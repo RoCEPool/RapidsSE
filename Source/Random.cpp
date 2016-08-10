@@ -2,7 +2,7 @@
 /* Random.cpp -- generate a random number                                     */
 /*============================================================================*/
 
-#include "Common.h"
+#include "Random.hpp"
 
 //---------------------------------------------------------------------------//
 // generate a random number                                                  //
@@ -76,6 +76,29 @@ u8 Random::uRandom(u8 uLow, u8 uHigh)
   assert (n <= uHigh);
   
   return n;
+}
+
+/*---------------------------------------------------------------------------*/
+/* sRandomString: generate a random string of given length                   */
+/*---------------------------------------------------------------------------*/
+s16K Random::sRandomString(i8 iLength) {
+  
+  char sCharSet[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
+  s16K sRandomString;
+  
+  ASSERT(iLength < sizeof(s16K));
+  
+  i8 iCharSetSize = String::iSize(sCharSet);
+  
+  for (i8 i = 0;i < iLength; i++) {
+    i8 iKey = iRandom(iCharSetSize-1);
+    sRandomString.vAppend(sCharSet[iKey]);
+  }
+  
+  sRandomString.vAppend('\0');
+
+  
+  return sRandomString;
 }
 
 /*============================================================================*/

@@ -10,6 +10,8 @@ namespace Common
 {
   class Random
   {
+    
+    
   public:
     static i8 iRandom(void);
     static i8 iRandom(i8 iMax);
@@ -18,6 +20,8 @@ namespace Common
     static u8 uRandom(void);
     static u8 uRandom(u8 uMax);
     static u8 uRandom(u8 uLow, u8 uHigh);
+    
+    static s16K sRandomString(i8 iLength);
   };
   
 }
