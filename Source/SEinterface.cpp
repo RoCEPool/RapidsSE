@@ -104,11 +104,11 @@ void SEinterface::vAppendRequest(s& sRequest)
   String::vCopy(wWorkspace,wItfAddr);
   String::vConcat(wWorkspace," >seitf task.this task.itf! ");
   xVal = wWorkspace;
-  vTrace("%s\n",xVal.sStr());
+  //vTrace("%s\n",xVal.sStr());
   xValSet.vAppend(pCursor,xVal);
   
   xVal = sRequest.a();
-  vTrace("%s\n",xVal.sStr());
+  //vTrace("%s\n",xVal.sStr());
   xValSet.vAppend(pCursor,xVal);
   
   bool b = m_pRequestQueue->bAppend(&xValSet);
@@ -124,6 +124,8 @@ bool SEinterface::bPopResponse(s& sResponse)
   
   if (! m_pResponseQueue->bPop(&xResponse))
     return false;
+  
+  sResponse = xResponse.sStr();
   
   return true;
 }

@@ -359,10 +359,9 @@ void RapidsSE::vSeitfPrompt(void)
     sResponse = "<none>";
     if (Prompt::bGetInput(sPrompt,sRequest)) {
       pSEitf->vAppendRequest(sRequest);
-      if (pSEitf->bPopResponse(sResponse))
-        vTrace("%s\n",sResponse.a());
-      else
-        vTrace("not reponse yet\n");
+      while (! pSEitf->bPopResponse(sResponse))
+        ;
+      vTrace("%s\n",sResponse.a());
     }
   }
 }

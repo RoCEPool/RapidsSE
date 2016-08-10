@@ -38,12 +38,12 @@ dic:     tenants
   until
 ;
 
-: !req ( process request  ) valset> >: >: ;
-: req> ( receive request  ) begin task.this task.queue@ queue.pop until traceon ;
+: !req ( process request  ) valset> stk >: stk >: stk ;
+: req> ( receive request  ) begin task.this task.queue@ queue.pop until ;
 : >rsp ( send response    )
+   >str
     task.this task.itf@
-    seitf.dic dic.push "rspque" find execute dic.drop
-    queue.append
+    seitf.dic {{ "rspque" find execute queue.append }}
 ;
 
 : serverLoop ( request server )
