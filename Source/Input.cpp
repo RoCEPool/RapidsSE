@@ -141,8 +141,9 @@ void Input::vNextLiteral(char* aWorkspace)
     }
     
     if ( ! m_cChar ) {
+      vUngetChar();
       *a = '\0';
-      m_eLiteralType = LT_NAMELIT;
+      m_eLiteralType = LT_INTLIT;
       return;
     }
     
