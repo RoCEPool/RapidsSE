@@ -8,6 +8,9 @@ Arguments  gxArguments;
 
 void vTest1(void);
 
+/*----------------------------------------------------------------------------*/
+/* main                                                                       */
+/*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {  
   printf("RapidsSE %s (%s %s)\n",VERSION_STRING,__DATE__,__TIME__);
