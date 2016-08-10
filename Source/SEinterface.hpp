@@ -11,10 +11,11 @@ namespace StorageEngine
   class SEinterface : public Object
   {
   public:
-    Dictionary m_xDictionary;
+    i8         m_iPid;           // process which created this seitf
+    Dictionary m_xDictionary;    // private dictionary
 
-    Queue* m_pRequestQueue;
-    Queue* m_pResponseQueue;
+    Queue*     m_pRequestQueue;  // request queue
+    Queue*     m_pResponseQueue; // reponse queue
     
     // must be last
     Footer m_xFooter;

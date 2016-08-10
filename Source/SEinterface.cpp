@@ -69,6 +69,8 @@ void SEinterface::vDump(const char* aTitle)
 /*----------------------------------------------------------------------------*/
 void SEinterface::vInit(void)
 {
+  m_iPid = Process::iGetPid();
+  
   Word* pReqQueWord = gpDictionary->pFind("requestQueue");
   
   ASSERT(pReqQueWord);
