@@ -1,0 +1,10 @@
+"wrdvar.sen" .
+: wrdvar:
+    create 
+    object!!
+    sizeof_wrdval allot
+    word.this >body magic!!
+    word.this >body CN_WRDVAL class!
+    ( word.this >body thread.init )
+    does>
+;

@@ -1,0 +1,36 @@
+//
+// boot.sen -- boot file
+//
+
+"boot.sen" .
+
+"core_words.sen" >>:
+
+"open_trace.sen" >>:
+
+"runtime.sen" >>:
+
+( create the threadList to hold all thread's )
+threadlist: threadList
+
+( create the txList to hold all tx's )
+txlist: txList
+
+( create the sessionList to hold all session's )
+sessionlist: sessionList
+
+"metadata.sen" >>:
+
+"testing.sen" >>:
+
+( add this task to task list )
+// task.this tasklist tasklist.append
+
+// to be done
+
+( spawn first 2nd thread and leave on stack )
+thread: Thread1
+taskset: TaskSet1 TaskSet1 Thread1 thread.taskset!
+Thread1 thread.spawn Thread1
+
+"booted.sen" >>:

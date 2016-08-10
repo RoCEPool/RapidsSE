@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* MemoryManagement.h - includes for Memory Management                        */
+/*============================================================================*/
+
+#pragma once
+
+#include "Common.h"
+
+static const i8 C_SIZE_LARGE_BUFFER  = C_1MB;
+static const i8 C_SIZE_MEDIUM_OBJECT = C_1KB * 16;
+static const i8 C_SIZE_SMALL_OBJECT  = C_1KB;
+
+#include "Object.hpp"
+
+#include "bn.hpp"
+#include "Buffer.hpp"
+#include "BufferFree.hpp"
+#include "BufferPool.hpp"
+#include "BufferPoolIter.hpp"
+#include "BufferPoolAnalyzer.hpp"
+
+#include "SegmentBuffer.hpp"
+#include "Strand.hpp"
+#include "Segment.hpp"
+
+#include "FreeChunk.hpp"
+#include "HeapBuffer.hpp"
+#include "Heap.hpp"
+
+//-----------------------------------------------------------------------------
+namespace MemoryManagement
+{
+  void vCheckAssumptions(void);
+}
+
+using namespace MemoryManagement;
+
+extern BufferPool* gpBufferPool;
+
+/*---------------------------------------------------------------------------*/
+/* pCheck: check address                                                     */
+/*---------------------------------------------------------------------------*/
+template <class OBJECT>
+static OBJECT pPoolCheck(void* pAddress)
+{
+#ifdef ADDRESS_CHECK
+  if (pAddress)
+    gpBufferPool->vCheckAddress(pAddress);
+#endif
+  
+  return static_cast<OBJECT>(pAddress);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

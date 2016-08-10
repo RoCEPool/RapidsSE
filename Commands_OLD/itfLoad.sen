@@ -1,0 +1,7 @@
+"itfLoad.sen" .
+
+: run
+  "itf_v2.sen" >>:
+  "itf_commands.sen" >>:
+  "itf2" find execute
+;

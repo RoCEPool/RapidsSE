@@ -1,0 +1,93 @@
+"itf_v2.sen" .
+
+( create the parts )
+thread:  requestServerThread
+taskset: requestServerTaskSet
+queue:   requestQueue
+dic:     tenants
+
+: itf_init_client ( configure the client )
+
+  seitf.new task.this task.itf!
+
+  requestQueue  task.this task.itf@ seitf.req!
+
+  task.this task.itf@ seitf.dic dic.push "rspque" :queue dic.drop
+;
+
+: itf_init_server ( configure the server )
+
+  "serverLoop" task.new
+
+  dup requestQueue swap task.queue!
+
+  requestServerTaskSet taskset.append
+
+  requestServerTaskSet requestServerThread thread.taskset!
+
+  requestServerThread thread.spawn
+;
+
+: >itf ( send request     ) task.this task.itf@ seitf.req@ queue.append ;
+
+: itf> ( receive response )
+  begin
+    task.this task.itf@
+    seitf.dic dic.push "rspque" find execute dic.drop
+    queue.pop
+  until
+;
+
+: !req ( process request  ) valset> >: >: ;
+: req> ( receive request  ) begin task.this task.queue@ queue.pop until traceon ;
+: >rsp ( send response    )
+    task.this task.itf@
+    seitf.dic dic.push "rspque" find execute dic.drop
+    queue.append
+;
+
+: serverLoop ( request server )
+    "server" task.this task.name!
+    begin req> !req >rsp 0 until
+;
+
+: itf2_prompt ( prompt test )
+
+  begin
+
+    "client" task.this task.name!
+
+    snooze
+
+    retryPoint
+
+    "Client$ " .put accept
+
+    dup strlen 3 < if
+      >:
+    else
+      dup 3 0 substr ">se" streql
+      if
+        dup strlen 3 - 3 substr
+
+        ( form the response address )
+        task.this task.itf@ >int >str " >seitf task.this task.itf! " concat
+
+        2 >valset
+
+        >itf itf> .
+      else
+        >:
+      then
+    then
+
+  0 until
+;
+
+: itf2 ( init and run itf test )
+
+  itf_init_client
+  itf_init_server
+
+  itf2_prompt
+;

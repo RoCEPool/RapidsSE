@@ -1,0 +1,282 @@
+#-----------------------------------------------------------------------------#
+# iAsm.s: assembler routines                                                  #
+#-----------------------------------------------------------------------------#
+
+#
+# OS X calling convention:
+#
+# the first six integer or pointer arguments are passed in
+# registers RDI, RSI, RDX, RCX, R8, and R9
+#
+# refer: http://en.wikipedia.org/wiki/X86_calling_conventions
+#
+
+#-----------------------------------------------------------------------------#
+# _iAtomicDec: atomically decrement integer at [rdi]                          #
+#-----------------------------------------------------------------------------#
+.globl _iAtomicDec
+.intel_syntax noprefix
+
+_iAtomicDec:
+
+  mov rcx,-1
+  lock xadd [rdi], rcx
+  mov rax, rcx
+  dec rax
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iAtomicInc: atomically increment integer at [rdi]                          #
+#-----------------------------------------------------------------------------#
+.globl _iAtomicInc
+.intel_syntax noprefix
+
+_iAtomicInc:
+
+  mov rcx,1
+  lock xadd [rdi], rcx
+  mov rax, rcx
+  inc rax
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iCpuid: cpuid with arg in rdi, register to return in rsi                   #
+#-----------------------------------------------------------------------------#
+.globl _iCpuid
+.intel_syntax noprefix
+
+_iCpuid:
+
+  mov rax,0
+  mov rax,rdi
+
+  cpuid
+
+  # 0 is eax
+  cmp rsi,0
+  jne _1
+
+  shl rax,32
+  shr rax,32
+
+  ret
+
+  # 1 is ebx
+_1:
+  cmp rsi,1
+  jne _2
+
+  mov rax,0
+  mov eax,ebx
+
+  ret
+
+  # 2 is ecx
+_2:
+  cmp rsi,2
+  jne _3
+
+  mov rax,0
+  mov eax,ecx
+
+  ret
+
+  # 3 is edx
+_3:
+  mov rax,0
+  mov eax,edx
+
+  ret
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iDropRead: drop read lock at [rdi] (no wait)                               #
+#-----------------------------------------------------------------------------#
+.globl _iDropRead
+.intel_syntax noprefix
+
+_iDropRead:
+
+  mov rsi, [rdi]  # get value at rdi
+  mov rdx, rsi
+  dec rdx         # remove one read lock
+
+  call _iTestSet  # attempt to drop read lock
+
+  cmp rax,0
+  je _iDropRead
+
+  mov rax, 1
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iDropWrite: drop write lock at [rdi] (no wait)                             #
+#-----------------------------------------------------------------------------#
+.globl _iDropWrite
+.intel_syntax noprefix
+
+_iDropWrite:
+
+  mov rax, 0
+  mov [rdi], rax  # clear the write lock
+
+  mov rax, 1
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iGrabRead: grab read lock at [rdi] (no wait)                               #
+#-----------------------------------------------------------------------------#
+.globl _iGrabRead
+.intel_syntax noprefix
+
+_iGrabRead:
+
+  mov r9, 1       # construct mask
+  shl r9, 63
+
+_iGrabReadRetry:
+
+  mov rax, [rdi]  # get value at rdi
+  mov r8, rax     # keep copy in r8
+
+  and rax, r9     # test if currently write locked
+
+  js _GrabReadFailed  # is locked, fail
+
+  mov rsi, r8     # the <if> value
+  mov rdx, r8     # construcr <then> value
+  inc rdx
+
+  call _iTestSet  # attempt to grab
+
+  cmp rax,0
+  je _iGrabReadRetry
+
+  mov rax,1
+  ret
+
+_GrabReadFailed:
+  mov rax, 0
+  ret
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iGrabWrite: grab write lock at [rdi] (no wait)                             #
+#-----------------------------------------------------------------------------#
+.globl _iGrabWrite
+.intel_syntax noprefix
+
+_iGrabWrite:
+
+  mov rax, [rdi]  # get value at rdi
+  mov r8, rax     # keep copy in r8
+  mov r9, 1       # construct mask
+  shl r9, 63
+
+  and rax, r9     # test if write locked already
+
+  js _GrabWriteFailed  # is locked, fail
+
+  mov rsi, r8     # the <if> value
+  mov rdx, r8     # construct <then> value
+  or  rdx, r9
+
+  call _iTestSet  # attempt to grab
+
+  cmp rax,0
+  je _GrabWriteFailed
+
+_GrabWriteWait:
+  mov rax, [rdi]
+  cmp rax, r9
+  jne _GrabWriteWait
+  
+  mov rax,1
+  ret
+
+_GrabWriteFailed:
+  mov rax, 0
+  ret
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iIsLocked: return true if locked                                           #
+#-----------------------------------------------------------------------------#
+.globl _iIsLocked
+.intel_syntax noprefix
+
+_iIsLocked:
+
+  mov rax, [rdi]  # get value at rdi
+
+  mov r9, 0
+
+  cmp rax, r9     # test if currently locked
+
+  jne _IsLocked   # is locked
+
+  mov rax,0
+  ret
+
+_IsLocked:
+  mov rax, 1
+  ret
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iRdtscp: read time-stamp counter                                           #
+#-----------------------------------------------------------------------------#
+.globl _iRdtscp
+.intel_syntax noprefix
+
+_iRdtscp:
+
+  push rbx
+  push rcx
+  push rdx
+
+  rdtscp
+  shl rdx,32
+  or rax,rdx
+
+  pop rdx
+  pop rcx
+  pop rbx
+
+ret
+
+#-----------------------------------------------------------------------------#
+# _iTestSet: atomic test and set                                              #
+#-----------------------------------------------------------------------------#
+.globl _iTestSet
+.intel_syntax noprefix
+
+_iTestSet:
+
+  mov rax, rsi
+
+  lock cmpxchg [rdi], rdx
+
+  cmp rax, rsi
+
+  jne _Failed
+
+_Success:
+  mov rax,1
+  ret
+
+_Failed:
+  mov rax,0
+  ret
+
+#-----------------------------------------------------------------------------#
+# end of file                                                                 #
+#-----------------------------------------------------------------------------#

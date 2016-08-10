@@ -1,0 +1,553 @@
+/*============================================================================*/
+/* Task.hpp - task                                                            */
+/*============================================================================*/
+
+#pragma once
+
+#include "Tasking.h"
+
+namespace StorageEngine
+{
+  class SEinterface;
+}
+
+namespace Threading
+{
+  class Thread;
+}
+
+namespace Tasking
+{
+  enum eTS // Task State
+  {
+  /* 0 */ TS_NONE=0,
+  /* 1 */ TS_RUNNING,
+  /* 2 */ TS_SLICED,
+  /* 3 */ TS_WAITING,
+  /* 4 */ TS_SLEEPING,
+  /* 5 */ TS_BLOCKED,
+  /* 6 */ TS_EXITED,
+  /* 7 */ TS_ENUMS
+  };
+  
+  static const char *pTS[]
+  {
+    /* 0 */ "NONE",
+    /* 1 */ "RUNNING",
+    /* 2 */ "SLICED",
+    /* 3 */ "WAITING",
+    /* 4 */ "SLEEPING",
+    /* 5 */ "BLOCKED",
+    /* 6 */ "EXITED",
+    /* 7 */ "ENUMS",
+  };
+  
+  typedef NP<Task,CN_TASK> NP_Task;
+  typedef NNP<Task,CN_TASK> NNP_Task;
+
+  class Task : public Object,
+               public ListNode_t<Task>
+  {
+    #define GET_THROW(_1,_2,NAME,...) NAME
+    #define THROW(...) GET_THROW(__VA_ARGS__, THROW2, THROW1)(__VA_ARGS__)
+      
+    #define THROW1(p1) \
+    { \
+      String::vSprint(nnpTask->m_sException.a(),p1); \
+      nnpTask->m_sFile = __FILE__; \
+      throw (i8)__LINE__; \
+    }
+      
+    #define THROW2(p1, p2) \
+    { \
+      String::vSprint(nnpTask->m_sException.a(),p1,p2); \
+      nnpTask->m_sFile = __FILE__; \
+      throw (i8)__LINE__; \
+    }
+      
+      // throw invalid parameter
+    #define THROW_INVALID_PARAM(primitive) \
+    { \
+      THROW("Invalid param stack for: %s",primitive); \
+    }
+
+  private:
+    Lock  m_xLock;
+    i8    m_iTaskNo;    // task
+    s32   m_sName;      // task name
+    eTS   m_eState;     // state (running, sleeping, ...)
+    i8    m_iTxId;      // transaction id
+    i8    m_iWakeAt;    // time at which to wake this tx
+    
+    NP_Task m_npNextInSet; // next task in set
+    NP_Task m_npPrevInSet; // prev task in set
+    
+    DictionaryStack m_xDictionaryStack;
+    
+    Queue* m_pQueue;    // processing queue
+    
+    Stack  m_xParamStack;  // parameter stack
+    Stack  m_xReturnStack; // return stack
+    
+    s256  m_sCommand;   // supplied command
+    s256  m_sLiteral;   // current literal
+    Input m_xInput;     // input parser
+    
+    union {
+      Cell*       m_pCell;
+      CodeField*  m_pCodeField;
+      OnStack*    m_pValue;
+    };
+    
+    Cell* m_pResetIP;
+    Cell* m_pBeginIP;
+    Word* m_pWord;
+    bool  m_bCompiling;
+    bool  m_bTracing;
+    
+    // exception
+    s256  m_sFile;
+    s256  m_sException;
+    
+    // registers
+//    Table*   m_pTable;
+//    Index*   m_pIndex;
+    
+    StorageEngine::SEinterface* m_pSEitf;
+    
+    // test
+    Dictionary m_xTaskDictionary;
+    
+    // always last
+    Footer m_xFooter;
+
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, Task* pTask);
+    void  operator delete(void*);
+    
+    Task(void);
+    Task(NNP_Task nnpTask);
+    Task(const char* aCommand);
+    void vInit(const char* aCommand);
+    ~Task(void);
+    
+    void vAdjustNext(i8 iBytes);
+    void vAddConstant(const char* aName, i8 iVal);
+    void vAddConstant(const char* aName, const char* aValue);
+    void vAddConstants(void);
+    void vAddPrimitive(const char* aName, pFUN pFunc, bool bImmediate);
+    Object* pArgObject(void);
+    void vCheckLocked(void);
+    Word* pCompileColon(s& sDefinition);
+    Word* pCurrentWord(void);
+    static void vDebug(void);
+    void vDump(void);
+    Word* pFindWord(s& sName);
+    Word* pFindWord(const char* aName);
+    bool  bForgetWord(s& sName);
+    void vInitialiseDictionary(void);
+    bool  bIsName(s& sName);
+    void vLiteralNext(void);
+    Word* pLocateWord(Cell* pCell);
+    void vLoop(void);
+    NP_Task npNextInSet(void);
+    void  vNextInSet(NP_Task npNext);
+    void vPrepareAttachSen(void);
+    void vPrepareBootSen(void);
+    void vPrepareCommand(const char *aCommand);
+    void vPrepareDocol(void);
+    NP_Task npPrevInSet(void);
+    void vPrevInSet(NP_Task npPrev);
+    void vPrimitive(const char *aPrimitive);
+    void vReset(void);
+    void vRetry(void);
+    Threading::Thread* pRootThread(void);
+    void vRoutineCall(Word* pWord);
+    eTS  eState(void);
+    void vState(eTS eState);
+    i8   iTxId(void) const;
+    void vTxId(i8 iTxId);
+    void vUndirect(void);
+    
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+
+    bool bGuardParam(i8 iCount) const;
+    
+    bool bGuardParam(eCN eClass0) const;
+    bool bGuardParam(eCN eClass0, eCN eClass1) const;
+    bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const;
+    
+    bool bGuardReturn(eCN eClass0) const;
+    bool bGuardReturn(eCN eClass0, eCN eClass1) const;
+    bool bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const;
+    
+    bool bPopParam(Cell*& pCell);
+    bool bPopParam(i8& iArg1);
+    bool bPopParam(i8& iArg1, i8& iArg2);
+    bool bPopParam(i8& iArg1, OnStack& xArg1);
+    bool bPopParam(i8& iArg1, i8& iArg2, OnStack& xArg3);
+    bool bPopParam(Object*& pObject);
+    bool bPopParam(Object*& pObject1, Object*& pObject2);
+    bool bPopParam(Object*& pObject, OnStack& xValue);
+    bool bPopParam(OnStack& xArg1);
+    bool bPopParam(OnStack& xArg1, OnStack& xArg2);
+    bool bPopParam(OnStack& xArg1, OnStack& xArg2, OnStack& xArg3);
+    bool bPopParam(s32&  sArg1);
+    bool bPopParam(s256& sArg1);
+    bool bPopParam(s16K& sArg1);
+    bool bPopParam(s16K& sArg1, s16K& sArg2);
+    bool bPopParam(Task*& pTask);
+    bool bPopParam(Word*& pArg1);
+    bool bPopParamInt(i8& iArg1);
+
+    void vPopParam(OnStack* pValue);
+    
+    void vPushParam(Cell* pCell);
+    void vPushParam(const char* aString);
+    void vPushParam(i8 iArg1);
+    void vPushParam(Object* pObject);
+    //    void vPushParam(Object* pObject);
+    void vPushParam(OnStack& xArg1);
+    void vPushParam(OnStack* pValue);
+    void vPushParam(s32&  sArg1);
+    void vPushParam(s256& sArg1);
+    void vPushParam(s16K& sArg1);
+    void vPushParam(Threading::Thread* pThread);
+    void vPushParam(NNP_Task nnpTask);
+    void vPushParam(Word* pWord);
+    
+    void vPushReturn(Cell* pCell);
+    void vPushReturn(const char* aString);
+    void vPushReturn(i8 iArg1);
+    void vPushReturn(OnStack* pValue);
+    void vPushReturn(OnStack& xValue);
+    void vPushReturn(s32& sArg1);
+    void vPushReturn(s256& sArg1);
+    void vPushReturn(s16K& sArg1);
+
+    void vPopReturn(Cell*& pCell);
+    bool bPopReturn(i8& iArg1);
+    bool bPopReturn(i8& iArg1, i8& iArg2);
+    bool bPopReturn(OnStack& xValue);
+    void vPopReturn(OnStack* pValue);
+    bool bPopReturn(s32&  sArg1);
+    bool bPopReturn(s256& sArg1);
+    bool bPopReturn(s16K& sArg1);
+    
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    
+    static void vAccept(NNP_Task nnpTask);
+    static void vAdd(NNP_Task nnpTask);
+    static void vAllot(NNP_Task nnpTask);          
+    static void vAgain(NNP_Task nnpTask);          
+    static void vAgain_(NNP_Task nnpTask);         
+    static void vAnd(NNP_Task nnpTask);            
+    static void vBegin(NNP_Task nnpTask);          
+    static void vBegin_(NNP_Task nnpTask);         
+    static void vBoot(NNP_Task nnpTask);           
+    static void vBpa(NNP_Task nnpTask);            
+    static void vClassFetch(NNP_Task nnpTask);
+    static void vClassStore(NNP_Task nnpTask);     
+    static void vCodeAssign(NNP_Task nnpTask);     
+    static void vColon(NNP_Task nnpTask);          
+    static void vComma(NNP_Task nnpTask);          
+    static void vComment(NNP_Task nnpTask);        
+    static void vCommentLine(NNP_Task nnpTask);
+    static void vConcat(NNP_Task nnpTask);
+    static void vCompiling(NNP_Task nnpTask);      
+    static void vCwd(NNP_Task nnpTask);            
+    static void vDivide(NNP_Task nnpTask);         
+    static void vDepth(NNP_Task nnpTask);          
+    static void vDo(NNP_Task nnpTask);             
+    static void vDo_RT(NNP_Task nnpTask);          
+    static void vDrop(NNP_Task nnpTask);           
+    static void vDup(NNP_Task nnpTask);            
+    static void vDump(NNP_Task nnpTask);           
+    static void vElse(NNP_Task nnpTask);           
+    static void vEncodeCall(NNP_Task nnpTask);     
+    static void vEncodeDoes(NNP_Task nnpTask);     
+    static void vEncodeEmb(NNP_Task nnpTask);      
+    static void vEncodeFun(NNP_Task nnpTask);      
+    static void vEncodeVal(NNP_Task nnpTask);      
+    static void vEnter(NNP_Task nnpTask);          
+    static void vEnterCompiler(NNP_Task nnpTask);
+    static void vEnterInterpreter(NNP_Task nnpTask);
+    static void vEnvGet(NNP_Task nnpTask);
+    static void vEqual(NNP_Task nnpTask);          
+    static void vEqualAddress(NNP_Task nnpTask);
+    static void vExecute(NNP_Task nnpTask);
+    static void vExit(NNP_Task nnpTask);           
+    static void vFetch(NNP_Task nnpTask);
+    static void vFetchInteger(NNP_Task nnpTask);
+    static void vFetchPointer(NNP_Task nnpTask);   
+    static void vFreeSpace(NNP_Task nnpTask);      
+    static void vGreater(NNP_Task nnpTask);
+    static void vGreaterEqual(NNP_Task nnpTask);   
+    static void vGwd(NNP_Task nnpTask);            
+    static void vHazard(NNP_Task nnpTask);         
+    static void vI(NNP_Task nnpTask);              
+    static void vIf(NNP_Task nnpTask);             
+    static void vImmediate(NNP_Task nnpTask);      
+    static void vInputClose(NNP_Task nnpTask);     
+    static void vInputDepth(NNP_Task nnpTask);     
+    static void vInputOpen(NNP_Task nnpTask);      
+    static void vInputPop(NNP_Task nnpTask);       
+    static void vInputPush(NNP_Task nnpTask);      
+    static void vInputStdin(NNP_Task nnpTask);     
+    static void vInputText(NNP_Task nnpTask);      
+    static void vInterpreting(NNP_Task nnpTask);   
+    static void vIsBooted(NNP_Task nnpTask);       
+    static void vIsCompiling(NNP_Task nnpTask);    
+    static void vIsImmediate(NNP_Task nnpTask);    
+    static void vIsInterpreting(NNP_Task nnpTask); 
+    static void vIsIntLit(NNP_Task nnpTask);       
+    static void vIsNameLit(NNP_Task nnpTask);      
+    static void vIsPrimitive(NNP_Task nnpTask);    
+    static void vIsStrLit(NNP_Task nnpTask);       
+    static void vJ(NNP_Task nnpTask);              
+    static void vJump(NNP_Task nnpTask);           
+    static void vJumpFalse(NNP_Task nnpTask);      
+    static void vJumpTrue(NNP_Task nnpTask);       
+    static void vLess(NNP_Task nnpTask);           
+    static void vLessEqual(NNP_Task nnpTask);      
+    static void vLiteral(NNP_Task nnpTask);        
+    static void vLiteralGet(NNP_Task nnpTask);
+    static void vLitNext(NNP_Task nnpTask);
+    static void vLitType(NNP_Task nnpTask);        
+    static void vLocate(NNP_Task nnpTask);         
+    static void vLoop(NNP_Task nnpTask);           
+    static void vLoop_RT(NNP_Task nnpTask);        
+    static void vLoopPlus(NNP_Task nnpTask);       
+    static void vLoopPlus_RT(NNP_Task nnpTask);    
+    static void vMagicFetch(NNP_Task nnpTask);     
+    static void vMagicMark(NNP_Task nnpTask);      
+    static void vMultiply(NNP_Task nnpTask);       
+    static void vNameWord(NNP_Task nnpTask);       
+    static void vNewLine(NNP_Task nnpTask);
+    static void vNop(NNP_Task nnpTask);
+    static void vNot(NNP_Task nnpTask);
+    static void vNotEqual(NNP_Task nnpTask);       
+    static void vObjectMark(NNP_Task nnpTask);     
+    static void vOr(NNP_Task nnpTask);             
+    static void vPause(NNP_Task nnpTask);          
+    static void vPick(NNP_Task nnpTask);           
+    static void vPrevWord(NNP_Task nnpTask);       
+    static void vPrint(NNP_Task nnpTask);          
+    static void vPstackDepth(NNP_Task nnpTask);
+    static void vProcessExit(NNP_Task nnpTask);
+    static void vPush(NNP_Task nnpTask);           
+    static void vPushEmbedded(NNP_Task nnpTask);
+    static void vPut(NNP_Task nnpTask);
+    static void vPutNewline(NNP_Task nnpTask);     
+    static void vQuit(NNP_Task nnpTask);           
+    static void vRdtscp(NNP_Task nnpTask);         
+    static void vRepeat(NNP_Task nnpTask);         
+    static void vRetryPoint(NNP_Task nnpTask);
+    static void vRot(NNP_Task nnpTask);
+    static void vSee(NNP_Task nnpTask);
+    static void vSemicolon(NNP_Task nnpTask);      
+    static void vSignal(NNP_Task nnpTask);         
+    static void vSnooze(NNP_Task nnpTask);         
+    static void vStore(NNP_Task nnpTask);
+    static void vStoreInteger(NNP_Task nnpTask);
+    static void vStrEql(NNP_Task nnpTask);
+    static void vStrLen(NNP_Task nnpTask);
+    static void vSubStr(NNP_Task nnpTask);
+    static void vSubtract(NNP_Task nnpTask);       
+    static void vSwap(NNP_Task nnpTask);           
+    static void vTest(NNP_Task nnpTask);           
+    static void vThen(NNP_Task nnpTask);           
+    static void vThrow(NNP_Task nnpTask);          
+    static void vTick(NNP_Task nnpTask);           
+    static void vToBody(NNP_Task nnpTask);         
+    static void vToCmd(NNP_Task nnpTask);          
+    static void vToInt(NNP_Task nnpTask);          
+    static void vToSEitf(NNP_Task nnpTask);
+    static void vToStr(NNP_Task nnpTask);
+    static void vToTask(NNP_Task nnpTask);
+    static void vToValSet(NNP_Task nnpTask);
+    static void vToValues(NNP_Task nnpTask);
+    static void vTraceOff(NNP_Task nnpTask);
+    static void vTraceOn(NNP_Task nnpTask);        
+    static void vUnloop(NNP_Task nnpTask);         
+    static void vUntil(NNP_Task nnpTask);          
+    static void vVersion(NNP_Task nnpTask);        
+    static void vWait(NNP_Task nnpTask);           
+    static void vWake(NNP_Task nnpTask);           
+    static void vWhile(NNP_Task nnpTask);          
+    static void vZeroLess(NNP_Task nnpTask);       
+    static void vZeroLessEqual(NNP_Task nnpTask);  
+    static void vZeroEqual(NNP_Task nnpTask);      
+    static void vZeroNotEqual(NNP_Task nnpTask);   
+    static void vZeroGreaterEqual(NNP_Task nnpTask); 
+    static void vZeroGreater(NNP_Task nnpTask);      
+
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+
+    // args
+    static void vArgsPrint(NNP_Task nnpTask);
+    
+    // dic
+    static void vDicCount(NNP_Task nnpTask);
+    static void vDicDrop(NNP_Task nnpTask);       
+    static void vDicInit(NNP_Task nnpTask);
+    static void vDicMain(NNP_Task nnpTask);
+    static void vDicName(NNP_Task nnpTask);
+    static void vDicPick(NNP_Task nnpTask);
+    static void vDicPush(NNP_Task nnpTask);       
+    static void vDicStack(NNP_Task nnpTask);
+    
+    // file
+    static void vFileClose(NNP_Task nnpTask);     
+    static void vFileInit(NNP_Task nnpTask);      
+    static void vFileOpen(NNP_Task nnpTask);
+    static void vFilePathGet(NNP_Task nnpTask);
+    static void vFilePathSet(NNP_Task nnpTask);   
+    static void vFileRead(NNP_Task nnpTask);
+    static void vFileWrite(NNP_Task nnpTask);
+    
+    // pstack
+    static void vPstackClass(NNP_Task nnpTask);
+    
+    // queue
+    static void vQueueAppend(NNP_Task nnpTask);
+    static void vQueueDump(NNP_Task nnpTask);
+    static void vQueueInit(NNP_Task nnpTask);     
+    static void vQueuePop(NNP_Task nnpTask);      
+
+    // rstack
+    static void vRstackDepth(NNP_Task nnpTask);
+    static void vRstackFetch(NNP_Task nnpTask);
+    static void vRstackPick(NNP_Task nnpTask);
+    
+    // seinterface
+    static void vSEitfDic(NNP_Task nnpTask);
+    static void vSEitfDelete(NNP_Task nnpTask);
+    static void vSEitfDump(NNP_Task nnpTask);
+    static void vSEitfNew(NNP_Task nnpTask);
+    static void vSEitfReqFetch(NNP_Task nnpTask);
+    static void vSEitfReqStore(NNP_Task nnpTask);
+    static void vSEitfRspFetch(NNP_Task nnpTask);
+    static void vSEitfRspStore(NNP_Task nnpTask);
+    
+    // session
+    static void vSessionDelete(NNP_Task nnpTask);
+    static void vSessionNew(NNP_Task nnpTask);
+    
+    // sessionlist
+    static void vSessionListDump(NNP_Task nnpTask);
+    static void vSessionListInit(NNP_Task nnpTask);
+
+    // system
+    static void vSystemCpu(NNP_Task nnpTask);
+    
+    // table
+    static void vTableDrop(NNP_Task nnpTask);
+    static void vTableDump(NNP_Task nnpTask);
+    static void vTableExport(NNP_Task nnpTask);
+    static void vTableInit(NNP_Task nnpTask);
+    static void vTableInsert(NNP_Task nnpTask);
+    static void vTableLoad(NNP_Task nnpTask);
+    static void vTableList(NNP_Task nnpTask);
+    static void vTableSpace(NNP_Task nnpTask);
+    static void vTableTruncate(NNP_Task nnpTask);
+    
+    // task
+    static void vTaskDic(NNP_Task nnpTask);
+    static void vTaskDump(NNP_Task nnpTask);
+    static void vTaskInit(NNP_Task nnpTask);
+    static void vTaskItfFetch(NNP_Task nnpTask);
+    static void vTaskItfStore(NNP_Task nnpTask);
+    static void vTaskNameFetch(NNP_Task nnpTask);
+    static void vTaskNameStore(NNP_Task nnpTask);
+    static void vTaskNew(NNP_Task nnpTask);
+    static void vTaskThis(NNP_Task nnpTask);
+    static void vTaskQfetch(NNP_Task nnpTask);
+    static void vTaskQstore(NNP_Task nnpTask);
+    static void vTaskStateFetch(NNP_Task nnpTask);
+    static void vTaskStateStore(NNP_Task nnpTask);
+    
+    // tasklist
+    static void vTaskList(NNP_Task nnpTask);
+    static void vTaskListAppend(NNP_Task nnpTask);
+    static void vTaskListDump(NNP_Task nnpTask);
+    static void vTaskListInit(NNP_Task nnpTask);
+    
+    // taskset
+    static void vTaskSetAppend(NNP_Task nnpTask); 
+    static void vTaskSetDump(NNP_Task nnpTask);   
+    static void vTaskSetInit(NNP_Task nnpTask);   
+    
+    // thread
+    static void vThreadAppend(NNP_Task nnpTask);  
+    static void vThreadBind(NNP_Task nnpTask);
+    static void vThreadCpu(NNP_Task nnpTask);
+    static void vThreadDump(NNP_Task nnpTask);
+    static void vThreadInit(NNP_Task nnpTask);    
+    static void vThreadSfetch(NNP_Task nnpTask);  
+    static void vThreadSstore(NNP_Task nnpTask);  
+    static void vThreadSpawn(NNP_Task nnpTask);   
+
+    // threadlist
+    static void vThreadListDump(NNP_Task nnpTask);
+    static void vThreadListInit(NNP_Task nnpTask);
+    
+    // tx
+    static void vTxDelete(NNP_Task nnpTask);
+    static void vTxNew(NNP_Task nnpTask);
+    
+    // txlist
+    static void vTxListDump(NNP_Task nnpTask);
+    static void vTxListInit(NNP_Task nnpTask);
+    
+    // txmap
+    static void vTxMapInit(NNP_Task nnpTask);
+    
+    // word
+    static void vCreate(NNP_Task nnpTask);
+    static void vCreateFrom(NNP_Task nnpTask);
+    static void vDoes(NNP_Task nnpTask);
+    static void vFind(NNP_Task nnpTask);
+    static void vForget(NNP_Task nnpTask);
+    static void vWord(NNP_Task nnpTask);
+    static void vWordDic(NNP_Task nnpTask);
+    static void vWordDump(NNP_Task nnpTask);
+    static void vWordForget(NNP_Task nnpTask);
+    static void vWordKindGet(NNP_Task nnpTask);
+    static void vWordKindSet(NNP_Task nnpTask);
+    static void vWordName(NNP_Task nnpTask);
+    static void vWordThis(NNP_Task nnpTask);
+    
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    /*------------------------------------------------------------------------*/
+    
+    // socket
+    static void vSocketAccept(NNP_Task nnpTask);   
+    static void vSocketClose(NNP_Task nnpTask);    
+    static void vSocketConnect(NNP_Task nnpTask);  
+    static void vSocketListen(NNP_Task nnpTask);   
+    static void vSocketOpen(NNP_Task nnpTask);     
+    static void vSocketRecv(NNP_Task nnpTask);     
+    static void vSocketSend(NNP_Task nnpTask);     
+    
+    static void vClient(NNP_Task nnpTask);         
+    static void vServer(NNP_Task nnpTask);         
+  };
+  
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

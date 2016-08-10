@@ -1,0 +1,70 @@
+"itf.sen" .
+
+( create the request server parts )
+thread:  requestServerThread
+taskset: requestServerTaskSet
+queue:   requestQueue
+queue:   responseQueue
+
+( initialise itf testing )
+: itf_init
+
+  ( request server side )
+  "serve_requests" task.new dup requestQueue swap task.queue!
+
+  requestServerTaskSet taskset.append
+
+  requestServerTaskSet requestServerThread thread.taskset!
+
+  requestServerThread  thread.spawn
+
+  ( se itf side )
+  seitf.new task.this task.itf!
+
+  requestQueue task.this task.itf@ seitf.req!
+
+  responseQueue task.this task.itf@ seitf.rsp!
+;
+
+( send a request )
+(
+: >itf
+  task.this task.itf@ seitf.req@ queue.append
+;
+)
+: >itf
+  requestQueue queue.append
+  requestQueue queue.pop drop
+  "_" concat rdtscp >str concat
+  responseQueue queue.append
+;
+
+( receive a response )
+(
+: itf>
+  begin task.this task.itf@ seitf.req@ queue.pop not while snooze repeat
+;
+)
+: itf>
+  responseQueue queue.pop drop
+;
+
+( receive a request )
+: req>
+  begin task.this task.queue@ queue.pop not while snooze repeat
+;
+
+( send a response )
+: >rsp
+  responseQueue queue.append
+;
+
+( request server )
+: serve_requests
+  begin req> " served" concat >rsp 1 while repeat
+;
+
+( se itf test )
+: itf
+  10 0 do "<msg>_" I >str concat >itf itf> . loop
+;

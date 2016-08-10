@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* AttachMap.hpp - map of addresses when process attaches                     */
+/*============================================================================*/
+
+#pragma once
+
+#include "StorageEngine.h"
+
+namespace StorageEngine
+{
+  class AttachMap : public Buffer
+  {
+  public:
+    i8                 m_iPid;
+    i8                 m_iQuit;
+    i8                 m_iStop;
+    
+    i8                 m_iPoolSize;
+    
+    BufferPool*        m_pBufferPool;
+    Heap*              m_pMediumHeap;
+    Heap*              m_pSmallHeap;
+    GlobalDictionary*  m_pGlobalDictionary;
+    Dictionary*        m_pDictionary;
+    TaskList*          m_pTaskList;
+   
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    AttachMap(void);
+    ~AttachMap(void);
+    
+    void vInit(void);
+  
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

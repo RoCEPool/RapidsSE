@@ -1,0 +1,10 @@
+"task.sen" .
+: task:
+  create
+  object!!
+  sizeof_task allot
+  word.this >body magic!!
+  word.this >body CN_TASK class!
+  word.this >body task.init
+  does> 
+;

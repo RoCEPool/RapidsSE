@@ -1,0 +1,10 @@
+"intvar.sen" .
+: intvar:
+    create 
+    object!!
+    sizeof_intval allot
+    word.this >body magic!!
+    word.this >body CN_INTVAL class!
+    ( word.this >body thread.init )
+    does> test
+;

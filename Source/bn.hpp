@@ -1,0 +1,37 @@
+/*============================================================================*/
+/*  bn.hpp - buffer number                                                    */
+/*============================================================================*/
+
+#pragma once
+
+#include "Common.h"
+
+namespace MemoryManagement
+{
+  class bn
+  {
+  private:
+    i8 m_iBufferNo;
+
+  public:
+    bn(void);
+    bn(i8 iBufferNo);
+    ~bn(void);
+    
+    static bn nNil(void);
+    bool operator ==(bn n);
+    bool operator !=(bn n);
+    bool operator >=(bn n);
+    bool operator <=(bn n);
+    i8 operator *(void);
+    bn operator ++(int i);
+    bn operator +(int i);
+    bn operator -(int i);
+  };
+  
+  bn operator "" _bn(unsigned long long i);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

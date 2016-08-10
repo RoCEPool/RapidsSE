@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* TaskList.hpp - Thread Set                                                  */
+/*============================================================================*/
+
+#pragma once
+
+#include "Tasking.h"
+
+namespace Tasking {
+    
+  class TaskList : public Object,
+                   public List_t<Task>
+  {
+  private:
+    
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    TaskList(void);
+    ~TaskList(void);
+    
+    Task* pAllocTask(void);
+    void  vFreeTask(Task* pTask);
+  };
+    
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* OSthread.hpp - an os thread                                                */
+/*============================================================================*/
+#pragma once
+
+#include "Common.h"
+
+namespace Common
+{
+  class PosixThread
+  {
+  public:
+    i8               m_iOpSysThreadId; // thread id as known by os
+    pthread_t        m_iPosixThreadId; // posix thread id
+    bool             m_bLocked;        // true if mutex is locked
+    pthread_mutex_t  m_xMutex;         // mutex variable
+    pthread_cond_t   m_xCond;          // condition variable
+    
+    PosixThread(void);
+    ~PosixThread(void);
+    
+    bool bBindThread(i8 iCpu);
+    i8   iThreadCpu(void);
+    void vSetOSThreadId(void);
+    bool bSpawnThread(void* pFun(void*), void* pArg);
+    
+    void vSignalThread(void);
+    
+    //---------------------------------------------------------------------------
+
+    void  vCondBroadcast(void);
+    void  vCondSignal(void);
+    void  vCondWait(void);
+    void  vCondTimedWait(i8 iNanoSeconds);
+    bool  bMutexLock(void);
+    void  vMutexLock(void);
+    void  vMutexUnlock(void);
+    void  vTlsSet(pthread_key_t iTlsKey, void* pArg);
+    
+    //---------------------------------------------------------------------------
+    
+    static void vNanoSleep(i8 nNanoSeconds);
+    static void vSecSleep(i8 nSeconds);
+    static bool bTlsCreate(pthread_key_t* pTlsKey);
+    static void* pTlsGet(pthread_key_t iTlsKey);
+  };
+
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,89 @@
+/*============================================================================*/
+/* FreeChunk.cpp - free chunk in heap                                         */
+/*============================================================================*/
+
+#include "MemoryManagement.h"
+
+/*----------------------------------------------------------------------------*/
+/* new                                                                        */
+/*----------------------------------------------------------------------------*/
+void* FreeChunk::operator new(size_t iSize)
+{
+  vFatal("fatal: FreeChunk class cannot be new'd");
+  
+  //vExitFatal();
+  
+  exit(EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete                                                                     */
+/*----------------------------------------------------------------------------*/
+void FreeChunk::operator delete(void* pFreeChunkAddress)
+{
+  vFatal("fatal: FreeChunk class cannot be deleted");
+  
+  //vExitFatal();
+  
+  exit(EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+FreeChunk::FreeChunk(void)
+: Object(CN_NONE)
+{
+  vFatal("fatal: FreeChunk class cannot be new'd");
+  
+  //vExitFatal();
+  
+  exit(EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+FreeChunk::~FreeChunk(void)
+{
+  vFatal("fatal: FreeChunk class cannot be deleted");
+  
+  //vExitFatal();
+  
+  exit(EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* initialize a free chunk                                                    */
+/*----------------------------------------------------------------------------*/
+void FreeChunk::vInit(eCN eClass)
+{
+  _poolAddress_(this);
+
+  vSetMagic();
+  vClass(eClass);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next free chunk in chain                                               */
+/*----------------------------------------------------------------------------*/
+FreeChunk* FreeChunk::pNextFree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pNextFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next free chunk in chain                                               */
+/*----------------------------------------------------------------------------*/
+void FreeChunk::vNextFree(FreeChunk* pNextFree)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pNextFree = pNextFree;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

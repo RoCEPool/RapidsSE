@@ -1,0 +1,26 @@
+"dic.sen" .
+
+: dic ;
+
+: dic:
+    create
+    object!!
+    sizeof_dictionary allot
+    word.this >body magic!!
+    word.this >body CN_DICTIONARY class!
+    ' dic word.this word.kind!
+    word.this >body dic.init
+    does>
+;
+
+: :dic
+    >create
+    object!!
+    sizeof_dictionary allot
+    word.this >body magic!!
+    word.this >body CN_DICTIONARY class!
+    ' dic word.this word.kind!
+    word.this >body dic.init
+    word.this
+    does>
+;

@@ -1,0 +1,9 @@
+"itfLoad.sen" .
+
+: client
+  "itf_v2.sen" >>:
+  "itf_commands.sen" >>:
+  snooze
+  "Welcome to RapidsSE" .
+  "itf2" find execute
+;

@@ -1,0 +1,10 @@
+"sessionList.sen" .
+: sessionList:
+    create
+    object!!
+    sizeof_sessionlist allot
+    word.this >body magic!!
+    word.this >body CN_SESSIONLIST class!
+    word.this >body sessionlist.init
+    does> test
+;

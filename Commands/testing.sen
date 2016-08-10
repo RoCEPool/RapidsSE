@@ -1,0 +1,10 @@
+"testing.sen" .
+"server.sen" >>:
+"client.sen" >>:
+( "compose_a.sen" >>: )
+( "compose_b.sen" >>: )
+"1m.sen" >>:
+"misc_testing.sen" >>:
+"queue_test.sen" >>:
+"snoozeLoop.sen" >>:
+"itfLoad.sen" >>:

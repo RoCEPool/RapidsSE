@@ -1,0 +1,9 @@
+"client.sen" .
+: client_code:
+    "client running" .
+    4334
+    SocketOpen
+    SocketConnect
+    "hello there" SocketSend
+    "client sent : hello there" .
+;

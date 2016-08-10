@@ -1,0 +1,21 @@
+"queue.sen" .
+: queue: 
+    create 
+    object!!
+    sizeof_queue allot
+    word.this >body magic!!
+    word.this >body CN_QUEUE class!
+    word.this >body queue.init
+    does> 
+;
+
+
+: :queue
+    >create
+    object!!
+    sizeof_queue allot
+    word.this >body magic!!
+    word.this >body CN_QUEUE class!
+    word.this >body queue.init
+    does>
+;

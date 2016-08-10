@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* Lock.cpp -- locking                                                        */
+/*============================================================================*/
+
+#pragma once
+
+#include "Common.h"
+
+namespace Common
+{
+  class Lock
+  {
+  private:
+    u8 m_uValue;
+    
+  public:
+    void* operator new(size_t);
+    
+    Lock();
+    ~Lock();
+    
+    void vCheckInit(void);
+    
+    bool bGrabRead(void);
+    void vGrabRead(void);
+    void vCheckRead(void);
+    void vDropRead(void);
+    
+    bool bGrabWrite(void);
+    void vGrabWrite(void);
+    void vCheckWrite(void);
+    void vDropWrite(void);
+    
+    bool bIsLocked(void);
+    
+  };
+  
+  typedef Lock lck;
+  
+  const u8 C_WRITELOCK = 0x8000000000000000;
+  
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

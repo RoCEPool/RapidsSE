@@ -1,0 +1,21 @@
+"queue_test.sen" .
+: test_seed
+    begin
+      task.this task.queue@ not if "no queue" . [ 1 rstack.pick ] again then
+      task.this task.queue@ queue.pop
+        if .
+        else "no msg" . "a message" task.this task.queue@ queue.append
+        then
+      "snoozing..." . snooze
+    0 until
+;
+taskSet:  testTaskSet  ( create a task set )
+thread:   testThread   ( create a thread )
+queue:    testQueue    ( create a message queue )
+: queue_test
+    testThread thread.spawn
+    testTaskSet testThread thread.taskset!  ( put task set into thread )
+    "test_seed" task.new ( spawn new task )
+    dup testQueue swap task.queue! ( put queue into task )
+    testtaskSet taskset.append ( put task into taskset )
+;

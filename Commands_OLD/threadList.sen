@@ -1,0 +1,10 @@
+"threadList.sen" .
+: threadList:
+    create
+    object!!
+    sizeof_threadlist allot
+    word.this >body magic!!
+    word.this >body CN_THREADLIST class!
+    word.this >body threadlist.init
+    does> test
+;

@@ -1,0 +1,23 @@
+"table.sen" .
+
+: table:
+    create
+    object!!
+    sizeof_table allot
+    word.this >body magic!!
+    word.this >body CN_TABLE class!
+    word.this >body table.init
+    word.this
+    does>
+;
+
+: :table
+    >create
+    object!!
+    sizeof_table allot
+    word.this >body magic!!
+    word.this >body CN_TABLE class!
+    word.this >body table.init
+    word.this
+    does>
+;

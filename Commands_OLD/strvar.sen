@@ -1,0 +1,10 @@
+"strvar.sen" .
+: s32var:
+    create 
+    object!!
+    sizeof_strval sizeof_s32 + allot
+    word.this >body magic!!
+    word.this >body CN_STRVAL class!
+    ( word.this >body thread.init )
+    does> test
+;

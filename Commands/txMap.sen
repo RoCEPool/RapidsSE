@@ -1,0 +1,10 @@
+"txmap.sen" .
+: txMap:
+    create
+    object!!
+    sizeof_txmap allot
+    word.this >body magic!!
+    word.this >body CN_TXMAP class!
+    word.this >body txmap.init
+    does>
+;

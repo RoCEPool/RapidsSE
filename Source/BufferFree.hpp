@@ -1,0 +1,29 @@
+/*============================================================================*/
+/*  BufferFree.hpp - a buffer when its in the buffer pool free chain          */
+/*============================================================================*/
+
+#pragma once
+
+#include "Common.h"
+
+using namespace Common;
+
+namespace MemoryManagement
+{
+  class BufferFree : public Buffer
+  {
+  private:
+    bn m_nNextFree;  // next buffer in free chain
+
+  public:
+    BufferFree(void);
+    ~BufferFree(void);
+    
+    bn   nNextFree(void);
+    void vNextFree(bn nBuffer);
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

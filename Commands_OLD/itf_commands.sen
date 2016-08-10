@@ -1,0 +1,66 @@
+"itf_commands.sen" .
+
+: tenant ;
+: catalog ;
+: schema ;
+: table ;
+
+: connect
+   task.this task.itf@ seitf.dic dic.push words dic.drop
+   drop drop drop 1 ;
+
+: disconnect 1 ;
+
+: create_tenant
+    dic.main {{
+      "tenants" find execute
+      {{
+        :dic dup ' tenant swap word.kind! execute 
+        {{
+          "catalogs" :dic drop
+        }}
+      }}
+    }}
+    1
+;
+
+: create_catalog
+    "catalogs" find execute
+    {{
+      :dic execute
+      {{
+        "schemas" :dic drop
+      }}
+    }}
+    1
+;
+
+: create_schema
+    "schemas" find execute
+    {{
+      :dic execute
+    }}
+    1
+;
+
+: create_table
+    :table drop
+;
+
+: use_tenant
+    dic.main dic.push
+      "tenants" find execute dic.push
+         find execute dic.push
+;
+
+: use_catalog
+    "catalogs" find execute dic.push
+      find execute dic.push
+;
+
+: use_schema 
+    "schemas" find execute dic.push
+      find execute dic.push
+;
+
+: use_table ;

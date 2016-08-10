@@ -1,0 +1,5 @@
+"compose_b.sen" .
+: compose_b
+  taskset2 thread2 thread.taskset!
+  "snoozeLoop" task.new taskset2 taskset.append
+;
