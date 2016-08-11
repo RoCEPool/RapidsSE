@@ -1076,19 +1076,6 @@ void Task::vInitialiseDictionary(void)
   "  ;";
   
   pCompileColon(sDefinition);
-
-  //-----------------------------------------------------
-  sDefinition =
-  ": ::attach"
-  "  traceon"
-  "  gwd ."
-  "  \"../../../commands\" cwd"
-  "  gwd ."
-  "  \"attach.sen\" >>:"
-  "  ::exit"
-  "  ;";
-  
-  pCompileColon(sDefinition);
   
 }
 
@@ -1188,27 +1175,6 @@ void Task::vNextInSet(NP_Task npNextInSet)
   m_npNextInSet = npNextInSet;
 }
 
-/*----------------------------------------------------------------------------*/
-/* prepare to run ::attach                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vPrepareAttachSen(void)
-{
-  Word* pAttachSen = pFindWord("::attach");
-  
-  vTrace("pAttachSen: %p\n",pAttachSen);
-
-  ASSERT(pAttachSen);
-  
-  m_pCell = pAttachSen->pFirstCell();
-  
-  m_eState = TS_RUNNING;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sCommand = "";
-  m_xInput.vScanText(m_sCommand);
-}
 
 /*----------------------------------------------------------------------------*/
 /* prepare to run ::boot                                                      */

@@ -1,4 +1,0 @@
-"attach.sen" .
-thread: Thread2
-taskset: TaskSet2 TaskSet2 Thread2 thread.taskset!
-Thread2

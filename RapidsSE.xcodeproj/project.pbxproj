@@ -233,7 +233,6 @@
 		F226E7401D41E36500E10FC3 /* Skip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Skip.cpp; path = Source/Skip.cpp; sourceTree = "<group>"; };
 		F226E7431D42B61F00E10FC3 /* Shm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Shm.cpp; path = Source/Shm.cpp; sourceTree = "<group>"; };
 		F226E7441D42B61F00E10FC3 /* Shm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Shm.hpp; path = Source/Shm.hpp; sourceTree = "<group>"; };
-		F226E7461D42DECD00E10FC3 /* attach.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = attach.sen; path = Commands/attach.sen; sourceTree = "<group>"; };
 		F226E7471D430FC200E10FC3 /* 1m.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 1m.sen; path = Commands/1m.sen; sourceTree = "<group>"; };
 		F226E7481D4312F300E10FC3 /* core.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = core.sen; path = Commands/core.sen; sourceTree = "<group>"; };
 		F226E7491D43144100E10FC3 /* misc_testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = misc_testing.sen; path = Commands/misc_testing.sen; sourceTree = "<group>"; };
@@ -446,7 +445,6 @@
 			isa = PBXGroup;
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
-				F226E7461D42DECD00E10FC3 /* attach.sen */,
 				98159E241D3741C100478E83 /* client.sen */,
 				F23314E51D3DF9B700EE2CF7 /* compose_a.sen */,
 				F23314E61D3DF9B700EE2CF7 /* compose_b.sen */,
