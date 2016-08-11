@@ -929,6 +929,9 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("client",          &vClient,           false);
   vAddPrimitive("server",          &vServer,           false);
   
+  //-----------------------------------------------------
+  vAddConstants();
+  
   //----------------------------------------------------------
   s16K sDefinition;
   sDefinition =
@@ -940,12 +943,12 @@ void Task::vInitialiseDictionary(void)
     "    litNext"
 
     // end of input
-    "    litType 0 == if"
+    "    litType LT_NONE == if"
     "      exit"
     "    then"
   
     // integer
-    "    litType 2 == if"
+    "    litType LT_INTLIT == if"
 
     "      literal >int"            // convert str to int, leave on stack
 
@@ -961,7 +964,7 @@ void Task::vInitialiseDictionary(void)
     "    then"
 
     // string
-    "    litType 3 == if"
+    "    litType LT_STRLIT == if"
 
     "      literal"                 // put str on stack
 
@@ -977,7 +980,7 @@ void Task::vInitialiseDictionary(void)
     "    then"
 
     // what?
-    "    litType 1 != if"           // double check we have a name
+    "    litType LT_NAMELIT != if"           // double check we have a name
     "      \"strange literal\" . litType ."
     "      again_"
     "    then"
@@ -1022,9 +1025,6 @@ void Task::vInitialiseDictionary(void)
     " ;";
 
   pCompileColon(sDefinition);
-  
-  //-----------------------------------------------------
-  vAddConstants();
   
   //-----------------------------------------------------
   sDefinition =
