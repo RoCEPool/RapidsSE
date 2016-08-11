@@ -144,7 +144,6 @@
 		980951021D326F4A002F20B0 /* queue.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = queue.sen; path = Commands/queue.sen; sourceTree = "<group>"; };
 		980951041D326F4A002F20B0 /* task.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = task.sen; path = Commands/task.sen; sourceTree = "<group>"; };
 		980951061D326F4A002F20B0 /* booted.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = booted.sen; path = Commands/booted.sen; sourceTree = "<group>"; };
-		980951071D326F4A002F20B0 /* var.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = var.sen; path = Commands/var.sen; sourceTree = "<group>"; };
 		98159E231D37413000478E83 /* server.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = server.sen; path = Commands/server.sen; sourceTree = "<group>"; };
 		98159E241D3741C100478E83 /* client.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = client.sen; path = Commands/client.sen; sourceTree = "<group>"; };
 		98163FAB1D0F14E3002B7755 /* an.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = an.cpp; path = Source/an.cpp; sourceTree = "<group>"; };
@@ -426,9 +425,7 @@
 		F2F125141D21DC5F00CA8E5A /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = File.cpp; path = Source/File.cpp; sourceTree = "<group>"; };
 		F2F125191D2231B300CA8E5A /* s16K.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = s16K.cpp; path = Source/s16K.cpp; sourceTree = "<group>"; };
 		F2F1251A1D2231B300CA8E5A /* s16K.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = s16K.hpp; path = Source/s16K.hpp; sourceTree = "<group>"; };
-		F2F2365C1D4BFCD50028A9C2 /* intvar.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = intvar.sen; path = Commands/intvar.sen; sourceTree = "<group>"; };
-		F2F2365D1D4C01110028A9C2 /* strvar.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = strvar.sen; path = Commands/strvar.sen; sourceTree = "<group>"; };
-		F2F2365E1D4C05A20028A9C2 /* wrdvar.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = wrdvar.sen; path = Commands/wrdvar.sen; sourceTree = "<group>"; };
+		F2F2365C1D4BFCD50028A9C2 /* var.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = var.sen; path = Commands/var.sen; sourceTree = "<group>"; };
 		F2F2365F1D4D41460028A9C2 /* itfLoad.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itfLoad.sen; path = Commands/itfLoad.sen; sourceTree = "<group>"; };
 		F2F236601D4D41A60028A9C2 /* itf_v2.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itf_v2.sen; path = Commands/itf_v2.sen; sourceTree = "<group>"; };
 		F2F236611D4EAC840028A9C2 /* itf_commands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itf_commands.sen; path = Commands/itf_commands.sen; sourceTree = "<group>"; };
@@ -752,11 +749,8 @@
 				F226E7481D4312F300E10FC3 /* core_words.sen */,
 				F226E71D1D40286400E10FC3 /* dic.sen */,
 				F226E7241D41918800E10FC3 /* file.sen */,
-				F2F2365C1D4BFCD50028A9C2 /* intvar.sen */,
+				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
 				F226E7251D419E3400E10FC3 /* open_trace.sen */,
-				F2F2365D1D4C01110028A9C2 /* strvar.sen */,
-				980951071D326F4A002F20B0 /* var.sen */,
-				F2F2365E1D4C05A20028A9C2 /* wrdvar.sen */,
 			);
 			name = Boot;
 			sourceTree = "<group>";
