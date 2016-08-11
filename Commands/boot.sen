@@ -12,17 +12,22 @@
 "file.sen" >>:
 "var.sen" >>:
 "trace.sen" >>:
+"useful.sen" >>:
 
 // compile the runtime words
 "runtime.sen" >>:
 
 //------------------------------------------------------------------------------
-// step 2: compile "the system"
+// step 2: compile testing
+"testing.sen" >>:
+
+//------------------------------------------------------------------------------
+// step 3: compile "the system"
 "metadata.sen" >>:
 "theSystem.sen" >>:
 
 //------------------------------------------------------------------------------
-// step 3: 
+// step 3:
 
 ( create the threadList to hold all thread's )
 threadlist: threadList
