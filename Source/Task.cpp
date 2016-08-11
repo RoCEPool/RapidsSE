@@ -2762,6 +2762,7 @@ void Task::vExecute(NNP_Task nnpTask)
       nnpTask->vPopReturn(nnpTask->m_pCell);
     }
     else {
+      // does> inherited code
       BodyField* pBody = pWord->pBodyField();
       nnpTask->m_pCell = pBody->m_pCell;
     }
