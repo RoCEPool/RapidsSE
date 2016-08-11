@@ -109,88 +109,49 @@ void Input::vDiscardLine(void)
 /*----------------------------------------------------------------------------*/
 /* parse next literal into given buffer                                       */
 /*----------------------------------------------------------------------------*/
-void Input::vNextLiteral(char* aWorkspace)
+void Input::vNextLiteral(char* wWorkspace)
 {
   _poolAddress_(this);
   
-  // reset
-  m_eLiteralType = LT_NONE;
-  *aWorkspace = '\0';
-  char *a = aWorkspace;
+  bool b;
   
   // get first/next char
   vGetChar();
-  if ( ! m_cChar )
-    return;
   
-  // skip whitespace
-  while (String::bIsWhite(m_cChar))
-    vGetChar();
-  
-  if ( ! m_cChar)
-    return;
-
-  // collect int literal
-  if (String::bIsDigit(m_cChar)) {
-    
-    i8 iNoDigits = 0;
-    
-    for ( ; m_cChar && String::bIsDigit(m_cChar); vGetChar()) {
-      *a++ = m_cChar;
-      iNoDigits++;
-    }
-    
-    if ( ! m_cChar ) {
-      vUngetChar();
-      *a = '\0';
-      m_eLiteralType = LT_INTLIT;
-      return;
-    }
-    
-    if (('x' == m_cChar || 'X' == m_cChar) && 1 == iNoDigits) {
-      vGetChar();
-      *a++ = m_cChar;
-      for ( ; m_cChar && String::bIsHex(m_cChar); vGetChar())
-        *a++ = m_cChar;
-    }
-    
-    if ( ! m_cChar || String::bIsWhite(m_cChar) || '"' == m_cChar) {
-      *a = '\0';
-      m_eLiteralType = LT_INTLIT;
-      if ('"' == m_cChar)
-        vUngetChar();
-      return;
-    }
-    
-    for ( ; m_cChar && !String::bIsWhite(m_cChar) && '"' != m_cChar; vGetChar())
-      *a++ = m_cChar;
-    *a = '\0';
-    m_eLiteralType = LT_NAMELIT;
-    if ('"' == m_cChar)
-      vUngetChar();
+  // end of input?
+  if (bEndInput()) {
+    m_eLiteralType = LT_NONE;
+    *wWorkspace = '\0';
     return;
   }
   
-  // collect str literal
-  if (m_cChar == '"') {
-    
-    vGetChar();
-    for ( ; m_cChar && '"' != m_cChar; vGetChar())
-      *a++ = m_cChar;
-    
-    *a = '\0';
-    m_eLiteralType = LT_STRLIT;
+  // skip whitespace
+  vSkipWhitespace();
+  
+  // end of input?
+  if (bEndInput()) {
+    m_eLiteralType = LT_NONE;
+    *wWorkspace = '\0';
+    return;
+  }
+
+  // collect integer literal
+  if (bStartInteger()) {
+    b = bParseInteger(wWorkspace);
+    ASSERT(b);
+    return;
+  }
+  
+  // collect string literal
+  if (bStartString()) {
+    b = bParseString(wWorkspace);
+    ASSERT(b);
     return;
   }
   
   // collect name literal
-  for ( ; m_cChar && !String::bIsWhite(m_cChar) && '"' != m_cChar; vGetChar())
-    *a++ = m_cChar;
-  *a = '\0';
-  m_eLiteralType = LT_NAMELIT;
-  
-  if (! m_cChar || '"' == m_cChar)
-    vUngetChar();
+  b = bParseName(wWorkspace);
+  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,6 +241,132 @@ void Input::vSetStdin(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* attempt to parse block comment                                             */
+/*----------------------------------------------------------------------------*/
+bool Input::bParseBlock(char* wWorkspace)
+{
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to parse integer                                                   */
+/*----------------------------------------------------------------------------*/
+bool Input::bParseInteger(char* yWorkspace)
+{
+  char *y = yWorkspace;
+  
+  i8 iNoDigits = 0;
+  
+  // collect initial digits
+  while (bIsDigit()) {
+    *y++ = m_cChar;
+    iNoDigits++;
+    vGetChar();
+  }
+  
+  // end of input?
+  if (bEndInput()) {
+    
+    // push back the unconsumed char
+    if (bEndInput())
+      vUngetChar();
+
+    // terminate an intlit
+    *y = '\0';
+    m_eLiteralType = LT_INTLIT;
+    return true;
+  }
+  
+  // 0x hex number?
+  if (1 == iNoDigits && bIsX()) {
+    
+    // skip the 'x'
+    vGetChar();
+    
+    // collect the hex digits
+    while (bIsHex()) {
+      *y++ = m_cChar;
+      vGetChar();
+    }
+  }
+  
+  // end of collecting an integer?
+  if ( bEndInput() || bIsWhite() || bStartString() ) {
+    
+    // push back the unconsumed char
+    if (bEndInput())
+      vUngetChar();
+
+    // terminate an intlit
+    *y = '\0';
+    m_eLiteralType = LT_INTLIT;
+    return true;
+  }
+  
+  // its actually a name; complete parsing name
+  bool b = bParseName(y);
+  ASSERT(b);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to parse line comment                                              */
+/*----------------------------------------------------------------------------*/
+bool Input::bParseLine(char* wWorkspace)
+{
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to parse name                                                      */
+/*----------------------------------------------------------------------------*/
+bool Input::bParseName(char* yWorkspace)
+{
+  char *y = yWorkspace;
+
+  // collect the characters of the name
+  while ( bMoreInput() && !bIsWhite() && !bStartString() ) {
+    *y++ = m_cChar;
+    vGetChar();
+  }
+  
+  // push back the unconsumed char
+  if (bEndInput())
+    vUngetChar();
+  
+  // terminate a namelit
+  *y = '\0';
+  m_eLiteralType = LT_NAMELIT;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to parse string                                                    */
+/*----------------------------------------------------------------------------*/
+bool Input::bParseString(char* yWorkspace)
+{
+  char *y = yWorkspace;
+  
+  // skip the leading '"'
+  vGetChar();
+  
+  // collect the chars in the string
+  while ( bMoreInput() && !bEndString() ) {
+    *y++ = m_cChar;
+    vGetChar();
+  }
+  
+  // push back a '\0'
+  if (bEndInput())
+    vUngetChar();
+  
+  // terminate a strlit
+  *y = '\0';
+  m_eLiteralType = LT_STRLIT;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
 void Input::vGetChar(void)
@@ -292,6 +379,8 @@ void Input::vGetChar(void)
     }
     
     m_cChar = m_xInputFile.cGetChar();
+    
+    // print the prompt again next time?
     if (m_xInputFile.bIsStdin() && '\n' == m_cChar)
       m_bPrompt = true;
   }
@@ -313,6 +402,114 @@ void Input::vUngetChar(void)
   }
   
   m_cChar = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* skip whitespace                                                            */
+/*----------------------------------------------------------------------------*/
+void Input::vSkipWhitespace(void)
+{
+  while (String::bIsWhite(m_cChar))
+    vGetChar();
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end input                                                         */
+/*----------------------------------------------------------------------------*/
+bool Input::bEndInput(void)
+{
+  if ( ! m_cChar )
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for more input                                                        */
+/*----------------------------------------------------------------------------*/
+bool Input::bMoreInput(void)
+{
+  if (m_cChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of integer                                                  */
+/*----------------------------------------------------------------------------*/
+bool Input::bStartInteger(void)
+{
+  if (String::bIsDigit(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of string                                                   */
+/*----------------------------------------------------------------------------*/
+bool Input::bStartString(void)
+{
+  if (m_cChar == '"')
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of string                                                     */
+/*----------------------------------------------------------------------------*/
+bool Input::bEndString(void)
+{
+  if (m_cChar == '"')
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a base-10 digit                                                   */
+/*----------------------------------------------------------------------------*/
+bool Input::bIsDigit(void)
+{
+  if (String::bIsDigit(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a base-16 digit                                                   */
+/*----------------------------------------------------------------------------*/
+bool Input::bIsHex(void)
+{
+  if (String::bIsHex(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a white character                                                 */
+/*----------------------------------------------------------------------------*/
+bool Input::bIsWhite(void)
+{
+  if (String::bIsWhite(m_cChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a 'x' or 'X'                                                      */
+/*----------------------------------------------------------------------------*/
+bool Input::bIsX(void)
+{
+  if ('x' == m_cChar || 'X' == m_cChar)
+    return true;
+  
+  return false;
 }
 
 /*============================================================================*/

@@ -41,8 +41,26 @@ namespace Tasking
     void vSetStdin(void);
     
   private:
+    bool  bParseBlock(char* aWorkspace);
+    bool  bParseInteger(char* aWorkspace);
+    bool  bParseLine(char* aWorkspace);
+    bool  bParseName(char* aWorkspace);
+    bool  bParseString(char* aWorkspace);
+    
     void  vGetChar(void);
     void  vUngetChar(void);
+    
+    void  vSkipWhitespace(void);
+    
+    bool  bEndInput(void);
+    bool  bMoreInput(void);
+    bool  bStartInteger(void);
+    bool  bStartString(void);
+    bool  bEndString(void);
+    bool  bIsDigit(void);
+    bool  bIsHex(void);
+    bool  bIsWhite(void);
+    bool  bIsX(void);
   };
 }
 
