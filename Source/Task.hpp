@@ -257,7 +257,6 @@ namespace Tasking
     static void vColon(NNP_Task nnpTask);          
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
-    static void vCommentLine(NNP_Task nnpTask);
     static void vConcat(NNP_Task nnpTask);
     static void vCompiling(NNP_Task nnpTask);      
     static void vCwd(NNP_Task nnpTask);            
@@ -328,7 +327,6 @@ namespace Tasking
     static void vMagicMark(NNP_Task nnpTask);      
     static void vMultiply(NNP_Task nnpTask);       
     static void vNameWord(NNP_Task nnpTask);       
-    static void vNewLine(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
     static void vNotEqual(NNP_Task nnpTask);       

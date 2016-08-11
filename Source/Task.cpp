@@ -674,7 +674,6 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
-  vAddPrimitive("//",              &vCommentLine,      true );
   vAddPrimitive("compiling",       &vCompiling,        false);
   vAddPrimitive("concat",          &vConcat,           false);
   vAddPrimitive("create",          &vCreate,           false);
@@ -748,7 +747,6 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("magic!!",         &vMagicMark,        false);
   vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
-  vAddPrimitive("\n",              &vNewLine,          false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
   vAddPrimitive("!=",              &vNotEqual,         false);
@@ -2338,22 +2336,6 @@ void Task::vComment(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* // -- commentLine                                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vCommentLine(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vCommentLine");
-  
-//  for (;;) {
-//    nnpTask->vLiteralNext();
-//    if (String::bEqualTo("\n",nnpTask->m_sLiteral.a()))
-//      break;
-//  }
-
-  nnpTask->m_xInput.vDiscardLine();
-}
-
-/*----------------------------------------------------------------------------*/
 /* compiling -- enter compiling mode                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vCompiling(NNP_Task nnpTask)
@@ -3485,14 +3467,6 @@ void Task::vNameWord(NNP_Task nnpTask)
     THROW_INVALID_PARAM("nameWord");
   
   nnpTask->vPushParam(pWord->sName().a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* newline -- skip new line                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vNewLine(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vNewLine");
 }
 
 /*----------------------------------------------------------------------------*/
