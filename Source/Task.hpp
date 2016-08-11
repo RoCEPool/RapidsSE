@@ -153,7 +153,6 @@ namespace Tasking
     void vLoop(void);
     NP_Task npNextInSet(void);
     void  vNextInSet(NP_Task npNext);
-    void vPrepareAttachSen(void);
     void vPrepareBootSen(void);
     void vPrepareCommand(const char *aCommand);
     void vPrepareDocol(void);
