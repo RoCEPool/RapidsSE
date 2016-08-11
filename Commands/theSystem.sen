@@ -4,11 +4,6 @@
 
 "theSystem.sen" .
 
-( "compose_a.sen" >>: )
-( "compose_b.sen" >>: )
-"1m.sen" >>:
-"misc_testing.sen" >>:
-"queue_test.sen" >>:
 "itfLoad.sen" >>:
 
 /*============================================================================*/

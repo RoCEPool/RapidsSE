@@ -27,7 +27,7 @@
 "theSystem.sen" >>:
 
 //------------------------------------------------------------------------------
-// step 3:
+// step 4:
 
 ( create the threadList to hold all thread's )
 threadlist: threadList

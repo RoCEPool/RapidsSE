@@ -291,8 +291,6 @@
 		F226E7961D46A04700E10FC3 /* xxhash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = xxhash.cpp; path = Source/xxhash.cpp; sourceTree = "<group>"; };
 		F226E7971D46A04700E10FC3 /* xxhash.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = xxhash.hpp; path = Source/xxhash.hpp; sourceTree = "<group>"; };
 		F226E7991D46A7F600E10FC3 /* queue_test.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = queue_test.sen; path = Commands/queue_test.sen; sourceTree = "<group>"; };
-		F23314E51D3DF9B700EE2CF7 /* compose_a.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = compose_a.sen; path = Commands/compose_a.sen; sourceTree = "<group>"; };
-		F23314E61D3DF9B700EE2CF7 /* compose_b.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = compose_b.sen; path = Commands/compose_b.sen; sourceTree = "<group>"; };
 		F2389CC01D4756DF008DF3D9 /* ValSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValSet.cpp; sourceTree = "<group>"; };
 		F2389CC11D4756DF008DF3D9 /* ValSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValSet.hpp; sourceTree = "<group>"; };
 		F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StorageEngine.cpp; sourceTree = "<group>"; };
@@ -447,17 +445,12 @@
 			isa = PBXGroup;
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
-				F23314E51D3DF9B700EE2CF7 /* compose_a.sen */,
-				F23314E61D3DF9B700EE2CF7 /* compose_b.sen */,
 				F28DF4D71D5527B900013BBC /* export.sen */,
 				F2F2365F1D4D41460028A9C2 /* itfLoad.sen */,
 				F2F236601D4D41A60028A9C2 /* itf_v2.sen */,
 				F2F236611D4EAC840028A9C2 /* itf_commands.sen */,
 				F28DF4D61D5519C400013BBC /* load.sen */,
-				F226E7491D43144100E10FC3 /* misc_testing.sen */,
-				F226E7991D46A7F600E10FC3 /* queue_test.sen */,
 				F2B3B14E1D5131FC0049597E /* tableload.sen */,
-				F226E7471D430FC200E10FC3 /* 1m.sen */,
 			);
 			name = TheSystem;
 			sourceTree = SOURCE_ROOT;
@@ -945,6 +938,9 @@
 			isa = PBXGroup;
 			children = (
 				F2D9BF781D5D37BB00129097 /* testing.sen */,
+				F226E7491D43144100E10FC3 /* misc_testing.sen */,
+				F226E7991D46A7F600E10FC3 /* queue_test.sen */,
+				F226E7471D430FC200E10FC3 /* 1m.sen */,
 			);
 			name = Testing;
 			sourceTree = "<group>";
