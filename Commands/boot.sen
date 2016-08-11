@@ -4,9 +4,15 @@
 
 "boot.sen" .
 
-"core_words.sen" >>:
+"core.sen" >>:
 
-"open_trace.sen" >>:
+"dic.sen" >>:
+
+"file.sen" >>:
+
+"var.sen" >>:
+
+"trace.sen" >>:
 
 "runtime.sen" >>:
 

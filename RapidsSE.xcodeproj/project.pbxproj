@@ -217,7 +217,7 @@
 		F226E7211D41805500E10FC3 /* AttachMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AttachMap.cpp; sourceTree = "<group>"; };
 		F226E7221D41805500E10FC3 /* AttachMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AttachMap.hpp; sourceTree = "<group>"; };
 		F226E7241D41918800E10FC3 /* file.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = file.sen; path = Commands/file.sen; sourceTree = "<group>"; };
-		F226E7251D419E3400E10FC3 /* open_trace.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = open_trace.sen; path = Commands/open_trace.sen; sourceTree = "<group>"; };
+		F226E7251D419E3400E10FC3 /* trace.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = trace.sen; path = Commands/trace.sen; sourceTree = "<group>"; };
 		F226E7261D41A7D700E10FC3 /* Env.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Env.cpp; path = Source/Env.cpp; sourceTree = "<group>"; };
 		F226E7271D41A7D700E10FC3 /* Env.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Env.hpp; path = Source/Env.hpp; sourceTree = "<group>"; };
 		F226E72C1D41DDD200E10FC3 /* BufferPoolAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BufferPoolAnalyzer.cpp; sourceTree = "<group>"; };
@@ -235,7 +235,7 @@
 		F226E7441D42B61F00E10FC3 /* Shm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Shm.hpp; path = Source/Shm.hpp; sourceTree = "<group>"; };
 		F226E7461D42DECD00E10FC3 /* attach.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = attach.sen; path = Commands/attach.sen; sourceTree = "<group>"; };
 		F226E7471D430FC200E10FC3 /* 1m.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 1m.sen; path = Commands/1m.sen; sourceTree = "<group>"; };
-		F226E7481D4312F300E10FC3 /* core_words.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = core_words.sen; path = Commands/core_words.sen; sourceTree = "<group>"; };
+		F226E7481D4312F300E10FC3 /* core.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = core.sen; path = Commands/core.sen; sourceTree = "<group>"; };
 		F226E7491D43144100E10FC3 /* misc_testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = misc_testing.sen; path = Commands/misc_testing.sen; sourceTree = "<group>"; };
 		F226E74B1D4407CE00E10FC3 /* tenants.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tenants.sen; path = Commands/tenants.sen; sourceTree = "<group>"; };
 		F226E74C1D44088000E10FC3 /* catalog.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = catalog.sen; path = Commands/catalog.sen; sourceTree = "<group>"; };
@@ -746,11 +746,11 @@
 			children = (
 				980950FF1D326F4A002F20B0 /* boot.sen */,
 				980951061D326F4A002F20B0 /* booted.sen */,
-				F226E7481D4312F300E10FC3 /* core_words.sen */,
+				F226E7481D4312F300E10FC3 /* core.sen */,
 				F226E71D1D40286400E10FC3 /* dic.sen */,
 				F226E7241D41918800E10FC3 /* file.sen */,
+				F226E7251D419E3400E10FC3 /* trace.sen */,
 				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
-				F226E7251D419E3400E10FC3 /* open_trace.sen */,
 			);
 			name = Boot;
 			sourceTree = "<group>";

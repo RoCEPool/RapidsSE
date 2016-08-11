@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* open_trace.sen -- trace file related words                                 */
+/* trace.sen -- trace file related words                                      */
 /*============================================================================*/
 
-"open_trace.sen" .
+"trace.sen" .
 
 file: trace_file
 

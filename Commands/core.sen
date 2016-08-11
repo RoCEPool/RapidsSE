@@ -1,7 +1,7 @@
 /*============================================================================*/
-/* core_words.sen -- high-level core words                                    */
+/* core.sen -- additional high-level core words                               */
 /*============================================================================*/
-"core_words.sen" .
+"core.sen" .
 
 : words word.this begin dup while dup nameWord .put " " .put prevWord repeat drop .\n ;
 
@@ -32,11 +32,6 @@
 
 : >: input.push input.text docol input.pop ;
 
-"dic.sen" >>:
-
-"file.sen" >>:
-
-"var.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */
