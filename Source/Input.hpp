@@ -42,6 +42,7 @@ namespace Tasking
     
   private:
     bool  bParseBlock(char* aWorkspace);
+    bool  bParseComment(char* aWorkspace);
     bool  bParseInteger(char* aWorkspace);
     bool  bParseLine(char* aWorkspace);
     bool  bParseName(char* aWorkspace);
@@ -54,8 +55,10 @@ namespace Tasking
     
     bool  bEndInput(void);
     bool  bMoreInput(void);
+    bool  bStartComment(void);
     bool  bStartInteger(void);
     bool  bStartString(void);
+    bool  bEndLine(void);
     bool  bEndString(void);
     bool  bIsDigit(void);
     bool  bIsHex(void);

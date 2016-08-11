@@ -115,26 +115,40 @@ void Input::vNextLiteral(char* wWorkspace)
   
   bool b;
   
-  // get first/next char
-  vGetChar();
+  *wWorkspace = '\0';
   
-  // end of input?
-  if (bEndInput()) {
-    m_eLiteralType = LT_NONE;
-    *wWorkspace = '\0';
-    return;
-  }
-  
-  // skip whitespace
-  vSkipWhitespace();
-  
-  // end of input?
-  if (bEndInput()) {
-    m_eLiteralType = LT_NONE;
-    *wWorkspace = '\0';
-    return;
-  }
+  while (true) {
+    
+    // get first/next char
+    vGetChar();
+    
+    // end of input?
+    if (bEndInput()) {
+      m_eLiteralType = LT_NONE;
+      *wWorkspace = '\0';
+      return;
+    }
+    
+    // skip whitespace
+    vSkipWhitespace();
+    
+    // end of input?
+    if (bEndInput()) {
+      m_eLiteralType = LT_NONE;
+      *wWorkspace = '\0';
+      return;
+    }
 
+    // collect any comment
+    if (bStartComment()) {
+      if (!bParseComment(wWorkspace))
+        break;
+    }
+    else {
+      break;
+    }
+  }
+  
   // collect integer literal
   if (bStartInteger()) {
     b = bParseInteger(wWorkspace);
@@ -246,6 +260,74 @@ void Input::vSetStdin(void)
 bool Input::bParseBlock(char* wWorkspace)
 {
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attempt to parse a comment                                                 */
+/*----------------------------------------------------------------------------*/
+bool Input::bParseComment(char* yWorkspace)
+{
+  char cOne;
+  char cTwo;
+  char *y = yWorkspace;
+  
+  // have seen a '/'
+
+  // lets look at the next character
+  vGetChar();
+  
+  // test if we are looking at a line comment
+  if ('/' == m_cChar) {
+
+    // it is a line comment
+    // consume till end of input or end of line
+    while (bMoreInput() && !bEndLine())
+      vGetChar();
+    
+    // push back the unconsumed char
+    if (bEndInput())
+      vUngetChar();
+    
+    return true;
+  }
+
+  // test if we are looking at a block comment
+  if ('*' == m_cChar) {
+    
+    // it is a block comment
+    
+    // get first char
+    vGetChar();
+    if (bEndInput())
+      return true;
+    cOne = m_cChar;
+    
+    // get second char
+    vGetChar();
+    if (bEndInput())
+      return true;
+    cTwo = m_cChar;
+
+    // find either end-of-comment or end-of-input
+    while (true) {
+    
+      // end-of-comment ?
+      if ('*' == cOne && '/' == cTwo)
+        return true;
+      
+      // advance to next pair
+      cOne = cTwo;
+      vGetChar();
+      if (bEndInput())
+        return true;
+      cTwo = m_cChar;
+    }
+
+  }
+  
+  // it's actually a name ( e.g. /ugh )
+  *y++ = '/';
+  return bParseName(y);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,6 +518,17 @@ bool Input::bMoreInput(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for start of comment                                                  */
+/*----------------------------------------------------------------------------*/
+bool Input::bStartComment(void)
+{
+  if (m_cChar == '/')
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for start of integer                                                  */
 /*----------------------------------------------------------------------------*/
 bool Input::bStartInteger(void)
@@ -452,6 +545,17 @@ bool Input::bStartInteger(void)
 bool Input::bStartString(void)
 {
   if (m_cChar == '"')
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of line                                                       */
+/*----------------------------------------------------------------------------*/
+bool Input::bEndLine(void)
+{
+  if (m_cChar == '\n')
     return true;
   
   return false;
