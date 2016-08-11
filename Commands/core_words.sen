@@ -30,8 +30,6 @@
 
 : dec 1 - ;
 
-"var.sen" >>:
-
 : >: input.push input.text docol input.pop ;
 
 "dic.sen" >>:
