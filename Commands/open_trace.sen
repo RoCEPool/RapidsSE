@@ -1,8 +1,19 @@
+/*============================================================================*/
+/* open_trace.sen -- trace file related words                                 */
+/*============================================================================*/
+
 "open_trace.sen" .
+
 file: trace_file
+
 : open_trace
   "/tmp/se_trace.txt" trace_file file.path!
   open_append trace_file file.open
   if "trace file opened" . else "trace file not opened" . then
 ;
+
 open_trace
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
