@@ -4,17 +4,25 @@
 
 "boot.sen" .
 
+//------------------------------------------------------------------------------
+// step 1: compile the inital set of high-level words
+
 "core.sen" >>:
-
 "dic.sen" >>:
-
 "file.sen" >>:
-
 "var.sen" >>:
-
 "trace.sen" >>:
 
+// compile the runtime words
 "runtime.sen" >>:
+
+//------------------------------------------------------------------------------
+// step 2: compile "the system"
+"metadata.sen" >>:
+"theSystem.sen" >>:
+
+//------------------------------------------------------------------------------
+// step 3: 
 
 ( create the threadList to hold all thread's )
 threadlist: threadList
@@ -25,19 +33,13 @@ txlist: txList
 ( create the sessionList to hold all session's )
 sessionlist: sessionList
 
-"metadata.sen" >>:
-
-"testing.sen" >>:
-
 ( add this task to task list )
 // task.this tasklist tasklist.append
 
-// to be done
-
 ( spawn first 2nd thread and leave on stack )
-thread: Thread1
-taskset: TaskSet1 TaskSet1 Thread1 thread.taskset!
-Thread1 thread.spawn Thread1
+thread: RootThread
+taskset: TaskSet1 TaskSet1 RootThread thread.taskset!
+RootThread thread.spawn RootThread
 
 "booted.sen" >>:
 
