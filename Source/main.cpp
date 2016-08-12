@@ -32,7 +32,7 @@ int main(int argc, const char* argv[])
   // unmap from shm and optionally unlink it
   RapidsSE::vPoolClose();
 
-  printf("Exiting RapidsSE!\n");
+  printf("RapidsSE exits\n");
     
   return EXIT_SUCCESS;
 }

@@ -72,6 +72,10 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--status"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
