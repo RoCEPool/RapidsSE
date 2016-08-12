@@ -110,9 +110,19 @@ bool Arguments::bParse(int argc, const char* argv[])
 void Arguments::vPrint(void)
 {
   vTrace("Args:\n");
+  
+  if (m_bCommand) vTrace("  --command\n");
+  if (m_bDocol)   vTrace("  --docol\n");
+  if (m_bHelp)    vTrace("  --help\n");
+  if (m_bList)    vTrace("  --list\n");
+  if (m_bSeitf)   vTrace("  --seitf\n");
+  if (m_bStart)   vTrace("  --start\n");
+  if (m_bStatus)  vTrace("  --status\n");
+  if (m_bStop)    vTrace("  --stop\n");
+  if (m_bTest)    vTrace("  --test\n");
 
   vTrace("  --regionName %s\n",m_sRegionName.a());
-  vTrace("  --poolSize %llds\n",m_iPoolSize);
+  vTrace("  --poolSize %lld\n",m_iPoolSize);
 }
 
 /*----------------------------------------------------------------------------*/

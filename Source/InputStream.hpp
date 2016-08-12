@@ -8,7 +8,7 @@
 
 namespace Tasking
 {
-  class Input : public ObjVal
+  class InputStream : public ObjVal
   {
   private:
     i8           m_iDepth;
@@ -23,8 +23,8 @@ namespace Tasking
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Input(void);
-    ~Input(void);
+    InputStream(void);
+    ~InputStream(void);
     
     i8   iDepth(void);
     void vDepth(i8 iDepth);

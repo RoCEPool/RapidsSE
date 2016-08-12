@@ -20,6 +20,8 @@ int main(int argc, const char* argv[])
   if ( ! gxArguments.bParse(argc,argv) )
     exit(EXIT_FAILURE);
   
+  gxArguments.vPrint();
+  
   // either create new shm region
   // or attach to an existing one
   RapidsSE::vPoolOpen();

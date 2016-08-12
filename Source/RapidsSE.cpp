@@ -181,7 +181,7 @@ void RapidsSE::vAttachRegionNew(void)
   // overlay buffer pool onto 1st buffer (buffer #0)
   gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
   
-  vTrace("Shm %p\n",mpRegion);
+  vTrace("Shm mapped at %p\n",mpRegion);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,7 +219,7 @@ void RapidsSE::vCreateRegionNew(void)
   
   gpBufferPool = new(mpRegion) BufferPool;
   
-  vTrace("Shm %p\n",mpRegion);
+  vTrace("Shm mapped at %p\n",mpRegion);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -286,11 +286,14 @@ void RapidsSE::vCreateRegion(void)
 /*----------------------------------------------------------------------------*/
 /* intialise the main dictionary                                              */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDicInit(NP_Task npBootTask)
+void RapidsSE::vDicInit(NP_Task npRootTask)
 {
-  npBootTask->vInitialiseDictionary();
-  npBootTask->vPrepareBootSen();
-  npBootTask->vLoop();
+  npRootTask->vInitialiseDictionary();
+  
+  npRootTask->vPrepareBootSen();
+  
+  vTrace("[[mainThread]] RapidsSE::vDicInit running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
+  npRootTask->vLoop();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -381,6 +384,9 @@ void RapidsSE::vSystemInit(void)
   gpTaskList = new TaskList;
   
   gnpRootTask = new Task;
+  s32 sName;
+  sName = "rootTask";
+  gnpRootTask->vName(sName);
   
   vDicInit(gnpRootTask);
   
@@ -389,7 +395,6 @@ void RapidsSE::vSystemInit(void)
   // get the trace file
   Word* pTraceFileWord = gpDictionary->pFind("trace_file");
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->pBodyArea());
-  vTrace("SE booted\n");
   
   // the root thread is on pstack of root task
   gnpRootThread = gnpRootTask->pRootThread();
@@ -402,6 +407,9 @@ void RapidsSE::vSystemStart(void)
 {
   // prepare to run client using docol interpreter
   gnpRootTask->vPrepareCommand("SystemStart");
+  
+  vTrace("[[mainThread]] RapidsSE::vSystemStart launching [%s] %p\n",
+         gnpRootTask->sName().a(),*gnpRootTask);
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
@@ -438,6 +446,8 @@ void RapidsSE::vTlsInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vWaitFlag(void)
 {
+  vTrace("[[mainThread]] waiting on stop...\n");
+
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
     PosixThread::vNanoSleep(100_KB);

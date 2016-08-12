@@ -14,11 +14,10 @@ namespace Threading
   private:
 
   public:
-    
-    PosixThread m_xPosixThread;
-    NP_Task     m_npTask;
-    
-    TaskSet*    m_pTaskSet;
+    s32         m_sName;        // thread name
+    PosixThread m_xPosixThread; // its posix structure
+    TaskSet*    m_pTaskSet;     // task set this thread serves
+    NP_Task     m_npTask;       // the task being executed
     
   public:
     void* operator new(size_t, Thread* pThread);
@@ -35,6 +34,8 @@ namespace Threading
     i8   iCpu(void);
     void vDump(void) const;
     void vLoop(void);
+    s&   sName(void);
+    void vName(s& sName);
     void vSpawn(void);
   };
 }

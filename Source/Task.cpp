@@ -109,7 +109,7 @@ void Task::vInit(const char* aCommand)
   // basic state
   m_xLock.vCheckInit();
   m_iTaskNo    = iTaskNo++;
-  m_sName      = "<none>";
+  m_sName      = "<no task name>";
   m_eState     = TS_NONE;
   m_iTxId      = -1;
   m_npNextInSet = nullptr;
@@ -129,7 +129,7 @@ void Task::vInit(const char* aCommand)
   m_sCommand = aCommand;
   if (m_sCommand.iLength())
     String::vConcat(m_sCommand.a()," exit");
-  m_xInput.vScanText(m_sCommand);
+  m_xInputStream.vScanText(m_sCommand);
   
   m_sLiteral = "";
   
@@ -370,7 +370,7 @@ Word* Task::pCompileColon(s& sDefinition)
   Word* pFoundWord;
   ValWsp xValWsp;
   
-  m_xInput.vScanText(sDefinition);
+  m_xInputStream.vScanText(sDefinition);
   
   // get :
   vLiteralNext();
@@ -382,12 +382,12 @@ Word* Task::pCompileColon(s& sDefinition)
   
   vLiteralNext();
   
-  while (LT_NONE != m_xInput.eLiteralType()) {
+  while (LT_NONE != m_xInputStream.eLiteralType()) {
     
     if (String::bEqualTo(";",m_sLiteral.a()))
       break;
     
-    switch (m_xInput.eLiteralType()) {
+    switch (m_xInputStream.eLiteralType()) {
         
       case LT_INTLIT:
         xValWsp = String::iToI8(m_sLiteral.a());
@@ -429,7 +429,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
-  m_xInput.vScanText();
+  m_xInputStream.vScanText();
   
   return pNewWord;
 }
@@ -891,6 +891,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("thread.cpu",      &vThreadCpu,        false);
   vAddPrimitive("thread.dump",     &vThreadDump,       false);
   vAddPrimitive("thread.init",     &vThreadInit,       false);
+  vAddPrimitive("thread.name@",    &vThreadNameFetch,  false);
+  vAddPrimitive("thread.name!",    &vThreadNameStore,  false);
   vAddPrimitive("thread.taskset@", &vThreadSfetch,     false);
   vAddPrimitive("thread.taskset!", &vThreadSstore,     false);
   vAddPrimitive("thread.spawn",    &vThreadSpawn,      false);
@@ -1068,10 +1070,12 @@ void Task::vInitialiseDictionary(void)
   //-----------------------------------------------------
   sDefinition =
   ": ::boot"
+  "  \"::boot\" ."
   "  gwd ."
   "  \"../../../commands\" cwd"
   "  gwd ."
   "  \"boot.sen\" >>:"
+  "  \"::boot exit\" ."
   "  ::exit"
   "  ;";
   
@@ -1096,7 +1100,7 @@ bool Task::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 void Task::vLiteralNext(void)
 {
-  m_xInput.vNextLiteral(m_sLiteral.a());
+  m_xInputStream.vNextLiteral(m_sLiteral.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1160,6 +1164,26 @@ void Task::vLoop(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get name of this task                                                      */
+/*----------------------------------------------------------------------------*/
+s& Task::sName(void)
+{
+  _poolAddress_(this);
+  
+  return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name of this task                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vName(s& sName)
+{
+  _poolAddress_(this);
+  
+  m_sName = sName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next task in set                                                       */
 /*----------------------------------------------------------------------------*/
 NP_Task Task::npNextInSet(void)
@@ -1192,7 +1216,7 @@ void Task::vPrepareBootSen(void)
   m_xReturnStack.vReset();
   
   m_sCommand = "";
-  m_xInput.vScanText(m_sCommand);
+  m_xInputStream.vScanText(m_sCommand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1212,7 +1236,7 @@ void Task::vPrepareCommand(const char* aCommand)
   m_sCommand = aCommand;
   if (m_sCommand.iLength())
     String::vConcat(m_sCommand.a()," ::exit");
-  m_xInput.vScanText(m_sCommand);
+  m_xInputStream.vScanText(m_sCommand);
   
 }
 
@@ -1231,7 +1255,7 @@ void Task::vPrepareDocol(void)
   m_xReturnStack.vReset();
   
   m_sCommand = "";
-  m_xInput.vScanText(m_sCommand);
+  m_xInputStream.vScanText(m_sCommand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1405,11 +1429,11 @@ void Task::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 void Task::vUndirect(void)
 {
-  m_xInput.vCloseFile();
+  m_xInputStream.vCloseFile();
   
   //vTrace("undirect return stack: %lld\n",nnpTask->m_xReturnStack.iValues());
   
-  bool bPopped = bPopReturn(m_xInput);
+  bool bPopped = bPopReturn(m_xInputStream);
   ASSERT(bPopped);
 }
 
@@ -2456,7 +2480,7 @@ void Task::vDump(NNP_Task nnpTask)
   xValWsp.vToString(sWorkspace.a());
   char* aClass = xValWsp.aClass();
   
-  vTrace("[task%lld] %s (%s)\n",nnpTask->m_iTaskNo,sWorkspace.a(),aClass);
+  vTrace("[%s] %s (%s)\n",nnpTask->m_sName.a(),sWorkspace.a(),aClass);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2906,7 +2930,7 @@ void Task::vInputClose(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputClose");
   
-  nnpTask->m_xInput.vCloseFile();
+  nnpTask->m_xInputStream.vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2916,7 +2940,7 @@ void Task::vInputDepth(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputDepth");
 
-  i8 iDepth = nnpTask->m_xInput.iDepth();
+  i8 iDepth = nnpTask->m_xInputStream.iDepth();
   
   nnpTask->vPushParam(iDepth);
 }
@@ -2933,7 +2957,7 @@ void Task::vInputOpen(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sFilePath) )
     THROW_INVALID_PARAM("input.open");
   
-  bool bOpened = nnpTask->m_xInput.bOpenFile(sFilePath.a());
+  bool bOpened = nnpTask->m_xInputStream.bOpenFile(sFilePath.a());
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
 }
@@ -2945,12 +2969,12 @@ void Task::vInputPop(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPop");
   
-  i8 iInputDepth = nnpTask->m_xInput.iDepth();
+  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
   
-  bool bPopped = nnpTask->bPopReturn(nnpTask->m_xInput);
+  bool bPopped = nnpTask->bPopReturn(nnpTask->m_xInputStream);
   ASSERT(bPopped);
   
-  ASSERT(iInputDepth = nnpTask->m_xInput.iDepth() + 1);
+  ASSERT(iInputDepth = nnpTask->m_xInputStream.iDepth() + 1);
 
   bPopped = nnpTask->bPopReturn(nnpTask->m_sCommand);
   ASSERT(bPopped);
@@ -2963,15 +2987,15 @@ void Task::vInputPush(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPush");
   
-  i8 iInputDepth = nnpTask->m_xInput.iDepth();
+  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
   
   nnpTask->vPushReturn(nnpTask->m_sCommand);
 
-  nnpTask->vPushReturn(nnpTask->m_xInput);
+  nnpTask->vPushReturn(nnpTask->m_xInputStream);
   
-  nnpTask->m_xInput.vReset();
+  nnpTask->m_xInputStream.vReset();
   
-  nnpTask->m_xInput.vDepth(iInputDepth + 1);
+  nnpTask->m_xInputStream.vDepth(iInputDepth + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2981,11 +3005,11 @@ void Task::vInputStdin(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputStdin");
   
-  //nnpTask->vPushReturn(nnpTask->m_xInput);
+  //nnpTask->vPushReturn(nnpTask->m_xInputStream);
   
-  nnpTask->m_xInput.vReset();
+  nnpTask->m_xInputStream.vReset();
   
-  nnpTask->m_xInput.vSetStdin();
+  nnpTask->m_xInputStream.vSetStdin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3002,7 +3026,7 @@ void Task::vInputText(NNP_Task nnpTask)
     
   nnpTask->m_sCommand = sCommand;
   
-  nnpTask->m_xInput.vScanText(nnpTask->m_sCommand);
+  nnpTask->m_xInputStream.vScanText(nnpTask->m_sCommand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3078,7 +3102,7 @@ void Task::vIsIntLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsIntLit");
   
-  i8 iIsIntLit = LT_INTLIT == nnpTask->m_xInput.eLiteralType() ? 1 : 0;
+  i8 iIsIntLit = LT_INTLIT == nnpTask->m_xInputStream.eLiteralType() ? 1 : 0;
   
   nnpTask->vPushParam(iIsIntLit);
 }
@@ -3090,7 +3114,7 @@ void Task::vIsNameLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsNameLit");
   
-  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_xInput.eLiteralType() ? 1 : 0;
+  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_xInputStream.eLiteralType() ? 1 : 0;
   
   nnpTask->vPushParam(iIsNameLit);
 }
@@ -3119,7 +3143,7 @@ void Task::vIsStrLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsStrLit");
   
-  i8 iIsStrLit = LT_STRLIT == nnpTask->m_xInput.eLiteralType() ? 1 : 0;
+  i8 iIsStrLit = LT_STRLIT == nnpTask->m_xInputStream.eLiteralType() ? 1 : 0;
   
   nnpTask->vPushParam(iIsStrLit);
 }
@@ -3235,7 +3259,7 @@ void Task::vLiteralGet(NNP_Task nnpTask)
   
   char* aLiteral = nnpTask->m_sLiteral.a();
   
-  nnpTask->m_xInput.vNextLiteral(aLiteral);
+  nnpTask->m_xInputStream.vNextLiteral(aLiteral);
   
   nnpTask->vPushParam(nnpTask->m_sLiteral.a());
 }
@@ -3254,7 +3278,7 @@ void Task::vLitNext(NNP_Task nnpTask)
   
   char* aLiteral = nnpTask->m_sLiteral.a();
   
-  nnpTask->m_xInput.vNextLiteral(aLiteral);
+  nnpTask->m_xInputStream.vNextLiteral(aLiteral);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3264,7 +3288,7 @@ void Task::vLitType(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vLitType");
   
-  eLT eLiteralType = nnpTask->m_xInput.eLiteralType();
+  eLT eLiteralType = nnpTask->m_xInputStream.eLiteralType();
   
   nnpTask->vPushParam(eLiteralType);
 }
@@ -3570,7 +3594,7 @@ void Task::vPrint(NNP_Task nnpTask)
     THROW_INVALID_PARAM(".");
   
   xValWsp.vToString(sWorkspace.a());
-  vTrace("[task%lld] %s\n",nnpTask->m_iTaskNo,sWorkspace.a());
+  vTrace("[%s] %s\n",nnpTask->m_sName.a(),sWorkspace.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4020,7 +4044,7 @@ void Task::vSwap(NNP_Task nnpTask)
 void Task::vTest(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vTest");
-  vTrace("[task%lld] Test\n",nnpTask->m_iTaskNo);
+  vTrace("[%s] Test\n",nnpTask->m_sName.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5332,6 +5356,54 @@ void Task::vThreadInit(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   new(pThread) Thread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.name@ -- fetch thread name                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadNameFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadNameFetch");
+  
+  Object* pObject;
+  
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("thread.name@");
+  
+  ASSERT(CN_THREAD == pObject->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pObject);
+  
+  s32 sName;
+  sName = pThread->sName();
+  
+  nnpTask->vPushParam(sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.name! -- store thread name                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadNameStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadNameStore");
+  
+  Object* pObject;
+  
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("thread.name!");
+  
+  ASSERT(CN_THREAD == pObject->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pObject);
+  
+  s32 sName;
+  ValWsp xNameWsp;
+  if ( ! nnpTask->bPopParam(xNameWsp) )
+    THROW_INVALID_PARAM("thread.name!");
+  
+  sName = xNameWsp.sStr();
+  
+  pThread->vName(sName);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Input.cpp - input handler                                                  */
+/* InputStream.cpp - input stream handler                                     */
 /*============================================================================*/
 
 #include "Tasking.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Input::operator new(size_t iSize)
+void* InputStream::operator new(size_t iSize)
 {
-  vFatal("fatal: Input class cannot be new'd");
+  vFatal("fatal: InputStream class cannot be new'd");
   
   //vExitFatal();
   
@@ -19,9 +19,9 @@ void* Input::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Input::operator delete(void* pAddress)
+void InputStream::operator delete(void* pAddress)
 {
-  vFatal("fatal: Input class cannot be deleted");
+  vFatal("fatal: InputStream class cannot be deleted");
   
   //vExitFatal();
   
@@ -31,8 +31,8 @@ void Input::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Input::Input(void)
-: ObjVal(sizeof(Input))
+InputStream::InputStream(void)
+: ObjVal(sizeof(InputStream))
 {
   _poolAddress_(this);
 
@@ -44,7 +44,7 @@ Input::Input(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Input::~Input(void)
+InputStream::~InputStream(void)
 {
   _poolAddress_(this);
 
@@ -54,7 +54,7 @@ Input::~Input(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of this input                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Input::iDepth(void)
+i8 InputStream::iDepth(void)
 {
   _poolAddress_(this);
   
@@ -64,7 +64,7 @@ i8 Input::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* set depth of this input                                                    */
 /*----------------------------------------------------------------------------*/
-void Input::vDepth(i8 iDepth)
+void InputStream::vDepth(i8 iDepth)
 {
   _poolAddress_(this);
   
@@ -74,7 +74,7 @@ void Input::vDepth(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* get type of literal just scanned                                           */
 /*----------------------------------------------------------------------------*/
-eLT Input::eLiteralType(void)
+eLT InputStream::eLiteralType(void)
 {
   _poolAddress_(this);
   
@@ -84,7 +84,7 @@ eLT Input::eLiteralType(void)
 /*----------------------------------------------------------------------------*/
 /* close current file                                                         */
 /*----------------------------------------------------------------------------*/
-void Input::vCloseFile(void)
+void InputStream::vCloseFile(void)
 {
   _poolAddress_(this);
 
@@ -97,7 +97,7 @@ void Input::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* discard remainder of line                                                  */
 /*----------------------------------------------------------------------------*/
-void Input::vDiscardLine(void)
+void InputStream::vDiscardLine(void)
 {
   _poolAddress_(this);
 
@@ -109,7 +109,7 @@ void Input::vDiscardLine(void)
 /*----------------------------------------------------------------------------*/
 /* parse next literal into given buffer                                       */
 /*----------------------------------------------------------------------------*/
-void Input::vNextLiteral(char* wWorkspace)
+void InputStream::vNextLiteral(char* wWorkspace)
 {
   _poolAddress_(this);
   
@@ -171,7 +171,7 @@ void Input::vNextLiteral(char* wWorkspace)
 /*----------------------------------------------------------------------------*/
 /* open file for scanning                                                     */
 /*----------------------------------------------------------------------------*/
-bool Input::bOpenFile(const char* aFilePath)
+bool InputStream::bOpenFile(const char* aFilePath)
 {
   _poolAddress_(this);
 
@@ -188,7 +188,7 @@ bool Input::bOpenFile(const char* aFilePath)
 /*----------------------------------------------------------------------------*/
 /* prompt for input                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vPrompt(void)
+void InputStream::vPrompt(void)
 {
   _poolAddress_(this);
   
@@ -198,7 +198,7 @@ void Input::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* reset this input                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vReset(void)
+void InputStream::vReset(void)
 {
   _poolAddress_(this);
 
@@ -214,7 +214,7 @@ void Input::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* use text for scanning                                                      */
 /*----------------------------------------------------------------------------*/
-void Input::vScanText(void)
+void InputStream::vScanText(void)
 {
   _poolAddress_(this);
   
@@ -226,7 +226,7 @@ void Input::vScanText(void)
 /*----------------------------------------------------------------------------*/
 /* use text for scanning                                                      */
 /*----------------------------------------------------------------------------*/
-void Input::vScanText(s& sScanText)
+void InputStream::vScanText(s& sScanText)
 {
   _poolAddress_(this);
   
@@ -238,7 +238,7 @@ void Input::vScanText(s& sScanText)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void Input::vSetStdin(void)
+void InputStream::vSetStdin(void)
 {
   _poolAddress_(this);
   
@@ -257,7 +257,7 @@ void Input::vSetStdin(void)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse block comment                                             */
 /*----------------------------------------------------------------------------*/
-bool Input::bParseBlock(char* wWorkspace)
+bool InputStream::bParseBlock(char* wWorkspace)
 {
   return false;
 }
@@ -265,7 +265,7 @@ bool Input::bParseBlock(char* wWorkspace)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse a comment                                                 */
 /*----------------------------------------------------------------------------*/
-bool Input::bParseComment(char* yWorkspace)
+bool InputStream::bParseComment(char* yWorkspace)
 {
   char cOne;
   char cTwo;
@@ -333,7 +333,7 @@ bool Input::bParseComment(char* yWorkspace)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse integer                                                   */
 /*----------------------------------------------------------------------------*/
-bool Input::bParseInteger(char* yWorkspace)
+bool InputStream::bParseInteger(char* yWorkspace)
 {
   char *y = yWorkspace;
   
@@ -394,7 +394,7 @@ bool Input::bParseInteger(char* yWorkspace)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse line comment                                              */
 /*----------------------------------------------------------------------------*/
-bool Input::bParseLine(char* wWorkspace)
+bool InputStream::bParseLine(char* wWorkspace)
 {
   return false;
 }
@@ -402,7 +402,7 @@ bool Input::bParseLine(char* wWorkspace)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse name                                                      */
 /*----------------------------------------------------------------------------*/
-bool Input::bParseName(char* yWorkspace)
+bool InputStream::bParseName(char* yWorkspace)
 {
   char *y = yWorkspace;
 
@@ -425,7 +425,7 @@ bool Input::bParseName(char* yWorkspace)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse string                                                    */
 /*----------------------------------------------------------------------------*/
-bool Input::bParseString(char* yWorkspace)
+bool InputStream::bParseString(char* yWorkspace)
 {
   char *y = yWorkspace;
   
@@ -451,7 +451,7 @@ bool Input::bParseString(char* yWorkspace)
 /*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
-void Input::vGetChar(void)
+void InputStream::vGetChar(void)
 {
   if (m_bFromFile) {
     
@@ -474,7 +474,7 @@ void Input::vGetChar(void)
 /*----------------------------------------------------------------------------*/
 /* unget input character                                                      */
 /*----------------------------------------------------------------------------*/
-void Input::vUngetChar(void)
+void InputStream::vUngetChar(void)
 {
   if (m_bFromFile) {
     m_xInputFile.vUngetChar(m_cChar);
@@ -489,7 +489,7 @@ void Input::vUngetChar(void)
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-void Input::vSkipWhitespace(void)
+void InputStream::vSkipWhitespace(void)
 {
   while (String::bIsWhite(m_cChar))
     vGetChar();
@@ -498,7 +498,7 @@ void Input::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 /* test for end input                                                         */
 /*----------------------------------------------------------------------------*/
-bool Input::bEndInput(void)
+bool InputStream::bEndInput(void)
 {
   if ( ! m_cChar )
     return true;
@@ -509,7 +509,7 @@ bool Input::bEndInput(void)
 /*----------------------------------------------------------------------------*/
 /* test for more input                                                        */
 /*----------------------------------------------------------------------------*/
-bool Input::bMoreInput(void)
+bool InputStream::bMoreInput(void)
 {
   if (m_cChar)
     return true;
@@ -520,7 +520,7 @@ bool Input::bMoreInput(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of comment                                                  */
 /*----------------------------------------------------------------------------*/
-bool Input::bStartComment(void)
+bool InputStream::bStartComment(void)
 {
   if (m_cChar == '/')
     return true;
@@ -531,7 +531,7 @@ bool Input::bStartComment(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of integer                                                  */
 /*----------------------------------------------------------------------------*/
-bool Input::bStartInteger(void)
+bool InputStream::bStartInteger(void)
 {
   if (String::bIsDigit(m_cChar))
     return true;
@@ -542,7 +542,7 @@ bool Input::bStartInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of string                                                   */
 /*----------------------------------------------------------------------------*/
-bool Input::bStartString(void)
+bool InputStream::bStartString(void)
 {
   if (m_cChar == '"')
     return true;
@@ -553,7 +553,7 @@ bool Input::bStartString(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of line                                                       */
 /*----------------------------------------------------------------------------*/
-bool Input::bEndLine(void)
+bool InputStream::bEndLine(void)
 {
   if (m_cChar == '\n')
     return true;
@@ -564,7 +564,7 @@ bool Input::bEndLine(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of string                                                     */
 /*----------------------------------------------------------------------------*/
-bool Input::bEndString(void)
+bool InputStream::bEndString(void)
 {
   if (m_cChar == '"')
     return true;
@@ -575,7 +575,7 @@ bool Input::bEndString(void)
 /*----------------------------------------------------------------------------*/
 /* test for a base-10 digit                                                   */
 /*----------------------------------------------------------------------------*/
-bool Input::bIsDigit(void)
+bool InputStream::bIsDigit(void)
 {
   if (String::bIsDigit(m_cChar))
     return true;
@@ -586,7 +586,7 @@ bool Input::bIsDigit(void)
 /*----------------------------------------------------------------------------*/
 /* test for a base-16 digit                                                   */
 /*----------------------------------------------------------------------------*/
-bool Input::bIsHex(void)
+bool InputStream::bIsHex(void)
 {
   if (String::bIsHex(m_cChar))
     return true;
@@ -597,7 +597,7 @@ bool Input::bIsHex(void)
 /*----------------------------------------------------------------------------*/
 /* test for a white character                                                 */
 /*----------------------------------------------------------------------------*/
-bool Input::bIsWhite(void)
+bool InputStream::bIsWhite(void)
 {
   if (String::bIsWhite(m_cChar))
     return true;
@@ -608,7 +608,7 @@ bool Input::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 /* test for a 'x' or 'X'                                                      */
 /*----------------------------------------------------------------------------*/
-bool Input::bIsX(void)
+bool InputStream::bIsX(void)
 {
   if ('x' == m_cChar || 'X' == m_cChar)
     return true;

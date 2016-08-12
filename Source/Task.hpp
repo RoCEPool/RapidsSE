@@ -91,7 +91,7 @@ namespace Tasking
     
     s256  m_sCommand;   // supplied command
     s256  m_sLiteral;   // current literal
-    Input m_xInput;     // input parser
+    InputStream m_xInputStream;     // input stream parser
     
     union {
       Cell*       m_pCell;
@@ -152,7 +152,9 @@ namespace Tasking
     Word* pLocateWord(Cell* pCell);
     void vLoop(void);
     NP_Task npNextInSet(void);
-    void  vNextInSet(NP_Task npNext);
+    s&   sName(void);
+    void vName(s& sName);
+    void vNextInSet(NP_Task npNext);
     void vPrepareBootSen(void);
     void vPrepareCommand(const char *aCommand);
     void vPrepareDocol(void);
@@ -492,7 +494,9 @@ namespace Tasking
     static void vThreadCpu(NNP_Task nnpTask);
     static void vThreadDump(NNP_Task nnpTask);
     static void vThreadInit(NNP_Task nnpTask);    
-    static void vThreadSfetch(NNP_Task nnpTask);  
+    static void vThreadNameFetch(NNP_Task nnpTask);
+    static void vThreadNameStore(NNP_Task nnpTask);
+    static void vThreadSfetch(NNP_Task nnpTask);
     static void vThreadSstore(NNP_Task nnpTask);  
     static void vThreadSpawn(NNP_Task nnpTask);   
 

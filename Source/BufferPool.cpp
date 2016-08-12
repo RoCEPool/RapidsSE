@@ -36,7 +36,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
     exit(EXIT_FAILURE);
   }
   
-  vTrace("Shm %p\n",pRegion);
+  vTrace("Shm mapped at %p\n",pRegion);
   
   return reinterpret_cast<Buffer*>(pRegion);
 }
@@ -67,7 +67,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
     exit(EXIT_FAILURE);
   }
   
-  vTrace("Shm %p\n",pRegion);
+  vTrace("Shm mapped at %p\n",pRegion);
   
   return reinterpret_cast<Buffer*>(pRegion);
 }
@@ -97,7 +97,7 @@ Buffer* BufferPool::pCreateRegion(s& sRegionName,
     exit(EXIT_FAILURE);
   }
   
-  vTrace("Shm %p\n",pRegion);
+  vTrace("Shm mapped at %p\n",pRegion);
   
   return reinterpret_cast<Buffer*>(pRegion);
 }

@@ -4,34 +4,39 @@
 
 "intvar.sen" .
 
+/*----------------------------------------------------------------------------*/
+/* create int variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
 : intvar:
     create 
     object!!
     sizeof_intval allot
     word.this >body magic!!
     word.this >body CN_INTVAL class!
-    ( word.this >body thread.init )
-    does> test
+    does>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* create s32 variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
 : s32var:
     create
     object!!
     sizeof_strval sizeof_s32 + allot
     word.this >body magic!!
     word.this >body CN_STRVAL class!
-    ( word.this >body thread.init )
-    does> test
+    does>
 ;
 
-
+/*----------------------------------------------------------------------------*/
+/* create wrd variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
 : wrdvar:
     create
     object!!
     sizeof_wrdval allot
     word.this >body magic!!
     word.this >body CN_WRDVAL class!
-    ( word.this >body thread.init )
     does>
 ;
 

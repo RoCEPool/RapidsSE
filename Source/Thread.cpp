@@ -19,7 +19,7 @@ void* Thread::operator new(size_t iSize, Thread* pThread)
 }
 
 /*----------------------------------------------------------------------------*/
-/* threads are never delete (at the moment)                                   */
+/* threads are never delete (for the moment)                                  */
 /*----------------------------------------------------------------------------*/
 void Thread::operator delete(void* pTxAddress)
 {
@@ -37,13 +37,13 @@ Thread::Thread(void)
 : Object(CN_THREAD)
 {
   _poolAddress_(this);
-  
-  m_npTask = nullptr;
-  
-  m_pTaskSet = nullptr;
-  
+
   ASSERT( gpThreadList );
   
+  m_sName    = "<no thread name>";
+  m_pTaskSet = nullptr;
+  m_npTask   = nullptr;
+
   Thread* pThread = this;
   gpThreadList->vAppend(pThread);
 }
@@ -61,13 +61,13 @@ Thread::~Thread(void)
 /*----------------------------------------------------------------------------*/
 void* Thread::vEntry(void* pArg)
 {
-  vTrace("Thread::vEntry %p\n",pArg);
-  
   Thread* pThread = static_cast<Thread*>(pArg);
+  
+  vTrace("[[%s]] Thread::vEntry %p\n",pThread->sName().a(),pThread);
   
   pThread->vLoop();
 
-  vTrace("Thread::vExit %p\n",pArg);
+  vTrace("[[%s]] Thread:;vEntry %p exiting\n",pThread->sName().a(),pThread);
   
   delete pThread;
   
@@ -158,7 +158,7 @@ void Thread::vLoop(void)
       
       if ( ! m_npTask ) {
         if (bWarn)
-          vTrace("Thread: %p: No tx\n",this);
+          vTrace("[[%s]] Thread::vLoop no task\n",m_sName.a());
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
         //m_xPosixThread.vSecSleep(1);
@@ -172,6 +172,8 @@ void Thread::vLoop(void)
       ASSERT(m_xPosixThread.pTlsGet(giTLS_TaskKey));
       
       m_npTask->vState(TS_RUNNING);
+      
+      vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.a(),m_npTask->sName().a(),*m_npTask);
       
       // set rdtscp
       m_npTask->vLoop();
@@ -188,6 +190,26 @@ void Thread::vLoop(void)
       }
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get name of this thread                                                    */
+/*----------------------------------------------------------------------------*/
+s& Thread::sName(void)
+{
+  _poolAddress_(this);
+
+  return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set name of this thread                                                    */
+/*----------------------------------------------------------------------------*/
+void Thread::vName(s& sName)
+{
+  _poolAddress_(this);
+  
+  m_sName = sName;
 }
 
 /*----------------------------------------------------------------------------*/

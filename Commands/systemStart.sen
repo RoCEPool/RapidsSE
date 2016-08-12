@@ -4,12 +4,20 @@
 
 "systemStart.sen" .
 
+/*----------------------------------------------------------------------------*/
+/* called by RapidsSE::vSystemStart                                           */
+/*----------------------------------------------------------------------------*/
 : systemStart
+
+  "systemStart" .
+
+  "metadata.sen" >>:
   "systemCommands.sen" >>:
   "requestServer.sen"  >>:
+
   snooze
-  "Welcome to RapidsSE" .
-  "requestServerStart" find execute
+
+  "requestServerLoop" find execute
 ;
 
 /*============================================================================*/

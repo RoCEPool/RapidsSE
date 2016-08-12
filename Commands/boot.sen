@@ -4,8 +4,9 @@
 
 "boot.sen" .
 
-//------------------------------------------------------------------------------
-// step 1: compile the inital set of high-level words
+/*----------------------------------------------------------------------------*/
+/* step 1: compile the inital set of high-level words                         */
+/*----------------------------------------------------------------------------*/
 
 "core.sen" >>:
 "dic.sen" >>:
@@ -17,17 +18,23 @@
 // compile the runtime words
 "runtime.sen" >>:
 
-//------------------------------------------------------------------------------
-// step 2: compile testing
+/*----------------------------------------------------------------------------*/
+/* step 2: compile testing                                                    */
+/*----------------------------------------------------------------------------*/
+
 "testing.sen" >>:
 
-//------------------------------------------------------------------------------
-// step 3: compile "the system"
-"metadata.sen" >>:
+/*----------------------------------------------------------------------------*/
+/* step 3: compile "the system"                                               */
+/*----------------------------------------------------------------------------*/
+
 "theSystem.sen" >>:
 
-//------------------------------------------------------------------------------
-// step 4:
+/*----------------------------------------------------------------------------*/
+/* step 4: create the main objects for the system                             */
+/*----------------------------------------------------------------------------*/
+
+( tasklist will already exist )
 
 ( create the threadList to hold all thread's )
 threadlist: threadList
@@ -38,13 +45,20 @@ txlist: txList
 ( create the sessionList to hold all session's )
 sessionlist: sessionList
 
-( add this task to task list )
-// task.this tasklist tasklist.append
+( create the task set for the root thread )
+taskset: rootTaskSet
 
-( spawn first 2nd thread and leave on stack )
-thread: RootThread
-taskset: TaskSet1 TaskSet1 RootThread thread.taskset!
-RootThread thread.spawn RootThread
+( create the root thread and name it )
+thread: rootThread "rootThread" rootThread thread.name!
+
+( give root task set to the root thread )
+rootTaskSet rootThread thread.taskSet!
+
+( spawn the posix thread for the root thread )
+rootThread thread.spawn
+
+( leave root thread on stack )
+rootThread
 
 "booted.sen" >>:
 

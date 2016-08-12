@@ -197,7 +197,6 @@ void Dictionary::vInit(void)
   m_pCurrentWord = nullptr;
   
   Word* pWord = Word::pToWord(this);
-  vTrace("Dictionary name: %s\n",pWord->sName().a());
   
   m_sName.vInit();
   m_sName = pWord->sName();

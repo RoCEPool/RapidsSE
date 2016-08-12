@@ -10,7 +10,7 @@
 #include "Queue.hpp"
 
 #include "DictionaryStack.hpp"
-#include "Input.hpp"
+#include "InputStream.hpp"
 #include "Stack.hpp"
 #include "Task.hpp"
 #include "TaskList.hpp"

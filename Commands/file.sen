@@ -4,6 +4,9 @@
 
 "file.sen" .
 
+/*----------------------------------------------------------------------------*/
+/* create a file using name from input stream (doesnt leave file on stk)      */
+/*----------------------------------------------------------------------------*/
 : file:
   create
   object!!
@@ -11,7 +14,21 @@
   word.this >body magic!!
   word.this >body CN_FILE class!
   word.this >body file.init
-  does> "file on stk" .
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a file using name on stack (leaves file on stack)                   */
+/*----------------------------------------------------------------------------*/
+: :file
+  >create
+  object!!
+  sizeof_file allot
+  word.this >body magic!!
+  word.this >body CN_FILE class!
+  word.this >body file.init
+  word.this
+  does>
 ;
 
 /*============================================================================*/
