@@ -426,7 +426,7 @@
 		F2F1251A1D2231B300CA8E5A /* s16K.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = s16K.hpp; path = Source/s16K.hpp; sourceTree = "<group>"; };
 		F2F2365C1D4BFCD50028A9C2 /* var.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = var.sen; path = Commands/var.sen; sourceTree = "<group>"; };
 		F2F2365F1D4D41460028A9C2 /* itfLoad.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itfLoad.sen; path = Commands/itfLoad.sen; sourceTree = "<group>"; };
-		F2F236601D4D41A60028A9C2 /* itf_v2.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itf_v2.sen; path = Commands/itf_v2.sen; sourceTree = "<group>"; };
+		F2F236601D4D41A60028A9C2 /* itf_v3.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itf_v3.sen; path = Commands/itf_v3.sen; sourceTree = "<group>"; };
 		F2F236611D4EAC840028A9C2 /* itf_commands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = itf_commands.sen; path = Commands/itf_commands.sen; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -447,7 +447,7 @@
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
 				F28DF4D71D5527B900013BBC /* export.sen */,
 				F2F2365F1D4D41460028A9C2 /* itfLoad.sen */,
-				F2F236601D4D41A60028A9C2 /* itf_v2.sen */,
+				F2F236601D4D41A60028A9C2 /* itf_v3.sen */,
 				F2F236611D4EAC840028A9C2 /* itf_commands.sen */,
 				F28DF4D61D5519C400013BBC /* load.sen */,
 				F2B3B14E1D5131FC0049597E /* tableload.sen */,

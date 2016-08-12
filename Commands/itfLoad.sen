@@ -1,7 +1,7 @@
 "itfLoad.sen" .
 
 : client
-  "itf_v2.sen" >>:
+  "itf_v3.sen" >>:
   "itf_commands.sen" >>:
   snooze
   "Welcome to RapidsSE" .
