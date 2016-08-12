@@ -155,8 +155,8 @@ namespace Tasking
     s&   sName(void);
     void vName(s& sName);
     void vNextInSet(NP_Task npNext);
-    void vPrepareBootSen(void);
     void vPrepareCommand(const char *aCommand);
+    void vPrepareDicInitialiseSen(void);
     void vPrepareDocol(void);
     NP_Task npPrevInSet(void);
     void vPrevInSet(NP_Task npPrev);

@@ -1069,13 +1069,13 @@ void Task::vInitialiseDictionary(void)
   
   //-----------------------------------------------------
   sDefinition =
-  ": ::boot"
-  "  \"::boot\" ."
+  ": ::dicInitialise"
+  "  \"::dicInitialise\" ."
   "  gwd ."
   "  \"../../../commands\" cwd"
   "  gwd ."
-  "  \"boot.sen\" >>:"
-  "  \"::boot exit\" ."
+  "  \"dicInitialise.sen\" >>:"
+  "  \"::dicInitialise exit\" ."
   "  ::exit"
   "  ;";
   
@@ -1201,11 +1201,11 @@ void Task::vNextInSet(NP_Task npNextInSet)
 
 
 /*----------------------------------------------------------------------------*/
-/* prepare to run ::boot                                                      */
+/* prepare to run ::dicInitialis                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vPrepareBootSen(void)
+void Task::vPrepareDicInitialiseSen(void)
 {
-  Word* pBootSen = pFindWord("::boot");
+  Word* pBootSen = pFindWord("::dicInitialise");
   ASSERT(pBootSen);
   
   m_pCell = pBootSen->pFirstCell();
@@ -3046,7 +3046,7 @@ void Task::vIsBooted(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsBooted");
   
-  Word* pWord = nnpTask->pFindWord("booted");
+  Word* pWord = nnpTask->pFindWord("dicInitialised");
   
   i8 bIsBooted = pWord ? true : false;
   

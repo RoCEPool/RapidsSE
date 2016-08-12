@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* boot.sen -- high-level boot sequence                                       */
+/* dicInitialise.sen -- initialise the dictionary                             */
 /*============================================================================*/
 
-"boot.sen" .
+"dicInitialise.sen" .
 
 /*----------------------------------------------------------------------------*/
 /* step 1: compile the inital set of high-level words                         */
@@ -60,7 +60,7 @@ rootThread thread.spawn
 ( leave root thread on stack )
 rootThread
 
-"booted.sen" >>:
+"dicInitialised.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */

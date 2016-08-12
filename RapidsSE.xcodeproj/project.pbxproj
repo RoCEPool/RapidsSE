@@ -139,11 +139,11 @@
 
 /* Begin PBXFileReference section */
 		980950FE1D326F4A002F20B0 /* thread.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = thread.sen; path = Commands/thread.sen; sourceTree = "<group>"; };
-		980950FF1D326F4A002F20B0 /* boot.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = boot.sen; path = Commands/boot.sen; sourceTree = "<group>"; };
+		980950FF1D326F4A002F20B0 /* dicInitialise.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicInitialise.sen; path = Commands/dicInitialise.sen; sourceTree = "<group>"; };
 		980951011D326F4A002F20B0 /* taskSet.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = taskSet.sen; path = Commands/taskSet.sen; sourceTree = "<group>"; };
 		980951021D326F4A002F20B0 /* queue.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = queue.sen; path = Commands/queue.sen; sourceTree = "<group>"; };
 		980951041D326F4A002F20B0 /* task.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = task.sen; path = Commands/task.sen; sourceTree = "<group>"; };
-		980951061D326F4A002F20B0 /* booted.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = booted.sen; path = Commands/booted.sen; sourceTree = "<group>"; };
+		980951061D326F4A002F20B0 /* dicInitialised.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicInitialised.sen; path = Commands/dicInitialised.sen; sourceTree = "<group>"; };
 		98159E231D37413000478E83 /* socket_server.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket_server.sen; path = Commands/socket_server.sen; sourceTree = "<group>"; };
 		98159E241D3741C100478E83 /* socket_client.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket_client.sen; path = Commands/socket_client.sen; sourceTree = "<group>"; };
 		98163FAB1D0F14E3002B7755 /* an.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = an.cpp; path = Source/an.cpp; sourceTree = "<group>"; };
@@ -732,25 +732,25 @@
 			name = Grid;
 			sourceTree = "<group>";
 		};
-		F2389CDD1D47EFB6008DF3D9 /* Boot */ = {
+		F2389CDD1D47EFB6008DF3D9 /* DicInitialise */ = {
 			isa = PBXGroup;
 			children = (
-				980950FF1D326F4A002F20B0 /* boot.sen */,
+				980950FF1D326F4A002F20B0 /* dicInitialise.sen */,
 				F226E7481D4312F300E10FC3 /* core.sen */,
 				F226E71D1D40286400E10FC3 /* dic.sen */,
 				F226E7241D41918800E10FC3 /* file.sen */,
 				F226E7251D419E3400E10FC3 /* trace.sen */,
 				F2389D0D1D4AD133008DF3D9 /* useful.sen */,
 				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
-				980951061D326F4A002F20B0 /* booted.sen */,
+				980951061D326F4A002F20B0 /* dicInitialised.sen */,
 			);
-			name = Boot;
+			name = DicInitialise;
 			sourceTree = "<group>";
 		};
 		F2389CE01D47F291008DF3D9 /* SEN */ = {
 			isa = PBXGroup;
 			children = (
-				F2389CDD1D47EFB6008DF3D9 /* Boot */,
+				F2389CDD1D47EFB6008DF3D9 /* DicInitialise */,
 				F226E7571D4570CA00E10FC3 /* Runtime */,
 				F226E74A1D44076400E10FC3 /* MetaData */,
 				980950FC1D326F33002F20B0 /* TheSystem */,

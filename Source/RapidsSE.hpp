@@ -31,7 +31,7 @@ namespace StorageEngine
     static void vAttachRegion(void);
     static void vCreateObjects(void);
     static void vCreateRegion(void);
-    static void vDicInit(NP_Task npBootTask);
+    static void vDicInitialise(NP_Task npBootTask);
     static void vHandler(Error* pError);
     static void vRunCommand(void);
     static void vRunDocol(void);

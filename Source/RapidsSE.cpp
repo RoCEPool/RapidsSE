@@ -286,13 +286,13 @@ void RapidsSE::vCreateRegion(void)
 /*----------------------------------------------------------------------------*/
 /* intialise the main dictionary                                              */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDicInit(NP_Task npRootTask)
+void RapidsSE::vDicInitialise(NP_Task npRootTask)
 {
   npRootTask->vInitialiseDictionary();
   
-  npRootTask->vPrepareBootSen();
+  npRootTask->vPrepareDicInitialiseSen();
   
-  vTrace("[[mainThread]] RapidsSE::vDicInit running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
+  vTrace("[[mainThread]] RapidsSE::vDicInitialise running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
   npRootTask->vLoop();
 }
 
@@ -388,7 +388,7 @@ void RapidsSE::vSystemInit(void)
   sName = "rootTask";
   gnpRootTask->vName(sName);
   
-  vDicInit(gnpRootTask);
+  vDicInitialise(gnpRootTask);
   
   gpAttachMap->vInit();
   
@@ -446,7 +446,7 @@ void RapidsSE::vTlsInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vWaitFlag(void)
 {
-  vTrace("[[mainThread]] waiting on stop...\n");
+  vTrace("[[mainThread]] Waiting on stop %s\n","...");
 
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
