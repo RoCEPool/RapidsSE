@@ -12,15 +12,15 @@ namespace Common
   {
   public:
     struct {
-      unsigned int m_iYear   :  8;  // 256 years, base is 1900
-      unsigned int m_iMonth  :  4;  // 16 months
-      unsigned int m_iDay    :  5;  // 32 days
-      unsigned int m_iHour   :  5;  // 32 hours
-      unsigned int m_iMinute :  6;  // 64 minutes
-      unsigned int m_iSecond :  6;  // 64 seconds
-      unsigned int m_iMicro  : 20;  // 1M useconds
-      unsigned int m_iSpare  : 10;  // 10 bits
-                            // 64 bits
+      u8 m_iYear   :  8;  // 256 years, base is 1900
+      u8 m_iMonth  :  4;  // 16 months
+      u8 m_iDay    :  5;  // 32 days
+      u8 m_iHour   :  5;  // 32 hours
+      u8 m_iMinute :  6;  // 64 minutes
+      u8 m_iSecond :  6;  // 64 seconds
+      u8 m_iMicro  : 20;  // 1M useconds
+      u8 m_iSpare  : 10;  // 10 bits
+                  // 64 bits
     };
     
   public:
@@ -45,7 +45,7 @@ namespace Common
       m_iMinute = xArg.m_iMinute;
       m_iSecond = xArg.m_iSecond;
       m_iMicro  = xArg.m_iMicro;
-      m_iSpare  = xArg.m_iSpare;
+      //m_iSpare  = xArg.m_iSpare;
     }
     
     void operator = (i8 i)
@@ -57,7 +57,7 @@ namespace Common
       m_iMinute = 0;
       m_iSecond = 0;
       m_iMicro  = 0;
-      m_iSpare  = 0;
+      //m_iSpare  = 0;
     }
     
     bool operator >= (Time* pArg)

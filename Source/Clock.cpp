@@ -21,7 +21,6 @@ void* Clock::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 Clock::Clock()
 {
-  i8 i = sizeof(Time);
   ASSERT(sizeof(Time) == 8); // logic check
   
   vUpdate();
