@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* systemServer.sen -- system server                                          */
+/*============================================================================*/
+
+"systemServer.sen" .
+
+//------------------------------------------------------------------------------
+( create the parts )
+thread:  requestServerThread
+taskset: requestServerTaskSet
+queue:   requestQueue
+dic:     tenants
+
+//------------------------------------------------------------------------------
+: !req ( process request  )
+    valset> stk >: stk >: stk
+;
+
+//------------------------------------------------------------------------------
+: req> ( receive request  )
+    begin
+      task.this task.queue@
+      queue.pop
+    until
+;
+
+//------------------------------------------------------------------------------
+: >rsp ( send response    )
+    >str
+    task.this task.itf@
+    seitf.dic {{ "rspque" find execute queue.append }}
+;
+
+//------------------------------------------------------------------------------
+: requestServerLoop ( request server )
+    "requestServer" task.this task.name!
+    begin
+      req>
+      !req
+      >rsp
+    0 until
+;
+
+//------------------------------------------------------------------------------
+: requestServerStart ( start the request server )
+
+    "requestServerLoop" task.new
+
+    dup requestQueue swap task.queue!
+
+    requestServerTaskSet taskset.append
+
+    requestServerTaskSet requestServerThread thread.taskset!
+
+    requestServerThread thread.spawn
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

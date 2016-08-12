@@ -401,7 +401,7 @@ void RapidsSE::vSystemInit(void)
 void RapidsSE::vSystemStart(void)
 {
   // prepare to run client using docol interpreter
-  gnpRootTask->vPrepareCommand("client");
+  gnpRootTask->vPrepareCommand("SystemStart");
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
