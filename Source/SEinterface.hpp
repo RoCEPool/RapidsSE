@@ -53,36 +53,36 @@ namespace StorageEngine
     
     //--------------------------------------------------------------------------
     
-    bool bHelp();
+    bool bHelp(char* pWords[]);
     
-    bool bConnect();
-    bool bDisconnect();
+    bool bConnect(char* pWords[]);
+    bool bDisconnect(char* pWords[]);
 
-    bool bCreateTenant();
-    bool bDropTenant();
+    bool bCreateTenant(char* pWords[]);
+    bool bDropTenant(char* pWords[]);
 
-    bool bCreateCatalog();
-    bool bDropCatalog();
+    bool bCreateCatalog(char* pWords[]);
+    bool bDropCatalog(char* pWords[]);
     
-    bool bCreateSchema();
-    bool bDropSchema();
+    bool bCreateSchema(char* pWords[]);
+    bool bDropSchema(char* pWords[]);
     
-    bool bCreateTable();
-    bool bDropTable();
+    bool bCreateTable(char* pWords[]);
+    bool bDropTable(char* pWords[]);
     
-    bool bCopyTable();
-    bool bExportTable();
-    bool bLoadTable();
-    bool bSelectTable();
-    bool bTruncateTable();
+    bool bCopyTable(char* pWords[]);
+    bool bExportTable(char* pWords[]);
+    bool bLoadTable(char* pWords[]);
+    bool bSelectTable(char* pWords[]);
+    bool bTruncateTable(char* pWords[]);
     
-    bool bPopDic();
-    bool bPushDic();
-    bool bGetDicPath();
-    bool bSetDicPath();
-    bool bGetDicContents();
+    bool bPopDic(char* pWords[]);
+    bool bPushDic(char* pWords[]);
+    bool bGetDicPath(char* pWords[]);
+    bool bSetDicPath(char* pWords[]);
+    bool bGetDicContents(char* pWords[]);
     
-    bool bX();
+    bool bX(char* pWords[]);
   };
 }
 

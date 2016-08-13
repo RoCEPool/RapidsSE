@@ -439,7 +439,14 @@ Word* Task::pCompileColon(s& sDefinition)
 /*----------------------------------------------------------------------------*/
 Word* Task::pCurrentWord(void)
 {
-  Word* pWord = m_xDictionaryStack.pTop()->pCurrentWord();
+  
+  Dictionary* pDictionary;
+  if (m_pSEitf)
+    pDictionary = m_pSEitf->pDicStack()->pTop();
+  else
+    pDictionary = m_xDictionaryStack.pTop();
+
+  Word* pWord = pDictionary->pCurrentWord();
   
   return pWord;
 }
@@ -6044,7 +6051,11 @@ void Task::vCreate(NNP_Task nnpTask)
   
   nnpTask->vLiteralNext();
   
-  Dictionary* pDictionary = nnpTask->m_xDictionaryStack.pTop();
+  Dictionary* pDictionary;
+  if (nnpTask->m_pSEitf)
+    pDictionary = nnpTask->m_pSEitf->pDicStack()->pTop();
+  else
+    pDictionary = nnpTask->m_xDictionaryStack.pTop();
   
   new(pDictionary) Word(nnpTask->m_sLiteral.a());
 }
@@ -6060,7 +6071,11 @@ void Task::vCreateFrom(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sName) )
     THROW_INVALID_PARAM(">create");
   
-  Dictionary* pDictionary = nnpTask->m_xDictionaryStack.pTop();
+  Dictionary* pDictionary;
+  if (nnpTask->m_pSEitf)
+    pDictionary = nnpTask->m_pSEitf->pDicStack()->pTop();
+  else
+    pDictionary = nnpTask->m_xDictionaryStack.pTop();
   
   new(pDictionary) Word(sName.a());
 }

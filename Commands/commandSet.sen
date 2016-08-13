@@ -54,9 +54,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* list dictionary contents                                                   */
+/*----------------------------------------------------------------------------*/
+: ls
+    word.this
+    begin dup
+      while
+        dup word.kind@ word.name ' word word.name streql not if
+          dup nameWord .put " is a " .put dup word.kind@ nameword .put .\n
+        then
+        prevWord
+      repeat
+    drop
+    "done" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
 : x
+    words
     "x" 1 2
 ;
 
@@ -166,18 +183,6 @@
   0 dic.pick dic.name "schemas"  streql if literal> create_schema  exit then
   0 dic.pick dic.name "tables"   streql if literal> create_table   exit then
   "huh?" . drop
-;
-
-//------------------------------------------------------------------------------
-: ls
-  word.this
-  begin dup while
-    dup word.kind@ word.name ' word word.name streql not if
-      dup nameWord .put " is a " .put dup word.kind@ nameword .put .\n
-    then
-    prevWord
-  repeat
-  drop
 ;
 
 //------------------------------------------------------------------------------

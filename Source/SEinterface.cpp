@@ -197,7 +197,7 @@ bool SEinterface::bDecode(char* pWords[])
 {
   if (String::bEqualTo("?",pWords[0],C_NO_CASE) ||
       String::bEqualTo("help",pWords[0],C_NO_CASE)) {
-    bHelp();
+    bHelp(pWords);
     return false;
   }
   
@@ -206,107 +206,107 @@ bool SEinterface::bDecode(char* pWords[])
   }
   
   if (String::bEqualTo("cd",pWords[0],C_NO_CASE)) {
-    bPushDic();
+    bPushDic(pWords);
     return true;
   }
   
   if (String::bEqualTo("con",pWords[0],C_NO_CASE)) {
-    bConnect();
+    bConnect(pWords);
     return true;
   }
 
   if (String::bEqualTo("cpy",pWords[0],C_NO_CASE)) {
-    bCopyTable();
+    bCopyTable(pWords);
     return true;
   }
 
   if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
-    bDisconnect();
+    bDisconnect(pWords);
     return true;
   }
   
   if (String::bEqualTo("exp",pWords[0],C_NO_CASE)) {
-    bExportTable();
+    bExportTable(pWords);
     return true;
   }
   
   if (String::bEqualTo("lod",pWords[0],C_NO_CASE)) {
-    bLoadTable();
+    bLoadTable(pWords);
     return true;
   }
   
   if (String::bEqualTo("ls",pWords[0],C_NO_CASE)) {
-    bGetDicContents();
+    bGetDicContents(pWords);
     return true;
   }
   
   if (String::bEqualTo("mkcat",pWords[0],C_NO_CASE)) {
-    bCreateCatalog();
+    bCreateCatalog(pWords);
     return true;
   }
   
   if (String::bEqualTo("mksch",pWords[0],C_NO_CASE)) {
-    bCreateSchema();
+    bCreateSchema(pWords);
     return true;
   }
   
   if (String::bEqualTo("mktbl",pWords[0],C_NO_CASE)) {
-    bCreateTable();
+    bCreateTable(pWords);
     return true;
   }
   
   if (String::bEqualTo("mkten",pWords[0],C_NO_CASE)) {
-    bCreateTenant();
+    bCreateTenant(pWords);
     return true;
   }
   
   if (String::bEqualTo("pop",pWords[0],C_NO_CASE)) {
-    bPopDic();
+    bPopDic(pWords);
     return true;
   }
   
   if (String::bEqualTo("pwd",pWords[0],C_NO_CASE)) {
-    bGetDicPath();
+    bGetDicPath(pWords);
     return true;
   }
   
   if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
-    bDropCatalog();
+    bDropCatalog(pWords);
     return true;
   }
   
   if (String::bEqualTo("rmsch",pWords[0],C_NO_CASE)) {
-    bDropSchema();
+    bDropSchema(pWords);
     return true;
   }
   
   if (String::bEqualTo("rmtbl",pWords[0],C_NO_CASE)) {
-    bDropTable();
+    bDropTable(pWords);
     return true;
   }
   
   if (String::bEqualTo("rmten",pWords[0],C_NO_CASE)) {
-    bDropTenant();
+    bDropTenant(pWords);
     return true;
   }
   
   if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
-    bSelectTable();
+    bSelectTable(pWords);
     return true;
   }
   
   if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
-    bTruncateTable();
+    bTruncateTable(pWords);
     return true;
   }
   
   if (String::bEqualTo("use",pWords[0],C_NO_CASE)) {
-    bSetDicPath();
+    bSetDicPath(pWords);
     return true;
   }
   
   if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
-    bX();
+    bX(pWords);
     return true;
   }
   
@@ -425,7 +425,7 @@ void SEinterface::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bHelp()
+bool SEinterface::bHelp(char* pWords[])
 {
   vTrace("seitf temporary commands:\n");
   vTrace("bye   -- quit seitf\n");
@@ -458,7 +458,7 @@ bool SEinterface::bHelp()
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bConnect()
+bool SEinterface::bConnect(char* pWords[])
 {
   s256 sRequest;
   
@@ -471,7 +471,7 @@ bool SEinterface::bConnect()
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDisconnect()
+bool SEinterface::bDisconnect(char* pWords[])
 {
   s256 sRequest;
 
@@ -484,20 +484,26 @@ bool SEinterface::bDisconnect()
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateTenant()
+bool SEinterface::bCreateTenant(char* pWords[])
 {
   s256 sRequest;
+    
+  char* a = sRequest.a();
   
-  sRequest = "\"ten\" create_tenant";
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," create_tenant");
+  
   vAppendRequest(sRequest);
-  
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropTenant()
+bool SEinterface::bDropTenant(char* pWords[])
 {
   return false;
 }
@@ -505,7 +511,7 @@ bool SEinterface::bDropTenant()
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateCatalog()
+bool SEinterface::bCreateCatalog(char* pWords[])
 {
   s256 sRequest;
   
@@ -518,7 +524,7 @@ bool SEinterface::bCreateCatalog()
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropCatalog()
+bool SEinterface::bDropCatalog(char* pWords[])
 {
   return false;
 }
@@ -526,7 +532,7 @@ bool SEinterface::bDropCatalog()
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateSchema()
+bool SEinterface::bCreateSchema(char* pWords[])
 {
   s256 sRequest;
   
@@ -539,7 +545,7 @@ bool SEinterface::bCreateSchema()
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropSchema()
+bool SEinterface::bDropSchema(char* pWords[])
 {
   return false;
 }
@@ -547,7 +553,7 @@ bool SEinterface::bDropSchema()
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateTable()
+bool SEinterface::bCreateTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -560,7 +566,7 @@ bool SEinterface::bCreateTable()
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropTable()
+bool SEinterface::bDropTable(char* pWords[])
 {
   return false;
 }
@@ -568,7 +574,7 @@ bool SEinterface::bDropTable()
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCopyTable()
+bool SEinterface::bCopyTable(char* pWords[])
 {
   return false;
 }
@@ -576,7 +582,7 @@ bool SEinterface::bCopyTable()
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bExportTable()
+bool SEinterface::bExportTable(char* pWords[])
 {
   return false;
 }
@@ -584,7 +590,7 @@ bool SEinterface::bExportTable()
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bLoadTable()
+bool SEinterface::bLoadTable(char* pWords[])
 {
   return false;
 }
@@ -592,7 +598,7 @@ bool SEinterface::bLoadTable()
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bSelectTable()
+bool SEinterface::bSelectTable(char* pWords[])
 {
   return false;
 }
@@ -600,7 +606,7 @@ bool SEinterface::bSelectTable()
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bTruncateTable()
+bool SEinterface::bTruncateTable(char* pWords[])
 {
   return false;
 }
@@ -608,7 +614,7 @@ bool SEinterface::bTruncateTable()
 /*----------------------------------------------------------------------------*/
 /* pop dictionary                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPopDic()
+bool SEinterface::bPopDic(char* pWords[])
 {
   return false;
 }
@@ -616,11 +622,18 @@ bool SEinterface::bPopDic()
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPushDic()
+bool SEinterface::bPushDic(char* pWords[])
 {
   s256 sRequest;
   
-  sRequest = "\"tenants\" cd";
+  char* a = sRequest.a();
+
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," cd");
+  
   vAppendRequest(sRequest);
   
   return true;
@@ -629,7 +642,7 @@ bool SEinterface::bPushDic()
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bGetDicPath()
+bool SEinterface::bGetDicPath(char* pWords[])
 {
   s256 sRequest;
   
@@ -642,7 +655,7 @@ bool SEinterface::bGetDicPath()
 /*----------------------------------------------------------------------------*/
 /* set dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bSetDicPath()
+bool SEinterface::bSetDicPath(char* pWords[])
 {
   return true;
 }
@@ -650,15 +663,20 @@ bool SEinterface::bSetDicPath()
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bGetDicContents()
+bool SEinterface::bGetDicContents(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "ls";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bX()
+bool SEinterface::bX(char* pWords[])
 {
   s256 sRequest;
   
