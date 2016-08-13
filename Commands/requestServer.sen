@@ -24,7 +24,7 @@ dic:     tenants
 
 //------------------------------------------------------------------------------
 : >rsp ( send response    )
-    >str
+    >valset valset> stk >valset
     task.this task.itf@
     seitf.dic {{ "rspque" find execute queue.append }}
 ;

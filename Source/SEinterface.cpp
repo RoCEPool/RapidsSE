@@ -97,6 +97,7 @@ void SEinterface::vPrompt(void)
 {
   s32  sPrompt;
   s256 sRequest;
+  i8   iStatus;
   s256 sResponse;
   
   sPrompt = "seitf> ";
@@ -105,9 +106,9 @@ void SEinterface::vPrompt(void)
     sResponse = "<none>";
     if (Prompt::bGetInput(sPrompt,sRequest)) {
       vAppendRequest(sRequest);
-      while (! bPopResponse(sResponse))
+      while (! bPopResponse(iStatus,sResponse))
         ;
-      vTrace("%s\n",sResponse.a());
+      vTrace("%lld %s\n",iStatus,sResponse.a());
     }
   }
 }
@@ -166,20 +167,18 @@ bool SEinterface::bPopResponse(i8& iResult, s& sResponse)
   if (! m_pResponseQueue->bPop(&xValSet))
     return false;
   
-  ValWsp xValWsp;
-  ValWsp* pValWsp = &xValWsp;
+  ValWsp* pValWsp;
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  ASSERT(2 == xValWsp.iInt());
+  sResponse = pValWsp->sStr();
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  iResult = xValWsp.iInt();
+  iResult = pValWsp->iInt();
 
   b = xValSet.bExtract(pCursor,pValWsp);
-  ASSERT(b);
-  sResponse = xValWsp.sStr();
+  ASSERT(! b);
   
   return true;
 }
