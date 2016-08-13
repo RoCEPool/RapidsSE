@@ -875,8 +875,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("task.dic",        &vTaskDic,          false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
   vAddPrimitive("task.init",       &vTaskInit,         false);
-  vAddPrimitive("task.itf@",       &vTaskItfFetch,     false);
-  vAddPrimitive("task.itf!",       &vTaskItfStore,     false);
+  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
+  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
   vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
   vAddPrimitive("task.name!",      &vTaskNameStore,    false);
   vAddPrimitive("task.new",        &vTaskNew,          false);
@@ -4975,7 +4975,7 @@ void Task::vSEitfNew(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.req@ -- fetch SE itf request queue                                   */
+/* seitf.req@ -- fetch SEitf request queue                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfReqFetch(NNP_Task nnpTask)
 {
@@ -4995,7 +4995,7 @@ void Task::vSEitfReqFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.req! -- store SE itf request queue                                   */
+/* seitf.req! -- store SEitf request queue                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfReqStore(NNP_Task nnpTask)
 {
@@ -5020,7 +5020,7 @@ void Task::vSEitfReqStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.rsp@ -- fetch SE itf response queue                                  */
+/* seitf.rsp@ -- fetch SEitf response queue                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRspFetch(NNP_Task nnpTask)
 {
@@ -5040,7 +5040,7 @@ void Task::vSEitfRspFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitf.rsp! -- store SE itf response queue                                  */
+/* seitf.rsp! -- store SEitf response queue                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRspStore(NNP_Task nnpTask)
 {
@@ -5753,16 +5753,16 @@ void Task::vTaskInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.itf@ -- fetch se itf of task on param stack                           */
+/* task.seitf@ -- fetch SEitf of task on param stack                          */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskItfFetch(NNP_Task nnpTask)
+void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskItfFetch");
+  nnpTask->vPrimitive("vTaskSeitfFetch");
   
   Task* pThatTask;
   
   if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.itf@");
+    THROW_INVALID_PARAM("task.seitf@");
   
   SEinterface* pSEitf = pThatTask->m_pSEitf;
   
@@ -5773,24 +5773,24 @@ void Task::vTaskItfFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.itf! -- store se itf on param stack into task on param stack          */
+/* task.seitf! -- store SEitf on param stack into task on param stack         */
 /*----------------------------------------------------------------------------*/
-void Task::vTaskItfStore(NNP_Task nnpTask)
+void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskItfStore");
+  nnpTask->vPrimitive("vTaskSeitfStore");
   
   Task* pThatTask;
   
   if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.itf!");
+    THROW_INVALID_PARAM("task.seitf!");
   
   PtrVal xPtrSEitf;
   
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
-    THROW_INVALID_PARAM("task.itf!");
+    THROW_INVALID_PARAM("task.seitf!");
   
   SEinterface* pSEitf = static_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  ASSERT(! pSEitf || CN_SEINTERFACE == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;
 }

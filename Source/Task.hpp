@@ -465,8 +465,8 @@ namespace Tasking
     static void vTaskDic(NNP_Task nnpTask);
     static void vTaskDump(NNP_Task nnpTask);
     static void vTaskInit(NNP_Task nnpTask);
-    static void vTaskItfFetch(NNP_Task nnpTask);
-    static void vTaskItfStore(NNP_Task nnpTask);
+    static void vTaskSeitfFetch(NNP_Task nnpTask);
+    static void vTaskSeitfStore(NNP_Task nnpTask);
     static void vTaskNameFetch(NNP_Task nnpTask);
     static void vTaskNameStore(NNP_Task nnpTask);
     static void vTaskNew(NNP_Task nnpTask);

@@ -166,6 +166,10 @@ bool SEinterface::bDecode(s& sCommand)
     bDisconnect();
     return true;
   }
+
+  if (String::bEqualTo("bye",sCommand.a(),C_NO_CASE)) {
+    exit(EXIT_SUCCESS);
+  }
   
   if (0 == String::iLength(sCommand.a()))
     return false;
@@ -188,7 +192,7 @@ void SEinterface::vAppendRequest(s& sRequest)
   
   String::wToString((i8)this,wItfAddr);
   String::vCopy(wWorkspace,wItfAddr);
-  String::vConcat(wWorkspace," >seitf task.this task.itf! ");
+  String::vConcat(wWorkspace," >seitf task.this task.seitf! ");
   xVal = wWorkspace;
   //vTrace("%s\n",xVal.sStr());
   xValSet.vAppend(pCursor,xVal);
