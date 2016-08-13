@@ -12,8 +12,8 @@
   "systemStart" .
 
   "metadata.sen" >>:
-  "systemCommands.sen" >>:
-  "requestServer.sen"  >>:
+  "commandSet.sen" >>:
+  "requestServer.sen" >>:
 
   snooze
 

@@ -426,7 +426,7 @@
 		F2F2365C1D4BFCD50028A9C2 /* var.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = var.sen; path = Commands/var.sen; sourceTree = "<group>"; };
 		F2F2365F1D4D41460028A9C2 /* systemStart.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemStart.sen; path = Commands/systemStart.sen; sourceTree = "<group>"; };
 		F2F236601D4D41A60028A9C2 /* requestServer.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = requestServer.sen; path = Commands/requestServer.sen; sourceTree = "<group>"; };
-		F2F236611D4EAC840028A9C2 /* systemCommands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemCommands.sen; path = Commands/systemCommands.sen; sourceTree = "<group>"; };
+		F2F236611D4EAC840028A9C2 /* commandSet.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = commandSet.sen; path = Commands/commandSet.sen; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -444,9 +444,9 @@
 			isa = PBXGroup;
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
+				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
 				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
 				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
-				F2F236611D4EAC840028A9C2 /* systemCommands.sen */,
 				F28DF4D71D5527B900013BBC /* export.sen */,
 				F28DF4D61D5519C400013BBC /* load.sen */,
 				F2B3B14E1D5131FC0049597E /* tableload.sen */,
@@ -508,8 +508,6 @@
 			children = (
 				F24F61791D066DCD00954E9C /* Notes */,
 				F2389CE01D47F291008DF3D9 /* SEN */,
-				F2D9BF771D5D379300129097 /* Testing */,
-				F2D9BF751D5D36ED00129097 /* Socket */,
 				F2389CE11D47F2AE008DF3D9 /* C++ */,
 				98A3C4801CF74E6200BD2B80 /* Products */,
 			);
@@ -752,8 +750,10 @@
 			children = (
 				F2389CDD1D47EFB6008DF3D9 /* DicInitialise */,
 				F226E7571D4570CA00E10FC3 /* Runtime */,
-				F226E74A1D44076400E10FC3 /* MetaData */,
 				980950FC1D326F33002F20B0 /* TheSystem */,
+				F226E74A1D44076400E10FC3 /* MetaData */,
+				F2D9BF771D5D379300129097 /* Testing */,
+				F2D9BF751D5D36ED00129097 /* Socket */,
 			);
 			name = SEN;
 			sourceTree = "<group>";
