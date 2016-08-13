@@ -96,21 +96,49 @@ void SEinterface::vInit(void)
 void SEinterface::vPrompt(void)
 {
   s32  sPrompt;
-  s256 sRequest;
+  s256 sCommand;
   i8   iStatus;
   s256 sResponse;
   
   sPrompt = "seitf> ";
   while (true) {
-    sRequest  = "";
-    sResponse = "<none>";
-    if (Prompt::bGetInput(sPrompt,sRequest)) {
-      vAppendRequest(sRequest);
+    
+    sCommand  = "<no command>";
+    sResponse = "<no response>";
+    
+    if (Prompt::bGetInput(sPrompt,sCommand)) {
+    
+      if ( ! bDecode(sCommand) )
+        continue;
+      
       while (! bPopResponse(iStatus,sResponse))
         ;
+      
       vTrace("%lld %s\n",iStatus,sResponse.a());
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* decode request                                                             */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bDecode(s& sCommand)
+{
+  if (String::bEqualTo("con",sCommand.a(),C_NO_CASE)) {
+    bConnect();
+    return true;
+  }
+
+  if (String::bEqualTo("dis",sCommand.a(),C_NO_CASE)) {
+    bDisconnect();
+    return true;
+  }
+  
+  if (0 == String::iLength(sCommand.a()))
+    return false;
+    
+  vTrace("Unknown command: %s\n",sCommand.a());
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,7 +251,12 @@ void SEinterface::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bConnect()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "connect";
+  vAppendRequest(sRequest);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,7 +264,12 @@ bool SEinterface::bConnect()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDisconnect()
 {
-  return false;
+  s256 sRequest;
+
+  sRequest = "disconnect";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,7 +277,12 @@ bool SEinterface::bDisconnect()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bCreateTenant()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "mkten boray";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -255,7 +298,12 @@ bool SEinterface::bDropTenant()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bCreateCatalog()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "mkcat cat1";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,7 +319,12 @@ bool SEinterface::bDropCatalog()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bCreateSchema()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "mksch sch1";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +340,12 @@ bool SEinterface::bDropSchema()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bCreateTable()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "mktbl T";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

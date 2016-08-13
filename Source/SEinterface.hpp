@@ -32,6 +32,7 @@ namespace StorageEngine
     void   vDump(const char* aTitle);
     void   vInit(void);
     void   vPrompt(void);
+    bool   bDecode(s& sRequest);
     
     //--------------------------------------------------------------------------
     
