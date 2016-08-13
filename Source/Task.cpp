@@ -4251,7 +4251,7 @@ void Task::vToValSet(NNP_Task nnpTask)
     if ( ! nnpTask->bPopParam(xVal) )
       THROW_INVALID_PARAM(">valset");
     
-    vTrace("%s\n",xVal.sStr());
+    //vTrace("%s\n",xVal.sStr());
     
     xValSet.vAppend(pCursor,xVal);
   }
@@ -4280,6 +4280,8 @@ void Task::vToValues(NNP_Task nnpTask)
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
     nnpTask->vPushParam(pValWsp[iVal]);
+
+  nnpTask->vPushParam(nVal);
 }
 
 /*----------------------------------------------------------------------------*/

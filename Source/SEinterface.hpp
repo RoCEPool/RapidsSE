@@ -44,7 +44,6 @@ namespace StorageEngine
     void   vResponseQueue(Queue* pResponseQueue);
     Queue* pResponseQueue(void);
     
-    
     //--------------------------------------------------------------------------
     
     bool bConnect();
