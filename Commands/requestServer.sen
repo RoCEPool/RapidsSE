@@ -24,7 +24,7 @@ dic:     tenants
 
 //------------------------------------------------------------------------------
 : >rsp ( send response    )
-    >valset valset> stk >valset
+    >valset
     "rspque" find execute queue.append
     0 task.this task.seitf!
 ;

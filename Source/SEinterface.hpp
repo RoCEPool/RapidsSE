@@ -80,6 +80,8 @@ namespace StorageEngine
     bool bGetDicPath();
     bool bSetDicPath();
     bool bGetDicContents();
+    
+    bool bX();
   };
 }
 

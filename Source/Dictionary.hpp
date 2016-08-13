@@ -36,6 +36,7 @@ namespace Dictionaries
     bool  bIsName(s& sName);
     Word* pLocate(Cell* pCell);
     s&    sName(void);
+    void  vName(const char* aName);
     
   };
 }

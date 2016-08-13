@@ -38,6 +38,8 @@ SEinterface::SEinterface(void)
   //m_xDicStack;
   m_pRequestQueue  = nullptr;
   m_pResponseQueue = nullptr;
+  
+  m_xDictionary.vName("seitf");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,6 +269,11 @@ bool SEinterface::bDecode(s& sCommand)
     return true;
   }
   
+  if (String::bEqualTo("x",sCommand.a(),C_NO_CASE)) {
+    bX();
+    return true;
+  }
+  
   if (0 == String::iLength(sCommand.a()))
     return false;
     
@@ -445,7 +452,7 @@ bool SEinterface::bCreateTenant()
 {
   s256 sRequest;
   
-  sRequest = "mkten boray";
+  sRequest = "\"ten\" create_tenant";
   vAppendRequest(sRequest);
   
   return true;
@@ -575,7 +582,12 @@ bool SEinterface::bPopDic()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bPushDic()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "\"tenants\" cd";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -583,7 +595,12 @@ bool SEinterface::bPushDic()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bGetDicPath()
 {
-  return false;
+  s256 sRequest;
+  
+  sRequest = "pwd";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,7 +608,7 @@ bool SEinterface::bGetDicPath()
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bSetDicPath()
 {
-  return false;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -600,6 +617,19 @@ bool SEinterface::bSetDicPath()
 bool SEinterface::bGetDicContents()
 {
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* x test                                                                     */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bX()
+{
+  s256 sRequest;
+  
+  sRequest = "x";
+  vAppendRequest(sRequest);
+  
+  return true;
 }
 
 /*============================================================================*/
