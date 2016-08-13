@@ -30,6 +30,7 @@ namespace DataStructures
     void  vDump(void);
     void  vInitialize(void);
     bool  bPop(ValWsp* pValWsp);
+    bool  bPop(ValSet* pValSet);
     
   private:
     void vExpand(void);

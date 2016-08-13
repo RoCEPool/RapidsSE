@@ -149,6 +149,37 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value set from this queue (there may not be any)                       */
+/*----------------------------------------------------------------------------*/
+bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
+{
+  _poolAddress_(this);
+  
+  bDiscardable = false;
+  
+  if (0 == m_iCount) {
+    //ASSERT(m_pTopValue == m_pNextFree);
+    return false;
+  }
+  
+  i8 nBytes = m_pTopValue->iSize();
+  
+  Memory::vCopy(pValSet,m_pTopValue,nBytes);
+  
+  //m_pTopValue = pNextValue(m_pTopValue);
+  m_pTopValue = static_cast<OnStack*>(pvAdd(m_pTopValue,nBytes));
+  
+  m_iCount--;
+  
+  if (0 == m_iCount) {
+    //ASSERT(!m_pTopValue);
+    bDiscardable = true;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

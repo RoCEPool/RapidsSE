@@ -32,6 +32,7 @@ namespace DataStructures
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
     bool     bPop(ValWsp* pValWsp, bool& bDiscard);
+    bool     bPop(ValSet* pValSet, bool& bDiscard);
 
   private:
     OnStack*   pFirstValue(void);

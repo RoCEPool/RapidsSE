@@ -155,6 +155,36 @@ bool SEinterface::bPopResponse(s& sResponse)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop response from reponse queue                                            */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bPopResponse(i8& iResult, s& sResponse)
+{
+  bool b;
+  ValSet xValSet;
+  char* pCursor = nullptr;
+  
+  if (! m_pResponseQueue->bPop(&xValSet))
+    return false;
+  
+  ValWsp xValWsp;
+  ValWsp* pValWsp = &xValWsp;
+  
+  b = xValSet.bExtract(pCursor,pValWsp);
+  ASSERT(b);
+  ASSERT(2 == xValWsp.iInt());
+  
+  b = xValSet.bExtract(pCursor,pValWsp);
+  ASSERT(b);
+  iResult = xValWsp.iInt();
+
+  b = xValSet.bExtract(pCursor,pValWsp);
+  ASSERT(b);
+  sResponse = xValWsp.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get request queue                                                          */
 /*----------------------------------------------------------------------------*/
 Queue* SEinterface::pRequestQueue(void)

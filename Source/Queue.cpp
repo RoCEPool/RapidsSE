@@ -145,6 +145,35 @@ bool Queue::bPop(ValWsp* pValWsp)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop value set from this queue (there may not be any)                       */
+/*----------------------------------------------------------------------------*/
+bool Queue::bPop(ValSet* pValSet)
+{
+  _poolAddress_(this);
+  
+  m_zLock.vGrabWrite();
+  
+  if ( ! m_pTopBuffer ) {
+    m_zLock.vDropWrite();
+    return nullptr;
+  }
+  
+  bool bDiscardable;
+  bool bPopped = m_pTopBuffer->bPop(pValSet,bDiscardable);
+  
+  if (bDiscardable && m_pTopBuffer != m_pEndBuffer) {
+    ASSERT(bPopped);
+    vDiscard();
+  }
+  
+  m_iCount--;
+  
+  m_zLock.vDropWrite();
+  
+  return bPopped;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

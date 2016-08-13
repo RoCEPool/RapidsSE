@@ -37,6 +37,7 @@ namespace StorageEngine
     
     void   vAppendRequest(s& sRequest);
     bool   bPopResponse(s& sResponse);
+    bool   bPopResponse(i8& iResult, s& sResponse);
     
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);
