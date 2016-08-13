@@ -339,12 +339,12 @@ bool SEinterface::bPopResponse(i8& iResult, s& sResponse)
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  sResponse = pValWsp->sStr();
+  iResult = pValWsp->iInt();
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  iResult = pValWsp->iInt();
-
+  sResponse = pValWsp->sStr();
+  
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(! b);
   
