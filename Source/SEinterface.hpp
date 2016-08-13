@@ -36,7 +36,8 @@ namespace StorageEngine
     void   vDump(const char* aTitle);
     void   vInit(void);
     void   vPrompt(void);
-    bool   bDecode(s& sRequest);
+    void   vParse(s& sRequest, char* pWords[]);
+    bool   bDecode(char* pWords[]);
     
     //--------------------------------------------------------------------------
     

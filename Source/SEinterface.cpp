@@ -135,6 +135,26 @@ void SEinterface::vPrompt(void)
   i8   iStatus;
   s256 sResponse;
   
+  char xArray[C_16KB];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1],
+    &xArray[C_1KB * 2],
+    &xArray[C_1KB * 3],
+    &xArray[C_1KB * 4],
+    &xArray[C_1KB * 5],
+    &xArray[C_1KB * 6],
+    &xArray[C_1KB * 7],
+    &xArray[C_1KB * 8],
+    &xArray[C_1KB * 9],
+    &xArray[C_1KB * 10],
+    &xArray[C_1KB * 11],
+    &xArray[C_1KB * 12],
+    &xArray[C_1KB * 13],
+    &xArray[C_1KB * 14],
+    &xArray[C_1KB * 15]
+  };
+  
   sPrompt = "seitf> ";
   while (true) {
     
@@ -142,8 +162,10 @@ void SEinterface::vPrompt(void)
     sResponse = "<no response>";
     
     if (Prompt::bGetInput(sPrompt,sCommand)) {
+
+      vParse(sCommand,pWords);
     
-      if ( ! bDecode(sCommand) )
+      if ( ! bDecode(pWords) )
         continue;
       
       while (! bPopResponse(iStatus,sResponse))
@@ -155,129 +177,143 @@ void SEinterface::vPrompt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse command and break into words                                         */
+/*----------------------------------------------------------------------------*/
+void SEinterface::vParse(s& sCommand, char* pWords[])
+{
+  char* ps = sCommand.a();
+  
+  String::vSkipWhite(&ps);
+  for (i8 i = 0; String::bExtractWord(&ps,pWords[i]); i++) {
+    vTrace("Word[%lld] %s\n",i,pWords[i]);
+    String::vSkipWhite(&ps);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDecode(s& sCommand)
+bool SEinterface::bDecode(char* pWords[])
 {
-  if (String::bEqualTo("?",sCommand.a(),C_NO_CASE) ||
-      String::bEqualTo("help",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("?",pWords[0],C_NO_CASE) ||
+      String::bEqualTo("help",pWords[0],C_NO_CASE)) {
     bHelp();
     return false;
   }
   
-  if (String::bEqualTo("bye",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("bye",pWords[0],C_NO_CASE)) {
     exit(EXIT_SUCCESS);
   }
   
-  if (String::bEqualTo("cd",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("cd",pWords[0],C_NO_CASE)) {
     bPushDic();
     return true;
   }
   
-  if (String::bEqualTo("con",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("con",pWords[0],C_NO_CASE)) {
     bConnect();
     return true;
   }
 
-  if (String::bEqualTo("cpy",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("cpy",pWords[0],C_NO_CASE)) {
     bCopyTable();
     return true;
   }
 
-  if (String::bEqualTo("dis",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
     bDisconnect();
     return true;
   }
   
-  if (String::bEqualTo("exp",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("exp",pWords[0],C_NO_CASE)) {
     bExportTable();
     return true;
   }
   
-  if (String::bEqualTo("lod",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("lod",pWords[0],C_NO_CASE)) {
     bLoadTable();
     return true;
   }
   
-  if (String::bEqualTo("ls",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("ls",pWords[0],C_NO_CASE)) {
     bGetDicContents();
     return true;
   }
   
-  if (String::bEqualTo("mkcat",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("mkcat",pWords[0],C_NO_CASE)) {
     bCreateCatalog();
     return true;
   }
   
-  if (String::bEqualTo("mksch",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("mksch",pWords[0],C_NO_CASE)) {
     bCreateSchema();
     return true;
   }
   
-  if (String::bEqualTo("mktbl",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("mktbl",pWords[0],C_NO_CASE)) {
     bCreateTable();
     return true;
   }
   
-  if (String::bEqualTo("mkten",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("mkten",pWords[0],C_NO_CASE)) {
     bCreateTenant();
     return true;
   }
   
-  if (String::bEqualTo("pop",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("pop",pWords[0],C_NO_CASE)) {
     bPopDic();
     return true;
   }
   
-  if (String::bEqualTo("pwd",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("pwd",pWords[0],C_NO_CASE)) {
     bGetDicPath();
     return true;
   }
   
-  if (String::bEqualTo("rmcat",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
     bDropCatalog();
     return true;
   }
   
-  if (String::bEqualTo("rmsch",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("rmsch",pWords[0],C_NO_CASE)) {
     bDropSchema();
     return true;
   }
   
-  if (String::bEqualTo("rmtbl",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("rmtbl",pWords[0],C_NO_CASE)) {
     bDropTable();
     return true;
   }
   
-  if (String::bEqualTo("rmten",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("rmten",pWords[0],C_NO_CASE)) {
     bDropTenant();
     return true;
   }
   
-  if (String::bEqualTo("sel",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
     bSelectTable();
     return true;
   }
   
-  if (String::bEqualTo("tr",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
     bTruncateTable();
     return true;
   }
   
-  if (String::bEqualTo("use",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("use",pWords[0],C_NO_CASE)) {
     bSetDicPath();
     return true;
   }
   
-  if (String::bEqualTo("x",sCommand.a(),C_NO_CASE)) {
+  if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
     bX();
     return true;
   }
   
-  if (0 == String::iLength(sCommand.a()))
+  if (0 == String::iLength(pWords[0]))
     return false;
     
-  vTrace("Unknown command: %s\n",sCommand.a());
+  vTrace("Unknown command: %s\n",pWords[0]);
   return false;
 }
 
