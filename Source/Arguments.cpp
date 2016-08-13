@@ -22,7 +22,6 @@ Arguments::Arguments(void)
   m_bStart   = false;
   m_bStatus  = false;
   m_bStop    = false;
-  m_bTest    = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -91,11 +90,6 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_bStop = true;
       continue;
     }
-        
-    if (String::bEqualTo("--test",argv[iArg],C_NO_CASE)) {
-      m_bTest = true;
-      continue;
-    }
     
     vTrace("Unrecognized command argument: %s\n",argv[iArg]);
     return false;
@@ -119,7 +113,6 @@ void Arguments::vPrint(void)
   if (m_bStart)   vTrace("  --start\n");
   if (m_bStatus)  vTrace("  --status\n");
   if (m_bStop)    vTrace("  --stop\n");
-  if (m_bTest)    vTrace("  --test\n");
 
   vTrace("  --regionName %s\n",m_sRegionName.a());
   vTrace("  --poolSize %lld\n",m_iPoolSize);
@@ -139,7 +132,6 @@ void Arguments::vPrintHelp(void)
   printf("--start         (start system)\n");
   printf("--status        (print status of system)\n");
   printf("--stop          (stop system)\n");
-  printf("--test          (test for shm region)\n");
   
   printf("\n");
   printf("--region        (name of shm region)\n");

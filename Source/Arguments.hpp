@@ -23,7 +23,6 @@ namespace StorageEngine
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
-    bool m_bTest;       // test for region
     
   public:
     Arguments(void);
