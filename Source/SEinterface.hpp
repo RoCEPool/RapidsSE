@@ -29,18 +29,50 @@ namespace StorageEngine
     
     Dictionary* pDictionary(void);
     
-    void vDump(const char* aTitle);
+    void   vDump(const char* aTitle);
+    void   vInit(void);
+    void   vPrompt(void);
     
-    void vInit(void);
-    void vAppendRequest(s& sRequest);
-    bool bPopResponse(s& sResponse);
+    //--------------------------------------------------------------------------
+    
+    void   vAppendRequest(s& sRequest);
+    bool   bPopResponse(s& sResponse);
     
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);
     
     void   vResponseQueue(Queue* pResponseQueue);
     Queue* pResponseQueue(void);
+    
+    
+    //--------------------------------------------------------------------------
+    
+    bool bConnect();
+    bool bDisconnect();
 
+    bool bCreateTenant();
+    bool bDropTenant();
+
+    bool bCreateCatalog();
+    bool bDropCatalog();
+    
+    bool bCreateSchema();
+    bool bDropSchema();
+    
+    bool bCreateTable();
+    bool bDroptable();
+    
+    bool bCopyTable();
+    bool bExportTable();
+    bool bFetchTable();
+    bool bLoadTable();
+    bool bTruncateTable();
+    
+    bool bPopDic();
+    bool bPushDic();
+    bool bGetDicPath();
+    bool bSetDicPath();
+    bool bGetDicContents();
   };
 }
 

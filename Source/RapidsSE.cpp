@@ -333,24 +333,9 @@ void RapidsSE::vRunDocol(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSeitfPrompt(void)
 {
-  s32  sPrompt;
-  s256 sRequest;
-  s256 sResponse;
-  
   SEinterface* pSEitf = new SEinterface;
   pSEitf->vInit();
-  
-  sPrompt = "seitf> ";
-  while (true) {
-    sRequest  = "";
-    sResponse = "<none>";
-    if (Prompt::bGetInput(sPrompt,sRequest)) {
-      pSEitf->vAppendRequest(sRequest);
-      while (! pSEitf->bPopResponse(sResponse))
-        ;
-      vTrace("%s\n",sResponse.a());
-    }
-  }
+  pSEitf->vPrompt();
 }
 
 /*----------------------------------------------------------------------------*/
