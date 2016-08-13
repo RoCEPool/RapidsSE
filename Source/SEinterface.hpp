@@ -13,7 +13,7 @@ namespace StorageEngine
   public:
     i8         m_iPid;           // process which created this seitf
     Dictionary m_xDictionary;    // private dictionary
-    DictionaryStack m_xDicStack; // private dictionary stack
+    DictionaryStack m_xDicStack; // dictionary stack
 
     Queue*     m_pRequestQueue;  // request queue
     Queue*     m_pResponseQueue; // reponse queue
@@ -28,8 +28,7 @@ namespace StorageEngine
     SEinterface(void);
     ~SEinterface(void);
     
-    Dictionary* pDictionary(void);
-    
+    DictionaryStack* pDicStack(void);
     void   vPushDic(Dictionary* pDictionary);
     void   vPopDic(void);
     Word*   pFindWord(s& sName);

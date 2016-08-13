@@ -431,7 +431,6 @@ namespace Tasking
     static void vRstackPick(NNP_Task nnpTask);
     
     // seinterface
-    static void vSEitfDic(NNP_Task nnpTask);
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
     static void vSEitfNew(NNP_Task nnpTask);

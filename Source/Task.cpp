@@ -474,7 +474,17 @@ Word* Task::pFindWord(s& sName)
 {
   _poolAddress_(this);
   
-  Word* pWord = m_xDictionaryStack.pFind(sName.a());
+  Word* pWord = nullptr;
+  
+  // attempt to find word in seitf dic stack
+  if (m_pSEitf) {
+    pWord = m_pSEitf->pFindWord(sName);
+    if (pWord)
+      return pWord;
+  }
+  
+  // attempt to find word in this tasks dic stack
+  pWord = m_xDictionaryStack.pFind(sName.a());
   
   return pWord;
 }
@@ -838,7 +848,6 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("rstack.pick",     &vRstackPick,       false);
 
   vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
-  vAddPrimitive("seitf.dic",       &vSEitfDic,         false);
   vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
   vAddPrimitive("seitf.new",       &vSEitfNew,         false);
   vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
@@ -4507,6 +4516,17 @@ void Task::vArgsPrint(NNP_Task nnpTask)
 void Task::vDicCount(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vDicCount");
+  
+  i8 iCount;
+  
+  if (nnpTask->m_pSEitf) {
+    iCount = nnpTask->m_pSEitf->pDicStack()->iCount();
+  }
+  else {
+    iCount = nnpTask->m_xDictionaryStack.iCount();
+  }
+  
+  nnpTask->vPushParam(iCount);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4516,7 +4536,12 @@ void Task::vDicDrop(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vDicDrop");
   
-  nnpTask->m_xDictionaryStack.vDiscard();
+  if (nnpTask->m_pSEitf) {
+    nnpTask->m_pSEitf->vPopDic();
+  }
+  else {
+    nnpTask->m_xDictionaryStack.vDiscard();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4526,7 +4551,12 @@ void Task::vDicStack(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vDicDump");
   
-  nnpTask->m_xDictionaryStack.vDump();
+  if (nnpTask->m_pSEitf) {
+    nnpTask->m_pSEitf->pDicStack()->vDump();
+  }
+  else {
+    nnpTask->m_xDictionaryStack.vDump();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4590,7 +4620,13 @@ void Task::vDicPick(NNP_Task nnpTask)
     THROW_INVALID_PARAM("dic.pick");
   
   PtrVal xPtrDic;
-  xPtrDic = nnpTask->m_xDictionaryStack.pPick(iDic);
+
+  if (nnpTask->m_pSEitf) {
+    xPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
+  }
+  else {
+    xPtrDic = nnpTask->m_xDictionaryStack.pPick(iDic);
+  }
   
   nnpTask->vPushParam(xPtrDic);
 }
@@ -4609,7 +4645,12 @@ void Task::vDicPush(NNP_Task nnpTask)
 
   Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
   
-  nnpTask->m_xDictionaryStack.vPush(pDictionary);
+  if (nnpTask->m_pSEitf) {
+    nnpTask->m_pSEitf->vPushDic(pDictionary);
+  }
+  else {
+    nnpTask->m_xDictionaryStack.vPush(pDictionary);
+  }
 }
 
 // file: ///////////////////////////////////////////////////////////////////////
@@ -4881,27 +4922,6 @@ void Task::vQueuePop(NNP_Task nnpTask)
 }
 
 // seitf: //////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* seitf.dic -- push se itf onto param stack                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfDic(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vSEitfDic");
-  
-  PtrVal xPtrSEitf;
-  
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.dic");
-  
-  SEinterface* pSEitf = static_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
-  
-  PtrVal xDicPtr;
-  xDicPtr = (void*)pSEitf->pDictionary();
-  
-  nnpTask->vPushParam(xDicPtr);
-}
 
 /*----------------------------------------------------------------------------*/
 /* seitf.delete -- delete SE interface                                        */

@@ -48,11 +48,11 @@ SEinterface::~SEinterface(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get dictionary                                                             */
+/* pop dictionary from dictionary stack                                       */
 /*----------------------------------------------------------------------------*/
-Dictionary* SEinterface::pDictionary(void)
+DictionaryStack* SEinterface::pDicStack(void)
 {
-  return &m_xDictionary;
+  return &m_xDicStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,6 +118,9 @@ void SEinterface::vInit(void)
   m_pResponseQueue->vSetMagic();
   m_pResponseQueue->vClass(CN_QUEUE);
   m_pResponseQueue->vInitialize();
+  
+  m_xDicStack.vPush(gpDictionary);
+  m_xDicStack.vPush(&m_xDictionary);
 }
 
 /*----------------------------------------------------------------------------*/
