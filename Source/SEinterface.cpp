@@ -33,7 +33,9 @@ void SEinterface::operator delete(void* pSEinterfaceAddress)
 SEinterface::SEinterface(void)
 : Object(CN_SEINTERFACE)
 {
+  m_iPid = 0;
   //m_xDictionary;
+  //m_xDicStack;
   m_pRequestQueue  = nullptr;
   m_pResponseQueue = nullptr;
 }
@@ -51,6 +53,34 @@ SEinterface::~SEinterface(void)
 Dictionary* SEinterface::pDictionary(void)
 {
   return &m_xDictionary;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push dictionary onto dictionary stack                                      */
+/*----------------------------------------------------------------------------*/
+void SEinterface::vPushDic(Dictionary* pDictionary)
+{
+  m_xDicStack.vPush(pDictionary);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop dictionary from dictionary stack                                       */
+/*----------------------------------------------------------------------------*/
+void SEinterface::vPopDic(void)
+{
+  m_xDicStack.vDiscard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* find word given name                                                       */
+/*----------------------------------------------------------------------------*/
+Word* SEinterface::pFindWord(s& sName)
+{
+  _poolAddress_(this);
+  
+  Word* pWord = m_xDicStack.pFind(sName.a());
+  
+  return pWord;
 }
 
 /*----------------------------------------------------------------------------*/
