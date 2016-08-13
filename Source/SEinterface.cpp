@@ -157,8 +157,28 @@ void SEinterface::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDecode(s& sCommand)
 {
+  if (String::bEqualTo("?",sCommand.a(),C_NO_CASE) ||
+      String::bEqualTo("help",sCommand.a(),C_NO_CASE)) {
+    bHelp();
+    return false;
+  }
+  
+  if (String::bEqualTo("bye",sCommand.a(),C_NO_CASE)) {
+    exit(EXIT_SUCCESS);
+  }
+  
+  if (String::bEqualTo("cd",sCommand.a(),C_NO_CASE)) {
+    bPushDic();
+    return true;
+  }
+  
   if (String::bEqualTo("con",sCommand.a(),C_NO_CASE)) {
     bConnect();
+    return true;
+  }
+
+  if (String::bEqualTo("cpy",sCommand.a(),C_NO_CASE)) {
+    bCopyTable();
     return true;
   }
 
@@ -166,9 +186,85 @@ bool SEinterface::bDecode(s& sCommand)
     bDisconnect();
     return true;
   }
-
-  if (String::bEqualTo("bye",sCommand.a(),C_NO_CASE)) {
-    exit(EXIT_SUCCESS);
+  
+  if (String::bEqualTo("exp",sCommand.a(),C_NO_CASE)) {
+    bExportTable();
+    return true;
+  }
+  
+  if (String::bEqualTo("lod",sCommand.a(),C_NO_CASE)) {
+    bLoadTable();
+    return true;
+  }
+  
+  if (String::bEqualTo("ls",sCommand.a(),C_NO_CASE)) {
+    bGetDicContents();
+    return true;
+  }
+  
+  if (String::bEqualTo("mkcat",sCommand.a(),C_NO_CASE)) {
+    bCreateCatalog();
+    return true;
+  }
+  
+  if (String::bEqualTo("mksch",sCommand.a(),C_NO_CASE)) {
+    bCreateSchema();
+    return true;
+  }
+  
+  if (String::bEqualTo("mktbl",sCommand.a(),C_NO_CASE)) {
+    bCreateTable();
+    return true;
+  }
+  
+  if (String::bEqualTo("mkten",sCommand.a(),C_NO_CASE)) {
+    bCreateTenant();
+    return true;
+  }
+  
+  if (String::bEqualTo("pop",sCommand.a(),C_NO_CASE)) {
+    bPopDic();
+    return true;
+  }
+  
+  if (String::bEqualTo("pwd",sCommand.a(),C_NO_CASE)) {
+    bGetDicPath();
+    return true;
+  }
+  
+  if (String::bEqualTo("rmcat",sCommand.a(),C_NO_CASE)) {
+    bDropCatalog();
+    return true;
+  }
+  
+  if (String::bEqualTo("rmsch",sCommand.a(),C_NO_CASE)) {
+    bDropSchema();
+    return true;
+  }
+  
+  if (String::bEqualTo("rmtbl",sCommand.a(),C_NO_CASE)) {
+    bDropTable();
+    return true;
+  }
+  
+  if (String::bEqualTo("rmten",sCommand.a(),C_NO_CASE)) {
+    bDropTenant();
+    return true;
+  }
+  
+  if (String::bEqualTo("sel",sCommand.a(),C_NO_CASE)) {
+    bSelectTable();
+    return true;
+  }
+  
+  if (String::bEqualTo("tr",sCommand.a(),C_NO_CASE)) {
+    bTruncateTable();
+    return true;
+  }
+  
+  if (String::bEqualTo("use",sCommand.a(),C_NO_CASE)) {
+    bSetDicPath();
+    return true;
   }
   
   if (0 == String::iLength(sCommand.a()))
@@ -284,6 +380,39 @@ void SEinterface::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bHelp()
+{
+  vTrace("seitf temporary commands:\n");
+  vTrace("bye   -- quit seitf\n");
+  vTrace("cd    -- change dictionary\n");
+  vTrace("con   -- connect\n");
+  vTrace("cpy   -- select into t2 from t;\n");
+  vTrace("dis   -- disconnect\n");
+  vTrace("exp   -- export table t\n");
+  vTrace("lod   -- load table t\n");
+  vTrace("ls    -- list dictionary contents\n");
+  vTrace("mkcat -- create catalog ten.cat;\n");
+  vTrace("mksch -- create schema ten.cat.sch\n");
+  vTrace("mktbl -- create table ten.cat.sch.t\n");
+  vTrace("mkten -- create tenant ten;\n");
+  vTrace("pop   -- cd ..\n");
+  vTrace("pwd   -- print working dictionary\n");
+  vTrace("rmcat -- drop catalog ten.cat;\n");
+  vTrace("rmsch -- drop schema ten.cat.sch;\n");
+  vTrace("rmtbl -- drop table ten.cat.sch.t;\n");
+  vTrace("rmten -- drop tenant ten;\n");
+  vTrace("sel   -- select * from t;\n");
+  vTrace("tr    -- truncate table t;\n");
+  vTrace("use   -- set path to ten.cat.sch\n");
+  vTrace("?     -- print this help\n");
+  vTrace("help  -- print this help\n");
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bConnect()
@@ -388,7 +517,7 @@ bool SEinterface::bCreateTable()
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDroptable()
+bool SEinterface::bDropTable()
 {
   return false;
 }
@@ -410,17 +539,17 @@ bool SEinterface::bExportTable()
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch rows from a table                                                    */
+/* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bFetchTable()
+bool SEinterface::bLoadTable()
 {
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* load a table from file                                                     */
+/* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bLoadTable()
+bool SEinterface::bSelectTable()
 {
   return false;
 }

@@ -52,6 +52,8 @@ namespace StorageEngine
     
     //--------------------------------------------------------------------------
     
+    bool bHelp();
+    
     bool bConnect();
     bool bDisconnect();
 
@@ -65,12 +67,12 @@ namespace StorageEngine
     bool bDropSchema();
     
     bool bCreateTable();
-    bool bDroptable();
+    bool bDropTable();
     
     bool bCopyTable();
     bool bExportTable();
-    bool bFetchTable();
     bool bLoadTable();
+    bool bSelectTable();
     bool bTruncateTable();
     
     bool bPopDic();
