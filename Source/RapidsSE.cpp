@@ -59,28 +59,34 @@ void RapidsSE::vCheckAssumptions(void)
 void RapidsSE::vExecute(void)
 {
   try {
-    // shm seg should exist
-    ASSERT(gpBufferPool);
     
     if (gxArguments.m_bCommand) {
+      ASSERT(gpBufferPool);
       vSystemInit();
       vRunCommand();
       vWaitFlag();
     }
     else if (gxArguments.m_bDocol) {
+      ASSERT(gpBufferPool);
       vSystemInit();
       vRunDocol();
       vWaitFlag();
     }
     else if (gxArguments.m_bSeitf) {
+      ASSERT(gpBufferPool);
       vSeitfPrompt();
     }
+    else if (gxArguments.m_bStatus) {
+      vSystemStatus();
+    }
     else if (gxArguments.m_bStart) {
+      ASSERT(gpBufferPool);
       vSystemInit();
       vSystemStart();
       vWaitFlag();
     }
     else if (gxArguments.m_bStop) {
+      ASSERT(gpBufferPool);
       vSystemStop();
     }
     else {
@@ -107,12 +113,14 @@ void RapidsSE::vPoolClose(void)
 void RapidsSE::vPoolOpen(void)
 {
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
-    vCreateRegionNew();
+    vCreateRegion();
     vCreateObjects();
     return;
   }
+  else if (gxArguments.m_bStatus) {
+  }
   else {
-    vAttachRegionNew();
+    vAttachRegion();
     vAttachObjects();
     return;
   }
@@ -125,7 +133,20 @@ void RapidsSE::vPoolOpen(void)
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vAttachRegionNew(void)
+void RapidsSE::vAttachObjects(void)
+{
+  // get pointers to global objects from attach map
+  gpAttachMap        = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
+  gpMediumHeap       = gpAttachMap->m_pMediumHeap;
+  gpSmallHeap        = gpAttachMap->m_pSmallHeap;
+  gpGlobalDictionary = gpAttachMap->m_pGlobalDictionary;
+  gpDictionary       = gpAttachMap->m_pDictionary;
+}
+
+/*----------------------------------------------------------------------------*/
+/* attach to an existing shm region                                           */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vAttachRegion(void)
 {
   int iFD;
   SysCall xSysCall;
@@ -151,11 +172,11 @@ void RapidsSE::vAttachRegionNew(void)
   
   // overlay attach map onto 2nd buffer (buffer #1)
   gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
-
+  
   // get the actual size
   i8 iPoolSize = gpAttachMap->m_iPoolSize;
   gpAttachMap = nullptr;
-
+  
   // close the temporary mapping
   bResult = Shm::bClose(iFD,xSysCall);
   bResult = Shm::bUnmap(mpRegion,10_MB,xSysCall);
@@ -187,7 +208,20 @@ void RapidsSE::vAttachRegionNew(void)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vCreateRegionNew(void)
+void RapidsSE::vCreateObjects(void)
+{
+  // create global objects
+  gpAttachMap        = new AttachMap();
+  gpMediumHeap       = new Heap(CN_MEDIUMHEAP,C_SIZE_MEDIUM_OBJECT);
+  gpSmallHeap        = new Heap(CN_SMALLHEAP,C_SIZE_SMALL_OBJECT);
+  gpGlobalDictionary = new GlobalDictionary;
+  gpDictionary       = &gpGlobalDictionary->m_xDictionary;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create new shm region                                                      */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vCreateRegion(void)
 {
   int iFD;
   SysCall xSysCall;
@@ -223,67 +257,6 @@ void RapidsSE::vCreateRegionNew(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop existing region                                                       */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vDropRegionNew(void)
-{
-  SysCall xSysCall;
-  
-  bool b = Shm::bUnlink(gxArguments.m_sRegionName.a(), xSysCall);
-  ASSERT(b);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* attach to an existing shm region                                           */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vAttachObjects(void)
-{
-  // get pointers to global objects from attach map
-  gpAttachMap        = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
-  gpMediumHeap       = gpAttachMap->m_pMediumHeap;
-  gpSmallHeap        = gpAttachMap->m_pSmallHeap;
-  gpGlobalDictionary = gpAttachMap->m_pGlobalDictionary;
-  gpDictionary       = gpAttachMap->m_pDictionary;
-}
-
-/*----------------------------------------------------------------------------*/
-/* attach to an existing shm region                                           */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vAttachRegion(void)
-{
-  // attach to region
-  gpBufferPool = new BufferPool(gxArguments.m_sRegionName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create new shm region                                                      */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCreateObjects(void)
-{
-  // create global objects
-  gpAttachMap        = new AttachMap();
-  gpMediumHeap       = new Heap(CN_MEDIUMHEAP,C_SIZE_MEDIUM_OBJECT);
-  gpSmallHeap        = new Heap(CN_SMALLHEAP,C_SIZE_SMALL_OBJECT);
-  gpGlobalDictionary = new GlobalDictionary;
-  gpDictionary       = &gpGlobalDictionary->m_xDictionary;
-}
-
-/*----------------------------------------------------------------------------*/
-/* create new shm region                                                      */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCreateRegion(void)
-{
-  // create new region
-  gpBufferPool = new BufferPool(gxArguments.m_sRegionName,
-                                gxArguments.m_iPoolSize,
-                                C_SIZE_LARGE_BUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
 /* intialise the main dictionary                                              */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicInitialise(NP_Task npRootTask)
@@ -294,6 +267,17 @@ void RapidsSE::vDicInitialise(NP_Task npRootTask)
   
   vTrace("[[mainThread]] RapidsSE::vDicInitialise running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
   npRootTask->vLoop();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop existing region                                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDropRegion(void)
+{
+  SysCall xSysCall;
+  
+  bool b = Shm::bUnlink(gxArguments.m_sRegionName.a(), xSysCall);
+  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,13 +403,44 @@ void RapidsSE::vSystemStart(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* status of the system                                                       */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vSystemStatus(void)
+{
+  if (bTestRegion())
+    vTrace("RapidsSE %s running\n",gxArguments.m_sRegionName.a());
+  else
+    vTrace("RapidsSE %s not running\n",gxArguments.m_sRegionName.a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* stop the system                                                            */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStop(void)
 {
+  vDropRegion();
+  
   gpAttachMap->m_iStop = 1;
   
   // the system is now stopped
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for region                                                            */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE::bTestRegion(void)
+{
+  int iFD;
+  SysCall xSysCall;
+  
+  // open existing shm region
+  bool bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
+  if ( ! bResult )
+    return false;
+  
+  bResult = Shm::bClose(iFD,xSysCall);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

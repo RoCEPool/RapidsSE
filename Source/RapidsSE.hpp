@@ -21,9 +21,6 @@ namespace StorageEngine
     static void vPoolClose(void);
     static void vPoolOpen(void);
 
-    static void vAttachRegionNew(void);
-    static void vCreateRegionNew(void);
-    static void vDropRegionNew(void);
     
     //-------------------------------------------------------------------------
     
@@ -32,13 +29,16 @@ namespace StorageEngine
     static void vCreateObjects(void);
     static void vCreateRegion(void);
     static void vDicInitialise(NP_Task npBootTask);
+    static void vDropRegion(void);
     static void vHandler(Error* pError);
     static void vRunCommand(void);
     static void vRunDocol(void);
     static void vSeitfPrompt(void);
     static void vSystemInit(void);
     static void vSystemStart(void);
+    static void vSystemStatus(void);
     static void vSystemStop(void);
+    static bool bTestRegion(void);
     static void vTlsInit(void);
     static void vWaitFlag(void);
   };
