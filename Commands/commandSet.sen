@@ -160,7 +160,7 @@
 /*----------------------------------------------------------------------------*/
 /* list dictionary contents                                                   */
 /*----------------------------------------------------------------------------*/
-: ls
+: ls_old
     word.this
     begin dup
       while
@@ -171,6 +171,25 @@
       repeat
     drop
     "done" 1 2
+;
+
+: isTable
+  word.kind@ ' table eql
+;
+
+: ls
+    ""                             // ls string
+    word.this iterate              // iterate word cursor
+      "(" concat                   //
+      cursor@ word.name concat     // add name of the word to ls string
+      " " concat cursor@ word.kind@ word.name concat
+      cursor@ isTable if
+        " " concat cursor@ execute table.space >str concat
+      then
+      ")\n" concat                 //
+      cursor@ prevWord dup cursor! // advance cursor backwards thru words
+    next
+    1 2
 ;
 
 /*----------------------------------------------------------------------------*/

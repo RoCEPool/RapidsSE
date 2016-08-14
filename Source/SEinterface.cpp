@@ -103,6 +103,7 @@ void SEinterface::vInit(void)
 {
   m_iPid = Process::iGetPid();
   
+  Word* pQueueWord = gpDictionary->pFind("queue");
   Word* pReqQueWord = gpDictionary->pFind("requestQueue");
   
   ASSERT(pReqQueWord);
@@ -111,6 +112,7 @@ void SEinterface::vInit(void)
   
   Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
+  pRspQueWord->vKind(pQueueWord);
   pRspQueWord->vFunc(&Task::vNop);
   pRspQueWord->pAllot(sizeof(Queue));
 //  pRspQueWord->vEncode("encodeDoes");

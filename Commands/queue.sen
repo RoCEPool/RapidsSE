@@ -4,12 +4,15 @@
 
 "queue.sen" .
 
+: queue ;
+
 : queue:
     create 
     object!!
     sizeof_queue allot
     word.this >body magic!!
     word.this >body CN_QUEUE class!
+   ' queue word.this word.kind!
     word.this >body queue.init
     does> 
 ;
@@ -20,6 +23,7 @@
     sizeof_queue allot
     word.this >body magic!!
     word.this >body CN_QUEUE class!
+    ' queue word.this word.kind!
     word.this >body queue.init
     does>
 ;
