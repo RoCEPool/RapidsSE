@@ -22,14 +22,117 @@
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
 : create_tenant
-    dic.main {{
-      "tenants" find execute {{
-        :dic dup ' tenant swap word.kind! execute {{
-          "catalogs" :dic drop
-        }}
-      }}
+    :dic dup ' tenant swap word.kind! execute {{
+      "catalogs" :dic drop
     }}
     "created tenant" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a catalog                                                           */
+/*----------------------------------------------------------------------------*/
+: create_catalog
+    :dic dup ' catalog swap word.kind! execute {{
+      "schemas" :dic drop
+    }}
+    "created catalog" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a schema                                                            */
+/*----------------------------------------------------------------------------*/
+: create_schema
+    :dic dup ' schema swap word.kind! execute {{
+      "tables" :dic drop
+    }}
+    "created schema" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a table                                                             */
+/*----------------------------------------------------------------------------*/
+: create_table
+    :table drop
+    "created table" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* load a table                                                               */
+/*----------------------------------------------------------------------------*/
+: load_table ( "filename" "tablename" )
+    find execute ( "filename" table )
+    swap
+    "load.sen" >>:
+    "loaded table" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* export a table                                                             */
+/*----------------------------------------------------------------------------*/
+: export_table ( "filename" "tablename" )
+    find execute ( "filename" table )
+    swap
+    "export.sen" >>:
+    "exported table" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: size_table ( "tablename" )
+    find execute ( table )
+    table.space
+    >str 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncate table ( "tablename" )
+    find execute ( table )
+    table.truncate
+    "table truncated" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a table                                                               */
+/*----------------------------------------------------------------------------*/
+: drop_table ( "<tablename> -- "dropped table" 1 2 )
+    find
+    dup word.kind@ ' table eql not if drop "not a table" 0 2 exit then
+    dup execute table.truncate
+    >forget
+    "dropped table" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a schema                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_schema ( "<schemaname> -- "dropped schema" 1 2 )
+    find
+    dup word.kind@ ' schema eql not if drop "not a schema" 0 2 exit then
+    >forget
+    "dropped schema" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a catalog                                                             */
+/*----------------------------------------------------------------------------*/
+: drop_catalog ( "<catalogname> -- "dropped catalog" 1 2 )
+    find
+    dup word.kind@ ' catalog eql not if drop "not a catalog" 0 2 exit then
+    >forget
+    "dropped catalog" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a tenant                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_tenant ( "<tenantname> -- "dropped tenant" 1 2 )
+    find
+    dup word.kind@ ' tenant eql not if drop "not a tenant" 0 2 exit then
+    >forget
+    "dropped tenant" 1 2
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +144,7 @@
     else
       find execute dic.push
     then
-    "done" 1 2
+    "changed" 1 2
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -70,149 +173,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* ping test                                                                  */
+/*----------------------------------------------------------------------------*/
+: ping
+    "pong" 1 2
+;
+
+/*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
 : x
     words
     "x" 1 2
-;
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-: create_catalog
-    "catalogs" find execute
-    {{
-      :dic dup ' catalog swap word.kind! execute
-      {{
-        "schemas" :dic drop
-      }}
-    }}
-    1
-;
-
-//------------------------------------------------------------------------------
-: create_schema
-    "schemas" find execute
-    {{
-      :dic dup ' schema swap word.kind! execute
-      {{
-        "tables" :dic drop
-      }}
-    }}
-    1
-;
-
-//------------------------------------------------------------------------------
-: create_table
-    :table drop
-;
-
-//------------------------------------------------------------------------------
-: drop_tenant
-;
-
-//------------------------------------------------------------------------------
-: drop_catalog
-;
-
-//------------------------------------------------------------------------------
-: drop_schema
-;
-
-//------------------------------------------------------------------------------
-: drop_table
-  dup word.kind@ ' table eql not if "not a table" . drop exit then
-  dup execute table.truncate
-  >forget
-;
-
-//------------------------------------------------------------------------------
-: use_tenant
-    dic.main dic.push
-      "tenants" find execute dic.push
-         find execute dic.push
-;
-
-//------------------------------------------------------------------------------
-: use_catalog
-    "catalogs" find execute dic.push
-      find execute dic.push
-;
-
-//------------------------------------------------------------------------------
-: use_schema
-    "schemas" find execute dic.push
-      find execute dic.push
-;
-
-//------------------------------------------------------------------------------
-: use_table ;
-
-//------------------------------------------------------------------------------
-: export
-  literal> ( "tableName" ) find execute ( table )
-  literal> ( table "fileName" )
-  "export.sen" >>:
-;
-
-//------------------------------------------------------------------------------
-: tbl:
-  table:
-  "table" find swap word.kind!
-;
-
-//------------------------------------------------------------------------------
-: rm
-  traceon
-  literal> find dup word.kind@ word.name
-  dup "tenant"  streql if drop drop_tenant  exit then
-  dup "catalog" streql if drop drop_catalog exit then
-  dup "schema"  streql if drop drop_schema  exit then
-  dup "table"   streql if drop drop_table   exit then
-  "huh?" . drop
-;
-
-//------------------------------------------------------------------------------
-: mk
-  // traceon
-  0 dic.pick dic.name "tenants"  streql if literal> create_tenant  exit then
-  0 dic.pick dic.name "catalogs" streql if literal> create_catalog exit then
-  0 dic.pick dic.name "schemas"  streql if literal> create_schema  exit then
-  0 dic.pick dic.name "tables"   streql if literal> create_table   exit then
-  "huh?" . drop
-;
-
-//------------------------------------------------------------------------------
-: load
-  literal> ( "tableName" ) find execute ( table )
-  literal> ( table "fileName" )
-  traceoff
-  "load.sen" >>:
-;
-
-//------------------------------------------------------------------------------
-: size
-   literal> ( "tableName" ) find execute ( table )
-   table.space .
-;
-
-//------------------------------------------------------------------------------
-: trunc
-  literal> ( "tableName" ) find execute ( table )
-  table.truncate
-;
-
-//------------------------------------------------------------------------------
-: help
-  "cd   -- change directory" .
-  "load -- load table" .
-  "ls   -- list directory contents" .
-  "mk   -- make tenant/catalog/schema/table" .
-  "pwd  -- print working directory" .
-  "size -- print size of table" .
 ;
 
 /*============================================================================*/

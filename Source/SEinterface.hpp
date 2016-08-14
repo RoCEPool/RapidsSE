@@ -37,7 +37,7 @@ namespace StorageEngine
     void   vInit(void);
     void   vPrompt(void);
     void   vParse(s& sRequest, char* pWords[]);
-    bool   bDecode(char* pWords[]);
+    void   vExecute(char* pWords[]);
     
     //--------------------------------------------------------------------------
     
@@ -53,6 +53,11 @@ namespace StorageEngine
     
     //--------------------------------------------------------------------------
     
+    void   vDo(const char* aCommand);
+    
+    //--------------------------------------------------------------------------
+    
+    bool bDecode(char* pWords[]);
     bool bHelp(char* pWords[]);
     
     bool bConnect(char* pWords[]);
@@ -81,7 +86,10 @@ namespace StorageEngine
     bool bGetDicPath(char* pWords[]);
     bool bSetDicPath(char* pWords[]);
     bool bGetDicContents(char* pWords[]);
+
+    bool bPing(char* pWords[]);
     
+    bool bDo(char* pWords[]);
     bool bX(char* pWords[]);
   };
 }

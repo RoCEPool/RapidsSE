@@ -710,6 +710,34 @@ bool String::bExtractPort(char** ps, u2* pPort)
 //}
 
 /*----------------------------------------------------------------------------*/
+/* bExtractString: extract a quoted string from substr                        */
+/*----------------------------------------------------------------------------*/
+bool String::bExtractString(char** ps, char* pString)
+{
+  if ( ! *ps )
+    return false;
+  
+  if ('"' != **ps)
+    return false;
+  
+  char *a = pString;
+  //*a++ = *((*ps)++);
+  
+  (*ps)++;
+  for ( ; **ps; (*ps)++) {
+    if ('"' == **ps) {
+      (*ps)++;
+      break;
+    }
+    *a++ = **ps;
+  }
+  
+  *a = '\0';
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bExtractWord: extract a word from substr                                   */
 /*----------------------------------------------------------------------------*/
 bool String::bExtractWord(char** ps, char* pWord)
@@ -732,6 +760,35 @@ bool String::bExtractWord(char** ps, char* pWord)
 
   *a = '\0';
 
+  return bOnce;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bExtractWord: extract a word or quoted string                              */
+/*----------------------------------------------------------------------------*/
+bool String::bExtractWordString(char** ps, char* pWord)
+{
+  if ( ! *ps )
+    return false;
+  
+  if ('"' == **ps)
+    return bExtractString(ps,pWord);
+  
+  bool bOnce = false;
+  if (**ps && isalnum(**ps))
+    bOnce = true;
+  
+  char *a = pWord;
+  for ( ; **ps; (*ps)++)
+  {
+    if ( ! isalnum(**ps) )
+      break;
+    
+    *a++ = **ps;
+  }
+  
+  *a = '\0';
+  
   return bOnce;
 }
 

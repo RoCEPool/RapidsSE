@@ -67,7 +67,9 @@ namespace Common
     static bool  bExtractLiteral(const char** ps, char* pLiteral, eLT* pLiteralType);
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
+    static bool  bExtractString(char** ps, char* pString);
     static bool  bExtractWord(char** ps, char* pWord);
+    static bool  bExtractWordString(char** ps, char* pWord);
     
     static bool  bFind(char** ps, const char cArg);
     static bool  bFind(char** ps, const char* sArg);
