@@ -602,6 +602,21 @@ bool Task::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const
   return true;
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* guard return stack                                                         */
+/*----------------------------------------------------------------------------*/
+bool Task::bGuardReturn(i8 iCount) const
+{
+  _poolAddress_(this);
+  
+  if (m_xReturnStack.iValues() < iCount)
+    return false;
+  
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /* guard return stack 1                                                       */
 /*----------------------------------------------------------------------------*/
@@ -699,6 +714,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("concat",          &vConcat,           false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
+  vAddPrimitive("cursor@",         &vCursorFetch,      false);
+  vAddPrimitive("cursor!",         &vCursorStore,      false);
   vAddPrimitive("cwd",             &vCwd,              false);
   vAddPrimitive("depth",           &vDepth,            false);
   vAddPrimitive("/",               &vDivide,           false);
@@ -749,6 +766,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("isNameLit",       &vIsNameLit,        false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
   vAddPrimitive("isStrLit",        &vIsStrLit,         false);
+  vAddPrimitive("iterate",         &vIterate,          true );
+  vAddPrimitive("iterate_rt",      &vIterate_RT,       false);
   vAddPrimitive("j",               &vJ,                false);
   vAddPrimitive("jump",            &vJump,             false);
   vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
@@ -768,6 +787,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("magic!!",         &vMagicMark,        false);
   vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
+  vAddPrimitive("next",            &vNext,             true );
+  vAddPrimitive("next_rt",         &vNext_RT,          false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
   vAddPrimitive("!=",              &vNotEqual,         false);
@@ -2030,6 +2051,20 @@ bool Task::bPopReturn(OnStack& xValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop val from return stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopReturn(OnStack& xValue1, OnStack& xValue2)
+{
+  if ( ! bGuardReturn(2) )
+    return false;
+  
+  vPopReturn(&xValue1);
+  vPopReturn(&xValue2);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from return stack                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vPopReturn(OnStack* pValue)
@@ -2342,7 +2377,6 @@ void Task::vComment(NNP_Task nnpTask)
     if (String::bEqualTo(")",nnpTask->m_sLiteral.a()))
       break;
   }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2375,6 +2409,39 @@ void Task::vConcat(NNP_Task nnpTask)
   xStrR.pAsStrVal()->vSize();
   
   nnpTask->vPushParam(xStrR);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cursor@ -- fetch cursor from return stack onto param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vCursorFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vCursorFetch");
+  
+  i8 iPick = 0;
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* cursor! -- replace cursor on return stack from param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vCursorStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vCursorStore");
+  
+  i8 iPeek = 0;
+  
+  ValWsp xCursorWsp;
+  
+  if ( ! nnpTask->bPopParam(xCursorWsp) )
+    THROW_INVALID_PARAM("cursor!");
+  
+  nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2423,7 +2490,7 @@ void Task::vDivide(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* do -- do (do loop)                                                         */
+/* do -- compile time of do ... loop                                immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vDo(NNP_Task nnpTask)
 {
@@ -2439,7 +2506,7 @@ void Task::vDo(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* do_rt -- runtime of do (do loop)                                       IMM */
+/* do_rt -- runtime of do ... loop                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vDo_RT(NNP_Task nnpTask)
 {
@@ -2451,7 +2518,7 @@ void Task::vDo_RT(NNP_Task nnpTask)
     THROW_INVALID_PARAM("do_rt");
   
   nnpTask->vPushReturn(iLimit);
-  nnpTask->vPushReturn(iIndex);
+  nnpTask->vPushReturn(iIndex); // index is on top
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3169,6 +3236,37 @@ void Task::vIsStrLit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iterate -- compile time of iterate ... next                      immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vIterate(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vIterate");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("iterate_rt");
+  
+  Cell* pIterateLoc = pCurrentWord->pLastCell();
+  
+  nnpTask->vPushReturn(pIterateLoc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate_rt -- runtime of iterate ... next                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vIterate_RT(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vIterate_RT");
+  
+  PtrVal xPtrCursor;
+  
+  if ( ! nnpTask->bPopParam(xPtrCursor) )
+    THROW_INVALID_PARAM("iterate_rt");
+  
+  nnpTask->vPushReturn(xPtrCursor);
+}
+
+/*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto param stack                */
 /*----------------------------------------------------------------------------*/
 void Task::vJ(NNP_Task nnpTask)
@@ -3332,7 +3430,7 @@ void Task::vLocate(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop -- do loop                                                            */
+/* loop -- compile time for do ... loop                            immediate  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoop(NNP_Task nnpTask)
 {
@@ -3367,7 +3465,7 @@ void Task::vLoop_RT(NNP_Task nnpTask)
   
   if (iIndex < iLimit) {
     nnpTask->vPushReturn(iLimit);
-    nnpTask->vPushReturn(iIndex);
+    nnpTask->vPushReturn(iIndex); // index is on top
   }
   else {
     nnpTask->m_pCell += 2;
@@ -3477,6 +3575,48 @@ void Task::vNameWord(NNP_Task nnpTask)
     THROW_INVALID_PARAM("nameWord");
   
   nnpTask->vPushParam(pWord->sName().a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* next -- compile time for iterate ... next                        immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNext");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  IPval xPtrIterateLoc;
+  nnpTask->vPopReturn(&xPtrIterateLoc);
+  
+  Cell* pIterateLoc = xPtrIterateLoc.pCell();
+  
+  pCurrentWord->vEncode("Next_RT");
+  
+  pCurrentWord->vEncode("jump",pIterateLoc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* next_rt -- runtime for iterate ... next                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vNext_RT(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNext_RT");
+
+  IPval xPtrObject;
+  IPval xPtrCursor;
+  
+  if ( ! nnpTask->bPopParam(xPtrObject) )
+    THROW_INVALID_PARAM("next_rt");
+  
+  if (xPtrObject.iAsInt()) {
+    // fall into jump which follows
+  }
+  else {
+    nnpTask->vPopReturn(&xPtrCursor);
+    nnpTask->m_pCell += 2;
+    // skip the jump which follows
+  }
 }
 
 /*----------------------------------------------------------------------------*/

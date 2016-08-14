@@ -181,6 +181,8 @@ namespace Tasking
     bool bGuardParam(eCN eClass0, eCN eClass1) const;
     bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const;
     
+    bool bGuardReturn(i8 iCount) const;
+    
     bool bGuardReturn(eCN eClass0) const;
     bool bGuardReturn(eCN eClass0, eCN eClass1) const;
     bool bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const;
@@ -233,6 +235,7 @@ namespace Tasking
     bool bPopReturn(i8& iArg1);
     bool bPopReturn(i8& iArg1, i8& iArg2);
     bool bPopReturn(OnStack& xValue);
+    bool bPopReturn(OnStack& xValue1, OnStack& xValue2);
     void vPopReturn(OnStack* pValue);
     bool bPopReturn(s32&  sArg1);
     bool bPopReturn(s256& sArg1);
@@ -260,7 +263,9 @@ namespace Tasking
     static void vComment(NNP_Task nnpTask);        
     static void vConcat(NNP_Task nnpTask);
     static void vCompiling(NNP_Task nnpTask);      
-    static void vCwd(NNP_Task nnpTask);            
+    static void vCursorFetch(NNP_Task nnpTask);
+    static void vCursorStore(NNP_Task nnpTask);
+    static void vCwd(NNP_Task nnpTask);
     static void vDivide(NNP_Task nnpTask);         
     static void vDepth(NNP_Task nnpTask);          
     static void vDo(NNP_Task nnpTask);             
@@ -300,7 +305,9 @@ namespace Tasking
     static void vInputPush(NNP_Task nnpTask);      
     static void vInputStdin(NNP_Task nnpTask);     
     static void vInputText(NNP_Task nnpTask);      
-    static void vInterpreting(NNP_Task nnpTask);   
+    static void vIterate(NNP_Task nnpTask);
+    static void vIterate_RT(NNP_Task nnpTask);
+    static void vInterpreting(NNP_Task nnpTask);
     static void vIsBooted(NNP_Task nnpTask);       
     static void vIsCompiling(NNP_Task nnpTask);    
     static void vIsImmediate(NNP_Task nnpTask);    
@@ -328,11 +335,13 @@ namespace Tasking
     static void vMagicMark(NNP_Task nnpTask);      
     static void vMultiply(NNP_Task nnpTask);       
     static void vNameWord(NNP_Task nnpTask);       
+    static void vNext(NNP_Task nnpTask);
+    static void vNext_RT(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
     static void vNotEqual(NNP_Task nnpTask);       
-    static void vObjectMark(NNP_Task nnpTask);     
-    static void vOr(NNP_Task nnpTask);             
+    static void vObjectMark(NNP_Task nnpTask);
+    static void vOr(NNP_Task nnpTask);
     static void vPause(NNP_Task nnpTask);          
     static void vPick(NNP_Task nnpTask);           
     static void vPrevWord(NNP_Task nnpTask);       

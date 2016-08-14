@@ -110,6 +110,21 @@ void Stack::vPeek(i8 iNthValue, OnStack* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* poke at given value on stack                                               */
+/*----------------------------------------------------------------------------*/
+void Stack::vPoke(i8 iNthValue, OnStack* pValue)
+{
+  _poolAddress_(this);
+  //_magic_();
+
+  i8 iSize = pValue->iSize();
+  
+  OnStack* pPokeAddress = pPeek(iNthValue);
+  
+  Memory::vCopy(pPokeAddress,pValue,iSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
 void Stack::vPop(OnStack* pValue)

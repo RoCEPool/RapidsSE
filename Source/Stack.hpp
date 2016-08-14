@@ -33,6 +33,7 @@ namespace Tasking
     OnStack* pPeek(void) const;
     OnStack* pPeek(i8 iNthValue) const;
     void   vPeek(i8 iNthValue, OnStack* pValue);
+    void   vPoke(i8 iNthValue, OnStack* pValue);
     void   vPop(OnStack* pValue);
     void   vPush(OnStack* pValue);
     void   vRetry(void);

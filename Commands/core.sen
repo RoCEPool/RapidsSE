@@ -7,12 +7,20 @@
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
-: words
+: words_old
    word.this
    begin
      dup while dup nameWord .put " " .put prevWord
    repeat
-   drop .\n ;
+   drop .\n
+;
+
+: words
+    word.this iterate              // iterate word cursor
+      cursor@ word.name .          // print the name of the word
+      cursor@ prevWord dup cursor! // advance cursor backwards thru words
+    next
+;
 
 /*----------------------------------------------------------------------------*/
 /* list all words (long form) in the current dictionary                       */
