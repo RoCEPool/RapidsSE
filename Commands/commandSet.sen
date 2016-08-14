@@ -173,11 +173,8 @@
     "done" 1 2
 ;
 
-: isTable
-  word.kind@ ' table eql
-;
-
 : ls
+    traceon
     ""                             // ls string
     word.this iterate              // iterate word cursor
       "(" concat                   //
@@ -189,6 +186,7 @@
       ")\n" concat                 //
       cursor@ prevWord dup cursor! // advance cursor backwards thru words
     next
+    traceoff
     1 2
 ;
 

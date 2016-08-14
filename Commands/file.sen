@@ -5,6 +5,13 @@
 "file.sen" .
 
 /*----------------------------------------------------------------------------*/
+/* file is use as a kind of word to identify files                            */
+/*----------------------------------------------------------------------------*/
+: file ;
+
+: isFile word.kind@ ' file eql ;
+
+/*----------------------------------------------------------------------------*/
 /* create a file using name from input stream (doesnt leave file on stk)      */
 /*----------------------------------------------------------------------------*/
 : file:
@@ -13,6 +20,7 @@
   sizeof_file allot
   word.this >body magic!!
   word.this >body CN_FILE class!
+  ' file word.this word.kind!
   word.this >body file.init
   does>
 ;
@@ -26,6 +34,7 @@
   sizeof_file allot
   word.this >body magic!!
   word.this >body CN_FILE class!
+  ' file word.this word.kind!
   word.this >body file.init
   word.this
   does>
