@@ -6143,10 +6143,7 @@ void Task::vWordForget(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(pWord) )
     THROW_INVALID_PARAM(">forget");
   
-  if ( ! pWord )
-    THROW("No such word: %s",nnpTask->m_sLiteral.a());
-  
-  bool bResult = nnpTask->bForgetWord(nnpTask->m_sLiteral);
+  bool bResult = nnpTask->bForgetWord(pWord->sName());
   ASSERT(bResult);
 }
 

@@ -441,6 +441,11 @@ bool SEinterface::bDecode(char* pWords[])
     return true;
   }
   
+  if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
+    bSizeTable(pWords);
+    return true;
+  }
+  
   if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
     bTruncateTable(pWords);
     return true;
@@ -711,11 +716,41 @@ bool SEinterface::bSelectTable(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* size of table                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bSizeTable(char* pWords[])
+{
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," size_table");
+  
+  vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bTruncateTable(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," truncate_table");
+  
+  vAppendRequest(sRequest);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -811,6 +846,7 @@ bool SEinterface::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDo(char* pWords[])
 {
+  vDo("ping");
   vDo("cd tenants");
   vDo("mkten ten");
   vDo("cd ten");
@@ -818,10 +854,18 @@ bool SEinterface::bDo(char* pWords[])
   vDo("mkcat cat");
   vDo("cd cat");
   vDo("cd schemas");
+  vDo("mksch sch");
+  vDo("cd sch");
+  vDo("cd tables");
   vDo("mktbl t");
+  vDo("pwd");
   vDo("ls");
   vDo("ld t \"/tpch/nation.tbl\"");
   vDo("ex t \"/tmp/nation.txt\"");
+  vDo("sz t ");
+  vDo("tr t ");
+  vDo("sz t ");
+  vDo("rmtbl t ");
   
   return false;
 }

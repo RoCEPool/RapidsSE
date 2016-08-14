@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
-: truncate table ( "tablename" )
+: truncate_table ( "tablename" )
     find execute ( table )
     table.truncate
     "table truncated" 1 2
@@ -97,12 +97,13 @@
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-: drop_table ( "<tablename> -- "dropped table" 1 2 )
+: drop_table ( "<tablename>" -- "dropped table" 1 2 )
     find
     dup word.kind@ ' table eql not if drop "not a table" 0 2 exit then
     dup execute table.truncate
     >forget
     "dropped table" 1 2
+    traceoff
 ;
 
 /*----------------------------------------------------------------------------*/
