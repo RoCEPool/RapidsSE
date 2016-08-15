@@ -88,6 +88,7 @@ namespace StorageEngine
     bool bExportTable(char* pWords[]);
     bool bLoadTable(char* pWords[]);
     bool bSelectTable(char* pWords[]);
+    bool bAddressTable(char* pWords[]);
     bool bSizeTable(char* pWords[]);
     bool bTruncateTable(char* pWords[]);
     

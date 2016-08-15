@@ -354,6 +354,11 @@ bool SEinterface::bDecode(char* pWords[])
     return true;
   }
   
+  if (String::bEqualTo("adr",pWords[0],C_NO_CASE)) {
+    bAddressTable(pWords);
+    return true;
+  }
+  
   if (String::bEqualTo("bye",pWords[0],C_NO_CASE)) {
     exit(EXIT_SUCCESS);
   }
@@ -919,6 +924,25 @@ bool SEinterface::bSelectTable(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address a table                                                        */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bAddressTable(char* pWords[])
+{
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," address_table");
+  
+  vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bSizeTable(char* pWords[])
@@ -1066,9 +1090,9 @@ bool SEinterface::bDo(char* pWords[])
   vDo("ld t \"/tpch/nation.tbl\"");
   vDo("ex t \"/tmp/nation.txt\"");
   vDo("sz t ");
-  vDo("tr t ");
-  vDo("sz t ");
-  vDo("rmtbl t ");
+//  vDo("tr t ");
+//  vDo("sz t ");
+//  vDo("rmtbl t ");
   
   return false;
 }

@@ -96,6 +96,16 @@ void Table::vExport(File* pFile)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first segment buffer                                                   */
+/*----------------------------------------------------------------------------*/
+SegmentBuffer* Table::pSegmentBuffer(void)
+{
+  _poolAddress_(this);
+  
+  return pFirstBuffer();
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 void Table::vInsertRow(StrVal* pRowStr)

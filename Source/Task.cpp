@@ -899,6 +899,7 @@ void Task::vInitialiseDictionary(void)
   
   vAddPrimitive("table.drop",      &vTableDrop,        false);
   vAddPrimitive("table.export",    &vTableExport,      false);
+  vAddPrimitive("table.firstBuffer", &vTableFirstBuffer, false);
   vAddPrimitive("table.init",      &vTableInit,        false);
   vAddPrimitive("table.insert",    &vTableInsert,      false);
   vAddPrimitive("table.load",      &vTableLoad,        false);
@@ -5784,6 +5785,26 @@ void Task::vTableExport(NNP_Task nnpTask)
   ASSERT(CN_FILE == pFile->eClass());
   
   pTable->vExport(pFile);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.firstBuffer -- push ptr to first buffer of table onto stack          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableFirstBuffer(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableFirstBuffer");
+  
+  PtrVal xPtrTable;
+  
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.firstBuffer");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+
+  SegmentBuffer* pFirstBuffer = pTable->pFirstBuffer();
+
+  nnpTask->vPushParam(pFirstBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -31,6 +31,8 @@ namespace MemoryManagement
 
     Object* pFirstObject(void);
     Object* pNextObject(Object* pCurr, i8 nBytes);
+
+    SegmentBuffer* pFirstBuffer(void);
     
     i8      iBufferCount(void);
     
