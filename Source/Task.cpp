@@ -743,6 +743,7 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("@i",              &vFetchInteger,     false);
   vAddPrimitive("@p",              &vFetchPointer,     false);
   vAddPrimitive("find",            &vFind,             false);
+  vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
   vAddPrimitive(">",               &vGreater,          false);
   vAddPrimitive(">=",              &vGreaterEqual,     false);
@@ -2893,6 +2894,18 @@ void Task::vFetchPointer(NNP_Task nnpTask)
   xPointer = *static_cast<char**>(xPtrPointer.pPtr());
 
   nnpTask->vPushParam(xPointer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* freePercent -- push free percent of buffer pool onto stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vFreePercent(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vFreePercent");
+  
+  i8 iFreePercent = gpBufferPool->iFreePercent();
+  
+  nnpTask->vPushParam(iFreePercent);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -290,7 +290,8 @@ namespace Tasking
     static void vFetch(NNP_Task nnpTask);
     static void vFetchInteger(NNP_Task nnpTask);
     static void vFetchPointer(NNP_Task nnpTask);   
-    static void vFreeSpace(NNP_Task nnpTask);      
+    static void vFreePercent(NNP_Task nnpTask);
+    static void vFreeSpace(NNP_Task nnpTask);
     static void vGreater(NNP_Task nnpTask);
     static void vGreaterEqual(NNP_Task nnpTask);   
     static void vGwd(NNP_Task nnpTask);            

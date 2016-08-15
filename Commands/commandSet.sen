@@ -240,6 +240,9 @@
 
     swap
     "load.sen" >>:
+
+    freespace .
+
     "loaded table" success
 ;
 

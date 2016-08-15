@@ -399,6 +399,18 @@ void BufferPool::vFree(Buffer* pBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return free space percentage                                               */
+/*----------------------------------------------------------------------------*/
+i8 BufferPool::iFreePercent(void)
+{
+  _class_(CN_BUFFERPOOL);
+  
+  i8 iFreePercent = DIV(iFreeSpace() * 100,iPoolSize());
+  
+  return iFreePercent;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return free space in bytes                                                 */
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::iFreeSpace(void)

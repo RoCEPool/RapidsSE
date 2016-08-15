@@ -65,6 +65,7 @@ namespace MemoryManagement
     bool bDetachPool(void);
     void vDump(void);
     void vFree(Buffer* pBuffer);
+    i8   iFreePercent(void);
     i8   iFreeSpace(void);
     void vInitialise(void);
     i8   iPoolSize(void) const;
