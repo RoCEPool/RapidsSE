@@ -62,6 +62,8 @@ namespace StorageEngine
     
     bool bConnect(char* pWords[]);
     bool bDisconnect(char* pWords[]);
+    
+    bool bDropDictionary(char* pWords[]);
 
     bool bCreateTenant(char* pWords[]);
     bool bDropTenant(char* pWords[]);

@@ -23,6 +23,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* drop a dictionary                                                          */
+/*----------------------------------------------------------------------------*/
+: drop_dictionary ( "<dicname>" -- "dropped dictionary" 1 2 )
+    find
+    dup word.kind@ ' dic eql not if drop "not a dictionary" 1 failure exit then
+    >forget
+    "dropped dictionary" success
+;
+
+/*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
 : create_tenant
@@ -144,6 +154,7 @@
 /*----------------------------------------------------------------------------*/
 : cd
     dup ".." streql if
+      drop
       dic.drop
     else
       find execute dic.push

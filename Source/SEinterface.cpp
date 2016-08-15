@@ -418,6 +418,11 @@ bool SEinterface::bDecode(char* pWords[])
     return true;
   }
   
+  if (String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
+    bDropDictionary(pWords);
+    return true;
+  }
+  
   if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
     bDropCatalog(pWords);
     return true;
@@ -537,6 +542,25 @@ bool SEinterface::bDisconnect(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop a dictionary                                                          */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bDropDictionary(char* pWords[])
+{
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," drop_dictionary");
+  
+  vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bCreateTenant(char* pWords[])
@@ -560,7 +584,18 @@ bool SEinterface::bCreateTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDropTenant(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," drop_tenant");
+  
+  vAppendRequest(sRequest);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -587,7 +622,18 @@ bool SEinterface::bCreateCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDropCatalog(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," drop_catalog");
+  
+  vAppendRequest(sRequest);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -614,7 +660,18 @@ bool SEinterface::bCreateSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDropSchema(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," drop_schema");
+  
+  vAppendRequest(sRequest);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -660,7 +717,22 @@ bool SEinterface::bDropTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bCopyTable(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[2]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," \"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," copy_table");
+  
+  vAppendRequest(sRequest);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -714,7 +786,18 @@ bool SEinterface::bLoadTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bSelectTable(char* pWords[])
 {
-  return false;
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," select_table");
+  
+  vAppendRequest(sRequest);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
