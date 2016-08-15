@@ -66,16 +66,23 @@ namespace StorageEngine
     bool bDropDictionary(char* pWords[]);
 
     bool bCreateTenant(char* pWords[]);
+    bool bListTenants(char* pWords[]);
     bool bDropTenant(char* pWords[]);
 
     bool bCreateCatalog(char* pWords[]);
+    bool bListCatalogs(char* pWords[]);
     bool bDropCatalog(char* pWords[]);
     
     bool bCreateSchema(char* pWords[]);
+    bool bListSchemas(char* pWords[]);
     bool bDropSchema(char* pWords[]);
     
     bool bCreateTable(char* pWords[]);
+    bool bListTables(char* pWords[]);
     bool bDropTable(char* pWords[]);
+
+    bool bAddColumn(char* pWords[]);
+    bool bListColumns(char* pWords[]);
     
     bool bCopyTable(char* pWords[]);
     bool bExportTable(char* pWords[]);

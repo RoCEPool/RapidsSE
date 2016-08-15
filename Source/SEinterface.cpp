@@ -349,6 +349,11 @@ bool SEinterface::bDecode(char* pWords[])
     return false;
   }
   
+  if (String::bEqualTo("add",pWords[0],C_NO_CASE)) {
+    bAddColumn(pWords);
+    return true;
+  }
+  
   if (String::bEqualTo("bye",pWords[0],C_NO_CASE)) {
     exit(EXIT_SUCCESS);
   }
@@ -385,6 +390,31 @@ bool SEinterface::bDecode(char* pWords[])
   
   if (String::bEqualTo("ls",pWords[0],C_NO_CASE)) {
     bGetDicContents(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("lscats",pWords[0],C_NO_CASE)) {
+    bListCatalogs(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("lscols",pWords[0],C_NO_CASE)) {
+    bListColumns(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("lsschs",pWords[0],C_NO_CASE)) {
+    bListSchemas(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("lstbls",pWords[0],C_NO_CASE)) {
+    bListTables(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("lstens",pWords[0],C_NO_CASE)) {
+    bListTenants(pWords);
     return true;
   }
   
@@ -580,6 +610,19 @@ bool SEinterface::bCreateTenant(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* list tenants                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bListTenants(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "list_tenants";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDropTenant(char* pWords[])
@@ -614,6 +657,19 @@ bool SEinterface::bCreateCatalog(char* pWords[])
   String::vConcat(a," create_catalog");
   
   vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* list catalogs                                                              */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bListCatalogs(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "list_catalogs";
+  vAppendRequest(sRequest);
+  
   return true;
 }
 
@@ -656,6 +712,19 @@ bool SEinterface::bCreateSchema(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* list schemas                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bListSchemas(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "list_schemas";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDropSchema(char* pWords[])
@@ -694,6 +763,19 @@ bool SEinterface::bCreateTable(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* list tables                                                                */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bListTables(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "list_tables";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 bool SEinterface::bDropTable(char* pWords[])
@@ -709,6 +791,42 @@ bool SEinterface::bDropTable(char* pWords[])
   String::vConcat(a," drop_table");
   
   vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bAddColumn(char* pWords[])
+{
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[2]);
+  String::vConcat(a,"\"");
+  
+  String::vCopy(a," \"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," add_column");
+  
+  vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* list columns                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bListColumns(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "list_columns";
+  vAppendRequest(sRequest);
+  
   return true;
 }
 
