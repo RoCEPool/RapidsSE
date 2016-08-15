@@ -40,10 +40,10 @@ namespace DBobjects {
     Table(i8 iTxId, const char* pTableName);
     ~Table(void);
     
-    void vInsertRow(StrVal* pRow);
-
+    void vCopy(Table* pTable);
     void vExport(File* pFile);
-    SegmentBuffer* pSegmentBuffer(void);
+    SegmentBuffer* pFirstBuffer(void);
+    void vInsertRow(StrVal* pRow);
     void vLoad(File* pFile);
     void vList(void);
     void vTruncate(void);

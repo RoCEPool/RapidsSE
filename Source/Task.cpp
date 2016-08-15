@@ -5752,6 +5752,8 @@ void Task::vTableCopy(NNP_Task nnpTask)
 
   Table* pToTable = reinterpret_cast<Table*>(xPtrToTable.pPtr());
   ASSERT(CN_TABLE == pToTable->eClass());
+  
+  pToTable->vCopy(pFromTable);
 }
 
 /*----------------------------------------------------------------------------*/

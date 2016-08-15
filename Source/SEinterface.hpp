@@ -79,6 +79,7 @@ namespace StorageEngine
     
     bool bCreateTable(char* pWords[]);
     bool bListTables(char* pWords[]);
+    bool bDumpTable(char* pWords[]);
     bool bDropTable(char* pWords[]);
 
     bool bAddColumn(char* pWords[]);

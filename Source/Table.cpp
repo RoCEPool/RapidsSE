@@ -79,6 +79,29 @@ Table::~Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given table into this one                                             */
+/*----------------------------------------------------------------------------*/
+void Table::vCopy(Table *pTable)
+{
+  _poolAddress_(this);
+
+  SegmentBuffer* pFromBuffer = pTable->pFirstBuffer();
+  
+  while (pFromBuffer) {
+    
+    vTrace("FromBuffer %p\n",pFromBuffer);
+    
+    vExtendSpace();
+
+    SegmentBuffer* pToBuffer = pLastBuffer();
+    
+    pToBuffer->vCopy(pFromBuffer);
+    
+    pFromBuffer = pFromBuffer->pNextBuffer();
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* export table into file                                                     */
 /*----------------------------------------------------------------------------*/
 void Table::vExport(File* pFile)
@@ -98,11 +121,11 @@ void Table::vExport(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* get first segment buffer                                                   */
 /*----------------------------------------------------------------------------*/
-SegmentBuffer* Table::pSegmentBuffer(void)
+SegmentBuffer* Table::pFirstBuffer(void)
 {
   _poolAddress_(this);
   
-  return pFirstBuffer();
+  return Segment::pFirstBuffer();
 }
 
 /*----------------------------------------------------------------------------*/

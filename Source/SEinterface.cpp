@@ -178,7 +178,7 @@ void SEinterface::vParse(s& sCommand, char* pWords[])
   
   String::vSkipWhite(&ps);
   for (i8 i = 0; String::bExtractWordString(&ps,pWords[i]); i++) {
-    vTrace("Word[%lld] %s\n",i,pWords[i]);
+    //vTrace("Word[%lld] %s\n",i,pWords[i]);
     String::vSkipWhite(&ps);
   }
 }
@@ -380,6 +380,11 @@ bool SEinterface::bDecode(char* pWords[])
   
   if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
     bDisconnect(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("dump",pWords[0],C_NO_CASE)) {
+    bDumpTable(pWords);
     return true;
   }
   
@@ -777,6 +782,25 @@ bool SEinterface::bListTables(char* pWords[])
   sRequest = "list_tables";
   vAppendRequest(sRequest);
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump a table                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEinterface::bDumpTable(char* pWords[])
+{
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," dump_table");
+  
+  vAppendRequest(sRequest);
   return true;
 }
 

@@ -156,6 +156,10 @@ void SegmentBuffer::vCopy(SegmentBuffer* pFromBuffer)
   i8 iBytes = pFromBuffer->iBytesUsed();
   
   Memory::vCopy(pFirstObject(),pFromBuffer->pFirstObject(),iBytes);
+  
+  char* pRevised = pcAdd(pFirstObject(),iBytes);
+  
+  m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
 }
 
 /*----------------------------------------------------------------------------*/
