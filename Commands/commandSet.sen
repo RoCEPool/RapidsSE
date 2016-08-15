@@ -8,6 +8,87 @@
 
 : failure 2 ;
 
+: withinTenants
+    0 dic.pick dic.name "tenants" streql
+;
+
+: withinCatalogs
+    0 dic.pick dic.name "catalogs" streql
+;
+
+: withinSchemas
+    0 dic.pick dic.name "schemas" streql
+;
+
+: withinTables
+    0 dic.pick dic.name "tables" streql
+;
+
+: checkInTenants
+    withinTenants if 1 exit then
+    "not in tenants" 1 failure 0
+;
+
+: checkInCatalogs
+    withinCatalogs if 1 exit then
+    "not in catalogs" 1 failure 0
+;
+
+: checkInSchemas
+    withinSchemas if 1 exit then
+    "not in schemas" 1 failure 0
+;
+
+: checkInTables
+    withinTables if 1 exit then
+    "not in tables" 1 failure 0
+;
+
+: checkIsDic ( word )
+
+    dup not if drop "no such dictionary" 1 failure 0 exit then
+
+    dup word.kind@ ' dic eql if 1 exit then
+    drop
+    "not a dictionary" 1 failure 0
+;
+
+: checkIsTenant ( word )
+
+    dup not if drop "no such tenant" 1 failure 0 exit then
+
+    dup word.kind@ ' tenant eql if 1 exit then
+    drop
+    "not a tenant" 1 failure 0
+;
+
+: checkIsCatalog ( word )
+
+    dup not if drop "no such catalog" 1 failure 0 exit then
+
+    dup word.kind@ ' catalog eql if 1 exit then
+    drop
+    "not a catalog" 1 failure 0
+;
+
+: checkIsSchema ( word )
+
+    dup not if drop "no such schema" 1 failure 0 exit then
+
+    dup word.kind@ ' schema eql if 1 exit then
+    drop
+    "not a schema" 1 failure 0
+;
+
+: checkIsTable ( word )
+
+    dup not if drop "no such table" 1 failure 0 exit then
+
+    dup word.kind@ ' table eql if 1 exit then
+    drop
+    "not a table" 1 failure 0
+;
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -30,9 +111,13 @@
 /* drop a dictionary                                                          */
 /*----------------------------------------------------------------------------*/
 : drop_dictionary ( "<dicname>" -- "dropped dictionary" 1 2 )
+
     find
-    dup word.kind@ ' dic eql not if drop "not a dictionary" 1 failure exit then
+
+    checkIsDic not if exit then
+
     >forget
+
     "dropped dictionary" success
 ;
 
@@ -40,6 +125,9 @@
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
 : create_tenant
+
+    checkInTenants not if exit then
+
     :dic dup ' tenant swap word.kind! execute {{
       "catalogs" :dic drop
     }}
@@ -50,6 +138,9 @@
 /* get list of tenants                                                        */
 /*----------------------------------------------------------------------------*/
 : list_tenants
+
+    checkInTenants not if exit then
+
     contents_string             // get contents of dic as a string
     success
 ;
@@ -58,6 +149,9 @@
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
 : create_catalog
+
+    checkInCatalogs not if exit then
+
     :dic dup ' catalog swap word.kind! execute {{
       "schemas" :dic drop
     }}
@@ -68,6 +162,9 @@
 /* get list of catalogs                                                       */
 /*----------------------------------------------------------------------------*/
 : list_catalogs
+
+    checkInCatalogs not if exit then
+
     contents_string             // get contents of dic as a string
     success
 ;
@@ -76,6 +173,9 @@
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
 : create_schema
+
+    checkInSchemas not if exit then
+
     :dic dup ' schema swap word.kind! execute {{
       "tables" :dic drop
     }}
@@ -86,6 +186,7 @@
 /* get list of schemas                                                        */
 /*----------------------------------------------------------------------------*/
 : list_schemas
+
     contents_string             // get contents of dic as a string
     success
 ;
@@ -94,6 +195,9 @@
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
 : create_table
+
+    checkInTables not if exit then
+
     :table drop
     "created table" success
 ;
@@ -102,6 +206,9 @@
 /* get list of tables                                                         */
 /*----------------------------------------------------------------------------*/
 : list_tables
+
+    checkInTables not if exit then
+
     contents_string             // get contents of dic as a string
     success
 ;
@@ -124,7 +231,13 @@
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
 : load_table ( "filename" "tablename" )
-    find execute ( "filename" table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( "filename" table )
+
     swap
     "load.sen" >>:
     "loaded table" success
@@ -137,7 +250,11 @@
 
     // traceon
 
-    find execute   ( "<to-tableNm>" ^fromTable )
+    find
+
+    checkIsTable not if exit then
+
+    execute        ( "<to-tableNm>" ^fromTable )
 
     swap           ( ^fromTable "<to-tableNm>" )
 
@@ -156,7 +273,13 @@
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
 : export_table ( "filename" "tablename" )
-    find execute ( "filename" table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( "filename" table )
+
     swap
     "export.sen" >>:
     "exported table" success
@@ -166,7 +289,13 @@
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
 : size_table ( "tablename" )
-    find execute ( table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( table )
+
     table.space
     >str success
 ;
@@ -175,7 +304,13 @@
 /* dump contents of table                                                     */
 /*----------------------------------------------------------------------------*/
 : dump_table ( "tablename" -- "done" <success> )
-    find execute ( table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( table )
+
     table.list   ( )
     "done" success
 ;
@@ -184,7 +319,13 @@
 /* get first buffer of table                                                  */
 /*----------------------------------------------------------------------------*/
 : select_table ( "tablename" )
-    find execute ( table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( table )
+
     table.firstBuffer
     >str success
 ;
@@ -193,7 +334,13 @@
 /* get address of table                                                       */
 /*----------------------------------------------------------------------------*/
 : address_table ( "tablename" )
-    find execute ( table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( table )
+
     >str success
 ;
 
@@ -201,8 +348,15 @@
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
 : truncate_table ( "tablename" )
-    find execute ( table )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( table )
+
     table.truncate
+
     "table truncated" success
 ;
 
@@ -210,10 +364,15 @@
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : drop_table ( "<tablename>" -- "dropped table" 1 2 )
+
     find
-    dup word.kind@ ' table eql not if drop "not a table" 0 2 exit then
+
+    checkIsTable not if exit then
+
     dup execute table.truncate
+
     >forget
+
     "dropped table" success
 ;
 
@@ -221,9 +380,13 @@
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
 : drop_schema ( "<schemaname> -- "dropped schema" 1 2 )
+
     find
-    dup word.kind@ ' schema eql not if drop "not a schema" 0 2 exit then
+
+    checkIsSchema not if exit then
+
     >forget
+
     "dropped schema" success
 ;
 
@@ -231,9 +394,13 @@
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
 : drop_catalog ( "<catalogname> -- "dropped catalog" 1 2 )
+
     find
-    dup word.kind@ ' catalog eql not if drop "not a catalog" 0 2 exit then
+
+    checkIsCatalog not if exit then
+
     >forget
+
     "dropped catalog" success
 ;
 
@@ -241,9 +408,13 @@
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
 : drop_tenant ( "<tenantname> -- "dropped tenant" 1 2 )
+
     find
-    dup word.kind@ ' tenant eql not if drop "not a tenant" 0 2 exit then
+
+    checkIsTenant not if exit then
+
     >forget
+
     "dropped tenant" success
 ;
 
@@ -271,27 +442,20 @@
 /* print working dictionary                                                   */
 /*----------------------------------------------------------------------------*/
 : pwd
+
     ""
-    dic.count 0 do I dic.pick dic.name concat " " concat loop
+    dic.count 0 do
+      I dic.pick
+      dic.name concat
+      " " concat
+    loop
+
     success
 ;
 
 /*----------------------------------------------------------------------------*/
 /* list dictionary contents                                                   */
 /*----------------------------------------------------------------------------*/
-: ls_old
-    word.this
-    begin dup
-      while
-        dup word.kind@ word.name ' word word.name streql not if
-          dup nameWord .put " is a " .put dup word.kind@ nameword .put .\n
-        then
-        prevWord
-      repeat
-    drop
-    "done" success
-;
-
 : ls
     ""                             // initial ls string
     word.this dup iterate          // setup iteration of words
