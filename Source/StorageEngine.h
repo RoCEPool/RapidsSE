@@ -12,7 +12,6 @@
 #include "Arguments.hpp"
 #include "RapidsSE.hpp"
 #include "AttachMap.hpp"
-#include "SEinterface.hpp"
 
 //-----------------------------------------------------------------------------
 namespace StorageEngine

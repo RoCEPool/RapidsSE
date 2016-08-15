@@ -2,7 +2,7 @@
 /* SEinterface.cpp - se interface                                             */
 /*============================================================================*/
 
-#include "StorageEngine.h"
+#include "Interface.h"
 
 extern Heap*        gpSmallHeap;
 extern Dictionary*  gpDictionary;

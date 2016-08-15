@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "StorageEngine.h"
+#include "Interface.h"
 
-namespace StorageEngine
+namespace Interface
 {
   class SEinterface : public Object
   {

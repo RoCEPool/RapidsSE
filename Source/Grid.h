@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Sessions.h"
+#include "Interface.h"
 
 #include "Node.hpp"
 #include "Proxy.hpp"

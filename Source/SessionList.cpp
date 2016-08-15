@@ -2,7 +2,7 @@
 /* SessionList.cpp - Session List                                             */
 /*============================================================================*/
 
-#include "Sessions.h"
+#include "Interface.h"
 
 extern Heap*        gpSmallHeap;
 extern SessionList* gpSessionList;

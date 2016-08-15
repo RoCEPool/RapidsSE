@@ -6,7 +6,7 @@
 
 #include "Tasking.h"
 
-namespace StorageEngine
+namespace Interface
 {
   class SEinterface;
 }
@@ -113,7 +113,7 @@ namespace Tasking
 //    Table*   m_pTable;
 //    Index*   m_pIndex;
     
-    StorageEngine::SEinterface* m_pSEitf;
+    Interface::SEinterface* m_pSEitf;
     
     // test
     Dictionary m_xTaskDictionary;

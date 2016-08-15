@@ -48,7 +48,7 @@ void RapidsSE::vCheckAssumptions(void)
   DBobjects::vCheckAssumptions();
   Tasking::vCheckAssumptions();
   Threading::vCheckAssumptions();
-  Sessions::vCheckAssumptions();
+  Interface::vCheckAssumptions();
   Grid::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
 }

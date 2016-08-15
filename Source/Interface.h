@@ -1,21 +1,22 @@
 /*============================================================================*/
-/* Sessions.h - includes for Sessions namespace                               */
+/* Interface.h - includes for Interface namespace                             */
 /*============================================================================*/
 
 #pragma once
 
 #include "Transactions.h"
 
+#include "SEinterface.hpp"
 #include "Session.hpp"
 #include "SessionList.hpp"
 
 //-----------------------------------------------------------------------------
-namespace Sessions
+namespace Interface
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Sessions;
+using namespace Interface;
 
 /*============================================================================*/
 /* end                                                                        */

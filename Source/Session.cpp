@@ -2,7 +2,7 @@
 /* Session.cpp - Session                                                      */
 /*============================================================================*/
 
-#include "Sessions.h"
+#include "Interface.h"
 
 extern SessionList*  gpSessionList;
 

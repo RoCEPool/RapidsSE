@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Sessions.h"
+#include "Interface.h"
 
-namespace Sessions {
+namespace Interface {
     
   class SessionList : public Object,
                       public List_t<Session>

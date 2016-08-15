@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Sessions.cpp - sessions functions                                          */
+/* Interface.cpp - interface functions                                        */
 /*============================================================================*/
 
 #include "Grid.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Sessions::vCheckAssumptions(void)
+void Interface::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Session)     < C_SIZE_SMALL_OBJECT);
   ASSERT(sizeof(SessionList) < C_SIZE_SMALL_OBJECT);
