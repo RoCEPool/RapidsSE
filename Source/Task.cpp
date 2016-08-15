@@ -767,7 +767,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
   vAddPrimitive("isStrLit",        &vIsStrLit,         false);
   vAddPrimitive("iterate",         &vIterate,          true );
-  vAddPrimitive("iterate_rt",      &vIterate_RT,       false);
+  vAddPrimitive("iterate_rt_A",    &vIterate_RT_A,     false);
+  vAddPrimitive("iterate_rt_B",    &vIterate_RT_B,     false);
   vAddPrimitive("j",               &vJ,                false);
   vAddPrimitive("jump",            &vJump,             false);
   vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
@@ -788,11 +789,12 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("next",            &vNext,             true );
-  vAddPrimitive("next_rt",         &vNext_RT,          false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
   vAddPrimitive("!=",              &vNotEqual,         false);
+  vAddPrimitive("object@",         &vObjectFetch,      false);
   vAddPrimitive("object!!",        &vObjectMark,       false);
+  vAddPrimitive("object!",         &vObjectStore,      false);
   vAddPrimitive("or",              &vOr,               false);
   vAddPrimitive("pause",           &vPause,            false);
   vAddPrimitive("pick",            &vPick,             false);
@@ -2418,13 +2420,13 @@ void Task::vCursorFetch(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vCursorFetch");
   
-  i8 iPick = 0;
+  i8 iPick = 1;
   
-  ValWsp xValWsp;
+  ValWsp xCursorWsp;
   
-  nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
+  nnpTask->m_xReturnStack.vPeek(iPick,&xCursorWsp);
   
-  nnpTask->vPushParam(xValWsp);
+  nnpTask->vPushParam(xCursorWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3244,26 +3246,54 @@ void Task::vIterate(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vEncode("iterate_rt");
+  pCurrentWord->vEncode("iterate_rt_a");
   
   Cell* pIterateLoc = pCurrentWord->pLastCell();
-  
   nnpTask->vPushReturn(pIterateLoc);
+  pCurrentWord->vEncode("iterate_rt_b");
+
+  pCurrentWord->vEncode("jumpFalse");
+  Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  nnpTask->vPushReturn(pJumpFalseArg);
 }
 
 /*----------------------------------------------------------------------------*/
-/* iterate_rt -- runtime of iterate ... next                                  */
+/* iterate_rt_a -- runtime of iterate ... next                                */
 /*----------------------------------------------------------------------------*/
-void Task::vIterate_RT(NNP_Task nnpTask)
+void Task::vIterate_RT_A(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIterate_RT");
+  nnpTask->vPrimitive("vIterate_RT_A");
   
+  PtrVal xPtrObject;
   PtrVal xPtrCursor;
   
-  if ( ! nnpTask->bPopParam(xPtrCursor) )
-    THROW_INVALID_PARAM("iterate_rt");
+  if ( ! nnpTask->bPopParam(xPtrObject,xPtrCursor) )
+    THROW_INVALID_PARAM("iterate_rt_a");
   
   nnpTask->vPushReturn(xPtrCursor);
+  nnpTask->vPushReturn(xPtrObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate_rt_b -- runtime of iterate ... next                                */
+/*----------------------------------------------------------------------------*/
+void Task::vIterate_RT_B(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vIterate_RT_B");
+  
+  i8 iPick = 0;
+  
+  ValWsp xObjectWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  nnpTask->vPushParam(xObjectWsp);
+  
+  ValWsp xWsp;
+  
+  if ( ! xObjectWsp.iAsInt() ) {
+    if ( !nnpTask->bPopReturn(xWsp,xWsp) )
+      THROW_INVALID_PARAM("iterate_rt_b");
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3586,37 +3616,17 @@ void Task::vNext(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  IPval xPtrIterateLoc;
-  nnpTask->vPopReturn(&xPtrIterateLoc);
+  Cell* pJumpFalseArg;
+  nnpTask->vPopReturn(pJumpFalseArg);
   
-  Cell* pIterateLoc = xPtrIterateLoc.pCell();
+  Cell* pIterateLoc;
+  nnpTask->vPopReturn(pIterateLoc);
   
-  pCurrentWord->vEncode("Next_RT");
+  //----------------------------------------------------------------------------
   
   pCurrentWord->vEncode("jump",pIterateLoc);
-}
-
-/*----------------------------------------------------------------------------*/
-/* next_rt -- runtime for iterate ... next                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vNext_RT(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vNext_RT");
-
-  IPval xPtrObject;
-  IPval xPtrCursor;
   
-  if ( ! nnpTask->bPopParam(xPtrObject) )
-    THROW_INVALID_PARAM("next_rt");
-  
-  if (xPtrObject.iAsInt()) {
-    // fall into jump which follows
-  }
-  else {
-    nnpTask->vPopReturn(&xPtrCursor);
-    nnpTask->m_pCell += 2;
-    // skip the jump which follows
-  }
+  pJumpFalseArg->m_pJumpLocn = pCurrentWord->pLastCell();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3658,6 +3668,39 @@ void Task::vNotEqual(NNP_Task nnpTask)
   r = i != j;
   
   nnpTask->vPushParam(r);
+}
+
+/*----------------------------------------------------------------------------*/
+/* object@ -- fetch object from return stack onto param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vObjectFetch");
+  
+  i8 iPick = 0;
+  
+  ValWsp xObjectWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  
+  nnpTask->vPushParam(xObjectWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* object! -- replace object on return stack from param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vObjectStore");
+  
+  i8 iPeek = 0;
+  
+  ValWsp xObjectWsp;
+  
+  if ( ! nnpTask->bPopParam(xObjectWsp) )
+    THROW_INVALID_PARAM("object!");
+  
+  nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3845,7 +3888,7 @@ void Task::vRdtscp(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* repeat -- repeat a begin-while-repeat loop                                 */
+/* repeat -- repeat a begin-while-repeat loop                       immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vRepeat(NNP_Task nnpTask)
 {
@@ -4527,7 +4570,7 @@ void Task::vWake(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* while -- check for continue with loop                                      */
+/* while -- check for continue with loop                            immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vWhile(NNP_Task nnpTask)
 {

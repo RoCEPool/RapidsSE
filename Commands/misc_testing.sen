@@ -1,8 +1,28 @@
+/*============================================================================*/
+/* misc_testing.sen -- miscellaneous testing                                  */
+/*============================================================================*/
+
 "misc_testing.sen" .
 
 : iftest if "yes" . then ;
+
 : ifelsetest if "yes" . else "no" . then ;
+
 : untiltest 0 begin 1 + dup . dup 10 == until ;
+
 : whiletest 0 begin 1 + dup 10 < while dup . repeat ;
+
+: dotest 10 0 do I . loop ;
+
 : +looptest 10 0 do I . 2 +loop ;
 
+: iterate_test
+    word.this word.this iterate // iterate word cursor
+      object@ word.name .       // print the name of the word
+      object@ prevWord object!  // step backwards thru words
+    next                        // next iteration
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

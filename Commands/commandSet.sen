@@ -4,18 +4,22 @@
 
 "commandSet.sen" .
 
+: success 0 2 ;
+
+: failure 2 ;
+
 /*----------------------------------------------------------------------------*/
 /* connect to SE                                                              */
 /*----------------------------------------------------------------------------*/
 : connect
-    "connected" 1 2
+    "connected" success
 ;
 
 /*----------------------------------------------------------------------------*/
 /* disconnect from SE                                                         */
 /*----------------------------------------------------------------------------*/
 : disconnect
-    "disconnected" 1 2
+    "disconnected" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -25,7 +29,7 @@
     :dic dup ' tenant swap word.kind! execute {{
       "catalogs" :dic drop
     }}
-    "created tenant" 1 2
+    "created tenant" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +39,7 @@
     :dic dup ' catalog swap word.kind! execute {{
       "schemas" :dic drop
     }}
-    "created catalog" 1 2
+    "created catalog" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +49,7 @@
     :dic dup ' schema swap word.kind! execute {{
       "tables" :dic drop
     }}
-    "created schema" 1 2
+    "created schema" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +57,7 @@
 /*----------------------------------------------------------------------------*/
 : create_table
     :table drop
-    "created table" 1 2
+    "created table" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +67,7 @@
     find execute ( "filename" table )
     swap
     "load.sen" >>:
-    "loaded table" 1 2
+    "loaded table" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +77,7 @@
     find execute ( "filename" table )
     swap
     "export.sen" >>:
-    "exported table" 1 2
+    "exported table" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +86,7 @@
 : size_table ( "tablename" )
     find execute ( table )
     table.space
-    >str 1 2
+    >str success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -91,7 +95,7 @@
 : truncate_table ( "tablename" )
     find execute ( table )
     table.truncate
-    "table truncated" 1 2
+    "table truncated" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -102,8 +106,7 @@
     dup word.kind@ ' table eql not if drop "not a table" 0 2 exit then
     dup execute table.truncate
     >forget
-    "dropped table" 1 2
-    traceoff
+    "dropped table" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +116,7 @@
     find
     dup word.kind@ ' schema eql not if drop "not a schema" 0 2 exit then
     >forget
-    "dropped schema" 1 2
+    "dropped schema" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +126,7 @@
     find
     dup word.kind@ ' catalog eql not if drop "not a catalog" 0 2 exit then
     >forget
-    "dropped catalog" 1 2
+    "dropped catalog" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +136,7 @@
     find
     dup word.kind@ ' tenant eql not if drop "not a tenant" 0 2 exit then
     >forget
-    "dropped tenant" 1 2
+    "dropped tenant" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +148,7 @@
     else
       find execute dic.push
     then
-    "changed" 1 2
+    "changed" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +157,7 @@
 : pwd
     ""
     dic.count 0 do I . I dic.pick dic.name concat " " concat loop
-    1 2
+    success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -170,31 +173,33 @@
         prevWord
       repeat
     drop
-    "done" 1 2
+    "done" success
 ;
 
 : ls
-    traceon
-    ""                             // ls string
-    word.this iterate              // iterate word cursor
+    ""                             // initial ls string
+    word.this dup iterate          // setup iteration of words
       "(" concat                   //
-      cursor@ word.name concat     // add name of the word to ls string
-      " " concat cursor@ word.kind@ word.name concat
-      cursor@ isTable if
-        " " concat cursor@ execute table.space >str concat
+      object@ word.name concat     // add name of the word to ls string
+                                   // add word kind to ls string
+      " " concat
+      object@ word.kind@ word.name concat
+                                   // add size of table to ls string
+      object@ isTable if
+        " " concat
+        object@ execute table.space >str concat
       then
       ")\n" concat                 //
-      cursor@ prevWord dup cursor! // advance cursor backwards thru words
+      object@ prevWord object!     // step backwards thru words
     next
-    traceoff
-    1 2
+    success
 ;
 
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
 : ping
-    "pong" 1 2
+    "pong" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +207,7 @@
 /*----------------------------------------------------------------------------*/
 : x
     words
-    "x" 1 2
+    "x" success
 ;
 
 /*============================================================================*/

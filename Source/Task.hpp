@@ -306,7 +306,8 @@ namespace Tasking
     static void vInputStdin(NNP_Task nnpTask);     
     static void vInputText(NNP_Task nnpTask);      
     static void vIterate(NNP_Task nnpTask);
-    static void vIterate_RT(NNP_Task nnpTask);
+    static void vIterate_RT_A(NNP_Task nnpTask);
+    static void vIterate_RT_B(NNP_Task nnpTask);
     static void vInterpreting(NNP_Task nnpTask);
     static void vIsBooted(NNP_Task nnpTask);       
     static void vIsCompiling(NNP_Task nnpTask);    
@@ -336,11 +337,12 @@ namespace Tasking
     static void vMultiply(NNP_Task nnpTask);       
     static void vNameWord(NNP_Task nnpTask);       
     static void vNext(NNP_Task nnpTask);
-    static void vNext_RT(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
     static void vNotEqual(NNP_Task nnpTask);       
+    static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMark(NNP_Task nnpTask);
+    static void vObjectStore(NNP_Task nnpTask);
     static void vOr(NNP_Task nnpTask);
     static void vPause(NNP_Task nnpTask);          
     static void vPick(NNP_Task nnpTask);           
