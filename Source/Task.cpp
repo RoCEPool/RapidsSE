@@ -217,7 +217,7 @@ void Task::vAddConstants(void)
   /* 27 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
   /* 28 */ vAddConstant("CN_ROW",                   CN_ROW);
   /* 29 */ vAddConstant("CN_SEGMENTBUFFER",         CN_SEGMENTBUFFER);
-  /* 30 */ vAddConstant("CN_SEINTERFACE",           CN_SEINTERFACE);
+  /* 30 */ vAddConstant("CN_SEITF",                 CN_SEITF);
   /* 31 */ vAddConstant("CN_SESSION",               CN_SESSION);
   /* 32 */ vAddConstant("CN_SESSIONLIST",           CN_SESSIONLIST);
   /* 33 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
@@ -275,7 +275,7 @@ void Task::vAddConstants(void)
   /* 29 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
   /* 30 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(Row));
   /* 31 */ vAddConstant("SIZEOF_ROWSPACE",          sizeof(Row));
-  /* 32 */ vAddConstant("SIZEOF_SEINTERFACE",       sizeof(SEinterface));
+  /* 32 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
   /* 33 */ vAddConstant("SIZEOF_SESSION",           sizeof(Session));
   /* 34 */ vAddConstant("SIZEOF_SESSIONLIST",       sizeof(SessionList));
   /* 37 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
@@ -4405,7 +4405,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
     THROW_INVALID_PARAM(">seitf");
   
   PtrVal xPtrSEitf;
-  xPtrSEitf = reinterpret_cast<SEinterface*>(iVal);
+  xPtrSEitf = reinterpret_cast<SEitf*>(iVal);
   
   nnpTask->vPushParam(&xPtrSEitf);
 }
@@ -5144,8 +5144,8 @@ void Task::vSEitfDelete(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("seitf.delete");
 
-  SEinterface* pSEitf = static_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   delete pSEitf;
 }
@@ -5161,8 +5161,8 @@ void Task::vSEitfDump(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("seitf.dump");
   
-  SEinterface* pSEitf = reinterpret_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vDump("SessionList:");
 }
@@ -5174,8 +5174,8 @@ void Task::vSEitfNew(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfNew");
   
-  SEinterface* pSEitf = new SEinterface;
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = new SEitf;
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   PtrVal xPtrSEitf;
   xPtrSEitf = pSEitf;
@@ -5194,8 +5194,8 @@ void Task::vSEitfReqFetch(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("seitf.req@");
   
-  SEinterface* pSEitf = reinterpret_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   PtrVal xPtrQueue;
   xPtrQueue = pSEitf->pRequestQueue();
@@ -5214,8 +5214,8 @@ void Task::vSEitfReqStore(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("seitf.req!");
   
-  SEinterface* pSEitf = reinterpret_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   PtrVal xPtrQueue;
   
@@ -5239,8 +5239,8 @@ void Task::vSEitfRspFetch(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("seitf.rsp@");
   
-  SEinterface* pSEitf = reinterpret_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   PtrVal xPtrQueue;
   xPtrQueue = pSEitf->pResponseQueue();
@@ -5259,8 +5259,8 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("seitf.rsp!");
   
-  SEinterface* pSEitf = reinterpret_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(CN_SEITF == pSEitf->eClass());
   
   PtrVal xPtrQueue;
   
@@ -6017,7 +6017,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(pThatTask) )
     THROW_INVALID_PARAM("task.seitf@");
   
-  SEinterface* pSEitf = pThatTask->m_pSEitf;
+  SEitf* pSEitf = pThatTask->m_pSEitf;
   
   PtrVal xPtrSEitf;
   xPtrSEitf = pSEitf;
@@ -6042,8 +6042,8 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
     THROW_INVALID_PARAM("task.seitf!");
   
-  SEinterface* pSEitf = static_cast<SEinterface*>(xPtrSEitf.pPtr());
-  ASSERT(! pSEitf || CN_SEINTERFACE == pSEitf->eClass());
+  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;
 }

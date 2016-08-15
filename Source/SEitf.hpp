@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SEinterface.hpp - se interface                                             */
+/* SEitf.hpp - se interface                                                   */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace Interface
 {
-  class SEinterface : public Object
+  class SEitf : public Object
   {
   public:
     i8         m_iPid;           // process which created this seitf
@@ -25,8 +25,8 @@ namespace Interface
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SEinterface(void);
-    ~SEinterface(void);
+    SEitf(void);
+    ~SEitf(void);
     
     DictionaryStack* pDicStack(void);
     void   vPushDic(Dictionary* pDictionary);

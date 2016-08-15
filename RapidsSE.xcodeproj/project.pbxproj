@@ -55,7 +55,7 @@
 		F226E7831D45D65000E10FC3 /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7811D45D65000E10FC3 /* Arguments.cpp */; };
 		F226E7861D45D6FE00E10FC3 /* OnHeap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7841D45D6FE00E10FC3 /* OnHeap.cpp */; };
 		F226E7891D45DA8200E10FC3 /* InProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7871D45DA8200E10FC3 /* InProcess.cpp */; };
-		F226E78C1D45ED8B00E10FC3 /* SEinterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E78A1D45ED8B00E10FC3 /* SEinterface.cpp */; };
+		F226E78C1D45ED8B00E10FC3 /* SEitf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E78A1D45ED8B00E10FC3 /* SEitf.cpp */; };
 		F226E7911D45FD5800E10FC3 /* Partition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E78D1D45FD5800E10FC3 /* Partition.cpp */; };
 		F226E7921D45FD5800E10FC3 /* Partitions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E78F1D45FD5800E10FC3 /* Partitions.cpp */; };
 		F226E7951D45FD7500E10FC3 /* Ring.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7931D45FD7500E10FC3 /* Ring.cpp */; };
@@ -280,8 +280,8 @@
 		F226E7851D45D6FE00E10FC3 /* OnHeap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OnHeap.hpp; sourceTree = "<group>"; };
 		F226E7871D45DA8200E10FC3 /* InProcess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InProcess.cpp; sourceTree = "<group>"; };
 		F226E7881D45DA8200E10FC3 /* InProcess.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InProcess.hpp; sourceTree = "<group>"; };
-		F226E78A1D45ED8B00E10FC3 /* SEinterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SEinterface.cpp; path = Source/SEinterface.cpp; sourceTree = "<group>"; };
-		F226E78B1D45ED8B00E10FC3 /* SEinterface.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SEinterface.hpp; path = Source/SEinterface.hpp; sourceTree = "<group>"; };
+		F226E78A1D45ED8B00E10FC3 /* SEitf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SEitf.cpp; path = Source/SEitf.cpp; sourceTree = "<group>"; };
+		F226E78B1D45ED8B00E10FC3 /* SEitf.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SEitf.hpp; path = Source/SEitf.hpp; sourceTree = "<group>"; };
 		F226E78D1D45FD5800E10FC3 /* Partition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Partition.cpp; sourceTree = "<group>"; };
 		F226E78E1D45FD5800E10FC3 /* Partition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Partition.hpp; sourceTree = "<group>"; };
 		F226E78F1D45FD5800E10FC3 /* Partitions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Partitions.cpp; sourceTree = "<group>"; };
@@ -686,12 +686,12 @@
 			children = (
 				F226E7621D45835300E10FC3 /* Interface.h */,
 				F2389CC71D4771A3008DF3D9 /* Interface.cpp */,
+				F226E78A1D45ED8B00E10FC3 /* SEitf.cpp */,
+				F226E78B1D45ED8B00E10FC3 /* SEitf.hpp */,
 				F226E76E1D458C5600E10FC3 /* SessionList.cpp */,
 				F226E76F1D458C5600E10FC3 /* SessionList.hpp */,
 				F226E75F1D4582CC00E10FC3 /* Session.cpp */,
 				F226E7601D4582CC00E10FC3 /* Session.hpp */,
-				F226E78A1D45ED8B00E10FC3 /* SEinterface.cpp */,
-				F226E78B1D45ED8B00E10FC3 /* SEinterface.hpp */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -1023,7 +1023,7 @@
 				F253099B1D023E58000F6728 /* Memory.cpp in Sources */,
 				F21D29BF1D0E3F9A000F8C45 /* RapidsSE.cpp in Sources */,
 				F2389CCC1D477220008DF3D9 /* Threading.cpp in Sources */,
-				F226E78C1D45ED8B00E10FC3 /* SEinterface.cpp in Sources */,
+				F226E78C1D45ED8B00E10FC3 /* SEitf.cpp in Sources */,
 				F2EC32CD1D2C67DA00791294 /* Thread.cpp in Sources */,
 				F21D29BA1D0E21DE000F8C45 /* PosixThread.cpp in Sources */,
 				F226E7201D408B6100E10FC3 /* NP.cpp in Sources */,

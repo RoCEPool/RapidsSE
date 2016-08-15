@@ -6,7 +6,7 @@
 
 #include "Transactions.h"
 
-#include "SEinterface.hpp"
+#include "SEitf.hpp"
 #include "Session.hpp"
 #include "SessionList.hpp"
 

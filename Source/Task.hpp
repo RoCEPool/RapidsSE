@@ -8,7 +8,7 @@
 
 namespace Interface
 {
-  class SEinterface;
+  class SEitf;
 }
 
 namespace Threading
@@ -113,7 +113,7 @@ namespace Tasking
 //    Table*   m_pTable;
 //    Index*   m_pIndex;
     
-    Interface::SEinterface* m_pSEitf;
+    Interface::SEitf* m_pSEitf;
     
     // test
     Dictionary m_xTaskDictionary;

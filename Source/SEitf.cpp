@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SEinterface.cpp - se interface                                             */
+/* SEitf.cpp - se interface                                                   */
 /*============================================================================*/
 
 #include "Interface.h"
@@ -10,7 +10,7 @@ extern Dictionary*  gpDictionary;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SEinterface::operator new(size_t iSize)
+void* SEitf::operator new(size_t iSize)
 {
   Object* pObject = gpSmallHeap->pAllocObject();
   
@@ -20,9 +20,9 @@ void* SEinterface::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void SEinterface::operator delete(void* pSEinterfaceAddress)
+void SEitf::operator delete(void* pSEinterfaceAddress)
 {
-  SEinterface* pSEitf = reinterpret_cast<SEinterface*>(pSEinterfaceAddress);
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(pSEinterfaceAddress);
   
   gpSmallHeap->vFreeObject(pSEitf);
 }
@@ -30,8 +30,8 @@ void SEinterface::operator delete(void* pSEinterfaceAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SEinterface::SEinterface(void)
-: Object(CN_SEINTERFACE)
+SEitf::SEitf(void)
+: Object(CN_SEITF)
 {
   m_iPid = 0;
   //m_xDictionary;
@@ -45,14 +45,14 @@ SEinterface::SEinterface(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SEinterface::~SEinterface(void)
+SEitf::~SEitf(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop dictionary from dictionary stack                                       */
 /*----------------------------------------------------------------------------*/
-DictionaryStack* SEinterface::pDicStack(void)
+DictionaryStack* SEitf::pDicStack(void)
 {
   return &m_xDicStack;
 }
@@ -60,7 +60,7 @@ DictionaryStack* SEinterface::pDicStack(void)
 /*----------------------------------------------------------------------------*/
 /* push dictionary onto dictionary stack                                      */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vPushDic(Dictionary* pDictionary)
+void SEitf::vPushDic(Dictionary* pDictionary)
 {
   m_xDicStack.vPush(pDictionary);
 }
@@ -68,7 +68,7 @@ void SEinterface::vPushDic(Dictionary* pDictionary)
 /*----------------------------------------------------------------------------*/
 /* pop dictionary from dictionary stack                                       */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vPopDic(void)
+void SEitf::vPopDic(void)
 {
   m_xDicStack.vDiscard();
 }
@@ -76,7 +76,7 @@ void SEinterface::vPopDic(void)
 /*----------------------------------------------------------------------------*/
 /* find word given name                                                       */
 /*----------------------------------------------------------------------------*/
-Word* SEinterface::pFindWord(s& sName)
+Word* SEitf::pFindWord(s& sName)
 {
   _poolAddress_(this);
   
@@ -88,7 +88,7 @@ Word* SEinterface::pFindWord(s& sName)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vDump(const char* aTitle)
+void SEitf::vDump(const char* aTitle)
 {
   vTrace("%s %p:\n",aTitle,this);
   vTrace("  RequestQueue %p  ResponseQueue %p\n",
@@ -99,7 +99,7 @@ void SEinterface::vDump(const char* aTitle)
 /*----------------------------------------------------------------------------*/
 /* initialise this seitf                                                      */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vInit(void)
+void SEitf::vInit(void)
 {
   m_iPid = Process::iGetPid();
   
@@ -130,7 +130,7 @@ void SEinterface::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vPrompt(void)
+void SEitf::vPrompt(void)
 {
   s32  sPrompt;
   s256 sCommand;
@@ -172,7 +172,7 @@ void SEinterface::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* parse command and break into words                                         */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vParse(s& sCommand, char* pWords[])
+void SEitf::vParse(s& sCommand, char* pWords[])
 {
   char* ps = sCommand.a();
   
@@ -186,7 +186,7 @@ void SEinterface::vParse(s& sCommand, char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vExecute(char* pWords[])
+void SEitf::vExecute(char* pWords[])
 {
   i8   iStatus;
   s256 sResponse;
@@ -203,7 +203,7 @@ void SEinterface::vExecute(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* append request to request queue                                            */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vAppendRequest(s& sRequest)
+void SEitf::vAppendRequest(s& sRequest)
 {
   char wItfAddr[32];
   char wWorkspace[C_1KB * 16];
@@ -230,7 +230,7 @@ void SEinterface::vAppendRequest(s& sRequest)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPopResponse(s& sResponse)
+bool SEitf::bPopResponse(s& sResponse)
 {
   ValWsp xResponse;
   
@@ -245,7 +245,7 @@ bool SEinterface::bPopResponse(s& sResponse)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPopResponse(i8& iResult, s& sResponse)
+bool SEitf::bPopResponse(i8& iResult, s& sResponse)
 {
   bool b;
   ValSet xValSet;
@@ -273,7 +273,7 @@ bool SEinterface::bPopResponse(i8& iResult, s& sResponse)
 /*----------------------------------------------------------------------------*/
 /* get request queue                                                          */
 /*----------------------------------------------------------------------------*/
-Queue* SEinterface::pRequestQueue(void)
+Queue* SEitf::pRequestQueue(void)
 {
   return m_pRequestQueue;
 }
@@ -281,14 +281,14 @@ Queue* SEinterface::pRequestQueue(void)
 /*----------------------------------------------------------------------------*/
 /* set request queue                                                          */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vRequestQueue(Queue* pRequestQueue)
+void SEitf::vRequestQueue(Queue* pRequestQueue)
 {
   m_pRequestQueue = pRequestQueue;
 }
 /*----------------------------------------------------------------------------*/
 /* get response queue                                                         */
 /*----------------------------------------------------------------------------*/
-Queue* SEinterface::pResponseQueue(void)
+Queue* SEitf::pResponseQueue(void)
 {
   return m_pResponseQueue;
 }
@@ -296,7 +296,7 @@ Queue* SEinterface::pResponseQueue(void)
 /*----------------------------------------------------------------------------*/
 /* set response queue                                                         */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vResponseQueue(Queue* pResponseQueue)
+void SEitf::vResponseQueue(Queue* pResponseQueue)
 {
   m_pResponseQueue = pResponseQueue;
 }
@@ -304,7 +304,7 @@ void SEinterface::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 /* do                                                                         */
 /*----------------------------------------------------------------------------*/
-void SEinterface::vDo(const char* aCommand)
+void SEitf::vDo(const char* aCommand)
 {
   s256 sCommand;
   
@@ -341,7 +341,7 @@ void SEinterface::vDo(const char* aCommand)
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDecode(char* pWords[])
+bool SEitf::bDecode(char* pWords[])
 {
   if (String::bEqualTo("?",pWords[0],C_NO_CASE) ||
       String::bEqualTo("help",pWords[0],C_NO_CASE)) {
@@ -525,7 +525,7 @@ bool SEinterface::bDecode(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bHelp(char* pWords[])
+bool SEitf::bHelp(char* pWords[])
 {
   vTrace("seitf temporary commands:\n");
   vTrace("bye   -- quit seitf\n");
@@ -558,7 +558,7 @@ bool SEinterface::bHelp(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bConnect(char* pWords[])
+bool SEitf::bConnect(char* pWords[])
 {
   s256 sRequest;
   
@@ -571,7 +571,7 @@ bool SEinterface::bConnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDisconnect(char* pWords[])
+bool SEitf::bDisconnect(char* pWords[])
 {
   s256 sRequest;
 
@@ -584,7 +584,7 @@ bool SEinterface::bDisconnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a dictionary                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropDictionary(char* pWords[])
+bool SEitf::bDropDictionary(char* pWords[])
 {
   s256 sRequest;
   
@@ -603,7 +603,7 @@ bool SEinterface::bDropDictionary(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateTenant(char* pWords[])
+bool SEitf::bCreateTenant(char* pWords[])
 {
   s256 sRequest;
     
@@ -622,7 +622,7 @@ bool SEinterface::bCreateTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bListTenants(char* pWords[])
+bool SEitf::bListTenants(char* pWords[])
 {
   s256 sRequest;
   
@@ -635,7 +635,7 @@ bool SEinterface::bListTenants(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropTenant(char* pWords[])
+bool SEitf::bDropTenant(char* pWords[])
 {
   s256 sRequest;
   
@@ -654,7 +654,7 @@ bool SEinterface::bDropTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateCatalog(char* pWords[])
+bool SEitf::bCreateCatalog(char* pWords[])
 {
   s256 sRequest;
   
@@ -673,7 +673,7 @@ bool SEinterface::bCreateCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bListCatalogs(char* pWords[])
+bool SEitf::bListCatalogs(char* pWords[])
 {
   s256 sRequest;
   
@@ -686,7 +686,7 @@ bool SEinterface::bListCatalogs(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropCatalog(char* pWords[])
+bool SEitf::bDropCatalog(char* pWords[])
 {
   s256 sRequest;
   
@@ -705,7 +705,7 @@ bool SEinterface::bDropCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateSchema(char* pWords[])
+bool SEitf::bCreateSchema(char* pWords[])
 {
   s256 sRequest;
   
@@ -724,7 +724,7 @@ bool SEinterface::bCreateSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bListSchemas(char* pWords[])
+bool SEitf::bListSchemas(char* pWords[])
 {
   s256 sRequest;
   
@@ -737,7 +737,7 @@ bool SEinterface::bListSchemas(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropSchema(char* pWords[])
+bool SEitf::bDropSchema(char* pWords[])
 {
   s256 sRequest;
   
@@ -756,7 +756,7 @@ bool SEinterface::bDropSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCreateTable(char* pWords[])
+bool SEitf::bCreateTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -775,7 +775,7 @@ bool SEinterface::bCreateTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bListTables(char* pWords[])
+bool SEitf::bListTables(char* pWords[])
 {
   s256 sRequest;
   
@@ -788,7 +788,7 @@ bool SEinterface::bListTables(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDumpTable(char* pWords[])
+bool SEitf::bDumpTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -807,7 +807,7 @@ bool SEinterface::bDumpTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDropTable(char* pWords[])
+bool SEitf::bDropTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -826,7 +826,7 @@ bool SEinterface::bDropTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bAddColumn(char* pWords[])
+bool SEitf::bAddColumn(char* pWords[])
 {
   s256 sRequest;
   
@@ -849,7 +849,7 @@ bool SEinterface::bAddColumn(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bListColumns(char* pWords[])
+bool SEitf::bListColumns(char* pWords[])
 {
   s256 sRequest;
   
@@ -862,7 +862,7 @@ bool SEinterface::bListColumns(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bCopyTable(char* pWords[])
+bool SEitf::bCopyTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -885,7 +885,7 @@ bool SEinterface::bCopyTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bExportTable(char* pWords[])
+bool SEitf::bExportTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -908,7 +908,7 @@ bool SEinterface::bExportTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bLoadTable(char* pWords[])
+bool SEitf::bLoadTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -931,7 +931,7 @@ bool SEinterface::bLoadTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bSelectTable(char* pWords[])
+bool SEitf::bSelectTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -950,7 +950,7 @@ bool SEinterface::bSelectTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get address a table                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bAddressTable(char* pWords[])
+bool SEitf::bAddressTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -969,7 +969,7 @@ bool SEinterface::bAddressTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bSizeTable(char* pWords[])
+bool SEitf::bSizeTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -988,7 +988,7 @@ bool SEinterface::bSizeTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bTruncateTable(char* pWords[])
+bool SEitf::bTruncateTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1007,7 +1007,7 @@ bool SEinterface::bTruncateTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* pop dictionary                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPopDic(char* pWords[])
+bool SEitf::bPopDic(char* pWords[])
 {
   return false;
 }
@@ -1015,7 +1015,7 @@ bool SEinterface::bPopDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPushDic(char* pWords[])
+bool SEitf::bPushDic(char* pWords[])
 {
   s256 sRequest;
   
@@ -1035,7 +1035,7 @@ bool SEinterface::bPushDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bGetDicPath(char* pWords[])
+bool SEitf::bGetDicPath(char* pWords[])
 {
   s256 sRequest;
   
@@ -1048,7 +1048,7 @@ bool SEinterface::bGetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* set dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bSetDicPath(char* pWords[])
+bool SEitf::bSetDicPath(char* pWords[])
 {
   return true;
 }
@@ -1056,7 +1056,7 @@ bool SEinterface::bSetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bGetDicContents(char* pWords[])
+bool SEitf::bGetDicContents(char* pWords[])
 {
   s256 sRequest;
   
@@ -1069,7 +1069,7 @@ bool SEinterface::bGetDicContents(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bPing(char* pWords[])
+bool SEitf::bPing(char* pWords[])
 {
   s256 sRequest;
   
@@ -1082,7 +1082,7 @@ bool SEinterface::bPing(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bX(char* pWords[])
+bool SEitf::bX(char* pWords[])
 {
   s256 sRequest;
   
@@ -1095,7 +1095,7 @@ bool SEinterface::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* do                                                                         */
 /*----------------------------------------------------------------------------*/
-bool SEinterface::bDo(char* pWords[])
+bool SEitf::bDo(char* pWords[])
 {
   vDo("ping");
   vDo("cd tenants");

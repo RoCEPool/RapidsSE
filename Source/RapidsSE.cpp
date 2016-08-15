@@ -340,7 +340,7 @@ void RapidsSE::vRunDocol(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSeitfPrompt(void)
 {
-  SEinterface* pSEitf = new SEinterface;
+  SEitf* pSEitf = new SEitf;
   pSEitf->vInit();
   pSEitf->vPrompt();
 }
