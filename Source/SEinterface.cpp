@@ -1111,8 +1111,10 @@ bool SEinterface::bDo(char* pWords[])
   vDo("mktbl t");
   vDo("pwd");
   vDo("ls");
-  vDo("ld t \"/tpch/nation.tbl\"");
-  vDo("ex t \"/tmp/nation.txt\"");
+  vDo("ld t \"/tpch/lineitem.tbl\"");
+  vDo("ld t \"/tpch/lineitem.tbl\"");
+  vDo("ld t \"/tpch/lineitem.tbl\"");
+  vDo("ex t \"/tmp/lineitem.txt\"");
   vDo("sz t ");
 //  vDo("tr t ");
 //  vDo("sz t ");

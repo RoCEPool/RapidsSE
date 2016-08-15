@@ -151,12 +151,23 @@ void Table::vLoad(File* pFile)
 {
   _poolAddress_(this);
   
- ValWsp xBuffer;
+   ValWsp xBuffer;
   
   char* y = xBuffer.pAsStrVal()->sStr();
   
+  if (! gpBufferPool->bHasDataSpace()) {
+    vTrace("Buffer pool low\n");
+    return;
+  }
+    
   while (pFile->bReadLine(y)) {
     xBuffer.pAsStrVal()->vSize();
+
+    if (! gpBufferPool->bHasDataSpace()) {
+      vTrace("Buffer pool low\n");
+      return;
+    }
+    
     vInsertRow(xBuffer.pAsStrVal());
   }
 }

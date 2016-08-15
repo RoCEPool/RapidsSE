@@ -67,6 +67,7 @@ namespace MemoryManagement
     void vFree(Buffer* pBuffer);
     i8   iFreePercent(void);
     i8   iFreeSpace(void);
+    bool bHasDataSpace(void);
     void vInitialise(void);
     i8   iPoolSize(void) const;
     Buffer* pToBuffer(bn nBuffer) const;

@@ -232,6 +232,8 @@
 /*----------------------------------------------------------------------------*/
 : load_table ( "filename" "tablename" )
 
+    freespace .
+
     find
 
     checkIsTable not if exit then

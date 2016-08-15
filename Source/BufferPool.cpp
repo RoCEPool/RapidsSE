@@ -423,6 +423,20 @@ i8 BufferPool::iFreeSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does the pool have room for more data (row or entries) ?                   */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bHasDataSpace(void)
+{
+  _class_(CN_BUFFERPOOL);
+  
+  i8   iPercent = iFreePercent();
+  
+  bool bHasSpace = iPercent > 19 ? true : false;
+  
+  return bHasSpace;
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialise all buffers in the pool                                         */
 /*----------------------------------------------------------------------------*/
 void BufferPool::vInitialise(void)

@@ -5814,7 +5814,7 @@ void Task::vTableExport(NNP_Task nnpTask)
   PtrVal xPtrFile;
   
   if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
-    THROW_INVALID_PARAM("table.load");
+    THROW_INVALID_PARAM("table.export");
   
   Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
   ASSERT(CN_TABLE == pTable->eClass());
