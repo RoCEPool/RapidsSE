@@ -434,6 +434,18 @@ bool InputStream::bParseString(char* yWorkspace)
   
   // collect the chars in the string
   while ( bMoreInput() && !bEndString() ) {
+    
+    // test for \n
+    if ('\\' == m_cChar) {
+      vGetChar();
+      if ('n' == m_cChar)
+        m_cChar = '\n';
+      else {
+        vUngetChar();
+        m_cChar = '\\';
+      }
+    }
+        
     *y++ = m_cChar;
     vGetChar();
   }
