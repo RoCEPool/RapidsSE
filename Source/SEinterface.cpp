@@ -178,7 +178,7 @@ void SEinterface::vParse(s& sCommand, char* pWords[])
   
   String::vSkipWhite(&ps);
   for (i8 i = 0; String::bExtractWordString(&ps,pWords[i]); i++) {
-    vTrace("Word[%lld] %s\n",i,pWords[i]);
+    //vTrace("Word[%lld] %s\n",i,pWords[i]);
     String::vSkipWhite(&ps);
   }
 }

@@ -75,6 +75,10 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--start --seitf"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--status"
             isEnabled = "NO">
          </CommandLineArgument>

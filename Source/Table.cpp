@@ -42,7 +42,7 @@ Table::Table(void)
   _magic_();
   
   Word* pWord = Word::pToWord(this);
-  vTrace("Table name: %s\n",pWord->sName().a());
+  //.vTrace("Table name: %s\n",pWord->sName().a());
   
   m_iTxId        = -1;
   m_sTableName   = pWord->sName();

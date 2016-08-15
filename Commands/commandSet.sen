@@ -208,7 +208,7 @@
 /*----------------------------------------------------------------------------*/
 : pwd
     ""
-    dic.count 0 do I . I dic.pick dic.name concat " " concat loop
+    dic.count 0 do I dic.pick dic.name concat " " concat loop
     success
 ;
 

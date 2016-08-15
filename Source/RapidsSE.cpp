@@ -66,6 +66,19 @@ void RapidsSE::vExecute(void)
       vRunCommand();
       vWaitFlag();
     }
+    else if (gxArguments.m_bStart) {
+      ASSERT(gpBufferPool);
+      vSystemInit();
+      vSystemStart();
+      if (gxArguments.m_bSeitf) {
+        while (! gpDictionary->pFind("requestQueue"))
+          ;
+        PosixThread::vNanoSleep(250_MB);
+        vSeitfPrompt();
+      }
+      else
+        vWaitFlag();
+    }
     else if (gxArguments.m_bDocol) {
       ASSERT(gpBufferPool);
       vSystemInit();
@@ -78,12 +91,6 @@ void RapidsSE::vExecute(void)
     }
     else if (gxArguments.m_bStatus) {
       vSystemStatus();
-    }
-    else if (gxArguments.m_bStart) {
-      ASSERT(gpBufferPool);
-      vSystemInit();
-      vSystemStart();
-      vWaitFlag();
     }
     else if (gxArguments.m_bStop) {
       ASSERT(gpBufferPool);
