@@ -122,6 +122,28 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* copy a table. from-table must exist & to-table is created                  */
+/*----------------------------------------------------------------------------*/
+: copy_table ( "<to-tableNm>" "<from-tableNm>" -- "text" n 2 )
+
+    // traceon
+
+    find execute   ( "<to-tableNm>" ^fromTable )
+
+    swap           ( ^fromTable "<to-tableNm>" )
+
+    :table execute ( ^fromTable ^toTable )
+
+    swap           ( ^toTable ^fromTable )
+
+    table.copy     ( )
+
+    "table copied" success
+
+    // traceoff
+;
+
+/*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
 : export_table ( "filename" "tablename" )

@@ -897,6 +897,7 @@ void Task::vInitialiseDictionary(void)
   
   vAddPrimitive("system.cpu",      &vSystemCpu,        false);
   
+  vAddPrimitive("table.copy",      &vTableCopy,        false);
   vAddPrimitive("table.drop",      &vTableDrop,        false);
   vAddPrimitive("table.export",    &vTableExport,      false);
   vAddPrimitive("table.firstBuffer", &vTableFirstBuffer, false);
@@ -5730,6 +5731,28 @@ void Task::vThreadListInit(NNP_Task nnpTask)
 }
 
 // table: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* table.copy -- copy from table to table on param stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTableCopy(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableCopy");
+  
+  PtrVal xPtrFromTable;
+  if ( ! nnpTask->bPopParam(xPtrFromTable) )
+    THROW_INVALID_PARAM("table.copy");
+
+  PtrVal xPtrToTable;
+  if ( ! nnpTask->bPopParam(xPtrToTable) )
+    THROW_INVALID_PARAM("table.copy");
+  
+  Table* pFromTable = reinterpret_cast<Table*>(xPtrFromTable.pPtr());
+  ASSERT(CN_TABLE == pFromTable->eClass());
+
+  Table* pToTable = reinterpret_cast<Table*>(xPtrToTable.pPtr());
+  ASSERT(CN_TABLE == pToTable->eClass());
+}
 
 /*----------------------------------------------------------------------------*/
 /* table.drop -- drop of table on param stack                                 */
