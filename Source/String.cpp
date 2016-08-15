@@ -774,7 +774,7 @@ bool String::bExtractWordString(char** ps, char* pWord)
   if ('"' == **ps)
     return bExtractString(ps,pWord);
   
-  if ('.' == **ps)
+  if (! isalnum(**ps))
     return bExtractItem(ps,pWord);
   
   bool bOnce = false;

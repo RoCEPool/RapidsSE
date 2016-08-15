@@ -233,12 +233,19 @@
 /* change dictionary                                                          */
 /*----------------------------------------------------------------------------*/
 : cd
+
     dup ".." streql if
       drop
       dic.drop
     else
-      find execute dic.push
+      dup "~" streql if
+        drop
+        begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
+      else
+        find execute dic.push
+      then
     then
+
     "changed" success
 ;
 
