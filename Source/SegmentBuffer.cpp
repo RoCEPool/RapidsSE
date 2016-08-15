@@ -145,8 +145,40 @@ void SegmentBuffer::vPrevBuffer(SegmentBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy given buffer                                                          */
 /*----------------------------------------------------------------------------*/
+void SegmentBuffer::vCopy(SegmentBuffer* pFromBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  
+  m_bHasSpace = pFromBuffer->bHasSpace();
+  
+  i8 iBytes = pFromBuffer->iBytesUsed();
+  
+  Memory::vCopy(pFirstObject(),pFromBuffer->pFirstObject(),iBytes);
+}
+
 /*----------------------------------------------------------------------------*/
+/* has space?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SegmentBuffer::bHasSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  
+  return m_bHasSpace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc bytes used                                                            */
+/*----------------------------------------------------------------------------*/
+i8 SegmentBuffer::iBytesUsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  
+  i8 iBytes = iSub(m_pFreeSpace,pFirstObject());
+  
+  return iBytes;
+}
 
 /*----------------------------------------------------------------------------*/
 /* first allocatable byte in segment                                          */
@@ -159,6 +191,10 @@ Object* SegmentBuffer::pFirstObject(void)
   
   return pStart;
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* calculate location of footer                                               */

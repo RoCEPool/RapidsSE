@@ -34,8 +34,12 @@ namespace MemoryManagement
     SegmentBuffer* pPrevBuffer(void);
     void           vPrevBuffer(SegmentBuffer* pPrevBuffer);
     
-  private:
+    void vCopy(SegmentBuffer* pFromBuffer);
+    bool bHasSpace(void);
+    i8   iBytesUsed(void);
     Object* pFirstObject(void);
+    
+  private:
     Footer* pFooter(void);
     i8      iFreeSpace(void);
     bool    bIsExhausted(void);
