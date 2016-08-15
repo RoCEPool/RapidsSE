@@ -398,27 +398,27 @@ bool SEinterface::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("lscats",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("lscat",pWords[0],C_NO_CASE)) {
     bListCatalogs(pWords);
     return true;
   }
   
-  if (String::bEqualTo("lscols",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("lscol",pWords[0],C_NO_CASE)) {
     bListColumns(pWords);
     return true;
   }
   
-  if (String::bEqualTo("lsschs",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("lssch",pWords[0],C_NO_CASE)) {
     bListSchemas(pWords);
     return true;
   }
   
-  if (String::bEqualTo("lstbls",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("lstbl",pWords[0],C_NO_CASE)) {
     bListTables(pWords);
     return true;
   }
   
-  if (String::bEqualTo("lstens",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("lsten",pWords[0],C_NO_CASE)) {
     bListTenants(pWords);
     return true;
   }

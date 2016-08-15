@@ -35,6 +35,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string                 */
+/*----------------------------------------------------------------------------*/
+: contents_string
+
+    ""                             // initial contents string
+    "(" concat                     //
+    word.this dup iterate          // setup iteration of words
+      object@ word.name concat     // add name of the word to contents string
+                                   // add word kind to ls string
+      " " concat                   //
+      object@ prevWord object!     // step backwards thru words
+    next                           //
+    ")" concat                     //
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* dump the parameter stack                                                   */
 /*----------------------------------------------------------------------------*/
 : stk
