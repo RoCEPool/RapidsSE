@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SessionList.hpp - Session List                                             */
+/* SEitfList.hpp - SEitf List                                                 */
 /*============================================================================*/
 
 #pragma once
@@ -8,20 +8,20 @@
 
 namespace Interface {
     
-  class SessionList : public Object,
-                      public List_t<SEitf>
+  class SEitfList : public Object,
+                    public List_t<SEitf>
   {
   private:
     
   public:
-    void* operator new(size_t, SessionList* pSessionList);
+    void* operator new(size_t, SEitfList* pSEitfList);
     void  operator delete(void*);
     
-    SessionList(void);
-    ~SessionList(void);
+    SEitfList(void);
+    ~SEitfList(void);
     
     SEitf* pAllocSEitf(void);
-    void     vFreeSEitf(SEitf* pSEitf);
+    void   vFreeSEitf(SEitf* pSEitf);
   };
     
 }

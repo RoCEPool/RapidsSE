@@ -42,8 +42,8 @@ threadlist: threadList
 ( create the txList to hold all tx's )
 txlist: txList
 
-( create the sessionList to hold all session's )
-sessionlist: sessionList
+( create the seitfList to hold all seitf's )
+seitflist: seitfList
 
 ( create the task set for the root thread )
 taskset: rootTaskSet

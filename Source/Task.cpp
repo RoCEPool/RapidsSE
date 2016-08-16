@@ -218,24 +218,23 @@ void Task::vAddConstants(void)
   /* 28 */ vAddConstant("CN_ROW",                   CN_ROW);
   /* 29 */ vAddConstant("CN_SEGMENTBUFFER",         CN_SEGMENTBUFFER);
   /* 30 */ vAddConstant("CN_SEITF",                 CN_SEITF);
-  /* 31 */ vAddConstant("CN_SESSION",               CN_SESSION);
-  /* 32 */ vAddConstant("CN_SESSIONLIST",           CN_SESSIONLIST);
-  /* 33 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
-  /* 34 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
-  /* 35 */ vAddConstant("CN_STACK",                 CN_STACK);
-  /* 36 */ vAddConstant("CN_STRAND",                CN_STRAND);
-  /* 37 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
-  /* 38 */ vAddConstant("CN_TABLE",                 CN_TABLE);
-  /* 39 */ vAddConstant("CN_TASK",                  CN_TASK);
-  /* 40 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
-  /* 41 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
-  /* 42 */ vAddConstant("CN_THREAD",                CN_THREAD);
-  /* 43 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 44 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 45 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 46 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 47 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 48 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 31 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
+  /* 32 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
+  /* 33 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
+  /* 34 */ vAddConstant("CN_STACK",                 CN_STACK);
+  /* 35 */ vAddConstant("CN_STRAND",                CN_STRAND);
+  /* 36 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
+  /* 37 */ vAddConstant("CN_TABLE",                 CN_TABLE);
+  /* 38 */ vAddConstant("CN_TASK",                  CN_TASK);
+  /* 39 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
+  /* 40 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
+  /* 41 */ vAddConstant("CN_THREAD",                CN_THREAD);
+  /* 42 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
+  /* 43 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 44 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 45 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 46 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 47 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
  
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -276,8 +275,7 @@ void Task::vAddConstants(void)
   /* 30 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(Row));
   /* 31 */ vAddConstant("SIZEOF_ROWSPACE",          sizeof(Row));
   /* 32 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
-  /* 33 */ vAddConstant("SIZEOF_SESSION",           sizeof(Session));
-  /* 34 */ vAddConstant("SIZEOF_SESSIONLIST",       sizeof(SessionList));
+  /* 34 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
   /* 37 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
   /* 38 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
   /* 39 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
@@ -889,12 +887,9 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
   vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
   vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
-  
-  vAddPrimitive("session.delete",  &vSessionDelete,    false);
-  vAddPrimitive("session.new",     &vSessionNew,       false);
-  
-  vAddPrimitive("sessionlist.dump",&vSessionListDump,  false);
-  vAddPrimitive("sessionlist.init",&vSessionListInit,  false);
+    
+  vAddPrimitive("seitflist.dump",  &vSEitfListDump,    false);
+  vAddPrimitive("seitflist.init",  &vSEitfListInit,    false);
   
   vAddPrimitive("system.cpu",      &vSystemCpu,        false);
   
@@ -5164,7 +5159,7 @@ void Task::vSEitfDump(NNP_Task nnpTask)
   SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  pSEitf->vDump("SessionList:");
+  pSEitf->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5273,76 +5268,40 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
   pSEitf->vResponseQueue(pQueue);
 }
 
-// session: ////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* session.delete -- delete session                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vSessionDelete(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vSessionDelete");
-  
-  PtrVal xPtrSession;
-  
-  if ( ! nnpTask->bPopParam(xPtrSession) )
-    THROW_INVALID_PARAM("session.delete");
-  
-  Session* pSession = static_cast<Session*>(xPtrSession.pPtr());
-  ASSERT(CN_SESSION == pSession->eClass());
-
-  delete pSession;
-}
-
-/*----------------------------------------------------------------------------*/
-/* session.new -- new session                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vSessionNew(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vSessionNew");
-  
-  Session* pSession = new Session;
-  ASSERT(CN_SESSION == pSession->eClass());
-
-  PtrVal xPtrSession;
-  xPtrSession = pSession;
-  
-  nnpTask->vPushParam(xPtrSession);
-}
-
 // sessionset: /////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* sessionlist.dump -- dump of sessionList on param stack                     */
+/* seitflist.dump -- dump of seitfList on param stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionListDump(NNP_Task nnpTask)
+void Task::vSEitfListDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSessionListDump");
+  nnpTask->vPrimitive("vSEitfListDump");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
-    THROW_INVALID_PARAM("sessionlist.dump");
+    THROW_INVALID_PARAM("seitflist.dump");
   
-  SessionList* pSessionList = reinterpret_cast<SessionList*>(xPtrVal.pPtr());
-  ASSERT(CN_SESSIONLIST == pSessionList->eClass());
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrVal.pPtr());
+  ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  pSessionList->vDump("SessionList:");
+  pSEitfList->vDump("SEitfList:");
 }
 
 /*----------------------------------------------------------------------------*/
-/* sessionlist.init -- init of sessionList on param stack                     */
+/* seitflist.init -- init of seitfList on param stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vSessionListInit(NNP_Task nnpTask)
+void Task::vSEitfListInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSessionListInit");
+  nnpTask->vPrimitive("vSEitfListInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
-    THROW_INVALID_PARAM("sessionlist.init");
+    THROW_INVALID_PARAM("seitflist.init");
   
-  SessionList* pSessionList = reinterpret_cast<SessionList*>(xPtrVal.pPtr());
-  ASSERT(CN_SESSIONLIST == pSessionList->eClass());
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrVal.pPtr());
+  ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  new(pSessionList) SessionList;
+  new(pSEitfList) SEitfList;
 }
 
 // system: ///////////////////////////////////////////////////////////////////

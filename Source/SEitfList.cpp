@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* SessionList.cpp - Session List                                             */
+/* SEitfList.cpp - SEitf List                                                 */
 /*============================================================================*/
 
 #include "Interface.h"
 
 extern Heap*        gpSmallHeap;
-extern SessionList* gpSessionList;
+extern SEitfList*   gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SessionList::operator new(size_t iSize, SessionList* pSessionList)
+void* SEitfList::operator new(size_t iSize, SEitfList* pSEitfList)
 {
-  return pSessionList;
+  return pSEitfList;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void SessionList::operator delete(void* pBufferAddress)
+void SEitfList::operator delete(void* pBufferAddress)
 {
-  vFatal("fatal: SessionList class cannot be deleted");
+  vFatal("fatal: SEitfList class cannot be deleted");
   
   //vExitFatal();
   
@@ -30,20 +30,20 @@ void SessionList::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SessionList::SessionList(void)
-: Object(CN_SESSIONLIST)
+SEitfList::SEitfList(void)
+: Object(CN_SEITFLIST)
 {
   _poolAddress_(this);
   
-  ASSERT( ! gpSessionList );
+  ASSERT( ! gpSEitfList );
   
-  gpSessionList = this;
+  gpSEitfList = this;
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SessionList::~SessionList(void)
+SEitfList::~SEitfList(void)
 {
   _poolAddress_(this);
 }
@@ -51,7 +51,7 @@ SessionList::~SessionList(void)
 /*----------------------------------------------------------------------------*/
 /* allocate a seitf                                                           */
 /*----------------------------------------------------------------------------*/
-SEitf* SessionList::pAllocSEitf(void)
+SEitf* SEitfList::pAllocSEitf(void)
 {
   _poolAddress_(this);
 
@@ -65,7 +65,7 @@ SEitf* SessionList::pAllocSEitf(void)
 /*----------------------------------------------------------------------------*/
 /* free a seitf                                                               */
 /*----------------------------------------------------------------------------*/
-void SessionList::vFreeSEitf(SEitf* pSEitf)
+void SEitfList::vFreeSEitf(SEitf* pSEitf)
 {
   _poolAddress_(this);
   

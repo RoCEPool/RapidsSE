@@ -4,7 +4,7 @@
 
 "runtime.sen" .
 
-"sessionList.sen" >>:
+"seitfList.sen" >>:
 "task.sen" >>:
 "taskList.sen" >>:
 "taskSet.sen" >>:

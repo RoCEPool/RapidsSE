@@ -442,7 +442,7 @@ namespace Tasking
     static void vRstackFetch(NNP_Task nnpTask);
     static void vRstackPick(NNP_Task nnpTask);
     
-    // seinterface
+    // seitf
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
     static void vSEitfNew(NNP_Task nnpTask);
@@ -451,13 +451,9 @@ namespace Tasking
     static void vSEitfRspFetch(NNP_Task nnpTask);
     static void vSEitfRspStore(NNP_Task nnpTask);
     
-    // session
-    static void vSessionDelete(NNP_Task nnpTask);
-    static void vSessionNew(NNP_Task nnpTask);
-    
-    // sessionlist
-    static void vSessionListDump(NNP_Task nnpTask);
-    static void vSessionListInit(NNP_Task nnpTask);
+    // seitflist
+    static void vSEitfListDump(NNP_Task nnpTask);
+    static void vSEitfListInit(NNP_Task nnpTask);
 
     // system
     static void vSystemCpu(NNP_Task nnpTask);

@@ -7,8 +7,7 @@
 #include "Transactions.h"
 
 #include "SEitf.hpp"
-#include "Session.hpp"
-#include "SessionList.hpp"
+#include "SEitfList.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Interface

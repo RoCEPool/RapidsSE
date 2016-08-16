@@ -88,9 +88,9 @@ Word* SEitf::pFindWord(s& sName)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void SEitf::vDump(const char* aTitle)
+void SEitf::vDump(void)
 {
-  vTrace("%s %p:\n",aTitle,this);
+  vTrace("SEitf %p:\n",this);
   vTrace("  RequestQueue %p  ResponseQueue %p\n",
          m_pRequestQueue,
          m_pResponseQueue);

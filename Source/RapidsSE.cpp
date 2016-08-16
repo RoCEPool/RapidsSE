@@ -16,7 +16,7 @@ Word*               gpWord             = nullptr;
 
 TaskList*           gpTaskList         = nullptr;
 ThreadList*         gpThreadList       = nullptr;
-SessionList*        gpSessionList      = nullptr;
+SEitfList*          gpSEitfList        = nullptr;
 TxList*             gpTxList           = nullptr;
 
 File*               gpTraceFile        = nullptr;

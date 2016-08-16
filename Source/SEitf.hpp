@@ -8,7 +8,8 @@
 
 namespace Interface
 {
-  class SEitf : public Object
+  class SEitf : public Object,
+                       public ListNode_t<SEitf>
   {
   public:
     i8         m_iPid;           // process which created this seitf
@@ -33,7 +34,7 @@ namespace Interface
     void   vPopDic(void);
     Word*   pFindWord(s& sName);
     
-    void   vDump(const char* aTitle);
+    void   vDump(void);
     void   vInit(void);
     void   vPrompt(void);
     void   vParse(s& sRequest, char* pWords[]);

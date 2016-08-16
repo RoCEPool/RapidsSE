@@ -43,11 +43,10 @@
 		F226E73F1D41E2ED00E10FC3 /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E73D1D41E2ED00E10FC3 /* Queue.cpp */; };
 		F226E7411D41E36500E10FC3 /* Skip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7401D41E36500E10FC3 /* Skip.cpp */; };
 		F226E7451D42B61F00E10FC3 /* Shm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7431D42B61F00E10FC3 /* Shm.cpp */; };
-		F226E7611D4582CC00E10FC3 /* Session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E75F1D4582CC00E10FC3 /* Session.cpp */; };
 		F226E7661D4587AC00E10FC3 /* Tx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7641D4587AC00E10FC3 /* Tx.cpp */; };
 		F226E76A1D4589DE00E10FC3 /* TxList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7681D4589DE00E10FC3 /* TxList.cpp */; };
 		F226E76D1D458B3300E10FC3 /* TxMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E76B1D458B3300E10FC3 /* TxMap.cpp */; };
-		F226E7701D458C5600E10FC3 /* SessionList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E76E1D458C5600E10FC3 /* SessionList.cpp */; };
+		F226E7701D458C5600E10FC3 /* SEitfList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E76E1D458C5600E10FC3 /* SEitfList.cpp */; };
 		F226E7731D45917800E10FC3 /* Proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7711D45917800E10FC3 /* Proxy.cpp */; };
 		F226E7781D4592EA00E10FC3 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7761D4592EA00E10FC3 /* Node.cpp */; };
 		F226E77B1D4594DC00E10FC3 /* GridModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7791D4594DC00E10FC3 /* GridModel.cpp */; };
@@ -248,11 +247,9 @@
 		F226E7541D440AD200E10FC3 /* tables.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tables.sen; path = Commands/tables.sen; sourceTree = "<group>"; };
 		F226E7551D440AFE00E10FC3 /* metadata.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = metadata.sen; path = Commands/metadata.sen; sourceTree = "<group>"; };
 		F226E7561D440BBF00E10FC3 /* rows.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rows.sen; path = Commands/rows.sen; sourceTree = "<group>"; };
-		F226E7591D45711E00E10FC3 /* sessionList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sessionList.sen; path = Commands/sessionList.sen; sourceTree = "<group>"; };
+		F226E7591D45711E00E10FC3 /* seitfList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfList.sen; path = Commands/seitfList.sen; sourceTree = "<group>"; };
 		F226E75B1D4571FD00E10FC3 /* txList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txList.sen; path = Commands/txList.sen; sourceTree = "<group>"; };
 		F226E75C1D4571FD00E10FC3 /* txMap.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txMap.sen; path = Commands/txMap.sen; sourceTree = "<group>"; };
-		F226E75F1D4582CC00E10FC3 /* Session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Session.cpp; path = Source/Session.cpp; sourceTree = "<group>"; };
-		F226E7601D4582CC00E10FC3 /* Session.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Session.hpp; path = Source/Session.hpp; sourceTree = "<group>"; };
 		F226E7621D45835300E10FC3 /* Interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interface.h; path = Source/Interface.h; sourceTree = "<group>"; };
 		F226E7641D4587AC00E10FC3 /* Tx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tx.cpp; path = Source/Tx.cpp; sourceTree = "<group>"; };
 		F226E7651D4587AC00E10FC3 /* Tx.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Tx.hpp; path = Source/Tx.hpp; sourceTree = "<group>"; };
@@ -261,8 +258,8 @@
 		F226E7691D4589DE00E10FC3 /* TxList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxList.hpp; path = Source/TxList.hpp; sourceTree = "<group>"; };
 		F226E76B1D458B3300E10FC3 /* TxMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxMap.cpp; path = Source/TxMap.cpp; sourceTree = "<group>"; };
 		F226E76C1D458B3300E10FC3 /* TxMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxMap.hpp; path = Source/TxMap.hpp; sourceTree = "<group>"; };
-		F226E76E1D458C5600E10FC3 /* SessionList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SessionList.cpp; path = Source/SessionList.cpp; sourceTree = "<group>"; };
-		F226E76F1D458C5600E10FC3 /* SessionList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SessionList.hpp; path = Source/SessionList.hpp; sourceTree = "<group>"; };
+		F226E76E1D458C5600E10FC3 /* SEitfList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SEitfList.cpp; path = Source/SEitfList.cpp; sourceTree = "<group>"; };
+		F226E76F1D458C5600E10FC3 /* SEitfList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SEitfList.hpp; path = Source/SEitfList.hpp; sourceTree = "<group>"; };
 		F226E7711D45917800E10FC3 /* Proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Proxy.cpp; path = Source/Proxy.cpp; sourceTree = "<group>"; };
 		F226E7721D45917800E10FC3 /* Proxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Proxy.hpp; path = Source/Proxy.hpp; sourceTree = "<group>"; };
 		F226E7751D45921A00E10FC3 /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Grid.h; path = Source/Grid.h; sourceTree = "<group>"; };
@@ -669,7 +666,7 @@
 			children = (
 				F2389CDF1D47F1E0008DF3D9 /* runtime.sen */,
 				980951021D326F4A002F20B0 /* queue.sen */,
-				F226E7591D45711E00E10FC3 /* sessionList.sen */,
+				F226E7591D45711E00E10FC3 /* seitfList.sen */,
 				980951041D326F4A002F20B0 /* task.sen */,
 				F2389CF51D48666A008DF3D9 /* taskList.sen */,
 				980951011D326F4A002F20B0 /* taskSet.sen */,
@@ -688,10 +685,8 @@
 				F2389CC71D4771A3008DF3D9 /* Interface.cpp */,
 				F226E78A1D45ED8B00E10FC3 /* SEitf.cpp */,
 				F226E78B1D45ED8B00E10FC3 /* SEitf.hpp */,
-				F226E76E1D458C5600E10FC3 /* SessionList.cpp */,
-				F226E76F1D458C5600E10FC3 /* SessionList.hpp */,
-				F226E75F1D4582CC00E10FC3 /* Session.cpp */,
-				F226E7601D4582CC00E10FC3 /* Session.hpp */,
+				F226E76E1D458C5600E10FC3 /* SEitfList.cpp */,
+				F226E76F1D458C5600E10FC3 /* SEitfList.hpp */,
 			);
 			name = Interface;
 			sourceTree = "<group>";
@@ -1073,7 +1068,7 @@
 				F2B3B15A1D51A8980049597E /* Object.cpp in Sources */,
 				F226E7861D45D6FE00E10FC3 /* OnHeap.cpp in Sources */,
 				F28DF4DA1D56725F00013BBC /* Strand.cpp in Sources */,
-				F226E7701D458C5600E10FC3 /* SessionList.cpp in Sources */,
+				F226E7701D458C5600E10FC3 /* SEitfList.cpp in Sources */,
 				F2389CF01D4842F2008DF3D9 /* ThreadList.cpp in Sources */,
 				F2389CDA1D4774D0008DF3D9 /* Common.cpp in Sources */,
 				98686CD41D1A7C7B00A4CC3E /* Row.cpp in Sources */,
@@ -1099,7 +1094,6 @@
 				F226E76D1D458B3300E10FC3 /* TxMap.cpp in Sources */,
 				F2B3B16E1D53F2D70049597E /* Types.cpp in Sources */,
 				F2B3B1661D51E0F70049597E /* HeapBuffer.cpp in Sources */,
-				F226E7611D4582CC00E10FC3 /* Session.cpp in Sources */,
 				98C42D051D009FBD007DD84F /* Index.cpp in Sources */,
 				F226E7411D41E36500E10FC3 /* Skip.cpp in Sources */,
 				F24C76571D1B6A5100D41D09 /* WrdVal.cpp in Sources */,

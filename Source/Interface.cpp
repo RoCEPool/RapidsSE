@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Interface::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Session)     < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(SessionList) < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(SEitf)     < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(SEitfList) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

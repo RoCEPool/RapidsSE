@@ -1,21 +1,17 @@
 /*============================================================================*/
-/* sessionList.sen -- list of sessions                                        */
+/* seitfList.sen -- list of se interfaces                                     */
 /*============================================================================*/
 
-//
-// SHOULD THIS BE seitfList ?
-//
+"seitfList.sen" .
 
-"sessionList.sen" .
-
-: sessionList:
+: seitfList:
     create
     object!!
-    sizeof_sessionlist allot
+    sizeof_seitflist allot
     word.this >body magic!!
-    word.this >body CN_SESSIONLIST class!
-    word.this >body sessionlist.init
-    does> test
+    word.this >body CN_SEITFLIST class!
+    word.this >body seitflist.init
+    does>
 ;
 
 /*============================================================================*/
