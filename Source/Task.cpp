@@ -826,6 +826,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive(">body",           &vToBody,           false);
   vAddPrimitive(">cmd",            &vToCmd,            false);
   vAddPrimitive(">int",            &vToInt,            false);
+  vAddPrimitive("r>",              &vToPstack,         false);
+  vAddPrimitive(">r",              &vToRstack,         false);
   vAddPrimitive(">seitf",          &vToSEitf,          false);
   vAddPrimitive(">str",            &vToStr,            false);
   vAddPrimitive(">task",           &vToTask,           false);
@@ -879,6 +881,7 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("queue.pop",       &vQueuePop,         false);
 
   vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
+  vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
   vAddPrimitive("rstack.pick",     &vRstackPick,       false);
 
@@ -3968,6 +3971,19 @@ void Task::vRstackDepth(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rdrop -- discard top value off rstack                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackDrop(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstackDrop");
+  
+  // should just discard on stack
+  
+  ValWsp xValA;
+  nnpTask->vPopReturn(&xValA);
+}
+
+/*----------------------------------------------------------------------------*/
 /* r@ -- place copy of nth value in return stack onto param stack             */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetch(NNP_Task nnpTask)
@@ -4387,6 +4403,34 @@ void Task::vToInt(NNP_Task nnpTask)
   i8 i = String::iToI8(sBuff.a());
 
   nnpTask->vPushParam(i);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r> -- move value from rstack to pstack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vToPstack(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vToPstack");
+  
+  ValWsp xVal;
+  if ( ! nnpTask->bPopReturn(xVal) )
+    THROW_INVALID_PARAM("r>");
+  
+  nnpTask->vPushParam(xVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* >r -- move value from pstack to rstack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vToRstack(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vToRstack");
+  
+  ValWsp xVal;
+  if ( ! nnpTask->bPopParam(xVal) )
+    THROW_INVALID_PARAM(">r");
+
+  nnpTask->vPushReturn(xVal);
 }
 
 /*----------------------------------------------------------------------------*/

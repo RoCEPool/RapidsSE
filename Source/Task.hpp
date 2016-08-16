@@ -378,6 +378,8 @@ namespace Tasking
     static void vToBody(NNP_Task nnpTask);         
     static void vToCmd(NNP_Task nnpTask);          
     static void vToInt(NNP_Task nnpTask);          
+    static void vToPstack(NNP_Task nnpTask);
+    static void vToRstack(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
     static void vToStr(NNP_Task nnpTask);
     static void vToTask(NNP_Task nnpTask);
@@ -441,6 +443,7 @@ namespace Tasking
 
     // rstack
     static void vRstackDepth(NNP_Task nnpTask);
+    static void vRstackDrop(NNP_Task nnpTask);
     static void vRstackFetch(NNP_Task nnpTask);
     static void vRstackPick(NNP_Task nnpTask);
     
