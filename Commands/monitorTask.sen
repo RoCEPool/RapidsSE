@@ -8,13 +8,33 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-lock: monitorLock
+lock:    monitorLock
 
-str:  monitorString
+str:     monitorString
+
+taskset: monitorTaskSet
+
+thread:  monitorThread
 
 /*----------------------------------------------------------------------------*/
-/* create a file using name from input stream (doesnt leave file on stk)      */
+/* start the monitor task                                                     */
 /*----------------------------------------------------------------------------*/
+
+: monitorStart
+
+     "monitorLoop"  task.new
+
+     monitorTaskSet taskSet.Append
+
+     monitorTaskSet monitorThread  thread.taskset!
+
+     monitorThread  thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* monitor task loop                                                          */
+/*----------------------------------------------------------------------------*/
+
 : monitorLoop
 
     "monitorTask" task.this task.name!
@@ -27,7 +47,7 @@ str:  monitorString
 
       monitorLock lock.grabWrite
 
-        freespace >str
+        "freespace " freespace >str concat
 
         monitorString !s
 

@@ -58,12 +58,12 @@ Task::Task(void)
   _poolAddress_(this);
   _magic_();
   
-  // this contructor is invoked only for root task creation
-  if (gnpRootTask != nullptr) {
-    String::vSprint(m_sException.a(),"Root task already exits!");
-    m_sFile = __FILE__;
-    throw (i8)__LINE__;
-  }
+//  // this contructor is invoked only for root task creation
+//  if (gnpRootTask != nullptr) {
+//    String::vSprint(m_sException.a(),"Root task already exits!");
+//    m_sFile = __FILE__;
+//    throw (i8)__LINE__;
+//  }
   
   vInit("");
 }
@@ -929,6 +929,7 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("task.new",        &vTaskNew,          false);
   vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
   vAddPrimitive("task.queue!",     &vTaskQstore,       false);
+  vAddPrimitive("task.seed",       &vTaskSeed,         false);
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
@@ -6341,11 +6342,28 @@ void Task::vTaskQstore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.seed -- set the seed word of task                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSeed(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskSeed");
+  
+  ValWsp xStrWsp;
+  
+  if ( ! nnpTask->bPopParam(xStrWsp) )
+    THROW_INVALID_PARAM("task.seed");
+  
+  char* pSeed = xStrWsp.pAsStrVal()->sStr();
+  
+  nnpTask->vPrepareCommand(pSeed);
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxStateFetch");
+  nnpTask->vPrimitive("vTaskStateFetch");
   
   Task* pThatTask;
   

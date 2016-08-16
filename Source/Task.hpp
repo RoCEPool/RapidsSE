@@ -499,6 +499,7 @@ namespace Tasking
     static void vTaskThis(NNP_Task nnpTask);
     static void vTaskQfetch(NNP_Task nnpTask);
     static void vTaskQstore(NNP_Task nnpTask);
+    static void vTaskSeed(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
     
