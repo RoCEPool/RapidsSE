@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Platform.h"
 
-namespace Common
+namespace Platform
 {
   extern "C" u8 iRdtscp(void);
   extern "C" u8 iAtomicDec(u8*);

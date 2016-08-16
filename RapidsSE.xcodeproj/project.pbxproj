@@ -33,6 +33,8 @@
 		F21D29C51D0E524C000F8C45 /* Dictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29C31D0E524C000F8C45 /* Dictionary.cpp */; };
 		F21D29C81D0E525A000F8C45 /* Word.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29C61D0E525A000F8C45 /* Word.cpp */; };
 		F21D29D41D0F6668000F8C45 /* BodyField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29D21D0F6668000F8C45 /* BodyField.cpp */; };
+		F22056671D62D3EF00E8EF5B /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CDB1D477589008DF3D9 /* Platform.cpp */; };
+		F22056681D62D3FC00E8EF5B /* Asm.s in Sources */ = {isa = PBXBuildFile; fileRef = F2BD2EB51D13E226009D7467 /* Asm.s */; };
 		F226E71C1D3F6E2300E10FC3 /* GlobalDictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */; };
 		F226E7201D408B6100E10FC3 /* NP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E71E1D408B6100E10FC3 /* NP.cpp */; };
 		F226E7231D41805500E10FC3 /* AttachMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7211D41805500E10FC3 /* AttachMap.cpp */; };
@@ -72,7 +74,6 @@
 		F2389CD61D4773C2008DF3D9 /* StackValues.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD51D4773C2008DF3D9 /* StackValues.cpp */; };
 		F2389CD81D477416008DF3D9 /* MemoryManagement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD71D477416008DF3D9 /* MemoryManagement.cpp */; };
 		F2389CDA1D4774D0008DF3D9 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD91D4774D0008DF3D9 /* Common.cpp */; };
-		F2389CDC1D477589008DF3D9 /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CDB1D477589008DF3D9 /* Platform.cpp */; };
 		F2389CED1D482985008DF3D9 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CEB1D482985008DF3D9 /* User.cpp */; };
 		F2389CF01D4842F2008DF3D9 /* ThreadList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CEE1D4842F2008DF3D9 /* ThreadList.cpp */; };
 		F2389CF41D485E8B008DF3D9 /* TaskList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CF21D485E8B008DF3D9 /* TaskList.cpp */; };
@@ -104,7 +105,6 @@
 		F2B3B1651D51E0F70049597E /* Heap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B1611D51E0F70049597E /* Heap.cpp */; };
 		F2B3B1661D51E0F70049597E /* HeapBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B1631D51E0F70049597E /* HeapBuffer.cpp */; };
 		F2B3B16E1D53F2D70049597E /* Types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B16C1D53F2D70049597E /* Types.cpp */; };
-		F2BD2EB61D13E226009D7467 /* Asm.s in Sources */ = {isa = PBXBuildFile; fileRef = F2BD2EB51D13E226009D7467 /* Asm.s */; };
 		F2BD2EB91D149EDF009D7467 /* PtrVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2BD2EB71D149EDF009D7467 /* PtrVal.cpp */; };
 		F2C6E9771D25B519007C624C /* QueueBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E9751D25B519007C624C /* QueueBuffer.cpp */; };
 		F2C6E97D1D25C1E6007C624C /* Addressing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E97B1D25C1E6007C624C /* Addressing.cpp */; };
@@ -123,6 +123,16 @@
 		F2F125151D21DC5F00CA8E5A /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2F125141D21DC5F00CA8E5A /* File.cpp */; };
 		F2F1251B1D2231B300CA8E5A /* s16K.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2F125191D2231B300CA8E5A /* s16K.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F220566A1D62D7A300E8EF5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98A3C4771CF74E6100BD2B80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F22056621D62D39F00E8EF5B;
+			remoteInfo = RapidsSE;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		98A3C47D1CF74E6200BD2B80 /* CopyFiles */ = {
@@ -207,6 +217,7 @@
 		F21D29C71D0E525A000F8C45 /* Word.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Word.hpp; sourceTree = "<group>"; };
 		F21D29D21D0F6668000F8C45 /* BodyField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyField.cpp; sourceTree = "<group>"; };
 		F21D29D31D0F6668000F8C45 /* BodyField.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyField.hpp; sourceTree = "<group>"; };
+		F22056631D62D39F00E8EF5B /* libRapidsSE.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libRapidsSE.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		F226E7131D3F3F6700E10FC3 /* Dictionaries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionaries.h; sourceTree = "<group>"; };
 		F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalDictionary.cpp; sourceTree = "<group>"; };
 		F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalDictionary.hpp; sourceTree = "<group>"; };
@@ -431,6 +442,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F22056601D62D39F00E8EF5B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -508,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				98A3C47F1CF74E6200BD2B80 /* SE */,
+				F22056631D62D39F00E8EF5B /* libRapidsSE.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -934,6 +953,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		F22056611D62D39F00E8EF5B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		98A3C47E1CF74E6200BD2B80 /* SE */ = {
 			isa = PBXNativeTarget;
@@ -946,11 +975,29 @@
 			buildRules = (
 			);
 			dependencies = (
+				F220566B1D62D7A300E8EF5B /* PBXTargetDependency */,
 			);
 			name = SE;
 			productName = RapidsSE;
 			productReference = 98A3C47F1CF74E6200BD2B80 /* SE */;
 			productType = "com.apple.product-type.tool";
+		};
+		F22056621D62D39F00E8EF5B /* RapidsSE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F22056641D62D3A000E8EF5B /* Build configuration list for PBXNativeTarget "RapidsSE" */;
+			buildPhases = (
+				F220565F1D62D39F00E8EF5B /* Sources */,
+				F22056601D62D39F00E8EF5B /* Frameworks */,
+				F22056611D62D39F00E8EF5B /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RapidsSE;
+			productName = RapidsSE;
+			productReference = F22056631D62D39F00E8EF5B /* libRapidsSE.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
 
@@ -963,6 +1010,9 @@
 				TargetAttributes = {
 					98A3C47E1CF74E6200BD2B80 = {
 						CreatedOnToolsVersion = 7.2.1;
+					};
+					F22056621D62D39F00E8EF5B = {
+						CreatedOnToolsVersion = 7.3.1;
 					};
 				};
 			};
@@ -978,6 +1028,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				F22056621D62D39F00E8EF5B /* RapidsSE */,
 				98A3C47E1CF74E6200BD2B80 /* SE */,
 			);
 		};
@@ -1029,7 +1080,6 @@
 				989057011D59D2AD0000D247 /* Mersenne.cpp in Sources */,
 				F2389CCE1D477280008DF3D9 /* Tasking.cpp in Sources */,
 				F226E72E1D41DDD200E10FC3 /* BufferPoolAnalyzer.cpp in Sources */,
-				F2BD2EB61D13E226009D7467 /* Asm.s in Sources */,
 				F2389CD01D4772D3008DF3D9 /* Dictionaries.cpp in Sources */,
 				F25C6F1D1D30512C000886A8 /* DictionaryStack.cpp in Sources */,
 				F23907961D2318CD00120B0F /* Dir.cpp in Sources */,
@@ -1042,7 +1092,6 @@
 				F2389CC21D4756DF008DF3D9 /* ValSet.cpp in Sources */,
 				F2C6E9831D28E31E007C624C /* IPval.cpp in Sources */,
 				F226E73B1D41E0C200E10FC3 /* IndexColumn.cpp in Sources */,
-				F2389CDC1D477589008DF3D9 /* Platform.cpp in Sources */,
 				982ECD861D071EE40001919C /* mn.cpp in Sources */,
 				F2EC32D31D2DAFDB00791294 /* ObjVal.cpp in Sources */,
 				F2C6E9771D25B519007C624C /* QueueBuffer.cpp in Sources */,
@@ -1106,7 +1155,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F220565F1D62D39F00E8EF5B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F22056671D62D3EF00E8EF5B /* Platform.cpp in Sources */,
+				F22056681D62D3FC00E8EF5B /* Asm.s in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F220566B1D62D7A300E8EF5B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F22056621D62D39F00E8EF5B /* RapidsSE */;
+			targetProxy = F220566A1D62D7A300E8EF5B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		98A3C4841CF74E6200BD2B80 /* Debug */ = {
@@ -1195,6 +1261,7 @@
 		98A3C4871CF74E6200BD2B80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"OTHER_LDFLAGS[arch=*]" = "-lRapidsSE";
 				"PRELINK_LIBS[arch=*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1203,6 +1270,31 @@
 		98A3C4881CF74E6200BD2B80 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		F22056651D62D3A000E8EF5B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				DYLIB_COMPATIBILITY_VERSION = "";
+				"DYLIB_COMPATIBILITY_VERSION[arch=*]" = "";
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				"OTHER_LDFLAGS[arch=*]" = "-dynamiclib";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F22056661D62D3A000E8EF5B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -1224,6 +1316,15 @@
 			buildConfigurations = (
 				98A3C4871CF74E6200BD2B80 /* Debug */,
 				98A3C4881CF74E6200BD2B80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F22056641D62D3A000E8EF5B /* Build configuration list for PBXNativeTarget "RapidsSE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F22056651D62D3A000E8EF5B /* Debug */,
+				F22056661D62D3A000E8EF5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

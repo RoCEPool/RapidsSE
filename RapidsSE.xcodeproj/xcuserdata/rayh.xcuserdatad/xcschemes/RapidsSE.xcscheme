@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-               BuildableName = "SE"
-               BlueprintName = "SE"
+               BlueprintIdentifier = "F22056621D62D39F00E8EF5B"
+               BuildableName = "libRapidsSE.dylib"
+               BlueprintName = "RapidsSE"
                ReferencedContainer = "container:RapidsSE.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-            BuildableName = "SE"
-            BlueprintName = "SE"
-            ReferencedContainer = "container:RapidsSE.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,42 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-            BuildableName = "SE"
-            BlueprintName = "SE"
+            BlueprintIdentifier = "F22056621D62D39F00E8EF5B"
+            BuildableName = "libRapidsSE.dylib"
+            BlueprintName = "RapidsSE"
             ReferencedContainer = "container:RapidsSE.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "--docol"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--seitf"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--start"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--start --seitf"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--status"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "--stop"
-            isEnabled = "NO">
-         </CommandLineArgument>
-      </CommandLineArguments>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -96,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-            BuildableName = "SE"
-            BlueprintName = "SE"
+            BlueprintIdentifier = "F22056621D62D39F00E8EF5B"
+            BuildableName = "libRapidsSE.dylib"
+            BlueprintName = "RapidsSE"
             ReferencedContainer = "container:RapidsSE.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
