@@ -11,6 +11,7 @@
 "core.sen" >>:
 "dic.sen" >>:
 "file.sen" >>:
+"lock.sen" >>:
 "var.sen" >>:
 "trace.sen" >>:
 "useful.sen" >>:

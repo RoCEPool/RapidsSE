@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* lock.sen -- lock related words                                             */
+/*============================================================================*/
+
+"lock.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* lock is used as a kind of word to identify locks                           */
+/*----------------------------------------------------------------------------*/
+: lock ;
+
+: isLock word.kind@ ' lock eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create a lock using name from input stream (doesnt leave lock on stk)      */
+/*----------------------------------------------------------------------------*/
+: lock:
+  create
+  object!!
+  sizeof_lock allot
+  word.this >body magic!!
+  word.this >body CN_LOCK class!
+  ' lock word.this word.kind!
+  word.this >body lock.init
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a lock using name on stack (leaves lock on stack)                   */
+/*----------------------------------------------------------------------------*/
+: :lock
+  >create
+  object!!
+  sizeof_lock allot
+  word.this >body magic!!
+  word.this >body CN_LOCK class!
+  ' lock word.this word.kind!
+  word.this >body lock.init
+  word.this
+  does>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

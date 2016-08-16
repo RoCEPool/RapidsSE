@@ -218,6 +218,7 @@
 		F21D29D21D0F6668000F8C45 /* BodyField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyField.cpp; sourceTree = "<group>"; };
 		F21D29D31D0F6668000F8C45 /* BodyField.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyField.hpp; sourceTree = "<group>"; };
 		F22056631D62D39F00E8EF5B /* libRapidsSE.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libRapidsSE.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		F22056DC1D62F11400E8EF5B /* lock.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lock.sen; path = Commands/lock.sen; sourceTree = "<group>"; };
 		F226E7131D3F3F6700E10FC3 /* Dictionaries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionaries.h; sourceTree = "<group>"; };
 		F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalDictionary.cpp; sourceTree = "<group>"; };
 		F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalDictionary.hpp; sourceTree = "<group>"; };
@@ -745,6 +746,7 @@
 				F226E7481D4312F300E10FC3 /* core.sen */,
 				F226E71D1D40286400E10FC3 /* dic.sen */,
 				F226E7241D41918800E10FC3 /* file.sen */,
+				F22056DC1D62F11400E8EF5B /* lock.sen */,
 				F226E7251D419E3400E10FC3 /* trace.sen */,
 				F2389D0D1D4AD133008DF3D9 /* useful.sen */,
 				F2F2365C1D4BFCD50028A9C2 /* var.sen */,

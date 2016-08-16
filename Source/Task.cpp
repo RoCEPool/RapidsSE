@@ -209,32 +209,33 @@ void Task::vAddConstants(void)
   /* 19 */ vAddConstant("CN_GRIDMODEL",             CN_GRIDMODEL);
   /* 20 */ vAddConstant("CN_HEAPBUFFER",            CN_HEAPBUFFER);
   /* 21 */ vAddConstant("CN_INDEX",                 CN_INDEX);
-  /* 22 */ vAddConstant("CN_MEDIUMHEAP",            CN_MEDIUMHEAP);
-  /* 23 */ vAddConstant("CN_NODE",                  CN_NODE);
-  /* 24 */ vAddConstant("CN_PROXY",                 CN_PROXY);
-  /* 25 */ vAddConstant("CN_PROXYSET",              CN_PROXYSET);
-  /* 26 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
-  /* 27 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
-  /* 28 */ vAddConstant("CN_ROW",                   CN_ROW);
-  /* 29 */ vAddConstant("CN_SEGMENTBUFFER",         CN_SEGMENTBUFFER);
-  /* 30 */ vAddConstant("CN_SEITF",                 CN_SEITF);
-  /* 31 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
-  /* 32 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
-  /* 33 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
-  /* 34 */ vAddConstant("CN_STACK",                 CN_STACK);
-  /* 35 */ vAddConstant("CN_STRAND",                CN_STRAND);
-  /* 36 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
-  /* 37 */ vAddConstant("CN_TABLE",                 CN_TABLE);
-  /* 38 */ vAddConstant("CN_TASK",                  CN_TASK);
-  /* 39 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
-  /* 40 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
-  /* 41 */ vAddConstant("CN_THREAD",                CN_THREAD);
-  /* 42 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 43 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 44 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 45 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 46 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 47 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 22 */ vAddConstant("CN_LOCK",                  CN_LOCK);
+  /* 23 */ vAddConstant("CN_MEDIUMHEAP",            CN_MEDIUMHEAP);
+  /* 24 */ vAddConstant("CN_NODE",                  CN_NODE);
+  /* 25 */ vAddConstant("CN_PROXY",                 CN_PROXY);
+  /* 26 */ vAddConstant("CN_PROXYSET",              CN_PROXYSET);
+  /* 27 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
+  /* 28 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
+  /* 29 */ vAddConstant("CN_ROW",                   CN_ROW);
+  /* 30 */ vAddConstant("CN_SEGMENTBUFFER",         CN_SEGMENTBUFFER);
+  /* 31 */ vAddConstant("CN_SEITF",                 CN_SEITF);
+  /* 32 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
+  /* 33 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
+  /* 34 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
+  /* 35 */ vAddConstant("CN_STACK",                 CN_STACK);
+  /* 36 */ vAddConstant("CN_STRAND",                CN_STRAND);
+  /* 37 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
+  /* 38 */ vAddConstant("CN_TABLE",                 CN_TABLE);
+  /* 39 */ vAddConstant("CN_TASK",                  CN_TASK);
+  /* 40 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
+  /* 41 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
+  /* 42 */ vAddConstant("CN_THREAD",                CN_THREAD);
+  /* 43 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
+  /* 44 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 45 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 46 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 47 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 48 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
  
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -263,32 +264,32 @@ void Task::vAddConstants(void)
   /* 17 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_GLOBALDICTIONARY",  sizeof(GlobalDictionary));
   /* 19 */ vAddConstant("SIZEOF_GRIDMODEL",         sizeof(GridModel));
-  /* 20 */ vAddConstant("SIZEOF_INDEX",             sizeof(Index));
-
-  /* 22 */ vAddConstant("SIZEOF_HEAP",              sizeof(Heap));
-  /* 24 */ vAddConstant("SIZEOF_NODE",              sizeof(Node));
-  /* 25 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
-  /* 26 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
-  /* 27 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
-  /* 28 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
-  /* 29 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
-  /* 30 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(Row));
-  /* 31 */ vAddConstant("SIZEOF_ROWSPACE",          sizeof(Row));
-  /* 32 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
-  /* 34 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
-  /* 37 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
-  /* 38 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
-  /* 39 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
-  /* 40 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
-  /* 39 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
-  /* 40 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
-  /* 41 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
-  /* 42 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
-  /* 43 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 44 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
-  /* 45 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 46 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
-  /* 47 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 20 */ vAddConstant("SIZEOF_HEAP",              sizeof(Heap));
+  /* 21 */ vAddConstant("SIZEOF_INDEX",             sizeof(Index));
+  /* 22 */ vAddConstant("SIZEOF_LOCK",              sizeof(Lock));
+  /* 23 */ vAddConstant("SIZEOF_NODE",              sizeof(Node));
+  /* 24 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
+  /* 25 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
+  /* 26 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
+  /* 27 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
+  /* 28 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
+  /* 29 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(Row));
+  /* 30 */ vAddConstant("SIZEOF_ROWSPACE",          sizeof(Row));
+  /* 31 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
+  /* 32 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
+  /* 33 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
+  /* 34 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
+  /* 35 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
+  /* 36 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
+  /* 37 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
+  /* 38 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
+  /* 39 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
+  /* 40 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
+  /* 41 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 42 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
+  /* 43 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 44 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
+  /* 45 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
@@ -871,6 +872,12 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("file.path!",      &vFilePathSet,      false);
   vAddPrimitive("file.read",       &vFileRead,         false);
   vAddPrimitive("file.write",      &vFileWrite,        false);
+  
+  vAddPrimitive("lock.dropread",   &vLockDropRead,     false);
+  vAddPrimitive("lock.dropwrite",  &vLockDropWrite,    false);
+  vAddPrimitive("lock.grabread",   &vLockGrabRead,     false);
+  vAddPrimitive("lock.grabwrite",  &vLockGrabWrite,    false);
+  vAddPrimitive("lock.init",       &vLockInit,         false);
   
   vAddPrimitive("pstack.class",    &vPstackClass,      false);
   vAddPrimitive("p.depth",         &vPstackDepth,      false);
@@ -5087,6 +5094,98 @@ void Task::vFileWrite(NNP_Task nnpTask)
     THROW_INVALID_PARAM("file.write");
   
   //pFile->bWrite(xValue);
+}
+
+// lock: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* lock.dropread -- drop read lock                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vLockDropRead(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLockDropRead");
+  
+  PtrVal xLockPtr;
+  if ( ! nnpTask->bPopParam(xLockPtr) )
+    THROW_INVALID_PARAM("lock.dropread");
+  
+  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  ASSERT(pLock);
+  ASSERT(CN_LOCK == pLock->eClass());
+  
+  pLock->vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock.dropwrite -- drop write lock                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vLockDropWrite(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLockDropWrite");
+
+  PtrVal xLockPtr;
+  if ( ! nnpTask->bPopParam(xLockPtr) )
+    THROW_INVALID_PARAM("lock.dropwrite");
+  
+  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  ASSERT(pLock);
+  ASSERT(CN_LOCK == pLock->eClass());
+
+  pLock->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock.grabread -- grab read lock                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vLockGrabRead(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLockGrabRead");
+
+  PtrVal xLockPtr;
+  if ( ! nnpTask->bPopParam(xLockPtr) )
+    THROW_INVALID_PARAM("lock.grabread");
+  
+  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  ASSERT(pLock);
+  ASSERT(CN_LOCK == pLock->eClass());
+
+  pLock->vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock.grabwrite -- grab write lock                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vLockGrabWrite(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLockGrabWrite");
+
+  PtrVal xLockPtr;
+  if ( ! nnpTask->bPopParam(xLockPtr) )
+    THROW_INVALID_PARAM("lock.grabwrite");
+  
+  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  ASSERT(pLock);
+  ASSERT(CN_LOCK == pLock->eClass());
+  
+  pLock->vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* lock.init -- initialise lock                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vLockInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLockInit");
+  
+  PtrVal xLockPtr;
+  if ( ! nnpTask->bPopParam(xLockPtr) )
+    THROW_INVALID_PARAM("lock.init");
+  
+  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  ASSERT(pLock);
+  ASSERT(CN_LOCK == pLock->eClass());
+  
+  pLock->vInit();
 }
 
 // pstack: /////////////////////////////////////////////////////////////////////

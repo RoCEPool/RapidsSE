@@ -8,17 +8,20 @@
 
 namespace Common
 {
-  class Lock
+  class Lock : public mn,
+               public cn
   {
   private:
     u8 m_uValue;
     
   public:
-    void* operator new(size_t);
+    void* operator new(size_t, void* pLockAddress);
+    void  operator delete(void* pLockAddress);
     
-    Lock();
-    ~Lock();
+    Lock(void);
+    ~Lock(void);
     
+    void vInit(void);
     void vCheckInit(void);
     
     bool bGrabRead(void);

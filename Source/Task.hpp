@@ -432,6 +432,13 @@ namespace Tasking
     static void vFileRead(NNP_Task nnpTask);
     static void vFileWrite(NNP_Task nnpTask);
     
+    // lock
+    static void vLockDropRead(NNP_Task nnpTask);
+    static void vLockDropWrite(NNP_Task nnpTask);
+    static void vLockGrabRead(NNP_Task nnpTask);
+    static void vLockGrabWrite(NNP_Task nnpTask);
+    static void vLockInit(NNP_Task nnpTask);
+    
     // pstack
     static void vPstackClass(NNP_Task nnpTask);
     
