@@ -112,6 +112,28 @@
 ;
 
 
+: tableExporter ( "<fileNm>" ^table )
+
+    >r          ( "<fileNm>" ) ( R: ^table )
+
+    file.new >r ( "<fileNm>" ) ( R: ^table ^file )
+
+    0 rpick file.path!
+
+    open_write 0 rpick file.open drop
+
+    0 rpick 1 rpick table.export
+
+    0 rpick file.close
+
+    0 rpick file.delete
+
+    rdrop
+
+    rdrop
+;
+
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -274,6 +296,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* export a table                                                             */
+/*----------------------------------------------------------------------------*/
+: export_table ( "filename" "tablename" )
+
+    find
+
+    checkIsTable not if exit then
+
+    execute ( "filename" table )
+
+    // swap
+    // "export.sen" >>:
+
+    tableExporter
+
+    "exported table" success
+;
+
+/*----------------------------------------------------------------------------*/
 /* copy a table. from-table must exist & to-table is created                  */
 /*----------------------------------------------------------------------------*/
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- "text" n 2 )
@@ -297,22 +338,6 @@
     "table copied" success
 
     // traceoff
-;
-
-/*----------------------------------------------------------------------------*/
-/* export a table                                                             */
-/*----------------------------------------------------------------------------*/
-: export_table ( "filename" "tablename" )
-
-    find
-
-    checkIsTable not if exit then
-
-    execute ( "filename" table )
-
-    swap
-    "export.sen" >>:
-    "exported table" success
 ;
 
 /*----------------------------------------------------------------------------*/
