@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-               BuildableName = "RapidsSE"
-               BlueprintName = "RapidsSE"
+               BuildableName = "SE"
+               BlueprintName = "SE"
                ReferencedContainer = "container:RapidsSE.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-            BuildableName = "RapidsSE"
-            BlueprintName = "RapidsSE"
+            BuildableName = "SE"
+            BlueprintName = "SE"
             ReferencedContainer = "container:RapidsSE.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -56,8 +56,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-            BuildableName = "RapidsSE"
-            BlueprintName = "RapidsSE"
+            BuildableName = "SE"
+            BlueprintName = "SE"
             ReferencedContainer = "container:RapidsSE.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -72,11 +72,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--status"
@@ -101,8 +101,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "98A3C47E1CF74E6200BD2B80"
-            BuildableName = "RapidsSE"
-            BlueprintName = "RapidsSE"
+            BuildableName = "SE"
+            BlueprintName = "SE"
             ReferencedContainer = "container:RapidsSE.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

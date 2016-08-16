@@ -172,7 +172,7 @@
 		989056FA1D59C0650000D247 /* NNP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NNP.cpp; path = Source/NNP.cpp; sourceTree = "<group>"; };
 		989056FE1D59D2AD0000D247 /* Mersenne.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mersenne.cpp; path = Source/Mersenne.cpp; sourceTree = "<group>"; };
 		989056FF1D59D2AD0000D247 /* Mersenne.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Mersenne.hpp; path = Source/Mersenne.hpp; sourceTree = "<group>"; };
-		98A3C47F1CF74E6200BD2B80 /* RapidsSE */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RapidsSE; sourceTree = BUILT_PRODUCTS_DIR; };
+		98A3C47F1CF74E6200BD2B80 /* SE */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SE; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A3C4821CF74E6200BD2B80 /* main.cpp */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = Source/main.cpp; sourceTree = "<group>"; };
 		98C42CE11D0069D1007DD84F /* Task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task.cpp; sourceTree = "<group>"; };
 		98C42CE21D0069D1007DD84F /* Task.hpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = Task.hpp; sourceTree = "<group>"; };
@@ -507,7 +507,7 @@
 		98A3C4801CF74E6200BD2B80 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				98A3C47F1CF74E6200BD2B80 /* RapidsSE */,
+				98A3C47F1CF74E6200BD2B80 /* SE */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -935,9 +935,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		98A3C47E1CF74E6200BD2B80 /* RapidsSE */ = {
+		98A3C47E1CF74E6200BD2B80 /* SE */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 98A3C4861CF74E6200BD2B80 /* Build configuration list for PBXNativeTarget "RapidsSE" */;
+			buildConfigurationList = 98A3C4861CF74E6200BD2B80 /* Build configuration list for PBXNativeTarget "SE" */;
 			buildPhases = (
 				98A3C47B1CF74E6200BD2B80 /* Sources */,
 				98A3C47C1CF74E6200BD2B80 /* Frameworks */,
@@ -947,9 +947,9 @@
 			);
 			dependencies = (
 			);
-			name = RapidsSE;
+			name = SE;
 			productName = RapidsSE;
-			productReference = 98A3C47F1CF74E6200BD2B80 /* RapidsSE */;
+			productReference = 98A3C47F1CF74E6200BD2B80 /* SE */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -978,7 +978,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				98A3C47E1CF74E6200BD2B80 /* RapidsSE */,
+				98A3C47E1CF74E6200BD2B80 /* SE */,
 			);
 		};
 /* End PBXProject section */
@@ -1219,7 +1219,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		98A3C4861CF74E6200BD2B80 /* Build configuration list for PBXNativeTarget "RapidsSE" */ = {
+		98A3C4861CF74E6200BD2B80 /* Build configuration list for PBXNativeTarget "SE" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				98A3C4871CF74E6200BD2B80 /* Debug */,
