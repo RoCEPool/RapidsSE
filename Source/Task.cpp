@@ -813,6 +813,7 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("signal",          &vSignal,           false);
+  vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("!i",              &vStoreInteger,     false);
@@ -4131,6 +4132,23 @@ void Task::vSignal(NNP_Task nnpTask)
   nnpTask->vPrimitive("vSignal");
   
   // ..tbd..
+}
+
+/*----------------------------------------------------------------------------*/
+/* sleep -- sleep for n seconds                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSleep(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSnooze");
+  
+  i8 nSeconds;
+  
+  if ( ! nnpTask->bPopParam(nSeconds) )
+    THROW_INVALID_PARAM("sleep");
+  
+  Thread* pThread = Thread::pThread();
+  
+  pThread->m_xPosixThread.vSecSleep(nSeconds);
 }
 
 /*----------------------------------------------------------------------------*/

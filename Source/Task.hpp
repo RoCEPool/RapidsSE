@@ -365,6 +365,7 @@ namespace Tasking
     static void vSemicolon(NNP_Task nnpTask);      
     static void vSignal(NNP_Task nnpTask);         
     static void vSnooze(NNP_Task nnpTask);         
+    static void vSleep(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
     static void vStorePointer(NNP_Task nnpTask);
     static void vStoreInteger(NNP_Task nnpTask);

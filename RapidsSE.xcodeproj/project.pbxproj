@@ -341,6 +341,7 @@
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F24C76551D1B6A5100D41D09 /* WrdVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WrdVal.cpp; sourceTree = "<group>"; };
 		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
+		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
 		F24F61791D066DCD00954E9C /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes; path = Documents/Notes; sourceTree = SOURCE_ROOT; };
 		F25309921D0235EC000F6728 /* BufferPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BufferPool.cpp; sourceTree = "<group>"; };
 		F25309931D0235EC000F6728 /* BufferPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferPool.hpp; sourceTree = "<group>"; };
@@ -458,6 +459,7 @@
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
 				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
+				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
 				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
 				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
 			);
