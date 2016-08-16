@@ -349,8 +349,6 @@
 		F25309AA1D038AD6000F6728 /* Buffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Buffer.hpp; sourceTree = "<group>"; };
 		F25C6F1B1D30512C000886A8 /* DictionaryStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DictionaryStack.cpp; sourceTree = "<group>"; };
 		F25C6F1C1D30512C000886A8 /* DictionaryStack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DictionaryStack.hpp; sourceTree = "<group>"; };
-		F28DF4D61D5519C400013BBC /* load.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = load.sen; path = Commands/load.sen; sourceTree = "<group>"; };
-		F28DF4D71D5527B900013BBC /* export.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = export.sen; path = Commands/export.sen; sourceTree = "<group>"; };
 		F28DF4D81D56725F00013BBC /* Strand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Strand.cpp; sourceTree = "<group>"; };
 		F28DF4D91D56725F00013BBC /* Strand.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Strand.hpp; sourceTree = "<group>"; };
 		F28DF4DE1D59060700013BBC /* Process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Process.cpp; path = Source/Process.cpp; sourceTree = "<group>"; };
@@ -368,7 +366,6 @@
 		F291CCC91D11FF54009150AF /* ValWsp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValWsp.hpp; sourceTree = "<group>"; };
 		F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TaskVal.cpp; sourceTree = "<group>"; };
 		F29C97A41D1C955F00ED5F30 /* TaskVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TaskVal.hpp; sourceTree = "<group>"; };
-		F2B3B14E1D5131FC0049597E /* tableload.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tableload.sen; path = Commands/tableload.sen; sourceTree = "<group>"; };
 		F2B3B14F1D5150360049597E /* SegmentBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentBuffer.cpp; sourceTree = "<group>"; };
 		F2B3B1501D5150360049597E /* SegmentBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SegmentBuffer.hpp; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
@@ -444,9 +441,6 @@
 				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
 				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
 				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
-				F28DF4D71D5527B900013BBC /* export.sen */,
-				F28DF4D61D5519C400013BBC /* load.sen */,
-				F2B3B14E1D5131FC0049597E /* tableload.sen */,
 			);
 			name = TheSystem;
 			sourceTree = SOURCE_ROOT;

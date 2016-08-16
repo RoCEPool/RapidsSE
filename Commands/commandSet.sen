@@ -285,9 +285,6 @@
 
     execute ( "filename" table )
 
-    // swap
-    // "load.sen" >>:
-
     tableLoader
 
     freespace .
@@ -305,9 +302,6 @@
     checkIsTable not if exit then
 
     execute ( "filename" table )
-
-    // swap
-    // "export.sen" >>:
 
     tableExporter
 
