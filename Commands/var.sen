@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* intvar.sen -- integer variable related words                               */
+/* var.sen -- variable related words                                          */
 /*============================================================================*/
 
-"intvar.sen" .
+"var.sen" .
 
 /*----------------------------------------------------------------------------*/
 /* create int variable in current dictionary using name from input stream     */
