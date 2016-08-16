@@ -113,7 +113,8 @@ void SEitf::vInit(void)
   Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
-  pRspQueWord->vFunc(&Task::vNop);
+  //pRspQueWord->vFunc(&Task::vNop);
+  pRspQueWord->vFunc(nullptr);
   pRspQueWord->pAllot(sizeof(Queue));
 //  pRspQueWord->vEncode("encodeDoes");
 //  pRspQueWord->vEncode("exit");
@@ -165,6 +166,14 @@ void SEitf::vPrompt(void)
     if (Prompt::bGetInput(sPrompt,sCommand)) {
       vParse(sCommand,pWords);
       vExecute(pWords);
+      
+      if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
+        while (true) {
+          PosixThread::vSecSleep(10);
+          vExecute(pWords);
+        }
+      }
+   
     }
   }
 }
@@ -515,6 +524,11 @@ bool SEitf::bDecode(char* pWords[])
   if (String::bEqualTo("ping",pWords[0],C_NO_CASE)) {
     return bPing(pWords);
   }
+  
+  if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
+    return bGetMonitor(pWords);
+  }
+  
   if (0 == String::iLength(pWords[0]))
     return false;
   
@@ -1061,6 +1075,19 @@ bool SEitf::bGetDicContents(char* pWords[])
   s256 sRequest;
   
   sRequest = "ls";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetMonitor(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "get_monitor";
   vAppendRequest(sRequest);
   
   return true;

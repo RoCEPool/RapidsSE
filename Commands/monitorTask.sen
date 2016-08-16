@@ -53,11 +53,24 @@ thread:  monitorThread
 
       monitorLock lock.dropWrite
 
-      monitorString @s .
+      // monitorString @s .
 
-      1 sleep
+      10 sleep
 
     0 until
+;
+
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+
+: monitorString@
+
+    monitorLock lock.grabRead
+
+      monitorString @s
+
+    monitorLock lock.dropRead
 ;
 
 /*============================================================================*/

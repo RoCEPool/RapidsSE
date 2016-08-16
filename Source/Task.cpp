@@ -2833,7 +2833,7 @@ void Task::vExecute(NNP_Task nnpTask)
     nnpTask->vPushParam(xPtrVal);
     
     pFUN pFunc = pWord->pFunc();
-    if (Task::vNop == pFunc) {
+    if (!pFunc || Task::vNop == pFunc) {
       nnpTask->vPopReturn(nnpTask->m_pCell);
     }
     else {
@@ -6559,6 +6559,10 @@ void Task::vFind(NNP_Task nnpTask)
   s256 sName;
   if ( ! nnpTask->bPopParam(sName) )
     THROW_INVALID_PARAM("find");
+ 
+  if (nnpTask->m_bTracing) {
+    i8 i = 0; i++;
+  }
   
   Word* pWord = nnpTask->pFindWord(sName);
   

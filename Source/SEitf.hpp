@@ -100,6 +100,8 @@ namespace Interface
     bool bSetDicPath(char* pWords[]);
     bool bGetDicContents(char* pWords[]);
 
+    bool bGetMonitor(char* pWords[]);
+    
     bool bPing(char* pWords[]);
     
     bool bDo(char* pWords[]);

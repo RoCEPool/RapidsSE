@@ -17,6 +17,8 @@
 
   snooze
 
+  monitorStart
+
   "requestServerLoop" find execute
 ;
 
