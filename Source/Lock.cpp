@@ -20,7 +20,6 @@ void Lock::operator delete(void* pLockAddress)
   // must be explicitly free'd by caller
 }
 
-
 //---------------------------------------------------------------------------//
 // Lock: constructor                                                         //
 //---------------------------------------------------------------------------//

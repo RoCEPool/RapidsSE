@@ -24,6 +24,8 @@ namespace Common
     void operator = (const char* aArg);
     void operator = (char* aArg);
     void operator = (s& rArg);
+    
+    void vInit(void);
   };
 }
 

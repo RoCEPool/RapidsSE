@@ -14,7 +14,7 @@ namespace Common
     
     char m_mWorkspace[C_S_SIZE]; // string workspace 
     
-  public:
+  public:    
     s32(void);
     s32(s32& rArg);
     s32(const char* aArg);

@@ -290,6 +290,7 @@ namespace Tasking
     static void vFetch(NNP_Task nnpTask);
     static void vFetchInteger(NNP_Task nnpTask);
     static void vFetchPointer(NNP_Task nnpTask);   
+    static void vFetchString(NNP_Task nnpTask);
     static void vFreePercent(NNP_Task nnpTask);
     static void vFreeSpace(NNP_Task nnpTask);
     static void vGreater(NNP_Task nnpTask);
@@ -365,7 +366,9 @@ namespace Tasking
     static void vSignal(NNP_Task nnpTask);         
     static void vSnooze(NNP_Task nnpTask);         
     static void vStore(NNP_Task nnpTask);
+    static void vStorePointer(NNP_Task nnpTask);
     static void vStoreInteger(NNP_Task nnpTask);
+    static void vStoreString(NNP_Task nnpTask);
     static void vStrEql(NNP_Task nnpTask);
     static void vStrLen(NNP_Task nnpTask);
     static void vSubStr(NNP_Task nnpTask);

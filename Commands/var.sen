@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create int variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/
-: intvar:
+: int:
     create 
     object!!
     sizeof_intval allot
@@ -17,12 +17,12 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create s32 variable in current dictionary using name from input stream     */
+/* create str variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/
-: s32var:
+: str:
     create
     object!!
-    sizeof_strval sizeof_s32 + allot
+    sizeof_strval sizeof_s256 + allot
     word.this >body magic!!
     word.this >body CN_STRVAL class!
     does>

@@ -154,7 +154,7 @@ void File::vInit(void)
 {
   m_xSysCall.vSetMagic();
   
-  m_sFilePath.vInit(256);
+  m_sFilePath.vInit();
   m_sOpenMode.vInit();
   m_pFilePtr    = nullptr;
   m_iTraceLevel = 0;

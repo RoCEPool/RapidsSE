@@ -741,6 +741,7 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("@i",              &vFetchInteger,     false);
   vAddPrimitive("@p",              &vFetchPointer,     false);
+  vAddPrimitive("@s",              &vFetchString,      false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
@@ -814,7 +815,8 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("signal",          &vSignal,           false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
-  vAddPrimitive("int!",            &vStoreInteger,     false);
+  vAddPrimitive("!i",              &vStoreInteger,     false);
+  vAddPrimitive("!s",              &vStoreString,      false);
   vAddPrimitive("streql",          &vStrEql,           false);
   vAddPrimitive("strlen",          &vStrLen,           false);
   vAddPrimitive("subStr",          &vSubStr,           false);
@@ -2904,6 +2906,19 @@ void Task::vFetchPointer(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* @s -- fetch string                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vFetchString(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vFetchString");
+  
+  PtrVal xPtrStr;
+  nnpTask->vPopParam(&xPtrStr);
+  
+  nnpTask->vPushParam(static_cast<StrVal*>(xPtrStr.pPtr()));
+}
+
+/*----------------------------------------------------------------------------*/
 /* freePercent -- push free percent of buffer pool onto stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vFreePercent(NNP_Task nnpTask)
@@ -4149,7 +4164,7 @@ void Task::vStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* int! -- store integer                                                      */
+/* !i -- store integer                                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vStoreInteger(NNP_Task nnpTask)
 {
@@ -4161,11 +4176,29 @@ void Task::vStoreInteger(NNP_Task nnpTask)
   i8 i;
   
   if ( ! nnpTask->bPopParam(i) )
-    THROW_INVALID_PARAM("int!");
+    THROW_INVALID_PARAM("!i");
   
   *static_cast<i8*>(xPtrInteger.pPtr()) = i;
   
-  nnpTask->vPushParam(i);
+  //  nnpTask->vPushParam(i);
+}
+
+/*----------------------------------------------------------------------------*/
+/* !s -- store string                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vStoreString(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vStoreString");
+  
+  PtrVal xPtrStr;
+  nnpTask->vPopParam(&xPtrStr);
+  
+  ValWsp xStrWsp;
+  
+  if ( ! nnpTask->bPopParam(xStrWsp) )
+    THROW_INVALID_PARAM("!s");
+    
+  *static_cast<StrVal*>(xPtrStr.pPtr()) = xStrWsp.sStr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5485,7 +5518,7 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
   new(pSEitfList) SEitfList;
 }
 
-// system: ///////////////////////////////////////////////////////////////////
+// system: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* system.cpu-- get no. of cpu's in the machine                               */
@@ -5496,6 +5529,7 @@ void Task::vSystemCpu(NNP_Task nnpTask)
   
   nnpTask->vPushParam(System::iCpuCount());
 }
+
 // tasklist: ///////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
