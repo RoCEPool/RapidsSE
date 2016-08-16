@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SessionSey.hpp - Session Set                                               */
+/* SessionList.hpp - Session List                                             */
 /*============================================================================*/
 
 #pragma once
@@ -9,7 +9,7 @@
 namespace Interface {
     
   class SessionList : public Object,
-                      public List_t<Session>
+                      public List_t<SEitf>
   {
   private:
     
@@ -20,8 +20,8 @@ namespace Interface {
     SessionList(void);
     ~SessionList(void);
     
-    Session* pAllocSession(void);
-    void     vFreeSession(Session* pSession);
+    SEitf* pAllocSEitf(void);
+    void     vFreeSEitf(SEitf* pSEitf);
   };
     
 }

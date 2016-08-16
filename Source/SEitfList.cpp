@@ -49,29 +49,29 @@ SessionList::~SessionList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a session                                                         */
+/* allocate a seitf                                                           */
 /*----------------------------------------------------------------------------*/
-Session* SessionList::pAllocSession(void)
+SEitf* SessionList::pAllocSEitf(void)
 {
   _poolAddress_(this);
 
-  Session* pSession = reinterpret_cast<Session*>(gpSmallHeap->pAllocObject());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(gpSmallHeap->pAllocObject());
   
-  vAppend(pSession);
+  vAppend(pSEitf);
   
-  return pSession;
+  return pSEitf;
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a session                                                             */
+/* free a seitf                                                               */
 /*----------------------------------------------------------------------------*/
-void SessionList::vFreeSession(Session* pSession)
+void SessionList::vFreeSEitf(SEitf* pSEitf)
 {
   _poolAddress_(this);
   
-  vRemove(pSession);
+  vRemove(pSEitf);
   
-  gpSmallHeap->vFreeObject(pSession);
+  gpSmallHeap->vFreeObject(pSEitf);
 }
 
 /*============================================================================*/
