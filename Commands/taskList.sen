@@ -7,7 +7,7 @@
 : taskList:
     create
     object!!
-    ( this should be a @p to gpTaskList )
+    ( this should be a @ to gpTaskList )
     sizeof_tasklist allot
     word.this >body magic!!
     word.this >body CN_TASKLIST class!

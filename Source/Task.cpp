@@ -739,9 +739,6 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("execute",         &vExecute,          false);
   vAddPrimitive("exit",            &vExit,             false);
   vAddPrimitive("@",               &vFetch,            false);
-  vAddPrimitive("@i",              &vFetchInteger,     false);
-  vAddPrimitive("@p",              &vFetchPointer,     false);
-  vAddPrimitive("@s",              &vFetchString,      false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
@@ -816,8 +813,6 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
-  vAddPrimitive("!i",              &vStoreInteger,     false);
-  vAddPrimitive("!s",              &vStoreString,      false);
   vAddPrimitive("streql",          &vStrEql,           false);
   vAddPrimitive("strlen",          &vStrLen,           false);
   vAddPrimitive("subStr",          &vSubStr,           false);
@@ -1258,9 +1253,9 @@ void Task::vNextInSet(NP_Task npNextInSet)
 
 
 /*----------------------------------------------------------------------------*/
-/* prepare to run ::dicInitialis                                              */
+/* seed task to run ::dicInitialise                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vPrepareDicInitialiseSen(void)
+void Task::vSeedDicInitialiseSen(void)
 {
   Word* pBootSen = pFindWord("::dicInitialise");
   ASSERT(pBootSen);
@@ -1277,9 +1272,9 @@ void Task::vPrepareDicInitialiseSen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepare to run given command                                               */
+/* seed task to run given command                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vPrepareCommand(const char* aCommand)
+void Task::vSeedWord(const char* aCommand)
 {
   Word* pShellEnter = pFindWord("::docmd");
   
@@ -1298,9 +1293,9 @@ void Task::vPrepareCommand(const char* aCommand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prepare to run ::enter                                                     */
+/* seed task to run ::enter                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vPrepareDocol(void)
+void Task::vSeedDocol(void)
 {
   Word* pShellEnter = pFindWord("::enter");
   
@@ -2876,49 +2871,6 @@ void Task::vFetch(NNP_Task nnpTask)
   nnpTask->vPushParam(xVal);
 }
 
-/*----------------------------------------------------------------------------*/
-/* @i -- fetch integer using pointer on stack                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vFetchInteger(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vFetchInteger");
-  
-  PtrVal xPtrInteger;
-  nnpTask->vPopParam(&xPtrInteger);
-  
-  OnStack* pValue= static_cast<OnStack*>(xPtrInteger.pPtr());
-  
-  nnpTask->vPushParam(pValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* @p -- fetch pointer using pointer on stack                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vFetchPointer(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vFetchPointer");
-  
-  PtrVal xPtrPointer;
-  nnpTask->vPopParam(&xPtrPointer);
-
-  PtrVal xPointer;
-  xPointer = *static_cast<char**>(xPtrPointer.pPtr());
-
-  nnpTask->vPushParam(xPointer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* @s -- fetch string                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vFetchString(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vFetchString");
-  
-  PtrVal xPtrStr;
-  nnpTask->vPopParam(&xPtrStr);
-  
-  nnpTask->vPushParam(static_cast<StrVal*>(xPtrStr.pPtr()));
-}
 
 /*----------------------------------------------------------------------------*/
 /* freePercent -- push free percent of buffer pool onto stack                 */
@@ -4180,44 +4132,6 @@ void Task::vStore(NNP_Task nnpTask)
     THROW_INVALID_PARAM("!");
     
   xPtr.vStore(xVal);
-}
-
-/*----------------------------------------------------------------------------*/
-/* !i -- store integer                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vStoreInteger(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vStoreInteger");
-  
-  PtrVal xPtrInteger;
-  nnpTask->vPopParam(&xPtrInteger);
-  
-  i8 i;
-  
-  if ( ! nnpTask->bPopParam(i) )
-    THROW_INVALID_PARAM("!i");
-  
-  *static_cast<i8*>(xPtrInteger.pPtr()) = i;
-  
-  //  nnpTask->vPushParam(i);
-}
-
-/*----------------------------------------------------------------------------*/
-/* !s -- store string                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vStoreString(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vStoreString");
-  
-  PtrVal xPtrStr;
-  nnpTask->vPopParam(&xPtrStr);
-  
-  ValWsp xStrWsp;
-  
-  if ( ! nnpTask->bPopParam(xStrWsp) )
-    THROW_INVALID_PARAM("!s");
-    
-  *static_cast<StrVal*>(xPtrStr.pPtr()) = xStrWsp.sStr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6287,11 +6201,11 @@ void Task::vTaskNew(NNP_Task nnpTask)
   ValWsp xValWsp;
   nnpTask->vPopParam(&xValWsp);
   
-  char* aCommand = xValWsp.sStr();
+  char* aSeedWord = xValWsp.sStr();
   
   NNP_Task nnpNewTask = new Task(nnpTask);
   
-  nnpNewTask->vPrepareCommand(aCommand);
+  nnpNewTask->vSeedWord(aSeedWord);
   
 //  ThreadOld* pThread = ThreadOld::pThread();
 //  
@@ -6355,7 +6269,7 @@ void Task::vTaskSeed(NNP_Task nnpTask)
   
   char* pSeed = xStrWsp.pAsStrVal()->sStr();
   
-  nnpTask->vPrepareCommand(pSeed);
+  nnpTask->vSeedWord(pSeed);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6904,7 +6818,7 @@ void Task::vClient(NNP_Task nnpTask)
   pThread->vSpawn();
   
   NNP_Task nnpTaskNew = new Task(nnpTask);
-  nnpTaskNew->vPrepareCommand("client_code:");
+  nnpTaskNew->vSeedWord("client_code:");
   pThread->vAppend(nnpTaskNew);
 }
 
@@ -6930,7 +6844,7 @@ void Task::vServer(NNP_Task nnpTask)
   
   // FIX!!!
   //NNP_Task nnpTaskNew = new Task();
-  //nnpTaskNew->vPrepareCommand("server_code:");
+  //nnpTaskNew->vSeedWord("server_code:");
   //pThread->vAppend(nnpTaskNew);
 }
 

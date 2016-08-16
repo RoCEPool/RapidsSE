@@ -39,7 +39,7 @@ thread:  monitorThread
 
     "monitorTask" task.this task.name!
 
-    "" monitorString !s
+    "" monitorString !
 
     "Monitor Task running..." .
 
@@ -49,11 +49,11 @@ thread:  monitorThread
 
         "freespace " freespace >str concat
 
-        monitorString !s
+        monitorString !
 
       monitorLock lock.dropWrite
 
-      // monitorString @s .
+      // monitorString @ .
 
       10 sleep
 
@@ -68,7 +68,7 @@ thread:  monitorThread
 
     monitorLock lock.grabRead
 
-      monitorString @s
+      monitorString @
 
     monitorLock lock.dropRead
 ;

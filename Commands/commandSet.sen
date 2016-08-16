@@ -4,6 +4,8 @@
 
 "commandSet.sen" .
 
+int: queryCount
+
 : success 0 2 ;
 
 : failure 2 ;
@@ -372,6 +374,8 @@
     find
 
     checkIsTable not if exit then
+
+    queryCount ++
 
     execute ( table )
 
