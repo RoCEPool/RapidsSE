@@ -17,11 +17,12 @@ namespace StorageEngine
   public:
     static void vCheckAssumptions(void);
     
-    static void vExecute(void);
-    static void vPoolClose(void);
-    static void vPoolOpen(void);
+    static void   vExecute(void);
+    static void   vPoolClose(void);
+    static void   vPoolOpen(void);
+    static void   vSEitfDelete(SEitf* pSEitf);
+    static SEitf* pSEitfNew(void);
 
-    
     //-------------------------------------------------------------------------
     
     static void vAttachObjects(void);

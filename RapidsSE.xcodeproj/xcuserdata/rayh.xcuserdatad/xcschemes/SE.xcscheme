@@ -64,11 +64,11 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--docol"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--seitf"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start"
