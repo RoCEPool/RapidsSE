@@ -19,7 +19,7 @@ ThreadList*         gpThreadList       = nullptr;
 SEitfList*          gpSEitfList        = nullptr;
 TxList*             gpTxList           = nullptr;
 
-File*               gpTraceFile        = nullptr;
+extern File*               gpTraceFile;
 
 pthread_key_t       giTLS_ThreadKey    = 0;
 pthread_key_t       giTLS_TaskKey      = 0;
