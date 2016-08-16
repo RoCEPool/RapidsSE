@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-extern Arguments gxArguments;
+Arguments gxArguments;
 
 BufferPool*         gpBufferPool       = nullptr;
 AttachMap *         gpAttachMap        = nullptr;
@@ -19,7 +19,7 @@ ThreadList*         gpThreadList       = nullptr;
 SEitfList*          gpSEitfList        = nullptr;
 TxList*             gpTxList           = nullptr;
 
-extern File*               gpTraceFile;
+File*               gpTraceFile        = nullptr;
 
 pthread_key_t       giTLS_ThreadKey    = 0;
 pthread_key_t       giTLS_TaskKey      = 0;

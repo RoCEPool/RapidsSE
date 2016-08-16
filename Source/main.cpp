@@ -4,7 +4,7 @@
 
 #include "StorageEngine.h"
 
-Arguments  gxArguments;
+extern Arguments  gxArguments;
 
 void vTest1(void);
 

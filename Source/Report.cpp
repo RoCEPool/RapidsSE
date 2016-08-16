@@ -4,8 +4,7 @@
 
 #include "Common.h"
 
-//extern File* gpTraceFile;
-File* gpTraceFile = nullptr;
+extern File* gpTraceFile;
 
 char gaReportBuffer[C_1MB] = {'\0'};
   
