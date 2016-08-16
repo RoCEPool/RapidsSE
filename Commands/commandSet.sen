@@ -90,8 +90,25 @@
 ;
 
 
-: tableLoader
+: tableLoader ( "<fileNm>" ^table )
 
+    >r          ( "<fileNm>" ) ( R: ^table )
+
+    file.new >r ( "<fileNm>" ) ( R: ^table ^file )
+
+    0 rpick file.path!
+
+    open_read 0 rpick file.open drop
+
+    0 rpick 1 rpick table.load
+
+    0 rpick file.close
+
+    0 rpick file.delete
+
+    rdrop
+
+    rdrop
 ;
 
 
@@ -246,8 +263,10 @@
 
     execute ( "filename" table )
 
-    swap
-    "load.sen" >>:
+    // swap
+    // "load.sen" >>:
+
+    tableLoader
 
     freespace .
 

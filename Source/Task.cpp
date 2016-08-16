@@ -883,7 +883,7 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
-  vAddPrimitive("rstack.pick",     &vRstackPick,       false);
+  vAddPrimitive("rpick",           &vRstackPick,       false);
 
   vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
   vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
@@ -4004,7 +4004,7 @@ void Task::vRstackFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rstack.pick -- place copy of nth value in return stack onto param stack    */
+/* rpick -- place copy of nth value in return stack onto param stack          */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackPick(NNP_Task nnpTask)
 {
@@ -4012,7 +4012,7 @@ void Task::vRstackPick(NNP_Task nnpTask)
   
   i8 iPick;
   if ( ! nnpTask->bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("rstack.pick");
+    THROW_INVALID_PARAM("rpick");
     
   // could do this directly on stack
   
@@ -4020,7 +4020,7 @@ void Task::vRstackPick(NNP_Task nnpTask)
   
   nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
   
-  nnpTask->vPushReturn(xValWsp);
+  nnpTask->vPushParam(xValWsp);
 }
 
 /*----------------------------------------------------------------------------*/
