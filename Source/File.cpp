@@ -31,15 +31,20 @@ const char* C_OPEN_READ_WRITE_CREATE = "w+";
 const char* C_OPEN_READ_APPEND = "a+";
 
 /*----------------------------------------------------------------------------*/
-/* operator new: class cannot be new'd                                        */
+/* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* File::operator new(size_t)
+void* File::operator new(size_t, void* pFileAddress)
 {
-  vFatal("fatal: File class cannot be new'd\n");
-  
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  return pFileAddress;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void File::operator delete(void* pFileAddress)
+{
+  // do nothing
+  // must be explicitly free'd by caller
 }
 
 /*----------------------------------------------------------------------------*/

@@ -421,7 +421,9 @@ namespace Tasking
     
     // file
     static void vFileClose(NNP_Task nnpTask);     
-    static void vFileInit(NNP_Task nnpTask);      
+    static void vFileDelete(NNP_Task nnpTask);
+    static void vFileInit(NNP_Task nnpTask);
+    static void vFileNew(NNP_Task nnpTask);
     static void vFileOpen(NNP_Task nnpTask);
     static void vFilePathGet(NNP_Task nnpTask);
     static void vFilePathSet(NNP_Task nnpTask);   

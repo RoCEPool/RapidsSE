@@ -861,7 +861,9 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("dic.stack",       &vDicStack,         false);
   
   vAddPrimitive("file.close",      &vFileClose,        false);
+  vAddPrimitive("file.delete",     &vFileDelete,       false);
   vAddPrimitive("file.init",       &vFileInit,         false);
+  vAddPrimitive("file.new",        &vFileNew,          false);
   vAddPrimitive("file.open",       &vFileOpen,         false);
   vAddPrimitive("file.path@",      &vFilePathGet,      false);
   vAddPrimitive("file.path!",      &vFilePathSet,      false);
@@ -4877,6 +4879,26 @@ void Task::vFileClose(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* file.delete -- delete a file                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vFileDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vFileDelete");
+  
+  PtrVal xFilePtr;
+  
+  if ( ! nnpTask->bPopParam(xFilePtr) )
+    THROW_INVALID_PARAM("file.delete");
+  
+  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+
+  Object* pFileObject = reinterpret_cast<Object*>(pFile);
+  delete pFile;
+  
+  gpSmallHeap->vFreeObject(pFileObject);
+}
+
+/*----------------------------------------------------------------------------*/
 /* file.init -- initialise a file                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vFileInit(NNP_Task nnpTask)
@@ -4891,6 +4913,22 @@ void Task::vFileInit(NNP_Task nnpTask)
   File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
   
   pFile->vInit();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file.new -- new a file                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vFileNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vFileNew");
+  
+  void* pFileAddress = gpSmallHeap->pAllocObject();
+  File* pFile = new(pFileAddress) File;
+  
+  PtrVal xFilePtr;
+  xFilePtr = pFile;
+  
+  nnpTask->vPushParam(xFilePtr);
 }
 
 /*----------------------------------------------------------------------------*/
