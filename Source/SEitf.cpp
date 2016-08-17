@@ -6,6 +6,7 @@
 
 extern Heap*        gpSmallHeap;
 extern Dictionary*  gpDictionary;
+extern SEitfList*   gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -40,6 +41,10 @@ SEitf::SEitf(void)
   m_pResponseQueue = nullptr;
   
   m_xDictionary.vName("seitf");
+  
+  SEitf* pSEitf = this;
+  
+  gpSEitfList->vAppend(pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +52,9 @@ SEitf::SEitf(void)
 /*----------------------------------------------------------------------------*/
 SEitf::~SEitf(void)
 {
+  SEitf* pSEitf = this;
+  
+  gpSEitfList->vRemove(pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,7 +98,12 @@ Word* SEitf::pFindWord(s& sName)
 /*----------------------------------------------------------------------------*/
 void SEitf::vDump(void)
 {
-  vTrace("SEitf %p:\n",this);
+  vTrace("SEitf %p: pid %lld (%s)\n",
+         this,
+         m_iPid,
+         Process::bTestPid(m_iPid) ? "exists" : "non-existant"
+         );
+  
   vTrace("  RequestQueue %p  ResponseQueue %p\n",
          m_pRequestQueue,
          m_pResponseQueue);

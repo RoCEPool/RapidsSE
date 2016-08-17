@@ -160,12 +160,10 @@ SEitf* RapidsSE::pSEitfNew(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vAttachObjects(void)
 {
+  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
+  
   // get pointers to global objects from attach map
-  gpAttachMap        = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
-  gpMediumHeap       = gpAttachMap->m_pMediumHeap;
-  gpSmallHeap        = gpAttachMap->m_pSmallHeap;
-  gpGlobalDictionary = gpAttachMap->m_pGlobalDictionary;
-  gpDictionary       = gpAttachMap->m_pDictionary;
+  gpAttachMap->vGetGlobals();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -384,7 +382,7 @@ void RapidsSE::vSystemInit(void)
   
   vDicInitialise(gnpRootTask);
   
-  gpAttachMap->vInit();
+  gpAttachMap->vRecordGlobals();
   
   // get the trace file
   Word* pTraceFileWord = gpDictionary->pFind("trace_file");

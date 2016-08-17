@@ -39,8 +39,6 @@ seitflist seitfCursor: seitfCrs
 
 : iterateSEitfList
 
-    exit //!!!!!!!!!!!!!!!!!!!!!!!
-
     seitfcrs seitfcrs seitfcursor.begin
 
     iterate
@@ -76,7 +74,7 @@ seitflist seitfCursor: seitfCrs
 
       // reclaimString @ .
 
-      10 sleep
+      3 sleep
 
     0 until
 ;

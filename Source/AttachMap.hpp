@@ -23,6 +23,7 @@ namespace StorageEngine
     GlobalDictionary*  m_pGlobalDictionary;
     Dictionary*        m_pDictionary;
     TaskList*          m_pTaskList;
+    SEitfList*         m_pSEitfList;
    
   public:
     void* operator new(size_t);
@@ -31,8 +32,8 @@ namespace StorageEngine
     AttachMap(void);
     ~AttachMap(void);
     
-    void vInit(void);
-  
+    void vGetGlobals(void);
+    void vRecordGlobals(void);
   };
 }
 

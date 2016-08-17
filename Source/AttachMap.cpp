@@ -9,6 +9,7 @@ extern Heap*                 gpMediumHeap;
 extern GlobalDictionary*     gpGlobalDictionary;
 extern Dictionary*           gpDictionary;
 extern TaskList*             gpTaskList;
+extern SEitfList*            gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -49,9 +50,22 @@ AttachMap::~AttachMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/* get all the needed globals                                                 */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vInit(void)
+void AttachMap::vGetGlobals(void)
+{
+  gpMediumHeap       = m_pMediumHeap;
+  gpSmallHeap        = m_pSmallHeap;
+  gpGlobalDictionary = m_pGlobalDictionary;
+  gpDictionary       = m_pDictionary;
+  gpTaskList         = m_pTaskList;
+  gpSEitfList        = m_pSEitfList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* record all the needed globals                                              */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vRecordGlobals(void)
 {
   m_iPid              = Process::iGetPid();
   m_iStop             = 0;
@@ -65,6 +79,7 @@ void AttachMap::vInit(void)
   m_pGlobalDictionary = gpGlobalDictionary;
   m_pDictionary       = gpDictionary;
   m_pTaskList         = gpTaskList;
+  m_pSEitfList        = gpSEitfList;
 }
 
 /*============================================================================*/
