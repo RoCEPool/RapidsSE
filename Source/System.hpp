@@ -18,7 +18,11 @@ namespace Common
     
   public:
     
+    static i8 iClockFrequency(void);
+    static i8 iCoreCount(void);
     static i8 iCpuCount(void);
+    static i8 iPhysicalMemory(void);
+    
   };
 }
 

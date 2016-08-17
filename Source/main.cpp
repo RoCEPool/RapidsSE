@@ -16,7 +16,7 @@ int main(int argc, const char* argv[])
   printf("RapidsSE %s (%s %s)\n",VERSION_STRING,__DATE__,__TIME__);
   
   vTrace("Task::vWord %p\n",Task::vWord);
-    
+  
   if ( ! gxArguments.bParse(argc,argv) )
     exit(EXIT_FAILURE);
   
