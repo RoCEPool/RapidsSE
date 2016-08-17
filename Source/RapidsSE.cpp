@@ -73,7 +73,7 @@ void RapidsSE::vExecute(void)
       if (gxArguments.m_bSeitf) {
         while (! gpDictionary->pFind("requestQueue"))
           ;
-        PosixThread::vNanoSleep(250_MB);
+        PosixThread::vSleepNano(250_MB);
         vSeitfPrompt();
       }
       else
@@ -473,7 +473,7 @@ void RapidsSE::vWaitFlag(void)
 
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )
-    PosixThread::vNanoSleep(100_KB);
+    PosixThread::vSleepMilli(10);
 }
 
 /*============================================================================*/

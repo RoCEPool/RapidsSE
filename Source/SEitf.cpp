@@ -183,7 +183,7 @@ void SEitf::vPrompt(void)
       
       if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
         while (true) {
-          PosixThread::vSecSleep(10);
+          PosixThread::vSleepSec(10);
           vExecute(pWords);
         }
       }

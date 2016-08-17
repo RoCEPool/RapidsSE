@@ -627,6 +627,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("thread.name!",    &vThreadNameStore,  false);
   vAddPrimitive("thread.taskset@", &vThreadSfetch,     false);
   vAddPrimitive("thread.taskset!", &vThreadSstore,     false);
+  vAddPrimitive("thread.sleep_s",  &vThreadSleep_s,    false);
+  vAddPrimitive("thread.sleep_ms", &vThreadSleep_ms,   false);
+  vAddPrimitive("thread.sleep_us", &vThreadSleep_us,   false);
+  vAddPrimitive("thread.sleep_ns", &vThreadSleep_ns,   false);
   vAddPrimitive("thread.spawn",    &vThreadSpawn,      false);
   
   vAddPrimitive("threadlist.dump", &vThreadListDump,   false);
@@ -4136,7 +4140,7 @@ void Task::vSignal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSleep(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSnooze");
+  nnpTask->vPrimitive("vSleep");
   
   i8 nSeconds;
   
@@ -4145,7 +4149,7 @@ void Task::vSleep(NNP_Task nnpTask)
   
   Thread* pThread = Thread::pThread();
   
-  pThread->m_xPosixThread.vSecSleep(nSeconds);
+  pThread->m_xPosixThread.vSleepSec(nSeconds);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4157,7 +4161,7 @@ void Task::vSnooze(NNP_Task nnpTask)
   
   Thread* pThread = Thread::pThread();
   
-  pThread->m_xPosixThread.vNanoSleep(100_MB);
+  pThread->m_xPosixThread.vSleepNano(100_MB);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6039,6 +6043,74 @@ void Task::vThreadSstore(NNP_Task nnpTask)
   TaskSet* pTaskSet = static_cast<TaskSet*>(pTaskSetEmb);
   
   pThread->m_pTaskSet = pTaskSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.sleep_s -- sleep for n seconds                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSleep_s(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadSleep_s");
+  
+  i8 nSeconds;
+  
+  if ( ! nnpTask->bPopParam(nSeconds) )
+    THROW_INVALID_PARAM("sleep_s");
+  
+  Thread* pThread = Thread::pThread();
+  
+  pThread->m_xPosixThread.vSleepSec(nSeconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.sleep_ms -- sleep for n milliseconds                                */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSleep_ms(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadSleep_ms");
+  
+  i8 nMilliseconds;
+  
+  if ( ! nnpTask->bPopParam(nMilliseconds) )
+    THROW_INVALID_PARAM("sleep_ms");
+  
+  Thread* pThread = Thread::pThread();
+  
+  pThread->m_xPosixThread.vSleepMilli(nMilliseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.sleep_us -- sleep for n microseconds                                */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSleep_us(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadSleep_us");
+  
+  i8 nMicroseconds;
+  
+  if ( ! nnpTask->bPopParam(nMicroseconds) )
+    THROW_INVALID_PARAM("sleep_us");
+  
+  Thread* pThread = Thread::pThread();
+  
+  pThread->m_xPosixThread.vSleepMicro(nMicroseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.sleep_ns -- sleep for n nanoseconds                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadSleep_ns(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadSleep_ns");
+  
+  i8 nNanoseconds;
+  
+  if ( ! nnpTask->bPopParam(nNanoseconds) )
+    THROW_INVALID_PARAM("sleep_ns");
+  
+  Thread* pThread = Thread::pThread();
+  
+  pThread->m_xPosixThread.vSleepNano(nNanoseconds);
 }
 
 /*----------------------------------------------------------------------------*/

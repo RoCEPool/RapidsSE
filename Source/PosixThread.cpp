@@ -261,9 +261,57 @@ void PosixThread::vTlsSet(pthread_key_t iTlsKey, void* pArg)
 //----------------------------------------------------------------------------//
 
 /*----------------------------------------------------------------------------*/
+/* sleep for given number of microseconds                                     */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vSleepMicro(i8 nMicroSeconds)
+{
+  struct timespec xReq;
+  struct timespec xRem;
+  
+  if (nMicroSeconds >= C_1M) {
+    xReq.tv_nsec = (nMicroSeconds % C_1M) * C_1K;
+    xReq.tv_sec  = DIV(nMicroSeconds,C_1M);
+  }
+  else {
+    xReq.tv_nsec = nMicroSeconds * C_1K;
+    xReq.tv_sec  = 0;
+  }
+  
+  i8 rCode = nanosleep(&xReq,&xRem);
+  
+  if (rCode && errno != EINTR) {
+    vWarn("PosixThread::vSleepMicro error; errno=%lld",errno);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* sleep for given number of milliseconds                                     */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vSleepMilli(i8 nMilliSeconds)
+{
+  struct timespec xReq;
+  struct timespec xRem;
+  
+  if (nMilliSeconds >= C_1K) {
+    xReq.tv_nsec = (nMilliSeconds % C_1K) * C_1M;
+    xReq.tv_sec  = DIV(nMilliSeconds,C_1K);
+  }
+  else {
+    xReq.tv_nsec = nMilliSeconds * C_1M;
+    xReq.tv_sec  = 0;
+  }
+  
+  i8 rCode = nanosleep(&xReq,&xRem);
+  
+  if (rCode && errno != EINTR) {
+    vWarn("PosixThread::vSleepMilli error; errno=%lld",errno);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* sleep for given number of nanoseconds                                      */
 /*----------------------------------------------------------------------------*/
-void PosixThread::vNanoSleep(i8 nNanoSeconds)
+void PosixThread::vSleepNano(i8 nNanoSeconds)
 {
   struct timespec xReq;
   struct timespec xRem;
@@ -280,14 +328,14 @@ void PosixThread::vNanoSleep(i8 nNanoSeconds)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("nanosleep() error; errno=%lld",errno);
+    vWarn("PosixThread::vSleepNano error; errno=%lld",errno);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* sleep for given number of seconds                                          */
 /*----------------------------------------------------------------------------*/
-void PosixThread::vSecSleep(i8 nSeconds)
+void PosixThread::vSleepSec(i8 nSeconds)
 {
   sleep((unsigned)nSeconds);
 }

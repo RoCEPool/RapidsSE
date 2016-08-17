@@ -533,7 +533,11 @@ namespace Tasking
     static void vThreadNameFetch(NNP_Task nnpTask);
     static void vThreadNameStore(NNP_Task nnpTask);
     static void vThreadSfetch(NNP_Task nnpTask);
-    static void vThreadSstore(NNP_Task nnpTask);  
+    static void vThreadSstore(NNP_Task nnpTask);
+    static void vThreadSleep_s(NNP_Task nnpTask);
+    static void vThreadSleep_ms(NNP_Task nnpTask);
+    static void vThreadSleep_us(NNP_Task nnpTask);
+    static void vThreadSleep_ns(NNP_Task nnpTask);
     static void vThreadSpawn(NNP_Task nnpTask);   
 
     // threadlist

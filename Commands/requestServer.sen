@@ -19,6 +19,7 @@ dic:     tenants
     begin
       task.this task.queue@
       queue.pop
+      dup not if 100 thread.sleep_us then
     until
 ;
 

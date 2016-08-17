@@ -39,8 +39,10 @@ namespace Common
     
     //---------------------------------------------------------------------------
     
-    static void vNanoSleep(i8 nNanoSeconds);
-    static void vSecSleep(i8 nSeconds);
+    static void vSleepMicro(i8 nMicroSeconds);
+    static void vSleepMilli(i8 nMilliSeconds);
+    static void vSleepNano(i8 nNanoSeconds);
+    static void vSleepSec(i8 nSeconds);
     static bool bTlsCreate(pthread_key_t* pTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
   };

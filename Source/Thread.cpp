@@ -150,7 +150,7 @@ void Thread::vLoop(void)
     while (true) {
 
       if ( ! m_pTaskSet ) {
-        PosixThread::vNanoSleep(10_KB);
+        PosixThread::vSleepNano(10_KB);
         continue;
       }
       
@@ -162,7 +162,7 @@ void Thread::vLoop(void)
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
         //m_xPosixThread.vSecSleep(1);
-        PosixThread::vNanoSleep(10_KB);
+        PosixThread::vSleepNano(10_KB);
         continue;
       }
       

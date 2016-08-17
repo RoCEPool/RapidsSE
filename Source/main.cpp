@@ -16,6 +16,17 @@ int main(int argc, const char* argv[])
   printf("RapidsSE %s (%s %s)\n",VERSION_STRING,__DATE__,__TIME__);
   
   vTrace("Task::vWord %p\n",Task::vWord);
+  
+//  Timer xTimer;
+//  
+//  xTimer.vStart();
+//  
+//  PosixThread::vSleepMilli(10);
+//  
+//  xTimer.vUpdate();
+//  
+//  vTrace("duration %lldns\n",xTimer.iNanoseconds());
+  
 
   RapidsSE::vCheckAssumptions();
   
