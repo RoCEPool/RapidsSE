@@ -437,6 +437,10 @@ namespace Tasking
     static void vLockGrabWrite(NNP_Task nnpTask);
     static void vLockInit(NNP_Task nnpTask);
     
+    // process
+    static void vProcessGetPid(NNP_Task nnpTask);
+    static void vProcessTestPid(NNP_Task nnpTask);
+    
     // pstack
     static void vPstackClass(NNP_Task nnpTask);
     

@@ -885,6 +885,9 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("lock.grabwrite",  &vLockGrabWrite,    false);
   vAddPrimitive("lock.init",       &vLockInit,         false);
   
+  vAddPrimitive("process.getpid",  &vProcessGetPid,    false);
+  vAddPrimitive("process.testpid", &vProcessTestPid,   false);
+  
   vAddPrimitive("pstack.class",    &vPstackClass,      false);
   vAddPrimitive("p.depth",         &vPstackDepth,      false);
   
@@ -5181,6 +5184,36 @@ void Task::vLockInit(NNP_Task nnpTask)
   ASSERT(CN_LOCK == pLock->eClass());
   
   pLock->vInit();
+}
+
+// process: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* process.getpid -- get pid of this process                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vProcessGetPid(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vProcessGetPid");
+  
+  i8 iPid = Process::iGetPid();
+  
+  nnpTask->vPushParam(iPid);
+}
+
+/*----------------------------------------------------------------------------*/
+/* process.testpid -- test pid on stack                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vProcessTestPid(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vProcessTestPid");
+
+  i8 iPid;
+  if ( ! nnpTask->bPopParam(iPid) )
+    THROW_INVALID_PARAM("process.testpid");
+  
+  i8 iExists = Process::bTestPid(iPid);
+  
+  nnpTask->vPushParam(iExists);
 }
 
 // pstack: /////////////////////////////////////////////////////////////////////
