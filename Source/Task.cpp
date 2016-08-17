@@ -5452,6 +5452,21 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
 void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorBegin");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+
+  pSEitfCursor->vBegin();
+  pSEitfCursor->vFirst();
+  
+  PtrVal xPtrVal;
+  xPtrVal = pSEitfCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5460,6 +5475,18 @@ void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorDelete");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+  
+  Object* pObject = reinterpret_cast<Object*>(pSEitfCursor);
+  delete pSEitfCursor;
+  
+  gpSmallHeap->vFreeObject(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5468,6 +5495,15 @@ void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorEnd");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+  
+  pSEitfCursor->vEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5476,6 +5512,20 @@ void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorFirst");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+  
+  pSEitfCursor->vFirst();
+  
+  PtrVal xPtrVal;
+  xPtrVal = pSEitfCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5484,6 +5534,18 @@ void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 void Task::vSEitfCursorGet(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorGet");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+  
+  PtrVal xPtrVal;
+  xPtrVal = pSEitfCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5492,6 +5554,13 @@ void Task::vSEitfCursorGet(NNP_Task nnpTask)
 void Task::vSEitfCursorInit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorInit");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5500,6 +5569,21 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
 void Task::vSEitfCursorNew(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorNew");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("seitflist.dump");
+  
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrVal.pPtr());
+  ASSERT(CN_SEITFLIST == pSEitfList->eClass());
+  
+  void* pSEitfCursorAddress = gpSmallHeap->pAllocObject();
+  SEitfCursor* pSEitfCursor = new(pSEitfCursorAddress) SEitfCursor(pSEitfList);
+  
+  PtrVal xSEitfCursorPtr;
+  xSEitfCursorPtr = pSEitfCursor;
+  
+  nnpTask->vPushParam(xSEitfCursorPtr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5508,6 +5592,20 @@ void Task::vSEitfCursorNew(NNP_Task nnpTask)
 void Task::vSEitfCursorNext(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfCursorNext");
+  
+  PtrVal xPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+  
+  pSEitfCursor->vNext();
+  
+  PtrVal xPtrVal;
+  xPtrVal = pSEitfCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
 }
 
 // seitflist: //////////////////////////////////////////////////////////////////

@@ -20,6 +20,8 @@ namespace DataStructures
   public:
     ListCursor_t(List_t<OBJECT>* pList);
     
+    void vBegin(void);
+    void vEnd(void);
     void vFirst(void);
     void vNext(void);
     OBJECT* pObject(void);
@@ -41,7 +43,29 @@ ListCursor_t<OBJECT>::ListCursor_t(List_t<OBJECT>* pList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin at first object in list                                              */
+/* begin iterating list                                                       */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListCursor_t<OBJECT>::vBegin(void)
+{
+  ASSERT(m_pList);
+  
+  m_pList->vReadLock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* end iterating list                                                         */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void ListCursor_t<OBJECT>::vEnd(void)
+{
+  ASSERT(m_pList);
+  
+  m_pList->vReadUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set at first object in list                                                */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
 void ListCursor_t<OBJECT>::vFirst(void)
