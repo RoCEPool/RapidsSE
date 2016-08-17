@@ -4,8 +4,6 @@
 
 "commandSet.sen" .
 
-int: queryCount
-
 : success 0 2 ;
 
 : failure 2 ;

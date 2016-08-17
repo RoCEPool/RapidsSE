@@ -49,6 +49,10 @@ thread:  monitorThread
 
         "freespace " freespace >str concat
 
+        " queries " concat
+
+        queryCount @ >str concat
+
         monitorString !
 
       monitorLock lock.dropWrite

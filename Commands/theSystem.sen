@@ -4,6 +4,8 @@
 
 "theSystem.sen" .
 
+int: queryCount
+
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
 
