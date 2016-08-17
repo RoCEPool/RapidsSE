@@ -288,7 +288,7 @@ void RapidsSE::vDicInitialise(NP_Task npRootTask)
 {
   npRootTask->vInitialiseDictionary();
   
-  npRootTask->vPrepareDicInitialiseSen();
+  npRootTask->vSeedDicInitialiseSen();
   
   vTrace("[[mainThread]] RapidsSE::vDicInitialise running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
   npRootTask->vLoop();
@@ -328,8 +328,8 @@ void RapidsSE::vHandler(Error* pError)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vRunCommand(void)
 {
-  // prepare to run command using the docol interpreter
-  gnpRootTask->vPrepareCommand(gxArguments.m_sCommand.a());
+  // seed root task to run command using the docol interpreter
+  gnpRootTask->vSeedWord(gxArguments.m_sCommand.a());
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
@@ -343,8 +343,8 @@ void RapidsSE::vRunCommand(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vRunDocol(void)
 {
-  // prepare to run docol interpreter
-  gnpRootTask->vPrepareDocol();
+  // seed root task to run docol interpreter
+  gnpRootTask->vSeedDocol();
   
   // append root task onto root thread's task set
   // root thread will pop the root task and run it
@@ -399,8 +399,8 @@ void RapidsSE::vSystemInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStart(void)
 {
-  // prepare to run client using docol interpreter
-  gnpRootTask->vPrepareCommand("SystemStart");
+  // seed root task to start the system
+  gnpRootTask->vSeedWord("SystemStart");
   
   vTrace("[[mainThread]] RapidsSE::vSystemStart launching [%s] %p\n",
          gnpRootTask->sName().a(),*gnpRootTask);

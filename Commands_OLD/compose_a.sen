@@ -1,7 +1,0 @@
-"compose_a.sen" .
-thread: thread2
-taskset: taskset2
-thread: server_thread
-taskset: server_taskset
-thread: client_thread
-taskset: client_taskset

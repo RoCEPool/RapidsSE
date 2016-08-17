@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* reclaimTask.sen -- reclaim task                                            */
+/*============================================================================*/
+
+"reclaimTask.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+lock:    reclaimLock
+
+str:     reclaimString
+
+taskset: reclaimTaskSet
+
+thread:  reclaimThread
+
+/*----------------------------------------------------------------------------*/
+/* start the reclaim task                                                     */
+/*----------------------------------------------------------------------------*/
+
+: reclaimStart
+
+     "reclaimLoop"  task.new
+
+     reclaimTaskSet taskSet.Append
+
+     reclaimTaskSet reclaimThread  thread.taskset!
+
+     reclaimThread  thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+
+: reclaimLoop
+
+    "reclaimTask" task.this task.name!
+
+    "" reclaimString !
+
+    "reclaim Task running..." .
+
+    begin
+
+      reclaimLock lock.grabWrite
+
+      reclaimLock lock.dropWrite
+
+      // reclaimString @ .
+
+      10 sleep
+
+    0 until
+;
+
+/*----------------------------------------------------------------------------*/
+/* get reclaim string                                                         */
+/*----------------------------------------------------------------------------*/
+
+: reclaimString@
+
+    reclaimLock lock.grabRead
+
+      reclaimString @
+
+    reclaimLock lock.dropRead
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

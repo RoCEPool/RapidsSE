@@ -4,6 +4,8 @@
 
 "commandSet.sen" .
 
+int: queryCount
+
 : success 0 2 ;
 
 : failure 2 ;
@@ -373,6 +375,8 @@
 
     checkIsTable not if exit then
 
+    queryCount ++
+
     execute ( table )
 
     table.firstBuffer
@@ -522,6 +526,13 @@
       object@ prevWord object!     // step backwards thru words
     next
     success
+;
+
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+: get_monitor
+    monitorString@ success
 ;
 
 /*----------------------------------------------------------------------------*/

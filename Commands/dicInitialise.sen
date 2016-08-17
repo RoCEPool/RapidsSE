@@ -26,13 +26,7 @@
 "testing.sen" >>:
 
 /*----------------------------------------------------------------------------*/
-/* step 3: compile "the system"                                               */
-/*----------------------------------------------------------------------------*/
-
-"theSystem.sen" >>:
-
-/*----------------------------------------------------------------------------*/
-/* step 4: create the main objects for the system                             */
+/* step 3: create the main objects for the system                             */
 /*----------------------------------------------------------------------------*/
 
 ( tasklist will already exist )
@@ -54,6 +48,16 @@ thread: rootThread "rootThread" rootThread thread.name!
 
 ( give root task set to the root thread )
 rootTaskSet rootThread thread.taskSet!
+
+/*----------------------------------------------------------------------------*/
+/* step 4: compile "the system"                                               */
+/*----------------------------------------------------------------------------*/
+
+"theSystem.sen" >>:
+
+/*----------------------------------------------------------------------------*/
+/* step 4: spawn the root thread                                              */
+/*----------------------------------------------------------------------------*/
 
 ( spawn the posix thread for the root thread )
 rootThread thread.spawn

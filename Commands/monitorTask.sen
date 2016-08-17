@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* monitorTask.sen -- monitor task                                            */
+/*============================================================================*/
+
+"monitorTask.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+lock:    monitorLock
+
+str:     monitorString
+
+taskset: monitorTaskSet
+
+thread:  monitorThread
+
+/*----------------------------------------------------------------------------*/
+/* start the monitor task                                                     */
+/*----------------------------------------------------------------------------*/
+
+: monitorStart
+
+     "monitorLoop"  task.new
+
+     monitorTaskSet taskSet.Append
+
+     monitorTaskSet monitorThread  thread.taskset!
+
+     monitorThread  thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* monitor task loop                                                          */
+/*----------------------------------------------------------------------------*/
+
+: monitorLoop
+
+    "monitorTask" task.this task.name!
+
+    "" monitorString !
+
+    "Monitor Task running..." .
+
+    begin
+
+      monitorLock lock.grabWrite
+
+        "freespace " freespace >str concat
+
+        monitorString !
+
+      monitorLock lock.dropWrite
+
+      // monitorString @ .
+
+      10 sleep
+
+    0 until
+;
+
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+
+: monitorString@
+
+    monitorLock lock.grabRead
+
+      monitorString @
+
+    monitorLock lock.dropRead
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

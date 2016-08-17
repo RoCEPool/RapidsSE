@@ -345,6 +345,8 @@
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F24C76551D1B6A5100D41D09 /* WrdVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WrdVal.cpp; sourceTree = "<group>"; };
 		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
+		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
+		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
 		F24F61791D066DCD00954E9C /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes; path = Documents/Notes; sourceTree = SOURCE_ROOT; };
 		F25309921D0235EC000F6728 /* BufferPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BufferPool.cpp; sourceTree = "<group>"; };
 		F25309931D0235EC000F6728 /* BufferPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferPool.hpp; sourceTree = "<group>"; };
@@ -462,6 +464,8 @@
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
 				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
+				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
+				F24D1FB71D63F17E005031F5 /* reclaimTask.sen */,
 				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
 				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
 			);
@@ -844,8 +848,6 @@
 			children = (
 				982ECD8B1D071EF70001919C /* Common.h */,
 				F2389CD91D4774D0008DF3D9 /* Common.cpp */,
-				989056FE1D59D2AD0000D247 /* Mersenne.cpp */,
-				989056FF1D59D2AD0000D247 /* Mersenne.hpp */,
 				989056F91D59C0650000D247 /* NNP.hpp */,
 				989056FA1D59C0650000D247 /* NNP.cpp */,
 				F25309A61D0288AB000F6728 /* _bytes.cpp */,
@@ -867,6 +869,8 @@
 				98686CD61D1A7C8D00A4CC3E /* Lock.hpp */,
 				F25309991D023E58000F6728 /* Memory.cpp */,
 				F253099A1D023E58000F6728 /* Memory.hpp */,
+				989056FE1D59D2AD0000D247 /* Mersenne.cpp */,
+				989056FF1D59D2AD0000D247 /* Mersenne.hpp */,
 				F226E71E1D408B6100E10FC3 /* NP.cpp */,
 				F226E71F1D408B6100E10FC3 /* NP.hpp */,
 				F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */,
