@@ -219,24 +219,25 @@ void Task::vAddConstants(void)
   /* 29 */ vAddConstant("CN_ROW",                   CN_ROW);
   /* 30 */ vAddConstant("CN_SEGMENTBUFFER",         CN_SEGMENTBUFFER);
   /* 31 */ vAddConstant("CN_SEITF",                 CN_SEITF);
-  /* 32 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
-  /* 33 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
-  /* 34 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
-  /* 35 */ vAddConstant("CN_STACK",                 CN_STACK);
-  /* 36 */ vAddConstant("CN_STRAND",                CN_STRAND);
-  /* 37 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
-  /* 38 */ vAddConstant("CN_TABLE",                 CN_TABLE);
-  /* 39 */ vAddConstant("CN_TASK",                  CN_TASK);
-  /* 40 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
-  /* 41 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
-  /* 42 */ vAddConstant("CN_THREAD",                CN_THREAD);
-  /* 43 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 44 */ vAddConstant("CN_TIMER",                 CN_TIMER);
-  /* 45 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 46 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 47 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 48 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 49 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 32 */ vAddConstant("CN_SEITFCURSOR",           CN_SEITFCURSOR);
+  /* 34 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
+  /* 35 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
+  /* 36 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
+  /* 37 */ vAddConstant("CN_STACK",                 CN_STACK);
+  /* 38 */ vAddConstant("CN_STRAND",                CN_STRAND);
+  /* 39 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
+  /* 40 */ vAddConstant("CN_TABLE",                 CN_TABLE);
+  /* 41 */ vAddConstant("CN_TASK",                  CN_TASK);
+  /* 42 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
+  /* 43 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
+  /* 44 */ vAddConstant("CN_THREAD",                CN_THREAD);
+  /* 45 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
+  /* 46 */ vAddConstant("CN_TIMER",                 CN_TIMER);
+  /* 47 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 48 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 49 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 50 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 51 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
  
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -277,21 +278,21 @@ void Task::vAddConstants(void)
   /* 29 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(Row));
   /* 30 */ vAddConstant("SIZEOF_ROWSPACE",          sizeof(Row));
   /* 31 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
-  /* 32 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
-  /* 33 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
-  /* 34 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
-  /* 35 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
-  /* 36 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
-  /* 37 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
-  /* 38 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
-  /* 39 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
-  /* 40 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
-  /* 41 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 32 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
+  /* 33 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
+  /* 34 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
+  /* 35 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
+  /* 36 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
+  /* 37 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
+  /* 38 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
+  /* 39 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
+  /* 40 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
+  /* 41 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
   /* 42 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 43 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
-  /* 44 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 45 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
-  /* 46 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 44 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
+  /* 45 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 46 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
+  /* 47 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
@@ -904,7 +905,16 @@ void Task::vInitialiseDictionary(void)
   vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
   vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
   vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
-    
+  
+  vAddPrimitive("seitfcursor.begin",  &vSEitfCursorBegin,  false);
+  vAddPrimitive("seitfcursor.delete", &vSEitfCursorDelete, false);
+  vAddPrimitive("seitfcursor.end",    &vSEitfCursorEnd,    false);
+  vAddPrimitive("seitfcursor.first",  &vSEitfCursorFirst,  false);
+  vAddPrimitive("seitfcursor.get",    &vSEitfCursorGet,    false);
+  vAddPrimitive("seitfcursor.init",   &vSEitfCursorInit,   false);
+  vAddPrimitive("seitfcursor.new",    &vSEitfCursorNew,    false);
+  vAddPrimitive("seitfcursor.next",   &vSEitfCursorNext,   false);
+  
   vAddPrimitive("seitflist.dump",  &vSEitfListDump,    false);
   vAddPrimitive("seitflist.init",  &vSEitfListInit,    false);
   
@@ -5434,7 +5444,73 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
   pSEitf->vResponseQueue(pQueue);
 }
 
-// sessionset: /////////////////////////////////////////////////////////////////
+// seitfcursor: ////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.begin -- begin using seitf currsor                             */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorBegin");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.delete -- delete an seitf cursor                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorDelete");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.end -- end using seitf cursor                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorEnd");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.first -- set to first and get seitf                            */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorFirst(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorFirst");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.get -- get current seitf                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorGet");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.init -- init an seitf cursor                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorInit");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.new -- new an seitf cursor                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorNew");
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitfcursor.next -- advance to next and get seitf                          */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCursorNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSEitfCursorNext");
+}
+
+// seitflist: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* seitflist.dump -- dump of seitfList on param stack                         */

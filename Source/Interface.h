@@ -8,6 +8,7 @@
 
 #include "SEitf.hpp"
 #include "SEitfList.hpp"
+#include "SEitfCursor.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Interface

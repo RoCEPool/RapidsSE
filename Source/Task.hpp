@@ -460,6 +460,16 @@ namespace Tasking
     static void vSEitfReqStore(NNP_Task nnpTask);
     static void vSEitfRspFetch(NNP_Task nnpTask);
     static void vSEitfRspStore(NNP_Task nnpTask);
+
+    // seitfcursor
+    static void vSEitfCursorBegin(NNP_Task nnpTask);
+    static void vSEitfCursorDelete(NNP_Task nnpTask);
+    static void vSEitfCursorEnd(NNP_Task nnpTask);
+    static void vSEitfCursorFirst(NNP_Task nnpTask);
+    static void vSEitfCursorGet(NNP_Task nnpTask);
+    static void vSEitfCursorInit(NNP_Task nnpTask);
+    static void vSEitfCursorNew(NNP_Task nnpTask);
+    static void vSEitfCursorNext(NNP_Task nnpTask);
     
     // seitflist
     static void vSEitfListDump(NNP_Task nnpTask);
