@@ -200,13 +200,19 @@ void SEitf::vExecute(char* pWords[])
   i8   iStatus;
   s256 sResponse;
   
+  Timer xTimer;
+  
+  xTimer.vStart();
+  
   if ( ! bDecode(pWords) )
     return;
   
   while (! bPopResponse(iStatus,sResponse))
     ;
+
+  xTimer.vUpdate();
   
-  vTrace("%lld %s\n",iStatus,sResponse.a());
+  vTrace("%lld %s (%lldus)\n",iStatus,sResponse.a(),xTimer.iMicroseconds());
 }
 
 /*----------------------------------------------------------------------------*/
