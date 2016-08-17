@@ -18,11 +18,21 @@ namespace Common
     Since();
     ~Since();
     
+    void  vAdd(i8 iMicroseconds);
     void  vGet(i8& iSeconds, i8& iMicroseconds);
+    void  vSet(void);
+    void  vSet(Time* pTime);
     void  vSet(i8 iSeconds, i8 iMicroseconds);
     
     i8    iSeconds(void);
     i8    iMicroseconds(void);
+    
+    void  vToTime(Time* pTime);
+    
+    //-------------------------------------------------------------------------
+    
+    static void vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& SysCall);
+
   };
 }
 

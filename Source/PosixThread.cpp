@@ -166,15 +166,17 @@ void PosixThread::vCondWait(void)
 /*----------------------------------------------------------------------------*/
 /* this thread waits for signal (should be calling thread)                    */
 /*----------------------------------------------------------------------------*/
-void PosixThread::vCondTimedWait(i8 iNanoSeconds)
+void PosixThread::vCondTimedWait(i8 iMicroSeconds)
 {
-  Clock xClock;
+  Since xSince;
   
-  xClock.vAdd(iNanoSeconds);
+  xSince.vSet();
+  
+  xSince.vAdd(iMicroSeconds);
   
   struct timespec xTimeSpec;
-  xTimeSpec.tv_sec  = xClock.m_iSeconds;
-  xTimeSpec.tv_nsec = xClock.m_iMicro * 1000;
+  xTimeSpec.tv_sec  = xSince.m_iSeconds;
+  xTimeSpec.tv_nsec = xSince.m_iMicroseconds * 1000;
   
   ASSERT(m_bLocked);
   

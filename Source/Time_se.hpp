@@ -8,6 +8,8 @@
 
 namespace Common
 {
+  class Since;
+  
   class Time
   {
   public:
@@ -26,92 +28,13 @@ namespace Common
   public:
     void* operator new(size_t);
     
-    Time();
-    ~Time();
+    Time(void);
+    ~Time(void);
     
-    static void vAppendUtc(char** pz, Time* pTime);
-    static bool bExtractUTC(char** ps, Time* pTime);
-    
-    char* pAppend(char* pWS);
-    
-    i8 iToSeconds(void);
-    
-    void operator = (Time xArg)
-    {
-      m_iYear   = xArg.m_iYear;
-      m_iMonth  = xArg.m_iMonth;
-      m_iDay    = xArg.m_iDay;
-      m_iHour   = xArg.m_iHour;
-      m_iMinute = xArg.m_iMinute;
-      m_iSecond = xArg.m_iSecond;
-      m_iMicro  = xArg.m_iMicro;
-      //m_iSpare  = xArg.m_iSpare;
-    }
-    
-    void operator = (i8 i)
-    {
-      m_iYear   = 0;
-      m_iMonth  = 0;
-      m_iDay    = 0;
-      m_iHour   = 0;
-      m_iMinute = 0;
-      m_iSecond = 0;
-      m_iMicro  = 0;
-      //m_iSpare  = 0;
-    }
-    
-    bool operator >= (Time* pArg)
-    {
-      if (m_iYear > pArg->m_iYear) return true;
-      if (m_iYear < pArg->m_iYear) return false;
+    void vSet(Since* pSince);
 
-      if (m_iMonth > pArg->m_iMonth) return true;
-      if (m_iMonth < pArg->m_iMonth) return false;
-
-      if (m_iDay > pArg->m_iDay) return true;
-      if (m_iDay < pArg->m_iDay) return false;
-      
-      if (m_iHour > pArg->m_iHour) return true;
-      if (m_iHour < pArg->m_iHour) return false;
-      
-      if (m_iMinute > pArg->m_iMinute) return true;
-      if (m_iMinute < pArg->m_iMinute) return false;
-      
-      if (m_iSecond > pArg->m_iSecond) return true;
-      if (m_iSecond < pArg->m_iSecond) return false;
-      
-      if (m_iMicro > pArg->m_iMicro) return true;
-      if (m_iMicro < pArg->m_iMicro) return false;
-      
-      return true;
-    }
-    
-    bool operator <= (Time* pArg)
-    {
-      if (m_iYear < pArg->m_iYear) return true;
-      if (m_iYear > pArg->m_iYear) return false;
-      
-      if (m_iMonth < pArg->m_iMonth) return true;
-      if (m_iMonth > pArg->m_iMonth) return false;
-      
-      if (m_iDay < pArg->m_iDay) return true;
-      if (m_iDay > pArg->m_iDay) return false;
-      
-      if (m_iHour < pArg->m_iHour) return true;
-      if (m_iHour > pArg->m_iHour) return false;
-      
-      if (m_iMinute < pArg->m_iMinute) return true;
-      if (m_iMinute > pArg->m_iMinute) return false;
-      
-      if (m_iSecond < pArg->m_iSecond) return true;
-      if (m_iSecond > pArg->m_iSecond) return false;
-      
-      if (m_iMicro < pArg->m_iMicro) return true;
-      if (m_iMicro > pArg->m_iMicro) return false;
-      
-      return true;
-    }
-          
+    void vAppendUtc(char** pz);
+    bool bExtractUTC(char** ps);
   };
 
 }

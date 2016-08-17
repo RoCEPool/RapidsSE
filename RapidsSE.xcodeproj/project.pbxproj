@@ -21,7 +21,6 @@
 		F22056721D62DA8200E8EF5B /* Mersenne.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989056FE1D59D2AD0000D247 /* Mersenne.cpp */; };
 		F22056731D62DA8800E8EF5B /* NNP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 989056FA1D59C0650000D247 /* NNP.cpp */; };
 		F22056741D62DA8B00E8EF5B /* _bytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F25309A61D0288AB000F6728 /* _bytes.cpp */; };
-		F22056751D62DA9200E8EF5B /* Clock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29AC1D0E1306000F8C45 /* Clock.cpp */; };
 		F22056761D62DA9700E8EF5B /* Dir.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F23907951D2318CD00120B0F /* Dir.cpp */; };
 		F22056771D62DA9A00E8EF5B /* Env.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7261D41A7D700E10FC3 /* Env.cpp */; };
 		F22056781D62DA9F00E8EF5B /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98664B2D1D3FA0E800163CE2 /* Error.cpp */; };
@@ -209,8 +208,6 @@
 		F21D29A71D0E0236000F8C45 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = String.hpp; path = Source/String.hpp; sourceTree = "<group>"; };
 		F21D29A91D0E0E15000F8C45 /* Time_se.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Time_se.cpp; path = Source/Time_se.cpp; sourceTree = "<group>"; };
 		F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Time_se.hpp; path = Source/Time_se.hpp; sourceTree = "<group>"; };
-		F21D29AC1D0E1306000F8C45 /* Clock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clock.cpp; path = Source/Clock.cpp; sourceTree = "<group>"; };
-		F21D29AD1D0E1306000F8C45 /* Clock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Clock.hpp; path = Source/Clock.hpp; sourceTree = "<group>"; };
 		F21D29B61D0E193E000F8C45 /* Threading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Threading.h; sourceTree = "<group>"; };
 		F21D29B71D0E199B000F8C45 /* DBobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBobjects.h; sourceTree = "<group>"; };
 		F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PosixThread.cpp; path = Source/PosixThread.cpp; sourceTree = "<group>"; };
@@ -866,8 +863,6 @@
 				F25309A61D0288AB000F6728 /* _bytes.cpp */,
 				F25309A71D0288AB000F6728 /* _bytes.hpp */,
 				982ECD8A1D071EF70001919C /* _debug.h */,
-				F21D29AC1D0E1306000F8C45 /* Clock.cpp */,
-				F21D29AD1D0E1306000F8C45 /* Clock.hpp */,
 				F23907951D2318CD00120B0F /* Dir.cpp */,
 				F23907941D23180500120B0F /* Dir.hpp */,
 				F226E7261D41A7D700E10FC3 /* Env.cpp */,
@@ -1196,7 +1191,6 @@
 				F22056831D62DAC900E8EF5B /* s.cpp in Sources */,
 				F220566D1D62DA3200E8EF5B /* mn.cpp in Sources */,
 				F220567A1D62DAA600E8EF5B /* Footer.cpp in Sources */,
-				F22056751D62DA9200E8EF5B /* Clock.cpp in Sources */,
 				F22056D21D62DE7D00E8EF5B /* Node.cpp in Sources */,
 				F22056B11D62DDC600E8EF5B /* IndexColumn.cpp in Sources */,
 				F220566C1D62DA0900E8EF5B /* Addressing.cpp in Sources */,

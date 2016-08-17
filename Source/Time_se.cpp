@@ -2,7 +2,7 @@
 /* Time.cpp - system time                                                     */
 /*============================================================================*/
 
-#include "Time_se.hpp"
+#include "Common.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
@@ -19,48 +19,80 @@ void* Time::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* Time: constructor                                                          */
 /*----------------------------------------------------------------------------*/
-Time::Time()
+Time::Time(void)
 {
+  m_iYear   = 0;
+  m_iMonth  = 0;
+  m_iDay    = 0;
+  m_iHour   = 0;
+  m_iMinute = 0;
+  m_iSecond = 0;
+  m_iMicro  = 0;
 }
 
 /*----------------------------------------------------------------------------*/
 /* ~Time: destructor                                                          */
 /*----------------------------------------------------------------------------*/
-Time::~Time()
+Time::~Time(void)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/* vSet: set time using since                                                 */
+/*----------------------------------------------------------------------------*/
+void Time::vSet(Since* pSince)
+{
+  struct tm xTimeResult;
+  
+  time_t iSeconds = pSince->iSeconds();
+  
+  void* pTimeResult = gmtime_r(&iSeconds,&xTimeResult);
+  
+  if ( ! pTimeResult )
+    vError("gmtime_r() error; errno=%d",errno);
+  
+  m_iYear   = xTimeResult.tm_year;
+  m_iMonth  = xTimeResult.tm_mon+1;
+  m_iDay    = xTimeResult.tm_mday;
+  m_iHour   = xTimeResult.tm_hour;
+  m_iMinute = xTimeResult.tm_min;
+  m_iSecond = xTimeResult.tm_sec;
+  m_iMicro  = (int)pSince->iMicroseconds();
 }
 
 /*----------------------------------------------------------------------------*/
 /* vAppendUtc: append given time into workspace                               */
 /*----------------------------------------------------------------------------*/
-void Time::vAppendUtc(char** pz, Time* pTime)
+void Time::vAppendUtc(char** pz)
 {
+  // refer: http://en.wikipedia.org/wiki/ISO_8601
+  
   char* z = *pz;
   
-  i8 iYear  = pTime->m_iYear + 1900;
-  i8 iMilli = DIV(pTime->m_iMicro,1000);
+  i8 iYear  = m_iYear + 1900;
+  i8 iMilli = DIV(m_iMicro,1000);
   
   String::vAppendDecimal(&z,iYear);
   String::vAppendChar(&z,'-');
   
-  if (pTime->m_iMonth < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,pTime->m_iMonth);
+  if (m_iMonth < 10) String::vAppendChar(&z,'0');
+  String::vAppendDecimal(&z,m_iMonth);
   String::vAppendChar(&z,'-');
   
-  if (pTime->m_iDay < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,pTime->m_iDay);
+  if (m_iDay < 10) String::vAppendChar(&z,'0');
+  String::vAppendDecimal(&z,m_iDay);
   String::vAppendChar(&z,'T');
   
-  if (pTime->m_iHour < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,pTime->m_iHour);
+  if (m_iHour < 10) String::vAppendChar(&z,'0');
+  String::vAppendDecimal(&z,m_iHour);
   String::vAppendChar(&z,':');
   
-  if (pTime->m_iMinute < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,pTime->m_iMinute);
+  if (m_iMinute < 10) String::vAppendChar(&z,'0');
+  String::vAppendDecimal(&z,m_iMinute);
   String::vAppendChar(&z,':');
   
-  if (pTime->m_iSecond < 10) String::vAppendChar(&z,'0');
-  String::vAppendDecimal(&z,pTime->m_iSecond);
+  if (m_iSecond < 10) String::vAppendChar(&z,'0');
+  String::vAppendDecimal(&z,m_iSecond);
   String::vAppendChar(&z,'.');
   
   if (iMilli < 100) String::vAppendChar(&z,'0');
@@ -76,31 +108,31 @@ void Time::vAppendUtc(char** pz, Time* pTime)
 /*----------------------------------------------------------------------------*/
 /* bExtractUTC: extract a utc time from substr       yyyy-mm-ddThh:mi:ss.fffZ */
 /*----------------------------------------------------------------------------*/
-bool Time::bExtractUTC(char** ps, Time* pTime)
+bool Time::bExtractUTC(char** ps)
 {
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   if ( ! *ps )
     return false;
   
-  pTime->m_iYear   = 0; pTime->m_iMonth  = 0; pTime->m_iDay    = 0;
-  pTime->m_iHour   = 0; pTime->m_iMinute = 0; pTime->m_iSecond = 0;
-  pTime->m_iMicro  = 0;
+  m_iYear   = 0; m_iMonth  = 0; m_iDay    = 0;
+  m_iHour   = 0; m_iMinute = 0; m_iSecond = 0;
+  m_iMicro  = 0;
   
   i8 v;
   
   if ( ! String::bExtractInw(ps,&v) ) return false;
-  pTime->m_iYear = (unsigned int)v - 1900;
+  m_iYear = (unsigned int)v - 1900;
   
   if ('-' != *(*ps)++) return false;
   
   if ( ! String::bExtractInw(ps,&v) ) return false;
-  pTime->m_iMonth = (unsigned int)v;
+  m_iMonth = (unsigned int)v;
   
   if ('-' != *(*ps)++) return false;
   
   if ( ! String::bExtractInw(ps,&v) ) return false;
-  pTime->m_iDay = (unsigned int)v;
+  m_iDay = (unsigned int)v;
   
   // - - -
   
@@ -109,54 +141,29 @@ bool Time::bExtractUTC(char** ps, Time* pTime)
   (*ps)++;
   
   if ( ! String::bExtractInw(ps,&v) ) return true;
-  pTime->m_iHour = (unsigned int)v;
+  m_iHour = (unsigned int)v;
   
   if (':' != *(*ps)++) return true;
   
   if ( ! String::bExtractInw(ps,&v) ) return true;
-  pTime->m_iMinute = (unsigned int)v;
+  m_iMinute = (unsigned int)v;
   
   if (':' != *(*ps)++) return true;
   
   if ( ! String::bExtractInw(ps,&v) ) return true;
-  pTime->m_iSecond = (unsigned int)v;
+  m_iSecond = (unsigned int)v;
   
   if ('.' == **ps)
   {
     (*ps)++;
     if ( String::bExtractInw(ps,&v) )
-      pTime->m_iMicro  = (unsigned int)(v*1000);
+      m_iMicro  = (unsigned int)(v*1000);
   }
   
   if ('Z' == **ps)
     (*ps)++;
   
   return true;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* iToSeconds: convery Time to i8 seconds                                     */
-/*----------------------------------------------------------------------------*/
-i8 Time::iToSeconds(void)
-{
-  struct tm xTM;
-  
-  xTM.tm_year   = m_iYear;
-  xTM.tm_mon    = m_iMonth-1;
-  xTM.tm_mday   = m_iDay;
-  xTM.tm_hour   = m_iHour;
-  xTM.tm_min    = m_iMinute;
-  xTM.tm_sec    = m_iSecond;
-  xTM.tm_isdst  = 0;
-  xTM.tm_gmtoff = 0;
-  xTM.tm_wday   = 0;
-  xTM.tm_yday   = 0;
-  xTM.tm_zone   = nullptr;
-  
-  i8 iSeconds = timegm(&xTM);
-
-  return iSeconds;
 }
 
 
