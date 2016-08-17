@@ -74,7 +74,7 @@ void Clock::vUpdate()
 //  ASSERT(m_iMicro < 1000000); // logic check
   
   SysCall SysCall;
-  Today::vGet(&m_iSeconds,&m_iMicro,SysCall);
+  Clock::vGetSince(&m_iSeconds,&m_iMicro,SysCall);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,6 +154,35 @@ char* Clock::sToUTC(char* aWorkspace)
   Time::vAppendUtc(&z,&xTime);
   
   return aWorkspace;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get time of day (current realtime clock)                                   */
+/*----------------------------------------------------------------------------*/
+void Clock::vGetSince(i8* pSeconds, i8* pMicroseconds, SysCall& SysCall)
+{
+  struct timeval xTimeVal;
+  
+  SysCall.vClear();
+  
+  i8 rCode = gettimeofday(&xTimeVal,NULL);
+  
+  if (rCode) {
+    SysCall.vError(errno);
+    vError("gettimeofday() error; errno=%d",errno);
+    return;
+  }
+  
+  SysCall.vSuccess();
+  
+  *pSeconds      = xTimeVal.tv_sec;
+  *pMicroseconds = xTimeVal.tv_usec;
+  
+  ASSERT(*pMicroseconds < 1000000); // logic check
 }
 
 /*============================================================================*/

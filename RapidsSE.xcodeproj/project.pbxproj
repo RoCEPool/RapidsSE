@@ -43,8 +43,7 @@
 		F22056881D62DAE000E8EF5B /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A61D0E0236000F8C45 /* String.cpp */; };
 		F22056891D62DAE300E8EF5B /* SysCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F25309961D023B18000F6728 /* SysCall.cpp */; };
 		F220568A1D62DAE700E8EF5B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2CC758E1D4FDC4A00261B4D /* System.cpp */; };
-		F220568B1D62DAEA00E8EF5B /* SETime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A91D0E0E15000F8C45 /* SETime.cpp */; };
-		F220568C1D62DAEF00E8EF5B /* Today.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A01D0DFE93000F8C45 /* Today.cpp */; };
+		F220568B1D62DAEA00E8EF5B /* Time_se.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A91D0E0E15000F8C45 /* Time_se.cpp */; };
 		F220568D1D62DAF300E8EF5B /* xxhash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7961D46A04700E10FC3 /* xxhash.cpp */; };
 		F220568E1D62DC9600E8EF5B /* Strand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F28DF4D81D56725F00013BBC /* Strand.cpp */; };
 		F220568F1D62DC9A00E8EF5B /* SegmentBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B14F1D5150360049597E /* SegmentBuffer.cpp */; };
@@ -204,12 +203,10 @@
 		F21D29861D07A88C000F8C45 /* Report.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Report.cpp; path = Source/Report.cpp; sourceTree = "<group>"; };
 		F21D29871D07A88C000F8C45 /* Report.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Report.hpp; path = Source/Report.hpp; sourceTree = "<group>"; };
 		F21D298A1D07AC5E000F8C45 /* HashDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HashDefs.h; sourceTree = "<group>"; };
-		F21D29A01D0DFE93000F8C45 /* Today.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Today.cpp; path = Source/Today.cpp; sourceTree = "<group>"; };
-		F21D29A11D0DFE93000F8C45 /* Today.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Today.hpp; path = Source/Today.hpp; sourceTree = "<group>"; };
 		F21D29A61D0E0236000F8C45 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = String.cpp; path = Source/String.cpp; sourceTree = "<group>"; };
 		F21D29A71D0E0236000F8C45 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = String.hpp; path = Source/String.hpp; sourceTree = "<group>"; };
-		F21D29A91D0E0E15000F8C45 /* SETime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SETime.cpp; path = Source/SETime.cpp; sourceTree = "<group>"; };
-		F21D29AA1D0E0E15000F8C45 /* SETime.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SETime.hpp; path = Source/SETime.hpp; sourceTree = "<group>"; };
+		F21D29A91D0E0E15000F8C45 /* Time_se.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Time_se.cpp; path = Source/Time_se.cpp; sourceTree = "<group>"; };
+		F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Time_se.hpp; path = Source/Time_se.hpp; sourceTree = "<group>"; };
 		F21D29AC1D0E1306000F8C45 /* Clock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clock.cpp; path = Source/Clock.cpp; sourceTree = "<group>"; };
 		F21D29AD1D0E1306000F8C45 /* Clock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Clock.hpp; path = Source/Clock.hpp; sourceTree = "<group>"; };
 		F21D29B61D0E193E000F8C45 /* Threading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Threading.h; sourceTree = "<group>"; };
@@ -911,12 +908,10 @@
 				F25309971D023B18000F6728 /* SysCall.hpp */,
 				F2CC758E1D4FDC4A00261B4D /* System.cpp */,
 				F2CC758F1D4FDC4A00261B4D /* System.hpp */,
-				F21D29A91D0E0E15000F8C45 /* SETime.cpp */,
-				F21D29AA1D0E0E15000F8C45 /* SETime.hpp */,
+				F21D29A91D0E0E15000F8C45 /* Time_se.cpp */,
+				F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */,
 				F24D1FBC1D64009A005031F5 /* Timer.cpp */,
 				F24D1FBD1D64009A005031F5 /* Timer.hpp */,
-				F21D29A01D0DFE93000F8C45 /* Today.cpp */,
-				F21D29A11D0DFE93000F8C45 /* Today.hpp */,
 				F226E7961D46A04700E10FC3 /* xxhash.cpp */,
 				F226E7971D46A04700E10FC3 /* xxhash.hpp */,
 			);
@@ -1117,7 +1112,7 @@
 				F220568F1D62DC9A00E8EF5B /* SegmentBuffer.cpp in Sources */,
 				F22056AF1D62DDAA00E8EF5B /* Dictionaries.cpp in Sources */,
 				F22056771D62DA9A00E8EF5B /* Env.cpp in Sources */,
-				F220568B1D62DAEA00E8EF5B /* SETime.cpp in Sources */,
+				F220568B1D62DAEA00E8EF5B /* Time_se.cpp in Sources */,
 				F220569E1D62DD0E00E8EF5B /* PtrVal.cpp in Sources */,
 				F22056BE1D62DDF500E8EF5B /* Task.cpp in Sources */,
 				F22056D91D62DEA400E8EF5B /* AttachMap.cpp in Sources */,
@@ -1189,7 +1184,6 @@
 				F22056951D62DCB300E8EF5B /* BufferPoolIter.cpp in Sources */,
 				F220567E1D62DAB500E8EF5B /* PosixThread.cpp in Sources */,
 				F22056701D62DA3F00E8EF5B /* Types.cpp in Sources */,
-				F220568C1D62DAEF00E8EF5B /* Today.cpp in Sources */,
 				F22056AC1D62DD6300E8EF5B /* CodeField.cpp in Sources */,
 				F22056831D62DAC900E8EF5B /* s.cpp in Sources */,
 				F220566D1D62DA3200E8EF5B /* mn.cpp in Sources */,

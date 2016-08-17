@@ -11,7 +11,7 @@ namespace Common
   class Today
   {
   public:
-    static void vGet(i8* pSeconds, i8* pMicroseconds, SysCall& SysCall);
+    //static void vGetSince(i8* pSeconds, i8* pMicroseconds, SysCall& SysCall);
   };
 
 }

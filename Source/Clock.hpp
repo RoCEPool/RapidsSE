@@ -29,6 +29,11 @@ namespace Common
     void  vUpdate();
     
     char* sToUTC(char* aWorkspace);
+
+    //-------------------------------------------------------------------------
+    
+    static void vGetSince(i8* pSeconds, i8* pMicroseconds, SysCall& SysCall);
+    
   };
 
 }
