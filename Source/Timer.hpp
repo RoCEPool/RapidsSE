@@ -25,7 +25,7 @@ namespace Common
     
     void vInit(void);
     void vReset(void);
-    void vBegin(void);
+    void vStart(void);
     void vUpdate(void);
     
     i8   iNanoseconds(void);

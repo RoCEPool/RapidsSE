@@ -12,6 +12,7 @@
 "dic.sen" >>:
 "file.sen" >>:
 "lock.sen" >>:
+"timer.sen" >>:
 "var.sen" >>:
 "trace.sen" >>:
 "useful.sen" >>:

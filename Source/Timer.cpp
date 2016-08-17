@@ -56,9 +56,9 @@ void Timer::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin                                                                      */
+/* start                                                                      */
 /*----------------------------------------------------------------------------*/
-void Timer::vBegin(void)
+void Timer::vStart(void)
 {
   m_iStart  = iRdtscp();
   m_iUpdate = 0;
@@ -83,9 +83,8 @@ i8 Timer::iNanoseconds(void)
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = System::iClockFrequency();
-  i8 iTicksPerNano = iTicksPerSecond / C_1Bn;
   
-  i8 iNano = iTicks / iTicksPerNano;
+  i8 iNano = iTicks * C_1Bn / iTicksPerSecond;
   
   return iNano;
 }
@@ -100,9 +99,8 @@ i8 Timer::iMicroseconds(void)
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = System::iClockFrequency();
-  i8 iTicksPerMicro = iTicksPerSecond / C_1M;
   
-  i8 iMicro = iTicks / iTicksPerMicro;
+  i8 iMicro = iTicks * C_1M / iTicksPerSecond;
   
   return iMicro;
 }
@@ -117,9 +115,8 @@ i8 Timer::iMilliseconds(void)
   
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = System::iClockFrequency();
-  i8 iTicksPerMilli = iTicksPerSecond / C_1K;
   
-  i8 iMilli = iTicks / iTicksPerMilli;
+  i8 iMilli = iTicks * C_1K / iTicksPerSecond;
   
   return iMilli;
 }

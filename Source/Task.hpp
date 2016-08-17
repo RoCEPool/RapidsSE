@@ -525,15 +525,14 @@ namespace Tasking
     static void vThreadListInit(NNP_Task nnpTask);
     
     // timer
-    static void vTimerBegin(NNP_Task nnpTask);
     static void vTimerDelete(NNP_Task nnpTask);
     static void vTimerInit(NNP_Task nnpTask);
-    static void vTimerMicroseconds(NNP_Task nnpTask);
-    static void vTimerMilliseconds(NNP_Task nnpTask);
-    static void vTimerNanoseconds(NNP_Task nnpTask);
+    static void vTimerMicrosecs(NNP_Task nnpTask);
+    static void vTimerMillisecs(NNP_Task nnpTask);
+    static void vTimerNanosecs(NNP_Task nnpTask);
     static void vTimerNew(NNP_Task nnpTask);
     static void vTimerReset(NNP_Task nnpTask);
-    static void vTimerSeconds(NNP_Task nnpTask);
+    static void vTimerSecs(NNP_Task nnpTask);
     static void vTimerStart(NNP_Task nnpTask);
     static void vTimerTicks(NNP_Task nnpTask);
     static void vTimerUpdate(NNP_Task nnpTask);

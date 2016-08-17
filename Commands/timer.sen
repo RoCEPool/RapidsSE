@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* timer.sen -- timer                                                         */
+/*============================================================================*/
+
+"timer.sen" .
+
+: timer ;
+
+: timer:
+    create 
+    object!!
+    sizeof_timer allot
+    word.this >body magic!!
+    word.this >body CN_TIMER class!
+   ' timer word.this word.kind!
+    word.this >body timer.init
+    does> 
+;
+
+: :timer
+    >create
+    object!!
+    sizeof_timer allot
+    word.this >body magic!!
+    word.this >body CN_TIMER class!
+    ' timer word.this word.kind!
+    word.this >body timer.init
+    does>
+;
+
+timer: testTimer
+
+: timerTest
+
+    testTimer timer.start
+    1 sleep
+    testTimer timer.update
+    testTimer timer.millisecs .
+    testTimer timer.microsecs .
+    testTimer timer.nanosecs .
+    testTimer timer.ticks .
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -351,6 +351,7 @@
 		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
 		F24D1FBC1D64009A005031F5 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Source/Timer.cpp; sourceTree = "<group>"; };
 		F24D1FBD1D64009A005031F5 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Timer.hpp; path = Source/Timer.hpp; sourceTree = "<group>"; };
+		F24D1FC01D64109C005031F5 /* timer.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = timer.sen; path = Commands/timer.sen; sourceTree = "<group>"; };
 		F24F61791D066DCD00954E9C /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes; path = Documents/Notes; sourceTree = SOURCE_ROOT; };
 		F25309921D0235EC000F6728 /* BufferPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BufferPool.cpp; sourceTree = "<group>"; };
 		F25309931D0235EC000F6728 /* BufferPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferPool.hpp; sourceTree = "<group>"; };
@@ -768,6 +769,7 @@
 				F226E71D1D40286400E10FC3 /* dic.sen */,
 				F226E7241D41918800E10FC3 /* file.sen */,
 				F22056DC1D62F11400E8EF5B /* lock.sen */,
+				F24D1FC01D64109C005031F5 /* timer.sen */,
 				F226E7251D419E3400E10FC3 /* trace.sen */,
 				F2389D0D1D4AD133008DF3D9 /* useful.sen */,
 				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
