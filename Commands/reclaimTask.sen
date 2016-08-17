@@ -45,6 +45,20 @@ seitflist seitfCursor: seitfCrs
 
       object@ seitf.dump
 
+      object@ task.this task.seitf!
+        "pid" find execute
+        0 task.this task.seitf!
+
+      dup .put " " .put dup process.testpid .put .\n
+
+      process.testpid not if
+        "would delete..." .
+        // object@ seitf.delete // eek!
+      else
+        "not deleteing..." .
+      then
+      stk
+
       cursor@ seitfcursor.next object!
 
     next

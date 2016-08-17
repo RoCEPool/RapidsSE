@@ -114,29 +114,30 @@ void SEitf::vDump(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vInit(void)
 {
+  // pid
   m_iPid = Process::iGetPid();
+  m_xDictionary.vAddConstant("pid",m_iPid);
   
+  // response queue
   Word* pQueueWord = gpDictionary->pFind("queue");
-  Word* pReqQueWord = gpDictionary->pFind("requestQueue");
-  
-  ASSERT(pReqQueWord);
-  
-  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pBodyArea());
-  
   Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
-  //pRspQueWord->vFunc(&Task::vNop);
   pRspQueWord->vFunc(nullptr);
   pRspQueWord->pAllot(sizeof(Queue));
-//  pRspQueWord->vEncode("encodeDoes");
-//  pRspQueWord->vEncode("exit");
   
   m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pBodyArea());
   m_pResponseQueue->vSetMagic();
   m_pResponseQueue->vClass(CN_QUEUE);
   m_pResponseQueue->vInitialize();
   
+  // request queue
+  Word* pReqQueWord = gpDictionary->pFind("requestQueue");
+  ASSERT(pReqQueWord);
+  
+  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pBodyArea());
+  
+  // dictionary stack
   m_xDicStack.vPush(gpDictionary);
   m_xDicStack.vPush(&m_xDictionary);
 }

@@ -24,6 +24,7 @@ namespace Dictionaries
     Dictionary(void);
     ~Dictionary(void);
     
+    void  vAddConstant(const char* aName, i8 iVal);
     Word* pAllocWord(i8 iBytes);
     Word* pCurrentWord(void);
     void  vDump(void);
