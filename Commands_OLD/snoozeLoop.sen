@@ -1,6 +1,0 @@
-"snoozeLoop.sen" .
-: snoozeLoop
-    begin
-      "snoozing..." . snooze pause
-    0 until
-;

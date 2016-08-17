@@ -1,7 +1,0 @@
-"var.sen" .
-: var: 
-    create 
-    object!!
-    8 allot
-    does> test
-;

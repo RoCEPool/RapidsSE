@@ -1,5 +1,0 @@
-"misc_testing.sen" .
-: iftest if "yes" . then ;
-: ifelsetest if "yes" . else "no" . then ;
-: untiltest 0 begin 1 + dup . dup 10 == until ;
-: whiletest 0 begin 1 + dup 10 < while dup . repeat ;
