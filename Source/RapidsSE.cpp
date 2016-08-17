@@ -397,7 +397,7 @@ void RapidsSE::vSystemInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStart(void)
 {
-  vTrace("System started at: %s\n",gpAttachMap->m_sUTC.a());
+  vTrace("Shm region initialised at: %s\n",gpAttachMap->m_sUTC.a());
 
   // seed root task to start the system
   gnpRootTask->vSeedWord("SystemStart");
