@@ -19,6 +19,8 @@ namespace Interface
     Queue*     m_pRequestQueue;  // request queue
     Queue*     m_pResponseQueue; // reponse queue
     
+    s256       m_sResponse;      // response
+    
     // must be last
     Footer m_xFooter;
     
@@ -43,6 +45,7 @@ namespace Interface
     //--------------------------------------------------------------------------
     
     void   vAppendRequest(s& sRequest);
+    char*  pGetResponse(void);
     bool   bPopResponse(s& sResponse);
     bool   bPopResponse(i8& iResult, s& sResponse);
     
