@@ -40,11 +40,9 @@
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "Shm.hpp"
-#include "xxhash.hpp"
 #include "process.hpp"
 #include "prompt.hpp"
 
-#include "Mersenne.hpp"
 #include "Timer.hpp"
 #include "Since.hpp"
 

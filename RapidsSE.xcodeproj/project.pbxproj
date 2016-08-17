@@ -880,8 +880,6 @@
 				98686CD61D1A7C8D00A4CC3E /* Lock.hpp */,
 				F25309991D023E58000F6728 /* Memory.cpp */,
 				F253099A1D023E58000F6728 /* Memory.hpp */,
-				989056FE1D59D2AD0000D247 /* Mersenne.cpp */,
-				989056FF1D59D2AD0000D247 /* Mersenne.hpp */,
 				F226E71E1D408B6100E10FC3 /* NP.cpp */,
 				F226E71F1D408B6100E10FC3 /* NP.hpp */,
 				F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */,
@@ -916,8 +914,6 @@
 				F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */,
 				F24D1FBC1D64009A005031F5 /* Timer.cpp */,
 				F24D1FBD1D64009A005031F5 /* Timer.hpp */,
-				F226E7961D46A04700E10FC3 /* xxhash.cpp */,
-				F226E7971D46A04700E10FC3 /* xxhash.hpp */,
 			);
 			name = Common;
 			sourceTree = SOURCE_ROOT;
@@ -988,32 +984,44 @@
 			isa = PBXGroup;
 			children = (
 				F2DD656B1D652B1E009B684A /* ThirdParty.h */,
-				F2DD65691D652A6F009B684A /* BZIP2 */,
-				F2DD65681D652A67009B684A /* LZ4 */,
-				F2DD656A1D652A76009B684A /* XXhash */,
+				F2DD65691D652A6F009B684A /* bzip2 */,
+				F2DD65681D652A67009B684A /* lz4 */,
+				F2DD656D1D652BF3009B684A /* Mersenne */,
+				F2DD656A1D652A76009B684A /* xxhash */,
 			);
 			name = ThirdParty;
 			sourceTree = "<group>";
 		};
-		F2DD65681D652A67009B684A /* LZ4 */ = {
+		F2DD65681D652A67009B684A /* lz4 */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = LZ4;
+			name = lz4;
 			sourceTree = "<group>";
 		};
-		F2DD65691D652A6F009B684A /* BZIP2 */ = {
+		F2DD65691D652A6F009B684A /* bzip2 */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			name = BZIP2;
+			name = bzip2;
 			sourceTree = "<group>";
 		};
-		F2DD656A1D652A76009B684A /* XXhash */ = {
+		F2DD656A1D652A76009B684A /* xxhash */ = {
 			isa = PBXGroup;
 			children = (
+				F226E7961D46A04700E10FC3 /* xxhash.cpp */,
+				F226E7971D46A04700E10FC3 /* xxhash.hpp */,
 			);
-			name = XXhash;
+			name = xxhash;
+			sourceTree = "<group>";
+		};
+		F2DD656D1D652BF3009B684A /* Mersenne */ = {
+			isa = PBXGroup;
+			children = (
+				989056FE1D59D2AD0000D247 /* Mersenne.cpp */,
+				989056FF1D59D2AD0000D247 /* Mersenne.hpp */,
+			);
+			name = Mersenne;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
