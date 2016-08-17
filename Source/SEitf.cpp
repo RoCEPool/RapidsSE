@@ -243,6 +243,18 @@ void SEitf::vAppendRequest(s& sRequest)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop response from reponse queue (response is from pointer in seitf(shm))   */
+/*----------------------------------------------------------------------------*/
+char* SEitf::pGetResponse(void)
+{
+  i8 iStatus;
+  while (! bPopResponse(iStatus, m_sResponse))
+  ;
+  
+  return m_sResponse.a();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop response from reponse queue                                            */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPopResponse(s& sResponse)

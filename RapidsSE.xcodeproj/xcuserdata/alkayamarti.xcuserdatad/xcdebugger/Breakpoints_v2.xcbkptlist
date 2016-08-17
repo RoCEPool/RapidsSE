@@ -2371,7 +2371,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "242"
             endingLineNumber = "242"
-            landmarkName = "SEitf::bPopResponse(s&amp; sResponse)"
+            landmarkName = "SEitf::vAppendRequest(s&amp; sRequest)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2387,7 +2387,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "254"
             endingLineNumber = "254"
-            landmarkName = "SEitf::bPopResponse(i8&amp; iResult, s&amp; sResponse)"
+            landmarkName = "SEitf::pGetResponse(void)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2402,9 +2402,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "257"
-            endingLineNumber = "257"
-            landmarkName = "SEitf::bPopResponse(i8&amp; iResult, s&amp; sResponse)"
-            landmarkType = "5">
+            endingLineNumber = "257">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2419,7 +2417,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "629"
             endingLineNumber = "629"
-            landmarkName = "SEitf::bListTenants(char* pWords[])"
+            landmarkName = "SEitf::bDropDictionary(char* pWords[])"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2434,9 +2432,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "SEitf::bPopResponse(i8&amp; iResult, s&amp; sResponse)"
-            landmarkType = "5">
+            endingLineNumber = "256">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2450,9 +2446,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "258"
-            endingLineNumber = "258"
-            landmarkName = "SEitf::bPopResponse(i8&amp; iResult, s&amp; sResponse)"
-            landmarkType = "5">
+            endingLineNumber = "258">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2560,25 +2554,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "367"
-            endingLineNumber = "367"
-            landmarkName = "SEitf::bDecode(char* pWords[])"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Api.cpp"
-            timestampString = "493088670.705262"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "pRapidsSE_GetCatalogs(SEitf* pSEitf)"
-            landmarkType = "7">
+            endingLineNumber = "367">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2652,25 +2628,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "366"
-            endingLineNumber = "366"
-            landmarkName = "SEitf::bDecode(char* pWords[])"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Api.cpp"
-            timestampString = "493088670.705262"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "pRapidsSE_GetCatalogs(SEitf* pSEitf)"
-            landmarkType = "7">
+            endingLineNumber = "366">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2687,22 +2645,6 @@
             endingLineNumber = "1178"
             landmarkName = "Task::vLoop(void)"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Api.cpp"
-            timestampString = "493089322.319355"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
-            landmarkName = "pRapidsSE_GetCatalogs(SEitf* pSEitf)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2740,7 +2682,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Thread.cpp"
@@ -2756,7 +2698,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/PosixThread.cpp"

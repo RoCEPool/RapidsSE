@@ -1,19 +1,255 @@
-//
-//  Api.cpp
-//  RapidsSE
-//
-//  Created by alka yamarti on 16/08/16.
-//  Copyright © 2016 Borrui Data Technology. All rights reserved.
-//
+/*============================================================================*/
+/* Api.cpp - RapidsSE Api funcstions                                          */
+/*============================================================================*/
 
 #include "Api.hpp"
 
 /*----------------------------------------------------------------------------*/
-/* delete an seitf instance                                                   */
+/* get list of catalogs                                                       */
+/*----------------------------------------------------------------------------*/
+char* pRapidsSE_GetCatalogs(SEitf* pSEitf)
+{
+  vTrace("pRapidsSE_GetCatalogs\n");
+  
+  char xArray[C_1KB * 2];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1]
+  };
+  
+  // change directory to tenants
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "tenants");
+  pSEitf->bDecode(pWords);
+  vTrace("cd tenants\n");
+  
+  // get response
+  char* pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd tenants): %s\n", pResponse);
+  
+  // change directory to ten
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "ten");
+  pSEitf->bDecode(pWords);
+  vTrace("cd ten\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd ten): %s\n", pResponse);
+  
+  // change directory to catalogs
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "catalogs");
+  pSEitf->bDecode(pWords);
+  vTrace("cd catalogs\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd catalogs): %s\n", pResponse);
+  
+  // list all catalogs
+  String::vCopy(pWords[0], "lscat");
+  pSEitf->bDecode(pWords);
+  vTrace("lscat\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (lscat): %s\n", pSEitf->m_sResponse.a());
+  
+  // return list of catalogs
+  return pResponse;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get list of schemas for given catalog                                      */
+/*----------------------------------------------------------------------------*/
+char* pRapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog)
+{
+  vTrace("pRapidsSE_GetSchemas: %s\n", pCatalog);
+  
+  char xArray[C_1KB * 2];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1]
+  };
+  
+  if (!pCatalog)
+    return nullptr;
+  
+  // change directory to tenants
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "tenants");
+  pSEitf->bDecode(pWords);
+  vTrace("cd tenants\n");
+  
+  // get response
+  char* pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd tenants): %s\n", pResponse);
+  
+  // change directory to tenant ten
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "ten");
+  pSEitf->bDecode(pWords);
+  vTrace("cd ten\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd ten): %s\n", pResponse);
+  
+  // change directory to catalogs
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "catalogs");
+  pSEitf->bDecode(pWords);
+  vTrace("cd catalogs\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd catalogs): %s\n", pResponse);
+  
+  // change directory to pCatalog
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], pCatalog);
+  pSEitf->bDecode(pWords);
+  vTrace("cd %s\n", pCatalog);
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // change directory to schemas
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "schemas");
+  pSEitf->bDecode(pWords);
+  vTrace("cd schemas\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // list all schemas in pCatalog
+  String::vCopy(pWords[0], "lssch");
+  pSEitf->bDecode(pWords);
+  vTrace("lssch\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // return list of schemas in pCatalog
+  return pResponse;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get list of tables for given schema of given catalog                       */
+/*----------------------------------------------------------------------------*/
+char* pRapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema)
+{
+  vTrace("pRapidsSE_GetTables: %s %s\n", pCatalog, pSchema);
+  
+  char xArray[C_1KB * 2];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1]
+  };
+  
+  if (!pCatalog)
+    return nullptr;
+  
+  if (!pSchema)
+    return nullptr;
+  
+  // change directory to tenants
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "tenants");
+  pSEitf->bDecode(pWords);
+  vTrace("cd tenants\n");
+  
+  // get response
+  char* pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd tenants): %s\n", pResponse);
+  
+  // change directory to tenant ten
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "ten");
+  pSEitf->bDecode(pWords);
+  vTrace("cd ten\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd ten): %s\n", pResponse);
+  
+  // change directory to catalogs
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "catalogs");
+  pSEitf->bDecode(pWords);
+  vTrace("cd catalogs\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp (cd catalogs): %s\n", pResponse);
+  
+  // change directory to pCatalog
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], pCatalog);
+  pSEitf->bDecode(pWords);
+  vTrace("cd %s\n", pCatalog);
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // change directory to schemas
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "schemas");
+  pSEitf->bDecode(pWords);
+  vTrace("cd %s\n", pCatalog);
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // change directory to pSchema
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], pSchema);
+  pSEitf->bDecode(pWords);
+  vTrace("cd %s\n", pSchema);
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // change directory to tables
+  String::vCopy(pWords[0], "cd");
+  String::vCopy(pWords[1], "tables");
+  pSEitf->bDecode(pWords);
+  vTrace("cd tables\n");
+  
+  // get response
+  pResponse = pSEitf->pGetResponse();
+  vTrace("rsp: %s\n", pResponse);
+  
+  // list all the tables in pSchema of pCatalog
+  String::vCopy(pWords[0], "lstbl");
+  pSEitf->bDecode(pWords);
+  vTrace("lstbl\n");
+  
+  // get the response
+  pResponse = pSEitf->pGetResponse();
+  
+  vTrace("rsp: %s\n", pResponse);
+  
+  // return the list of tables in pSchema of pCatalog
+  return pResponse;
+}
+
+/*----------------------------------------------------------------------------*/
+/* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
 void vRapidsSE_PoolOpen(void)
 {
-    RapidsSE::vPoolOpen();
+  vTrace("vRapidsSE_PoolOpen\n");
+  
+  RapidsSE::vPoolOpen();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,6 +257,8 @@ void vRapidsSE_PoolOpen(void)
 /*----------------------------------------------------------------------------*/
 void vRapidsSE_SEitfDelete(SEitf* pSEitf)
 {
+  vTrace("vRapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+  
   RapidsSE::vSEitfDelete(pSEitf);
 }
 
@@ -29,74 +267,14 @@ void vRapidsSE_SEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 SEitf* pRapidsSE_SEitfNew(void)
 {
+  vTrace("pRapidsSE_SEitfNew\n");
+  
   SEitf* pSEitf = RapidsSE::pSEitfNew();
   pSEitf->vInit();
   
   return pSEitf;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get list of catalogs                                                       */
-/*----------------------------------------------------------------------------*/
-char* pRapidsSE_GetCatalogs(SEitf* pSEitf)
-{
-  s256 sResponse;
-  s256 sCommand;
-  
-  char xArray[C_16KB];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1],
-    &xArray[C_1KB * 2],
-    &xArray[C_1KB * 3],
-    &xArray[C_1KB * 4],
-    &xArray[C_1KB * 5],
-    &xArray[C_1KB * 6],
-    &xArray[C_1KB * 7],
-    &xArray[C_1KB * 8],
-    &xArray[C_1KB * 9],
-    &xArray[C_1KB * 10],
-    &xArray[C_1KB * 11],
-    &xArray[C_1KB * 12],
-    &xArray[C_1KB * 13],
-    &xArray[C_1KB * 14],
-    &xArray[C_1KB * 15]
-  };
-
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tenants");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tenants\n");
-  
-  i8 iStatus;
-  while (! pSEitf->bPopResponse(iStatus,sResponse))
-    ;
-  vTrace("rsp: %s\n", sResponse.a());
-  
-  String::vCopy(pWords[0], "cd ten");
-  pSEitf->bDecode(pWords);
-  vTrace("cd ten\n");
-  
-  while (! pSEitf->bPopResponse(iStatus,sResponse))
-    ;
-  vTrace("rsp: %s\n", sResponse.a());
-  
-  String::vCopy(pWords[0], "cd catalogs");
-  pSEitf->bDecode(pWords);
-  vTrace("cd catalogs\n");
-  
-  while (! pSEitf->bPopResponse(iStatus,sResponse))
-    ;
-  vTrace("rsp: %s\n", sResponse.a());
-  
-  String::vCopy(pWords[0], "ls");
-  pSEitf->bDecode(pWords);
-  vTrace("ls\n");
-  
-  while (! pSEitf->bPopResponse(iStatus,sResponse))
-    ;
-  
-  vTrace("rsp: %s\n", sResponse.a());
-  
- return sResponse.a();
-}
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
