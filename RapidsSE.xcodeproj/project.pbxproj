@@ -124,6 +124,8 @@
 		F22056D91D62DEA400E8EF5B /* AttachMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7211D41805500E10FC3 /* AttachMap.cpp */; };
 		F22056DA1D62DEA800E8EF5B /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7811D45D65000E10FC3 /* Arguments.cpp */; };
 		F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */; };
+		F24D1FBE1D64009A005031F5 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F24D1FBC1D64009A005031F5 /* Timer.cpp */; };
+		F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F24D1FBD1D64009A005031F5 /* Timer.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -347,6 +349,8 @@
 		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
 		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
+		F24D1FBC1D64009A005031F5 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Source/Timer.cpp; sourceTree = "<group>"; };
+		F24D1FBD1D64009A005031F5 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Timer.hpp; path = Source/Timer.hpp; sourceTree = "<group>"; };
 		F24F61791D066DCD00954E9C /* Notes */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Notes; path = Documents/Notes; sourceTree = SOURCE_ROOT; };
 		F25309921D0235EC000F6728 /* BufferPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BufferPool.cpp; sourceTree = "<group>"; };
 		F25309931D0235EC000F6728 /* BufferPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferPool.hpp; sourceTree = "<group>"; };
@@ -901,6 +905,8 @@
 				F2CC758F1D4FDC4A00261B4D /* System.hpp */,
 				F21D29A91D0E0E15000F8C45 /* SETime.cpp */,
 				F21D29AA1D0E0E15000F8C45 /* SETime.hpp */,
+				F24D1FBC1D64009A005031F5 /* Timer.cpp */,
+				F24D1FBD1D64009A005031F5 /* Timer.hpp */,
 				F21D29A01D0DFE93000F8C45 /* Today.cpp */,
 				F21D29A11D0DFE93000F8C45 /* Today.hpp */,
 				F226E7961D46A04700E10FC3 /* xxhash.cpp */,
@@ -978,6 +984,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1095,6 +1102,7 @@
 				F22056D11D62DE7A00E8EF5B /* ProxySet.cpp in Sources */,
 				F22056971D62DCBB00E8EF5B /* BufferFree.cpp in Sources */,
 				F220568D1D62DAF300E8EF5B /* xxhash.cpp in Sources */,
+				F24D1FBE1D64009A005031F5 /* Timer.cpp in Sources */,
 				F22056981D62DCBE00E8EF5B /* Buffer.cpp in Sources */,
 				F220568F1D62DC9A00E8EF5B /* SegmentBuffer.cpp in Sources */,
 				F22056AF1D62DDAA00E8EF5B /* Dictionaries.cpp in Sources */,

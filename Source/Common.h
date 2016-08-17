@@ -48,6 +48,7 @@
 #include "prompt.hpp"
 
 #include "Mersenne.hpp"
+#include "Timer.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Common

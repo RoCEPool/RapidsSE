@@ -231,11 +231,12 @@ void Task::vAddConstants(void)
   /* 41 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
   /* 42 */ vAddConstant("CN_THREAD",                CN_THREAD);
   /* 43 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 44 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 45 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 46 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 47 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 48 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 44 */ vAddConstant("CN_TIMER",                 CN_TIMER);
+  /* 45 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 46 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 47 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 48 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 49 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
  
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -286,10 +287,11 @@ void Task::vAddConstants(void)
   /* 39 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
   /* 40 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
   /* 41 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 42 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
-  /* 43 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 44 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
-  /* 45 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 42 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 43 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
+  /* 44 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 45 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
+  /* 46 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));

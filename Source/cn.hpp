@@ -60,11 +60,12 @@ namespace Types
     /* 41 */ CN_TASKSET,
     /* 42 */ CN_THREAD,
     /* 43 */ CN_THREADLIST,
-    /* 44 */ CN_TX,
-    /* 45 */ CN_TXMAP,
-    /* 46 */ CN_TXLIST,
-    /* 47 */ CN_WORD,
-    /* 48 */ CN_ENUMS
+    /* 44 */ CN_TIMER,
+    /* 45 */ CN_TX,
+    /* 46 */ CN_TXMAP,
+    /* 47 */ CN_TXLIST,
+    /* 48 */ CN_WORD,
+    /* 49 */ CN_ENUMS
   };
   
   static const char *pCN[]
@@ -116,11 +117,12 @@ namespace Types
     /* 41 */ "TASKSET",
     /* 42 */ "THREAD",
     /* 43 */ "THREADLIST",
-    /* 44 */ "TX",
-    /* 45 */ "TXMAP",
-    /* 46 */ "TXLIST",
-    /* 47 */ "WORD",
-    /* 48 */ "ENUMS"
+    /* 44 */ "TIMER",
+    /* 45 */ "TX",
+    /* 46 */ "TXMAP",
+    /* 47 */ "TXLIST",
+    /* 48 */ "WORD",
+    /* 49 */ "ENUMS"
   };
 
   class cn
