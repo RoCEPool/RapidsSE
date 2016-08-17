@@ -10,7 +10,8 @@ namespace Common {
   class Process
   {
   public:
-    static i8 iGetPid(void);
+    static i8   iGetPid(void);
+    static bool bTestPid(i8 iPid);
   };
 
 }
