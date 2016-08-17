@@ -67,6 +67,20 @@ void Dictionary::vAddConstant(const char* aName, i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add constant                                                               */
+/*----------------------------------------------------------------------------*/
+void Dictionary::vAddConstant(const char* aName, const char* aValue)
+{
+  Word* pNewWord = new(this) Word(aName);
+  
+  StrVal xStrVal;
+  xStrVal = aValue;
+  
+  pNewWord->vEncode("push",&xStrVal);
+  pNewWord->vEncode("exit");
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a word                                                            */
 /*----------------------------------------------------------------------------*/
 Word* Dictionary::pAllocWord(i8 iBytes)

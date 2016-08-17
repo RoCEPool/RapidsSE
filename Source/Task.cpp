@@ -95,6 +95,14 @@ Task::Task(const char* sCommand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Task::~Task(void)
+{
+  _poolAddress_(this);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vInit(const char* aCommand)
@@ -137,11 +145,36 @@ void Task::vInit(const char* aCommand)
 }
 
 /*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
+/* add constant                                                               */
 /*----------------------------------------------------------------------------*/
-Task::~Task(void)
+void Task::vAddConstant(const char* aName, i8 iVal)
 {
-  _poolAddress_(this);
+  Dictionary* pDic = m_xDictionaryStack.pTop();
+  
+  pDic->vAddConstant(aName,iVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add constant                                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vAddConstant(const char* aName, const char* aValue)
+{
+  Dictionary* pDic = m_xDictionaryStack.pTop();
+  
+  pDic->vAddConstant(aName,aValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add primitive word into dictionary                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
+{
+  Dictionary* pDic = m_xDictionaryStack.pTop();
+  
+  Word* pWord = new(pDic) Word(WT_PRIMITIVE,pFunc);
+  
+  pWord->vName(pName);
+  pWord->vImmediate(bImmediate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,17 +183,6 @@ Task::~Task(void)
 void Task::vAdjustNext(i8 iBytes)
 {
   m_pCell = reinterpret_cast<Cell*>(pcAdd(m_pCell,iBytes));
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitive word into dictionary                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
-{
-  Word* pWord = new(m_xDictionaryStack.pTop()) Word(WT_PRIMITIVE,pFunc);
-  
-  pWord->vName(pName);
-  pWord->vImmediate(bImmediate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -332,31 +354,479 @@ void Task::vAddConstants(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* boot constant                                                              */
+/* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddConstant(const char* aName, i8 iVal)
+void Task::vAddPrimitives(void)
 {
-  Word* pNewWord = new(m_xDictionaryStack.pTop()) Word(aName);
+  vAddPrimitive("word",            &vWord,             false);
+  gpWord = pFindWord("word");
   
-  IntVal xIntVal;
-  xIntVal = iVal;
+  vAddPrimitive("accept",          &vAccept,           false);
+  vAddPrimitive("+",               &vAdd,              false);
+  vAddPrimitive("allot",           &vAllot,            false);
+  vAddPrimitive("again",           &vAgain,            true );
+  vAddPrimitive("again_",          &vAgain_,           false);
+  vAddPrimitive("and",             &vAnd,              false);
+  vAddPrimitive("begin",           &vBegin,            true );
+  vAddPrimitive("begin_",          &vBegin_,           false);
+  vAddPrimitive("boot",            &vBoot,             false);
+  vAddPrimitive("bpa",             &vBpa,              false);
+  vAddPrimitive("class@",          &vClassFetch,       false);
+  vAddPrimitive("class!",          &vClassStore,       false);
+  vAddPrimitive("code=",           &vCodeAssign,       false);
+  vAddPrimitive(":",               &vColon,            false);
+  vAddPrimitive(",",               &vComma,            false);
+  vAddPrimitive("(",               &vComment,          true );
+  vAddPrimitive("compiling",       &vCompiling,        false);
+  vAddPrimitive("concat",          &vConcat,           false);
+  vAddPrimitive("create",          &vCreate,           false);
+  vAddPrimitive(">create",         &vCreateFrom,       false);
+  vAddPrimitive("cursor@",         &vCursorFetch,      false);
+  vAddPrimitive("cursor!",         &vCursorStore,      false);
+  vAddPrimitive("cwd",             &vCwd,              false);
+  vAddPrimitive("depth",           &vDepth,            false);
+  vAddPrimitive("/",               &vDivide,           false);
+  vAddPrimitive("do",              &vDo,               true );
+  vAddPrimitive("do_rt",           &vDo_RT,            false);
+  vAddPrimitive("does>",           &vDoes,             true );
+  vAddPrimitive("drop",            &vDrop,             false);
+  vAddPrimitive("dup",             &vDup,              false);
+  vAddPrimitive("dump",            &vDump,             false);
+  vAddPrimitive("else",            &vElse,             true );
+  vAddPrimitive("encodeCall",      &vEncodeCall,       false);
+  vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
+  vAddPrimitive("encodeEmb",       &vEncodeEmb,        true );
+  vAddPrimitive("encodeFun",       &vEncodeFun,        false);
+  vAddPrimitive("encodeVal",       &vEncodeVal,        false);
+  vAddPrimitive("env@",            &vEnvGet,           false);
+  vAddPrimitive("enter",           &vEnter,            false);
+  vAddPrimitive("]",               &vEnterCompiler,    false);
+  vAddPrimitive("[",               &vEnterInterpreter, true );
+  vAddPrimitive("==",              &vEqual,            false);
+  vAddPrimitive("eql",             &vEqualAddress,     false);
+  vAddPrimitive("execute",         &vExecute,          false);
+  vAddPrimitive("exit",            &vExit,             false);
+  vAddPrimitive("@",               &vFetch,            false);
+  vAddPrimitive("find",            &vFind,             false);
+  vAddPrimitive("freePercent",     &vFreePercent,      false);
+  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
+  vAddPrimitive(">",               &vGreater,          false);
+  vAddPrimitive(">=",              &vGreaterEqual,     false);
+  vAddPrimitive("gwd",             &vGwd,              false);
+  vAddPrimitive("i",               &vI,                false);
+  vAddPrimitive("if",              &vIf,               true );
+  vAddPrimitive("immediate",       &vImmediate,        true );
+  vAddPrimitive("input.close",     &vInputClose,       false);
+  vAddPrimitive("input.depth",     &vInputDepth,       false);
+  vAddPrimitive("input.open",      &vInputOpen,        false);
+  vAddPrimitive("input.pop",       &vInputPop,         false);
+  vAddPrimitive("input.push",      &vInputPush,        false);
+  vAddPrimitive("input.stdin",     &vInputStdin,       false);
+  vAddPrimitive("input.text",      &vInputText,        false);
+  vAddPrimitive("interpreting",    &vInterpreting,     false);
+  vAddPrimitive("isBooted",        &vIsBooted,         false);
+  vAddPrimitive("isCompiling",     &vIsCompiling,      false);
+  vAddPrimitive("isIntLit",        &vIsIntLit,         false);
+  vAddPrimitive("isImmediate",     &vIsImmediate,      false);
+  vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
+  vAddPrimitive("isNameLit",       &vIsNameLit,        false);
+  vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
+  vAddPrimitive("isStrLit",        &vIsStrLit,         false);
+  vAddPrimitive("iterate",         &vIterate,          true );
+  vAddPrimitive("iterate_rt_A",    &vIterate_RT_A,     false);
+  vAddPrimitive("iterate_rt_B",    &vIterate_RT_B,     false);
+  vAddPrimitive("j",               &vJ,                false);
+  vAddPrimitive("jump",            &vJump,             false);
+  vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
+  vAddPrimitive("jumpTrue",        &vJumpTrue,         false);
+  vAddPrimitive("<",               &vLess,             false);
+  vAddPrimitive("<=",              &vLessEqual,        false);
+  vAddPrimitive("literal",         &vLiteral,          false);
+  vAddPrimitive("literal>",        &vLiteralGet,       false);
+  vAddPrimitive("litNext",         &vLitNext,          false);
+  vAddPrimitive("litType",         &vLitType,          false);
+  vAddPrimitive("locate",          &vLocate,           false);
+  vAddPrimitive("loop",            &vLoop,             true );
+  vAddPrimitive("loop_rt",         &vLoop_RT,          false);
+  vAddPrimitive("+loop",           &vLoopPlus,         true );
+  vAddPrimitive("+loop_rt",        &vLoopPlus_RT,      false);
+  vAddPrimitive("magic@",          &vMagicFetch,       false);
+  vAddPrimitive("magic!!",         &vMagicMark,        false);
+  vAddPrimitive("*",               &vMultiply,         false);
+  vAddPrimitive("nameWord",        &vNameWord,         false);
+  vAddPrimitive("next",            &vNext,             true );
+  vAddPrimitive("nop",             &vNop,              false);
+  vAddPrimitive("not",             &vNot,              false);
+  vAddPrimitive("!=",              &vNotEqual,         false);
+  vAddPrimitive("object@",         &vObjectFetch,      false);
+  vAddPrimitive("object!!",        &vObjectMark,       false);
+  vAddPrimitive("object!",         &vObjectStore,      false);
+  vAddPrimitive("or",              &vOr,               false);
+  vAddPrimitive("pause",           &vPause,            false);
+  vAddPrimitive("pick",            &vPick,             false);
+  vAddPrimitive("prevWord",        &vPrevWord,         false);
+  vAddPrimitive(".",               &vPrint,            false);
+  vAddPrimitive("processExit",     &vProcessExit,      false);
+  vAddPrimitive("push",            &vPush,             false);
+  vAddPrimitive(".put",            &vPut,              false);
+  vAddPrimitive(".\\n",            &vPutNewline,       false);
+  vAddPrimitive("quit",            &vQuit,             false);
+  vAddPrimitive("rdtscp",          &vRdtscp,           false);
+  vAddPrimitive("repeat",          &vRepeat,           true );
+  vAddPrimitive("retryPoint",      &vRetryPoint,       false);
+  vAddPrimitive("rot",             &vRot,              false);
+  vAddPrimitive("see",             &vSee,              false);
+  vAddPrimitive(";",               &vSemicolon,        true );
+  vAddPrimitive("signal",          &vSignal,           false);
+  vAddPrimitive("sleep",           &vSleep,            false);
+  vAddPrimitive("snooze",          &vSnooze,           false);
+  vAddPrimitive("!",               &vStore,            false);
+  vAddPrimitive("streql",          &vStrEql,           false);
+  vAddPrimitive("strlen",          &vStrLen,           false);
+  vAddPrimitive("subStr",          &vSubStr,           false);
+  vAddPrimitive("-",               &vSubtract,         false);
+  vAddPrimitive("swap",            &vSwap,             false);
+  vAddPrimitive("test",            &vTest,             false);
+  vAddPrimitive("then",            &vThen,             true );
+  vAddPrimitive("throw",           &vThrow,            false);
+  vAddPrimitive("'",               &vTick,             true );
+  vAddPrimitive(">body",           &vToBody,           false);
+  vAddPrimitive(">cmd",            &vToCmd,            false);
+  vAddPrimitive(">int",            &vToInt,            false);
+  vAddPrimitive("r>",              &vToPstack,         false);
+  vAddPrimitive(">r",              &vToRstack,         false);
+  vAddPrimitive(">seitf",          &vToSEitf,          false);
+  vAddPrimitive(">str",            &vToStr,            false);
+  vAddPrimitive(">task",           &vToTask,           false);
+  vAddPrimitive("valset>",         &vToValues,         false);
+  vAddPrimitive(">valset",         &vToValSet,         false);
+  vAddPrimitive("traceOff",        &vTraceOff,         false);
+  vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("unloop",          &vUnloop,           false);
+  vAddPrimitive("until",           &vUntil,            true );
+  vAddPrimitive("version",         &vVersion,          false);
+  vAddPrimitive("wait",            &vWait,             false);
+  vAddPrimitive("wake",            &vWake,             false);
+  vAddPrimitive("while",           &vWhile,            true );
+  vAddPrimitive("0<",              &vZeroLess,         false);
+  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
+  vAddPrimitive("0==",             &vZeroEqual,        false);
+  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
+  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
+  vAddPrimitive("0>",              &vZeroGreater,      false);
   
-  pNewWord->vEncode("push",&xIntVal);
-  pNewWord->vEncode("exit");
+  //----------------------------------------------------------
+  vAddPrimitive("args.print",      &vArgsPrint,        false);
+  
+  vAddPrimitive("dic.count",       &vDicCount,         false);
+  vAddPrimitive("dic.drop",        &vDicDrop,          false);
+  vAddPrimitive("}}",              &vDicDrop,          false);
+  vAddPrimitive("dic.init",        &vDicInit,          false);
+  vAddPrimitive("dic.main",        &vDicMain,          false);
+  vAddPrimitive("dic.name",        &vDicName,          false);
+  vAddPrimitive("dic.pick",        &vDicPick,          false);
+  vAddPrimitive("dic.push",        &vDicPush,          false);
+  vAddPrimitive("{{",              &vDicPush,          false);
+  vAddPrimitive("dic.stack",       &vDicStack,         false);
+  
+  vAddPrimitive("file.close",      &vFileClose,        false);
+  vAddPrimitive("file.delete",     &vFileDelete,       false);
+  vAddPrimitive("file.init",       &vFileInit,         false);
+  vAddPrimitive("file.new",        &vFileNew,          false);
+  vAddPrimitive("file.open",       &vFileOpen,         false);
+  vAddPrimitive("file.path@",      &vFilePathGet,      false);
+  vAddPrimitive("file.path!",      &vFilePathSet,      false);
+  vAddPrimitive("file.read",       &vFileRead,         false);
+  vAddPrimitive("file.write",      &vFileWrite,        false);
+  
+  vAddPrimitive("lock.dropread",   &vLockDropRead,     false);
+  vAddPrimitive("lock.dropwrite",  &vLockDropWrite,    false);
+  vAddPrimitive("lock.grabread",   &vLockGrabRead,     false);
+  vAddPrimitive("lock.grabwrite",  &vLockGrabWrite,    false);
+  vAddPrimitive("lock.init",       &vLockInit,         false);
+  
+  vAddPrimitive("process.getpid",  &vProcessGetPid,    false);
+  vAddPrimitive("process.testpid", &vProcessTestPid,   false);
+  
+  vAddPrimitive("pstack.class",    &vPstackClass,      false);
+  vAddPrimitive("p.depth",         &vPstackDepth,      false);
+  
+  vAddPrimitive("queue.append",    &vQueueAppend,      false);
+  vAddPrimitive("queue.dump",      &vQueueDump,        false);
+  vAddPrimitive("queue.init",      &vQueueInit,        false);
+  vAddPrimitive("queue.pop",       &vQueuePop,         false);
+  
+  vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
+  vAddPrimitive("rdrop",           &vRstackDrop,       false);
+  vAddPrimitive("r@",              &vRstackFetch,      false);
+  vAddPrimitive("rpick",           &vRstackPick,       false);
+  
+  vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
+  vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
+  vAddPrimitive("seitf.new",       &vSEitfNew,         false);
+  vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
+  vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
+  vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
+  vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
+  
+  vAddPrimitive("seitfcursor.begin",  &vSEitfCursorBegin,  false);
+  vAddPrimitive("seitfcursor.delete", &vSEitfCursorDelete, false);
+  vAddPrimitive("seitfcursor.end",    &vSEitfCursorEnd,    false);
+  vAddPrimitive("seitfcursor.first",  &vSEitfCursorFirst,  false);
+  vAddPrimitive("seitfcursor.get",    &vSEitfCursorGet,    false);
+  vAddPrimitive("seitfcursor.init",   &vSEitfCursorInit,   false);
+  vAddPrimitive("seitfcursor.new",    &vSEitfCursorNew,    false);
+  vAddPrimitive("seitfcursor.next",   &vSEitfCursorNext,   false);
+  
+  vAddPrimitive("seitflist.dump",  &vSEitfListDump,    false);
+  vAddPrimitive("seitflist.init",  &vSEitfListInit,    false);
+  
+  vAddPrimitive("system.cpu",      &vSystemCpu,        false);
+  
+  vAddPrimitive("table.copy",      &vTableCopy,        false);
+  vAddPrimitive("table.drop",      &vTableDrop,        false);
+  vAddPrimitive("table.export",    &vTableExport,      false);
+  vAddPrimitive("table.firstBuffer", &vTableFirstBuffer, false);
+  vAddPrimitive("table.init",      &vTableInit,        false);
+  vAddPrimitive("table.insert",    &vTableInsert,      false);
+  vAddPrimitive("table.load",      &vTableLoad,        false);
+  vAddPrimitive("table.list",      &vTableList,        false);
+  vAddPrimitive("table.space",     &vTableSpace,       false);
+  vAddPrimitive("table.truncate",  &vTableTruncate,    false);
+  
+  vAddPrimitive("task.dic",        &vTaskDic,          false);
+  vAddPrimitive("task.dump",       &vTaskDump,         false);
+  vAddPrimitive("task.init",       &vTaskInit,         false);
+  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
+  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
+  vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
+  vAddPrimitive("task.name!",      &vTaskNameStore,    false);
+  vAddPrimitive("task.new",        &vTaskNew,          false);
+  vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
+  vAddPrimitive("task.queue!",     &vTaskQstore,       false);
+  vAddPrimitive("task.seed",       &vTaskSeed,         false);
+  vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
+  vAddPrimitive("task.state!",     &vTaskStateStore,   false);
+  vAddPrimitive("task.this",       &vTaskThis,         false);
+  
+  vAddPrimitive("tasklist",        &vTaskList,         false);
+  vAddPrimitive("tasklist.append", &vTaskListAppend,   false);
+  vAddPrimitive("tasklist.dump",   &vTaskListDump,     false);
+  vAddPrimitive("tasklist.init",   &vTaskListInit,     false);
+  
+  vAddPrimitive("taskset.append",  &vTaskSetAppend,    false);
+  vAddPrimitive("taskset.dump",    &vTaskSetDump,      false);
+  vAddPrimitive("taskset.init",    &vTaskSetInit,      false);
+  
+  vAddPrimitive("thread.append",   &vThreadAppend,     false);
+  vAddPrimitive("thread.bind",     &vThreadBind,       false);
+  vAddPrimitive("thread.cpu",      &vThreadCpu,        false);
+  vAddPrimitive("thread.dump",     &vThreadDump,       false);
+  vAddPrimitive("thread.init",     &vThreadInit,       false);
+  vAddPrimitive("thread.name@",    &vThreadNameFetch,  false);
+  vAddPrimitive("thread.name!",    &vThreadNameStore,  false);
+  vAddPrimitive("thread.taskset@", &vThreadSfetch,     false);
+  vAddPrimitive("thread.taskset!", &vThreadSstore,     false);
+  vAddPrimitive("thread.spawn",    &vThreadSpawn,      false);
+  
+  vAddPrimitive("threadlist.dump", &vThreadListDump,   false);
+  vAddPrimitive("threadlist.init", &vThreadListInit,   false);
+  
+  vAddPrimitive("timer.delete",    &vTimerDelete,      false);
+  vAddPrimitive("timer.init",      &vTimerInit,        false);
+  vAddPrimitive("timer.microsecs", &vTimerMicrosecs,   false);
+  vAddPrimitive("timer.millisecs", &vTimerMillisecs,   false);
+  vAddPrimitive("timer.nanosecs",  &vTimerNanosecs,    false);
+  vAddPrimitive("timer.new",       &vTimerNew,         false);
+  vAddPrimitive("timer.reset",     &vTimerReset,       false);
+  vAddPrimitive("timer.secs",      &vTimerSecs,        false);
+  vAddPrimitive("timer.start",     &vTimerStart,       false);
+  vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
+  vAddPrimitive("timer.update",    &vTimerUpdate,      false);
+  
+  vAddPrimitive("tx.delete",       &vTxDelete,         false);
+  vAddPrimitive("tx.new",          &vTxNew,            false);
+  
+  vAddPrimitive("txList.dump",     &vTxListDump,       false);
+  vAddPrimitive("txList.init",     &vTxListInit,       false);
+  
+  vAddPrimitive("txMap.init",      &vTxMapInit,        false);
+  
+  vAddPrimitive("word.dump",       &vWordDump,         false);
+  vAddPrimitive("word.dic",        &vWordDic,          false);
+  vAddPrimitive("forget",          &vForget,           false);
+  vAddPrimitive(">forget",         &vWordForget,       false);
+  vAddPrimitive("word.kind@",      &vWordKindGet,      false);
+  vAddPrimitive("word.kind!",      &vWordKindSet,      false);
+  vAddPrimitive("word.name",       &vWordName,         false);
+  vAddPrimitive("word.this",       &vWordThis,         false);
+  
+  //----------------------------------------------------------
+  vAddPrimitive("socketAccept",    &vSocketAccept,     false);
+  vAddPrimitive("socketClose",     &vSocketClose,      false);
+  vAddPrimitive("socketConnect",   &vSocketConnect,    false);
+  vAddPrimitive("socketListen",    &vSocketListen,     false);
+  vAddPrimitive("socketOpen",      &vSocketOpen,       false);
+  vAddPrimitive("socketRecv",      &vSocketRecv,       false);
+  vAddPrimitive("socketSend",      &vSocketSend,       false);
+  
+  vAddPrimitive("client",          &vClient,           false);
+  vAddPrimitive("server",          &vServer,           false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* boot constant                                                              */
+/* add initial set of routines into dictionary (min set to boot)              */
 /*----------------------------------------------------------------------------*/
-void Task::vAddConstant(const char* aName, const char* aValue)
+void Task::vAddRoutines(void)
 {
-  Word* pNewWord = new(m_xDictionaryStack.pTop()) Word(aName);
+  s16K sDefinition;
+
+  sDefinition =
+  ": docol "
   
-  StrVal xStrVal;
-  xStrVal = aValue;
+  "  retryPoint"
   
-  pNewWord->vEncode("push",&xStrVal);
-  pNewWord->vEncode("exit");
+  "  begin_"
+  "    litNext"
+  
+  // end of input
+  "    litType LT_NONE == if"
+  "      exit"
+  "    then"
+  
+  // integer
+  "    litType LT_INTLIT == if"
+  
+  "      literal >int"            // convert str to int, leave on stack
+  
+  "      isinterpreting if"       // interpret leaves int on stack
+  "        again_"
+  "      then"
+  
+  "      iscompiling if"          // compile encodes push intval
+  "        encodeVal"
+  "        again_"
+  "      then"
+  
+  "    then"
+  
+  // string
+  "    litType LT_STRLIT == if"
+  
+  "      literal"                 // put str on stack
+  
+  "      isinterpreting if"       // interpret leaves str on stack
+  "        again_"
+  "      then"
+  
+  "      iscompiling if"          // compile encodes push strval
+  "        encodeVal"
+  "        again_"
+  "      then"
+  
+  "    then"
+  
+  // what?
+  "    litType LT_NAMELIT != if"           // double check we have a name
+  "      \"strange literal\" . litType ."
+  "      again_"
+  "    then"
+  
+  // known name?
+  "    literal find"              // attempt to find
+  "    dup not if"
+  "      drop"
+  "      \"unknown\" ."
+  "      literal ."
+  "      isBooted not if processExit then "
+  "      again_"
+  "    then"
+  
+  // known word on stack
+  
+  // immediate
+  "    dup isImmediate if"       // execute an immediate word
+  "      execute"
+  "      again_"
+  "    then"
+  
+  // compiling
+  "    isCompiling if "          // compile encodes call to word
+  "      dup isPrimitive if"
+  "        encodeFun"
+  "        again_"
+  "      then"
+  "      dup isPrimitive not if"
+  "        encodeCall"
+  "        again_"
+  "      then"
+  "    then"
+  
+  // interpreting
+  "    isInterpreting if "       // interpreting calls word
+  "      execute"
+  "      again_"
+  "    then"
+  
+  "  again_"
+  " ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
+  ": ::exit"
+  "  TS_EXITED task.this task.state!"
+  "  ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
+  ": ::docmd"
+  //  "  input.text"
+  "  docol"
+  "  ::exit"
+  "  ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  
+  sDefinition =
+  ": ::enter"
+  "  input.stdin"
+  "  docol"
+  "  ::exit"
+  "  ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
+  ": >>:"
+  "  input.push"
+  "  input.open"
+  "  docol"
+  "  input.close"
+  "  input.pop"
+  "  ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
+  ": ::dicInitialise"
+  "  \"::dicInitialise\" ."
+  "  gwd ."
+  "  \"../../../commands\" cwd"
+  "  gwd ."
+  "  \"dicInitialise.sen\" >>:"
+  "  \"::dicInitialise exit\" ."
+  "  ::exit"
+  "  ;";
+  
+  pCompileColon(sDefinition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,8 +916,8 @@ Word* Task::pCompileColon(s& sDefinition)
 /*----------------------------------------------------------------------------*/
 Word* Task::pCurrentWord(void)
 {
-  
   Dictionary* pDictionary;
+  
   if (m_pSEitf)
     pDictionary = m_pSEitf->pDicStack()->pTop();
   else
@@ -698,473 +1168,11 @@ bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const
 /*----------------------------------------------------------------------------*/
 void Task::vInitialiseDictionary(void)
 {
-  vAddPrimitive("word",            &vWord,             false);
-  gpWord = pFindWord("word");
-  
-  vAddPrimitive("accept",          &vAccept,           false);
-  vAddPrimitive("+",               &vAdd,              false);
-  vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("again",           &vAgain,            true );
-  vAddPrimitive("again_",          &vAgain_,           false);
-  vAddPrimitive("and",             &vAnd,              false);
-  vAddPrimitive("begin",           &vBegin,            true );
-  vAddPrimitive("begin_",          &vBegin_,           false);
-  vAddPrimitive("boot",            &vBoot,             false);
-  vAddPrimitive("bpa",             &vBpa,              false);
-  vAddPrimitive("class@",          &vClassFetch,       false);
-  vAddPrimitive("class!",          &vClassStore,       false);
-  vAddPrimitive("code=",           &vCodeAssign,       false);
-  vAddPrimitive(":",               &vColon,            false);
-  vAddPrimitive(",",               &vComma,            false);
-  vAddPrimitive("(",               &vComment,          true );
-  vAddPrimitive("compiling",       &vCompiling,        false);
-  vAddPrimitive("concat",          &vConcat,           false);
-  vAddPrimitive("create",          &vCreate,           false);
-  vAddPrimitive(">create",         &vCreateFrom,       false);
-  vAddPrimitive("cursor@",         &vCursorFetch,      false);
-  vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("cwd",             &vCwd,              false);
-  vAddPrimitive("depth",           &vDepth,            false);
-  vAddPrimitive("/",               &vDivide,           false);
-  vAddPrimitive("do",              &vDo,               true );
-  vAddPrimitive("do_rt",           &vDo_RT,            false);
-  vAddPrimitive("does>",           &vDoes,             true );
-  vAddPrimitive("drop",            &vDrop,             false);
-  vAddPrimitive("dup",             &vDup,              false);
-  vAddPrimitive("dump",            &vDump,             false);
-  vAddPrimitive("else",            &vElse,             true );
-  vAddPrimitive("encodeCall",      &vEncodeCall,       false);
-  vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
-  vAddPrimitive("encodeEmb",       &vEncodeEmb,        true );
-  vAddPrimitive("encodeFun",       &vEncodeFun,        false);
-  vAddPrimitive("encodeVal",       &vEncodeVal,        false);
-  vAddPrimitive("env@",            &vEnvGet,           false);
-  vAddPrimitive("enter",           &vEnter,            false);
-  vAddPrimitive("]",               &vEnterCompiler,    false);
-  vAddPrimitive("[",               &vEnterInterpreter, true );
-  vAddPrimitive("==",              &vEqual,            false);
-  vAddPrimitive("eql",             &vEqualAddress,     false);
-  vAddPrimitive("execute",         &vExecute,          false);
-  vAddPrimitive("exit",            &vExit,             false);
-  vAddPrimitive("@",               &vFetch,            false);
-  vAddPrimitive("find",            &vFind,             false);
-  vAddPrimitive("freePercent",     &vFreePercent,      false);
-  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
-  vAddPrimitive(">",               &vGreater,          false);
-  vAddPrimitive(">=",              &vGreaterEqual,     false);
-  vAddPrimitive("gwd",             &vGwd,              false);
-  vAddPrimitive("i",               &vI,                false);
-  vAddPrimitive("if",              &vIf,               true );
-  vAddPrimitive("immediate",       &vImmediate,        true );
-  vAddPrimitive("input.close",     &vInputClose,       false);
-  vAddPrimitive("input.depth",     &vInputDepth,       false);
-  vAddPrimitive("input.open",      &vInputOpen,        false);
-  vAddPrimitive("input.pop",       &vInputPop,         false);
-  vAddPrimitive("input.push",      &vInputPush,        false);
-  vAddPrimitive("input.stdin",     &vInputStdin,       false);
-  vAddPrimitive("input.text",      &vInputText,        false);
-  vAddPrimitive("interpreting",    &vInterpreting,     false);
-  vAddPrimitive("isBooted",        &vIsBooted,         false);
-  vAddPrimitive("isCompiling",     &vIsCompiling,      false);
-  vAddPrimitive("isIntLit",        &vIsIntLit,         false);
-  vAddPrimitive("isImmediate",     &vIsImmediate,      false);
-  vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
-  vAddPrimitive("isNameLit",       &vIsNameLit,        false);
-  vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
-  vAddPrimitive("isStrLit",        &vIsStrLit,         false);
-  vAddPrimitive("iterate",         &vIterate,          true );
-  vAddPrimitive("iterate_rt_A",    &vIterate_RT_A,     false);
-  vAddPrimitive("iterate_rt_B",    &vIterate_RT_B,     false);
-  vAddPrimitive("j",               &vJ,                false);
-  vAddPrimitive("jump",            &vJump,             false);
-  vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
-  vAddPrimitive("jumpTrue",        &vJumpTrue,         false);
-  vAddPrimitive("<",               &vLess,             false);
-  vAddPrimitive("<=",              &vLessEqual,        false);
-  vAddPrimitive("literal",         &vLiteral,          false);
-  vAddPrimitive("literal>",        &vLiteralGet,       false);
-  vAddPrimitive("litNext",         &vLitNext,          false);
-  vAddPrimitive("litType",         &vLitType,          false);
-  vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("loop",            &vLoop,             true );
-  vAddPrimitive("loop_rt",         &vLoop_RT,          false);
-  vAddPrimitive("+loop",           &vLoopPlus,         true );
-  vAddPrimitive("+loop_rt",        &vLoopPlus_RT,      false);
-  vAddPrimitive("magic@",          &vMagicFetch,       false);
-  vAddPrimitive("magic!!",         &vMagicMark,        false);
-  vAddPrimitive("*",               &vMultiply,         false);
-  vAddPrimitive("nameWord",        &vNameWord,         false);
-  vAddPrimitive("next",            &vNext,             true );
-  vAddPrimitive("nop",             &vNop,              false);
-  vAddPrimitive("not",             &vNot,              false);
-  vAddPrimitive("!=",              &vNotEqual,         false);
-  vAddPrimitive("object@",         &vObjectFetch,      false);
-  vAddPrimitive("object!!",        &vObjectMark,       false);
-  vAddPrimitive("object!",         &vObjectStore,      false);
-  vAddPrimitive("or",              &vOr,               false);
-  vAddPrimitive("pause",           &vPause,            false);
-  vAddPrimitive("pick",            &vPick,             false);
-  vAddPrimitive("prevWord",        &vPrevWord,         false);
-  vAddPrimitive(".",               &vPrint,            false);
-  vAddPrimitive("processExit",     &vProcessExit,      false);
-  vAddPrimitive("push",            &vPush,             false);
-  vAddPrimitive(".put",            &vPut,              false);
-  vAddPrimitive(".\\n",            &vPutNewline,       false);
-  vAddPrimitive("quit",            &vQuit,             false);
-  vAddPrimitive("rdtscp",          &vRdtscp,           false);
-  vAddPrimitive("repeat",          &vRepeat,           true );
-  vAddPrimitive("retryPoint",      &vRetryPoint,       false);
-  vAddPrimitive("rot",             &vRot,              false);
-  vAddPrimitive("see",             &vSee,              false);
-  vAddPrimitive(";",               &vSemicolon,        true );
-  vAddPrimitive("signal",          &vSignal,           false);
-  vAddPrimitive("sleep",           &vSleep,            false);
-  vAddPrimitive("snooze",          &vSnooze,           false);
-  vAddPrimitive("!",               &vStore,            false);
-  vAddPrimitive("streql",          &vStrEql,           false);
-  vAddPrimitive("strlen",          &vStrLen,           false);
-  vAddPrimitive("subStr",          &vSubStr,           false);
-  vAddPrimitive("-",               &vSubtract,         false);
-  vAddPrimitive("swap",            &vSwap,             false);
-  vAddPrimitive("test",            &vTest,             false);
-  vAddPrimitive("then",            &vThen,             true );
-  vAddPrimitive("throw",           &vThrow,            false);
-  vAddPrimitive("'",               &vTick,             true );
-  vAddPrimitive(">body",           &vToBody,           false);
-  vAddPrimitive(">cmd",            &vToCmd,            false);
-  vAddPrimitive(">int",            &vToInt,            false);
-  vAddPrimitive("r>",              &vToPstack,         false);
-  vAddPrimitive(">r",              &vToRstack,         false);
-  vAddPrimitive(">seitf",          &vToSEitf,          false);
-  vAddPrimitive(">str",            &vToStr,            false);
-  vAddPrimitive(">task",           &vToTask,           false);
-  vAddPrimitive("valset>",         &vToValues,         false);
-  vAddPrimitive(">valset",         &vToValSet,         false);
-  vAddPrimitive("traceOff",        &vTraceOff,         false);
-  vAddPrimitive("traceOn",         &vTraceOn,          false);
-  vAddPrimitive("unloop",          &vUnloop,           false);
-  vAddPrimitive("until",           &vUntil,            true );
-  vAddPrimitive("version",         &vVersion,          false);
-  vAddPrimitive("wait",            &vWait,             false);
-  vAddPrimitive("wake",            &vWake,             false);
-  vAddPrimitive("while",           &vWhile,            true );
-  vAddPrimitive("0<",              &vZeroLess,         false);
-  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
-  vAddPrimitive("0==",             &vZeroEqual,        false);
-  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
-  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
-  vAddPrimitive("0>",              &vZeroGreater,      false);
-  
-  //----------------------------------------------------------
-  vAddPrimitive("args.print",      &vArgsPrint,        false);
+  vAddPrimitives();
 
-  vAddPrimitive("dic.count",       &vDicCount,         false);
-  vAddPrimitive("dic.drop",        &vDicDrop,          false);
-  vAddPrimitive("}}",              &vDicDrop,          false);
-  vAddPrimitive("dic.init",        &vDicInit,          false);
-  vAddPrimitive("dic.main",        &vDicMain,          false);
-  vAddPrimitive("dic.name",        &vDicName,          false);
-  vAddPrimitive("dic.pick",        &vDicPick,          false);
-  vAddPrimitive("dic.push",        &vDicPush,          false);
-  vAddPrimitive("{{",              &vDicPush,          false);
-  vAddPrimitive("dic.stack",       &vDicStack,         false);
-  
-  vAddPrimitive("file.close",      &vFileClose,        false);
-  vAddPrimitive("file.delete",     &vFileDelete,       false);
-  vAddPrimitive("file.init",       &vFileInit,         false);
-  vAddPrimitive("file.new",        &vFileNew,          false);
-  vAddPrimitive("file.open",       &vFileOpen,         false);
-  vAddPrimitive("file.path@",      &vFilePathGet,      false);
-  vAddPrimitive("file.path!",      &vFilePathSet,      false);
-  vAddPrimitive("file.read",       &vFileRead,         false);
-  vAddPrimitive("file.write",      &vFileWrite,        false);
-  
-  vAddPrimitive("lock.dropread",   &vLockDropRead,     false);
-  vAddPrimitive("lock.dropwrite",  &vLockDropWrite,    false);
-  vAddPrimitive("lock.grabread",   &vLockGrabRead,     false);
-  vAddPrimitive("lock.grabwrite",  &vLockGrabWrite,    false);
-  vAddPrimitive("lock.init",       &vLockInit,         false);
-  
-  vAddPrimitive("process.getpid",  &vProcessGetPid,    false);
-  vAddPrimitive("process.testpid", &vProcessTestPid,   false);
-  
-  vAddPrimitive("pstack.class",    &vPstackClass,      false);
-  vAddPrimitive("p.depth",         &vPstackDepth,      false);
-  
-  vAddPrimitive("queue.append",    &vQueueAppend,      false);
-  vAddPrimitive("queue.dump",      &vQueueDump,        false);
-  vAddPrimitive("queue.init",      &vQueueInit,        false);
-  vAddPrimitive("queue.pop",       &vQueuePop,         false);
-
-  vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
-  vAddPrimitive("rdrop",           &vRstackDrop,       false);
-  vAddPrimitive("r@",              &vRstackFetch,      false);
-  vAddPrimitive("rpick",           &vRstackPick,       false);
-
-  vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
-  vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
-  vAddPrimitive("seitf.new",       &vSEitfNew,         false);
-  vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
-  vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
-  vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
-  vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
-  
-  vAddPrimitive("seitfcursor.begin",  &vSEitfCursorBegin,  false);
-  vAddPrimitive("seitfcursor.delete", &vSEitfCursorDelete, false);
-  vAddPrimitive("seitfcursor.end",    &vSEitfCursorEnd,    false);
-  vAddPrimitive("seitfcursor.first",  &vSEitfCursorFirst,  false);
-  vAddPrimitive("seitfcursor.get",    &vSEitfCursorGet,    false);
-  vAddPrimitive("seitfcursor.init",   &vSEitfCursorInit,   false);
-  vAddPrimitive("seitfcursor.new",    &vSEitfCursorNew,    false);
-  vAddPrimitive("seitfcursor.next",   &vSEitfCursorNext,   false);
-  
-  vAddPrimitive("seitflist.dump",  &vSEitfListDump,    false);
-  vAddPrimitive("seitflist.init",  &vSEitfListInit,    false);
-  
-  vAddPrimitive("system.cpu",      &vSystemCpu,        false);
-  
-  vAddPrimitive("table.copy",      &vTableCopy,        false);
-  vAddPrimitive("table.drop",      &vTableDrop,        false);
-  vAddPrimitive("table.export",    &vTableExport,      false);
-  vAddPrimitive("table.firstBuffer", &vTableFirstBuffer, false);
-  vAddPrimitive("table.init",      &vTableInit,        false);
-  vAddPrimitive("table.insert",    &vTableInsert,      false);
-  vAddPrimitive("table.load",      &vTableLoad,        false);
-  vAddPrimitive("table.list",      &vTableList,        false);
-  vAddPrimitive("table.space",     &vTableSpace,       false);
-  vAddPrimitive("table.truncate",  &vTableTruncate,    false);
-  
-  vAddPrimitive("task.dic",        &vTaskDic,          false);
-  vAddPrimitive("task.dump",       &vTaskDump,         false);
-  vAddPrimitive("task.init",       &vTaskInit,         false);
-  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
-  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
-  vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
-  vAddPrimitive("task.name!",      &vTaskNameStore,    false);
-  vAddPrimitive("task.new",        &vTaskNew,          false);
-  vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
-  vAddPrimitive("task.queue!",     &vTaskQstore,       false);
-  vAddPrimitive("task.seed",       &vTaskSeed,         false);
-  vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
-  vAddPrimitive("task.state!",     &vTaskStateStore,   false);
-  vAddPrimitive("task.this",       &vTaskThis,         false);
-
-  vAddPrimitive("tasklist",        &vTaskList,         false);
-  vAddPrimitive("tasklist.append", &vTaskListAppend,   false);
-  vAddPrimitive("tasklist.dump",   &vTaskListDump,     false);
-  vAddPrimitive("tasklist.init",   &vTaskListInit,     false);
-  
-  vAddPrimitive("taskset.append",  &vTaskSetAppend,    false);
-  vAddPrimitive("taskset.dump",    &vTaskSetDump,      false);
-  vAddPrimitive("taskset.init",    &vTaskSetInit,      false);
-  
-  vAddPrimitive("thread.append",   &vThreadAppend,     false);
-  vAddPrimitive("thread.bind",     &vThreadBind,       false);
-  vAddPrimitive("thread.cpu",      &vThreadCpu,        false);
-  vAddPrimitive("thread.dump",     &vThreadDump,       false);
-  vAddPrimitive("thread.init",     &vThreadInit,       false);
-  vAddPrimitive("thread.name@",    &vThreadNameFetch,  false);
-  vAddPrimitive("thread.name!",    &vThreadNameStore,  false);
-  vAddPrimitive("thread.taskset@", &vThreadSfetch,     false);
-  vAddPrimitive("thread.taskset!", &vThreadSstore,     false);
-  vAddPrimitive("thread.spawn",    &vThreadSpawn,      false);
-  
-  vAddPrimitive("threadlist.dump", &vThreadListDump,   false);
-  vAddPrimitive("threadlist.init", &vThreadListInit,   false);
-  
-  vAddPrimitive("timer.delete",    &vTimerDelete,      false);
-  vAddPrimitive("timer.init",      &vTimerInit,        false);
-  vAddPrimitive("timer.microsecs", &vTimerMicrosecs,   false);
-  vAddPrimitive("timer.millisecs", &vTimerMillisecs,   false);
-  vAddPrimitive("timer.nanosecs",  &vTimerNanosecs,    false);
-  vAddPrimitive("timer.new",       &vTimerNew,         false);
-  vAddPrimitive("timer.reset",     &vTimerReset,       false);
-  vAddPrimitive("timer.secs",      &vTimerSecs,        false);
-  vAddPrimitive("timer.start",     &vTimerStart,       false);
-  vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
-  vAddPrimitive("timer.update",    &vTimerUpdate,      false);
-  
-  vAddPrimitive("tx.delete",       &vTxDelete,         false);
-  vAddPrimitive("tx.new",          &vTxNew,            false);
-  
-  vAddPrimitive("txList.dump",     &vTxListDump,       false);
-  vAddPrimitive("txList.init",     &vTxListInit,       false);
-
-  vAddPrimitive("txMap.init",      &vTxMapInit,        false);
-  
-  vAddPrimitive("word.dump",       &vWordDump,         false);
-  vAddPrimitive("word.dic",        &vWordDic,          false);
-  vAddPrimitive("forget",          &vForget,           false);
-  vAddPrimitive(">forget",         &vWordForget,       false);
-  vAddPrimitive("word.kind@",      &vWordKindGet,      false);
-  vAddPrimitive("word.kind!",      &vWordKindSet,      false);
-  vAddPrimitive("word.name",       &vWordName,         false);
-  vAddPrimitive("word.this",       &vWordThis,         false);
-  
-  //----------------------------------------------------------
-  vAddPrimitive("socketAccept",    &vSocketAccept,     false);
-  vAddPrimitive("socketClose",     &vSocketClose,      false);
-  vAddPrimitive("socketConnect",   &vSocketConnect,    false);
-  vAddPrimitive("socketListen",    &vSocketListen,     false);
-  vAddPrimitive("socketOpen",      &vSocketOpen,       false);
-  vAddPrimitive("socketRecv",      &vSocketRecv,       false);
-  vAddPrimitive("socketSend",      &vSocketSend,       false);
-  
-  vAddPrimitive("client",          &vClient,           false);
-  vAddPrimitive("server",          &vServer,           false);
-  
-  //-----------------------------------------------------
   vAddConstants();
   
-  //----------------------------------------------------------
-  s16K sDefinition;
-  sDefinition =
-    ": docol "
-
-    "  retryPoint"
-  
-    "  begin_"
-    "    litNext"
-
-    // end of input
-    "    litType LT_NONE == if"
-    "      exit"
-    "    then"
-  
-    // integer
-    "    litType LT_INTLIT == if"
-
-    "      literal >int"            // convert str to int, leave on stack
-
-    "      isinterpreting if"       // interpret leaves int on stack
-    "        again_"
-    "      then"
-
-    "      iscompiling if"          // compile encodes push intval
-    "        encodeVal"
-    "        again_"
-    "      then"
-
-    "    then"
-
-    // string
-    "    litType LT_STRLIT == if"
-
-    "      literal"                 // put str on stack
-
-    "      isinterpreting if"       // interpret leaves str on stack
-    "        again_"
-    "      then"
-
-    "      iscompiling if"          // compile encodes push strval
-    "        encodeVal"
-    "        again_"
-    "      then"
-
-    "    then"
-
-    // what?
-    "    litType LT_NAMELIT != if"           // double check we have a name
-    "      \"strange literal\" . litType ."
-    "      again_"
-    "    then"
-
-    // known name?
-    "    literal find"              // attempt to find
-    "    dup not if"
-    "      drop"
-    "      \"unknown\" ."
-    "      literal ."
-    "      isBooted not if processExit then "
-    "      again_"
-    "    then"
-
-    // known word on stack
-
-    // immediate
-    "    dup isImmediate if"       // execute an immediate word
-    "      execute"
-    "      again_"
-    "    then"
-
-    // compiling
-    "    isCompiling if "          // compile encodes call to word
-    "      dup isPrimitive if"
-    "        encodeFun"
-    "        again_"
-    "      then"
-    "      dup isPrimitive not if"
-    "        encodeCall"
-    "        again_"
-    "      then"
-    "    then"
-
-    // interpreting
-    "    isInterpreting if "       // interpreting calls word
-    "      execute"
-    "      again_"
-    "    then"
-
-    "  again_"
-    " ;";
-
-  pCompileColon(sDefinition);
-  
-  //-----------------------------------------------------
-  sDefinition =
-  ": ::exit"
-  "  TS_EXITED task.this task.state!"
-  "  ;";
-  
-  pCompileColon(sDefinition);
-  
-  //-----------------------------------------------------
-  sDefinition =
-  ": ::docmd"
-  //  "  input.text"
-  "  docol"
-  "  ::exit"
-  "  ;";
-  
-  pCompileColon(sDefinition);
-  
-  //-----------------------------------------------------
-  
-  sDefinition =
-  ": ::enter"
-  "  input.stdin"
-  "  docol"
-  "  ::exit"
-  "  ;";
-  
-  pCompileColon(sDefinition);
-  
-  //-----------------------------------------------------
-  sDefinition =
-  ": >>:"
-  "  input.push"
-  "  input.open"
-  "  docol"
-  "  input.close"
-  "  input.pop"
-  "  ;";
-  
-  pCompileColon(sDefinition);
-  
-  //-----------------------------------------------------
-  sDefinition =
-  ": ::dicInitialise"
-  "  \"::dicInitialise\" ."
-  "  gwd ."
-  "  \"../../../commands\" cwd"
-  "  gwd ."
-  "  \"dicInitialise.sen\" >>:"
-  "  \"::dicInitialise exit\" ."
-  "  ::exit"
-  "  ;";
-  
-  pCompileColon(sDefinition);
-  
+  vAddRoutines();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1195,56 +1203,6 @@ Word* Task::pLocateWord(Cell* pCell)
   Word* pWord = m_xDictionaryStack.pLocate(pCell);
   
   return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* tx loop                                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vLoop(void)
-{
-  while (TS_RUNNING == m_eState) {
-    
-    pFUN pFunc = m_pCell->m_pCodeField->m_pFunc;
-    
-    //vTrace("pFunc %p\n",pFunc);
-    
-    m_pCell++;
-    
-    try {
-      (pFunc)(this);
-    }
-    
-    catch (i8 iException) {
-      char wFileName[256];
-      
-      const char* ps;
-      
-      ps = String::sLast(m_sFile.a());
-      String::bBackward(&ps,m_sFile.a(),'/');
-      String::vCopy(wFileName,ps+1);
-      vError("%s : line %lld in %s\n",
-             m_sException.a(),
-             iException,
-             wFileName);
-      vRetry();
-    }
-    
-    catch (Error* pError) {
-      char wFileName[256];
-      
-      const char* ps;
-      
-      ps = String::sLast(pError->pFileName());
-      String::bBackward(&ps,pError->pFileName(),'/');
-      String::vCopy(wFileName,ps+1);
-      vError("%s : line %lld in %s\n",
-             pError->pError(),
-             pError->iLineNumber(),
-             wFileName);
-      vRetry();
-    }
-    
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1519,6 +1477,60 @@ void Task::vUndirect(void)
   
   bool bPopped = bPopReturn(m_xInputStream);
   ASSERT(bPopped);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* task loop                                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoop(void)
+{
+  while (TS_RUNNING == m_eState) {
+    
+    pFUN pFunc = m_pCell->m_pCodeField->m_pFunc;
+    
+    //vTrace("pFunc %p\n",pFunc);
+    
+    m_pCell++;
+    
+    try {
+      (pFunc)(this);
+    }
+    
+    catch (i8 iException) {
+      char wFileName[256];
+      
+      const char* ps;
+      
+      ps = String::sLast(m_sFile.a());
+      String::bBackward(&ps,m_sFile.a(),'/');
+      String::vCopy(wFileName,ps+1);
+      vError("%s : line %lld in %s\n",
+             m_sException.a(),
+             iException,
+             wFileName);
+      vRetry();
+    }
+    
+    catch (Error* pError) {
+      char wFileName[256];
+      
+      const char* ps;
+      
+      ps = String::sLast(pError->pFileName());
+      String::bBackward(&ps,pError->pFileName(),'/');
+      String::vCopy(wFileName,ps+1);
+      vError("%s : line %lld in %s\n",
+             pError->pError(),
+             pError->iLineNumber(),
+             wFileName);
+      vRetry();
+    }
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/

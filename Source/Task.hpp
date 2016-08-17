@@ -137,6 +137,8 @@ namespace Tasking
     void vAddConstant(const char* aName, const char* aValue);
     void vAddConstants(void);
     void vAddPrimitive(const char* aName, pFUN pFunc, bool bImmediate);
+    void vAddPrimitives(void);
+    void vAddRoutines(void);
     Object* pArgObject(void);
     void vCheckLocked(void);
     Word* pCompileColon(s& sDefinition);
