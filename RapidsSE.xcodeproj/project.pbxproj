@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		982243411D6347A800670ED5 /* Api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9822433F1D6347A800670ED5 /* Api.cpp */; };
+		982243421D6347A800670ED5 /* Api.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 982243401D6347A800670ED5 /* Api.hpp */; };
 		98A3C4831CF74E6200BD2B80 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98A3C4821CF74E6200BD2B80 /* main.cpp */; };
 		F22056671D62D3EF00E8EF5B /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CDB1D477589008DF3D9 /* Platform.cpp */; };
 		F22056681D62D3FC00E8EF5B /* Asm.s in Sources */ = {isa = PBXBuildFile; fileRef = F2BD2EB51D13E226009D7467 /* Asm.s */; };
@@ -163,6 +165,8 @@
 		981C8FDC1D19574D00530F3B /* DataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataStructures.h; path = Source/DataStructures.h; sourceTree = "<group>"; };
 		981C8FDF1D19577200530F3B /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Random.cpp; path = Source/Random.cpp; sourceTree = "<group>"; };
 		981C8FE01D19577200530F3B /* Random.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Random.hpp; path = Source/Random.hpp; sourceTree = "<group>"; };
+		9822433F1D6347A800670ED5 /* Api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Api.cpp; path = Source/Api.cpp; sourceTree = "<group>"; };
+		982243401D6347A800670ED5 /* Api.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Api.hpp; path = Source/Api.hpp; sourceTree = "<group>"; };
 		982ECD7B1D06CF460001919C /* MemoryManagement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MemoryManagement.h; sourceTree = "<group>"; };
 		982ECD841D071EE40001919C /* mn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mn.cpp; path = Source/mn.cpp; sourceTree = "<group>"; };
 		982ECD851D071EE40001919C /* mn.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = mn.hpp; path = Source/mn.hpp; sourceTree = "<group>"; };
@@ -485,6 +489,15 @@
 			name = DataStructures;
 			sourceTree = SOURCE_ROOT;
 		};
+		982243351D62F4BF00670ED5 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				9822433F1D6347A800670ED5 /* Api.cpp */,
+				982243401D6347A800670ED5 /* Api.hpp */,
+			);
+			name = Api;
+			sourceTree = "<group>";
+		};
 		9864C9911D08077800E98010 /* DBobjects */ = {
 			isa = PBXGroup;
 			children = (
@@ -772,6 +785,7 @@
 			isa = PBXGroup;
 			children = (
 				F226E7421D42AA8F00E10FC3 /* Main */,
+				982243351D62F4BF00670ED5 /* Api */,
 				F21D29BB1D0E3B62000F8C45 /* StorageEngine */,
 				F226E7741D4591E100E10FC3 /* Grid */,
 				F226E75E1D45823800E10FC3 /* Interface */,
@@ -960,6 +974,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				982243421D6347A800670ED5 /* Api.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1135,6 +1150,7 @@
 				F22056A81D62DD3D00E8EF5B /* Word.cpp in Sources */,
 				F220567C1D62DAAF00E8EF5B /* Memory.cpp in Sources */,
 				F22056681D62D3FC00E8EF5B /* Asm.s in Sources */,
+				982243411D6347A800670ED5 /* Api.cpp in Sources */,
 				F22056C71D62DE1A00E8EF5B /* Threading.cpp in Sources */,
 				F22056B41D62DDCF00E8EF5B /* Partition.cpp in Sources */,
 				F22056BD1D62DDF200E8EF5B /* TaskList.cpp in Sources */,
