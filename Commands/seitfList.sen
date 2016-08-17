@@ -14,6 +14,16 @@
     does>
 ;
 
+: seitfCursor:
+    create
+    object!!
+    sizeof_seitfcursor allot
+    word.this >body magic!!
+    word.this >body CN_SEITFCURSOR class!
+    word.this >body seitfcursor.init
+    does>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

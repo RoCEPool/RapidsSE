@@ -16,6 +16,8 @@ taskset: reclaimTaskSet
 
 thread:  reclaimThread
 
+seitflist seitfCursor: seitfCrs
+
 /*----------------------------------------------------------------------------*/
 /* start the reclaim task                                                     */
 /*----------------------------------------------------------------------------*/
@@ -35,6 +37,27 @@ thread:  reclaimThread
 /* reclaim task loop                                                          */
 /*----------------------------------------------------------------------------*/
 
+: iterateSEitfList
+
+    exit //!!!!!!!!!!!!!!!!!!!!!!!
+
+    seitfcrs seitfcrs seitfcursor.begin
+
+    iterate
+
+      object@ seitf.dump
+
+      cursor@ seitfcursor.next object!
+
+    next
+
+    seitfcrs seitfcursor.end
+;
+
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+
 : reclaimLoop
 
     "reclaimTask" task.this task.name!
@@ -46,6 +69,8 @@ thread:  reclaimThread
     begin
 
       reclaimLock lock.grabWrite
+
+      iterateSEitfList
 
       reclaimLock lock.dropWrite
 

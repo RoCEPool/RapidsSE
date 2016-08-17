@@ -5559,8 +5559,16 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitf.rsp!");
   
+  s32 sName;
+  sName = "seitflist";
+  Word* pWord = nnpTask->pFindWord(sName);
+  ASSERT(pWord);
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pWord->pBodyArea());
+  
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
+  
+  new(pSEitfCursor) SEitfCursor(pSEitfList);
 }
 
 /*----------------------------------------------------------------------------*/
