@@ -128,6 +128,7 @@
 		F2A0FAFB1D6432F20032B090 /* SEitfCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A0FAF91D6432F20032B090 /* SEitfCursor.hpp */; };
 		F2A0FAFE1D6457CA0032B090 /* Since.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A0FAFC1D6457CA0032B090 /* Since.cpp */; };
 		F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A0FAFD1D6457CA0032B090 /* Since.hpp */; };
+		F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656B1D652B1E009B684A /* ThirdParty.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -422,6 +423,7 @@
 		F2CC758F1D4FDC4A00261B4D /* System.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = System.hpp; path = Source/System.hpp; sourceTree = "<group>"; };
 		F2D9BF761D5D375900129097 /* socket.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket.sen; path = Commands/socket.sen; sourceTree = "<group>"; };
 		F2D9BF781D5D37BB00129097 /* testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = testing.sen; path = Commands/testing.sen; sourceTree = "<group>"; };
+		F2DD656B1D652B1E009B684A /* ThirdParty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThirdParty.h; path = ThirdParty/ThirdParty.h; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -812,6 +814,7 @@
 				F291CCBD1D11E52D009150AF /* StackValues */,
 				F25309911D02352D000F6728 /* MemoryManagement */,
 				F25309951D02399A000F6728 /* Common */,
+				F2DD65671D652A4B009B684A /* ThirdParty */,
 				F2B3B16B1D53F2690049597E /* Types */,
 				F21D29821D078D5C000F8C45 /* Platform */,
 				F21D29891D07AC36000F8C45 /* Miscellaneous */,
@@ -981,6 +984,38 @@
 			name = Testing;
 			sourceTree = "<group>";
 		};
+		F2DD65671D652A4B009B684A /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				F2DD656B1D652B1E009B684A /* ThirdParty.h */,
+				F2DD65691D652A6F009B684A /* BZIP2 */,
+				F2DD65681D652A67009B684A /* LZ4 */,
+				F2DD656A1D652A76009B684A /* XXhash */,
+			);
+			name = ThirdParty;
+			sourceTree = "<group>";
+		};
+		F2DD65681D652A67009B684A /* LZ4 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = LZ4;
+			sourceTree = "<group>";
+		};
+		F2DD65691D652A6F009B684A /* BZIP2 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = BZIP2;
+			sourceTree = "<group>";
+		};
+		F2DD656A1D652A76009B684A /* XXhash */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = XXhash;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -988,6 +1023,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,

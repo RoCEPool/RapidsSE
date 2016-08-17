@@ -1,0 +1,10 @@
+blocksort.c
+bzip2recover.c
+bzlib.c
+compress.c
+crctable.c
+decompress.c
+dlltest.c
+huffman.c
+mk251.c
+randtable.c

@@ -3,9 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
-
-#include "Types.h"
+#include "ThirdParty.h"
 
 #include "_bytes.hpp"
 #include "_debug.h"
