@@ -46,6 +46,11 @@ int: queryCount
     "not in tables" 1 failure 0
 ;
 
+: checkIsKnown ( word )
+    dup not if drop "no such word" 1 failure 0 exit then
+    1
+;
+
 : checkIsDic ( word )
 
     dup not if drop "no such dictionary" 1 failure 0 exit then
@@ -484,7 +489,9 @@ int: queryCount
         drop
         begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
       else
-        find execute dic.push
+        find
+        checkIsKnown not if exit then
+        execute dic.push
       then
     then
 
