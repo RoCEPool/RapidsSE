@@ -5,6 +5,7 @@
 "theSystem.sen" .
 
 "monitorTask.sen" >>:
+"reclaimTask.sen" >>:
 
 "systemStart.sen" >>:
 
