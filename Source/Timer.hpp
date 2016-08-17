@@ -17,6 +17,7 @@ namespace Common
     i8      m_iUpdate;
     
   public:
+    void* operator new(size_t);
     void* operator new(size_t, void* pTimerAddress);
     void operator delete(void* pTimerAddress);
     Timer(void);

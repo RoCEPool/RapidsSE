@@ -6326,6 +6326,212 @@ void Task::vTaskThis(NNP_Task nnpTask)
   nnpTask->vPushParam(nnpTask);
 }
 
+// timer: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* timer.delete -- delete timer                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimeDelete");
+  
+  PtrVal xPtrSession;
+  
+  if ( ! nnpTask->bPopParam(xPtrSession) )
+    THROW_INVALID_PARAM("timer.delete");
+  
+  Timer* pTimer = static_cast<Timer*>(xPtrSession.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  Object* pTimerObject = reinterpret_cast<Object*>(pTimer);
+  
+  delete pTimer;
+  
+  gpSmallHeap->vFreeObject(pTimerObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.init -- init timer                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerInit");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.init");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  new(pTimer) Timer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.new -- new timer                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerNew");
+  
+  void* pTimerAddress = gpSmallHeap->pAllocObject();
+
+  Timer* pTimer = new(pTimerAddress) Timer;
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  PtrVal xPtrTimer;
+  xPtrTimer = pTimer;
+  
+  nnpTask->vPushParam(xPtrTimer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.begin -- begin timer                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerBegin");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.begin");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  pTimer->vBegin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.update -- update timer                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerUpdate(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerUpdate");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.update");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  pTimer->vUpdate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.reset -- reset timer                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerReset(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerReset");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.reset");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  pTimer->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.nanoseconds -- get elapsed duration in nanoseconds                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerNanoseconds(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerNanoseconds");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.nanoseconds");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  i8 iNanoseconds = pTimer->iNanoseconds();
+  
+  nnpTask->vPushParam(iNanoseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.microseconds -- get elapsed duration in microseconds                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerMicroseconds(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerMicroseconds");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.microseconds");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  i8 iMicroseconds = pTimer->iMicroseconds();
+  
+  nnpTask->vPushParam(iMicroseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.milliseconds -- get elapsed duration in milliseconds                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerMilliseconds(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerMilliseconds");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.milliseconds");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  i8 iMilliseconds = pTimer->iMilliseconds();
+  
+  nnpTask->vPushParam(iMilliseconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.seconds -- get elapsed duration in seconds                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerSeconds(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerSeconds");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.seconds");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  i8 iSeconds = pTimer->iSeconds();
+  
+  nnpTask->vPushParam(iSeconds);
+}
+
+/*----------------------------------------------------------------------------*/
+/* timer.ticks -- get elapsed ticks                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTimerTicks(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTimerTicks");
+  
+  PtrVal xPtrTimer;
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
+    THROW_INVALID_PARAM("timer.ticks");
+  
+  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  ASSERT(CN_TIMER == pTimer->eClass());
+  
+  i8 iTicks = pTimer->iTicks();
+  
+  nnpTask->vPushParam(iTicks);
+}
+
+
 // tx: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/

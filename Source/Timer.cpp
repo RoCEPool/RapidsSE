@@ -125,6 +125,22 @@ i8 Timer::iMilliseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* seconds                                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Timer::iSeconds(void)
+{
+  ASSERT(m_iStart);
+  ASSERT(m_iUpdate);
+  
+  i8 iTicks = (m_iUpdate - m_iStart);
+  i8 iTicksPerSecond = System::iClockFrequency();
+  
+  i8 iSeconds = iTicks / iTicksPerSecond;
+  
+  return iSeconds;
+}
+
+/*----------------------------------------------------------------------------*/
 /* number of ticks                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Timer::iTicks(void)
