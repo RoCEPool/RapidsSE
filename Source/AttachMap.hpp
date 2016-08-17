@@ -12,6 +12,10 @@ namespace StorageEngine
   {
   public:
     i8                 m_iPid;
+    Since              m_xSince;
+    Time               m_xTime;
+    s32                m_sUTC;
+    
     i8                 m_iQuit;
     i8                 m_iStop;
     

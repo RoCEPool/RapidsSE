@@ -68,6 +68,11 @@ void AttachMap::vGetGlobals(void)
 void AttachMap::vRecordGlobals(void)
 {
   m_iPid              = Process::iGetPid();
+  
+  m_xSince.vSet();
+  m_xTime.vSet(&m_xSince);
+  m_xTime.vUTC(m_sUTC);
+  
   m_iStop             = 0;
   m_iQuit             = 0;
   
