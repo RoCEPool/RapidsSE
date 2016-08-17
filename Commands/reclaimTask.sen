@@ -52,18 +52,21 @@ seitflist seitfCursor: seitfCrs
       dup .put " " .put dup process.testpid .put .\n
 
       process.testpid not if
-        "would delete..." .
-        // object@ seitf.delete // eek!
+        "deleting..." .
+        object@
+        cursor@ seitfcursor.end 0 object!
+        seitf.delete
+        "deleted" .
       else
-        "not deleteing..." .
+        "not deleteing" .
+        cursor@ seitfcursor.next object!
       then
-      stk
-
-      cursor@ seitfcursor.next object!
 
     next
 
     seitfcrs seitfcursor.end
+
+    stk
 ;
 
 /*----------------------------------------------------------------------------*/
