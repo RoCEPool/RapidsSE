@@ -6,6 +6,8 @@
 
 #include "Types.h"
 
+#include "bzlib.h"
+#include "lz4.h"
 #include "Mersenne.hpp"
 #include "xxhash.hpp"
 

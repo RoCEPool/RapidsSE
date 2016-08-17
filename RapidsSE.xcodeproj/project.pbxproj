@@ -129,6 +129,10 @@
 		F2A0FAFE1D6457CA0032B090 /* Since.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A0FAFC1D6457CA0032B090 /* Since.cpp */; };
 		F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A0FAFD1D6457CA0032B090 /* Since.hpp */; };
 		F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656B1D652B1E009B684A /* ThirdParty.h */; };
+		F2DD65701D652D47009B684A /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DD656E1D652D47009B684A /* liblz4.a */; };
+		F2DD65711D652D47009B684A /* lz4.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656F1D652D47009B684A /* lz4.h */; };
+		F2DD65741D652D7E009B684A /* bzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65721D652D7E009B684A /* bzlib.h */; };
+		F2DD65751D652D7E009B684A /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DD65731D652D7E009B684A /* libbz2.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -424,6 +428,10 @@
 		F2D9BF761D5D375900129097 /* socket.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket.sen; path = Commands/socket.sen; sourceTree = "<group>"; };
 		F2D9BF781D5D37BB00129097 /* testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = testing.sen; path = Commands/testing.sen; sourceTree = "<group>"; };
 		F2DD656B1D652B1E009B684A /* ThirdParty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThirdParty.h; path = ThirdParty/ThirdParty.h; sourceTree = "<group>"; };
+		F2DD656E1D652D47009B684A /* liblz4.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblz4.a; path = ThirdParty/lz4/liblz4.a; sourceTree = "<group>"; };
+		F2DD656F1D652D47009B684A /* lz4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4.h; path = ThirdParty/lz4/lz4.h; sourceTree = "<group>"; };
+		F2DD65721D652D7E009B684A /* bzlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bzlib.h; path = ThirdParty/bzip2/bzlib.h; sourceTree = "<group>"; };
+		F2DD65731D652D7E009B684A /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = ThirdParty/bzip2/libbz2.a; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -462,6 +470,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2DD65751D652D7E009B684A /* libbz2.a in Frameworks */,
+				F2DD65701D652D47009B684A /* liblz4.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -995,6 +1005,8 @@
 		F2DD65681D652A67009B684A /* lz4 */ = {
 			isa = PBXGroup;
 			children = (
+				F2DD656F1D652D47009B684A /* lz4.h */,
+				F2DD656E1D652D47009B684A /* liblz4.a */,
 			);
 			name = lz4;
 			sourceTree = "<group>";
@@ -1002,6 +1014,8 @@
 		F2DD65691D652A6F009B684A /* bzip2 */ = {
 			isa = PBXGroup;
 			children = (
+				F2DD65721D652D7E009B684A /* bzlib.h */,
+				F2DD65731D652D7E009B684A /* libbz2.a */,
 			);
 			name = bzip2;
 			sourceTree = "<group>";
@@ -1034,6 +1048,8 @@
 				F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
+				F2DD65711D652D47009B684A /* lz4.h in Headers */,
+				F2DD65741D652D7E009B684A /* bzlib.h in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
 				F2A0FAFB1D6432F20032B090 /* SEitfCursor.hpp in Headers */,
 			);
@@ -1361,6 +1377,11 @@
 				DYLIB_COMPATIBILITY_VERSION = "";
 				"DYLIB_COMPATIBILITY_VERSION[arch=*]" = "";
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ThirdParty/lz4",
+					"$(PROJECT_DIR)/ThirdParty/bzip2",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				"OTHER_LDFLAGS[arch=*]" = "-dynamiclib";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1374,6 +1395,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ThirdParty/lz4",
+					"$(PROJECT_DIR)/ThirdParty/bzip2",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
