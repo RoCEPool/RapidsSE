@@ -650,6 +650,9 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("tx.delete",       &vTxDelete,         false);
   vAddPrimitive("tx.new",          &vTxNew,            false);
+  vAddPrimitive("tx.begin",        &vTxBegin,          false);
+  vAddPrimitive("tx.commit",       &vTxCommit,         false);
+  vAddPrimitive("tx.rollback",     &vTxRollback,       false);
   
   vAddPrimitive("txList.dump",     &vTxListDump,       false);
   vAddPrimitive("txList.init",     &vTxListInit,       false);
@@ -6876,6 +6879,54 @@ void Task::vTxNew(NNP_Task nnpTask)
   xPtrTx = pTx;
   
   nnpTask->vPushParam(xPtrTx);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.begin -- begin a tx                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTxBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxDelete");
+  
+  PtrVal xPtrSession;
+  
+  if ( ! nnpTask->bPopParam(xPtrSession) )
+    THROW_INVALID_PARAM("tx.delete");
+  
+  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
+  ASSERT(CN_TX == pTx->eClass());
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.commit -- commit a tx                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCommit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxCommit");
+  
+  PtrVal xPtrSession;
+  
+  if ( ! nnpTask->bPopParam(xPtrSession) )
+    THROW_INVALID_PARAM("tx.commit");
+  
+  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
+  ASSERT(CN_TX == pTx->eClass());
+}
+
+/*----------------------------------------------------------------------------*/
+/* tx.rollback -- rollback a tx                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRollback(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxRollback");
+  
+  PtrVal xPtrSession;
+  
+  if ( ! nnpTask->bPopParam(xPtrSession) )
+    THROW_INVALID_PARAM("tx.rollback");
+  
+  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
+  ASSERT(CN_TX == pTx->eClass());
 }
 
 // txlist: /////////////////////////////////////////////////////////////////////

@@ -560,6 +560,11 @@ namespace Tasking
     // tx
     static void vTxDelete(NNP_Task nnpTask);
     static void vTxNew(NNP_Task nnpTask);
+
+    static void vTxBegin(NNP_Task nnpTask);
+    static void vTxCommit(NNP_Task nnpTask);
+    static void vTxRollback(NNP_Task nnpTask);
+    
     
     // txlist
     static void vTxListDump(NNP_Task nnpTask);
