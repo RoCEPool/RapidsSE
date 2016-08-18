@@ -432,6 +432,7 @@
 		F2DD656F1D652D47009B684A /* lz4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz4.h; path = ThirdParty/lz4/lz4.h; sourceTree = "<group>"; };
 		F2DD65721D652D7E009B684A /* bzlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bzlib.h; path = ThirdParty/bzip2/bzlib.h; sourceTree = "<group>"; };
 		F2DD65731D652D7E009B684A /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = ThirdParty/bzip2/libbz2.a; sourceTree = "<group>"; };
+		F2DD65761D653E0C009B684A /* listerTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = listerTask.sen; path = Commands/listerTask.sen; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -483,6 +484,7 @@
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
 				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
+				F2DD65761D653E0C009B684A /* listerTask.sen */,
 				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
 				F24D1FB71D63F17E005031F5 /* reclaimTask.sen */,
 				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
@@ -553,8 +555,8 @@
 			isa = PBXGroup;
 			children = (
 				F24F61791D066DCD00954E9C /* Notes */,
-				F2389CE01D47F291008DF3D9 /* SEN */,
 				F2389CE11D47F2AE008DF3D9 /* C++ */,
+				F2389CE01D47F291008DF3D9 /* SEN */,
 				98A3C4801CF74E6200BD2B80 /* Products */,
 			);
 			sourceTree = "<group>";
