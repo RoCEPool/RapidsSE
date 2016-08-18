@@ -224,6 +224,9 @@ void Task::vAddConstants(void)
   vAddConstant("magic",           MAGIC);
   vAddConstant("poolsize",        gxArguments.m_iPoolSize);
   
+  vAddConstant("true",  1);
+  vAddConstant("false", (i8)0);
+
   /*  0 */ vAddConstant("CN_NONE",                  CN_NONE);
 
   /*  1 */ vAddConstant("CN_INTVAL",                CN_INTVAL);

@@ -64,7 +64,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--docol"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--seitf"
@@ -76,7 +76,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--status"
