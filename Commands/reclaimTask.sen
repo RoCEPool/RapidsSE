@@ -66,7 +66,6 @@ seitflist seitfCursor: seitfCrs
         reclaimTaskPrint if
           "not deleteing" .
         then
-        not
         cursor@ seitfcursor.next object!
       then
 

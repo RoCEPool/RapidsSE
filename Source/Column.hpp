@@ -23,15 +23,14 @@ namespace DBobjects
     /* 1 */ "XYZ"
   };
 
-  class Column {
-
-  private:
-  i8    m_iTxId;
-  i8    m_iColumnNo;
-  s32   m_sColumnName;
-  eCT   m_eColumnType;
-  bool  m_bIsNullable;
-  i8    m_nColumnMgr;
+  class Column
+  {
+    private:
+    i8    m_iColumnNo;
+    s32   m_sColumnName;
+    eCT   m_eColumnType;
+    bool  m_bIsNullable;
+    i8    m_nColumnMgr;
   };
 
 }

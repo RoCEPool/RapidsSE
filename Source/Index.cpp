@@ -26,13 +26,12 @@ void Index::operator delete(void* pTableAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Index::Index(i8 iTxId, const char* pIndexName)
+Index::Index(const char* pIndexName)
 : Object(CN_INDEX)
 {
   _poolAddress_(this);
   _magic_();
   
-  m_iTxId = iTxId;
   m_sIndexName = pIndexName;
   
   _class_(CN_INDEX);
@@ -57,25 +56,14 @@ char* Index::pIndexName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the txid                                                               */
-/*----------------------------------------------------------------------------*/
-i8 Index::iTxId(void) const
-{
-  _poolAddress_(this);
-  
-  return m_iTxId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* vDump                                                                      */
 /*----------------------------------------------------------------------------*/
 void Index::vDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("Index %p: TxId %lld IndexName %s\n",
+  vTrace("Index %p: %s\n",
          this,
-         m_iTxId,
          m_sIndexName.a()
          );
 }

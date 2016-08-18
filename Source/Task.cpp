@@ -1584,7 +1584,8 @@ void Task::vLoop(void)
       ps = String::sLast(m_sFile.a());
       String::bBackward(&ps,m_sFile.a(),'/');
       String::vCopy(wFileName,ps+1);
-      vError("%s : line %lld in %s\n",
+      vError("[%s] %s : line %lld in %s\n",
+             m_sName.a(),
              m_sException.a(),
              iException,
              wFileName);
@@ -1599,7 +1600,8 @@ void Task::vLoop(void)
       ps = String::sLast(pError->pFileName());
       String::bBackward(&ps,pError->pFileName(),'/');
       String::vCopy(wFileName,ps+1);
-      vError("%s : line %lld in %s\n",
+      vError("[%s] %s : line %lld in %s\n",
+             m_sName.a(),
              pError->pError(),
              pError->iLineNumber(),
              wFileName);
