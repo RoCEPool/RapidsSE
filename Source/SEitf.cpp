@@ -181,6 +181,10 @@ void SEitf::vPrompt(void)
       vParse(sCommand,pWords);
       vExecute(pWords);
       
+      if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
+        vIterateRows();
+      }
+      
       if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
         while (true) {
           PosixThread::vSleepSec(10);
@@ -212,7 +216,7 @@ void SEitf::vParse(s& sCommand, char* pWords[])
 void SEitf::vExecute(char* pWords[])
 {
   i8   iStatus;
-  s256 sResponse;
+  //s256 sResponse;
   
   Timer xTimer;
   
@@ -221,12 +225,33 @@ void SEitf::vExecute(char* pWords[])
   if ( ! bDecode(pWords) )
     return;
   
-  while (! bPopResponse(iStatus,sResponse))
+  while (! bPopResponse(iStatus,m_sResponse))
     ;
 
   xTimer.vUpdate();
   
-  vTrace("%lld %s (%lldus)\n",iStatus,sResponse.a(),xTimer.iMicroseconds());
+  vTrace("%lld %s (%lldus)\n",iStatus,m_sResponse.a(),xTimer.iMicroseconds());
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate rows                                                               */
+/*----------------------------------------------------------------------------*/
+void SEitf::vIterateRows(void)
+{
+  i8 iAddress = String::iToI8(m_sResponse.a());
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vBegin();
+  char* pStr = pRowCursor->pRowAsStr();
+  while (pStr) {
+    vTrace("Row: %s\n",pStr);
+    pRowCursor->vNext();
+    pStr = pRowCursor->pRowAsStr();
+  }
+  
+  delete pRowCursor;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1207,6 +1232,9 @@ bool SEitf::bTpcH(char* pWords[])
   vDo("mktbl partsupp");
   vDo("mktbl region");
   vDo("mktbl supplier");
+  vDo("ld nation \"/tpch/nation.tbl\"");
+  vDo("ld region \"/tpch/region.tbl\"");
+  vDo("ld supplier \"/tpch/supplier.tbl\"");
   vDo("pwd");
   vDo("ls");
   //  vDo("tr t ");

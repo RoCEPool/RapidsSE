@@ -42,6 +42,8 @@ namespace Interface
     void   vParse(s& sRequest, char* pWords[]);
     void   vExecute(char* pWords[]);
     
+    void   vIterateRows(void);
+    
     //--------------------------------------------------------------------------
     
     void   vAppendRequest(s& sRequest);

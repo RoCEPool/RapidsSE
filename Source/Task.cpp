@@ -5512,7 +5512,6 @@ void Task::vRowCursorNew(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vRowCursorNew");
   
-  
   RowCursor* pRowCursor = new RowCursor;
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
@@ -5579,10 +5578,12 @@ void Task::vRowCursorTableStore(NNP_Task nnpTask)
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+  if ( ! nnpTask->bPopParam(xPtrTable) )
     THROW_INVALID_PARAM("rowcursor.table!");
   
   Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
   pRowCursor->vTable(pTable);
 }
 

@@ -380,10 +380,17 @@
 
     queryCount ++
 
+    traceon
     execute ( table )
 
-    table.firstBuffer
-    >str success
+    //table.firstBuffer
+
+    rowcursor.new dup rot rowcursor.table!
+
+    >str
+    traceoff
+
+    success
 ;
 
 /*----------------------------------------------------------------------------*/
