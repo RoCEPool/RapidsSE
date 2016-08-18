@@ -6,8 +6,8 @@
 
 #include "DBobjects.h"
 
-namespace DBobjects {
-  
+namespace DBobjects
+{
   class User : public Object
   {
   private:
@@ -16,9 +16,7 @@ namespace DBobjects {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    
   };
-  
 }
 
 /*============================================================================*/

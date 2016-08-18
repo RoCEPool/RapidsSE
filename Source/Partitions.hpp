@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Partitions.hpp - Table Partitions                                           */
+/* Partitions.hpp - table partitions                                           */
 /*============================================================================*/
 
 #pragma once
 
 #include "DBobjects.h"
 
-namespace DBobjects {
-    
+namespace DBobjects
+{
   class Partitions
   {
   private:
@@ -20,7 +20,6 @@ namespace DBobjects {
     Partitions(void);
     ~Partitions(void);
   };
-    
 }
 
 /*============================================================================*/

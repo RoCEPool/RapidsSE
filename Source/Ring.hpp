@@ -6,19 +6,20 @@
 
 #include "DBobjects.h"
 
-namespace DBobjects {
-  
-  class Ring : public Object
+namespace DBobjects
+{
+  class Ring
   {
-    
   private:
+    i8 m_iAssignment[16];
     
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
+    Ring(void);
+    ~Ring(void);
   };
-  
 }
 
 /*============================================================================*/

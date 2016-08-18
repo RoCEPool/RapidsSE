@@ -6,8 +6,8 @@
 
 #include "DBobjects.h"
 
-namespace DBobjects {
-  
+namespace DBobjects
+{  
   enum eTT // Table Type
   {
     /* 0 */ TT_NONE=0,
@@ -26,6 +26,7 @@ namespace DBobjects {
     s32 m_sTableName;
     eTT m_eTableType;
     
+    Ring m_xRing;
     Partitions m_xPartitions;
         
   public:

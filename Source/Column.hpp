@@ -9,8 +9,8 @@
 
 using namespace Common;
 
-namespace DBobjects {
-  
+namespace DBobjects
+{  
   enum eCT // Column Type
   {
     /* 0 */ CT_NONE=0,

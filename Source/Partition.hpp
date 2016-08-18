@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Proxy.hpp - Proxy                                                          */
+/* Partition.hpp - table partition                                            */
 /*============================================================================*/
 
 #pragma once
 
 #include "DBobjects.h"
 
-namespace DBobjects {
-    
+namespace DBobjects
+{
   class Partition
   {
   private:
@@ -19,7 +19,6 @@ namespace DBobjects {
     Partition(void);
     ~Partition(void);
   };
-    
 }
 
 /*============================================================================*/
