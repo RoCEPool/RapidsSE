@@ -1233,12 +1233,12 @@ bool SEitf::bTpcH(char* pWords[])
   vDo("mktbl partsupp");
   vDo("mktbl region");
   vDo("mktbl supplier");
-  vDo("ld customer \"/tpch/customer.tbl\"");
-  vDo("ld lineitem \"/tpch/lineitem.tbl\"");
+  //vDo("ld customer \"/tpch/customer.tbl\"");
+  //vDo("ld lineitem \"/tpch/lineitem.tbl\"");
   vDo("ld nation   \"/tpch/nation.tbl\"");
-  vDo("ld orders   \"/tpch/orders.tbl\"");
-  vDo("ld part     \"/tpch/part.tbl\"");
-  vDo("ld partsupp \"/tpch/partsupp.tbl\"");
+  //vDo("ld orders   \"/tpch/orders.tbl\"");
+  //vDo("ld part     \"/tpch/part.tbl\"");
+  //vDo("ld partsupp \"/tpch/partsupp.tbl\"");
   vDo("ld region   \"/tpch/region.tbl\"");
   vDo("ld supplier \"/tpch/supplier.tbl\"");
   vDo("pwd");
