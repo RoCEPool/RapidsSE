@@ -11,8 +11,11 @@ namespace StorageEngine
   class Arguments : public InProcess
   {
   public:
+    // configuration
     s256 m_sRegionName; // name of shared memory region
     i8   m_iPoolSize;   // size of region in bytes
+
+    // commands
     s256 m_sCommand;    // command to run
     
     bool m_bCommand;    // run command
@@ -23,6 +26,9 @@ namespace StorageEngine
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
+    
+    // options
+    bool m_bBgTasks;    // start background tasks
     
   public:
     Arguments(void);

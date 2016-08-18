@@ -10,13 +10,13 @@
 #include "cn.hpp"
 
 #include "Addressing.hpp"
+#include "Magnitudes.h"
 
 namespace Types
 {
   void vCheckAssumptions(void);
 }
 
-#include "Constants.h"
 
 
 //-----------------------------------------------------------------------------

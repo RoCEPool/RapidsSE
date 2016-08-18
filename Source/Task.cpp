@@ -218,15 +218,32 @@ Object* Task::pArgObject(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstants(void)
 {
-  vAddConstant("largebuffersize", C_SIZE_LARGE_BUFFER);
-  vAddConstant("mediumbuffersize",C_SIZE_MEDIUM_OBJECT);
-  vAddConstant("smallbuffersize", C_SIZE_SMALL_OBJECT);
-  vAddConstant("magic",           MAGIC);
-  vAddConstant("poolsize",        gxArguments.m_iPoolSize);
+  vAddConstant("largebuffersize",  C_SIZE_LARGE_BUFFER);
+  vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
+  vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
+  vAddConstant("magic",            MAGIC);
+  vAddConstant("poolsize",         gxArguments.m_iPoolSize);
+  vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
   
   vAddConstant("true",  1);
   vAddConstant("false", (i8)0);
 
+  vAddConstant("C_1KB",   C_1KB);
+  vAddConstant("C_1MB",   C_1MB);
+  vAddConstant("C_1GB",   C_1GB);
+  vAddConstant("C_1TB",   C_1TB);
+  vAddConstant("C_1PB",   C_1PB);
+  vAddConstant("C_1EB",   C_1EB);
+  
+  vAddConstant("C_1K",    C_1K);
+  vAddConstant("C_1M",    C_1M);
+  vAddConstant("C_1Bn",   C_1Bn);
+  
+  vAddConstant("C_4KB",   C_4KB);
+  vAddConstant("C_16KB",  C_16KB);
+  vAddConstant("C_64KB",  C_64KB);
+  vAddConstant("C_256KB", C_256KB);
+  
   /*  0 */ vAddConstant("CN_NONE",                  CN_NONE);
 
   /*  1 */ vAddConstant("CN_INTVAL",                CN_INTVAL);

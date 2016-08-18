@@ -9,6 +9,8 @@
 
 #include "SystemIncludes.h"
 
+#include "Asm.h"
+
 //-----------------------------------------------------------------------------
 namespace Platform
 {

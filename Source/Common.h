@@ -15,18 +15,14 @@
 #include "s256.hpp"
 #include "s16K.hpp"
 
-
 #include "Error.hpp"
 #include "NP.hpp"
 #include "NNP.hpp"
 
 
-#include "Asm.h"
-
 #include "Report.hpp"
 #include "SysCall.hpp"
 
-#include "Constants.h"
 #include "Memory.hpp"
 #include "String.hpp"
 #include "Today.hpp"

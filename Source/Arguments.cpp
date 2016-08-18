@@ -12,6 +12,7 @@ Arguments::Arguments(void)
 {
   m_sRegionName = "/RapidsSE_DefaultRegion";
   m_iPoolSize   = 1_GB * 2;
+  
   m_sCommand    = "";
   
   m_bCommand = false;
@@ -22,6 +23,8 @@ Arguments::Arguments(void)
   m_bStart   = false;
   m_bStatus  = false;
   m_bStop    = false;
+
+  m_bBgTasks = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,6 +91,13 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
       m_bStop = true;
+      continue;
+    }
+
+    // options -----------------------------------------------------------------
+    
+    if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
+      m_bBgTasks = true;
       continue;
     }
     

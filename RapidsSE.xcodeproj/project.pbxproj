@@ -372,7 +372,7 @@
 		F25309A01D024F85000F6728 /* bn.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bn.hpp; sourceTree = "<group>"; };
 		F25309A21D0261C2000F6728 /* BufferPoolIter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BufferPoolIter.cpp; sourceTree = "<group>"; };
 		F25309A31D0261C2000F6728 /* BufferPoolIter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferPoolIter.hpp; sourceTree = "<group>"; };
-		F25309A51D027496000F6728 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = Source/Constants.h; sourceTree = "<group>"; };
+		F25309A51D027496000F6728 /* Magnitudes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Magnitudes.h; path = Source/Magnitudes.h; sourceTree = "<group>"; };
 		F25309A61D0288AB000F6728 /* _bytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _bytes.cpp; path = Source/_bytes.cpp; sourceTree = "<group>"; };
 		F25309A71D0288AB000F6728 /* _bytes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = _bytes.hpp; path = Source/_bytes.hpp; sourceTree = "<group>"; };
 		F25309A91D038AD6000F6728 /* Buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Buffer.cpp; sourceTree = "<group>"; };
@@ -971,7 +971,6 @@
 			children = (
 				F2B3B16D1D53F2D70049597E /* Types.h */,
 				F2B3B16C1D53F2D70049597E /* Types.cpp */,
-				F25309A51D027496000F6728 /* Constants.h */,
 				98163FAB1D0F14E3002B7755 /* an.cpp */,
 				98163FAC1D0F14E3002B7755 /* an.hpp */,
 				982ECD871D071EED0001919C /* cn.cpp */,
@@ -980,6 +979,7 @@
 				982ECD851D071EE40001919C /* mn.hpp */,
 				F2C6E97B1D25C1E6007C624C /* Addressing.cpp */,
 				F226E7351D41DE7B00E10FC3 /* Addressing.hpp */,
+				F25309A51D027496000F6728 /* Magnitudes.h */,
 			);
 			name = Types;
 			sourceTree = "<group>";

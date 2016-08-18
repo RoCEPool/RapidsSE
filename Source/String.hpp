@@ -26,6 +26,9 @@ namespace Common
     /*  4 */ "ENUMS",
   };
   
+  static const int C_NO_CASE    = 0;
+  static const int C_CASE       = 1;
+  
   class String
   {
   private:
