@@ -7,12 +7,12 @@
 #include "Dictionaries.h"
 
 #include "Row.hpp"
-#include "RowCursor.hpp"
 #include "Index.hpp"
 #include "Partition.hpp"
 #include "Partitions.hpp"
 #include "Ring.hpp"
 #include "Table.hpp"
+#include "RowCursor.hpp"
 
 #include "User.hpp"
 

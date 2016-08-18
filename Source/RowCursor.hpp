@@ -11,7 +11,9 @@ namespace DBobjects
   class RowCursor : public Object
   {
   private:
-
+    Table*  m_pTable;
+    Object* m_pRow;
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* pRowCursorAddress);
@@ -20,6 +22,12 @@ namespace DBobjects
     RowCursor(void);
     ~RowCursor(void);
     
+    void  vTable(Table* pTable);
+    void  vBegin(void);
+    void  vEnd(void);
+    void  vFirst(void);
+    void  vNext(void);
+    char* pRowAsStr(void);
   };  
 }
 
