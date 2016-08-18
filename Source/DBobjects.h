@@ -7,6 +7,7 @@
 #include "Dictionaries.h"
 
 #include "Row.hpp"
+#include "RowCursor.hpp"
 #include "Index.hpp"
 #include "Partition.hpp"
 #include "Partitions.hpp"
