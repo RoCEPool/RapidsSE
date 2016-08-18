@@ -43,30 +43,36 @@ seitflist seitfCursor: seitfCrs
 
     iterate
 
-      object@ seitf.dump
+      reclaimTaskPrint if
+        object@ seitf.dump
+      then
 
       object@ task.this task.seitf!
         "pid" find execute
         0 task.this task.seitf!
 
-      dup .put " " .put dup process.testpid .put .\n
+      reclaimTaskPrint if
+        dup .put " " .put dup process.testpid .put .\n
+      then
 
       process.testpid not if
-        "deleting..." .
+        reclaimTaskPrint if
+          "deleting..." .
+        then
         object@
         cursor@ seitfcursor.end 0 object!
         seitf.delete
-        "deleted" .
       else
-        "not deleteing" .
+        reclaimTaskPrint if
+          "not deleteing" .
+        then
+        not
         cursor@ seitfcursor.next object!
       then
 
     next
 
     seitfcrs seitfcursor.end
-
-    stk
 ;
 
 /*----------------------------------------------------------------------------*/

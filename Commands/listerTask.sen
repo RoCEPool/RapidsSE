@@ -35,13 +35,17 @@ tasklist taskCursor: taskCrs
 
 : iterateTaskList
 
-    "task list..." .
+    listerTaskPrint if
+      "task list..." .
+    then
 
 //traceon
   taskcrs taskcrs taskcursor.begin
   iterate
 
-    object@ task.dump
+    listerTaskPrint if
+      object@ task.dump
+    then
 
     cursor@ taskcursor.next object!
 

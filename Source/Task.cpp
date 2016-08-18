@@ -393,6 +393,10 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("CORE_COUNT",               System::iCoreCount());
   /*  0 */ vAddConstant("CPU_COUNT",                System::iCpuCount());
   /*  0 */ vAddConstant("PHYSICAL_MEMORY",          System::iPhysicalMemory());
+  
+  vAddConstant("listerTaskPrint",false);
+  vAddConstant("monitorTaskPrint",false);
+  vAddConstant("reclaimTaskPrint",false);
 }
 
 /*----------------------------------------------------------------------------*/
