@@ -15,17 +15,11 @@
   "commandSet.sen" >>:
   "requestServer.sen" >>:
 
-  snooze
-
-//listerStart
-
-  snooze
-
-//monitorStart
-
-  snooze
-
-//reclaimStart
+  bgtasks if
+    snooze listerStart
+    snooze monitorStart
+    snooze reclaimStart
+  then
 
   "requestServerLoop" find execute
 ;

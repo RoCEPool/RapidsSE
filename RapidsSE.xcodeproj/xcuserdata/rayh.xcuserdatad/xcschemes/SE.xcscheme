@@ -63,6 +63,10 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
+            argument = "--bgtasks"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--docol"
             isEnabled = "NO">
          </CommandLineArgument>
@@ -75,7 +79,11 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--start --seitf"
+            argument = "--start --seitf "
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--start --seitf --bgtasks"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
