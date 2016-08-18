@@ -487,9 +487,16 @@
         drop
         begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
       else
-        find
-        checkIsKnown not if exit then
-        execute dic.push
+        dup "tenants" streql if
+          begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
+          find
+          checkIsKnown not if exit then
+          execute dic.push
+        else
+          find
+          checkIsKnown not if exit then
+          execute dic.push
+        then
       then
     then
 
