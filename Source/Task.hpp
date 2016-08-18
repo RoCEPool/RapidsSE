@@ -492,9 +492,6 @@ namespace Tasking
     // seitflist
     static void vSEitfListDump(NNP_Task nnpTask);
     static void vSEitfListInit(NNP_Task nnpTask);
-
-    // system
-    static void vSystemCpu(NNP_Task nnpTask);
     
     // table
     static void vTableCopy(NNP_Task nnpTask);
@@ -524,6 +521,16 @@ namespace Tasking
     static void vTaskSeed(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
+    
+    // taskcursor
+    static void vTaskCursorBegin(NNP_Task nnpTask);
+    static void vTaskCursorDelete(NNP_Task nnpTask);
+    static void vTaskCursorEnd(NNP_Task nnpTask);
+    static void vTaskCursorFirst(NNP_Task nnpTask);
+    static void vTaskCursorGet(NNP_Task nnpTask);
+    static void vTaskCursorInit(NNP_Task nnpTask);
+    static void vTaskCursorNew(NNP_Task nnpTask);
+    static void vTaskCursorNext(NNP_Task nnpTask);
     
     // tasklist
     static void vTaskList(NNP_Task nnpTask);

@@ -272,15 +272,16 @@ void Task::vAddConstants(void)
   /* 39 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
   /* 40 */ vAddConstant("CN_TABLE",                 CN_TABLE);
   /* 41 */ vAddConstant("CN_TASK",                  CN_TASK);
-  /* 42 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
-  /* 43 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
-  /* 44 */ vAddConstant("CN_THREAD",                CN_THREAD);
-  /* 45 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 46 */ vAddConstant("CN_TIMER",                 CN_TIMER);
-  /* 47 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 48 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 49 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 50 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 42 */ vAddConstant("CN_TASKCURSOR",            CN_TASKCURSOR);
+  /* 43 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
+  /* 44 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
+  /* 45 */ vAddConstant("CN_THREAD",                CN_THREAD);
+  /* 46 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
+  /* 47 */ vAddConstant("CN_TIMER",                 CN_TIMER);
+  /* 48 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 49 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 50 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 51 */ vAddConstant("CN_WORD",                  CN_WORD);
   /* 51 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
  
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
@@ -330,14 +331,15 @@ void Task::vAddConstants(void)
   /* 37 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
   /* 38 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
   /* 39 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
-  /* 40 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
-  /* 41 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
-  /* 42 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
-  /* 43 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 44 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
-  /* 45 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 46 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
-  /* 47 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 40 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
+  /* 41 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
+  /* 42 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
+  /* 43 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
+  /* 44 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 45 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
+  /* 46 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 47 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
+  /* 48 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
@@ -615,8 +617,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitflist.dump",  &vSEitfListDump,    false);
   vAddPrimitive("seitflist.init",  &vSEitfListInit,    false);
   
-  vAddPrimitive("system.cpu",      &vSystemCpu,        false);
-  
   vAddPrimitive("table.copy",      &vTableCopy,        false);
   vAddPrimitive("table.drop",      &vTableDrop,        false);
   vAddPrimitive("table.export",    &vTableExport,      false);
@@ -642,6 +642,15 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
+  
+  vAddPrimitive("taskcursor.begin",  &vTaskCursorBegin,  false);
+  vAddPrimitive("taskcursor.delete", &vTaskCursorDelete, false);
+  vAddPrimitive("taskcursor.end",    &vTaskCursorEnd,    false);
+  vAddPrimitive("taskcursor.first",  &vTaskCursorFirst,  false);
+  vAddPrimitive("taskcursor.get",    &vTaskCursorGet,    false);
+  vAddPrimitive("taskcursor.init",   &vTaskCursorInit,   false);
+  vAddPrimitive("taskcursor.new",    &vTaskCursorNew,    false);
+  vAddPrimitive("taskcursor.next",   &vTaskCursorNext,   false);
   
   vAddPrimitive("tasklist",        &vTaskList,         false);
   vAddPrimitive("tasklist.append", &vTaskListAppend,   false);
@@ -5744,7 +5753,7 @@ void Task::vSEitfCursorBegin(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.begin");
   
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -5767,7 +5776,7 @@ void Task::vSEitfCursorDelete(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.delete");
   
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -5787,7 +5796,7 @@ void Task::vSEitfCursorEnd(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.end");
   
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -5804,7 +5813,7 @@ void Task::vSEitfCursorFirst(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.first");
   
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -5826,7 +5835,7 @@ void Task::vSEitfCursorGet(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.get");
   
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -5846,7 +5855,7 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.init");
   
   s32 sName;
   sName = "seitflist";
@@ -5869,7 +5878,7 @@ void Task::vSEitfCursorNew(NNP_Task nnpTask)
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
-    THROW_INVALID_PARAM("seitflist.dump");
+    THROW_INVALID_PARAM("seitfcursor.new");
   
   SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrVal.pPtr());
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
@@ -5892,7 +5901,7 @@ void Task::vSEitfCursorNext(NNP_Task nnpTask)
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PARAM("seitfcursor.next");
   
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -5941,16 +5950,176 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
   new(pSEitfList) SEitfList;
 }
 
-// system: /////////////////////////////////////////////////////////////////////
+// taskcursor: /////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* system.cpu-- get no. of cpu's in the machine                               */
+/* taskcursor.begin -- begin using task currsor                               */
 /*----------------------------------------------------------------------------*/
-void Task::vSystemCpu(NNP_Task nnpTask)
+void Task::vTaskCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSystemCpu");
+  nnpTask->vPrimitive("vTaskCursorBegin");
   
-  nnpTask->vPushParam(System::iCpuCount());
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.begin");
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  pTaskCursor->vBegin();
+  pTaskCursor->vFirst();
+  
+  PtrVal xPtrVal;
+  xPtrVal = pTaskCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.delete -- delete an task cursor                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorDelete");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.delete");
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  Object* pObject = reinterpret_cast<Object*>(pTaskCursor);
+  delete pTaskCursor;
+  
+  gpSmallHeap->vFreeObject(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.end -- end using task cursor                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorEnd");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.end");
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  pTaskCursor->vEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.first -- set to first and get task                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorFirst(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorFirst");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.first");
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  pTaskCursor->vFirst();
+  
+  PtrVal xPtrVal;
+  xPtrVal = pTaskCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.get -- get current task                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorGet");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.get");
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  PtrVal xPtrVal;
+  xPtrVal = pTaskCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.init -- init an task cursor                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorInit");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.init");
+  
+  s32 sName;
+  sName = "tasklist";
+  Word* pWord = nnpTask->pFindWord(sName);
+  ASSERT(pWord);
+  TaskList* pTaskList = reinterpret_cast<TaskList*>(pWord->pBodyArea());
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  new(pTaskCursor) TaskCursor(pTaskList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.new -- new an task cursor                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorNew");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.new");
+  
+  TaskList* pTaskList = reinterpret_cast<TaskList*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskList->eClass());
+  
+  void* pTaskCursorAddress = gpSmallHeap->pAllocObject();
+  TaskCursor* pTaskCursor = new(pTaskCursorAddress) TaskCursor(pTaskList);
+  
+  PtrVal xSEitfCursorPtr;
+  xSEitfCursorPtr = pTaskCursor;
+  
+  nnpTask->vPushParam(xSEitfCursorPtr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* taskcursor.next -- advance to next and get task                            */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCursorNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskCursorNext");
+  
+  PtrVal xPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+    THROW_INVALID_PARAM("taskcursor.next");
+  
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
+  
+  pTaskCursor->vNext();
+  
+  PtrVal xPtrVal;
+  xPtrVal = pTaskCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrVal);
 }
 
 // tasklist: ///////////////////////////////////////////////////////////////////

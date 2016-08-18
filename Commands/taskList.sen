@@ -15,6 +15,16 @@
     does> 
 ;
 
+: taskCursor:
+    create
+    object!!
+    sizeof_taskcursor allot
+    word.this >body magic!!
+    word.this >body CN_TASKCURSOR class!
+    word.this >body taskcursor.init
+    does>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
