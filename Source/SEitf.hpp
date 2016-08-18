@@ -108,6 +108,7 @@ namespace Interface
     bool bPing(char* pWords[]);
     
     bool bDo(char* pWords[]);
+    bool bTpcH(char* pWords[]);
     bool bX(char* pWords[]);
   };
 }

@@ -489,23 +489,18 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("pop",pWords[0],C_NO_CASE)) {
-    bPopDic(pWords);
-    return true;
-  }
-  
   if (String::bEqualTo("pwd",pWords[0],C_NO_CASE)) {
     bGetDicPath(pWords);
     return true;
   }
   
-  if (String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
-    bDropDictionary(pWords);
+  if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
+    bDropCatalog(pWords);
     return true;
   }
   
-  if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
-    bDropCatalog(pWords);
+  if (String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
+    bDropDictionary(pWords);
     return true;
   }
   
@@ -539,11 +534,6 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("use",pWords[0],C_NO_CASE)) {
-    bSetDicPath(pWords);
-    return true;
-  }
-  
   if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
     bX(pWords);
     return true;
@@ -551,6 +541,10 @@ bool SEitf::bDecode(char* pWords[])
   
   if (String::bEqualTo("do",pWords[0],C_NO_CASE)) {
     return bDo(pWords);
+  }
+  
+  if (String::bEqualTo("tpch",pWords[0],C_NO_CASE)) {
+    return bTpcH(pWords);
   }
   
   if (String::bEqualTo("ping",pWords[0],C_NO_CASE)) {
@@ -574,27 +568,37 @@ bool SEitf::bDecode(char* pWords[])
 bool SEitf::bHelp(char* pWords[])
 {
   vTrace("seitf temporary commands:\n");
+  vTrace("add   -- add column to table\n");
+  vTrace("adr   -- get address of table\n");
   vTrace("bye   -- quit seitf\n");
   vTrace("cd    -- change dictionary\n");
   vTrace("con   -- connect\n");
-  vTrace("cpy   -- select into t2 from t;\n");
+  vTrace("cp    -- copy table\n");
   vTrace("dis   -- disconnect\n");
-  vTrace("exp   -- export table t\n");
-  vTrace("lod   -- load table t\n");
+  vTrace("do    -- do shorthand\n");
+  vTrace("dump  -- dump table\n");
+  vTrace("ex    -- export table t\n");
+  vTrace("ld    -- load table t\n");
   vTrace("ls    -- list dictionary contents\n");
-  vTrace("mkcat -- create catalog ten.cat;\n");
-  vTrace("mksch -- create schema ten.cat.sch\n");
-  vTrace("mktbl -- create table ten.cat.sch.t\n");
-  vTrace("mkten -- create tenant ten;\n");
-  vTrace("pop   -- cd ..\n");
+  vTrace("lscat -- list catalogs contents\n");
+  vTrace("lscol -- list columns\n");
+  vTrace("lssch -- list schemas contents\n");
+  vTrace("lstbl -- list tables contents\n");
+  vTrace("lsten -- list tenants contents\n");
+  vTrace("mkcat -- create catalog\n");
+  vTrace("mksch -- create schema\n");
+  vTrace("mktbl -- create table\n");
+  vTrace("mkten -- create tenant\n");
   vTrace("pwd   -- print working dictionary\n");
-  vTrace("rmcat -- drop catalog ten.cat;\n");
-  vTrace("rmsch -- drop schema ten.cat.sch;\n");
-  vTrace("rmtbl -- drop table ten.cat.sch.t;\n");
-  vTrace("rmten -- drop tenant ten;\n");
-  vTrace("sel   -- select * from t;\n");
-  vTrace("tr    -- truncate table t;\n");
-  vTrace("use   -- set path to ten.cat.sch\n");
+  vTrace("rmcat -- drop catalog\n");
+  vTrace("rmdic -- drop dictionary\n");
+  vTrace("rmsch -- drop schema\n");
+  vTrace("rmtbl -- drop table\n");
+  vTrace("rmten -- drop tenant\n");
+  vTrace("sel   -- select * from table\n");
+  vTrace("sz    -- size of table\n");
+  vTrace("tpch  -- tpch shorthand\n");
+  vTrace("tr    -- truncate table\n");
   vTrace("?     -- print this help\n");
   vTrace("help  -- print this help\n");
   
@@ -1176,6 +1180,38 @@ bool SEitf::bDo(char* pWords[])
 //  vDo("tr t ");
 //  vDo("sz t ");
 //  vDo("rmtbl t ");
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tpch                                                                       */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bTpcH(char* pWords[])
+{
+  vDo("ping");
+  vDo("cd tenants");
+  vDo("mkten boray");
+  vDo("cd boray");
+  vDo("cd catalogs");
+  vDo("mkcat catalog");
+  vDo("cd catalog");
+  vDo("cd schemas");
+  vDo("mksch schema");
+  vDo("cd schema");
+  vDo("cd tables");
+  vDo("mktbl customer");
+  vDo("mktbl lineitem");
+  vDo("mktbl nation");
+  vDo("mktbl orders");
+  vDo("mktbl partsupp");
+  vDo("mktbl region");
+  vDo("mktbl supplier");
+  vDo("pwd");
+  vDo("ls");
+  //  vDo("tr t ");
+  //  vDo("sz t ");
+  //  vDo("rmtbl t ");
   
   return false;
 }
