@@ -17,6 +17,8 @@
 #include "TaskSet.hpp"
 #include "TaskVal.hpp"
 
+#include "TaskCursor.hpp"
+
 #include "Socket.hpp"
 
 //-----------------------------------------------------------------------------

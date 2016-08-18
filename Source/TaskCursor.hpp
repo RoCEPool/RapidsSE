@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* TaskCursor.hpp - Cursor over task list                                     */
+/*============================================================================*/
+
+#pragma once
+
+#include "Tasking.h"
+
+namespace Tasking
+{
+  class TaskCursor : public Object,
+                     public ListCursor_t<Task>
+  {
+  private:
+    
+  public:
+    void* operator new(size_t, void* pTaskCursorAddress);
+    void  operator delete(void*);
+    
+    TaskCursor(List_t<Task>* pList);
+    ~TaskCursor(void);
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

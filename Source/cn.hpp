@@ -58,16 +58,17 @@ namespace Types
     /* 39 */ CN_SYSCALL,
     /* 40 */ CN_TABLE,
     /* 41 */ CN_TASK,
-    /* 42 */ CN_TASKLIST,
-    /* 43 */ CN_TASKSET,
-    /* 44 */ CN_THREAD,
-    /* 45 */ CN_THREADLIST,
-    /* 46 */ CN_TIMER,
-    /* 47 */ CN_TX,
-    /* 48 */ CN_TXMAP,
-    /* 49 */ CN_TXLIST,
-    /* 50 */ CN_WORD,
-    /* 51 */ CN_ENUMS
+    /* 42 */ CN_TASKCURSOR,
+    /* 43 */ CN_TASKLIST,
+    /* 44 */ CN_TASKSET,
+    /* 45 */ CN_THREAD,
+    /* 46 */ CN_THREADLIST,
+    /* 47 */ CN_TIMER,
+    /* 48 */ CN_TX,
+    /* 49 */ CN_TXMAP,
+    /* 50 */ CN_TXLIST,
+    /* 51 */ CN_WORD,
+    /* 52 */ CN_ENUMS
   };
   
   static const char *pCN[]
@@ -117,16 +118,17 @@ namespace Types
     /* 39 */ "SYSCALL",
     /* 40 */ "TABLE",
     /* 41 */ "TASK",
-    /* 42 */ "TASKLIST",
-    /* 43 */ "TASKSET",
-    /* 44 */ "THREAD",
-    /* 45 */ "THREADLIST",
-    /* 46 */ "TIMER",
-    /* 47 */ "TX",
-    /* 48 */ "TXMAP",
-    /* 49 */ "TXLIST",
-    /* 50 */ "WORD",
-    /* 51 */ "ENUMS"
+    /* 42 */ "TASKCURSOR",
+    /* 43 */ "TASKLIST",
+    /* 44 */ "TASKSET",
+    /* 45 */ "THREAD",
+    /* 46 */ "THREADLIST",
+    /* 47 */ "TIMER",
+    /* 48 */ "TX",
+    /* 49 */ "TXMAP",
+    /* 50 */ "TXLIST",
+    /* 51 */ "WORD",
+    /* 52 */ "ENUMS"
   };
 
   class cn
