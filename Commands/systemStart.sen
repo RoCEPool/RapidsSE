@@ -17,15 +17,15 @@
 
   snooze
 
-  listerStart
+//listerStart
 
   snooze
 
-  monitorStart
+//monitorStart
 
   snooze
 
-  reclaimStart
+//reclaimStart
 
   "requestServerLoop" find execute
 ;
