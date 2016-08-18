@@ -74,10 +74,10 @@ void List_t<OBJECT>::vAppend(OBJECT*& pNode)
   m_zLock.vGrabWrite();
   
   if (m_pTail)
-    m_pTail->vNext(pNode);
+    m_pTail->vNextNode(pNode);
   
-  pNode->vPrev(m_pTail);
-  pNode->vNext(nullptr);
+  pNode->vPrevNode(m_pTail);
+  pNode->vNextNode(nullptr);
   
   m_pTail = pNode;
   if (! m_pHead)
@@ -114,16 +114,16 @@ void List_t<OBJECT>::vDump(const char* aTitle)
 template <class OBJECT>
 void List_t<OBJECT>::vInsert(OBJECT*& pNode)
 {
-  ASSERT( ! pNode->pPrev() );
-  ASSERT( ! pNode->pNext() );
+  ASSERT( ! pNode->pPrevNode() );
+  ASSERT( ! pNode->pNextNode() );
   
   m_zLock.vGrabWrite();
   
   if (m_pHead)
     m_pTail->vHead(pNode);
   
-  pNode->vPrev(nullptr);
-  pNode->vNext(m_pHead);
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(m_pHead);
   
   m_pHead = pNode;
   
@@ -148,9 +148,9 @@ OBJECT* List_t<OBJECT>::pPop(void)
 
   OBJECT* pNode = m_pHead;
 
-  m_pHead = m_pHead->pNext();
+  m_pHead = m_pHead->pNextNode();
   if (m_pHead)
-    m_pHead->vPrev(nullptr);
+    m_pHead->vPrevNode(nullptr);
   else
     m_pTail = nullptr;
   
@@ -158,8 +158,8 @@ OBJECT* List_t<OBJECT>::pPop(void)
   
   m_zLock.vDropWrite();
   
-  pNode->vPrev(nullptr);
-  pNode->vNext(nullptr);
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(nullptr);
   
   return pNode;
 }
@@ -172,14 +172,14 @@ void List_t<OBJECT>::vRemove(OBJECT*& pNode)
 {
   m_zLock.vGrabWrite();
   
-  OBJECT* pPrev = pNode->pPrev();
-  OBJECT* pNext = pNode->pNext();
+  OBJECT* pPrev = pNode->pPrevNode();
+  OBJECT* pNext = pNode->pNextNode();
 
   if (pPrev)
-    pPrev->vNext(pNext);
+    pPrev->vNextNode(pNext);
 
   if (pNext)
-    pNext->vPrev(pPrev);
+    pNext->vPrevNode(pPrev);
   
   if (pNode == m_pHead)
     m_pHead = pNext;
@@ -191,8 +191,8 @@ void List_t<OBJECT>::vRemove(OBJECT*& pNode)
   
   m_zLock.vDropWrite();
   
-  pNode->vPrev(nullptr);
-  pNode->vNext(nullptr);
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

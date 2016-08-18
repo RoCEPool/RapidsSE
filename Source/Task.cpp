@@ -55,8 +55,10 @@ void Task::operator delete(void* pTaskAddress)
 Task::Task(void)
 : Object(CN_TASK)
 {
-  _poolAddress_(this);
+ _poolAddress_(this);
   _magic_();
+
+  ASSERT(gpTaskList);
   
 //  // this contructor is invoked only for root task creation
 //  if (gnpRootTask != nullptr) {
@@ -66,6 +68,9 @@ Task::Task(void)
 //  }
   
   vInit("");
+  
+  Task* pTask = this;
+  gpTaskList->vAppend(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +82,12 @@ Task::Task(NNP_Task nnpTask)
   _poolAddress_(this);
   _magic_();
   
+  ASSERT(gpTaskList);
+  
   vInit("");
+  
+  Task* pTask = this;
+  gpTaskList->vAppend(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,9 +99,14 @@ Task::Task(const char* sCommand)
   _poolAddress_(this);
   _magic_();
   
+  ASSERT(gpTaskList);
+
   _class_(CN_TASK);
   
   vInit(sCommand);
+  
+  Task* pTask = this;
+  gpTaskList->vAppend(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,6 +115,9 @@ Task::Task(const char* sCommand)
 Task::~Task(void)
 {
   _poolAddress_(this);
+  
+  Task* pTask = this;
+  gpTaskList->vRemove(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

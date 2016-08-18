@@ -95,7 +95,7 @@ void ListCursor_t<OBJECT>::vNext(void)
   ASSERT(m_bHasLock);
   
   if (m_pObject)
-    m_pObject = m_pObject->pNext();
+    m_pObject = m_pObject->pNextNode();
 }
 
 /*----------------------------------------------------------------------------*/
