@@ -151,7 +151,7 @@ void Table::vLoad(File* pFile)
 {
   _poolAddress_(this);
   
-   ValWsp xBuffer;
+  ValWsp xBuffer;
   
   char* y = xBuffer.pAsStrVal()->sStr();
   
@@ -170,6 +170,88 @@ void Table::vLoad(File* pFile)
     
     vInsertRow(xBuffer.pAsStrVal());
   }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void Table::vLoad2(File* pFile)
+{
+  _poolAddress_(this);
+
+  //
+  // IN PROGRESS
+  //
+  
+  static const i8 C_CHUNK = C_256KB;
+  char  xWorkspace[C_CHUNK];
+  
+  char* pReadInto;
+  char* pScan;
+  char* pNext;
+  char* pEnd;
+  char* z;
+  
+  i8 iBytesRead;
+  i8 iBytesToRead;
+  i8 iBytesLeftover;
+  i8 iRowBytes;
+  
+  ValWsp xRow;
+  xRow.vClass(CN_STRVAL);
+  
+  // process file in chunks
+  iBytesLeftover = 0;
+  pScan = xWorkspace;
+  
+  for (;;) {
+  
+    // how much to read
+    iBytesToRead = C_CHUNK - iBytesLeftover;
+    
+    // where to read into to
+    pReadInto = pcAdd(xWorkspace,iBytesLeftover);
+   
+    // read next (partial) chunk
+    iBytesRead = pFile->iReadChunk(pReadInto,iBytesToRead);
+    if ( ! iBytesRead )
+      break;
+    
+    iBytesLeftover += iBytesRead;
+    pEnd = &xWorkspace[iBytesLeftover];
+
+    z = xRow.pAsStrVal()->sStr();
+    pNext = xWorkspace;
+    pScan = pNext;
+    iRowBytes = 0;
+    while (pScan < pEnd) {
+
+      //      vTrace("%c\n",*pScan);
+      
+      // test for eol
+      if ('\n' == *pScan) {
+        // got a line/row
+        *z = '\0';
+        xRow.pAsStrVal()->vSize();
+        //vTrace("Row: %s\n",xRow.sStr());
+        vInsertRow(xRow.pAsStrVal());
+        
+        // continue with next line/row
+        pNext = ++pScan;
+        iBytesLeftover -= (iRowBytes + 1);
+        iRowBytes = 0;
+        z = xRow.pAsStrVal()->sStr();
+        continue;
+      }
+      
+      *z++ = *pScan++;
+      iRowBytes++;
+    }
+    
+    if (iBytesLeftover) {
+      Memory::vCopy(xWorkspace,pNext,iBytesLeftover);
+    }
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
