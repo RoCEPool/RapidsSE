@@ -48,15 +48,12 @@ RowCursor::RowCursor(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin iteration                                                            */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vTable(Table* pTable)
+RowCursor::~RowCursor(void)
 {
   _poolAddress_(this);
   _magic_();
-  
-  m_pTable = pTable;
-  m_pRow   = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +118,29 @@ char* RowCursor::pRowAsStr(void)
     return pStrVal->sStr();
   else
     return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* RowCursor::pTable(void)
+{
+  _poolAddress_(this);
+  _magic_();
+  
+  return m_pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void RowCursor::vTable(Table* pTable)
+{
+  _poolAddress_(this);
+  _magic_();
+  
+  m_pTable = pTable;
+  m_pRow   = nullptr;
 }
 
 /*============================================================================*/

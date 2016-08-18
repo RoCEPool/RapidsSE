@@ -452,6 +452,18 @@ namespace Tasking
     static void vQueueInit(NNP_Task nnpTask);     
     static void vQueuePop(NNP_Task nnpTask);      
 
+    // rowcursor
+    static void vRowCursorBegin(NNP_Task nnpTask);
+    static void vRowCursorDelete(NNP_Task nnpTask);
+    static void vRowCursorEnd(NNP_Task nnpTask);
+    static void vRowCursorFirst(NNP_Task nnpTask);
+    static void vRowCursorGet(NNP_Task nnpTask);
+    static void vRowCursorInit(NNP_Task nnpTask);
+    static void vRowCursorNew(NNP_Task nnpTask);
+    static void vRowCursorNext(NNP_Task nnpTask);
+    static void vRowCursorTableFetch(NNP_Task nnpTask);
+    static void vRowCursorTableStore(NNP_Task nnpTask);
+    
     // rstack
     static void vRstackDepth(NNP_Task nnpTask);
     static void vRstackDrop(NNP_Task nnpTask);

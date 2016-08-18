@@ -576,6 +576,17 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("queue.init",      &vQueueInit,        false);
   vAddPrimitive("queue.pop",       &vQueuePop,         false);
   
+  vAddPrimitive("rowcursor.begin",  &vRowCursorBegin,  false);
+  vAddPrimitive("rowcursor.delete", &vRowCursorDelete, false);
+  vAddPrimitive("rowcursor.end",    &vRowCursorEnd,    false);
+  vAddPrimitive("rowcursor.first",  &vRowCursorFirst,  false);
+  vAddPrimitive("rowcursor.get",    &vRowCursorGet,    false);
+  vAddPrimitive("rowcursor.init",   &vRowCursorInit,   false);
+  vAddPrimitive("rowcursor.new",    &vRowCursorNew,    false);
+  vAddPrimitive("rowcursor.next",   &vRowCursorNext,   false);
+  vAddPrimitive("rowcursor.table@", &vRowCursorTableFetch, false);
+  vAddPrimitive("rowcursor.table!", &vRowCursorTableStore, false);
+  
   vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
@@ -5371,6 +5382,208 @@ void Task::vQueuePop(NNP_Task nnpTask)
   else
     nnpTask->vPushParam((i8)0);
   
+}
+
+// rowcursor: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.begin -- begin using row cursor                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorBegin");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.begin");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vBegin();
+  pRowCursor->vFirst();
+  
+  PtrVal xPtrRow;
+  xPtrRow = pRowCursor->pRowAsStr();
+  
+  nnpTask->vPushParam(xPtrRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.delete -- delete a row cursor                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorDelete");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.delete");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  Object* pObject = reinterpret_cast<Object*>(pRowCursor);
+  delete pRowCursor;
+  
+  gpSmallHeap->vFreeObject(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.end -- end using row cursor                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorEnd");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.end");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.first -- set to first and get row                                */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorFirst(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorFirst");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.first");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vFirst();
+  
+  PtrVal xPtrRow;
+  xPtrRow = pRowCursor->pRowAsStr();
+  
+  nnpTask->vPushParam(xPtrRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.get -- get current row                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorGet");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.get");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  PtrVal xPtrRow;
+  xPtrRow = pRowCursor->pRowAsStr();
+  
+  nnpTask->vPushParam(xPtrRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.init -- init a row cursor                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorInit");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.init");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  new(pRowCursor) RowCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.new -- new an row cursor                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorNew");
+  
+  
+  RowCursor* pRowCursor = new RowCursor;
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  PtrVal xPtrRowCursor;
+  xPtrRowCursor = pRowCursor;
+  
+  nnpTask->vPushParam(xPtrRowCursor);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.next -- advance to next and get row                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorNext");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.next");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vNext();
+  
+  PtrVal xPtrRow;
+  xPtrRow = pRowCursor->pRowAsStr();
+  
+  nnpTask->vPushParam(xPtrRow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.table@ -- fetch table from row cursor                            */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorTableFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorTableFetch");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.table@");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  PtrVal xPtrTable;
+  xPtrTable = pRowCursor->pTable();
+  
+  nnpTask->vPushParam(xPtrTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.table! -- store table into row cursor                            */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorTableStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRowCursorTableStore");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.table!");
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("rowcursor.table!");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  pRowCursor->vTable(pTable);
 }
 
 // seitf: //////////////////////////////////////////////////////////////////////

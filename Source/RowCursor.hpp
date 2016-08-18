@@ -22,13 +22,14 @@ namespace DBobjects
     RowCursor(void);
     ~RowCursor(void);
     
-    void  vTable(Table* pTable);
-    void  vBegin(void);
-    void  vEnd(void);
-    void  vFirst(void);
-    void  vNext(void);
-    char* pRowAsStr(void);
-  };  
+    void   vBegin(void);
+    void   vEnd(void);
+    void   vFirst(void);
+    void   vNext(void);
+    char*  pRowAsStr(void);
+    Table* pTable(void);
+    void   vTable(Table* pTable);
+  };
 }
 
 /*============================================================================*/
