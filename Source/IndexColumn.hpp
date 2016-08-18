@@ -11,8 +11,8 @@ using namespace Common;
 
 namespace DBobjects
 {
-  class IndexColumn {
-
+  class IndexColumn
+  {
   private:
     i8    m_iIndexColumnNo;
     i8    m_iColumnNo;

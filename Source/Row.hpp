@@ -10,7 +10,6 @@ namespace DBobjects
 {
   class Row : public Object
   {
-    
   private:
     i8    m_iDataBytes;  // number of data bytes
     // ...data..

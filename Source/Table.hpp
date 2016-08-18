@@ -20,8 +20,8 @@ namespace DBobjects
     /* 1 */ "NORMAL"
   };
     
-  class Table : public Segment {
-    
+  class Table : public Segment
+  {
   private:
     s32 m_sTableName;
     eTT m_eTableType;
