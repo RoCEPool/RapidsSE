@@ -57,6 +57,7 @@ namespace Common
     s256& sPath(void);
     void vPath(const char* aFilePath);
     void vPrint(const char* sFormat,...);
+    i8   iReadChunk(void* pChunk, i8 nBytes);
     bool bReadLine(s& s);
     bool bReadLine(char* y);
     void vReset(void);

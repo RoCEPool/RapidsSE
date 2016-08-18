@@ -337,6 +337,18 @@ void File::vPrint(const char* sFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
+/* read chunk                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 File::iReadChunk(void* pChunk, i8 nBytes)
+{
+  m_xSysCall.vClear();
+  
+  i8 iBytesRead = fread(pChunk,1,nBytes,m_pFilePtr);
+  
+  return iBytesRead;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next line                                                             */
 /*----------------------------------------------------------------------------*/
 bool File::bReadLine(char* aBuffer)
