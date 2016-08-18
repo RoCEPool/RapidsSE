@@ -3910,7 +3910,7 @@ void Task::vPrint(NNP_Task nnpTask)
     THROW_INVALID_PARAM(".");
   
   xValWsp.vToString(sWorkspace.a());
-  vTrace("[%s] %s\n",nnpTask->m_sName.a(),sWorkspace.a());
+  vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
 }
 
 /*----------------------------------------------------------------------------*/

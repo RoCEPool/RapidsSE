@@ -26,6 +26,8 @@ tasklist taskCursor: taskCrs
 
      listerTaskSet listerThread  thread.taskset!
 
+     "listerThread" listerThread thread.name!
+
      listerThread  thread.spawn
 ;
 

@@ -24,13 +24,15 @@ seitflist seitfCursor: seitfCrs
 
 : reclaimStart
 
-     "reclaimLoop"  task.new
+     "reclaimLoop"   task.new
 
-     reclaimTaskSet taskSet.Append
+     reclaimTaskSet  taskSet.Append
 
-     reclaimTaskSet reclaimThread  thread.taskset!
+     reclaimTaskSet  reclaimThread  thread.taskset!
 
-     reclaimThread  thread.spawn
+     "reclaimThread" reclaimThread  thread.name!
+
+     reclaimThread   thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
