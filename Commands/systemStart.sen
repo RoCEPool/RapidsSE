@@ -16,9 +16,11 @@
   "requestServer.sen" >>:
 
   bgtasks if
+
     snooze listerStart
     snooze monitorStart
     snooze reclaimStart
+
   then
 
   "requestServerLoop" find execute

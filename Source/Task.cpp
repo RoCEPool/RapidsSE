@@ -1009,9 +1009,10 @@ void Task::vDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("Tx %p: %s State %d %s TxId %lld \n",
+  vTrace("Tx %p: %16s TaskNo %02lld State %d %s TxId %lld \n",
          this,
          m_sName.a(),
+         m_iTaskNo,
          m_eState,
          pTS[m_eState],
          m_iTxId
@@ -1402,24 +1403,28 @@ void Task::vPrimitive(const char* aPrimitive)
     
     ValWsp* pValWsp = static_cast<ValWsp*>(m_xParamStack.pPeek(iValue));
     
-    if (CN_INTVAL == pValWsp->eClass()) {
+    eCN eClass = pValWsp->eClass();
+    
+    if (CN_INTVAL == eClass) {
       vTrace("%lld",pValWsp->iInt());
     }
-    else if (CN_PTRVAL == pValWsp->eClass()) {
+    else if (CN_PTRVAL == eClass) {
       vTrace("%p (%s)",pValWsp->pPtr(),pValWsp->aClass());
     }
-    else if (CN_STRVAL == pValWsp->eClass()) {
+    else if (CN_STRVAL == eClass) {
       vTrace("\"%lls\"",pValWsp->sStr());
     }
-    else if (CN_WRDVAL == pValWsp->eClass()) {
+    else if (CN_WRDVAL == eClass) {
       WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(pValWsp);
       vTrace("%s (word)",pWrdVal->pWord() ? pWrdVal->pWord()->sName().a() : "<nilwrd>");
     }
-    else if (CN_TASKVAL == pValWsp->eClass()) {
-      if (pValWsp->nnpTask() == this)
-        vTrace("%p (task.this)",pValWsp->nnpTask());
-      else
-        vTrace("%p (task)",pValWsp->nnpTask());
+    else if (CN_TASKVAL == eClass) {
+      vTrace("alka??(task)");
+      
+//      if (pValWsp->nnpTask() == this)
+//        vTrace("%p (task.this)",pValWsp->nnpTask());
+//      else
+//        vTrace("%p (task)",pValWsp->nnpTask());
     }
     else {
       vTrace("unknown value on stack: class=%lld",pValWsp->eClass());
@@ -3795,6 +3800,10 @@ void Task::vObjectStore(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vObjectStore");
   
+  if (nnpTask->m_bTracing) {
+    int i = 0;
+  }
+  
   i8 iPeek = 0;
   
   ValWsp xObjectWsp;
@@ -5967,6 +5976,474 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
   new(pSEitfList) SEitfList;
 }
 
+// table: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* table.copy -- copy from table to table on param stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTableCopy(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableCopy");
+  
+  PtrVal xPtrFromTable;
+  if ( ! nnpTask->bPopParam(xPtrFromTable) )
+    THROW_INVALID_PARAM("table.copy");
+  
+  PtrVal xPtrToTable;
+  if ( ! nnpTask->bPopParam(xPtrToTable) )
+    THROW_INVALID_PARAM("table.copy");
+  
+  Table* pFromTable = reinterpret_cast<Table*>(xPtrFromTable.pPtr());
+  ASSERT(CN_TABLE == pFromTable->eClass());
+  
+  Table* pToTable = reinterpret_cast<Table*>(xPtrToTable.pPtr());
+  ASSERT(CN_TABLE == pToTable->eClass());
+  
+  pToTable->vCopy(pFromTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.drop -- drop of table on param stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTableDrop(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableDrop");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.drop");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+}
+
+/*----------------------------------------------------------------------------*/
+/* table dump                                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTableDump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableDump");
+  
+  vTrace("TableDump\n");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.dump");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.export -- export table into file                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTableExport(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableExport");
+  
+  PtrVal xPtrTable;
+  PtrVal xPtrFile;
+  
+  if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
+    THROW_INVALID_PARAM("table.export");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  ASSERT(CN_FILE == pFile->eClass());
+  
+  pTable->vExport(pFile);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.firstBuffer -- push ptr to first buffer of table onto stack          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableFirstBuffer(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableFirstBuffer");
+  
+  PtrVal xPtrTable;
+  
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.firstBuffer");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  SegmentBuffer* pFirstBuffer = pTable->pFirstBuffer();
+  
+  nnpTask->vPushParam(pFirstBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.init -- init of table on param stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTableInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableInit");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.init");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  new(pTable) Table;
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.insert -- insert row into table on param stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTableInsert(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableInsert");
+  
+  ValWsp xRow;
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable,xRow) )
+    THROW_INVALID_PARAM("table.insert");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vInsertRow(xRow.pAsStrVal());
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.load -- load file into table on param stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableLoad(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableLoad");
+  
+  PtrVal xPtrTable;
+  PtrVal xPtrFile;
+  
+  if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
+    THROW_INVALID_PARAM("table.load");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  ASSERT(CN_FILE == pFile->eClass());
+  
+  pTable->vLoad(pFile);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.list -- list all rows of table on param stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTableList(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableList");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.list");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vList();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.truncate -- release all rows/buffers in table on param stack         */
+/*----------------------------------------------------------------------------*/
+void Task::vTableTruncate(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableTruncate");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.truncate");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vTruncate();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.space -- push the buffer space used bytable on param stack           */
+/*----------------------------------------------------------------------------*/
+void Task::vTableSpace(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableSpace");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.spave");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  i8 iBuffers = pTable->iBufferCount();
+  i8 iSpace   = iBuffers * C_SIZE_LARGE_BUFFER;
+  
+  nnpTask->vPushParam(iSpace);
+}
+
+// task: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* task.dic -- push task dictionary onto param stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskDic(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskDic");
+  
+  PtrVal xDicPtr;
+  xDicPtr = (void*)&nnpTask->m_xTaskDictionary;
+  
+  nnpTask->vPushParam(xDicPtr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.dump -- dump of task on param stack                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskDump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskDump");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.dump");
+  
+  pThatTask->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.init -- init of task on param stack                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskInit");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("task.init");
+  
+  Task* pThatTask = reinterpret_cast<Task*>(xPtrVal.pPtr());
+  ASSERT(CN_TASK == pThatTask->eClass());
+  
+  //  pThatTask->vInit("");
+  
+  new(pThatTask) Task;
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.seitf@ -- fetch SEitf of task on param stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSeitfFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskSeitfFetch");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.seitf@");
+  
+  SEitf* pSEitf = pThatTask->m_pSEitf;
+  
+  PtrVal xPtrSEitf;
+  xPtrSEitf = pSEitf;
+  
+  nnpTask->vPushParam(xPtrSEitf);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.seitf! -- store SEitf on param stack into task on param stack         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSeitfStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskSeitfStore");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.seitf!");
+  
+  PtrVal xPtrSEitf;
+  
+  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+    THROW_INVALID_PARAM("task.seitf!");
+  
+  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
+  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
+  
+  pThatTask->m_pSEitf = pSEitf;
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.name@ -- fetch task name                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskNameFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskNameFetch");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.name@");
+  
+  nnpTask->vPushParam(pThatTask->m_sName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.name! -- store task name                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskNameStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskNameStore");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.name!");
+  
+  ValWsp xWspName;
+  nnpTask->vPopParam(&xWspName);
+  
+  pThatTask->m_sName = xWspName.pAsStrVal()->sStr();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.new -- create a new task                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskNew");
+  
+  if ( ! nnpTask->bGuardParam(CN_STRVAL) )
+    THROW_INVALID_PARAM("task.new");
+  
+  ValWsp xValWsp;
+  nnpTask->vPopParam(&xValWsp);
+  
+  char* aSeedWord = xValWsp.sStr();
+  
+  NNP_Task nnpNewTask = new Task;
+  
+  nnpNewTask->vSeedWord(aSeedWord);
+    
+  Task* pNewTask = *nnpNewTask;
+  gpTaskList->vAppend(pNewTask);
+  
+  nnpTask->vPushParam(nnpNewTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.queue@ -- fetch queue of task on param stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQfetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskQfetch");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.queue@");
+  
+  Queue* pQueue = pThatTask->m_pQueue;
+  
+  Object* pQueueEmb = static_cast<Object*>(pQueue);
+  
+  nnpTask->vPushParam(pQueueEmb);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.queue! -- store queue on param stack into task on param stack         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskQstore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskQstore");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.queue!");
+  
+  Object* pQueueEmb;
+  
+  if ( ! nnpTask->bPopParam(pQueueEmb) )
+    THROW_INVALID_PARAM("task.queue!");
+  
+  Queue* pQueue = static_cast<Queue*>(pQueueEmb);
+  
+  pThatTask->m_pQueue = pQueue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.seed -- set the seed word of task                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSeed(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskSeed");
+  
+  ValWsp xStrWsp;
+  
+  if ( ! nnpTask->bPopParam(xStrWsp) )
+    THROW_INVALID_PARAM("task.seed");
+  
+  char* pSeed = xStrWsp.pAsStrVal()->sStr();
+  
+  nnpTask->vSeedWord(pSeed);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.state@ -- fetch state of task                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskStateFetch(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskStateFetch");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.state@");
+  
+  eTS eState = pThatTask->m_eState;
+  
+  nnpTask->vPushParam((i8)eState);
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.state! -- store state of task                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskStateStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskStateStore");
+  
+  Task* pThatTask;
+  
+  if ( ! nnpTask->bPopParam(pThatTask) )
+    THROW_INVALID_PARAM("task.state!");
+  
+  i8 iState;
+  
+  if ( ! nnpTask->bPopParam(iState) )
+    THROW_INVALID_PARAM("task.state!");
+  
+  pThatTask->m_eState = (eTS)iState;
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.this -- push this tx                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskThis(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTaskThis");
+  
+  nnpTask->vPushParam(nnpTask);
+}
+
 // taskcursor: /////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -5986,10 +6463,9 @@ void Task::vTaskCursorBegin(NNP_Task nnpTask)
   pTaskCursor->vBegin();
   pTaskCursor->vFirst();
   
-  PtrVal xPtrVal;
-  xPtrVal = pTaskCursor->pObject();
-  
-  nnpTask->vPushParam(xPtrVal);
+  TaskVal xTaskPtr;
+  xTaskPtr = pTaskCursor->pObject();
+  nnpTask->vPushParam(xTaskPtr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6045,10 +6521,9 @@ void Task::vTaskCursorFirst(NNP_Task nnpTask)
   
   pTaskCursor->vFirst();
   
-  PtrVal xPtrVal;
-  xPtrVal = pTaskCursor->pObject();
-  
-  nnpTask->vPushParam(xPtrVal);
+  TaskVal xTaskPtr;
+  xTaskPtr = pTaskCursor->pObject();
+  nnpTask->vPushParam(xTaskPtr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6065,10 +6540,8 @@ void Task::vTaskCursorGet(NNP_Task nnpTask)
   TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
-  PtrVal xPtrVal;
-  xPtrVal = pTaskCursor->pObject();
-  
-  nnpTask->vPushParam(xPtrVal);
+  Task* pThatTask = pTaskCursor->pObject();
+  nnpTask->vPushParam(pThatTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6082,16 +6555,16 @@ void Task::vTaskCursorInit(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
     THROW_INVALID_PARAM("taskcursor.init");
   
-  s32 sName;
-  sName = "tasklist";
-  Word* pWord = nnpTask->pFindWord(sName);
-  ASSERT(pWord);
-  TaskList* pTaskList = reinterpret_cast<TaskList*>(pWord->pBodyArea());
+//  s32 sName;
+//  sName = "tasklist";
+//  Word* pWord = nnpTask->pFindWord(sName);
+//  ASSERT(pWord);
+//  TaskList* pTaskList = reinterpret_cast<TaskList*>(pWord->pBodyArea());
   
   TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
-  new(pTaskCursor) TaskCursor(pTaskList);
+  new(pTaskCursor) TaskCursor(gpTaskList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6133,10 +6606,9 @@ void Task::vTaskCursorNext(NNP_Task nnpTask)
   
   pTaskCursor->vNext();
   
-  PtrVal xPtrVal;
-  xPtrVal = pTaskCursor->pObject();
-  
-  nnpTask->vPushParam(xPtrVal);
+  TaskVal xTaskPtr;
+  xTaskPtr = pTaskCursor->pObject();
+  nnpTask->vPushParam(xTaskPtr);
 }
 
 // tasklist: ///////////////////////////////////////////////////////////////////
@@ -6592,475 +7064,6 @@ void Task::vThreadListInit(NNP_Task nnpTask)
   ASSERT(CN_THREADLIST == pThreadList->eClass());
   
   new(pThreadList) ThreadList;
-}
-
-// table: //////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* table.copy -- copy from table to table on param stack                      */
-/*----------------------------------------------------------------------------*/
-void Task::vTableCopy(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableCopy");
-  
-  PtrVal xPtrFromTable;
-  if ( ! nnpTask->bPopParam(xPtrFromTable) )
-    THROW_INVALID_PARAM("table.copy");
-
-  PtrVal xPtrToTable;
-  if ( ! nnpTask->bPopParam(xPtrToTable) )
-    THROW_INVALID_PARAM("table.copy");
-  
-  Table* pFromTable = reinterpret_cast<Table*>(xPtrFromTable.pPtr());
-  ASSERT(CN_TABLE == pFromTable->eClass());
-
-  Table* pToTable = reinterpret_cast<Table*>(xPtrToTable.pPtr());
-  ASSERT(CN_TABLE == pToTable->eClass());
-  
-  pToTable->vCopy(pFromTable);
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.drop -- drop of table on param stack                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vTableDrop(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableDrop");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.drop");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-}
-
-/*----------------------------------------------------------------------------*/
-/* table dump                                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vTableDump(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableDump");
-  
-  vTrace("TableDump\n");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.dump");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vDump();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.export -- export table into file                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTableExport(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableExport");
-  
-  PtrVal xPtrTable;
-  PtrVal xPtrFile;
-  
-  if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
-    THROW_INVALID_PARAM("table.export");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
-  ASSERT(CN_FILE == pFile->eClass());
-  
-  pTable->vExport(pFile);
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.firstBuffer -- push ptr to first buffer of table onto stack          */
-/*----------------------------------------------------------------------------*/
-void Task::vTableFirstBuffer(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableFirstBuffer");
-  
-  PtrVal xPtrTable;
-  
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.firstBuffer");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-
-  SegmentBuffer* pFirstBuffer = pTable->pFirstBuffer();
-
-  nnpTask->vPushParam(pFirstBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.init -- init of table on param stack                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vTableInit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableInit");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.init");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  new(pTable) Table;
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.insert -- insert row into table on param stack                       */
-/*----------------------------------------------------------------------------*/
-void Task::vTableInsert(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableInsert");
-  
-  ValWsp xRow;
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable,xRow) )
-    THROW_INVALID_PARAM("table.insert");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vInsertRow(xRow.pAsStrVal());
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.load -- load file into table on param stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTableLoad(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableLoad");
-  
-  PtrVal xPtrTable;
-  PtrVal xPtrFile;
-  
-  if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
-    THROW_INVALID_PARAM("table.load");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
-  ASSERT(CN_FILE == pFile->eClass());
-  
-  pTable->vLoad(pFile);
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.list -- list all rows of table on param stack                        */
-/*----------------------------------------------------------------------------*/
-void Task::vTableList(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableList");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.list");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vList();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.truncate -- release all rows/buffers in table on param stack         */
-/*----------------------------------------------------------------------------*/
-void Task::vTableTruncate(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableTruncate");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.truncate");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vTruncate();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.space -- push the buffer space used bytable on param stack           */
-/*----------------------------------------------------------------------------*/
-void Task::vTableSpace(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableSpace");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.spave");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  i8 iBuffers = pTable->iBufferCount();
-  i8 iSpace   = iBuffers * C_SIZE_LARGE_BUFFER;
-  
-  nnpTask->vPushParam(iSpace);
-}
-
-// task: ///////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* task.dic -- push task dictionary onto param stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskDic(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskDic");
-  
-  PtrVal xDicPtr;
-  xDicPtr = (void*)&nnpTask->m_xTaskDictionary;
-  
-  nnpTask->vPushParam(xDicPtr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.dump -- dump of task on param stack                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskDump(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskDump");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.dump");
-  
-  pThatTask->vDump();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.init -- init of task on param stack                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskInit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskInit");
-  
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
-    THROW_INVALID_PARAM("task.init");
-
-  Task* pThatTask = reinterpret_cast<Task*>(xPtrVal.pPtr());
-  ASSERT(CN_TASK == pThatTask->eClass());
-  
-  //  pThatTask->vInit("");
-  
-  new(pThatTask) Task;
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.seitf@ -- fetch SEitf of task on param stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfFetch(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskSeitfFetch");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.seitf@");
-  
-  SEitf* pSEitf = pThatTask->m_pSEitf;
-  
-  PtrVal xPtrSEitf;
-  xPtrSEitf = pSEitf;
-  
-  nnpTask->vPushParam(xPtrSEitf);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.seitf! -- store SEitf on param stack into task on param stack         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfStore(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskSeitfStore");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.seitf!");
-  
-  PtrVal xPtrSEitf;
-  
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
-    THROW_INVALID_PARAM("task.seitf!");
-  
-  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
-  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
-  
-  pThatTask->m_pSEitf = pSEitf;
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.name@ -- fetch task name                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskNameFetch(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskNameFetch");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.name@");
-  
-  nnpTask->vPushParam(pThatTask->m_sName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.name! -- store task name                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskNameStore(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskNameStore");
-
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.name!");
-  
-  ValWsp xWspName;
-  nnpTask->vPopParam(&xWspName);
-  
-  pThatTask->m_sName = xWspName.pAsStrVal()->sStr();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.new -- create a new task                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskNew(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskNew");
-  
-  if ( ! nnpTask->bGuardParam(CN_STRVAL) )
-    THROW_INVALID_PARAM("task.new");
-  
-  ValWsp xValWsp;
-  nnpTask->vPopParam(&xValWsp);
-  
-  char* aSeedWord = xValWsp.sStr();
-  
-  NNP_Task nnpNewTask = new Task(nnpTask);
-  
-  nnpNewTask->vSeedWord(aSeedWord);
-  
-//  ThreadOld* pThread = ThreadOld::pThread();
-//  
-//  pThread->vAppend(pNewTx);
-  
-  nnpTask->vPushParam(nnpNewTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.queue@ -- fetch queue of task on param stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskQfetch(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskQfetch");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.queue@");
-  
-  Queue* pQueue = pThatTask->m_pQueue;
-  
-  Object* pQueueEmb = static_cast<Object*>(pQueue);
-  
-  nnpTask->vPushParam(pQueueEmb);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.queue! -- store queue on param stack into task on param stack         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskQstore(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskQstore");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.queue!");
-  
-  Object* pQueueEmb;
-
-  if ( ! nnpTask->bPopParam(pQueueEmb) )
-    THROW_INVALID_PARAM("task.queue!");
-  
-  Queue* pQueue = static_cast<Queue*>(pQueueEmb);
-
-  pThatTask->m_pQueue = pQueue;
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.seed -- set the seed word of task                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSeed(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskSeed");
-  
-  ValWsp xStrWsp;
-  
-  if ( ! nnpTask->bPopParam(xStrWsp) )
-    THROW_INVALID_PARAM("task.seed");
-  
-  char* pSeed = xStrWsp.pAsStrVal()->sStr();
-  
-  nnpTask->vSeedWord(pSeed);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.state@ -- fetch state of task                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskStateFetch(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskStateFetch");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.state@");
-  
-  eTS eState = pThatTask->m_eState;
-  
-  nnpTask->vPushParam((i8)eState);
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.state! -- store state of task                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskStateStore(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskStateStore");
-  
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.state!");
-  
-  i8 iState;
-
-  if ( ! nnpTask->bPopParam(iState) )
-    THROW_INVALID_PARAM("task.state!");
-  
-  pThatTask->m_eState = (eTS)iState;
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.this -- push this tx                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskThis(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTaskThis");
-  
-  nnpTask->vPushParam(nnpTask);
 }
 
 // timer: //////////////////////////////////////////////////////////////////////

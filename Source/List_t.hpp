@@ -22,11 +22,11 @@ namespace DataStructures
     
     List_t(void);
     
-    void    vAppend(OBJECT*& pNode);
+    void    vAppend(OBJECT* pNode);
     void    vDump(const char* aTitle);
-    void    vInsert(OBJECT*& pNode);
+    void    vInsert(OBJECT* pNode);
     OBJECT* pPop(void);
-    void    vRemove(OBJECT*& pNode);
+    void    vRemove(OBJECT* pNode);
     
     void    vReadLock(void);
     void    vReadUnlock(void);
@@ -69,7 +69,7 @@ List_t<OBJECT>::List_t(void)
 /* append object to end of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vAppend(OBJECT*& pNode)
+void List_t<OBJECT>::vAppend(OBJECT* pNode)
 {
   m_zLock.vGrabWrite();
   
@@ -80,6 +80,7 @@ void List_t<OBJECT>::vAppend(OBJECT*& pNode)
   pNode->vNextNode(nullptr);
   
   m_pTail = pNode;
+  
   if (! m_pHead)
     m_pHead = pNode;
   
@@ -112,7 +113,7 @@ void List_t<OBJECT>::vDump(const char* aTitle)
 /* insert object at head of list                                              */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vInsert(OBJECT*& pNode)
+void List_t<OBJECT>::vInsert(OBJECT* pNode)
 {
   ASSERT( ! pNode->pPrevNode() );
   ASSERT( ! pNode->pNextNode() );
@@ -168,7 +169,7 @@ OBJECT* List_t<OBJECT>::pPop(void)
 /* remove object from head of list                                            */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vRemove(OBJECT*& pNode)
+void List_t<OBJECT>::vRemove(OBJECT* pNode)
 {
   m_zLock.vGrabWrite();
   

@@ -26,7 +26,7 @@ void TaskCursor::operator delete(void* pTaskCursorAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TaskCursor::TaskCursor(List_t<Task>* pList)
-: Object(CN_SEITFCURSOR),
+: Object(CN_TASKCURSOR),
   ListCursor_t<Task>(pList)
 {
   _poolAddress_(this);

@@ -12,6 +12,8 @@ taskset: listerTaskSet
 
 thread:  listerThread
 
+tasklist taskCursor: taskCrs
+
 /*----------------------------------------------------------------------------*/
 /* start the lister task                                                      */
 /*----------------------------------------------------------------------------*/
@@ -34,6 +36,18 @@ thread:  listerThread
 : iterateTaskList
 
     "task list..." .
+
+//traceon
+  taskcrs taskcrs taskcursor.begin
+  iterate
+
+    object@ task.dump
+
+    cursor@ taskcursor.next object!
+
+  next
+
+  taskcrs taskcursor.end
 
 ;
 
