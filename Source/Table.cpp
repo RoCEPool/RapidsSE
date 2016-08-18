@@ -42,29 +42,20 @@ Table::Table(void)
   _magic_();
   
   Word* pWord = Word::pToWord(this);
-  //.vTrace("Table name: %s\n",pWord->sName().a());
   
-  m_iTxId        = -1;
-  m_sTableName   = pWord->sName();
-  m_eTableType   = TT_NONE;
-  m_pCurrentRow  = nullptr;
-  m_nParitionMgr = 0;
-  m_nColumnMgr   = 0;
-  m_nIndexMgr    = 0;
-  
-  _class_(CN_TABLE);
+  m_sTableName = pWord->sName();
+  m_eTableType = TT_NORMAL;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Table::Table(i8 iTxId, const char* pTableName)
+Table::Table(const char* pTableName)
 : Segment(CN_TABLE)
 {
   _poolAddress_(this);
   _magic_();
   
-  m_iTxId = iTxId;
   m_sTableName = pTableName;
   
   _class_(CN_TABLE);
@@ -291,25 +282,14 @@ char* Table::pTableName(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the txid                                                               */
-/*----------------------------------------------------------------------------*/
-i8 Table::iTxId(void) const
-{
-  _poolAddress_(this);
-  
-  return m_iTxId;
-}
-
-/*----------------------------------------------------------------------------*/
 /* vDump                                                                      */
 /*----------------------------------------------------------------------------*/
 void Table::vDump(void) 
 {
   _poolAddress_(this);
   
-  vTrace("Table %p: TxId %lld TableName %s\n",
+  vTrace("Table %p: %s\n",
          this,
-         m_iTxId,
          m_sTableName.a()
          );
   //m_pRowAllocator->vDump();

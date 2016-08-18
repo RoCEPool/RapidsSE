@@ -3800,10 +3800,6 @@ void Task::vObjectStore(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vObjectStore");
   
-  if (nnpTask->m_bTracing) {
-    int i = 0;
-  }
-  
   i8 iPeek = 0;
   
   ValWsp xObjectWsp;

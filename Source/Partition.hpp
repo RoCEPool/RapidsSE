@@ -8,15 +8,16 @@
 
 namespace DBobjects {
     
-  class Partition : public Object
+  class Partition
   {
-    
   private:
     
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
+    Partition(void);
+    ~Partition(void);
   };
     
 }
