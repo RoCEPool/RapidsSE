@@ -62,7 +62,7 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
        pChunk = pNextChunk(pChunk,nBytes)) {
 
     eCN eClass = pChunk->eClass();
-    if (CN_NONE == eClass)
+    if (CN_FREECHUNK == eClass)
       continue;
     
     xCounts[eClass]++;
