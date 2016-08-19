@@ -28,6 +28,7 @@ namespace MemoryManagement
     ~Heap(void);
     
     Object* pAllocObject(void);
+    void    vAnalyse(i8 xCounts[]);
     void    vDump(void);
     i8      iAllocCount(void);
     i8      iBufferCount(void);

@@ -36,9 +36,9 @@ void BufferPoolAnalyzer::vAnalyze(void)
 {
   ASSERT(m_nClassNo == CN_BUFFERPOOLANALYZER);
   
-  i8 iCountPoolObjects[CN_ENUMS];
+  i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountPoolObjects[index] = 0;
+    iCountObjects[index] = 0;
   
   bn nBuffer = 0;
   bn nBufferCount = gpBufferPool->m_iBufferCount - 1;
@@ -48,7 +48,7 @@ void BufferPoolAnalyzer::vAnalyze(void)
       nBuffer++) {
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-    iCountPoolObjects[pBuffer->eClass()]++;
+    iCountObjects[pBuffer->eClass()]++;
   }
   
   vTrace("**************************************************************\n");
@@ -79,19 +79,49 @@ void BufferPoolAnalyzer::vAnalyze(void)
          gpMediumHeap->iFreeCount());
   
   vTrace("\n");
-  
   vTrace("  BufferPool Objects:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
-    if (iCountPoolObjects[eClass] == 0)
+    if (iCountObjects[eClass] == 0)
       continue;
     
-    vTrace("  %16s %-6lld \n", pCN[eClass], iCountPoolObjects[eClass]);
+    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+  
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    iCountObjects[index] = 0;
+
+  gpSmallHeap->vAnalyse(iCountObjects);
+
+  vTrace("\n");
+  vTrace("  SmallHeap Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    iCountObjects[index] = 0;
+  
+  gpMediumHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n");
+  vTrace("  MediumHeap Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
   }
   
   vTrace("**************************************************************\n");
-
 }
 
 /*----------------------------------------------------------------------------*/

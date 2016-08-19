@@ -51,6 +51,25 @@ HeapBuffer::~HeapBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* analyse the objects in this heap buffer                                    */
+/*----------------------------------------------------------------------------*/
+void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+ 
+  for (FreeChunk* pChunk = pFirstChunk();
+       pChunk;
+       pChunk = pNextChunk(pChunk,nBytes)) {
+
+    eCN eClass = pChunk->eClass();
+    if (CN_NONE == eClass)
+      continue;
+    
+    xCounts[eClass]++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vDump(void)

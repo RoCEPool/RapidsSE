@@ -24,6 +24,7 @@ namespace MemoryManagement
     
     void vDump(void);
     
+    void vAnalyse(i8 nBytes, i8 xCounts[]);
     HeapBuffer* pNextBuffer(void);
     void        vNextBuffer(HeapBuffer* pNextBuffer);
     HeapBuffer* pPrevBuffer(void);

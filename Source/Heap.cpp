@@ -91,6 +91,24 @@ i8 Heap::iAllocCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* analyse the objects in the heap                                           */
+/*----------------------------------------------------------------------------*/
+void Heap::vAnalyse(i8 xCounts[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_zLock.vGrabWrite();
+  
+  HeapBuffer* pHeapBuffer = m_pFirstBuffer;
+  while (pHeapBuffer) {
+    pHeapBuffer->vAnalyse(m_iObjectSize,xCounts);
+    pHeapBuffer = pHeapBuffer->pNextBuffer();
+  }
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of buffers in the heap                                          */
 /*----------------------------------------------------------------------------*/
 i8 Heap::iBufferCount(void)

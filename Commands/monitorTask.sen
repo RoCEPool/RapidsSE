@@ -61,6 +61,8 @@ thread:  monitorThread
 
       // monitorString @ .
 
+bpa
+
       10 sleep
 
     0 until
