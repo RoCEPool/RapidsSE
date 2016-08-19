@@ -16,6 +16,11 @@ namespace Platform
   typedef unsigned long long u8;  // 8 byte unsigned integer
   
   typedef double             d8;  // 8 byte double
+  
+  typedef unsigned char      b1;  // 1 byte boolean
+  typedef unsigned short     b2;  // 2 byte boolean
+  typedef unsigned long      b4;  // 4 byte boolean
+  typedef unsigned long long b8;  // 8 byte boolean
 }
 
 /*============================================================================*/
