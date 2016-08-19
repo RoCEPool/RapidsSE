@@ -368,7 +368,7 @@ void Task::vAddConstants(void)
 
   /*  0 */ vAddConstant("TS_NONE",                  TS_NONE);
   /*  1 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
-  /*  2 */ vAddConstant("TS_SLICED",                TS_SLICED);
+  /*  2 */ vAddConstant("TS_SWITCH",                TS_SWITCH);
   /*  3 */ vAddConstant("TS_WAITING",               TS_WAITING);
   /*  5 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
   /*  6 */ vAddConstant("TS_BLOCKED",               TS_BLOCKED);
@@ -512,7 +512,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("object!!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
   vAddPrimitive("or",              &vOr,               false);
-  vAddPrimitive("pause",           &vPause,            false);
   vAddPrimitive("pick",            &vPick,             false);
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
@@ -536,6 +535,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("subStr",          &vSubStr,           false);
   vAddPrimitive("-",               &vSubtract,         false);
   vAddPrimitive("swap",            &vSwap,             false);
+  vAddPrimitive("switch",          &vSwitch,           false);
   vAddPrimitive("test",            &vTest,             false);
   vAddPrimitive("then",            &vThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
@@ -1346,7 +1346,7 @@ void Task::vSeedWord(const char* aCommand)
   
   m_pCell = pShellEnter->pFirstCell();
   
-  m_eState = TS_SLICED;
+  m_eState = TS_SWITCH;
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -1367,7 +1367,7 @@ void Task::vSeedDocol(void)
   
   m_pCell = pShellEnter->pFirstCell();
   
-  m_eState = TS_SLICED;
+  m_eState = TS_SWITCH;
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -3859,13 +3859,13 @@ void Task::vOr(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pause -- pause this task                                                   */
+/* switch -- task switch                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vPause(NNP_Task nnpTask)
+void Task::vSwitch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPause");
+  nnpTask->vPrimitive("vSwitch");
   
-  nnpTask->vState(TS_SLICED);
+  nnpTask->vState(TS_SWITCH);
 }
 
 /*----------------------------------------------------------------------------*/

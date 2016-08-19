@@ -179,7 +179,7 @@ void Thread::vLoop(void)
       m_npTask->vLoop();
       // clear rdtscp
       
-      if (TS_SLICED == m_npTask->eState()) {
+      if (TS_SWITCH == m_npTask->eState()) {
         NNP_Task nnpTask = *m_npTask;
         vAppend(nnpTask);
         m_npTask = nullptr;

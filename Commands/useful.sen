@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : snoozeLoop
     begin
-      "snoozing..." . snooze pause
+      "snoozing..." . snooze switch
     0 until
 ;
 

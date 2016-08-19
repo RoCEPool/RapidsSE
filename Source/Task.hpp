@@ -22,7 +22,7 @@ namespace Tasking
   {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_RUNNING,
-  /* 2 */ TS_SLICED,
+  /* 2 */ TS_SWITCH,
   /* 3 */ TS_WAITING,
   /* 4 */ TS_SLEEPING,
   /* 5 */ TS_BLOCKED,
@@ -34,7 +34,7 @@ namespace Tasking
   {
     /* 0 */ "NONE",
     /* 1 */ "RUNNING",
-    /* 2 */ "SLICED",
+    /* 2 */ "SWITCH",
     /* 3 */ "WAITING",
     /* 4 */ "SLEEPING",
     /* 5 */ "BLOCKED",
@@ -345,8 +345,7 @@ namespace Tasking
     static void vObjectMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
     static void vOr(NNP_Task nnpTask);
-    static void vPause(NNP_Task nnpTask);          
-    static void vPick(NNP_Task nnpTask);           
+    static void vPick(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);       
     static void vPrint(NNP_Task nnpTask);          
     static void vPstackDepth(NNP_Task nnpTask);
@@ -371,7 +370,8 @@ namespace Tasking
     static void vSubStr(NNP_Task nnpTask);
     static void vSubtract(NNP_Task nnpTask);       
     static void vSwap(NNP_Task nnpTask);           
-    static void vTest(NNP_Task nnpTask);           
+    static void vSwitch(NNP_Task nnpTask);
+    static void vTest(NNP_Task nnpTask);
     static void vThen(NNP_Task nnpTask);           
     static void vThrow(NNP_Task nnpTask);          
     static void vTick(NNP_Task nnpTask);           
