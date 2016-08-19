@@ -239,6 +239,7 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  pFreeChunk->vClass(CN_NONE);
   pFreeChunk->vNextFree(m_pFreeHead);
   m_pFreeHead = pFreeChunk;
   
