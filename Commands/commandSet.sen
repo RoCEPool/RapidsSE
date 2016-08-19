@@ -94,6 +94,9 @@
     "not a table" 1 failure 0
 ;
 
+: createColumnsDic ( table -- table )
+    dup table.dic {{ "columns" :dic }}
+;
 
 : tableLoader ( "<fileNm>" ^table )
 
@@ -248,7 +251,8 @@
 
     checkInTables not if exit then
 
-    :table drop
+    :table execute createColumnsDic drop
+
     "created table" success
 ;
 
