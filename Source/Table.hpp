@@ -26,6 +26,8 @@ namespace DBobjects
     s32 m_sTableName;
     eTT m_eTableType;
     
+    Dictionary m_xDictionary;
+    
     Ring m_xRing;
     Partitions m_xPartitions;
         
@@ -39,6 +41,7 @@ namespace DBobjects
     ~Table(void);
     
     void vCopy(Table* pTable);
+    Dictionary* pDic(void);
     void vExport(File* pFile);
     SegmentBuffer* pFirstBuffer(void);
     void vInsertRow(StrVal* pRow);
@@ -51,7 +54,6 @@ namespace DBobjects
     void  vTableName(s& sName);
     void  vDump(void);
   };
-  
 }
 
 /*============================================================================*/

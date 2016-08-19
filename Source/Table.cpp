@@ -45,6 +45,10 @@ Table::Table(void)
   
   m_sTableName = pWord->sName();
   m_eTableType = TT_NORMAL;
+  
+  //m_xDictionary
+  //m_xRing
+  //m_xPartitions
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,6 +94,16 @@ void Table::vCopy(Table *pTable)
     
     pFromBuffer = pFromBuffer->pNextBuffer();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dictionary                                                             */
+/*----------------------------------------------------------------------------*/
+Dictionary* Table::pDic(void)
+{
+  _poolAddress_(this);
+  
+  return &m_xDictionary;
 }
 
 /*----------------------------------------------------------------------------*/

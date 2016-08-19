@@ -642,16 +642,17 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitflist.dump",  &vSEitfListDump,    false);
   vAddPrimitive("seitflist.init",  &vSEitfListInit,    false);
   
-  vAddPrimitive("table.copy",      &vTableCopy,        false);
-  vAddPrimitive("table.drop",      &vTableDrop,        false);
-  vAddPrimitive("table.export",    &vTableExport,      false);
+  vAddPrimitive("table.copy",        &vTableCopy,        false);
+  vAddPrimitive("table.dic",         &vTableDic,         false);
+  vAddPrimitive("table.drop",        &vTableDrop,        false);
+  vAddPrimitive("table.export",      &vTableExport,      false);
   vAddPrimitive("table.firstBuffer", &vTableFirstBuffer, false);
-  vAddPrimitive("table.init",      &vTableInit,        false);
-  vAddPrimitive("table.insert",    &vTableInsert,      false);
-  vAddPrimitive("table.load",      &vTableLoad,        false);
-  vAddPrimitive("table.list",      &vTableList,        false);
-  vAddPrimitive("table.space",     &vTableSpace,       false);
-  vAddPrimitive("table.truncate",  &vTableTruncate,    false);
+  vAddPrimitive("table.init",        &vTableInit,        false);
+  vAddPrimitive("table.insert",      &vTableInsert,      false);
+  vAddPrimitive("table.load",        &vTableLoad,        false);
+  vAddPrimitive("table.list",        &vTableList,        false);
+  vAddPrimitive("table.space",       &vTableSpace,       false);
+  vAddPrimitive("table.truncate",    &vTableTruncate,    false);
   
   vAddPrimitive("task.dic",        &vTaskDic,          false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
@@ -6010,6 +6011,25 @@ void Task::vTableCopy(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pToTable->eClass());
   
   pToTable->vCopy(pFromTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.dic -- get table dictionary                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableDic(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTableDic");
+  
+  PtrVal xPtrTable;
+  if ( ! nnpTask->bPopParam(xPtrTable) )
+    THROW_INVALID_PARAM("table.dic");
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  Dictionary* pDictionary = pTable->pDic();
+  
+  nnpTask->vPushParam(pDictionary);
 }
 
 /*----------------------------------------------------------------------------*/
