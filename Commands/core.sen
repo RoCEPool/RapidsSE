@@ -16,9 +16,9 @@
 ;
 
 : words
-    word.this iterate              // iterate word cursor
-      cursor@ word.name .          // print the name of the word
-      cursor@ prevWord dup cursor! // advance cursor backwards thru words
+    word.this dup iterate          // iterate word cursor
+      object@ word.name .          // print the name of the word
+      object@ prevWord object!     // advance cursor backwards thru words
     next
 ;
 
@@ -71,7 +71,17 @@
 /*----------------------------------------------------------------------------*/
 /* define a constant                                                          */
 /*----------------------------------------------------------------------------*/
-: constant create , does> ;
+: constant
+    create
+    ,
+//    does>
+;
+
+: :constant
+      >create
+,
+//    does>
+;
 
 /*----------------------------------------------------------------------------*/
 /* increment integer on stack                                                 */

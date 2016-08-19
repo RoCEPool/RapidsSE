@@ -24,6 +24,10 @@
     0 dic.pick dic.name "tables" streql
 ;
 
+: withinColumns
+    0 dic.pick dic.name "columns" streql
+;
+
 : checkInTenants
     withinTenants if 1 exit then
     "not in tenants" 1 failure 0
@@ -42,6 +46,11 @@
 : checkInTables
     withinTables if 1 exit then
     "not in tables" 1 failure 0
+;
+
+: checkInColumns
+    withinColumns if 1 exit then
+    "not in columns" 1 failure 0
 ;
 
 : checkIsKnown ( word )
@@ -96,6 +105,27 @@
 
 : createColumnsDic ( table -- table )
     dup table.dic {{ "columns" :dic }}
+;
+
+: pushTable ( "<tableName>" -- )
+
+    find checkIsKnown
+
+    not if "no such table" 1 failure 0 exit then
+
+    execute dic.push
+;
+
+: :column ( "<columnType>" "<columnName>" )
+
+    :constant
+;
+
+: addColumn ( "<columnType>" "<columnName" -- <result> )
+
+    :column
+
+    true
 ;
 
 : tableLoader ( "<fileNm>" ^table )
@@ -270,7 +300,17 @@
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-: add_column
+: add_column ( "<columnType>" "<columnName" "<tableName>" -- <response> )
+
+    checkInTables not if exit then
+
+    pushTable not if exit then
+
+    addColumn not if exit then
+
+    popTable
+
+    "created column" success
 ;
 
 /*----------------------------------------------------------------------------*/

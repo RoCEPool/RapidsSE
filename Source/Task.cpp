@@ -2505,6 +2505,7 @@ void Task::vComma(NNP_Task nnpTask)
     THROW_INVALID_PARAM("comma");
     
   pCurrentWord->vEncode("push",&xValWsp);
+  pCurrentWord->vEncode("exit");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2576,7 +2577,7 @@ void Task::vCursorStore(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vCursorStore");
   
-  i8 iPeek = 0;
+  i8 iPeek = 1;
   
   ValWsp xCursorWsp;
   
