@@ -2,7 +2,11 @@
 /*  BufferPoolAnalyzer.cpp - buffer pool analyzer                             */
 /*============================================================================*/
 
-#include "Tasking.h"
+#include "StorageEngine.h"
+
+extern Heap* gpMediumHeap;
+extern Heap* gpSmallHeap;
+extern Arguments gxArguments;
 
 /*============================================================================*/
 /* end                                                                        */
@@ -32,68 +36,61 @@ void BufferPoolAnalyzer::vAnalyze(void)
 {
   ASSERT(m_nClassNo == CN_BUFFERPOOLANALYZER);
   
-  vTrace("/**************************************/\n");
-  vTrace("    BufferPoolAnalyzer\n");
-  vTrace("/**************************************/\n");
-
-  vTrace("PoolSize %lld BufferSize %lld \n"
-         "BufferCount %lld InUse %lld FreeCount %lld\n",
+  i8 iCountPoolObjects[CN_ENUMS];
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    iCountPoolObjects[index] = 0;
+  
+  bn nBuffer = 0;
+  bn nBufferCount = gpBufferPool->m_iBufferCount - 1;
+  
+  for (bn nBuffer = gpBufferPool->nBufferFirst();
+       nBuffer <= nBufferCount;
+      nBuffer++) {
+    
+    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    iCountPoolObjects[pBuffer->eClass()]++;
+  }
+  
+  vTrace("/**************************************************************/\n");
+  vTrace("/* Buffer Pool Analysis                                       */\n");
+  vTrace("/**************************************************************/\n");
+  
+  vTrace("  Region %s %p\n",gxArguments.m_sRegionName.a(),gpBufferPool);
+  vTrace("  PoolSize %lld BufferSize %lld \n",
          gpBufferPool->m_iPoolSize,
-         gpBufferPool->m_iBufferSize,
+         gpBufferPool->m_iBufferSize);
+  
+  vTrace("\n");
+  
+  vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
          gpBufferPool->m_iBufferCount,
          gpBufferPool->m_iUseCount,
          gpBufferPool->m_iFreeCount
          );
   
-  i8 iCountPoolObjects[CN_ENUMS];
-  i8 iCountSlotObjects[CN_ENUMS];
+  vTrace("   SmallHeap buffers %-6lld alloc %-6lld free %-6lld\n",
+         gpSmallHeap->iBufferCount(),
+         gpSmallHeap->iAllocCount(),
+         gpSmallHeap->iFreeCount());
   
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    iCountPoolObjects[index] = 0;
-    iCountSlotObjects[index] = 0;
-  }
+  vTrace("  MediumHeap buffers %-6lld alloc %-6lld free %-6lld\n",
+         gpMediumHeap->iBufferCount(),
+         gpMediumHeap->iAllocCount(),
+         gpMediumHeap->iFreeCount());
   
-  bn nBuffer = gpBufferPool->nBufferFirst();
-  bn nBufferCount = gpBufferPool->m_iBufferCount - 1;
-  for ( bn nBuffer = gpBufferPool->nBufferFirst(); nBuffer <= nBufferCount; nBuffer++) {
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-
-    iCountPoolObjects[pBuffer->eClass()]++;
-        
-//    if (pBuffer->eClass() == CN_CATALOGALLOCATOR ||
-//        pBuffer->eClass() == CN_SCHEMAALLOCATOR) {
-//     
-//      SlotAllocator* pSlotAllocator = static_cast<SlotAllocator*>(pBuffer);
-//      for (sn nSlot = 0_sn; nSlot < pSlotAllocator->nSlotLast(); nSlot++) {
-//        
-//        Slot* pSlot = pSlotAllocator->pToSlot(nSlot);
-//        if (pSlot->bIsAllocated())
-//          iCountSlotObjects[pSlot->eSlotClass()]++;
-//      }
-//
-//    }
-  }
+  vTrace("\n");
   
-  vTrace("\nBufferPool Objects:\n");
+  vTrace("  BufferPool Objects:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
     if (iCountPoolObjects[eClass] == 0)
       continue;
     
-    vTrace("%18s: %d \n", pCN[eClass], iCountPoolObjects[eClass]);
+    vTrace("  %16s %-6lld \n", pCN[eClass], iCountPoolObjects[eClass]);
   }
   
-  vTrace("\nBufferPool Slot Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountSlotObjects[eClass] == 0)
-      continue;
-    
-    vTrace("%18s: %d \n", pCN[eClass], iCountSlotObjects[eClass]);
-  }
-  vTrace("/**************************************/\n");
+  vTrace("/**************************************************************/\n");
 
 }
 

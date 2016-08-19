@@ -36,6 +36,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   
   m_iObjectSize  = iObjectSize;
   m_zLock.vCheckInit();
+  m_iAllocCount  = 0;
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
@@ -78,6 +79,26 @@ Object* Heap::pAllocObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of allocated objects                                            */
+/*----------------------------------------------------------------------------*/
+i8 Heap::iAllocCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iAllocCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of buffers in the heap                                          */
+/*----------------------------------------------------------------------------*/
+i8 Heap::iBufferCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this heap                                                             */
 /*----------------------------------------------------------------------------*/
 void Heap::vDump(void)
@@ -88,6 +109,16 @@ void Heap::vDump(void)
          this,
          m_iBufferCount,
          m_iFreeCount);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of free chunks                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Heap::iFreeCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_iFreeCount;
 }
 
 /*----------------------------------------------------------------------------*/

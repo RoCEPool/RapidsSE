@@ -2414,7 +2414,11 @@ void Task::vBpa(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vBpa");
   
-  gpBPA->vAnalyze();
+  BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
+  
+  pBPA->vAnalyze();
+  
+  delete pBPA;
 }
 
 /*----------------------------------------------------------------------------*/

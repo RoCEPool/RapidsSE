@@ -13,6 +13,7 @@ namespace MemoryManagement
   private:
     i8          m_iObjectSize;   // size of each object (e.g. 1KB or 16KB)
     Lock        m_zLock;         // lock over all segments and free chain
+    i8          m_iAllocCount;   // number of allocated objects
     i8          m_iBufferCount;  // number of buffers in the heap
     HeapBuffer* m_pFirstBuffer;  // first buffer in the heap
     HeapBuffer* m_pLastBuffer;   // last buffer in the heap
@@ -28,6 +29,9 @@ namespace MemoryManagement
     
     Object* pAllocObject(void);
     void    vDump(void);
+    i8      iAllocCount(void);
+    i8      iBufferCount(void);
+    i8      iFreeCount(void);
     void    vFreeObject(Object* pObject);
     i8      iObjectSize(void);
     
