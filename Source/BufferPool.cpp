@@ -45,7 +45,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
 /* attach to an existing shared buffer pool                                   */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAttachRegion(s& sRegionName,
-                                  i8 iPoolSize, i8 iBufferSize, int& iDescriptor)
+                                  i8 iRegionSize, i8 iBufferSize, int& iDescriptor)
 {
   SysCall xSysCall;
   
@@ -60,7 +60,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
   }
   
   // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iPoolSize,true,xSysCall);
+  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iRegionSize,true,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
     Shm::bClose(iDescriptor,xSysCall);
@@ -76,21 +76,21 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
 /* create a new shared buffer pool                                            */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pCreateRegion(s& sRegionName,
-                                  i8 iPoolSize, i8 iBufferSize, int& iDescriptor)
+                                  i8 iRegionSize, i8 iBufferSize, int& iDescriptor)
 {
   SysCall xSysCall;
   
   vTrace("Creating region %s\n",sRegionName.a());
   
   // open a shared memory region
-  bool bResult = Shm::bCreate(sRegionName.a(),iPoolSize,iDescriptor,xSysCall);
+  bool bResult = Shm::bCreate(sRegionName.a(),iRegionSize,iDescriptor,xSysCall);
   if ( ! bResult ) {
     vTrace("BufferPool::pCreateRegion Shared Memory Region failed to open region %s\n",
            sRegionName.a());
     exit(EXIT_FAILURE);
   }
   // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iPoolSize,true,xSysCall);
+  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iRegionSize,true,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pCreateRegion failed to map!\n");
     Shm::bClose(iDescriptor,xSysCall);
@@ -113,27 +113,27 @@ BufferPool::BufferPool(s& sRegionName)
 {
   vClass(CN_BUFFERPOOL);
   
-  m_iPoolSize    = 10_MB;
+  m_iRegionSize    = 10_MB;
   m_iBufferSize  = 1_MB;
   m_sShmName     = sRegionName;
   
   m_zFreeLock    = 0;
-  m_iUseCount    = 0;
+  m_iAllocCount  = 0;
   m_iFreeCount   = 0;
   
   m_pBase = pAttachRegion(sRegionName,m_iShmDescriptor);
   
   gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(m_pBase,C_SIZE_LARGE_BUFFER));
   
-  m_iPoolSize   = gpAttachMap->m_iPoolSize;
+  m_iRegionSize   = gpAttachMap->m_iRegionSize;
   m_iBufferSize = C_SIZE_LARGE_BUFFER;
   
   bool bResult = bDetachPool();
   ASSERT(bResult);
 
-  m_pBase  = pAttachRegion(sRegionName,m_iPoolSize,m_iBufferSize,m_iShmDescriptor);
-  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iPoolSize));
-  m_iBufferCount = DIV(m_iPoolSize,m_iBufferSize);
+  m_pBase  = pAttachRegion(sRegionName,m_iRegionSize,m_iBufferSize,m_iShmDescriptor);
+  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
+  m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
   
   // do not initialise
 }
@@ -141,23 +141,23 @@ BufferPool::BufferPool(s& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create a new buffer pool                                                   */
 /*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(s& sRegionName, i8 iPoolSize, i8 iBufferSize)
+BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
 {
   vClass(CN_BUFFERPOOL);
   
   gpBufferPool   = this;
-  m_iPoolSize    = iPoolSize;
+  m_iRegionSize    = iRegionSize;
   m_iBufferSize  = iBufferSize;
-  m_iBufferCount = DIV(m_iPoolSize,m_iBufferSize);
+  m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
   m_sShmName     = sRegionName;
   
   m_zFreeLock    = 0;
-  m_iUseCount    = 0;
+  m_iAllocCount  = 0;
   m_iFreeCount   = 0;
   
   m_nFreeHead    = bn::nNil();
-  m_pBase        = pCreateRegion(m_sShmName,m_iPoolSize,m_iBufferSize,m_iShmDescriptor);
-  m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iPoolSize));
+  m_pBase        = pCreateRegion(m_sShmName,m_iRegionSize,m_iBufferSize,m_iShmDescriptor);
+  m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   
   vInitialise();
 }
@@ -199,18 +199,18 @@ BufferPool::BufferPool(void)
   vClass(CN_BUFFERPOOL);
   
   gpBufferPool   = this;
-  m_iPoolSize    = gxArguments.m_iPoolSize;
+  m_iRegionSize    = gxArguments.m_iRegionSize;
   m_iBufferSize  = C_SIZE_LARGE_BUFFER;
-  m_iBufferCount = DIV(m_iPoolSize,C_SIZE_LARGE_BUFFER);
+  m_iBufferCount = DIV(m_iRegionSize,C_SIZE_LARGE_BUFFER);
   m_sShmName     = gxArguments.m_sRegionName;
   
   m_zFreeLock    = 0;
-  m_iUseCount    = 0;
+  m_iAllocCount  = 0;
   m_iFreeCount   = 0;
   
   m_nFreeHead    = bn::nNil();
   m_pBase        = reinterpret_cast<Buffer*>(this);
-  m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iPoolSize));
+  m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   
   vInitialise();
 }
@@ -244,7 +244,7 @@ Buffer* BufferPool::pAllocBuffer(void)
   
   // adjust counts
   m_iFreeCount--;
-  m_iUseCount++;
+  m_iAllocCount++;
   
   return pPoolCheck<BufferFree*>(pAllocatedBuffer);
 }
@@ -329,7 +329,7 @@ bool BufferPool::bDetachPool(void)
   
   bool bResult = Shm::bClose(m_iShmDescriptor,xSysCall);
   
-  bResult = Shm::bUnmap(m_pBase,m_iPoolSize,xSysCall);
+  bResult = Shm::bUnmap(m_pBase,m_iRegionSize,xSysCall);
   
   return bResult;
 }
@@ -341,14 +341,14 @@ void BufferPool::vDump(void)
 {
   _class_(CN_BUFFERPOOL);
   
-  vTrace("PoolSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
+  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
          "InUse %lld FreeCount %lld FreeHead %lld\n",
-         m_iPoolSize,
+         m_iRegionSize,
          m_iBufferSize,
          m_iBufferCount,
          m_pBase,
          m_pLimit,
-         m_iUseCount,
+         m_iAllocCount,
          m_iFreeCount,
          *m_nFreeHead
          );
@@ -395,7 +395,7 @@ void BufferPool::vFree(Buffer* pBuffer)
   
   // adjust counts
   m_iFreeCount++;
-  m_iUseCount--;
+  m_iAllocCount--;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -405,7 +405,7 @@ i8 BufferPool::iFreePercent(void)
 {
   _class_(CN_BUFFERPOOL);
   
-  i8 iFreePercent = DIV(iFreeSpace() * 100,iPoolSize());
+  i8 iFreePercent = DIV(iFreeSpace() * 100,iRegionSize());
   
   return iFreePercent;
 }
@@ -443,9 +443,9 @@ void BufferPool::vInitialise(void)
 {
   _class_(CN_BUFFERPOOL);
   
-  m_iUseCount  = 0;
-  m_iFreeCount = m_iBufferCount;
-  m_nFreeHead  = nBufferFirst();
+  m_iAllocCount = 0;
+  m_iFreeCount  = m_iBufferCount;
+  m_nFreeHead   = nBufferFirst();
   
   //vTrace("FirstBuffer %lld LastBuffer %lld\n",*nBufferFirst(),*nBufferLast());
   
@@ -479,11 +479,11 @@ void BufferPool::vInitialise(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of pool                                                  */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iPoolSize(void) const
+i8 BufferPool::iRegionSize(void) const
 {
   _class_(CN_BUFFERPOOL);
   
-  return m_iPoolSize;
+  return m_iRegionSize;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,7 +19,7 @@ namespace StorageEngine
     i8                 m_iQuit;
     i8                 m_iStop;
     
-    i8                 m_iPoolSize;
+    i8                 m_iRegionSize;
     
     BufferPool*        m_pBufferPool;
     Heap*              m_pMediumHeap;

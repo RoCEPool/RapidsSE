@@ -21,7 +21,7 @@ namespace MemoryManagement
   private:
     
     // buffer pool characteristics
-    i8   m_iPoolSize;    // size of the pool (e.g. 1_TB)
+    i8   m_iRegionSize;    // size of the pool (e.g. 1_TB)
     i8   m_iBufferSize;  // size of each buffer (e.g. 1_MB)
     i8   m_iBufferCount; // number of buffers in pool
     
@@ -33,19 +33,19 @@ namespace MemoryManagement
     
     // free chain
     i8   m_zFreeLock;    // lock over free chain
-    i8   m_iUseCount;    // number of buffers currently in use
+    i8   m_iAllocCount;  // number of buffers currently in use
     i8   m_iFreeCount;   // number of buffers in free chain
     bn   m_nFreeHead;    // head of free chain
 
   public:    
     static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor);
     static Buffer* pAttachRegion(s& sRegionName,
-                                 i8 iPoolSize, i8 iBufferSize, int& iDescriptor);
+                                 i8 iRegionSize, i8 iBufferSize, int& iDescriptor);
     static Buffer* pCreateRegion(s& sRegionName,
-                                 i8 iPoolSize, i8 iBufferSize, int& iDescriptor);
+                                 i8 iRegionSize, i8 iBufferSize, int& iDescriptor);
 
     BufferPool(s& sRegionName);
-    BufferPool(s& sRegionName, i8 iPoolSize, i8 iBufferSize);
+    BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize);
     
     void* operator new(size_t);
     //----
@@ -69,7 +69,7 @@ namespace MemoryManagement
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(void);
-    i8   iPoolSize(void) const;
+    i8   iRegionSize(void) const;
     Buffer* pToBuffer(bn nBuffer) const;
     BufferFree* pToBufferFree(bn nBuffer) const;
     BufferFree* pToBufferFree(Buffer* pBuffer) const;

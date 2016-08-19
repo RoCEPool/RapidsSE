@@ -51,20 +51,20 @@ void BufferPoolAnalyzer::vAnalyze(void)
     iCountPoolObjects[pBuffer->eClass()]++;
   }
   
-  vTrace("/**************************************************************/\n");
-  vTrace("/* Buffer Pool Analysis                                       */\n");
-  vTrace("/**************************************************************/\n");
+  vTrace("**************************************************************\n");
+  vTrace("* Buffer Pool Analysis                                       *\n");
+  vTrace("**************************************************************\n");
   
   vTrace("  Region %s %p\n",gxArguments.m_sRegionName.a(),gpBufferPool);
-  vTrace("  PoolSize %lld BufferSize %lld \n",
-         gpBufferPool->m_iPoolSize,
+  vTrace("  RegionSize %lld BufferSize %lld \n",
+         gpBufferPool->m_iRegionSize,
          gpBufferPool->m_iBufferSize);
   
   vTrace("\n");
   
   vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
          gpBufferPool->m_iBufferCount,
-         gpBufferPool->m_iUseCount,
+         gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
   
@@ -90,7 +90,7 @@ void BufferPoolAnalyzer::vAnalyze(void)
     vTrace("  %16s %-6lld \n", pCN[eClass], iCountPoolObjects[eClass]);
   }
   
-  vTrace("/**************************************************************/\n");
+  vTrace("**************************************************************\n");
 
 }
 

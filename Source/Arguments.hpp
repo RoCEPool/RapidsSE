@@ -13,7 +13,7 @@ namespace StorageEngine
   public:
     // configuration
     s256 m_sRegionName; // name of shared memory region
-    i8   m_iPoolSize;   // size of region in bytes
+    i8   m_iRegionSize;   // size of region in bytes
 
     // commands
     s256 m_sCommand;    // command to run

@@ -11,7 +11,7 @@ Arguments::Arguments(void)
 : InProcess(CN_ARGUMENTS)
 {
   m_sRegionName = "/RapidsSE_DefaultRegion";
-  m_iPoolSize   = 1_GB * 2;
+  m_iRegionSize   = 1_GB * 2;
   
   m_sCommand    = "";
   
@@ -75,7 +75,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     if (String::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
-      m_iPoolSize = String::iToI8(argv[++iArg]);
+      m_iRegionSize = String::iToI8(argv[++iArg]);
       continue;
     }
     
@@ -125,7 +125,7 @@ void Arguments::vPrint(void)
   if (m_bStop)    vTrace("  --stop\n");
 
   vTrace("  --regionName %s\n",m_sRegionName.a());
-  vTrace("  --poolSize %lld\n",m_iPoolSize);
+  vTrace("  --regionSize %lld\n",m_iRegionSize);
 }
 
 /*----------------------------------------------------------------------------*/

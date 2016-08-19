@@ -76,7 +76,7 @@ void AttachMap::vRecordGlobals(void)
   m_iStop             = 0;
   m_iQuit             = 0;
   
-  m_iPoolSize         = gpBufferPool->iPoolSize();
+  m_iRegionSize         = gpBufferPool->iRegionSize();
 
   m_pBufferPool       = gpBufferPool;
   m_pMediumHeap       = gpMediumHeap;

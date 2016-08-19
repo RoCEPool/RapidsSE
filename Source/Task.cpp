@@ -222,7 +222,7 @@ void Task::vAddConstants(void)
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic",            MAGIC);
-  vAddConstant("poolsize",         gxArguments.m_iPoolSize);
+  vAddConstant("regionsize",       gxArguments.m_iRegionSize);
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
   
   vAddConstant("true",  1);

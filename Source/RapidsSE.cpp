@@ -197,7 +197,7 @@ void RapidsSE::vAttachRegion(void)
   gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
   
   // get the actual size
-  i8 iPoolSize = gpAttachMap->m_iPoolSize;
+  i8 iRegionSize = gpAttachMap->m_iRegionSize;
   gpAttachMap = nullptr;
   
   // close the temporary mapping
@@ -215,7 +215,7 @@ void RapidsSE::vAttachRegion(void)
   }
   
   // allocate the full extent of memory required
-  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,iPoolSize,true,xSysCall);
+  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,iRegionSize,true,xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttachRegion failed to map\n");
     Shm::bClose(iFD,xSysCall);
@@ -253,7 +253,7 @@ void RapidsSE::vCreateRegion(void)
   
   // open a new shm region
   bool bResult = Shm::bCreate(gxArguments.m_sRegionName.a(),
-                              gxArguments.m_iPoolSize,
+                              gxArguments.m_iRegionSize,
                               iFD,
                               xSysCall);
   if ( ! bResult ) {
@@ -265,7 +265,7 @@ void RapidsSE::vCreateRegion(void)
   // allocate memory for the shm region
   mpRegion = Shm::pMap(iFD,
                        C_ADDR_POOL,
-                       gxArguments.m_iPoolSize,
+                       gxArguments.m_iRegionSize,
                        true,
                        xSysCall);
   if ( ! mpRegion )  {

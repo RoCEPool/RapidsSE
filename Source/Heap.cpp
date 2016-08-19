@@ -73,6 +73,8 @@ Object* Heap::pAllocObject(void)
 
   Object* pObject = static_cast<Object*>(pPopFree());
   
+  m_iAllocCount++;
+
   m_zLock.vDropWrite();
   
   return pObject;
@@ -132,6 +134,8 @@ void Heap::vFreeObject(Object* pObject)
   
   vPushFree(static_cast<FreeChunk*>(pObject));
   
+  m_iAllocCount--;
+
   m_zLock.vDropWrite();
 }
 
