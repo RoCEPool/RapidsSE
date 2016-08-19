@@ -2371,7 +2371,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "242"
             endingLineNumber = "242"
-            landmarkName = "SEitf::vAppendRequest(s&amp; sRequest)"
+            landmarkName = "SEitf::vIterateRows(void)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2387,7 +2387,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "254"
             endingLineNumber = "254"
-            landmarkName = "SEitf::pGetResponse(void)"
+            landmarkName = "SEitf::vIterateRows(void)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2417,7 +2417,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "629"
             endingLineNumber = "629"
-            landmarkName = "SEitf::bDropDictionary(char* pWords[])"
+            landmarkName = "SEitf::bHelp(char* pWords[])"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2461,7 +2461,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "334"
             endingLineNumber = "334"
-            landmarkName = "SEitf::vDo(const char* aCommand)"
+            landmarkName = "SEitf::bPopResponse(i8&amp; iResult, s&amp; sResponse)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2476,9 +2476,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "200"
-            endingLineNumber = "200"
-            landmarkName = "SEitf::vExecute(char* pWords[])"
-            landmarkType = "5">
+            endingLineNumber = "200">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2554,7 +2552,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "367"
-            endingLineNumber = "367">
+            endingLineNumber = "367"
+            landmarkName = "SEitf::vResponseQueue(Queue* pResponseQueue)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2628,7 +2628,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "366"
-            endingLineNumber = "366">
+            endingLineNumber = "366"
+            landmarkName = "SEitf::vResponseQueue(Queue* pResponseQueue)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

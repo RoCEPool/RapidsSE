@@ -138,7 +138,7 @@ void Table::vInsertRow(StrVal* pRowStr)
 /*----------------------------------------------------------------------------*/
 /* load file into tabl                                                        */
 /*----------------------------------------------------------------------------*/
-void Table::vLoad(File* pFile)
+void Table::vLoad2(File* pFile)
 {
   _poolAddress_(this);
   
@@ -165,7 +165,7 @@ void Table::vLoad(File* pFile)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void Table::vLoad2(File* pFile)
+void Table::vLoad(File* pFile)
 {
   _poolAddress_(this);
 

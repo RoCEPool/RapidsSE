@@ -1219,11 +1219,11 @@ bool SEitf::bTpcH(char* pWords[])
   vDo("mkten boray");
   vDo("cd boray");
   vDo("cd catalogs");
-  vDo("mkcat catalog");
-  vDo("cd catalog");
+  vDo("mkcat borayCatalog");
+  vDo("cd borayCatalog");
   vDo("cd schemas");
-  vDo("mksch schema");
-  vDo("cd schema");
+  vDo("mksch boraySchema");
+  vDo("cd boraySchema");
   vDo("cd tables");
   vDo("mktbl customer");
   vDo("mktbl lineitem");
