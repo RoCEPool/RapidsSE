@@ -774,7 +774,7 @@ bool String::bExtractWordString(char** ps, char* pWord)
   if ('"' == **ps)
     return bExtractString(ps,pWord);
   
-  if (! isalnum(**ps))
+  if ( !isalnum(**ps) && !('_' == **ps))
     return bExtractItem(ps,pWord);
   
   bool bOnce = false;
@@ -784,7 +784,7 @@ bool String::bExtractWordString(char** ps, char* pWord)
   char *a = pWord;
   for ( ; **ps; (*ps)++)
   {
-    if ( ! isalnum(**ps) )
+    if ( !isalnum(**ps) && !('_' == **ps) )
       break;
     
     *a++ = **ps;

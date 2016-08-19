@@ -572,6 +572,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dic.drop",        &vDicDrop,          false);
   vAddPrimitive("}}",              &vDicDrop,          false);
   vAddPrimitive("dic.init",        &vDicInit,          false);
+  vAddPrimitive("dic.last",        &vDicLast,          false);
   vAddPrimitive("dic.main",        &vDicMain,          false);
   vAddPrimitive("dic.name",        &vDicName,          false);
   vAddPrimitive("dic.pick",        &vDicPick,          false);
@@ -4929,6 +4930,25 @@ void Task::vDicInit(NNP_Task nnpTask)
   Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
 
   pDictionary->vInit();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.last -- get last word of dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vDicLast(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDicLast");
+  
+  PtrVal xDicPtr;
+  
+  if ( ! nnpTask->bPopParam(xDicPtr) )
+    THROW_INVALID_PARAM("dic.last");
+  
+  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
+  
+  Word* pLastWord = pDictionary->pCurrentWord();
+  
+  nnpTask->vPushParam(pLastWord);
 }
 
 /*----------------------------------------------------------------------------*/

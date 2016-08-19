@@ -415,6 +415,7 @@ namespace Tasking
     static void vDicCount(NNP_Task nnpTask);
     static void vDicDrop(NNP_Task nnpTask);       
     static void vDicInit(NNP_Task nnpTask);
+    static void vDicLast(NNP_Task nnpTask);
     static void vDicMain(NNP_Task nnpTask);
     static void vDicName(NNP_Task nnpTask);
     static void vDicPick(NNP_Task nnpTask);

@@ -901,17 +901,21 @@ bool SEitf::bDropTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(char* pWords[])
+bool SEitf::bAddColumn(char* pWords[16])
 {
   s256 sRequest;
   
   char* a = sRequest.a();
   
   String::vCopy(a,"\"");
+  String::vConcat(a,pWords[3]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," \"");
   String::vConcat(a,pWords[2]);
   String::vConcat(a,"\"");
   
-  String::vCopy(a," \"");
+  String::vConcat(a," \"");
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
   
@@ -928,9 +932,15 @@ bool SEitf::bListColumns(char* pWords[])
 {
   s256 sRequest;
   
-  sRequest = "list_columns";
-  vAppendRequest(sRequest);
+  char* a = sRequest.a();
   
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," list_columns");
+  
+  vAppendRequest(sRequest);
   return true;
 }
 
@@ -1228,6 +1238,10 @@ bool SEitf::bTpcH(char* pWords[])
   vDo("mktbl customer");
   vDo("mktbl lineitem");
   vDo("mktbl nation");
+  vDo("add nation N_NATIONKEY  \"INTEGER NOT NULL\"");
+  vDo("add nation N_NAME       \"CHAR(25) NOT NULL\"");
+  vDo("add nation N_REGIONKEY  \"INTEGER NOT NULL\"");
+  vDo("add nation N_COMMENT    \"VARCHAR(152)\"");
   vDo("mktbl orders");
   vDo("mktbl part");
   vDo("mktbl partsupp");
@@ -1236,6 +1250,8 @@ bool SEitf::bTpcH(char* pWords[])
   //vDo("ld customer \"/tpch/customer.tbl\"");
   //vDo("ld lineitem \"/tpch/lineitem.tbl\"");
   vDo("ld nation   \"/tpch/nation.tbl\"");
+  
+  
   //vDo("ld orders   \"/tpch/orders.tbl\"");
   //vDo("ld part     \"/tpch/part.tbl\"");
   //vDo("ld partsupp \"/tpch/partsupp.tbl\"");

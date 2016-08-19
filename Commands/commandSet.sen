@@ -104,7 +104,7 @@
 ;
 
 : createColumnsDic ( table -- table )
-    dup table.dic {{ "columns" :dic }}
+    dup table.dic {{ "columns" :dic drop }}
 ;
 
 : pushTable ( "<tableName>" -- )
@@ -113,7 +113,28 @@
 
     not if "no such table" 1 failure 0 exit then
 
+    execute table.dic dic.push
+
+    true
+;
+
+: popTable
+    dic.drop
+;
+
+: pushColumns ( -- )
+
+    "columns" find checkIsKnown
+
+    not if "no columns dic" 1 failure 0 exit then
+
     execute dic.push
+
+    true
+;
+
+: popColumns
+    dic.drop
 ;
 
 : :column ( "<columnType>" "<columnName>" )
@@ -127,6 +148,38 @@
 
     true
 ;
+
+
+: listColumns ( -- )
+
+traceon
+
+  ""                             // initial ls string
+  0 dic.pick dic.last            // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
+
+    object@ word.name            // column name
+
+    " " concat
+    object@ execute concat       // column type
+
+    swap
+
+    dup strlen
+    if " , " swap concat then         //
+
+    concat                       // prepend column to ls
+
+    object@ prevWord object!     // step backwards thru words
+
+  next                           //
+
+  "\n" concat
+
+traceoff
+;
+
 
 : tableLoader ( "<fileNm>" ^table )
 
@@ -302,22 +355,42 @@
 /*----------------------------------------------------------------------------*/
 : add_column ( "<columnType>" "<columnName" "<tableName>" -- <response> )
 
+traceon
     checkInTables not if exit then
 
     pushTable not if exit then
 
+    pushColumns not if exit then
+
     addColumn not if exit then
+
+    popColumns
 
     popTable
 
     "created column" success
+traceoff
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get list of columns                                                        */
 /*----------------------------------------------------------------------------*/
-: list_columns
-    contents_string             // get contents of dic as a string
+: list_columns ( "<tableName>" -- <response> )
+
+//traceon
+    checkInTables not if exit then
+
+    pushTable not if exit then
+
+    pushColumns not if exit then
+
+    listColumns
+
+    popColumns
+
+    popTable
+//traceoff
+
     success
 ;
 
