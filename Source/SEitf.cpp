@@ -35,15 +35,16 @@ SEitf::SEitf(void)
 : Object(CN_SEITF)
 {
   m_iPid = 0;
-  //m_xDictionary;
+  m_xDictionary.vName("seitf");
   //m_xDicStack;
   m_pRequestQueue  = nullptr;
   m_pResponseQueue = nullptr;
-  
-  m_xDictionary.vName("seitf");
-  
+  //m_sResponse
+  m_iInput = 0;
+  //m_xInputStream[]
+  //m_sPrompt
+
   SEitf* pSEitf = this;
-  
   gpSEitfList->vAppend(pSEitf);
 }
 
@@ -221,13 +222,14 @@ void SEitf::vPrompt(void)
   };
   
   m_sPrompt = "seitf> ";
-  m_xInputStream.vUseStdin();
-  m_xInputStream.vPrompt(m_sPrompt.a());
-  m_xInputStream.vLineOriented(true);
+  m_xInputStream[m_iInput].vUseStdin();
+  m_xInputStream[m_iInput].vPrompt(m_sPrompt.a());
+  m_xInputStream[m_iInput].vLineOriented(true);
   
   while (true) {
-    for (i8 i = 0; LT_NONE != m_xInputStream.eNextLiteral(pWords[i]); i++)
-      ;
+    i8 i = 0;
+    while (LT_NONE != m_xInputStream[m_iInput].eNextLiteral(pWords[i]))
+      i++;
     
     vExecute(pWords);
     

@@ -12,17 +12,18 @@ namespace Interface
                        public ListNode_t<SEitf>
   {
   public:
-    i8         m_iPid;           // process which created this seitf
-    Dictionary m_xDictionary;    // private dictionary
-    DictionaryStack m_xDicStack; // dictionary stack
+    i8         m_iPid;             // process which created this seitf
+    Dictionary m_xDictionary;      // private dictionary
+    DictionaryStack m_xDicStack;   // dictionary stack
 
-    Queue*     m_pRequestQueue;  // request queue
-    Queue*     m_pResponseQueue; // reponse queue
+    Queue*     m_pRequestQueue;    // request queue
+    Queue*     m_pResponseQueue;   // reponse queue
     
-    s256       m_sResponse;      // response
+    s256       m_sResponse;        // response
     
-    InputStream m_xInputStream;  // input stream handler
-    s256        m_sPrompt;       // prompt
+    i8          m_iInput;
+    InputStream m_xInputStream[4]; // input stream handler
+    s256        m_sPrompt;         // prompt
     
     // must be last
     Footer m_xFooter;
