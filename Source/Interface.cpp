@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Interface::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(SEitf)     < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(SEitf)     < C_SIZE_MEDIUM_OBJECT);
   ASSERT(sizeof(SEitfList) < C_SIZE_SMALL_OBJECT);
 }
 

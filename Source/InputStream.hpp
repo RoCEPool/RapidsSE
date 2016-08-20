@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Input.hpp - Input Stream Handler                                           */
+/* InputStream.hpp - Input Stream Handler                                     */
 /*============================================================================*/
 
 #pragma once
@@ -28,14 +28,15 @@ namespace Tasking
   class InputStream : public ObjVal
   {
   private:
-    i8           m_iDepth;       // depth of this input
-    bool         m_bFromFile;    // input is from a file?
-    File         m_xInputFile;   // the input file
-    const char*  m_yInputText;   // the input text string
-    char         m_cCurrChar;    // current char; 0 indicates EOF
-    eLT          m_eLiteralType; // type of literal just recognized
-    bool         m_bPrompt;      // print prompt
-    const char*  m_aPrompt;      // the prompt
+    i8           m_iDepth;        // depth of this input
+    bool         m_bFromFile;     // input is from a file?
+    File         m_xInputFile;    // the input file
+    const char*  m_yInputText;    // the input text string
+    char         m_cCurrChar;     // current char; 0 indicates EOF
+    eLT          m_eLiteralType;  // type of literal just recognized
+    bool         m_bPrompt;       // print prompt
+    const char*  m_aPrompt;       // the prompt
+    bool         m_bLineOriented; // line oriented? (temporary)
     
   public:
     void* operator new(size_t);
@@ -47,14 +48,14 @@ namespace Tasking
     void vCloseFile(void);
     i8   iDepth(void);
     void vDepth(i8 iDepth);
-    void vInputText(void);
-    void vInputText(s& sScanText);
+    void vLineOriented(bool bLineOriented);
     eLT  eNextLiteral(char* wWorkspace);
     bool bOpenFile(const char* aFilePath);
     void vPrintPrompt(void);
     void vPrompt(char* aPrompt);
     void vReset(void);
-    void vSetStdin(void);
+    void vUseStdin(void);
+    void vUseText(s& sScanText);
     
   private:
     bool  bParseComment(char* wWorkspace);

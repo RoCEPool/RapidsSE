@@ -52,6 +52,19 @@ InputStream::~InputStream(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* close current file                                                         */
+/*----------------------------------------------------------------------------*/
+void InputStream::vCloseFile(void)
+{
+  _poolAddress_(this);
+
+  if (m_xInputFile.bIsOpen())
+    m_xInputFile.vClose();
+  
+  m_bFromFile = false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get depth of this input                                                    */
 /*----------------------------------------------------------------------------*/
 i8 InputStream::iDepth(void)
@@ -72,16 +85,13 @@ void InputStream::vDepth(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* close current file                                                         */
+/* set liine oreinted mode                                                    */
 /*----------------------------------------------------------------------------*/
-void InputStream::vCloseFile(void)
+void InputStream::vLineOriented(bool bLineOriented)
 {
   _poolAddress_(this);
-
-  if (m_xInputFile.bIsOpen())
-    m_xInputFile.vClose();
   
-  m_bFromFile = false;
+  m_bLineOriented = bLineOriented;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,33 +217,9 @@ void InputStream::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use text for scanning                                                      */
-/*----------------------------------------------------------------------------*/
-void InputStream::vInputText(void)
-{
-  _poolAddress_(this);
-  
-  vCloseFile();
-  
-  m_yInputText = nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* use text for scanning                                                      */
-/*----------------------------------------------------------------------------*/
-void InputStream::vInputText(s& sScanText)
-{
-  _poolAddress_(this);
-  
-  vCloseFile();
-
-  m_yInputText = sScanText.a();
-}
-
-/*----------------------------------------------------------------------------*/
 /* use stdin as input file                                                    */
 /*----------------------------------------------------------------------------*/
-void InputStream::vSetStdin(void)
+void InputStream::vUseStdin(void)
 {
   _poolAddress_(this);
   
@@ -243,6 +229,18 @@ void InputStream::vSetStdin(void)
   
   m_bFromFile = true;
   m_bPrompt   = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use given text for scanning                                                */
+/*----------------------------------------------------------------------------*/
+void InputStream::vUseText(s& sScanText)
+{
+  _poolAddress_(this);
+  
+  vCloseFile();
+  
+  m_yInputText = sScanText.a();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -463,9 +461,16 @@ void InputStream::vGetChar(void)
   // get next char from input file
   m_cCurrChar = m_xInputFile.cGetChar();
   
-  // do we need to print the prompt again next time?
-  if (m_xInputFile.bIsStdin() && '\n' == m_cCurrChar)
-    m_bPrompt = true;
+  // end of line processing
+  if ('\n' == m_cCurrChar) {
+  
+    // do we need to print the prompt again next time?
+    if (m_xInputFile.bIsStdin())
+      m_bPrompt = true;
+    
+    if (m_bLineOriented)
+      m_cCurrChar = 0;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -4,7 +4,7 @@
 
 #include "Interface.h"
 
-extern Heap*        gpSmallHeap;
+extern Heap*        gpMediumHeap;
 extern Dictionary*  gpDictionary;
 extern SEitfList*   gpSEitfList;
 
@@ -13,7 +13,7 @@ extern SEitfList*   gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void* SEitf::operator new(size_t iSize)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpMediumHeap->pAllocObject();
   
   return pObject;
 }
@@ -25,7 +25,7 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 {
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pSEinterfaceAddress);
   
-  gpSmallHeap->vFreeObject(pSEitf);
+  gpMediumHeap->vFreeObject(pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ void SEitf::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEitf::vPrompt(void)
+void SEitf::vPrompt2(void)
 {
   s32  sPrompt;
   s256 sCommand;
@@ -193,6 +193,55 @@ void SEitf::vPrompt(void)
       }
    
     }
+  }
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void SEitf::vPrompt(void)
+{
+  char xArray[C_16KB];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1],
+    &xArray[C_1KB * 2],
+    &xArray[C_1KB * 3],
+    &xArray[C_1KB * 4],
+    &xArray[C_1KB * 5],
+    &xArray[C_1KB * 6],
+    &xArray[C_1KB * 7],
+    &xArray[C_1KB * 8],
+    &xArray[C_1KB * 9],
+    &xArray[C_1KB * 10],
+    &xArray[C_1KB * 11],
+    &xArray[C_1KB * 12],
+    &xArray[C_1KB * 13],
+    &xArray[C_1KB * 14],
+    &xArray[C_1KB * 15]
+  };
+  
+  m_sPrompt = "seitf> ";
+  m_xInputStream.vUseStdin();
+  m_xInputStream.vPrompt(m_sPrompt.a());
+  m_xInputStream.vLineOriented(true);
+  
+  while (true) {
+    for (i8 i = 0; LT_NONE != m_xInputStream.eNextLiteral(pWords[i]); i++)
+      ;
+    
+    vExecute(pWords);
+    
+    if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
+      vIterateRows();
+    }
+    
+    if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
+      while (true) {
+        PosixThread::vSleepSec(10);
+        vExecute(pWords);
+      }
+    }
+    
   }
 }
 
@@ -409,6 +458,9 @@ void SEitf::vDo(const char* aCommand)
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDecode(char* pWords[])
 {
+  if (0 == String::iLength(pWords[0]))
+    return false;
+  
   if (String::bEqualTo("?",pWords[0],C_NO_CASE) ||
       String::bEqualTo("help",pWords[0],C_NO_CASE)) {
     bHelp(pWords);
@@ -579,9 +631,6 @@ bool SEitf::bDecode(char* pWords[])
   if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
     return bGetMonitor(pWords);
   }
-  
-  if (0 == String::iLength(pWords[0]))
-    return false;
   
   vTrace("Unknown command: %s\n",pWords[0]);
   return false;

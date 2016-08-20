@@ -21,6 +21,9 @@ namespace Interface
     
     s256       m_sResponse;      // response
     
+    InputStream m_xInputStream;  // input stream handler
+    s256        m_sPrompt;       // prompt
+    
     // must be last
     Footer m_xFooter;
     
@@ -39,6 +42,7 @@ namespace Interface
     void   vDump(void);
     void   vInit(void);
     void   vPrompt(void);
+    void   vPrompt2(void);
     void   vParse(s& sRequest, char* pWords[]);
     void   vExecute(char* pWords[]);
     
