@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* InputStream.cpp - input stream handler                                     */
+/* InputStream.cpp - Input Stream Handler                                     */
 /*============================================================================*/
 
 #include "Tasking.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* InputStream::operator new(size_t iSize)
+void* InputStream::operator new(size_t)
 {
   vFatal("fatal: InputStream class cannot be new'd");
   
@@ -19,7 +19,7 @@ void* InputStream::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void InputStream::operator delete(void* pAddress)
+void InputStream::operator delete(void*)
 {
   vFatal("fatal: InputStream class cannot be deleted");
   
@@ -72,16 +72,6 @@ void InputStream::vDepth(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get type of literal just scanned                                           */
-/*----------------------------------------------------------------------------*/
-eLT InputStream::eLiteralType(void)
-{
-  _poolAddress_(this);
-  
-  return m_eLiteralType;
-}
-
-/*----------------------------------------------------------------------------*/
 /* close current file                                                         */
 /*----------------------------------------------------------------------------*/
 void InputStream::vCloseFile(void)
@@ -97,14 +87,16 @@ void InputStream::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 /* parse next literal into given buffer                                       */
 /*----------------------------------------------------------------------------*/
-void InputStream::vNextLiteral(char* wWorkspace)
+eLT InputStream::eNextLiteral(char* wLiteral)
 {
   _poolAddress_(this);
   
   bool b;
   
-  *wWorkspace = '\0';
+  *wLiteral = '\0';
   
+  // - skip any whitespace or comments before next literal
+
   while (true) {
     
     // get first/next char
@@ -113,8 +105,8 @@ void InputStream::vNextLiteral(char* wWorkspace)
     // end of input?
     if (bEndInput()) {
       m_eLiteralType = LT_NONE;
-      *wWorkspace = '\0';
-      return;
+      *wLiteral = '\0';
+      return m_eLiteralType;
     }
     
     // skip whitespace
@@ -123,37 +115,41 @@ void InputStream::vNextLiteral(char* wWorkspace)
     // end of input?
     if (bEndInput()) {
       m_eLiteralType = LT_NONE;
-      *wWorkspace = '\0';
-      return;
+      *wLiteral = '\0';
+      return m_eLiteralType;
     }
 
     // collect any comment
     if (bStartComment()) {
-      if (!bParseComment(wWorkspace))
+      if (!bParseComment(wLiteral))
         break;
     }
     else {
       break;
     }
   }
+
+  // - collect the literal
   
   // collect integer literal
   if (bStartInteger()) {
-    b = bParseInteger(wWorkspace);
+    b = bParseInteger(wLiteral);
     ASSERT(b);
-    return;
+    return m_eLiteralType;
   }
   
   // collect string literal
   if (bStartString()) {
-    b = bParseString(wWorkspace);
+    b = bParseString(wLiteral);
     ASSERT(b);
-    return;
+    return m_eLiteralType;
   }
   
   // collect name literal
-  b = bParseName(wWorkspace);
+  b = bParseName(wLiteral);
   ASSERT(b);
+  
+  return m_eLiteralType;  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,17 +176,17 @@ void InputStream::vPrintPrompt(void)
 {
   _poolAddress_(this);
   
-  printf("%s",m_wPrompt);
+  printf("%s",m_aPrompt);
 }
 
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void InputStream::vPrompt(char* wPrompt)
+void InputStream::vPrompt(char* aPrompt)
 {
   _poolAddress_(this);
   
-  m_wPrompt = wPrompt;
+  m_aPrompt = aPrompt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +203,7 @@ void InputStream::vReset(void)
   m_cCurrChar    = 0;
   m_eLiteralType = LT_NONE;
   m_bPrompt      = false;
-  m_wPrompt      = "docol>";
+  m_aPrompt      = "docol>";
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,21 +250,13 @@ void InputStream::vSetStdin(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* attempt to parse block comment                                             */
-/*----------------------------------------------------------------------------*/
-bool InputStream::bParseBlock(char* wWorkspace)
-{
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to parse a comment                                                 */
 /*----------------------------------------------------------------------------*/
-bool InputStream::bParseComment(char* yWorkspace)
+bool InputStream::bParseComment(char* wLiteral)
 {
   char cOne;
   char cTwo;
-  char *y = yWorkspace;
+  char *z = wLiteral;
   
   // have seen a '/'
 
@@ -325,22 +313,22 @@ bool InputStream::bParseComment(char* yWorkspace)
   }
   
   // it's actually a name ( e.g. /ugh )
-  *y++ = '/';
-  return bParseName(y);
+  *z++ = '/';
+  return bParseName(z);
 }
 
 /*----------------------------------------------------------------------------*/
 /* attempt to parse integer                                                   */
 /*----------------------------------------------------------------------------*/
-bool InputStream::bParseInteger(char* yWorkspace)
+bool InputStream::bParseInteger(char* wLiteral)
 {
-  char *y = yWorkspace;
+  char *z = wLiteral;
   
   i8 iNoDigits = 0;
   
   // collect initial digits
   while (bIsDigit()) {
-    *y++ = m_cCurrChar;
+    *z++ = m_cCurrChar;
     iNoDigits++;
     vGetChar();
   }
@@ -353,7 +341,7 @@ bool InputStream::bParseInteger(char* yWorkspace)
       vUngetChar();
 
     // terminate an intlit
-    *y = '\0';
+    *z = '\0';
     m_eLiteralType = LT_INTLIT;
     return true;
   }
@@ -366,7 +354,7 @@ bool InputStream::bParseInteger(char* yWorkspace)
     
     // collect the hex digits
     while (bIsHex()) {
-      *y++ = m_cCurrChar;
+      *z++ = m_cCurrChar;
       vGetChar();
     }
   }
@@ -379,35 +367,27 @@ bool InputStream::bParseInteger(char* yWorkspace)
       vUngetChar();
 
     // terminate an intlit
-    *y = '\0';
+    *z = '\0';
     m_eLiteralType = LT_INTLIT;
     return true;
   }
   
   // its actually a name; complete parsing name
-  bool b = bParseName(y);
+  bool b = bParseName(z);
   ASSERT(b);
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* attempt to parse line comment                                              */
-/*----------------------------------------------------------------------------*/
-bool InputStream::bParseLine(char* wWorkspace)
-{
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
 /* attempt to parse name                                                      */
 /*----------------------------------------------------------------------------*/
-bool InputStream::bParseName(char* yWorkspace)
+bool InputStream::bParseName(char* wLiteral)
 {
-  char *y = yWorkspace;
+  char *z = wLiteral;
 
   // collect the characters of the name
   while ( bMoreInput() && !bIsWhite() && !bStartString() ) {
-    *y++ = m_cCurrChar;
+    *z++ = m_cCurrChar;
     vGetChar();
   }
   
@@ -416,7 +396,7 @@ bool InputStream::bParseName(char* yWorkspace)
     vUngetChar();
   
   // terminate a namelit
-  *y = '\0';
+  *z = '\0';
   m_eLiteralType = LT_NAMELIT;
   return true;
 }
@@ -424,9 +404,9 @@ bool InputStream::bParseName(char* yWorkspace)
 /*----------------------------------------------------------------------------*/
 /* attempt to parse string                                                    */
 /*----------------------------------------------------------------------------*/
-bool InputStream::bParseString(char* yWorkspace)
+bool InputStream::bParseString(char* wLiteral)
 {
-  char *y = yWorkspace;
+  char *z = wLiteral;
   
   // skip the leading '"'
   vGetChar();
@@ -445,7 +425,7 @@ bool InputStream::bParseString(char* yWorkspace)
       }
     }
         
-    *y++ = m_cCurrChar;
+    *z++ = m_cCurrChar;
     vGetChar();
   }
   
@@ -454,7 +434,7 @@ bool InputStream::bParseString(char* yWorkspace)
     vUngetChar();
   
   // terminate a strlit
-  *y = '\0';
+  *z = '\0';
   m_eLiteralType = LT_STRLIT;
   return true;
 }
@@ -464,25 +444,28 @@ bool InputStream::bParseString(char* yWorkspace)
 /*----------------------------------------------------------------------------*/
 void InputStream::vGetChar(void)
 {
-  if (m_bFromFile) {
-    
-    // print prompt?
-    if (m_bPrompt) {
-      m_bPrompt = false;
-      vPrintPrompt();
-    }
-    
-    // get next char from input file
-    m_cCurrChar = m_xInputFile.cGetChar();
-    
-    // do we need to print the prompt again next time?
-    if (m_xInputFile.bIsStdin() && '\n' == m_cCurrChar)
-      m_bPrompt = true;
-  }
-  else {
-    // get next char from input file
+  // - from input text
+  
+  if (! m_bFromFile) {
+    // get next char from input text
     m_cCurrChar = *m_yInputText++;
+    return;
   }
+
+  // - from input file
+  
+  // print prompt?
+  if (m_bPrompt) {
+    m_bPrompt = false;
+    vPrintPrompt();
+  }
+  
+  // get next char from input file
+  m_cCurrChar = m_xInputFile.cGetChar();
+  
+  // do we need to print the prompt again next time?
+  if (m_xInputFile.bIsStdin() && '\n' == m_cCurrChar)
+    m_bPrompt = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -490,12 +473,10 @@ void InputStream::vGetChar(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vUngetChar(void)
 {
-  if (m_bFromFile) {
+  if (m_bFromFile)
     m_xInputFile.vUngetChar(m_cCurrChar);
-  }
-  else {
+  else
     m_yInputText--;
-  }
   
   m_cCurrChar = 0;
 }
@@ -536,7 +517,7 @@ bool InputStream::bMoreInput(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStartComment(void)
 {
-  if (m_cCurrChar == '/')
+  if ('/' == m_cCurrChar)
     return true;
   
   return false;
@@ -558,7 +539,7 @@ bool InputStream::bStartInteger(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStartString(void)
 {
-  if (m_cCurrChar == '"')
+  if ('"' == m_cCurrChar)
     return true;
   
   return false;
@@ -569,7 +550,7 @@ bool InputStream::bStartString(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndLine(void)
 {
-  if (m_cCurrChar == '\n')
+  if ('\n' == m_cCurrChar)
     return true;
   
   return false;
@@ -580,7 +561,7 @@ bool InputStream::bEndLine(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndString(void)
 {
-  if (m_cCurrChar == '"')
+  if ('"' == m_cCurrChar)
     return true;
   
   return false;

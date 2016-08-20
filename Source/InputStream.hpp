@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Input.hpp - input stream handler                                            */
+/* Input.hpp - Input Stream Handler                                           */
 /*============================================================================*/
 
 #pragma once
@@ -35,7 +35,7 @@ namespace Tasking
     char         m_cCurrChar;    // current char; 0 indicates EOF
     eLT          m_eLiteralType; // type of literal just recognized
     bool         m_bPrompt;      // print prompt
-    const char*  m_wPrompt;      // the prompt
+    const char*  m_aPrompt;      // the prompt
     
   public:
     void* operator new(size_t);
@@ -49,21 +49,18 @@ namespace Tasking
     void vDepth(i8 iDepth);
     void vInputText(void);
     void vInputText(s& sScanText);
-    eLT  eLiteralType(void);
-    void vNextLiteral(char* aWorkspace);
+    eLT  eNextLiteral(char* wWorkspace);
     bool bOpenFile(const char* aFilePath);
     void vPrintPrompt(void);
-    void vPrompt(char* wPrompt);
+    void vPrompt(char* aPrompt);
     void vReset(void);
     void vSetStdin(void);
     
   private:
-    bool  bParseBlock(char* aWorkspace);
-    bool  bParseComment(char* aWorkspace);
-    bool  bParseInteger(char* aWorkspace);
-    bool  bParseLine(char* aWorkspace);
-    bool  bParseName(char* aWorkspace);
-    bool  bParseString(char* aWorkspace);
+    bool  bParseComment(char* wWorkspace);
+    bool  bParseInteger(char* wWorkspace);
+    bool  bParseName(char* wWorkspace);
+    bool  bParseString(char* wWorkspace);
     
     void  vGetChar(void);
     void  vUngetChar(void);

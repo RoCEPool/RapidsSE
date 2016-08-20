@@ -937,12 +937,12 @@ Word* Task::pCompileColon(s& sDefinition)
   
   vLiteralNext();
   
-  while (LT_NONE != m_xInputStream.eLiteralType()) {
+  while (LT_NONE != m_eLiteral) {
     
     if (String::bEqualTo(";",m_sLiteral.a()))
       break;
     
-    switch (m_xInputStream.eLiteralType()) {
+    switch (m_eLiteral) {
         
       case LT_INTLIT:
         xValWsp = String::iToI8(m_sLiteral.a());
@@ -1271,7 +1271,7 @@ bool Task::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 void Task::vLiteralNext(void)
 {
-  m_xInputStream.vNextLiteral(m_sLiteral.a());
+  m_eLiteral = m_xInputStream.eNextLiteral(m_sLiteral.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3316,7 +3316,7 @@ void Task::vIsIntLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsIntLit");
   
-  i8 iIsIntLit = LT_INTLIT == nnpTask->m_xInputStream.eLiteralType() ? 1 : 0;
+  i8 iIsIntLit = LT_INTLIT == nnpTask->m_eLiteral ? 1 : 0;
   
   nnpTask->vPushParam(iIsIntLit);
 }
@@ -3328,7 +3328,7 @@ void Task::vIsNameLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsNameLit");
   
-  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_xInputStream.eLiteralType() ? 1 : 0;
+  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_eLiteral ? 1 : 0;
   
   nnpTask->vPushParam(iIsNameLit);
 }
@@ -3357,7 +3357,7 @@ void Task::vIsStrLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsStrLit");
   
-  i8 iIsStrLit = LT_STRLIT == nnpTask->m_xInputStream.eLiteralType() ? 1 : 0;
+  i8 iIsStrLit = LT_STRLIT == nnpTask->m_eLiteral ? 1 : 0;
   
   nnpTask->vPushParam(iIsStrLit);
 }
@@ -3532,7 +3532,7 @@ void Task::vLiteralGet(NNP_Task nnpTask)
   
   char* aLiteral = nnpTask->m_sLiteral.a();
   
-  nnpTask->m_xInputStream.vNextLiteral(aLiteral);
+  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
   
   nnpTask->vPushParam(nnpTask->m_sLiteral.a());
 }
@@ -3551,7 +3551,7 @@ void Task::vLitNext(NNP_Task nnpTask)
   
   char* aLiteral = nnpTask->m_sLiteral.a();
   
-  nnpTask->m_xInputStream.vNextLiteral(aLiteral);
+  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3561,7 +3561,8 @@ void Task::vLitType(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vLitType");
   
-  eLT eLiteralType = nnpTask->m_xInputStream.eLiteralType();
+  //eLT eLiteralType = nnpTask->m_xInputStream.eLiteralType();
+  eLT eLiteralType = nnpTask->m_eLiteral;
   
   nnpTask->vPushParam(eLiteralType);
 }
