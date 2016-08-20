@@ -8,17 +8,35 @@
 
 namespace Tasking
 {
+  enum eLT // literal type
+  {
+    /*  0 */ LT_NONE=0,  // none
+    /*  1 */ LT_NAMELIT, // name literal, e.g. WASHER or ++ etc
+    /*  2 */ LT_INTLIT,  // int literal, e.g. 1, 42
+    /*  3 */ LT_STRLIT,  // str litera, e.g. "the answer"
+    /*  4 */ LT_ENUMS
+  };
+  
+  static const char *pLT[]
+  {
+    /*  0 */ "NONE",
+    /*  1 */ "NAMELIT",
+    /*  2 */ "INTLIT",
+    /*  3 */ "STRLIT",
+    /*  4 */ "ENUMS",
+  };
   class InputStream : public ObjVal
   {
   private:
-    i8           m_iDepth;
-    bool         m_bFromFile;
-    const char*  m_yScanText;
-    eLT          m_eLiteralType;
-    char         m_cChar;
-    bool         m_bPrompt;
-    File         m_xInputFile;
-
+    i8           m_iDepth;       // depth of this input
+    bool         m_bFromFile;    // input is from a file?
+    File         m_xInputFile;   // the input file
+    const char*  m_yInputText;   // the input text string
+    char         m_cCurrChar;    // current char; 0 indicates EOF
+    eLT          m_eLiteralType; // type of literal just recognized
+    bool         m_bPrompt;      // print prompt
+    const char*  m_wPrompt;      // the prompt
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -26,18 +44,17 @@ namespace Tasking
     InputStream(void);
     ~InputStream(void);
     
+    void vCloseFile(void);
     i8   iDepth(void);
     void vDepth(i8 iDepth);
-    
+    void vInputText(void);
+    void vInputText(s& sScanText);
     eLT  eLiteralType(void);
-    void vCloseFile(void);
-    void vDiscardLine(void);
     void vNextLiteral(char* aWorkspace);
     bool bOpenFile(const char* aFilePath);
-    void vPrompt(void);
+    void vPrintPrompt(void);
+    void vPrompt(char* wPrompt);
     void vReset(void);
-    void vScanText(void);
-    void vScanText(s& sScanText);
     void vSetStdin(void);
     
   private:

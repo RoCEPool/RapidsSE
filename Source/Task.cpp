@@ -153,9 +153,10 @@ void Task::vInit(const char* aCommand)
   m_bTracing   = false;
   
   m_sCommand = aCommand;
+  m_eLiteral = LT_NONE;
   if (m_sCommand.iLength())
     String::vConcat(m_sCommand.a()," exit");
-  m_xInputStream.vScanText(m_sCommand);
+  m_xInputStream.vInputText(m_sCommand);
   
   m_sLiteral = "";
   
@@ -924,7 +925,7 @@ Word* Task::pCompileColon(s& sDefinition)
   Word* pFoundWord;
   ValWsp xValWsp;
   
-  m_xInputStream.vScanText(sDefinition);
+  m_xInputStream.vInputText(sDefinition);
   
   // get :
   vLiteralNext();
@@ -983,7 +984,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
-  m_xInputStream.vScanText();
+  m_xInputStream.vReset();
   
   return pNewWord;
 }
@@ -1336,7 +1337,7 @@ void Task::vSeedDicInitialiseSen(void)
   m_xReturnStack.vReset();
   
   m_sCommand = "";
-  m_xInputStream.vScanText(m_sCommand);
+  m_xInputStream.vInputText(m_sCommand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1356,7 +1357,7 @@ void Task::vSeedWord(const char* aCommand)
   m_sCommand = aCommand;
   if (m_sCommand.iLength())
     String::vConcat(m_sCommand.a()," ::exit");
-  m_xInputStream.vScanText(m_sCommand);
+  m_xInputStream.vInputText(m_sCommand);
   
 }
 
@@ -1375,7 +1376,7 @@ void Task::vSeedDocol(void)
   m_xReturnStack.vReset();
   
   m_sCommand = "";
-  m_xInputStream.vScanText(m_sCommand);
+  m_xInputStream.vInputText(m_sCommand);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3239,7 +3240,7 @@ void Task::vInputText(NNP_Task nnpTask)
     
   nnpTask->m_sCommand = sCommand;
   
-  nnpTask->m_xInputStream.vScanText(nnpTask->m_sCommand);
+  nnpTask->m_xInputStream.vInputText(nnpTask->m_sCommand);
 }
 
 /*----------------------------------------------------------------------------*/

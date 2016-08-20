@@ -95,18 +95,6 @@ void InputStream::vCloseFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard remainder of line                                                  */
-/*----------------------------------------------------------------------------*/
-void InputStream::vDiscardLine(void)
-{
-  _poolAddress_(this);
-
-  do {
-    vGetChar();
-  } while ('\n' != m_cChar);
-}
-
-/*----------------------------------------------------------------------------*/
 /* parse next literal into given buffer                                       */
 /*----------------------------------------------------------------------------*/
 void InputStream::vNextLiteral(char* wWorkspace)
@@ -188,11 +176,21 @@ bool InputStream::bOpenFile(const char* aFilePath)
 /*----------------------------------------------------------------------------*/
 /* prompt for input                                                           */
 /*----------------------------------------------------------------------------*/
-void InputStream::vPrompt(void)
+void InputStream::vPrintPrompt(void)
 {
   _poolAddress_(this);
   
-  printf("docol> ");
+  printf("%s",m_wPrompt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prompt                                                                 */
+/*----------------------------------------------------------------------------*/
+void InputStream::vPrompt(char* wPrompt)
+{
+  _poolAddress_(this);
+  
+  m_wPrompt = wPrompt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,41 +200,42 @@ void InputStream::vReset(void)
 {
   _poolAddress_(this);
 
+  //m_iDepth -- never gets reset
   m_bFromFile    = false;
-  m_yScanText    = nullptr;
-  m_eLiteralType = LT_NONE;
-  m_cChar        = 0;
-  m_bPrompt      = false;
-  
   m_xInputFile.vReset();
+  m_yInputText   = nullptr;
+  m_cCurrChar    = 0;
+  m_eLiteralType = LT_NONE;
+  m_bPrompt      = false;
+  m_wPrompt      = "docol>";
 }
 
 /*----------------------------------------------------------------------------*/
 /* use text for scanning                                                      */
 /*----------------------------------------------------------------------------*/
-void InputStream::vScanText(void)
+void InputStream::vInputText(void)
 {
   _poolAddress_(this);
   
   vCloseFile();
   
-  m_yScanText = nullptr;
+  m_yInputText = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* use text for scanning                                                      */
 /*----------------------------------------------------------------------------*/
-void InputStream::vScanText(s& sScanText)
+void InputStream::vInputText(s& sScanText)
 {
   _poolAddress_(this);
   
   vCloseFile();
 
-  m_yScanText = sScanText.a();
+  m_yInputText = sScanText.a();
 }
 
 /*----------------------------------------------------------------------------*/
-/* use stdin                                                                  */
+/* use stdin as input file                                                    */
 /*----------------------------------------------------------------------------*/
 void InputStream::vSetStdin(void)
 {
@@ -277,7 +276,7 @@ bool InputStream::bParseComment(char* yWorkspace)
   vGetChar();
   
   // test if we are looking at a line comment
-  if ('/' == m_cChar) {
+  if ('/' == m_cCurrChar) {
 
     // it is a line comment
     // consume till end of input or end of line
@@ -292,7 +291,7 @@ bool InputStream::bParseComment(char* yWorkspace)
   }
 
   // test if we are looking at a block comment
-  if ('*' == m_cChar) {
+  if ('*' == m_cCurrChar) {
     
     // it is a block comment
     
@@ -300,13 +299,13 @@ bool InputStream::bParseComment(char* yWorkspace)
     vGetChar();
     if (bEndInput())
       return true;
-    cOne = m_cChar;
+    cOne = m_cCurrChar;
     
     // get second char
     vGetChar();
     if (bEndInput())
       return true;
-    cTwo = m_cChar;
+    cTwo = m_cCurrChar;
 
     // find either end-of-comment or end-of-input
     while (true) {
@@ -320,7 +319,7 @@ bool InputStream::bParseComment(char* yWorkspace)
       vGetChar();
       if (bEndInput())
         return true;
-      cTwo = m_cChar;
+      cTwo = m_cCurrChar;
     }
 
   }
@@ -341,7 +340,7 @@ bool InputStream::bParseInteger(char* yWorkspace)
   
   // collect initial digits
   while (bIsDigit()) {
-    *y++ = m_cChar;
+    *y++ = m_cCurrChar;
     iNoDigits++;
     vGetChar();
   }
@@ -367,7 +366,7 @@ bool InputStream::bParseInteger(char* yWorkspace)
     
     // collect the hex digits
     while (bIsHex()) {
-      *y++ = m_cChar;
+      *y++ = m_cCurrChar;
       vGetChar();
     }
   }
@@ -408,7 +407,7 @@ bool InputStream::bParseName(char* yWorkspace)
 
   // collect the characters of the name
   while ( bMoreInput() && !bIsWhite() && !bStartString() ) {
-    *y++ = m_cChar;
+    *y++ = m_cCurrChar;
     vGetChar();
   }
   
@@ -436,17 +435,17 @@ bool InputStream::bParseString(char* yWorkspace)
   while ( bMoreInput() && !bEndString() ) {
     
     // test for \n
-    if ('\\' == m_cChar) {
+    if ('\\' == m_cCurrChar) {
       vGetChar();
-      if ('n' == m_cChar)
-        m_cChar = '\n';
+      if ('n' == m_cCurrChar)
+        m_cCurrChar = '\n';
       else {
         vUngetChar();
-        m_cChar = '\\';
+        m_cCurrChar = '\\';
       }
     }
         
-    *y++ = m_cChar;
+    *y++ = m_cCurrChar;
     vGetChar();
   }
   
@@ -467,19 +466,22 @@ void InputStream::vGetChar(void)
 {
   if (m_bFromFile) {
     
+    // print prompt?
     if (m_bPrompt) {
       m_bPrompt = false;
-      vPrompt();
+      vPrintPrompt();
     }
     
-    m_cChar = m_xInputFile.cGetChar();
+    // get next char from input file
+    m_cCurrChar = m_xInputFile.cGetChar();
     
-    // print the prompt again next time?
-    if (m_xInputFile.bIsStdin() && '\n' == m_cChar)
+    // do we need to print the prompt again next time?
+    if (m_xInputFile.bIsStdin() && '\n' == m_cCurrChar)
       m_bPrompt = true;
   }
   else {
-    m_cChar = *m_yScanText++;
+    // get next char from input file
+    m_cCurrChar = *m_yInputText++;
   }
 }
 
@@ -489,13 +491,13 @@ void InputStream::vGetChar(void)
 void InputStream::vUngetChar(void)
 {
   if (m_bFromFile) {
-    m_xInputFile.vUngetChar(m_cChar);
+    m_xInputFile.vUngetChar(m_cCurrChar);
   }
   else {
-    m_yScanText--;
+    m_yInputText--;
   }
   
-  m_cChar = 0;
+  m_cCurrChar = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -503,7 +505,7 @@ void InputStream::vUngetChar(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vSkipWhitespace(void)
 {
-  while (String::bIsWhite(m_cChar))
+  while (String::bIsWhite(m_cCurrChar))
     vGetChar();
 }
 
@@ -512,7 +514,7 @@ void InputStream::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndInput(void)
 {
-  if ( ! m_cChar )
+  if ( ! m_cCurrChar )
     return true;
   
   return false;
@@ -523,18 +525,18 @@ bool InputStream::bEndInput(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bMoreInput(void)
 {
-  if (m_cChar)
+  if (m_cCurrChar)
     return true;
   
   return false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* test for start of comment                                                  */
+/* test for possible start of comment                                         */
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStartComment(void)
 {
-  if (m_cChar == '/')
+  if (m_cCurrChar == '/')
     return true;
   
   return false;
@@ -545,7 +547,7 @@ bool InputStream::bStartComment(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStartInteger(void)
 {
-  if (String::bIsDigit(m_cChar))
+  if (String::bIsDigit(m_cCurrChar))
     return true;
   
   return false;
@@ -556,7 +558,7 @@ bool InputStream::bStartInteger(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStartString(void)
 {
-  if (m_cChar == '"')
+  if (m_cCurrChar == '"')
     return true;
   
   return false;
@@ -567,7 +569,7 @@ bool InputStream::bStartString(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndLine(void)
 {
-  if (m_cChar == '\n')
+  if (m_cCurrChar == '\n')
     return true;
   
   return false;
@@ -578,7 +580,7 @@ bool InputStream::bEndLine(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndString(void)
 {
-  if (m_cChar == '"')
+  if (m_cCurrChar == '"')
     return true;
   
   return false;
@@ -589,7 +591,7 @@ bool InputStream::bEndString(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bIsDigit(void)
 {
-  if (String::bIsDigit(m_cChar))
+  if (String::bIsDigit(m_cCurrChar))
     return true;
   
   return false;
@@ -600,7 +602,7 @@ bool InputStream::bIsDigit(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bIsHex(void)
 {
-  if (String::bIsHex(m_cChar))
+  if (String::bIsHex(m_cCurrChar))
     return true;
   
   return false;
@@ -611,7 +613,7 @@ bool InputStream::bIsHex(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bIsWhite(void)
 {
-  if (String::bIsWhite(m_cChar))
+  if (String::bIsWhite(m_cCurrChar))
     return true;
   
   return false;
@@ -622,7 +624,7 @@ bool InputStream::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bIsX(void)
 {
-  if ('x' == m_cChar || 'X' == m_cChar)
+  if ('x' == m_cCurrChar || 'X' == m_cCurrChar)
     return true;
   
   return false;

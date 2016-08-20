@@ -91,6 +91,7 @@ namespace Tasking
     
     s256  m_sCommand;   // supplied command
     s256  m_sLiteral;   // current literal
+    eLT   m_eLiteral;   // literat type
     InputStream m_xInputStream;     // input stream parser
     
     union {

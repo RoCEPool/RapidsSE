@@ -8,24 +8,6 @@
 
 namespace Common
 {
-  enum eLT // literal type
-  {
-    /*  0 */ LT_NONE=0,  // none
-    /*  1 */ LT_NAMELIT, // name literal, e.g. WASHER or ++ etc
-    /*  2 */ LT_INTLIT,  // int literal, e.g. 1, 42
-    /*  3 */ LT_STRLIT,  // str litera, e.g. "the answer"
-    /*  4 */ LT_ENUMS
-  };
-  
-  static const char *pLT[]
-  {
-    /*  0 */ "NONE",
-    /*  1 */ "NAMELIT",
-    /*  2 */ "INTLIT",
-    /*  3 */ "STRLIT",
-    /*  4 */ "ENUMS",
-  };
-  
   static const int C_NO_CASE    = 0;
   static const int C_CASE       = 1;
   
@@ -67,7 +49,6 @@ namespace Common
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractInw(char** ps, i8* i);
     static bool  bExtractItem(char** ps, char* pItem);
-    static bool  bExtractLiteral(const char** ps, char* pLiteral, eLT* pLiteralType);
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
     static bool  bExtractString(char** ps, char* pString);
