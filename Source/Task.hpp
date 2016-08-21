@@ -413,6 +413,9 @@ namespace Tasking
 
     // args
     static void vArgsPrint(NNP_Task nnpTask);
+
+    // csv
+    static void vCsvFirstValue(NNP_Task nnpTask);
     
     // dic
     static void vDicCount(NNP_Task nnpTask);

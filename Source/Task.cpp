@@ -571,6 +571,8 @@ void Task::vAddPrimitives(void)
   //----------------------------------------------------------
   vAddPrimitive("args.print",      &vArgsPrint,        false);
   
+  vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+  
   vAddPrimitive("dic.count",       &vDicCount,         false);
   vAddPrimitive("dic.drop",        &vDicDrop,          false);
   vAddPrimitive("}}",              &vDicDrop,          false);
@@ -4922,7 +4924,30 @@ void Task::vArgsPrint(NNP_Task nnpTask)
   gxArguments.vPrint();
 }
 
-// d: //////////////////////////////////////////////////////////////////////////
+// csv: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* csv.firstValue -- get first value from csv string                          */
+/*----------------------------------------------------------------------------*/
+void Task::vCsvFirstValue(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vCsvFirstValue");
+  
+  ValWsp xStr;
+  if ( ! nnpTask->bPopParam(xStr) )
+    THROW_INVALID_PARAM("csv.firstValue");
+  
+  s256 sFirstValue;
+  
+  char* z = xStr.sStr();
+  
+  if (! String::bExtractItem(&z,sFirstValue.a()))
+    sFirstValue = "";
+  
+  nnpTask->vPushParam(sFirstValue);
+}
+
+// dic: ////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* dic.count -- get number of dictionaries on dictionary stack                */
