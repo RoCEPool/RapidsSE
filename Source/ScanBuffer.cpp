@@ -34,6 +34,8 @@ ScanBuffer::ScanBuffer(void)
 {
   _poolAddress_(this);
   _magic_();
+  
+  vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +45,225 @@ ScanBuffer::~ScanBuffer(void)
 {
   _poolAddress_(this);
   _magic_();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get into area and number of available bytes                                */
+/*----------------------------------------------------------------------------*/
+char* ScanBuffer::pInto(i8& iAvailableBytes)
+{
+  //
+  // a) no previous dangling portion
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | ..available..                                                       |
+  // +---------------------------------------------------------------------+
+  // ^- m_pEndData
+  //
+  
+  //
+  // b) previous dangling portion
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | dangling...| ..available..                                          |
+  // +---------------------------------------------------------------------+
+  //              ^- m_pEndData (of copied up dangling portion)
+  //
+  
+  iAvailableBytes = iBytesAvailable();
+  
+  return m_pEndData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment number of data bytes in the workarea                             */
+/*----------------------------------------------------------------------------*/
+void ScanBuffer::vMore(i8& iMoreBytes)
+{
+  //
+  // a) data fills workarea
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | data...                                                             |
+  // +---------------------------------------------------------------------+
+  //                                                           m_pEndData -^
+  //
+  // b) data doesnt fill workarea
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | data...                                                | ..no data..|
+  // +---------------------------------------------------------------------+
+  //                                              m_pEndData -^
+  
+  m_pEndData = pcAdd(m_pEndData,iMoreBytes - 1);
+  
+  m_pNextMsg = pFirstByte();
+}
+
+/*----------------------------------------------------------------------------*/
+/* scan for next message                                                      */
+/*----------------------------------------------------------------------------*/
+char* ScanBuffer::pScan(i8& iMessageBytes)
+{
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | msg1\nmsg2\nmsg3\n...                                               |
+  // +---------------------------------------------------------------------+
+  //         ^- m_pNextMsg                                     m_pEndData -^
+  //
+  
+  char* pMsg = m_pNextMsg;
+
+  while (m_pNextMsg <= m_pEndData) {
+  
+    if (*m_pNextMsg == '\n') {
+      m_pNextMsg++;
+      return pMsg;
+    }
+    
+    m_pNextMsg++;
+  }
+  
+  vCopyUp(pMsg);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* calc available bytes                                                       */
+/*----------------------------------------------------------------------------*/
+i8 ScanBuffer::iBytesAvailable(void)
+{
+  //
+  // a) no previous dangling portion
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | ..available..                                                       |
+  // +---------------------------------------------------------------------+
+  // ^- m_pEndData
+  //
+  
+  //
+  // b) previous dangling portion
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | dangling...| ..available..                                          |
+  // +---------------------------------------------------------------------+
+  //              ^- m_pEndData (of prev copied up dangling portion)
+  //
+  
+  i8 iBytes = iSub(pLastByte(),m_pEndData) + 1;
+  
+  return iBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy dangling portion to beginning of workarea                             */
+/*----------------------------------------------------------------------------*/
+void ScanBuffer::vCopyUp(char* pDangling)
+{
+  // used all of the workarea?
+  if (pDangling > pLastByte()) {
+    vReset();
+    return;
+  }
+  
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | msg1\nmsg2\nmsg3\n...                                 | dangling... |
+  // +---------------------------------------------------------------------+
+  //                                              pDangling -^
+  //
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | dangling... | ..available..                                         |
+  // +---------------------------------------------------------------------+
+  //               ^- m_pEndData (of copied up dangling portion)
+  //
+  
+  // copy dangling data bytes to begining of workarea
+  i8 iDanglingBytes = iSub(pLastByte(),pDangling);
+  Memory::vCopy(pFirstByte(),pDangling,iDanglingBytes);
+  m_pEndData = pcAdd(pFirstByte(),iDanglingBytes - 1);
+  
+  // invalidate starting position (requires more)
+  m_pNextMsg = nullptr;
+  
+  // wipe the remaining data area (debug)
+  vWipe(m_pEndData+1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* first byte of workarea                                                     */
+/*----------------------------------------------------------------------------*/
+char* ScanBuffer::pFirstByte(void)
+{
+  char* pFirst = &m_wWorkarea[0];
+  
+  return pFirst;
+}
+
+/*----------------------------------------------------------------------------*/
+/* last byte of workarea                                                      */
+/*----------------------------------------------------------------------------*/
+char* ScanBuffer::pLastByte(void)
+{
+  char* pLast = &m_wWorkarea[C_WORKAREA - 1];
+  
+  return pLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset to initial position (no data)                                        */
+/*----------------------------------------------------------------------------*/
+void ScanBuffer::vReset(void)
+{
+  //
+  // v- pFirstByte()                                          pLastByte() -v
+  // +---------------------------------------------------------------------+
+  // | available...                                                        |
+  // +---------------------------------------------------------------------+
+  // ^- m_pEnd
+  //
+  
+  m_pEndData = pFirstByte();
+  m_pNextMsg = nullptr;
+  vWipe();
+  
+  ASSERT(C_WORKAREA == iBytesAvailable());
+}
+
+/*----------------------------------------------------------------------------*/
+/* wipe work area                                                             */
+/*----------------------------------------------------------------------------*/
+void ScanBuffer::vWipe(void)
+{
+  Memory::vSet(m_wWorkarea,0xEF,C_WORKAREA);
+}
+
+/*----------------------------------------------------------------------------*/
+/* wipe work area                                                             */
+/*----------------------------------------------------------------------------*/
+void ScanBuffer::vWipe(char* pFrom)
+{
+  ASSERT(pFrom >= m_wWorkarea);
+  
+  i8 iBytes = iSub(pLastByte(),pFrom);
+  
+  Memory::vSet(pFrom,0xEF,iBytes);
 }
 
 /*============================================================================*/

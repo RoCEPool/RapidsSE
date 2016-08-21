@@ -17,10 +17,16 @@ const i8 C_1TB = C_1GB * C_1KB;  // 1 terabyte = 1,099,511,627,776
 const i8 C_1PB = C_1TB * C_1KB;  // 1 petabyte = 1,125,899,906,842,624
 const i8 C_1EB = C_1PB * C_1KB;  // 1 exabyte  = 1,152,921,504,606,846,976
 
-const i8 C_4KB   = C_1KB * 4;    // 4 kilobytes
-const i8 C_16KB  = C_1KB * 16;   // 16 kilobytes
-const i8 C_64KB  = C_1KB * 64;   // 64 kilobytes
-const i8 C_256KB = C_1KB * 256;  // 256 kilobytes
+const i8 C_2KB    = C_1KB * 2;     // 2 kilobytes
+const i8 C_4KB    = C_1KB * 4;     // 4 kilobytes
+const i8 C_8KB    = C_1KB * 8;     // 8 kilobytes
+const i8 C_16KB   = C_1KB * 16;    // 16 kilobytes
+const i8 C_32KB   = C_1KB * 32;    // 32 kilobytes
+const i8 C_64KB   = C_1KB * 64;    // 64 kilobytes
+const i8 C_128KB  = C_1KB * 128;   // 128 kilobytes
+const i8 C_256KB  = C_1KB * 256;   // 256 kilobytes
+const i8 C_512KB  = C_1KB * 512;   // 512 kilobytes
+const i8 C_1008KB = C_1KB * 1008;  // 1008 kilobytes (1MB - 16KB)
 
 // the 1000^n constants
 const i8 C_1K  = 1000LL;         // 1 thousand
