@@ -11,7 +11,7 @@ namespace DBobjects
   class Partitions
   {
   private:
-    Partition m_xPartition[16];
+    Partition m_xPartition[1];
     
   public:
     void* operator new(size_t);
@@ -19,6 +19,8 @@ namespace DBobjects
     
     Partitions(void);
     ~Partitions(void);
+    
+    Partition* pPartition(i8 iPartition);
   };
 }
 

@@ -36,7 +36,7 @@ void Table::operator delete(void* pTableAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Table::Table(void)
-: Segment(CN_TABLE)
+: Object(CN_TABLE)
 {
   _poolAddress_(this);
   _magic_();
@@ -55,7 +55,7 @@ Table::Table(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Table::Table(const char* pTableName)
-: Segment(CN_TABLE)
+: Object(CN_TABLE)
 {
   _poolAddress_(this);
   _magic_();
@@ -74,6 +74,18 @@ Table::~Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of row buffers in this table                                    */
+/*----------------------------------------------------------------------------*/
+i8 Table::iRowBuffers(void)
+{
+  _poolAddress_(this);
+  
+  i8 iBuffers = pPartition(0)->iBufferCount();
+  
+  return iBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given table into this one                                             */
 /*----------------------------------------------------------------------------*/
 void Table::vCopy(Table *pTable)
@@ -86,9 +98,9 @@ void Table::vCopy(Table *pTable)
     
     vTrace("FromBuffer %p\n",pFromBuffer);
     
-    vExtendSpace();
+    pPartition(0)->vExtendSpace();
 
-    SegmentBuffer* pToBuffer = pLastBuffer();
+    SegmentBuffer* pToBuffer = pPartition(0)->pLastBuffer();
     
     pToBuffer->vCopy(pFromBuffer);
     
@@ -115,11 +127,11 @@ void Table::vExport(File* pFile)
   
   Object* pCurrent;
   
-  for (pCurrent = pFirstObject(); pCurrent; ) {
+  for (pCurrent = pPartition(0)->pFirstObject(); pCurrent; ) {
     StrVal* pStrVal = reinterpret_cast<StrVal*>(pCurrent);
     //vTrace("Row %p: %s\n",pStrVal,pStrVal->sStr());
     pFile->vPrint("%s\n",pStrVal->sStr());
-    pCurrent = pNextObject(pCurrent,pStrVal->iSize());
+    pCurrent = pPartition(0)->pNextObject(pCurrent,pStrVal->iSize());
   }
 }
 
@@ -130,7 +142,7 @@ SegmentBuffer* Table::pFirstBuffer(void)
 {
   _poolAddress_(this);
   
-  return Segment::pFirstBuffer();
+  return pPartition(0)->pFirstBuffer();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +154,7 @@ void Table::vInsertRow(StrVal* pRowStr)
 
   i8 nBytes = pRowStr->iSize();
   
-  Object* pRow = pAllocObject(nBytes);
+  Object* pRow = pPartition(0)->pAllocObject(nBytes);
 
   ASSERT(pRow);
   
@@ -268,10 +280,10 @@ void Table::vList(void)
 
   Object* pCurrent;
   
-  for (pCurrent = pFirstObject(); pCurrent; ) {
+  for (pCurrent = pPartition(0)->pFirstObject(); pCurrent; ) {
     StrVal* pStrVal = reinterpret_cast<StrVal*>(pCurrent);
     vTrace("Row %p: %s\n",pStrVal,pStrVal->sStr());
-    pCurrent = pNextObject(pCurrent,pStrVal->iSize());
+    pCurrent = pPartition(0)->pNextObject(pCurrent,pStrVal->iSize());
   }
 }
 
@@ -282,7 +294,7 @@ void Table::vTruncate(void)
 {
   _poolAddress_(this);
 
-  vReleaseAll();
+  pPartition(0)->vReleaseAll();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,6 +319,18 @@ void Table::vDump(void)
          m_sTableName.a()
          );
   //m_pRowAllocator->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a partition                                                            */
+/*----------------------------------------------------------------------------*/
+Partition* Table::pPartition(i8 iPartition)
+{
+  _poolAddress_(this);
+
+  Partition* pPart = m_xPartitions.pPartition(iPartition);
+  
+  return pPart;
 }
 
 /*============================================================================*/

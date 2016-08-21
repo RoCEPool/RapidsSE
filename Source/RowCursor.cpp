@@ -64,7 +64,7 @@ void RowCursor::vBegin(void)
   _poolAddress_(this);
   _magic_();
 
-  m_pRow = m_pTable->pFirstObject();
+  m_pRow = m_pTable->pPartition(0)->pFirstObject();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +86,7 @@ void RowCursor::vFirst(void)
   _poolAddress_(this);
   _magic_();
   
-  m_pRow = m_pTable->pFirstObject();
+  m_pRow = m_pTable->pPartition(0)->pFirstObject();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,7 +101,7 @@ void RowCursor::vNext(void)
   
   i8 iSize = pStrVal->iSize();
 
-  m_pRow = m_pTable->pNextObject(m_pRow,iSize);
+  m_pRow = m_pTable->pPartition(0)->pNextObject(m_pRow,iSize);
 }
 
 /*----------------------------------------------------------------------------*/

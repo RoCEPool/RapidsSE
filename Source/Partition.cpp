@@ -32,6 +32,7 @@ void Partition::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Partition::Partition(void)
+: Segment(CN_PARTITION)
 {
   _poolAddress_(this);
 }

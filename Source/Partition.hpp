@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Partition
+  class Partition : public Segment
   {
   private:
     

@@ -20,7 +20,7 @@ namespace DBobjects
     /* 1 */ "NORMAL"
   };
     
-  class Table : public Segment
+  class Table : public Object
   {
   private:
     s32 m_sTableName;
@@ -48,11 +48,16 @@ namespace DBobjects
     void vLoad(File* pFile);
     void vLoad2(File* pFile);
     void vList(void);
+    i8   iRowBuffers(void);
     void vTruncate(void);
         
     char* pTableName(void);
     void  vTableName(s& sName);
     void  vDump(void);
+    
+    //--------------------------------------------------------------------------
+    
+    Partition* pPartition(i8);
   };
 }
 
