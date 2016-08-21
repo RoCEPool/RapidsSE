@@ -85,6 +85,36 @@ void InputStream::vDepth(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
+/* seen EOF?                                                                  */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bEOF(void)
+{
+  _poolAddress_(this);
+  
+  return m_bEOF;
+}
+
+/*----------------------------------------------------------------------------*/
+/* seen EOL?                                                                  */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bEOL(void)
+{
+  _poolAddress_(this);
+  
+  return m_bEOL;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set EOL                                                                    */
+/*----------------------------------------------------------------------------*/
+void InputStream::vEOL(bool bEOL)
+{
+  _poolAddress_(this);
+  
+  m_bEOL = bEOL;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set liine oreinted mode                                                    */
 /*----------------------------------------------------------------------------*/
 void InputStream::vLineOriented(bool bLineOriented)
@@ -122,6 +152,13 @@ eLT InputStream::eNextLiteral(char* wLiteral)
     // skip whitespace
     vSkipWhitespace();
     
+    // did we get an eol?
+    if ('\n' == m_cCurrChar) {
+      m_eLiteralType = LT_NONE;
+      *wLiteral = '\0';
+      return m_eLiteralType;
+    }
+    
     // end of input?
     if (bEndInput()) {
       m_eLiteralType = LT_NONE;
@@ -131,7 +168,7 @@ eLT InputStream::eNextLiteral(char* wLiteral)
 
     // collect any comment
     if (bStartComment()) {
-      if (!bParseComment(wLiteral))
+      if (! bParseComment(wLiteral))
         break;
     }
     else {
@@ -213,7 +250,9 @@ void InputStream::vReset(void)
   m_cCurrChar    = 0;
   m_eLiteralType = LT_NONE;
   m_bPrompt      = false;
-  m_aPrompt      = "docol>";
+  m_aPrompt      = "docol> ";
+  m_bLineOriented = false;
+  m_bEOF         = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,7 +429,7 @@ bool InputStream::bParseName(char* wLiteral)
   }
   
   // push back the unconsumed char
-  if (bEndInput())
+  if (bEndInput()) //&& m_xInputFile.bIsStdin())
     vUngetChar();
   
   // terminate a namelit
@@ -428,7 +467,7 @@ bool InputStream::bParseString(char* wLiteral)
   }
   
   // push back a '\0'
-  if (bEndInput())
+  if (bEndInput() && '\0' == m_cCurrChar)
     vUngetChar();
   
   // terminate a strlit
@@ -461,15 +500,20 @@ void InputStream::vGetChar(void)
   // get next char from input file
   m_cCurrChar = m_xInputFile.cGetChar();
   
+  if (0 == m_cCurrChar) {
+    m_bEOF = true;
+    return;
+  }
+  
   // end of line processing
   if ('\n' == m_cCurrChar) {
-  
+
+    m_bEOL = true;
     // do we need to print the prompt again next time?
     if (m_xInputFile.bIsStdin())
       m_bPrompt = true;
     
-    if (m_bLineOriented)
-      m_cCurrChar = 0;
+    //m_cCurrChar = 0;
   }
 }
 
@@ -491,8 +535,20 @@ void InputStream::vUngetChar(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vSkipWhitespace(void)
 {
-  while (String::bIsWhite(m_cCurrChar))
-    vGetChar();
+
+  for (;;) {
+    if (m_cCurrChar == ' ' || m_cCurrChar == '\t') {
+      vGetChar();
+      continue;
+    }
+
+    if (!m_bLineOriented && m_cCurrChar == '\n') {
+      vGetChar();
+      continue;
+    }
+    
+    break;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -500,7 +556,7 @@ void InputStream::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndInput(void)
 {
-  if ( ! m_cCurrChar )
+  if ( ! m_cCurrChar ) // || (m_bLineOriented && '\n' == m_cCurrChar))
     return true;
   
   return false;

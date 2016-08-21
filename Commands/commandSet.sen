@@ -152,8 +152,6 @@
 
 : listColumns ( -- )
 
-traceon
-
   ""                             // initial ls string
   0 dic.pick dic.last            // get last word of current dic
   dup                            // setup iteration of words
@@ -177,7 +175,6 @@ traceon
 
   "\n" concat
 
-traceoff
 ;
 
 
@@ -355,7 +352,6 @@ traceoff
 /*----------------------------------------------------------------------------*/
 : add_column ( "<columnType>" "<columnName" "<tableName>" -- <response> )
 
-traceon
     checkInTables not if exit then
 
     pushTable not if exit then
@@ -369,7 +365,7 @@ traceon
     popTable
 
     "created column" success
-traceoff
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -377,7 +373,6 @@ traceoff
 /*----------------------------------------------------------------------------*/
 : list_columns ( "<tableName>" -- <response> )
 
-//traceon
     checkInTables not if exit then
 
     pushTable not if exit then
@@ -389,7 +384,6 @@ traceoff
     popColumns
 
     popTable
-//traceoff
 
     success
 ;
@@ -435,8 +429,6 @@ traceoff
 /*----------------------------------------------------------------------------*/
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- "text" n 2 )
 
-    // traceon
-
     find
 
     checkIsTable not if exit then
@@ -452,8 +444,6 @@ traceoff
     table.copy     ( )
 
     "table copied" success
-
-    // traceoff
 ;
 
 /*----------------------------------------------------------------------------*/

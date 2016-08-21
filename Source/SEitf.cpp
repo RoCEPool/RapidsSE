@@ -222,14 +222,27 @@ void SEitf::vPrompt(void)
   };
   
   m_sPrompt = "seitf> ";
-  m_xInputStream[m_iInput].vUseStdin();
-  m_xInputStream[m_iInput].vPrompt(m_sPrompt.a());
-  m_xInputStream[m_iInput].vLineOriented(true);
+  
+  pInput()->vUseStdin();
+  pInput()->vPrompt(m_sPrompt.a());
+  pInput()->vLineOriented(true);
   
   while (true) {
+    InputStream* pInput = this->pInput();
+    
     i8 i = 0;
-    while (LT_NONE != m_xInputStream[m_iInput].eNextLiteral(pWords[i]))
+    pInput->vEOL(false);
+    do {
+      pInput->eNextLiteral(pWords[i]);
+      //vTrace("Word [%lld] %s\n",i,pWords[i]);
       i++;
+    }
+    while (! pInput->bEOL() && ! pInput->bEOF());
+    
+    if (pInput->bEOF()) {
+      vPopFile();
+      continue;
+    }
     
     vExecute(pWords);
     
@@ -634,8 +647,64 @@ bool SEitf::bDecode(char* pWords[])
     return bGetMonitor(pWords);
   }
   
+  if (bTestFile(pWords[0])) {
+    vPushFile(pWords[0]);
+    return false;
+  }
+  
   vTrace("Unknown command: %s\n",pWords[0]);
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for command file                                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bTestFile(char* pWord)
+{
+  File xFile;
+  
+  if (xFile.bExists(pWord))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push command file                                                          */
+/*----------------------------------------------------------------------------*/
+void SEitf::vPushFile(char* pWord)
+{
+  ASSERT(m_iInput < C_INPUT_ARRAY - 1);
+  m_iInput++;
+  
+  InputStream* pInput = this->pInput();
+  
+  bool b = pInput->bOpenFile(pWord);
+  ASSERT(b);
+  
+  pInput->vLineOriented(true);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop command file                                                           */
+/*----------------------------------------------------------------------------*/
+void SEitf::vPopFile(void)
+{
+  ASSERT(m_iInput);
+
+  InputStream* pInput = this->pInput();
+  
+  pInput->vCloseFile();
+  
+  m_iInput--;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current input stream                                                   */
+/*----------------------------------------------------------------------------*/
+InputStream* SEitf::pInput(void)
+{
+  return &m_xInputStream[m_iInput];
 }
 
 /*----------------------------------------------------------------------------*/

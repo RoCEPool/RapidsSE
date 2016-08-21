@@ -42,8 +42,10 @@ namespace Common
     File(void);
    ~File();
     
+    
     void vClear(void);
     void vClose(void);
+    bool bExists(const char *aFilePath);
     char cGetChar(void);
     void vFlush(void);
     void vInit(void);
@@ -91,7 +93,6 @@ namespace Common
 //    void  vWrite(void* pBuffer, i8 nBytes, SysCall& SysCall);
 //    void  vWriteCS(void* pBuffer, i8 nBytes, SysCall& SysCall);
 //    
-//    static bool bExists(const char *aFilePath, SysCall& SysCall);
 //    static i8   iSizeFile(const char* aFilePath, SysCall& SysCall);
 //    static void vDeleteFile(const char* aFilePath, SysCall& SysCall);
 //    static void vExtractFileName(char* aFileName, const char* aFilePath);

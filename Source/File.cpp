@@ -71,6 +71,10 @@ File::~File(void)
   }
 }
 
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
 /* clear file arguments                                                       */
 /*----------------------------------------------------------------------------*/
@@ -112,6 +116,33 @@ void File::vClose(void)
   vReset();
   
   m_xSysCall.vSuccess();
+}
+
+/*---------------------------------------------------------------------------*/
+/* bExists: test if named file exists                                        */
+/*---------------------------------------------------------------------------*/
+bool File::bExists(const char *psFileName)
+{
+  m_xSysCall.vClear();
+  
+  struct stat xStat;
+  
+  int rCode = stat(psFileName,&xStat);
+  
+  if (0 == rCode && (xStat.st_mode & S_IFREG)) {
+    m_xSysCall.vSuccess();
+    return true;
+  }
+  
+  if (rCode && ENOENT == errno) {
+    m_xSysCall.vFailure(0);
+    return false;
+  }
+  
+  m_xSysCall.vError(errno);
+  vWarn("File::bExists: stat() error; errno=%d",errno);
+  
+  return false;
 }
 
 /*---------------------------------------------------------------------------*/

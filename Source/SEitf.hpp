@@ -11,6 +11,8 @@ namespace Interface
   class SEitf : public Object,
                        public ListNode_t<SEitf>
   {
+    static const i8 C_INPUT_ARRAY = 4;
+    
   public:
     i8         m_iPid;             // process which created this seitf
     Dictionary m_xDictionary;      // private dictionary
@@ -22,7 +24,7 @@ namespace Interface
     s256       m_sResponse;        // response
     
     i8          m_iInput;
-    InputStream m_xInputStream[4]; // input stream handler
+    InputStream m_xInputStream[C_INPUT_ARRAY]; // input stream handler
     s256        m_sPrompt;         // prompt
     
     // must be last
@@ -49,6 +51,12 @@ namespace Interface
     
     void   vIterateRows(void);
     
+    bool   bTestFile(char* pWord);
+    void   vPushFile(char* pWord);
+    void   vPopFile(void);
+    
+    InputStream* pInput(void);
+
     //--------------------------------------------------------------------------
     
     void   vAppendRequest(s& sRequest);
