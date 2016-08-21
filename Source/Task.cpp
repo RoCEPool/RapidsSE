@@ -424,6 +424,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("class@",          &vClassFetch,       false);
   vAddPrimitive("class!",          &vClassStore,       false);
+  vAddPrimitive("clip",            &vClip,             false);
   vAddPrimitive("code=",           &vCodeAssign,       false);
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
@@ -505,6 +506,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("magic!!",         &vMagicMark,        false);
   vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
+  vAddPrimitive("neg",             &vNeg,              false);
   vAddPrimitive("next",            &vNext,             true );
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
@@ -2463,6 +2465,41 @@ void Task::vClassStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* clip -- clip string ( length str -- str )                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vClip(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vClip");
+  
+  i8 iLength;
+  ValWsp xString;
+  ValWsp xSubStr;
+  
+  StrVal* pStrVal = xString.pAsStrVal();
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(iLength,xString) )
+    THROW_INVALID_PARAM("clip");
+  
+  // validate length
+  i8 iStrLength = pStrVal->iChars();
+  
+  if ( iLength == 0 || llabs(iLength) >= iStrLength)
+    THROW("Invalid length for: clip");
+  
+  char* pStart;
+  
+  if (iLength > 0)
+    pStart = xString.sStr();
+  else
+    pStart = xString.sStr() + iStrLength - 1 - llabs(iLength);
+
+  xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
+  
+  nnpTask->vPushParam(&xSubStr);
+}
+
+/*----------------------------------------------------------------------------*/
 /* codeAssign -- fetch ptr from word.code on stack into this word             */
 /*----------------------------------------------------------------------------*/
 void Task::vCodeAssign(NNP_Task nnpTask)
@@ -3734,6 +3771,23 @@ void Task::vNameWord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* neg -- gegate top integer on stack                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vNeg(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNeg");
+  
+  i8 r, i;
+  
+  if ( ! nnpTask->bPopParam(i) )
+    THROW_INVALID_PARAM("neg");
+  
+  r = -1 * i;
+  
+  nnpTask->vPushParam(r);
+}
+
+/*----------------------------------------------------------------------------*/
 /* next -- compile time for iterate ... next                        immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vNext(NNP_Task nnpTask)
@@ -4310,35 +4364,37 @@ void Task::vStrLen(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* substr -- substring                                                        */
+/* substr -- substring ( start length str == substr )                         */
 /*----------------------------------------------------------------------------*/
 void Task::vSubStr(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSubStr");
   
   i8 iLength;
-  i8 iStartIndex;
+  i8 iStart;
   ValWsp xString;
   ValWsp xSubStr;
   
   StrVal* pStrVal = xString.pAsStrVal();
   
   // get the arguments
-  if ( ! nnpTask->bPopParam(iStartIndex,iLength,xString) )
+  if ( ! nnpTask->bPopParam(iStart,iLength,xString) )
     THROW_INVALID_PARAM("substr");
   
   // validate start index
-  if ( iStartIndex < 0 || iStartIndex >= pStrVal->iChars())
+  if ( iStart < 0 || iStart >= pStrVal->iChars())
     THROW("Invalid start index for: subStr");
   
   // validate length
-  if ( iLength <= 0 || iStartIndex + iLength >= pStrVal->iChars())
-    THROW("Invalid length for: subStr");
+  if ( iLength <= 0 || iStart + iLength >= pStrVal->iChars())
+    THROW("Invalid length for: substr");
 
   // compute substring
   //xSubStr.vCopyString(xString.sStr() + iStartIndex,iLength);
   
-  xSubStr.pAsStrVal()->vCopyString(xString.sStr() + iStartIndex,iLength);
+  char* pStart = xString.sStr() + iStart;
+  
+  xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
   
   nnpTask->vPushParam(&xSubStr);
 }

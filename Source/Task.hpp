@@ -260,7 +260,8 @@ namespace Tasking
     static void vBpa(NNP_Task nnpTask);            
     static void vClassFetch(NNP_Task nnpTask);
     static void vClassStore(NNP_Task nnpTask);     
-    static void vCodeAssign(NNP_Task nnpTask);     
+    static void vClip(NNP_Task nnpTask);
+    static void vCodeAssign(NNP_Task nnpTask);
     static void vColon(NNP_Task nnpTask);          
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
@@ -338,6 +339,7 @@ namespace Tasking
     static void vMagicMark(NNP_Task nnpTask);      
     static void vMultiply(NNP_Task nnpTask);       
     static void vNameWord(NNP_Task nnpTask);       
+    static void vNeg(NNP_Task nnpTask);
     static void vNext(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
