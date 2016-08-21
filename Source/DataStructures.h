@@ -13,6 +13,8 @@
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
 
+#include "ScanBuffer.hpp"
+
 #include "SkipNode.hpp"
 #include "SkipCursor.hpp"
 #include "Skip.hpp"

@@ -137,6 +137,10 @@
 		F2DD657A1D655BE6009B684A /* RowCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65781D655BE6009B684A /* RowCursor.hpp */; };
 		F2DD657D1D66428F009B684A /* TaskCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD657B1D66428F009B684A /* TaskCursor.cpp */; };
 		F2DD657E1D66428F009B684A /* TaskCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD657C1D66428F009B684A /* TaskCursor.hpp */; };
+		F2DD65811D6A51A5009B684A /* ScanBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD657F1D6A51A5009B684A /* ScanBuffer.cpp */; };
+		F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65801D6A51A5009B684A /* ScanBuffer.hpp */; };
+		F2DD65851D6A53B4009B684A /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD65831D6A53B4009B684A /* Loader.cpp */; };
+		F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65841D6A53B4009B684A /* Loader.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -441,6 +445,10 @@
 		F2DD65781D655BE6009B684A /* RowCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RowCursor.hpp; sourceTree = "<group>"; };
 		F2DD657B1D66428F009B684A /* TaskCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TaskCursor.cpp; sourceTree = "<group>"; };
 		F2DD657C1D66428F009B684A /* TaskCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TaskCursor.hpp; sourceTree = "<group>"; };
+		F2DD657F1D6A51A5009B684A /* ScanBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScanBuffer.cpp; path = Source/ScanBuffer.cpp; sourceTree = "<group>"; };
+		F2DD65801D6A51A5009B684A /* ScanBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScanBuffer.hpp; path = Source/ScanBuffer.hpp; sourceTree = "<group>"; };
+		F2DD65831D6A53B4009B684A /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
+		F2DD65841D6A53B4009B684A /* Loader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Loader.hpp; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -512,6 +520,8 @@
 				F2389CE71D47FAF2008DF3D9 /* List_t.hpp */,
 				F2389CEA1D47FE2E008DF3D9 /* ListCursor_t.hpp */,
 				F2389CE91D47FCF6008DF3D9 /* ListNode_t.hpp */,
+				F2DD657F1D6A51A5009B684A /* ScanBuffer.cpp */,
+				F2DD65801D6A51A5009B684A /* ScanBuffer.hpp */,
 				F226E7401D41E36500E10FC3 /* Skip.cpp */,
 				981C8FDB1D19574D00530F3B /* Skip.hpp */,
 				981C8FD41D19574200530F3B /* SkipNode.cpp */,
@@ -554,6 +564,8 @@
 				98C42D041D009FBD007DD84F /* Index.hpp */,
 				F226E7371D41E0C200E10FC3 /* IndexColumn.cpp */,
 				F226E7381D41E0C200E10FC3 /* IndexColumn.hpp */,
+				F2DD65831D6A53B4009B684A /* Loader.cpp */,
+				F2DD65841D6A53B4009B684A /* Loader.hpp */,
 				F2389CEB1D482985008DF3D9 /* User.cpp */,
 				F2389CEC1D482985008DF3D9 /* User.hpp */,
 			);
@@ -1066,7 +1078,9 @@
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				F2DD65711D652D47009B684A /* lz4.h in Headers */,
 				F2DD65741D652D7E009B684A /* bzlib.h in Headers */,
+				F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
+				F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */,
 				F2A0FAFB1D6432F20032B090 /* SEitfCursor.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1228,6 +1242,7 @@
 				F22056781D62DA9F00E8EF5B /* Error.cpp in Sources */,
 				F22056AA1D62DD5B00E8EF5B /* GlobalDictionary.cpp in Sources */,
 				F22056741D62DA8B00E8EF5B /* _bytes.cpp in Sources */,
+				F2DD65811D6A51A5009B684A /* ScanBuffer.cpp in Sources */,
 				F22056671D62D3EF00E8EF5B /* Platform.cpp in Sources */,
 				F22056B01D62DDC200E8EF5B /* User.cpp in Sources */,
 				F22056C31D62DE0700E8EF5B /* DictionaryStack.cpp in Sources */,
@@ -1262,6 +1277,7 @@
 				F2DD657D1D66428F009B684A /* TaskCursor.cpp in Sources */,
 				F22056891D62DAE300E8EF5B /* SysCall.cpp in Sources */,
 				F22056801D62DABC00E8EF5B /* Prompt.cpp in Sources */,
+				F2DD65851D6A53B4009B684A /* Loader.cpp in Sources */,
 				F22056951D62DCB300E8EF5B /* BufferPoolIter.cpp in Sources */,
 				F220567E1D62DAB500E8EF5B /* PosixThread.cpp in Sources */,
 				F22056701D62DA3F00E8EF5B /* Types.cpp in Sources */,

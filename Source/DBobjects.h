@@ -14,6 +14,7 @@
 #include "Table.hpp"
 #include "RowCursor.hpp"
 
+#include "Loader.hpp"
 #include "User.hpp"
 
 //-----------------------------------------------------------------------------
