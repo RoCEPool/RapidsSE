@@ -6,34 +6,93 @@ ping
 
 cd tenants
 mkten boray
+
 cd boray
 cd catalogs
 mkcat borayCatalog
+
 cd borayCatalog
 cd schemas
 mksch boraySchema
+
 cd boraySchema
 cd tables
 
 mktbl customer
+add customer C_NAME          "VARCHAR(25) NOT NULL"
+add customer C_ADDRESS       "VARCHAR(40) NOT NULL"
+add customer C_NATIONKEY     "INTEGER NOT NULL"
+add customer C_PHONE         "CHAR(15) NOT NULL"
+add customer C_ACCTBAL       "DECIMAL(15,2) NOT NULL"
+add customer C_MKTSEGMENT    "CHAR(10) NOT NULL"
+add customer C_COMMENT       "VARCHAR(117) NOT NULL"
 
 mktbl lineitem
+add lineitem L_ORDERKEY      "INTEGER NOT NULL"
+add lineitem L_PARTKEY       "INTEGER NOT NULL"
+add lineitem L_SUPPKEY       "INTEGER NOT NULL"
+add lineitem L_LINENUMBER    "INTEGER NOT NULL"
+add lineitem L_QUANTITY      "DECIMAL(15,2) NOT NULL"
+add lineitem L_EXTENDEDPRICE "DECIMAL(15,2) NOT NULL"
+add lineitem L_DISCOUNT      "DECIMAL(15,2) NOT NULL"
+add lineitem L_TAX           "DECIMAL(15,2) NOT NULL"
+add lineitem L_RETURNFLAG    "CHAR(1) NOT NULL"
+add lineitem L_LINESTATUS    "CHAR(1) NOT NULL"
+add lineitem L_SHIPDATE      "DATE NOT NULL"
+add lineitem L_COMMITDATE    "DATE NOT NULL"
+add lineitem L_RECEIPTDATE   "DATE NOT NULL"
+add lineitem L_SHIPINSTRUCT  "CHAR(25) NOT NULL"
+add lineitem L_SHIPMODE      "CHAR(10) NOT NULL"
+add lineitem L_COMMENT       "VARCHAR(44) NOT NULL"
 
 mktbl nation
-add nation N_NATIONKEY  "INTEGER NOT NULL"
-add nation N_NAME       "CHAR(25) NOT NULL"
-add nation N_REGIONKEY  "INTEGER NOT NULL"
-add nation N_COMMENT    "VARCHAR(152)"
+add nation N_NATIONKEY       "INTEGER NOT NULL"
+add nation N_NAME            "CHAR(25) NOT NULL"
+add nation N_REGIONKEY       "INTEGER NOT NULL"
+add nation N_COMMENT         "VARCHAR(152)"
 
 mktbl orders
+add orders O_ORDERKEY        "INTEGER NOT NULL"
+add orders O_CUSTKEY         "INTEGER NOT NULL"
+add orders O_ORDERSTATUS     "CHAR(1) NOT NULL"
+add orders O_TOTALPRICE      "DECIMAL(15,2) NOT NULL"
+add orders O_ORDERDATE       "DATE NOT NULL"
+add orders O_ORDERPRIORITY   "CHAR(15) NOT NULL"  
+add orders O_CLERK           "CHAR(15) NOT NULL"
+add orders O_SHIPPRIORITY    "INTEGER NOT NULL"
+add orders O_COMMENT         "VARCHAR(79) NOT NULL"
 
 mktbl part
+add part P_PARTKEY           "INTEGER NOT NULL"
+add part P_NAME              "VARCHAR(55) NOT NULL"
+add part P_MFGR              "CHAR(25) NOT NULL"
+add part P_BRAND             "CHAR(10) NOT NULL"
+add part P_TYPE              "VARCHAR(25) NOT NULL"
+add part P_SIZE              "INTEGER NOT NULL"
+add part P_CONTAINER         "CHAR(10) NOT NULL"
+add part P_RETAILPRICE       "DECIMAL(15,2) NOT NULL"
+add part P_COMMENT           "VARCHAR(23) NOT NULL"
 
 mktbl partsupp
+add partsupp PS_PARTKEY      "INTEGER NOT NULL"
+add partsupp PS_SUPPKEY      "INTEGER NOT NULL"
+add partsupp PS_AVAILQTY     "INTEGER NOT NULL"
+add partsupp PS_SUPPLYCOST   "DECIMAL(15,2) NOT NULL"
+add partsupp PS_COMMENT      "VARCHAR(199) NOT NULL"
 
 mktbl region
+add region R_REGIONKEY       "INTEGER NOT NULL"
+add region R_NAME            "CHAR(25) NOT NULL"
+add region R_COMMENT         "VARCHAR(152)"
 
 mktbl supplier
+add supplier S_SUPPKEY       "INTEGER NOT NULL"
+add supplier S_NAME          "CHAR(25) NOT NULL"
+add supplier S_ADDRESS       "VARCHAR(40) NOT NULL"
+add supplier S_NATIONKEY     "INTEGER NOT NULL"
+add supplier S_PHONE         "CHAR(15) NOT NULL"
+add supplier S_ACCTBAL       "DECIMAL(15,2) NOT NULL"
+add supplier S_COMMENT       "VARCHAR(101) NOT NULL"
 
 ld customer "/tpch/customer.tbl"
 ld lineitem "/tpch/lineitem.tbl"
