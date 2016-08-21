@@ -43,7 +43,9 @@ SEitf::SEitf(void)
   m_iInput = 0;
   //m_xInputStream[]
   //m_sPrompt
-
+  m_iCommand = 0;
+  m_bSkipHistory = false;
+  
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
 }
@@ -295,7 +297,9 @@ void SEitf::vExecute(char* pWords[])
   if ( ! bDecode(pWords) )
     return;
   
-  vHistoryAppend(pWords);
+  if (! m_bSkipHistory)
+    vHistoryAppend(pWords);
+  m_bSkipHistory = false;
   
   while (! bPopResponse(iStatus,m_sResponse))
     ;
@@ -487,7 +491,9 @@ void SEitf::vHistoryAppend(char* pWords[])
     m_xHistoryFile.vPrint("%s",pWords[i]);
   }
   m_xHistoryFile.vPrint("%s","\n");
-  m_xHistoryFile.vFlush();;
+  m_xHistoryFile.vFlush();
+  
+  m_iCommand++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -504,6 +510,53 @@ void SEitf::vHistoryClose(void)
 void SEitf::vHistoryEnd(void)
 {
   m_xHistoryFile.vSeekEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command from history file                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bHistoryGet(i8 iCommand, char* pWords[])
+{
+  vHistoryStart();
+  
+  char wCommand[C_4KB];
+  
+  s16K sCommand;
+  
+  i8 i = 0;
+  while (bHistoryRead(wCommand)) {
+    if (++i == iCommand) {
+      vHistoryEnd();
+//      String::vCopy(pWords[0],wCommand);
+      {
+        m_iInput++;
+        InputStream* pInput = this->pInput();
+        sCommand = wCommand;
+        pInput->vUseText(sCommand);
+        pInput->vLineOriented(true);
+        
+        
+        for (i8 i = 0; i < 16; i++)
+          *pWords[i] = '\0';
+        
+        i8 i = 0;
+        pInput->vEOL(false);
+        do {
+          pInput->eNextLiteral(pWords[i]);
+          vTrace("Word [%lld] %s\n",i,pWords[i]);
+          i++;
+        }
+        while (! pInput->bEOL() && ! pInput->bEOF());
+        
+        m_iInput--;
+      }
+      
+      return true;
+    }
+  }
+  
+  vHistoryEnd();
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -529,7 +582,6 @@ void SEitf::vHistoryPrint(void)
   char wCommand[C_4KB];
   
   i8 i = 1;
-  
   while (bHistoryRead(wCommand)) {
     vTrace("%lld %s\n",i++,wCommand);
   }
@@ -538,13 +590,40 @@ void SEitf::vHistoryPrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reab command history file                                                  */
+/* read command history file                                                  */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bHistoryRead(char* wCommand)
 {
   bool bResult = m_xHistoryFile.bReadLine(wCommand);
   
   return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* recall command from history file                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bHistoryRecall(char* pWords[])
+{
+  i8 iCommand;
+  
+  if (String::bEqualTo("!!",pWords[0],C_NO_CASE)) {
+    iCommand = m_iCommand;
+    if (! iCommand)
+      return false;
+  }
+  else {
+    // get command number
+    if (String::iLength(pWords[0]) < 2)
+      return false;
+    
+    iCommand = String::iToI8(pWords[0]+1);
+  }
+  
+  vTrace("Recall: %lld\n",iCommand);
+  
+  bool b = bHistoryGet(iCommand,pWords);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -567,6 +646,22 @@ bool SEitf::bDecode(char* pWords[])
 {
   if (0 == String::iLength(pWords[0]))
     return false;
+  
+  if (String::bEqualTo("history",pWords[0],C_NO_CASE)) {
+    return bPrintHistory(pWords);
+  }
+
+  if (String::bEqualTo("!!",pWords[0],C_NO_CASE)) {
+    if (! bHistoryRecall(pWords))
+      return false;
+    m_bSkipHistory = true;
+  }
+  
+  if ('!' == *pWords[0]) {
+    if (! bHistoryRecall(pWords))
+      return false;
+    m_bSkipHistory = true;
+  }
   
   if (String::bEqualTo("?",pWords[0],C_NO_CASE) ||
       String::bEqualTo("help",pWords[0],C_NO_CASE)) {
@@ -737,10 +832,6 @@ bool SEitf::bDecode(char* pWords[])
   
   if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
     return bGetMonitor(pWords);
-  }
-  
-  if (String::bEqualTo("!!",pWords[0],C_NO_CASE)) {
-    return bPrintHistory(pWords);
   }
   
   if (bTestFile(pWords[0])) {

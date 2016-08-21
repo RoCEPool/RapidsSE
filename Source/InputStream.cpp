@@ -486,6 +486,10 @@ void InputStream::vGetChar(void)
   if (! m_bFromFile) {
     // get next char from input text
     m_cCurrChar = *m_yInputText++;
+    
+    if ('\n' == m_cCurrChar || '\0' == m_cCurrChar)
+      m_bEOL = true;
+    
     return;
   }
 

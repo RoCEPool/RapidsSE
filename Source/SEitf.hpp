@@ -29,6 +29,8 @@ namespace Interface
     
     char        m_wHistory[C_4KB];
     File        m_xHistoryFile;
+    i8          m_iCommand;
+    bool        m_bSkipHistory;
     
     
     // must be last
@@ -65,9 +67,11 @@ namespace Interface
 
     void   vHistoryAppend(char* pWords[]);
     void   vHistoryClose(void);
+    bool   bHistoryGet(i8 iCommand, char* pWords[]);
     void   vHistoryOpen(void);
     void   vHistoryPrint(void);
     bool   bHistoryRead(char* wCommand);
+    bool   bHistoryRecall(char* pWords[]);
     void   vHistoryStart(void);
     void   vHistoryEnd(void);
     
