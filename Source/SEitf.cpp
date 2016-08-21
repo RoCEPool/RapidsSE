@@ -227,7 +227,13 @@ void SEitf::vPrompt(void)
   pInput()->vPrompt(m_sPrompt.a());
   pInput()->vLineOriented(true);
   
+  vHistoryOpen();
+  
   while (true) {
+    
+    for (i8 i = 0; i < 16; i++)
+      *pWords[i] = '\0';
+    
     InputStream* pInput = this->pInput();
     
     i8 i = 0;
@@ -288,6 +294,8 @@ void SEitf::vExecute(char* pWords[])
   
   if ( ! bDecode(pWords) )
     return;
+  
+  vHistoryAppend(pWords);
   
   while (! bPopResponse(iStatus,m_sResponse))
     ;
@@ -463,6 +471,90 @@ void SEitf::vDo(const char* aCommand)
   vParse(sCommand,pWords);
   vExecute(pWords);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append command to history file                                             */
+/*----------------------------------------------------------------------------*/
+void SEitf::vHistoryAppend(char* pWords[])
+{
+  for (i8 i = 0; *pWords[i]; i++) {
+    if (i)
+      m_xHistoryFile.vPrint("%s"," ");
+    m_xHistoryFile.vPrint("%s",pWords[i]);
+  }
+  m_xHistoryFile.vPrint("%s","\n");
+  m_xHistoryFile.vFlush();;
+}
+
+/*----------------------------------------------------------------------------*/
+/* close command history file                                                 */
+/*----------------------------------------------------------------------------*/
+void SEitf::vHistoryClose(void)
+{
+  m_xHistoryFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seek to end of command history file                                        */
+/*----------------------------------------------------------------------------*/
+void SEitf::vHistoryEnd(void)
+{
+  m_xHistoryFile.vSeekEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* open command history file                                                  */
+/*----------------------------------------------------------------------------*/
+void SEitf::vHistoryOpen(void)
+{
+  char wFileName[C_1KB];
+  
+  String::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt",Process::iGetPid());
+  
+  bool b = m_xHistoryFile.bOpen(wFileName,C_OPEN_READ_WRITE_CREATE);
+  ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print command history file                                                 */
+/*----------------------------------------------------------------------------*/
+void SEitf::vHistoryPrint(void)
+{
+  vHistoryStart();
+  
+  char wCommand[C_4KB];
+  
+  i8 i = 1;
+  
+  while (bHistoryRead(wCommand)) {
+    vTrace("%lld %s\n",i++,wCommand);
+  }
+
+  vHistoryEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reab command history file                                                  */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bHistoryRead(char* wCommand)
+{
+  bool bResult = m_xHistoryFile.bReadLine(wCommand);
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* seek to start of command history file                                      */
+/*----------------------------------------------------------------------------*/
+void SEitf::vHistoryStart(void)
+{
+  m_xHistoryFile.vSeek(0);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -645,6 +737,10 @@ bool SEitf::bDecode(char* pWords[])
   
   if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
     return bGetMonitor(pWords);
+  }
+  
+  if (String::bEqualTo("!!",pWords[0],C_NO_CASE)) {
+    return bPrintHistory(pWords);
   }
   
   if (bTestFile(pWords[0])) {
@@ -1282,6 +1378,15 @@ bool SEitf::bGetMonitor(char* pWords[])
   vAppendRequest(sRequest);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print command history                                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPrintHistory(char* pWords[])
+{
+  vHistoryPrint();
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

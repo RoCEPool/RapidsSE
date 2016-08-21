@@ -27,6 +27,10 @@ namespace Interface
     InputStream m_xInputStream[C_INPUT_ARRAY]; // input stream handler
     s256        m_sPrompt;         // prompt
     
+    char        m_wHistory[C_4KB];
+    File        m_xHistoryFile;
+    
+    
     // must be last
     Footer m_xFooter;
     
@@ -56,7 +60,17 @@ namespace Interface
     void   vPopFile(void);
     
     InputStream* pInput(void);
+    
+    //--------------------------------------------------------------------------
 
+    void   vHistoryAppend(char* pWords[]);
+    void   vHistoryClose(void);
+    void   vHistoryOpen(void);
+    void   vHistoryPrint(void);
+    bool   bHistoryRead(char* wCommand);
+    void   vHistoryStart(void);
+    void   vHistoryEnd(void);
+    
     //--------------------------------------------------------------------------
     
     void   vAppendRequest(s& sRequest);
@@ -119,6 +133,7 @@ namespace Interface
     bool bGetDicContents(char* pWords[]);
 
     bool bGetMonitor(char* pWords[]);
+    bool bPrintHistory(char* pWords[]);
     
     bool bPing(char* pWords[]);
     

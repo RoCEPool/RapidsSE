@@ -63,6 +63,8 @@ namespace Common
     bool bReadLine(s& s);
     bool bReadLine(char* y);
     void vReset(void);
+    void vSeek(i8 iOffset);
+    void vSeekEnd(void);
     void vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     void vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     SysCall& rSysCall(void);

@@ -460,6 +460,42 @@ void File::vReset(void)
   vSet("","");
 }
 
+/*---------------------------------------------------------------------------*/
+/* vSeek: seek to offset                                                     */
+/*---------------------------------------------------------------------------*/
+void File::vSeek(i8 iOffset)
+{
+  m_xSysCall.vClear();
+  
+  i8 rCode = fseek(m_pFilePtr,iOffset,SEEK_SET);
+  
+  if (rCode) {
+    m_xSysCall.vError(errno);
+    vWarn("File::vSeek: fseek() error; errno=%d",errno);
+    return;
+  }
+  
+  m_xSysCall.vSuccess();
+}
+
+/*---------------------------------------------------------------------------*/
+/* vSeek: seek to end                                                        */
+/*---------------------------------------------------------------------------*/
+void File::vSeekEnd(void)
+{
+  m_xSysCall.vClear();
+  
+  i8 rCode = fseek(m_pFilePtr,0,SEEK_END);
+  
+  if (rCode) {
+    m_xSysCall.vError(errno);
+    vWarn("File::vSeek: fseek() error; errno=%d",errno);
+    return;
+  }
+  
+  m_xSysCall.vSuccess();
+}
+
 /*----------------------------------------------------------------------------*/
 /* set file arguments                                                         */
 /*----------------------------------------------------------------------------*/
