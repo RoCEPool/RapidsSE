@@ -575,16 +575,16 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("0>",              &vZeroGreater,      false);
   
   //----------------------------------------------------------
-//  vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
-//  vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
-//  vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
-//  vAddPrimitive("assert.stack_1+", &vAssertStack_1more, false);
-//  vAddPrimitive("assert.stack_2",  &vAssertStack_2,     false);
-//  vAddPrimitive("assert.stack_2+", &vAssertStack_2more, false);
-//  vAddPrimitive("assert.stack_3",  &vAssertStack_3,     false);
-//  vAddPrimitive("assert.stack_3+", &vAssertStack_3more, false);
-//  vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
-//  vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
+  vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
+  vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
+  vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
+  vAddPrimitive("assert.stack_1+", &vAssertStack_1more, false);
+  vAddPrimitive("assert.stack_2",  &vAssertStack_2,     false);
+  vAddPrimitive("assert.stack_2+", &vAssertStack_2more, false);
+  vAddPrimitive("assert.stack_3",  &vAssertStack_3,     false);
+  vAddPrimitive("assert.stack_3+", &vAssertStack_3more, false);
+  vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
+  vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
   
   vAddPrimitive("args.print",      &vArgsPrint,        false);
   
@@ -4967,6 +4967,110 @@ void Task::vAssertStack_0more(NNP_Task nnpTask)
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack0+");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_1 -- asssert 1 values on stack                                */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_1(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_1");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (1 == iStackValues)  )
+    THROW("assert.stack_1");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_1+ -- asssert 0 or more values on stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_1more(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_1more");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (1 <= iStackValues) )
+    THROW("assert.stack1+");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_2 -- asssert 2 values on stack                                */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_2(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_2");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (2 == iStackValues)  )
+    THROW("assert.stack_2");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_2+ -- asssert 2 or more values on stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_2more(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_2more");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (2 <= iStackValues) )
+    THROW("assert.stack0+");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_3 -- asssert 3 values on stack                                */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_3(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_3");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (3 == iStackValues)  )
+    THROW("assert.stack_3");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_3+ -- asssert 3 or more values on stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_3more(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_3more");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (0 <= iStackValues) )
+    THROW("assert.stack3+");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_4 -- asssert 4 values on stack                                */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_4(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_4");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (4 == iStackValues)  )
+    THROW("assert.stack_4");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_4+ -- asssert 4 or more values on stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_4more(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_4more");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (0 <= iStackValues) )
+    THROW("assert.stack4+");
 }
 
 // args: ///////////////////////////////////////////////////////////////////////
