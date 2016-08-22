@@ -43,8 +43,11 @@ RowCursor::RowCursor(void)
   _poolAddress_(this);
   _magic_();
   
-  m_pTable = nullptr;
-  m_pRow   = nullptr;
+  m_pTable     = nullptr;
+  m_pPartition = nullptr;
+  m_pStrand    = nullptr;
+  m_pBuffer    = nullptr;
+  m_pRow       = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

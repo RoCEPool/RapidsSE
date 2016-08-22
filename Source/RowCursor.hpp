@@ -11,8 +11,11 @@ namespace DBobjects
   class RowCursor : public Object
   {
   private:
-    Table*  m_pTable;
-    Object* m_pRow;
+    Table*     m_pTable;
+    Partition* m_pPartition;
+    Strand*    m_pStrand;
+    Buffer*    m_pBuffer;
+    Object*    m_pRow;
     
   public:
     void* operator new(size_t);
