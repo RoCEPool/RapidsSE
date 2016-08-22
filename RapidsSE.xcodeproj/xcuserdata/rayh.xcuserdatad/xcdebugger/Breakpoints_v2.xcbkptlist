@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523920.321908"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5325"
-            endingLineNumber = "5325"
+            startingLineNumber = "5364"
+            endingLineNumber = "5364"
             landmarkName = "Task::vLoaderDelete(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523921.244279"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5342"
-            endingLineNumber = "5342"
+            startingLineNumber = "5381"
+            endingLineNumber = "5381"
             landmarkName = "Task::vLoaderNew(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523922.717937"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5355"
-            endingLineNumber = "5355"
+            startingLineNumber = "5394"
+            endingLineNumber = "5394"
             landmarkName = "Task::vLoaderInit(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523924.124358"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5372"
-            endingLineNumber = "5372"
+            startingLineNumber = "5411"
+            endingLineNumber = "5411"
             landmarkName = "Task::vLoaderTableStore(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523925.698965"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5393"
-            endingLineNumber = "5393"
+            startingLineNumber = "5432"
+            endingLineNumber = "5432"
             landmarkName = "Task::vLoaderPathStore(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -90,11 +90,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523927.55593"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5414"
-            endingLineNumber = "5414"
+            startingLineNumber = "5453"
+            endingLineNumber = "5453"
             landmarkName = "Task::vLoaderOpenFile(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523928.433004"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5433"
-            endingLineNumber = "5433"
+            startingLineNumber = "5472"
+            endingLineNumber = "5472"
             landmarkName = "Task::vLoaderCloseFile(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523930.131731"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5450"
-            endingLineNumber = "5450"
+            startingLineNumber = "5489"
+            endingLineNumber = "5489"
             landmarkName = "Task::vLoaderFetchRecord(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523931.695894"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5469"
-            endingLineNumber = "5469"
+            startingLineNumber = "5508"
+            endingLineNumber = "5508"
             landmarkName = "Task::vLoaderInsertRow(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523933.585789"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5488"
-            endingLineNumber = "5488"
+            startingLineNumber = "5527"
+            endingLineNumber = "5527"
             landmarkName = "Task::vLoaderBegin(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493523935.24245"
+            timestampString = "493531857.531554"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5505"
-            endingLineNumber = "5505"
+            startingLineNumber = "5544"
+            endingLineNumber = "5544"
             landmarkName = "Task::vLoaderEnd(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -192,38 +192,6 @@
             startingLineNumber = "151"
             endingLineNumber = "151"
             landmarkName = "ScanBuffer::pScan(i8&amp; iMessageBytes)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/ScanBuffer.cpp"
-            timestampString = "493528458.889588"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "ScanBuffer::iBytesAvailable(void)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/ScanBuffer.cpp"
-            timestampString = "493528919.946727"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234"
-            landmarkName = "ScanBuffer::vCopyUp(char* pDangling)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

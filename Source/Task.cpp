@@ -575,6 +575,17 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("0>",              &vZeroGreater,      false);
   
   //----------------------------------------------------------
+//  vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
+//  vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
+//  vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
+//  vAddPrimitive("assert.stack_1+", &vAssertStack_1more, false);
+//  vAddPrimitive("assert.stack_2",  &vAssertStack_2,     false);
+//  vAddPrimitive("assert.stack_2+", &vAssertStack_2more, false);
+//  vAddPrimitive("assert.stack_3",  &vAssertStack_3,     false);
+//  vAddPrimitive("assert.stack_3+", &vAssertStack_3more, false);
+//  vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
+//  vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
+  
   vAddPrimitive("args.print",      &vArgsPrint,        false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
@@ -4929,6 +4940,34 @@ void Task::vZeroGreater(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+// assert: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_0 -- asssert 0 values on stack                                */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_0(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_0");
+
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (0 == iStackValues)  )
+    THROW("assert.stack_0");
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert.stack_0+ -- asssert 0 or more values on stack                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAssertStack_0more(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vAssertStack_0more");
+  
+  i8 iStackValues = nnpTask->m_xParamStack.iValues();
+  
+  if ( ! (0 <= iStackValues) )
+    THROW("assert.stack0+");
+}
 
 // args: ///////////////////////////////////////////////////////////////////////
 

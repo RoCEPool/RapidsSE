@@ -21,7 +21,7 @@ namespace Interface
     Queue*     m_pRequestQueue;    // request queue
     Queue*     m_pResponseQueue;   // reponse queue
     
-    s256       m_sResponse;        // response
+    s8K         m_sResponse;        // response
     
     i8          m_iInput;
     InputStream m_xInputStream[C_INPUT_ARRAY]; // input stream handler

@@ -414,6 +414,18 @@ namespace Tasking
     // args
     static void vArgsPrint(NNP_Task nnpTask);
 
+    // assert
+    static void vAssertStack_0(NNP_Task nnpTask);
+    static void vAssertStack_0more(NNP_Task nnpTask);
+    static void vAssertStack_1(NNP_Task nnpTask);
+    static void vAssertStack_1more(NNP_Task nnpTask);
+    static void vAssertStack_2(NNP_Task nnpTask);
+    static void vAssertStack_2more(NNP_Task nnpTask);
+    static void vAssertStack_3(NNP_Task nnpTask);
+    static void vAssertStack_3more(NNP_Task nnpTask);
+    static void vAssertStack_4(NNP_Task nnpTask);
+    static void vAssertStack_4more(NNP_Task nnpTask);
+
     // csv
     static void vCsvFirstValue(NNP_Task nnpTask);
     

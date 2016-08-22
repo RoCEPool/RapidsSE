@@ -141,6 +141,8 @@
 		F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65801D6A51A5009B684A /* ScanBuffer.hpp */; };
 		F2DD65851D6A53B4009B684A /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD65831D6A53B4009B684A /* Loader.cpp */; };
 		F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65841D6A53B4009B684A /* Loader.hpp */; };
+		F2DD658A1D6AB589009B684A /* s8K.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD65881D6AB589009B684A /* s8K.cpp */; };
+		F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65891D6AB589009B684A /* s8K.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -450,6 +452,8 @@
 		F2DD65831D6A53B4009B684A /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
 		F2DD65841D6A53B4009B684A /* Loader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Loader.hpp; sourceTree = "<group>"; };
 		F2DD65871D6A8BE7009B684A /* loader.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = loader.sen; path = Commands/loader.sen; sourceTree = "<group>"; };
+		F2DD65881D6AB589009B684A /* s8K.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = s8K.cpp; path = Source/s8K.cpp; sourceTree = "<group>"; };
+		F2DD65891D6AB589009B684A /* s8K.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = s8K.hpp; path = Source/s8K.hpp; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -936,6 +940,8 @@
 				F2F125111D21D6E800CA8E5A /* s32.hpp */,
 				F2F1250A1D21BB0500CA8E5A /* s256.cpp */,
 				F2F1250B1D21BB0500CA8E5A /* s256.hpp */,
+				F2DD65881D6AB589009B684A /* s8K.cpp */,
+				F2DD65891D6AB589009B684A /* s8K.hpp */,
 				F2F125191D2231B300CA8E5A /* s16K.cpp */,
 				F2F1251A1D2231B300CA8E5A /* s16K.hpp */,
 				F226E7431D42B61F00E10FC3 /* Shm.cpp */,
@@ -1076,6 +1082,7 @@
 				F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */,
 				F2DD657A1D655BE6009B684A /* RowCursor.hpp in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
+				F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */,
 				F2DD657E1D66428F009B684A /* TaskCursor.hpp in Headers */,
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				F2DD65711D652D47009B684A /* lz4.h in Headers */,
@@ -1189,6 +1196,7 @@
 				F22056AB1D62DD5F00E8EF5B /* Dictionary.cpp in Sources */,
 				F220568E1D62DC9600E8EF5B /* Strand.cpp in Sources */,
 				F22056D31D62DE8100E8EF5B /* GridModel.cpp in Sources */,
+				F2DD658A1D6AB589009B684A /* s8K.cpp in Sources */,
 				F22056901D62DCA000E8EF5B /* Segment.cpp in Sources */,
 				F22056931D62DCAC00E8EF5B /* Heap.cpp in Sources */,
 				F22056D61D62DE8E00E8EF5B /* OnHeap.cpp in Sources */,

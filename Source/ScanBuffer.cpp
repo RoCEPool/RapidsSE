@@ -188,9 +188,6 @@ i8 ScanBuffer::iBytesAvailable(void)
   ASSERT(m_pEndData <= pLastByte());
   
   i8 iBytes = iSub(pLastByte(),m_pEndData) + 1;
-  if (iBytes > C_WORKAREA) {
-    i8 i = 0;
-  }
   ASSERT(iBytes <= C_WORKAREA);
   
   return iBytes;
@@ -230,8 +227,6 @@ void ScanBuffer::vCopyUp(char* pDangling)
   ASSERT(iDanglingBytes <= C_WORKAREA);
   Memory::vCopy(pFirstByte(),pDangling,iDanglingBytes);
   m_pEndData = pcAdd(pFirstByte(),iDanglingBytes - 1);
-  if (m_pEndData < pFirstByte())
-    i8 i = 0;
   
   ASSERT(m_pEndData >= pFirstByte());
   ASSERT(m_pEndData <= pLastByte());
