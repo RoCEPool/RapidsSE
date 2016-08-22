@@ -33,6 +33,7 @@ namespace DBobjects
     ~RowStrand(void);
     
     bool bInsertRow(StrVal* pRow);
+    i8   iRowBuffers(void);
     
     RowBuffer* pFirstBuffer(void);
     RowBuffer* pLastBuffer(void);

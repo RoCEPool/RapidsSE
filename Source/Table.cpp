@@ -80,7 +80,13 @@ i8 Table::iRowBuffers(void)
 {
   _poolAddress_(this);
   
-  i8 iBuffers = pPartition(0)->iBufferCount();
+  i8 iBuffers = 0;
+
+  RowStrand *pStrand = pPartition(0)->pHeadStrand();
+  while (pStrand) {
+    iBuffers += pStrand->iRowBuffers();
+    pStrand = pStrand->pNextStrand();
+  }
   
   return iBuffers;
 }
