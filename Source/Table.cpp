@@ -126,14 +126,21 @@ void Table::vExport(File* pFile)
 {
   _poolAddress_(this);
   
-  Object* pCurrent;
+  Object* pRow;
   
-  for (pCurrent = pPartition(0)->pFirstObject(); pCurrent; ) {
-    StrVal* pStrVal = reinterpret_cast<StrVal*>(pCurrent);
-    //vTrace("Row %p: %s\n",pStrVal,pStrVal->sStr());
-    pFile->vPrint("%s\n",pStrVal->sStr());
-    pCurrent = pPartition(0)->pNextObject(pCurrent,pStrVal->iSize());
+  RowCursor* pRowCursor = new RowCursor;
+  
+  pRowCursor->vTable(this);
+  
+  pRowCursor->vBegin();
+  pRowCursor->vFirst();
+  while ( (pRow = pRowCursor->pRow()) ) {
+    //vTrace("Exporting %s\n",((StrVal*)pRow)->sStr());
+    pFile->vPrint("%s\n",((StrVal*)pRow)->sStr());
+    pRowCursor->vNext();
   }
+  
+  delete pRowCursor;
 }
 
 /*----------------------------------------------------------------------------*/
