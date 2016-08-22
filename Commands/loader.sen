@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* loader.sen -- Table Loader                                                 */
+/*============================================================================*/
+
+"loader.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a loader using name from input stream (doesnt leave loader on stk)  */
+/*----------------------------------------------------------------------------*/
+: loader:
+    create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADER class!
+    word.this >body loader.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a loader using name on the stack (leaves loader on stack)           */
+/*----------------------------------------------------------------------------*/
+: :loader
+    >create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADER class!
+    word.this >body loader.init
+    word.this
+    does>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

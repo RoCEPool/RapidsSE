@@ -449,6 +449,7 @@
 		F2DD65801D6A51A5009B684A /* ScanBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScanBuffer.hpp; path = Source/ScanBuffer.hpp; sourceTree = "<group>"; };
 		F2DD65831D6A53B4009B684A /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loader.cpp; sourceTree = "<group>"; };
 		F2DD65841D6A53B4009B684A /* Loader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Loader.hpp; sourceTree = "<group>"; };
+		F2DD65871D6A8BE7009B684A /* loader.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = loader.sen; path = Commands/loader.sen; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -733,6 +734,7 @@
 				F226E7521D440A2900E10FC3 /* columns.sen */,
 				F226E74D1D44088C00E10FC3 /* column.sen */,
 				F226E7561D440BBF00E10FC3 /* rows.sen */,
+				F2DD65871D6A8BE7009B684A /* loader.sen */,
 			);
 			name = MetaData;
 			sourceTree = "<group>";
