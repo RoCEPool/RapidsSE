@@ -31,6 +31,31 @@
     does>
 ;
 
+: load ( "<path>" table loader )
+//traceon
+
+    >r
+
+//temp
+    "/tpch/lineitem.tbl"
+    "t" :table execute
+//
+    0 rpick loader.table!
+    0 rpick loader.path!
+    0 rpick loader.openFile not if "file not opened" . rdrop exit then
+    0 rpick loader.begin
+    begin
+      0 rpick loader.fetchrecord
+      while
+        0 rpick loader.insertrow drop
+    repeat
+    0 rpick loader.end
+    0 rpick loader.closeFile
+    rdrop
+
+//traceoff
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

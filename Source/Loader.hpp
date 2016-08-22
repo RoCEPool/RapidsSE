@@ -14,6 +14,8 @@ namespace DBobjects
     Table* m_pTable;   // table being load
     File   m_xFile;    // from which file
     char*  m_pRecord;  // record from file
+    i8     m_iLength;  // length of record
+    
     ScanBuffer* m_pScanBuffer; // scanning buffer
     
   public:

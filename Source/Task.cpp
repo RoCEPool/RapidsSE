@@ -604,8 +604,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
-  vAddPrimitive("loader.tableStore",  &vLoaderTableStore,  false);
-  vAddPrimitive("loader.pathStore",   &vLoaderPathStore,   false);
+  vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
   vAddPrimitive("loader.openFile",    &vLoaderOpenFile,    false);
   vAddPrimitive("loader.begin",       &vLoaderBegin,       false);
   vAddPrimitive("loader.fetchRecord", &vLoaderFetchRecord, false);

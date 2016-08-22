@@ -19,6 +19,7 @@
 
 // compile the runtime words
 "runtime.sen" >>:
+"metadata.sen" >>:
 
 /*----------------------------------------------------------------------------*/
 /* step 2: compile testing                                                    */

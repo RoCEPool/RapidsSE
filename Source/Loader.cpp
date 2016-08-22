@@ -98,6 +98,8 @@ bool Loader::bOpenFile(void)
 /*----------------------------------------------------------------------------*/
 void Loader::vBegin(void)
 {
+  ASSERT( ! m_pScanBuffer );
+  
   m_pScanBuffer = new ScanBuffer;
 }
 
@@ -106,18 +108,18 @@ void Loader::vBegin(void)
 /*----------------------------------------------------------------------------*/
 bool Loader::bFetchRecord(void)
 {
-  i8 iBytes;
-
-  m_pRecord = m_pScanBuffer->pScan(iBytes);
+  m_pRecord = m_pScanBuffer->pScan(m_iLength);
   if ( m_pRecord )
     return true;
   
-  char* pInto = m_pScanBuffer->pInto(iBytes);
+  i8 iAvailableBytes;
+  char* pInto = m_pScanBuffer->pInto(iAvailableBytes);
   
-  i8 iRead = m_xFile.iReadChunk(pInto,iBytes);
+  i8 iRead = m_xFile.iReadChunk(pInto,iAvailableBytes);
+  //vTrace("Read %lld\n",iRead);
   m_pScanBuffer->vMore(iRead);
 
-  m_pRecord = m_pScanBuffer->pScan(iBytes);
+  m_pRecord = m_pScanBuffer->pScan(m_iLength);
   if ( m_pRecord )
     return true;
   
@@ -129,10 +131,18 @@ bool Loader::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 bool Loader::bInsertRow(void)
 {
-  StrVal xRow;
-  xRow = m_pRecord;
+  ValWsp xRow;
+  xRow.vClass(CN_STRVAL);
   
-  m_pTable->vInsertRow(&xRow);
+  StrVal* pStrVal = xRow.pAsStrVal();
+  
+  Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
+  pStrVal->sStr()[m_iLength] = '\0';
+  pStrVal->vSize();
+  
+  //vTrace("Row: %s\n",pStrVal->sStr());
+  
+  m_pTable->vInsertRow(pStrVal);
   
   return true;
 }
