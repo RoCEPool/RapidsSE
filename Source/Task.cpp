@@ -281,7 +281,9 @@ void Task::vAddConstants(void)
   /* 30 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
   /* 31 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
   /* 32 */ vAddConstant("CN_ROW",                   CN_ROW);
+  /* 32 */ vAddConstant("CN_ROWBUFFER",             CN_ROWBUFFER);
   /* 33 */ vAddConstant("CN_ROWCURSOR",             CN_ROWCURSOR);
+  /* 32 */ vAddConstant("CN_ROWSTRAND",             CN_ROWSTRAND);
   /* 34 */ vAddConstant("CN_SCANBUFFER",            CN_SCANBUFFER);
   /* 35 */ vAddConstant("CN_SEGMENTBUFFER",         CN_SEGMENTBUFFER);
   /* 36 */ vAddConstant("CN_SEITF",                 CN_SEITF);
@@ -345,9 +347,9 @@ void Task::vAddConstants(void)
   /* 29 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
   /* 30 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
   /* 31 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
-  /* 32 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(Row));
+  /* 32 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
   /* 33 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
-  /* 34 */ vAddConstant("SIZEOF_ROWSPACE",          sizeof(Row));
+  /* 34 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
   /* 35 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
   /* 36 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
   /* 37 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));

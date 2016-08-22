@@ -161,6 +161,17 @@ void Table::vInsertRow(StrVal* pRowStr)
   Memory::vCopy(pRow,pRowStr,nBytes);
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void Table::vInsertRow2(StrVal* pRowStr)
+{
+  _poolAddress_(this);
+  
+  bool bInserted = pPartition(0)->bInsertRow(pRowStr);
+  
+  ASSERT(bInserted);
+}
+
 /*----------------------------------------------------------------------------*/
 /* load file into tabl                                                        */
 /*----------------------------------------------------------------------------*/

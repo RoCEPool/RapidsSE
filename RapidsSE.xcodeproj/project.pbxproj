@@ -143,6 +143,10 @@
 		F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65841D6A53B4009B684A /* Loader.hpp */; };
 		F2DD658A1D6AB589009B684A /* s8K.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD65881D6AB589009B684A /* s8K.cpp */; };
 		F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65891D6AB589009B684A /* s8K.hpp */; };
+		F2DD658E1D6B86A6009B684A /* RowBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD658C1D6B86A6009B684A /* RowBuffer.cpp */; };
+		F2DD658F1D6B86A6009B684A /* RowBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD658D1D6B86A6009B684A /* RowBuffer.hpp */; };
+		F2DD65921D6B86B7009B684A /* RowStrand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2DD65901D6B86B7009B684A /* RowStrand.cpp */; };
+		F2DD65931D6B86B7009B684A /* RowStrand.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2DD65911D6B86B7009B684A /* RowStrand.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -454,6 +458,10 @@
 		F2DD65871D6A8BE7009B684A /* loader.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = loader.sen; path = Commands/loader.sen; sourceTree = "<group>"; };
 		F2DD65881D6AB589009B684A /* s8K.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = s8K.cpp; path = Source/s8K.cpp; sourceTree = "<group>"; };
 		F2DD65891D6AB589009B684A /* s8K.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = s8K.hpp; path = Source/s8K.hpp; sourceTree = "<group>"; };
+		F2DD658C1D6B86A6009B684A /* RowBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RowBuffer.cpp; sourceTree = "<group>"; };
+		F2DD658D1D6B86A6009B684A /* RowBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RowBuffer.hpp; sourceTree = "<group>"; };
+		F2DD65901D6B86B7009B684A /* RowStrand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RowStrand.cpp; sourceTree = "<group>"; };
+		F2DD65911D6B86B7009B684A /* RowStrand.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RowStrand.hpp; sourceTree = "<group>"; };
 		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
 		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
@@ -563,8 +571,12 @@
 				F226E78E1D45FD5800E10FC3 /* Partition.hpp */,
 				98686CD01D1A7C7B00A4CC3E /* Row.cpp */,
 				98686CD11D1A7C7B00A4CC3E /* Row.hpp */,
+				F2DD658C1D6B86A6009B684A /* RowBuffer.cpp */,
+				F2DD658D1D6B86A6009B684A /* RowBuffer.hpp */,
 				F2DD65771D655BE6009B684A /* RowCursor.cpp */,
 				F2DD65781D655BE6009B684A /* RowCursor.hpp */,
+				F2DD65901D6B86B7009B684A /* RowStrand.cpp */,
+				F2DD65911D6B86B7009B684A /* RowStrand.hpp */,
 				98C42D031D009FBD007DD84F /* Index.cpp */,
 				98C42D041D009FBD007DD84F /* Index.hpp */,
 				F226E7371D41E0C200E10FC3 /* IndexColumn.cpp */,
@@ -1079,6 +1091,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2DD658F1D6B86A6009B684A /* RowBuffer.hpp in Headers */,
 				F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */,
 				F2DD657A1D655BE6009B684A /* RowCursor.hpp in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
@@ -1087,6 +1100,7 @@
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				F2DD65711D652D47009B684A /* lz4.h in Headers */,
 				F2DD65741D652D7E009B684A /* bzlib.h in Headers */,
+				F2DD65931D6B86B7009B684A /* RowStrand.hpp in Headers */,
 				F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
 				F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */,
@@ -1191,6 +1205,7 @@
 				F220567B1D62DAAB00E8EF5B /* Lock.cpp in Sources */,
 				F22056941D62DCB000E8EF5B /* FreeChunk.cpp in Sources */,
 				F22056A71D62DD3A00E8EF5B /* WrdVal.cpp in Sources */,
+				F2DD65921D6B86B7009B684A /* RowStrand.cpp in Sources */,
 				F2A0FAFA1D6432F20032B090 /* SEitfCursor.cpp in Sources */,
 				F220569B1D62DD0400E8EF5B /* ValWsp.cpp in Sources */,
 				F22056AB1D62DD5F00E8EF5B /* Dictionary.cpp in Sources */,
@@ -1198,6 +1213,7 @@
 				F22056D31D62DE8100E8EF5B /* GridModel.cpp in Sources */,
 				F2DD658A1D6AB589009B684A /* s8K.cpp in Sources */,
 				F22056901D62DCA000E8EF5B /* Segment.cpp in Sources */,
+				F2DD658E1D6B86A6009B684A /* RowBuffer.cpp in Sources */,
 				F22056931D62DCAC00E8EF5B /* Heap.cpp in Sources */,
 				F22056D61D62DE8E00E8EF5B /* OnHeap.cpp in Sources */,
 				F22056A61D62DD3300E8EF5B /* DataStructures.cpp in Sources */,

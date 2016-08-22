@@ -49,7 +49,6 @@ Partitions::~Partitions(void)
 Partition* Partitions::pPartition(i8 iPartition)
 {
   return &m_xPartition[iPartition];
-  return &m_xPartition[iPartition];
 }
 
 /*============================================================================*/

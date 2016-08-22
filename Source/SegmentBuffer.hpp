@@ -21,6 +21,7 @@ namespace MemoryManagement
     void  operator delete(void*);
     
     SegmentBuffer(void);
+    SegmentBuffer(eCN eClass);
    ~SegmentBuffer(void);
     
     Object* pAllocObject(size_t nBytes);

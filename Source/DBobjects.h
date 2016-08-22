@@ -7,17 +7,25 @@
 #include "Dictionaries.h"
 
 #include "Row.hpp"
+#include "RowBuffer.hpp"
+#include "RowStrand.hpp"
+
 #include "Index.hpp"
+
 #include "Partition.hpp"
 #include "Partitions.hpp"
+
 #include "Ring.hpp"
+
 #include "Table.hpp"
+
 #include "RowCursor.hpp"
 
 #include "Loader.hpp"
+
 #include "User.hpp"
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 namespace DBobjects
 {
   void vCheckAssumptions(void);

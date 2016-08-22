@@ -32,7 +32,23 @@ void SegmentBuffer::operator delete(void* pSegmentAddress)
 SegmentBuffer::SegmentBuffer(void)
 : Buffer(CN_SEGMENTBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bHasSpace   = true;
+  m_pFreeSpace  = pFirstObject();
+  m_pPrevBuffer = nullptr;
+  m_pNextBuffer = nullptr;
+  
+  pFooter()->vSetFooter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+SegmentBuffer::SegmentBuffer(eCN eClass)
+: Buffer(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bHasSpace   = true;
   m_pFreeSpace  = pFirstObject();
@@ -47,7 +63,7 @@ SegmentBuffer::SegmentBuffer(void)
 /*----------------------------------------------------------------------------*/
 SegmentBuffer::~SegmentBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +71,7 @@ SegmentBuffer::~SegmentBuffer(void)
 /*----------------------------------------------------------------------------*/
 Object* SegmentBuffer::pAllocObject(size_t nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   // was exhausted on last call?
   if (bIsExhausted())
@@ -79,7 +95,7 @@ Object* SegmentBuffer::pAllocObject(size_t nBytes)
 /*----------------------------------------------------------------------------*/
 Object* SegmentBuffer::pFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   Object* pFirst = pFirstObject();
   
@@ -94,7 +110,7 @@ Object* SegmentBuffer::pFirst(void)
 /*----------------------------------------------------------------------------*/
 Object* SegmentBuffer::pNext(Object* pCurr, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   Object* pNext = static_cast<Object*>(pvAdd(pCurr,nBytes));
   
@@ -109,7 +125,7 @@ Object* SegmentBuffer::pNext(Object* pCurr, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 SegmentBuffer* SegmentBuffer::pNextBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pNextBuffer;
 }
@@ -119,7 +135,7 @@ SegmentBuffer* SegmentBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void SegmentBuffer::vNextBuffer(SegmentBuffer* pNextBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pNextBuffer = pNextBuffer;
 }
@@ -129,7 +145,7 @@ void SegmentBuffer::vNextBuffer(SegmentBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 SegmentBuffer* SegmentBuffer::pPrevBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pPrevBuffer;
 }
@@ -139,7 +155,7 @@ SegmentBuffer* SegmentBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 void SegmentBuffer::vPrevBuffer(SegmentBuffer* pPrevBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pPrevBuffer = pPrevBuffer;
 }
@@ -149,7 +165,7 @@ void SegmentBuffer::vPrevBuffer(SegmentBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 void SegmentBuffer::vCopy(SegmentBuffer* pFromBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bHasSpace = pFromBuffer->bHasSpace();
   
@@ -167,7 +183,7 @@ void SegmentBuffer::vCopy(SegmentBuffer* pFromBuffer)
 /*----------------------------------------------------------------------------*/
 bool SegmentBuffer::bHasSpace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_bHasSpace;
 }
@@ -177,7 +193,7 @@ bool SegmentBuffer::bHasSpace(void)
 /*----------------------------------------------------------------------------*/
 i8 SegmentBuffer::iBytesUsed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 iBytes = iSub(m_pFreeSpace,pFirstObject());
   
@@ -189,7 +205,7 @@ i8 SegmentBuffer::iBytesUsed(void)
 /*----------------------------------------------------------------------------*/
 Object* SegmentBuffer::pFirstObject(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(SegmentBuffer)));
   
@@ -205,7 +221,7 @@ Object* SegmentBuffer::pFirstObject(void)
 /*----------------------------------------------------------------------------*/
 Footer* SegmentBuffer::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
   
@@ -217,7 +233,7 @@ Footer* SegmentBuffer::pFooter(void)
 /*----------------------------------------------------------------------------*/
 i8 SegmentBuffer::iFreeSpace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   i8 nBytes = iSub(pLastByte(),m_pFreeSpace);
   
@@ -229,7 +245,7 @@ i8 SegmentBuffer::iFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 bool SegmentBuffer::bIsExhausted(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_bHasSpace ? false : true;
 }
@@ -239,7 +255,7 @@ bool SegmentBuffer::bIsExhausted(void)
 /*----------------------------------------------------------------------------*/
 void SegmentBuffer::vSetExhausted(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bHasSpace = false;
 }

@@ -45,6 +45,7 @@ namespace DBobjects
     void vExport(File* pFile);
     SegmentBuffer* pFirstBuffer(void);
     void vInsertRow(StrVal* pRow);
+    void vInsertRow2(StrVal* pRow);
     void vLoad(File* pFile);
     void vLoad2(File* pFile);
     void vList(void);

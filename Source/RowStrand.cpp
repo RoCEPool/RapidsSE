@@ -1,0 +1,176 @@
+/*============================================================================*/
+/* RowStrand.cpp -- Row Strand                                                */
+/*============================================================================*/
+
+#include "DBobjects.h"
+
+/*----------------------------------------------------------------------------*/
+/* allocate a row strand from small object heap                               */
+/*----------------------------------------------------------------------------*/
+void* RowStrand::operator new(size_t)
+{
+  Object* pObject = gpSmallHeap->pAllocObject();
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* release a row strand back to the small object heap                         */
+/*----------------------------------------------------------------------------*/
+void RowStrand::operator delete(void* pRowStrandAddress)
+{
+  RowStrand* pRowStrand = static_cast<RowStrand*>(pRowStrandAddress);
+  
+  gpSmallHeap->vFreeObject(pRowStrand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowStrand::RowStrand(void)
+: Object(CN_ROWSTRAND)
+{
+  _poolAddress_(this);
+  
+  m_zLock.vCheckInit();
+  m_iRowBuffers  = 0;
+  m_pFirstBuffer = nullptr;
+  m_pLastBuffer  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+RowStrand::~RowStrand(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a row into this strand                                              */
+/*----------------------------------------------------------------------------*/
+bool RowStrand::bInsertRow(StrVal* pRowStr)
+{
+  _poolAddress_(this);
+  
+  m_zLock.vGrabWrite();
+  
+  if (! m_pLastBuffer) {
+    if (! bExtendStrand()) {
+      m_zLock.vDropWrite();
+      return false;
+    }
+  }
+
+  bool bInserted = m_pLastBuffer->bInsertRow(pRowStr);
+  
+  if (bInserted) {
+    m_zLock.vDropWrite();
+    return true;
+  }
+  
+  if (! bExtendStrand()) {
+    m_zLock.vDropWrite();
+    return false;
+  }
+  
+  bInserted = m_pLastBuffer->bInsertRow(pRowStr);
+  ASSERT(bInserted);
+  
+  m_zLock.vDropWrite();
+  
+  return bInserted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowStrand* RowStrand::pNextStrand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pNextStrand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowStrand::vNextStrand(RowStrand* pNextStrand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pNextStrand = pNextStrand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowStrand* RowStrand::pPrevStrand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pPrevStrand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowStrand::vPrevStrand(RowStrand* pPrevStrand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pPrevStrand = pPrevStrand;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* extend this strand                                                         */
+/*----------------------------------------------------------------------------*/
+bool RowStrand::bExtendStrand(void)
+{
+  _poolAddress_(this);
+  
+  if (m_iRowBuffers >= C_STRAND_LENGTH)
+    return false;
+
+  RowBuffer* pNewBuffer = new RowBuffer;
+  
+  if (! m_pFirstBuffer) {
+    ASSERT(! m_iRowBuffers);
+    ASSERT(! m_pLastBuffer);
+    
+    m_pFirstBuffer = pNewBuffer;
+    m_pLastBuffer  = pNewBuffer;
+    
+    m_iRowBuffers = 1;
+  }
+  else {
+    ASSERT(m_iRowBuffers);
+    ASSERT(m_pLastBuffer);
+    
+    m_pLastBuffer->vNextBuffer(pNewBuffer);
+    pNewBuffer->vPrevBuffer(m_pLastBuffer);
+    
+    m_pLastBuffer = pNewBuffer;
+    
+    m_iRowBuffers++;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calculate location of footer                                               */
+/*----------------------------------------------------------------------------*/
+Footer* RowStrand::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

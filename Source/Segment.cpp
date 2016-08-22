@@ -39,9 +39,6 @@ Segment::Segment(eCN eClass)
   
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
-
-  m_pHeadStrand = nullptr;
-  m_pTailStrand = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

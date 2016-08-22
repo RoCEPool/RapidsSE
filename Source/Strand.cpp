@@ -29,10 +29,10 @@ void Strand::operator delete(void* pStrandAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Strand::Strand(void)
-: Object(CN_STRAND)
+Strand::Strand(eCN eClass)
+: Object(eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_xLock.vCheckInit();
   
@@ -50,7 +50,7 @@ Strand::Strand(void)
 /*----------------------------------------------------------------------------*/
 Strand::~Strand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ Strand::~Strand(void)
 /*----------------------------------------------------------------------------*/
 void Strand::vAppendBuffer(SegmentBuffer* pBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STRAND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_xLock.vGrabWrite();
   
@@ -91,7 +91,7 @@ void Strand::vAppendBuffer(SegmentBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 SegmentBuffer* Strand::pFirstBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   return m_pHeadBuffer;
 }
@@ -101,7 +101,7 @@ SegmentBuffer* Strand::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 SegmentBuffer* Strand::pPopBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   SegmentBuffer* pBuffer = nullptr;
   
@@ -135,7 +135,7 @@ SegmentBuffer* Strand::pPopBuffer(void)
 /*----------------------------------------------------------------------------*/
 Footer* Strand::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEGMENTBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return &m_xFooter;
 }

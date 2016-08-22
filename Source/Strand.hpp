@@ -26,7 +26,7 @@ namespace MemoryManagement
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Strand(void);
+    Strand(eCN eClass);
    ~Strand(void);
     
     i8 iCountBuffer(void);

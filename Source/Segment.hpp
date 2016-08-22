@@ -15,9 +15,6 @@ namespace MemoryManagement
     i8       m_iCount;        // number of buffers
     SegmentBuffer* m_pFirstBuffer; // first buffer in list
     SegmentBuffer* m_pLastBuffer;  // last buffer in list
-
-    Strand* m_pHeadStrand; // first strand in list
-    Strand* m_pTailStrand; // last strand in list
     
   public:
     void* operator new(size_t);
