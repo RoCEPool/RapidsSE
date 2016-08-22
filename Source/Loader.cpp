@@ -142,7 +142,7 @@ bool Loader::bInsertRow(void)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  m_pTable->vInsertRow(pStrVal);
+  m_pTable->vInsertRow(0,pStrVal);
   
   return true;
 }

@@ -6606,7 +6606,7 @@ void Task::vTableInsert(NNP_Task nnpTask)
   Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vInsertRow(xRow.pAsStrVal());
+  pTable->vInsertRow(0,xRow.pAsStrVal());
 }
 
 /*----------------------------------------------------------------------------*/

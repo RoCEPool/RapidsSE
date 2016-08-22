@@ -44,8 +44,7 @@ namespace DBobjects
     Dictionary* pDic(void);
     void vExport(File* pFile);
     SegmentBuffer* pFirstBuffer(void);
-    void vInsertRow(StrVal* pRow);
-    void vInsertRow2(StrVal* pRow);
+    void vInsertRow(i8 iPartition, StrVal* pRow);
     void vLoad(File* pFile);
     void vLoad2(File* pFile);
     void vList(void);

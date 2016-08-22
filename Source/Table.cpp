@@ -88,24 +88,25 @@ i8 Table::iRowBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* copy given table into this one                                             */
 /*----------------------------------------------------------------------------*/
-void Table::vCopy(Table *pTable)
+void Table::vCopy(Table *pFromTable)
 {
   _poolAddress_(this);
-
-  SegmentBuffer* pFromBuffer = pTable->pFirstBuffer();
   
-  while (pFromBuffer) {
-    
-    vTrace("FromBuffer %p\n",pFromBuffer);
-    
-    pPartition(0)->vExtendSpace();
-
-    SegmentBuffer* pToBuffer = pPartition(0)->pLastBuffer();
-    
-    pToBuffer->vCopy(pFromBuffer);
-    
-    pFromBuffer = pFromBuffer->pNextBuffer();
+  Object* pRow;
+  
+  RowCursor* pRowCursor = new RowCursor;
+  
+  pRowCursor->vTable(pFromTable);
+  
+  pRowCursor->vBegin();
+  pRowCursor->vFirst();
+  while ( (pRow = pRowCursor->pRow()) ) {
+    //vTrace("Copying %s\n",((StrVal*)pRow)->sStr());
+    vInsertRow(0,(StrVal*)pRow);
+    pRowCursor->vNext();
   }
+  
+  delete pRowCursor;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,26 +149,13 @@ SegmentBuffer* Table::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow2(StrVal* pRowStr)
+void Table::vInsertRow(i8 iPartition, StrVal* pRowStr)
 {
   _poolAddress_(this);
 
-  i8 nBytes = pRowStr->iSize();
+  Partition* pPartn = pPartition(iPartition);
   
-  Object* pRow = pPartition(0)->pAllocObject(nBytes);
-
-  ASSERT(pRow);
-  
-  Memory::vCopy(pRow,pRowStr,nBytes);
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-void Table::vInsertRow(StrVal* pRowStr)
-{
-  _poolAddress_(this);
-  
-  bool bInserted = pPartition(0)->bInsertRow(pRowStr);
+  bool bInserted = pPartn->bInsertRow(pRowStr);
   
   ASSERT(bInserted);
 }
@@ -196,7 +184,7 @@ void Table::vLoad2(File* pFile)
       return;
     }
     
-    vInsertRow(xBuffer.pAsStrVal());
+    vInsertRow(0,xBuffer.pAsStrVal());
   }
 }
 
@@ -261,7 +249,7 @@ void Table::vLoad(File* pFile)
         *z = '\0';
         xRow.pAsStrVal()->vSize();
         //vTrace("Row: %s\n",xRow.sStr());
-        vInsertRow(xRow.pAsStrVal());
+        vInsertRow(0,xRow.pAsStrVal());
         
         // continue with next line/row
         pNext = ++pScan;

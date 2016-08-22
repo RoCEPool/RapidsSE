@@ -234,6 +234,8 @@ Buffer* BufferPool::pAllocBuffer(void)
   
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
+    if ( m_iFreeCount )
+      i8 i = 0;
     ASSERT( ! m_iFreeCount );
     return nullptr;
   }
