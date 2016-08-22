@@ -54,7 +54,7 @@ namespace Common
     bool bIsStdin(void);
     bool bIsStdout(void);
     bool bOpen(void);
-    bool bOpen(const char* aFilePath, i8 iTraceLevel=0);
+    bool bOpen(const char* aOpenMode, i8 iTraceLevel=0);
     bool bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     s256& sPath(void);
     void vPath(const char* aFilePath);
