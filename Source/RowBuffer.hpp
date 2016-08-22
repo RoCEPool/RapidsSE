@@ -17,6 +17,8 @@ namespace DBobjects
     ~RowBuffer(void);
     
     bool bInsertRow(StrVal* pRow);
+    
+    RowBuffer* pNextBuffer(void);
   };
 }
 

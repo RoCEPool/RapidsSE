@@ -45,8 +45,8 @@ RowCursor::RowCursor(void)
   
   m_pTable     = nullptr;
   m_pPartition = nullptr;
-  m_pStrand    = nullptr;
-  m_pBuffer    = nullptr;
+  m_pRowStrand = nullptr;
+  m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
 }
 
@@ -67,7 +67,14 @@ void RowCursor::vBegin(void)
   _poolAddress_(this);
   _magic_();
 
+  m_pPartition = m_pTable->pPartition(0);
+  m_pRowStrand = m_pPartition->pHeadStrand();
+  m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+  
+  // - - - -
+  
   m_pRow = m_pTable->pPartition(0)->pFirstObject();
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,18 +91,38 @@ void RowCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set to first row                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vFirst(void)
+void RowCursor::vFirst2(void)
 {
   _poolAddress_(this);
   _magic_();
   
   m_pRow = m_pTable->pPartition(0)->pFirstObject();
 }
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void RowCursor::vFirst(void)
+{
+  _poolAddress_(this);
+  _magic_();
+  
+  m_pPartition = m_pTable->pPartition(0);
+  m_pRowStrand = m_pPartition->pHeadStrand();
+  if (m_pRowStrand) {
+    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+    if (m_pRowBuffer)
+      m_pRow = m_pRowBuffer->pFirst();
+    else
+      m_pRow = nullptr;
+  }
+  else {
+    m_pRowBuffer = nullptr;
+    m_pRow = nullptr;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* advance to next row                                                        */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vNext(void)
+void RowCursor::vNext2(void)
 {
   _poolAddress_(this);
   _magic_();
@@ -105,6 +132,39 @@ void RowCursor::vNext(void)
   i8 iSize = pStrVal->iSize();
 
   m_pRow = m_pTable->pPartition(0)->pNextObject(m_pRow,iSize);
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void RowCursor::vNext(void)
+{
+  _poolAddress_(this);
+  _magic_();
+  
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow);
+  
+  i8 iSize = pStrVal->iSize();
+  
+  m_pRow = m_pRowBuffer->pNext(m_pRow,iSize);
+  if (m_pRow)
+    return;
+  
+  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
+  if (m_pRowBuffer) {
+    m_pRow = m_pRowBuffer->pFirst();
+    if (m_pRow)
+      return;
+  }
+  
+  m_pRowStrand = m_pRowStrand->pNextStrand();
+  if (m_pRowStrand) {
+    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+    if (m_pRowBuffer) {
+      m_pRow = m_pRowBuffer->pFirst();
+      if (m_pRow)
+        return;
+    }
+  }
+  
+  m_pRow = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

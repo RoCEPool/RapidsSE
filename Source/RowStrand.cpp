@@ -82,6 +82,26 @@ bool RowStrand::bInsertRow(StrVal* pRowStr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get first buffer                                                           */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowStrand::pFirstBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pFirstBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowStrand::pLastBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pLastBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 RowStrand* RowStrand::pNextStrand(void)

@@ -13,8 +13,8 @@ namespace DBobjects
   private:
     Table*     m_pTable;
     Partition* m_pPartition;
-    Strand*    m_pStrand;
-    Buffer*    m_pBuffer;
+    RowStrand* m_pRowStrand;
+    RowBuffer* m_pRowBuffer;
     Object*    m_pRow;
     
   public:
@@ -28,7 +28,9 @@ namespace DBobjects
     void   vBegin(void);
     void   vEnd(void);
     void   vFirst(void);
+    void   vFirst2(void);
     void   vNext(void);
+    void   vNext2(void);
     char*  pRowAsStr(void);
     Table* pTable(void);
     void   vTable(Table* pTable);

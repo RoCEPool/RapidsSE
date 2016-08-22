@@ -148,7 +148,7 @@ SegmentBuffer* Table::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(StrVal* pRowStr)
+void Table::vInsertRow2(StrVal* pRowStr)
 {
   _poolAddress_(this);
 
@@ -163,7 +163,7 @@ void Table::vInsertRow(StrVal* pRowStr)
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-void Table::vInsertRow2(StrVal* pRowStr)
+void Table::vInsertRow(StrVal* pRowStr)
 {
   _poolAddress_(this);
   

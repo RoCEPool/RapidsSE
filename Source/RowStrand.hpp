@@ -34,6 +34,9 @@ namespace DBobjects
     
     bool bInsertRow(StrVal* pRow);
     
+    RowBuffer* pFirstBuffer(void);
+    RowBuffer* pLastBuffer(void);
+    
     RowStrand* pNextStrand(void);
     void       vNextStrand(RowStrand* pNextStrand);
     

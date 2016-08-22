@@ -320,6 +320,7 @@ void SEitf::vIterateRows(void)
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   pRowCursor->vBegin();
+  pRowCursor->vFirst();
   char* pStr = pRowCursor->pRowAsStr();
   while (pStr) {
     vTrace("Row: %s\n",pStr);
@@ -327,6 +328,7 @@ void SEitf::vIterateRows(void)
     pStr = pRowCursor->pRowAsStr();
   }
   
+  pRowCursor->vEnd();
   delete pRowCursor;
 }
 

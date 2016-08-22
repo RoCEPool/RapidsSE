@@ -28,6 +28,9 @@ namespace DBobjects
     
     bool bInsertRow(StrVal* pRowStr);
     
+    RowStrand* pHeadStrand(void);
+    RowStrand* pTailStrand(void);
+    
   private:
     bool bExtendPartition(void);
     Footer* pFooter(void);
