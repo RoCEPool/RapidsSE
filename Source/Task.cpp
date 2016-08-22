@@ -601,6 +601,18 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("file.read",       &vFileRead,         false);
   vAddPrimitive("file.write",      &vFileWrite,        false);
   
+  vAddPrimitive("loader.new",         &vLoaderNew,         false);
+  vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.init",        &vLoaderInit,        false);
+  vAddPrimitive("loader.tableStore",  &vLoaderTableStore,  false);
+  vAddPrimitive("loader.pathStore",   &vLoaderPathStore,   false);
+  vAddPrimitive("loader.openFile",    &vLoaderOpenFile,    false);
+  vAddPrimitive("loader.begin",       &vLoaderBegin,       false);
+  vAddPrimitive("loader.fetchRecord", &vLoaderFetchRecord, false);
+  vAddPrimitive("loader.insertRow",   &vLoaderInsertRow,   false);
+  vAddPrimitive("loader.end",         &vLoaderEnd,         false);
+  vAddPrimitive("loader.closeFile",   &vLoaderCloseFile,   false);
+
   vAddPrimitive("lock.dropread",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropwrite",  &vLockDropWrite,    false);
   vAddPrimitive("lock.grabread",   &vLockGrabRead,     false);
@@ -5301,6 +5313,205 @@ void Task::vFileWrite(NNP_Task nnpTask)
     THROW_INVALID_PARAM("file.write");
   
   //pFile->bWrite(xValue);
+}
+
+// loader: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* loader.delete -- delete a table loader                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderDelete");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.delete");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  delete pLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.new -- new a table loader                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderNew");
+  
+  Loader* pLoader = new Loader;
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  nnpTask->vPushParam(pLoader);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.init -- init a table loader                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderInit");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.init");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  new(pLoader) Loader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.table! -- store table into loader                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderTableStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderTableStore");
+  
+  PtrVal xPtrTable;
+  PtrVal xPtrLoader;
+  if ( ! nnpTask->bPopParam(xPtrLoader,xPtrTable) )
+    THROW_INVALID_PARAM("loader.tableStore");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrLoader.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  ASSERT(CN_TABLE == pTable->eClass());
+
+  pLoader->vTable(pTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.path! -- store file path into loader                                */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderPathStore(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderPathStore");
+  
+  ValWsp xWspPath;
+  PtrVal xPtrLoader;
+  if ( ! nnpTask->bPopParam(xPtrLoader,xWspPath) )
+    THROW_INVALID_PARAM("loader.pathStore");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrLoader.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  s256 sPath;
+  sPath = xWspPath.sStr();
+  
+  pLoader->vPath(sPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.openfile -- open file to be loaded                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderOpenFile(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderOpenFile");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.openfile");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  bool bOpened = pLoader->bOpenFile();
+  
+  nnpTask->vPushParam(bOpened);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.closefile -- close file being loaded                                */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderCloseFile(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderCloseFile");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.closefile");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  pLoader->vCloseFile();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.fetchRecord -- fetch next record from file being loaded             */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderFetchRecord(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderFetchReord");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.fetchRecord");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  bool bFetched = pLoader->bFetchRecord();
+  
+  nnpTask->vPushParam(bFetched);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.insertRow -- insert row into table being loaded                     */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderInsertRow(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderFetchReord");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.fetchRecord");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  bool bInserted = pLoader->bInsertRow();
+  
+  nnpTask->vPushParam(bInserted);
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.begin -- begin loading                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderBegin");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.begin");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  pLoader->vBegin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.end -- end loading                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderEnd");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.end");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  pLoader->vEnd();
 }
 
 // lock: ///////////////////////////////////////////////////////////////////////

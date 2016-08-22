@@ -18,6 +18,7 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, void* pLoaderAddress);
     void  operator delete(void* pLoaderAddress);
  
     Loader(void);
@@ -29,8 +30,10 @@ namespace DBobjects
     void   vPath(s& sPath);
     
     bool   bOpenFile(void);
+    void   vBegin(void);
     bool   bFetchRecord(void);
-    void   vInsertRow(void);
+    bool   bInsertRow(void);
+    void   vEnd(void);
     void   vCloseFile(void);
   };
 }

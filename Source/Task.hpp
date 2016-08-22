@@ -439,6 +439,19 @@ namespace Tasking
     static void vFileRead(NNP_Task nnpTask);
     static void vFileWrite(NNP_Task nnpTask);
     
+    // loader
+    static void vLoaderNew(NNP_Task nnpTask);
+    static void vLoaderDelete(NNP_Task nnpTask);
+    static void vLoaderInit(NNP_Task nnpTask);
+    static void vLoaderTableStore(NNP_Task nnpTask);
+    static void vLoaderPathStore(NNP_Task nnpTask);
+    static void vLoaderOpenFile(NNP_Task nnpTask);
+    static void vLoaderBegin(NNP_Task nnpTask);
+    static void vLoaderFetchRecord(NNP_Task nnpTask);
+    static void vLoaderInsertRow(NNP_Task nnpTask);
+    static void vLoaderEnd(NNP_Task nnpTask);
+    static void vLoaderCloseFile(NNP_Task nnpTask);
+
     // lock
     static void vLockDropRead(NNP_Task nnpTask);
     static void vLockDropWrite(NNP_Task nnpTask);

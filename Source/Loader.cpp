@@ -15,6 +15,14 @@ void* Loader::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* Loader::operator new(size_t, void* pLoaderAddress)
+{
+  return pLoaderAddress;
+}
+
+/*----------------------------------------------------------------------------*/
 /* delete operator                                                            */
 /*----------------------------------------------------------------------------*/
 void Loader::operator delete(void* pLoaderAddress)
@@ -35,7 +43,7 @@ Loader::Loader(void)
   m_pTable  = nullptr;
   //m_xFile
   m_pRecord = nullptr;
-  m_pScanBuffer = new ScanBuffer;
+  m_pScanBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +53,8 @@ Loader::~Loader(void)
 {
   _poolAddress_(this);
   
-  delete m_pScanBuffer;
+  if (m_pScanBuffer)
+    delete m_pScanBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +94,14 @@ bool Loader::bOpenFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin loading                                                              */
+/*----------------------------------------------------------------------------*/
+void Loader::vBegin(void)
+{
+  m_pScanBuffer = new ScanBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch next record                                                          */
 /*----------------------------------------------------------------------------*/
 bool Loader::bFetchRecord(void)
@@ -110,12 +127,23 @@ bool Loader::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 /* insert row                                                                 */
 /*----------------------------------------------------------------------------*/
-void Loader::vInsertRow(void)
+bool Loader::bInsertRow(void)
 {
   StrVal xRow;
   xRow = m_pRecord;
   
   m_pTable->vInsertRow(&xRow);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end loading                                                                */
+/*----------------------------------------------------------------------------*/
+void Loader::vEnd(void)
+{
+  delete m_pScanBuffer;
+  m_pScanBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
