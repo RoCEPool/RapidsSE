@@ -28,9 +28,7 @@ namespace DBobjects
     void    vBegin(void);
     void    vEnd(void);
     void    vFirst(void);
-    void    vFirst2(void);
     void    vNext(void);
-    void    vNext2(void);
     Object* pRow(void);
     char*   pRowAsStr(void);
     Table*  pTable(void);

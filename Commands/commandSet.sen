@@ -462,21 +462,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dump contents of table                                                     */
-/*----------------------------------------------------------------------------*/
-: dump_table ( "tablename" -- "done" <success> )
-
-    find
-
-    checkIsTable not if exit then
-
-    execute ( table )
-
-    table.list   ( )
-    "done" success
-;
-
-/*----------------------------------------------------------------------------*/
 /* get first buffer of table                                                  */
 /*----------------------------------------------------------------------------*/
 : select_table ( "tablename" )
@@ -488,8 +473,6 @@
     queryCount ++
 
     execute ( table )
-
-    //table.firstBuffer
 
     rowcursor.new dup rot rowcursor.table!
 

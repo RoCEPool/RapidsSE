@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Partition : public Segment
+  class Partition : public Object
   {
   private:
     Lock       m_zLock;        // lock covers all buffers

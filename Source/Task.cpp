@@ -683,11 +683,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.dic",         &vTableDic,         false);
   vAddPrimitive("table.drop",        &vTableDrop,        false);
   vAddPrimitive("table.export",      &vTableExport,      false);
-  vAddPrimitive("table.firstBuffer", &vTableFirstBuffer, false);
   vAddPrimitive("table.init",        &vTableInit,        false);
   vAddPrimitive("table.insert",      &vTableInsert,      false);
   vAddPrimitive("table.load",        &vTableLoad,        false);
-  vAddPrimitive("table.list",        &vTableList,        false);
   vAddPrimitive("table.space",       &vTableSpace,       false);
   vAddPrimitive("table.truncate",    &vTableTruncate,    false);
   
@@ -6555,26 +6553,6 @@ void Task::vTableExport(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.firstBuffer -- push ptr to first buffer of table onto stack          */
-/*----------------------------------------------------------------------------*/
-void Task::vTableFirstBuffer(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableFirstBuffer");
-  
-  PtrVal xPtrTable;
-  
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.firstBuffer");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  SegmentBuffer* pFirstBuffer = pTable->pFirstBuffer();
-  
-  nnpTask->vPushParam(pFirstBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
 /* table.init -- init of table on param stack                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTableInit(NNP_Task nnpTask)
@@ -6629,23 +6607,6 @@ void Task::vTableLoad(NNP_Task nnpTask)
   ASSERT(CN_FILE == pFile->eClass());
   
   pTable->vLoad(pFile);
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.list -- list all rows of table on param stack                        */
-/*----------------------------------------------------------------------------*/
-void Task::vTableList(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableList");
-  
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
-    THROW_INVALID_PARAM("table.list");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  pTable->vList();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -150,16 +150,6 @@ void Table::vExport(File* pFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get first segment buffer                                                   */
-/*----------------------------------------------------------------------------*/
-SegmentBuffer* Table::pFirstBuffer(void)
-{
-  _poolAddress_(this);
-  
-  return pPartition(0)->pFirstBuffer();
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 void Table::vInsertRow(i8 iPartition, StrVal* pRowStr)
@@ -284,29 +274,13 @@ void Table::vLoad(File* pFile)
 }
 
 /*----------------------------------------------------------------------------*/
-/* list all rows                                                              */
-/*----------------------------------------------------------------------------*/
-void Table::vList(void)
-{
-  _poolAddress_(this);
-
-  Object* pCurrent;
-  
-  for (pCurrent = pPartition(0)->pFirstObject(); pCurrent; ) {
-    StrVal* pStrVal = reinterpret_cast<StrVal*>(pCurrent);
-    vTrace("Row %p: %s\n",pStrVal,pStrVal->sStr());
-    pCurrent = pPartition(0)->pNextObject(pCurrent,pStrVal->iSize());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* release all rows/buffers                                                   */
 /*----------------------------------------------------------------------------*/
 void Table::vTruncate(void)
 {
   _poolAddress_(this);
 
-  pPartition(0)->vReleaseAll();
+  //pPartition(0)->vReleaseAll();
 }
 
 /*----------------------------------------------------------------------------*/
