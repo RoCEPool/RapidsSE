@@ -19,6 +19,7 @@ cd boraySchema
 cd tables
 
 mktbl customer
+add customer C_CUSTKEY       "INTEGER NOT NULL"
 add customer C_NAME          "VARCHAR(25) NOT NULL"
 add customer C_ADDRESS       "VARCHAR(40) NOT NULL"
 add customer C_NATIONKEY     "INTEGER NOT NULL"
