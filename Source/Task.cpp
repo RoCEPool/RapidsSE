@@ -512,6 +512,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("+loop_rt",        &vLoopPlus_RT,      false);
   vAddPrimitive("magic@",          &vMagicFetch,       false);
   vAddPrimitive("magic!!",         &vMagicMark,        false);
+  vAddPrimitive("%",               &vModulo,           false);
   vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("neg",             &vNeg,              false);
@@ -3787,6 +3788,23 @@ void Task::vMagicMark(NNP_Task nnpTask)
   nnpTask->vPopParam(&xPtrObject);
   
   xPtrObject.pObject()->vSetMagic();
+}
+
+/*----------------------------------------------------------------------------*/
+/* % -- modulo of top integer by second integer on stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vModulo(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vModulo");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->bPopParam(j,i) )
+    THROW_INVALID_PARAM("%");
+  
+  r = MOD(i,j);
+  
+  nnpTask->vPushParam(r);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -338,7 +338,8 @@ namespace Tasking
     static void vLoopPlus_RT(NNP_Task nnpTask);    
     static void vMagicFetch(NNP_Task nnpTask);     
     static void vMagicMark(NNP_Task nnpTask);      
-    static void vMultiply(NNP_Task nnpTask);       
+    static void vModulo(NNP_Task nnpTask);
+    static void vMultiply(NNP_Task nnpTask);
     static void vNameWord(NNP_Task nnpTask);       
     static void vNeg(NNP_Task nnpTask);
     static void vNext(NNP_Task nnpTask);
