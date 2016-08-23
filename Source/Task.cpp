@@ -152,11 +152,11 @@ void Task::vInit(const char* aCommand)
   m_bCompiling = false;
   m_bTracing   = false;
   
-  m_sCommand = aCommand;
+  m_sInputLine = aCommand;
   m_eLiteral = LT_NONE;
-  if (m_sCommand.iLength())
-    String::vConcat(m_sCommand.a()," exit");
-  m_xInputStream.vUseText(m_sCommand);
+  if (m_sInputLine.iLength())
+    String::vConcat(m_sInputLine.a()," exit");
+  m_xInputStream.vUseText(m_sInputLine);
   
   m_sLiteral = "";
   
@@ -1370,8 +1370,8 @@ void Task::vSeedDicInitialiseSen(void)
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
   
-  m_sCommand = "";
-  m_xInputStream.vUseText(m_sCommand);
+  m_sInputLine = "";
+  m_xInputStream.vUseText(m_sInputLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1388,10 +1388,10 @@ void Task::vSeedWord(const char* aCommand)
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
   
-  m_sCommand = aCommand;
-  if (m_sCommand.iLength())
-    String::vConcat(m_sCommand.a()," ::exit");
-  m_xInputStream.vUseText(m_sCommand);
+  m_sInputLine = aCommand;
+  if (m_sInputLine.iLength())
+    String::vConcat(m_sInputLine.a()," ::exit");
+  m_xInputStream.vUseText(m_sInputLine);
   
 }
 
@@ -1409,8 +1409,8 @@ void Task::vSeedDocol(void)
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
   
-  m_sCommand = "";
-  m_xInputStream.vUseText(m_sCommand);
+  m_sInputLine = "";
+  m_xInputStream.vUseText(m_sInputLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3279,7 +3279,7 @@ void Task::vInputPop(NNP_Task nnpTask)
   
   ASSERT(iInputDepth = nnpTask->m_xInputStream.iDepth() + 1);
 
-  bPopped = nnpTask->bPopReturn(nnpTask->m_sCommand);
+  bPopped = nnpTask->bPopReturn(nnpTask->m_sInputLine);
   ASSERT(bPopped);
 }
 
@@ -3292,7 +3292,7 @@ void Task::vInputPush(NNP_Task nnpTask)
   
   i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
   
-  nnpTask->vPushReturn(nnpTask->m_sCommand);
+  nnpTask->vPushReturn(nnpTask->m_sInputLine);
 
   nnpTask->vPushReturn(nnpTask->m_xInputStream);
   
@@ -3312,24 +3312,24 @@ void Task::vInputStdin(NNP_Task nnpTask)
   
   nnpTask->m_xInputStream.vReset();
   
-  nnpTask->m_xInputStream.vUseStdin();
+  nnpTask->m_xInputStream.vUseStdin(nnpTask->m_sInputLine);
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.text -- redirect input to command string on param stack              */
+/* input.text -- redirect input parsining to string on param stack            */
 /*----------------------------------------------------------------------------*/
 void Task::vInputText(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputText");
   
-  s256 sCommand;
+  s256 sInput;
   
-  if ( ! nnpTask->bPopParam(sCommand) )
+  if ( ! nnpTask->bPopParam(sInput) )
     THROW_INVALID_PARAM("input.text");
     
-  nnpTask->m_sCommand = sCommand;
+  nnpTask->m_sInputLine = sInput;
   
-  nnpTask->m_xInputStream.vUseText(nnpTask->m_sCommand);
+  nnpTask->m_xInputStream.vUseText(nnpTask->m_sInputLine);
 }
 
 /*----------------------------------------------------------------------------*/

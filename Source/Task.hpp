@@ -84,15 +84,15 @@ namespace Tasking
     
     DictionaryStack m_xDictionaryStack;
     
-    Queue* m_pQueue;    // processing queue
+    Queue* m_pQueue;       // processing queue
     
     Stack  m_xParamStack;  // parameter stack
     Stack  m_xReturnStack; // return stack
     
-    s256  m_sCommand;   // supplied command
-    s256  m_sLiteral;   // current literal
-    eLT   m_eLiteral;   // literat type
-    InputStream m_xInputStream;     // input stream parser
+    s256  m_sInputLine;    // input line buffer
+    s256  m_sLiteral;      // current literal
+    eLT   m_eLiteral;      // literal type
+    InputStream m_xInputStream; // input stream parser
     
     union {
       Cell*       m_pCell;

@@ -31,11 +31,13 @@ namespace Tasking
     i8           m_iDepth;        // depth of this input
     bool         m_bFromFile;     // input is from a file?
     File         m_xInputFile;    // the input file
-    const char*  m_yInputText;    // the input text string
+    char*        m_wInputLine;    // input line buffer
+    const char*  m_yInputChar;    // input char cursor
     char         m_cCurrChar;     // current char
     eLT          m_eLiteralType;  // type of literal just recognized
-    bool         m_bPrompt;       // print prompt
     const char*  m_aPrompt;       // the prompt
+    
+    bool         m_bPrompt;       // print prompt
     bool         m_bLineOriented; // line oriented? (temporary)
     bool         m_bEOF;          // end of file?
     bool         m_bEOL;          // end of line?
@@ -59,8 +61,8 @@ namespace Tasking
     void vPrintPrompt(void);
     void vPrompt(char* aPrompt);
     void vReset(void);
-    void vUseStdin(void);
-    void vUseText(s& sScanText);
+    void vUseStdin(s& sInputLine);
+    void vUseText(s& sInputText);
     
   private:
     bool  bParseComment(char* wWorkspace);

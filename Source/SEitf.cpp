@@ -225,7 +225,7 @@ void SEitf::vPrompt(void)
   
   m_sPrompt = "seitf> ";
   
-  pInput()->vUseStdin();
+  pInput()->vUseStdin(m_sInputLine);
   pInput()->vPrompt(m_sPrompt.a());
   pInput()->vLineOriented(true);
   

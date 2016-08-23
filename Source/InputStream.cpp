@@ -217,16 +217,6 @@ bool InputStream::bOpenFile(const char* aFilePath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt for input                                                           */
-/*----------------------------------------------------------------------------*/
-void InputStream::vPrintPrompt(void)
-{
-  _poolAddress_(this);
-  
-  printf("%s",m_aPrompt);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
 void InputStream::vPrompt(char* aPrompt)
@@ -246,40 +236,51 @@ void InputStream::vReset(void)
   //m_iDepth -- never gets reset
   m_bFromFile    = false;
   m_xInputFile.vReset();
-  m_yInputText   = nullptr;
+  m_wInputLine   = nullptr;
+  m_yInputChar   = nullptr;
   m_cCurrChar    = 0;
   m_eLiteralType = LT_NONE;
-  m_bPrompt      = false;
   m_aPrompt      = "docol> ";
+  
+  m_bPrompt       = false;
   m_bLineOriented = false;
-  m_bEOF         = false;
+  m_bEOF          = false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* use stdin as input file                                                    */
+/* use stdin as input                                                         */
 /*----------------------------------------------------------------------------*/
-void InputStream::vUseStdin(void)
+void InputStream::vUseStdin(s& sInputLine)
 {
   _poolAddress_(this);
   
   vCloseFile();
   
+  // special case where stdin isnt opened,
+  // so just set file as peing opened for read
   m_xInputFile.vSet(stdin,"stdin",C_OPEN_READ);
   
-  m_bFromFile = true;
-  m_bPrompt   = true;
+  // setup for reading from file
+  m_bFromFile   = true;
+  m_wInputLine  = sInputLine.a();
+  m_yInputChar  = m_wInputLine;
+  *m_wInputLine = '\0';
+  
+  m_bPrompt     = true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* use given text for scanning                                                */
+/* use given text as input                                                    */
 /*----------------------------------------------------------------------------*/
-void InputStream::vUseText(s& sScanText)
+void InputStream::vUseText(s& sInputText)
 {
   _poolAddress_(this);
   
   vCloseFile();
   
-  m_yInputText = sScanText.a();
+  m_bFromFile  = false;
+  m_wInputLine = nullptr;
+  m_yInputChar = sInputText.a();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -485,7 +486,7 @@ void InputStream::vGetChar(void)
   
   if (! m_bFromFile) {
     // get next char from input text
-    m_cCurrChar = *m_yInputText++;
+    m_cCurrChar = *m_yInputChar++;
     
     if ('\n' == m_cCurrChar || '\0' == m_cCurrChar)
       m_bEOL = true;
@@ -529,7 +530,7 @@ void InputStream::vUngetChar(void)
   if (m_bFromFile)
     m_xInputFile.vUngetChar(m_cCurrChar);
   else
-    m_yInputText--;
+    m_yInputChar--;
   
   m_cCurrChar = 0;
 }
@@ -674,6 +675,16 @@ bool InputStream::bIsX(void)
     return true;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* prompt for input                                                           */
+/*----------------------------------------------------------------------------*/
+void InputStream::vPrintPrompt(void)
+{
+  _poolAddress_(this);
+  
+  printf("%s",m_aPrompt);
 }
 
 /*============================================================================*/
