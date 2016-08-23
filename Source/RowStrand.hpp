@@ -44,6 +44,8 @@ namespace DBobjects
     RowStrand* pPrevStrand(void);
     void       vPrevStrand(RowStrand* pPrevStrand);
     
+    void vReleaseAll(void);
+    
   private:
     bool    bExtendStrand(void);
     Footer* pFooter(void);

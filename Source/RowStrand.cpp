@@ -152,6 +152,30 @@ void RowStrand::vPrevStrand(RowStrand* pPrevStrand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* release all strands                                                        */
+/*----------------------------------------------------------------------------*/
+void RowStrand::vReleaseAll(void)
+{
+  _poolAddress_(this);
+  
+  m_zLock.vGrabWrite();
+  
+  RowBuffer* pRowBuffer = m_pFirstBuffer;
+  while (pRowBuffer) {
+    RowBuffer* pTBD = pRowBuffer;
+    pRowBuffer = pRowBuffer->pNextBuffer();
+    
+    delete pTBD;
+  }
+  
+  m_iRowBuffers  = 0;
+  m_pFirstBuffer = nullptr;
+  m_pLastBuffer  = nullptr;
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

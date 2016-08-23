@@ -102,6 +102,28 @@ RowStrand* Partition::pTailStrand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* release all strands                                                        */
+/*----------------------------------------------------------------------------*/
+void Partition::vReleaseAll(void)
+{
+  _poolAddress_(this);
+  
+  m_zLock.vGrabWrite();
+  
+  RowStrand* pRowStrand = m_pHeadStrand;
+  while (pRowStrand) {
+    pRowStrand->vReleaseAll();
+    pRowStrand = pRowStrand->pNextStrand();
+  }
+  
+  m_iRowStrands = 0;
+  m_pHeadStrand = nullptr;
+  m_pTailStrand = nullptr;
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

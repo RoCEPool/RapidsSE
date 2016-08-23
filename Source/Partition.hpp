@@ -31,6 +31,8 @@ namespace DBobjects
     RowStrand* pHeadStrand(void);
     RowStrand* pTailStrand(void);
     
+    void vReleaseAll(void);
+    
   private:
     bool bExtendPartition(void);
     Footer* pFooter(void);
