@@ -189,7 +189,7 @@ Object* RowBuffer::pFirstObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(SegmentBuffer)));
+  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(RowBuffer)));
   
   return pStart;
 }

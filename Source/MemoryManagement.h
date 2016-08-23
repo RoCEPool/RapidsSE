@@ -20,7 +20,6 @@ static const i8 C_SIZE_SMALL_OBJECT  = C_1KB;
 #include "BufferPoolAnalyzer.hpp"
 
 #include "SegmentBuffer.hpp"
-#include "Strand.hpp"
 #include "Segment.hpp"
 
 #include "FreeChunk.hpp"
