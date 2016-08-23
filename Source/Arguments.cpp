@@ -11,20 +11,21 @@ Arguments::Arguments(void)
 : InProcess(CN_ARGUMENTS)
 {
   m_sRegionName = "/RapidsSE_DefaultRegion";
-  m_iRegionSize   = 1_GB * 2;
+  m_iRegionSize = 1_GB * 2;
+  m_iPartitions = 1;
   
   m_sCommand    = "";
   
-  m_bCommand = false;
-  m_bDocol   = false;
-  m_bHelp    = false;
-  m_bList    = false;
-  m_bSeitf   = false;
-  m_bStart   = false;
-  m_bStatus  = false;
-  m_bStop    = false;
+  m_bCommand    = false;
+  m_bDocol      = false;
+  m_bHelp       = false;
+  m_bList       = false;
+  m_bSeitf      = false;
+  m_bStart      = false;
+  m_bStatus     = false;
+  m_bStop       = false;
 
-  m_bBgTasks = false;
+  m_bBgTasks    = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,6 +67,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--list",argv[iArg],C_NO_CASE)) {
       m_bList = false;
+      continue;
+    }
+    
+    if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
+      m_iPartitions = String::iToI8(argv[++iArg]);
       continue;
     }
     
@@ -136,16 +142,17 @@ void Arguments::vPrintHelp(void)
   printf("\n");
   
   printf("Help:\n");
-  printf("--command <cmd> (run given command)\n");
-  printf("--help          (print this list)\n");
-  printf("--list          (print list of available systems)\n");
-  printf("--start         (start system)\n");
-  printf("--status        (print status of system)\n");
-  printf("--stop          (stop system)\n");
+  printf("--command <cmd>   (run given command)\n");
+  printf("--help            (print this list)\n");
+  printf("--list            (print list of available systems)\n");
+  printf("--start           (start system)\n");
+  printf("--status          (print status of system)\n");
+  printf("--stop            (stop system)\n");
   
   printf("\n");
-  printf("--region        (name of shm region)\n");
-  printf("--size          (size of shm region)\n");
+  printf("--partitions <i>  (number of partitions)\n");
+  printf("--region <name>   (name of shm region)\n");
+  printf("--size <i>        (size in bytes of shm region)\n");
 
   printf("\n");
 }
