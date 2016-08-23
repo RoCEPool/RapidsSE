@@ -5,12 +5,39 @@
 #include "DBobjects.h"
 
 /*----------------------------------------------------------------------------*/
+/* fetch a new buffer from buffer pool                                        */
+/*----------------------------------------------------------------------------*/
+void* RowBuffer::operator new(size_t)
+{
+  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return a segment to the buffer pool                                        */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::operator delete(void* pRowBufferAddress)
+{
+  Buffer* pBuffer = static_cast<Buffer*>(pRowBufferAddress);
+  
+  gpBufferPool->vFree(pBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(void)
-: SegmentBuffer(CN_ROWBUFFER)
+: Buffer(CN_ROWBUFFER)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bHasSpace   = true;
+  m_pFreeSpace  = pFirstObject();
+  m_pPrevBuffer = nullptr;
+  m_pNextBuffer = nullptr;
+  
+  pFooter()->vSetFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -18,34 +45,220 @@ RowBuffer::RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 RowBuffer::~RowBuffer(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert a row into this buffer                                              */
+/* allocate an object in this segmented space                                 */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(StrVal* pRowStr)
+Object* RowBuffer::pAllocRow(size_t nBytes)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 nBytes = pRowStr->iSize();
+  // was exhausted on last call?
+  if (bIsExhausted())
+    return nullptr;
   
-  Object* pRow = pAllocObject(nBytes);
+  // test  sufficient freespace
+  if (iFreeSpace() < nBytes) {
+    vSetExhausted();
+    return nullptr;
+  }
   
-  if ( ! pRow )
-    return false;
- 
-  Memory::vCopy(pRow,pRowStr,nBytes);
+  Object* pObject = m_pFreeSpace;
   
-  return true;
+  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next row buffer                                                        */
+/* first object                                                               */
+/*----------------------------------------------------------------------------*/
+Object* RowBuffer::pFirst(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Object* pFirst = pFirstObject();
+  
+  if (pFirst < m_pFreeSpace)
+    return pFirst;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* next object                                                                */
+/*----------------------------------------------------------------------------*/
+Object* RowBuffer::pNext(Object* pCurr, i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Object* pNext = static_cast<Object*>(pvAdd(pCurr,nBytes));
+  
+  if (pNext < m_pFreeSpace)
+    return pNext;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next buffer                                                            */
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowBuffer::pNextBuffer(void)
 {
-  _poolAddress_(this);
-  return (RowBuffer*)SegmentBuffer::pNextBuffer();
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pNextBuffer = pNextBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pPrevBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prev buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pPrevBuffer = pPrevBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vCopy(RowBuffer* pFromBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bHasSpace = pFromBuffer->bHasSpace();
+  
+  i8 iBytes = pFromBuffer->iBytesUsed();
+  
+  Memory::vCopy(pFirstObject(),pFromBuffer->pFirstObject(),iBytes);
+  
+  char* pRevised = pcAdd(pFirstObject(),iBytes);
+  
+  m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
+}
+
+/*----------------------------------------------------------------------------*/
+/* has space?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bHasSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bHasSpace;
+}
+
+/*----------------------------------------------------------------------------*/
+/* calc bytes used                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iBytesUsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 iBytes = iSub(m_pFreeSpace,pFirstObject());
+  
+  return iBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* first allocatable byte in segment                                          */
+/*----------------------------------------------------------------------------*/
+Object* RowBuffer::pFirstObject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(SegmentBuffer)));
+  
+  return pStart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into this buffer                                                */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bInsertRow(StrVal* pRowStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 iSize = pRowStr->iSize();
+
+  Object* pRow = pAllocRow(iSize);
+  if (!pRow)
+    return false;
+
+  Memory::vCopy(pRow,pRowStr,iSize);
+  
+  return true;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* calculate location of footer                                               */
+/*----------------------------------------------------------------------------*/
+Footer* RowBuffer::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
+  
+  return pFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* how much free space (in bytes) left in segment?                            */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iFreeSpace(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nBytes = iSub(pLastByte(),m_pFreeSpace);
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* has this buffer exhausted its space?                                       */
+/*----------------------------------------------------------------------------*/
+bool RowBuffer::bIsExhausted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bHasSpace ? false : true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* this buffer has exhausted its space                                        */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vSetExhausted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bHasSpace = false;
 }
 
 /*============================================================================*/
