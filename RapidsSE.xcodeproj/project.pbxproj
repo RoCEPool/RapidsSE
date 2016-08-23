@@ -44,8 +44,6 @@
 		F220568A1D62DAE700E8EF5B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2CC758E1D4FDC4A00261B4D /* System.cpp */; };
 		F220568B1D62DAEA00E8EF5B /* Time_se.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A91D0E0E15000F8C45 /* Time_se.cpp */; };
 		F220568D1D62DAF300E8EF5B /* xxhash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7961D46A04700E10FC3 /* xxhash.cpp */; };
-		F220568F1D62DC9A00E8EF5B /* SegmentBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B14F1D5150360049597E /* SegmentBuffer.cpp */; };
-		F22056901D62DCA000E8EF5B /* Segment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B15B1D51AE6E0049597E /* Segment.cpp */; };
 		F22056911D62DCA300E8EF5B /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B1581D51A8980049597E /* Object.cpp */; };
 		F22056921D62DCA700E8EF5B /* HeapBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B1631D51E0F70049597E /* HeapBuffer.cpp */; };
 		F22056931D62DCAC00E8EF5B /* Heap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B1611D51E0F70049597E /* Heap.cpp */; };
@@ -407,12 +405,8 @@
 		F2A0FAF91D6432F20032B090 /* SEitfCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SEitfCursor.hpp; path = Source/SEitfCursor.hpp; sourceTree = "<group>"; };
 		F2A0FAFC1D6457CA0032B090 /* Since.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Since.cpp; path = Source/Since.cpp; sourceTree = "<group>"; };
 		F2A0FAFD1D6457CA0032B090 /* Since.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Since.hpp; path = Source/Since.hpp; sourceTree = "<group>"; };
-		F2B3B14F1D5150360049597E /* SegmentBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SegmentBuffer.cpp; sourceTree = "<group>"; };
-		F2B3B1501D5150360049597E /* SegmentBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SegmentBuffer.hpp; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		F2B3B1591D51A8980049597E /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
-		F2B3B15B1D51AE6E0049597E /* Segment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Segment.cpp; sourceTree = "<group>"; };
-		F2B3B15C1D51AE6E0049597E /* Segment.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Segment.hpp; sourceTree = "<group>"; };
 		F2B3B15E1D51DDD70049597E /* FreeChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeChunk.cpp; sourceTree = "<group>"; };
 		F2B3B15F1D51DDD70049597E /* FreeChunk.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FreeChunk.hpp; sourceTree = "<group>"; };
 		F2B3B1611D51E0F70049597E /* Heap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Heap.cpp; sourceTree = "<group>"; };
@@ -896,10 +890,6 @@
 				F2B3B1641D51E0F70049597E /* HeapBuffer.hpp */,
 				F2B3B1581D51A8980049597E /* Object.cpp */,
 				F2B3B1591D51A8980049597E /* Object.hpp */,
-				F2B3B15B1D51AE6E0049597E /* Segment.cpp */,
-				F2B3B15C1D51AE6E0049597E /* Segment.hpp */,
-				F2B3B14F1D5150360049597E /* SegmentBuffer.cpp */,
-				F2B3B1501D5150360049597E /* SegmentBuffer.hpp */,
 			);
 			name = MemoryManagement;
 			path = Source;
@@ -1206,7 +1196,6 @@
 				F22056AB1D62DD5F00E8EF5B /* Dictionary.cpp in Sources */,
 				F22056D31D62DE8100E8EF5B /* GridModel.cpp in Sources */,
 				F2DD658A1D6AB589009B684A /* s8K.cpp in Sources */,
-				F22056901D62DCA000E8EF5B /* Segment.cpp in Sources */,
 				F2DD658E1D6B86A6009B684A /* RowBuffer.cpp in Sources */,
 				F22056931D62DCAC00E8EF5B /* Heap.cpp in Sources */,
 				F22056D61D62DE8E00E8EF5B /* OnHeap.cpp in Sources */,
@@ -1221,7 +1210,6 @@
 				F220568D1D62DAF300E8EF5B /* xxhash.cpp in Sources */,
 				F24D1FBE1D64009A005031F5 /* Timer.cpp in Sources */,
 				F22056981D62DCBE00E8EF5B /* Buffer.cpp in Sources */,
-				F220568F1D62DC9A00E8EF5B /* SegmentBuffer.cpp in Sources */,
 				F22056AF1D62DDAA00E8EF5B /* Dictionaries.cpp in Sources */,
 				F22056771D62DA9A00E8EF5B /* Env.cpp in Sources */,
 				F220568B1D62DAEA00E8EF5B /* Time_se.cpp in Sources */,
