@@ -298,7 +298,8 @@ namespace Tasking
     static void vGreaterEqual(NNP_Task nnpTask);   
     static void vGwd(NNP_Task nnpTask);            
     static void vHazard(NNP_Task nnpTask);         
-    static void vI(NNP_Task nnpTask);              
+    static void vHash(NNP_Task nnpTask);
+    static void vI(NNP_Task nnpTask);
     static void vIf(NNP_Task nnpTask);             
     static void vImmediate(NNP_Task nnpTask);      
     static void vInputClose(NNP_Task nnpTask);     

@@ -471,6 +471,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">",               &vGreater,          false);
   vAddPrimitive(">=",              &vGreaterEqual,     false);
   vAddPrimitive("gwd",             &vGwd,              false);
+  vAddPrimitive("hash",            &vHash,             false);
+  vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
   vAddPrimitive("if",              &vIf,               true );
   vAddPrimitive("immediate",       &vImmediate,        true );
@@ -3149,6 +3151,26 @@ void Task::vGwd(NNP_Task nnpTask)
   else {
     THROW("Unable to get current directory");
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash -- get hash of string                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vHash(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vHash");
+  
+  ValWsp xString;
+  if ( ! nnpTask->bPopParam(xString) )
+    THROW_INVALID_PARAM("strlen");
+  
+  StrVal* pStrVal = xString.pAsStrVal();
+  
+  i8 iLength = String::iLength(pStrVal->sStr());
+  
+  i8 iHash = XXH32(pStrVal->sStr(),iLength,0);
+  
+  nnpTask->vPushParam(iHash);
 }
 
 /*----------------------------------------------------------------------------*/
