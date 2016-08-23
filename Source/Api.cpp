@@ -361,7 +361,7 @@ void vRapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 
   vTrace("pRowCursor: 0x%x\n", pRowCursor);
   pRowCursor->vBegin();
-  
+  pRowCursor->vFirst();
 }
 
 /*----------------------------------------------------------------------------*/

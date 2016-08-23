@@ -1,10 +1,14 @@
 /*============================================================================*/
-/*  _debug.h - debug macro definitions                                        */
+/* _debug.h -- Debug Macro Definitions                                        */
 /*============================================================================*/
+
 #pragma once
 
 namespace Common
 {
+  void vAssertTrap(void);
+  void vDebugTrap(void);
+  
   #ifdef MAGIC_CHECK
   #define _magic_() ASSERT(iMagic() == MAGIC);
   #else
@@ -32,7 +36,8 @@ namespace Common
   // ASSERT
   #define ASSERT(condition) \
   { \
-    if (!(condition)) { \
+    if ( !(condition) ) { \
+      Common::vAssertTrap(); \
       THROW_ERROR(EC_ASSERT); \
     } \
   }
