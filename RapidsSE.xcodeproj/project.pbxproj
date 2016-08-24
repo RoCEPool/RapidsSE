@@ -216,6 +216,7 @@
 		98C42D041D009FBD007DD84F /* Index.hpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.h; path = Index.hpp; sourceTree = "<group>"; };
 		F201DDDF1D6E4D8900A26858 /* rowCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rowCursor.sen; path = Commands/rowCursor.sen; sourceTree = "<group>"; };
 		F201DDE01D6E597F00A26858 /* exporter.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = exporter.sen; path = Commands/exporter.sen; sourceTree = "<group>"; };
+		F201DDE11D6E688D00A26858 /* copier.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = copier.sen; path = Commands/copier.sen; sourceTree = "<group>"; };
 		F21D297F1D0773B4000F8C45 /* Tasking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tasking.h; sourceTree = "<group>"; };
 		F21D29811D078B99000F8C45 /* _types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _types.h; path = Source/_types.h; sourceTree = "<group>"; };
 		F21D29831D078D9D000F8C45 /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = Source/Platform.h; sourceTree = "<group>"; };
@@ -742,6 +743,7 @@
 				F226E74F1D4408B200E10FC3 /* table.sen */,
 				F226E7521D440A2900E10FC3 /* columns.sen */,
 				F226E74D1D44088C00E10FC3 /* column.sen */,
+				F201DDE11D6E688D00A26858 /* copier.sen */,
 				F201DDE01D6E597F00A26858 /* exporter.sen */,
 				F226E7561D440BBF00E10FC3 /* rows.sen */,
 				F201DDDF1D6E4D8900A26858 /* rowCursor.sen */,

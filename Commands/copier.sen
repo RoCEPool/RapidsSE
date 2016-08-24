@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* copier.sen -- Table Copier                                                 */
+/*============================================================================*/
+
+"copier.sen" .
+
+: copier ( "<fromTableNm>" "<toTableNm>" )
+
+traceon
+
+  "nation" find execute >r
+
+  "nation_copy" :table execute >r
+
+//--
+
+  "row_cursor" find dup if else
+    drop "row_cursor" :rowCursor
+  then
+  execute
+
+  >r
+
+  // r0 ^rowCursor
+  // r1 ^toTable
+  // r2 ^fromTable
+
+  r2 r0 rowcursor.table!
+
+  0 r0 rowcursor.begin
+  r0 rowcursor.first
+  begin
+    while
+    r0 rowcursor.get .
+    r0 rowcursor.get r1 table.insert
+    r0 rowcursor.next
+  repeat
+
+  rdrop rdrop rdrop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

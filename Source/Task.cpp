@@ -6826,8 +6826,8 @@ void Task::vTableInsert(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vTableInsert");
   
-  ValWsp xRow;
   PtrVal xPtrTable;
+  ValWsp xRow;
   if ( ! nnpTask->bPopParam(xPtrTable,xRow) )
     THROW_INVALID_PARAM("table.insert");
   
