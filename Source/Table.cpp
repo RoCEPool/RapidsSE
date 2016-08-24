@@ -104,7 +104,7 @@ void Table::vCopy(Table *pFromTable)
   
   pRowCursor->vTable(pFromTable);
   
-  pRowCursor->vBegin();
+  pRowCursor->vBegin(0);
   pRowCursor->vFirst();
   while ( (pRow = pRowCursor->pRow()) ) {
     //vTrace("Copying %s\n",((StrVal*)pRow)->sStr());
@@ -138,7 +138,7 @@ void Table::vExport(File* pFile)
   
   pRowCursor->vTable(this);
   
-  pRowCursor->vBegin();
+  pRowCursor->vBegin(0);
   pRowCursor->vFirst();
   while ( (pRow = pRowCursor->pRow()) ) {
     //vTrace("Exporting %s\n",((StrVal*)pRow)->sStr());

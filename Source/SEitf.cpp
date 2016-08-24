@@ -31,11 +31,13 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SEitf::SEitf(void)
+SEitf::SEitf(i8 iPartition)
 : Object(CN_SEITF)
 {
   m_iPid = 0;
   m_iPartitions = 1;
+  m_iPartition  = iPartition;
+  
   m_xDictionary.vName("seitf");
   //m_xDicStack;
   m_pRequestQueue  = nullptr;
@@ -144,6 +146,14 @@ void SEitf::vInit(void)
   // dictionary stack
   m_xDicStack.vPush(gpDictionary);
   m_xDicStack.vPush(&m_xDictionary);
+}
+
+/*----------------------------------------------------------------------------*/
+/* which partition                                                            */
+/*----------------------------------------------------------------------------*/
+i8 SEitf::iPartition(void)
+{
+  return m_iPartition;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +338,7 @@ void SEitf::vIterateRows(void)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vBegin();
+  pRowCursor->vBegin(0);
   pRowCursor->vFirst();
   char* pStr = pRowCursor->pRowAsStr();
   while (pStr) {

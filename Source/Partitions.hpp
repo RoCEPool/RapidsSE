@@ -8,10 +8,12 @@
 
 namespace DBobjects
 {
+  static const i8 C_TABLE_PARTITIONS = 8;
+  
   class Partitions
   {
   private:
-    Partition m_xPartition[1];
+    Partition m_xPartition[C_TABLE_PARTITIONS];
     
   public:
     void* operator new(size_t);

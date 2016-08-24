@@ -34,6 +34,8 @@ namespace Interface
   public:
     i8         m_iPid;             // process which created this seitf
     i8         m_iPartitions;      // number of partitions in each node
+    i8         m_iPartition;       // which partition this seitf connects to
+    
     Dictionary m_xDictionary;      // private dictionary
     DictionaryStack m_xDicStack;   // dictionary stack
 
@@ -63,7 +65,7 @@ namespace Interface
     void* operator new(size_t);
     void  operator delete(void*);
     
-    SEitf(void);
+    SEitf(i8 iPartition);
     ~SEitf(void);
     
     DictionaryStack* pDicStack(void);
@@ -74,6 +76,7 @@ namespace Interface
     void   vDump(void);
     
     void   vInit(void);
+    i8     iPartition(void);
     void   vPrompt(void);
     void   vPrompt2(void);
     void   vParse(s& sRequest, char* pWords[]);

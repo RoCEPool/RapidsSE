@@ -62,11 +62,13 @@ RowCursor::~RowCursor(void)
 /*----------------------------------------------------------------------------*/
 /* begin iteration                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vBegin(void)
+void RowCursor::vBegin(i8 iPartition)
 {
   _poolAddress_(this);
   _magic_();
 
+  m_iPartition = iPartition;
+  
   m_pPartition = nullptr;
   m_pRowStrand = nullptr;
   m_pRowBuffer = nullptr;
@@ -96,7 +98,7 @@ void RowCursor::vFirst(void)
   _poolAddress_(this);
   _magic_();
   
-  m_pPartition = m_pTable->pPartition(0);
+  m_pPartition = m_pTable->pPartition(m_iPartition);
   m_pRowStrand = m_pPartition->pHeadStrand();
   if (m_pRowStrand) {
     m_pRowBuffer = m_pRowStrand->pFirstBuffer();

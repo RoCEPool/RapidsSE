@@ -31,6 +31,9 @@ namespace StorageEngine
     // options
     bool m_bBgTasks;    // start background tasks
     
+    // seitf options
+    i8   m_iPartition;  // which partition
+    
   public:
     Arguments(void);
     ~Arguments(void);

@@ -598,7 +598,7 @@ eIE RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
 
   vTrace("pRowCursor: 0x%x\n", pRowCursor);
-  pRowCursor->vBegin();
+  pRowCursor->vBegin(pSEitf->iPartition());
   pRowCursor->vFirst();
   
   return IE_NONE;

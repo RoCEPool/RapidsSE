@@ -10,6 +10,8 @@
 void DBobjects::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Table) < C_SIZE_SMALL_OBJECT);
+  
+  vTrace("sizeof(Table) %lld\n",sizeof(Table));
 }
 
 /*============================================================================*/

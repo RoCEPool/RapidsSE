@@ -5696,7 +5696,7 @@ void Task::vLoaderInsertRow(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(iPartn) )
     THROW_INVALID_PARAM("loader.insertRow");
   
-  ASSERT(0 == iPartn);
+  ASSERT(iPartn < gxArguments.m_iPartitions);
   bool bInserted = pLoader->bInsertRow(iPartn);
   
   nnpTask->vPushParam(bInserted);
@@ -5992,7 +5992,7 @@ void Task::vRowCursorBegin(NNP_Task nnpTask)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vBegin();
+  pRowCursor->vBegin(0);
   pRowCursor->vFirst();
   
   PtrVal xPtrRow;
@@ -6223,7 +6223,7 @@ void Task::vSEitfNew(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSEitfNew");
   
-  SEitf* pSEitf = new SEitf;
+  SEitf* pSEitf = new SEitf(0);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   PtrVal xPtrSEitf;

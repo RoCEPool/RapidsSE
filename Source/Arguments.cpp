@@ -26,6 +26,7 @@ Arguments::Arguments(void)
   m_bStop       = false;
 
   m_bBgTasks    = false;
+  m_iPartitions = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +73,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
       m_iPartitions = String::iToI8(argv[++iArg]);
+      ASSERT(m_iPartitions < C_TABLE_PARTITIONS);
       continue;
     }
     
@@ -107,6 +109,12 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    // seitf options -----------------------------------------------------------
+    if (String::bEqualTo("--partition",argv[iArg],C_NO_CASE)) {
+      m_iPartition = String::iToI8(argv[++iArg]);
+      continue;
+    }
+    
     vTrace("Unrecognized command argument: %s\n",argv[iArg]);
     return false;
   }
@@ -132,6 +140,8 @@ void Arguments::vPrint(void)
 
   vTrace("  --regionName %s\n",m_sRegionName.a());
   vTrace("  --regionSize %lld\n",m_iRegionSize);
+  vTrace("  --partition %lld\n",m_iPartition);
+  vTrace("  --partitions %lld\n",m_iPartitions);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,6 +161,7 @@ void Arguments::vPrintHelp(void)
   
   printf("\n");
   printf("--partitions <i>  (number of partitions)\n");
+  printf("--partition <i>   (which partition)\n");
   printf("--region <name>   (name of shm region)\n");
   printf("--size <i>        (size in bytes of shm region)\n");
 

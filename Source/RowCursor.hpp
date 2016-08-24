@@ -12,6 +12,8 @@ namespace DBobjects
   {
   private:
     Table*     m_pTable;
+    i8         m_iPartition;
+    
     Partition* m_pPartition;
     RowStrand* m_pRowStrand;
     RowBuffer* m_pRowBuffer;
@@ -25,7 +27,7 @@ namespace DBobjects
     RowCursor(void);
     ~RowCursor(void);
     
-    void    vBegin(void);
+    void    vBegin(i8 iPartition);
     void    vEnd(void);
     void    vFirst(void);
     void    vNext(void);

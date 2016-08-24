@@ -4,6 +4,10 @@
 
 #include "DBobjects.h"
 
+#include "StorageEngine.h"
+
+extern Arguments gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
@@ -131,6 +135,8 @@ bool Loader::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 bool Loader::bInsertRow(i8 iPartn)
 {
+  ASSERT(iPartn < gxArguments.m_iPartitions);
+  
   ValWsp xRow;
   xRow.vClass(CN_STRVAL);
   
@@ -142,7 +148,6 @@ bool Loader::bInsertRow(i8 iPartn)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  ASSERT(0 == iPartn);
   m_pTable->vInsertRow(iPartn,pStrVal);
   
   return true;

@@ -33,27 +33,27 @@
 
 : toPartition
 
-//traceon
+traceon
     csv.firstvalue
 
     hash
 
     args.partitions %
 
-//traceoff
+traceoff
 ;
-
-
 
 : load ( "<path>" table loader )
 //traceon
 
+    "Table_Loader" find dup if else
+      drop
+      "Table_Loader" :loader
+    then
+    execute
+
     >r
 
-//temp
-    "/tpch/lineitem.tbl"
-    "t" :table execute
-//
     0 rpick loader.table!
     0 rpick loader.path!
     0 rpick loader.openFile not if "file not opened" . rdrop exit then
@@ -70,6 +70,17 @@
 
 //traceoff
 ;
+
+: loadtest
+
+traceon
+    // "/tpch/lineitem.tbl"
+    "/tpch/nation.tbl"
+    "t" :table execute
+
+   load
+;
+
 
 /*============================================================================*/
 /* end                                                                        */

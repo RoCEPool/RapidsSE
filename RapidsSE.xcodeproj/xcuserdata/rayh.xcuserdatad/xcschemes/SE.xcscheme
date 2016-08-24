@@ -91,6 +91,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--partitions 2"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--status"
             isEnabled = "NO">
          </CommandLineArgument>

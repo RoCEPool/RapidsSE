@@ -146,7 +146,7 @@ void RapidsSE::vSEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 SEitf* RapidsSE::pSEitfNew(void)
 {
-  SEitf* pSEitf = new SEitf;
+  SEitf* pSEitf = new SEitf(0);
   
   return pSEitf;
 }
@@ -356,7 +356,7 @@ void RapidsSE::vRunDocol(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSeitfPrompt(void)
 {
-  SEitf* pSEitf = new SEitf;
+  SEitf* pSEitf = new SEitf(0);
   pSEitf->vInit();
   pSEitf->vPrompt();
 }
