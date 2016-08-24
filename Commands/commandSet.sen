@@ -198,6 +198,11 @@
     rdrop
 ;
 
+: tableLoader2 ( "<fileNm>" ^table )
+
+    load if "loaded!" . else . then
+;
+
 
 : tableExporter ( "<fileNm>" ^table )
 

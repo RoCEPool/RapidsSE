@@ -43,7 +43,7 @@ traceon
 traceoff
 ;
 
-: load ( "<path>" table loader )
+: load ( "<path>" ^table -- t|f )
 //traceon
 
     "Table_Loader" find dup if else
@@ -56,7 +56,7 @@ traceoff
 
     0 rpick loader.table!
     0 rpick loader.path!
-    0 rpick loader.openFile not if "file not opened" . rdrop exit then
+    0 rpick loader.openFile not if "file not opened" . rdrop false exit then
     0 rpick loader.begin
     begin
       0 rpick loader.fetchrecord
@@ -68,6 +68,8 @@ traceoff
     0 rpick loader.closeFile
     rdrop
 
+    true
+
 //traceoff
 ;
 
@@ -78,7 +80,7 @@ traceon
     "/tpch/nation.tbl"
     "t" :table execute
 
-   load
+   load if "loaded!" . else . then
 ;
 
 
