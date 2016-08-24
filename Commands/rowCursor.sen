@@ -1,0 +1,66 @@
+/*============================================================================*/
+/* rowCursor.sen -- Row Cursor                                                */
+/*============================================================================*/
+
+"rowCursor.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a rowCursor using name from input stream                            */
+/*----------------------------------------------------------------------------*/
+: rowCursor:
+    create
+    object!!
+    sizeof_rowCursor allot
+    word.this >body magic!!
+    word.this >body CN_ROWCURSOR class!
+    word.this >body rowCursor.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a rowCursor using name on the stack (leaves on stack)               */
+/*----------------------------------------------------------------------------*/
+: :rowCursor
+    >create
+    object!!
+    sizeof_rowCursor allot
+    word.this >body magic!!
+    word.this >body CN_ROWCURSOR class!
+    word.this >body rowCursor.init
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: list_table
+    "row_cursor" find dup if else
+      drop "row_cursor" :rowCursor
+    then
+    execute
+
+    >r
+
+    0 rpick rowcursor.table!
+    0 0 rpick rowcursor.begin
+    0 rpick rowcursor.first
+    begin
+    while
+      0 rpick rowcursor.get
+      .
+      0 rpick rowcursor.next
+    repeat
+
+    rdrop
+;
+
+: cursorTest
+
+    "nation" find execute
+
+    list_table
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

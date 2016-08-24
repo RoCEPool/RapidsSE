@@ -26,7 +26,7 @@ Arguments::Arguments(void)
   m_bStop       = false;
 
   m_bBgTasks    = false;
-  m_iPartitions = 0;
+  m_iPartition  = 0;
 }
 
 /*----------------------------------------------------------------------------*/

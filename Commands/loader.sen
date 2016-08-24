@@ -78,7 +78,7 @@ traceoff
 traceon
     // "/tpch/lineitem.tbl"
     "/tpch/nation.tbl"
-    "t" :table execute
+    "nation" :table execute
 
    load if "loaded!" . else . then
 ;

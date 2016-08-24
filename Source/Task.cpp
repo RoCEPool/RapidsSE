@@ -5993,13 +5993,11 @@ void Task::vRowCursorBegin(NNP_Task nnpTask)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vBegin(0);
-  pRowCursor->vFirst();
+  i8 iPartn;
+  if ( ! nnpTask->bPopParam(iPartn) )
+    THROW_INVALID_PARAM("rowcursor.begin");
   
-  PtrVal xPtrRow;
-  xPtrRow = pRowCursor->pRowAsStr();
-  
-  nnpTask->vPushParam(xPtrRow);
+  pRowCursor->vBegin(iPartn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6075,10 +6073,10 @@ void Task::vRowCursorGet(NNP_Task nnpTask)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  PtrVal xPtrRow;
-  xPtrRow = pRowCursor->pRowAsStr();
+  s16K xRow;
+  xRow = pRowCursor->pRowAsStr();
   
-  nnpTask->vPushParam(xPtrRow);
+  nnpTask->vPushParam(xRow);
 }
 
 /*----------------------------------------------------------------------------*/
