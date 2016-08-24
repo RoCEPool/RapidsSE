@@ -414,7 +414,7 @@ namespace Tasking
     /*------------------------------------------------------------------------*/
 
     // args
-    static void vArgsPartitions(NNP_Task nnpTask);
+    static void vArgsPartition(NNP_Task nnpTask);
     static void vArgsPrint(NNP_Task nnpTask);
 
     // assert

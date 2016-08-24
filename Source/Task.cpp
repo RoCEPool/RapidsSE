@@ -225,6 +225,7 @@ void Task::vAddConstants(void)
   vAddConstant("magic",            MAGIC);
   vAddConstant("regionsize",       gxArguments.m_iRegionSize);
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
+  vAddConstant("partitions",       gxArguments.m_iPartitions);
   
   vAddConstant("true",  1);
   vAddConstant("false", (i8)0);
@@ -589,8 +590,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
   vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
   
-  vAddPrimitive("args.partitions", &vArgsPartitions, false);
-  vAddPrimitive("args.print",      &vArgsPrint,      false);
+  vAddPrimitive("args.partition",  &vArgsPartition, false);
+  vAddPrimitive("args.print",      &vArgsPrint,     false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
@@ -5117,13 +5118,13 @@ void Task::vAssertStack_4more(NNP_Task nnpTask)
 // args: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* args.partitions -- get number of partitions from arguments                 */
+/* args.partition -- get the speficic partition from arguments                */
 /*----------------------------------------------------------------------------*/
-void Task::vArgsPartitions(NNP_Task nnpTask)
+void Task::vArgsPartition(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vArgsPartitions");
+  nnpTask->vPrimitive("vArgsPartition");
   
-  nnpTask->vPushParam(gxArguments.m_iPartitions);
+  nnpTask->vPushParam(gxArguments.m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/

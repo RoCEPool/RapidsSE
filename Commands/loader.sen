@@ -38,7 +38,7 @@ traceon
 
     hash
 
-    args.partitions %
+    partitions %
 
 traceoff
 ;
