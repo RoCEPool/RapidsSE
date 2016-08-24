@@ -8,6 +8,24 @@
 
 namespace Interface
 {
+  enum eIE// Interface Error
+  {
+    /* 0 */ IE_NONE=0,
+    /* 1 */ IE_COMMAND_FAILED,
+    /* 2 */ IE_INVALID_COMMAND,
+    /* 3 */ IE_INVALID_PARAMETER,
+    /* 4 */ IE_ENUMS
+  };
+  
+  static const char *pIE[]
+  {
+    /* 0 */ "NONE",
+    /* 1 */ "COMMAND FAILED",
+    /* 2 */ "INVALID COMMAND",
+    /* 3 */ "INVALID PARAMETER",
+    /* 4 */ "ENUMS",
+  };
+  
   class SEitf : public Object,
                        public ListNode_t<SEitf>
   {
@@ -15,6 +33,7 @@ namespace Interface
     
   public:
     i8         m_iPid;             // process which created this seitf
+    i8         m_iPartitions;      // number of partitions in each node
     Dictionary m_xDictionary;      // private dictionary
     DictionaryStack m_xDicStack;   // dictionary stack
 
@@ -34,6 +53,8 @@ namespace Interface
     i8          m_iCommand;
     bool        m_bSkipHistory;
     
+    eIE         m_eInterfaceError;
+    s256        m_sInterfaceError;
     
     // must be last
     Footer m_xFooter;
@@ -51,6 +72,7 @@ namespace Interface
     Word*   pFindWord(s& sName);
     
     void   vDump(void);
+    
     void   vInit(void);
     void   vPrompt(void);
     void   vPrompt2(void);
@@ -80,7 +102,7 @@ namespace Interface
     //--------------------------------------------------------------------------
     
     void   vAppendRequest(s& sRequest);
-    char*  pGetResponse(void);
+    i8     iGetResponse(void);
     bool   bPopResponse(s& sResponse);
     bool   bPopResponse(i8& iResult, s& sResponse);
     
@@ -146,6 +168,11 @@ namespace Interface
     bool bDo(char* pWords[]);
     bool bTpcH(char* pWords[]);
     bool bX(char* pWords[]);
+    
+    //--------------------------------------------------------------------------
+    void         vClearLastError(void);
+    const char*  pGetLastError(void);
+    void         vSetLastError(eIE eInterfaceError);
   };
 }
 

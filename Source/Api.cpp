@@ -7,354 +7,592 @@
 /*----------------------------------------------------------------------------*/
 /* get list of catalogs                                                       */
 /*----------------------------------------------------------------------------*/
-char* pRapidsSE_GetCatalogs(SEitf* pSEitf)
+eIE RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
 {
-  vTrace("pRapidsSE_GetCatalogs\n");
+  vTrace("RapidsSE_GetCatalogs\n");
   
-  char xArray[C_1KB * 2];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
-  };
+  eIE eResult;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
   
   // change directory to tenants
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tenants");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tenants\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "tenants");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  char* pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd tenants): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  // change directory to ten
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "boray");
-  pSEitf->bDecode(pWords);
-  vTrace("cd ten\n");
+  // change directory to boray
+  eResult = eExecuteCommand(pSEitf, "cd", "boray");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd ten): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to catalogs
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "catalogs");
-  pSEitf->bDecode(pWords);
-  vTrace("cd catalogs\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "catalogs");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd catalogs): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // list all catalogs
-  String::vCopy(pWords[0], "lscat");
-  pSEitf->bDecode(pWords);
-  vTrace("lscat\n");
+  eResult = eExecuteCommand(pSEitf, "lscat");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (lscat): %s\n", pSEitf->m_sResponse.a());
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  *ppCatalogs = pSEitf->m_sResponse.a();
   
   // return list of catalogs
-  return pResponse;
+  return eResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get list of columns for given table of given catalog and schema            */
+/*----------------------------------------------------------------------------*/
+eIE RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
+                        char* pTable, void** ppColumns)
+{
+  vTrace("RapidsSE_GetColumns: %s %s %s\n", pCatalog, pSchema, pTable);
+  
+  eIE eResult;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pCatalog)
+    return IE_INVALID_PARAMETER;
+  
+  if (!pSchema)
+    return IE_INVALID_PARAMETER;
+  
+  // change directory to tenants
+  eResult = eExecuteCommand(pSEitf, "cd", "tenants");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to boray
+  eResult = eExecuteCommand(pSEitf, "cd", "boray");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to catalogs
+  eResult = eExecuteCommand(pSEitf, "cd", "catalogs");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pCatalog
+  eResult = eExecuteCommand(pSEitf, "cd", pCatalog);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to schemas
+  eResult = eExecuteCommand(pSEitf, "cd", "schemas");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pSchema
+  eResult = eExecuteCommand(pSEitf, "cd", pSchema);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to tables
+  eResult = eExecuteCommand(pSEitf, "cd", "tables");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // list all the columns of pTable
+  eResult = eExecuteCommand(pSEitf, "lscol", pTable);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+
+  // return the list of columns of pTable
+  *ppColumns = pSEitf->m_sResponse.a();
+  
+  return eResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last error                                                             */
+/*----------------------------------------------------------------------------*/
+eIE RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
+{
+  vTrace("RapidsSE_GetLastError\n");
+  
+  *ppError = pSEitf->m_sInterfaceError.a();
+  
+  vTrace("Error : %s\n", *ppError);
+  return IE_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next row                                                               */
+/*----------------------------------------------------------------------------*/
+eIE RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
+{
+  //vTrace("pRapidsSE_GetNextRow: 0x%x\n", pSEitf);
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  *ppRow = pRowCursor->pRowAsStr();
+  if (!*ppRow) {
+    delete pRowCursor;
+    return IE_NONE;
+  }
+  
+  // move cursor to next row
+  pRowCursor->vNext();
+  
+  return IE_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partitions                                                   */
+/*----------------------------------------------------------------------------*/
+eIE RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
+{
+  vTrace("RapidsSE_GetParitions: 0x%x\n", pSEitf);
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  *(i8**)(ppPartitions) = &pSEitf->m_iPartitions;
+  
+  return IE_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get list of schemas for given catalog                                      */
 /*----------------------------------------------------------------------------*/
-char* pRapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog)
+eIE RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
 {
-  vTrace("pRapidsSE_GetSchemas: %s\n", pCatalog);
+  vTrace("RapidsSE_GetSchemas: %s\n", pCatalog);
   
-  char xArray[C_1KB * 2];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
-  };
+  eIE eResult;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
   
   if (!pCatalog)
-    return nullptr;
+    return IE_INVALID_PARAMETER;
   
   // change directory to tenants
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tenants");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tenants\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "tenants");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  char* pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd tenants): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  // change directory to tenant ten
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "boray");
-  pSEitf->bDecode(pWords);
-  vTrace("cd ten\n");
+  // change directory to boray
+  eResult = eExecuteCommand(pSEitf, "cd", "boray");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd ten): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to catalogs
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "catalogs");
-  pSEitf->bDecode(pWords);
-  vTrace("cd catalogs\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "catalogs");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd catalogs): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to pCatalog
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], pCatalog);
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pCatalog);
+  eResult = eExecuteCommand(pSEitf, "cd", pCatalog);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to schemas
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "schemas");
-  pSEitf->bDecode(pWords);
-  vTrace("cd schemas\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "schemas");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // list all schemas in pCatalog
-  String::vCopy(pWords[0], "lssch");
-  pSEitf->bDecode(pWords);
-  vTrace("lssch\n");
+  eResult = eExecuteCommand(pSEitf, "lssch");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  // return list of schemas in pCatalog
-  return pResponse;
+  // return list of schemas in ppSchemas
+  *ppSchemas = pSEitf->m_sResponse.a();
+  
+  return eResult;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get list of tables for given schema of given catalog                       */
 /*----------------------------------------------------------------------------*/
-char* pRapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema)
+eIE RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables)
 {
-  vTrace("pRapidsSE_GetTables: %s %s\n", pCatalog, pSchema);
+  vTrace("RapidsSE_GetTables: %s %s\n", pCatalog, pSchema);
   
-  char xArray[C_1KB * 2];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
-  };
+  eIE eResult;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
   
   if (!pCatalog)
-    return nullptr;
+    return IE_INVALID_PARAMETER;
   
   if (!pSchema)
-    return nullptr;
+    return IE_INVALID_PARAMETER;
   
   // change directory to tenants
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tenants");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tenants\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "tenants");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  char* pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd tenants): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  // change directory to tenant ten
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "boray");
-  pSEitf->bDecode(pWords);
-  vTrace("cd ten\n");
+  // change directory to boray
+  eResult = eExecuteCommand(pSEitf, "cd", "boray");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd ten): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to catalogs
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "catalogs");
-  pSEitf->bDecode(pWords);
-  vTrace("cd catalogs\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "catalogs");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd catalogs): %s\n", pResponse);
-  
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+ 
   // change directory to pCatalog
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], pCatalog);
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pCatalog);
+  eResult = eExecuteCommand(pSEitf, "cd", pCatalog);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to schemas
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "schemas");
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pCatalog);
+  eResult = eExecuteCommand(pSEitf, "cd", "schemas");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to pSchema
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], pSchema);
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pSchema);
+  eResult = eExecuteCommand(pSEitf, "cd", pSchema);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
-  
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+
   // change directory to tables
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tables");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tables\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "tables");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
-  
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+
   // list all the tables in pSchema of pCatalog
-  String::vCopy(pWords[0], "lstbl");
-  pSEitf->bDecode(pWords);
-  vTrace("lstbl\n");
+  eResult = eExecuteCommand(pSEitf, "lstbl");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  // get the response
-  pResponse = pSEitf->pGetResponse();
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  vTrace("rsp: %s\n", pResponse);
+  // return list of tables in ppSchemas
+  *ppTables = pSEitf->m_sResponse.a();
   
-  // return the list of tables in pSchema of pCatalog
-  return pResponse;
+  return eResult;
 }
 
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-void vRapidsSE_PoolOpen(void)
+eIE RapidsSE_PoolOpen(void)
 {
   vTrace("vRapidsSE_PoolOpen\n");
   
+  // open the pool
   RapidsSE::vPoolOpen();
+  
+  return IE_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete an seitf instance                                                   */
 /*----------------------------------------------------------------------------*/
-void vRapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+eIE RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
-  vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema,pTable);
+  vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
   
-  char xArray[C_1KB * 2];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1]
-  };
+  eIE eResult;
+
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  // clear the last error
+  pSEitf->vClearLastError();
   
   if (!pCatalog)
-    return;
+    return IE_INVALID_PARAMETER;
   
   if (!pSchema)
-    return;
+    return IE_INVALID_PARAMETER;
   
   if (!pTable)
-    return;
+    return IE_INVALID_PARAMETER;
 
   // change directory to tenants
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tenants");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tenants\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "tenants");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  char* pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd tenants): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
-  // change directory to tenant ten
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "boray");
-  pSEitf->bDecode(pWords);
-  vTrace("cd boray\n");
+  // change directory to boray
+  eResult = eExecuteCommand(pSEitf, "cd", "boray");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd boray): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to catalogs
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "catalogs");
-  pSEitf->bDecode(pWords);
-  vTrace("cd catalogs\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "catalogs");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (cd catalogs): %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to pCatalog
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], pCatalog);
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pCatalog);
+  eResult = eExecuteCommand(pSEitf, "cd", pCatalog);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to schemas
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "schemas");
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pCatalog);
+  eResult = eExecuteCommand(pSEitf, "cd", "schemas");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to pSchema
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], pSchema);
-  pSEitf->bDecode(pWords);
-  vTrace("cd %s\n", pSchema);
+  eResult = eExecuteCommand(pSEitf, "cd", pSchema);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // change directory to tables
-  String::vCopy(pWords[0], "cd");
-  String::vCopy(pWords[1], "tables");
-  pSEitf->bDecode(pWords);
-  vTrace("cd tables\n");
+  eResult = eExecuteCommand(pSEitf, "cd", "tables");
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp: %s\n", pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
 
   // select * from pTable
-  String::vCopy(pWords[0], "sel");
-  String::vCopy(pWords[1], pTable);
-  pSEitf->bDecode(pWords);
-  vTrace("sel %s\n", pTable);
+  eResult = eExecuteCommand(pSEitf, "sel", pTable);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // get response
-  pResponse = pSEitf->pGetResponse();
-  vTrace("rsp (sel %s): 0x%x\n", pTable, pResponse);
-  
-  i8 iAddress = String::iToI8(pResponse);
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+
+  i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
   
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -362,56 +600,116 @@ void vRapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   vTrace("pRowCursor: 0x%x\n", pRowCursor);
   pRowCursor->vBegin();
   pRowCursor->vFirst();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next row                                                               */
-/*----------------------------------------------------------------------------*/
-char* pRapidsSE_GetNextRow(SEitf* pSEitf)
-{
-  //vTrace("pRapidsSE_GetNextRow: 0x%x\n", pSEitf);
-  //vTrace("pRapidsSE_GetNextRow: 0x%x\n", pSEitf->m_sResponse.a());
   
-  i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
-  
-  
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
-  //vTrace("pRowCursor: 0x%x\n", pRowCursor);
-  
-  char* pStr = pRowCursor->pRowAsStr();
-  if (!pStr) {
-    delete pRowCursor;
-    return nullptr;
-  }
-  
-  //vTrace("Row: %s\n",pStr);
-  pRowCursor->vNext();
-  
-  return pStr;
+  return IE_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* delete an seitf instance                                                   */
 /*----------------------------------------------------------------------------*/
-void vRapidsSE_SEitfDelete(SEitf* pSEitf)
+eIE RapidsSE_SEitfDelete(SEitf* pSEitf)
 {
-  vTrace("vRapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+  vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+  
+  // clear the last error
+  pSEitf->vClearLastError();
   
   RapidsSE::vSEitfDelete(pSEitf);
+  
+  return IE_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* create a new seitf instance                                                */
 /*----------------------------------------------------------------------------*/
-SEitf* pRapidsSE_SEitfNew(void)
+eIE RapidsSE_SEitfNew(void** ppSEitf)
 {
-  vTrace("pRapidsSE_SEitfNew\n");
+  vTrace("RapidsSE_SEitfNew\n");
   
-  SEitf* pSEitf = RapidsSE::pSEitfNew();
+  SEitf* pSEitf = pSEitf = RapidsSE::pSEitfNew();
   pSEitf->vInit();
   
-  return pSEitf;
+  // return the newly created SEitf
+  *ppSEitf = pSEitf;
+  
+  return IE_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* change directory                                                           */
+/*----------------------------------------------------------------------------*/
+eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand, const char* pParameter)
+{
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  bool bResult;
+  char xArray[C_1KB * 2];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1]
+  };
+
+  // execute command
+  String::vCopy(pWords[0], pCommand);
+  String::vCopy(pWords[1], pParameter);
+  
+  vTrace("%s %s\n", pWords[0], pWords[1]);
+  bResult = pSEitf->bDecode(pWords);
+  
+  if (!bResult) {
+    // set last error
+    pSEitf->vSetLastError(IE_INVALID_COMMAND);
+    return IE_INVALID_COMMAND;
+  }
+  
+  vTrace("%s %s\n", pCommand, pParameter);
+  return IE_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand)
+{
+  bool bResult;
+  char xArray[C_1KB * 1];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+  };
+  
+  // execute command pCommand
+  String::vCopy(pWords[0], pCommand);
+  
+  bResult = pSEitf->bDecode(pWords);
+  
+  if (!bResult) {
+    // set last error
+    pSEitf->vSetLastError(IE_INVALID_COMMAND);
+    return IE_INVALID_COMMAND;
+  }
+  
+  vTrace("cd %s\n", pCommand);
+  return IE_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get response                                                               */
+/*----------------------------------------------------------------------------*/
+eIE eGetResponse(SEitf* pSEitf)
+{
+  // get response
+  i8 iResponse = pSEitf->iGetResponse();
+  vTrace("rsp : %lld\n", iResponse);
+  
+  if (iResponse) {
+    pSEitf->vSetLastError(IE_COMMAND_FAILED);
+    return IE_COMMAND_FAILED;
+  }
+  
+  pSEitf->vSetLastError(IE_NONE);
+  return IE_NONE;
+  
 }
 
 /*============================================================================*/

@@ -35,6 +35,7 @@ SEitf::SEitf(void)
 : Object(CN_SEITF)
 {
   m_iPid = 0;
+  m_iPartitions = 1;
   m_xDictionary.vName("seitf");
   //m_xDicStack;
   m_pRequestQueue  = nullptr;
@@ -362,13 +363,13 @@ void SEitf::vAppendRequest(s& sRequest)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue (response is from pointer in seitf(shm))   */
 /*----------------------------------------------------------------------------*/
-char* SEitf::pGetResponse(void)
+i8 SEitf::iGetResponse(void)
 {
   i8 iStatus;
   while (! bPopResponse(iStatus, m_sResponse))
   ;
   
-  return m_sResponse.a();
+  return iStatus;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -646,8 +647,9 @@ void SEitf::vHistoryStart(void)
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDecode(char* pWords[])
 {
-  if (0 == String::iLength(pWords[0]))
+  if (0 == String::iLength(pWords[0])) {
     return false;
+  }
   
   if (String::bEqualTo("history",pWords[0],C_NO_CASE)) {
     return bPrintHistory(pWords);
@@ -1535,6 +1537,35 @@ bool SEitf::bDo(char* pWords[])
 //  vDo("rmtbl t ");
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last error                                                             */
+/*----------------------------------------------------------------------------*/
+const char* SEitf::pGetLastError(void) {
+  return m_sInterfaceError.a();
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear last error                                                           */
+/*----------------------------------------------------------------------------*/
+void SEitf::vClearLastError(void) {
+  m_eInterfaceError = IE_NONE;
+  String::vCopy(m_sInterfaceError.a(), "");
+}
+
+/*----------------------------------------------------------------------------*/
+/* set last error                                                             */
+/*----------------------------------------------------------------------------*/
+void SEitf::vSetLastError(eIE eInterfaceError) {
+  m_eInterfaceError = eInterfaceError;
+  String::vCopy(m_sInterfaceError.a(), pIE[m_eInterfaceError]);
+  
+  if (String::iLength(m_sResponse.a()) != 0) {
+    String::vConcat(m_sInterfaceError.a(), " (");
+    String::vConcat(m_sInterfaceError.a(), m_sResponse.a());
+    String::vConcat(m_sInterfaceError.a(), ") ");
+  }
 }
 
 /*----------------------------------------------------------------------------*/
