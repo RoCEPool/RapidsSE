@@ -94,6 +94,9 @@ void File::vClear(void)
 void File::vClose(void)
 {
   m_xSysCall.vClear();
+
+  // never close stdin
+  ASSERT(! bIsStdin() );
   
   if (m_iTraceLevel)
     vTrace("File::vClose: closing file %s mode %s",m_sFilePath.a(),m_sOpenMode.a());

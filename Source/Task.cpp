@@ -589,7 +589,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
   vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
   
-  vAddPrimitive("args.print",      &vArgsPrint,        false);
+  vAddPrimitive("args.partitions", &vArgsPartitions, false);
+  vAddPrimitive("args.print",      &vArgsPrint,      false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
@@ -623,6 +624,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loader.openFile",    &vLoaderOpenFile,    false);
   vAddPrimitive("loader.begin",       &vLoaderBegin,       false);
   vAddPrimitive("loader.fetchRecord", &vLoaderFetchRecord, false);
+  vAddPrimitive("loader.pushRecord",  &vLoaderPushRecord,  false);
   vAddPrimitive("loader.insertRow",   &vLoaderInsertRow,   false);
   vAddPrimitive("loader.end",         &vLoaderEnd,         false);
   vAddPrimitive("loader.closeFile",   &vLoaderCloseFile,   false);
@@ -3260,7 +3262,8 @@ void Task::vInputOpen(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sFilePath) )
     THROW_INVALID_PARAM("input.open");
   
-  bool bOpened = nnpTask->m_xInputStream.bOpenFile(sFilePath.a());
+  bool bOpened = nnpTask->m_xInputStream.bOpenFile(nnpTask->m_sInputLine,
+                                                   sFilePath.a());
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
 }
@@ -5114,6 +5117,16 @@ void Task::vAssertStack_4more(NNP_Task nnpTask)
 // args: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* args.partitions -- get number of partitions from arguments                 */
+/*----------------------------------------------------------------------------*/
+void Task::vArgsPartitions(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vArgsPartitions");
+  
+  nnpTask->vPushParam(gxArguments.m_iPartitions);
+}
+
+/*----------------------------------------------------------------------------*/
 /* args.print -- print arguments                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vArgsPrint(NNP_Task nnpTask)
@@ -5643,6 +5656,29 @@ void Task::vLoaderFetchRecord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loader.pushRecord -- fetch record onto stack                               */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderPushRecord(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLoaderPushReord");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("loader.pushRecord");
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  ValWsp xRecord;
+  xRecord.vClass(CN_STRVAL);
+  StrVal* sRecord = xRecord.pAsStrVal();
+  
+  pLoader->vGetRecord(sRecord);
+  
+  nnpTask->vPushParam(xRecord);
+}
+
+/*----------------------------------------------------------------------------*/
 /* loader.insertRow -- insert row into table being loaded                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInsertRow(NNP_Task nnpTask)
@@ -5651,12 +5687,17 @@ void Task::vLoaderInsertRow(NNP_Task nnpTask)
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
-    THROW_INVALID_PARAM("loader.fetchRecord");
+    THROW_INVALID_PARAM("loader.insertRecord");
   
   Loader* pLoader = reinterpret_cast<Loader*>(xPtrVal.pPtr());
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  bool bInserted = pLoader->bInsertRow();
+  i8 iPartn;
+  if ( ! nnpTask->bPopParam(iPartn) )
+    THROW_INVALID_PARAM("loader.insertRow");
+  
+  ASSERT(0 == iPartn);
+  bool bInserted = pLoader->bInsertRow(iPartn);
   
   nnpTask->vPushParam(bInserted);
 }

@@ -226,33 +226,41 @@ void SEitf::vPrompt(void)
   
   m_sPrompt = "seitf> ";
   
-  pInput()->vUseStdin(m_sInputLine);
-  pInput()->vPrompt(m_sPrompt.a());
-  pInput()->vLineOriented(true);
-  
   vHistoryOpen();
+  
+  InputStream* pInput;
+  pInput = this->pInput();
+  pInput->vUseStdin(m_sInputLine);
+  pInput->vPrompt(m_sPrompt.a());
   
   while (true) {
     
     for (i8 i = 0; i < 16; i++)
       *pWords[i] = '\0';
     
-    InputStream* pInput = this->pInput();
-    
+    pInput = this->pInput();
+    if (pInput->bStdin()) {
+      pInput->vUseStdin(m_sInputLine);
+      pInput->bGetLine(m_sInputLine);
+      pInput->vUseText(m_sInputLine);
+    }
+    else {
+      pInput->vUseFile(m_sInputLine);
+      if (! pInput->bFirstChar() ) {
+        if ( ! pInput->bGetLine(m_sInputLine) ) {
+          vPopFile();
+          continue;
+        }
+      }
+      pInput->vUseText(m_sInputLine);
+    }
+  
     i8 i = 0;
-    pInput->vEOL(false);
-    do {
-      pInput->eNextLiteral(pWords[i]);
+    while (LT_NONE != pInput->eNextLiteral(pWords[i])) {
       //vTrace("Word [%lld] %s\n",i,pWords[i]);
       i++;
     }
-    while (! pInput->bEOL() && ! pInput->bEOF());
-    
-    if (pInput->bEOF()) {
-      vPopFile();
-      continue;
-    }
-    
+        
     vExecute(pWords);
     
     if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
@@ -537,19 +545,16 @@ bool SEitf::bHistoryGet(i8 iCommand, char* pWords[])
         sCommand = wCommand;
         pInput->vUseText(sCommand);
         pInput->vLineOriented(true);
-        
-        
+                
         for (i8 i = 0; i < 16; i++)
           *pWords[i] = '\0';
         
         i8 i = 0;
-        pInput->vEOL(false);
-        do {
-          pInput->eNextLiteral(pWords[i]);
-          vTrace("Word [%lld] %s\n",i,pWords[i]);
+        //pInput->vEOL(false);
+        while (LT_NONE != pInput->eNextLiteral(pWords[i])) {
+          //vTrace("Word [%lld] %s\n",i,pWords[i]);
           i++;
         }
-        while (! pInput->bEOL() && ! pInput->bEOF());
         
         m_iInput--;
       }
@@ -870,10 +875,9 @@ void SEitf::vPushFile(char* pWord)
   
   InputStream* pInput = this->pInput();
   
-  bool b = pInput->bOpenFile(pWord);
+  bool b = pInput->bOpenFile(m_sInputLine,pWord);
   ASSERT(b);
   
-  pInput->vLineOriented(true);
 }
 
 /*----------------------------------------------------------------------------*/

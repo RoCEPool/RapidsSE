@@ -129,7 +129,7 @@ bool Loader::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 /* insert row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Loader::bInsertRow(void)
+bool Loader::bInsertRow(i8 iPartn)
 {
   ValWsp xRow;
   xRow.vClass(CN_STRVAL);
@@ -142,9 +142,20 @@ bool Loader::bInsertRow(void)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  m_pTable->vInsertRow(0,pStrVal);
+  ASSERT(0 == iPartn);
+  m_pTable->vInsertRow(iPartn,pStrVal);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get record                                                                 */
+/*----------------------------------------------------------------------------*/
+void Loader::vGetRecord(StrVal* pStrVal)
+{
+  Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
+  pStrVal->sStr()[m_iLength] = '\0';
+  pStrVal->vSize();
 }
 
 /*----------------------------------------------------------------------------*/
