@@ -662,6 +662,16 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
   vAddPrimitive("rpick",           &vRstackPick,       false);
+  vAddPrimitive("r0",              &vRstack0,          false);
+  vAddPrimitive("r1",              &vRstack1,          false);
+  vAddPrimitive("r2",              &vRstack2,          false);
+  vAddPrimitive("r3",              &vRstack3,          false);
+  vAddPrimitive("r4",              &vRstack4,          false);
+  vAddPrimitive("r5",              &vRstack5,          false);
+  vAddPrimitive("r6",              &vRstack6,          false);
+  vAddPrimitive("r7",              &vRstack7,          false);
+  vAddPrimitive("r8",              &vRstack8,          false);
+  vAddPrimitive("r9",              &vRstack9,          false);
   
   vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
   vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
@@ -4257,6 +4267,166 @@ void Task::vRstackPick(NNP_Task nnpTask)
   ValWsp xValWsp;
   
   nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r0 -- place copy of 0th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack0(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack0");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r1 -- place copy of 1st value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack1(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack1");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(1,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r2 -- place copy of 2nd value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack2(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack2");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(2,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r3 -- place copy of 3rd value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack3(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack3");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(3,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r4 -- place copy of 4th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack4(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack4");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(4,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r5 -- place copy of 0th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack5(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack5");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(5,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r6 -- place copy of 6th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack6(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack6");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(6,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r7 -- place copy of 7th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack7(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack7");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(7,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r8 -- place copy of 8th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack8(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack8");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(8,&xValWsp);
+  
+  nnpTask->vPushParam(xValWsp);
+}
+
+/*----------------------------------------------------------------------------*/
+/* r9 -- place copy of 9th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack9(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vRstack9");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(9,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
 }

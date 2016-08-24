@@ -505,6 +505,16 @@ namespace Tasking
     static void vRstackDrop(NNP_Task nnpTask);
     static void vRstackFetch(NNP_Task nnpTask);
     static void vRstackPick(NNP_Task nnpTask);
+    static void vRstack0(NNP_Task nnpTask);
+    static void vRstack1(NNP_Task nnpTask);
+    static void vRstack2(NNP_Task nnpTask);
+    static void vRstack3(NNP_Task nnpTask);
+    static void vRstack4(NNP_Task nnpTask);
+    static void vRstack5(NNP_Task nnpTask);
+    static void vRstack6(NNP_Task nnpTask);
+    static void vRstack7(NNP_Task nnpTask);
+    static void vRstack8(NNP_Task nnpTask);
+    static void vRstack9(NNP_Task nnpTask);
     
     // seitf
     static void vSEitfDelete(NNP_Task nnpTask);
