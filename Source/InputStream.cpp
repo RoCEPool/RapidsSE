@@ -57,6 +57,9 @@ InputStream::~InputStream(void)
 void InputStream::vCloseFile(void)
 {
   _poolAddress_(this);
+  
+  if (bStdin())
+    return;
 
   if (m_xInputFile.bIsOpen())
     m_xInputFile.vClose();
@@ -122,6 +125,7 @@ void InputStream::vLineOriented(bool bLineOriented)
   _poolAddress_(this);
   
   m_bLineOriented = bLineOriented;
+  m_bFirstChar = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,62 +137,61 @@ eLT InputStream::eNextLiteral(char* wLiteral)
   
   bool b;
   
+  m_eLiteralType = LT_NONE;
   *wLiteral = '\0';
   
-  // - skip any whitespace or comments before next literal
-
+  // - skip whitespace and comments
+  
   while (true) {
     
-    // get first/next char
-    vGetChar();
-    
-    // end of input?
-    if (bEndInput()) {
-      m_eLiteralType = LT_NONE;
-      *wLiteral = '\0';
-      return m_eLiteralType;
-    }
+    if (m_bFirstChar)
+      m_bFirstChar = false;
+    else
+      vGetChar();
     
     // skip whitespace
     vSkipWhitespace();
     
-    // did we get an eol?
-    if ('\n' == m_cCurrChar) {
+    // end of input?
+    if (m_bEndInput) {
       m_eLiteralType = LT_NONE;
       *wLiteral = '\0';
+      //vTrace("NONE>><<\n");
       return m_eLiteralType;
     }
     
-    // end of input?
-    if (bEndInput()) {
-      m_eLiteralType = LT_NONE;
-      *wLiteral = '\0';
-      return m_eLiteralType;
-    }
-
     // collect any comment
-    if (bStartComment()) {
-      if (! bParseComment(wLiteral))
-        break;
+    if (bStartComment() && bParseComment(wLiteral)) {
+      
+      // did we parse a name like /ugh?
+      if (LT_NONE != m_eLiteralType) {
+        //vTrace("NAME >>%s<<\n",wLiteral);
+        return m_eLiteralType;
+      }
+      
+      // parsed a comment
+      continue;
     }
-    else {
-      break;
-    }
-  }
 
+    // we have a literal
+    break;
+  }
+  
   // - collect the literal
   
-  // collect integer literal
+  // collect integer literal?
   if (bStartInteger()) {
     b = bParseInteger(wLiteral);
     ASSERT(b);
+    //vTrace("INT >>%s<<\n",wLiteral);
     return m_eLiteralType;
   }
   
-  // collect string literal
+  // collect string literal?
   if (bStartString()) {
     b = bParseString(wLiteral);
     ASSERT(b);
+    //vTrace("STR >>%s<<\n",wLiteral);
     return m_eLiteralType;
   }
   
@@ -196,13 +199,14 @@ eLT InputStream::eNextLiteral(char* wLiteral)
   b = bParseName(wLiteral);
   ASSERT(b);
   
-  return m_eLiteralType;  
+  //vTrace("NAME >>%s<<\n",wLiteral);
+  return m_eLiteralType;
 }
 
 /*----------------------------------------------------------------------------*/
 /* open file for scanning                                                     */
 /*----------------------------------------------------------------------------*/
-bool InputStream::bOpenFile(const char* aFilePath)
+bool InputStream::bOpenFile(s& sInputLine, const char* aFilePath)
 {
   _poolAddress_(this);
 
@@ -212,6 +216,10 @@ bool InputStream::bOpenFile(const char* aFilePath)
   
   if (bOpened)
     m_bFromFile = true;
+ 
+  m_wInputLine  = sInputLine.a();
+  vNextLine();
+  m_bFirstChar  = true;
   
   return bOpened;
 }
@@ -241,6 +249,8 @@ void InputStream::vReset(void)
   m_cCurrChar    = 0;
   m_eLiteralType = LT_NONE;
   m_aPrompt      = "docol> ";
+  m_bEndInput    = false;
+  m_bFirstChar   = false;
   
   m_bPrompt       = false;
   m_bLineOriented = false;
@@ -254,19 +264,26 @@ void InputStream::vUseStdin(s& sInputLine)
 {
   _poolAddress_(this);
   
-  vCloseFile();
+  if ( ! bStdin() ) {
+    vCloseFile();
   
-  // special case where stdin isnt opened,
-  // so just set file as peing opened for read
-  m_xInputFile.vSet(stdin,"stdin",C_OPEN_READ);
+    // special case where stdin isnt opened,
+    // so just set file as open opened for read
+  
+    m_xInputFile.vSet(stdin,"stdin",C_OPEN_READ);
+  }
   
   // setup for reading from file
   m_bFromFile   = true;
   m_wInputLine  = sInputLine.a();
   m_yInputChar  = m_wInputLine;
   *m_wInputLine = '\0';
+  m_bEndInput   = false;
+  m_bFirstChar   = false;
   
   m_bPrompt     = true;
+
+  *m_yInputChar = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -276,16 +293,215 @@ void InputStream::vUseText(s& sInputText)
 {
   _poolAddress_(this);
   
-  vCloseFile();
+//  if ( ! bStdin() )
+//    vCloseFile();
   
   m_bFromFile  = false;
   m_wInputLine = nullptr;
   m_yInputChar = sInputText.a();
+  m_bEndInput  = false;
+  
+  m_bPrompt     = false;
+  
+  m_cCurrChar   = *m_yInputChar++;
+  m_bFirstChar  = true;
 }
+/*----------------------------------------------------------------------------*/
+/* use file                                                                   */
+/*----------------------------------------------------------------------------*/
+void InputStream::vUseFile(s& sInputText)
+{
+  _poolAddress_(this);
+  
+  m_bFromFile  = true;
+  m_wInputLine = nullptr;
+  m_yInputChar = sInputText.a();
+  m_bEndInput  = false;
+  
+  m_bPrompt     = false;
+  
+  m_cCurrChar   = *m_yInputChar++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* getting chars from stdin?                                                  */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bStdin(void)
+{
+  _poolAddress_(this);
+  
+  bool b = m_xInputFile.bIsStdin();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have we first char?                                                        */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bFirstChar(void)
+{
+  _poolAddress_(this);
+  
+  return m_bFirstChar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a line                                                                 */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bGetLine(s& sInputLine)
+{
+  _poolAddress_(this);
+  
+  char c;
+  
+  if (bStdin())
+    vPrintPrompt();
+  
+  m_wInputLine = sInputLine.a();
+  m_yInputChar = sInputLine.a();
+  
+  do {
+    
+    // get next char from input file
+    c = m_xInputFile.cGetChar();
+    if ('\0' == c)
+      break;
+    
+    *m_yInputChar++ = c;
+    
+  } while ('\n' != c);
+  
+  // eof?
+  if ('\0' == c && m_yInputChar == m_wInputLine)
+    return false;
+  
+  *m_yInputChar++ = '\0';
+  
+  m_yInputChar = m_wInputLine;
+  
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get next input character                                                   */
+/*----------------------------------------------------------------------------*/
+void InputStream::vGetChar(void)
+{
+  m_cCurrChar = *m_yInputChar++;
+  
+  if ('\0' != m_cCurrChar)
+    return;
+
+  // end of apriori text?
+  if (! m_bFromFile) {
+    ASSERT('\0' == m_cCurrChar)
+    m_bEndInput = true;
+    return;
+  }
+  
+  if (m_bLineOriented) {
+    ASSERT('\0' == m_cCurrChar)
+    m_bEndInput = true;
+    return;
+  }
+  
+  vNextLine();
+  
+  if ('\0' != m_cCurrChar)
+    return;
+  
+  ASSERT('\0' == m_cCurrChar)
+  ASSERT( ! m_xInputFile.bIsStdin() );
+  m_bEndInput = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* unget input character                                                      */
+/*----------------------------------------------------------------------------*/
+void InputStream::vUngetChar(void)
+{
+  if (m_bFromFile)
+    m_xInputFile.vUngetChar(m_cCurrChar);
+  else
+    m_yInputChar--;
+  
+  m_cCurrChar = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next line from input source                                            */
+/*----------------------------------------------------------------------------*/
+void InputStream::vNextLine(void)
+{
+  char c;
+  bool bEOFdetected = false;
+  
+  m_yInputChar = m_wInputLine;
+  
+  // end of apriori input?
+  if (! m_bFromFile) {
+    m_bEndInput= true;
+    return;
+  }
+
+  // loop till we get a line
+  for (;;) {
+  
+    // prompt the user
+    if (m_xInputFile.bIsStdin())
+      vPrintPrompt();
+    
+    // collect one line of input line
+    for (;;) {
+      
+      // get next char from input file
+      c = m_xInputFile.cGetChar();
+      *m_yInputChar++ = c;
+      
+      // test for eof
+      if ('\0' == c) {
+        bEOFdetected = true;
+        break;
+      }
+      
+      // test for eol
+      if ('\n' == c) {
+        *m_yInputChar++ = '\0';
+        break;
+      }
+    }
+
+    // set the input cursor back to the beginning of input line
+    m_yInputChar = m_wInputLine;
+    //vTrace("LINE %s",m_yInputChar);
+    
+    // did we get a line?
+    if ('\0' != *m_yInputChar) {
+      m_yInputChar = m_wInputLine;
+      m_cCurrChar  = *m_yInputChar++;
+      return;
+    }
+    
+    // did user hit return without typing something in?
+    if (m_xInputFile.bIsStdin())
+      continue;
+
+    // have we reached the end of the input file
+    if (bEOFdetected)
+      break;
+  }
+
+  m_bEndInput = true;
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* attempt to parse a comment                                                 */
@@ -297,45 +513,41 @@ bool InputStream::bParseComment(char* wLiteral)
   char *z = wLiteral;
   
   // have seen a '/'
-
+  ASSERT(bStartComment());
+  
   // lets look at the next character
   vGetChar();
   
-  // test if we are looking at a line comment
+  // test for line comment, i.e. //...\n
   if ('/' == m_cCurrChar) {
-
-    // it is a line comment
-    // consume till end of input or end of line
-    while (bMoreInput() && !bEndLine())
+    
+    // consume till end of line
+    while ('\n' != m_cCurrChar)
       vGetChar();
     
-    // push back the unconsumed char
-    if (bEndInput())
-      vUngetChar();
+    vUngetChar();
     
     return true;
   }
-
-  // test if we are looking at a block comment
+  
+  // test for block comment, i.e. /*...*/
   if ('*' == m_cCurrChar) {
-    
-    // it is a block comment
     
     // get first char
     vGetChar();
-    if (bEndInput())
+    if (m_bEndInput)
       return true;
     cOne = m_cCurrChar;
     
     // get second char
     vGetChar();
-    if (bEndInput())
+    if (m_bEndInput)
       return true;
     cTwo = m_cCurrChar;
-
+    
     // find either end-of-comment or end-of-input
     while (true) {
-    
+      
       // end-of-comment ?
       if ('*' == cOne && '/' == cTwo)
         return true;
@@ -343,11 +555,11 @@ bool InputStream::bParseComment(char* wLiteral)
       // advance to next pair
       cOne = cTwo;
       vGetChar();
-      if (bEndInput())
+      if (m_bEndInput)
         return true;
       cTwo = m_cCurrChar;
     }
-
+    
   }
   
   // it's actually a name ( e.g. /ugh )
@@ -360,28 +572,19 @@ bool InputStream::bParseComment(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bParseInteger(char* wLiteral)
 {
-  char *z = wLiteral;
-  
   i8 iNoDigits = 0;
+  char *z = wLiteral;
+
+  // we have seen a digit
+  ASSERT(bStartInteger());
+  
+  // - start parsing an integer
   
   // collect initial digits
   while (bIsDigit()) {
     *z++ = m_cCurrChar;
     iNoDigits++;
     vGetChar();
-  }
-  
-  // end of input?
-  if (bEndInput()) {
-    
-    // push back the unconsumed char
-    if (bEndInput())
-      vUngetChar();
-
-    // terminate an intlit
-    *z = '\0';
-    m_eLiteralType = LT_INTLIT;
-    return true;
   }
   
   // 0x hex number?
@@ -395,21 +598,23 @@ bool InputStream::bParseInteger(char* wLiteral)
       *z++ = m_cCurrChar;
       vGetChar();
     }
+
   }
-  
-  // end of collecting an integer?
-  if ( bEndInput() || bIsWhite() || bStartString() ) {
-    
+
+  // - handle the case where we have a name like 1_ugh
+
+  // just a number?
+  if ( bIsNull() || bIsWhite() || bStartComment() || bStartString() ) {
+
     // push back the unconsumed char
-    if (bEndInput())
-      vUngetChar();
+    vUngetChar();
 
     // terminate an intlit
     *z = '\0';
     m_eLiteralType = LT_INTLIT;
     return true;
   }
-  
+
   // its actually a name; complete parsing name
   bool b = bParseName(z);
   ASSERT(b);
@@ -422,16 +627,17 @@ bool InputStream::bParseInteger(char* wLiteral)
 bool InputStream::bParseName(char* wLiteral)
 {
   char *z = wLiteral;
-
+  
+  ASSERT(bStartName());
+  
   // collect the characters of the name
-  while ( bMoreInput() && !bIsWhite() && !bStartString() ) {
+  while ( !bIsNull() && !bIsWhite() && !bStartString() ) {
     *z++ = m_cCurrChar;
     vGetChar();
   }
   
   // push back the unconsumed char
-  if (bEndInput()) //&& m_xInputFile.bIsStdin())
-    vUngetChar();
+  vUngetChar();
   
   // terminate a namelit
   *z = '\0';
@@ -450,7 +656,7 @@ bool InputStream::bParseString(char* wLiteral)
   vGetChar();
   
   // collect the chars in the string
-  while ( bMoreInput() && !bEndString() ) {
+  while ( ! bEndString() ) {
     
     // test for \n
     if ('\\' == m_cCurrChar) {
@@ -462,77 +668,19 @@ bool InputStream::bParseString(char* wLiteral)
         m_cCurrChar = '\\';
       }
     }
-        
+    
     *z++ = m_cCurrChar;
     vGetChar();
   }
   
   // push back a '\0'
-  if (bEndInput() && '\0' == m_cCurrChar)
+  if ('\0' == m_cCurrChar)
     vUngetChar();
   
-  // terminate a strlit
+  // terminate the strlit
   *z = '\0';
   m_eLiteralType = LT_STRLIT;
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next input character                                                   */
-/*----------------------------------------------------------------------------*/
-void InputStream::vGetChar(void)
-{
-  // - from input text
-  
-  if (! m_bFromFile) {
-    // get next char from input text
-    m_cCurrChar = *m_yInputChar++;
-    
-    if ('\n' == m_cCurrChar || '\0' == m_cCurrChar)
-      m_bEOL = true;
-    
-    return;
-  }
-
-  // - from input file
-  
-  // print prompt?
-  if (m_bPrompt) {
-    m_bPrompt = false;
-    vPrintPrompt();
-  }
-  
-  // get next char from input file
-  m_cCurrChar = m_xInputFile.cGetChar();
-  
-  if (0 == m_cCurrChar) {
-    m_bEOF = true;
-    return;
-  }
-  
-  // end of line processing
-  if ('\n' == m_cCurrChar) {
-
-    m_bEOL = true;
-    // do we need to print the prompt again next time?
-    if (m_xInputFile.bIsStdin())
-      m_bPrompt = true;
-    
-    //m_cCurrChar = 0;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* unget input character                                                      */
-/*----------------------------------------------------------------------------*/
-void InputStream::vUngetChar(void)
-{
-  if (m_bFromFile)
-    m_xInputFile.vUngetChar(m_cCurrChar);
-  else
-    m_yInputChar--;
-  
-  m_cCurrChar = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -540,20 +688,8 @@ void InputStream::vUngetChar(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vSkipWhitespace(void)
 {
-
-  for (;;) {
-    if (m_cCurrChar == ' ' || m_cCurrChar == '\t') {
-      vGetChar();
-      continue;
-    }
-
-    if (!m_bLineOriented && m_cCurrChar == '\n') {
-      vGetChar();
-      continue;
-    }
-    
-    break;
-  }
+  while ( ! m_bEndInput && String::bIsWhite(m_cCurrChar) )
+    vGetChar();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,6 +737,17 @@ bool InputStream::bStartInteger(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for start of name                                                     */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bStartName(void)
+{
+  if (bStartComment() || bStartInteger() || bStartString())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for start of string                                                   */
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStartString(void)
@@ -627,7 +774,7 @@ bool InputStream::bEndLine(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bEndString(void)
 {
-  if ('"' == m_cCurrChar)
+  if ('"' == m_cCurrChar || '\0' == m_cCurrChar)
     return true;
   
   return false;
@@ -650,6 +797,28 @@ bool InputStream::bIsDigit(void)
 bool InputStream::bIsHex(void)
 {
   if (String::bIsHex(m_cCurrChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for '\0'                                                              */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bIsNull(void)
+{
+  if ('\0' == m_cCurrChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a '/'                                                             */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bIsSlash(void)
+{
+  if ('/' == m_cCurrChar)
     return true;
   
   return false;

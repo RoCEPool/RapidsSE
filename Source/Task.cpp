@@ -3260,7 +3260,8 @@ void Task::vInputOpen(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sFilePath) )
     THROW_INVALID_PARAM("input.open");
   
-  bool bOpened = nnpTask->m_xInputStream.bOpenFile(sFilePath.a());
+  bool bOpened = nnpTask->m_xInputStream.bOpenFile(nnpTask->m_sInputLine,
+                                                   sFilePath.a());
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
 }

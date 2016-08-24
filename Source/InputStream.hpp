@@ -29,18 +29,21 @@ namespace Tasking
   {
   private:
     i8           m_iDepth;        // depth of this input
-    bool         m_bFromFile;     // input is from a file?
+    bool         m_bFromFile;     // input source is from a file?
     File         m_xInputFile;    // the input file
     char*        m_wInputLine;    // input line buffer
-    const char*  m_yInputChar;    // input char cursor
+    char*        m_yInputChar;    // input char cursor
     char         m_cCurrChar;     // current char
     eLT          m_eLiteralType;  // type of literal just recognized
     const char*  m_aPrompt;       // the prompt
+    bool         m_bEndInput;     // end of input?
+    bool         m_bFirstChar;    // first char
     
     bool         m_bPrompt;       // print prompt
     bool         m_bLineOriented; // line oriented? (temporary)
     bool         m_bEOF;          // end of file?
     bool         m_bEOL;          // end of line?
+
     
   public:
     void* operator new(size_t);
@@ -57,12 +60,18 @@ namespace Tasking
     void vEOL(bool bEOL);
     void vLineOriented(bool bLineOriented);
     eLT  eNextLiteral(char* wWorkspace);
-    bool bOpenFile(const char* aFilePath);
+    bool bOpenFile(s& sInputLine, const char* aFilePath);
     void vPrintPrompt(void);
     void vPrompt(char* aPrompt);
     void vReset(void);
     void vUseStdin(s& sInputLine);
     void vUseText(s& sInputText);
+    void vUseFile(s& sInputText);
+    
+    bool  bGetLine(s& sInputLine);
+    void  vNextLine(void);
+    bool  bStdin(void);
+    bool  bFirstChar(void);
     
   private:
     bool  bParseComment(char* wWorkspace);
@@ -73,17 +82,21 @@ namespace Tasking
     void  vGetChar(void);
     void  vUngetChar(void);
     
+    
     void  vSkipWhitespace(void);
     
     bool  bEndInput(void);
     bool  bMoreInput(void);
     bool  bStartComment(void);
     bool  bStartInteger(void);
+    bool  bStartName(void);
     bool  bStartString(void);
     bool  bEndLine(void);
     bool  bEndString(void);
     bool  bIsDigit(void);
     bool  bIsHex(void);
+    bool  bIsNull(void);
+    bool  bIsSlash(void);
     bool  bIsWhite(void);
     bool  bIsX(void);
   };
