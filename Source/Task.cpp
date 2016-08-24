@@ -5677,7 +5677,9 @@ void Task::vFileWrite(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(xValue) )
     THROW_INVALID_PARAM("file.write");
   
-  //pFile->bWrite(xValue);
+  char* wStr = xValue.pAsStrVal()->sStr();
+  
+  pFile->vPrint("%s\n",wStr);
 }
 
 // loader: /////////////////////////////////////////////////////////////////////

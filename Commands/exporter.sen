@@ -1,0 +1,48 @@
+/*============================================================================*/
+/* exporter.sen -- Table Exporter                                              */
+/*============================================================================*/
+
+"exporter.sen" .
+
+: exporter ( "<fileNm>" ^table )
+
+traceon
+
+  "/tmp/nation.txt" "nation" find execute
+
+//--
+
+  swap file.new >r
+
+  r0 file.path! OPEN_WRITE r0 file.open
+  if "file open!" . else "file not opened!" . exit then
+
+  "row_cursor" find dup if else
+    drop "row_cursor" :rowCursor
+  then
+  execute
+
+  >r
+
+  r0 rowcursor.table!
+
+  0 r0 rowcursor.begin
+  r0 rowcursor.first
+  begin
+    while
+    r0 rowcursor.get
+    dup .
+    r1 file.write
+    r0 rowcursor.next
+  repeat
+
+  r1 file.close
+
+  rdrop
+
+  rdrop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

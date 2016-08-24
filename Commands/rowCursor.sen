@@ -33,7 +33,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-: list_table
+: list_table ( ^ table )
+
     "row_cursor" find dup if else
       drop "row_cursor" :rowCursor
     then
