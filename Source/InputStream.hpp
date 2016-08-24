@@ -42,7 +42,6 @@ namespace Tasking
     bool         m_bPrompt;       // print prompt
     bool         m_bLineOriented; // line oriented? (temporary)
     bool         m_bEOF;          // end of file?
-    bool         m_bEOL;          // end of line?
 
     
   public:
@@ -56,8 +55,6 @@ namespace Tasking
     i8   iDepth(void);
     void vDepth(i8 iDepth);
     bool bEOF(void);
-    bool bEOL(void);
-    void vEOL(bool bEOL);
     void vLineOriented(bool bLineOriented);
     eLT  eNextLiteral(char* wWorkspace);
     bool bOpenFile(s& sInputLine, const char* aFilePath);
