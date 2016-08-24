@@ -177,7 +177,7 @@
 
 ;
 
-: tableLoader ( "<fileNm>" ^table )
+: tableLoader2 ( "<fileNm>" ^table )
 
     >r          ( "<fileNm>" ) ( R: ^table )
 
@@ -198,7 +198,7 @@
     rdrop
 ;
 
-: tableLoader2 ( "<fileNm>" ^table )
+: tableLoader ( "<fileNm>" ^table )
 
     load if "loaded!" . else . then
 ;
@@ -470,9 +470,11 @@
 /*----------------------------------------------------------------------------*/
 : select_table ( "tablename" )
 
+traceon
+
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if traceoff exit then
 
     queryCount ++
 
@@ -483,6 +485,8 @@
     >str
 
     success
+
+traceoff
 ;
 
 /*----------------------------------------------------------------------------*/

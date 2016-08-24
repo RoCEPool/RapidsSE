@@ -338,7 +338,7 @@ void SEitf::vIterateRows(void)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vBegin(0);
+  pRowCursor->vBegin(m_iPartition);
   pRowCursor->vFirst();
   char* pStr = pRowCursor->pRowAsStr();
   while (pStr) {

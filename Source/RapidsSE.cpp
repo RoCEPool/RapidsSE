@@ -146,7 +146,7 @@ void RapidsSE::vSEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 SEitf* RapidsSE::pSEitfNew(void)
 {
-  SEitf* pSEitf = new SEitf(0);
+  SEitf* pSEitf = new SEitf(gxArguments.m_iPartition);
   
   return pSEitf;
 }
@@ -356,7 +356,7 @@ void RapidsSE::vRunDocol(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSeitfPrompt(void)
 {
-  SEitf* pSEitf = new SEitf(0);
+  SEitf* pSEitf = new SEitf(gxArguments.m_iPartition);
   pSEitf->vInit();
   pSEitf->vPrompt();
 }
