@@ -63,8 +63,6 @@ void InputStream::vCloseFile(void)
 
   if (m_xInputFile.bIsOpen())
     m_xInputFile.vClose();
-  
-  m_bFromFile = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,14 +86,126 @@ void InputStream::vDepth(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set liine oreinted mode                                                    */
+/* have we first char?                                                        */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bFirstChar(void)
+{
+  _poolAddress_(this);
+  
+  return m_bFirstChar;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get a line                                                                 */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bGetLine(s& sInputLine)
+{
+  _poolAddress_(this);
+  
+  char c;
+  
+  if (bStdin())
+    vPrintPrompt();
+  
+  m_wInputLine = sInputLine.a();
+  m_yInputCursor = sInputLine.a();
+  
+  do {
+    
+    // get next char from input file
+    c = m_xInputFile.cGetChar();
+    if ('\0' == c)
+      break;
+    
+    *m_yInputCursor++ = c;
+    
+  } while ('\n' != c);
+  
+  // eof?
+  if ('\0' == c && m_yInputCursor == m_wInputLine)
+    return false;
+  
+  *m_yInputCursor++ = '\0';
+  
+  m_yInputCursor = m_wInputLine;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set line oreinted mode                                                     */
 /*----------------------------------------------------------------------------*/
 void InputStream::vLineOriented(bool bLineOriented)
 {
   _poolAddress_(this);
   
   m_bLineOriented = bLineOriented;
-  m_bFirstChar = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next line from input source                                            */
+/*----------------------------------------------------------------------------*/
+void InputStream::vNextLine(void)
+{
+  char c;
+  bool bEOFdetected = false;
+  
+  m_yInputCursor = m_wInputLine;
+  
+  // end of apriori input?
+  if (! m_bFromFile) {
+    m_bEndInput= true;
+    return;
+  }
+  
+  // loop till we get a line
+  for (;;) {
+    
+    // prompt the user
+    if (m_xInputFile.bIsStdin())
+      vPrintPrompt();
+    
+    // collect one line of input line
+    for (;;) {
+      
+      // get next char from input file
+      c = m_xInputFile.cGetChar();
+      *m_yInputCursor++ = c;
+      
+      // test for eof
+      if ('\0' == c) {
+        bEOFdetected = true;
+        break;
+      }
+      
+      // test for eol
+      if ('\n' == c) {
+        *m_yInputCursor++ = '\0';
+        break;
+      }
+    }
+    
+    // set the input cursor back to the beginning of input line
+    m_yInputCursor = m_wInputLine;
+    //vTrace("LINE %s",m_yInputCursor);
+    
+    // did we get a line?
+    if ('\0' != *m_yInputCursor) {
+      m_yInputCursor = m_wInputLine;
+      m_cCurrChar  = *m_yInputCursor++;
+      return;
+    }
+    
+    // did user hit return without typing something in?
+    if (m_xInputFile.bIsStdin())
+      continue;
+    
+    // have we reached the end of the input file
+    if (bEOFdetected)
+      break;
+  }
+  
+  m_bEndInput = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +293,6 @@ bool InputStream::bOpenFile(s& sInputLine, const char* aFilePath)
   vCloseFile();
   
   bool bOpened = m_xInputFile.bOpen(aFilePath,C_OPEN_READ);
-  
   if (bOpened)
     m_bFromFile = true;
  
@@ -215,7 +324,7 @@ void InputStream::vReset(void)
   m_bFromFile    = false;
   m_xInputFile.vReset();
   m_wInputLine   = nullptr;
-  m_yInputChar   = nullptr;
+  m_yInputCursor   = nullptr;
   m_cCurrChar    = 0;
   m_eLiteralType = LT_NONE;
   m_aPrompt      = "docol> ";
@@ -224,6 +333,35 @@ void InputStream::vReset(void)
   
   m_bPrompt       = false;
   m_bLineOriented = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* getting chars from stdin?                                                  */
+/*----------------------------------------------------------------------------*/
+bool InputStream::bStdin(void)
+{
+  _poolAddress_(this);
+  
+  bool b = m_xInputFile.bIsStdin();
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use file                                                                   */
+/*----------------------------------------------------------------------------*/
+void InputStream::vUseFile(s& sInputText)
+{
+  _poolAddress_(this);
+  
+  m_bFromFile  = true;
+  m_wInputLine = nullptr;
+  m_yInputCursor = sInputText.a();
+  m_bEndInput  = false;
+  
+  m_bPrompt     = false;
+  
+  m_cCurrChar   = *m_yInputCursor++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -245,14 +383,14 @@ void InputStream::vUseStdin(s& sInputLine)
   // setup for reading from file
   m_bFromFile   = true;
   m_wInputLine  = sInputLine.a();
-  m_yInputChar  = m_wInputLine;
+  m_yInputCursor  = m_wInputLine;
   *m_wInputLine = '\0';
   m_bEndInput   = false;
   m_bFirstChar   = false;
   
   m_bPrompt     = true;
 
-  *m_yInputChar = '\0';
+  *m_yInputCursor = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -267,90 +405,14 @@ void InputStream::vUseText(s& sInputText)
   
   m_bFromFile  = false;
   m_wInputLine = nullptr;
-  m_yInputChar = sInputText.a();
+  m_yInputCursor = sInputText.a();
   m_bEndInput  = false;
   
   m_bPrompt     = false;
   
-  m_cCurrChar   = *m_yInputChar++;
+  m_cCurrChar   = *m_yInputCursor++;
   m_bFirstChar  = true;
 }
-/*----------------------------------------------------------------------------*/
-/* use file                                                                   */
-/*----------------------------------------------------------------------------*/
-void InputStream::vUseFile(s& sInputText)
-{
-  _poolAddress_(this);
-  
-  m_bFromFile  = true;
-  m_wInputLine = nullptr;
-  m_yInputChar = sInputText.a();
-  m_bEndInput  = false;
-  
-  m_bPrompt     = false;
-  
-  m_cCurrChar   = *m_yInputChar++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* getting chars from stdin?                                                  */
-/*----------------------------------------------------------------------------*/
-bool InputStream::bStdin(void)
-{
-  _poolAddress_(this);
-  
-  bool b = m_xInputFile.bIsStdin();
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* have we first char?                                                        */
-/*----------------------------------------------------------------------------*/
-bool InputStream::bFirstChar(void)
-{
-  _poolAddress_(this);
-  
-  return m_bFirstChar;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get a line                                                                 */
-/*----------------------------------------------------------------------------*/
-bool InputStream::bGetLine(s& sInputLine)
-{
-  _poolAddress_(this);
-  
-  char c;
-  
-  if (bStdin())
-    vPrintPrompt();
-  
-  m_wInputLine = sInputLine.a();
-  m_yInputChar = sInputLine.a();
-  
-  do {
-    
-    // get next char from input file
-    c = m_xInputFile.cGetChar();
-    if ('\0' == c)
-      break;
-    
-    *m_yInputChar++ = c;
-    
-  } while ('\n' != c);
-  
-  // eof?
-  if ('\0' == c && m_yInputChar == m_wInputLine)
-    return false;
-  
-  *m_yInputChar++ = '\0';
-  
-  m_yInputChar = m_wInputLine;
-  
-  return true;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -361,7 +423,7 @@ bool InputStream::bGetLine(s& sInputLine)
 /*----------------------------------------------------------------------------*/
 void InputStream::vGetChar(void)
 {
-  m_cCurrChar = *m_yInputChar++;
+  m_cCurrChar = *m_yInputCursor++;
   
   if ('\0' != m_cCurrChar)
     return;
@@ -397,80 +459,10 @@ void InputStream::vUngetChar(void)
   if (m_bFromFile)
     m_xInputFile.vUngetChar(m_cCurrChar);
   else
-    m_yInputChar--;
+    m_yInputCursor--;
   
   m_cCurrChar = 0;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get next line from input source                                            */
-/*----------------------------------------------------------------------------*/
-void InputStream::vNextLine(void)
-{
-  char c;
-  bool bEOFdetected = false;
-  
-  m_yInputChar = m_wInputLine;
-  
-  // end of apriori input?
-  if (! m_bFromFile) {
-    m_bEndInput= true;
-    return;
-  }
-
-  // loop till we get a line
-  for (;;) {
-  
-    // prompt the user
-    if (m_xInputFile.bIsStdin())
-      vPrintPrompt();
-    
-    // collect one line of input line
-    for (;;) {
-      
-      // get next char from input file
-      c = m_xInputFile.cGetChar();
-      *m_yInputChar++ = c;
-      
-      // test for eof
-      if ('\0' == c) {
-        bEOFdetected = true;
-        break;
-      }
-      
-      // test for eol
-      if ('\n' == c) {
-        *m_yInputChar++ = '\0';
-        break;
-      }
-    }
-
-    // set the input cursor back to the beginning of input line
-    m_yInputChar = m_wInputLine;
-    //vTrace("LINE %s",m_yInputChar);
-    
-    // did we get a line?
-    if ('\0' != *m_yInputChar) {
-      m_yInputChar = m_wInputLine;
-      m_cCurrChar  = *m_yInputChar++;
-      return;
-    }
-    
-    // did user hit return without typing something in?
-    if (m_xInputFile.bIsStdin())
-      continue;
-
-    // have we reached the end of the input file
-    if (bEOFdetected)
-      break;
-  }
-
-  m_bEndInput = true;
-}
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* attempt to parse a comment                                                 */

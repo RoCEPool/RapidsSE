@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/SEitf.cpp"
-            timestampString = "493697930.858255"
+            timestampString = "493698442.480279"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "846"
-            endingLineNumber = "846"
+            startingLineNumber = "844"
+            endingLineNumber = "844"
             landmarkName = "SEitf::bDecode(char* pWords[])"
             landmarkType = "5">
          </BreakpointContent>

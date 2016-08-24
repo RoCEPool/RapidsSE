@@ -225,8 +225,6 @@ void SEitf::vPrompt(void)
   
   m_sPrompt = "seitf> ";
   
-  //  pInput()->vLineOriented(true);
-  
   vHistoryOpen();
   
   InputStream* pInput;
@@ -878,7 +876,6 @@ void SEitf::vPushFile(char* pWord)
   bool b = pInput->bOpenFile(m_sInputLine,pWord);
   ASSERT(b);
   
-  //pInput->vLineOriented(true);
 }
 
 /*----------------------------------------------------------------------------*/

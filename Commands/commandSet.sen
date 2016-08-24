@@ -177,7 +177,6 @@
 
 ;
 
-
 : tableLoader ( "<fileNm>" ^table )
 
     >r          ( "<fileNm>" ) ( R: ^table )

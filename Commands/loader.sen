@@ -31,6 +31,20 @@
     does>
 ;
 
+: toPartition
+
+//traceon
+    csv.firstvalue
+
+    hash
+
+    args.partitions %
+
+//traceoff
+;
+
+
+
 : load ( "<path>" table loader )
 //traceon
 
@@ -47,6 +61,7 @@
     begin
       0 rpick loader.fetchrecord
       while
+        0 rpick loader.pushRecord toPartition
         0 rpick loader.insertrow drop
     repeat
     0 rpick loader.end

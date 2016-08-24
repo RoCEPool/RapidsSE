@@ -34,7 +34,8 @@ namespace DBobjects
     bool   bOpenFile(void);
     void   vBegin(void);
     bool   bFetchRecord(void);
-    bool   bInsertRow(void);
+    void   vGetRecord(StrVal* pStrVal);
+    bool   bInsertRow(i8 iPartn);
     void   vEnd(void);
     void   vCloseFile(void);
   };

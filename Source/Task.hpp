@@ -414,6 +414,7 @@ namespace Tasking
     /*------------------------------------------------------------------------*/
 
     // args
+    static void vArgsPartitions(NNP_Task nnpTask);
     static void vArgsPrint(NNP_Task nnpTask);
 
     // assert
@@ -462,6 +463,7 @@ namespace Tasking
     static void vLoaderOpenFile(NNP_Task nnpTask);
     static void vLoaderBegin(NNP_Task nnpTask);
     static void vLoaderFetchRecord(NNP_Task nnpTask);
+    static void vLoaderPushRecord(NNP_Task nnpTask);
     static void vLoaderInsertRow(NNP_Task nnpTask);
     static void vLoaderEnd(NNP_Task nnpTask);
     static void vLoaderCloseFile(NNP_Task nnpTask);

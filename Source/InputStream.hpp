@@ -32,15 +32,14 @@ namespace Tasking
     bool         m_bFromFile;     // input source is from a file?
     File         m_xInputFile;    // the input file
     char*        m_wInputLine;    // input line buffer
-    char*        m_yInputChar;    // input char cursor
+    char*        m_yInputCursor;  // input char cursor
     char         m_cCurrChar;     // current char
+    bool         m_bFirstChar;    // first char of line has been parsed
     eLT          m_eLiteralType;  // type of literal just recognized
     const char*  m_aPrompt;       // the prompt
-    bool         m_bEndInput;     // end of input?
-    bool         m_bFirstChar;    // first char
-    
     bool         m_bPrompt;       // print prompt
-    bool         m_bLineOriented; // line oriented? (temporary)
+    bool         m_bLineOriented; // line oriented?
+    bool         m_bEndInput;     // end of input?
     
   public:
     void* operator new(size_t);
@@ -52,30 +51,28 @@ namespace Tasking
     void vCloseFile(void);
     i8   iDepth(void);
     void vDepth(i8 iDepth);
+    bool bFirstChar(void);
+    bool bGetLine(s& sInputLine);
     void vLineOriented(bool bLineOriented);
+    void vNextLine(void);
     eLT  eNextLiteral(char* wWorkspace);
     bool bOpenFile(s& sInputLine, const char* aFilePath);
     void vPrintPrompt(void);
     void vPrompt(char* aPrompt);
     void vReset(void);
+    bool bStdin(void);
+    void vUseFile(s& sInputText);
     void vUseStdin(s& sInputLine);
     void vUseText(s& sInputText);
-    void vUseFile(s& sInputText);
-    
-    bool  bGetLine(s& sInputLine);
-    void  vNextLine(void);
-    bool  bStdin(void);
-    bool  bFirstChar(void);
     
   private:
+    void  vGetChar(void);
+    void  vUngetChar(void);
+    
     bool  bParseComment(char* wWorkspace);
     bool  bParseInteger(char* wWorkspace);
     bool  bParseName(char* wWorkspace);
     bool  bParseString(char* wWorkspace);
-    
-    void  vGetChar(void);
-    void  vUngetChar(void);
-    
     
     void  vSkipWhitespace(void);
     
