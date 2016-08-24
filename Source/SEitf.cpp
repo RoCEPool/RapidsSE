@@ -261,12 +261,7 @@ void SEitf::vPrompt(void)
       //vTrace("Word [%lld] %s\n",i,pWords[i]);
       i++;
     }
-    
-    if (pInput->bEOF()) {
-      vPopFile();
-      continue;
-    }
-    
+        
     vExecute(pWords);
     
     if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {

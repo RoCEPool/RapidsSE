@@ -88,16 +88,6 @@ void InputStream::vDepth(i8 iDepth)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seen EOF?                                                                  */
-/*----------------------------------------------------------------------------*/
-bool InputStream::bEOF(void)
-{
-  _poolAddress_(this);
-  
-  return m_bEOF;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set liine oreinted mode                                                    */
 /*----------------------------------------------------------------------------*/
 void InputStream::vLineOriented(bool bLineOriented)
@@ -234,7 +224,6 @@ void InputStream::vReset(void)
   
   m_bPrompt       = false;
   m_bLineOriented = false;
-  m_bEOF          = false;
 }
 
 /*----------------------------------------------------------------------------*/
