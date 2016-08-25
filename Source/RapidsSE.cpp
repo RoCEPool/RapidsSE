@@ -14,6 +14,7 @@ GlobalDictionary*   gpGlobalDictionary = nullptr;
 Dictionary*         gpDictionary       = nullptr;
 Word*               gpWord             = nullptr;
 
+Grid*               gpGrid             = nullptr;
 TaskList*           gpTaskList         = nullptr;
 ThreadList*         gpThreadList       = nullptr;
 SEitfList*          gpSEitfList        = nullptr;
@@ -76,6 +77,10 @@ void RapidsSE::vExecute(void)
         PosixThread::vSleepNano(250_MB);
         vSeitfPrompt();
       }
+//      else if (gxArguments.m_bDocol) {
+//        vRunDocol();
+//        vWaitFlag();
+//      }
       else
         vWaitFlag();
     }

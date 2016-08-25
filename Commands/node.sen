@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* node.sen -- node routines                                                  */
+/*============================================================================*/
+
+"node.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* node is use as a kind of word to identify nodes (of a grid)                */
+/*----------------------------------------------------------------------------*/
+: node ;
+
+: isNode word.kind@ ' node eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create a node using name from input stream                                 */
+/*----------------------------------------------------------------------------*/
+: node:
+    create
+    object!!
+    sizeof_node allot
+    word.this >body magic!!
+    word.this >body CN_NODE class!
+    word.this >body node.init
+    ' node word.this word.kind!
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a node using name on the stack (leaves node word on stack)          */
+/*----------------------------------------------------------------------------*/
+: :node
+    >create
+    object!!
+    sizeof_node allot
+    word.this >body magic!!
+    word.this >body CN_NODE class!
+    word.this >body node.init
+    ' node word.this word.kind!
+    word.this
+    does>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

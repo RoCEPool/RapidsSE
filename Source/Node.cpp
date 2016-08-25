@@ -9,23 +9,50 @@
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t iSize)
 {
-  vFatal("fatal: Node class cannot be new'd");
+  Object* pObject = gpSmallHeap->pAllocObject();
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Node::operator delete(void* pBufferAddress)
+void Node::operator delete(void* pNodeAddress)
 {
-  vFatal("fatal: Node class cannot be deleted");
+  Object* pObject = reinterpret_cast<Node*>(pNodeAddress);
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  gpSmallHeap->vFreeObject(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Node::Node(i8 iNodeNo)
+: Object(CN_NODE)
+{
+  m_iNodeNo = iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+Node::~Node(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* init                                                                       */
+/*----------------------------------------------------------------------------*/
+void Node::vInit(void)
+{
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node number                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Node::iNodeNo(void)
+{
+  return m_iNodeNo;
 }
 
 /*============================================================================*/

@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* grid.sen -- grid routines                                                  */
+/*============================================================================*/
+
+"grid.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* grid is use as a kind of word to identify grids                            */
+/*----------------------------------------------------------------------------*/
+: grid ;
+
+: isGrid word.kind@ ' grid eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create a grid using name from input stream                                 */
+/*----------------------------------------------------------------------------*/
+: grid:
+    create
+    object!!
+    sizeof_grid allot
+    word.this >body magic!!
+    word.this >body CN_GRID class!
+    word.this >body grid.init
+    ' grid word.this word.kind!
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a grid using name on the stack (leaves grid word on stack)          */
+/*----------------------------------------------------------------------------*/
+: :grid
+    >create
+    object!!
+    sizeof_grid allot
+    word.this >body magic!!
+    word.this >body CN_GRID class!
+    word.this >body grid.init
+    ' grid word.this word.kind!
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+grid: grid.this
+
+0 node.new grid.appendNode
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

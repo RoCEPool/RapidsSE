@@ -454,6 +454,10 @@ namespace Tasking
     static void vFileRead(NNP_Task nnpTask);
     static void vFileWrite(NNP_Task nnpTask);
     
+    // grid
+    static void vGridAppendNode(NNP_Task nnpTask);
+    static void vGridInit(NNP_Task nnpTask);
+    
     // loader
     static void vLoaderNew(NNP_Task nnpTask);
     static void vLoaderDelete(NNP_Task nnpTask);
@@ -478,6 +482,21 @@ namespace Tasking
     // memory
     static void vMemoryByteDump(NNP_Task nnpTask);
     static void vMemoryWordDump(NNP_Task nnpTask);
+    
+    // node (of grid)
+    static void vNodeInit(NNP_Task nnpTask);
+    static void vNodeNew(NNP_Task nnpTask);
+    static void vNodeNo(NNP_Task nnpTask);
+    
+    // nodecursor
+    static void vNodeCursorBegin(NNP_Task nnpTask);
+    static void vNodeCursorDelete(NNP_Task nnpTask);
+    static void vNodeCursorEnd(NNP_Task nnpTask);
+    static void vNodeCursorFirst(NNP_Task nnpTask);
+    static void vNodeCursorGet(NNP_Task nnpTask);
+    static void vNodeCursorInit(NNP_Task nnpTask);
+    static void vNodeCursorNew(NNP_Task nnpTask);
+    static void vNodeCursorNext(NNP_Task nnpTask);
     
     // process
     static void vProcessGetPid(NNP_Task nnpTask);

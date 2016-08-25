@@ -6,6 +6,10 @@
 
 int: queryCount
 
+"node.sen" >>:
+"grid.sen" >>:
+"nodeCursor.sen" >>:
+
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:

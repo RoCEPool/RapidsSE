@@ -2,8 +2,8 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
-#include "RapidsSE.hpp"
-#include "Tasking.h"
+#include "StorageEngine.h"
+//#include "Tasking.h"
 
 extern Arguments             gxArguments;
 
@@ -14,6 +14,7 @@ extern BufferPoolAnalyzer*   gpBPA;
 extern Dictionary*           gpDictionary;
 extern Word*                 gpWord;
 
+extern Grid*                 gpGrid;
 extern TaskList*             gpTaskList;
 extern NP_Task               gnpRootTask;
 
@@ -269,43 +270,44 @@ void Task::vAddConstants(void)
   /* 17 */ vAddConstant("CN_FILE",                  CN_FILE);
   /* 18 */ vAddConstant("CN_FREECHUNK",             CN_FREECHUNK);
   /* 19 */ vAddConstant("CN_GLOBALDICTIONARY",      CN_GLOBALDICTIONARY);
-  /* 20 */ vAddConstant("CN_GRIDMODEL",             CN_GRIDMODEL);
+  /* 20 */ vAddConstant("CN_GRID",                  CN_GRID);
   /* 21 */ vAddConstant("CN_HEAPBUFFER",            CN_HEAPBUFFER);
   /* 22 */ vAddConstant("CN_INDEX",                 CN_INDEX);
   /* 23 */ vAddConstant("CN_LOADER",                CN_LOADER);
   /* 24 */ vAddConstant("CN_LOCK",                  CN_LOCK);
   /* 25 */ vAddConstant("CN_MEDIUMHEAP",            CN_MEDIUMHEAP);
   /* 26 */ vAddConstant("CN_NODE",                  CN_NODE);
-  /* 27 */ vAddConstant("CN_PARTITION",             CN_PARTITION);
-  /* 28 */ vAddConstant("CN_PROXY",                 CN_PROXY);
-  /* 29 */ vAddConstant("CN_PROXYSET",              CN_PROXYSET);
-  /* 30 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
-  /* 31 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
-  /* 32 */ vAddConstant("CN_ROW",                   CN_ROW);
-  /* 32 */ vAddConstant("CN_ROWBUFFER",             CN_ROWBUFFER);
-  /* 33 */ vAddConstant("CN_ROWCURSOR",             CN_ROWCURSOR);
-  /* 32 */ vAddConstant("CN_ROWSTRAND",             CN_ROWSTRAND);
-  /* 34 */ vAddConstant("CN_SCANBUFFER",            CN_SCANBUFFER);
-  /* 35 */ vAddConstant("CN_SEITF",                 CN_SEITF);
-  /* 36 */ vAddConstant("CN_SEITFCURSOR",           CN_SEITFCURSOR);
-  /* 37 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
-  /* 38 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
-  /* 39 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
-  /* 40 */ vAddConstant("CN_STACK",                 CN_STACK);
-  /* 41 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
-  /* 42 */ vAddConstant("CN_TABLE",                 CN_TABLE);
-  /* 43 */ vAddConstant("CN_TASK",                  CN_TASK);
-  /* 44 */ vAddConstant("CN_TASKCURSOR",            CN_TASKCURSOR);
-  /* 45 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
-  /* 46 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
-  /* 47 */ vAddConstant("CN_THREAD",                CN_THREAD);
-  /* 48 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 49 */ vAddConstant("CN_TIMER",                 CN_TIMER);
-  /* 50 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 51 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 52 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 53 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 54 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 27 */ vAddConstant("CN_NODECURSOR",            CN_NODECURSOR);
+  /* 28 */ vAddConstant("CN_PARTITION",             CN_PARTITION);
+  /* 29 */ vAddConstant("CN_PROXY",                 CN_PROXY);
+  /* 30 */ vAddConstant("CN_PROXYSET",              CN_PROXYSET);
+  /* 31 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
+  /* 32 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
+  /* 33 */ vAddConstant("CN_ROW",                   CN_ROW);
+  /* 34 */ vAddConstant("CN_ROWBUFFER",             CN_ROWBUFFER);
+  /* 35 */ vAddConstant("CN_ROWCURSOR",             CN_ROWCURSOR);
+  /* 36 */ vAddConstant("CN_ROWSTRAND",             CN_ROWSTRAND);
+  /* 37 */ vAddConstant("CN_SCANBUFFER",            CN_SCANBUFFER);
+  /* 38 */ vAddConstant("CN_SEITF",                 CN_SEITF);
+  /* 39 */ vAddConstant("CN_SEITFCURSOR",           CN_SEITFCURSOR);
+  /* 40 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
+  /* 41 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
+  /* 42 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
+  /* 43 */ vAddConstant("CN_STACK",                 CN_STACK);
+  /* 44 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
+  /* 45 */ vAddConstant("CN_TABLE",                 CN_TABLE);
+  /* 46 */ vAddConstant("CN_TASK",                  CN_TASK);
+  /* 47 */ vAddConstant("CN_TASKCURSOR",            CN_TASKCURSOR);
+  /* 48 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
+  /* 49 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
+  /* 50 */ vAddConstant("CN_THREAD",                CN_THREAD);
+  /* 51 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
+  /* 52 */ vAddConstant("CN_TIMER",                 CN_TIMER);
+  /* 53 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 54 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 55 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 56 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 57 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
 
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -335,40 +337,41 @@ void Task::vAddConstants(void)
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
   /* 19 */ vAddConstant("SIZEOF_GLOBALDICTIONARY",  sizeof(GlobalDictionary));
   /* 20 */ vAddConstant("SIZEOF_GRID",              sizeof(Grid));
-  /* 21 */ vAddConstant("SIZEOF_HEAP",              sizeof(Heap));
+  /* 21 */ vAddConstant("SIZEOF_HEAPBUFFER",        sizeof(HeapBuffer));
   /* 22 */ vAddConstant("SIZEOF_INDEX",             sizeof(Index));
   /* 23 */ vAddConstant("SIZEOF_LOADER",            sizeof(Loader));
   /* 24 */ vAddConstant("SIZEOF_LOCK",              sizeof(Lock));
   /* 25 */ vAddConstant("SIZEOF_NODE",              sizeof(Node));
-  /* 26 */ vAddConstant("SIZEOF_PARTITION",         sizeof(Partition));
-  /* 27 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
-  /* 28 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
-  /* 29 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
-  /* 30 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
-  /* 31 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
-  /* 32 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
-  /* 33 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
-  /* 34 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
-  /* 35 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
-  /* 36 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
-  /* 37 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
-  /* 38 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
-  /* 39 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
-  /* 40 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
-  /* 41 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
-  /* 42 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
-  /* 43 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
-  /* 44 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
-  /* 45 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
-  /* 46 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
-  /* 47 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
-  /* 48 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 49 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
-  /* 50 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
-  /* 51 */ vAddConstant("SIZEOF_TXLIST",            sizeof(TxList));
-  /* 52 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 53 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
-  /* 54 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 26 */ vAddConstant("SIZEOF_NODECURSOR",        sizeof(NodeCursor));
+  /* 27 */ vAddConstant("SIZEOF_PARTITION",         sizeof(Partition));
+  /* 28 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
+  /* 29 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
+  /* 30 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
+  /* 31 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
+  /* 32 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
+  /* 33 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
+  /* 34 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
+  /* 35 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
+  /* 36 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
+  /* 37 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
+  /* 38 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
+  /* 39 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
+  /* 40 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
+  /* 41 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
+  /* 42 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
+  /* 43 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
+  /* 44 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
+  /* 45 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
+  /* 46 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
+  /* 47 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
+  /* 48 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
+  /* 49 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 50 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
+  /* 51 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
+  /* 52 */ vAddConstant("SIZEOF_TXLIST",            sizeof(TxList));
+  /* 53 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 54 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
+  /* 55 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
@@ -617,6 +620,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("file.read",       &vFileRead,         false);
   vAddPrimitive("file.write",      &vFileWrite,        false);
   
+  vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
+  vAddPrimitive("grid.init",       &vGridInit,         false);
+  
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
@@ -638,6 +644,19 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("memory.bytedump", &vMemoryByteDump,   false);
   vAddPrimitive("memory.worddump", &vMemoryWordDump,   false);
+  
+  vAddPrimitive("node.init",       &vNodeInit,         false);
+  vAddPrimitive("node.new",        &vNodeNew,          false);
+  vAddPrimitive("node.no",         &vNodeNo,           false);
+  
+  vAddPrimitive("nodecursor.begin",  &vNodeCursorBegin,  false);
+  vAddPrimitive("nodecursor.delete", &vNodeCursorDelete, false);
+  vAddPrimitive("nodecursor.end",    &vNodeCursorEnd,    false);
+  vAddPrimitive("nodecursor.first",  &vNodeCursorFirst,  false);
+  vAddPrimitive("nodecursor.get",    &vNodeCursorGet,    false);
+  vAddPrimitive("nodecursor.init",   &vNodeCursorInit,   false);
+  vAddPrimitive("nodecursor.new",    &vNodeCursorNew,    false);
+  vAddPrimitive("nodecursor.next",   &vNodeCursorNext,   false);
   
   vAddPrimitive("process.getpid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testpid", &vProcessTestPid,   false);
@@ -5685,6 +5704,47 @@ void Task::vFileWrite(NNP_Task nnpTask)
   pFile->vPrint("%s\n",wStr);
 }
 
+// grid: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* grid.appendNode -- append grid node into grid                              */
+/*----------------------------------------------------------------------------*/
+void Task::vGridAppendNode(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vGridAppendNode");
+  
+  PtrVal xNodePtr;
+  
+  if ( ! nnpTask->bPopParam(xNodePtr) )
+    THROW_INVALID_PARAM("grid.addNode");
+
+  Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
+  ASSERT(pNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  gpGrid->vAppend(pNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.init -- initialise a grid                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vGridInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vGridInit");
+  
+  PtrVal xGridPtr;
+  
+  if ( ! nnpTask->bPopParam(xGridPtr) )
+    THROW_INVALID_PARAM("grid.init");
+  
+  Grid* pGrid = reinterpret_cast<Grid*>(xGridPtr.pPtr());
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  new(pGrid) Grid;
+
+  pGrid->vInit();
+}
+
 // loader: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -6042,6 +6102,215 @@ void Task::vMemoryWordDump(NNP_Task nnpTask)
     THROW_INVALID_PARAM("memory.worddump");
   
   pWord->vWordDump(iSize);
+}
+
+// node: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* node.init -- initialise a node (of a grid)                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeInit");
+  
+  PtrVal xNodePtr;
+  
+  if ( ! nnpTask->bPopParam(xNodePtr) )
+    THROW_INVALID_PARAM("node.init");
+  
+  Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  pNode->vInit();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.new -- new a node (of a grid)                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeNew");
+  
+  i8 iNodeNo;
+  
+  if ( ! nnpTask->bPopParam(iNodeNo) )
+    THROW_INVALID_PARAM("node.new");
+  
+  Node* pNode = new Node(iNodeNo);
+  ASSERT(CN_NODE == pNode->eClass());
+
+  PtrVal xNodePtr;
+  xNodePtr = pNode;
+  
+  nnpTask->vPushParam(xNodePtr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.no -- push node number of node (of a grid)                            */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeNo(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeNo");
+  
+  PtrVal xNodePtr;
+  
+  if ( ! nnpTask->bPopParam(xNodePtr) )
+    THROW_INVALID_PARAM("node.no");
+  
+  Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  nnpTask->vPushParam(pNode->iNodeNo());
+}
+
+// nodecursor: /////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* nodecursor.begin -- begin using node (of grid) cursor                      */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorBegin");
+  
+  PtrVal xPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+    THROW_INVALID_PARAM("nodeCursor.begin");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  pNodeCursor->vBegin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodecursor.delete -- delete a node (of grid) cursor                        */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorDelete");
+  
+  PtrVal xPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+    THROW_INVALID_PARAM("nodeCursor.delete");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  delete pNodeCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodecursor.end -- end using node (of grid) cursor                          */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorEnd");
+  
+  PtrVal xPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+    THROW_INVALID_PARAM("nodecursor.end");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  pNodeCursor->vEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodeCursor.first -- set to first and push node (of grid)                   */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorFirst(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorFirst");
+  
+  PtrVal xPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+    THROW_INVALID_PARAM("nodeCursor.first");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  pNodeCursor->vFirst();
+  
+  PtrVal xPtrNode;
+  xPtrNode = pNodeCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodeCursor.get -- push current node (of grid)                              */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorGet");
+  
+  PtrVal xPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+    THROW_INVALID_PARAM("nodeCursor.get");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  PtrVal xPtrNode;
+  xPtrNode = pNodeCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodeCursor.init -- init a node cursor                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorInit");
+  
+  PtrVal xPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+    THROW_INVALID_PARAM("nodeCursor.init");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  new(pNodeCursor) NodeCursor(gpGrid);
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodeCursor.new -- new a node (of grid) cursor                              */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorNew");
+  
+  NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  PtrVal xPtrNodeCursor;
+  xPtrNodeCursor = pNodeCursor;
+  
+  nnpTask->vPushParam(xPtrNodeCursor);
+}
+
+/*----------------------------------------------------------------------------*/
+/* nodeCursor.next -- advance to next and get node (of grid)                  */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeCursorNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vNodeCursorNext");
+  
+  PtrVal xPtrRowCursor;
+  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+    THROW_INVALID_PARAM("nodeCursor.next");
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrRowCursor.pPtr());
+  ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
+  
+  pNodeCursor->vNext();
+  
+  PtrVal xPtrNode;
+  xPtrNode = pNodeCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrNode);
 }
 
 // process: ////////////////////////////////////////////////////////////////////

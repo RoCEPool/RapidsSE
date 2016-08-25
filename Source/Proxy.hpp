@@ -16,6 +16,8 @@ namespace GridModel
     void* operator new(size_t);
     void  operator delete(void*);
     
+    Proxy(void);
+    ~Proxy(void);
   };
 }
 

@@ -8,14 +8,19 @@
 
 namespace GridModel
 {
-  class Grid : public Object
+  class Grid : public Object,
+               public List_t<Node>
   {
   private:
     
   public:
-    void* operator new(size_t);
+    void* operator new(size_t, Grid* pGrid);
     void  operator delete(void*);
     
+    Grid(void);
+    ~Grid(void);
+    
+    void vInit(void);
   };
     
 }

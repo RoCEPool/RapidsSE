@@ -5,9 +5,12 @@
 #include "StorageEngine.h"
 
 extern BufferPool*           gpBufferPool;
+
 extern Heap*                 gpMediumHeap;
 extern GlobalDictionary*     gpGlobalDictionary;
 extern Dictionary*           gpDictionary;
+
+extern Grid*                 gpGrid;
 extern TaskList*             gpTaskList;
 extern SEitfList*            gpSEitfList;
 extern Arguments             gxArguments;
@@ -59,6 +62,8 @@ void AttachMap::vGetGlobals(void)
   gpSmallHeap        = m_pSmallHeap;
   gpGlobalDictionary = m_pGlobalDictionary;
   gpDictionary       = m_pDictionary;
+  
+  gpGrid             = m_pGrid;
   gpTaskList         = m_pTaskList;
   gpSEitfList        = m_pSEitfList;
 }
@@ -74,20 +79,22 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vSet(&m_xSince);
   m_xTime.vUTC(m_sUTC);
   
-  m_iStop             = 0;
-  m_iQuit             = 0;
-  
   m_iRegionSize       = gpBufferPool->iRegionSize();
-  
   m_iPartitions       = gxArguments.m_iPartitions;
-
+  
   m_pBufferPool       = gpBufferPool;
+  
   m_pMediumHeap       = gpMediumHeap;
   m_pSmallHeap        = gpSmallHeap;
   m_pGlobalDictionary = gpGlobalDictionary;
   m_pDictionary       = gpDictionary;
+  
+  m_pGrid             = gpGrid;
   m_pTaskList         = gpTaskList;
   m_pSEitfList        = gpSEitfList;
+  
+  m_iStop             = 0;
+  m_iQuit             = 0;
 }
 
 /*----------------------------------------------------------------------------*/

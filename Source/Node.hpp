@@ -8,15 +8,22 @@
 
 namespace GridModel
 {
-  class Node : public Object
+  class Node : public Object,
+               public ListNode_t<Node>
   {
-    
   private:
+    i8    m_iNodeNo;
     
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
+    Node(i8 iNodeNo);
+    ~Node(void);
+    
+    void vInit(void);
+    
+    i8 iNodeNo(void);
   };
 }
 

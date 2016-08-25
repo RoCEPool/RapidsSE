@@ -16,11 +16,7 @@ namespace StorageEngine
     Time               m_xTime;
     s32                m_sUTC;
     
-    i8                 m_iQuit;
-    i8                 m_iStop;
-    
     i8                 m_iRegionSize;
-    
     i8                 m_iPartitions;
     
     BufferPool*        m_pBufferPool;
@@ -28,9 +24,14 @@ namespace StorageEngine
     Heap*              m_pSmallHeap;
     GlobalDictionary*  m_pGlobalDictionary;
     Dictionary*        m_pDictionary;
+    
+    Grid*              m_pGrid;
     TaskList*          m_pTaskList;
     SEitfList*         m_pSEitfList;
    
+    i8                 m_iQuit;
+    i8                 m_iStop;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

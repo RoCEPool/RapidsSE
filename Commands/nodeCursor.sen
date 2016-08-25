@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* nodeCursor.sen -- Node Cursor                                              */
+/*============================================================================*/
+
+"nodeCursor.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a nodeCursor using name from input stream                           */
+/*----------------------------------------------------------------------------*/
+: nodeCursor:
+    create
+    object!!
+    sizeof_nodeCursor allot
+    word.this >body magic!!
+    word.this >body CN_NODECURSOR class!
+    word.this >body nodeCursor.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a nodeCursor using name on the stack              (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :nodeCursor
+    >create
+    object!!
+    sizeof_nodeCursor allot
+    word.this >body magic!!
+    word.this >body CN_NODECURSOR class!
+    word.this >body nodeCursor.init
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::nodeCursor ( create a temporary nodeCursor )
+
+    "__nodeCursor__" find dup
+    not if
+      drop
+      "__nodeCursor__" :nodeCursor
+    then
+    execute
+;
+
+: ~nodeCursor ( forget temporary nodeCursor )
+
+    "__nodeCursor__" find >forget
+;
+
+: listNodes ( list all nodes in grid )
+
+    ::nodeCursor >r // r0 ^nodeCursor
+
+    r0 nodeCursor.begin
+    r0 nodeCursor.first
+    begin
+      while
+      r0 nodeCursor.get
+      node.no .
+      r0 nodeCursor.next
+    repeat
+
+    rdrop
+
+    ~nodeCursor
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
