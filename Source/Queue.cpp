@@ -125,6 +125,7 @@ bool Queue::bPop(ValWsp* pValWsp)
   m_zLock.vGrabWrite();
   
   if ( ! m_pTopBuffer ) {
+    ASSERT( ! m_iCount );
     m_zLock.vDropWrite();
     return nullptr;
   }
@@ -132,12 +133,15 @@ bool Queue::bPop(ValWsp* pValWsp)
   bool bDiscardable;
   bool bPopped = m_pTopBuffer->bPop(pValWsp,bDiscardable);
 
-  if (bDiscardable && m_pTopBuffer != m_pEndBuffer) {
+  if (bDiscardable) {
     ASSERT(bPopped);
     vDiscard();
   }
   
-  m_iCount--;
+  if (bPopped)
+    m_iCount--;
+  
+  ASSERT(m_iCount >= 0);
   
   m_zLock.vDropWrite();
 
@@ -154,6 +158,7 @@ bool Queue::bPop(ValSet* pValSet)
   m_zLock.vGrabWrite();
   
   if ( ! m_pTopBuffer ) {
+    ASSERT( ! m_iCount );
     m_zLock.vDropWrite();
     return nullptr;
   }
@@ -161,12 +166,15 @@ bool Queue::bPop(ValSet* pValSet)
   bool bDiscardable;
   bool bPopped = m_pTopBuffer->bPop(pValSet,bDiscardable);
   
-  if (bDiscardable && m_pTopBuffer != m_pEndBuffer) {
+  if (bDiscardable) {
     ASSERT(bPopped);
     vDiscard();
   }
   
-  m_iCount--;
+  if (bPopped)
+    m_iCount--;
+
+  ASSERT(m_iCount >= 0);
   
   m_zLock.vDropWrite();
   
@@ -184,15 +192,15 @@ void Queue::vDiscard(void)
 {
   _poolAddress_(this);
   
-  QueueBuffer* pQbuffer = m_pTopBuffer;
+  QueueBuffer* pQueueBufferTBD = m_pTopBuffer;
   
-  ASSERT(0 == pQbuffer->iCount());
+  ASSERT(0 == pQueueBufferTBD->iCount());
  
   m_pTopBuffer = m_pTopBuffer->pNext();
   if ( ! m_pTopBuffer )
     m_pEndBuffer = nullptr;
   
-  delete pQbuffer;
+  delete pQueueBufferTBD;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,14 +210,15 @@ void Queue::vExpand(void)
 {
   _poolAddress_(this);
   
-  QueueBuffer* pQbuffer = new QueueBuffer;
+  QueueBuffer* pNewQueueBuffer = new QueueBuffer;
   
-  pQbuffer->vNext(m_pEndBuffer);
+  if (m_pEndBuffer)
+    m_pEndBuffer->vNext(pNewQueueBuffer);
   
-  m_pEndBuffer = pQbuffer;
+  m_pEndBuffer = pNewQueueBuffer;
   
   if ( ! m_pTopBuffer )
-    m_pTopBuffer = pQbuffer;
+    m_pTopBuffer = pNewQueueBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

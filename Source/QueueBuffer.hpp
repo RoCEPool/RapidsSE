@@ -13,8 +13,8 @@ namespace DataStructures
     friend class Queue;
     
   private:
-    QueueBuffer*   m_pNext;
-    i8             m_iCount;
+    QueueBuffer* m_pNext;
+    i8       m_iCount;
     OnStack* m_pTopValue;
     OnStack* m_pNextFree;
     // ..data..

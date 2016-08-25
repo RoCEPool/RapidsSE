@@ -207,6 +207,12 @@ void SEitf::vPrompt2(void)
           vExecute(pWords);
         }
       }
+
+      if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
+        while (true) {
+          vExecute(pWords);
+        }
+      }
    
     }
   }
@@ -286,6 +292,11 @@ void SEitf::vPrompt(void)
       }
     }
     
+    if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
+      while (true) {
+        vExecute(pWords);
+      }
+    }
   }
 }
 
@@ -1518,11 +1529,22 @@ bool SEitf::bPing(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bX(char* pWords[])
 {
+  
   s256 sRequest;
   
-  sRequest = "x";
+  sRequest = "ping";
   vAppendRequest(sRequest);
   
+//  static bool bFirst = true;
+//  if (bFirst) {
+//    bFirst = false;
+//    vAppendRequest(sRequest);
+//    vAppendRequest(sRequest);
+//    vAppendRequest(sRequest);
+//    vAppendRequest(sRequest);
+//    vAppendRequest(sRequest);    
+//  }
+
   return true;
 }
 

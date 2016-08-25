@@ -141,8 +141,13 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   m_iCount--;
   
   if (0 == m_iCount) {
-    //ASSERT(!m_pTopValue);
-    bDiscardable = true;
+    if (m_pNext) {
+      bDiscardable = true;
+    }
+    else {
+      m_pTopValue = pFirstValue();
+      m_pNextFree = m_pTopValue;
+    }
   }
   
   return true;
@@ -172,8 +177,13 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
   m_iCount--;
   
   if (0 == m_iCount) {
-    //ASSERT(!m_pTopValue);
-    bDiscardable = true;
+    if (m_pNext) {
+      bDiscardable = true;
+    }
+    else {
+      m_pTopValue = pFirstValue();
+      m_pNextFree = m_pTopValue;
+    }
   }
   
   return true;

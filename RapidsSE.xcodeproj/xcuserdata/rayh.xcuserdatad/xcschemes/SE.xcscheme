@@ -76,7 +76,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --bgtasks"
@@ -84,7 +84,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf "
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf --bgtasks"
@@ -92,7 +92,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--partitions 8"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--partition 0"
