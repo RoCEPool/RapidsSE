@@ -273,6 +273,7 @@ Table Commands:
   lscol   list_columns
   ld      load_table
   sel     select_table
+  dump    dump_table
   cp      copy_table
   ex      export_table
   sz      size_table
@@ -517,6 +518,23 @@ Misc Commands:
 ;
 
 /*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+: dump_table ( "<tableNm>" )
+
+  find
+
+  checkIsTable not if exit then
+
+  execute ( table )
+
+  rowDump
+
+  "table dumped" success
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
 : size_table ( "tablename" )
@@ -532,7 +550,7 @@ Misc Commands:
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get first buffer of table                                                  */
+/* get row cursor for table                                                   */
 /*----------------------------------------------------------------------------*/
 : select_table ( "tablename" )
 

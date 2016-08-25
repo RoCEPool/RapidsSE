@@ -33,33 +33,43 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-: list_table ( ^ table )
+: rowDump ( ^ table )
 
-    "row_cursor" find dup if else
-      drop "row_cursor" :rowCursor
+    "__row_cursor" find dup if else
+      drop
+      "__row_cursor" :rowCursor
     then
     execute
 
     >r
+    // r0 ^rowCursor
 
-    0 rpick rowcursor.table!
-    0 0 rpick rowcursor.begin
-    0 rpick rowcursor.first
-    begin
-    while
-      0 rpick rowcursor.get
-      .
-      0 rpick rowcursor.next
-    repeat
+    r0 rowcursor.table!
+    partitions 0
+    do
+      // r2 ^rowCursor
+      I r2 rowcursor.begin
+      r2 rowcursor.first
+      begin
+        while
+        r2 rowcursor.get
+        .
+        r2 rowcursor.next
+      repeat
+
+      r2 rowCursor.end
+    loop
 
     rdrop
+
+    "__row_cursor" find >forget
 ;
 
 : cursorTest
 
     "nation" find execute
 
-    list_table
+    rowDump
 ;
 
 /*============================================================================*/
