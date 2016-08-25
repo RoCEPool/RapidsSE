@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* TxMap.hpp - Transaction Map                                                */
+/* TxMap.hpp -- Transaction Map                                               */
 /*============================================================================*/
 
 #pragma once
 
 #include "Transactions.h"
 
-namespace Transactions {
-    
+namespace Transactions
+{
   class TxMap : public Object
   {
   private:
@@ -22,7 +22,6 @@ namespace Transactions {
     
     void vSetTx(i8 iTx, Tx* pTx);
   };
-    
 }
 
 /*============================================================================*/
