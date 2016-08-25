@@ -204,7 +204,7 @@
 ;
 
 
-: tableExporter ( "<fileNm>" ^table )
+: tableExporter2 ( "<fileNm>" ^table )
 
     >r          ( "<fileNm>" ) ( R: ^table )
 
@@ -223,6 +223,16 @@
     rdrop
 
     rdrop
+;
+
+: tableExporter ( "<fileNm>" ^table )
+
+   export if "exported!" . else . then
+;
+
+: tableCopier
+
+   copy if "copied!" . else . then
 ;
 
 
@@ -499,9 +509,9 @@ Misc Commands:
 
     :table execute ( ^fromTable ^toTable )
 
-    swap           ( ^toTable ^fromTable )
+//    swap           ( ^toTable ^fromTable )
 
-    table.copy     ( )
+    tableCopier
 
     "table copied" success
 ;

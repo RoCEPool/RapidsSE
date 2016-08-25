@@ -4,43 +4,63 @@
 
 "exporter.sen" .
 
-: exporter ( "<fileNm>" ^table )
+: export ( "<fileNm>" ^table )
 
-traceon
+  swap file.new
 
-  "/tmp/nation.txt" "nation" find execute
-
-//--
-
-  swap file.new >r
+  >r
+  // r0 ^file
 
   r0 file.path! OPEN_WRITE r0 file.open
-  if "file open!" . else "file not opened!" . exit then
+  if "file open!" . else "file not opened!" . rdrop false exit then
 
-  "row_cursor" find dup if else
-    drop "row_cursor" :rowCursor
+  "__row_cursor" find dup if else
+    drop "__row_cursor" :rowCursor
   then
   execute
 
   >r
+  // r0 ^rowCursor
+  // r1 ^file
 
   r0 rowcursor.table!
 
-  0 r0 rowcursor.begin
-  r0 rowcursor.first
-  begin
-    while
-    r0 rowcursor.get
-    dup .
-    r1 file.write
-    r0 rowcursor.next
-  repeat
+  partitions 0
+  do
+    // r2 ^rowCursor
+    // r3 ^file
+
+    I r2 rowcursor.begin
+    r2 rowcursor.first
+    begin
+      while
+      r2 rowcursor.get
+//dup .
+      r3 file.write
+      r2 rowcursor.next
+    repeat
+
+    r2 rowcursor.end
+  loop
 
   r1 file.close
 
-  rdrop
+  rdrop rdrop
 
-  rdrop
+  "__row_cursor" find >forget
+
+  true
+;
+
+: exportTest
+
+traceon
+
+    "/tmp/nation.txt" "nation" find execute
+
+    export
+
+traceoff
 ;
 
 /*============================================================================*/

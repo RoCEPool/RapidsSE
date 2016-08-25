@@ -46,9 +46,9 @@
 : load ( "<path>" ^table -- t|f )
 //traceon
 
-    "Table_Loader" find dup if else
+    "__table_loader" find dup if else
       drop
-      "Table_Loader" :loader
+      "__table_loader" :loader
     then
     execute
 
@@ -70,6 +70,8 @@
 
     true
 
+    "__table_loader" find >forget
+
 //traceoff
 ;
 
@@ -82,7 +84,6 @@ traceon
 
    load if "loaded!" . else . then
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

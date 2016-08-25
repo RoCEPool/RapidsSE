@@ -73,7 +73,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
       m_iPartitions = String::iToI8(argv[++iArg]);
-      ASSERT(m_iPartitions < C_TABLE_PARTITIONS);
+      ASSERT(m_iPartitions <= C_TABLE_PARTITIONS);
       continue;
     }
     

@@ -113,6 +113,9 @@ ex partsupp "/tmp/partsupp.txt"
 ex region   "/tmp/region.txt"
 ex supplier "/tmp/supplier.txt"
 
+//cp nation nation_copy
+//ex nation_copy "/tmp/nation_copy.txt"
+
 pwd
 ls
 

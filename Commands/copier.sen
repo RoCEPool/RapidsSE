@@ -4,15 +4,12 @@
 
 "copier.sen" .
 
-: copier ( "<fromTableNm>" "<toTableNm>" )
+: copy ( ^fromTable ^toTable )
 
-traceon
-
-  "nation" find execute >r
-
-  "nation_copy" :table execute >r
-
-//--
+  swap
+  >r >r
+  // r0 ^toTable
+  // r1 ^fromtable
 
   "row_cursor" find dup if else
     drop "row_cursor" :rowCursor
@@ -27,16 +24,32 @@ traceon
 
   r2 r0 rowcursor.table!
 
-  0 r0 rowcursor.begin
-  r0 rowcursor.first
-  begin
-    while
-    r0 rowcursor.get .
-    r0 rowcursor.get r1 table.insert
-    r0 rowcursor.next
-  repeat
+  partitions 0
+  do
+    // r2 ^rowCursor
+    // r3 ^toTable
+    // r4 ^fromTable
+
+    I r2 rowcursor.begin
+    r2 rowcursor.first
+
+    begin
+      while
+      //r2 rowcursor.get .
+      r2 rowcursor.get r3 table.insert
+      r2 rowcursor.next
+    repeat
+
+    r2 rowcursor.end
+  loop
+
+  // r0 ^rowCursor
+  // r1 ^toTable
+  // r2 ^fromTable
 
   rdrop rdrop rdrop
+
+  true
 ;
 
 /*============================================================================*/

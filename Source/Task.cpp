@@ -5501,7 +5501,7 @@ void Task::vDicPush(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileClose(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileInit");
+  nnpTask->vPrimitive("vFileClose");
   
   PtrVal xFilePtr;
   
