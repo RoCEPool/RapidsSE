@@ -636,6 +636,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("lock.grabwrite",  &vLockGrabWrite,    false);
   vAddPrimitive("lock.init",       &vLockInit,         false);
   
+  vAddPrimitive("memory.bytedump", &vMemoryByteDump,   false);
+  vAddPrimitive("memory.worddump", &vMemoryWordDump,   false);
+  
   vAddPrimitive("process.getpid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testpid", &vProcessTestPid,   false);
   
@@ -5999,6 +6002,46 @@ void Task::vLockInit(NNP_Task nnpTask)
   ASSERT(CN_LOCK == pLock->eClass());
   
   pLock->vInit();
+}
+
+// memory: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* memory.bytedump -- byte-oriented dump                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vMemoryByteDump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vMemoryByteDump");
+  
+  Word* pWord;
+  i8 iSize;
+  
+  if ( ! nnpTask->bPopParam(iSize) )
+    THROW_INVALID_PARAM("memory.bytedump");
+  
+  if ( ! nnpTask->bPopParam(pWord) )
+    THROW_INVALID_PARAM("memory.bytedump");
+  
+  pWord->vByteDump(iSize);
+}
+
+/*----------------------------------------------------------------------------*/
+/* memory.worddump -- word-oriented dump                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vMemoryWordDump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vMemoryWordDump");
+  
+  Word* pWord;
+  i8 iSize;
+  
+  if ( ! nnpTask->bPopParam(iSize) )
+    THROW_INVALID_PARAM("memory.bytedump");
+  
+  if ( ! nnpTask->bPopParam(pWord) )
+    THROW_INVALID_PARAM("memory.worddump");
+  
+  pWord->vWordDump(iSize);
 }
 
 // process: ////////////////////////////////////////////////////////////////////

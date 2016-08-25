@@ -17,7 +17,7 @@ extern "C" eIE RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, 
 extern "C" eIE RapidsSE_PoolOpen(void);
 extern "C" eIE RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
 extern "C" eIE RapidsSE_SEitfDelete(SEitf* pSEitf);
-extern "C" eIE RapidsSE_SEitfNew(void** ppSEitf);
+extern "C" eIE RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition);
 
 // private calls
 eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand, const char* pParameter);

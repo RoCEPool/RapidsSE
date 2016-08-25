@@ -622,11 +622,12 @@ eIE RapidsSE_SEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* create a new seitf instance                                                */
 /*----------------------------------------------------------------------------*/
-eIE RapidsSE_SEitfNew(void** ppSEitf)
+eIE RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition)
 {
-  vTrace("RapidsSE_SEitfNew\n");
+  vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
   
-  SEitf* pSEitf = pSEitf = RapidsSE::pSEitfNew();
+  //SEitf* pSEitf = pSEitf = RapidsSE::pSEitfNew();
+  SEitf* pSEitf = new SEitf(iPartition);
   pSEitf->vInit();
   
   // return the newly created SEitf
@@ -654,7 +655,7 @@ eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   String::vCopy(pWords[0], pCommand);
   String::vCopy(pWords[1], pParameter);
   
-  vTrace("%s %s\n", pWords[0], pWords[1]);
+  vTrace("%s %s\n", pCommand, pParameter);
   bResult = pSEitf->bDecode(pWords);
   
   if (!bResult) {
@@ -663,7 +664,6 @@ eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand, const char* pParameter)
     return IE_INVALID_COMMAND;
   }
   
-  vTrace("%s %s\n", pCommand, pParameter);
   return IE_NONE;
 }
 
@@ -681,6 +681,7 @@ eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand)
   // execute command pCommand
   String::vCopy(pWords[0], pCommand);
   
+  vTrace("cd %s\n", pCommand);
   bResult = pSEitf->bDecode(pWords);
   
   if (!bResult) {
@@ -689,7 +690,6 @@ eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand)
     return IE_INVALID_COMMAND;
   }
   
-  vTrace("cd %s\n", pCommand);
   return IE_NONE;
 }
 

@@ -64,6 +64,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--docol"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "--partitions 8"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
@@ -72,11 +76,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--stop"

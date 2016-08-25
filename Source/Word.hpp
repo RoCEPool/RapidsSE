@@ -79,6 +79,7 @@ namespace Dictionaries
     void  vFunc(Tasking::pFUN pFunc);
     
     char* pBodyArea(void);
+    void  vByteDump(i8 iSize);
     char* pDataEnd(void);
     i8    iDataBytes(void) const;
     void  vDump(void);
@@ -107,6 +108,7 @@ namespace Dictionaries
     void  vReset(void);
     i8    iSize(void) const;
     OnStack* pValue(void);
+    void  vWordDump(i8 iSize);
     eWT   eWordType(void) const;
     void  vWordType(eWT eWordType);
     

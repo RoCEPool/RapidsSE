@@ -123,6 +123,91 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump given words of memory at given address                                */
+/*----------------------------------------------------------------------------*/
+void Memory::vWordDump(void *pAddress, i8 iBytes)
+{
+  
+  i8 iOffset = 0;
+  i8 iWord = 0;
+  i8 iWords = iBytes/sizeof(int);
+
+  // dump a header
+  vTrace("\n%18s %8s %55s\n",
+         "Memory address", "Offset", "Hex dump");
+  vTrace("%18s %8s %55s\n",
+         "------------------", "--------",
+         "-------------------------------------------------------");
+  
+  // dump the memory
+  for (i8 i = 0; i < iWords; i++) {
+    
+    // beginning of line, dump the address
+    if (iWord == 0) {
+      vTrace("0x%016x ", (i8)((unsigned char*)pAddress + iOffset));
+      vTrace("0x%06x ", iOffset);
+    }
+    
+    vTrace("%08x ", (i8)(*((int*)pAddress + i)));
+    
+    iWord++;
+    
+    // middle of line ?
+    if (iWord == C_WORDS_PER_LINE/2) {
+      vTrace("- ");
+    }
+    
+    // newline ?
+    if (iWord == C_WORDS_PER_LINE) {
+      /*
+      for (i8 i = 0; i < C_WORDS_PER_LINE; i++) {
+        
+        u8 uWord = *((u8*)pAddress + iOffset + i);
+        
+        if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
+          vTrace("%c", '.');
+        } else {
+          vTrace("%c", cChar);
+        }
+      }
+      */
+      iWord = 0;
+      iOffset += C_WORDS_PER_LINE * sizeof(int);
+      vTrace("\n");
+    }
+  }
+  
+  // end of buffer and not at 16-byte boundary ?
+  if (iWord > 0 && iWord < C_WORDS_PER_LINE) {
+    
+    i8 i = C_WORDS_PER_LINE - iWord;
+    
+    while (i) {
+      
+      vTrace("%s ", "__");
+      iWord++;
+      if (iWord == C_WORDS_PER_LINE/2) {
+        vTrace("- ");
+      }
+      i--;
+    }
+  
+    /*
+    for (i8 i= 0; i < iWord; i++) {
+      char cChar = *((unsigned char*)pAddress + iOffset + i);
+      if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
+        vTrace("%c", '.');
+      } else {
+        vTrace("%c", cChar);
+      }
+    }
+     */
+    vTrace("\n");
+  }
+  vTrace("\n");
+}
+
+/*----------------------------------------------------------------------------*/
 /* zero dst                                                                   */
 /*----------------------------------------------------------------------------*/
 void Memory::vZero(void* pDst, i8 iBytes)
