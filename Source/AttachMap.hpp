@@ -21,6 +21,8 @@ namespace StorageEngine
     
     i8                 m_iRegionSize;
     
+    i8                 m_iPartitions;
+    
     BufferPool*        m_pBufferPool;
     Heap*              m_pMediumHeap;
     Heap*              m_pSmallHeap;
@@ -38,6 +40,8 @@ namespace StorageEngine
     
     void vGetGlobals(void);
     void vRecordGlobals(void);
+    
+    void vDump(void);
   };
 }
 

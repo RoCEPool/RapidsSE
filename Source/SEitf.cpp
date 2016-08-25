@@ -3,10 +3,12 @@
 /*============================================================================*/
 
 #include "Interface.h"
+#include "StorageEngine.h"
 
 extern Heap*        gpMediumHeap;
 extern Dictionary*  gpDictionary;
 extern SEitfList*   gpSEitfList;
+extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -35,7 +37,7 @@ SEitf::SEitf(i8 iPartition)
 : Object(CN_SEITF)
 {
   m_iPid = 0;
-  m_iPartitions = 1;
+  m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;
   
   m_xDictionary.vName("seitf");

@@ -10,6 +10,7 @@ extern GlobalDictionary*     gpGlobalDictionary;
 extern Dictionary*           gpDictionary;
 extern TaskList*             gpTaskList;
 extern SEitfList*            gpSEitfList;
+extern Arguments             gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -76,7 +77,9 @@ void AttachMap::vRecordGlobals(void)
   m_iStop             = 0;
   m_iQuit             = 0;
   
-  m_iRegionSize         = gpBufferPool->iRegionSize();
+  m_iRegionSize       = gpBufferPool->iRegionSize();
+  
+  m_iPartitions       = gxArguments.m_iPartitions;
 
   m_pBufferPool       = gpBufferPool;
   m_pMediumHeap       = gpMediumHeap;
@@ -85,6 +88,18 @@ void AttachMap::vRecordGlobals(void)
   m_pDictionary       = gpDictionary;
   m_pTaskList         = gpTaskList;
   m_pSEitfList        = gpSEitfList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this attachmap                                                        */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vDump(void)
+{
+  vTrace("AttachMap %p:\n",this);
+  vTrace("  pid %lld\n",m_iPid);
+  vTrace("  utc %s\n",m_sUTC.a());
+  vTrace("  regionSize %lld\n",m_iRegionSize);
+  vTrace("  partitions %lld\n",m_iPartitions);
 }
 
 /*============================================================================*/
