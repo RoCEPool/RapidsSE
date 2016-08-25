@@ -92,7 +92,7 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--partitions 2"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--partition 0"

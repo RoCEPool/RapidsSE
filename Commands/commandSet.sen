@@ -230,6 +230,62 @@
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*
+
+Connection Commands:
+
+  con     connect
+  dis     disconnect
+
+Tenant Commands:
+
+  mkten   create_tenant
+  lsten   list_tenants
+  rmten   drop_tenant
+
+Catalog Commands:
+
+  mkcat   create_catalog
+  lscat   list_catalogs
+  rmcat   drop_catalog
+
+Schema Commands:
+
+  mksch   create_schema
+  lssch   list_schemas
+  rmsch   drop_schema
+
+Table Commands:
+
+  mktbl   create_table
+  lstbl   list_tables
+  add     add_column
+  lscol   list_columns
+  ld      load_table
+  sel     select_table
+  cp      copy_table
+  ex      export_table
+  sz      size_table
+  tr      truncate_table
+  rmtbl   drop_table
+
+Dictionary Commands:
+
+  cd      cd ..
+          cd ~
+          cd
+  pwd     pwd
+  ls      ls
+
+Misc Commands:
+
+  mon     get_monitor
+  ping    ping
+  x       x
+
+*/
+
+
 /*----------------------------------------------------------------------------*/
 /* connect to SE                                                              */
 /*----------------------------------------------------------------------------*/

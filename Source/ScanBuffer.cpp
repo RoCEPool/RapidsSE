@@ -76,15 +76,16 @@ char* ScanBuffer::pInto(i8& iAvailableBytes)
   
   iAvailableBytes = iBytesAvailable();
   
-  ASSERT(m_pEndData >= pFirstByte());
+  ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
-  return m_pEndData;
+  
+  return m_pEndData + 1;
 }
 
 /*----------------------------------------------------------------------------*/
 /* increment number of data bytes in the workarea                             */
 /*----------------------------------------------------------------------------*/
-void ScanBuffer::vMore(i8& iMoreBytes)
+void ScanBuffer::vMore(i8& iBytesRead)
 {
   //
   // a) data fills workarea
@@ -103,11 +104,21 @@ void ScanBuffer::vMore(i8& iMoreBytes)
   // +---------------------------------------------------------------------+
   //                                              m_pEndData -^
   
-  m_pEndData = pcAdd(m_pEndData,iMoreBytes - 1);
+  m_pEndData = pcAdd(m_pEndData,iBytesRead);
   
   m_pNextMsg = pFirstByte();
-  ASSERT(m_pEndData >= pFirstByte());
+  ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
+  
+  
+//  printf("More: ");
+//  for (char* c = pFirstByte(); c <= pFirstByte() + 1000; c++) {
+//    if (*c == '\n')
+//      break;
+//    printf("%c",*c);
+//  }
+//  printf("\n");
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +137,7 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
   // initial case of no data
   if ( ! m_pNextMsg ) {
     iMessageBytes = 0;
-    ASSERT(m_pEndData >= pFirstByte());
+    ASSERT(m_pEndData >= pFirstByte() - 1);
     ASSERT(m_pEndData <= pLastByte());
     return nullptr;
   }
@@ -139,7 +150,7 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
       iMessageBytes = iSub(m_pNextMsg,pMsg);
       ASSERT(iMessageBytes <= C_WORKAREA);
       m_pNextMsg++;
-      ASSERT(m_pEndData >= pFirstByte());
+      ASSERT(m_pEndData >= pFirstByte() - 1);
       ASSERT(m_pEndData <= pLastByte());
       return pMsg;
     }
@@ -151,8 +162,10 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
   vCopyUp(pMsg);
   
   iMessageBytes = 0;
-  ASSERT(m_pEndData >= pFirstByte());
+  ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
+  m_pNextMsg = nullptr;
+  
   return nullptr;
 }
 
@@ -184,10 +197,10 @@ i8 ScanBuffer::iBytesAvailable(void)
   // +---------------------------------------------------------------------+
   //              ^- m_pEndData (of prev copied up dangling portion)
   //
-  ASSERT(m_pEndData >= pFirstByte());
+  ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
   
-  i8 iBytes = iSub(pLastByte(),m_pEndData) + 1;
+  i8 iBytes = iSub(pLastByte(),m_pEndData);
   ASSERT(iBytes <= C_WORKAREA);
   
   return iBytes;
@@ -199,8 +212,10 @@ i8 ScanBuffer::iBytesAvailable(void)
 void ScanBuffer::vCopyUp(char* pDangling)
 {
   // used all of the workarea?
-  if (pDangling >= pLastByte()) {
+  if (pDangling > pLastByte()) {
     vReset();
+    ASSERT(m_pEndData >= pFirstByte() - 1);
+    ASSERT(m_pEndData <= pLastByte());
     return;
   }
   
@@ -219,16 +234,26 @@ void ScanBuffer::vCopyUp(char* pDangling)
   //               ^- m_pEndData (of copied up dangling portion)
   //
   
-  ASSERT(pDangling >= pFirstByte());
+  ASSERT(pDangling >= pFirstByte() - 1);
   ASSERT(pDangling <= pLastByte());
   
   // copy dangling data bytes to begining of workarea
-  i8 iDanglingBytes = iSub(pLastByte(),pDangling);
+  i8 iDanglingBytes = iSub(pLastByte(),pDangling) + 1;
   ASSERT(iDanglingBytes <= C_WORKAREA);
+  
   Memory::vCopy(pFirstByte(),pDangling,iDanglingBytes);
   m_pEndData = pcAdd(pFirstByte(),iDanglingBytes - 1);
   
-  ASSERT(m_pEndData >= pFirstByte());
+//  if (iDanglingBytes < 1000) {
+//    printf("CopyUp %lld: ",iDanglingBytes);
+//    for (char* c = pFirstByte(); c <= m_pEndData; c++) {
+//      ASSERT(*c != 0xEF);
+//      printf("%c",*c);
+//    }
+//    printf("\n");
+//  }
+  
+  ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
   
   // invalidate starting position (requires more)
@@ -271,8 +296,8 @@ void ScanBuffer::vReset(void)
   // ^- m_pEnd
   //
   
-  m_pEndData = pFirstByte();
-  ASSERT(m_pEndData >= pFirstByte());
+  m_pEndData = pFirstByte() - 1;
+  ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
   
   m_pNextMsg = nullptr;
@@ -296,7 +321,7 @@ void ScanBuffer::vWipe(char* pFrom)
 {
   ASSERT(pFrom >= m_wWorkarea);
   
-  i8 iBytes = iSub(pLastByte(),pFrom);
+  i8 iBytes = iSub(pLastByte(),pFrom) + 1;
   
   Memory::vSet(pFrom,0xEF,iBytes);
 }

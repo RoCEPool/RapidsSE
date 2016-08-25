@@ -33,14 +33,14 @@
 
 : toPartition
 
-traceon
+//traceon
     csv.firstvalue
 
     hash
 
     partitions %
 
-traceoff
+//traceoff
 ;
 
 : load ( "<path>" ^table -- t|f )
