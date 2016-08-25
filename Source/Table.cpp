@@ -280,9 +280,7 @@ void Table::vTruncate(void)
 {
   _poolAddress_(this);
 
-  Partition* pPartn = pPartition(0);
-
-  pPartn->vReleaseAll();
+  m_xPartitions.vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/

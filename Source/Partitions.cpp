@@ -4,6 +4,10 @@
 
 #include "DBobjects.h"
 
+#include "StorageEngine.h"
+
+extern Arguments gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -49,6 +53,16 @@ Partitions::~Partitions(void)
 Partition* Partitions::pPartition(i8 iPartition)
 {
   return &m_xPartition[iPartition];
+}
+
+/*----------------------------------------------------------------------------*/
+/* tuncate all partitions                                                     */
+/*----------------------------------------------------------------------------*/
+void Partitions::vTruncate(void)
+{
+  i8 iPartn;
+  for (iPartn = 0; iPartn < gxArguments.m_iPartitions; iPartn++)
+    m_xPartition[iPartn].vTruncate();
 }
 
 /*============================================================================*/

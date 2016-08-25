@@ -154,7 +154,7 @@ void RowStrand::vPrevStrand(RowStrand* pPrevStrand)
 /*----------------------------------------------------------------------------*/
 /* release all strands                                                        */
 /*----------------------------------------------------------------------------*/
-void RowStrand::vReleaseAll(void)
+void RowStrand::vTruncate(void)
 {
   _poolAddress_(this);
   
@@ -162,10 +162,10 @@ void RowStrand::vReleaseAll(void)
   
   RowBuffer* pRowBuffer = m_pFirstBuffer;
   while (pRowBuffer) {
-    RowBuffer* pTBD = pRowBuffer;
+    RowBuffer* pRowBufferTBD = pRowBuffer;
     pRowBuffer = pRowBuffer->pNextBuffer();
     
-    delete pTBD;
+    delete pRowBufferTBD;
   }
   
   m_iRowBuffers  = 0;

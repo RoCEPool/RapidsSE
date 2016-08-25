@@ -104,7 +104,7 @@ RowStrand* Partition::pTailStrand(void)
 /*----------------------------------------------------------------------------*/
 /* release all strands                                                        */
 /*----------------------------------------------------------------------------*/
-void Partition::vReleaseAll(void)
+void Partition::vTruncate(void)
 {
   _poolAddress_(this);
   
@@ -112,7 +112,7 @@ void Partition::vReleaseAll(void)
   
   RowStrand* pRowStrand = m_pHeadStrand;
   while (pRowStrand) {
-    pRowStrand->vReleaseAll();
+    pRowStrand->vTruncate();
     pRowStrand = pRowStrand->pNextStrand();
   }
   

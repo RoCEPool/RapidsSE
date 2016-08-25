@@ -23,6 +23,8 @@ namespace DBobjects
     ~Partitions(void);
     
     Partition* pPartition(i8 iPartition);
+    
+    void vTruncate(void);
   };
 }
 
