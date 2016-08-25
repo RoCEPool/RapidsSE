@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Grid.h"
+#include "GridModel.h"
 
 #include "InProcess.hpp"
 #include "OnHeap.hpp"

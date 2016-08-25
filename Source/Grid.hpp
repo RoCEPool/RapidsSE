@@ -1,16 +1,15 @@
 /*============================================================================*/
-/* GridModel.hpp - Grid Model                                                 */
+/* Grid.hpp -- Grid of Nodes                                                  */
 /*============================================================================*/
 
 #pragma once
 
-#include "Grid.h"
+#include "GridModel.h"
 
-namespace Grid {
-    
-  class GridModel : public Object
+namespace GridModel
+{
+  class Grid : public Object
   {
-    
   private:
     
   public:

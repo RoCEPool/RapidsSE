@@ -2,7 +2,7 @@
 /* Dictionaries.cpp - dictionaries functions                                  */
 /*============================================================================*/
 
-#include "Grid.h"
+#include "Dictionaries.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */

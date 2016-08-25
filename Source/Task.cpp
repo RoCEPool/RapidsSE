@@ -334,7 +334,7 @@ void Task::vAddConstants(void)
   /* 17 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
   /* 19 */ vAddConstant("SIZEOF_GLOBALDICTIONARY",  sizeof(GlobalDictionary));
-  /* 20 */ vAddConstant("SIZEOF_GRIDMODEL",         sizeof(GridModel));
+  /* 20 */ vAddConstant("SIZEOF_GRID",              sizeof(Grid));
   /* 21 */ vAddConstant("SIZEOF_HEAP",              sizeof(Heap));
   /* 22 */ vAddConstant("SIZEOF_INDEX",             sizeof(Index));
   /* 23 */ vAddConstant("SIZEOF_LOADER",            sizeof(Loader));

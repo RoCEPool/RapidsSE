@@ -1,31 +1,14 @@
 /*============================================================================*/
-/* GridModel - Grid Model                                                     */
+/* GridModel.cpp -- Grid Model functions                                      */
 /*============================================================================*/
 
-#include "Grid.h"
+#include "GridModel.h"
 
 /*----------------------------------------------------------------------------*/
-/* operator new                                                               */
+/* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void* GridModel::operator new(size_t iSize)
+void GridModel::vCheckAssumptions(void)
 {
-  vFatal("fatal: GridModel class cannot be new'd");
-  
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
-}
-
-/*----------------------------------------------------------------------------*/
-/* operator delete                                                            */
-/*----------------------------------------------------------------------------*/
-void GridModel::operator delete(void* pBufferAddress)
-{
-  vFatal("fatal: GridModel class cannot be deleted");
-  
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
 }
 
 /*============================================================================*/

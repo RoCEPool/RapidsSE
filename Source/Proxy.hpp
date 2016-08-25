@@ -4,13 +4,12 @@
 
 #pragma once
 
-#include "Grid.h"
+#include "GridModel.h"
 
-namespace Grid {
-    
+namespace GridModel
+{
   class Proxy : public Object
   {
-    
   private:
     
   public:
@@ -18,7 +17,6 @@ namespace Grid {
     void  operator delete(void*);
     
   };
-    
 }
 
 /*============================================================================*/

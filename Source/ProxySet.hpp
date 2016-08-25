@@ -4,13 +4,12 @@
 
 #pragma once
 
-#include "Grid.h"
+#include "GridModel.h"
 
-namespace Grid {
-    
+namespace GridModel
+{
   class ProxySet : public Object
   {
-    
   private:
     
   public:

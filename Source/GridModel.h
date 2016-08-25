@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Grid.h - includes for Grid namespace                                       */
+/* GridModel.h -- includes for Grid Model namespace                           */
 /*============================================================================*/
 
 #pragma once
@@ -9,15 +9,15 @@
 #include "Node.hpp"
 #include "Proxy.hpp"
 #include "ProxySet.hpp"
-#include "GridModel.hpp"
+#include "Grid.hpp"
 
 //-----------------------------------------------------------------------------
-namespace Grid
+namespace GridModel
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Grid;
+using namespace GridModel;
 
 /*============================================================================*/
 /* end                                                                        */

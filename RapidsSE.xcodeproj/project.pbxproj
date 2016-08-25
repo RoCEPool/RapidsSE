@@ -110,8 +110,8 @@
 		F22056D01D62DE7700E8EF5B /* Proxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7711D45917800E10FC3 /* Proxy.cpp */; };
 		F22056D11D62DE7A00E8EF5B /* ProxySet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E77C1D45956300E10FC3 /* ProxySet.cpp */; };
 		F22056D21D62DE7D00E8EF5B /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7761D4592EA00E10FC3 /* Node.cpp */; };
-		F22056D31D62DE8100E8EF5B /* GridModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7791D4594DC00E10FC3 /* GridModel.cpp */; };
-		F22056D41D62DE8400E8EF5B /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC51D477113008DF3D9 /* Grid.cpp */; };
+		F22056D31D62DE8100E8EF5B /* Grid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7791D4594DC00E10FC3 /* Grid.cpp */; };
+		F22056D41D62DE8400E8EF5B /* GridModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC51D477113008DF3D9 /* GridModel.cpp */; };
 		F22056D51D62DE8B00E8EF5B /* RapidsSE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29BE1D0E3F9A000F8C45 /* RapidsSE.cpp */; };
 		F22056D61D62DE8E00E8EF5B /* OnHeap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7841D45D6FE00E10FC3 /* OnHeap.cpp */; };
 		F22056D71D62DE9D00E8EF5B /* InProcess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7871D45DA8200E10FC3 /* InProcess.cpp */; };
@@ -297,11 +297,11 @@
 		F226E76F1D458C5600E10FC3 /* SEitfList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SEitfList.hpp; path = Source/SEitfList.hpp; sourceTree = "<group>"; };
 		F226E7711D45917800E10FC3 /* Proxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Proxy.cpp; path = Source/Proxy.cpp; sourceTree = "<group>"; };
 		F226E7721D45917800E10FC3 /* Proxy.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Proxy.hpp; path = Source/Proxy.hpp; sourceTree = "<group>"; };
-		F226E7751D45921A00E10FC3 /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Grid.h; path = Source/Grid.h; sourceTree = "<group>"; };
+		F226E7751D45921A00E10FC3 /* GridModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GridModel.h; path = Source/GridModel.h; sourceTree = "<group>"; };
 		F226E7761D4592EA00E10FC3 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Node.cpp; path = Source/Node.cpp; sourceTree = "<group>"; };
 		F226E7771D4592EA00E10FC3 /* Node.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Node.hpp; path = Source/Node.hpp; sourceTree = "<group>"; };
-		F226E7791D4594DC00E10FC3 /* GridModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GridModel.cpp; path = Source/GridModel.cpp; sourceTree = "<group>"; };
-		F226E77A1D4594DC00E10FC3 /* GridModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GridModel.hpp; path = Source/GridModel.hpp; sourceTree = "<group>"; };
+		F226E7791D4594DC00E10FC3 /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Grid.cpp; path = Source/Grid.cpp; sourceTree = "<group>"; };
+		F226E77A1D4594DC00E10FC3 /* Grid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Grid.hpp; path = Source/Grid.hpp; sourceTree = "<group>"; };
 		F226E77C1D45956300E10FC3 /* ProxySet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProxySet.cpp; path = Source/ProxySet.cpp; sourceTree = "<group>"; };
 		F226E77D1D45956300E10FC3 /* ProxySet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ProxySet.hpp; path = Source/ProxySet.hpp; sourceTree = "<group>"; };
 		F226E77F1D45D4D900E10FC3 /* user.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = user.sen; path = Commands/user.sen; sourceTree = "<group>"; };
@@ -325,7 +325,7 @@
 		F2389CC01D4756DF008DF3D9 /* ValSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValSet.cpp; sourceTree = "<group>"; };
 		F2389CC11D4756DF008DF3D9 /* ValSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValSet.hpp; sourceTree = "<group>"; };
 		F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StorageEngine.cpp; sourceTree = "<group>"; };
-		F2389CC51D477113008DF3D9 /* Grid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Grid.cpp; path = Source/Grid.cpp; sourceTree = "<group>"; };
+		F2389CC51D477113008DF3D9 /* GridModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GridModel.cpp; path = Source/GridModel.cpp; sourceTree = "<group>"; };
 		F2389CC71D4771A3008DF3D9 /* Interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Interface.cpp; path = Source/Interface.cpp; sourceTree = "<group>"; };
 		F2389CC91D4771D6008DF3D9 /* Transactions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Transactions.cpp; path = Source/Transactions.cpp; sourceTree = "<group>"; };
 		F2389CCB1D477220008DF3D9 /* Threading.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Threading.cpp; sourceTree = "<group>"; };
@@ -801,13 +801,13 @@
 			name = Transactions;
 			sourceTree = "<group>";
 		};
-		F226E7741D4591E100E10FC3 /* Grid */ = {
+		F226E7741D4591E100E10FC3 /* GridModel */ = {
 			isa = PBXGroup;
 			children = (
-				F226E7751D45921A00E10FC3 /* Grid.h */,
-				F2389CC51D477113008DF3D9 /* Grid.cpp */,
-				F226E7791D4594DC00E10FC3 /* GridModel.cpp */,
-				F226E77A1D4594DC00E10FC3 /* GridModel.hpp */,
+				F226E7751D45921A00E10FC3 /* GridModel.h */,
+				F2389CC51D477113008DF3D9 /* GridModel.cpp */,
+				F226E7791D4594DC00E10FC3 /* Grid.cpp */,
+				F226E77A1D4594DC00E10FC3 /* Grid.hpp */,
 				F226E7761D4592EA00E10FC3 /* Node.cpp */,
 				F226E7771D4592EA00E10FC3 /* Node.hpp */,
 				F226E77C1D45956300E10FC3 /* ProxySet.cpp */,
@@ -815,7 +815,7 @@
 				F226E7711D45917800E10FC3 /* Proxy.cpp */,
 				F226E7721D45917800E10FC3 /* Proxy.hpp */,
 			);
-			name = Grid;
+			name = GridModel;
 			sourceTree = "<group>";
 		};
 		F2389CDD1D47EFB6008DF3D9 /* DicInitialise */ = {
@@ -854,7 +854,7 @@
 				F226E7421D42AA8F00E10FC3 /* Main */,
 				982243351D62F4BF00670ED5 /* Api */,
 				F21D29BB1D0E3B62000F8C45 /* StorageEngine */,
-				F226E7741D4591E100E10FC3 /* Grid */,
+				F226E7741D4591E100E10FC3 /* GridModel */,
 				F226E75E1D45823800E10FC3 /* Interface */,
 				F226E7631D45873400E10FC3 /* Transactions */,
 				F21D29AF1D0E18CB000F8C45 /* Threading */,
@@ -1200,7 +1200,7 @@
 				F2A0FAFA1D6432F20032B090 /* SEitfCursor.cpp in Sources */,
 				F220569B1D62DD0400E8EF5B /* ValWsp.cpp in Sources */,
 				F22056AB1D62DD5F00E8EF5B /* Dictionary.cpp in Sources */,
-				F22056D31D62DE8100E8EF5B /* GridModel.cpp in Sources */,
+				F22056D31D62DE8100E8EF5B /* Grid.cpp in Sources */,
 				F2DD658A1D6AB589009B684A /* s8K.cpp in Sources */,
 				F2DD658E1D6B86A6009B684A /* RowBuffer.cpp in Sources */,
 				F22056931D62DCAC00E8EF5B /* Heap.cpp in Sources */,
@@ -1260,7 +1260,7 @@
 				F22056671D62D3EF00E8EF5B /* Platform.cpp in Sources */,
 				F22056B01D62DDC200E8EF5B /* User.cpp in Sources */,
 				F22056C31D62DE0700E8EF5B /* DictionaryStack.cpp in Sources */,
-				F22056D41D62DE8400E8EF5B /* Grid.cpp in Sources */,
+				F22056D41D62DE8400E8EF5B /* GridModel.cpp in Sources */,
 				F22056D01D62DE7700E8EF5B /* Proxy.cpp in Sources */,
 				F22056BC1D62DDEE00E8EF5B /* TaskSet.cpp in Sources */,
 				F220567F1D62DAB800E8EF5B /* Process.cpp in Sources */,
