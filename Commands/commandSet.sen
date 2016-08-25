@@ -200,7 +200,7 @@
 
 : tableLoader ( "<fileNm>" ^table )
 
-    load if "loaded!" . else . then
+    load drop
 ;
 
 
@@ -464,7 +464,7 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : load_table ( "filename" "tablename" )
 
-    freespace .
+    //freespace .
 
     find
 
@@ -474,7 +474,7 @@ Misc Commands:
 
     tableLoader
 
-    freespace .
+    //freespace .
 
     "loaded table" success
 ;

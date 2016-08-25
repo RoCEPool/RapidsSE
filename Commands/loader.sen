@@ -53,19 +53,20 @@
     execute
 
     >r
+    // r0 ^loader
 
-    0 rpick loader.table!
-    0 rpick loader.path!
-    0 rpick loader.openFile not if "file not opened" . rdrop false exit then
-    0 rpick loader.begin
+    r0 loader.table!
+    r0 loader.path!
+    r0 loader.openFile not if "file not opened" . rdrop false exit then
+    r0 loader.begin
     begin
-      0 rpick loader.fetchrecord
+      r0 loader.fetchrecord
       while
-        0 rpick loader.pushRecord toPartition
-        0 rpick loader.insertrow drop
+        r0 loader.pushRecord toPartition
+        r0 loader.insertrow drop
     repeat
-    0 rpick loader.end
-    0 rpick loader.closeFile
+    r0 loader.end
+    r0 loader.closeFile
     rdrop
 
     true
