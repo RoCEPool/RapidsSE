@@ -33,12 +33,14 @@ namespace Common
   #define _poolAddress_(pArg)
   #endif
 
+  //(__builtin_expect(!(e), 0) ? "");
+  
   // ASSERT
   #define ASSERT(condition) \
   { \
     if ( !(condition) ) { \
       Common::vAssertTrap(); \
-      THROW_ERROR(EC_ASSERT); \
+      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
     } \
   }
   
@@ -88,6 +90,8 @@ namespace Common
   #define THROW_ERROR(exception) \
     throw new Error(exception,__FILE__,__LINE__);
   
+  #define THROW_ERROR_MSG(exception, msg) \
+    throw new Error(exception,msg,__FILE__,__LINE__);
 };
 
 /*============================================================================*/

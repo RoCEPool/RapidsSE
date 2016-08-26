@@ -12,14 +12,30 @@ Error::Error(eEC eErrorCode, const char* sFile, i8 iLine)
   m_eErrorCode = eErrorCode;
   String::vCopy(m_sFileName.a(), sFile);
   m_iLineNumber = iLine;
+  String::vCopy(m_sErrorMsg.a(), pEC[m_eErrorCode]);
 }
 
 /*----------------------------------------------------------------------------*/
-/* return error                                                               */
+/* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-const char* Error::pError(void)
+Error::Error(eEC eErrorCode, const char* pErrorMsg, const char* sFile, i8 iLine)
 {
-  return pEC[m_eErrorCode];
+  m_eErrorCode = eErrorCode;
+  String::vCopy(m_sFileName.a(), sFile);
+  m_iLineNumber = iLine;
+  String::vCopy(m_sErrorMsg.a(), pEC[m_eErrorCode]);
+  String::vConcat(m_sErrorMsg.a(), " (");
+  String::vConcat(m_sErrorMsg.a(), pErrorMsg);
+  String::vConcat(m_sErrorMsg.a(), ") ");
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* return error message                                                       */
+/*----------------------------------------------------------------------------*/
+const char* Error::pErrorMsg(void)
+{
+  return m_sErrorMsg.a();
 }
 
 /*----------------------------------------------------------------------------*/

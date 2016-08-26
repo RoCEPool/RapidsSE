@@ -32,11 +32,13 @@ namespace Common
     eEC   m_eErrorCode;
     s256  m_sFileName;
     i8    m_iLineNumber;
+    s256  m_sErrorMsg;
     
   public:
     Error(eEC eErrorCode, const char* sFile, i8 iLine);
+    Error(eEC eErrorCode, const char *errormsg, const char* sFile, i8 iLine);
     
-    const char* pError(void);
+    const char* pErrorMsg(void);
     char*       pFileName(void);
     i8          iLineNumber(void);
   };
