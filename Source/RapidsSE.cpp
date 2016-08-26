@@ -17,8 +17,9 @@ Word*               gpWord             = nullptr;
 Grid*               gpGrid             = nullptr;
 TaskList*           gpTaskList         = nullptr;
 ThreadList*         gpThreadList       = nullptr;
-SEitfList*          gpSEitfList        = nullptr;
 TxCollection*       gpTxCollection     = nullptr;
+TxMap*              gpTxMap            = nullptr;
+SEitfList*          gpSEitfList        = nullptr;
 
 File*               gpTraceFile        = nullptr;
 

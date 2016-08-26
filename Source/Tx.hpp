@@ -10,15 +10,15 @@ namespace Transactions {
     
   enum eTP // Transaction Phase
   {
-    /* 0 */ TP_FREE=0,
-    /* 1 */ TP_ALLOCATED,
-    /* 2 */ TP_EXECUTING,
-    /* 3 */ TP_COMMITTING,
-    /* 4 */ TP_COMMITTED,
-    /* 5 */ TP_PREPARING,
-    /* 6 */ TP_PREPARED,
-    /* 7 */ TP_ROLLINGBACK,
-    /* 8 */ TP_ROLLEDBACK,
+    /* 0 */ TP_NONE=0,
+    /* 1 */ TP_EXECUTING,
+    /* 2 */ TP_COMMITTING,
+    /* 3 */ TP_COMMITTED,
+    /* 4 */ TP_PREPARING,
+    /* 5 */ TP_PREPARED,
+    /* 6 */ TP_ROLLINGBACK,
+    /* 7 */ TP_ROLLEDBACK,
+    /* 8 */ TP_FREE,
     /* 9 */ TP_ENUMS
   };
   
@@ -41,8 +41,10 @@ namespace Transactions {
   {
     
   private:
-    i8    m_iTxId;      // transaction id
-    eTP   m_ePhase;     // phase (executing, committing, ...)
+    Lock  m_xLock;  // lock
+    i8    m_iTxNo;  // transaction number (0..C_TX_ARRAY-1)
+    i8    m_iTxId;  // transaction id
+    eTP   m_ePhase; // phase (executing, committing, ...)
 
   public:
     void* operator new(size_t);
@@ -50,7 +52,16 @@ namespace Transactions {
     
     Tx(void);
     
-    void vDump(void);
+    i8 iTxNo(void);
+    void vTxNo(i8 iTxNo);
+
+    i8 iTxId(void);
+    void vTxId(i8 iTxId);
+
+    eTP ePhase(void);
+    void vPhase(eTP ePhase);
+    
+    void vDump(void);    
   };
     
 }

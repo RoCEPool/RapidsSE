@@ -488,7 +488,7 @@ namespace Tasking
     static void vNodeNew(NNP_Task nnpTask);
     static void vNodeNo(NNP_Task nnpTask);
     
-    // nodecursor
+    // nodeCursor
     static void vNodeCursorBegin(NNP_Task nnpTask);
     static void vNodeCursorDelete(NNP_Task nnpTask);
     static void vNodeCursorEnd(NNP_Task nnpTask);
@@ -511,7 +511,7 @@ namespace Tasking
     static void vQueueInit(NNP_Task nnpTask);     
     static void vQueuePop(NNP_Task nnpTask);      
 
-    // rowcursor
+    // rowCursor
     static void vRowCursorBegin(NNP_Task nnpTask);
     static void vRowCursorDelete(NNP_Task nnpTask);
     static void vRowCursorEnd(NNP_Task nnpTask);
@@ -548,7 +548,7 @@ namespace Tasking
     static void vSEitfRspFetch(NNP_Task nnpTask);
     static void vSEitfRspStore(NNP_Task nnpTask);
 
-    // seitfcursor
+    // seitfCursor
     static void vSEitfCursorBegin(NNP_Task nnpTask);
     static void vSEitfCursorDelete(NNP_Task nnpTask);
     static void vSEitfCursorEnd(NNP_Task nnpTask);
@@ -558,7 +558,7 @@ namespace Tasking
     static void vSEitfCursorNew(NNP_Task nnpTask);
     static void vSEitfCursorNext(NNP_Task nnpTask);
     
-    // seitflist
+    // seitfList
     static void vSEitfListDump(NNP_Task nnpTask);
     static void vSEitfListInit(NNP_Task nnpTask);
     
@@ -592,7 +592,7 @@ namespace Tasking
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
     
-    // taskcursor
+    // taskCursor
     static void vTaskCursorBegin(NNP_Task nnpTask);
     static void vTaskCursorDelete(NNP_Task nnpTask);
     static void vTaskCursorEnd(NNP_Task nnpTask);
@@ -602,13 +602,13 @@ namespace Tasking
     static void vTaskCursorNew(NNP_Task nnpTask);
     static void vTaskCursorNext(NNP_Task nnpTask);
     
-    // tasklist
+    // taskList
     static void vTaskList(NNP_Task nnpTask);
     static void vTaskListAppend(NNP_Task nnpTask);
     static void vTaskListDump(NNP_Task nnpTask);
     static void vTaskListInit(NNP_Task nnpTask);
     
-    // taskset
+    // taskSet
     static void vTaskSetAppend(NNP_Task nnpTask); 
     static void vTaskSetDump(NNP_Task nnpTask);   
     static void vTaskSetInit(NNP_Task nnpTask);   
@@ -640,7 +640,7 @@ namespace Tasking
     static void vThreadCursorNew(NNP_Task nnpTask);
     static void vThreadCursorNext(NNP_Task nnpTask);
     
-    // threadlist
+    // threadList
     static void vThreadListDump(NNP_Task nnpTask);
     static void vThreadListInit(NNP_Task nnpTask);
     

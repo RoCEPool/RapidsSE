@@ -11,18 +11,18 @@ namespace DataStructures
   template <class OBJECT>
   class CollectionNode_t
   {
-    OBJECT* m_pPrev;   // prev node
-    OBJECT* m_pNext;   // next node
+    OBJECT* m_pPrevNode;   // prev node
+    OBJECT* m_pNextNode;   // next node
     
   public:
     void* operator new(size_t);
     
     CollectionNode_t<OBJECT>(void);
     
-    OBJECT* pNext(void);
-    void    vNext(OBJECT* pNext);
-    OBJECT* pPrev(void);
-    void    vPrev(OBJECT* pPrev);
+    OBJECT* pNextNode(void);
+    void    vNextNode(OBJECT* pNext);
+    OBJECT* pPrevNode(void);
+    void    vPrevNode(OBJECT* pPrev);
   };
 }
 
@@ -49,44 +49,44 @@ void* CollectionNode_t<OBJECT>::operator new(size_t iSize)
 template <class OBJECT>
 CollectionNode_t<OBJECT>::CollectionNode_t(void)
 {
-  m_pNext = nullptr;
-  m_pPrev = nullptr;
+  m_pNextNode = nullptr;
+  m_pPrevNode = nullptr;
 }
 
 /*---------------------------------------------------------------------------*/
 /* get next node                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-OBJECT* CollectionNode_t<OBJECT>::pNext(void)
+OBJECT* CollectionNode_t<OBJECT>::pNextNode(void)
 {
-  return m_pNext;
+  return m_pNextNode;
 }
 
 /*---------------------------------------------------------------------------*/
 /* set next node                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-void CollectionNode_t<OBJECT>::vNext(OBJECT* pNext)
+void CollectionNode_t<OBJECT>::vNextNode(OBJECT* pNext)
 {
-  m_pNext = pNext;
+  m_pNextNode = pNext;
 }
 
 /*---------------------------------------------------------------------------*/
 /* get prev node                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-OBJECT* CollectionNode_t<OBJECT>::pPrev(void)
+OBJECT* CollectionNode_t<OBJECT>::pPrevNode(void)
 {
-  return m_pPrev;
+  return m_pPrevNode;
 }
 
 /*---------------------------------------------------------------------------*/
 /* set prev node                                                             */
 /*---------------------------------------------------------------------------*/
 template <class OBJECT>
-void CollectionNode_t<OBJECT>::vPrev(OBJECT* pPrev)
+void CollectionNode_t<OBJECT>::vPrevNode(OBJECT* pPrev)
 {
-  m_pPrev = pPrev;
+  m_pPrevNode = pPrev;
 }
 
 /*============================================================================*/

@@ -36,6 +36,9 @@
 ( create the threadList to hold all thread's )
 threadList: threadList
 
+( create the txMap to map tx's )
+txMap: txMap
+
 ( create the txCollection to hold all tx's )
 txCollection: txCollection
 

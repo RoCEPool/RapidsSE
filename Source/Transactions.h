@@ -9,7 +9,7 @@
 #include "Tx.hpp"
 #include "TxCollection.hpp"
 #include "TxCursor.hpp"
-#include "TxMapArray.hpp"
+#include "TxArray.hpp"
 #include "TxMap.hpp"
 
 //-----------------------------------------------------------------------------

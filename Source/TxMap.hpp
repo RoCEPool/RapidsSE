@@ -11,7 +11,7 @@ namespace Transactions
   class TxMap : public Object
   {
   private:
-    TxMapArray* m_pTxMapArray; 
+    TxArray* m_pTxArray;
     
   public:
     void* operator new(size_t, TxMap* pTxMap);
@@ -21,6 +21,9 @@ namespace Transactions
     ~TxMap(void);
     
     void vSetTx(i8 iTx, Tx* pTx);
+    
+    Tx*  pBeginTx(void);
+    void vEndTx(Tx* pTx);
   };
 }
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TxCursor.hpp -- Cursor over Tx's in gpTxCollection                                 */
+/* TxCursor.hpp -- Cursor over Tx's in TxCollection                           */
 /*============================================================================*/
 
 #pragma once

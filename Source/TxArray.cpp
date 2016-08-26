@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TxMapArray.cpp - Transaction Map Array                                     */
+/* TxArray.cpp -- Transaction Array                                           */
 /*============================================================================*/
 
 #include "Transactions.h"
@@ -9,7 +9,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TxMapArray::operator new(size_t iSize)
+void* TxArray::operator new(size_t iSize)
 {
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
@@ -19,9 +19,9 @@ void* TxMapArray::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TxMapArray::operator delete(void* pBufferAddress)
+void TxArray::operator delete(void* pBufferAddress)
 {
-  vFatal("fatal: TxMapArray class cannot be deleted");
+  vFatal("fatal: TxArray class cannot be deleted");
   
   //vExitFatal();
   
@@ -31,17 +31,17 @@ void TxMapArray::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TxMapArray::TxMapArray(void)
-: Object(CN_TXMAP)
+TxArray::TxArray(void)
+: Object(CN_TXARRAY)
 {
-  for (i8 i = 0; i < C_TX_ARRAY; i++)
-    m_pMap[i] = nullptr;
+  for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
+    m_pTx[iTx] = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TxMapArray::~TxMapArray(void)
+TxArray::~TxArray(void)
 {
 }
 

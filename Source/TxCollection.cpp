@@ -6,6 +6,7 @@
 
 extern Heap*            gpSmallHeap;
 extern TxCollection*    gpTxCollection;
+extern TxMap*           gpTxMap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -37,6 +38,19 @@ TxCollection::TxCollection(void)
   
   ASSERT( ! gpTxCollection );
   
+  // we allocate all tx objects up front and push them onto free chain
+  for (i8 iTxNo = 0; iTxNo < C_TX_ARRAY; iTxNo++) {
+    
+    // allocate tx
+    Tx* pTx = reinterpret_cast<Tx*>(gpSmallHeap->pAllocObject());
+    
+    // initialize it
+    pTx->vTxNo(iTxNo);
+    
+    // push in onto the freelist
+    vPushFree(pTx);
+  }
+  
   gpTxCollection = this;
 }
 
@@ -47,9 +61,7 @@ Tx* TxCollection::pAllocTx(void)
 {
   _poolAddress_(this);
   
-  Tx* pTx = reinterpret_cast<Tx*>(gpSmallHeap->pAllocObject());
-  
-  vAppend(pTx);
+  Tx* pTx = pAllocObject();
   
   return pTx;
 }
@@ -61,9 +73,7 @@ void TxCollection::vFreeTx(Tx* pTx)
 {
   _poolAddress_(this);
   
-  vRemove(pTx);
-  
-  gpSmallHeap->vFreeObject(pTx);
+  vFreeObject(pTx);
 }
 
 /*============================================================================*/

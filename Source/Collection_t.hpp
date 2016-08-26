@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Colleciton_t.hpp - template for collection mixin                           */
+/* Collection_t.hpp -- Template for Collections                               */
 /*============================================================================*/
 
 #pragma once
@@ -13,10 +13,10 @@ namespace DataStructures
   {
   private:
     Lock    m_zLock;   // lock
-    i8      m_iCount;  // number of objects
-    OBJECT* m_pHead;   // head node
-    OBJECT* m_pTail;   // tail node
-    OBJECT* m_pFree;   // free chain
+    i8      m_iCount;  // number of objects in list
+    OBJECT* m_pHead;   // head node of list
+    OBJECT* m_pTail;   // tail node of list
+    OBJECT* m_pFree;   // head node of free chain
 
   public:
     void* operator new(size_t);
@@ -25,12 +25,12 @@ namespace DataStructures
         
     OBJECT* pAllocObject(void);
     void    vFreeObject(OBJECT* pObject);
-    
-    void    vAppend(OBJECT*& pNode);
     void    vDump(const char* aTitle);
-    void    vInsert(OBJECT*& pNode);
-    OBJECT* pPop(void);
-    void    vRemove(OBJECT*& pNode);
+    
+    void    vAppendList(OBJECT*& pNode);
+    OBJECT* pPopFree(void);
+    void    vPushFree(OBJECT* pNode);
+    void    vRemoveList(OBJECT*& pNode);
 
     void    vReadLock(void);
     void    vReadUnlock(void);
@@ -78,24 +78,22 @@ Collection_t<OBJECT>::Collection_t(void)
 template <class OBJECT>
 OBJECT* Collection_t<OBJECT>::pAllocObject(void)
 {
-  m_zLock.vGrabWrite();
-
-  OBJECT* pObject = nullptr;
+  OBJECT* pObject = pPopFree();
   
-  if (m_pFree) {
-    OBJECT* pObject = m_pFree;
-    m_pFree = m_pFree->pNext();
-  }
-  else {
-    // this is an assumption
-    pObject = reinterpret_cast<OBJECT*>(gpSmallHeap->pAllocObject());
-  }
-  
-  m_zLock.vDropWrite();
-  
-  vAppend(pObject);
+  vAppendList(pObject);
   
   return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove object from collection and push onto free chain                     */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void Collection_t<OBJECT>::vFreeObject(OBJECT* pObject)
+{
+  vRemoveList(pObject);
+
+  vPushFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -118,114 +116,88 @@ void Collection_t<OBJECT>::vDump(const char* aTitle)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove object from collection and push onto free chain                     */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append object to end of list                                               */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void Collection_t<OBJECT>::vFreeObject(OBJECT* pObject)
+void Collection_t<OBJECT>::vAppendList(OBJECT*& pNode)
 {
-  vRemove(pObject);
-  
   m_zLock.vGrabWrite();
   
-  pObject->vNext(m_pFree);
+  if (m_pTail)
+    m_pTail->vNextNode(pNode);
+  
+  pNode->vPrevNode(m_pTail);
+  pNode->vNextNode(nullptr);
+  
+  m_pTail = pNode;
+  
+  if (! m_pHead)
+    m_pHead = pNode;
+  
+  m_iCount++;
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop object from head of free chain                                         */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+OBJECT* Collection_t<OBJECT>::pPopFree(void)
+{
+  m_zLock.vGrabWrite();
+  
+  if ( ! m_pFree ) {
+    m_zLock.vDropWrite();
+    return nullptr;
+  }
+
+  OBJECT* pTopObject = m_pFree;
+
+  m_pFree = m_pFree->pNextNode();
+  
+  pTopObject->vPrevNode(nullptr);
+  pTopObject->vNextNode(nullptr);
+  
+  m_zLock.vDropWrite();
+  
+  return pTopObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push object onto free chain                                                */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void Collection_t<OBJECT>::vPushFree(OBJECT* pObject)
+{
+  m_zLock.vGrabWrite();
+  
+  pObject->vNextNode(m_pFree);
   m_pFree = pObject;
   
   m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
-/* append object to end of list                                               */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void Collection_t<OBJECT>::vAppend(OBJECT*& pNode)
-{
-  m_zLock.vGrabWrite();
-  
-  if (m_pTail)
-    m_pTail->vNext(pNode);
-  
-  pNode->vPrev(m_pTail);
-  pNode->vNext(nullptr);
-  
-  m_pTail = pNode;
-  
-  m_iCount++;
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert object at head of list                                              */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void Collection_t<OBJECT>::vInsert(OBJECT*& pNode)
-{
-  ASSERT( ! pNode->pPrev() );
-  ASSERT( ! pNode->pNext() );
-  
-  m_zLock.vGrabWrite();
-  
-  if (m_pHead)
-    m_pTail->vHead(pNode);
-  
-  pNode->vPrev(nullptr);
-  pNode->vNext(m_pHead);
-  
-  m_pHead = pNode;
-  
-  m_iCount++;
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop object from head of list                                               */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-OBJECT* Collection_t<OBJECT>::pPop(void)
-{
-  m_zLock.vGrabWrite();
-  
-  if ( ! m_pHead ) {
-    ASSERT( ! m_iCount );
-    m_zLock.vDropWrite();
-    return nullptr;
-  }
-
-  OBJECT* pNode = m_pHead;
-
-  m_pHead = m_pHead->pNext();
-  if (m_pHead)
-    m_pHead->vPrev(nullptr);
-  else
-    m_pTail = nullptr;
-  
-  m_iCount--;
-  
-  m_zLock.vDropWrite();
-  
-  pNode->vPrev(nullptr);
-  pNode->vNext(nullptr);
-  
-  return pNode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* remove object from head of list                                            */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void Collection_t<OBJECT>::vRemove(OBJECT*& pNode)
+void Collection_t<OBJECT>::vRemoveList(OBJECT*& pNode)
 {
   m_zLock.vGrabWrite();
   
-  OBJECT* pPrev = pNode->pPrev();
-  OBJECT* pNext = pNode->pNext();
+  OBJECT* pPrev = pNode->pPrevNode();
+  OBJECT* pNext = pNode->pNextNode();
 
   if (pPrev)
-    pPrev->vNext(pNext);
+    pPrev->vNextNode(pNext);
 
   if (pNext)
-    pNext->vPrev(pPrev);
+    pNext->vPrevNode(pPrev);
   
   if (pNode == m_pHead)
     m_pHead = pNext;
@@ -237,8 +209,8 @@ void Collection_t<OBJECT>::vRemove(OBJECT*& pNode)
   
   m_zLock.vDropWrite();
   
-  pNode->vPrev(nullptr);
-  pNode->vNext(nullptr);
+  pNode->vPrevNode(nullptr);
+  pNode->vNextNode(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/

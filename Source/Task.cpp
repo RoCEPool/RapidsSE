@@ -308,11 +308,12 @@ void Task::vAddConstants(void)
   /* 52 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
   /* 53 */ vAddConstant("CN_TIMER",                 CN_TIMER);
   /* 54 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 55 */ vAddConstant("CN_TXCOLLECTION",          CN_TXCOLLECTION);
-  /* 56 */ vAddConstant("CN_TXCURSOR",              CN_TXCURSOR);
-  /* 57 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 58 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 59 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 55 */ vAddConstant("CN_TXARRAY",               CN_TXARRAY);
+  /* 56 */ vAddConstant("CN_TXCOLLECTION",          CN_TXCOLLECTION);
+  /* 57 */ vAddConstant("CN_TXCURSOR",              CN_TXCURSOR);
+  /* 58 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 59 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 60 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
 
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -374,9 +375,10 @@ void Task::vAddConstants(void)
   /* 50 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
   /* 51 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
   /* 52 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
+  /* 53 */ vAddConstant("SIZEOF_TXARRAY",           sizeof(TxArray));
   /* 54 */ vAddConstant("SIZEOF_TXCOLLECTION",      sizeof(TxCollection));
-  /* 53 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
-  /* 55 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 55 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
+  /* 56 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
   /* 57 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
@@ -392,16 +394,16 @@ void Task::vAddConstants(void)
   /*  7 */ vAddConstant("TS_EXITED",                TS_EXITED);
   /*  8 */ vAddConstant("TS_ENUMS",                 TS_ENUMS);
 
-  /*  0 */ vAddConstant("TP_FREE",                  TP_FREE);
-  /*  1 */ vAddConstant("TP_ALLOCATED",             TP_ALLOCATED);
-  /*  2 */ vAddConstant("TP_EXECUTING",             TP_EXECUTING);
-  /*  3 */ vAddConstant("TP_COMMITTING",            TP_COMMITTING);
-  /*  5 */ vAddConstant("TP_COMMITTED",             TP_COMMITTED);
-  /*  6 */ vAddConstant("TP_PREPARING",             TP_PREPARING);
-  /*  7 */ vAddConstant("TP_PREPARED",              TP_PREPARED);
-  /*  8 */ vAddConstant("TP_ROLLINGBACK",           TP_ROLLINGBACK);
-  /*  9 */ vAddConstant("TP_ROLLEDBACK",            TP_ROLLEDBACK);
-  /* 10 */ vAddConstant("TP_ENUMS",                 TP_ENUMS);
+  /*  0 */ vAddConstant("TP_NONE",                  TP_NONE);
+  /*  1 */ vAddConstant("TP_EXECUTING",             TP_EXECUTING);
+  /*  2 */ vAddConstant("TP_COMMITTING",            TP_COMMITTING);
+  /*  3 */ vAddConstant("TP_COMMITTED",             TP_COMMITTED);
+  /*  4 */ vAddConstant("TP_PREPARING",             TP_PREPARING);
+  /*  5 */ vAddConstant("TP_PREPARED",              TP_PREPARED);
+  /*  6 */ vAddConstant("TP_ROLLINGBACK",           TP_ROLLINGBACK);
+  /*  7 */ vAddConstant("TP_ROLLEDBACK",            TP_ROLLEDBACK);
+  /*  8 */ vAddConstant("TP_FREE",                  TP_FREE);
+  /*  9 */ vAddConstant("TP_ENUMS",                 TP_ENUMS);
 
   /*  0 */ vAddConstant("OPEN_READ",                C_OPEN_READ);
   /*  1 */ vAddConstant("OPEN_WRITE",               C_OPEN_WRITE);
