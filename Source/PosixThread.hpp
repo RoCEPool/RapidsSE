@@ -46,7 +46,6 @@ namespace Common
     static bool bTlsCreate(pthread_key_t* pTlsKey);
     static void* pTlsGet(pthread_key_t iTlsKey);
   };
-
 }
 
 /*============================================================================*/

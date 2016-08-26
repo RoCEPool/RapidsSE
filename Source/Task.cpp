@@ -7492,11 +7492,6 @@ void Task::vTaskCursorBegin(NNP_Task nnpTask)
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vBegin();
-  pTaskCursor->vFirst();
-  
-  TaskVal xTaskPtr;
-  xTaskPtr = pTaskCursor->pObject();
-  nnpTask->vPushParam(xTaskPtr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7572,7 +7567,10 @@ void Task::vTaskCursorGet(NNP_Task nnpTask)
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   Task* pThatTask = pTaskCursor->pObject();
-  nnpTask->vPushParam(pThatTask);
+  
+  TaskVal xTask;
+  xTask = pThatTask;
+  nnpTask->vPushParam(xTask);
 }
 
 /*----------------------------------------------------------------------------*/

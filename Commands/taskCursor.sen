@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* taskCursor.sen -- Task Cursor                                              */
+/*============================================================================*/
+
+"taskCursor.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a taskCursor using name from input stream                           */
+/*----------------------------------------------------------------------------*/
+: treadCursor:
+    create
+    object!!
+    sizeof_taskCursor allot
+    word.this >body magic!!
+    word.this >body CN_TASKCURSOR class!
+    word.this >body taskCursor.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a taskCursor using name on the stack              (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :taskCursor
+    >create
+    object!!
+    sizeof_taskCursor allot
+    word.this >body magic!!
+    word.this >body CN_TASKCURSOR class!
+    word.this >body taskCursor.init
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::taskCursor ( create a temporary taskCursor )
+
+    "__taskCursor__" find dup
+    not if
+      drop
+      "__taskCursor__" :taskCursor
+    then
+    execute
+;
+
+: ~taskCursor ( forget temporary taskCursor )
+
+    "__taskCursor__" find >forget
+;
+
+: listTasks ( list all tasks )
+
+    ::taskCursor >r // r0 ^taskCursor
+
+    r0 taskCursor.begin
+    r0 taskCursor.first
+    begin
+      while
+      r0 taskCursor.get
+      task.name@ .
+      r0 taskCursor.next
+    repeat
+
+    rdrop
+
+    ~taskCursor
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
