@@ -765,6 +765,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("thread.cpu",      &vThreadCpu,        false);
   vAddPrimitive("thread.dump",     &vThreadDump,       false);
   vAddPrimitive("thread.init",     &vThreadInit,       false);
+  vAddPrimitive("thread.id",       &vThreadId,         false);
   vAddPrimitive("thread.name@",    &vThreadNameFetch,  false);
   vAddPrimitive("thread.name!",    &vThreadNameStore,  false);
   vAddPrimitive("thread.taskset@", &vThreadSfetch,     false);
@@ -7853,6 +7854,25 @@ void Task::vThreadDump(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   pThread->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.id -- get the id of thread                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadId(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadId");
+  
+  Object* pObject;
+  
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("thread.id");
+  
+  ASSERT(CN_THREAD == pObject->eClass());
+  
+  Thread* pThread = static_cast<Thread*>(pObject);
+  
+  nnpTask->vPushParam(pThread->m_xPosixThread.m_iOpSysThreadId);
 }
 
 /*----------------------------------------------------------------------------*/

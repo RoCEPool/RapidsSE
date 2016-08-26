@@ -56,8 +56,8 @@
     r0 threadCursor.first
     begin
       while
-      r0 threadCursor.get
-      thread.name@ .
+      r0 threadCursor.get dup
+      thread.name@ .put " (" .put thread.id .put ")" .put .\n
       r0 threadCursor.next
     repeat
 

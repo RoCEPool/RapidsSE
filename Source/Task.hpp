@@ -618,7 +618,8 @@ namespace Tasking
     static void vThreadBind(NNP_Task nnpTask);
     static void vThreadCpu(NNP_Task nnpTask);
     static void vThreadDump(NNP_Task nnpTask);
-    static void vThreadInit(NNP_Task nnpTask);    
+    static void vThreadId(NNP_Task nnpTask);
+    static void vThreadInit(NNP_Task nnpTask);
     static void vThreadNameFetch(NNP_Task nnpTask);
     static void vThreadNameStore(NNP_Task nnpTask);
     static void vThreadSfetch(NNP_Task nnpTask);
