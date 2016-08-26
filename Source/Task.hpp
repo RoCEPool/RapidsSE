@@ -629,6 +629,16 @@ namespace Tasking
     static void vThreadSleep_ns(NNP_Task nnpTask);
     static void vThreadSpawn(NNP_Task nnpTask);   
 
+    // threadCursor
+    static void vThreadCursorBegin(NNP_Task nnpTask);
+    static void vThreadCursorDelete(NNP_Task nnpTask);
+    static void vThreadCursorEnd(NNP_Task nnpTask);
+    static void vThreadCursorFirst(NNP_Task nnpTask);
+    static void vThreadCursorGet(NNP_Task nnpTask);
+    static void vThreadCursorInit(NNP_Task nnpTask);
+    static void vThreadCursorNew(NNP_Task nnpTask);
+    static void vThreadCursorNext(NNP_Task nnpTask);
+    
     // threadlist
     static void vThreadListDump(NNP_Task nnpTask);
     static void vThreadListInit(NNP_Task nnpTask);

@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* threadCursor.sen -- Thread Cursor                                          */
+/*============================================================================*/
+
+"threadCursor.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a threadCursor using name from input stream                         */
+/*----------------------------------------------------------------------------*/
+: treadCursor:
+    create
+    object!!
+    sizeof_threadCursor allot
+    word.this >body magic!!
+    word.this >body CN_THREADCURSOR class!
+    word.this >body threadCursor.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a threadCursor using name on the stack            (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :threadCursor
+    >create
+    object!!
+    sizeof_threadCursor allot
+    word.this >body magic!!
+    word.this >body CN_THREADCURSOR class!
+    word.this >body threadCursor.init
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::threadCursor ( create a temporary threadCursor )
+
+    "__threadCursor__" find dup
+    not if
+      drop
+      "__threadCursor__" :threadCursor
+    then
+    execute
+;
+
+: ~threadCursor ( forget temporary threadCursor )
+
+    "__threadCursor__" find >forget
+;
+
+: listThreads ( list all threads )
+
+    ::threadCursor >r // r0 ^threadCursor
+
+    r0 threadCursor.begin
+    r0 threadCursor.first
+    begin
+      while
+      r0 threadCursor.get
+      thread.name@ .
+      r0 threadCursor.next
+    repeat
+
+    rdrop
+
+    ~threadCursor
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

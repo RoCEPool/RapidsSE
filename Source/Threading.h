@@ -8,6 +8,7 @@
 
 #include "Thread.hpp"
 #include "ThreadList.hpp"
+#include "ThreadCursor.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Threading

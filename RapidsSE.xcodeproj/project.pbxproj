@@ -128,6 +128,8 @@
 		F2A0FAFE1D6457CA0032B090 /* Since.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A0FAFC1D6457CA0032B090 /* Since.cpp */; };
 		F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A0FAFD1D6457CA0032B090 /* Since.hpp */; };
 		F2A595CE1D6FD1DA007C66B1 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A595CD1D6FD1DA007C66B1 /* Debug.cpp */; };
+		F2A595D11D6FF2C4007C66B1 /* ThreadCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A595CF1D6FF2C4007C66B1 /* ThreadCursor.cpp */; };
+		F2A595D21D6FF2C4007C66B1 /* ThreadCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A595D01D6FF2C4007C66B1 /* ThreadCursor.hpp */; };
 		F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656B1D652B1E009B684A /* ThirdParty.h */; };
 		F2DD65701D652D47009B684A /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DD656E1D652D47009B684A /* liblz4.a */; };
 		F2DD65711D652D47009B684A /* lz4.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656F1D652D47009B684A /* lz4.h */; };
@@ -416,6 +418,9 @@
 		F2A0FAFC1D6457CA0032B090 /* Since.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Since.cpp; path = Source/Since.cpp; sourceTree = "<group>"; };
 		F2A0FAFD1D6457CA0032B090 /* Since.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Since.hpp; path = Source/Since.hpp; sourceTree = "<group>"; };
 		F2A595CD1D6FD1DA007C66B1 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = Source/Debug.cpp; sourceTree = "<group>"; };
+		F2A595CF1D6FF2C4007C66B1 /* ThreadCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadCursor.cpp; sourceTree = "<group>"; };
+		F2A595D01D6FF2C4007C66B1 /* ThreadCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ThreadCursor.hpp; sourceTree = "<group>"; };
+		F2A595D31D6FFA44007C66B1 /* threadCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = threadCursor.sen; path = Commands/threadCursor.sen; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		F2B3B1591D51A8980049597E /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		F2B3B15E1D51DDD70049597E /* FreeChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeChunk.cpp; sourceTree = "<group>"; };
@@ -676,6 +681,8 @@
 				F2389CCB1D477220008DF3D9 /* Threading.cpp */,
 				F2EC32CB1D2C67DA00791294 /* Thread.cpp */,
 				F2EC32CC1D2C67DA00791294 /* Thread.hpp */,
+				F2A595CF1D6FF2C4007C66B1 /* ThreadCursor.cpp */,
+				F2A595D01D6FF2C4007C66B1 /* ThreadCursor.hpp */,
 				F2389CEE1D4842F2008DF3D9 /* ThreadList.cpp */,
 				F2389CEF1D4842F2008DF3D9 /* ThreadList.hpp */,
 			);
@@ -774,6 +781,7 @@
 				F2389CF51D48666A008DF3D9 /* taskList.sen */,
 				980951011D326F4A002F20B0 /* taskSet.sen */,
 				980950FE1D326F4A002F20B0 /* thread.sen */,
+				F2A595D31D6FFA44007C66B1 /* threadCursor.sen */,
 				F2389CF11D484854008DF3D9 /* threadList.sen */,
 				F226E75B1D4571FD00E10FC3 /* txList.sen */,
 				F226E75C1D4571FD00E10FC3 /* txMap.sen */,
@@ -1109,6 +1117,7 @@
 				F2DD65931D6B86B7009B684A /* RowStrand.hpp in Headers */,
 				F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
+				F2A595D21D6FF2C4007C66B1 /* ThreadCursor.hpp in Headers */,
 				F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */,
 				F2A0FAFB1D6432F20032B090 /* SEitfCursor.hpp in Headers */,
 				F201DDE71D6F965D00A26858 /* NodeCursor.hpp in Headers */,
@@ -1269,6 +1278,7 @@
 				F22056911D62DCA300E8EF5B /* Object.cpp in Sources */,
 				F22056721D62DA8200E8EF5B /* Mersenne.cpp in Sources */,
 				F22056BA1D62DDE700E8EF5B /* Socket.cpp in Sources */,
+				F2A595D11D6FF2C4007C66B1 /* ThreadCursor.cpp in Sources */,
 				F22056C11D62DDFF00E8EF5B /* Queue.cpp in Sources */,
 				F22056781D62DA9F00E8EF5B /* Error.cpp in Sources */,
 				F22056AA1D62DD5B00E8EF5B /* GlobalDictionary.cpp in Sources */,

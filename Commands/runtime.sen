@@ -10,6 +10,7 @@
 "taskSet.sen" >>:
 "thread.sen" >>:
 "threadList.sen" >>:
+"threadCursor.sen" >>:
 "txList.sen" >>:
 "txMap.sen" >>:
 "queue.sen" >>:
