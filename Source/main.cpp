@@ -27,7 +27,6 @@ int main(int argc, const char* argv[])
 //  
 //  vTrace("duration %lldns\n",xTimer.iNanoseconds());
   
-
   RapidsSE::vCheckAssumptions();
   
   if ( ! gxArguments.bParse(argc,argv) )

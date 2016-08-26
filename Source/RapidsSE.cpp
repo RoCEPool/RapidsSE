@@ -327,8 +327,8 @@ void RapidsSE::vHandler(Error* pError)
   ps = String::sLast(pError->pFileName());
   String::bBackward(&ps,pError->pFileName(),'/');
   String::vCopy(wFileName,ps+1);
-  vError("%s : line %lld in %s\n",
-         pError->pError(),
+  vError("%s: line %lld in %s\n",
+         pError->pErrorMsg(),
          pError->iLineNumber(),
          wFileName);
 }
