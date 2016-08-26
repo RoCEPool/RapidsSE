@@ -9,9 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void Transactions::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Tx)     < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(TxList) < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(TxMap)  < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(Tx)           < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(TxCollection) < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(TxMap)        < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(TxMapArray)   < C_SIZE_LARGE_BUFFER);
 }
 
 /*============================================================================*/

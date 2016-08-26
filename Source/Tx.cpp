@@ -4,16 +4,16 @@
 
 #include "Transactions.h"
 
-extern TxList*  gpTxList;
+extern TxCollection*  gpTxCollection;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t iSize)
 {
-  ASSERT(gpTxList);
+  ASSERT(gpTxCollection);
   
-  Tx* pTx = gpTxList->pAllocTx();
+  Tx* pTx = gpTxCollection->pAllocTx();
   
   return pTx;
 }
@@ -25,7 +25,7 @@ void Tx::operator delete(void* pTxAddress)
 {
   Tx* pTx = reinterpret_cast<Tx*>(pTxAddress);
   
-  gpTxList->vFreeTx(pTx);
+  gpTxCollection->vFreeTx(pTx);
 }
 
 /*----------------------------------------------------------------------------*/

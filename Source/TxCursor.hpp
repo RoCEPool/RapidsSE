@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TxCursor.hpp -- Cursor over Tx's in TxList                                 */
+/* TxCursor.hpp -- Cursor over Tx's in gpTxCollection                                 */
 /*============================================================================*/
 
 #pragma once
@@ -9,7 +9,7 @@
 namespace Transactions
 {
   class TxCursor : public Object,
-                   public ListCursor_t<Tx>
+                   public CollectionCursor_t<Tx>
   {
   private:
     
@@ -18,7 +18,7 @@ namespace Transactions
     void* operator new(size_t, TxCursor* pTxCursor);
     void  operator delete(void*);
     
-    TxCursor(List_t<Tx>* pTxList);
+    TxCursor(Collection_t<Tx>* pTxCollection);
     ~TxCursor(void);
     
     void vInit(void);

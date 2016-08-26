@@ -18,7 +18,7 @@ Grid*               gpGrid             = nullptr;
 TaskList*           gpTaskList         = nullptr;
 ThreadList*         gpThreadList       = nullptr;
 SEitfList*          gpSEitfList        = nullptr;
-TxList*             gpTxList           = nullptr;
+TxCollection*       gpTxCollection     = nullptr;
 
 File*               gpTraceFile        = nullptr;
 

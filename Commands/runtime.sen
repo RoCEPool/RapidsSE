@@ -6,16 +6,20 @@
 
 "seitfList.sen" >>:
 "seitfCursor.sen" >>:
+
 "task.sen" >>:
 "taskList.sen" >>:
 "taskCursor.sen" >>:
 "taskSet.sen" >>:
+
 "thread.sen" >>:
 "threadList.sen" >>:
 "threadCursor.sen" >>:
-"txList.sen" >>:
+
+"txCollection.sen" >>:
 "txCursor.sen" >>:
 "txMap.sen" >>:
+
 "queue.sen" >>:
 
 /*============================================================================*/

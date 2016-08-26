@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TxList.hpp - Transaction List                                              */
+/* gpTxCollection.hpp - Transaction List                                              */
 /*============================================================================*/
 
 #pragma once
@@ -8,17 +8,17 @@
 
 namespace Transactions {
     
-  class TxList : public Object,
-                 public Collection_t<Tx>
+  class TxCollection : public Object,
+                       public Collection_t<Tx>
   {
   private:
     
   public:
-    void* operator new(size_t, TxList* pTxList);
+    void* operator new(size_t, TxCollection* pTxCollection);
     void  operator delete(void*);
     
-    TxList(void);
-    ~TxList(void);
+    TxCollection(void);
+    ~TxCollection(void);
     
     Tx*   pAllocTx(void);
     void  vFreeTx(Tx* pTx);

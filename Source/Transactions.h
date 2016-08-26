@@ -7,7 +7,7 @@
 #include "Threading.h"
 
 #include "Tx.hpp"
-#include "TxList.hpp"
+#include "TxCollection.hpp"
 #include "TxCursor.hpp"
 #include "TxMapArray.hpp"
 #include "TxMap.hpp"

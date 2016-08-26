@@ -666,6 +666,10 @@ namespace Tasking
     static void vTxCommit(NNP_Task nnpTask);
     static void vTxRollback(NNP_Task nnpTask);
     
+    // txCollection
+    static void vTxCollectionDump(NNP_Task nnpTask);
+    static void vTxCollectionInit(NNP_Task nnpTask);
+    
     // txCursor
     static void vTxCursorBegin(NNP_Task nnpTask);
     static void vTxCursorDelete(NNP_Task nnpTask);
@@ -675,11 +679,8 @@ namespace Tasking
     static void vTxCursorInit(NNP_Task nnpTask);
     static void vTxCursorNew(NNP_Task nnpTask);
     static void vTxCursorNext(NNP_Task nnpTask);
-    // txlist
-    static void vTxListDump(NNP_Task nnpTask);
-    static void vTxListInit(NNP_Task nnpTask);
     
-    // txmap
+    // txMap
     static void vTxMapInit(NNP_Task nnpTask);
     
     // word

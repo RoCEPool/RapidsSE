@@ -71,8 +71,8 @@ namespace Magic
     /* 52 */ CN_THREADLIST,
     /* 53 */ CN_TIMER,
     /* 54 */ CN_TX,
+    /* 56 */ CN_TXCOLLECTION,
     /* 55 */ CN_TXCURSOR,
-    /* 56 */ CN_TXLIST,
     /* 57 */ CN_TXMAP,
     /* 58 */ CN_WORD,
     /* 59 */ CN_ENUMS
@@ -138,8 +138,8 @@ namespace Magic
     /* 52 */ "THREADLIST",
     /* 53 */ "TIMER",
     /* 54 */ "TX",
-    /* 55 */ "TXCURSOR",
-    /* 56 */ "TXLIST",
+    /* 55 */ "TXCOLLECTION",
+    /* 56 */ "TXCURSOR",
     /* 57 */ "TXMAP",
     /* 58 */ "WORD",
     /* 59 */ "ENUMS"

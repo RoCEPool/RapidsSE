@@ -15,11 +15,14 @@ namespace DataStructures
   {
   private:
     Collection_t<OBJECT>* m_pCollection; // the collection
-    OBJECT* m_pObject;     // current node
+    bool            m_bHasLock; // does the cursor have the lock?
+   OBJECT* m_pObject;     // current node
 
   public:
     CollectionCursor_t(Collection_t<OBJECT>* pCollection);
     
+    void vBegin(void);
+    void vEnd(void);
     void vFirst(void);
     void vNext(void);
     OBJECT* pObject(void);
@@ -38,25 +41,59 @@ CollectionCursor_t<OBJECT>::CollectionCursor_t(Collection_t<OBJECT>* pCollection
 {
   m_pCollection = pCollection;
   m_pObject = nullptr;
+  m_bHasLock = false;
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin at first object in list                                              */
+/* begin iterating collection                                                 */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void CollectionCursor_t<OBJECT>::vBegin(void)
+{
+  ASSERT(m_pCollection);
+  ASSERT(! m_bHasLock);
+  
+  m_pCollection->vReadLock();
+  m_bHasLock = true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end iterating collection                                                   */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void CollectionCursor_t<OBJECT>::vEnd(void)
+{
+  ASSERT(m_pCollection);
+  
+  if (m_bHasLock) {
+    m_pCollection->vReadUnlock();
+    m_bHasLock = false;
+  }
+  
+  ASSERT(! m_bHasLock);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set at first object in collection                                          */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
 void CollectionCursor_t<OBJECT>::vFirst(void)
 {
   ASSERT(m_pCollection);
-  
+  ASSERT(m_bHasLock);
+   
   m_pObject = m_pCollection->pHead();
 }
 
 /*----------------------------------------------------------------------------*/
-/* move to next object in list                                                */
+/* move to next object in collection                                          */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
 void CollectionCursor_t<OBJECT>::vNext(void)
 {
+  ASSERT(m_pCollection);
+  ASSERT(m_bHasLock);
+  
   if (m_pObject)
     m_pObject = m_pObject->pNext();
 }
@@ -67,6 +104,9 @@ void CollectionCursor_t<OBJECT>::vNext(void)
 template <class OBJECT>
 OBJECT* CollectionCursor_t<OBJECT>::pObject(void)
 {
+  ASSERT(m_pCollection);
+  ASSERT(m_bHasLock);
+  
   return m_pObject;
 }
 

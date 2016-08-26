@@ -1,26 +1,26 @@
 /*============================================================================*/
-/* TxList.cpp - Transaction Set                                                */
+/* TxCollection.cpp -- Transaction Collection                                 */
 /*============================================================================*/
 
 #include "Transactions.h"
 
-extern Heap*      gpSmallHeap;
-extern TxList*    gpTxList;
+extern Heap*            gpSmallHeap;
+extern TxCollection*    gpTxCollection;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TxList::operator new(size_t iSize, TxList* pTxList)
+void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)
 {
-  return pTxList;
+  return pTxCollection;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void TxList::operator delete(void* pBufferAddress)
+void TxCollection::operator delete(void* pBufferAddress)
 {
-  vFatal("fatal: TxList class cannot be deleted");
+  vFatal("fatal: gpTxCollection class cannot be deleted");
   
   //vExitFatal();
   
@@ -30,20 +30,20 @@ void TxList::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TxList::TxList(void)
-: Object(CN_TXLIST)
+TxCollection::TxCollection(void)
+: Object(CN_TXCOLLECTION)
 {
   _poolAddress_(this);
   
-  ASSERT( ! gpTxList );
+  ASSERT( ! gpTxCollection );
   
-  gpTxList = this;
+  gpTxCollection = this;
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate a tx                                                              */
 /*----------------------------------------------------------------------------*/
-Tx* TxList::pAllocTx(void)
+Tx* TxCollection::pAllocTx(void)
 {
   _poolAddress_(this);
   
@@ -54,11 +54,10 @@ Tx* TxList::pAllocTx(void)
   return pTx;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* free a tx                                                                  */
 /*----------------------------------------------------------------------------*/
-void TxList::vFreeTx(Tx* pTx)
+void TxCollection::vFreeTx(Tx* pTx)
 {
   _poolAddress_(this);
   

@@ -1,16 +1,16 @@
 /*============================================================================*/
-/* txList.sen -- transaction list related words                               */
+/* txCollection.sen -- Transaction Collection                                 */
 /*============================================================================*/
 
-"txList.sen" .
+"txCollection.sen" .
 
-: txList:
+: txCollection:
     create
     object!!
-    sizeof_txset allot
+    sizeof_txcollection allot
     word.this >body magic!!
-    word.this >body CN_TXLIST class!
-    word.this >body txlist.init
+    word.this >body CN_TXCOLLECTION class!
+    word.this >body txCollection.init
     does>
 ;
 

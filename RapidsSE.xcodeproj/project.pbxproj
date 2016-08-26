@@ -103,7 +103,7 @@
 		F22056C71D62DE1A00E8EF5B /* Threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CCB1D477220008DF3D9 /* Threading.cpp */; };
 		F22056C81D62DE3F00E8EF5B /* TxMapArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CFC1D48AF5C008DF3D9 /* TxMapArray.cpp */; };
 		F22056C91D62DE4200E8EF5B /* TxMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E76B1D458B3300E10FC3 /* TxMap.cpp */; };
-		F22056CA1D62DE4500E8EF5B /* TxList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7681D4589DE00E10FC3 /* TxList.cpp */; };
+		F22056CA1D62DE4500E8EF5B /* TxCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7681D4589DE00E10FC3 /* TxCollection.cpp */; };
 		F22056CB1D62DE4900E8EF5B /* Tx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7641D4587AC00E10FC3 /* Tx.cpp */; };
 		F22056CC1D62DE4B00E8EF5B /* Transactions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC91D4771D6008DF3D9 /* Transactions.cpp */; };
 		F22056CD1D62DE5C00E8EF5B /* SEitfList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E76E1D458C5600E10FC3 /* SEitfList.cpp */; };
@@ -294,14 +294,14 @@
 		F226E7551D440AFE00E10FC3 /* metadata.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = metadata.sen; path = Commands/metadata.sen; sourceTree = "<group>"; };
 		F226E7561D440BBF00E10FC3 /* rows.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rows.sen; path = Commands/rows.sen; sourceTree = "<group>"; };
 		F226E7591D45711E00E10FC3 /* seitfList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfList.sen; path = Commands/seitfList.sen; sourceTree = "<group>"; };
-		F226E75B1D4571FD00E10FC3 /* txList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txList.sen; path = Commands/txList.sen; sourceTree = "<group>"; };
+		F226E75B1D4571FD00E10FC3 /* txCollection.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txCollection.sen; path = Commands/txCollection.sen; sourceTree = "<group>"; };
 		F226E75C1D4571FD00E10FC3 /* txMap.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txMap.sen; path = Commands/txMap.sen; sourceTree = "<group>"; };
 		F226E7621D45835300E10FC3 /* Interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interface.h; path = Source/Interface.h; sourceTree = "<group>"; };
 		F226E7641D4587AC00E10FC3 /* Tx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tx.cpp; path = Source/Tx.cpp; sourceTree = "<group>"; };
 		F226E7651D4587AC00E10FC3 /* Tx.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Tx.hpp; path = Source/Tx.hpp; sourceTree = "<group>"; };
 		F226E7671D4587E600E10FC3 /* Transactions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transactions.h; path = Source/Transactions.h; sourceTree = "<group>"; };
-		F226E7681D4589DE00E10FC3 /* TxList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxList.cpp; path = Source/TxList.cpp; sourceTree = "<group>"; };
-		F226E7691D4589DE00E10FC3 /* TxList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxList.hpp; path = Source/TxList.hpp; sourceTree = "<group>"; };
+		F226E7681D4589DE00E10FC3 /* TxCollection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxCollection.cpp; path = Source/TxCollection.cpp; sourceTree = "<group>"; };
+		F226E7691D4589DE00E10FC3 /* TxCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxCollection.hpp; path = Source/TxCollection.hpp; sourceTree = "<group>"; };
 		F226E76B1D458B3300E10FC3 /* TxMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxMap.cpp; path = Source/TxMap.cpp; sourceTree = "<group>"; };
 		F226E76C1D458B3300E10FC3 /* TxMap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxMap.hpp; path = Source/TxMap.hpp; sourceTree = "<group>"; };
 		F226E76E1D458C5600E10FC3 /* SEitfList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SEitfList.cpp; path = Source/SEitfList.cpp; sourceTree = "<group>"; };
@@ -792,8 +792,8 @@
 				980950FE1D326F4A002F20B0 /* thread.sen */,
 				F2A595D31D6FFA44007C66B1 /* threadCursor.sen */,
 				F2389CF11D484854008DF3D9 /* threadList.sen */,
+				F226E75B1D4571FD00E10FC3 /* txCollection.sen */,
 				F2A595DA1D703852007C66B1 /* txCursor.sen */,
-				F226E75B1D4571FD00E10FC3 /* txList.sen */,
 				F226E75C1D4571FD00E10FC3 /* txMap.sen */,
 			);
 			name = Runtime;
@@ -821,10 +821,10 @@
 				F2389CC91D4771D6008DF3D9 /* Transactions.cpp */,
 				F226E7641D4587AC00E10FC3 /* Tx.cpp */,
 				F226E7651D4587AC00E10FC3 /* Tx.hpp */,
+				F226E7681D4589DE00E10FC3 /* TxCollection.cpp */,
+				F226E7691D4589DE00E10FC3 /* TxCollection.hpp */,
 				F2A595D61D7036B7007C66B1 /* TxCursor.cpp */,
 				F2A595D71D7036B7007C66B1 /* TxCursor.hpp */,
-				F226E7681D4589DE00E10FC3 /* TxList.cpp */,
-				F226E7691D4589DE00E10FC3 /* TxList.hpp */,
 				F226E76B1D458B3300E10FC3 /* TxMap.cpp */,
 				F226E76C1D458B3300E10FC3 /* TxMap.hpp */,
 				F2389CFC1D48AF5C008DF3D9 /* TxMapArray.cpp */,
@@ -1247,7 +1247,7 @@
 				F22056D61D62DE8E00E8EF5B /* OnHeap.cpp in Sources */,
 				F22056A61D62DD3300E8EF5B /* DataStructures.cpp in Sources */,
 				F22056851D62DAD200E8EF5B /* s256.cpp in Sources */,
-				F22056CA1D62DE4500E8EF5B /* TxList.cpp in Sources */,
+				F22056CA1D62DE4500E8EF5B /* TxCollection.cpp in Sources */,
 				F220566F1D62DA3C00E8EF5B /* an.cpp in Sources */,
 				F22056991D62DCC100E8EF5B /* bn.cpp in Sources */,
 				F22056B91D62DDE000E8EF5B /* DBobjects.cpp in Sources */,

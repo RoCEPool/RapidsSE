@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TxCursor.cpp -- Cursor over Tx's in TxList                                 */
+/* TxCursor.cpp -- Cursor over Tx's in TxCollection                           */
 /*============================================================================*/
 
 #include "Transactions.h"
@@ -39,9 +39,9 @@ void TxCursor::operator delete(void* pThreadAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TxCursor::TxCursor(List_t<Tx>* pTxList)
+TxCursor::TxCursor(Collection_t<Tx>* gpTxCollection)
 : Object(CN_TXCURSOR),
-  ListCursor_t<Tx>(pTxList)
+  CollectionCursor_t<Tx>(gpTxCollection)
 {
   _poolAddress_(this);
 }

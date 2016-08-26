@@ -34,16 +34,16 @@
 ( tasklist will already exist )
 
 ( create the threadList to hold all thread's )
-threadlist: threadList
+threadList: threadList
 
-( create the txList to hold all tx's )
-txlist: txList
+( create the txCollection to hold all tx's )
+txCollection: txCollection
 
 ( create the seitfList to hold all seitf's )
-seitflist: seitfList
+seitfList: seitfList
 
 ( create the task set for the root thread )
-taskset: rootTaskSet
+taskSet: rootTaskSet
 
 ( create the root thread and name it )
 thread: rootThread "rootThread" rootThread thread.name!
