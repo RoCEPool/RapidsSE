@@ -77,10 +77,15 @@ void RapidsSE::vExecute(void)
         PosixThread::vSleepNano(250_MB);
         vSeitfPrompt();
       }
-//      else if (gxArguments.m_bDocol) {
-//        vRunDocol();
-//        vWaitFlag();
-//      }
+      else if (gxArguments.m_bDocol) {
+        while (! gpDictionary->pFind("requestQueue"))
+          ;
+        PosixThread::vSleepNano(250_MB);
+        gnpRootTask->vSeedDocol();
+        gnpRootTask->vLoop();
+        //vRunDocol();
+        vWaitFlag();
+      }
       else
         vWaitFlag();
     }
