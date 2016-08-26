@@ -19,6 +19,7 @@
 "txCollection.sen" >>:
 "txCursor.sen" >>:
 "txMap.sen" >>:
+"txRef.sen" >>:
 
 "queue.sen" >>:
 

@@ -828,6 +828,8 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("txMap.init",      &vTxMapInit,        false);
   
+  vAddPrimitive("txRef.init",      &vTxRefInit,        false);
+  
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive("forget",          &vForget,           false);
@@ -8774,10 +8776,10 @@ void Task::vTxCursorNext(NNP_Task nnpTask)
   nnpTask->vPushParam(xPtrTx);
 }
 
-// txmap: //////////////////////////////////////////////////////////////////////
+// txMap: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* txmap.init -- init of txmap on param stack                                 */
+/* txPap.init -- init of txmap on param stack                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(NNP_Task nnpTask)
 {
@@ -8785,12 +8787,31 @@ void Task::vTxMapInit(NNP_Task nnpTask)
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
-    THROW_INVALID_PARAM("txmap.init");
+    THROW_INVALID_PARAM("txMap.init");
   
   TxMap* pTxMap = reinterpret_cast<TxMap*>(xPtrVal.pPtr());
   ASSERT(CN_TXMAP == pTxMap->eClass());
   
   new(pTxMap) TxMap;
+}
+
+// txRef: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* txRef.init -- init of txref on param stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxRefInit");
+  
+  PtrVal xPtrVal;
+  if ( ! nnpTask->bPopParam(xPtrVal) )
+    THROW_INVALID_PARAM("txRef.init");
+  
+  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrVal.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  new(pTxRef) TxRef;
 }
 
 // words: //////////////////////////////////////////////////////////////////////

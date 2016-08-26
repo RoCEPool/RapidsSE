@@ -432,6 +432,7 @@
 		F2A595DA1D703852007C66B1 /* txCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txCursor.sen; path = Commands/txCursor.sen; sourceTree = "<group>"; };
 		F2A595DB1D70FA28007C66B1 /* TxRef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxRef.cpp; path = Source/TxRef.cpp; sourceTree = "<group>"; };
 		F2A595DC1D70FA28007C66B1 /* TxRef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxRef.hpp; path = Source/TxRef.hpp; sourceTree = "<group>"; };
+		F2A595DF1D70FC88007C66B1 /* txRef.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txRef.sen; path = Commands/txRef.sen; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		F2B3B1591D51A8980049597E /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		F2B3B15E1D51DDD70049597E /* FreeChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeChunk.cpp; sourceTree = "<group>"; };
@@ -797,6 +798,7 @@
 				F226E75B1D4571FD00E10FC3 /* txCollection.sen */,
 				F2A595DA1D703852007C66B1 /* txCursor.sen */,
 				F226E75C1D4571FD00E10FC3 /* txMap.sen */,
+				F2A595DF1D70FC88007C66B1 /* txRef.sen */,
 			);
 			name = Runtime;
 			sourceTree = "<group>";

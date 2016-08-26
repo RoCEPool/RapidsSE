@@ -682,6 +682,9 @@ namespace Tasking
     
     // txMap
     static void vTxMapInit(NNP_Task nnpTask);
+
+    // txRef
+    static void vTxRefInit(NNP_Task nnpTask);
     
     // word
     static void vCreate(NNP_Task nnpTask);
