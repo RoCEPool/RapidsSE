@@ -13,7 +13,6 @@ namespace Common
     static const i8 C_ASCII_MIN = 32;
     static const i8 C_ASCII_MAX = 127;
     static const i8 C_BYTES_PER_LINE = 16;
-    static const i8 C_WORDS_PER_LINE = 6;
     
   public:
     static void* pAddBytes(void* pAddress, i8 iBytes);
