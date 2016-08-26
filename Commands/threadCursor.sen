@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a threadCursor using name from input stream                         */
 /*----------------------------------------------------------------------------*/
-: treadCursor:
+: threadCursor:
     create
     object!!
     sizeof_threadCursor allot

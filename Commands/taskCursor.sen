@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* create a taskCursor using name from input stream                           */
 /*----------------------------------------------------------------------------*/
-: treadCursor:
+: taskCursor:
     create
     object!!
     sizeof_taskCursor allot

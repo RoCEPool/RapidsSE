@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* seitfCursor.sen -- SEitf Cursor                                            */
+/*============================================================================*/
+
+"seitfCursor.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a seitfCursor using name from input stream                          */
+/*----------------------------------------------------------------------------*/
+: seitfCursor:
+    create
+    object!!
+    sizeof_seitfCursor allot
+    word.this >body magic!!
+    word.this >body CN_SEITFCURSOR class!
+    word.this >body seitfCursor.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a seitfCursor using name on the stack             (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :seitfCursor
+    >create
+    object!!
+    sizeof_seitfCursor allot
+    word.this >body magic!!
+    word.this >body CN_SEITFCURSOR class!
+    word.this >body seitfCursor.init
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::seitfCursor ( create a temporary seitfCursor )
+
+    "__seitfCursor__" find dup
+    not if
+      drop
+      "__seitfCursor__" :seitfCursor
+    then
+    execute
+;
+
+: ~seitfCursor ( forget temporary seitfCursor )
+
+    "__seitfCursor__" find >forget
+;
+
+: listSeitf ( list all seitfs )
+
+    ::seitfCursor >r // r0 ^seitfCursor
+
+    r0 seitfCursor.begin
+    r0 seitfCursor.first
+    begin
+      while
+      r0 seitfCursor.get
+      seitf.dump
+      r0 seitfCursor.next
+    repeat
+
+    rdrop
+
+    ~seitfCursor
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

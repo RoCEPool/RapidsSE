@@ -5,6 +5,7 @@
 "runtime.sen" .
 
 "seitfList.sen" >>:
+"seitfCursor.sen" >>:
 "task.sen" >>:
 "taskList.sen" >>:
 "taskCursor.sen" >>:
