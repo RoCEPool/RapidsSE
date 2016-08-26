@@ -2,7 +2,7 @@
 /* txRef.sen -- Tx Reference                                                  */
 /*============================================================================*/
 
-"txmap.sen" .
+"txref.sen" .
 
 /*----------------------------------------------------------------------------*/
 /* create a txRef using name on the stack                   (leaves on stack) */
@@ -17,6 +17,34 @@
     word.this
     does>
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::txRef ( create a txRef )
+
+  "txRef" find dup
+  not if
+    drop
+    "txRef" :txCursor
+  then
+  execute
+;
+
+: beginTransaction
+  ::txRef
+  tx.begin drop
+;
+
+: commitTransaction
+  ::txRef
+  tx.commit drop
+;
+
+: rollbackTransaction
+  ::txRef
+  tx.rollback drop
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

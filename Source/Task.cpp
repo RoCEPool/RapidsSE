@@ -8547,15 +8547,19 @@ void Task::vTxNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxDelete");
+  nnpTask->vPrimitive("vTxBegin");
   
-  PtrVal xPtrSession;
+  PtrVal xPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrSession) )
-    THROW_INVALID_PARAM("tx.delete");
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+    THROW_INVALID_PARAM("tx.begin");
   
-  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
-  ASSERT(CN_TX == pTx->eClass());
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bBegun = pTxRef->bBeginTx();
+  
+  nnpTask->vPushParam(bBegun);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8565,13 +8569,17 @@ void Task::vTxCommit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vTxCommit");
   
-  PtrVal xPtrSession;
+  PtrVal xPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrSession) )
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
     THROW_INVALID_PARAM("tx.commit");
   
-  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
-  ASSERT(CN_TX == pTx->eClass());
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bCommitted = pTxRef->bCommitTx();
+  
+  nnpTask->vPushParam(bCommitted);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8581,13 +8589,17 @@ void Task::vTxRollback(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vTxRollback");
   
-  PtrVal xPtrSession;
+  PtrVal xPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrSession) )
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
     THROW_INVALID_PARAM("tx.rollback");
   
-  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
-  ASSERT(CN_TX == pTx->eClass());
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bRolledBack = pTxRef->bRollbackTx();
+  
+  nnpTask->vPushParam(bRolledBack);
 }
 
 // txCollection: ///////////////////////////////////////////////////////////////
