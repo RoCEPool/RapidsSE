@@ -201,8 +201,8 @@
 		982ECD881D071EED0001919C /* cn.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = cn.hpp; path = Source/cn.hpp; sourceTree = "<group>"; };
 		982ECD8A1D071EF70001919C /* Debug.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Debug.hpp; path = Source/Debug.hpp; sourceTree = "<group>"; };
 		982ECD8B1D071EF70001919C /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = Source/Common.h; sourceTree = "<group>"; };
-		985659B11D12CA5700D7508A /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
-		985659B21D12CA5700D7508A /* Socket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Socket.hpp; sourceTree = "<group>"; };
+		985659B11D12CA5700D7508A /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Socket.cpp; path = Source/Socket.cpp; sourceTree = "<group>"; };
+		985659B21D12CA5700D7508A /* Socket.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Socket.hpp; path = Source/Socket.hpp; sourceTree = "<group>"; };
 		98664B2D1D3FA0E800163CE2 /* Error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Error.cpp; path = Source/Error.cpp; sourceTree = "<group>"; };
 		98664B2E1D3FA0E800163CE2 /* Error.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Error.hpp; path = Source/Error.hpp; sourceTree = "<group>"; };
 		98686CD01D1A7C7B00A4CC3E /* Row.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Row.cpp; sourceTree = "<group>"; };
@@ -652,8 +652,6 @@
 				F2EC32CF1D2C751D00791294 /* TaskSet.hpp */,
 				F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */,
 				F29C97A41D1C955F00ED5F30 /* TaskVal.hpp */,
-				985659B11D12CA5700D7508A /* Socket.cpp */,
-				985659B21D12CA5700D7508A /* Socket.hpp */,
 			);
 			name = Tasking;
 			path = Source;
@@ -984,6 +982,8 @@
 				F226E7441D42B61F00E10FC3 /* Shm.hpp */,
 				F2A0FAFC1D6457CA0032B090 /* Since.cpp */,
 				F2A0FAFD1D6457CA0032B090 /* Since.hpp */,
+				985659B11D12CA5700D7508A /* Socket.cpp */,
+				985659B21D12CA5700D7508A /* Socket.hpp */,
 				F21D29A61D0E0236000F8C45 /* String.cpp */,
 				F21D29A71D0E0236000F8C45 /* String.hpp */,
 				F25309961D023B18000F6728 /* SysCall.cpp */,
