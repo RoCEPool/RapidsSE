@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* txCursor.sen -- Tx Cursor                                                  */
+/*============================================================================*/
+
+"txCursor.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create a txCursor using name from input stream                             */
+/*----------------------------------------------------------------------------*/
+: txCursor:
+    create
+    object!!
+    sizeof_txCursor allot
+    word.this >body magic!!
+    word.this >body CN_TXCURSOR class!
+    word.this >body txCursor.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a txCursor using name on the stack                (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :txCursor
+    >create
+    object!!
+    sizeof_txCursor allot
+    word.this >body magic!!
+    word.this >body CN_TXCURSOR class!
+    word.this >body txCursor.init
+    word.this
+    does>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: ::txCursor ( create a temporary txCursor )
+
+    "__txCursor__" find dup
+    not if
+      drop
+      "__txCursor__" :txCursor
+    then
+    execute
+;
+
+: ~txCursor ( forget temporary txCursor )
+
+    "__txCursor__" find >forget
+;
+
+: listThreads ( list all txs )
+
+    ::txCursor >r // r0 ^txCursor
+
+    r0 txCursor.begin
+    r0 txCursor.first
+    begin
+      while
+      r0 txCursor.get dup
+      tx.dump .
+      r0 txCursor.next
+    repeat
+
+    rdrop
+
+    ~txCursor
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

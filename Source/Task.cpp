@@ -306,10 +306,11 @@ void Task::vAddConstants(void)
   /* 52 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
   /* 53 */ vAddConstant("CN_TIMER",                 CN_TIMER);
   /* 54 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 55 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
-  /* 56 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 57 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 58 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  /* 55 */ vAddConstant("CN_TXCURSOR",              CN_TXCURSOR);
+  /* 56 */ vAddConstant("CN_TXLIST",                CN_TXLIST);
+  /* 57 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 58 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 59 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
 
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
@@ -371,10 +372,11 @@ void Task::vAddConstants(void)
   /* 50 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
   /* 51 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
   /* 52 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
-  /* 53 */ vAddConstant("SIZEOF_TXLIST",            sizeof(TxList));
-  /* 54 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 55 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
-  /* 56 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 53 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
+  /* 54 */ vAddConstant("SIZEOF_TXLIST",            sizeof(TxList));
+  /* 55 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 56 */ vAddConstant("SIZEOF_TXSET",             sizeof(TxList));
+  /* 57 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
   
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
@@ -801,10 +803,20 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("timer.update",    &vTimerUpdate,      false);
   
   vAddPrimitive("tx.delete",       &vTxDelete,         false);
+  vAddPrimitive("tx.dump",         &vTxDump,           false);
   vAddPrimitive("tx.new",          &vTxNew,            false);
   vAddPrimitive("tx.begin",        &vTxBegin,          false);
   vAddPrimitive("tx.commit",       &vTxCommit,         false);
   vAddPrimitive("tx.rollback",     &vTxRollback,       false);
+  
+  vAddPrimitive("txCursor.begin",  &vTxCursorBegin,  false);
+  vAddPrimitive("txCursor.delete", &vTxCursorDelete, false);
+  vAddPrimitive("txCursor.end",    &vTxCursorEnd,    false);
+  vAddPrimitive("txCursor.first",  &vTxCursorFirst,  false);
+  vAddPrimitive("txCursor.get",    &vTxCursorGet,    false);
+  vAddPrimitive("txCursor.init",   &vTxCursorInit,   false);
+  vAddPrimitive("txCursor.new",    &vTxCursorNew,    false);
+  vAddPrimitive("txCursor.next",   &vTxCursorNext,   false);
   
   vAddPrimitive("txList.dump",     &vTxListDump,       false);
   vAddPrimitive("txList.init",     &vTxListInit,       false);
@@ -8490,6 +8502,24 @@ void Task::vTxDelete(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tx.dump -- delete tx                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTxDump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxDump");
+  
+  PtrVal xPtrSession;
+  
+  if ( ! nnpTask->bPopParam(xPtrSession) )
+    THROW_INVALID_PARAM("tx.delete");
+  
+  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
+  ASSERT(CN_TX == pTx->eClass());
+
+  vTrace("Tx %p\n",pTx);
+}
+
+/*----------------------------------------------------------------------------*/
 /* tx.new -- new tx                                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vTxNew(NNP_Task nnpTask)
@@ -8551,6 +8581,156 @@ void Task::vTxRollback(NNP_Task nnpTask)
   
   Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
   ASSERT(CN_TX == pTx->eClass());
+}
+
+// txCursor: ///////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.begin -- begin using thread cursor                            */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorBegin");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadCursor.begin");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  pThreadCursor->vBegin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.delete -- delete a thread cursor                              */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTheadCursorDelete");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadCursor.delete");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  delete pThreadCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.end -- end using thread cursor                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorEnd");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadcursor.end");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  pThreadCursor->vEnd();
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.first -- set to first and push thread                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorFirst(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorFirst");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadCursor.first");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  pThreadCursor->vFirst();
+  
+  PtrVal xPtrThread;
+  xPtrThread = pThreadCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrThread);
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.get -- push current thread                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorGet");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadCursor.get");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  PtrVal xPtrNode;
+  xPtrNode = pThreadCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.init -- init a thread cursor                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorInit");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadCursor.init");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  new(pThreadCursor) ThreadCursor(gpThreadList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.new -- new a thread cursor                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorNew");
+  
+  ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  PtrVal xPtrThreadCursor;
+  xPtrThreadCursor = pThreadCursor;
+  
+  nnpTask->vPushParam(xPtrThreadCursor);
+}
+
+/*----------------------------------------------------------------------------*/
+/* threadCursor.next -- advance to next and push thread                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTxCursorNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vThreadCursorNext");
+  
+  PtrVal xPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+    THROW_INVALID_PARAM("threadCursor.next");
+  
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
+  
+  pThreadCursor->vNext();
+  
+  PtrVal xPtrThread;
+  xPtrThread = pThreadCursor->pObject();
+  
+  nnpTask->vPushParam(xPtrThread);
 }
 
 // txlist: /////////////////////////////////////////////////////////////////////

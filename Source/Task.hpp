@@ -659,13 +659,22 @@ namespace Tasking
     
     // tx
     static void vTxDelete(NNP_Task nnpTask);
+    static void vTxDump(NNP_Task nnpTask);
     static void vTxNew(NNP_Task nnpTask);
 
     static void vTxBegin(NNP_Task nnpTask);
     static void vTxCommit(NNP_Task nnpTask);
     static void vTxRollback(NNP_Task nnpTask);
     
-    
+    // txCursor
+    static void vTxCursorBegin(NNP_Task nnpTask);
+    static void vTxCursorDelete(NNP_Task nnpTask);
+    static void vTxCursorEnd(NNP_Task nnpTask);
+    static void vTxCursorFirst(NNP_Task nnpTask);
+    static void vTxCursorGet(NNP_Task nnpTask);
+    static void vTxCursorInit(NNP_Task nnpTask);
+    static void vTxCursorNew(NNP_Task nnpTask);
+    static void vTxCursorNext(NNP_Task nnpTask);
     // txlist
     static void vTxListDump(NNP_Task nnpTask);
     static void vTxListInit(NNP_Task nnpTask);

@@ -427,6 +427,7 @@
 		F2A595D51D702973007C66B1 /* seitfCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfCursor.sen; path = Commands/seitfCursor.sen; sourceTree = "<group>"; };
 		F2A595D61D7036B7007C66B1 /* TxCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxCursor.cpp; path = Source/TxCursor.cpp; sourceTree = "<group>"; };
 		F2A595D71D7036B7007C66B1 /* TxCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxCursor.hpp; path = Source/TxCursor.hpp; sourceTree = "<group>"; };
+		F2A595DA1D703852007C66B1 /* txCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txCursor.sen; path = Commands/txCursor.sen; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		F2B3B1591D51A8980049597E /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		F2B3B15E1D51DDD70049597E /* FreeChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeChunk.cpp; sourceTree = "<group>"; };
@@ -791,6 +792,7 @@
 				980950FE1D326F4A002F20B0 /* thread.sen */,
 				F2A595D31D6FFA44007C66B1 /* threadCursor.sen */,
 				F2389CF11D484854008DF3D9 /* threadList.sen */,
+				F2A595DA1D703852007C66B1 /* txCursor.sen */,
 				F226E75B1D4571FD00E10FC3 /* txList.sen */,
 				F226E75C1D4571FD00E10FC3 /* txMap.sen */,
 			);
