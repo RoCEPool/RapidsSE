@@ -8,6 +8,7 @@
 
 #include "Tx.hpp"
 #include "TxList.hpp"
+#include "TxCursor.hpp"
 #include "TxMapArray.hpp"
 #include "TxMap.hpp"
 
