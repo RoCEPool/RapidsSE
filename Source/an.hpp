@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Types.h"
+#include "Magic.h"
 
-namespace Types
+namespace Magic
 {
   class an
   {

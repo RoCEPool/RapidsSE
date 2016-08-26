@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Types.h - includes for Types namespace                                     */
+/* Magic.h - includes for Magic namespace                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,23 +9,23 @@
 #include "mn.hpp"
 #include "cn.hpp"
 
+#include "ByteLiterals.hpp"
 #include "Addressing.hpp"
 #include "Magnitudes.h"
 
-namespace Types
+namespace Magic
 {
   void vCheckAssumptions(void);
 }
-
 
 
 //-----------------------------------------------------------------------------
-namespace Types
+namespace Magic
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Types;
+using namespace Magic;
 
 /*============================================================================*/
 /* end                                                                        */

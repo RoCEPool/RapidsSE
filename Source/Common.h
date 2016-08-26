@@ -5,8 +5,7 @@
 
 #include "ThirdParty.h"
 
-#include "_bytes.hpp"
-#include "_debug.h"
+#include "Debug.hpp"
 
 #include "Footer.hpp"
 

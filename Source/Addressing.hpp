@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Types.h"
+#include "Magic.h"
 
-namespace Types
+namespace Magic
 {
   char* pcAdd(void* pAddress, i8 nBytes);
   void* pvAdd(void* pAddress, i8 nBytes);

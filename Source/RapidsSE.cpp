@@ -40,7 +40,7 @@ void RapidsSE::vCheckAssumptions(void)
 {
   // this is in reverse order of the spaces in the project
   Platform::vCheckAssumptions();
-  Types::vCheckAssumptions();
+  Magic::vCheckAssumptions();
   Common::vCheckAssumptions();
   MemoryManagement::vCheckAssumptions();
   StackValues::vCheckAssumptions();

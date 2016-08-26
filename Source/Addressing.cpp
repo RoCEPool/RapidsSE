@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* add bytes to address                                                       */
 /*----------------------------------------------------------------------------*/
-char* Types::pcAdd(void* pAddress, i8 nBytes)
+char* Magic::pcAdd(void* pAddress, i8 nBytes)
 {
   char* pAddr0 = reinterpret_cast<char*>(pAddress);
   
@@ -19,7 +19,7 @@ char* Types::pcAdd(void* pAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* add bytes to address                                                       */
 /*----------------------------------------------------------------------------*/
-void* Types::pvAdd(void* pAddress, i8 nBytes)
+void* Magic::pvAdd(void* pAddress, i8 nBytes)
 {
   char* pAddr0 = reinterpret_cast<char*>(pAddress);
   
@@ -31,7 +31,7 @@ void* Types::pvAdd(void* pAddress, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 /* compute difference between two addresses                                   */
 /*----------------------------------------------------------------------------*/
-i8 Types::iSub(void* pAddress0, void* pAddress1)
+i8 Magic::iSub(void* pAddress0, void* pAddress1)
 {
   char* pAddr0 = reinterpret_cast<char*>(pAddress0);
   char* pAddr1 = reinterpret_cast<char*>(pAddress1);

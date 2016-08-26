@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Types.h"
+#include "Magic.h"
 
-namespace Types
+namespace Magic
 {
   static const u4 MAGIC = 0X4347414d;
   //static const u8 HEADER = 0x5E4845414445525E;  // ^HEADER^
