@@ -132,6 +132,8 @@
 		F2A595D21D6FF2C4007C66B1 /* ThreadCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A595D01D6FF2C4007C66B1 /* ThreadCursor.hpp */; };
 		F2A595D81D7036B7007C66B1 /* TxCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A595D61D7036B7007C66B1 /* TxCursor.cpp */; };
 		F2A595D91D7036B7007C66B1 /* TxCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A595D71D7036B7007C66B1 /* TxCursor.hpp */; };
+		F2A595DD1D70FA28007C66B1 /* TxRef.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A595DB1D70FA28007C66B1 /* TxRef.cpp */; };
+		F2A595DE1D70FA28007C66B1 /* TxRef.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F2A595DC1D70FA28007C66B1 /* TxRef.hpp */; };
 		F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656B1D652B1E009B684A /* ThirdParty.h */; };
 		F2DD65701D652D47009B684A /* liblz4.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DD656E1D652D47009B684A /* liblz4.a */; };
 		F2DD65711D652D47009B684A /* lz4.h in Headers */ = {isa = PBXBuildFile; fileRef = F2DD656F1D652D47009B684A /* lz4.h */; };
@@ -428,6 +430,8 @@
 		F2A595D61D7036B7007C66B1 /* TxCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxCursor.cpp; path = Source/TxCursor.cpp; sourceTree = "<group>"; };
 		F2A595D71D7036B7007C66B1 /* TxCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxCursor.hpp; path = Source/TxCursor.hpp; sourceTree = "<group>"; };
 		F2A595DA1D703852007C66B1 /* txCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txCursor.sen; path = Commands/txCursor.sen; sourceTree = "<group>"; };
+		F2A595DB1D70FA28007C66B1 /* TxRef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxRef.cpp; path = Source/TxRef.cpp; sourceTree = "<group>"; };
+		F2A595DC1D70FA28007C66B1 /* TxRef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxRef.hpp; path = Source/TxRef.hpp; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		F2B3B1591D51A8980049597E /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		F2B3B15E1D51DDD70049597E /* FreeChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeChunk.cpp; sourceTree = "<group>"; };
@@ -827,6 +831,8 @@
 				F2A595D71D7036B7007C66B1 /* TxCursor.hpp */,
 				F226E76B1D458B3300E10FC3 /* TxMap.cpp */,
 				F226E76C1D458B3300E10FC3 /* TxMap.hpp */,
+				F2A595DB1D70FA28007C66B1 /* TxRef.cpp */,
+				F2A595DC1D70FA28007C66B1 /* TxRef.hpp */,
 			);
 			name = Transactions;
 			sourceTree = "<group>";
@@ -1123,6 +1129,7 @@
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
 				F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */,
 				F2DD657E1D66428F009B684A /* TaskCursor.hpp in Headers */,
+				F2A595DE1D70FA28007C66B1 /* TxRef.hpp in Headers */,
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				F2DD65711D652D47009B684A /* lz4.h in Headers */,
 				F2DD65741D652D7E009B684A /* bzlib.h in Headers */,
@@ -1290,6 +1297,7 @@
 				F2A0FAFE1D6457CA0032B090 /* Since.cpp in Sources */,
 				F22056CC1D62DE4B00E8EF5B /* Transactions.cpp in Sources */,
 				F22056911D62DCA300E8EF5B /* Object.cpp in Sources */,
+				F2A595DD1D70FA28007C66B1 /* TxRef.cpp in Sources */,
 				F22056721D62DA8200E8EF5B /* Mersenne.cpp in Sources */,
 				F22056BA1D62DDE700E8EF5B /* Socket.cpp in Sources */,
 				F2A595D11D6FF2C4007C66B1 /* ThreadCursor.cpp in Sources */,

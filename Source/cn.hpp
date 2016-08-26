@@ -75,8 +75,9 @@ namespace Magic
     /* 56 */ CN_TXCOLLECTION,
     /* 57 */ CN_TXCURSOR,
     /* 58 */ CN_TXMAP,
-    /* 59 */ CN_WORD,
-    /* 60 */ CN_ENUMS
+    /* 59 */ CN_TXREF,
+    /* 60 */ CN_WORD,
+    /* 61 */ CN_ENUMS
   };
   
   static const char *pCN[]
@@ -143,8 +144,9 @@ namespace Magic
     /* 56 */ "TXCOLLECTION",
     /* 57 */ "TXCURSOR",
     /* 58 */ "TXMAP",
-    /* 59 */ "WORD",
-    /* 60 */ "ENUMS"
+    /* 59 */ "TXREF",
+    /* 60 */ "WORD",
+    /* 61 */ "ENUMS"
   };
 
   class cn

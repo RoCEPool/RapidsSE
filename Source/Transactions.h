@@ -11,6 +11,7 @@
 #include "TxCursor.hpp"
 #include "TxArray.hpp"
 #include "TxMap.hpp"
+#include "TxRef.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Transactions
