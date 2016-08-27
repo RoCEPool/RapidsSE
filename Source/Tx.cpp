@@ -34,25 +34,25 @@ void Tx::operator delete(void* pTxAddress)
 Tx::Tx(void)
 : Object(CN_TX)
 {
-  m_iTxNo  = -1;
-  m_iTxId  = -1;
-  m_ePhase = TP_NONE;
+  m_iTxSlot = -1;
+  m_iTxId   = -1;
+  m_ePhase  = TP_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get tx number                                                              */
+/* get tx array slot                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Tx::iTxNo(void)
+i8 Tx::iTxSlot(void)
 {
-  return m_iTxNo;
+  return m_iTxSlot;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tx number                                                              */
+/* set tx array slot                                                          */
 /*----------------------------------------------------------------------------*/
-void Tx::vTxNo(i8 iTxNo)
+void Tx::vTxSlot(i8 iTxSlot)
 {
-  m_iTxNo = iTxNo;
+  m_iTxSlot = iTxSlot;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,7 @@ bool TxRef::bBeginTx(void)
 {
   ASSERT( ! m_pTx );
   
-  m_pTx = gpTxCollection->pAllocTx();
+  m_pTx = gpTxMap->pBeginTx();
   
   m_pTx->vPhase(TP_EXECUTING);
   
@@ -73,7 +73,7 @@ bool TxRef::bCommitTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bEndTx(void)
 {
-  gpTxCollection->vFreeTx(m_pTx);
+  gpTxMap->vEndTx(m_pTx);
   m_pTx = nullptr;
   
   return true;

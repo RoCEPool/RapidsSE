@@ -11,7 +11,10 @@ namespace Transactions
   class TxMap : public Object
   {
   private:
-    TxArray* m_pTxArray;
+    Lock     m_xLock;      // lock
+    i8       m_iSlot;      // given slot allocated
+    i8       m_iId;        // id generated
+    TxArray* m_pTxArray;   // the mapping array
     
   public:
     void* operator new(size_t, TxMap* pTxMap);
@@ -20,10 +23,13 @@ namespace Transactions
     TxMap(void);
     ~TxMap(void);
     
-    void vSetTx(i8 iTx, Tx* pTx);
-    
     Tx*  pBeginTx(void);
     void vEndTx(Tx* pTx);
+
+  private:
+    void vGiveSlot(Tx* pTx);
+    void vFindSlot(void);
+    void vTakeSlot(Tx* pTx);
   };
 }
 
