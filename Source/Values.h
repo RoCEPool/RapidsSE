@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StackValues.h - things that can be pushed on param/return stacks       */
+/* Values.h -- Self-Describing Values                                         */
 /*============================================================================*/
 
 #pragma once
@@ -16,12 +16,12 @@
 #include "ValSet.hpp"
 
 //-----------------------------------------------------------------------------
-namespace StackValues
+namespace Values
 {
   void vCheckAssumptions(void);
 }
 
-using namespace StackValues;
+using namespace Values;
 
 /*============================================================================*/
 /* end                                                                        */

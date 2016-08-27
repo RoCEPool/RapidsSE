@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* StackValues.cpp - stackValues functions                                    */
+/* Values.cpp -- Self-Descriing Values                                        */
 /*============================================================================*/
 
-#include "StackValues.h"
+#include "Values.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void StackValues::vCheckAssumptions(void)
+void Values::vCheckAssumptions(void)
 {
 }
 

@@ -2,7 +2,7 @@
 /* ValWsp.cpp - workspace for moving values to/from thread and task stacks    */
 /*============================================================================*/
 
-#include "StackValues.h"
+#include "Values.h"
 
 #include "TaskVal.hpp"
 #include "WrdVal.hpp"

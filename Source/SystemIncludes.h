@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* SystemIncludes.h - all the other includes                                  */
+/* SystemIncludes.h -- System Library Includes                                */
 /*============================================================================*/
 #pragma once
 
-#include <ASSERT.h>
+#include <assert.h>
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>

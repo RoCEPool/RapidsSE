@@ -63,7 +63,7 @@
 		F220569F1D62DD1100E8EF5B /* OnStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F291CCC51D11FADB009150AF /* OnStack.cpp */; };
 		F22056A01D62DD1300E8EF5B /* ObjVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2EC32D11D2DAFDB00791294 /* ObjVal.cpp */; };
 		F22056A11D62DD1700E8EF5B /* IntVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F291CCBE1D11E5AF009150AF /* IntVal.cpp */; };
-		F22056A21D62DD1A00E8EF5B /* StackValues.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD51D4773C2008DF3D9 /* StackValues.cpp */; };
+		F22056A21D62DD1A00E8EF5B /* Values.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD51D4773C2008DF3D9 /* Values.cpp */; };
 		F22056A31D62DD2200E8EF5B /* SkipCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981C8FD71D19574200530F3B /* SkipCursor.cpp */; };
 		F22056A41D62DD2600E8EF5B /* SkipNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981C8FD41D19574200530F3B /* SkipNode.cpp */; };
 		F22056A51D62DD2A00E8EF5B /* Skip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7401D41E36500E10FC3 /* Skip.cpp */; };
@@ -346,7 +346,7 @@
 		F2389CCF1D4772D3008DF3D9 /* Dictionaries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dictionaries.cpp; sourceTree = "<group>"; };
 		F2389CD11D477313008DF3D9 /* DBobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DBobjects.cpp; sourceTree = "<group>"; };
 		F2389CD31D477368008DF3D9 /* DataStructures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataStructures.cpp; path = Source/DataStructures.cpp; sourceTree = "<group>"; };
-		F2389CD51D4773C2008DF3D9 /* StackValues.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StackValues.cpp; sourceTree = "<group>"; };
+		F2389CD51D4773C2008DF3D9 /* Values.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Values.cpp; sourceTree = "<group>"; };
 		F2389CD71D477416008DF3D9 /* MemoryManagement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryManagement.cpp; sourceTree = "<group>"; };
 		F2389CD91D4774D0008DF3D9 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = Source/Common.cpp; sourceTree = "<group>"; };
 		F2389CDB1D477589008DF3D9 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Platform.cpp; path = Source/Platform.cpp; sourceTree = "<group>"; };
@@ -408,7 +408,7 @@
 		F28DF4E21D5936DC00013BBC /* Prompt.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Prompt.hpp; path = Source/Prompt.hpp; sourceTree = "<group>"; };
 		F291CCBE1D11E5AF009150AF /* IntVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntVal.cpp; sourceTree = "<group>"; };
 		F291CCBF1D11E5AF009150AF /* IntVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IntVal.hpp; sourceTree = "<group>"; };
-		F291CCC11D11E66A009150AF /* StackValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StackValues.h; sourceTree = "<group>"; };
+		F291CCC11D11E66A009150AF /* Values.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Values.h; sourceTree = "<group>"; };
 		F291CCC21D11E7A2009150AF /* StrVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StrVal.cpp; sourceTree = "<group>"; };
 		F291CCC31D11E7A2009150AF /* StrVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StrVal.hpp; sourceTree = "<group>"; };
 		F291CCC51D11FADB009150AF /* OnStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OnStack.cpp; sourceTree = "<group>"; };
@@ -902,7 +902,7 @@
 				9864C9911D08077800E98010 /* DBobjects */,
 				F226E7121D3F321100E10FC3 /* Dictionaries */,
 				981C8FD11D1956CC00530F3B /* DataStructures */,
-				F291CCBD1D11E52D009150AF /* StackValues */,
+				F291CCBD1D11E52D009150AF /* Values */,
 				F25309911D02352D000F6728 /* MemoryManagement */,
 				F25309951D02399A000F6728 /* Common */,
 				F2DD65671D652A4B009B684A /* ThirdParty */,
@@ -1006,11 +1006,11 @@
 			name = Common;
 			sourceTree = SOURCE_ROOT;
 		};
-		F291CCBD1D11E52D009150AF /* StackValues */ = {
+		F291CCBD1D11E52D009150AF /* Values */ = {
 			isa = PBXGroup;
 			children = (
-				F291CCC11D11E66A009150AF /* StackValues.h */,
-				F2389CD51D4773C2008DF3D9 /* StackValues.cpp */,
+				F291CCC11D11E66A009150AF /* Values.h */,
+				F2389CD51D4773C2008DF3D9 /* Values.cpp */,
 				F291CCBE1D11E5AF009150AF /* IntVal.cpp */,
 				F291CCBF1D11E5AF009150AF /* IntVal.hpp */,
 				F2EC32D11D2DAFDB00791294 /* ObjVal.cpp */,
@@ -1026,7 +1026,7 @@
 				F291CCC81D11FF54009150AF /* ValWsp.cpp */,
 				F291CCC91D11FF54009150AF /* ValWsp.hpp */,
 			);
-			name = StackValues;
+			name = Values;
 			path = Source;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -1236,7 +1236,7 @@
 				F22056C21D62DE0400E8EF5B /* InputStream.cpp in Sources */,
 				F22056BB1D62DDEB00E8EF5B /* TaskVal.cpp in Sources */,
 				F22056CE1D62DE6000E8EF5B /* SEitf.cpp in Sources */,
-				F22056A21D62DD1A00E8EF5B /* StackValues.cpp in Sources */,
+				F22056A21D62DD1A00E8EF5B /* Values.cpp in Sources */,
 				F2A595CE1D6FD1DA007C66B1 /* Debug.cpp in Sources */,
 				F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */,
 				F22056B81D62DDDD00E8EF5B /* Table.cpp in Sources */,

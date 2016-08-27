@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "StackValues.h"
+#include "Values.h"
 
-namespace StackValues
+namespace Values
 {
   class StrVal : public OnStack
   {

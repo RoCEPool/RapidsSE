@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "StackValues.h"
+#include "Values.h"
 
 namespace Tasks {
   class Task;
@@ -17,7 +17,7 @@ namespace Dictionaries {
   class WrdVal;
 }
 
-namespace StackValues
+namespace Values
 {
   class IntVal;
   class PtrVal;
