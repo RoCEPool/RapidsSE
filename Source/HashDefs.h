@@ -14,10 +14,12 @@
 #define REPORT_ERROR
 #define REPORT_FATAL
 
-#define DEBUG_CHECKS
-#define ADDRESS_CHECK
-#define CLASS_CHECK
-#define MAGIC_CHECK
+#ifdef _DEBUG
+  #define DEBUG_CHECKS
+  #define ADDRESS_CHECK
+  #define CLASS_CHECK
+  #define MAGIC_CHECK
+#endif
 
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide
 #define MAX(a,b) (((a)>(b))?(a):(b))  // which is smaller

@@ -32,8 +32,6 @@ namespace Common
   #else
   #define _poolAddress_(pArg)
   #endif
-
-  //(__builtin_expect(!(e), 0) ? "");
   
   // ASSERT
   #define ASSERT(condition) \

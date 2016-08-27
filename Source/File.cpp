@@ -121,6 +121,17 @@ void File::vClose(void)
   m_xSysCall.vSuccess();
 }
 
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void File::vDump(void)
+{
+  vTrace("File %s:\n", m_sFilePath.a());
+  vTrace("  Open Mode %s\n", m_sOpenMode.a());
+  vTrace("  Trace level %lld\n", m_iTraceLevel);
+  vTrace("  File Pointer 0x%p\n", m_pFilePtr);
+}
+
 /*---------------------------------------------------------------------------*/
 /* bExists: test if named file exists                                        */
 /*---------------------------------------------------------------------------*/
