@@ -2,7 +2,7 @@
 /* ThreadCursor.cpp -- Cursor over Threads in ThreadList                      */
 /*============================================================================*/
 
-#include "Threading.h"
+#include "Threads.h"
 
 extern Heap* gpSmallHeap;
 

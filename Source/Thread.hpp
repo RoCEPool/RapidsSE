@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Threading.h"
+#include "Threads.h"
 
-namespace Threading
+namespace Threads
 {
   class Thread : public Object,
                  public ListNode_t<Thread>

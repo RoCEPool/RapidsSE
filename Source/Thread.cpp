@@ -2,7 +2,7 @@
 /* Thread.cpp - thread                                                        */
 /*============================================================================*/
 
-#include "Threading.h"
+#include "Threads.h"
 
 extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;

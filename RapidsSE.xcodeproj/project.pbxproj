@@ -100,7 +100,7 @@
 		F22056C41D62DE0C00E8EF5B /* Tasking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CCD1D477280008DF3D9 /* Tasking.cpp */; };
 		F22056C51D62DE1300E8EF5B /* ThreadList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CEE1D4842F2008DF3D9 /* ThreadList.cpp */; };
 		F22056C61D62DE1700E8EF5B /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2EC32CB1D2C67DA00791294 /* Thread.cpp */; };
-		F22056C71D62DE1A00E8EF5B /* Threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CCB1D477220008DF3D9 /* Threading.cpp */; };
+		F22056C71D62DE1A00E8EF5B /* Threads.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CCB1D477220008DF3D9 /* Threads.cpp */; };
 		F22056C81D62DE3F00E8EF5B /* TxArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CFC1D48AF5C008DF3D9 /* TxArray.cpp */; };
 		F22056C91D62DE4200E8EF5B /* TxMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E76B1D458B3300E10FC3 /* TxMap.cpp */; };
 		F22056CA1D62DE4500E8EF5B /* TxCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7681D4589DE00E10FC3 /* TxCollection.cpp */; };
@@ -240,7 +240,7 @@
 		F21D29A71D0E0236000F8C45 /* String.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = String.hpp; path = Source/String.hpp; sourceTree = "<group>"; };
 		F21D29A91D0E0E15000F8C45 /* Time_se.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Time_se.cpp; path = Source/Time_se.cpp; sourceTree = "<group>"; };
 		F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Time_se.hpp; path = Source/Time_se.hpp; sourceTree = "<group>"; };
-		F21D29B61D0E193E000F8C45 /* Threading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Threading.h; sourceTree = "<group>"; };
+		F21D29B61D0E193E000F8C45 /* Threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Threads.h; sourceTree = "<group>"; };
 		F21D29B71D0E199B000F8C45 /* DBobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBobjects.h; sourceTree = "<group>"; };
 		F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PosixThread.cpp; path = Source/PosixThread.cpp; sourceTree = "<group>"; };
 		F21D29B91D0E21DE000F8C45 /* PosixThread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PosixThread.hpp; path = Source/PosixThread.hpp; sourceTree = "<group>"; };
@@ -341,7 +341,7 @@
 		F2389CC51D477113008DF3D9 /* GridModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GridModel.cpp; path = Source/GridModel.cpp; sourceTree = "<group>"; };
 		F2389CC71D4771A3008DF3D9 /* Interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Interface.cpp; path = Source/Interface.cpp; sourceTree = "<group>"; };
 		F2389CC91D4771D6008DF3D9 /* Transactions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Transactions.cpp; path = Source/Transactions.cpp; sourceTree = "<group>"; };
-		F2389CCB1D477220008DF3D9 /* Threading.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Threading.cpp; sourceTree = "<group>"; };
+		F2389CCB1D477220008DF3D9 /* Threads.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Threads.cpp; sourceTree = "<group>"; };
 		F2389CCD1D477280008DF3D9 /* Tasking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tasking.cpp; sourceTree = "<group>"; };
 		F2389CCF1D4772D3008DF3D9 /* Dictionaries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dictionaries.cpp; sourceTree = "<group>"; };
 		F2389CD11D477313008DF3D9 /* DBobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DBobjects.cpp; sourceTree = "<group>"; };
@@ -632,7 +632,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		98A3C4811CF74E6200BD2B80 /* Tasking */ = {
+		98A3C4811CF74E6200BD2B80 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
 				F21D297F1D0773B4000F8C45 /* Tasking.h */,
@@ -658,7 +658,7 @@
 				F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */,
 				F29C97A41D1C955F00ED5F30 /* TaskVal.hpp */,
 			);
-			name = Tasking;
+			name = Tasks;
 			path = Source;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -684,11 +684,11 @@
 			path = Source;
 			sourceTree = SOURCE_ROOT;
 		};
-		F21D29AF1D0E18CB000F8C45 /* Threading */ = {
+		F21D29AF1D0E18CB000F8C45 /* Threads */ = {
 			isa = PBXGroup;
 			children = (
-				F21D29B61D0E193E000F8C45 /* Threading.h */,
-				F2389CCB1D477220008DF3D9 /* Threading.cpp */,
+				F21D29B61D0E193E000F8C45 /* Threads.h */,
+				F2389CCB1D477220008DF3D9 /* Threads.cpp */,
 				F2EC32CB1D2C67DA00791294 /* Thread.cpp */,
 				F2EC32CC1D2C67DA00791294 /* Thread.hpp */,
 				F2A595CF1D6FF2C4007C66B1 /* ThreadCursor.cpp */,
@@ -696,7 +696,7 @@
 				F2389CEE1D4842F2008DF3D9 /* ThreadList.cpp */,
 				F2389CEF1D4842F2008DF3D9 /* ThreadList.hpp */,
 			);
-			name = Threading;
+			name = Threads;
 			path = Source;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -897,8 +897,8 @@
 				F226E7741D4591E100E10FC3 /* GridModel */,
 				F226E75E1D45823800E10FC3 /* Interface */,
 				F226E7631D45873400E10FC3 /* Transactions */,
-				F21D29AF1D0E18CB000F8C45 /* Threading */,
-				98A3C4811CF74E6200BD2B80 /* Tasking */,
+				F21D29AF1D0E18CB000F8C45 /* Threads */,
+				98A3C4811CF74E6200BD2B80 /* Tasks */,
 				9864C9911D08077800E98010 /* DBobjects */,
 				F226E7121D3F321100E10FC3 /* Dictionaries */,
 				981C8FD11D1956CC00530F3B /* DataStructures */,
@@ -1328,7 +1328,7 @@
 				F220567C1D62DAAF00E8EF5B /* Memory.cpp in Sources */,
 				F22056681D62D3FC00E8EF5B /* Asm.s in Sources */,
 				982243411D6347A800670ED5 /* Api.cpp in Sources */,
-				F22056C71D62DE1A00E8EF5B /* Threading.cpp in Sources */,
+				F22056C71D62DE1A00E8EF5B /* Threads.cpp in Sources */,
 				F22056B41D62DDCF00E8EF5B /* Partition.cpp in Sources */,
 				F22056BD1D62DDF200E8EF5B /* TaskList.cpp in Sources */,
 				F220569C1D62DD0700E8EF5B /* ValSet.cpp in Sources */,

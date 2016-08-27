@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Threading.cpp - threading functions                                        */
+/* Threads.cpp -- Threads Functions                                           */
 /*============================================================================*/
 
-#include "Threading.h"
+#include "Threads.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Threading::vCheckAssumptions(void)
+void Threads::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Thread)     < C_SIZE_SMALL_OBJECT);
   ASSERT(sizeof(ThreadList) < C_SIZE_SMALL_OBJECT);

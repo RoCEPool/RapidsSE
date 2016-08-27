@@ -49,7 +49,7 @@ void RapidsSE::vCheckAssumptions(void)
   Dictionaries::vCheckAssumptions();
   DBobjects::vCheckAssumptions();
   Tasking::vCheckAssumptions();
-  Threading::vCheckAssumptions();
+  Threads::vCheckAssumptions();
   Interface::vCheckAssumptions();
   GridModel::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();

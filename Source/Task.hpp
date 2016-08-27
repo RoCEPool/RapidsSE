@@ -11,7 +11,7 @@ namespace Interface
   class SEitf;
 }
 
-namespace Threading
+namespace Threads
 {
   class Thread;
 }
@@ -166,7 +166,7 @@ namespace Tasking
     void vPrimitive(const char *aPrimitive);
     void vReset(void);
     void vRetry(void);
-    Threading::Thread* pRootThread(void);
+    Threads::Thread* pRootThread(void);
     void vRoutineCall(Word* pWord);
     eTS  eState(void);
     void vState(eTS eState);
@@ -221,7 +221,7 @@ namespace Tasking
     void vPushParam(s32&  sArg1);
     void vPushParam(s256& sArg1);
     void vPushParam(s16K& sArg1);
-    void vPushParam(Threading::Thread* pThread);
+    void vPushParam(Threads::Thread* pThread);
     void vPushParam(NNP_Task nnpTask);
     void vPushParam(Word* pWord);
     

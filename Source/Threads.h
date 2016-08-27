@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Threading.h - includes for Threading namespace                             */
+/* Threads.h - includes for Threads namespace                             */
 /*============================================================================*/
 
 #pragma once
@@ -11,12 +11,12 @@
 #include "ThreadCursor.hpp"
 
 //-----------------------------------------------------------------------------
-namespace Threading
+namespace Threads
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Threading;
+using namespace Threads;
 
 /*============================================================================*/
 /* end                                                                        */

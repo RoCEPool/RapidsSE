@@ -2,7 +2,7 @@
 /* ThreadList.cpp - Thread Set                                                 */
 /*============================================================================*/
 
-#include "Threading.h"
+#include "Threads.h"
 
 extern Heap*        gpSmallHeap;
 extern ThreadList*  gpThreadList;

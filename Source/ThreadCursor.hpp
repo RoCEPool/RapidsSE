@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Threading.h"
+#include "Threads.h"
 
-namespace Threading
+namespace Threads
 {
   class ThreadCursor : public Object,
                        public ListCursor_t<Thread>
