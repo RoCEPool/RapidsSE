@@ -2,7 +2,7 @@
 /* ScanBuffer.cpp -- Scanning Buffer                                          */
 /*============================================================================*/
 
-#include "DataStructures.h"
+#include "Structures.h"
 
 extern BufferPool* gpBufferPool;
 

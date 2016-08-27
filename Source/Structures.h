@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DataStructures.h - includes for DataStructures namespace                   */
+/* Structures.h - includes for Structures namespace                   */
 /*============================================================================*/
 #pragma once
 
@@ -25,12 +25,12 @@
 #include "Stack.hpp"
 
 //-----------------------------------------------------------------------------
-namespace DataStructures
+namespace Structures
 {
   void vCheckAssumptions(void);
 }
 
-using namespace DataStructures;
+using namespace Structures;
 
 /*============================================================================*/
 /* end                                                                        */

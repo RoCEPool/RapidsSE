@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "DataStructures.h"
+#include "Structures.h"
 
 #include "BodyField.hpp"
 #include "Cell.hpp"

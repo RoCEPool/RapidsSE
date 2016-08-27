@@ -3,9 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "DataStructures.h"
+#include "Structures.h"
 
-namespace DataStructures {
+namespace Structures
+{
   
   typedef bool (*compare)(void* pSearchEntry, void* pListEntry, bool *bMatch);
   

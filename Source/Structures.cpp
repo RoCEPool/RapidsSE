@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* DataStructures.cpp - dataStructures functions                              */
+/* Structures.cpp - dataStructures functions                              */
 /*============================================================================*/
 
-#include "DataStructures.h"
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void DataStructures::vCheckAssumptions(void)
+void Structures::vCheckAssumptions(void)
 {
 }
 

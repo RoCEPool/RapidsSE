@@ -67,7 +67,7 @@
 		F22056A31D62DD2200E8EF5B /* SkipCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981C8FD71D19574200530F3B /* SkipCursor.cpp */; };
 		F22056A41D62DD2600E8EF5B /* SkipNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981C8FD41D19574200530F3B /* SkipNode.cpp */; };
 		F22056A51D62DD2A00E8EF5B /* Skip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7401D41E36500E10FC3 /* Skip.cpp */; };
-		F22056A61D62DD3300E8EF5B /* DataStructures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD31D477368008DF3D9 /* DataStructures.cpp */; };
+		F22056A61D62DD3300E8EF5B /* Structures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD31D477368008DF3D9 /* Structures.cpp */; };
 		F22056A71D62DD3A00E8EF5B /* WrdVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F24C76551D1B6A5100D41D09 /* WrdVal.cpp */; };
 		F22056A81D62DD3D00E8EF5B /* Word.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29C61D0E525A000F8C45 /* Word.cpp */; };
 		F22056A91D62DD5700E8EF5B /* IPval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E9811D28E31E007C624C /* IPval.cpp */; };
@@ -191,7 +191,7 @@
 		981C8FD41D19574200530F3B /* SkipNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SkipNode.cpp; path = Source/SkipNode.cpp; sourceTree = "<group>"; };
 		981C8FD71D19574200530F3B /* SkipCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SkipCursor.cpp; path = Source/SkipCursor.cpp; sourceTree = "<group>"; };
 		981C8FDB1D19574D00530F3B /* Skip.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Skip.hpp; path = Source/Skip.hpp; sourceTree = "<group>"; };
-		981C8FDC1D19574D00530F3B /* DataStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataStructures.h; path = Source/DataStructures.h; sourceTree = "<group>"; };
+		981C8FDC1D19574D00530F3B /* Structures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Structures.h; path = Source/Structures.h; sourceTree = "<group>"; };
 		981C8FDF1D19577200530F3B /* Random.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Random.cpp; path = Source/Random.cpp; sourceTree = "<group>"; };
 		981C8FE01D19577200530F3B /* Random.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Random.hpp; path = Source/Random.hpp; sourceTree = "<group>"; };
 		9822433F1D6347A800670ED5 /* Api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Api.cpp; path = Source/Api.cpp; sourceTree = "<group>"; };
@@ -345,7 +345,7 @@
 		F2389CCD1D477280008DF3D9 /* Tasks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tasks.cpp; sourceTree = "<group>"; };
 		F2389CCF1D4772D3008DF3D9 /* Dictionaries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dictionaries.cpp; sourceTree = "<group>"; };
 		F2389CD11D477313008DF3D9 /* DBobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DBobjects.cpp; sourceTree = "<group>"; };
-		F2389CD31D477368008DF3D9 /* DataStructures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DataStructures.cpp; path = Source/DataStructures.cpp; sourceTree = "<group>"; };
+		F2389CD31D477368008DF3D9 /* Structures.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Structures.cpp; path = Source/Structures.cpp; sourceTree = "<group>"; };
 		F2389CD51D4773C2008DF3D9 /* Values.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Values.cpp; sourceTree = "<group>"; };
 		F2389CD71D477416008DF3D9 /* MemoryManagement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryManagement.cpp; sourceTree = "<group>"; };
 		F2389CD91D4774D0008DF3D9 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = Source/Common.cpp; sourceTree = "<group>"; };
@@ -545,11 +545,11 @@
 			name = TheSystem;
 			sourceTree = SOURCE_ROOT;
 		};
-		981C8FD11D1956CC00530F3B /* DataStructures */ = {
+		981C8FD11D1956CC00530F3B /* Structures */ = {
 			isa = PBXGroup;
 			children = (
-				981C8FDC1D19574D00530F3B /* DataStructures.h */,
-				F2389CD31D477368008DF3D9 /* DataStructures.cpp */,
+				981C8FDC1D19574D00530F3B /* Structures.h */,
+				F2389CD31D477368008DF3D9 /* Structures.cpp */,
 				F2389CF61D4870C6008DF3D9 /* Collection_t.hpp */,
 				F2389CF71D4870C6008DF3D9 /* CollectionCursor_t.hpp */,
 				F2389CF81D4870C6008DF3D9 /* CollectionNode_t.hpp */,
@@ -571,7 +571,7 @@
 				F2E66A4A1D10AEB1009B5882 /* Stack.cpp */,
 				F2E66A4B1D10AEB1009B5882 /* Stack.hpp */,
 			);
-			name = DataStructures;
+			name = Structures;
 			sourceTree = SOURCE_ROOT;
 		};
 		982243351D62F4BF00670ED5 /* Api */ = {
@@ -901,7 +901,7 @@
 				98A3C4811CF74E6200BD2B80 /* Tasks */,
 				9864C9911D08077800E98010 /* DBobjects */,
 				F226E7121D3F321100E10FC3 /* Dictionaries */,
-				981C8FD11D1956CC00530F3B /* DataStructures */,
+				981C8FD11D1956CC00530F3B /* Structures */,
 				F291CCBD1D11E52D009150AF /* Values */,
 				F25309911D02352D000F6728 /* MemoryManagement */,
 				F25309951D02399A000F6728 /* Common */,
@@ -1254,7 +1254,7 @@
 				F2A595D81D7036B7007C66B1 /* TxCursor.cpp in Sources */,
 				F22056931D62DCAC00E8EF5B /* Heap.cpp in Sources */,
 				F22056D61D62DE8E00E8EF5B /* OnHeap.cpp in Sources */,
-				F22056A61D62DD3300E8EF5B /* DataStructures.cpp in Sources */,
+				F22056A61D62DD3300E8EF5B /* Structures.cpp in Sources */,
 				F22056851D62DAD200E8EF5B /* s256.cpp in Sources */,
 				F22056CA1D62DE4500E8EF5B /* TxCollection.cpp in Sources */,
 				F220566F1D62DA3C00E8EF5B /* an.cpp in Sources */,

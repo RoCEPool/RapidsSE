@@ -3,9 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "DataStructures.h"
+#include "Structures.h"
 
-namespace DataStructures {
+namespace Structures
+{
   
   class SkipCursor : public mn
   {

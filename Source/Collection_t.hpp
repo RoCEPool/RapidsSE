@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "DataStructures.h"
+#include "Structures.h"
 
-namespace DataStructures
+namespace Structures
 {
   template <class OBJECT> 
   class Collection_t
@@ -42,7 +42,7 @@ namespace DataStructures
 
 ////////////////////////////////////////////////////////////////////////////////
 
-using namespace DataStructures;
+using namespace Structures;
 
 extern Heap* gpSmallHeap;
 
