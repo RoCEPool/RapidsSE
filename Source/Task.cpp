@@ -807,12 +807,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
   vAddPrimitive("timer.update",    &vTimerUpdate,      false);
   
-  vAddPrimitive("tx.delete",       &vTxDelete,         false);
   vAddPrimitive("tx.dump",         &vTxDump,           false);
-  vAddPrimitive("tx.new",          &vTxNew,            false);
-  vAddPrimitive("tx.begin",        &vTxBegin,          false);
-  vAddPrimitive("tx.commit",       &vTxCommit,         false);
-  vAddPrimitive("tx.rollback",     &vTxRollback,       false);
   
   vAddPrimitive("txCursor.begin",  &vTxCursorBegin,  false);
   vAddPrimitive("txCursor.delete", &vTxCursorDelete, false);
@@ -829,6 +824,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("txMap.init",      &vTxMapInit,        false);
   
   vAddPrimitive("txRef.init",      &vTxRefInit,        false);
+  vAddPrimitive("txRef.begin",     &vTxRefBegin,       false);
+  vAddPrimitive("txRef.end",       &vTxRefEnd,         false);
+  vAddPrimitive("txRef.commit",    &vTxRefCommit,      false);
+  vAddPrimitive("txRef.rollback",  &vTxRefRollback,    false);
   
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
@@ -8491,24 +8490,6 @@ void Task::vTimerUpdate(NNP_Task nnpTask)
 // tx: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* tx.delete -- delete tx                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTxDelete(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTxDelete");
-  
-  PtrVal xPtrSession;
-  
-  if ( ! nnpTask->bPopParam(xPtrSession) )
-    THROW_INVALID_PARAM("tx.delete");
-  
-  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
-  ASSERT(CN_TX == pTx->eClass());
-  
-  delete pTx;
-}
-
-/*----------------------------------------------------------------------------*/
 /* tx.dump -- delete tx                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTxDump(NNP_Task nnpTask)
@@ -8524,82 +8505,6 @@ void Task::vTxDump(NNP_Task nnpTask)
   ASSERT(CN_TX == pTx->eClass());
 
   pTx->vDump();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tx.new -- new tx                                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vTxNew(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTxNew");
-  
-  Tx* pTx = new Tx;
-  ASSERT(CN_TX == pTx->eClass());
-  
-  PtrVal xPtrTx;
-  xPtrTx = pTx;
-  
-  nnpTask->vPushParam(xPtrTx);
-}
-
-/*----------------------------------------------------------------------------*/
-/* tx.begin -- begin a tx                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTxBegin(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTxBegin");
-  
-  PtrVal xPtrTxRef;
-  
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
-    THROW_INVALID_PARAM("tx.begin");
-  
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
-  ASSERT(CN_TXREF == pTxRef->eClass());
-  
-  bool bBegun = pTxRef->bBeginTx();
-  
-  nnpTask->vPushParam(bBegun);
-}
-
-/*----------------------------------------------------------------------------*/
-/* tx.commit -- commit a tx                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vTxCommit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTxCommit");
-  
-  PtrVal xPtrTxRef;
-  
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
-    THROW_INVALID_PARAM("tx.commit");
-  
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
-  ASSERT(CN_TXREF == pTxRef->eClass());
-  
-  bool bCommitted = pTxRef->bCommitTx();
-  
-  nnpTask->vPushParam(bCommitted);
-}
-
-/*----------------------------------------------------------------------------*/
-/* tx.rollback -- rollback a tx                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vTxRollback(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTxRollback");
-  
-  PtrVal xPtrTxRef;
-  
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
-    THROW_INVALID_PARAM("tx.rollback");
-  
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
-  ASSERT(CN_TXREF == pTxRef->eClass());
-  
-  bool bRolledBack = pTxRef->bRollbackTx();
-  
-  nnpTask->vPushParam(bRolledBack);
 }
 
 // txCollection: ///////////////////////////////////////////////////////////////
@@ -8791,7 +8696,7 @@ void Task::vTxCursorNext(NNP_Task nnpTask)
 // txMap: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* txPap.init -- init of txmap on param stack                                 */
+/* txMap.init -- init of txmap on param stack                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(NNP_Task nnpTask)
 {
@@ -8824,6 +8729,86 @@ void Task::vTxRefInit(NNP_Task nnpTask)
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   new(pTxRef) TxRef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.begin -- begin a tx (via a txRef on stack)                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefBegin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxRefBegin");
+  
+  PtrVal xPtrTxRef;
+  
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+    THROW_INVALID_PARAM("tx.begin");
+  
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bBegun = pTxRef->bBeginTx();
+  
+  nnpTask->vPushParam(bBegun);
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.end -- end a tx (via a txRef on stack)                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefEnd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxRefEnd");
+  
+  PtrVal xPtrTxRef;
+  
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+    THROW_INVALID_PARAM("txRef.end");
+  
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bEnded = pTxRef->bEndTx();
+  
+  nnpTask->vPushParam(bEnded);
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.commit -- commit a tx (via a txRef on stack)                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefCommit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxRefCommit");
+  
+  PtrVal xPtrTxRef;
+  
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+    THROW_INVALID_PARAM("txRef.commit");
+  
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bCommitted = pTxRef->bCommitTx();
+  
+  nnpTask->vPushParam(bCommitted);
+}
+
+/*----------------------------------------------------------------------------*/
+/* txRef.rollback -- rollback a tx (via a txRef on stack)                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTxRefRollback(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTxRefRollback");
+  
+  PtrVal xPtrTxRef;
+  
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+    THROW_INVALID_PARAM("txRef.rollback");
+  
+  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  bool bRolledBack = pTxRef->bRollbackTx();
+  
+  nnpTask->vPushParam(bRolledBack);
 }
 
 // words: //////////////////////////////////////////////////////////////////////

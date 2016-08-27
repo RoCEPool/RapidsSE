@@ -58,6 +58,9 @@
     r0 loader.table!
     r0 loader.path!
     r0 loader.openFile not if "file not opened" . rdrop false exit then
+
+    beginTransaction
+
     r0 loader.begin
     begin
       r0 loader.fetchrecord
@@ -65,6 +68,9 @@
         r0 loader.pushRecord toPartition
         r0 loader.insertrow drop
     repeat
+
+    commitTransaction
+
     r0 loader.end
     r0 loader.closeFile
     rdrop

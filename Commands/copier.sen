@@ -24,6 +24,8 @@
 
   r2 r0 rowcursor.table!
 
+  beginTransaction
+
   partitions 0
   do
     // r2 ^rowCursor
@@ -42,6 +44,8 @@
 
     r2 rowcursor.end
   loop
+
+  commitTransaction
 
   // r0 ^rowCursor
   // r1 ^toTable

@@ -658,13 +658,7 @@ namespace Tasking
     static void vTimerUpdate(NNP_Task nnpTask);
     
     // tx
-    static void vTxDelete(NNP_Task nnpTask);
     static void vTxDump(NNP_Task nnpTask);
-    static void vTxNew(NNP_Task nnpTask);
-
-    static void vTxBegin(NNP_Task nnpTask);
-    static void vTxCommit(NNP_Task nnpTask);
-    static void vTxRollback(NNP_Task nnpTask);
     
     // txCollection
     static void vTxCollectionDump(NNP_Task nnpTask);
@@ -682,6 +676,10 @@ namespace Tasking
     
     // txMap
     static void vTxMapInit(NNP_Task nnpTask);
+    static void vTxRefBegin(NNP_Task nnpTask);
+    static void vTxRefCommit(NNP_Task nnpTask);
+    static void vTxRefRollback(NNP_Task nnpTask);
+    static void vTxRefEnd(NNP_Task nnpTask);
 
     // txRef
     static void vTxRefInit(NNP_Task nnpTask);

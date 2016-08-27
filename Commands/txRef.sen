@@ -25,24 +25,28 @@
   "txRef" find dup
   not if
     drop
-    "txRef" :txCursor
+    "txRef" :txRef
   then
   execute
 ;
 
 : beginTransaction
   ::txRef
-  tx.begin drop
+  txRef.begin drop
 ;
 
 : commitTransaction
   ::txRef
-  tx.commit drop
+  dup
+  txRef.commit drop
+  txRef.end drop
 ;
 
 : rollbackTransaction
   ::txRef
-  tx.rollback drop
+  dup
+  txRef.rollback drop
+  txRef.end drop
 ;
 
 /*============================================================================*/
