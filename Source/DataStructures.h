@@ -13,6 +13,9 @@
 #include "ListNode_t.hpp"
 #include "List_t.hpp"
 
+#include "QueueBuffer.hpp"
+#include "Queue.hpp"
+
 #include "ScanBuffer.hpp"
 
 #include "SkipNode.hpp"
