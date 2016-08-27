@@ -26,7 +26,7 @@ namespace Common
     
   private:
     template <class T>
-    static void vPrintColor(const char* pFmt, const T& OnStack, const char* pColour);
+    static void vPrintColor(const char* pFmt, const T& Value, const char* pColour);
   };
   
 }

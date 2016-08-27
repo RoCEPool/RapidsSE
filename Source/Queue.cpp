@@ -48,7 +48,7 @@ Queue::~Queue(void)
 /*----------------------------------------------------------------------------*/
 /* append value to this queue                                                 */
 /*----------------------------------------------------------------------------*/
-bool Queue::bAppend(OnStack* pValue)
+bool Queue::bAppend(Value* pValue)
 {
   _poolAddress_(this);
   

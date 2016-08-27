@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class PtrVal : public OnStack
+  class PtrVal : public Value
   {
   private:
     void* m_pPtr;

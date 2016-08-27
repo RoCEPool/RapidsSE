@@ -25,7 +25,7 @@ namespace DataStructures
     Queue(void);
     ~Queue(void);
     
-    bool  bAppend(OnStack* pValue);
+    bool  bAppend(Value* pValue);
     i8    iCount(void);
     void  vDump(void);
     void  vInitialize(void);

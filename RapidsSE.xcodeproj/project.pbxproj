@@ -60,7 +60,7 @@
 		F220569C1D62DD0700E8EF5B /* ValSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC01D4756DF008DF3D9 /* ValSet.cpp */; };
 		F220569D1D62DD0A00E8EF5B /* StrVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F291CCC21D11E7A2009150AF /* StrVal.cpp */; };
 		F220569E1D62DD0E00E8EF5B /* PtrVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2BD2EB71D149EDF009D7467 /* PtrVal.cpp */; };
-		F220569F1D62DD1100E8EF5B /* OnStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F291CCC51D11FADB009150AF /* OnStack.cpp */; };
+		F220569F1D62DD1100E8EF5B /* Value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F291CCC51D11FADB009150AF /* Value.cpp */; };
 		F22056A01D62DD1300E8EF5B /* ObjVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2EC32D11D2DAFDB00791294 /* ObjVal.cpp */; };
 		F22056A11D62DD1700E8EF5B /* IntVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F291CCBE1D11E5AF009150AF /* IntVal.cpp */; };
 		F22056A21D62DD1A00E8EF5B /* Values.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD51D4773C2008DF3D9 /* Values.cpp */; };
@@ -411,8 +411,8 @@
 		F291CCC11D11E66A009150AF /* Values.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Values.h; sourceTree = "<group>"; };
 		F291CCC21D11E7A2009150AF /* StrVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StrVal.cpp; sourceTree = "<group>"; };
 		F291CCC31D11E7A2009150AF /* StrVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StrVal.hpp; sourceTree = "<group>"; };
-		F291CCC51D11FADB009150AF /* OnStack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OnStack.cpp; sourceTree = "<group>"; };
-		F291CCC61D11FADB009150AF /* OnStack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OnStack.hpp; sourceTree = "<group>"; };
+		F291CCC51D11FADB009150AF /* Value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Value.cpp; sourceTree = "<group>"; };
+		F291CCC61D11FADB009150AF /* Value.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Value.hpp; sourceTree = "<group>"; };
 		F291CCC81D11FF54009150AF /* ValWsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValWsp.cpp; sourceTree = "<group>"; };
 		F291CCC91D11FF54009150AF /* ValWsp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValWsp.hpp; sourceTree = "<group>"; };
 		F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TaskVal.cpp; sourceTree = "<group>"; };
@@ -1015,8 +1015,8 @@
 				F291CCBF1D11E5AF009150AF /* IntVal.hpp */,
 				F2EC32D11D2DAFDB00791294 /* ObjVal.cpp */,
 				F2EC32D21D2DAFDB00791294 /* ObjVal.hpp */,
-				F291CCC51D11FADB009150AF /* OnStack.cpp */,
-				F291CCC61D11FADB009150AF /* OnStack.hpp */,
+				F291CCC51D11FADB009150AF /* Value.cpp */,
+				F291CCC61D11FADB009150AF /* Value.hpp */,
 				F2BD2EB71D149EDF009D7467 /* PtrVal.cpp */,
 				F2BD2EB81D149EDF009D7467 /* PtrVal.hpp */,
 				F291CCC21D11E7A2009150AF /* StrVal.cpp */,
@@ -1281,7 +1281,7 @@
 				F22056A91D62DD5700E8EF5B /* IPval.cpp in Sources */,
 				F22056871D62DADB00E8EF5B /* Shm.cpp in Sources */,
 				F22056B21D62DDC900E8EF5B /* Index.cpp in Sources */,
-				F220569F1D62DD1100E8EF5B /* OnStack.cpp in Sources */,
+				F220569F1D62DD1100E8EF5B /* Value.cpp in Sources */,
 				F220567D1D62DAB200E8EF5B /* NP.cpp in Sources */,
 				F22056C91D62DE4200E8EF5B /* TxMap.cpp in Sources */,
 				F22056841D62DACF00E8EF5B /* s32.cpp in Sources */,

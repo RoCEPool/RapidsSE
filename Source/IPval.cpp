@@ -20,7 +20,7 @@ void* IPval::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IPval::IPval(void)
-: OnStack(CN_IPVAL)
+: Value(CN_IPVAL)
 {
   m_pCell = nullptr;
 }

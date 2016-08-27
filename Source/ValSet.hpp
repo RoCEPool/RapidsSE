@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class ValSet : public OnStack
+  class ValSet : public Value
   {
     static const i8 C_VALSET_SPACE = C_1KB * 16 - 128; // fudge
   private:

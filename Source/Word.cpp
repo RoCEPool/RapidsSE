@@ -193,7 +193,7 @@ void* Word::pAppend(CodeField* pCode)
 /*----------------------------------------------------------------------------*/
 /* append value                                                               */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(OnStack* pValue)
+void Word::vAppend(Value* pValue)
 {
   _poolAddress_(this);
 
@@ -204,7 +204,7 @@ void Word::vAppend(OnStack* pValue)
 /*----------------------------------------------------------------------------*/
 /* append value                                                               */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(OnStack* pValue)
+void* Word::pAppend(Value* pValue)
 {
   _poolAddress_(this);
 
@@ -427,7 +427,7 @@ void Word::vEncode(const char* aWord, CodeField* pCode)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, OnStack* pValue)
+void Word::vEncode(const char* aWord, Value* pValue)
 {
   _poolAddress_(this);
 
@@ -614,13 +614,13 @@ i8 Word::iSize(void) const
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-OnStack* Word::pValue(void)
+Value* Word::pValue(void)
 {
   _poolAddress_(this);
   
-  OnStack* pValue = reinterpret_cast<OnStack*>(pFirstCell());
+  Value* pValue = reinterpret_cast<Value*>(pFirstCell());
   
-  return pPoolCheck<OnStack*>(pValue);
+  return pPoolCheck<Value*>(pValue);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -8,10 +8,10 @@
 
 namespace Values
 {
-  class ValWsp : public OnStack
+  class ValWsp : public Value
   {
   private:
-    char m_mArray[C_1KB*16 - sizeof(OnStack)];
+    char m_mArray[C_1KB*16 - sizeof(Value)];
     
   public:
     void* operator new(size_t);

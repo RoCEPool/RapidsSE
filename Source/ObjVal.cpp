@@ -20,7 +20,7 @@ void* ObjVal::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ObjVal::ObjVal(i8 iSize)
-: OnStack(CN_OBJVAL)
+: Value(CN_OBJVAL)
 {
   m_iSize = iSize;
 }

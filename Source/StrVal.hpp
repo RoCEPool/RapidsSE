@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class StrVal : public OnStack
+  class StrVal : public Value
   {
   private:
     i8   m_iChars;

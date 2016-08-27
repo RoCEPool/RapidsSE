@@ -8,7 +8,7 @@
 
 namespace Tasks
 {
-  class TaskVal : public OnStack
+  class TaskVal : public Value
   {
   private:
     Task* m_pTask;

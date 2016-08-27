@@ -60,8 +60,8 @@ namespace Dictionaries
     void  vAppend(Cell* pCell);
     void* pAppend(CodeField* pCode);
     void  vAppend(CodeField* pCode);
-    void* pAppend(OnStack* pValue);
-    void  vAppend(OnStack* pValue);
+    void* pAppend(Value* pValue);
+    void  vAppend(Value* pValue);
     
     void* pAppend(Tasks::pFUN pFunc);
     void  vAppend(Tasks::pFUN pFunc);
@@ -86,7 +86,7 @@ namespace Dictionaries
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
     void  vEncode(const char* aWord, CodeField* pCode);
-    void  vEncode(const char* aWord, OnStack* pValue);
+    void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
     void  vEncode(CodeField* pCode);
     
@@ -107,7 +107,7 @@ namespace Dictionaries
     void  vPrevWord(Word* pPrevWord);
     void  vReset(void);
     i8    iSize(void) const;
-    OnStack* pValue(void);
+    Value* pValue(void);
     void  vWordDump(i8 iSize);
     eWT   eWordType(void) const;
     void  vWordType(eWT eWordType);

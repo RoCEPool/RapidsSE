@@ -23,7 +23,7 @@ void* ValWsp::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ValWsp::ValWsp(void)
-: OnStack(CN_VALWSP)
+: Value(CN_VALWSP)
 {
 }
 

@@ -1204,7 +1204,7 @@ bool Task::bGuardParam(eCN eClass0) const
   if (m_xParamStack.iValues() < 1)
     return false;
   
-  OnStack* pValue0 = m_xParamStack.pPeek(0);
+  Value* pValue0 = m_xParamStack.pPeek(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
@@ -1221,11 +1221,11 @@ bool Task::bGuardParam(eCN eClass0, eCN eClass1) const
   if (m_xParamStack.iValues() < 2)
     return false;
   
-  OnStack* pValue0 = m_xParamStack.pPeek(0);
+  Value* pValue0 = m_xParamStack.pPeek(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
-  OnStack* pValue1 = m_xParamStack.pPeek(1);
+  Value* pValue1 = m_xParamStack.pPeek(1);
   if (eClass1 != pValue1->eClass())
     return false;
   
@@ -1242,15 +1242,15 @@ bool Task::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const
   if (m_xParamStack.iValues() < 3)
     return false;
   
-  OnStack* pValue0 = m_xParamStack.pPeek(0);
+  Value* pValue0 = m_xParamStack.pPeek(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
-  OnStack* pValue1 = m_xParamStack.pPeek(1);
+  Value* pValue1 = m_xParamStack.pPeek(1);
   if (eClass1 != pValue1->eClass())
     return false;
   
-  OnStack* pValue2 = m_xParamStack.pPeek(2);
+  Value* pValue2 = m_xParamStack.pPeek(2);
   if (eClass2 != pValue2->eClass())
     return false;
   
@@ -1282,7 +1282,7 @@ bool Task::bGuardReturn(eCN eClass0) const
   if (m_xReturnStack.iValues() < 1)
     return false;
   
-  OnStack* pValue0 = m_xReturnStack.pPeek(0);
+  Value* pValue0 = m_xReturnStack.pPeek(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
@@ -1299,11 +1299,11 @@ bool Task::bGuardReturn(eCN eClass0, eCN eClass1) const
   if (m_xReturnStack.iValues() < 2)
     return false;
   
-  OnStack* pValue0 = m_xReturnStack.pPeek(0);
+  Value* pValue0 = m_xReturnStack.pPeek(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
-  OnStack* pValue1 = m_xReturnStack.pPeek(1);
+  Value* pValue1 = m_xReturnStack.pPeek(1);
   if (eClass1 != pValue1->eClass())
     return false;
   
@@ -1320,15 +1320,15 @@ bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const
   if (m_xReturnStack.iValues() < 3)
     return false;
   
-  OnStack* pValue0 = m_xReturnStack.pPeek(0);
+  Value* pValue0 = m_xReturnStack.pPeek(0);
   if (eClass0 != pValue0->eClass())
     return false;
   
-  OnStack* pValue1 = m_xReturnStack.pPeek(1);
+  Value* pValue1 = m_xReturnStack.pPeek(1);
   if (eClass1 != pValue1->eClass())
     return false;
   
-  OnStack* pValue2 = m_xReturnStack.pPeek(2);
+  Value* pValue2 = m_xReturnStack.pPeek(2);
   if (eClass2 != pValue2->eClass())
     return false;
   
@@ -1778,7 +1778,7 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from param stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(i8& iArg1, OnStack& xArg2)
+bool Task::bPopParam(i8& iArg1, Value& xArg2)
 {
   if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
     return false;
@@ -1796,7 +1796,7 @@ bool Task::bPopParam(i8& iArg1, OnStack& xArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from param stack                                             */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(i8& iArg1, i8& iArg2, OnStack& xArg3)
+bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
 {
   if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
@@ -1856,7 +1856,7 @@ bool Task::bPopParam(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from param stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(Object*& pObject, OnStack& xValue)
+bool Task::bPopParam(Object*& pObject, Value& xValue)
 {
   if ( ! bGuardParam(CN_PTRVAL) )
     return false;
@@ -1958,7 +1958,7 @@ bool Task::bPopParam(Task*& pTask1)
 /*----------------------------------------------------------------------------*/
 /* pop value from param stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(OnStack& xArg1)
+bool Task::bPopParam(Value& xArg1)
 {
   if ( ! bGuardParam(1) )
     return false;
@@ -1971,7 +1971,7 @@ bool Task::bPopParam(OnStack& xArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value, value from param stack                                          */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(OnStack& pValue1, OnStack& pValue2)
+bool Task::bPopParam(Value& pValue1, Value& pValue2)
 {
   if ( ! bGuardParam(2) )
     return false;
@@ -1986,7 +1986,7 @@ bool Task::bPopParam(OnStack& pValue1, OnStack& pValue2)
 /*----------------------------------------------------------------------------*/
 /* pop value, value, value from param stack                                   */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(OnStack& pValue1, OnStack& pValue2, OnStack& pValue3)
+bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 {
   if ( ! bGuardParam(3) )
     return false;
@@ -2035,7 +2035,7 @@ bool Task::bPopParamInt(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value from param stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPopParam(OnStack* pValue)
+void Task::vPopParam(Value* pValue)
 {
   m_xParamStack.vPop(pValue);
 }
@@ -2120,7 +2120,7 @@ void Task::vPushParam(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 /* push value onto parameter stack                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPushParam(OnStack& xVal1)
+void Task::vPushParam(Value& xVal1)
 {
   m_xParamStack.vPush(&xVal1);
 }
@@ -2128,7 +2128,7 @@ void Task::vPushParam(OnStack& xVal1)
 /*----------------------------------------------------------------------------*/
 /* push value onto parameter stack                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPushParam(OnStack* pValue)
+void Task::vPushParam(Value* pValue)
 {
   m_xParamStack.vPush(pValue);
 }
@@ -2215,7 +2215,7 @@ void Task::vPushReturn(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* push value onto return stack                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vPushReturn(OnStack* pValue)
+void Task::vPushReturn(Value* pValue)
 {
   m_xReturnStack.vPush(pValue);
 }
@@ -2223,7 +2223,7 @@ void Task::vPushReturn(OnStack* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto return stack                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vPushReturn(OnStack& xValue)
+void Task::vPushReturn(Value& xValue)
 {
   m_xReturnStack.vPush(&xValue);
 }
@@ -2280,7 +2280,7 @@ bool Task::bPopReturn(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop val from return stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopReturn(OnStack& xValue)
+bool Task::bPopReturn(Value& xValue)
 {
   // need to check the parameter stack
   
@@ -2292,7 +2292,7 @@ bool Task::bPopReturn(OnStack& xValue)
 /*----------------------------------------------------------------------------*/
 /* pop val from return stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopReturn(OnStack& xValue1, OnStack& xValue2)
+bool Task::bPopReturn(Value& xValue1, Value& xValue2)
 {
   if ( ! bGuardReturn(2) )
     return false;
@@ -2306,7 +2306,7 @@ bool Task::bPopReturn(OnStack& xValue1, OnStack& xValue2)
 /*----------------------------------------------------------------------------*/
 /* pop value from return stack                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vPopReturn(OnStack* pValue)
+void Task::vPopReturn(Value* pValue)
 {
   m_xReturnStack.vPop(pValue);
 }
@@ -3256,7 +3256,7 @@ void Task::vI(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vI");
   
-  OnStack* pI = nnpTask->m_xReturnStack.pPeek();
+  Value* pI = nnpTask->m_xReturnStack.pPeek();
   
   nnpTask->vPushParam(pI);
 }
@@ -3583,7 +3583,7 @@ void Task::vJ(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vJ");
   
-  OnStack* pI = nnpTask->m_xReturnStack.pPeek(3);
+  Value* pI = nnpTask->m_xReturnStack.pPeek(3);
   
   nnpTask->vPushParam(pI);
 }
@@ -4132,7 +4132,7 @@ void Task::vPush(NNP_Task nnpTask)
 { 
   nnpTask->vPrimitive("vPush");
   
-  OnStack* pValue = nnpTask->m_pValue;
+  Value* pValue = nnpTask->m_pValue;
   
   nnpTask->vPushParam(pValue);
   
@@ -4531,7 +4531,7 @@ void Task::vSee(NNP_Task nnpTask)
     else
     if (pCell->m_pCodeField->m_pFunc == Task::vPush) {
       pCell++;
-      //OnStack* pValue = reinterpret_cast<OnStack*>(pCell);
+      //Value* pValue = reinterpret_cast<Value*>(pCell);
       //pValue->vToString(sWorkspace.a());
       ValWsp* pValue = reinterpret_cast<ValWsp*>(pCell);
       pValue->vToString(sWorkspace.a());

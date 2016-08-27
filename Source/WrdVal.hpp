@@ -10,7 +10,7 @@ namespace Dictionaries
 {
   class Word;
   
-  class WrdVal : public OnStack
+  class WrdVal : public Value
   {
   private:
     Word* m_pWord;

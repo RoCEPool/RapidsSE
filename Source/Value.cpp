@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OnStack.cpp - root class for objects on thread stack                       */
+/* Value.cpp --Base Class for Self-Describing Values                          */
 /*============================================================================*/
 
 #include "Values.h"
@@ -10,9 +10,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* OnStack::operator new(size_t iSize)
+void* Value::operator new(size_t iSize)
 {
-  vFatal("fatal: OnStack class cannot be new'd\n");
+  vFatal("fatal: Value class cannot be new'd\n");
   
   //vExitFatal();
   
@@ -22,7 +22,7 @@ void* OnStack::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OnStack::OnStack(cn eClass)
+Value::Value(cn eClass)
 : cn(eClass)
 {
 }
@@ -30,7 +30,7 @@ OnStack::OnStack(cn eClass)
 /*----------------------------------------------------------------------------*/
 /* assign/copy an integer into workspace                                      */
 /*----------------------------------------------------------------------------*/
-void OnStack::operator =(i8 iInt)
+void Value::operator =(i8 iInt)
 {
   vClass(CN_INTVAL);
   
@@ -43,7 +43,7 @@ void OnStack::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* overlap this as a intval                                                   */
 /*----------------------------------------------------------------------------*/
-IntVal* OnStack::pAsIntVal(void)
+IntVal* Value::pAsIntVal(void)
 {
   IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
   
@@ -53,7 +53,7 @@ IntVal* OnStack::pAsIntVal(void)
 /*----------------------------------------------------------------------------*/
 /* overlap this as a ptrval                                                   */
 /*----------------------------------------------------------------------------*/
-PtrVal* OnStack::pAsPtrVal(void)
+PtrVal* Value::pAsPtrVal(void)
 {
   PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
   
@@ -63,7 +63,7 @@ PtrVal* OnStack::pAsPtrVal(void)
 /*----------------------------------------------------------------------------*/
 /* overlap this as a strval                                                   */
 /*----------------------------------------------------------------------------*/
-StrVal* OnStack::pAsStrVal(void)
+StrVal* Value::pAsStrVal(void)
 {
   StrVal* pStrVal = reinterpret_cast<StrVal*>(this);
   
@@ -73,7 +73,7 @@ StrVal* OnStack::pAsStrVal(void)
 /*----------------------------------------------------------------------------*/
 /* overlap this as a valset                                                   */
 /*----------------------------------------------------------------------------*/
-ValSet* OnStack::pAsValSet(void)
+ValSet* Value::pAsValSet(void)
 {
   ValSet* pValSet = reinterpret_cast<ValSet*>(this);
   
@@ -83,7 +83,7 @@ ValSet* OnStack::pAsValSet(void)
 /*----------------------------------------------------------------------------*/
 /* overlap this as a wrdval                                                   */
 /*----------------------------------------------------------------------------*/
-WrdVal* OnStack::pAsWrdVal(void)
+WrdVal* Value::pAsWrdVal(void)
 {
   WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(this);
   
@@ -93,7 +93,7 @@ WrdVal* OnStack::pAsWrdVal(void)
 /*----------------------------------------------------------------------------*/
 /* get class name                                                             */
 /*----------------------------------------------------------------------------*/
-char* OnStack::aClass(void)
+char* Value::aClass(void)
 {
   return (char*)pCN[eClass()];
 }
@@ -101,7 +101,7 @@ char* OnStack::aClass(void)
 /*----------------------------------------------------------------------------*/
 /* get integer (ignoring type)                                                */
 /*----------------------------------------------------------------------------*/
-i8 OnStack::iAsInt(void)
+i8 Value::iAsInt(void)
 {
   IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
   
@@ -113,7 +113,7 @@ i8 OnStack::iAsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get integer                                                                */
 /*----------------------------------------------------------------------------*/
-i8 OnStack::iInt(void)
+i8 Value::iInt(void)
 {
   ASSERT(CN_INTVAL == eClass());
   
@@ -127,7 +127,7 @@ i8 OnStack::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* get pointer                                                                */
 /*----------------------------------------------------------------------------*/
-void* OnStack::pPtr(void)
+void* Value::pPtr(void)
 {
   ASSERT(CN_PTRVAL == eClass());
   
@@ -141,7 +141,7 @@ void* OnStack::pPtr(void)
 /*----------------------------------------------------------------------------*/
 /* get string                                                                 */
 /*----------------------------------------------------------------------------*/
-char* OnStack::sStr(void)
+char* Value::sStr(void)
 {
   ASSERT(CN_STRVAL == eClass());
   
@@ -155,7 +155,7 @@ char* OnStack::sStr(void)
 /*----------------------------------------------------------------------------*/
 /* get task                                                                   */
 /*----------------------------------------------------------------------------*/
-NNP_Task OnStack::nnpTask(void)
+NNP_Task Value::nnpTask(void)
 {
   ASSERT(CN_TASKVAL == eClass());
   
@@ -169,7 +169,7 @@ NNP_Task OnStack::nnpTask(void)
 /*----------------------------------------------------------------------------*/
 /* get word                                                                   */
 /*----------------------------------------------------------------------------*/
-Word* OnStack::pWord(void)
+Word* Value::pWord(void)
 {
   ASSERT(CN_WRDVAL == eClass());
   
@@ -184,7 +184,7 @@ Word* OnStack::pWord(void)
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
-i8 OnStack::iSize(void)
+i8 Value::iSize(void)
 {
   i8 iSize = 0;
   
@@ -250,7 +250,7 @@ i8 OnStack::iSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void OnStack::vToCommand(char* aWorkspace)
+void Value::vToCommand(char* aWorkspace)
 {
   eCN eClass = this->eClass();
   switch(eClass) {
@@ -294,7 +294,7 @@ void OnStack::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void OnStack::vToString(char* aWorkspace)
+void Value::vToString(char* aWorkspace)
 {
   eCN eClass = this->eClass();
   switch(eClass) {

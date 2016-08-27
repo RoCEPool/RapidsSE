@@ -20,7 +20,7 @@ void* TaskVal::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 TaskVal::TaskVal(void)
-: OnStack(CN_TASKVAL)
+: Value(CN_TASKVAL)
 {
   m_pTask = nullptr;
 }

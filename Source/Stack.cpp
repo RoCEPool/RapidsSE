@@ -63,7 +63,7 @@ void Stack::vDiscard(void)
   _poolAddress_(this);
   //_magic_();
 
-  OnStack* pValue = reinterpret_cast<OnStack*>(m_pTop);
+  Value* pValue = reinterpret_cast<Value*>(m_pTop);
   i8 iSize = pValue->iSize();
   
   vPopBy(iSize);
@@ -73,7 +73,7 @@ void Stack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-OnStack* Stack::pPeek(void) const
+Value* Stack::pPeek(void) const
 {
   _poolAddress_(this);
   //_magic_();
@@ -84,7 +84,7 @@ OnStack* Stack::pPeek(void) const
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-OnStack* Stack::pPeek(i8 iNthValue) const
+Value* Stack::pPeek(i8 iNthValue) const
 {
   _poolAddress_(this);
   //_magic_();
@@ -95,12 +95,12 @@ OnStack* Stack::pPeek(i8 iNthValue) const
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPeek(i8 iNthValue, OnStack* pValue)
+void Stack::vPeek(i8 iNthValue, Value* pValue)
 {
   _poolAddress_(this);
   //_magic_();
   
-  OnStack* pPeekedValue = pPeek(iNthValue);
+  Value* pPeekedValue = pPeek(iNthValue);
 
   i8 iSize = pPeekedValue->iSize();
   
@@ -112,14 +112,14 @@ void Stack::vPeek(i8 iNthValue, OnStack* pValue)
 /*----------------------------------------------------------------------------*/
 /* poke at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-void Stack::vPoke(i8 iNthValue, OnStack* pValue)
+void Stack::vPoke(i8 iNthValue, Value* pValue)
 {
   _poolAddress_(this);
   //_magic_();
 
   i8 iSize = pValue->iSize();
   
-  OnStack* pPokeAddress = pPeek(iNthValue);
+  Value* pPokeAddress = pPeek(iNthValue);
   
   Memory::vCopy(pPokeAddress,pValue,iSize);
 }
@@ -127,7 +127,7 @@ void Stack::vPoke(i8 iNthValue, OnStack* pValue)
 /*----------------------------------------------------------------------------*/
 /* pop value from stack                                                       */
 /*----------------------------------------------------------------------------*/
-void Stack::vPop(OnStack* pValue)
+void Stack::vPop(Value* pValue)
 {
   _poolAddress_(this);
   //_magic_();
@@ -142,7 +142,7 @@ void Stack::vPop(OnStack* pValue)
 /*----------------------------------------------------------------------------*/
 /* push value onto stack                                                      */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(OnStack* pValue)
+void Stack::vPush(Value* pValue)
 {
   _poolAddress_(this);
   //_magic_();
@@ -211,17 +211,17 @@ i8 Stack::iValues(void) const
 /*----------------------------------------------------------------------------*/
 /* get address of given value on stack                                        */
 /*----------------------------------------------------------------------------*/
-OnStack* Stack::pGetValue(i8 iNthValue) const
+Value* Stack::pGetValue(i8 iNthValue) const
 {
   _poolAddress_(this);
   //_magic_();
   
-  OnStack* pValue = pTopValue();
+  Value* pValue = pTopValue();
   while (iNthValue--) {
     char* pAddress = reinterpret_cast<char*>(pValue);
     i8 iSize = pValue->iSize();
     pAddress += iSize;
-    pValue = reinterpret_cast<OnStack*>(pAddress);
+    pValue = reinterpret_cast<Value*>(pAddress);
   }
   
   return pValue;
@@ -239,7 +239,7 @@ void Stack::vPushBy(i8 iBytes)
   
   pTop -= iBytes;
   
-  m_pTop = reinterpret_cast<OnStack*>(pTop);
+  m_pTop = reinterpret_cast<Value*>(pTop);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,44 +254,44 @@ void Stack::vPopBy(i8 iBytes)
   
   pTop += iBytes;
   
-  m_pTop = reinterpret_cast<OnStack*>(pTop);
+  m_pTop = reinterpret_cast<Value*>(pTop);
 }
 
 /*----------------------------------------------------------------------------*/
 /* base of this stack                                                         */
 /*----------------------------------------------------------------------------*/
-OnStack* Stack::pStackBase(void)
+Value* Stack::pStackBase(void)
 {
   _poolAddress_(this);
   //_magic_();
   
   char* pBase = &m_mSpace[C_STACK_AREA-1];
   
-  return pPoolCheck<OnStack*>(pBase);
+  return pPoolCheck<Value*>(pBase);
 }
 
 /*----------------------------------------------------------------------------*/
 /* limit of this stack                                                        */
 /*----------------------------------------------------------------------------*/
-OnStack* Stack::pStackLimit(void) const
+Value* Stack::pStackLimit(void) const
 {
   _poolAddress_(this);
   //_magic_();
   
   char* pLimit = (char*)this + sizeof(Stack);
   
-  return pPoolCheck<OnStack*>(pLimit);
+  return pPoolCheck<Value*>(pLimit);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get address of value on top of stack                                       */
 /*----------------------------------------------------------------------------*/
-OnStack* Stack::pTopValue(void) const
+Value* Stack::pTopValue(void) const
 {
   _poolAddress_(this);
   //_magic_();
   
-  OnStack* pValue = reinterpret_cast<OnStack*>(m_pTop);
+  Value* pValue = reinterpret_cast<Value*>(m_pTop);
   
   return pValue;
 }

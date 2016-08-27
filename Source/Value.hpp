@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* OnStack.hpp - root class for objects on thread stack                       */
+/* Value.hpp -- Base Class for a Self-Describing Value                        */
 /*============================================================================*/
 
 #pragma once
@@ -25,13 +25,13 @@ namespace Values
   class ValSet;
   class ValWsp;
   
-  class OnStack : public mn,
-                  public cn
+  class Value : public mn,
+                public cn
   {
   public:
     void* operator new(size_t);
     
-    OnStack(cn eClass);
+    Value(cn eClass);
     
     void operator =(i8 iVal);
     

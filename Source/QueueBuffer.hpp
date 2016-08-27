@@ -15,8 +15,8 @@ namespace DataStructures
   private:
     QueueBuffer* m_pNext;
     i8       m_iCount;
-    OnStack* m_pTopValue;
-    OnStack* m_pNextFree;
+    Value* m_pTopValue;
+    Value* m_pNextFree;
     // ..data..
     
   public:
@@ -26,7 +26,7 @@ namespace DataStructures
     QueueBuffer(void);
     ~QueueBuffer(void);
     
-    bool     bAppend(OnStack* pValue);
+    bool     bAppend(Value* pValue);
     i8       iCount(void);
     void     vDump(void);
     QueueBuffer* pNext(void);
@@ -35,8 +35,8 @@ namespace DataStructures
     bool     bPop(ValSet* pValSet, bool& bDiscard);
 
   private:
-    OnStack*   pFirstValue(void);
-    OnStack*   pNextValue(OnStack* pValue);
+    Value*   pFirstValue(void);
+    Value*   pNextValue(Value* pValue);
     void     vVerify(void);
   };
 }

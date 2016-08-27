@@ -20,7 +20,7 @@ void* ValSet::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 ValSet::ValSet(void)
-: OnStack(CN_VALSET)
+: Value(CN_VALSET)
 {
   ASSERT(sizeof(ValSet) <= sizeof(ValWsp));
   

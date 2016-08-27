@@ -53,7 +53,7 @@ QueueBuffer::~QueueBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* append value to this queue                                                 */
 /*----------------------------------------------------------------------------*/
-bool QueueBuffer::bAppend(OnStack* pValue)
+bool QueueBuffer::bAppend(Value* pValue)
 {
   _poolAddress_(this);
   
@@ -66,7 +66,7 @@ bool QueueBuffer::bAppend(OnStack* pValue)
   
   Memory::vCopy(m_pNextFree,pValue,nBytes);
   
-  m_pNextFree = static_cast<OnStack*>(pvAdd(m_pNextFree,nBytes));
+  m_pNextFree = static_cast<Value*>(pvAdd(m_pNextFree,nBytes));
   
   m_iCount++;
   
@@ -136,7 +136,7 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   Memory::vCopy(pValWsp,m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
-  m_pTopValue = static_cast<OnStack*>(pvAdd(m_pTopValue,nBytes));
+  m_pTopValue = static_cast<Value*>(pvAdd(m_pTopValue,nBytes));
   
   m_iCount--;
   
@@ -172,7 +172,7 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
   Memory::vCopy(pValSet,m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
-  m_pTopValue = static_cast<OnStack*>(pvAdd(m_pTopValue,nBytes));
+  m_pTopValue = static_cast<Value*>(pvAdd(m_pTopValue,nBytes));
   
   m_iCount--;
   
@@ -196,11 +196,11 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
 /*----------------------------------------------------------------------------*/
 /* first value in this qbuffer                                                */
 /*----------------------------------------------------------------------------*/
-OnStack* QueueBuffer::pFirstValue(void)
+Value* QueueBuffer::pFirstValue(void)
 {
   _poolAddress_(this);
   
-  OnStack* pFirstValue = static_cast<OnStack*>(pvAdd(this,sizeof(QueueBuffer)));
+  Value* pFirstValue = static_cast<Value*>(pvAdd(this,sizeof(QueueBuffer)));
   
   return pFirstValue;
 }
@@ -208,13 +208,13 @@ OnStack* QueueBuffer::pFirstValue(void)
 /*----------------------------------------------------------------------------*/
 /* next value in this qbuffer                                                 */
 /*----------------------------------------------------------------------------*/
-OnStack* QueueBuffer::pNextValue(OnStack* pValue)
+Value* QueueBuffer::pNextValue(Value* pValue)
 {
   _poolAddress_(this);
   
   i8 nBytes = pValue->iSize();
   
-  OnStack* pNextValue = static_cast<OnStack*>(pvAdd(pValue,nBytes));
+  Value* pNextValue = static_cast<Value*>(pvAdd(pValue,nBytes));
   
   if (pNextValue < m_pNextFree)
     return pNextValue;
@@ -230,7 +230,7 @@ void QueueBuffer::vVerify(void)
   _poolAddress_(this);
   
   i8 iCount = 0;
-  for (OnStack* pValue = pFirstValue(); pValue; pValue = pNextValue(pValue))
+  for (Value* pValue = pFirstValue(); pValue; pValue = pNextValue(pValue))
     iCount++;
   
   ASSERT(iCount == m_iCount);

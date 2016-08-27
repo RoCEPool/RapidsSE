@@ -20,7 +20,7 @@ void* StrVal::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal::StrVal(void)
-: OnStack(CN_STRVAL)
+: Value(CN_STRVAL)
 {
   m_iChars = 0;
 }

@@ -20,7 +20,7 @@ void* WrdVal::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 WrdVal::WrdVal(void)
-: OnStack(CN_WRDVAL)
+: Value(CN_WRDVAL)
 {
   m_pWord = nullptr;
 }

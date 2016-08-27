@@ -20,7 +20,7 @@ void* IntVal::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 IntVal::IntVal(void)
-: OnStack(CN_INTVAL)
+: Value(CN_INTVAL)
 {
   m_iInt = 0;
 }

@@ -21,7 +21,7 @@ void* PtrVal::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 PtrVal::PtrVal(void)
-: OnStack(CN_PTRVAL)
+: Value(CN_PTRVAL)
 {
   m_pPtr = nullptr;
 }
@@ -63,7 +63,7 @@ Object* PtrVal::pObject(void) const
 /*----------------------------------------------------------------------------*/
 void PtrVal::vFetch(ValWsp& xValWsp)
 {
-  OnStack* pValue = reinterpret_cast<OnStack*>(m_pPtr);
+  Value* pValue = reinterpret_cast<Value*>(m_pPtr);
   
   eCN eClass = pValue->eClass();
   
@@ -95,7 +95,7 @@ void PtrVal::vFetch(ValWsp& xValWsp)
 void PtrVal::vStore(ValWsp& xValWsp)
 {
   // m_pPtr should point to a value, same as xValWsp
-  OnStack* pValue = reinterpret_cast<OnStack*>(m_pPtr);
+  Value* pValue = reinterpret_cast<Value*>(m_pPtr);
 
   ASSERT(pValue->eClass() == xValWsp.eClass());
   

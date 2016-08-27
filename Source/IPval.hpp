@@ -8,7 +8,7 @@
 
 namespace Dictionaries
 {
-  class IPval : public OnStack
+  class IPval : public Value
   {
   private:
     union {

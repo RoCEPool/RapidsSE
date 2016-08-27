@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class IntVal : public OnStack
+  class IntVal : public Value
   {
   private:
     i8 m_iInt;
