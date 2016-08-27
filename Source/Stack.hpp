@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* Stack.hpp - push/pop stack                                                 */
+/* Stack.hpp -- Push/Pop Stack of Values                                      */
 /*============================================================================*/
 
 #pragma once
 
-#include "Tasks.h"
+#include "DataStructures.h"
 
-namespace Tasks
+namespace DataStructures
 {
   class Stack : public Object
   {

@@ -482,8 +482,8 @@
 		F2DD658D1D6B86A6009B684A /* RowBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RowBuffer.hpp; sourceTree = "<group>"; };
 		F2DD65901D6B86B7009B684A /* RowStrand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RowStrand.cpp; sourceTree = "<group>"; };
 		F2DD65911D6B86B7009B684A /* RowStrand.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RowStrand.hpp; sourceTree = "<group>"; };
-		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Stack.cpp; sourceTree = "<group>"; };
-		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Stack.hpp; sourceTree = "<group>"; };
+		F2E66A4A1D10AEB1009B5882 /* Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Stack.cpp; path = Source/Stack.cpp; sourceTree = "<group>"; };
+		F2E66A4B1D10AEB1009B5882 /* Stack.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Stack.hpp; path = Source/Stack.hpp; sourceTree = "<group>"; };
 		F2EC32CB1D2C67DA00791294 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
 		F2EC32CC1D2C67DA00791294 /* Thread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Thread.hpp; sourceTree = "<group>"; };
 		F2EC32CE1D2C751D00791294 /* TaskSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TaskSet.cpp; sourceTree = "<group>"; };
@@ -568,6 +568,8 @@
 				F2389CE31D47F783008DF3D9 /* SkipNode.hpp */,
 				981C8FD71D19574200530F3B /* SkipCursor.cpp */,
 				F2389CE21D47F783008DF3D9 /* SkipCursor.hpp */,
+				F2E66A4A1D10AEB1009B5882 /* Stack.cpp */,
+				F2E66A4B1D10AEB1009B5882 /* Stack.hpp */,
 			);
 			name = DataStructures;
 			sourceTree = SOURCE_ROOT;
@@ -643,8 +645,6 @@
 				F2389CCD1D477280008DF3D9 /* Tasks.cpp */,
 				F2EC32D41D2DB24F00791294 /* InputStream.cpp */,
 				F2EC32D51D2DB24F00791294 /* InputStream.hpp */,
-				F2E66A4A1D10AEB1009B5882 /* Stack.cpp */,
-				F2E66A4B1D10AEB1009B5882 /* Stack.hpp */,
 				98C42CE11D0069D1007DD84F /* Task.cpp */,
 				98C42CE21D0069D1007DD84F /* Task.hpp */,
 				F2DD657B1D66428F009B684A /* TaskCursor.cpp */,

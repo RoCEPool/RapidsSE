@@ -8,7 +8,6 @@
 
 
 #include "InputStream.hpp"
-#include "Stack.hpp"
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskSet.hpp"

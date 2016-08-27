@@ -22,6 +22,8 @@
 #include "SkipCursor.hpp"
 #include "Skip.hpp"
 
+#include "Stack.hpp"
+
 //-----------------------------------------------------------------------------
 namespace DataStructures
 {
