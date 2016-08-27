@@ -2,7 +2,7 @@
 /* HeapBuffer.cpp - segment of objects                                        */
 /*============================================================================*/
 
-#include "MemoryManagement.h"
+#include "Pool.h"
 
 extern BufferPool*  gpBufferPool;
 

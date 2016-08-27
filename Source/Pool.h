@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* MemoryManagement.h - includes for Memory Management                        */
+/* Pool.h - includes for Memory Management                        */
 /*============================================================================*/
 
 #pragma once
@@ -24,12 +24,12 @@ static const i8 C_SIZE_SMALL_OBJECT  = C_1KB;
 #include "Heap.hpp"
 
 //-----------------------------------------------------------------------------
-namespace MemoryManagement
+namespace Pool
 {
   void vCheckAssumptions(void);
 }
 
-using namespace MemoryManagement;
+using namespace Pool;
 
 extern BufferPool* gpBufferPool;
 

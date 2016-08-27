@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* MemoryManagement.cpp - Memory Management functions                         */
+/* Pool.cpp - Memory Management functions                         */
 /*============================================================================*/
 
-#include "MemoryManagement.h"
+#include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void MemoryManagement::vCheckAssumptions(void)
+void Pool::vCheckAssumptions(void)
 {
 }
 

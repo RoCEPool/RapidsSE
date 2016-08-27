@@ -2,7 +2,7 @@
 /* Heap.cpp - heap allocator                                                  */
 /*============================================================================*/
 
-#include "MemoryManagement.h"
+#include "Pool.h"
 
 extern BufferPool* gpBufferPool;
 

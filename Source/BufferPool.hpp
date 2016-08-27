@@ -7,7 +7,7 @@
 
 using namespace Common;
 
-namespace MemoryManagement
+namespace Pool
 {
   class Buffer;
   class BufferPoolIter;

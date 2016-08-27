@@ -6,7 +6,7 @@
 
 #include "Common.h"
 
-namespace MemoryManagement
+namespace Pool
 {
   class bn
   {

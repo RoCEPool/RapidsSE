@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "MemoryManagement.h"
+#include "Pool.h"
 
-namespace MemoryManagement
+namespace Pool
 {
   class Heap : public Buffer
   {

@@ -2,7 +2,7 @@
 /* BufferPool.cpp - buffer allocator                                          */
 /*============================================================================*/
 
-#include "MemoryManagement.h"
+#include "Pool.h"
 
 #include "AttachMap.hpp"
 

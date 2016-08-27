@@ -2,7 +2,7 @@
 /* bn.cpp - buffer number                                                     */
 /*============================================================================*/
 
-#include "MemoryManagement.h"
+#include "Pool.h"
   
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -102,7 +102,7 @@ bn bn::operator ++(int i)
 /*----------------------------------------------------------------------------*/
 /* _bn buffer number literal suffix                                           */
 /*----------------------------------------------------------------------------*/
-bn MemoryManagement::operator "" _bn(unsigned long long i)
+bn Pool::operator "" _bn(unsigned long long i)
 {
   return (bn)i;
 }

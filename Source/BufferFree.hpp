@@ -8,7 +8,7 @@
 
 using namespace Common;
 
-namespace MemoryManagement
+namespace Pool
 {
   class BufferFree : public Buffer
   {

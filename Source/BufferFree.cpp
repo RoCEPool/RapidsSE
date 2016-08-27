@@ -2,7 +2,7 @@
 /*  BufferFree.cpp - buffer when its in the buffer pool free chain            */
 /*============================================================================*/
 
-#include "MemoryManagement.h"
+#include "Pool.h"
   
 extern BufferPool* gpBufferPool;
 

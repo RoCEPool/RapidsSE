@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include "MemoryManagement.h"
+#include "Pool.h"
 
 using namespace Common;
 
-namespace MemoryManagement
+namespace Pool
 {
   class BufferFree;
   class BufferPool;

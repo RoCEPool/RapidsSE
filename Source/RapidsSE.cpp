@@ -43,7 +43,7 @@ void RapidsSE::vCheckAssumptions(void)
   Platform::vCheckAssumptions();
   Magic::vCheckAssumptions();
   Common::vCheckAssumptions();
-  MemoryManagement::vCheckAssumptions();
+  Pool::vCheckAssumptions();
   Values::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Dictionaries::vCheckAssumptions();
