@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Tasking.h - includes for Tasking namespace                                 */
+/* Tasks.h - includes for Tasks namespace                                 */
 /*============================================================================*/
 
 #pragma once
@@ -22,12 +22,12 @@
 #include "Socket.hpp"
 
 //-----------------------------------------------------------------------------
-namespace Tasking
+namespace Tasks
 {
   void vCheckAssumptions(void);
 }
 
-using namespace Tasking;
+using namespace Tasks;
 
 /*============================================================================*/
 /* end                                                                        */

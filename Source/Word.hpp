@@ -47,7 +47,7 @@ namespace Dictionaries
     
     Word(void);
     Word(const char* sName);
-    Word(eWT eWordType, Tasking::pFUN pFunc);
+    Word(eWT eWordType, Tasks::pFUN pFunc);
     ~Word(void);
     
     void  vAddr(Cell* pCell);
@@ -63,11 +63,11 @@ namespace Dictionaries
     void* pAppend(OnStack* pValue);
     void  vAppend(OnStack* pValue);
     
-    void* pAppend(Tasking::pFUN pFunc);
-    void  vAppend(Tasking::pFUN pFunc);
+    void* pAppend(Tasks::pFUN pFunc);
+    void  vAppend(Tasks::pFUN pFunc);
 
-    void* pAppend(Tasking::pFUN* ppFunc);
-    void  vAppend(Tasking::pFUN* ppFunc);
+    void* pAppend(Tasks::pFUN* ppFunc);
+    void  vAppend(Tasks::pFUN* ppFunc);
     
     CodeField* pCodeField(void);
 
@@ -75,8 +75,8 @@ namespace Dictionaries
     
     BodyField* pBodyField(void);
     
-    Tasking::pFUN  pFunc(void) const;
-    void  vFunc(Tasking::pFUN pFunc);
+    Tasks::pFUN  pFunc(void) const;
+    void  vFunc(Tasks::pFUN pFunc);
     
     char* pBodyArea(void);
     void  vByteDump(i8 iSize);

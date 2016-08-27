@@ -6,7 +6,7 @@
 
 #include "StackValues.h"
 
-namespace Tasking {
+namespace Tasks {
   class Task;
   class TaskVal;
   typedef NNP<Task,CN_TASK> NNP_Task;
@@ -42,7 +42,7 @@ namespace StackValues
     i8    iInt(void);
     void* pPtr(void);
     char* sStr(void);
-    Tasking::NNP_Task nnpTask(void);
+    Tasks::NNP_Task nnpTask(void);
     Dictionaries::Word* pWord(void);
     
     IntVal* pAsIntVal(void);

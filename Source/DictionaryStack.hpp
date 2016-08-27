@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Tasking.h"
+#include "Tasks.h"
 
-namespace Tasking
+namespace Tasks
 {
   class DictionaryStack
   {
@@ -30,7 +30,7 @@ namespace Tasking
     void vDump(void);
     Word* pFind(s& sName);
     Word* pFind(const char* aName);
-    Word* pFindFunc(Tasking::pFUN pFunc);
+    Word* pFindFunc(Tasks::pFUN pFunc);
     bool  bForget(s& sName);
     Word* pLocate(Cell* pCell);
     Dictionary* pPick(i8 iDic);

@@ -6,7 +6,7 @@
 
 #include "Dictionaries.h"
 
-namespace Tasking
+namespace Tasks
 {
   typedef NNP<Task,CN_TASK> NNP_Task;
   
@@ -18,7 +18,7 @@ namespace Dictionaries
   class CodeField
   {
   public:
-    void (*m_pFunc)(Tasking::NNP_Task nnpTask); // static function of tx to execute
+    void (*m_pFunc)(Tasks::NNP_Task nnpTask); // static function of tx to execute
   };
 }
 

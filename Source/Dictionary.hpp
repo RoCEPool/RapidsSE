@@ -30,7 +30,7 @@ namespace Dictionaries
     Word* pCurrentWord(void);
     void  vDump(void);
     Word* pFind(const char* aName);
-    Word* pFindFunc(Tasking::pFUN pFunc);
+    Word* pFindFunc(Tasks::pFUN pFunc);
     bool  bForget(s& sName);
     void  vFreeWord(Word* pWord);
     bool  bHasWords(void);

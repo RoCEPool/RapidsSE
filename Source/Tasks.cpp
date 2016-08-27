@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Tasking.cpp - tasking functions                                            */
+/* Tasks.cpp - Tasks functions                                            */
 /*============================================================================*/
 
-#include "Tasking.h"
+#include "Tasks.h"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
-void Tasking::vCheckAssumptions(void)
+void Tasks::vCheckAssumptions(void)
 {
   ASSERT(sizeof(Queue)    < C_SIZE_SMALL_OBJECT);
   ASSERT(sizeof(Task)     < C_SIZE_MEDIUM_OBJECT);

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Tasking.h"
+#include "Tasks.h"
 
 namespace Interface
 {
@@ -16,7 +16,7 @@ namespace Threads
   class Thread;
 }
 
-namespace Tasking
+namespace Tasks
 {
   enum eTS // Task State
   {

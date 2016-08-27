@@ -143,7 +143,7 @@ Word* Dictionary::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given function                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pFindFunc(Tasking::pFUN pFunc)
+Word* Dictionary::pFindFunc(Tasks::pFUN pFunc)
 {
   _precondition_(this, CN_DICTIONARY);
   

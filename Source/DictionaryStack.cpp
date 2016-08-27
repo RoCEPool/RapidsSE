@@ -2,7 +2,7 @@
 /* DictionaryStack.cpp - dictionary stack                                     */
 /*============================================================================*/
 
-#include "Tasking.h"
+#include "Tasks.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -121,7 +121,7 @@ Word* DictionaryStack::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given function                                                 */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pFindFunc(Tasking::pFUN pFunc)
+Word* DictionaryStack::pFindFunc(Tasks::pFUN pFunc)
 {
   _poolAddress_(this);
   

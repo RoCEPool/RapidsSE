@@ -2,7 +2,7 @@
 /* Word.cpp - word in dictionary                                              */
 /*============================================================================*/
 
-#include "Tasking.h" // needed for Task::vEnter
+#include "Tasks.h" // needed for Task::vEnter
 
 extern BufferPool*  gpBufferPool;
 extern Dictionary*  gpDictionary;
@@ -23,7 +23,7 @@ void* Word::operator new(size_t, Dictionary* pDictionary)
   pWord->m_bImmediate  = false;
   pWord->m_iDataBytes  = 0;
   
-  pWord->m_xCode.m_pFunc = &Tasking::Task::vEnter;
+  pWord->m_xCode.m_pFunc = &Tasks::Task::vEnter;
   pWord->m_xBody.m_pCell = pWord->pFirstCell();
   
   return pWord;
