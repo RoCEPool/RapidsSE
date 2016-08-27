@@ -1,11 +1,8 @@
 /*============================================================================*/
-/* hashdefs.h - various #definitions                                          */
+/* HashDefs.h -- Various #definitions                                         */
 /*============================================================================*/
 
 #pragma once
-
-
-#define TRACE_FILE "/tmp/se_trace.txt"
 
 #define REPORT_INFO
 #define REPORT_TRACE
