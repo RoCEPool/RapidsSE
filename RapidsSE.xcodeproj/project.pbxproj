@@ -637,8 +637,6 @@
 			children = (
 				F21D297F1D0773B4000F8C45 /* Tasks.h */,
 				F2389CCD1D477280008DF3D9 /* Tasks.cpp */,
-				F25C6F1B1D30512C000886A8 /* DictionaryStack.cpp */,
-				F25C6F1C1D30512C000886A8 /* DictionaryStack.hpp */,
 				F2EC32D41D2DB24F00791294 /* InputStream.cpp */,
 				F2EC32D51D2DB24F00791294 /* InputStream.hpp */,
 				F226E73D1D41E2ED00E10FC3 /* Queue.cpp */,
@@ -735,6 +733,8 @@
 				F2C6E9851D29A749007C624C /* CodeField.hpp */,
 				F21D29C31D0E524C000F8C45 /* Dictionary.cpp */,
 				F21D29C41D0E524C000F8C45 /* Dictionary.hpp */,
+				F25C6F1B1D30512C000886A8 /* DictionaryStack.cpp */,
+				F25C6F1C1D30512C000886A8 /* DictionaryStack.hpp */,
 				F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */,
 				F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */,
 				F2C6E9811D28E31E007C624C /* IPval.cpp */,

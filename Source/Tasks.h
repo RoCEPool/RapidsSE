@@ -9,7 +9,6 @@
 #include "QueueBuffer.hpp"
 #include "Queue.hpp"
 
-#include "DictionaryStack.hpp"
 #include "InputStream.hpp"
 #include "Stack.hpp"
 #include "Task.hpp"

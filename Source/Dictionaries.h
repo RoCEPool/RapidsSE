@@ -10,6 +10,7 @@
 #include "Cell.hpp"
 #include "CodeField.hpp"
 #include "Dictionary.hpp"
+#include "DictionaryStack.hpp"
 #include "GlobalDictionary.hpp"
 #include "IPval.hpp"
 #include "Word.hpp"

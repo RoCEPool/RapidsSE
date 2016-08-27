@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Tasks.h"
+#include "Dictionaries.h"
 
-namespace Tasks
+namespace Dictionaries
 {
   class DictionaryStack
   {
