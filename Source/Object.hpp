@@ -1,10 +1,10 @@
 /*============================================================================*/
-/* Object.hpp - root class for objects in buffer pool                         */
+/* Object.hpp -- Base Class for Objects in Buffer Pool                        */
 /*============================================================================*/
 
 #pragma once
 
-#include "Pool.h"
+#include "Values.h"
 
 namespace Pool
 {

@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* Structures.h - includes for Structures namespace                   */
+/* Structures.h - includes for Structures namespace                           */
 /*============================================================================*/
 #pragma once
 
-#include "Values.h"
+#include "Pool.h"
 
 #include "CollectionCursor_t.hpp"
 #include "CollectionNode_t.hpp"

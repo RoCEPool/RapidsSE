@@ -6,6 +6,8 @@
 
 #include "Values.h"
 
+#include "Object.hpp"
+
 namespace Values
 {
   class PtrVal : public Value
@@ -22,7 +24,7 @@ namespace Values
     
     i8      iSize(void) const;
     void*   pPtr(void) const;
-    Object* pObject(void) const;
+    Pool::Object* pObject(void) const;
     
     void vFetch(ValWsp& xValWsp);
     void vStore(ValWsp& xValWsp);

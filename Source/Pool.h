@@ -4,13 +4,11 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Values.h"
 
 static const i8 C_SIZE_LARGE_BUFFER  = C_1MB;
 static const i8 C_SIZE_MEDIUM_OBJECT = C_1KB * 16;
 static const i8 C_SIZE_SMALL_OBJECT  = C_1KB;
-
-#include "Object.hpp"
 
 #include "bn.hpp"
 #include "Buffer.hpp"
