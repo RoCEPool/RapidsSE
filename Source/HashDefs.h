@@ -4,7 +4,6 @@
 
 #pragma once
 
-#define VERSION_STRING  "0.0.1"
 
 #define TRACE_FILE "/tmp/se_trace.txt"
 

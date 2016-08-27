@@ -5059,7 +5059,7 @@ void Task::vVersion(NNP_Task nnpTask)
   nnpTask->vPrimitive("vSersion");
   
   s256 sVersion;
-  sVersion = VERSION_STRING;
+  sVersion = RAPIDSSE_VERSION_STRING;
   
   nnpTask->vPushParam(sVersion);
 }

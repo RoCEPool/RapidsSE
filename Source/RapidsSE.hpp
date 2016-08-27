@@ -6,6 +6,8 @@
 
 #include "StorageEngine.h"
 
+#define RAPIDSSE_VERSION_STRING "0.0.1"
+
 namespace StorageEngine
 {
   typedef NP<Task,CN_TASK> NP_Task;

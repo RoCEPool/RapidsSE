@@ -13,7 +13,7 @@ void vTest1(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {  
-  printf("RapidsSE %s (%s %s)\n",VERSION_STRING,__DATE__,__TIME__);
+  printf("RapidsSE %s (%s %s)\n",RAPIDSSE_VERSION_STRING,__DATE__,__TIME__);
   
   vTrace("Task::vWord %p\n",Task::vWord);
   
