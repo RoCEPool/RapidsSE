@@ -6,8 +6,8 @@
 
 #include "Transactions.h"
 
-namespace Transactions {
-    
+namespace Transactions
+{    
   enum eTP // Transaction Phase
   {
     /* 0 */ TP_NONE=0,
@@ -39,7 +39,6 @@ namespace Transactions {
   class Tx : public Object,
              public CollectionNode_t<Tx>
   {
-    
   private:
     Lock  m_xLock;  // lock
     i8    m_iTxNo;  // transaction number (0..C_TX_ARRAY-1)

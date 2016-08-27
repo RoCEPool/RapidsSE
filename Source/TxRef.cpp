@@ -4,7 +4,8 @@
 
 #include "Transactions.h"
 
-extern TxMap* gpTxMap;
+extern TxMap*        gpTxMap;
+extern TxCollection* gpTxCollection;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -47,7 +48,13 @@ TxRef::~TxRef(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bBeginTx(void)
 {
-  return false;
+  ASSERT( ! m_pTx );
+  
+  m_pTx = gpTxCollection->pAllocTx();
+  
+  m_pTx->vPhase(TP_EXECUTING);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +62,10 @@ bool TxRef::bBeginTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bCommitTx(void)
 {
-  return false;
+  m_pTx->vPhase(TP_COMMITTING);
+  m_pTx->vPhase(TP_COMMITTED);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,7 +73,10 @@ bool TxRef::bCommitTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bEndTx(void)
 {
-  return false;
+  gpTxCollection->vFreeTx(m_pTx);
+  m_pTx = nullptr;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +84,9 @@ bool TxRef::bEndTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bRollbackTx(void)
 {
-  return false;
+  m_pTx->vPhase(TP_ROLLINGBACK);
+  m_pTx->vPhase(TP_ROLLEDBACK);
+  return true;
 }
 
 /*============================================================================*/

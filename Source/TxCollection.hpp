@@ -6,8 +6,8 @@
 
 #include "Transactions.h"
 
-namespace Transactions {
-    
+namespace Transactions
+{
   class TxCollection : public Object,
                        public Collection_t<Tx>
   {
@@ -23,7 +23,6 @@ namespace Transactions {
     Tx*   pAllocTx(void);
     void  vFreeTx(Tx* pTx);
   };
-    
 }
 
 /*============================================================================*/
