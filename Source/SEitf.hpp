@@ -78,7 +78,6 @@ namespace Interface
     void   vInit(void);
     i8     iPartition(void);
     void   vPrompt(void);
-    void   vPrompt2(void);
     void   vParse(s& sRequest, char* pWords[]);
     void   vExecute(char* pWords[]);
     

@@ -495,6 +495,9 @@ traceoff
 : ls
     ""                             // initial ls string
     word.this dup iterate          // setup iteration of words
+
+      dup strlen if "\n" concat then
+
 //"(" concat                   //
       object@ word.name
       16 strpad concat             // add name of the word to ls string
@@ -510,7 +513,7 @@ traceoff
         object@ execute table.space >str concat " bytes" concat
       then
 
-      "\n" concat                  //
+//      "\n" concat                  //
       object@ prevWord object!     // step backwards thru words
 
     next

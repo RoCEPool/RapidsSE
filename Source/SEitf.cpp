@@ -161,65 +161,6 @@ i8 SEitf::iPartition(void)
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEitf::vPrompt2(void)
-{
-  s32  sPrompt;
-  s256 sCommand;
-  s256 sResponse;
-  
-  char xArray[C_16KB];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1],
-    &xArray[C_1KB * 2],
-    &xArray[C_1KB * 3],
-    &xArray[C_1KB * 4],
-    &xArray[C_1KB * 5],
-    &xArray[C_1KB * 6],
-    &xArray[C_1KB * 7],
-    &xArray[C_1KB * 8],
-    &xArray[C_1KB * 9],
-    &xArray[C_1KB * 10],
-    &xArray[C_1KB * 11],
-    &xArray[C_1KB * 12],
-    &xArray[C_1KB * 13],
-    &xArray[C_1KB * 14],
-    &xArray[C_1KB * 15]
-  };
-  
-  sPrompt = "seitf> ";
-
-  while (true) {
-    sCommand  = "<no command>";
-    sResponse = "<no response>";
-    
-    if (Prompt::bGetInput(sPrompt,sCommand)) {
-      vParse(sCommand,pWords);
-      vExecute(pWords);
-      
-      if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
-        vIterateRows();
-      }
-      
-      if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
-        while (true) {
-          PosixThread::vSleepSec(10);
-          vExecute(pWords);
-        }
-      }
-
-      if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
-        while (true) {
-          vExecute(pWords);
-        }
-      }
-   
-    }
-  }
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 void SEitf::vPrompt(void)
 {
   char xArray[C_16KB];
@@ -338,7 +279,11 @@ void SEitf::vExecute(char* pWords[])
 
   xTimer.vUpdate();
   
-  vTrace("%lld %s (%lldus)\n",iStatus,m_sResponse.a(),xTimer.iMicroseconds());
+//  vTrace("%lld %s (%lldus)\n",iStatus,m_sResponse.a(),xTimer.iMicroseconds());
+  if (0 == iStatus)
+    vTrace("%s\n",m_sResponse.a());
+  else
+    vTrace("Error %lld : %s\n",iStatus,m_sResponse.a());
 }
 
 /*----------------------------------------------------------------------------*/
