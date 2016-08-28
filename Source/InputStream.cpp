@@ -170,29 +170,32 @@ void InputStream::vNextLine(void)
       
       // get next char from input file
       c = m_xInputFile.cGetChar();
-      *m_yInputCursor++ = c;
       
+      if ('\n' == c) {
+        *m_yInputCursor++ = c;
+        *m_yInputCursor = '\0';
+        break;
+      }
+
       // test for eof
       if ('\0' == c) {
+        *m_yInputCursor++ = c;
+        *m_yInputCursor = '\0';
         bEOFdetected = true;
         break;
       }
       
-      // test for eol
-      if ('\n' == c) {
-        *m_yInputCursor++ = '\0';
-        break;
-      }
+      *m_yInputCursor++ = c;
     }
     
     // set the input cursor back to the beginning of input line
     m_yInputCursor = m_wInputLine;
-    //vTrace("LINE %s",m_yInputCursor);
+    //vTrace("LINE %s\n",m_yInputCursor);
     
     // did we get a line?
     if ('\0' != *m_yInputCursor) {
       m_yInputCursor = m_wInputLine;
-      m_cCurrChar  = *m_yInputCursor++;
+      m_cCurrChar = *m_yInputCursor++;
       return;
     }
     
@@ -456,6 +459,9 @@ void InputStream::vGetChar(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vUngetChar(void)
 {
+  if ('\n' == m_cCurrChar)
+    return;
+  
   if (m_bFromFile)
     m_xInputFile.vUngetChar(m_cCurrChar);
   else
