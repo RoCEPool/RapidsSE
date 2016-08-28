@@ -450,7 +450,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
   vAddPrimitive("compiling",       &vCompiling,        false);
-  vAddPrimitive("concat",          &vConcat,           false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
@@ -556,9 +555,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
-  vAddPrimitive("streql",          &vStrEql,           false);
-  vAddPrimitive("strlen",          &vStrLen,           false);
-  vAddPrimitive("subStr",          &vSubStr,           false);
   vAddPrimitive("-",               &vSubtract,         false);
   vAddPrimitive("swap",            &vSwap,             false);
   vAddPrimitive("switch",          &vSwitch,           false);
@@ -723,6 +719,12 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("seitfList.dump",  &vSEitfListDump,    false);
   vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
+
+  vAddPrimitive("strpad", &vStringPad, false);
+  vAddPrimitive("streql", &vStrEql,    false);
+  vAddPrimitive("strlen", &vStrLen,    false);
+  vAddPrimitive("subStr", &vSubStr,    false);
+  vAddPrimitive("concat", &vConcat,    false);
   
   vAddPrimitive("table.copy",        &vTableCopy,        false);
   vAddPrimitive("table.dic",         &vTableDic,         false);
@@ -4619,82 +4621,6 @@ void Task::vStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* streql -- test string equality                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vStrEql(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vStrEql");
-  
-  ValWsp xStringA;
-  ValWsp xStringB;
-  
-  // get the arguments
-  if ( ! nnpTask->bPopParam(xStringB,xStringA) )
-    THROW_INVALID_PARAM("streql");
-  
-  i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
-  
-  nnpTask->vPushParam(iEqual);
-}
-
-/*----------------------------------------------------------------------------*/
-/* strlen -- string length                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vStrLen(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vStrLen");
-  
-  i8 iLength;
-  ValWsp xString;
-  
-  // get the arguments
-  if ( ! nnpTask->bPopParam(xString) )
-    THROW_INVALID_PARAM("strlen");
-  
-  StrVal* pStrVal = xString.pAsStrVal();
-  
-  iLength = String::iLength(pStrVal->sStr());
-  
-  nnpTask->vPushParam(iLength);
-}
-
-/*----------------------------------------------------------------------------*/
-/* substr -- substring ( start length str == substr )                         */
-/*----------------------------------------------------------------------------*/
-void Task::vSubStr(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vSubStr");
-  
-  i8 iLength;
-  i8 iStart;
-  ValWsp xString;
-  ValWsp xSubStr;
-  
-  StrVal* pStrVal = xString.pAsStrVal();
-  
-  // get the arguments
-  if ( ! nnpTask->bPopParam(iStart,iLength,xString) )
-    THROW_INVALID_PARAM("substr");
-  
-  // validate start index
-  if ( iStart < 0 || iStart >= pStrVal->iChars())
-    THROW("Invalid start index for: subStr");
-  
-  // validate length
-  if ( iLength <= 0 || iStart + iLength >= pStrVal->iChars())
-    THROW("Invalid length for: substr");
-
-  // compute substring
-  //xSubStr.vCopyString(xString.sStr() + iStartIndex,iLength);
-  
-  char* pStart = xString.sStr() + iStart;
-  
-  xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
-  
-  nnpTask->vPushParam(&xSubStr);
-}
-
-/*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
 void Task::vSubtract(NNP_Task nnpTask)
@@ -7041,6 +6967,105 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   new(pSEitfList) SEitfList;
+}
+
+// string: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* strpad -- pad string to given length                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vStringPad(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vStringPad");
+  
+  i8 iLength;
+
+  ValWsp xStringA;
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(iLength,xStringA) )
+    THROW_INVALID_PARAM("strpad");
+  
+  String::vPad(xStringA.sStr(),iLength,' ');
+  xStringA.pAsStrVal()->vSize();
+  
+  nnpTask->vPushParam(xStringA);
+}
+
+/*----------------------------------------------------------------------------*/
+/* streql -- test string equality                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vStrEql(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vStrEql");
+  
+  ValWsp xStringA;
+  ValWsp xStringB;
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(xStringB,xStringA) )
+    THROW_INVALID_PARAM("streql");
+  
+  i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
+  
+  nnpTask->vPushParam(iEqual);
+}
+
+/*----------------------------------------------------------------------------*/
+/* strlen -- string length                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vStrLen(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vStrLen");
+  
+  i8 iLength;
+  ValWsp xString;
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(xString) )
+    THROW_INVALID_PARAM("strlen");
+  
+  StrVal* pStrVal = xString.pAsStrVal();
+  
+  iLength = String::iLength(pStrVal->sStr());
+  
+  nnpTask->vPushParam(iLength);
+}
+
+/*----------------------------------------------------------------------------*/
+/* substr -- substring ( start length str == substr )                         */
+/*----------------------------------------------------------------------------*/
+void Task::vSubStr(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vSubStr");
+  
+  i8 iLength;
+  i8 iStart;
+  ValWsp xString;
+  ValWsp xSubStr;
+  
+  StrVal* pStrVal = xString.pAsStrVal();
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(iStart,iLength,xString) )
+    THROW_INVALID_PARAM("substr");
+  
+  // validate start index
+  if ( iStart < 0 || iStart >= pStrVal->iChars())
+    THROW("Invalid start index for: subStr");
+  
+  // validate length
+  if ( iLength <= 0 || iStart + iLength >= pStrVal->iChars())
+    THROW("Invalid length for: substr");
+  
+  // compute substring
+  //xSubStr.vCopyString(xString.sStr() + iStartIndex,iLength);
+  
+  char* pStart = xString.sStr() + iStart;
+  
+  xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
+  
+  nnpTask->vPushParam(&xSubStr);
 }
 
 // table: //////////////////////////////////////////////////////////////////////

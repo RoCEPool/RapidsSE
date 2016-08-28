@@ -265,8 +265,7 @@ namespace Tasks
     static void vColon(NNP_Task nnpTask);          
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
-    static void vConcat(NNP_Task nnpTask);
-    static void vCompiling(NNP_Task nnpTask);      
+    static void vCompiling(NNP_Task nnpTask);
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
     static void vCwd(NNP_Task nnpTask);
@@ -370,10 +369,7 @@ namespace Tasks
     static void vSnooze(NNP_Task nnpTask);         
     static void vSleep(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
-    static void vStrEql(NNP_Task nnpTask);
-    static void vStrLen(NNP_Task nnpTask);
-    static void vSubStr(NNP_Task nnpTask);
-    static void vSubtract(NNP_Task nnpTask);       
+    static void vSubtract(NNP_Task nnpTask);
     static void vSwap(NNP_Task nnpTask);           
     static void vSwitch(NNP_Task nnpTask);
     static void vTest(NNP_Task nnpTask);
@@ -561,6 +557,13 @@ namespace Tasks
     // seitfList
     static void vSEitfListDump(NNP_Task nnpTask);
     static void vSEitfListInit(NNP_Task nnpTask);
+    
+    // string
+    static void vStringPad(NNP_Task nnpTask);
+    static void vStrEql(NNP_Task nnpTask);
+    static void vStrLen(NNP_Task nnpTask);
+    static void vSubStr(NNP_Task nnpTask);
+    static void vConcat(NNP_Task nnpTask);
     
     // table
     static void vTableCopy(NNP_Task nnpTask);

@@ -74,6 +74,8 @@ namespace Common
     static bool  bEqualTo(const char* s1, const char* s2, i8 iCase);
     
     static char* sNew(const char* sFormat, ...);
+
+    static void  vPad(char* w, i8 iToLength, const char cWith);
     
     static void  vRemove(char* w, const char cLeading);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);

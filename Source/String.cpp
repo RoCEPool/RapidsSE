@@ -894,7 +894,25 @@ char* String::sNew(const char* sFormat, ...)
   
   return s;
 }
+
+/*----------------------------------------------------------------------------*/
+/* vPad: pad string to given length with char                                 */
+/*----------------------------------------------------------------------------*/
+void String::vPad(char* w, i8 iToLength, const char cWith)
+{
+  i8 iCurrLength = iLength(w);
   
+  if (iCurrLength >= iToLength)
+    return;
+  
+  char* z = zTerminator(w);
+  i8 nChars = iToLength - iCurrLength;
+  
+  for (i8 iChar = 0; iChar < nChars; iChar++)
+    *z++ = cWith;
+  *z = '\0';
+}
+
 /*----------------------------------------------------------------------------*/
 /* vRemove: remove any leading character                                      */
 /*----------------------------------------------------------------------------*/

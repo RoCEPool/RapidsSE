@@ -495,18 +495,24 @@ traceoff
 : ls
     ""                             // initial ls string
     word.this dup iterate          // setup iteration of words
-      "(" concat                   //
-      object@ word.name concat     // add name of the word to ls string
+//"(" concat                   //
+      object@ word.name
+      16 strpad concat             // add name of the word to ls string
                                    // add word kind to ls string
       " " concat
-      object@ word.kind@ word.name concat
+
+      object@ word.kind@ word.name
+      concat
+
                                    // add size of table to ls string
       object@ isTable if
         " " concat
-        object@ execute table.space >str concat
+        object@ execute table.space >str concat " bytes" concat
       then
-      ")\n" concat                 //
+
+      "\n" concat                  //
       object@ prevWord object!     // step backwards thru words
+
     next
     success
 ;
