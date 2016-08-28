@@ -998,7 +998,7 @@ void Task::vAddRoutines(void)
   "  gwd ."
   "  \"../../../commands\" cwd"
   "  gwd ."
-  "  \"dicInitialise.sen\" >>:"
+  "  \"initialise.sen\" >>:"
   "  \"::dicInitialise exit\" ."
   "  ::exit"
   "  ;";

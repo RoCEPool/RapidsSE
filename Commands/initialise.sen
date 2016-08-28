@@ -6,29 +6,33 @@
 
 // not the right place
 : success 0 2 ;
+
 : failure 2 ;
+
 : checkIsKnown ( word )
     dup not if drop "no such word" 1 failure 0 exit then
     1
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* step 1: compile the inital set of high-level words                         */
 /*----------------------------------------------------------------------------*/
 
 "core.sen" >>:
-"dic.sen" >>:
-"file.sen" >>:
-"lock.sen" >>:
-"timer.sen" >>:
-"var.sen" >>:
-"trace.sen" >>:
-"useful.sen" >>:
 
-// compile the runtime words
-"runtime.sen" >>:
-"metadata.sen" >>:
+"common.sen" >>:
+
+"structures.sen" >>:
+
+"tasks.sen" >>:
+
+"threads.sen" >>:
+
+"transactions.sen" >>:
+
+"interface.sen" >>:
+
+"dbobjects.sen" >>:
 
 /*----------------------------------------------------------------------------*/
 /* step 2: compile testing                                                    */
@@ -79,7 +83,7 @@ rootThread thread.spawn
 ( leave root thread on stack )
 rootThread
 
-"dicInitialised.sen" >>:
+: dicInitialised ;
 
 /*============================================================================*/
 /* end                                                                        */

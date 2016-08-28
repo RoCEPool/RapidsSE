@@ -179,11 +179,10 @@
 
 /* Begin PBXFileReference section */
 		980950FE1D326F4A002F20B0 /* thread.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = thread.sen; path = Commands/thread.sen; sourceTree = "<group>"; };
-		980950FF1D326F4A002F20B0 /* dicInitialise.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicInitialise.sen; path = Commands/dicInitialise.sen; sourceTree = "<group>"; };
+		980950FF1D326F4A002F20B0 /* initialise.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = initialise.sen; path = Commands/initialise.sen; sourceTree = "<group>"; };
 		980951011D326F4A002F20B0 /* taskSet.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = taskSet.sen; path = Commands/taskSet.sen; sourceTree = "<group>"; };
 		980951021D326F4A002F20B0 /* queue.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = queue.sen; path = Commands/queue.sen; sourceTree = "<group>"; };
 		980951041D326F4A002F20B0 /* task.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = task.sen; path = Commands/task.sen; sourceTree = "<group>"; };
-		980951061D326F4A002F20B0 /* dicInitialised.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dicInitialised.sen; path = Commands/dicInitialised.sen; sourceTree = "<group>"; };
 		98159E231D37413000478E83 /* socket_server.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket_server.sen; path = Commands/socket_server.sen; sourceTree = "<group>"; };
 		98159E241D3741C100478E83 /* socket_client.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket_client.sen; path = Commands/socket_client.sen; sourceTree = "<group>"; };
 		98163FAB1D0F14E3002B7755 /* an.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = an.cpp; path = Source/an.cpp; sourceTree = "<group>"; };
@@ -288,7 +287,7 @@
 		F226E74F1D4408B200E10FC3 /* table.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = table.sen; path = Commands/table.sen; sourceTree = "<group>"; };
 		F226E7511D440A0B00E10FC3 /* catalog.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = catalog.sen; path = Commands/catalog.sen; sourceTree = "<group>"; };
 		F226E7531D440A7A00E10FC3 /* schema.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = schema.sen; path = Commands/schema.sen; sourceTree = "<group>"; };
-		F226E7551D440AFE00E10FC3 /* metadata.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = metadata.sen; path = Commands/metadata.sen; sourceTree = "<group>"; };
+		F226E7551D440AFE00E10FC3 /* dbobjects.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dbobjects.sen; path = Commands/dbobjects.sen; sourceTree = "<group>"; };
 		F226E7561D440BBF00E10FC3 /* row.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = row.sen; path = Commands/row.sen; sourceTree = "<group>"; };
 		F226E7591D45711E00E10FC3 /* seitfList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfList.sen; path = Commands/seitfList.sen; sourceTree = "<group>"; };
 		F226E75B1D4571FD00E10FC3 /* txCollection.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txCollection.sen; path = Commands/txCollection.sen; sourceTree = "<group>"; };
@@ -345,7 +344,6 @@
 		F2389CD91D4774D0008DF3D9 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = Source/Common.cpp; sourceTree = "<group>"; };
 		F2389CDB1D477589008DF3D9 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Platform.cpp; path = Source/Platform.cpp; sourceTree = "<group>"; };
 		F2389CDE1D47F086008DF3D9 /* theSystem.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = theSystem.sen; path = Commands/theSystem.sen; sourceTree = "<group>"; };
-		F2389CDF1D47F1E0008DF3D9 /* runtime.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = runtime.sen; path = Commands/runtime.sen; sourceTree = "<group>"; };
 		F2389CE21D47F783008DF3D9 /* SkipCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SkipCursor.hpp; path = Source/SkipCursor.hpp; sourceTree = "<group>"; };
 		F2389CE31D47F783008DF3D9 /* SkipNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SkipNode.hpp; path = Source/SkipNode.hpp; sourceTree = "<group>"; };
 		F2389CE71D47FAF2008DF3D9 /* List_t.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = List_t.hpp; path = Source/List_t.hpp; sourceTree = "<group>"; };
@@ -369,6 +367,7 @@
 		F2389D0D1D4AD133008DF3D9 /* useful.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = useful.sen; path = Commands/useful.sen; sourceTree = "<group>"; };
 		F23907941D23180500120B0F /* Dir.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dir.hpp; path = Source/Dir.hpp; sourceTree = "<group>"; };
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
+		F246DFE91D737285000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
 		F24C76551D1B6A5100D41D09 /* WrdVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WrdVal.cpp; sourceTree = "<group>"; };
 		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
@@ -427,6 +426,14 @@
 		F2A595DB1D70FA28007C66B1 /* TxRef.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TxRef.cpp; path = Source/TxRef.cpp; sourceTree = "<group>"; };
 		F2A595DC1D70FA28007C66B1 /* TxRef.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TxRef.hpp; path = Source/TxRef.hpp; sourceTree = "<group>"; };
 		F2A595DF1D70FC88007C66B1 /* txRef.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txRef.sen; path = Commands/txRef.sen; sourceTree = "<group>"; };
+		F2A595E51D727EBA007C66B1 /* common.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = common.sen; path = Commands/common.sen; sourceTree = "<group>"; };
+		F2A595EB1D72823E007C66B1 /* commands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = commands.sen; path = Commands/commands.sen; sourceTree = "<group>"; };
+		F2A595EC1D728295007C66B1 /* structures.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = structures.sen; path = Commands/structures.sen; sourceTree = "<group>"; };
+		F2A595ED1D7282C9007C66B1 /* tasks.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tasks.sen; path = Commands/tasks.sen; sourceTree = "<group>"; };
+		F2A595EE1D7282F8007C66B1 /* threads.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = threads.sen; path = Commands/threads.sen; sourceTree = "<group>"; };
+		F2A595EF1D728327007C66B1 /* transactions.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = transactions.sen; path = Commands/transactions.sen; sourceTree = "<group>"; };
+		F2A595F01D728371007C66B1 /* interface.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = interface.sen; path = Commands/interface.sen; sourceTree = "<group>"; };
+		F2A595F11D728434007C66B1 /* actors.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = actors.sen; path = Commands/actors.sen; sourceTree = "<group>"; };
 		F2B3B1581D51A8980049597E /* Object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object.cpp; sourceTree = "<group>"; };
 		F2B3B1591D51A8980049597E /* Object.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Object.hpp; sourceTree = "<group>"; };
 		F2B3B15E1D51DDD70049597E /* FreeChunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeChunk.cpp; sourceTree = "<group>"; };
@@ -742,10 +749,10 @@
 			name = Main;
 			sourceTree = "<group>";
 		};
-		F226E74A1D44076400E10FC3 /* MetaData */ = {
+		F226E74A1D44076400E10FC3 /* DBobjects */ = {
 			isa = PBXGroup;
 			children = (
-				F226E7551D440AFE00E10FC3 /* metadata.sen */,
+				F226E7551D440AFE00E10FC3 /* dbobjects.sen */,
 				F226E74B1D4407CE00E10FC3 /* tenant.sen */,
 				F226E7801D45D4D900E10FC3 /* user.sen */,
 				F226E7511D440A0B00E10FC3 /* catalog.sen */,
@@ -755,29 +762,7 @@
 				F226E7561D440BBF00E10FC3 /* row.sen */,
 				F201DDDF1D6E4D8900A26858 /* rowCursor.sen */,
 			);
-			name = MetaData;
-			sourceTree = "<group>";
-		};
-		F226E7571D4570CA00E10FC3 /* Runtime */ = {
-			isa = PBXGroup;
-			children = (
-				F2389CDF1D47F1E0008DF3D9 /* runtime.sen */,
-				980951021D326F4A002F20B0 /* queue.sen */,
-				F2A595D51D702973007C66B1 /* seitfCursor.sen */,
-				F226E7591D45711E00E10FC3 /* seitfList.sen */,
-				980951041D326F4A002F20B0 /* task.sen */,
-				F2A595D41D701066007C66B1 /* taskCursor.sen */,
-				F2389CF51D48666A008DF3D9 /* taskList.sen */,
-				980951011D326F4A002F20B0 /* taskSet.sen */,
-				980950FE1D326F4A002F20B0 /* thread.sen */,
-				F2A595D31D6FFA44007C66B1 /* threadCursor.sen */,
-				F2389CF11D484854008DF3D9 /* threadList.sen */,
-				F226E75B1D4571FD00E10FC3 /* txCollection.sen */,
-				F2A595DA1D703852007C66B1 /* txCursor.sen */,
-				F226E75C1D4571FD00E10FC3 /* txMap.sen */,
-				F2A595DF1D70FC88007C66B1 /* txRef.sen */,
-			);
-			name = Runtime;
+			name = DBobjects;
 			sourceTree = "<group>";
 		};
 		F226E75E1D45823800E10FC3 /* Interface */ = {
@@ -835,35 +820,23 @@
 			name = GridModel;
 			sourceTree = "<group>";
 		};
-		F2389CDD1D47EFB6008DF3D9 /* DicInitialise */ = {
-			isa = PBXGroup;
-			children = (
-				980950FF1D326F4A002F20B0 /* dicInitialise.sen */,
-				F226E7481D4312F300E10FC3 /* core.sen */,
-				F226E71D1D40286400E10FC3 /* dic.sen */,
-				F226E7241D41918800E10FC3 /* file.sen */,
-				F22056DC1D62F11400E8EF5B /* lock.sen */,
-				F24D1FC01D64109C005031F5 /* timer.sen */,
-				F226E7251D419E3400E10FC3 /* trace.sen */,
-				F2389D0D1D4AD133008DF3D9 /* useful.sen */,
-				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
-				980951061D326F4A002F20B0 /* dicInitialised.sen */,
-			);
-			name = DicInitialise;
-			sourceTree = "<group>";
-		};
 		F2389CE01D47F291008DF3D9 /* SEN */ = {
 			isa = PBXGroup;
 			children = (
-				F2389CDD1D47EFB6008DF3D9 /* DicInitialise */,
-				F226E7571D4570CA00E10FC3 /* Runtime */,
-				980950FC1D326F33002F20B0 /* TheSystem */,
-				F2A595E11D726EED007C66B1 /* Tasks */,
+				980950FF1D326F4A002F20B0 /* initialise.sen */,
+				F2A595E11D726EED007C66B1 /* Actors */,
 				F2A595E01D726E40007C66B1 /* Commands */,
-				F226E74A1D44076400E10FC3 /* MetaData */,
+				980950FC1D326F33002F20B0 /* TheSystem */,
 				F2A595E21D726F1C007C66B1 /* GridModel */,
+				F2A595E91D728101007C66B1 /* Interface */,
+				F226E74A1D44076400E10FC3 /* DBobjects */,
+				F2A595E81D7280F0007C66B1 /* Transactions */,
+				F2A595E71D7280D3007C66B1 /* Threads */,
+				F2A595E61D7280C1007C66B1 /* Tasks */,
+				F2A595EA1D7281B2007C66B1 /* Structures */,
+				F2A595E31D727E44007C66B1 /* Common */,
+				F2A595E41D727E61007C66B1 /* Core */,
 				F2D9BF771D5D379300129097 /* Testing */,
-				F2D9BF751D5D36ED00129097 /* Socket */,
 			);
 			name = SEN;
 			sourceTree = "<group>";
@@ -1013,7 +986,7 @@
 		F2A595E01D726E40007C66B1 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
-				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
+				F2A595EB1D72823E007C66B1 /* commands.sen */,
 				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
 				F201DDE11D6E688D00A26858 /* copier.sen */,
 				F201DDE01D6E597F00A26858 /* exporter.sen */,
@@ -1022,24 +995,107 @@
 			name = Commands;
 			sourceTree = "<group>";
 		};
-		F2A595E11D726EED007C66B1 /* Tasks */ = {
+		F2A595E11D726EED007C66B1 /* Actors */ = {
 			isa = PBXGroup;
 			children = (
+				F2A595F11D728434007C66B1 /* actors.sen */,
 				F2DD65761D653E0C009B684A /* listerTask.sen */,
 				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
 				F24D1FB71D63F17E005031F5 /* reclaimTask.sen */,
+				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
 			);
-			name = Tasks;
+			name = Actors;
 			sourceTree = "<group>";
 		};
 		F2A595E21D726F1C007C66B1 /* GridModel */ = {
 			isa = PBXGroup;
 			children = (
+				F246DFE91D737285000E54C0 /* gridModel.sen */,
 				F201DDE21D6F930000A26858 /* grid.sen */,
 				F201DDE31D6F930F00A26858 /* node.sen */,
 				F2D753071D6FB55200CDB0A5 /* nodeCursor.sen */,
 			);
 			name = GridModel;
+			sourceTree = "<group>";
+		};
+		F2A595E31D727E44007C66B1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				F2A595E51D727EBA007C66B1 /* common.sen */,
+				F226E7241D41918800E10FC3 /* file.sen */,
+				F22056DC1D62F11400E8EF5B /* lock.sen */,
+				F24D1FC01D64109C005031F5 /* timer.sen */,
+				F226E7251D419E3400E10FC3 /* trace.sen */,
+				F2D9BF761D5D375900129097 /* socket.sen */,
+				98159E241D3741C100478E83 /* socket_client.sen */,
+				98159E231D37413000478E83 /* socket_server.sen */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		F2A595E41D727E61007C66B1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				F226E7481D4312F300E10FC3 /* core.sen */,
+				F226E71D1D40286400E10FC3 /* dic.sen */,
+				F2389D0D1D4AD133008DF3D9 /* useful.sen */,
+				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		F2A595E61D7280C1007C66B1 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				F2A595ED1D7282C9007C66B1 /* tasks.sen */,
+				980951041D326F4A002F20B0 /* task.sen */,
+				F2A595D41D701066007C66B1 /* taskCursor.sen */,
+				F2389CF51D48666A008DF3D9 /* taskList.sen */,
+				980951011D326F4A002F20B0 /* taskSet.sen */,
+			);
+			name = Tasks;
+			sourceTree = "<group>";
+		};
+		F2A595E71D7280D3007C66B1 /* Threads */ = {
+			isa = PBXGroup;
+			children = (
+				F2A595EE1D7282F8007C66B1 /* threads.sen */,
+				980950FE1D326F4A002F20B0 /* thread.sen */,
+				F2A595D31D6FFA44007C66B1 /* threadCursor.sen */,
+				F2389CF11D484854008DF3D9 /* threadList.sen */,
+			);
+			name = Threads;
+			sourceTree = "<group>";
+		};
+		F2A595E81D7280F0007C66B1 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				F2A595EF1D728327007C66B1 /* transactions.sen */,
+				F226E75B1D4571FD00E10FC3 /* txCollection.sen */,
+				F2A595DA1D703852007C66B1 /* txCursor.sen */,
+				F226E75C1D4571FD00E10FC3 /* txMap.sen */,
+				F2A595DF1D70FC88007C66B1 /* txRef.sen */,
+			);
+			name = Transactions;
+			sourceTree = "<group>";
+		};
+		F2A595E91D728101007C66B1 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				F2A595F01D728371007C66B1 /* interface.sen */,
+				F2A595D51D702973007C66B1 /* seitfCursor.sen */,
+				F226E7591D45711E00E10FC3 /* seitfList.sen */,
+			);
+			name = Interface;
+			sourceTree = "<group>";
+		};
+		F2A595EA1D7281B2007C66B1 /* Structures */ = {
+			isa = PBXGroup;
+			children = (
+				F2A595EC1D728295007C66B1 /* structures.sen */,
+				980951021D326F4A002F20B0 /* queue.sen */,
+			);
+			name = Structures;
 			sourceTree = "<group>";
 		};
 		F2B3B16B1D53F2690049597E /* Magic */ = {
@@ -1060,16 +1116,6 @@
 				F25309A51D027496000F6728 /* Magnitudes.h */,
 			);
 			name = Magic;
-			sourceTree = "<group>";
-		};
-		F2D9BF751D5D36ED00129097 /* Socket */ = {
-			isa = PBXGroup;
-			children = (
-				F2D9BF761D5D375900129097 /* socket.sen */,
-				98159E241D3741C100478E83 /* socket_client.sen */,
-				98159E231D37413000478E83 /* socket_server.sen */,
-			);
-			name = Socket;
 			sourceTree = "<group>";
 		};
 		F2D9BF771D5D379300129097 /* Testing */ = {

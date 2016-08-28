@@ -1,27 +1,13 @@
 /*============================================================================*/
-/* runtime.sen -- runtime components                                          */
+/* threads.sen -- threads group                                               */
 /*============================================================================*/
 
-"runtime.sen" .
-
-"seitfList.sen" >>:
-"seitfCursor.sen" >>:
-
-"task.sen" >>:
-"taskList.sen" >>:
-"taskCursor.sen" >>:
-"taskSet.sen" >>:
+"threads.sen" .
 
 "thread.sen" >>:
 "threadList.sen" >>:
 "threadCursor.sen" >>:
 
-"txCollection.sen" >>:
-"txCursor.sen" >>:
-"txMap.sen" >>:
-"txRef.sen" >>:
-
-"queue.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */
