@@ -170,6 +170,7 @@ namespace Interface
     bool bDo(char* pWords[]);
     bool bTpcH(char* pWords[]);
     bool bX(char* pWords[]);
+    bool bPrint(char* pWords[]);
     
     //--------------------------------------------------------------------------
     void         vClearLastError(void);

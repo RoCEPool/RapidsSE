@@ -814,6 +814,11 @@ bool SEitf::bDecode(char* pWords[])
     return bGetMonitor(pWords);
   }
   
+  if (String::bEqualTo("print",pWords[0],C_NO_CASE)) {
+    bPrint(pWords);
+    return false;
+  }
+  
   if (bTestFile(pWords[0])) {
     vPushFile(pWords[0]);
     return false;
@@ -1400,6 +1405,16 @@ bool SEitf::bPushDic(char* pWords[])
   
   vAppendRequest(sRequest);
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPrint(char* pWords[])
+{
+  printf("%s\n",pWords[1]);
+
   return true;
 }
 
