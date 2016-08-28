@@ -506,7 +506,7 @@
 		F2F2365C1D4BFCD50028A9C2 /* var.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = var.sen; path = Commands/var.sen; sourceTree = "<group>"; };
 		F2F2365F1D4D41460028A9C2 /* systemStart.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemStart.sen; path = Commands/systemStart.sen; sourceTree = "<group>"; };
 		F2F236601D4D41A60028A9C2 /* requestServer.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = requestServer.sen; path = Commands/requestServer.sen; sourceTree = "<group>"; };
-		F2F236611D4EAC840028A9C2 /* commandSet.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = commandSet.sen; path = Commands/commandSet.sen; sourceTree = "<group>"; };
+		F2F236611D4EAC840028A9C2 /* seitfCommands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfCommands.sen; path = Commands/seitfCommands.sen; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -987,10 +987,10 @@
 			isa = PBXGroup;
 			children = (
 				F2A595EB1D72823E007C66B1 /* commands.sen */,
-				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
 				F201DDE11D6E688D00A26858 /* copier.sen */,
 				F201DDE01D6E597F00A26858 /* exporter.sen */,
 				F2DD65871D6A8BE7009B684A /* loader.sen */,
+				F2F236611D4EAC840028A9C2 /* seitfCommands.sen */,
 			);
 			name = Commands;
 			sourceTree = "<group>";
