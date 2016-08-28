@@ -95,7 +95,8 @@ Misc Commands:
     :dic dup ' tenant swap word.kind! execute {{
       "catalogs" :dic drop
     }}
-    "created tenant" success
+
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -106,6 +107,7 @@ Misc Commands:
     checkInTenants not if exit then
 
     contents_string             // get contents of dic as a string
+
     success
 ;
 
@@ -120,7 +122,7 @@ Misc Commands:
 
   >forget
 
-  "dropped tenant" success
+  "<ok>" success
 ;
 
 
@@ -138,7 +140,8 @@ Misc Commands:
     :dic dup ' catalog swap word.kind! execute {{
       "schemas" :dic drop
     }}
-    "created catalog" success
+
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -163,7 +166,7 @@ Misc Commands:
 
     >forget
 
-    "dropped catalog" success
+    "<ok>" success
 ;
 
 
@@ -181,7 +184,8 @@ Misc Commands:
     :dic dup ' schema swap word.kind! execute {{
       "tables" :dic drop
     }}
-    "created schema" success
+
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -204,7 +208,7 @@ Misc Commands:
 
     >forget
 
-    "dropped schema" success
+    "<ok>" success
 ;
 
 
@@ -221,7 +225,7 @@ Misc Commands:
 
     :table execute createColumnsDic drop
 
-    "created table" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -252,7 +256,7 @@ Misc Commands:
 
     //freespace .
 
-    "loaded table" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -268,7 +272,7 @@ Misc Commands:
 
     tableExporter
 
-    "exported table" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -290,7 +294,7 @@ Misc Commands:
 
     tableCopier
 
-    "table copied" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -306,7 +310,7 @@ Misc Commands:
 
   rowDump
 
-  "table dumped" success
+  "<ok>" success
 
 ;
 
@@ -376,7 +380,7 @@ traceoff
 
     table.truncate
 
-    "table truncated" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -392,7 +396,7 @@ traceoff
 
     >forget
 
-    "dropped table" success
+    "<ok>" success
 ;
 
 
@@ -417,7 +421,7 @@ traceoff
 
     popTable
 
-    "created column" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -471,7 +475,7 @@ traceoff
       then
     then
 
-    "changed" success
+    "<ok>" success
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -493,28 +497,24 @@ traceoff
 /* list dictionary contents                                                   */
 /*----------------------------------------------------------------------------*/
 : ls
-    ""                             // initial ls string
-    word.this dup iterate          // setup iteration of words
+
+    ""
+    word.this dup iterate
 
       dup strlen if "\n" concat then
 
-//"(" concat                   //
-      object@ word.name
-      16 strpad concat             // add name of the word to ls string
-                                   // add word kind to ls string
-      " " concat
+      object@ word.name 12 strpad concat
 
-      object@ word.kind@ word.name
-      concat
+      "(" concat
+      object@ word.kind@ word.name concat
 
-                                   // add size of table to ls string
       object@ isTable if
         " " concat
         object@ execute table.space >str concat " bytes" concat
       then
+      ")" concat
 
-//      "\n" concat                  //
-      object@ prevWord object!     // step backwards thru words
+      object@ prevWord object!
 
     next
     success
@@ -531,7 +531,7 @@ traceoff
 
     >forget
 
-    "dropped dictionary" success
+    "<ok>" success
 ;
 
 

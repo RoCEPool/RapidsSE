@@ -280,10 +280,13 @@ void SEitf::vExecute(char* pWords[])
   xTimer.vUpdate();
   
 //  vTrace("%lld %s (%lldus)\n",iStatus,m_sResponse.a(),xTimer.iMicroseconds());
-  if (0 == iStatus)
-    vTrace("%s\n",m_sResponse.a());
-  else
+  if (0 == iStatus) {
+    if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") )
+      vTrace("%s\n",m_sResponse.a());
+  }
+  else {
     vTrace("Error %lld : %s\n",iStatus,m_sResponse.a());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
