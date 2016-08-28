@@ -1,12 +1,19 @@
 /*============================================================================*/
-/* tenants.sen -- tenant                                                      */
+/* tenant.sen -- tenant related words                                         */
 /*============================================================================*/
 
 "tenant.sen" .
 
 : tenant ;
 
-: tenant: ;
+: withinTenants
+    0 dic.pick dic.name "tenants" streql
+;
+
+: checkInTenants
+    withinTenants if 1 exit then
+    "not in tenants" 1 failure 0
+;
 
 /*============================================================================*/
 /* end                                                                        */

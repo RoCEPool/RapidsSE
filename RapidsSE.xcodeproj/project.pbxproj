@@ -283,18 +283,13 @@
 		F226E7471D430FC200E10FC3 /* 1m.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 1m.sen; path = Commands/1m.sen; sourceTree = "<group>"; };
 		F226E7481D4312F300E10FC3 /* core.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = core.sen; path = Commands/core.sen; sourceTree = "<group>"; };
 		F226E7491D43144100E10FC3 /* misc_testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = misc_testing.sen; path = Commands/misc_testing.sen; sourceTree = "<group>"; };
-		F226E74B1D4407CE00E10FC3 /* tenants.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tenants.sen; path = Commands/tenants.sen; sourceTree = "<group>"; };
-		F226E74C1D44088000E10FC3 /* catalog.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = catalog.sen; path = Commands/catalog.sen; sourceTree = "<group>"; };
+		F226E74B1D4407CE00E10FC3 /* tenant.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tenant.sen; path = Commands/tenant.sen; sourceTree = "<group>"; };
 		F226E74D1D44088C00E10FC3 /* column.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = column.sen; path = Commands/column.sen; sourceTree = "<group>"; };
-		F226E74E1D44089C00E10FC3 /* schema.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = schema.sen; path = Commands/schema.sen; sourceTree = "<group>"; };
 		F226E74F1D4408B200E10FC3 /* table.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = table.sen; path = Commands/table.sen; sourceTree = "<group>"; };
-		F226E7501D44090100E10FC3 /* tenant.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tenant.sen; path = Commands/tenant.sen; sourceTree = "<group>"; };
-		F226E7511D440A0B00E10FC3 /* catalogs.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = catalogs.sen; path = Commands/catalogs.sen; sourceTree = "<group>"; };
-		F226E7521D440A2900E10FC3 /* columns.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = columns.sen; path = Commands/columns.sen; sourceTree = "<group>"; };
-		F226E7531D440A7A00E10FC3 /* schemas.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = schemas.sen; path = Commands/schemas.sen; sourceTree = "<group>"; };
-		F226E7541D440AD200E10FC3 /* tables.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tables.sen; path = Commands/tables.sen; sourceTree = "<group>"; };
+		F226E7511D440A0B00E10FC3 /* catalog.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = catalog.sen; path = Commands/catalog.sen; sourceTree = "<group>"; };
+		F226E7531D440A7A00E10FC3 /* schema.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = schema.sen; path = Commands/schema.sen; sourceTree = "<group>"; };
 		F226E7551D440AFE00E10FC3 /* metadata.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = metadata.sen; path = Commands/metadata.sen; sourceTree = "<group>"; };
-		F226E7561D440BBF00E10FC3 /* rows.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rows.sen; path = Commands/rows.sen; sourceTree = "<group>"; };
+		F226E7561D440BBF00E10FC3 /* row.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = row.sen; path = Commands/row.sen; sourceTree = "<group>"; };
 		F226E7591D45711E00E10FC3 /* seitfList.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfList.sen; path = Commands/seitfList.sen; sourceTree = "<group>"; };
 		F226E75B1D4571FD00E10FC3 /* txCollection.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txCollection.sen; path = Commands/txCollection.sen; sourceTree = "<group>"; };
 		F226E75C1D4571FD00E10FC3 /* txMap.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = txMap.sen; path = Commands/txMap.sen; sourceTree = "<group>"; };
@@ -317,8 +312,7 @@
 		F226E77A1D4594DC00E10FC3 /* Grid.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Grid.hpp; path = Source/Grid.hpp; sourceTree = "<group>"; };
 		F226E77C1D45956300E10FC3 /* ProxySet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProxySet.cpp; path = Source/ProxySet.cpp; sourceTree = "<group>"; };
 		F226E77D1D45956300E10FC3 /* ProxySet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ProxySet.hpp; path = Source/ProxySet.hpp; sourceTree = "<group>"; };
-		F226E77F1D45D4D900E10FC3 /* user.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = user.sen; path = Commands/user.sen; sourceTree = "<group>"; };
-		F226E7801D45D4D900E10FC3 /* users.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = users.sen; path = Commands/users.sen; sourceTree = "<group>"; };
+		F226E7801D45D4D900E10FC3 /* user.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = user.sen; path = Commands/user.sen; sourceTree = "<group>"; };
 		F226E7811D45D65000E10FC3 /* Arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Arguments.cpp; sourceTree = "<group>"; };
 		F226E7821D45D65000E10FC3 /* Arguments.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Arguments.hpp; sourceTree = "<group>"; };
 		F226E7841D45D6FE00E10FC3 /* OnHeap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OnHeap.cpp; sourceTree = "<group>"; };
@@ -760,21 +754,15 @@
 			isa = PBXGroup;
 			children = (
 				F226E7551D440AFE00E10FC3 /* metadata.sen */,
-				F226E74B1D4407CE00E10FC3 /* tenants.sen */,
-				F226E7501D44090100E10FC3 /* tenant.sen */,
-				F226E7801D45D4D900E10FC3 /* users.sen */,
-				F226E77F1D45D4D900E10FC3 /* user.sen */,
-				F226E7511D440A0B00E10FC3 /* catalogs.sen */,
-				F226E74C1D44088000E10FC3 /* catalog.sen */,
-				F226E7531D440A7A00E10FC3 /* schemas.sen */,
-				F226E74E1D44089C00E10FC3 /* schema.sen */,
-				F226E7541D440AD200E10FC3 /* tables.sen */,
+				F226E74B1D4407CE00E10FC3 /* tenant.sen */,
+				F226E7801D45D4D900E10FC3 /* user.sen */,
+				F226E7511D440A0B00E10FC3 /* catalog.sen */,
+				F226E7531D440A7A00E10FC3 /* schema.sen */,
 				F226E74F1D4408B200E10FC3 /* table.sen */,
-				F226E7521D440A2900E10FC3 /* columns.sen */,
 				F226E74D1D44088C00E10FC3 /* column.sen */,
 				F201DDE11D6E688D00A26858 /* copier.sen */,
 				F201DDE01D6E597F00A26858 /* exporter.sen */,
-				F226E7561D440BBF00E10FC3 /* rows.sen */,
+				F226E7561D440BBF00E10FC3 /* row.sen */,
 				F201DDDF1D6E4D8900A26858 /* rowCursor.sen */,
 				F2DD65871D6A8BE7009B684A /* loader.sen */,
 			);

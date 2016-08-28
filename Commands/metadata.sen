@@ -4,19 +4,18 @@
 
 "metadata.sen" .
 
-"tenants.sen" >>:
+: success 0 2 ;
+
+: failure 2 ;
+
 "tenant.sen" >>:
-"users.sen" >>:
 "user.sen" >>:
-"catalogs.sen" >>:
 "catalog.sen" >>:
-"schemas.sen" >>:
 "schema.sen" >>:
-"tables.sen" >>:
 "table.sen" >>:
-"columns.sen" >>:
 "column.sen" >>:
-"rows.sen" >>:
+"row.sen" >>:
+
 "rowCursor.sen" >>:
 "loader.sen" >>:
 "exporter.sen" >>:

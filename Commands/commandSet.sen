@@ -4,17 +4,7 @@
 
 "commandSet.sen" .
 
-: success 0 2 ;
 
-: failure 2 ;
-
-: withinTenants
-    0 dic.pick dic.name "tenants" streql
-;
-
-: withinCatalogs
-    0 dic.pick dic.name "catalogs" streql
-;
 
 : withinSchemas
     0 dic.pick dic.name "schemas" streql
@@ -26,16 +16,6 @@
 
 : withinColumns
     0 dic.pick dic.name "columns" streql
-;
-
-: checkInTenants
-    withinTenants if 1 exit then
-    "not in tenants" 1 failure 0
-;
-
-: checkInCatalogs
-    withinCatalogs if 1 exit then
-    "not in catalogs" 1 failure 0
 ;
 
 : checkInSchemas
