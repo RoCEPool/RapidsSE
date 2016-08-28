@@ -15,6 +15,16 @@
     "not in catalogs" 1 failure 0
 ;
 
+: checkIsCatalog ( word )
+
+    dup not if drop "no such catalog" 1 failure 0 exit then
+
+    dup word.kind@ ' catalog eql if 1 exit then
+    drop
+    "not a catalog" 1 failure 0
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

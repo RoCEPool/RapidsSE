@@ -40,6 +40,40 @@
     does>
 ;
 
+: withinTables
+    0 dic.pick dic.name "tables" streql
+;
+
+: checkInTables
+    withinTables if 1 exit then
+    "not in tables" 1 failure 0
+;
+
+: checkIsTable ( word )
+
+  dup not if drop "no such table" 1 failure 0 exit then
+
+  dup word.kind@ ' table eql if 1 exit then
+  drop
+  "not a table" 1 failure 0
+;
+
+: pushTable ( "<tableName>" -- )
+
+    find checkIsKnown
+
+    not if "no such table" 1 failure 0 exit then
+
+    execute table.dic dic.push
+
+    true
+;
+
+: popTable
+    dic.drop
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

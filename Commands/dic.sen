@@ -40,6 +40,16 @@
     does>
 ;
 
+
+: checkIsDic ( word )
+
+    dup not if drop "no such dictionary" 1 failure 0 exit then
+    dup word.kind@ ' dic eql if 1 exit then
+    drop
+    "not a dictionary" 1 failure 0
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

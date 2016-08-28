@@ -526,14 +526,6 @@
 			isa = PBXGroup;
 			children = (
 				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
-				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
-				F2DD65761D653E0C009B684A /* listerTask.sen */,
-				F201DDE21D6F930000A26858 /* grid.sen */,
-				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
-				F201DDE31D6F930F00A26858 /* node.sen */,
-				F2D753071D6FB55200CDB0A5 /* nodeCursor.sen */,
-				F24D1FB71D63F17E005031F5 /* reclaimTask.sen */,
-				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
 				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
 			);
 			name = TheSystem;
@@ -760,11 +752,8 @@
 				F226E7531D440A7A00E10FC3 /* schema.sen */,
 				F226E74F1D4408B200E10FC3 /* table.sen */,
 				F226E74D1D44088C00E10FC3 /* column.sen */,
-				F201DDE11D6E688D00A26858 /* copier.sen */,
-				F201DDE01D6E597F00A26858 /* exporter.sen */,
 				F226E7561D440BBF00E10FC3 /* row.sen */,
 				F201DDDF1D6E4D8900A26858 /* rowCursor.sen */,
-				F2DD65871D6A8BE7009B684A /* loader.sen */,
 			);
 			name = MetaData;
 			sourceTree = "<group>";
@@ -869,7 +858,10 @@
 				F2389CDD1D47EFB6008DF3D9 /* DicInitialise */,
 				F226E7571D4570CA00E10FC3 /* Runtime */,
 				980950FC1D326F33002F20B0 /* TheSystem */,
+				F2A595E11D726EED007C66B1 /* Tasks */,
+				F2A595E01D726E40007C66B1 /* Commands */,
 				F226E74A1D44076400E10FC3 /* MetaData */,
+				F2A595E21D726F1C007C66B1 /* GridModel */,
 				F2D9BF771D5D379300129097 /* Testing */,
 				F2D9BF751D5D36ED00129097 /* Socket */,
 			);
@@ -1017,6 +1009,38 @@
 			name = Values;
 			path = Source;
 			sourceTree = SOURCE_ROOT;
+		};
+		F2A595E01D726E40007C66B1 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
+				F2F236611D4EAC840028A9C2 /* commandSet.sen */,
+				F201DDE11D6E688D00A26858 /* copier.sen */,
+				F201DDE01D6E597F00A26858 /* exporter.sen */,
+				F2DD65871D6A8BE7009B684A /* loader.sen */,
+			);
+			name = Commands;
+			sourceTree = "<group>";
+		};
+		F2A595E11D726EED007C66B1 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				F2DD65761D653E0C009B684A /* listerTask.sen */,
+				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
+				F24D1FB71D63F17E005031F5 /* reclaimTask.sen */,
+			);
+			name = Tasks;
+			sourceTree = "<group>";
+		};
+		F2A595E21D726F1C007C66B1 /* GridModel */ = {
+			isa = PBXGroup;
+			children = (
+				F201DDE21D6F930000A26858 /* grid.sen */,
+				F201DDE31D6F930F00A26858 /* node.sen */,
+				F2D753071D6FB55200CDB0A5 /* nodeCursor.sen */,
+			);
+			name = GridModel;
+			sourceTree = "<group>";
 		};
 		F2B3B16B1D53F2690049597E /* Magic */ = {
 			isa = PBXGroup;

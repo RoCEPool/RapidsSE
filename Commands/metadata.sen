@@ -4,10 +4,6 @@
 
 "metadata.sen" .
 
-: success 0 2 ;
-
-: failure 2 ;
-
 "tenant.sen" >>:
 "user.sen" >>:
 "catalog.sen" >>:

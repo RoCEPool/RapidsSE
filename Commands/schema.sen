@@ -6,6 +6,25 @@
 
 : schema ;
 
+: withinSchemas
+    0 dic.pick dic.name "schemas" streql
+;
+
+: checkInSchemas
+    withinSchemas if 1 exit then
+    "not in schemas" 1 failure 0
+;
+
+: checkIsSchema ( word )
+
+    dup not if drop "no such schema" 1 failure 0 exit then
+
+    dup word.kind@ ' schema eql if 1 exit then
+    drop
+    "not a schema" 1 failure 0
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

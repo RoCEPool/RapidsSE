@@ -6,6 +6,75 @@
 
 : column: ;
 
+: withinColumns
+    0 dic.pick dic.name "columns" streql
+;
+
+: checkInColumns
+    withinColumns if 1 exit then
+    "not in columns" 1 failure 0
+;
+
+: createColumnsDic ( table -- table )
+    dup table.dic {{ "columns" :dic drop }}
+;
+
+: pushColumns ( -- )
+
+    "columns" find checkIsKnown
+
+    not if "no columns dic" 1 failure 0 exit then
+
+    execute dic.push
+
+    true
+;
+
+: popColumns
+    dic.drop
+;
+
+: :column ( "<columnType>" "<columnName>" )
+
+    :constant
+;
+
+: addColumn ( "<columnType>" "<columnName" -- <result> )
+
+    :column
+
+    true
+;
+
+: listColumns ( -- )
+
+    ""                             // initial ls string
+    0 dic.pick dic.last            // get last word of current dic
+    dup                            // setup iteration of words
+    iterate                        //
+
+      object@ word.name            // column name
+
+      " " concat
+      object@ execute concat       // column type
+
+      swap
+
+      dup strlen
+      if " , " swap concat then    //
+
+      concat                       // prepend column to ls
+
+      object@ prevWord object!     // step backwards thru words
+
+    next                           //
+
+    "\n" concat
+
+;
+
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
