@@ -479,11 +479,11 @@ traceoff
 /*----------------------------------------------------------------------------*/
 : pwd
 
-    ""
+    "/"
     dic.count 0 do
-      I dic.pick
-      dic.name concat
-      " " concat
+      dic.count 1 - I -
+      dic.pick dic.name concat
+      "/" concat
     loop
 
     success
