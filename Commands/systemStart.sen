@@ -11,9 +11,6 @@
 
   "systemStart" .
 
-  "commandSet.sen" >>:
-  "requestServer.sen" >>:
-
   bgtasks if
 
     snooze listerStart

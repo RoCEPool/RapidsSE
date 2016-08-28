@@ -343,7 +343,7 @@
 		F2389CD71D477416008DF3D9 /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pool.cpp; sourceTree = "<group>"; };
 		F2389CD91D4774D0008DF3D9 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = Source/Common.cpp; sourceTree = "<group>"; };
 		F2389CDB1D477589008DF3D9 /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Platform.cpp; path = Source/Platform.cpp; sourceTree = "<group>"; };
-		F2389CDE1D47F086008DF3D9 /* theSystem.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = theSystem.sen; path = Commands/theSystem.sen; sourceTree = "<group>"; };
+		F2389CDE1D47F086008DF3D9 /* systemObjects.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemObjects.sen; path = Commands/systemObjects.sen; sourceTree = "<group>"; };
 		F2389CE21D47F783008DF3D9 /* SkipCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SkipCursor.hpp; path = Source/SkipCursor.hpp; sourceTree = "<group>"; };
 		F2389CE31D47F783008DF3D9 /* SkipNode.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SkipNode.hpp; path = Source/SkipNode.hpp; sourceTree = "<group>"; };
 		F2389CE71D47FAF2008DF3D9 /* List_t.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = List_t.hpp; path = Source/List_t.hpp; sourceTree = "<group>"; };
@@ -529,13 +529,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		980950FC1D326F33002F20B0 /* TheSystem */ = {
+		980950FC1D326F33002F20B0 /* SystemObjects */ = {
 			isa = PBXGroup;
 			children = (
-				F2389CDE1D47F086008DF3D9 /* theSystem.sen */,
-				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
+				F2389CDE1D47F086008DF3D9 /* systemObjects.sen */,
 			);
-			name = TheSystem;
+			name = SystemObjects;
 			sourceTree = SOURCE_ROOT;
 		};
 		981C8FD11D1956CC00530F3B /* Structures */ = {
@@ -824,9 +823,11 @@
 			isa = PBXGroup;
 			children = (
 				980950FF1D326F4A002F20B0 /* initialise.sen */,
-				F2A595E11D726EED007C66B1 /* Actors */,
+				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
+				F2D9BF771D5D379300129097 /* Testing */,
 				F2A595E01D726E40007C66B1 /* Commands */,
-				980950FC1D326F33002F20B0 /* TheSystem */,
+				F2A595E11D726EED007C66B1 /* Actors */,
+				980950FC1D326F33002F20B0 /* SystemObjects */,
 				F2A595E21D726F1C007C66B1 /* GridModel */,
 				F2A595E91D728101007C66B1 /* Interface */,
 				F226E74A1D44076400E10FC3 /* DBobjects */,
@@ -836,7 +837,6 @@
 				F2A595EA1D7281B2007C66B1 /* Structures */,
 				F2A595E31D727E44007C66B1 /* Common */,
 				F2A595E41D727E61007C66B1 /* Core */,
-				F2D9BF771D5D379300129097 /* Testing */,
 			);
 			name = SEN;
 			sourceTree = "<group>";

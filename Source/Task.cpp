@@ -3415,7 +3415,7 @@ void Task::vIsBooted(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsBooted");
   
-  Word* pWord = nnpTask->pFindWord("dicInitialised");
+  Word* pWord = nnpTask->pFindWord("__initialised__");
   
   i8 bIsBooted = pWord ? true : false;
   

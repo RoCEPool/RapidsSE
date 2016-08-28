@@ -1,81 +1,32 @@
 /*============================================================================*/
-/* dicInitialise.sen -- initialise the dictionary                             */
+/* initialise.sen -- initialise the dictionary                                */
 /*============================================================================*/
 
-"dicInitialise.sen" .
+"initialise.sen" .
 
-// not the right place
-: success 0 2 ;
-
-: failure 2 ;
-
-: checkIsKnown ( word )
-    dup not if drop "no such word" 1 failure 0 exit then
-    1
-;
-
-/*----------------------------------------------------------------------------*/
-/* step 1: compile the inital set of high-level words                         */
-/*----------------------------------------------------------------------------*/
+//
+// step 1: compile all the words
+//
 
 "core.sen" >>:
-
 "common.sen" >>:
-
 "structures.sen" >>:
-
 "tasks.sen" >>:
-
 "threads.sen" >>:
-
 "transactions.sen" >>:
-
 "interface.sen" >>:
-
 "dbobjects.sen" >>:
-
-/*----------------------------------------------------------------------------*/
-/* step 2: compile testing                                                    */
-/*----------------------------------------------------------------------------*/
-
+"gridModel.sen" >>:
+"systemObjects.sen" >>:
+"actors.sen" >>:
+"commands.sen" >>:
+"requestServer.sen" >>:
+"systemStart.sen" >>:
 "testing.sen" >>:
 
-/*----------------------------------------------------------------------------*/
-/* step 3: create the main objects for the system                             */
-/*----------------------------------------------------------------------------*/
-
-( tasklist will already exist )
-
-( create the threadList to hold all thread's )
-threadList: threadList
-
-( create the txMap to map tx's )
-txMap: txMap
-
-( create the txCollection to hold all tx's )
-txCollection: txCollection
-
-( create the seitfList to hold all seitf's )
-seitfList: seitfList
-
-( create the task set for the root thread )
-taskSet: rootTaskSet
-
-( create the root thread and name it )
-thread: rootThread "rootThread" rootThread thread.name!
-
-( give root task set to the root thread )
-rootTaskSet rootThread thread.taskSet!
-
-/*----------------------------------------------------------------------------*/
-/* step 4: compile "the system"                                               */
-/*----------------------------------------------------------------------------*/
-
-"theSystem.sen" >>:
-
-/*----------------------------------------------------------------------------*/
-/* step 4: spawn the root thread                                              */
-/*----------------------------------------------------------------------------*/
+//
+// step 2: spawn the root thread
+//
 
 ( spawn the posix thread for the root thread )
 rootThread thread.spawn
@@ -83,7 +34,7 @@ rootThread thread.spawn
 ( leave root thread on stack )
 rootThread
 
-: dicInitialised ;
+: __initialised__ ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* metadata.sen -- metadata components                                        */
+/* dbObjects.sen -- dbObjects group                                           */
 /*============================================================================*/
 
-"metadata.sen" .
+"dbObjects.sen" .
 
 "tenant.sen" >>:
 "user.sen" >>:
@@ -11,11 +11,7 @@
 "table.sen" >>:
 "column.sen" >>:
 "row.sen" >>:
-
 "rowCursor.sen" >>:
-"loader.sen" >>:
-"exporter.sen" >>:
-"copier.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */
