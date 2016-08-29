@@ -4,7 +4,7 @@
 
 "testing.sen" .
 
-"joinTestData.sen" >>:
+"jData.sen" >>:
 
 "miscTesting.sen" >>:
 

@@ -368,7 +368,7 @@
 		F23907941D23180500120B0F /* Dir.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dir.hpp; path = Source/Dir.hpp; sourceTree = "<group>"; };
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F246DFE91D737285000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
-		F246DFEA1D7398AE000E54C0 /* joinTestData.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = joinTestData.sen; path = Commands/joinTestData.sen; sourceTree = "<group>"; };
+		F246DFEA1D7398AE000E54C0 /* jData.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jData.sen; path = Commands/jData.sen; sourceTree = "<group>"; };
 		F24C76551D1B6A5100D41D09 /* WrdVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WrdVal.cpp; sourceTree = "<group>"; };
 		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
@@ -1123,7 +1123,7 @@
 			isa = PBXGroup;
 			children = (
 				F2D9BF781D5D37BB00129097 /* testing.sen */,
-				F246DFEA1D7398AE000E54C0 /* joinTestData.sen */,
+				F246DFEA1D7398AE000E54C0 /* jData.sen */,
 				F226E7491D43144100E10FC3 /* miscTesting.sen */,
 				F226E7471D430FC200E10FC3 /* 1m.sen */,
 			);

@@ -5662,7 +5662,7 @@ void Task::vFileWrite(NNP_Task nnpTask)
   
   char* wStr = xValue.pAsStrVal()->sStr();
   
-  pFile->vPrint("%s\n",wStr);
+  pFile->vPrint("%s",wStr);
 }
 
 // grid: ///////////////////////////////////////////////////////////////////////

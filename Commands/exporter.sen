@@ -37,6 +37,7 @@
       r2 rowcursor.get
 //dup .
       r3 file.write
+      "\n" r3 file.write
       r2 rowcursor.next
     repeat
 

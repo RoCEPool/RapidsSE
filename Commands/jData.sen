@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* joinTestData.sen -- generate join test data                                */
+/* jData.sen -- generate jTest data                                           */
 /*============================================================================*/
 
-"joinTestData.sen" .
+"jData.sen" .
 
 : >DigitWords
 
@@ -31,61 +31,80 @@
   rdrop
 ;
 
-: joinTestData
+: jData1000
 
-//traceon
+  file.new >r
 
-    1000 0
-    do
-      I .put
+  "../JTEST/j1000.csv" r0 file.path!
 
-      "|" .put
+  OPEN_WRITE r0 file.open not if "file not opened" . exit then
 
-      I >DigitWords .put
+  1000 0
+  do
+    I >str          r2 file.write
+    "|"             r2 file.write
+    I >DigitWords   r2 file.write
+    "|"             r2 file.write
+    I 100 % >str    r2 file.write
+    "|"             r2 file.write
+    I 10 % >str     r2 file.write
+    "\n"            r2 file.write
+  loop
 
-      "|" .put
+  r0 file.close
 
-      I 100 % >DigitWords
-      .put
+  rdrop
+;
 
-      "|" .put
+: jData100
 
-      I 10 % >DigitWords
-      .put
+  file.new >r
 
-      .\n
+  "../JTEST/j100.csv" r0 file.path!
 
-    loop
+  OPEN_WRITE r0 file.open not if "file not opened" . exit then
 
   100 0
   do
-    I .put
-
-    "|" .put
-
-    I >DigitWords .put
-
-    "|" .put
-
-    I 10 % >DigitWords
-    .put
-
-    .\n
-
+    I >str          r2 file.write
+    "|"             r2 file.write
+    I >DigitWords   r2 file.write
+    "|"             r2 file.write
+    I 10 % >str     r2 file.write
+    "\n"            r2 file.write
   loop
+
+  r0 file.close
+
+  rdrop
+;
+
+: jData10
+
+  file.new >r
+
+  "../JTEST/j10.csv" r0 file.path!
+
+  OPEN_WRITE r0 file.open not if "file not opened" . exit then
 
   10 0
   do
-    I .put
-
-    "|" .put
-
-    I >DigitWords .put
-
-    .\n
-
+    I >str          r2 file.write
+    "|"             r2 file.write
+    I >DigitWords   r2 file.write
+    "\n"            r2 file.write
   loop
 
+  r0 file.close
+
+  rdrop
+;
+
+: jData
+
+  jData1000
+  jData100
+  jData10
 ;
 
 /*============================================================================*/
