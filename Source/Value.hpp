@@ -42,14 +42,12 @@ namespace Values
     i8    iInt(void);
     void* pPtr(void);
     char* sStr(void);
-    Tasks::NNP_Task nnpTask(void);
     Dictionaries::Word* pWord(void);
     
     IntVal* pAsIntVal(void);
     PtrVal* pAsPtrVal(void);
     StrVal* pAsStrVal(void);
     ValSet* pAsValSet(void);
-    Dictionaries::WrdVal* pAsWrdVal(void);
     
     void  vToCommand(char* aWorkspace);
     void  vToString(char* aWorkspace);

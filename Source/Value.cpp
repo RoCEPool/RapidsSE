@@ -3,9 +3,7 @@
 /*============================================================================*/
 
 #include "Values.h"
-
-#include "TaskVal.hpp"
-#include "WrdVal.hpp"
+#include "IPval.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -81,16 +79,6 @@ ValSet* Value::pAsValSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* overlap this as a wrdval                                                   */
-/*----------------------------------------------------------------------------*/
-WrdVal* Value::pAsWrdVal(void)
-{
-  WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(this);
-  
-  return pWrdVal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get class name                                                             */
 /*----------------------------------------------------------------------------*/
 char* Value::aClass(void)
@@ -153,33 +141,18 @@ char* Value::sStr(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get task                                                                   */
-/*----------------------------------------------------------------------------*/
-NNP_Task Value::nnpTask(void)
-{
-  ASSERT(CN_TASKVAL == eClass());
-  
-  TaskVal* pPtrTask = reinterpret_cast<TaskVal*>(this);
-  
-  NNP_Task nnp = pPtrTask->pTask();
-  
-  return nnp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get word                                                                   */
 /*----------------------------------------------------------------------------*/
-Word* Value::pWord(void)
+Dictionaries::Word* Value::pWord(void)
 {
-  ASSERT(CN_WRDVAL == eClass());
+  ASSERT(CN_PTRVAL == eClass());
   
-  WrdVal* pPtrWord = reinterpret_cast<WrdVal*>(this);
+  PtrVal* pPtrWord = reinterpret_cast<PtrVal*>(this);
   
-  Word* p = pPtrWord->pWord();
+  Dictionaries::Word* p = pPtrWord->pWord();
   
   return p;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
@@ -221,21 +194,9 @@ i8 Value::iSize(void)
       break;
     }
       
-    case CN_TASKVAL: {
-      TaskVal* pTaskVal = reinterpret_cast<TaskVal*>(this);
-      iSize = pTaskVal->iSize();
-      break;
-    }
-      
     case CN_VALSET: {
       ValSet* pValSet = reinterpret_cast<ValSet*>(this);
       iSize = pValSet->iSize();
-      break;
-    }
-      
-   case CN_WRDVAL: {
-      WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(this);
-      iSize = pWrdVal->iSize();
       break;
     }
       
@@ -270,18 +231,6 @@ void Value::vToCommand(char* aWorkspace)
     case CN_STRVAL: {
       StrVal* pStrVal = reinterpret_cast<StrVal*>(this);
       pStrVal->vToCommand(aWorkspace);
-      break;
-    }
-      
-    case CN_TASKVAL: {
-      TaskVal* pTaskVal = reinterpret_cast<TaskVal*>(this);
-      pTaskVal->vToCommand(aWorkspace);
-      break;
-    }
-      
-    case CN_WRDVAL: {
-      WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(this);
-      pWrdVal->vToCommand(aWorkspace);
       break;
     }
       
@@ -323,21 +272,9 @@ void Value::vToString(char* aWorkspace)
       break;
     }
       
-    case CN_TASKVAL: {
-      TaskVal* pTaskVal = reinterpret_cast<TaskVal*>(this);
-      pTaskVal->vToString(aWorkspace);
-      break;
-    }
-      
     case CN_VALSET: {
       ValSet* pValSet = reinterpret_cast<ValSet*>(this);
       pValSet->vToString(aWorkspace);
-      break;
-    }
-      
-    case CN_WRDVAL: {
-      WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(this);
-      pWrdVal->vToString(aWorkspace);
       break;
     }
       

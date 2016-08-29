@@ -255,67 +255,65 @@ void Task::vAddConstants(void)
   /*  1 */ vAddConstant("CN_INTVAL",                CN_INTVAL);
   /*  2 */ vAddConstant("CN_IPVAL",                 CN_IPVAL);
   /*  3 */ vAddConstant("CN_OBJVAL",                CN_OBJVAL);
-  /*  3 */ vAddConstant("CN_PTRVAL",                CN_PTRVAL);
-  /*  4 */ vAddConstant("CN_STRVAL",                CN_STRVAL);
-  /*  5 */ vAddConstant("CN_TASKVAL",               CN_TASKVAL);
+  /*  4 */ vAddConstant("CN_PTRVAL",                CN_PTRVAL);
+  /*  5 */ vAddConstant("CN_STRVAL",                CN_STRVAL);
   /*  6 */ vAddConstant("CN_VALSET",                CN_VALSET);
   /*  7 */ vAddConstant("CN_VALWSP",                CN_VALWSP);
-  /*  8 */ vAddConstant("CN_WRDVAL",                CN_WRDVAL);
   
-  /*  9 */ vAddConstant("CN_ARGUMENTS",             CN_ARGUMENTS);
-  /* 10 */ vAddConstant("CN_ATTACHMAP",             CN_ATTACHMAP);
-  /* 11 */ vAddConstant("CN_BUFFER",                CN_BUFFER);
-  /* 12 */ vAddConstant("CN_BUFFERPOOL",            CN_BUFFERPOOL);
-  /* 13 */ vAddConstant("CN_BUFFERPOOLANALYZER",    CN_BUFFERPOOLANALYZER);
-  /* 14 */ vAddConstant("CN_BUFFERPOOLITER",        CN_BUFFERPOOLITER);
-  /* 15 */ vAddConstant("CN_DICTIONARY",            CN_DICTIONARY);
-  /* 16 */ vAddConstant("CN_DIR",                   CN_DIR);
-  /* 17 */ vAddConstant("CN_FILE",                  CN_FILE);
-  /* 18 */ vAddConstant("CN_FREECHUNK",             CN_FREECHUNK);
-  /* 19 */ vAddConstant("CN_GLOBALDICTIONARY",      CN_GLOBALDICTIONARY);
-  /* 20 */ vAddConstant("CN_GRID",                  CN_GRID);
-  /* 21 */ vAddConstant("CN_HEAPBUFFER",            CN_HEAPBUFFER);
-  /* 22 */ vAddConstant("CN_INDEX",                 CN_INDEX);
-  /* 23 */ vAddConstant("CN_LOADER",                CN_LOADER);
-  /* 24 */ vAddConstant("CN_LOCK",                  CN_LOCK);
-  /* 25 */ vAddConstant("CN_MEDIUMHEAP",            CN_MEDIUMHEAP);
-  /* 26 */ vAddConstant("CN_NODE",                  CN_NODE);
-  /* 27 */ vAddConstant("CN_NODECURSOR",            CN_NODECURSOR);
-  /* 28 */ vAddConstant("CN_PARTITION",             CN_PARTITION);
-  /* 29 */ vAddConstant("CN_PROXY",                 CN_PROXY);
-  /* 30 */ vAddConstant("CN_PROXYSET",              CN_PROXYSET);
-  /* 31 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
-  /* 32 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
-  /* 33 */ vAddConstant("CN_ROW",                   CN_ROW);
-  /* 34 */ vAddConstant("CN_ROWBUFFER",             CN_ROWBUFFER);
-  /* 35 */ vAddConstant("CN_ROWCURSOR",             CN_ROWCURSOR);
-  /* 36 */ vAddConstant("CN_ROWSTRAND",             CN_ROWSTRAND);
-  /* 37 */ vAddConstant("CN_SCANBUFFER",            CN_SCANBUFFER);
-  /* 38 */ vAddConstant("CN_SEITF",                 CN_SEITF);
-  /* 39 */ vAddConstant("CN_SEITFCURSOR",           CN_SEITFCURSOR);
-  /* 40 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
-  /* 41 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
-  /* 42 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
-  /* 43 */ vAddConstant("CN_STACK",                 CN_STACK);
-  /* 44 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
-  /* 45 */ vAddConstant("CN_TABLE",                 CN_TABLE);
-  /* 46 */ vAddConstant("CN_TASK",                  CN_TASK);
-  /* 47 */ vAddConstant("CN_TASKCURSOR",            CN_TASKCURSOR);
-  /* 48 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
-  /* 49 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
-  /* 50 */ vAddConstant("CN_THREAD",                CN_THREAD);
-  /* 51 */ vAddConstant("CN_THREADCURSOR",          CN_THREADCURSOR);
-  /* 52 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
-  /* 53 */ vAddConstant("CN_TIMER",                 CN_TIMER);
-  /* 54 */ vAddConstant("CN_TX",                    CN_TX);
-  /* 55 */ vAddConstant("CN_TXARRAY",               CN_TXARRAY);
-  /* 56 */ vAddConstant("CN_TXCOLLECTION",          CN_TXCOLLECTION);
-  /* 57 */ vAddConstant("CN_TXCURSOR",              CN_TXCURSOR);
-  /* 58 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
-  /* 59 */ vAddConstant("CN_TXREF",                 CN_TXREF);
-  /* 60 */ vAddConstant("CN_WORD",                  CN_WORD);
-  /* 61 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
-
+  /*  8 */ vAddConstant("CN_ARGUMENTS",             CN_ARGUMENTS);
+  /*  9 */ vAddConstant("CN_ATTACHMAP",             CN_ATTACHMAP);
+  /* 10 */ vAddConstant("CN_BUFFER",                CN_BUFFER);
+  /* 11 */ vAddConstant("CN_BUFFERPOOL",            CN_BUFFERPOOL);
+  /* 12 */ vAddConstant("CN_BUFFERPOOLANALYZER",    CN_BUFFERPOOLANALYZER);
+  /* 13 */ vAddConstant("CN_BUFFERPOOLITER",        CN_BUFFERPOOLITER);
+  /* 14 */ vAddConstant("CN_DICTIONARY",            CN_DICTIONARY);
+  /* 15 */ vAddConstant("CN_DIR",                   CN_DIR);
+  /* 16 */ vAddConstant("CN_FILE",                  CN_FILE);
+  /* 17 */ vAddConstant("CN_FREECHUNK",             CN_FREECHUNK);
+  /* 18 */ vAddConstant("CN_GLOBALDICTIONARY",      CN_GLOBALDICTIONARY);
+  /* 19 */ vAddConstant("CN_GRID",                  CN_GRID);
+  /* 20 */ vAddConstant("CN_HEAPBUFFER",            CN_HEAPBUFFER);
+  /* 21 */ vAddConstant("CN_INDEX",                 CN_INDEX);
+  /* 22 */ vAddConstant("CN_LOADER",                CN_LOADER);
+  /* 23 */ vAddConstant("CN_LOCK",                  CN_LOCK);
+  /* 24 */ vAddConstant("CN_MEDIUMHEAP",            CN_MEDIUMHEAP);
+  /* 25 */ vAddConstant("CN_NODE",                  CN_NODE);
+  /* 26 */ vAddConstant("CN_NODECURSOR",            CN_NODECURSOR);
+  /* 27 */ vAddConstant("CN_PARTITION",             CN_PARTITION);
+  /* 28 */ vAddConstant("CN_PROXY",                 CN_PROXY);
+  /* 29 */ vAddConstant("CN_PROXYSET",              CN_PROXYSET);
+  /* 30 */ vAddConstant("CN_QUEUE",                 CN_QUEUE);
+  /* 31 */ vAddConstant("CN_QUEUEBUFFER",           CN_QUEUEBUFFER);
+  /* 32 */ vAddConstant("CN_ROW",                   CN_ROW);
+  /* 33 */ vAddConstant("CN_ROWBUFFER",             CN_ROWBUFFER);
+  /* 34 */ vAddConstant("CN_ROWCURSOR",             CN_ROWCURSOR);
+  /* 35 */ vAddConstant("CN_ROWSTRAND",             CN_ROWSTRAND);
+  /* 36 */ vAddConstant("CN_SCANBUFFER",            CN_SCANBUFFER);
+  /* 37 */ vAddConstant("CN_SEITF",                 CN_SEITF);
+  /* 38 */ vAddConstant("CN_SEITFCURSOR",           CN_SEITFCURSOR);
+  /* 39 */ vAddConstant("CN_SEITFLIST",             CN_SEITFLIST);
+  /* 40 */ vAddConstant("CN_SMALLHEAP",             CN_SMALLHEAP);
+  /* 41 */ vAddConstant("CN_SOCKET",                CN_SOCKET);
+  /* 42 */ vAddConstant("CN_STACK",                 CN_STACK);
+  /* 43 */ vAddConstant("CN_SYSCALL",               CN_SYSCALL);
+  /* 44 */ vAddConstant("CN_TABLE",                 CN_TABLE);
+  /* 45 */ vAddConstant("CN_TASK",                  CN_TASK);
+  /* 46 */ vAddConstant("CN_TASKCURSOR",            CN_TASKCURSOR);
+  /* 47 */ vAddConstant("CN_TASKLIST",              CN_TASKLIST);
+  /* 48 */ vAddConstant("CN_TASKSET",               CN_TASKSET);
+  /* 49 */ vAddConstant("CN_THREAD",                CN_THREAD);
+  /* 50 */ vAddConstant("CN_THREADCURSOR",          CN_THREADCURSOR);
+  /* 51 */ vAddConstant("CN_THREADLIST",            CN_THREADLIST);
+  /* 52 */ vAddConstant("CN_TIMER",                 CN_TIMER);
+  /* 53 */ vAddConstant("CN_TX",                    CN_TX);
+  /* 54 */ vAddConstant("CN_TXARRAY",               CN_TXARRAY);
+  /* 55 */ vAddConstant("CN_TXCOLLECTION",          CN_TXCOLLECTION);
+  /* 56 */ vAddConstant("CN_TXCURSOR",              CN_TXCURSOR);
+  /* 57 */ vAddConstant("CN_TXMAP",                 CN_TXMAP);
+  /* 58 */ vAddConstant("CN_TXREF",                 CN_TXREF);
+  /* 59 */ vAddConstant("CN_WORD",                  CN_WORD);
+  /* 60 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
+  
   /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
   /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
   /*  2 */ vAddConstant("LT_INTLIT",                LT_INTLIT);
@@ -325,64 +323,61 @@ void Task::vAddConstants(void)
   /*  1 */ vAddConstant("SIZEOF_INTVAL",            sizeof(IntVal));
   /*  2 */ vAddConstant("SIZEOF_IPVAL",             sizeof(IPval));
   /*  3 */ vAddConstant("SIZEOF_OBJVAL",            sizeof(ObjVal));
-  /*  3 */ vAddConstant("SIZEOF_PTRVAL",            sizeof(PtrVal));
-  /*  4 */ vAddConstant("SIZEOF_STRVAL",            sizeof(StrVal));
-  /*  5 */ vAddConstant("SIZEOF_TASKVAL",           sizeof(TaskVal));
+  /*  4 */ vAddConstant("SIZEOF_PTRVAL",            sizeof(PtrVal));
+  /*  5 */ vAddConstant("SIZEOF_STRVAL",            sizeof(StrVal));
   /*  6 */ vAddConstant("SIZEOF_VALSET",            sizeof(ValWsp)); // correct
-  /*  7 */ vAddConstant("SIZEOF_VALWSP",            sizeof(ValWsp));
-  /*  8 */ vAddConstant("SIZEOF_WRDVAL",            sizeof(WrdVal));
   
-  /*  9 */ vAddConstant("SIZEOF_ARGUMENTS",         sizeof(Arguments));
-  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP",         sizeof(AttachMap));
-  /* 11 */ vAddConstant("SIZEOF_BUFFER",            sizeof(Buffer));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
-  /* 13 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPool));
-  /* 14 */ vAddConstant("SIZEOF_BUFFERPOOLITER",    sizeof(BufferPoolAnalyzer));
-  /* 15 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
-  /* 16 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
-  /* 17 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
-  /* 18 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
-  /* 19 */ vAddConstant("SIZEOF_GLOBALDICTIONARY",  sizeof(GlobalDictionary));
-  /* 20 */ vAddConstant("SIZEOF_GRID",              sizeof(Grid));
-  /* 21 */ vAddConstant("SIZEOF_HEAPBUFFER",        sizeof(HeapBuffer));
-  /* 22 */ vAddConstant("SIZEOF_INDEX",             sizeof(Index));
-  /* 23 */ vAddConstant("SIZEOF_LOADER",            sizeof(Loader));
-  /* 24 */ vAddConstant("SIZEOF_LOCK",              sizeof(Lock));
-  /* 25 */ vAddConstant("SIZEOF_NODE",              sizeof(Node));
-  /* 26 */ vAddConstant("SIZEOF_NODECURSOR",        sizeof(NodeCursor));
-  /* 27 */ vAddConstant("SIZEOF_PARTITION",         sizeof(Partition));
-  /* 28 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
-  /* 29 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
-  /* 30 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
-  /* 31 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
-  /* 32 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
-  /* 33 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
-  /* 34 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
-  /* 35 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
-  /* 36 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
-  /* 37 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
-  /* 38 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
-  /* 39 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
-  /* 40 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
-  /* 41 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
-  /* 42 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
-  /* 43 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
-  /* 44 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
-  /* 45 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
-  /* 46 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
-  /* 47 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
-  /* 48 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
-  /* 49 */ vAddConstant("SIZEOF_THREADCURSOR",      sizeof(ThreadCursor));
-  /* 50 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 51 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
-  /* 52 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
-  /* 53 */ vAddConstant("SIZEOF_TXARRAY",           sizeof(TxArray));
-  /* 54 */ vAddConstant("SIZEOF_TXCOLLECTION",      sizeof(TxCollection));
-  /* 55 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
-  /* 56 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 57 */ vAddConstant("SIZEOF_TXREF",             sizeof(TxRef));
-  /* 58 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
-  
+  /*  7 */ vAddConstant("SIZEOF_ARGUMENTS",         sizeof(Arguments));
+  /*  8 */ vAddConstant("SIZEOF_ATTACHMAP",         sizeof(AttachMap));
+  /*  9 */ vAddConstant("SIZEOF_BUFFER",            sizeof(Buffer));
+  /* 10 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
+  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPool));
+  /* 13 */ vAddConstant("SIZEOF_BUFFERPOOLITER",    sizeof(BufferPoolAnalyzer));
+  /* 14 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
+  /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
+  /* 16 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
+  /* 17 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
+  /* 18 */ vAddConstant("SIZEOF_GLOBALDICTIONARY",  sizeof(GlobalDictionary));
+  /* 19 */ vAddConstant("SIZEOF_GRID",              sizeof(Grid));
+  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER",        sizeof(HeapBuffer));
+  /* 21 */ vAddConstant("SIZEOF_INDEX",             sizeof(Index));
+  /* 22 */ vAddConstant("SIZEOF_LOADER",            sizeof(Loader));
+  /* 23 */ vAddConstant("SIZEOF_LOCK",              sizeof(Lock));
+  /* 24 */ vAddConstant("SIZEOF_NODE",              sizeof(Node));
+  /* 25 */ vAddConstant("SIZEOF_NODECURSOR",        sizeof(NodeCursor));
+  /* 26 */ vAddConstant("SIZEOF_PARTITION",         sizeof(Partition));
+  /* 27 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
+  /* 28 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
+  /* 29 */ vAddConstant("SIZEOF_QBUFFER",           sizeof(QueueBuffer));
+  /* 30 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
+  /* 31 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
+  /* 32 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
+  /* 33 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
+  /* 34 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
+  /* 35 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
+  /* 36 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
+  /* 37 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
+  /* 38 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
+  /* 39 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
+  /* 40 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
+  /* 41 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
+  /* 42 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
+  /* 43 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
+  /* 44 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
+  /* 45 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
+  /* 46 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
+  /* 47 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
+  /* 48 */ vAddConstant("SIZEOF_THREADCURSOR",      sizeof(ThreadCursor));
+  /* 49 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 50 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
+  /* 51 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
+  /* 52 */ vAddConstant("SIZEOF_TXARRAY",           sizeof(TxArray));
+  /* 53 */ vAddConstant("SIZEOF_TXCOLLECTION",      sizeof(TxCollection));
+  /* 54 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
+  /* 55 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 56 */ vAddConstant("SIZEOF_TXREF",             sizeof(TxRef));
+  /* 57 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
   /*  2 */ vAddConstant("SIZEOF_S16K",              sizeof(s16K));
@@ -1532,18 +1527,6 @@ void Task::vPrimitive(const char* aPrimitive)
     else if (CN_STRVAL == eClass) {
       vTrace("\"%lls\"",pValWsp->sStr());
     }
-    else if (CN_WRDVAL == eClass) {
-      WrdVal* pWrdVal = reinterpret_cast<WrdVal*>(pValWsp);
-      vTrace("%s (word)",pWrdVal->pWord() ? pWrdVal->pWord()->sName().a() : "<nilwrd>");
-    }
-    else if (CN_TASKVAL == eClass) {
-      vTrace("alka??(task)");
-      
-//      if (pValWsp->nnpTask() == this)
-//        vTrace("%p (task.this)",pValWsp->nnpTask());
-//      else
-//        vTrace("%p (task)",pValWsp->nnpTask());
-    }
     else {
       vTrace("unknown value on stack: class=%lld",pValWsp->eClass());
     }
@@ -2015,13 +1998,15 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Word*& pWord1)
 {
-  if ( ! bGuardParam(CN_WRDVAL) )
+  if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
-  WrdVal xWrdVal1;
-  vPopParam(&xWrdVal1);
+  PtrVal xPtrWord1;
+  vPopParam(&xPtrWord1);
   
-  pWord1 = xWrdVal1.pWord();
+  pWord1 = reinterpret_cast<Word*>(xPtrWord1.pPtr());
+  if (CN_WORD != pWord1->eClass())
+    return false;
   
   return true;
 }
@@ -2159,10 +2144,10 @@ void Task::vPushParam(NNP_Task pnnArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Word* pArg1)
 {
-  WrdVal xWrdVal1;
-  xWrdVal1 = pArg1;
+  PtrVal xPtrWord;
+  xPtrWord = pArg1;
   
-  vPushParam(&xWrdVal1);
+  vPushParam(&xPtrWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2578,7 +2563,7 @@ void Task::vCodeAssign(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vCodeAssign");
   
-  WrdVal xThatWord;
+  PtrVal xThatWord;
   nnpTask->vPopParam(&xThatWord);
   Word* pThatWord = xThatWord.pWord();
   

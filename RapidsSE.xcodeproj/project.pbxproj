@@ -68,7 +68,6 @@
 		F22056A41D62DD2600E8EF5B /* SkipNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981C8FD41D19574200530F3B /* SkipNode.cpp */; };
 		F22056A51D62DD2A00E8EF5B /* Skip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7401D41E36500E10FC3 /* Skip.cpp */; };
 		F22056A61D62DD3300E8EF5B /* Structures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD31D477368008DF3D9 /* Structures.cpp */; };
-		F22056A71D62DD3A00E8EF5B /* WrdVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F24C76551D1B6A5100D41D09 /* WrdVal.cpp */; };
 		F22056A81D62DD3D00E8EF5B /* Word.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29C61D0E525A000F8C45 /* Word.cpp */; };
 		F22056A91D62DD5700E8EF5B /* IPval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E9811D28E31E007C624C /* IPval.cpp */; };
 		F22056AA1D62DD5B00E8EF5B /* GlobalDictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */; };
@@ -88,7 +87,6 @@
 		F22056B81D62DDDD00E8EF5B /* Table.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98C42CFA1D009D68007DD84F /* Table.cpp */; };
 		F22056B91D62DDE000E8EF5B /* DBobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD11D477313008DF3D9 /* DBobjects.cpp */; };
 		F22056BA1D62DDE700E8EF5B /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 985659B11D12CA5700D7508A /* Socket.cpp */; };
-		F22056BB1D62DDEB00E8EF5B /* TaskVal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */; };
 		F22056BC1D62DDEE00E8EF5B /* TaskSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2EC32CE1D2C751D00791294 /* TaskSet.cpp */; };
 		F22056BD1D62DDF200E8EF5B /* TaskList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CF21D485E8B008DF3D9 /* TaskList.cpp */; };
 		F22056BE1D62DDF500E8EF5B /* Task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98C42CE11D0069D1007DD84F /* Task.cpp */; };
@@ -369,8 +367,6 @@
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F246DFE91D737285000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
 		F246DFEA1D7398AE000E54C0 /* jData.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jData.sen; path = Commands/jData.sen; sourceTree = "<group>"; };
-		F24C76551D1B6A5100D41D09 /* WrdVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WrdVal.cpp; sourceTree = "<group>"; };
-		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
 		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
 		F24D1FBC1D64009A005031F5 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Source/Timer.cpp; sourceTree = "<group>"; };
@@ -409,8 +405,6 @@
 		F291CCC61D11FADB009150AF /* Value.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Value.hpp; sourceTree = "<group>"; };
 		F291CCC81D11FF54009150AF /* ValWsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ValWsp.cpp; sourceTree = "<group>"; };
 		F291CCC91D11FF54009150AF /* ValWsp.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValWsp.hpp; sourceTree = "<group>"; };
-		F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TaskVal.cpp; sourceTree = "<group>"; };
-		F29C97A41D1C955F00ED5F30 /* TaskVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TaskVal.hpp; sourceTree = "<group>"; };
 		F2A0FAF81D6432F20032B090 /* SEitfCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SEitfCursor.cpp; path = Source/SEitfCursor.cpp; sourceTree = "<group>"; };
 		F2A0FAF91D6432F20032B090 /* SEitfCursor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SEitfCursor.hpp; path = Source/SEitfCursor.hpp; sourceTree = "<group>"; };
 		F2A0FAFC1D6457CA0032B090 /* Since.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Since.cpp; path = Source/Since.cpp; sourceTree = "<group>"; };
@@ -646,8 +640,6 @@
 				F2389CF31D485E8B008DF3D9 /* TaskList.hpp */,
 				F2EC32CE1D2C751D00791294 /* TaskSet.cpp */,
 				F2EC32CF1D2C751D00791294 /* TaskSet.hpp */,
-				F29C97A31D1C955F00ED5F30 /* TaskVal.cpp */,
-				F29C97A41D1C955F00ED5F30 /* TaskVal.hpp */,
 			);
 			name = Tasks;
 			path = Source;
@@ -734,8 +726,6 @@
 				F226E7361D41DEE400E10FC3 /* IPval.hpp */,
 				F21D29C61D0E525A000F8C45 /* Word.cpp */,
 				F21D29C71D0E525A000F8C45 /* Word.hpp */,
-				F24C76551D1B6A5100D41D09 /* WrdVal.cpp */,
-				F24C76561D1B6A5100D41D09 /* WrdVal.hpp */,
 			);
 			name = Dictionaries;
 			path = Source;
@@ -1294,7 +1284,6 @@
 			files = (
 				F22056D51D62DE8B00E8EF5B /* RapidsSE.cpp in Sources */,
 				F22056C21D62DE0400E8EF5B /* InputStream.cpp in Sources */,
-				F22056BB1D62DDEB00E8EF5B /* TaskVal.cpp in Sources */,
 				F22056CE1D62DE6000E8EF5B /* SEitf.cpp in Sources */,
 				F22056A21D62DD1A00E8EF5B /* Values.cpp in Sources */,
 				F2A595CE1D6FD1DA007C66B1 /* Debug.cpp in Sources */,
@@ -1303,7 +1292,6 @@
 				F22056D71D62DE9D00E8EF5B /* InProcess.cpp in Sources */,
 				F220567B1D62DAAB00E8EF5B /* Lock.cpp in Sources */,
 				F22056941D62DCB000E8EF5B /* FreeChunk.cpp in Sources */,
-				F22056A71D62DD3A00E8EF5B /* WrdVal.cpp in Sources */,
 				F2DD65921D6B86B7009B684A /* RowStrand.cpp in Sources */,
 				F2A0FAFA1D6432F20032B090 /* SEitfCursor.cpp in Sources */,
 				F220569B1D62DD0400E8EF5B /* ValWsp.cpp in Sources */,

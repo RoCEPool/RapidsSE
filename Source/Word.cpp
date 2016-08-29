@@ -445,10 +445,13 @@ void Word::vEncode(const char* aWord, Word* pWord)
   
   vEncode(aWord);
   
-  WrdVal xWord;
-  xWord = pWord;
+//  WrdVal xWord;
+//  xWord = pWord;
   
-  vAppend(&xWord);
+  PtrVal xPtrWord;
+  xPtrWord = pWord;
+  
+  vAppend(&xPtrWord);
 }
 
 /*----------------------------------------------------------------------------*/

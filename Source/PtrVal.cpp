@@ -80,10 +80,6 @@ void PtrVal::vFetch(ValWsp& xValWsp)
       xValWsp = pValue->pAsPtrVal()->pPtr();
       break;
       
-    case CN_WRDVAL:
-      xValWsp = pValue->pAsWrdVal()->pWord();
-      break;
-      
     default:
       ASSERT(0);
   }
@@ -112,10 +108,6 @@ void PtrVal::vStore(ValWsp& xValWsp)
       
     case CN_PTRVAL:
       *pValue->pAsPtrVal() = xValWsp.pPtr();
-      break;
-      
-    case CN_WRDVAL:
-      *pValue->pAsWrdVal() = xValWsp.pWord();
       break;
       
     default:

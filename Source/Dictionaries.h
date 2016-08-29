@@ -14,7 +14,6 @@
 #include "GlobalDictionary.hpp"
 #include "IPval.hpp"
 #include "Word.hpp"
-#include "WrdVal.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Dictionaries
