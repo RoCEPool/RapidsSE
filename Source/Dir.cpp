@@ -78,6 +78,46 @@ void Dir::vInit(void)
   m_xSysCall.vClear();
 }
 
+/*---------------------------------------------------------------------------*/
+/* bMake: make specified directory                                           */
+/*---------------------------------------------------------------------------*/
+bool Dir::bMake(s256& rPath)
+{
+  m_xSysCall.vClear();
+  
+  char* aPath = rPath.a();
+
+  if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
+    m_xSysCall.vError(errno);
+    vWarn("Dir::bMake: mkdir() error; errno=%d",errno);
+    return false;
+  }
+
+  m_xSysCall.vSuccess();
+  return true;
+}
+
+/*---------------------------------------------------------------------------*/
+/* bRemove: remove specified directory                                       */
+/*---------------------------------------------------------------------------*/
+bool Dir::bRemove(s256& rPath)
+{
+  m_xSysCall.vClear();
+  
+  char* aPath = rPath.a();
+  
+  int rCode = rmdir(aPath);
+
+  if (-1 == rCode) {
+    m_xSysCall.vError(errno);
+    vWarn("Dir::bRemove: rmdir() error; errno=%d",errno);
+    return false;
+  }
+
+  m_xSysCall.vSuccess();
+  return true;
+}
+
 /*----------------------------------------------------------------------------*/
 /* set current working directory                                              */
 /*----------------------------------------------------------------------------*/

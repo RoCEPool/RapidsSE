@@ -439,6 +439,11 @@ namespace Tasks
     static void vDicPush(NNP_Task nnpTask);       
     static void vDicStack(NNP_Task nnpTask);
     
+    // dir
+    static void vDirExists(NNP_Task nnpTask);
+    static void vDirMake(NNP_Task nnpTask);
+    static void vDirRemove(NNP_Task nnpTask);
+    
     // file
     static void vFileClose(NNP_Task nnpTask);     
     static void vFileDelete(NNP_Task nnpTask);

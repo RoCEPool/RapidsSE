@@ -24,6 +24,8 @@ namespace Common {
     bool bExists(s256& rPath);
     bool bGet(s256& rPath);
     void vInit(void);
+    bool bMake(s256& rPath);
+    bool bRemove(s256& rPath);
     bool bSet(s256& rPath);
 
 //    static bool   bChgCwd(const char* sDirPath);
@@ -35,7 +37,6 @@ namespace Common {
 //    static void   vGetFileList(FileList* pList, const char* sDirPath, bool bRecursive);
 //    static bool   bIsDir(const char* sDirPath);
 //    static bool   bIsReg(const char* sFilePath);
-//    static bool   bMakeDir(const char* sDirPath);
 //    static FileEnt* pFindFirst(Skip* pList, const char* sSuffix);
 //    static void   vRemoveDir(const char* sDirPath, Canon& canon);
 //    static void   vRemoveRecursive(const char* sDirPath, Canon& canon);

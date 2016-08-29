@@ -616,6 +616,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("{{",              &vDicPush,          false);
   vAddPrimitive("dic.stack",       &vDicStack,         false);
   
+  vAddPrimitive("dir.exists",      &vDirExists,        false);
+  vAddPrimitive("dir.make",        &vDirMake,          false);
+  vAddPrimitive("dir.remove",      &vDirRemove,        false);
+  
   vAddPrimitive("file.close",      &vFileClose,        false);
   vAddPrimitive("file.delete",     &vFileDelete,       false);
   vAddPrimitive("file.init",       &vFileInit,         false);
@@ -5415,6 +5419,62 @@ void Task::vDicPush(NNP_Task nnpTask)
   else {
     nnpTask->m_xDictionaryStack.vPush(pDictionary);
   }
+}
+
+// dir: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* dir.exists -- test if a directory exists                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vDirExists(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirExists");
+  
+  s256 sPath;
+  
+  if ( ! nnpTask->bPopParam(sPath) )
+    THROW_INVALID_PARAM("dir.exists");
+  
+  Dir xDir;
+  
+  i8 iResult = xDir.bExists(sPath);
+  nnpTask->vPushParam(iResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.make -- make a directory                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDirMake(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirMake");
+  
+  s256 sPath;
+  
+  if ( ! nnpTask->bPopParam(sPath) )
+    THROW_INVALID_PARAM("dir.make");
+  
+  Dir xDir;
+  
+  i8 iResult = xDir.bMake(sPath);
+  nnpTask->vPushParam(iResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.remove -- remove a directory                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDirRemove(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirRemove");
+  
+  s256 sPath;
+  
+  if ( ! nnpTask->bPopParam(sPath) )
+    THROW_INVALID_PARAM("dir.remove");
+  
+  Dir xDir;
+  
+  i8 iResult = xDir.bRemove(sPath);
+  nnpTask->vPushParam(iResult);
 }
 
 // file: ///////////////////////////////////////////////////////////////////////
