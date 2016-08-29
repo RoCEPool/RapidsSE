@@ -87,6 +87,10 @@ void RapidsSE::vExecute(void)
         //vRunDocol();
         vWaitFlag();
       }
+      else if (gxArguments.m_bSePrompt) {
+        ASSERT(gpBufferPool);
+        return;
+      }
       else
         vWaitFlag();
     }
@@ -95,6 +99,10 @@ void RapidsSE::vExecute(void)
       vSystemInit();
       vRunDocol();
       vWaitFlag();
+    }
+    else if (gxArguments.m_bSePrompt) {
+      ASSERT(gpBufferPool);
+      return;
     }
     else if (gxArguments.m_bSeitf) {
       ASSERT(gpBufferPool);

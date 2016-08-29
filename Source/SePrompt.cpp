@@ -47,6 +47,10 @@ void SePrompt::vPrompt(void)
     &xArray[C_1KB * 15]
   };
   
+  vTrace("SePrompt::vPrompt\n");
+
+  vAssertTrap();
+  
   m_sPrompt = "seitf> ";
   
   vHistoryOpen();

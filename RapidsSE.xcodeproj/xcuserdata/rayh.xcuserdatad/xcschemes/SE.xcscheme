@@ -75,6 +75,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "--seprompt"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "--start"
             isEnabled = "NO">
          </CommandLineArgument>
