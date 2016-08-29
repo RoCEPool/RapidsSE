@@ -40,6 +40,19 @@ Buffer::Buffer(eCN eClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Buffer::Buffer(eCN eClass, pDUMPFUN* pDumpFun)
+: Object(eClass, pDumpFun)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
+  ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Buffer::~Buffer(void)

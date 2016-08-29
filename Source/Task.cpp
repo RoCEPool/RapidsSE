@@ -663,6 +663,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
+  vAddPrimitive("object.dump",     &vObjectDump,       false);
+
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   
@@ -2535,7 +2537,7 @@ void Task::vBpa(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bpdump -- dump of objects in teh buffer pool                               */
+/* bpdump -- dump of objects in the buffer pool                               */
 /*----------------------------------------------------------------------------*/
 void Task::vBpdump(NNP_Task nnpTask)
 {
@@ -6285,6 +6287,52 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
   xPtrNode = pNodeCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
+}
+
+// object: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* object.dump -- dump the given object                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectDump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vObjectDump");
+  
+  IntVal xObject;
+  if ( ! nnpTask->bPopParam(xObject) )
+    THROW_INVALID_PARAM("object.dump");
+
+  Object* pObject = reinterpret_cast<Object*>(xObject.iInt());
+  
+  switch (pObject->eClass()) {
+      
+    case CN_ATTACHMAP:
+      //reinterpret_cast<AttachMap *>(pObject)->vDump(pSingleTab());
+      break;
+    case CN_BUFFER:
+      break;
+    case CN_FILE:
+      reinterpret_cast<File *>(pObject)->vDump(pSingleTab());
+      break;
+    case CN_DICTIONARY:
+      reinterpret_cast<Dictionary *>(pObject)->vDump(pSingleTab());
+      break;
+    case CN_SMALLHEAP:
+    case CN_MEDIUMHEAP:
+      reinterpret_cast<Heap *>(pObject)->vDump(pSingleTab());
+      //vDumpHeap((Heap *)pObject);
+      break;
+    case CN_HEAPBUFFER:
+      reinterpret_cast<HeapBuffer *>(pObject)->vDump(pSingleTab());
+      break;
+    case CN_TXARRAY:
+      reinterpret_cast<TxArray *>(pObject)->vDump(pSingleTab());
+      break;
+      
+    default:
+      vTrace("%sNo vDump() method in class %s\n\n", pSingleTab(), pCN[pObject->eClass()]);
+  }
+
 }
 
 // process: ////////////////////////////////////////////////////////////////////

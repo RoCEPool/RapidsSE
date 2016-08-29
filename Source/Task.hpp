@@ -501,6 +501,9 @@ namespace Tasks
     static void vNodeCursorNew(NNP_Task nnpTask);
     static void vNodeCursorNext(NNP_Task nnpTask);
     
+    // object
+    static void vObjectDump(NNP_Task nnpTask);
+
     // process
     static void vProcessGetPid(NNP_Task nnpTask);
     static void vProcessTestPid(NNP_Task nnpTask);

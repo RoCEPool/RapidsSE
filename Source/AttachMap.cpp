@@ -39,11 +39,10 @@ void AttachMap::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: Buffer(CN_ATTACHMAP)
+: Buffer(CN_ATTACHMAP, vDump)
 {
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,13 +99,16 @@ void AttachMap::vRecordGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vDump(const char* pTab)
+void AttachMap::vDump(void* pObject, const char* pTab)
 {
-  vTrace("%sAttachMap %p:\n", pTab, this);
-  vTrace("%s  pid %lld\n", pTab, m_iPid);
-  vTrace("%s  utc %s\n", pTab, m_sUTC.a());
-  vTrace("%s  regionSize %lld\n", pTab, m_iRegionSize);
-  vTrace("%s  partitions %lld\n\n", pTab, m_iPartitions);
+  AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
+  ASSERT(pAttachMap->eClass() == CN_ATTACHMAP);
+  
+  vTrace("%sAttachMap %p:\n", pTab, pAttachMap);
+  vTrace("%s  pid %lld\n", pTab, pAttachMap->m_iPid);
+  vTrace("%s  utc %s\n", pTab, pAttachMap->m_sUTC.a());
+  vTrace("%s  regionSize %lld\n", pTab, pAttachMap->m_iRegionSize);
+  vTrace("%s  partitions %lld\n\n", pTab, pAttachMap->m_iPartitions);
 }
 
 /*============================================================================*/

@@ -15,6 +15,7 @@ namespace Pool
     
   public:
     Object(eCN eClass);
+    Object(eCN eClass, pDUMPFUN* pDumpFun);
     
     void vInitMagic(void);
     

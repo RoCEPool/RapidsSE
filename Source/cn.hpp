@@ -146,6 +146,11 @@ namespace Magic
     /* 60 */ "ENUMS"
   };
 
+  typedef void (pDUMPFUN)(void* pObject, const char*);
+  
+  static pDUMPFUN *pDF[CN_ENUMS];
+  
+  
   class cn
   {
   private:
@@ -154,6 +159,7 @@ namespace Magic
   public:
     cn(void);
     cn(eCN eClassNo);
+    cn(eCN eClassNo, pDUMPFUN* pDumpFunc);
     ~cn(void);
     
     void operator =(eCN eClassNo);
@@ -161,6 +167,8 @@ namespace Magic
     //void vAssertClass(eCN eClassNo) const;
     eCN  eClass(void) const;
     void vClass(eCN eClassNo);
+    pDUMPFUN* pGetDump(void);
+    void vSetDump(eCN eClass, pDUMPFUN* pDumpFunc);
   };
   
 }

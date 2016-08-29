@@ -19,6 +19,7 @@ namespace Pool
     void  operator delete(void*);
 
     Buffer(eCN eClass);
+    Buffer(eCN eClass, pDUMPFUN* pDumpFun);
     ~Buffer(void);
     
     //void  vAssertClass(eCN eClassNo) const;

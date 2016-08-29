@@ -49,7 +49,6 @@ void BufferPoolAnalyzer::vAnalyze(void)
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     iCountObjects[pBuffer->eClass()]++;
-    pBuffer->vDump();
   }
   
   vTrace("**************************************************************\n");
@@ -205,25 +204,32 @@ void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
   switch (pBuffer->eClass()) {
   
     case CN_ATTACHMAP:
-      ((AttachMap *)(pBuffer))->vDump(pSingleTab()); break;
+      
+      // Example of a generic Dump
+      (pBuffer->pGetDump())(pBuffer, pSingleTab());
+      
+      break;
+      
     case CN_BUFFER:
       break;
     case CN_FILE:
-      ((File *)(pBuffer))->vDump(pSingleTab()); break;
+      ((File *)(pBuffer))->vDump(pSingleTab());
+      break;
     case CN_DICTIONARY:
-      ((Dictionary *)(pBuffer))->vDump(pSingleTab()); break;
+      ((Dictionary *)(pBuffer))->vDump(pSingleTab());
+      break;
     case CN_SMALLHEAP:
     case CN_MEDIUMHEAP:
       ((Heap *)(pBuffer))->vDump(pSingleTab());
       vDumpHeap((Heap *)pBuffer);
       break;
     case CN_HEAPBUFFER:
-      
-      ((HeapBuffer *)(pBuffer))->vDump(pSingleTab()); break;
+      ((HeapBuffer *)(pBuffer))->vDump(pSingleTab());
+      break;
     case CN_TXARRAY:
-      ((TxArray *)(pBuffer))->vDump(pSingleTab()); break;
-    break;
-    
+      ((TxArray *)(pBuffer))->vDump(pSingleTab());
+      break;
+
   default:
     vTrace("%sNo vDump() method in class %s\n\n", pSingleTab(), pCN[pBuffer->eClass()]);
   }
@@ -238,10 +244,9 @@ void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
   _magic_();
   
   HeapBuffer* pHeapBuffer;
-  s16K pSpace;
-  pSpace = "  ";
   
   pBuffer->vGrabLock();
+  
   for (pHeapBuffer = pBuffer->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
@@ -250,8 +255,10 @@ void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
          pChunk = pHeapBuffer->pNextChunk(pChunk,pBuffer->iObjectSize())) {
       
       eCN eClass = pChunk->eClass();
+      
       if (CN_FREECHUNK == eClass)
         continue;
+      
       switch (eClass) {
         case CN_NODE:
           ((Node *)(pChunk))->vDump(pDoubleTab()); break;
@@ -265,6 +272,7 @@ void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
       }
     }
   }
+  
   pBuffer->vDropLock();
 }
 
