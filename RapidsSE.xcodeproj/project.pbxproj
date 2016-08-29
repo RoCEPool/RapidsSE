@@ -119,6 +119,8 @@
 		F22056D91D62DEA400E8EF5B /* AttachMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7211D41805500E10FC3 /* AttachMap.cpp */; };
 		F22056DA1D62DEA800E8EF5B /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7811D45D65000E10FC3 /* Arguments.cpp */; };
 		F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */; };
+		F246DFEC1D73FE79000E54C0 /* se.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFEB1D73FE79000E54C0 /* se.cpp */; };
+		F246DFEE1D73FF25000E54C0 /* se.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F246DFED1D73FF25000E54C0 /* se.hpp */; };
 		F24D1FBE1D64009A005031F5 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F24D1FBC1D64009A005031F5 /* Timer.cpp */; };
 		F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F24D1FBD1D64009A005031F5 /* Timer.hpp */; };
 		F2A0FAFA1D6432F20032B090 /* SEitfCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A0FAF81D6432F20032B090 /* SEitfCursor.cpp */; };
@@ -367,6 +369,8 @@
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F246DFE91D737285000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
 		F246DFEA1D7398AE000E54C0 /* jData.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jData.sen; path = Commands/jData.sen; sourceTree = "<group>"; };
+		F246DFEB1D73FE79000E54C0 /* se.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = se.cpp; path = Source/se.cpp; sourceTree = "<group>"; };
+		F246DFED1D73FF25000E54C0 /* se.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = se.hpp; path = Source/se.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
 		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
 		F24D1FBC1D64009A005031F5 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Source/Timer.cpp; sourceTree = "<group>"; };
@@ -735,6 +739,8 @@
 			isa = PBXGroup;
 			children = (
 				98A3C4821CF74E6200BD2B80 /* main.cpp */,
+				F246DFEB1D73FE79000E54C0 /* se.cpp */,
+				F246DFED1D73FF25000E54C0 /* se.hpp */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1185,6 +1191,7 @@
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				F2DD65711D652D47009B684A /* lz4.h in Headers */,
 				F2DD65741D652D7E009B684A /* bzlib.h in Headers */,
+				F246DFEE1D73FF25000E54C0 /* se.hpp in Headers */,
 				F2DD65931D6B86B7009B684A /* RowStrand.hpp in Headers */,
 				F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
@@ -1309,6 +1316,7 @@
 				F22056991D62DCC100E8EF5B /* bn.cpp in Sources */,
 				F22056B91D62DDE000E8EF5B /* DBobjects.cpp in Sources */,
 				F22056D11D62DE7A00E8EF5B /* ProxySet.cpp in Sources */,
+				F246DFEC1D73FE79000E54C0 /* se.cpp in Sources */,
 				F22056971D62DCBB00E8EF5B /* BufferFree.cpp in Sources */,
 				F220568D1D62DAF300E8EF5B /* xxhash.cpp in Sources */,
 				F24D1FBE1D64009A005031F5 /* Timer.cpp in Sources */,

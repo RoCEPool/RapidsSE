@@ -84,11 +84,11 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf "
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --seitf --bgtasks"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--partitions 8"
