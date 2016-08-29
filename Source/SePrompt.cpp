@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* se.cpp -- storgae engine se> prompt                                        */
+/* SePrompt.cpp -- se> prompt                                                 */
 /*============================================================================*/
 
-#include "se.hpp"
+#include "SePrompt.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-se::se(i8 iPartition)
+SePrompt::SePrompt(i8 iPartition)
 {
   m_iPartition = iPartition;
   m_pSEitf     = new SEitf(m_iPartition);
@@ -17,7 +17,7 @@ se::se(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-se::~se(void)
+SePrompt::~SePrompt(void)
 {
   delete m_pSEitf;
 }
@@ -25,7 +25,7 @@ se::~se(void)
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void se::vPrompt(void)
+void SePrompt::vPrompt(void)
 {
   char xArray[C_16KB];
   char* pWords[16] = {
@@ -108,7 +108,7 @@ void se::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* parse command and break into words                                         */
 /*----------------------------------------------------------------------------*/
-void se::vParse(s& sCommand, char* pWords[])
+void SePrompt::vParse(s& sCommand, char* pWords[])
 {
   char* ps = sCommand.a();
   
@@ -122,7 +122,7 @@ void se::vParse(s& sCommand, char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-void se::vExecute(char* pWords[])
+void SePrompt::vExecute(char* pWords[])
 {
   i8   iStatus;
   //s256 sResponse;
@@ -156,7 +156,7 @@ void se::vExecute(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* iterate rows                                                               */
 /*----------------------------------------------------------------------------*/
-void se::vIterateRows(void)
+void SePrompt::vIterateRows(void)
 {
   i8 iAddress = String::iToI8(m_sResponse.a());
   
@@ -179,7 +179,7 @@ void se::vIterateRows(void)
 /*----------------------------------------------------------------------------*/
 /* append request to request queue                                            */
 /*----------------------------------------------------------------------------*/
-void se::vAppendRequest(s& sRequest)
+void SePrompt::vAppendRequest(s& sRequest)
 {
   char wItfAddr[32];
   char wWorkspace[C_1KB * 16];
@@ -207,7 +207,7 @@ void se::vAppendRequest(s& sRequest)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue (response is from pointer in seitf(shm))   */
 /*----------------------------------------------------------------------------*/
-i8 se::iGetResponse(void)
+i8 SePrompt::iGetResponse(void)
 {
   i8 iStatus;
   while (! bPopResponse(iStatus, m_sResponse))
@@ -219,7 +219,7 @@ i8 se::iGetResponse(void)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue                                            */
 /*----------------------------------------------------------------------------*/
-bool se::bPopResponse(s& sResponse)
+bool SePrompt::bPopResponse(s& sResponse)
 {
 //  ValWsp xResponse;
 //  
@@ -234,7 +234,7 @@ bool se::bPopResponse(s& sResponse)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue                                            */
 /*----------------------------------------------------------------------------*/
-bool se::bPopResponse(i8& iResult, s& sResponse)
+bool SePrompt::bPopResponse(i8& iResult, s& sResponse)
 {
 //  bool b;
 //  ValSet xValSet;
@@ -262,7 +262,7 @@ bool se::bPopResponse(i8& iResult, s& sResponse)
 /*----------------------------------------------------------------------------*/
 /* do                                                                         */
 /*----------------------------------------------------------------------------*/
-void se::vDo(const char* aCommand)
+void SePrompt::vDo(const char* aCommand)
 {
   s256 sCommand;
   
@@ -299,7 +299,7 @@ void se::vDo(const char* aCommand)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void se::vHistoryAppend(char* pWords[])
+void SePrompt::vHistoryAppend(char* pWords[])
 {
   for (i8 i = 0; *pWords[i]; i++) {
     if (i)
@@ -315,7 +315,7 @@ void se::vHistoryAppend(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* close command history file                                                 */
 /*----------------------------------------------------------------------------*/
-void se::vHistoryClose(void)
+void SePrompt::vHistoryClose(void)
 {
   m_xHistoryFile.vClose();
 }
@@ -323,7 +323,7 @@ void se::vHistoryClose(void)
 /*----------------------------------------------------------------------------*/
 /* seek to end of command history file                                        */
 /*----------------------------------------------------------------------------*/
-void se::vHistoryEnd(void)
+void SePrompt::vHistoryEnd(void)
 {
   m_xHistoryFile.vSeekEnd();
 }
@@ -331,7 +331,7 @@ void se::vHistoryEnd(void)
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool se::bHistoryGet(i8 iCommand, char* pWords[])
+bool SePrompt::bHistoryGet(i8 iCommand, char* pWords[])
 {
   vHistoryStart();
   
@@ -375,7 +375,7 @@ bool se::bHistoryGet(i8 iCommand, char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* open command history file                                                  */
 /*----------------------------------------------------------------------------*/
-void se::vHistoryOpen(void)
+void SePrompt::vHistoryOpen(void)
 {
   char wFileName[C_1KB];
   
@@ -388,7 +388,7 @@ void se::vHistoryOpen(void)
 /*----------------------------------------------------------------------------*/
 /* print command history file                                                 */
 /*----------------------------------------------------------------------------*/
-void se::vHistoryPrint(void)
+void SePrompt::vHistoryPrint(void)
 {
   vHistoryStart();
   
@@ -405,7 +405,7 @@ void se::vHistoryPrint(void)
 /*----------------------------------------------------------------------------*/
 /* read command history file                                                  */
 /*----------------------------------------------------------------------------*/
-bool se::bHistoryRead(char* wCommand)
+bool SePrompt::bHistoryRead(char* wCommand)
 {
   bool bResult = m_xHistoryFile.bReadLine(wCommand);
   
@@ -415,7 +415,7 @@ bool se::bHistoryRead(char* wCommand)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool se::bHistoryRecall(char* pWords[])
+bool SePrompt::bHistoryRecall(char* pWords[])
 {
   i8 iCommand;
   
@@ -442,7 +442,7 @@ bool se::bHistoryRecall(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* seek to start of command history file                                      */
 /*----------------------------------------------------------------------------*/
-void se::vHistoryStart(void)
+void SePrompt::vHistoryStart(void)
 {
   m_xHistoryFile.vSeek(0);
 }
@@ -455,7 +455,7 @@ void se::vHistoryStart(void)
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool se::bDecode(char* pWords[])
+bool SePrompt::bDecode(char* pWords[])
 {
   if (0 == String::iLength(pWords[0])) {
     return false;
@@ -665,7 +665,7 @@ bool se::bDecode(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* test for command file                                                      */
 /*----------------------------------------------------------------------------*/
-bool se::bTestFile(char* pWord)
+bool SePrompt::bTestFile(char* pWord)
 {
   File xFile;
   
@@ -678,7 +678,7 @@ bool se::bTestFile(char* pWord)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void se::vPushFile(char* pWord)
+void SePrompt::vPushFile(char* pWord)
 {
   ASSERT(m_iInput < C_INPUT_ARRAY - 1);
   m_iInput++;
@@ -693,7 +693,7 @@ void se::vPushFile(char* pWord)
 /*----------------------------------------------------------------------------*/
 /* pop command file                                                           */
 /*----------------------------------------------------------------------------*/
-void se::vPopFile(void)
+void SePrompt::vPopFile(void)
 {
   ASSERT(m_iInput);
   
@@ -707,7 +707,7 @@ void se::vPopFile(void)
 /*----------------------------------------------------------------------------*/
 /* get current input stream                                                   */
 /*----------------------------------------------------------------------------*/
-InputStream* se::pInput(void)
+InputStream* SePrompt::pInput(void)
 {
   return &m_xInputStream[m_iInput];
 }
@@ -715,7 +715,7 @@ InputStream* se::pInput(void)
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-bool se::bHelp(char* pWords[])
+bool SePrompt::bHelp(char* pWords[])
 {
   vTrace("seitf temporary commands:\n");
   vTrace("add   -- add column to table\n");
@@ -758,7 +758,7 @@ bool se::bHelp(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* connect to se                                                              */
 /*----------------------------------------------------------------------------*/
-bool se::bConnect(char* pWords[])
+bool SePrompt::bConnect(char* pWords[])
 {
   s256 sRequest;
   
@@ -771,7 +771,7 @@ bool se::bConnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* disconnect from se                                                         */
 /*----------------------------------------------------------------------------*/
-bool se::bDisconnect(char* pWords[])
+bool SePrompt::bDisconnect(char* pWords[])
 {
   s256 sRequest;
   
@@ -784,7 +784,7 @@ bool se::bDisconnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a dictionary                                                          */
 /*----------------------------------------------------------------------------*/
-bool se::bDropDictionary(char* pWords[])
+bool SePrompt::bDropDictionary(char* pWords[])
 {
   s256 sRequest;
   
@@ -803,7 +803,7 @@ bool se::bDropDictionary(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool se::bCreateTenant(char* pWords[])
+bool SePrompt::bCreateTenant(char* pWords[])
 {
   s256 sRequest;
   
@@ -822,7 +822,7 @@ bool se::bCreateTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bListTenants(char* pWords[])
+bool SePrompt::bListTenants(char* pWords[])
 {
   s256 sRequest;
   
@@ -835,7 +835,7 @@ bool se::bListTenants(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool se::bDropTenant(char* pWords[])
+bool SePrompt::bDropTenant(char* pWords[])
 {
   s256 sRequest;
   
@@ -854,7 +854,7 @@ bool se::bDropTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool se::bCreateCatalog(char* pWords[])
+bool SePrompt::bCreateCatalog(char* pWords[])
 {
   s256 sRequest;
   
@@ -873,7 +873,7 @@ bool se::bCreateCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool se::bListCatalogs(char* pWords[])
+bool SePrompt::bListCatalogs(char* pWords[])
 {
   s256 sRequest;
   
@@ -886,7 +886,7 @@ bool se::bListCatalogs(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool se::bDropCatalog(char* pWords[])
+bool SePrompt::bDropCatalog(char* pWords[])
 {
   s256 sRequest;
   
@@ -905,7 +905,7 @@ bool se::bDropCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool se::bCreateSchema(char* pWords[])
+bool SePrompt::bCreateSchema(char* pWords[])
 {
   s256 sRequest;
   
@@ -924,7 +924,7 @@ bool se::bCreateSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bListSchemas(char* pWords[])
+bool SePrompt::bListSchemas(char* pWords[])
 {
   s256 sRequest;
   
@@ -937,7 +937,7 @@ bool se::bListSchemas(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool se::bDropSchema(char* pWords[])
+bool SePrompt::bDropSchema(char* pWords[])
 {
   s256 sRequest;
   
@@ -956,7 +956,7 @@ bool se::bDropSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool se::bCreateTable(char* pWords[])
+bool SePrompt::bCreateTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -975,7 +975,7 @@ bool se::bCreateTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool se::bListTables(char* pWords[])
+bool SePrompt::bListTables(char* pWords[])
 {
   s256 sRequest;
   
@@ -988,7 +988,7 @@ bool se::bListTables(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bDumpTable(char* pWords[])
+bool SePrompt::bDumpTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1007,7 +1007,7 @@ bool se::bDumpTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bDropTable(char* pWords[])
+bool SePrompt::bDropTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1026,7 +1026,7 @@ bool se::bDropTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bAddColumn(char* pWords[16])
+bool SePrompt::bAddColumn(char* pWords[16])
 {
   s256 sRequest;
   
@@ -1053,7 +1053,7 @@ bool se::bAddColumn(char* pWords[16])
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bListColumns(char* pWords[])
+bool SePrompt::bListColumns(char* pWords[])
 {
   s256 sRequest;
   
@@ -1072,7 +1072,7 @@ bool se::bListColumns(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* copy a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool se::bCopyTable(char* pWords[])
+bool SePrompt::bCopyTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1095,7 +1095,7 @@ bool se::bCopyTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool se::bExportTable(char* pWords[])
+bool SePrompt::bExportTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1118,7 +1118,7 @@ bool se::bExportTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool se::bLoadTable(char* pWords[])
+bool SePrompt::bLoadTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1141,7 +1141,7 @@ bool se::bLoadTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool se::bSelectTable(char* pWords[])
+bool SePrompt::bSelectTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1160,7 +1160,7 @@ bool se::bSelectTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get address a table                                                        */
 /*----------------------------------------------------------------------------*/
-bool se::bAddressTable(char* pWords[])
+bool SePrompt::bAddressTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1179,7 +1179,7 @@ bool se::bAddressTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool se::bSizeTable(char* pWords[])
+bool SePrompt::bSizeTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1198,7 +1198,7 @@ bool se::bSizeTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool se::bTruncateTable(char* pWords[])
+bool SePrompt::bTruncateTable(char* pWords[])
 {
   s256 sRequest;
   
@@ -1217,7 +1217,7 @@ bool se::bTruncateTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* pop dictionary                                                             */
 /*----------------------------------------------------------------------------*/
-bool se::bPopDic(char* pWords[])
+bool SePrompt::bPopDic(char* pWords[])
 {
   return false;
 }
@@ -1225,7 +1225,7 @@ bool se::bPopDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* push dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-bool se::bPushDic(char* pWords[])
+bool SePrompt::bPushDic(char* pWords[])
 {
   s256 sRequest;
   
@@ -1245,7 +1245,7 @@ bool se::bPushDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool se::bPrint(char* pWords[])
+bool SePrompt::bPrint(char* pWords[])
 {
   printf("%s\n",pWords[1]);
   
@@ -1255,7 +1255,7 @@ bool se::bPrint(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool se::bGetDicPath(char* pWords[])
+bool SePrompt::bGetDicPath(char* pWords[])
 {
   s256 sRequest;
   
@@ -1268,7 +1268,7 @@ bool se::bGetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* set dictionary path                                                        */
 /*----------------------------------------------------------------------------*/
-bool se::bSetDicPath(char* pWords[])
+bool SePrompt::bSetDicPath(char* pWords[])
 {
   return true;
 }
@@ -1276,7 +1276,7 @@ bool se::bSetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get dictionary contents                                                    */
 /*----------------------------------------------------------------------------*/
-bool se::bGetDicContents(char* pWords[])
+bool SePrompt::bGetDicContents(char* pWords[])
 {
   s256 sRequest;
   
@@ -1289,7 +1289,7 @@ bool se::bGetDicContents(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-bool se::bGetMonitor(char* pWords[])
+bool SePrompt::bGetMonitor(char* pWords[])
 {
   s256 sRequest;
   
@@ -1302,7 +1302,7 @@ bool se::bGetMonitor(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* print command history                                                      */
 /*----------------------------------------------------------------------------*/
-bool se::bPrintHistory(char* pWords[])
+bool SePrompt::bPrintHistory(char* pWords[])
 {
   vHistoryPrint();
   return false;
@@ -1311,7 +1311,7 @@ bool se::bPrintHistory(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-bool se::bPing(char* pWords[])
+bool SePrompt::bPing(char* pWords[])
 {
   s256 sRequest;
   
@@ -1324,7 +1324,7 @@ bool se::bPing(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-bool se::bX(char* pWords[])
+bool SePrompt::bX(char* pWords[])
 {
   
   s256 sRequest;
@@ -1348,7 +1348,7 @@ bool se::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* do                                                                         */
 /*----------------------------------------------------------------------------*/
-bool se::bDo(char* pWords[])
+bool SePrompt::bDo(char* pWords[])
 {
   vDo("ping");
   vDo("cd tenants");
@@ -1377,14 +1377,14 @@ bool se::bDo(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
-const char* se::pGetLastError(void) {
+const char* SePrompt::pGetLastError(void) {
   return m_sInterfaceError.a();
 }
 
 /*----------------------------------------------------------------------------*/
 /* clear last error                                                           */
 /*----------------------------------------------------------------------------*/
-void se::vClearLastError(void) {
+void SePrompt::vClearLastError(void) {
   m_eInterfaceError = IE_NONE;
   String::vCopy(m_sInterfaceError.a(), "");
 }
@@ -1392,7 +1392,7 @@ void se::vClearLastError(void) {
 /*----------------------------------------------------------------------------*/
 /* set last error                                                             */
 /*----------------------------------------------------------------------------*/
-void se::vSetLastError(eIE eInterfaceError) {
+void SePrompt::vSetLastError(eIE eInterfaceError) {
   m_eInterfaceError = eInterfaceError;
   String::vCopy(m_sInterfaceError.a(), pIE[m_eInterfaceError]);
   
@@ -1406,7 +1406,7 @@ void se::vSetLastError(eIE eInterfaceError) {
 /*----------------------------------------------------------------------------*/
 /* tpch                                                                       */
 /*----------------------------------------------------------------------------*/
-bool se::bTpcH(char* pWords[])
+bool SePrompt::bTpcH(char* pWords[])
 {
   vDo("ping");
   vDo("cd tenants");

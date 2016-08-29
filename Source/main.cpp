@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "StorageEngine.h"
+#include "SePrompt.hpp"
 
 extern Arguments  gxArguments;
 
@@ -40,6 +41,12 @@ int main(int argc, const char* argv[])
   
   // execute the command line
   RapidsSE::vExecute();
+  
+  // optionally execute se> prompt
+  if (gxArguments.m_bSePrompt) {
+    SePrompt* pSePrompt;
+    pSePrompt->vPrompt();
+  }
 
   // unmap from shm and optionally unlink it
   RapidsSE::vPoolClose();

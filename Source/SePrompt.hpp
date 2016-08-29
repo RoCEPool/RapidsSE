@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* se.hpp -- se> prompt                                                       */
+/* SePrompt.hpp -- se> prompt                                                 */
 /*============================================================================*/
 
 #pragma once
 
 #include "Api.hpp"
 
-class se
+class SePrompt
 {
 private:
   static const i8 C_INPUT_ARRAY = 4;
@@ -30,8 +30,8 @@ private:
   s256        m_sInterfaceError;
   
 public:
-  se(i8 iPartition);
-  ~se(void);
+  SePrompt(i8 iPartition);
+  ~SePrompt(void);
   
   void vPrompt(void);
   
