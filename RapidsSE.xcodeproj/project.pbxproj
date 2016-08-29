@@ -126,6 +126,8 @@
 		F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */; };
 		F246DFF11D74EB02000E54C0 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFEF1D74EB02000E54C0 /* History.cpp */; };
 		F246DFF21D74EB02000E54C0 /* History.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F246DFF01D74EB02000E54C0 /* History.hpp */; };
+		F246DFF51D74F75B000E54C0 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFF31D74F75B000E54C0 /* Input.cpp */; };
+		F246DFF61D74F75B000E54C0 /* Input.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F246DFF41D74F75B000E54C0 /* Input.hpp */; };
 		F24D1FBE1D64009A005031F5 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F24D1FBC1D64009A005031F5 /* Timer.cpp */; };
 		F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F24D1FBD1D64009A005031F5 /* Timer.hpp */; };
 		F2A0FAFA1D6432F20032B090 /* SEitfCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2A0FAF81D6432F20032B090 /* SEitfCursor.cpp */; };
@@ -382,6 +384,8 @@
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F246DFEF1D74EB02000E54C0 /* History.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = History.cpp; path = Source/History.cpp; sourceTree = "<group>"; };
 		F246DFF01D74EB02000E54C0 /* History.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = History.hpp; path = Source/History.hpp; sourceTree = "<group>"; };
+		F246DFF31D74F75B000E54C0 /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Input.cpp; path = Source/Input.cpp; sourceTree = "<group>"; };
+		F246DFF41D74F75B000E54C0 /* Input.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Input.hpp; path = Source/Input.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
 		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
 		F24D1FBC1D64009A005031F5 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Source/Timer.cpp; sourceTree = "<group>"; };
@@ -743,6 +747,8 @@
 				98A3C4821CF74E6200BD2B80 /* main.cpp */,
 				F246DFEF1D74EB02000E54C0 /* History.cpp */,
 				F246DFF01D74EB02000E54C0 /* History.hpp */,
+				F246DFF31D74F75B000E54C0 /* Input.cpp */,
+				F246DFF41D74F75B000E54C0 /* Input.hpp */,
 				9859A6011D7447FB008BBCDD /* SePrompt.cpp */,
 				9859A6021D7447FB008BBCDD /* SePrompt.hpp */,
 			);
@@ -1152,6 +1158,7 @@
 				F2DD657A1D655BE6009B684A /* RowCursor.hpp in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
 				F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */,
+				F246DFF61D74F75B000E54C0 /* Input.hpp in Headers */,
 				F2DD657E1D66428F009B684A /* TaskCursor.hpp in Headers */,
 				9859A5FA1D73FD21008BBCDD /* Object.hpp in Headers */,
 				F2A595DE1D70FA28007C66B1 /* TxRef.hpp in Headers */,
@@ -1313,6 +1320,7 @@
 				F22056AD1D62DDA300E8EF5B /* Cell.cpp in Sources */,
 				F220568A1D62DAE700E8EF5B /* System.cpp in Sources */,
 				F22056BF1D62DDF900E8EF5B /* Stack.cpp in Sources */,
+				F246DFF51D74F75B000E54C0 /* Input.cpp in Sources */,
 				F22056CF1D62DE6300E8EF5B /* Interface.cpp in Sources */,
 				F22056A01D62DD1300E8EF5B /* ObjVal.cpp in Sources */,
 				F22056731D62DA8800E8EF5B /* NNP.cpp in Sources */,

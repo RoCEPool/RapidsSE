@@ -64,7 +64,8 @@ void SePrompt::vPrompt(void)
   pInput->vPrompt(m_sPrompt.a());
   
   while (true) {
-    
+   
+//--
     for (i8 i = 0; i < 16; i++)
       *pWords[i] = '\0';
     
@@ -91,6 +92,8 @@ void SePrompt::vPrompt(void)
       i++;
     }
     
+//--
+    
     if (String::bEqualTo("history",pWords[0],C_NO_CASE)) {
       m_xHistory.vPrint();
       continue;
@@ -113,7 +116,7 @@ void SePrompt::vPrompt(void)
       continue;
     }
 
-    vExecute2(pWords);
+    vExecute(pWords);
     
     if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
       vIterateRows();
@@ -122,13 +125,13 @@ void SePrompt::vPrompt(void)
     if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
       while (true) {
         PosixThread::vSleepSec(10);
-        vExecute2(pWords);
+        vExecute(pWords);
       }
     }
     
     if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
       while (true) {
-        vExecute2(pWords);
+        vExecute(pWords);
       }
     }
   }
@@ -141,7 +144,7 @@ void SePrompt::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vExecute2(char* pWords[])
+void SePrompt::vExecute(char* pWords[])
 {
   Timer xTimer;
   

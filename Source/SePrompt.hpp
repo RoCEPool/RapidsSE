@@ -33,7 +33,7 @@ public:
   
   
 private:
-  void   vExecute2(char* pWords[]);
+  void   vExecute(char* pWords[]);
   InputStream* pInput(void);
   void   vIterateRows(void);
   
