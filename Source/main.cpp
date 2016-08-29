@@ -45,7 +45,7 @@ int main(int argc, const char* argv[])
   // optionally execute se> prompt
   if (gxArguments.m_bSePrompt) {
     SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);
-    pSePrompt->vPrompt();
+    pSePrompt->vPrompt2();
   }
 
   // unmap from shm and optionally unlink it

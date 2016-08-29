@@ -25,7 +25,6 @@ public:
   void vPrompt(const char* wPrompt);
   void vInit(char* wWorkarea, char* pWords[]);
   
-private:
   void vPushFile(char* pWord);
   void vPopFile(void);
   

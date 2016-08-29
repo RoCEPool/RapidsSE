@@ -137,6 +137,66 @@ void SePrompt::vPrompt(void)
   }
 }
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+void SePrompt::vPrompt2(void)
+{
+  char wWorkarea[C_16KB];
+  char* pWords[16];
+  
+  m_xInput.vInit(wWorkarea,pWords);
+  m_xInput.vPrompt("se> ");
+  
+  m_xHistory.vOpen();
+  
+  while (true) {
+    
+    m_xInput.vNext(pWords);
+    
+    if (String::bEqualTo("history",pWords[0],C_NO_CASE)) {
+      m_xHistory.vPrint();
+      continue;
+    }
+    
+    if (String::bEqualTo("!!",pWords[0],C_NO_CASE)) {
+      if (! m_xHistory.bRecall(pWords))
+        continue;
+    }
+    
+    if ('!' == *pWords[0]) {
+      if (! m_xHistory.bRecall(pWords))
+        continue;
+    }
+    
+    m_xHistory.vAppend(pWords);
+    
+    if (bTestFile(pWords[0])) {
+      m_xInput.vPushFile(pWords[0]);
+      continue;
+    }
+    
+    vExecute(pWords);
+    
+    if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
+      vIterateRows();
+    }
+    
+    if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
+      while (true) {
+        PosixThread::vSleepSec(10);
+        vExecute(pWords);
+      }
+    }
+    
+    if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
+      while (true) {
+        vExecute(pWords);
+      }
+    }
+  }
+}
+
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -58,6 +58,7 @@ void Input::vNext(char* pWords[])
       i++;
     }
     
+    break;
   }
     
 }
@@ -88,6 +89,14 @@ void Input::vInit(char* wWorkarea, char* pWords[])
 
   pInput->vUseStdin(m_sInputLine);
   pInput->vPrompt(m_sPrompt.a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set prmpt                                                                  */
+/*----------------------------------------------------------------------------*/
+void Input::vPrompt(const char* wPrompt)
+{
+  m_sPrompt = wPrompt;
 }
 
 /*----------------------------------------------------------------------------*/

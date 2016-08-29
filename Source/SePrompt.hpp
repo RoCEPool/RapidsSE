@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Api.hpp"
+#include "Input.hpp"
 #include "History.hpp"
 
 class SePrompt
@@ -20,6 +21,7 @@ private:
   i8          m_iInput;
   InputStream m_xInputStream[C_INPUT_ARRAY]; // input stream handler
   
+  Input       m_xInput;
   s8K         m_sResponse;       // response
   
   History     m_xHistory;
@@ -30,6 +32,8 @@ public:
   ~SePrompt(void);
   
   void vPrompt(void);
+  void vPrompt2(void);
+  
   
   
 private:
