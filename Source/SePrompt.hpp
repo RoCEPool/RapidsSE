@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Api.hpp"
+#include "History.hpp"
 
 class SePrompt
 {
@@ -21,10 +22,8 @@ private:
   
   s8K         m_sResponse;       // response
   
-  char        m_wHistory[C_4KB];
-  File        m_xHistoryFile;
-  i8          m_iCommand;
-  bool        m_bSkipHistory;
+  History     m_xHistory;
+  
   
 public:
   SePrompt(i8 iPartition);
@@ -37,17 +36,6 @@ private:
   void   vExecute2(char* pWords[]);
   InputStream* pInput(void);
   void   vIterateRows(void);
-  
-  //----------------------------------------------------------------------------
-  void vHistoryAppend(char* pWords[]);
-  void vHistoryClose(void);
-  bool bHistoryGet(i8 iCommand, char* pWords[]);
-  void vHistoryOpen(void);
-  void vHistoryPrint(void);
-  bool bHistoryRead(char* wCommand);
-  bool bHistoryRecall(char* pWords[]);
-  void vHistoryStart(void);
-  void vHistoryEnd(void);
   
   //----------------------------------------------------------------------------
   bool bTestFile(char* pWord);

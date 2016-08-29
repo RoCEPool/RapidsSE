@@ -20,7 +20,6 @@ public:
   History(void);
   ~History(void);
   
-private:
   void vAppend(char* pWords[]);
   void vClose(void);
   bool bGet(i8 iCommand, char* pWords[]);
