@@ -124,12 +124,12 @@ void File::vClose(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void File::vDump(void)
+void File::vDump(const char* pTab)
 {
-  vTrace("File %s:\n", m_sFilePath.a());
-  vTrace("  Open Mode %s\n", m_sOpenMode.a());
-  vTrace("  Trace level %lld\n", m_iTraceLevel);
-  vTrace("  File Pointer 0x%p\n", m_pFilePtr);
+  vTrace("%sFile %s:\n", pTab, m_sFilePath.a());
+  vTrace("%s  Open Mode %s\n", pTab, m_sOpenMode.a());
+  vTrace("%s  Trace level %lld\n", pTab, m_iTraceLevel);
+  vTrace("%s  File Pointer 0x%p\n", pTab, m_pFilePtr);
 }
 
 /*---------------------------------------------------------------------------*/

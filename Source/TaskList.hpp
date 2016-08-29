@@ -21,6 +21,7 @@ namespace Tasks {
     ~TaskList(void);
     
     Task* pAllocTask(void);
+    void  vDump(const char* pTab);
     void  vFreeTask(Task* pTask);
   };
     

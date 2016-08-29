@@ -48,6 +48,17 @@ void Node::vInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Node::vDump(const char* pSpace)
+{
+  vTrace("%sNode %p: \n", pSpace, this);
+  vTrace("%s  NodeNo: %lld \n", pSpace, m_iNodeNo);
+  vTrace("%s  Prev Node %p\n", pSpace, pPrevNode());
+  vTrace("%s  Next Node %p\n\n", pSpace, pNextNode());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get node number                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Node::iNodeNo(void)

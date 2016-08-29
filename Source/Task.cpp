@@ -437,6 +437,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("begin_",          &vBegin_,           false);
   vAddPrimitive("boot",            &vBoot,             false);
   vAddPrimitive("bpa",             &vBpa,              false);
+  vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive("class@",          &vClassFetch,       false);
   vAddPrimitive("class!",          &vClassStore,       false);
   vAddPrimitive("code=",           &vCodeAssign,       false);
@@ -1118,18 +1119,29 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
+void Task::vDump(const char* pSpace)
+{
+  _poolAddress_(this);
+  
+  vTrace("%sTask %p: \n", pSpace, this);
+  vTrace("%s  name: %s \n", pSpace, m_sName.a());
+  vTrace("%s  taskNo %lld\n", pSpace,m_iTaskNo);
+  vTrace("%s  state %s\n", pSpace, pTS[m_eState]);
+  vTrace("%s  txId %lld \n\n", pSpace, m_iTxId);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
 void Task::vDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("Tx %p: %16s TaskNo %02lld State %d %s TxId %lld \n",
-         this,
-         m_sName.a(),
-         m_iTaskNo,
-         m_eState,
-         pTS[m_eState],
-         m_iTxId
-         );
+  vTrace("Task %p: \n", this);
+  vTrace("   name: %16s \n", m_sName.a());
+  vTrace("   taskNo %02lld\n" ,m_iTaskNo);
+  vTrace("   state %s\n", pTS[m_eState]);
+  vTrace("   txId %lld \n", m_iTxId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2518,6 +2530,20 @@ void Task::vBpa(NNP_Task nnpTask)
   BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
   
   pBPA->vAnalyze();
+  
+  delete pBPA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bpdump -- dump of objects in teh buffer pool                               */
+/*----------------------------------------------------------------------------*/
+void Task::vBpdump(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vBpdump");
+  
+  BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
+  
+  pBPA->vDump();
   
   delete pBPA;
 }

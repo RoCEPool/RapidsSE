@@ -28,7 +28,7 @@ namespace Dictionaries
     void  vAddConstant(const char* aName, const char* aValue);
     Word* pAllocWord(i8 iBytes);
     Word* pCurrentWord(void);
-    void  vDump(void);
+    void  vDump(const char* pTab);
     Word* pFind(const char* aName);
     Word* pFindFunc(Tasks::pFUN pFunc);
     bool  bForget(s& sName);

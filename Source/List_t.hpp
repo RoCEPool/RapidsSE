@@ -23,6 +23,7 @@ namespace Structures
     List_t(void);
     
     void    vAppend(OBJECT* pNode);
+    i8      iCount(void);
     void    vDump(const char* aTitle);
     void    vInsert(OBJECT* pNode);
     OBJECT* pPop(void);
@@ -88,7 +89,14 @@ void List_t<OBJECT>::vAppend(OBJECT* pNode)
   
   m_zLock.vDropWrite();
 }
-
+/*----------------------------------------------------------------------------*/
+/* dump each object in list                                                   */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+i8 List_t<OBJECT>::iCount(void)
+{
+  return m_iCount;
+}
 /*----------------------------------------------------------------------------*/
 /* dump each object in list                                                   */
 /*----------------------------------------------------------------------------*/

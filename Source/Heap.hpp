@@ -29,11 +29,15 @@ namespace Pool
     
     Object* pAllocObject(void);
     void    vAnalyse(i8 xCounts[]);
-    void    vDump(void);
     i8      iAllocCount(void);
     i8      iBufferCount(void);
+    void    vDropLock(void);
+    void    vDump(const char* pTab);
+    HeapBuffer* pFirstBuffer(void);
+    HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      iFreeCount(void);
     void    vFreeObject(Object* pObject);
+    void    vGrabLock(void);
     i8      iObjectSize(void);
     
   private:

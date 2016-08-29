@@ -83,6 +83,7 @@ namespace Dictionaries
     char* pDataEnd(void);
     i8    iDataBytes(void) const;
     void  vDump(void);
+    void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
     void  vEncode(const char* aWord, CodeField* pCode);

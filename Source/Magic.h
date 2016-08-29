@@ -10,6 +10,7 @@
 #include "cn.hpp"
 
 #include "ByteLiterals.hpp"
+#include "StringLiterals.hpp"
 #include "Addressing.hpp"
 #include "Magnitudes.h"
 

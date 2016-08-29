@@ -2260,11 +2260,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5823"
-            endingLineNumber = "5823"
+            startingLineNumber = "5849"
+            endingLineNumber = "5849"
+            landmarkName = "Task::vLoaderInit(NNP_Task nnpTask)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/Task.cpp"
+            timestampString = "494148369.40159"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "5868"
+            endingLineNumber = "5868"
             landmarkName = "Task::vLoaderTableStore(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2276,27 +2292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5842"
-            endingLineNumber = "5842"
-            landmarkName = "Task::vLoaderPathStore(NNP_Task nnpTask)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1685"
-            endingLineNumber = "1685"
+            startingLineNumber = "1697"
+            endingLineNumber = "1697"
             landmarkName = "Task::vLoop(void)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2308,11 +2308,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1684"
-            endingLineNumber = "1684"
+            startingLineNumber = "1696"
+            endingLineNumber = "1696"
             landmarkName = "Task::vLoop(void)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2324,12 +2324,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1881"
-            endingLineNumber = "1881"
-            landmarkName = "Task::bPopParam(s256&amp; sArg1)"
+            startingLineNumber = "1893"
+            endingLineNumber = "1893"
+            landmarkName = "Task::bPopParam(s32&amp; sArg1)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2340,11 +2340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "5811"
-            endingLineNumber = "5811">
+            startingLineNumber = "5837"
+            endingLineNumber = "5837">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2500,9 +2500,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
-            endingLineNumber = "122"
-            landmarkName = "RapidsSE::vPoolClose(void)"
-            landmarkType = "5">
+            endingLineNumber = "122">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2580,7 +2578,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "365"
-            endingLineNumber = "365">
+            endingLineNumber = "365"
+            landmarkName = "RapidsSE::vRunDocol(void)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2652,11 +2652,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493809361.244578"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1181"
-            endingLineNumber = "1181">
+            startingLineNumber = "1193"
+            endingLineNumber = "1193">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2858,11 +2858,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493811750.345166"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "6025"
-            endingLineNumber = "6025">
+            startingLineNumber = "6051"
+            endingLineNumber = "6051">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2872,12 +2872,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "493811762.40315"
+            timestampString = "494148369.40159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "6019"
-            endingLineNumber = "6019"
-            landmarkName = "Task::vLockDropWrite(NNP_Task nnpTask)"
+            startingLineNumber = "6045"
+            endingLineNumber = "6045"
+            landmarkName = "Task::vLockDropRead(NNP_Task nnpTask)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2910,6 +2910,214 @@
             startingLineNumber = "178"
             endingLineNumber = "178"
             landmarkName = "RapidsSE::vAttachObjects(void)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/mn.cpp"
+            timestampString = "493999322.449643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "mn::iMagic(void)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferFree.cpp"
+            timestampString = "493999418.87169"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
+            landmarkName = "BufferFree::nNextFree(void)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494145023.109298"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
+            landmarkName = "BufferPoolAnalyzer::vDump(void)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494148724.40702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "217"
+            endingLineNumber = "217"
+            landmarkName = "BufferPoolAnalyzer::vDump(Buffer* pBuffer)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494148724.40702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494148724.40702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "BufferPoolAnalyzer::vDump(Buffer* pBuffer)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/TxArray.cpp"
+            timestampString = "494153723.534959"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "TxArray::vDump(const char* pTab)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494148724.40702"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
+            landmarkName = "BufferPoolAnalyzer::vDump(Buffer* pBuffer)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494153504.665025"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "263"
+            endingLineNumber = "263"
+            landmarkName = "BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/cn.cpp"
+            timestampString = "494151136.559161"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "cn::pGetDump(eCN eClass)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/cn.cpp"
+            timestampString = "494151136.559161"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "cn::cn(eCN eClassNo)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/Task.cpp"
+            timestampString = "494151411.062381"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "Task::Task(void)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/BufferPoolAnalyzer.cpp"
+            timestampString = "494152485.942781"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "258"
+            endingLineNumber = "258"
+            landmarkName = "BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

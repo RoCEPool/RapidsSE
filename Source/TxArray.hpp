@@ -24,6 +24,8 @@ namespace Transactions
     
     TxArray(void);
     ~TxArray(void);
+    
+    void vDump(const char * pTab);
   };
 }
 

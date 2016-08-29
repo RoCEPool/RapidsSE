@@ -91,7 +91,7 @@ i8 Heap::iAllocCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the objects in the heap                                           */
+/* analyse the objects in the heap                                            */
 /*----------------------------------------------------------------------------*/
 void Heap::vAnalyse(i8 xCounts[])
 {
@@ -119,16 +119,81 @@ i8 Heap::iBufferCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump this heap                                                             */
+/* grab the lock                                                              */
 /*----------------------------------------------------------------------------*/
-void Heap::vDump(void)
+void Heap::vGrabLock()
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("Heap %p: BufferCount %lld FreeCount %lld\n",
-         this,
-         m_iBufferCount,
-         m_iFreeCount);
+  ASSERT(!m_zLock.bIsLocked());
+  m_zLock.vGrabWrite();
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the first buffer                                                       */
+/*----------------------------------------------------------------------------*/
+HeapBuffer* Heap::pFirstBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(m_zLock.bIsLocked());
+  
+  return m_pFirstBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop the lock                                                              */
+/*----------------------------------------------------------------------------*/
+void Heap::vDropLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(m_zLock.bIsLocked());
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this heap                                                             */
+/*----------------------------------------------------------------------------*/
+void Heap::vDump(const char* pTab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  vTrace("%s%s %p:\n", pTab, eClass() == CN_SMALLHEAP ? "SmallHeap" : "MediumHeap", this);
+  vTrace("%s  BufferCount %lld\n", pTab, m_iBufferCount);
+  vTrace("%s  FreeCount %lld\n\n",  pTab, m_iFreeCount);
+  
+  i8 iCountObjects[CN_ENUMS];
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    iCountObjects[index] = 0;
+  }
+  
+  vAnalyse(iCountObjects);
+  
+  vTrace("%s  Objects:\n", pTab);
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("%s    %s %lld \n", pTab, pCN[eClass], iCountObjects[eClass]);
+  }
+  vTrace("\n");
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the next buffer                                                       */
+/*----------------------------------------------------------------------------*/
+HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  ASSERT(m_zLock.bIsLocked());
+  
+  return pBuffer->pNextBuffer();
 }
 
 /*----------------------------------------------------------------------------*/

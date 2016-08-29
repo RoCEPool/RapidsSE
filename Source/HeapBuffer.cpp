@@ -72,16 +72,13 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void HeapBuffer::vDump(void)
+void HeapBuffer::vDump(const char* pTab)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
-  vTrace("HeapBuffer: %p NextBuffer %p PrevBuffer %p\n",
-         this,
-         m_pNextBuffer,
-         m_pPrevBuffer);
+  vTrace("%sHeapBuffer: %p\n", pTab, this);
+  vTrace("%s  NextBuffer %p\n", pTab, m_pNextBuffer);
+  vTrace("%s  PrevBuffer %p\n\n", pTab, m_pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

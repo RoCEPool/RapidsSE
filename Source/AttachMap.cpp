@@ -100,13 +100,13 @@ void AttachMap::vRecordGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vDump(void)
+void AttachMap::vDump(const char* pTab)
 {
-  vTrace("AttachMap %p:\n",this);
-  vTrace("  pid %lld\n",m_iPid);
-  vTrace("  utc %s\n",m_sUTC.a());
-  vTrace("  regionSize %lld\n",m_iRegionSize);
-  vTrace("  partitions %lld\n",m_iPartitions);
+  vTrace("%sAttachMap %p:\n", pTab, this);
+  vTrace("%s  pid %lld\n", pTab, m_iPid);
+  vTrace("%s  utc %s\n", pTab, m_sUTC.a());
+  vTrace("%s  regionSize %lld\n", pTab, m_iRegionSize);
+  vTrace("%s  partitions %lld\n\n", pTab, m_iPartitions);
 }
 
 /*============================================================================*/

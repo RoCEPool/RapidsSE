@@ -184,7 +184,7 @@ void RapidsSE::vAttachObjects(void)
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
   
-  gpAttachMap->vDump();
+  gpAttachMap->vDump(pSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/

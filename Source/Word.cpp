@@ -371,7 +371,6 @@ void Word::vDump(void)
   s32 sFuncName;
   
   Word* pFuncWord = gpDictionary->pFindFunc(m_xCode.m_pFunc);
-  
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
          "Func %p %s ..Data.. %p\n",
          this,
@@ -382,6 +381,28 @@ void Word::vDump(void)
          m_iDataBytes,
          m_xCode.m_pFunc,
          pFuncWord ? pFuncWord->aName() : "<not-found>",
+         pFirstCell()
+         );
+  }
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Word::vDump(const char* pTab)
+{
+  _poolAddress_(this);
+  
+  s32 sFuncName;
+  
+  vTrace("%sWord %p: %s %s %s DataBytes %lld "
+         "Func %p ..Data.. %p\n",
+         pTab,
+         this,
+         m_sName.a(),
+         pWT[m_eWordType],
+         m_bImmediate ? "Immediate" : "Not Immediate",
+         m_iDataBytes,
+         m_xCode.m_pFunc,
          pFirstCell()
          );
 }

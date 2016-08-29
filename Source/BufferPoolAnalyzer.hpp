@@ -9,6 +9,8 @@ using namespace Common;
 
 namespace Pool
 {
+  class Heap;
+  
   class BufferPoolAnalyzer : public mn
   {
   private:
@@ -18,7 +20,9 @@ namespace Pool
     
     BufferPoolAnalyzer(void);
     ~BufferPoolAnalyzer(void);
-    
+    void vDump(void);
+    void vDump(Buffer* pBuffer);
+    void vDumpHeap(Heap* pBuffer);
     void vAnalyze(void);
     void vAssertClass(eCN eClassNo) const;
   };
