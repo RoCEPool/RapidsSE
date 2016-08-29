@@ -43,6 +43,7 @@ tasklist taskCursor: taskCrs
 
 //traceon
   taskcrs taskcrs taskcursor.begin
+          taskcrs taskcursor.first
   iterate
 
     listerTaskPrint if
