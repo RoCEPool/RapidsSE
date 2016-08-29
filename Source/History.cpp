@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 History::History(void)
 {
-  m_wHistory[0] = '\0';
-  //m_xHistoryFile
-  m_iCommand = 0;
-  m_bSkipHistory = false;
+  //m_xFile
+  m_iCommands = 0;
+  
+  //m_xInputStream
 }
 
 /*----------------------------------------------------------------------------*/
@@ -20,6 +20,7 @@ History::History(void)
 /*----------------------------------------------------------------------------*/
 History::~History(void)
 {
+  vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,31 +28,17 @@ History::~History(void)
 /*----------------------------------------------------------------------------*/
 void History::vAppend(char* pWords[])
 {
+  vEnd();
+  
   for (i8 i = 0; *pWords[i]; i++) {
     if (i)
-      m_xHistoryFile.vPrint("%s"," ");
-    m_xHistoryFile.vPrint("%s",pWords[i]);
+      m_xFile.vPrint("%s"," ");
+    m_xFile.vPrint("%s",pWords[i]);
   }
-  m_xHistoryFile.vPrint("%s","\n");
-  m_xHistoryFile.vFlush();
+  m_xFile.vPrint("%s","\n");
+  m_xFile.vFlush();
   
-  m_iCommand++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* close command history file                                                 */
-/*----------------------------------------------------------------------------*/
-void History::vClose(void)
-{
-  m_xHistoryFile.vClose();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seek to end of command history file                                        */
-/*----------------------------------------------------------------------------*/
-void History::vEnd(void)
-{
-  m_xHistoryFile.vSeekEnd();
+  m_iCommands++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,22 +56,18 @@ bool History::bGet(i8 iCommand, char* pWords[])
   while (bRead(wCommand)) {
     if (++i == iCommand) {
       vEnd();
-      //      String::vCopy(pWords[0],wCommand);
-      {
-        sCommand = wCommand;
-        m_xInputStream.vUseText(sCommand);
-        m_xInputStream.vLineOriented(true);
+      sCommand = wCommand;
+      m_xInputStream.vUseText(sCommand);
+      m_xInputStream.vLineOriented(true);
         
-        for (i8 i = 0; i < 16; i++)
-          *pWords[i] = '\0';
-        
-        i8 i = 0;
-        //pInput->vEOL(false);
-        while (LT_NONE != m_xInputStream.eNextLiteral(pWords[i])) {
-          //vTrace("Word [%lld] %s\n",i,pWords[i]);
-          i++;
-        }
-        
+      for (i8 i = 0; i < 16; i++)
+        *pWords[i] = '\0';
+      
+      i8 i = 0;
+      //pInput->vEOL(false);
+      while (LT_NONE != m_xInputStream.eNextLiteral(pWords[i])) {
+        //vTrace("Word [%lld] %s\n",i,pWords[i]);
+        i++;
       }
       
       return true;
@@ -92,20 +75,8 @@ bool History::bGet(i8 iCommand, char* pWords[])
   }
   
   vEnd();
+  
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open command history file                                                  */
-/*----------------------------------------------------------------------------*/
-void History::vOpen(void)
-{
-  char wFileName[C_1KB];
-  
-  String::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt",Process::iGetPid());
-  
-  bool b = m_xHistoryFile.bOpen(wFileName,C_OPEN_READ_WRITE_CREATE);
-  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,26 +84,14 @@ void History::vOpen(void)
 /*----------------------------------------------------------------------------*/
 void History::vPrint(void)
 {
-  vStart();
-  
   char wCommand[C_4KB];
   
-  i8 i = 1;
-  while (bRead(wCommand)) {
-    vTrace("%lld %s\n",i++,wCommand);
-  }
+  vStart();
+  
+  for (i8 i = 1; bRead(wCommand); i++)
+    vTrace("  %lld  %s\n",i,wCommand);
   
   vEnd();
-}
-
-/*----------------------------------------------------------------------------*/
-/* read command history file                                                  */
-/*----------------------------------------------------------------------------*/
-bool History::bRead(char* wCommand)
-{
-  bool bResult = m_xHistoryFile.bReadLine(wCommand);
-  
-  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,7 +102,7 @@ bool History::bRecall(char* pWords[])
   i8 iCommand;
   
   if (String::bEqualTo("!!",pWords[0],C_NO_CASE)) {
-    iCommand = m_iCommand;
+    iCommand = m_iCommands;
     if (! iCommand)
       return false;
   }
@@ -157,9 +116,42 @@ bool History::bRecall(char* pWords[])
   
   vTrace("Recall: %lld\n",iCommand);
   
-  bool b = bGet(iCommand,pWords);
+  bool bRecalled = bGet(iCommand,pWords);
   
-  return b;
+  return bRecalled;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* open command history file                                                  */
+/*----------------------------------------------------------------------------*/
+void History::vOpen(void)
+{
+  char wFileName[C_1KB];
+  
+  String::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt",Process::iGetPid());
+  
+  bool b = m_xFile.bOpen(wFileName,C_OPEN_READ_WRITE_CREATE);
+  ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* close command history file                                                 */
+/*----------------------------------------------------------------------------*/
+void History::vClose(void)
+{
+  m_xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seek to end of command history file                                        */
+/*----------------------------------------------------------------------------*/
+void History::vEnd(void)
+{
+  m_xFile.vSeekEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +159,17 @@ bool History::bRecall(char* pWords[])
 /*----------------------------------------------------------------------------*/
 void History::vStart(void)
 {
-  m_xHistoryFile.vSeek(0);
+  m_xFile.vSeek(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* read line from command history file                                        */
+/*----------------------------------------------------------------------------*/
+bool History::bRead(char* wCommand)
+{
+  bool bResult = m_xFile.bReadLine(wCommand);
+  
+  return bResult;
 }
 
 /*============================================================================*/
