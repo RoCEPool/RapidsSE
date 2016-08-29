@@ -44,7 +44,7 @@ int main(int argc, const char* argv[])
   
   // optionally execute se> prompt
   if (gxArguments.m_bSePrompt) {
-    SePrompt* pSePrompt;
+    SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);
     pSePrompt->vPrompt();
   }
 

@@ -13,7 +13,7 @@ private:
 
   i8     m_iPartition; // which partition
   SEitf* m_pSEitf;     // interface into rapidsse
-  s256   m_sPrompt;    // prompt
+  s256   m_sPrompt;    // the prompt
   
   s256        m_sInputLine;
   i8          m_iInput;
@@ -40,6 +40,7 @@ public:
   //--------------------------------------------------------------------------
   void   vParse(s& sRequest, char* pWords[]);
   void   vExecute(char* pWords[]);
+  void   vExecute2(char* pWords[]);
   
   void   vIterateRows(void);
   

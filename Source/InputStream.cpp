@@ -34,7 +34,7 @@ void InputStream::operator delete(void*)
 InputStream::InputStream(void)
 : ObjVal(sizeof(InputStream))
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
 
   m_iDepth = 0;
 
@@ -46,7 +46,7 @@ InputStream::InputStream(void)
 /*----------------------------------------------------------------------------*/
 InputStream::~InputStream(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
 
   vCloseFile();
 }
@@ -56,7 +56,7 @@ InputStream::~InputStream(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vCloseFile(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   if (bStdin())
     return;
@@ -70,7 +70,7 @@ void InputStream::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 i8 InputStream::iDepth(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   return m_iDepth;
 }
@@ -80,7 +80,7 @@ i8 InputStream::iDepth(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vDepth(i8 iDepth)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   m_iDepth = iDepth;
 }
@@ -90,7 +90,7 @@ void InputStream::vDepth(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bFirstChar(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   return m_bFirstChar;
 }
@@ -100,7 +100,7 @@ bool InputStream::bFirstChar(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bGetLine(s& sInputLine)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   char c;
   
@@ -137,7 +137,7 @@ bool InputStream::bGetLine(s& sInputLine)
 /*----------------------------------------------------------------------------*/
 void InputStream::vLineOriented(bool bLineOriented)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   m_bLineOriented = bLineOriented;
 }
@@ -216,7 +216,7 @@ void InputStream::vNextLine(void)
 /*----------------------------------------------------------------------------*/
 eLT InputStream::eNextLiteral(char* wLiteral)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   bool b;
   
@@ -291,7 +291,7 @@ eLT InputStream::eNextLiteral(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bOpenFile(s& sInputLine, const char* aFilePath)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
 
   vCloseFile();
   
@@ -311,7 +311,7 @@ bool InputStream::bOpenFile(s& sInputLine, const char* aFilePath)
 /*----------------------------------------------------------------------------*/
 void InputStream::vPrompt(char* aPrompt)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   m_aPrompt = aPrompt;
 }
@@ -321,7 +321,7 @@ void InputStream::vPrompt(char* aPrompt)
 /*----------------------------------------------------------------------------*/
 void InputStream::vReset(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
 
   //m_iDepth -- never gets reset
   m_bFromFile    = false;
@@ -343,7 +343,7 @@ void InputStream::vReset(void)
 /*----------------------------------------------------------------------------*/
 bool InputStream::bStdin(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   bool b = m_xInputFile.bIsStdin();
   
@@ -355,7 +355,7 @@ bool InputStream::bStdin(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vUseFile(s& sInputText)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   m_bFromFile  = true;
   m_wInputLine = nullptr;
@@ -372,7 +372,7 @@ void InputStream::vUseFile(s& sInputText)
 /*----------------------------------------------------------------------------*/
 void InputStream::vUseStdin(s& sInputLine)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   if ( ! bStdin() ) {
     vCloseFile();
@@ -401,7 +401,7 @@ void InputStream::vUseStdin(s& sInputLine)
 /*----------------------------------------------------------------------------*/
 void InputStream::vUseText(s& sInputText)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
 //  if ( ! bStdin() )
 //    vCloseFile();
@@ -818,7 +818,7 @@ bool InputStream::bIsX(void)
 /*----------------------------------------------------------------------------*/
 void InputStream::vPrintPrompt(void)
 {
-  _poolAddress_(this);
+//  _poolAddress_(this);
   
   printf("%s",m_aPrompt);
 }

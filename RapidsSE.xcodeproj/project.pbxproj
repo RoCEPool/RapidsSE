@@ -736,9 +736,9 @@
 		F226E7421D42AA8F00E10FC3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				98A3C4821CF74E6200BD2B80 /* main.cpp */,
 				9859A6011D7447FB008BBCDD /* SePrompt.cpp */,
 				9859A6021D7447FB008BBCDD /* SePrompt.hpp */,
-				98A3C4821CF74E6200BD2B80 /* main.cpp */,
 			);
 			name = Main;
 			sourceTree = "<group>";

@@ -10,8 +10,10 @@
 SePrompt::SePrompt(i8 iPartition)
 {
   m_iPartition = iPartition;
-  m_pSEitf     = new SEitf(m_iPartition);
   m_sPrompt    = "se> ";
+
+  eIE eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition);
+  ASSERT(IE_NONE == eResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,8 +53,6 @@ void SePrompt::vPrompt(void)
 
   vAssertTrap();
   
-  m_sPrompt = "seitf> ";
-  
   vHistoryOpen();
   
   InputStream* pInput;
@@ -88,7 +88,12 @@ void SePrompt::vPrompt(void)
       i++;
     }
     
-    vExecute(pWords);
+    if (bTestFile(pWords[0])) {
+      vPushFile(pWords[0]);
+      continue;
+    }
+
+    vExecute2(pWords);
     
     if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
       vIterateRows();
@@ -154,6 +159,29 @@ void SePrompt::vExecute(char* pWords[])
   }
   else {
     vTrace("Error %lld : %s\n",iStatus,m_sResponse.a());
+  }
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+void SePrompt::vExecute2(char* pWords[])
+{
+  Timer xTimer;
+  
+  xTimer.vStart();
+
+  char* aResponse = nullptr;
+  eIE eResult = RapidsSE_ExecuteCommand(m_pSEitf,pWords,&aResponse);
+
+  if (IE_INVALID_COMMAND == eResult)
+    return;
+  
+  xTimer.vUpdate();
+  
+  if (IE_NONE == eResult) {
+    if ( ! String::bEqualTo(aResponse, "<ok>") )
+      vTrace("%s\n",aResponse);
+  }
+  else {
+    vTrace("Error %lld : %s\n",eResult,aResponse);
   }
 }
 

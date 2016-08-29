@@ -5,6 +5,41 @@
 #include "Api.hpp"
 
 /*----------------------------------------------------------------------------*/
+/* create a new seitf instance                                                */
+/*----------------------------------------------------------------------------*/
+eIE RapidsSE_ExecuteCommand(SEitf* pSEitf, char* pWords[], char** ppResponse)
+{
+//  vTrace("RapidsSE_ExecuteCommand: ");
+//  for (i8 i = 0; i < 8 && *pWords[i]; i++)
+//    vTrace("%s ",pWords[i]);
+//  vTrace("\n");
+  
+  eIE eResult = IE_NONE;
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  // send command to se
+  eResult = eExecuteCommand(pSEitf, pWords);
+  if (IE_NONE != eResult) {
+    *ppResponse = nullptr;
+    return eResult;
+  }
+  
+  // get response from se
+  eResult = eGetResponse(pSEitf);
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
+  
+  // put response into caller
+  *ppResponse = pSEitf->m_sResponse.a();
+  
+  // return result code
+  return eResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get list of catalogs                                                       */
 /*----------------------------------------------------------------------------*/
 eIE RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
@@ -637,7 +672,11 @@ eIE RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* change directory                                                           */
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                          */
 /*----------------------------------------------------------------------------*/
 eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand, const char* pParameter)
 {
@@ -694,13 +733,32 @@ eIE eExecuteCommand(SEitf* pSEitf, const char* pCommand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute command                                                            */
+/*----------------------------------------------------------------------------*/
+eIE eExecuteCommand(SEitf* pSEitf, char* pWords[])
+{
+  bool bResult;
+  
+  // execute command
+  bResult = pSEitf->bDecode(pWords);
+  
+  if (!bResult) {
+    // set last error
+    pSEitf->vSetLastError(IE_INVALID_COMMAND);
+    return IE_INVALID_COMMAND;
+  }
+  
+  return IE_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get response                                                               */
 /*----------------------------------------------------------------------------*/
 eIE eGetResponse(SEitf* pSEitf)
 {
   // get response
   i8 iResponse = pSEitf->iGetResponse();
-  vTrace("rsp : %lld\n", iResponse);
+//  vTrace("rsp : %lld\n", iResponse);
   
   if (iResponse) {
     pSEitf->vSetLastError(IE_COMMAND_FAILED);
@@ -709,7 +767,6 @@ eIE eGetResponse(SEitf* pSEitf)
   
   pSEitf->vSetLastError(IE_NONE);
   return IE_NONE;
-  
 }
 
 /*============================================================================*/
