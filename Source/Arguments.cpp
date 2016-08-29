@@ -21,6 +21,7 @@ Arguments::Arguments(void)
   m_bHelp       = false;
   m_bList       = false;
   m_bSeitf      = false;
+  m_bSePrompt   = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
@@ -79,6 +80,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--seitf",argv[iArg],C_NO_CASE)) {
       m_bSeitf = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
+      m_bSePrompt = true;
       continue;
     }
     

@@ -24,6 +24,7 @@ namespace StorageEngine
     bool m_bHelp;       // display help
     bool m_bList;       // list shm regions using /tmp
     bool m_bSeitf;      // run seitf> prompt
+    bool m_bSePrompt;   // run the se> prompt
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
