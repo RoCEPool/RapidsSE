@@ -444,7 +444,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("class@",          &vClassFetch,       false);
   vAddPrimitive("class!",          &vClassStore,       false);
-  vAddPrimitive("clip",            &vClip,             false);
   vAddPrimitive("code=",           &vCodeAssign,       false);
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
@@ -564,6 +563,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive(">body",           &vToBody,           false);
   vAddPrimitive(">cmd",            &vToCmd,            false);
+  vAddPrimitive(">digitName",      &vToDigitName,      false);
   vAddPrimitive(">int",            &vToInt,            false);
   vAddPrimitive("r>",              &vToPstack,         false);
   vAddPrimitive(">r",              &vToRstack,         false);
@@ -725,6 +725,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("strlen", &vStrLen,    false);
   vAddPrimitive("subStr", &vSubStr,    false);
   vAddPrimitive("concat", &vConcat,    false);
+  vAddPrimitive("clip",   &vClip,      false);
+  vAddPrimitive("toDigitName",&vToDigitName, false);
   
   vAddPrimitive("table.copy",        &vTableCopy,        false);
   vAddPrimitive("table.dic",         &vTableDic,         false);
@@ -2564,41 +2566,6 @@ void Task::vClassStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* clip -- clip string ( length str -- str )                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vClip(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vClip");
-  
-  i8 iLength;
-  ValWsp xString;
-  ValWsp xSubStr;
-  
-  StrVal* pStrVal = xString.pAsStrVal();
-  
-  // get the arguments
-  if ( ! nnpTask->bPopParam(iLength,xString) )
-    THROW_INVALID_PARAM("clip");
-  
-  // validate length
-  i8 iStrLength = pStrVal->iChars();
-  
-  if ( iLength == 0 || llabs(iLength) >= iStrLength)
-    THROW("Invalid length for: clip");
-  
-  char* pStart;
-  
-  if (iLength > 0)
-    pStart = xString.sStr();
-  else
-    pStart = xString.sStr() + iStrLength - 1 - llabs(iLength);
-
-  xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
-  
-  nnpTask->vPushParam(&xSubStr);
-}
-
-/*----------------------------------------------------------------------------*/
 /* codeAssign -- fetch ptr from word.code on stack into this word             */
 /*----------------------------------------------------------------------------*/
 void Task::vCodeAssign(NNP_Task nnpTask)
@@ -2668,28 +2635,6 @@ void Task::vCompiling(NNP_Task nnpTask)
   nnpTask->vPrimitive("vCompiling");
   
   nnpTask->m_bCompiling = true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat -- concat two strings                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vConcat(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vConcat");
-  
-  ValWsp xStrR;
-  ValWsp xStrB;
-  ValWsp xStrA;
-
-  if ( ! nnpTask->bPopParam(xStrB,xStrA) )
-    THROW_INVALID_PARAM("concat");
-  
-  xStrR = xStrA;
-  
-  String::vConcat(xStrR.sStr(),xStrB.sStr());
-  xStrR.pAsStrVal()->vSize();
-  
-  nnpTask->vPushParam(xStrR);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4242,7 +4187,7 @@ void Task::vRetryPoint(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rot -- rotate top three values on param stack                              */
+/* rot -- rotate top 3 values ( C B A -- A C B )                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRot(NNP_Task nnpTask)
 {
@@ -7054,8 +6999,11 @@ void Task::vSubStr(NNP_Task nnpTask)
   if ( iStart < 0 || iStart >= pStrVal->iChars())
     THROW("Invalid start index for: subStr");
   
-  // validate length
-  if ( iLength <= 0 || iStart + iLength >= pStrVal->iChars())
+  // handle to end of string case
+  if (-1 == iLength)
+    iLength = pStrVal->iChars() - iStart;
+  
+  if ( iLength <= 0 || iStart + iLength > pStrVal->iChars())
     THROW("Invalid length for: substr");
   
   // compute substring
@@ -7066,6 +7014,95 @@ void Task::vSubStr(NNP_Task nnpTask)
   xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
   
   nnpTask->vPushParam(&xSubStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* concat -- concat two strings                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vConcat(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vConcat");
+  
+  ValWsp xStrR;
+  ValWsp xStrB;
+  ValWsp xStrA;
+  
+  if ( ! nnpTask->bPopParam(xStrB,xStrA) )
+    THROW_INVALID_PARAM("concat");
+  
+  xStrR = xStrA;
+  
+  String::vConcat(xStrR.sStr(),xStrB.sStr());
+  xStrR.pAsStrVal()->vSize();
+  
+  nnpTask->vPushParam(xStrR);
+}
+
+/*----------------------------------------------------------------------------*/
+/* clip -- clip string ( length str -- str )                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vClip(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vClip");
+  
+  i8 iLength;
+  ValWsp xString;
+  ValWsp xSubStr;
+  
+  StrVal* pStrVal = xString.pAsStrVal();
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(iLength,xString) )
+    THROW_INVALID_PARAM("clip");
+  
+  // validate length
+  i8 iStrLength = pStrVal->iChars();
+  
+  if ( iLength == 0 || llabs(iLength) >= iStrLength)
+    THROW("Invalid length for: clip");
+  
+  char* pStart;
+  
+  if (iLength > 0)
+    pStart = xString.sStr();
+  else
+    pStart = xString.sStr() + iStrLength - 1 - llabs(iLength);
+  
+  xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
+  
+  nnpTask->vPushParam(&xSubStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* >DigitName -- convert to digit name                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vToDigitName(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vToDigitName");
+  
+  i8 iDigit;
+  
+  // get the arguments
+  if ( ! nnpTask->bPopParam(iDigit) )
+    THROW_INVALID_PARAM(">DigitName");
+  
+  s32 sName;
+  
+  switch (iDigit) {
+    case 0: sName = "zero";    break;
+    case 1: sName = "one";     break;
+    case 2: sName = "two";     break;
+    case 3: sName = "three";   break;
+    case 4: sName = "four";    break;
+    case 5: sName = "five";    break;
+    case 6: sName = "six";     break;
+    case 7: sName = "seven";   break;
+    case 8: sName = "eight";   break;
+    case 9: sName = "nine";    break;
+    default:sName = "invalid"; break;
+  }
+
+  nnpTask->vPushParam(sName);
 }
 
 // table: //////////////////////////////////////////////////////////////////////

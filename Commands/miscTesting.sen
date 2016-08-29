@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* misc_testing.sen -- miscellaneous testing                                  */
+/* miscTesting.sen -- miscellaneous testing                                   */
 /*============================================================================*/
 
-"misc_testing.sen" .
+"miscTesting.sen" .
 
 : iftest if "yes" . then ;
 

@@ -260,7 +260,6 @@ namespace Tasks
     static void vBpa(NNP_Task nnpTask);            
     static void vClassFetch(NNP_Task nnpTask);
     static void vClassStore(NNP_Task nnpTask);     
-    static void vClip(NNP_Task nnpTask);
     static void vCodeAssign(NNP_Task nnpTask);
     static void vColon(NNP_Task nnpTask);          
     static void vComma(NNP_Task nnpTask);          
@@ -378,7 +377,8 @@ namespace Tasks
     static void vTick(NNP_Task nnpTask);           
     static void vToBody(NNP_Task nnpTask);         
     static void vToCmd(NNP_Task nnpTask);          
-    static void vToInt(NNP_Task nnpTask);          
+    static void vToDigitName(NNP_Task nnpTask);
+    static void vToInt(NNP_Task nnpTask);
     static void vToPstack(NNP_Task nnpTask);
     static void vToRstack(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
@@ -564,6 +564,7 @@ namespace Tasks
     static void vStrLen(NNP_Task nnpTask);
     static void vSubStr(NNP_Task nnpTask);
     static void vConcat(NNP_Task nnpTask);
+    static void vClip(NNP_Task nnpTask);
     
     // table
     static void vTableCopy(NNP_Task nnpTask);

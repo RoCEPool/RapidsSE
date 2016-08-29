@@ -281,7 +281,7 @@
 		F226E7441D42B61F00E10FC3 /* Shm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Shm.hpp; path = Source/Shm.hpp; sourceTree = "<group>"; };
 		F226E7471D430FC200E10FC3 /* 1m.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 1m.sen; path = Commands/1m.sen; sourceTree = "<group>"; };
 		F226E7481D4312F300E10FC3 /* core.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = core.sen; path = Commands/core.sen; sourceTree = "<group>"; };
-		F226E7491D43144100E10FC3 /* misc_testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = misc_testing.sen; path = Commands/misc_testing.sen; sourceTree = "<group>"; };
+		F226E7491D43144100E10FC3 /* miscTesting.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = miscTesting.sen; path = Commands/miscTesting.sen; sourceTree = "<group>"; };
 		F226E74B1D4407CE00E10FC3 /* tenant.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tenant.sen; path = Commands/tenant.sen; sourceTree = "<group>"; };
 		F226E74D1D44088C00E10FC3 /* column.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = column.sen; path = Commands/column.sen; sourceTree = "<group>"; };
 		F226E74F1D4408B200E10FC3 /* table.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = table.sen; path = Commands/table.sen; sourceTree = "<group>"; };
@@ -368,6 +368,7 @@
 		F23907941D23180500120B0F /* Dir.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Dir.hpp; path = Source/Dir.hpp; sourceTree = "<group>"; };
 		F23907951D2318CD00120B0F /* Dir.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dir.cpp; path = Source/Dir.cpp; sourceTree = "<group>"; };
 		F246DFE91D737285000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
+		F246DFEA1D7398AE000E54C0 /* joinTestData.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = joinTestData.sen; path = Commands/joinTestData.sen; sourceTree = "<group>"; };
 		F24C76551D1B6A5100D41D09 /* WrdVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WrdVal.cpp; sourceTree = "<group>"; };
 		F24C76561D1B6A5100D41D09 /* WrdVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WrdVal.hpp; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
@@ -1122,7 +1123,8 @@
 			isa = PBXGroup;
 			children = (
 				F2D9BF781D5D37BB00129097 /* testing.sen */,
-				F226E7491D43144100E10FC3 /* misc_testing.sen */,
+				F246DFEA1D7398AE000E54C0 /* joinTestData.sen */,
+				F226E7491D43144100E10FC3 /* miscTesting.sen */,
 				F226E7471D430FC200E10FC3 /* 1m.sen */,
 			);
 			name = Testing;

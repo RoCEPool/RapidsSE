@@ -4,8 +4,11 @@
 
 "testing.sen" .
 
+"joinTestData.sen" >>:
+
+"miscTesting.sen" >>:
+
 "1m.sen" >>:
-"misc_testing.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */
