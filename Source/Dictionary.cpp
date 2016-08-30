@@ -109,7 +109,7 @@ Word* Dictionary::pCurrentWord(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump dictionary and all word                                               */
+/* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
 void Dictionary::vDump(eCN eClass, Object* pObject, const char* pTab)
 {

@@ -36,35 +36,35 @@ void* C_ADDR_POOL = (void*)0x204800000;
 
 pDUMPFUN *gpDump[]
 {
-  /*  0 */ &RapidsSE::vDumpInvalid,    //none
+  /*  0 */ &RapidsSE::vDumpInvalid,    // CN_NONE
   
-  /*  1 */ &RapidsSE::vDumpInvalid,
-  /*  2 */ &RapidsSE::vDumpInvalid,
-  /*  3 */ &RapidsSE::vDumpInvalid,
-  /*  4 */ &RapidsSE::vDumpInvalid,
-  /*  5 */ &RapidsSE::vDumpInvalid,
-  /*  6 */ &RapidsSE::vDumpInvalid,
+  /*  1 */ &RapidsSE::vDumpInvalid,    // CN_INTVAL
+  /*  2 */ &RapidsSE::vDumpInvalid,    // CN_OBJVAL
+  /*  3 */ &RapidsSE::vDumpInvalid,    // CN_PTRVAL
+  /*  4 */ &RapidsSE::vDumpInvalid,    // CN_STRVAL
+  /*  5 */ &RapidsSE::vDumpInvalid,    // CN_VALSET
+  /*  6 */ &RapidsSE::vDumpInvalid,    // CN_VALWSP
   
-  /*  7 */ &RapidsSE::vDumpInvalid,
+  /*  7 */ &RapidsSE::vDumpInvalid,    // CN_ARGUMENTS
   /*  8 */ &AttachMap::vDump,
   /*  9 */ &RapidsSE::vDumpDummy,
-  /* 10 */ &RapidsSE::vDumpInvalid,
-  /* 11 */ &RapidsSE::vDumpInvalid,
-  /* 12 */ &RapidsSE::vDumpInvalid,
+  /* 10 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOL
+  /* 11 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLANALYZER
+  /* 12 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLITER
   /* 13 */ &Dictionary::vDump,
-  /* 14 */ &RapidsSE::vDumpInvalid,
-  /* 15 */ &RapidsSE::vDumpInvalid,
-  /* 16 */ &RapidsSE::vDumpDummy,        // free chunk ??
+  /* 14 */ &RapidsSE::vDumpInvalid,    // CN_DIR
+  /* 15 */ &RapidsSE::vDumpInvalid,    // CN_FILE
+  /* 16 */ &RapidsSE::vDumpDummy,
   /* 17 */ &RapidsSE::vDumpDummy,
   /* 18 */ &RapidsSE::vDumpUndefined,
   /* 19 */ &HeapBuffer::vDump,
   /* 20 */ &RapidsSE::vDumpUndefined,
-  /* 21 */ &RapidsSE::vDumpUndefined,
-  /* 22 */ &RapidsSE::vDumpInvalid,      // Lock
+  /* 21 */ &Loader::vDump,
+  /* 22 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
   /* 23 */ &Heap::vDump,
   /* 24 */ &Node::vDump,
   /* 25 */ &RapidsSE::vDumpUndefined,
-  /* 26 */ &RapidsSE::vDumpUndefined,
+  /* 26 */ &Partition::vDump,
   /* 27 */ &RapidsSE::vDumpUndefined,
   /* 28 */ &RapidsSE::vDumpUndefined,
   /* 29 */ &RapidsSE::vDumpUndefined,
@@ -80,8 +80,8 @@ pDUMPFUN *gpDump[]
   /* 39 */ &Heap::vDump,
   /* 40 */ &RapidsSE::vDumpUndefined,
   /* 41 */ &RapidsSE::vDumpUndefined,
-  /* 42 */ &RapidsSE::vDumpInvalid,     // Syscall
-  /* 43 */ &RapidsSE::vDumpUndefined,
+  /* 42 */ &RapidsSE::vDumpInvalid,     // CN_SYSCALL
+  /* 43 */ &Table::vDump,
   /* 44 */ &Task::vDump,
   /* 45 */ &RapidsSE::vDumpUndefined,
   /* 46 */ &TaskList::vDump,
@@ -89,14 +89,14 @@ pDUMPFUN *gpDump[]
   /* 48 */ &RapidsSE::vDumpUndefined,
   /* 49 */ &RapidsSE::vDumpUndefined,
   /* 50 */ &RapidsSE::vDumpUndefined,
-  /* 51 */ &RapidsSE::vDumpInvalid,    // Timer
+  /* 51 */ &RapidsSE::vDumpInvalid,    // CN_TIMER
   /* 52 */ &RapidsSE::vDumpUndefined,
   /* 53 */ &TxArray::vDump,
   /* 54 */ &RapidsSE::vDumpUndefined,
   /* 55 */ &RapidsSE::vDumpUndefined,
   /* 56 */ &RapidsSE::vDumpUndefined,
   /* 57 */ &RapidsSE::vDumpUndefined,
-  /* 58 */ &RapidsSE::vDumpDummy,     // Word
+  /* 58 */ &RapidsSE::vDumpDummy,
   /* 59 */ &RapidsSE::vDumpUndefined
 };
 

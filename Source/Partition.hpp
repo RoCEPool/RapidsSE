@@ -26,6 +26,8 @@ namespace DBobjects
     Partition(void);
     ~Partition(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+
     bool bInsertRow(StrVal* pRowStr);
     
     RowStrand* pHeadStrand(void);
