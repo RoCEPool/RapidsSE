@@ -24,7 +24,7 @@ namespace Dictionaries
     Dictionary(void);
     ~Dictionary(void);
     
-    static void vDump(Object* pObject, const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
     void  vAddConstant(const char* aName, i8 iVal);
     void  vAddConstant(const char* aName, const char* aValue);

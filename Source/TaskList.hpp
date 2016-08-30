@@ -20,9 +20,11 @@ namespace Tasks {
     TaskList(void);
     ~TaskList(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     Task* pAllocTask(void);
-    void  vDump(const char* pTab);
     void  vFreeTask(Task* pTask);
+    void vDump(void);
   };
     
 }

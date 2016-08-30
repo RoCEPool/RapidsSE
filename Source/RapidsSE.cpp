@@ -36,69 +36,68 @@ void* C_ADDR_POOL = (void*)0x204800000;
 
 pDUMPFUN *gpDump[]
 {
-  /*  0 */ nullptr,
+  /*  0 */ &RapidsSE::vDumpInvalid,    //none
   
-  /*  1 */ nullptr,
-  /*  2 */ nullptr,
-  /*  3 */ nullptr,
-  /*  4 */ nullptr,
-  /*  5 */ nullptr,
-  /*  6 */ nullptr,
-  /*  7 */ nullptr,
+  /*  1 */ &RapidsSE::vDumpInvalid,
+  /*  2 */ &RapidsSE::vDumpInvalid,
+  /*  3 */ &RapidsSE::vDumpInvalid,
+  /*  4 */ &RapidsSE::vDumpInvalid,
+  /*  5 */ &RapidsSE::vDumpInvalid,
+  /*  6 */ &RapidsSE::vDumpInvalid,
   
-  /*  8 */ nullptr,
-  /*  9 */ &AttachMap::vDump,
-  /* 10 */ nullptr,
-  /* 11 */ nullptr,
-  /* 12 */ nullptr,
-  /* 13 */ nullptr,
-  /* 14 */ nullptr,
-  /* 15 */ nullptr,
-  /* 16 */ nullptr,
-  /* 17 */ nullptr,
-  /* 18 */ nullptr,
-  /* 19 */ nullptr,
-  /* 20 */ nullptr,
-  /* 21 */ nullptr,
-  /* 22 */ nullptr,
-  /* 23 */ nullptr,
-  /* 24 */ nullptr,
-  /* 25 */ nullptr,
-  /* 26 */ nullptr,
-  /* 27 */ nullptr,
-  /* 28 */ nullptr,
-  /* 29 */ nullptr,
-  /* 30 */ nullptr,
-  /* 31 */ nullptr,
-  /* 32 */ nullptr,
-  /* 33 */ nullptr,
-  /* 34 */ nullptr,
-  /* 35 */ nullptr,
-  /* 36 */ nullptr,
-  /* 37 */ nullptr,
-  /* 38 */ nullptr,
-  /* 39 */ nullptr,
-  /* 40 */ nullptr,
-  /* 41 */ nullptr,
-  /* 42 */ nullptr,
-  /* 43 */ nullptr,
-  /* 44 */ nullptr,
-  /* 45 */ nullptr,
-  /* 46 */ nullptr,
-  /* 47 */ nullptr,
-  /* 48 */ nullptr,
-  /* 49 */ nullptr,
-  /* 50 */ nullptr,
-  /* 51 */ nullptr,
-  /* 52 */ nullptr,
-  /* 53 */ nullptr,
-  /* 54 */ nullptr,
-  /* 55 */ nullptr,
-  /* 56 */ nullptr,
-  /* 57 */ nullptr,
-  /* 58 */ nullptr,
-  /* 59 */ nullptr,
-  /* 60 */ nullptr
+  /*  7 */ &RapidsSE::vDumpInvalid,
+  /*  8 */ &AttachMap::vDump,
+  /*  9 */ &RapidsSE::vDumpDummy,
+  /* 10 */ &RapidsSE::vDumpInvalid,
+  /* 11 */ &RapidsSE::vDumpInvalid,
+  /* 12 */ &RapidsSE::vDumpInvalid,
+  /* 13 */ &Dictionary::vDump,
+  /* 14 */ &RapidsSE::vDumpInvalid,
+  /* 15 */ &RapidsSE::vDumpInvalid,
+  /* 16 */ &RapidsSE::vDumpDummy,        // free chunk ??
+  /* 17 */ &RapidsSE::vDumpDummy,
+  /* 18 */ &RapidsSE::vDumpUndefined,
+  /* 19 */ &HeapBuffer::vDump,
+  /* 20 */ &RapidsSE::vDumpUndefined,
+  /* 21 */ &RapidsSE::vDumpUndefined,
+  /* 22 */ &RapidsSE::vDumpInvalid,      // Lock
+  /* 23 */ &Heap::vDump,
+  /* 24 */ &Node::vDump,
+  /* 25 */ &RapidsSE::vDumpUndefined,
+  /* 26 */ &RapidsSE::vDumpUndefined,
+  /* 27 */ &RapidsSE::vDumpUndefined,
+  /* 28 */ &RapidsSE::vDumpUndefined,
+  /* 29 */ &RapidsSE::vDumpUndefined,
+  /* 30 */ &RapidsSE::vDumpUndefined,
+  /* 31 */ &RapidsSE::vDumpUndefined,
+  /* 32 */ &RapidsSE::vDumpUndefined,
+  /* 33 */ &RapidsSE::vDumpUndefined,
+  /* 34 */ &RapidsSE::vDumpUndefined,
+  /* 35 */ &RapidsSE::vDumpUndefined,
+  /* 36 */ &RapidsSE::vDumpUndefined,
+  /* 37 */ &RapidsSE::vDumpUndefined,
+  /* 38 */ &RapidsSE::vDumpUndefined,
+  /* 39 */ &Heap::vDump,
+  /* 40 */ &RapidsSE::vDumpUndefined,
+  /* 41 */ &RapidsSE::vDumpUndefined,
+  /* 42 */ &RapidsSE::vDumpInvalid,     // Syscall
+  /* 43 */ &RapidsSE::vDumpUndefined,
+  /* 44 */ &Task::vDump,
+  /* 45 */ &RapidsSE::vDumpUndefined,
+  /* 46 */ &TaskList::vDump,
+  /* 47 */ &RapidsSE::vDumpUndefined,
+  /* 48 */ &RapidsSE::vDumpUndefined,
+  /* 49 */ &RapidsSE::vDumpUndefined,
+  /* 50 */ &RapidsSE::vDumpUndefined,
+  /* 51 */ &RapidsSE::vDumpInvalid,    // Timer
+  /* 52 */ &RapidsSE::vDumpUndefined,
+  /* 53 */ &TxArray::vDump,
+  /* 54 */ &RapidsSE::vDumpUndefined,
+  /* 55 */ &RapidsSE::vDumpUndefined,
+  /* 56 */ &RapidsSE::vDumpUndefined,
+  /* 57 */ &RapidsSE::vDumpUndefined,
+  /* 58 */ &RapidsSE::vDumpDummy,     // Word
+  /* 59 */ &RapidsSE::vDumpUndefined
 };
 
 /*----------------------------------------------------------------------------*/
@@ -120,6 +119,30 @@ void RapidsSE::vCheckAssumptions(void)
   Interface::vCheckAssumptions();
   GridModel::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dummy dump                                                                 */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDumpDummy(eCN eClass, Object* pObject, const char* pTab)
+{
+  // do nothing
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this attachmap                                                        */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDumpInvalid(eCN eClass, Object* pObject, const char* pTab)
+{
+  vTrace("%sInvalid Class %s in Buffer Pool\n", pTab, pCN[eClass]);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump not defined                                                           */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDumpUndefined(eCN eClass, Object* pObject, const char* pTab)
+{
+  vTrace("%sDump function not defined for class %s\n", pTab, pCN[eClass]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -241,7 +264,7 @@ void RapidsSE::vAttachObjects(void)
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
   
-  AttachMap::vDump(gpAttachMap, pSingleTab());
+  AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, pSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/

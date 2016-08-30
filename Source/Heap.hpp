@@ -27,12 +27,13 @@ namespace Pool
     Heap(eCN eClass, i8 iObjectSize);
     ~Heap(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     Object* pAllocObject(void);
     void    vAnalyse(i8 xCounts[]);
     i8      iAllocCount(void);
     i8      iBufferCount(void);
     void    vDropLock(void);
-    void    vDump(const char* pTab);
     HeapBuffer* pFirstBuffer(void);
     HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      iFreeCount(void);

@@ -111,10 +111,12 @@ Word* Dictionary::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary and all word                                               */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vDump(Object* pObject, const char* pTab)
+void Dictionary::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass == CN_DICTIONARY);
+  ASSERT(pObject->eClass() == CN_DICTIONARY);
+  
   Dictionary* pDictionary = reinterpret_cast<Dictionary*>(pObject);
-  ASSERT(pDictionary->eClass() == CN_DICTIONARY);
   
   vTrace("%sDictionary %p:\n", pTab, pDictionary);
   vTrace("%s  name %s \n", pTab, pDictionary->m_sName.a());

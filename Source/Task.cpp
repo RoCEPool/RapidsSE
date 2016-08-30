@@ -1119,15 +1119,18 @@ void Task::vDebug(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDump(const char* pSpace)
+void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  _poolAddress_(this);
+  ASSERT(eClass == CN_TASK);
+  ASSERT(pObject->eClass() == CN_TASK);
   
-  vTrace("%sTask %p: \n", pSpace, this);
-  vTrace("%s  name: %s \n", pSpace, m_sName.a());
-  vTrace("%s  taskNo %lld\n", pSpace,m_iTaskNo);
-  vTrace("%s  state %s\n", pSpace, pTS[m_eState]);
-  vTrace("%s  txId %lld \n\n", pSpace, m_iTxId);
+  Task* pTask = reinterpret_cast<Task*>(pObject);
+  
+  vTrace("%sTask %p: \n", pTab, pTask);
+  vTrace("%s  name: %s \n", pTab, pTask->m_sName.a());
+  vTrace("%s  taskNo %lld\n", pTab, pTask->m_iTaskNo);
+  vTrace("%s  state %s\n", pTab, pTS[pTask->m_eState]);
+  vTrace("%s  txId %lld \n\n", pTab, pTask->m_iTxId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6295,43 +6298,15 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
 void Task::vObjectDump(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vObjectDump");
-  /*
+  
   IntVal xObject;
   if ( ! nnpTask->bPopParam(xObject) )
     THROW_INVALID_PARAM("object.dump");
 
   Object* pObject = reinterpret_cast<Object*>(xObject.iInt());
   
-  switch (pObject->eClass()) {
-      
-    case CN_ATTACHMAP:
-      //reinterpret_cast<AttachMap *>(pObject)->vDump(pSingleTab());
-      break;
-    case CN_BUFFER:
-      break;
-    //case CN_FILE:
-    //  reinterpret_cast<File *>(pObject)->vDump(pSingleTab());
-    //  break;
-    case CN_DICTIONARY:
-      reinterpret_cast<Dictionary *>(pObject)->vDump(pSingleTab());
-      break;
-    case CN_SMALLHEAP:
-    case CN_MEDIUMHEAP:
-      reinterpret_cast<Heap *>(pObject)->vDump(pSingleTab());
-      //vDumpHeap((Heap *)pObject);
-      break;
-    case CN_HEAPBUFFER:
-      reinterpret_cast<HeapBuffer *>(pObject)->vDump(pSingleTab());
-      break;
-    case CN_TXARRAY:
-      reinterpret_cast<TxArray *>(pObject)->vDump(pSingleTab());
-      break;
-      
-    default:
-      vTrace("%sNo vDump() method in class %s\n\n", pSingleTab(), pCN[pObject->eClass()]);
-  }
-   */
-
+  pDUMPFUN* pDumpFun =gpDump[pObject->eClass()];
+  (pDumpFun)(pObject->eClass(), pObject, pSingleTab());
 }
 
 // process: ////////////////////////////////////////////////////////////////////
@@ -7891,7 +7866,7 @@ void Task::vTaskListDump(NNP_Task nnpTask)
   TaskList* pTaskList = reinterpret_cast<TaskList*>(xPtrTaskList.pPtr());
   ASSERT(CN_TASKLIST == pTaskList->eClass());
  
-  pTaskList->vDump("TaskList:");
+  pTaskList->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
