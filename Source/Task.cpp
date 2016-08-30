@@ -6531,7 +6531,7 @@ void Task::vRowCursorFirst(NNP_Task nnpTask)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vFirst2();
+  pRowCursor->vFirst();
   
   PtrVal xPtrRow;
   xPtrRow = pRowCursor->pRowAsStr();
@@ -6606,7 +6606,7 @@ void Task::vRowCursorNext(NNP_Task nnpTask)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vNext2();
+  pRowCursor->vNext();
   
   PtrVal xPtrRow;
   xPtrRow = pRowCursor->pRowAsStr();

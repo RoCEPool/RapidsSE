@@ -261,7 +261,7 @@ eIE RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   }
   
   // move cursor to next row
-  pRowCursor->vNext2();
+  pRowCursor->vNext();
   
   return IE_NONE;
 }
@@ -634,7 +634,7 @@ eIE RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 
   vTrace("pRowCursor: 0x%x\n", pRowCursor);
   pRowCursor->vBegin(pSEitf->iPartition());
-  pRowCursor->vFirst2();
+  pRowCursor->vFirst();
   
   return IE_NONE;
 }

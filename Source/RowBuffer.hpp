@@ -24,12 +24,9 @@ namespace DBobjects
     RowBuffer(void);
     ~RowBuffer(void);
     
-    Object*    pAllocObject(size_t nBytes);
     Row*       pAllocRow(i8 iDataBytes);
     
-    Object*    pFirstObject(void);
     Row*       pFirstRow(void);
-    Object*    pNextObject(Object* pCurr, i8 iBytes);
     Row*       pNextRow(Row* pCurr);
     
     RowBuffer* pNextBuffer(void);
@@ -43,7 +40,6 @@ namespace DBobjects
     bool       bHasSpace(void);
     
     bool       bInsertRow(StrVal* pRowStr);
-    bool       bInsertRow2(StrVal* pRowStr);
     
   private:
     Object* pDataArea(void);
