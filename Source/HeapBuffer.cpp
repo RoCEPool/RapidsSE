@@ -72,13 +72,13 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void HeapBuffer::vDump(const char* pTab)
+void HeapBuffer::vDump(Object* pObject, const char* pTab)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
   
-  vTrace("%sHeapBuffer: %p\n", pTab, this);
-  vTrace("%s  NextBuffer %p\n", pTab, m_pNextBuffer);
-  vTrace("%s  PrevBuffer %p\n\n", pTab, m_pPrevBuffer);
+  vTrace("%sHeapBuffer: %p\n", pTab, pHeapBuffer);
+  vTrace("%s  NextBuffer %p\n", pTab, pHeapBuffer->m_pNextBuffer);
+  vTrace("%s  PrevBuffer %p\n\n", pTab, pHeapBuffer->m_pPrevBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

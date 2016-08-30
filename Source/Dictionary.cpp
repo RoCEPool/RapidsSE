@@ -111,17 +111,17 @@ Word* Dictionary::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary and all word                                               */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vDump(const char* pTab)
+void Dictionary::vDump(Object* pObject, const char* pTab)
 {
-  _precondition_(this, CN_DICTIONARY);
+  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(pObject);
+  ASSERT(pDictionary->eClass() == CN_DICTIONARY);
   
-  vTrace("%sDictionary %p:\n", pTab, this);
-  vTrace("%s  name %s \n", pTab, m_sName.a());
-  vTrace("%s  lastWord %p\n\n", pTab, m_pCurrentWord);
+  vTrace("%sDictionary %p:\n", pTab, pDictionary);
+  vTrace("%s  name %s \n", pTab, pDictionary->m_sName.a());
+  vTrace("%s  lastWord %p\n\n", pTab, pDictionary->m_pCurrentWord);
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
-  
 }
 
 /*----------------------------------------------------------------------------*/

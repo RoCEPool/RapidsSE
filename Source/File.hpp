@@ -42,12 +42,11 @@ namespace Common
     File(void);
    ~File();
     
-    
     void vClear(void);
     void vClose(void);
-    void vDump(const char* pTab);
     bool bExists(const char *aFilePath);
     char cGetChar(void);
+    void vDump(const char* pTab);
     void vFlush(void);
     void vInit(void);
     bool bIsClosed(void);
