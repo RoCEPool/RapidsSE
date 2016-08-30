@@ -39,7 +39,7 @@ void AttachMap::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 AttachMap::AttachMap(void)
-: Buffer(CN_ATTACHMAP, vDump)
+: Buffer(CN_ATTACHMAP)
 {
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
@@ -99,7 +99,7 @@ void AttachMap::vRecordGlobals(void)
 /*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
-void AttachMap::vDump(void* pObject, const char* pTab)
+void AttachMap::vDump(Object* pObject, const char* pTab)
 {
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
   ASSERT(pAttachMap->eClass() == CN_ATTACHMAP);

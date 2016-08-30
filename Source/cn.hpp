@@ -85,9 +85,8 @@ namespace Magic
     /*  1 */ "INTVAL",
     /*  2 */ "IPVAL",
     /*  3 */ "OBJVAL",
-    /*  3 */ "PTRVAL",
-    /*  4 */ "STRVAL",
-    /*  5 */ "TASKVAL",
+    /*  4 */ "PTRVAL",
+    /*  5 */ "STRVAL",
     /*  6 */ "VALSET",
     /*  7 */ "VALWSP",
     
@@ -145,11 +144,6 @@ namespace Magic
     /* 59 */ "WORD",
     /* 60 */ "ENUMS"
   };
-
-  typedef void (pDUMPFUN)(void* pObject, const char*);
-  
-  static pDUMPFUN *pDF[CN_ENUMS];
-  
   
   class cn
   {
@@ -159,16 +153,12 @@ namespace Magic
   public:
     cn(void);
     cn(eCN eClassNo);
-    cn(eCN eClassNo, pDUMPFUN* pDumpFunc);
     ~cn(void);
     
     void operator =(eCN eClassNo);
     bool operator ==(eCN eClassNo) const;
-    //void vAssertClass(eCN eClassNo) const;
     eCN  eClass(void) const;
     void vClass(eCN eClassNo);
-    pDUMPFUN* pGetDump(void);
-    void vSetDump(eCN eClass, pDUMPFUN* pDumpFunc);
   };
   
 }

@@ -13,6 +13,9 @@
 #include "RapidsSE.hpp"
 #include "AttachMap.hpp"
 
+typedef void (pDUMPFUN)(Object* pObject, const char*);
+extern pDUMPFUN *gpDump[];
+
 //-----------------------------------------------------------------------------
 namespace StorageEngine
 {

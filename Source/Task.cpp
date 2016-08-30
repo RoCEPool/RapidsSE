@@ -6297,7 +6297,7 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
 void Task::vObjectDump(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vObjectDump");
-  
+  /*
   IntVal xObject;
   if ( ! nnpTask->bPopParam(xObject) )
     THROW_INVALID_PARAM("object.dump");
@@ -6311,9 +6311,9 @@ void Task::vObjectDump(NNP_Task nnpTask)
       break;
     case CN_BUFFER:
       break;
-    case CN_FILE:
-      reinterpret_cast<File *>(pObject)->vDump(pSingleTab());
-      break;
+    //case CN_FILE:
+    //  reinterpret_cast<File *>(pObject)->vDump(pSingleTab());
+    //  break;
     case CN_DICTIONARY:
       reinterpret_cast<Dictionary *>(pObject)->vDump(pSingleTab());
       break;
@@ -6332,6 +6332,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
     default:
       vTrace("%sNo vDump() method in class %s\n\n", pSingleTab(), pCN[pObject->eClass()]);
   }
+   */
 
 }
 

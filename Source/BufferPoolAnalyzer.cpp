@@ -204,28 +204,22 @@ void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
   switch (pBuffer->eClass()) {
   
     case CN_ATTACHMAP:
-      
+    //case CN_FILE:
+    //case CN_DICTIONARY:
+    //   case CN_HEAPBUFFER:
       // Example of a generic Dump
-      (pBuffer->pGetDump())(pBuffer, pSingleTab());
+      (gpDump[pBuffer->eClass()])(pBuffer, pSingleTab());
       
       break;
       
     case CN_BUFFER:
-      break;
-    case CN_FILE:
-      ((File *)(pBuffer))->vDump(pSingleTab());
-      break;
-    case CN_DICTIONARY:
-      ((Dictionary *)(pBuffer))->vDump(pSingleTab());
       break;
     case CN_SMALLHEAP:
     case CN_MEDIUMHEAP:
       ((Heap *)(pBuffer))->vDump(pSingleTab());
       vDumpHeap((Heap *)pBuffer);
       break;
-    case CN_HEAPBUFFER:
-      ((HeapBuffer *)(pBuffer))->vDump(pSingleTab());
-      break;
+   
     case CN_TXARRAY:
       ((TxArray *)(pBuffer))->vDump(pSingleTab());
       break;

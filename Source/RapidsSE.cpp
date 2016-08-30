@@ -34,6 +34,73 @@ Thread*             gnpRootThread      = nullptr;
 void*               mpRegion           = nullptr;
 void* C_ADDR_POOL = (void*)0x204800000;
 
+pDUMPFUN *gpDump[]
+{
+  /*  0 */ nullptr,
+  
+  /*  1 */ nullptr,
+  /*  2 */ nullptr,
+  /*  3 */ nullptr,
+  /*  4 */ nullptr,
+  /*  5 */ nullptr,
+  /*  6 */ nullptr,
+  /*  7 */ nullptr,
+  
+  /*  8 */ nullptr,
+  /*  9 */ &AttachMap::vDump,
+  /* 10 */ nullptr,
+  /* 11 */ nullptr,
+  /* 12 */ nullptr,
+  /* 13 */ nullptr,
+  /* 14 */ nullptr,
+  /* 15 */ nullptr,
+  /* 16 */ nullptr,
+  /* 17 */ nullptr,
+  /* 18 */ nullptr,
+  /* 19 */ nullptr,
+  /* 20 */ nullptr,
+  /* 21 */ nullptr,
+  /* 22 */ nullptr,
+  /* 23 */ nullptr,
+  /* 24 */ nullptr,
+  /* 25 */ nullptr,
+  /* 26 */ nullptr,
+  /* 27 */ nullptr,
+  /* 28 */ nullptr,
+  /* 29 */ nullptr,
+  /* 30 */ nullptr,
+  /* 31 */ nullptr,
+  /* 32 */ nullptr,
+  /* 33 */ nullptr,
+  /* 34 */ nullptr,
+  /* 35 */ nullptr,
+  /* 36 */ nullptr,
+  /* 37 */ nullptr,
+  /* 38 */ nullptr,
+  /* 39 */ nullptr,
+  /* 40 */ nullptr,
+  /* 41 */ nullptr,
+  /* 42 */ nullptr,
+  /* 43 */ nullptr,
+  /* 44 */ nullptr,
+  /* 45 */ nullptr,
+  /* 46 */ nullptr,
+  /* 47 */ nullptr,
+  /* 48 */ nullptr,
+  /* 49 */ nullptr,
+  /* 50 */ nullptr,
+  /* 51 */ nullptr,
+  /* 52 */ nullptr,
+  /* 53 */ nullptr,
+  /* 54 */ nullptr,
+  /* 55 */ nullptr,
+  /* 56 */ nullptr,
+  /* 57 */ nullptr,
+  /* 58 */ nullptr,
+  /* 59 */ nullptr,
+  /* 60 */ nullptr
+};
+
 /*----------------------------------------------------------------------------*/
 /* check assumptions                                                          */
 /*----------------------------------------------------------------------------*/

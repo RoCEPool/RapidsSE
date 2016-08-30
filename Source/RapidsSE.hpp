@@ -11,7 +11,7 @@
 namespace StorageEngine
 {
   typedef NP<Task,CN_TASK> NP_Task;
-
+  
   class RapidsSE
   {
   private:
@@ -43,6 +43,8 @@ namespace StorageEngine
     static bool bTestRegion(void);
     static void vTlsInit(void);
     static void vWaitFlag(void);
+    
+    static void vDump(Object* pObject, const char* pTab);
   };
 }
 
