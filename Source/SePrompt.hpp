@@ -35,7 +35,7 @@ private:
   void vProcess(void);
   bool bTestFile(char* pPath);
   
-  bool bHelp(char* pWords[]);
+  void vHelp(void);
 };
 
 /*============================================================================*/

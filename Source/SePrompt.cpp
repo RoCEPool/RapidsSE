@@ -65,10 +65,10 @@ void SePrompt::vPrompt(void)
 void SePrompt::vExecute(void)
 {
   Timer xTimer;
+  char* aResponse = nullptr;
   
   xTimer.vStart();
 
-  char* aResponse = nullptr;
   eIE eResult = RapidsSE_ExecuteCommand(m_pSEitf,m_pWords,&aResponse);
 
   if (aResponse)
@@ -118,6 +118,12 @@ void SePrompt::vProcess(void)
 {
   // - test for builtin comands
   
+  if (String::bEqualTo("?",   m_pWords[0],C_NO_CASE) ||
+      String::bEqualTo("help",m_pWords[0],C_NO_CASE)) {
+    vHelp();
+    return;
+  }
+
   if (String::bEqualTo("bye",m_pWords[0],C_NO_CASE)) {
     m_bContinue = false;
     return;
@@ -189,7 +195,7 @@ bool SePrompt::bTestFile(char* pWord)
 /*----------------------------------------------------------------------------*/
 /* help                                                                       */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bHelp(char* pWords[])
+void SePrompt::vHelp(void)
 {
   vTrace("se temporary commands:\n");
   vTrace("add   -- add column to table\n");
@@ -225,8 +231,6 @@ bool SePrompt::bHelp(char* pWords[])
   vTrace("tr    -- truncate table\n");
   vTrace("?     -- print this help\n");
   vTrace("help  -- print this help\n");
-  
-  return true;
 }
 
 /*============================================================================*/
