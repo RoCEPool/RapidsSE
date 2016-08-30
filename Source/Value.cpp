@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Values.h"
-#include "IPval.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -170,12 +169,6 @@ i8 Value::iSize(void)
       break;
     }
       
-    case CN_IPVAL: {
-      IPval* pIPval = reinterpret_cast<IPval*>(this);
-      iSize = pIPval->iSize();
-      break;
-    }
-      
     case CN_OBJVAL: {
       ObjVal* pObjVal = reinterpret_cast<ObjVal*>(this);
       iSize = pObjVal->iSize();
@@ -253,13 +246,7 @@ void Value::vToString(char* aWorkspace)
       pIntVal->vToString(aWorkspace);
       break;
     }
-      
-    case CN_IPVAL: {
-      IPval* pIPval = reinterpret_cast<IPval*>(this);
-      pIPval->vToString(aWorkspace);
-      break;
-    }
-      
+            
     case CN_PTRVAL: {
       PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
       pPtrVal->vToString(aWorkspace);

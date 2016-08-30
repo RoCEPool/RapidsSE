@@ -74,7 +74,6 @@
 		F22056A51D62DD2A00E8EF5B /* Skip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7401D41E36500E10FC3 /* Skip.cpp */; };
 		F22056A61D62DD3300E8EF5B /* Structures.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CD31D477368008DF3D9 /* Structures.cpp */; };
 		F22056A81D62DD3D00E8EF5B /* Word.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29C61D0E525A000F8C45 /* Word.cpp */; };
-		F22056A91D62DD5700E8EF5B /* IPval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E9811D28E31E007C624C /* IPval.cpp */; };
 		F22056AA1D62DD5B00E8EF5B /* GlobalDictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */; };
 		F22056AB1D62DD5F00E8EF5B /* Dictionary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29C31D0E524C000F8C45 /* Dictionary.cpp */; };
 		F22056AC1D62DD6300E8EF5B /* CodeField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E9841D29A749007C624C /* CodeField.cpp */; };
@@ -283,7 +282,6 @@
 		F226E72F1D41DE5100E10FC3 /* Column.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Column.cpp; sourceTree = "<group>"; };
 		F226E7301D41DE5100E10FC3 /* Column.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Column.hpp; sourceTree = "<group>"; };
 		F226E7351D41DE7B00E10FC3 /* Addressing.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Addressing.hpp; path = Source/Addressing.hpp; sourceTree = "<group>"; };
-		F226E7361D41DEE400E10FC3 /* IPval.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IPval.hpp; sourceTree = "<group>"; };
 		F226E7371D41E0C200E10FC3 /* IndexColumn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexColumn.cpp; sourceTree = "<group>"; };
 		F226E7381D41E0C200E10FC3 /* IndexColumn.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IndexColumn.hpp; sourceTree = "<group>"; };
 		F226E73D1D41E2ED00E10FC3 /* Queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Queue.cpp; path = Source/Queue.cpp; sourceTree = "<group>"; };
@@ -465,7 +463,6 @@
 		F2C6E9751D25B519007C624C /* QueueBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QueueBuffer.cpp; path = Source/QueueBuffer.cpp; sourceTree = "<group>"; };
 		F2C6E9761D25B519007C624C /* QueueBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = QueueBuffer.hpp; path = Source/QueueBuffer.hpp; sourceTree = "<group>"; };
 		F2C6E97B1D25C1E6007C624C /* Addressing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Addressing.cpp; path = Source/Addressing.cpp; sourceTree = "<group>"; };
-		F2C6E9811D28E31E007C624C /* IPval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IPval.cpp; sourceTree = "<group>"; };
 		F2C6E9841D29A749007C624C /* CodeField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeField.cpp; sourceTree = "<group>"; };
 		F2C6E9851D29A749007C624C /* CodeField.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CodeField.hpp; sourceTree = "<group>"; };
 		F2C6E9871D29A819007C624C /* Cell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cell.cpp; sourceTree = "<group>"; };
@@ -731,8 +728,6 @@
 				F25C6F1C1D30512C000886A8 /* DictionaryStack.hpp */,
 				F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */,
 				F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */,
-				F2C6E9811D28E31E007C624C /* IPval.cpp */,
-				F226E7361D41DEE400E10FC3 /* IPval.hpp */,
 				F21D29C61D0E525A000F8C45 /* Word.cpp */,
 				F21D29C71D0E525A000F8C45 /* Word.hpp */,
 			);
@@ -1372,7 +1367,6 @@
 				F22056761D62DA9700E8EF5B /* Dir.cpp in Sources */,
 				F22056C61D62DE1700E8EF5B /* Thread.cpp in Sources */,
 				F22056B51D62DDD200E8EF5B /* Partitions.cpp in Sources */,
-				F22056A91D62DD5700E8EF5B /* IPval.cpp in Sources */,
 				F22056871D62DADB00E8EF5B /* Shm.cpp in Sources */,
 				F22056B21D62DDC900E8EF5B /* Index.cpp in Sources */,
 				F220569F1D62DD1100E8EF5B /* Value.cpp in Sources */,

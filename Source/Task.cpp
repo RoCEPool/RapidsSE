@@ -253,7 +253,6 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("CN_NONE",                  CN_NONE);
 
   /*  1 */ vAddConstant("CN_INTVAL",                CN_INTVAL);
-  /*  2 */ vAddConstant("CN_IPVAL",                 CN_IPVAL);
   /*  3 */ vAddConstant("CN_OBJVAL",                CN_OBJVAL);
   /*  4 */ vAddConstant("CN_PTRVAL",                CN_PTRVAL);
   /*  5 */ vAddConstant("CN_STRVAL",                CN_STRVAL);
@@ -321,7 +320,6 @@ void Task::vAddConstants(void)
   /*  4 */ vAddConstant("LT_ENUMS",                 LT_ENUMS);
   
   /*  1 */ vAddConstant("SIZEOF_INTVAL",            sizeof(IntVal));
-  /*  2 */ vAddConstant("SIZEOF_IPVAL",             sizeof(IPval));
   /*  3 */ vAddConstant("SIZEOF_OBJVAL",            sizeof(ObjVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL",            sizeof(PtrVal));
   /*  5 */ vAddConstant("SIZEOF_STRVAL",            sizeof(StrVal));
@@ -1731,14 +1729,14 @@ void Task::vLoop(void)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Cell*& pCell)
 {
-  if ( ! bGuardParam(CN_IPVAL) )
+  if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
-  IPval xpIPval;
+  PtrVal xPtrIP;
   
-  m_xParamStack.vPop(&xpIPval);
+  m_xParamStack.vPop(&xPtrIP);
   
-  pCell = xpIPval.pCell();
+  pCell = reinterpret_cast<Cell*>(xPtrIP.pPtr());
   
   return true;
 }
@@ -2054,11 +2052,11 @@ void Task::vPopParam(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Cell* pCell)
 {
-  IPval xIP;
+  PtrVal xPtrIP;
   
-  xIP = pCell;
+  xPtrIP = pCell;
   
-  vPushParam(xIP);
+  vPushParam(xPtrIP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2215,10 +2213,10 @@ void Task::vPushReturn(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(Cell* pCell)
 {
-  IPval xpIPval;
-  xpIPval = pCell;
+  PtrVal xPtrIP;
+  xPtrIP = pCell;
   
-  m_xReturnStack.vPush(&xpIPval);
+  m_xReturnStack.vPush(&xPtrIP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2242,11 +2240,11 @@ void Task::vPushReturn(Value& xValue)
 /*----------------------------------------------------------------------------*/
 void Task::vPopReturn(Cell*& pCell)
 {
-  IPval xpIPval;
+  PtrVal xPtrIP;
   
-  m_xReturnStack.vPop(&xpIPval);
+  m_xReturnStack.vPop(&xPtrIP);
   
-  pCell = xpIPval.pCell();
+  pCell = reinterpret_cast<Cell*>(xPtrIP.pPtr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2491,7 +2489,7 @@ void Task::vBegin(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  IPval xPtrBeginLoc;
+  PtrVal xPtrBeginLoc;
 
   xPtrBeginLoc = pCurrentWord->pLastCell();
   
@@ -3715,10 +3713,10 @@ void Task::vLoop(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  IPval xPtrDoLoc;
+  PtrVal xPtrDoLoc;
   nnpTask->vPopReturn(&xPtrDoLoc);
   
-  Cell* pDoLoc = xPtrDoLoc.pCell();
+  Cell* pDoLoc = reinterpret_cast<Cell*>(xPtrDoLoc.pPtr());
   
   pCurrentWord->vEncode("Loop_RT");
   
