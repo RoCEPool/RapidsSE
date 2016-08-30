@@ -51,6 +51,22 @@ Partition::~Partition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump partition                                                             */
+/*----------------------------------------------------------------------------*/
+void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_PARTITION);
+  ASSERT(pObject->eClass() == CN_PARTITION);
+  
+  Partition* pPartition = reinterpret_cast<Partition*>(pObject);
+  
+  vTrace("%sPartition %p:\n", pTab, pPartition);
+  vTrace("%s  row strands %s \n", pTab, pPartition->m_iRowStrands);
+  vTrace("%s  head strand %p\n\n", pTab, pPartition->m_pHeadStrand);
+  vTrace("%s  tail strand %p\n\n", pTab, pPartition->m_pTailStrand);
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
 bool Partition::bInsertRow(StrVal* pRowStr)

@@ -126,6 +126,30 @@ Dictionary* Table::pDic(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vDump                                                                      */
+/*----------------------------------------------------------------------------*/
+void Table::vDump(void)
+{
+  _poolAddress_(this);
+  
+  vDump(CN_TABLE, this, pSingleTab());
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_TABLE);
+  ASSERT(pObject->eClass() == CN_TABLE);
+  
+  Table* pTable = reinterpret_cast<Table*>(pObject);
+  
+  vTrace("%sTable %p:\n", pTab, pTable);
+  vTrace("%s  name %s \n", pTab, pTable->m_sTableName.a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* export table into file                                                     */
 /*----------------------------------------------------------------------------*/
 void Table::vExport(File* pFile)
@@ -291,20 +315,6 @@ char* Table::pTableName(void)
   _poolAddress_(this);
   
   return m_sTableName.a();
-}
-
-/*----------------------------------------------------------------------------*/
-/* vDump                                                                      */
-/*----------------------------------------------------------------------------*/
-void Table::vDump(void) 
-{
-  _poolAddress_(this);
-  
-  vTrace("Table %p: %s\n",
-         this,
-         m_sTableName.a()
-         );
-  //m_pRowAllocator->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

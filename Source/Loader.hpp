@@ -26,6 +26,8 @@ namespace DBobjects
     Loader(void);
     ~Loader(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     Table* pTable(void);
     void   vTable(Table* pTable);
     

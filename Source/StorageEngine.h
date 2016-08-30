@@ -13,7 +13,7 @@
 #include "RapidsSE.hpp"
 #include "AttachMap.hpp"
 
-typedef void (pDUMPFUN)(Object* pObject, const char*);
+typedef void (pDUMPFUN)(eCN eClass, Object* pObject, const char*);
 extern pDUMPFUN *gpDump[];
 
 //-----------------------------------------------------------------------------

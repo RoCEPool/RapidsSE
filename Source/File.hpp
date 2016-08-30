@@ -46,7 +46,7 @@ namespace Common
     void vClose(void);
     bool bExists(const char *aFilePath);
     char cGetChar(void);
-    void vDump(const char* pTab);
+    void vDump(void);
     void vFlush(void);
     void vInit(void);
     bool bIsClosed(void);

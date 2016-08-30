@@ -62,23 +62,29 @@ Task* TaskList::pAllocTask(void)
   return pTask;
 }
 
+
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TaskList::vDump(const char* pTab)
+void TaskList::vDump(void)
 {
-  _poolAddress_(this);
-  /*
-   vTrace("%sTask %p: \n", pSpace, this);
-   vTrace("%s  name: %16s \n", pSpace, m_sName.a());
-   vTrace("%s  taskNo %02lld\n", pSpace,m_iTaskNo);
-   vTrace("%s  state %s\n", pSpace, pTS[m_eState]);
-   vTrace("%s  txId %lld \n\n", pSpace, m_iTxId);
-   */
-  vTrace("%sTaskList %p: \n", pTab, this);
-  vTrace("%s  count: %lld\n", pTab, iCount());
-  vTrace("%s  head %p\n", pTab,pHead());
-  vTrace("%s  tail %p\n\n", pTab, pTail());
+  vDump(CN_TASKLIST, this, pSingleTab());
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void TaskList::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_TASKLIST);
+  ASSERT(pObject->eClass() == CN_TASKLIST);
+  
+  TaskList* pTaskList = reinterpret_cast<TaskList*>(pObject);
+  
+  vTrace("%sTaskList %p: \n", pTab, pTaskList);
+  vTrace("%s  count: %lld\n", pTab, pTaskList->iCount());
+  vTrace("%s  head %p\n", pTab, pTaskList->pHead());
+  vTrace("%s  tail %p\n\n", pTab, pTaskList->pTail());
 }
 
 /*----------------------------------------------------------------------------*/

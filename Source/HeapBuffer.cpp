@@ -72,8 +72,11 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void HeapBuffer::vDump(Object* pObject, const char* pTab)
+void HeapBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass == CN_HEAPBUFFER);
+  ASSERT(pObject->eClass() == CN_HEAPBUFFER);
+  
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
   
   vTrace("%sHeapBuffer: %p\n", pTab, pHeapBuffer);
@@ -86,9 +89,7 @@ void HeapBuffer::vDump(Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 HeapBuffer* HeapBuffer::pNextBuffer(void)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pNextBuffer;
 }
@@ -98,9 +99,7 @@ HeapBuffer* HeapBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vNextBuffer(HeapBuffer* pNextBuffer)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pNextBuffer = pNextBuffer;
 }
@@ -110,9 +109,7 @@ void HeapBuffer::vNextBuffer(HeapBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 HeapBuffer* HeapBuffer::pPrevBuffer(void)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   return m_pPrevBuffer;
 }
@@ -122,9 +119,7 @@ HeapBuffer* HeapBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vPrevBuffer(HeapBuffer* pPrevBuffer)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   m_pPrevBuffer = pPrevBuffer;
 }
@@ -134,9 +129,7 @@ void HeapBuffer::vPrevBuffer(HeapBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 FreeChunk* HeapBuffer::pFirstChunk(void)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   FreeChunk* pFirstChunk = static_cast<FreeChunk*>(pvAdd(this,sizeof(HeapBuffer)));
   
@@ -148,9 +141,7 @@ FreeChunk* HeapBuffer::pFirstChunk(void)
 /*----------------------------------------------------------------------------*/
 FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   // calculate address of next buffer
   FreeChunk* pNextChunk = static_cast<FreeChunk*>(pvAdd(pChunk,nBytes));

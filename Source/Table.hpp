@@ -40,6 +40,8 @@ namespace DBobjects
     Table(const char* pTableName);
     ~Table(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     void vCopy(Table* pTable);
     Dictionary* pDic(void);
     void vExport(File* pFile);

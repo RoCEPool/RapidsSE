@@ -17,8 +17,12 @@ namespace StorageEngine
   private:
 
   public:
-    static void vCheckAssumptions(void);
+    static void   vCheckAssumptions(void);
     
+    static void   vDumpDummy(eCN eClass, Object* pObject, const char* pTab);
+    static void   vDumpInvalid(eCN eClass, Object* pObject, const char* pTab);
+    static void   vDumpUndefined(eCN eClass, Object* pObject, const char* pTab);
+
     static void   vExecute(void);
     static void   vPoolClose(void);
     static void   vPoolOpen(void);
@@ -43,8 +47,6 @@ namespace StorageEngine
     static bool bTestRegion(void);
     static void vTlsInit(void);
     static void vWaitFlag(void);
-    
-    static void vDump(Object* pObject, const char* pTab);
   };
 }
 

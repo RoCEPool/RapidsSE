@@ -50,12 +50,17 @@ void Node::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Node::vDump(const char* pSpace)
+void Node::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  vTrace("%sNode %p: \n", pSpace, this);
-  vTrace("%s  NodeNo: %lld \n", pSpace, m_iNodeNo);
-  vTrace("%s  Prev Node %p\n", pSpace, pPrevNode());
-  vTrace("%s  Next Node %p\n\n", pSpace, pNextNode());
+  ASSERT(eClass == CN_NODE);
+  ASSERT(pObject->eClass() == CN_NODE);
+  
+  Node* pNode = reinterpret_cast<Node*>(pObject);
+
+  vTrace("%sNode %p: \n", pTab, pNode);
+  vTrace("%s  NodeNo: %lld \n", pTab, pNode->m_iNodeNo);
+  vTrace("%s  Prev Node %p\n", pTab, pNode->pPrevNode());
+  vTrace("%s  Next Node %p\n\n", pTab, pNode->pNextNode());
 }
 
 /*----------------------------------------------------------------------------*/

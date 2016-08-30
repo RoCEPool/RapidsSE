@@ -21,7 +21,8 @@ namespace GridModel
     Node(i8 iNodeNo);
     ~Node(void);
     
-    void vDump(const char* pTab);
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     void vInit(void);
     i8   iNodeNo(void);
   };

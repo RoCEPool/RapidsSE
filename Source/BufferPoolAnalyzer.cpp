@@ -201,33 +201,13 @@ void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
 {
   _magic_();
   
-  switch (pBuffer->eClass()) {
+  pDUMPFUN* pDumpFun =gpDump[pBuffer->eClass()];
+  (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
   
-    case CN_ATTACHMAP:
-    //case CN_FILE:
-    //case CN_DICTIONARY:
-    //   case CN_HEAPBUFFER:
-      // Example of a generic Dump
-      (gpDump[pBuffer->eClass()])(pBuffer, pSingleTab());
-      
-      break;
-      
-    case CN_BUFFER:
-      break;
-    case CN_SMALLHEAP:
-    case CN_MEDIUMHEAP:
-      ((Heap *)(pBuffer))->vDump(pSingleTab());
-      vDumpHeap((Heap *)pBuffer);
-      break;
-   
-    case CN_TXARRAY:
-      ((TxArray *)(pBuffer))->vDump(pSingleTab());
-      break;
-
-  default:
-    vTrace("%sNo vDump() method in class %s\n\n", pSingleTab(), pCN[pBuffer->eClass()]);
+  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
+      pBuffer->eClass() == CN_SMALLHEAP ) {
+    vDumpHeap(reinterpret_cast<Heap*>(pBuffer));
   }
-   
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,20 +233,10 @@ void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
       if (CN_FREECHUNK == eClass)
         continue;
       
-      switch (eClass) {
-        case CN_NODE:
-          ((Node *)(pChunk))->vDump(pDoubleTab()); break;
-        case CN_TASK:
-          ((Task *)(pChunk))->vDump(pDoubleTab()); break;
-        case CN_TASKLIST: ((TaskList *)(pChunk))->vDump(pDoubleTab()); break;
-        case CN_WORD: break;
-        default:
-          vTrace("\n%sNo vDump() method in class %s\n\n", pDoubleTab(),pCN[eClass]);
-          break;
-      }
+      pDUMPFUN* pDumpFun =gpDump[eClass];
+      (pDumpFun)(eClass, pChunk, pDoubleTab());
     }
   }
-  
   pBuffer->vDropLock();
 }
 

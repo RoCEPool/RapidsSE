@@ -133,6 +133,8 @@ namespace Tasks
     void vInit(const char* aCommand);
     ~Task(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     void vAdjustNext(i8 iBytes);
     void vAddConstant(const char* aName, i8 iVal);
     void vAddConstant(const char* aName, const char* aValue);
@@ -145,7 +147,6 @@ namespace Tasks
     Word* pCompileColon(s& sDefinition);
     Word* pCurrentWord(void);
     static void vDebug(void);
-    void vDump(const char* pSpace);
     void vDump(void);
     Word* pFindWord(s& sName);
     Word* pFindWord(const char* aName);

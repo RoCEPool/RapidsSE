@@ -108,6 +108,22 @@ void Loader::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump loader                                                                */
+/*----------------------------------------------------------------------------*/
+void Loader::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_LOADER);
+  ASSERT(pObject->eClass() == CN_LOADER);
+  
+  Loader* pLoader = reinterpret_cast<Loader*>(pObject);
+  
+  vTrace("%Loader %p:\n", pTab, pLoader);
+  vTrace("%s  table %s \n", pTab, pLoader->m_pTable->pTableName());
+  vTrace("%s  record %p\n\n", pTab, pLoader->m_pRecord);
+  vTrace("%s  record length %lld\n\n", pTab, pLoader->m_iLength);
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch next record                                                          */
 /*----------------------------------------------------------------------------*/
 bool Loader::bFetchRecord(void)

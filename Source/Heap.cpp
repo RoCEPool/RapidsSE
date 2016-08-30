@@ -156,20 +156,23 @@ void Heap::vDropLock(void)
 /*----------------------------------------------------------------------------*/
 /* dump this heap                                                             */
 /*----------------------------------------------------------------------------*/
-void Heap::vDump(const char* pTab)
+void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
+  ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);
   
-  vTrace("%s%s %p:\n", pTab, eClass() == CN_SMALLHEAP ? "SmallHeap" : "MediumHeap", this);
-  vTrace("%s  BufferCount %lld\n", pTab, m_iBufferCount);
-  vTrace("%s  FreeCount %lld\n\n",  pTab, m_iFreeCount);
+  Heap* pHeap = reinterpret_cast<Heap*>(pObject);
+  
+  vTrace("%s%s %p:\n", pTab, eClass == CN_SMALLHEAP ? "SmallHeap" : "MediumHeap", pHeap);
+  vTrace("%s  BufferCount %lld\n", pTab, pHeap->m_iBufferCount);
+  vTrace("%s  FreeCount %lld\n\n",  pTab, pHeap->m_iFreeCount);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++) {
     iCountObjects[index] = 0;
   }
   
-  vAnalyse(iCountObjects);
+  pHeap->vAnalyse(iCountObjects);
   
   vTrace("%s  Objects:\n", pTab);
   for (i8 index = 0; index < CN_ENUMS; index++) {

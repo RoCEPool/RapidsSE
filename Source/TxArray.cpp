@@ -48,13 +48,18 @@ TxArray::~TxArray(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TxArray::vDump(const char* pTab)
+void TxArray::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass == CN_TXARRAY);
+  ASSERT(pObject->eClass() == CN_TXARRAY);
+  
+  TxArray* pTxArray = reinterpret_cast<TxArray*>(pObject);
+
   i8 iTxCount = 0;
   
-  vTrace("%sTxArray %p: \n", pTab, this);
+  vTrace("%sTxArray %p: \n", pTab, pTxArray);
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
-    if (m_pTx[iTx] != nullptr)
+    if (pTxArray->m_pTx[iTx] != nullptr)
       iTxCount++;
   vTrace("%s  txs: %lld\n\n", pTab, iTxCount);
 }
