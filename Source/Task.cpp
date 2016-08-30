@@ -2704,7 +2704,7 @@ void Task::vCwd(NNP_Task nnpTask)
     THROW_INVALID_PARAM("cwd");
   
   Dir xDir;
-  if ( ! xDir.bSet(sDir) )
+  if ( ! xDir.bSetCurrent(sDir) )
     THROW("Unable to set current directory");
 }
 
@@ -3179,7 +3179,7 @@ void Task::vGwd(NNP_Task nnpTask)
   Dir xDir;
   s256 sDir;
   
-  if (xDir.bGet(sDir)) {
+  if (xDir.bGetCurrent(sDir)) {
     xStrVal = sDir.a();
     nnpTask->vPushParam(&xStrVal);
   }

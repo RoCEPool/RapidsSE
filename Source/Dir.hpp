@@ -5,29 +5,56 @@
 
 #include "Common.h"
 
-namespace Common {
-  
-  //class FileEnt;
-  //class DirList;
-
+namespace Common
+{
   class Dir : public mn,
               public cn
   {
   private:
     s256    m_sDirPath;   // the path of the directory
-    SysCall m_xSysCall;
-
+   
+    DIR*    m_pDirPtr;    // dir pointer/descriptor
+    s256    m_sEntryName; // name of entry just read
+    i8      m_iEntryType; // type of entry just read
+ 
+    SysCall m_xSysCall;   // system call handler
+    
   public:
     Dir(void);
    ~Dir(void);
 
     bool bExists(s256& rPath);
-    bool bGet(s256& rPath);
+    bool bGetCurrent(s256& rPath);
     void vInit(void);
     bool bMake(s256& rPath);
     bool bRemove(s256& rPath);
-    bool bSet(s256& rPath);
+    bool bSetCurrent(s256& rPath);
+    
+    //--
+    
+    void vClose(void);
+    s&   sEntryName(void);
+    i8   iEntryType(void);
+    bool bExists(void);
+    bool bGetCurrent(void);
+    bool bIsClosed(void);
+    bool bIsOpen(void);
+    bool bMake(void);
+    bool bOpen(void);
+    s&   sPath(void);
+    void vPath(s256& sPath);
+    bool bRead(void);
+    bool bRemove(void);
+    void vRewind(void);
+    void vSeek(i8 iPosition);
+    bool bSetCurrent(void);
+    i8   iTell(void);
+    
+    
 
+//class FileEnt;
+//class DirList;
+    
 //    static bool   bChgCwd(const char* sDirPath);
 //    static void   vDeleteFiles(const char* sDirPath, inw iDepth, Canon& canon);
 //    static void   vGetCwd(char* sDirPath, inw nBytes);
