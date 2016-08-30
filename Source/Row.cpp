@@ -1,10 +1,8 @@
 /*============================================================================*/
-/* Row.cpp - Row                                                              */
+/* Row.cpp -- Row                                                             */
 /*============================================================================*/
 
-#include "DBobjects.h"
-
-extern BufferPool*   gpBufferPool;
+#include "Row.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -19,14 +17,23 @@ void* Row::operator new(size_t)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* Row::operator new(size_t, Row* pRow)
+{
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Row::Row(void)
-: Object(CN_ROW)
+: cn(CN_ROW)
 {
   _poolAddress_(this);
   _magic_();
   
+  m_iTxId      = -1;
   m_iDataBytes = 0;
   
   _class_(CN_ROW);
@@ -47,15 +54,15 @@ char* Row::pData(void)
 {
   _poolAddress_(this);
   
-  char* pAddress = reinterpret_cast<char*>(this) + sizeof(Row);
+  char* pDataAddr = pcAdd(this,sizeof(Row));
   
-  return pPoolCheck<char*>((void*)pAddress);
+  return pPoolCheck<char*>(pDataAddr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get data bytes                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Row::iDataBytes(void) const
+i8 Row::iDataBytes(void)
 {
   _poolAddress_(this);
   
@@ -69,30 +76,63 @@ void Row::vDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("Row %p: PrevRow %p DataBytes %lld %s\n",
+  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes)\n",
          this,
-         pPrevRow(),
+         m_iTxId,
          m_iDataBytes,
-         pData()
+         pData(),
+         String::iSize(pData())
          );
-}
-
-/*----------------------------------------------------------------------------*/
-/* get previous row                                                           */
-/*----------------------------------------------------------------------------*/
-Row* Row::pPrevRow(void) const
-{
-  _poolAddress_(this);
-  
-  return nullptr; //pPoolCheck<Row*>(pPrevSlab());
 }
 
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this row                                              */
 /*----------------------------------------------------------------------------*/
-i8 Row::iSize(void) const
+i8 Row::iSize(void)
 {
-  return sizeof(Row) - 1 + m_iDataBytes;
+  i8 iBytes = sizeof(Row) + m_iDataBytes;
+  
+  return iBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tx id                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Row::iTxId(void)
+{
+  return m_iTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tx id                                                                  */
+/*----------------------------------------------------------------------------*/
+void Row::vTxId(i8 iTxId)
+{
+  m_iTxId = iTxId;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get bytes required for row                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Row::iBytesRequired(const char* w)
+{
+  i8 iBytes = sizeof(Row) + String::iSize(w);
+  
+  return iBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bytes required for row                                                               */
+/*----------------------------------------------------------------------------*/
+i8 Row::iBytesRequired(i8 iDataBytes)
+{
+  i8 iBytes = sizeof(Row) + iDataBytes;
+  
+  return iBytes;
 }
 
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  Row.hpp - Row                                                             */
+/*  Row.hpp -- Row                                                            */
 /*============================================================================*/
 
 #pragma once
@@ -8,26 +8,32 @@
 
 namespace DBobjects
 {
-  class Row : public Object
+  class Row : public mn,
+              public cn
   {
   private:
-    i8    m_iDataBytes;  // number of data bytes
-    // ...data..
+    i8  m_iTxId;       // transaction id
+    i8  m_iDataBytes;  // number of data bytes (incl null teminator)
+    // ..data..
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, Row*);
     
-    Row();
+    Row(void);
     ~Row(void);
     
     char* pData(void);
-    char* pDataEnd(void);
-    i8    iDataBytes(void) const;
+    i8    iDataBytes(void);
     void  vDump(void);
-    Row*  pPrevRow(void) const;
-    i8    iSize(void) const;
+    i8    iSize(void);
+    i8    iTxId(void);
+    void  vTxId(i8 iTxId);
+    
+    static i8 iBytesRequired(const char* w);
+    static i8 iBytesRequired(i8 iDataBytes);
   };
-  
+
 }
 
 /*============================================================================*/
