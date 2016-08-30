@@ -601,6 +601,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dic.count",       &vDicCount,         false);
   vAddPrimitive("dic.drop",        &vDicDrop,          false);
   vAddPrimitive("}}",              &vDicDrop,          false);
+  vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
+  vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
   vAddPrimitive("dic.init",        &vDicInit,          false);
   vAddPrimitive("dic.last",        &vDicLast,          false);
   vAddPrimitive("dic.main",        &vDicMain,          false);
@@ -5307,6 +5309,45 @@ void Task::vDicDrop(NNP_Task nnpTask)
   else {
     nnpTask->m_xDictionaryStack.vDiscard();
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.frozen@ -- get dictionary frozen?                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vDicFrozenGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDicFrozenGet");
+  
+  PtrVal xPtrDic;
+  
+  if ( ! nnpTask->bPopParam(xPtrDic) )
+    THROW_INVALID_PARAM("dic.frozen@");
+  
+  Dictionary* pDic = _pDic(xPtrDic.pPtr());
+  
+  bool bFrozen = pDic->bFrozen();
+  
+  nnpTask->vPushParam(bFrozen);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.frozen! -- set dictionary frozen?                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vDicFrozenSet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDicFrozenSet");
+
+  IntVal xIntFrozen;
+  PtrVal xPtrDic;
+  
+  if ( ! nnpTask->bPopParam(xIntFrozen,xPtrDic) )
+    THROW_INVALID_PARAM("dic.frozen@");
+  
+  Dictionary* pDic = _pDic(xPtrDic.pPtr());
+  
+  bool bFrozen = xIntFrozen.iInt();
+
+  pDic->vFrozen(bFrozen);
 }
 
 /*----------------------------------------------------------------------------*/

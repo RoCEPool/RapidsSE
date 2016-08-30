@@ -434,6 +434,8 @@ namespace Tasks
     // dic
     static void vDicCount(NNP_Task nnpTask);
     static void vDicDrop(NNP_Task nnpTask);       
+    static void vDicFrozenGet(NNP_Task nnpTask);
+    static void vDicFrozenSet(NNP_Task nnpTask);
     static void vDicInit(NNP_Task nnpTask);
     static void vDicLast(NNP_Task nnpTask);
     static void vDicMain(NNP_Task nnpTask);

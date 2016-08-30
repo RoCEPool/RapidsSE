@@ -20,6 +20,8 @@
   then
 
   "requestServerLoop" find execute
+
+  dic.main true dic.frozen!
 ;
 
 /*============================================================================*/

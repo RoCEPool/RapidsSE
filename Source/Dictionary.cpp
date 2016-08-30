@@ -8,6 +8,17 @@ extern Heap*       gpSmallHeap;
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Dictionary* Dictionaries::_pDic(void* pAddr)
+{
+  Dictionary* pDic = reinterpret_cast<Dictionary*>(pAddr);
+  ASSERT(pDic);
+  ASSERT(CN_DICTIONARY == pDic->eClass());
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Dictionary::operator new(size_t iSize)
@@ -40,8 +51,9 @@ Dictionary::Dictionary(void)
 {
   _precondition_(this, CN_DICTIONARY);
   
+  m_sName  = "<main>";
+  m_bFrozen = false;
   m_pCurrentWord = nullptr;
-  m_sName = "<main>";
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,6 +98,8 @@ void Dictionary::vAddConstant(const char* aName, const char* aValue)
 Word* Dictionary::pAllocWord(i8 iBytes)
 {
   _precondition_(this, CN_DICTIONARY);
+  
+  ASSERT(!m_bFrozen);
   
   ASSERT(iBytes >= sizeof(Word));
   
@@ -200,6 +214,26 @@ void Dictionary::vFreeWord(Word* pWord)
   _precondition_(this, CN_DICTIONARY);
   
   gpSmallHeap->vFreeObject(pWord);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is dictionary frozen?                                                      */
+/*----------------------------------------------------------------------------*/
+bool Dictionary::bFrozen(void)
+{
+  _precondition_(this, CN_DICTIONARY);
+  
+  return m_bFrozen;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dictionary frozen?                                                     */
+/*----------------------------------------------------------------------------*/
+void Dictionary::vFrozen(bool bFrozen)
+{
+  _precondition_(this, CN_DICTIONARY);
+  
+  m_bFrozen = bFrozen;
 }
 
 /*----------------------------------------------------------------------------*/
