@@ -33,7 +33,7 @@ RowBuffer::RowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_bHasSpace   = true;
-  m_pFreeSpace  = pFirstObject();
+  m_pFreeSpace  = pDataArea();
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
@@ -51,7 +51,7 @@ RowBuffer::~RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* allocate an object in this segmented space                                 */
 /*----------------------------------------------------------------------------*/
-Object* RowBuffer::pAllocRow(size_t nBytes)
+Object* RowBuffer::pAllocObject(size_t nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -73,13 +73,37 @@ Object* RowBuffer::pAllocRow(size_t nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* first object                                                               */
+/* allocate a row in this segmented space                                     */
 /*----------------------------------------------------------------------------*/
-Object* RowBuffer::pFirst(void)
+Row* RowBuffer::pAllocRow(size_t nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Object* pFirst = pFirstObject();
+  // was exhausted on last call?
+  if (bIsExhausted())
+    return nullptr;
+  
+  // test  sufficient freespace
+  if (iFreeSpace() < nBytes) {
+    vSetExhausted();
+    return nullptr;
+  }
+  
+  Row* pRow = reinterpret_cast<Row*>(m_pFreeSpace);
+  
+  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* first object                                                               */
+/*----------------------------------------------------------------------------*/
+Object* RowBuffer::pFirstObject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Object* pFirst = pDataArea();
   
   if (pFirst < m_pFreeSpace)
     return pFirst;
@@ -88,15 +112,47 @@ Object* RowBuffer::pFirst(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* first row                                                                  */
+/*----------------------------------------------------------------------------*/
+Row* RowBuffer::pFirstRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Row* pFirst = reinterpret_cast<Row*>(pDataArea());
+  
+  if ((char*)pFirst < (char*)m_pFreeSpace)
+    return pFirst;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* next object                                                                */
 /*----------------------------------------------------------------------------*/
-Object* RowBuffer::pNext(Object* pCurr, i8 nBytes)
+Object* RowBuffer::pNextObject(Object* pCurr, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
   Object* pNext = static_cast<Object*>(pvAdd(pCurr,nBytes));
   
   if (pNext < m_pFreeSpace)
+    return pNext;
+  else
+    return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* next row                                                                   */
+/*----------------------------------------------------------------------------*/
+Row* RowBuffer::pNextRow(Row* pCurr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 iSize = pCurr->iSize();
+  
+  Row* pNext = static_cast<Row*>(pvAdd(pCurr,iSize));
+  
+  if ((char*)pNext < (char*)m_pFreeSpace)
     return pNext;
   else
     return nullptr;
@@ -143,9 +199,21 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* calc bytes used                                                            */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::iBytesUsed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 iBytes = iSub(m_pFreeSpace,pDataArea());
+  
+  return iBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given buffer                                                          */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vCopy(RowBuffer* pFromBuffer)
+void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -153,9 +221,9 @@ void RowBuffer::vCopy(RowBuffer* pFromBuffer)
   
   i8 iBytes = pFromBuffer->iBytesUsed();
   
-  Memory::vCopy(pFirstObject(),pFromBuffer->pFirstObject(),iBytes);
+  Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),iBytes);
   
-  char* pRevised = pcAdd(pFirstObject(),iBytes);
+  char* pRevised = pcAdd(pDataArea(),iBytes);
   
   m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
 }
@@ -171,30 +239,6 @@ bool RowBuffer::bHasSpace(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc bytes used                                                            */
-/*----------------------------------------------------------------------------*/
-i8 RowBuffer::iBytesUsed(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  i8 iBytes = iSub(m_pFreeSpace,pFirstObject());
-  
-  return iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* first allocatable byte in segment                                          */
-/*----------------------------------------------------------------------------*/
-Object* RowBuffer::pFirstObject(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(RowBuffer)));
-  
-  return pStart;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bInsertRow(StrVal* pRowStr)
@@ -203,19 +247,47 @@ bool RowBuffer::bInsertRow(StrVal* pRowStr)
   
   i8 iSize = pRowStr->iSize();
 
-  Object* pRow = pAllocRow(iSize);
-  if (!pRow)
+  Object* pObject = pAllocObject(iSize);
+  if (!pObject)
     return false;
 
-  Memory::vCopy(pRow,pRowStr,iSize);
+  Memory::vCopy(pObject,pRowStr,iSize);
   
   return true;
-  
 }
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool RowBuffer::bInsertRow2(StrVal* pRowStr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 iSize  = pRowStr->iSize();
+  i8 iBytes = Row::iBytesRequired(iSize);
+  
+  Row* pRow = pAllocRow(iBytes);
+  if (!pRow)
+    return false;
+  
+  Memory::vCopy(pRow->pData(),pRowStr,iSize);
+  
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+Object* RowBuffer::pDataArea(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(RowBuffer)));
+  
+  return pStart;
+}
 
 /*----------------------------------------------------------------------------*/
 /* calculate location of footer                                               */

@@ -2,7 +2,7 @@
 /*  Column.cpp - Column                                                       */
 /*============================================================================*/
 
-#include "Column.hpp"
+#include "DBobjects.h"
 
 namespace DBobjects {
     

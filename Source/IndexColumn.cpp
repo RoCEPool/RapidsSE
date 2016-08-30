@@ -2,7 +2,7 @@
 /* IndexColumn.cpp - Index Column                                             */
 /*============================================================================*/
 
-#include "IndexColumn.hpp"
+#include "DBobjects.h"
 
 namespace DBobjects {
     

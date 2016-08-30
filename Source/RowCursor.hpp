@@ -17,7 +17,8 @@ namespace DBobjects
     Partition* m_pPartition;
     RowStrand* m_pRowStrand;
     RowBuffer* m_pRowBuffer;
-    Object*    m_pRow;
+    Object*    m_pObject;
+    Row*       m_pRow;
     
   public:
     void* operator new(size_t);
@@ -30,8 +31,11 @@ namespace DBobjects
     void    vBegin(i8 iPartition);
     void    vEnd(void);
     void    vFirst(void);
+    void    vFirst2(void);
     void    vNext(void);
-    Object* pRow(void);
+    void    vNext2(void);
+    Object* pObject(void);
+    Row*    pRow(void);
     char*   pRowAsStr(void);
     Table*  pTable(void);
     void    vTable(Table* pTable);

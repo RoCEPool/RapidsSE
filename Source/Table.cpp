@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  Table.cpp - Table                                                         */
+/* Table.cpp -- Table                                                         */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -106,7 +106,7 @@ void Table::vCopy(Table *pFromTable)
   
   pRowCursor->vBegin(0);
   pRowCursor->vFirst();
-  while ( (pRow = pRowCursor->pRow()) ) {
+  while ( (pRow = pRowCursor->pObject()) ) {
     //vTrace("Copying %s\n",((StrVal*)pRow)->sStr());
     vInsertRow(0,(StrVal*)pRow);
     pRowCursor->vNext();
@@ -164,7 +164,7 @@ void Table::vExport(File* pFile)
   
   pRowCursor->vBegin(0);
   pRowCursor->vFirst();
-  while ( (pRow = pRowCursor->pRow()) ) {
+  while ( (pRow = pRowCursor->pObject()) ) {
     //vTrace("Exporting %s\n",((StrVal*)pRow)->sStr());
     pFile->vPrint("%s\n",((StrVal*)pRow)->sStr());
     pRowCursor->vNext();
