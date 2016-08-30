@@ -11,10 +11,9 @@ class Input
 private:
   static const i8 C_INPUT_DEPTH = 4;
 
-  s256   m_sPrompt;    // the prompt
-  
-  s256        m_sInputLine;
-  i8          m_iInputDepth;
+  s256        m_sPrompt;     // the prompt
+  s256        m_sInputLine;  // line of input
+  i8          m_iInputDepth; // depth in input array
   InputStream m_xInputStream[C_INPUT_DEPTH]; // input stream handler
   
 public:
