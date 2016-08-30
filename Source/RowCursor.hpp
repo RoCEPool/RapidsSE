@@ -30,11 +30,11 @@ namespace DBobjects
     
     void    vBegin(i8 iPartition);
     void    vEnd(void);
-    void    vFirst(void);
+//    void    vFirst(void);
     void    vFirst2(void);
-    void    vNext(void);
+//    void    vNext(void);
     void    vNext2(void);
-    Object* pObject(void);
+//    Object* pObject(void);
     Row*    pRow(void);
     char*   pRowAsStr(void);
     Table*  pTable(void);

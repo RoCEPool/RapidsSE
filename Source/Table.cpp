@@ -98,18 +98,18 @@ void Table::vCopy(Table *pFromTable)
 {
   _poolAddress_(this);
   
-  Object* pRow;
+  Row* pRow;
   
   RowCursor* pRowCursor = new RowCursor;
   
   pRowCursor->vTable(pFromTable);
   
   pRowCursor->vBegin(0);
-  pRowCursor->vFirst();
-  while ( (pRow = pRowCursor->pObject()) ) {
+  pRowCursor->vFirst2();
+  while ( (pRow = pRowCursor->pRow()) ) {
     //vTrace("Copying %s\n",((StrVal*)pRow)->sStr());
-    vInsertRow(0,(StrVal*)pRow);
-    pRowCursor->vNext();
+    vInsertRow(0,(StrVal*)pRow->pData());
+    pRowCursor->vNext2();
   }
   
   delete pRowCursor;
@@ -156,18 +156,18 @@ void Table::vExport(File* pFile)
 {
   _poolAddress_(this);
   
-  Object* pRow;
+  Row* pRow;
   
   RowCursor* pRowCursor = new RowCursor;
   
   pRowCursor->vTable(this);
   
   pRowCursor->vBegin(0);
-  pRowCursor->vFirst();
-  while ( (pRow = pRowCursor->pObject()) ) {
+  pRowCursor->vFirst2();
+  while ( (pRow = pRowCursor->pRow()) ) {
     //vTrace("Exporting %s\n",((StrVal*)pRow)->sStr());
-    pFile->vPrint("%s\n",((StrVal*)pRow)->sStr());
-    pRowCursor->vNext();
+    pFile->vPrint("%s\n",((StrVal*)pRow->pData())->sStr());
+    pRowCursor->vNext2();
   }
   
   delete pRowCursor;

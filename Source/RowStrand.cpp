@@ -61,7 +61,7 @@ bool RowStrand::bInsertRow(StrVal* pRowStr)
     }
   }
 
-  bool bInserted = m_pLastBuffer->bInsertRow(pRowStr);
+  bool bInserted = m_pLastBuffer->bInsertRow2(pRowStr);
   
   if (bInserted) {
     m_zLock.vDropWrite();
@@ -73,7 +73,7 @@ bool RowStrand::bInsertRow(StrVal* pRowStr)
     return false;
   }
   
-  bInserted = m_pLastBuffer->bInsertRow(pRowStr);
+  bInserted = m_pLastBuffer->bInsertRow2(pRowStr);
   ASSERT(bInserted);
   
   m_zLock.vDropWrite();

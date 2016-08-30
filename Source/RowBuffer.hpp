@@ -25,7 +25,7 @@ namespace DBobjects
     ~RowBuffer(void);
     
     Object*    pAllocObject(size_t nBytes);
-    Row*       pAllocRow(size_t nBytes);
+    Row*       pAllocRow(i8 iDataBytes);
     
     Object*    pFirstObject(void);
     Row*       pFirstRow(void);

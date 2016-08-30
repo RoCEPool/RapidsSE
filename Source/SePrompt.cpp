@@ -99,11 +99,11 @@ void SePrompt::vIterateRows(void)
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   pRowCursor->vBegin(m_iPartition);
-  pRowCursor->vFirst();
+  pRowCursor->vFirst2();
   char* pStr = pRowCursor->pRowAsStr();
   while (pStr) {
     vTrace("Row: %s\n",pStr);
-    pRowCursor->vNext();
+    pRowCursor->vNext2();
     pStr = pRowCursor->pRowAsStr();
   }
   

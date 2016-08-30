@@ -75,23 +75,29 @@ Object* RowBuffer::pAllocObject(size_t nBytes)
 /*----------------------------------------------------------------------------*/
 /* allocate a row in this segmented space                                     */
 /*----------------------------------------------------------------------------*/
-Row* RowBuffer::pAllocRow(size_t nBytes)
+Row* RowBuffer::pAllocRow(i8 iDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  i8 iBytes = Row::iBytesRequired(iDataBytes);
+
   // was exhausted on last call?
   if (bIsExhausted())
     return nullptr;
   
   // test  sufficient freespace
-  if (iFreeSpace() < nBytes) {
+  if (iFreeSpace() < iBytes) {
     vSetExhausted();
     return nullptr;
   }
   
   Row* pRow = reinterpret_cast<Row*>(m_pFreeSpace);
+
+  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,iBytes));
   
-  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  new(pRow) Row;
+  
+  pRow->vDataBytes(iDataBytes);
   
   return pRow;
 }
@@ -260,14 +266,13 @@ bool RowBuffer::bInsertRow2(StrVal* pRowStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  i8 iSize  = pRowStr->iSize();
-  i8 iBytes = Row::iBytesRequired(iSize);
+  i8 iDataBytes  = pRowStr->iSize();
   
-  Row* pRow = pAllocRow(iBytes);
+  Row* pRow = pAllocRow(iDataBytes);
   if (!pRow)
     return false;
   
-  Memory::vCopy(pRow->pData(),pRowStr,iSize);
+  Memory::vCopy(pRow->pData(),pRowStr,iDataBytes);
   
   return true;
 }

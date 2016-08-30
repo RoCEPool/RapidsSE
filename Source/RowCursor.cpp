@@ -95,25 +95,25 @@ void RowCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set to first row                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vFirst(void)
-{
-  _poolAddress_(this);
-  _magic_();
-  
-  m_pPartition = m_pTable->pPartition(m_iPartition);
-  m_pRowStrand = m_pPartition->pHeadStrand();
-  if (m_pRowStrand) {
-    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
-    if (m_pRowBuffer)
-      m_pObject = m_pRowBuffer->pFirstObject();
-    else
-      m_pObject = nullptr;
-  }
-  else {
-    m_pRowBuffer = nullptr;
-    m_pObject = nullptr;
-  }
-}
+//void RowCursor::vFirst(void)
+//{
+//  _poolAddress_(this);
+//  _magic_();
+//  
+//  m_pPartition = m_pTable->pPartition(m_iPartition);
+//  m_pRowStrand = m_pPartition->pHeadStrand();
+//  if (m_pRowStrand) {
+//    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+//    if (m_pRowBuffer)
+//      m_pObject = m_pRowBuffer->pFirstObject();
+//    else
+//      m_pObject = nullptr;
+//  }
+//  else {
+//    m_pRowBuffer = nullptr;
+//    m_pObject = nullptr;
+//  }
+//}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void RowCursor::vFirst2(void)
 {
@@ -138,38 +138,38 @@ void RowCursor::vFirst2(void)
 /*----------------------------------------------------------------------------*/
 /* advance to next row                                                        */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vNext(void)
-{
-  _poolAddress_(this);
-  _magic_();
-  
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pObject);
-  
-  i8 iSize = pStrVal->iSize();
-  
-  m_pObject = m_pRowBuffer->pNextObject(m_pObject,iSize);
-  if (m_pObject)
-    return;
-  
-  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
-  if (m_pRowBuffer) {
-    m_pObject = m_pRowBuffer->pFirstObject();
-    if (m_pObject)
-      return;
-  }
-  
-  m_pRowStrand = m_pRowStrand->pNextStrand();
-  if (m_pRowStrand) {
-    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
-    if (m_pRowBuffer) {
-      m_pObject = m_pRowBuffer->pFirstObject();
-      if (m_pObject)
-        return;
-    }
-  }
-  
-  m_pObject = nullptr;
-}
+//void RowCursor::vNext(void)
+//{
+//  _poolAddress_(this);
+//  _magic_();
+//  
+//  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pObject);
+//  
+//  i8 iSize = pStrVal->iSize();
+//  
+//  m_pObject = m_pRowBuffer->pNextObject(m_pObject,iSize);
+//  if (m_pObject)
+//    return;
+//  
+//  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
+//  if (m_pRowBuffer) {
+//    m_pObject = m_pRowBuffer->pFirstObject();
+//    if (m_pObject)
+//      return;
+//  }
+//  
+//  m_pRowStrand = m_pRowStrand->pNextStrand();
+//  if (m_pRowStrand) {
+//    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
+//    if (m_pRowBuffer) {
+//      m_pObject = m_pRowBuffer->pFirstObject();
+//      if (m_pObject)
+//        return;
+//    }
+//  }
+//  
+//  m_pObject = nullptr;
+//}
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 void RowCursor::vNext2(void)
 {
@@ -202,16 +202,16 @@ void RowCursor::vNext2(void)
   m_pRow = nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/* get current object                                                         */
-/*----------------------------------------------------------------------------*/
-Object* RowCursor::pObject(void)
-{
-  _poolAddress_(this);
-  _magic_();
-  
-  return m_pObject;
-}
+///*----------------------------------------------------------------------------*/
+///* get current object                                                         */
+///*----------------------------------------------------------------------------*/
+//Object* RowCursor::pObject(void)
+//{
+//  _poolAddress_(this);
+//  _magic_();
+//  
+//  return m_pObject;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
@@ -227,13 +227,29 @@ Row* RowCursor::pRow(void)
 /*----------------------------------------------------------------------------*/
 /* get current row (as a char*)                                               */
 /*----------------------------------------------------------------------------*/
+//char* RowCursor::pRowAsStr(void)
+//{
+//  _poolAddress_(this);
+//  _magic_();
+//  
+//  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pObject);
+//
+//  if (pStrVal)
+//    return pStrVal->sStr();
+//  else
+//    return nullptr;
+//}
+//
 char* RowCursor::pRowAsStr(void)
 {
   _poolAddress_(this);
   _magic_();
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pObject);
-
+  if (! m_pRow)
+    return nullptr;
+  
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->pData());
+  
   if (pStrVal)
     return pStrVal->sStr();
   else

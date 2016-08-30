@@ -25,6 +25,7 @@ namespace DBobjects
     
     char* pData(void);
     i8    iDataBytes(void);
+    void  vDataBytes(i8 iDataBytes);
     void  vDump(void);
     i8    iSize(void);
     i8    iTxId(void);
