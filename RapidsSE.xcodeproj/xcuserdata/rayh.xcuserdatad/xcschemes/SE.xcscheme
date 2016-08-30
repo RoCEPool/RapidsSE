@@ -71,27 +71,23 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--seitf"
+            argument = "--seprompt"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--seprompt"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "--start"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "--start --bgtasks"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--start --seitf "
-            isEnabled = "NO">
+            argument = "--start --seprompt"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "--start --seitf --bgtasks"
+            argument = "--start --seprompt --bgtasks"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument

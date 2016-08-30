@@ -20,7 +20,6 @@ Arguments::Arguments(void)
   m_bDocol      = false;
   m_bHelp       = false;
   m_bList       = false;
-  m_bSeitf      = false;
   m_bSePrompt   = false;
   m_bStart      = false;
   m_bStatus     = false;
@@ -78,11 +77,6 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
-    if (String::bEqualTo("--seitf",argv[iArg],C_NO_CASE)) {
-      m_bSeitf = true;
-      continue;
-    }
-    
     if (String::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
       m_bSePrompt = true;
       continue;
@@ -135,14 +129,14 @@ void Arguments::vPrint(void)
 {
   vTrace("Args:\n");
   
-  if (m_bCommand) vTrace("  --command\n");
-  if (m_bDocol)   vTrace("  --docol\n");
-  if (m_bHelp)    vTrace("  --help\n");
-  if (m_bList)    vTrace("  --list\n");
-  if (m_bSeitf)   vTrace("  --seitf\n");
-  if (m_bStart)   vTrace("  --start\n");
-  if (m_bStatus)  vTrace("  --status\n");
-  if (m_bStop)    vTrace("  --stop\n");
+  if (m_bCommand)  vTrace("  --command\n");
+  if (m_bDocol)    vTrace("  --docol\n");
+  if (m_bHelp)     vTrace("  --help\n");
+  if (m_bList)     vTrace("  --list\n");
+  if (m_bSePrompt) vTrace("  --seprompt\n");
+  if (m_bStart)    vTrace("  --start\n");
+  if (m_bStatus)   vTrace("  --status\n");
+  if (m_bStop)     vTrace("  --stop\n");
 
   vTrace("  --regionName %s\n",m_sRegionName.a());
   vTrace("  --regionSize %lld\n",m_iRegionSize);

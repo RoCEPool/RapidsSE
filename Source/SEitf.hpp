@@ -41,22 +41,10 @@ namespace Interface
 
     Queue*     m_pRequestQueue;    // request queue
     Queue*     m_pResponseQueue;   // reponse queue
+    s8K        m_sResponse;        // response
     
-    s8K         m_sResponse;       // response
-    
-    s256        m_sInputLine;
-    
-    i8          m_iInput;
-    InputStream m_xInputStream[C_INPUT_ARRAY]; // input stream handler
-    s256        m_sPrompt;         // prompt
-    
-    char        m_wHistory[C_4KB];
-    File        m_xHistoryFile;
-    i8          m_iCommand;
-    bool        m_bSkipHistory;
-    
-    eIE         m_eInterfaceError;
-    s256        m_sInterfaceError;
+    eIE         m_eInterfaceError; // error code
+    s256        m_sInterfaceError; // error string
     
     // must be last
     Footer m_xFooter;
@@ -71,57 +59,21 @@ namespace Interface
     DictionaryStack* pDicStack(void);
     void   vPushDic(Dictionary* pDictionary);
     void   vPopDic(void);
-    Word*   pFindWord(s& sName);
+    Word*  pFindWord(s& sName);
     
     void   vDump(void);
     
     void   vInit(void);
     i8     iPartition(void);
-    void   vPrompt(void);
-    void   vParse(s& sRequest, char* pWords[]);
-    void   vExecute(char* pWords[]);
-    
-    void   vIterateRows(void);
-    
-    bool   bTestFile(char* pWord);
-    void   vPushFile(char* pWord);
-    void   vPopFile(void);
-    
-    InputStream* pInput(void);
-    
-    //--------------------------------------------------------------------------
-
-    void   vHistoryAppend(char* pWords[]);
-    void   vHistoryClose(void);
-    bool   bHistoryGet(i8 iCommand, char* pWords[]);
-    void   vHistoryOpen(void);
-    void   vHistoryPrint(void);
-    bool   bHistoryRead(char* wCommand);
-    bool   bHistoryRecall(char* pWords[]);
-    void   vHistoryStart(void);
-    void   vHistoryEnd(void);
-    
-    //--------------------------------------------------------------------------
-    
-    void   vAppendRequest(s& sRequest);
-    i8     iGetResponse(void);
-    bool   bPopResponse(s& sResponse);
-    bool   bPopResponse(i8& iResult, s& sResponse);
-    
     void   vRequestQueue(Queue* pRequestQueue);
     Queue* pRequestQueue(void);
     
     void   vResponseQueue(Queue* pResponseQueue);
     Queue* pResponseQueue(void);
-    
-    //--------------------------------------------------------------------------
-    
-    void   vDo(const char* aCommand);
-    
+
     //--------------------------------------------------------------------------
     
     bool bDecode(char* pWords[]);
-    bool bHelp(char* pWords[]);
     
     bool bConnect(char* pWords[]);
     bool bDisconnect(char* pWords[]);
@@ -163,14 +115,17 @@ namespace Interface
     bool bGetDicContents(char* pWords[]);
 
     bool bGetMonitor(char* pWords[]);
-    bool bPrintHistory(char* pWords[]);
     
     bool bPing(char* pWords[]);
     
-    bool bDo(char* pWords[]);
-    bool bTpcH(char* pWords[]);
     bool bX(char* pWords[]);
     bool bPrint(char* pWords[]);
+    
+    //--------------------------------------------------------------------------
+    void vAppendRequest(s& sRequest);
+    
+    i8   iGetResponse(void);
+    bool bPopResponse(i8& iResult, s& sResponse);
     
     //--------------------------------------------------------------------------
     void         vClearLastError(void);

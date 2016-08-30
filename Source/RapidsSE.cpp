@@ -72,13 +72,7 @@ void RapidsSE::vExecute(void)
       ASSERT(gpBufferPool);
       vSystemInit();
       vSystemStart();
-      if (gxArguments.m_bSeitf) {
-        while (! gpDictionary->pFind("requestQueue"))
-          ;
-        PosixThread::vSleepNano(250_MB);
-        vSeitfPrompt();
-      }
-      else if (gxArguments.m_bDocol) {
+      if (gxArguments.m_bDocol) {
         while (! gpDictionary->pFind("requestQueue"))
           ;
         PosixThread::vSleepNano(250_MB);
@@ -103,10 +97,6 @@ void RapidsSE::vExecute(void)
     else if (gxArguments.m_bSePrompt) {
       ASSERT(gpBufferPool);
       return;
-    }
-    else if (gxArguments.m_bSeitf) {
-      ASSERT(gpBufferPool);
-      vSeitfPrompt();
     }
     else if (gxArguments.m_bStatus) {
       vSystemStatus();
@@ -370,16 +360,6 @@ void RapidsSE::vRunDocol(void)
   gnpRootThread->vAppend(*gnpRootTask);
   
   // the docol interpreter is now running in root task on root thread
-}
-
-/*----------------------------------------------------------------------------*/
-/* run seitf>                                                                 */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vSeitfPrompt(void)
-{
-  SEitf* pSEitf = new SEitf(gxArguments.m_iPartition);
-  pSEitf->vInit();
-  pSEitf->vPrompt();
 }
 
 /*----------------------------------------------------------------------------*/
