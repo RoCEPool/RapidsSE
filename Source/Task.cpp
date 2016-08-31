@@ -763,7 +763,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.export",      &vTableExport,      false);
   vAddPrimitive("table.init",        &vTableInit,        false);
   vAddPrimitive("table.insert",      &vTableInsert,      false);
-  vAddPrimitive("table.load",        &vTableLoad,        false);
   vAddPrimitive("table.space",       &vTableSpace,       false);
   vAddPrimitive("table.truncate",    &vTableTruncate,    false);
   
@@ -7728,28 +7727,6 @@ void Task::vTableInsert(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vInsertRow(0,nullptr,xRow.pAsStrVal());
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.load -- load file into table on param stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTableLoad(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableLoad");
-  
-  PtrVal xPtrTable;
-  PtrVal xPtrFile;
-  
-  if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
-    THROW_INVALID_PARAM("table.load");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
-  ASSERT(CN_FILE == pFile->eClass());
-  
-  pTable->vLoad(pFile);
 }
 
 /*----------------------------------------------------------------------------*/
