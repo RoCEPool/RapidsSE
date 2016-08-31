@@ -72,7 +72,7 @@ pDUMPFUN *gpDump[]
   /* 31 */ &RapidsSE::vDumpUndefined,
   /* 32 */ &RowBuffer::vDump,
   /* 33 */ &RapidsSE::vDumpUndefined,
-  /* 34 */ &RapidsSE::vDumpUndefined,
+  /* 34 */ &RowStrand::vDump,
   /* 35 */ &RapidsSE::vDumpUndefined,
   /* 36 */ &RapidsSE::vDumpUndefined,
   /* 37 */ &RapidsSE::vDumpUndefined,

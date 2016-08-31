@@ -91,7 +91,7 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
   
   vTrace("%sRowBuffer %p:\n", pTab, pRowBuffer);
-  vTrace("%s  hasSpace: %s \n", pTab, pRowBuffer->m_bHasSpace ? "true" : "false");
+  vTrace("%s  hasSpace %s \n", pTab, pRowBuffer->m_bHasSpace ? "true" : "false");
   vTrace("%s  freeSpace %p\n", pTab, pRowBuffer->m_pFreeSpace);
   vTrace("%s  prevBuffer %p\n", pTab, pRowBuffer->m_pPrevBuffer);
   vTrace("%s  nextBuffer %p\n\n", pTab, pRowBuffer->m_pNextBuffer);

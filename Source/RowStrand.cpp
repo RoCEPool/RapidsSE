@@ -46,6 +46,24 @@ RowStrand::~RowStrand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump rowbuffer                                                             */
+/*----------------------------------------------------------------------------*/
+void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_ROWSTRAND);
+  ASSERT(pObject->eClass() == CN_ROWSTRAND);
+  
+  RowStrand* pRowStrand = reinterpret_cast<RowStrand*>(pObject);
+  
+  vTrace("%sRowStrand %p:\n", pTab, pRowStrand);
+  vTrace("%s  rowBuffers %lld\n", pTab, pRowStrand->m_iRowBuffers);
+  vTrace("%s  firstBuffer %p\n", pTab, pRowStrand->m_pFirstBuffer);
+  vTrace("%s  nextBuffer %p\n", pTab, pRowStrand->m_pLastBuffer);
+  vTrace("%s  prevStrand %p\n", pTab, pRowStrand->m_pPrevStrand);
+  vTrace("%s  nextStrand %p\n\n", pTab, pRowStrand->m_pNextStrand);
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
 bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)

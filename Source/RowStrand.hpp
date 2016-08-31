@@ -32,6 +32,8 @@ namespace DBobjects
     RowStrand(void);
     ~RowStrand(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     bool bInsertRow(TxRef* pTxRef, StrVal* pRow);
     i8   iRowBuffers(void);
     
