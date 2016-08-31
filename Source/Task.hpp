@@ -425,7 +425,7 @@ namespace Tasks
     static void vAssertStack_3more(NNP_Task nnpTask);
     static void vAssertStack_4(NNP_Task nnpTask);
     static void vAssertStack_4more(NNP_Task nnpTask);
-
+    
     // csv
     static void vCsvFirstValue(NNP_Task nnpTask);
     
@@ -589,6 +589,19 @@ namespace Tasks
     // seitfList
     static void vSEitfListDump(NNP_Task nnpTask);
     static void vSEitfListInit(NNP_Task nnpTask);
+    
+    // stack
+    static void vStackClass(NNP_Task nnpTask);
+    static void vStackClass0(NNP_Task nnpTask);
+    static void vStackClass1(NNP_Task nnpTask);
+    static void vStackClass2(NNP_Task nnpTask);
+    static void vStackClass3(NNP_Task nnpTask);
+    static void vStackClass4(NNP_Task nnpTask);
+    static void vStackClass5(NNP_Task nnpTask);
+    static void vStackClass6(NNP_Task nnpTask);
+    static void vStackClass7(NNP_Task nnpTask);
+    static void vStackClass8(NNP_Task nnpTask);
+    static void vStackClass9(NNP_Task nnpTask);
     
     // string
     static void vStringPad(NNP_Task nnpTask);

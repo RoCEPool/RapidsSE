@@ -749,6 +749,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitfList.dump",  &vSEitfListDump,    false);
   vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
 
+  vAddPrimitive("stack.class",  &vStackClass,  false);
+  
   vAddPrimitive("strpad", &vStringPad, false);
   vAddPrimitive("streql", &vStrEql,    false);
   vAddPrimitive("strlen", &vStrLen,    false);
@@ -7398,6 +7400,28 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   new(pSEitfList) SEitfList;
+}
+
+// stack: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* stack.class -- get class of nth value on stack                             */
+/*----------------------------------------------------------------------------*/
+void Task::vStackClass(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vStackClass");
+
+  i8 nTh;
+  if ( ! nnpTask->bPopParam(nTh) )
+    THROW_INVALID_PARAM("stack.class");
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xParamStack.vPeek(nTh,&xValWsp);
+  
+  eCN eClass = xValWsp.eClass();
+  
+  nnpTask->vPushParam(eClass);
 }
 
 // string: /////////////////////////////////////////////////////////////////////

@@ -33,16 +33,10 @@ thread:  requestThread
 ;
 
 /*----------------------------------------------------------------------------*/
-/* process request                                                            */
-/*----------------------------------------------------------------------------*/
-: !req
-    valset> drop >: >:
-;
-
-/*----------------------------------------------------------------------------*/
 /* receive request                                                            */
 /*----------------------------------------------------------------------------*/
 : req>
+
     begin
       task.this task.queue@
       queue.pop
@@ -51,9 +45,35 @@ thread:  requestThread
 ;
 
 /*----------------------------------------------------------------------------*/
+/* process request                                                            */
+/*----------------------------------------------------------------------------*/
+: !req
+
+    valset>
+
+    // check stack
+    depth 3 != if "incorrect request stack depth" . quit then
+    0 stack.class CN_INTVAL != if "incorrect request value 0" . quit then
+    1 stack.class CN_STRVAL != if "incorrect request value 1" . quit then
+    2 stack.class CN_STRVAL != if "incorrect request value 2" . quit then
+
+    drop // the count
+    >:   // execute the response return address
+    >:   // decode/push the request
+;
+
+/*----------------------------------------------------------------------------*/
 /* send response                                                              */
 /*----------------------------------------------------------------------------*/
 : >rsp ( send response    )
+
+    // check stack
+    depth 3 != if "incorrect reponse stack depth" . quit then
+
+    0 stack.class CN_INTVAL != if "incorrect reponse value 0" . quit then
+    1 stack.class CN_INTVAL != if "incorrect reponse value 1" . quit then
+    2 stack.class CN_STRVAL != if "incorrect reponse value 2" . quit then
+
     >valset
     "rspque" find execute queue.append
     0 task.this task.seitf!
@@ -62,7 +82,6 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 /* request processing loop                                                    */
 /*----------------------------------------------------------------------------*/
-
 : requestLoop
 
     "renaming to Request Task" .
