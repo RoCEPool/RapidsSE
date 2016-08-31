@@ -40,8 +40,8 @@ namespace StorageEngine
     static void vHandler(Error* pError);
     static void vRunCommand(void);
     static void vRunDocol(void);
+    static void vStartActors(void);
     static void vSystemInit(void);
-    static void vSystemStart(void);
     static void vSystemStatus(void);
     static void vSystemStop(void);
     static bool bTestRegion(void);

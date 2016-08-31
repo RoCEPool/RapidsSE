@@ -1,0 +1,85 @@
+/*============================================================================*/
+/* requestTask.sen -- request processing task                                 */
+/*============================================================================*/
+
+"requestServer.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+queue:   requestQueue
+
+dic:     tenants
+
+taskset: requestTaskSet
+
+thread:  requestThread
+
+/*----------------------------------------------------------------------------*/
+/* start the request task                                                     */
+/*----------------------------------------------------------------------------*/
+: requestStart
+
+    "requestLoop"   task.new
+
+    requestTaskSet  taskSet.append
+
+    requestTaskSet  requestThread  thread.taskset!
+
+    "requestThread" requestThread  thread.name!
+
+    requestThread   thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* process request                                                            */
+/*----------------------------------------------------------------------------*/
+: !req
+    valset> drop >: >:
+;
+
+/*----------------------------------------------------------------------------*/
+/* receive request                                                            */
+/*----------------------------------------------------------------------------*/
+: req>
+    begin
+      task.this task.queue@
+      queue.pop
+      dup not if 100 thread.sleep_us then
+    until
+;
+
+/*----------------------------------------------------------------------------*/
+/* send response                                                              */
+/*----------------------------------------------------------------------------*/
+: >rsp ( send response    )
+    >valset
+    "rspque" find execute queue.append
+    0 task.this task.seitf!
+;
+
+/*----------------------------------------------------------------------------*/
+/* request processing loop                                                    */
+/*----------------------------------------------------------------------------*/
+
+: requestLoop
+
+    "renaming to Request Task" .
+
+    "requestTask" task.this task.name!
+
+    requestQueue  task.this task.queue!
+
+    "Request Server running..." .
+
+    begin
+      req>
+      !req
+      >rsp
+    0 until
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

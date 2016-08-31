@@ -604,6 +604,8 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
+  vAddPrimitive("debug.trap",      &vDebugTrap,        false);
+  
   vAddPrimitive("dic.count",       &vDicCount,         false);
   vAddPrimitive("dic.drop",        &vDicDrop,          false);
   vAddPrimitive("}}",              &vDicDrop,          false);
@@ -5261,6 +5263,18 @@ void Task::vCsvFirstValue(NNP_Task nnpTask)
     sFirstValue = "";
   
   nnpTask->vPushParam(sFirstValue);
+}
+
+// debug: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* debug.trap -- call debug trap                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vDebugTrap(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDebugTrap");
+
+  Common::vDebugTrap();
 }
 
 // dic: ////////////////////////////////////////////////////////////////////////

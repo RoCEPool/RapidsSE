@@ -515,8 +515,7 @@
 		F2F125191D2231B300CA8E5A /* s16K.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = s16K.cpp; path = Source/s16K.cpp; sourceTree = "<group>"; };
 		F2F1251A1D2231B300CA8E5A /* s16K.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = s16K.hpp; path = Source/s16K.hpp; sourceTree = "<group>"; };
 		F2F2365C1D4BFCD50028A9C2 /* var.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = var.sen; path = Commands/var.sen; sourceTree = "<group>"; };
-		F2F2365F1D4D41460028A9C2 /* systemStart.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemStart.sen; path = Commands/systemStart.sen; sourceTree = "<group>"; };
-		F2F236601D4D41A60028A9C2 /* requestServer.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = requestServer.sen; path = Commands/requestServer.sen; sourceTree = "<group>"; };
+		F2F236601D4D41A60028A9C2 /* requestTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = requestTask.sen; path = Commands/requestTask.sen; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -809,8 +808,6 @@
 			isa = PBXGroup;
 			children = (
 				F246E0061D75548A000E54C0 /* initialise.sen */,
-				F2F236601D4D41A60028A9C2 /* requestServer.sen */,
-				F2F2365F1D4D41460028A9C2 /* systemStart.sen */,
 			);
 			name = Initialise;
 			sourceTree = "<group>";
@@ -908,6 +905,7 @@
 				F2DD65761D653E0C009B684A /* listerTask.sen */,
 				F24D1FB61D639F64005031F5 /* monitorTask.sen */,
 				F24D1FB71D63F17E005031F5 /* reclaimTask.sen */,
+				F2F236601D4D41A60028A9C2 /* requestTask.sen */,
 			);
 			name = Actors;
 			sourceTree = "<group>";

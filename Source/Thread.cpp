@@ -7,6 +7,8 @@
 extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
 
+extern NP_Task      gnpRootTask;
+
 extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
 
@@ -185,8 +187,10 @@ void Thread::vLoop(void)
         m_npTask = nullptr;
       }
       else if (TS_EXITED == m_npTask->eState()) {
-        delete *m_npTask;
-        m_npTask = nullptr;
+        if (*gnpRootTask != *m_npTask) {
+          delete *m_npTask;
+          m_npTask = nullptr;
+        }
       }
     }
   }

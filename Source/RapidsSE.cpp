@@ -151,7 +151,6 @@ void RapidsSE::vDumpUndefined(eCN eClass, Object* pObject, const char* pTab)
 void RapidsSE::vExecute(void)
 {
   try {
-    
     if (gxArguments.m_bCommand) {
       ASSERT(gpBufferPool);
       vSystemInit();
@@ -161,14 +160,9 @@ void RapidsSE::vExecute(void)
     else if (gxArguments.m_bStart) {
       ASSERT(gpBufferPool);
       vSystemInit();
-      vSystemStart();
+      vStartActors();
       if (gxArguments.m_bDocol) {
-        while (! gpDictionary->pFind("requestQueue"))
-          ;
-        PosixThread::vSleepNano(250_MB);
-        gnpRootTask->vSeedDocol();
-        gnpRootTask->vLoop();
-        //vRunDocol();
+        vRunDocol();
         vWaitFlag();
       }
       else if (gxArguments.m_bSePrompt) {
@@ -196,7 +190,7 @@ void RapidsSE::vExecute(void)
       vSystemStop();
     }
     else {
-      vTrace("Unknown command\n");
+      vTrace("Unknown command line argument\n");
       exit(EXIT_FAILURE);
     }
   }
@@ -484,16 +478,16 @@ void RapidsSE::vSystemInit(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* start the system                                                           */
+/* start the actors                                                           */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vSystemStart(void)
+void RapidsSE::vStartActors(void)
 {
   vTrace("Shm region initialised at: %s\n",gpAttachMap->m_sUTC.a());
 
   // seed root task to start the system
-  gnpRootTask->vSeedWord("SystemStart");
+  gnpRootTask->vSeedWord("startActors");
   
-  vTrace("[[mainThread]] RapidsSE::vSystemStart launching [%s] %p\n",
+  vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n",
          gnpRootTask->sName().a(),*gnpRootTask);
   
   // append root task onto root thread's task set
@@ -501,6 +495,11 @@ void RapidsSE::vSystemStart(void)
   gnpRootThread->vAppend(*gnpRootTask);
   
   // the system is now running
+  
+  while (! gpDictionary->pFind("requestQueue"))
+    ;
+
+  PosixThread::vSleepNano(250_MB);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -20,8 +20,6 @@
 "systemObjects.sen" >>:
 "actors.sen" >>:
 "commands.sen" >>:
-"requestServer.sen" >>:
-"systemStart.sen" >>:
 "testing.sen" >>:
 
 //

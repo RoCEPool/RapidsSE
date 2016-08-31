@@ -464,6 +464,8 @@ namespace Tasks
     static void vDirRewind(NNP_Task nnpTask);
     static void vDirSeek(NNP_Task nnpTask);
     static void vDirTell(NNP_Task nnpTask);
+    
+    static void vDebugTrap(NNP_Task nnpTask);
 
     // file
     static void vFileClose(NNP_Task nnpTask);     

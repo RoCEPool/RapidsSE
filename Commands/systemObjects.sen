@@ -18,13 +18,13 @@ txCollection: txCollection
 ( seitfList holds all seitf's )
 seitfList: seitfList
 
-( the task set for the root thread )
+( task set for root thread )
 taskSet: rootTaskSet
 
-( the root thread and name it )
+( root thread and name it )
 thread: rootThread "rootThread" rootThread thread.name!
 
-( give root task set to the root thread )
+( give root task set to root thread )
 rootTaskSet rootThread thread.taskSet!
 
 /*============================================================================*/

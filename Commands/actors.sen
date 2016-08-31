@@ -9,6 +9,31 @@ int: queryCount
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
+"requestTask.sen" >>:
+
+/*----------------------------------------------------------------------------*/
+/* called by RapidsSE::vStartActors                                           */
+/*----------------------------------------------------------------------------*/
+: startActors
+
+  "startActors" .
+
+  bgtasks if
+
+    snooze listerStart
+    snooze monitorStart
+    snooze reclaimStart
+
+  then
+
+  //dic.main true dic.frozen!
+
+  //  debug.trap
+
+  //  "requestProcessingLoop" find execute
+
+  requestStart
+;
 
 /*============================================================================*/
 /* end                                                                        */
