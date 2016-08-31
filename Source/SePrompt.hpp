@@ -30,10 +30,12 @@ public:
   void vPrompt(void);
   
 private:
+  void vCreateTable(void);
   void vExecute(void);
   void vIterateRows(void);
   void vProcess(void);
   bool bTestFile(char* pPath);
+  bool bValidateType(char* pType);
   
   void vHelp(void);
 };
