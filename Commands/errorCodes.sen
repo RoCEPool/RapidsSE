@@ -21,6 +21,8 @@
  23  constant  EC_NOT_A_SCHEMA
  24  constant  EC_NOT_A_TABLE
 
+"success"          constant  EM_SUCCESS
+
 "not in tenants"   constant  EM_NOT_IN_TENANTS
 "not in catalogs"  constant  EM_NOT_IN_CATALOGS
 "not in schemas"   constant  EM_NOT_IN_SCHEMAS
@@ -35,6 +37,30 @@
 "not a catalog"    constant  EM_NOT_A_CATALOG
 "not a schema"     constant  EM_NOT_A_SCHEMA
 "not a table"      constant  EM_NOT_A_TABLE
+
+/*----------------------------------------------------------------------------*/
+/* convert EC error code to EM error message                                  */
+/*----------------------------------------------------------------------------*/
+: toEM
+
+  dup EC_SUCCESS == if drop EM_NOT_IN_TENANTS exit then
+
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+
+  "unknown error code " swap concat
+;
 
 /*============================================================================*/
 /* end                                                                        */
