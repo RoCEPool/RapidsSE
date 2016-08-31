@@ -40,6 +40,7 @@
   dup
   txRef.commit drop
   txRef.end drop
+  "txRef" find >forget
 ;
 
 : rollbackTransaction
@@ -47,6 +48,7 @@
   dup
   txRef.rollback drop
   txRef.end drop
+  "txRef" find >forget
 ;
 
 /*============================================================================*/
