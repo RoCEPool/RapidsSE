@@ -35,7 +35,10 @@
 #include <sys/unistd.h>
 #include <sys/wait.h>
 
-#include "mach/thread_act.h"
+#ifdef __APPLE__
+  #include "mach/thread_act.h"
+#endif
+
 #include <netinet/in.h>
 //#include <pcap/pcap.h>
 #include <arpa/inet.h>
