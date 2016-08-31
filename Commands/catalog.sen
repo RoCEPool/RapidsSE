@@ -6,6 +6,12 @@
 
 : catalog ;
 
+: makeCatalogs {{ "catalogs" :dic drop }} ;
+
+: :catalog
+    :dic dup ' catalog swap word.kind!
+;
+
 : withinCatalogs
     0 dic.pick dic.name "catalogs" streql
 ;

@@ -92,9 +92,7 @@ Misc Commands:
 
     checkInTenants not if exit then
 
-    :dic dup ' tenant swap word.kind! execute {{
-      "catalogs" :dic drop
-    }}
+    :tenant execute {{ "catalogs" :dic drop }}
 
     "<ok>" success
 ;
@@ -137,9 +135,7 @@ Misc Commands:
 
     checkInCatalogs not if exit then
 
-    :dic dup ' catalog swap word.kind! execute {{
-      "schemas" :dic drop
-    }}
+    :catalog execute makeSchemas
 
     "<ok>" success
 ;
@@ -152,6 +148,7 @@ Misc Commands:
     checkInCatalogs not if exit then
 
     contents_string             // get contents of dic as a string
+
     success
 ;
 
@@ -181,9 +178,7 @@ Misc Commands:
 
     checkInSchemas not if exit then
 
-    :dic dup ' schema swap word.kind! execute {{
-      "tables" :dic drop
-    }}
+    :schema execute makeTables
 
     "<ok>" success
 ;
@@ -194,6 +189,7 @@ Misc Commands:
 : list_schemas
 
     contents_string             // get contents of dic as a string
+
     success
 ;
 
@@ -223,7 +219,7 @@ Misc Commands:
 
     checkInTables not if exit then
 
-    :table execute createColumnsDic drop
+    :table execute makeColumns
 
     "<ok>" success
 ;

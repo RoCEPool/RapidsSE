@@ -6,6 +6,10 @@
 
 : column: ;
 
+: makeColumns ( table --  )
+   table.dic {{ "columns" :dic drop }}
+;
+
 : withinColumns
     0 dic.pick dic.name "columns" streql
 ;
@@ -13,10 +17,6 @@
 : checkInColumns
     withinColumns if 1 exit then
     "not in columns" 1 failure 0
-;
-
-: createColumnsDic ( table -- table )
-    dup table.dic {{ "columns" :dic drop }}
 ;
 
 : pushColumns ( -- )

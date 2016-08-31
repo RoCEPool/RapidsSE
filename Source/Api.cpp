@@ -233,11 +233,11 @@ eIE RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
 /*----------------------------------------------------------------------------*/
 eIE RapidsSE_GetErrorCode(SEitf* pSEitf, i8* pError)
 {
-  vTrace("RapidsSE_GetErrorCode\n");
+  //vTrace("RapidsSE_GetErrorCode\n");
   
   *pError = pSEitf->m_iErrorCode;
   
-  vTrace("Error : %lld\n", *pError);
+  //vTrace("Error : %lld\n", *pError);
   return IE_NONE;
 }
 
@@ -250,7 +250,7 @@ eIE RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
   
   *ppError = pSEitf->m_sInterfaceError.a();
   
-  vTrace("Error : %s\n", *ppError);
+  //vTrace("Error : %s\n", *ppError);
   return IE_NONE;
 }
 

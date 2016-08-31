@@ -6,6 +6,10 @@
 
 : tenant ;
 
+: :tenant
+    :dic dup ' tenant swap word.kind!
+;
+
 : withinTenants
     0 dic.pick dic.name "tenants" streql
 ;

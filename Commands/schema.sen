@@ -6,6 +6,12 @@
 
 : schema ;
 
+: makeSchemas {{ "schemas" :dic drop }} ;
+
+: :schema
+    :dic dup ' schema swap word.kind!
+;
+
 : withinSchemas
     0 dic.pick dic.name "schemas" streql
 ;
