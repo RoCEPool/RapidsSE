@@ -195,7 +195,7 @@ bool RowBuffer::bHasSpace(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
+bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   

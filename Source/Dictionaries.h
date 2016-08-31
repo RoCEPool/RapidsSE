@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Structures.h"
+#include "Transactions.h"
 
 #include "BodyField.hpp"
 #include "Cell.hpp"

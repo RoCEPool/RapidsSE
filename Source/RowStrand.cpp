@@ -48,7 +48,7 @@ RowStrand::~RowStrand(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
+bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 {
   _poolAddress_(this);
   

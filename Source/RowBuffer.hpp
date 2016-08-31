@@ -6,11 +6,6 @@
 
 #include "DBobjects.h"
 
-namespace Transactions
-{
-  class TxRef;
-}
-
 namespace DBobjects
 {
   class RowBuffer : public Buffer
@@ -44,7 +39,7 @@ namespace DBobjects
     void       vCopyBuffer(RowBuffer* pFromBuffer);
     bool       bHasSpace(void);
     
-    bool       bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr);
+    bool       bInsertRow(TxRef* pTxRef, StrVal* pRowStr);
     
   private:
     Object* pDataArea(void);

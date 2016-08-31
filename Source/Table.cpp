@@ -176,7 +176,7 @@ void Table::vExport(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iPartition, Transactions::TxRef* pTxRef, StrVal* pRowStr)
+void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRowStr)
 {
   _poolAddress_(this);
 

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Threads.h"
+#include "Structures.h"
 
 #include "Tx.hpp"
 #include "TxCollection.hpp"

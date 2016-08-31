@@ -6,11 +6,6 @@
 
 #include "DBobjects.h"
 
-namespace Transactions
-{
-  class TxRef;
-}
-
 namespace DBobjects
 {
   
@@ -21,7 +16,7 @@ namespace DBobjects
     File   m_xFile;    // from which file
     char*  m_pRecord;  // record from file
     i8     m_iLength;  // length of record
-    Transactions::TxRef* m_pTxRef;   // tx
+    TxRef* m_pTxRef;   // tx
     
     ScanBuffer* m_pScanBuffer; // scanning buffer
     
@@ -39,7 +34,7 @@ namespace DBobjects
     void   vTable(Table* pTable);
     
     void   vPath(s& sPath);
-    void   vTxRef(Transactions::TxRef* pTxRef);
+    void   vTxRef(TxRef* pTxRef);
     
     bool   bOpenFile(void);
     void   vBegin(void);
