@@ -10,6 +10,7 @@
 extern "C" eIE RapidsSE_ExecuteCommand(SEitf* pSEitf, char* pWords[], char** ppResponse);
 extern "C" eIE RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog);
 extern "C" eIE RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog,  char* pSchema, char* pTable, void** ppColumns);
+extern "C" eIE RapidsSE_GetErrorCode(SEitf* pSEitf, i8* pError);
 extern "C" eIE RapidsSE_GetLastError(SEitf* pSEitf, void** ppError);
 extern "C" eIE RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow);
 extern "C" eIE RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions);

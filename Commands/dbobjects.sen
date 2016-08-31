@@ -4,6 +4,7 @@
 
 "dbObjects.sen" .
 
+"errorCodes.sen" >>:
 "tenant.sen" >>:
 "user.sen" >>:
 "catalog.sen" >>:

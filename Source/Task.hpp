@@ -599,7 +599,6 @@ namespace Tasks
     static void vClip(NNP_Task nnpTask);
     
     // table
-    static void vTableCopy(NNP_Task nnpTask);
     static void vTableDic(NNP_Task nnpTask);
     static void vTableDrop(NNP_Task nnpTask);
     static void vTableDump(NNP_Task nnpTask);

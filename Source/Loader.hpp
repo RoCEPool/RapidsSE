@@ -8,7 +8,6 @@
 
 namespace DBobjects
 {
-  
   class Loader : public Object
   {
   private:

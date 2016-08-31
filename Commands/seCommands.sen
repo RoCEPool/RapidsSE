@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* seitfCommands.sen -- the set of commands from seitf                        */
+/* seCommands.sen -- the set of commands from se>                             */
 /*============================================================================*/
 
-"seitfCommands.sen" .
+"seCommands.sen" .
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

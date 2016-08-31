@@ -28,12 +28,14 @@ eIE RapidsSE_ExecuteCommand(SEitf* pSEitf, char* pWords[], char** ppResponse)
   
   // get response from se
   eResult = eGetResponse(pSEitf);
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
   
   // put response into caller
   *ppResponse = pSEitf->m_sResponse.a();
+  
+  // test for error
+  if (IE_NONE != eResult) {
+    return eResult;
+  }
   
   // return result code
   return eResult;
@@ -224,6 +226,19 @@ eIE RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   *ppColumns = pSEitf->m_sResponse.a();
   
   return eResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get error code                                                             */
+/*----------------------------------------------------------------------------*/
+eIE RapidsSE_GetErrorCode(SEitf* pSEitf, i8* pError)
+{
+  vTrace("RapidsSE_GetErrorCode\n");
+  
+  *pError = pSEitf->m_iErrorCode;
+  
+  vTrace("Error : %lld\n", *pError);
+  return IE_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -757,10 +772,10 @@ eIE eExecuteCommand(SEitf* pSEitf, char* pWords[])
 eIE eGetResponse(SEitf* pSEitf)
 {
   // get response
-  i8 iResponse = pSEitf->iGetResponse();
+  i8 iError = pSEitf->iGetResponse();
 //  vTrace("rsp : %lld\n", iResponse);
   
-  if (iResponse) {
+  if (iError) {
     pSEitf->vSetLastError(IE_COMMAND_FAILED);
     return IE_COMMAND_FAILED;
   }

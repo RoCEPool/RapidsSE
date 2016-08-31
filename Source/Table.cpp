@@ -92,30 +92,6 @@ i8 Table::iRowBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* copy given table into this one                                             */
-/*----------------------------------------------------------------------------*/
-void Table::vCopy(Table *pFromTable)
-{
-  _poolAddress_(this);
-  
-  Row* pRow;
-  
-  RowCursor* pRowCursor = new RowCursor;
-  
-  pRowCursor->vTable(pFromTable);
-  
-  pRowCursor->vBegin(0);
-  pRowCursor->vFirst();
-  while ( (pRow = pRowCursor->pRow()) ) {
-    //vTrace("Copying %s\n",((StrVal*)pRow)->sStr());
-    vInsertRow(0,nullptr,(StrVal*)pRow->pData());
-    pRowCursor->vNext();
-  }
-  
-  delete pRowCursor;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get dictionary                                                             */
 /*----------------------------------------------------------------------------*/
 Dictionary* Table::pDic(void)

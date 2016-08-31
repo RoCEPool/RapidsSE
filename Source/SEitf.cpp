@@ -980,11 +980,10 @@ void SEitf::vAppendRequest(s& sRequest)
 /*----------------------------------------------------------------------------*/
 i8 SEitf::iGetResponse(void)
 {
-  i8 iStatus;
-  while (! bPopResponse(iStatus, m_sResponse))
+  while (! bPopResponse(m_iErrorCode, m_sResponse))
     ;
   
-  return iStatus;
+  return m_iErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/

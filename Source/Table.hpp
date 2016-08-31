@@ -27,8 +27,7 @@ namespace DBobjects
     eTT m_eTableType;
     
     Dictionary m_xDictionary;
-    
-    Ring m_xRing;
+    Ring       m_xRing;
     Partitions m_xPartitions;
         
   public:
@@ -42,7 +41,6 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void vCopy(Table* pTable);
     Dictionary* pDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRow);
     i8   iRowBuffers(void);

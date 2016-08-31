@@ -757,7 +757,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("clip",   &vClip,      false);
   vAddPrimitive("toDigitName",&vToDigitName, false);
   
-  vAddPrimitive("table.copy",        &vTableCopy,        false);
   vAddPrimitive("table.dic",         &vTableDic,         false);
   vAddPrimitive("table.drop",        &vTableDrop,        false);
   vAddPrimitive("table.init",        &vTableInit,        false);
@@ -7595,30 +7594,6 @@ void Task::vToDigitName(NNP_Task nnpTask)
 // table: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* table.copy -- copy from table to table on param stack                      */
-/*----------------------------------------------------------------------------*/
-void Task::vTableCopy(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableCopy");
-  
-  PtrVal xPtrFromTable;
-  if ( ! nnpTask->bPopParam(xPtrFromTable) )
-    THROW_INVALID_PARAM("table.copy");
-  
-  PtrVal xPtrToTable;
-  if ( ! nnpTask->bPopParam(xPtrToTable) )
-    THROW_INVALID_PARAM("table.copy");
-  
-  Table* pFromTable = reinterpret_cast<Table*>(xPtrFromTable.pPtr());
-  ASSERT(CN_TABLE == pFromTable->eClass());
-  
-  Table* pToTable = reinterpret_cast<Table*>(xPtrToTable.pPtr());
-  ASSERT(CN_TABLE == pToTable->eClass());
-  
-  pToTable->vCopy(pFromTable);
-}
-
-/*----------------------------------------------------------------------------*/
 /* table.dic -- get table dictionary                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vTableDic(NNP_Task nnpTask)
@@ -7707,7 +7682,7 @@ void Task::vTableInsert(NNP_Task nnpTask)
   TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
   ASSERT(CN_TXREF == pTxRef->eClass());
   
-  pTable->vInsertRow(0,pTxRef,xRow.pAsStrVal());
+  pTable->vInsertRow(0,pTxRef,xRow.pAsStrVal());       // MISSING PARTN NUMBER??
 }
 
 /*----------------------------------------------------------------------------*/

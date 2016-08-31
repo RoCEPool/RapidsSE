@@ -84,7 +84,9 @@ void SePrompt::vExecute(void)
       vTrace("%s\n",aResponse);
   }
   else {
-    vTrace("Error %lld : %s\n",eResult,aResponse);
+    i8 iError = 0;
+    RapidsSE_GetErrorCode(m_pSEitf,&iError);
+    vTrace("Error %lld : %s\n",iError,aResponse);
   }
 }
 
