@@ -4,6 +4,8 @@
 
 #include "DBobjects.h"
 
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
@@ -193,7 +195,7 @@ bool RowBuffer::bHasSpace(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(StrVal* pRowStr)
+bool RowBuffer::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
@@ -202,6 +204,12 @@ bool RowBuffer::bInsertRow(StrVal* pRowStr)
   Row* pRow = pAllocRow(iDataBytes);
   if (!pRow)
     return false;
+  
+  i8 iTxId = pTxRef->iTxId();
+  
+//  vTrace("TxId %lld\n",iTxId);
+  
+  pRow->vTxId(iTxId);
   
   Memory::vCopy(pRow->pData(),pRowStr,iDataBytes);
   

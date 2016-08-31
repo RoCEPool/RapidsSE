@@ -70,7 +70,7 @@ Table* Loader::pTable(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get table                                                                  */
+/* set table                                                                  */
 /*----------------------------------------------------------------------------*/
 void Loader::vTable(Table* pTable)
 {
@@ -85,6 +85,17 @@ void Loader::vPath(s& sPath)
   const char* pPath = sPath.a();
   
   m_xFile.vPath(pPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set txref                                                                  */
+/*----------------------------------------------------------------------------*/
+void Loader::vTxRef(TxRef* pTxRef)
+{
+  m_pTxRef = pTxRef;
+  
+  vTrace("TxId %lld\n",pTxRef->iTxId());
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -164,7 +175,7 @@ bool Loader::bInsertRow(i8 iPartn)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  m_pTable->vInsertRow(iPartn,pStrVal);
+  m_pTable->vInsertRow(iPartn,m_pTxRef,pStrVal);
   
   return true;
 }

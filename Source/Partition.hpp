@@ -6,6 +6,11 @@
 
 #include "DBobjects.h"
 
+namespace Transactions
+{
+  class TxRef;
+}
+
 namespace DBobjects
 {
   class Partition : public Object
@@ -28,7 +33,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
-    bool bInsertRow(StrVal* pRowStr);
+    bool bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr);
     
     RowStrand* pHeadStrand(void);
     RowStrand* pTailStrand(void);

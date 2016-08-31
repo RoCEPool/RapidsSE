@@ -59,7 +59,7 @@
     r0 loader.path!
     r0 loader.openFile not if "file not opened" . rdrop false exit then
 
-    beginTransaction
+    beginTransaction r0 loader.txref!
 
     r0 loader.begin
     begin
@@ -75,9 +75,9 @@
     r0 loader.closeFile
     rdrop
 
+    "__table_loader" find >forget
     true
 
-    "__table_loader" find >forget
 
 //traceoff
 ;

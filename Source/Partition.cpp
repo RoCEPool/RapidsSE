@@ -69,7 +69,7 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool Partition::bInsertRow(StrVal* pRowStr)
+bool Partition::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
 {
   _poolAddress_(this);
   
@@ -82,7 +82,7 @@ bool Partition::bInsertRow(StrVal* pRowStr)
     }
   }
   
-  bool bInserted = m_pTailStrand->bInsertRow(pRowStr);
+  bool bInserted = m_pTailStrand->bInsertRow(pTxRef,pRowStr);
   if (bInserted) {
     m_zLock.vDropWrite();
     return true;
@@ -93,7 +93,7 @@ bool Partition::bInsertRow(StrVal* pRowStr)
     return false;
   }
   
-  bInserted = m_pTailStrand->bInsertRow(pRowStr);
+  bInserted = m_pTailStrand->bInsertRow(pTxRef,pRowStr);
   ASSERT(bInserted);
   
   m_zLock.vDropWrite();

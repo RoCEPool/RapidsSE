@@ -48,7 +48,7 @@ RowStrand::~RowStrand(void)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bInsertRow(StrVal* pRowStr)
+bool RowStrand::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
 {
   _poolAddress_(this);
   
@@ -61,7 +61,7 @@ bool RowStrand::bInsertRow(StrVal* pRowStr)
     }
   }
 
-  bool bInserted = m_pLastBuffer->bInsertRow(pRowStr);
+  bool bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRowStr);
   
   if (bInserted) {
     m_zLock.vDropWrite();
@@ -73,7 +73,7 @@ bool RowStrand::bInsertRow(StrVal* pRowStr)
     return false;
   }
   
-  bInserted = m_pLastBuffer->bInsertRow(pRowStr);
+  bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRowStr);
   ASSERT(bInserted);
   
   m_zLock.vDropWrite();

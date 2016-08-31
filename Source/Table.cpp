@@ -108,7 +108,7 @@ void Table::vCopy(Table *pFromTable)
   pRowCursor->vFirst();
   while ( (pRow = pRowCursor->pRow()) ) {
     //vTrace("Copying %s\n",((StrVal*)pRow)->sStr());
-    vInsertRow(0,(StrVal*)pRow->pData());
+    vInsertRow(0,nullptr,(StrVal*)pRow->pData());
     pRowCursor->vNext();
   }
   
@@ -176,13 +176,13 @@ void Table::vExport(File* pFile)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iPartition, StrVal* pRowStr)
+void Table::vInsertRow(i8 iPartition, Transactions::TxRef* pTxRef, StrVal* pRowStr)
 {
   _poolAddress_(this);
 
   Partition* pPartn = pPartition(iPartition);
   
-  bool bInserted = pPartn->bInsertRow(pRowStr);
+  bool bInserted = pPartn->bInsertRow(pTxRef,pRowStr);
   
   ASSERT(bInserted);
 }
@@ -211,7 +211,7 @@ void Table::vLoad2(File* pFile)
       return;
     }
     
-    vInsertRow(0,xBuffer.pAsStrVal());
+    vInsertRow(0,nullptr,xBuffer.pAsStrVal());
   }
 }
 
@@ -276,7 +276,7 @@ void Table::vLoad(File* pFile)
         *z = '\0';
         xRow.pAsStrVal()->vSize();
         //vTrace("Row: %s\n",xRow.sStr());
-        vInsertRow(0,xRow.pAsStrVal());
+        vInsertRow(0,nullptr,xRow.pAsStrVal());
         
         // continue with next line/row
         pNext = ++pScan;

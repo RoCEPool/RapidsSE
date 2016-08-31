@@ -19,6 +19,8 @@ namespace Transactions
     
     TxRef(void);
     ~TxRef(void);
+    
+    i8   iTxId(void);
   
     bool bBeginTx(void);
     bool bCommitTx(void);

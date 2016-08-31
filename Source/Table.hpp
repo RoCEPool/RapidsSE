@@ -6,6 +6,11 @@
 
 #include "DBobjects.h"
 
+namespace Transactions
+{
+  class TxRef;
+}
+
 namespace DBobjects
 {  
   enum eTT // Table Type
@@ -45,7 +50,7 @@ namespace DBobjects
     void vCopy(Table* pTable);
     Dictionary* pDic(void);
     void vExport(File* pFile);
-    void vInsertRow(i8 iPartition, StrVal* pRow);
+    void vInsertRow(i8 iPartition, Transactions::TxRef* pTxRef, StrVal* pRow);
     void vLoad(File* pFile);
     void vLoad2(File* pFile);
     i8   iRowBuffers(void);

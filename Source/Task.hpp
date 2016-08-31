@@ -486,6 +486,7 @@ namespace Tasks
     static void vLoaderInit(NNP_Task nnpTask);
     static void vLoaderTableStore(NNP_Task nnpTask);
     static void vLoaderPathStore(NNP_Task nnpTask);
+    static void vLoaderTxRefStore(NNP_Task nnpTask);
     static void vLoaderOpenFile(NNP_Task nnpTask);
     static void vLoaderBegin(NNP_Task nnpTask);
     static void vLoaderFetchRecord(NNP_Task nnpTask);

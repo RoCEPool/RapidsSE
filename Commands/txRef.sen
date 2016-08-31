@@ -30,9 +30,10 @@
   execute
 ;
 
-: beginTransaction
+: beginTransaction  ( -- txref )
   ::txRef
   txRef.begin drop
+  ::txref
 ;
 
 : commitTransaction

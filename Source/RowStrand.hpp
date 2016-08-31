@@ -6,6 +6,11 @@
 
 #include "DBobjects.h"
 
+namespace Transactions
+{
+  class TxRef;
+}
+
 namespace DBobjects
 {
   class RowStrand : public Object
@@ -32,7 +37,7 @@ namespace DBobjects
     RowStrand(void);
     ~RowStrand(void);
     
-    bool bInsertRow(StrVal* pRow);
+    bool bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRow);
     i8   iRowBuffers(void);
     
     RowBuffer* pFirstBuffer(void);
