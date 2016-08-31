@@ -412,6 +412,14 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("CPU_COUNT",                System::iCpuCount());
   /*  0 */ vAddConstant("PHYSICAL_MEMORY",          System::iPhysicalMemory());
   
+  /*  1 */ vAddConstant("FILE_FIFO",                DT_FIFO);
+  /*  2 */ vAddConstant("FILE_CHR",                 DT_CHR);
+  /*  3 */ vAddConstant("FILE_DIR",                 DT_DIR);
+  /*  6 */ vAddConstant("FILE_BLK",                 DT_BLK);
+  /*  8 */ vAddConstant("FILE_REG",                 DT_REG);
+  /* 10 */ vAddConstant("FILE_LNK",                 DT_LNK);
+  /* 12 */ vAddConstant("FILE_SOCK",                DT_SOCK);
+
   vAddConstant("listerTaskPrint",false);
   vAddConstant("monitorTaskPrint",false);
   vAddConstant("reclaimTaskPrint",false);
