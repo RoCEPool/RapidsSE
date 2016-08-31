@@ -36,8 +36,8 @@
 #include "Dir.hpp"
 #include "Env.hpp"
 #include "Shm.hpp"
-#include "process.hpp"
-#include "prompt.hpp"
+#include "Process.hpp"
+#include "Prompt.hpp"
 
 #include "Timer.hpp"
 #include "Since.hpp"
