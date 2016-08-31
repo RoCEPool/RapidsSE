@@ -24,6 +24,8 @@ namespace DBobjects
     RowBuffer(void);
     ~RowBuffer(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     Row*       pAllocRow(i8 iDataBytes);
     
     Row*       pFirstRow(void);

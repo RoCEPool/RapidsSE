@@ -81,6 +81,23 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump rowbuffer                                                             */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_ROWBUFFER);
+  ASSERT(pObject->eClass() == CN_ROWBUFFER);
+  
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
+  
+  vTrace("%sRowBuffer %p:\n", pTab, pRowBuffer);
+  vTrace("%s  hasSpace: %s \n", pTab, pRowBuffer->m_bHasSpace ? "true" : "false");
+  vTrace("%s  freeSpace %p\n", pTab, pRowBuffer->m_pFreeSpace);
+  vTrace("%s  prevBuffer %p\n", pTab, pRowBuffer->m_pPrevBuffer);
+  vTrace("%s  nextBuffer %p\n\n", pTab, pRowBuffer->m_pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* first row                                                                  */
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pFirstRow(void)
