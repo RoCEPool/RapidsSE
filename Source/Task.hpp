@@ -603,7 +603,6 @@ namespace Tasks
     static void vTableDic(NNP_Task nnpTask);
     static void vTableDrop(NNP_Task nnpTask);
     static void vTableDump(NNP_Task nnpTask);
-    static void vTableExport(NNP_Task nnpTask);
     static void vTableFirstBuffer(NNP_Task nnpTask);
     static void vTableInit(NNP_Task nnpTask);
     static void vTableInsert(NNP_Task nnpTask);

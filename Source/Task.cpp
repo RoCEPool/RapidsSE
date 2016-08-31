@@ -760,7 +760,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.copy",        &vTableCopy,        false);
   vAddPrimitive("table.dic",         &vTableDic,         false);
   vAddPrimitive("table.drop",        &vTableDrop,        false);
-  vAddPrimitive("table.export",      &vTableExport,      false);
   vAddPrimitive("table.init",        &vTableInit,        false);
   vAddPrimitive("table.insert",      &vTableInsert,      false);
   vAddPrimitive("table.space",       &vTableSpace,       false);
@@ -7670,28 +7669,6 @@ void Task::vTableDump(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vDump();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.export -- export table into file                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTableExport(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vTableExport");
-  
-  PtrVal xPtrTable;
-  PtrVal xPtrFile;
-  
-  if ( ! nnpTask->bPopParam(xPtrTable,xPtrFile) )
-    THROW_INVALID_PARAM("table.export");
-  
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
-  ASSERT(CN_FILE == pFile->eClass());
-  
-  pTable->vExport(pFile);
 }
 
 /*----------------------------------------------------------------------------*/

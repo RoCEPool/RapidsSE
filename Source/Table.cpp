@@ -150,30 +150,6 @@ void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* export table into file                                                     */
-/*----------------------------------------------------------------------------*/
-void Table::vExport(File* pFile)
-{
-  _poolAddress_(this);
-  
-  Row* pRow;
-  
-  RowCursor* pRowCursor = new RowCursor;
-  
-  pRowCursor->vTable(this);
-  
-  pRowCursor->vBegin(0);
-  pRowCursor->vFirst();
-  while ( (pRow = pRowCursor->pRow()) ) {
-    //vTrace("Exporting %s\n",((StrVal*)pRow)->sStr());
-    pFile->vPrint("%s\n",((StrVal*)pRow->pData())->sStr());
-    pRowCursor->vNext();
-  }
-  
-  delete pRowCursor;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
 void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRowStr)

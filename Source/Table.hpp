@@ -44,7 +44,6 @@ namespace DBobjects
     
     void vCopy(Table* pTable);
     Dictionary* pDic(void);
-    void vExport(File* pFile);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRow);
     i8   iRowBuffers(void);
     void vTruncate(void);
