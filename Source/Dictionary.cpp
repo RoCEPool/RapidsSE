@@ -4,6 +4,7 @@
 
 #include "Dictionaries.h"
 
+extern Heap*       gpMediumHeap;
 extern Heap*       gpSmallHeap;
 extern BufferPool* gpBufferPool;
 
@@ -103,7 +104,7 @@ Word* Dictionary::pAllocWord(i8 iBytes)
   
   ASSERT(iBytes >= (i8)sizeof(Word));
   
-  Word* pWord = reinterpret_cast<Word*>(gpSmallHeap->pAllocObject());
+  Word* pWord = reinterpret_cast<Word*>(gpMediumHeap->pAllocObject());
   
   pWord->vPrevWord(m_pCurrentWord);
   

@@ -67,6 +67,11 @@ void SePrompt::vExecute(void)
   Timer xTimer;
   char* aResponse = nullptr;
   
+// ALKA ECHO
+//  for (i8 i = 0; i < 16 && *m_pWords[i]; i++)
+//    vTrace("%s ",m_pWords[i]);
+//  vTrace("\n");
+
   xTimer.vStart();
 
   eIE eResult = RapidsSE_ExecuteCommand(m_pSEitf,m_pWords,&aResponse);

@@ -43,10 +43,10 @@
 
 : checkIsDic ( word )
 
-    dup not if drop "no such dictionary" 1 failure 0 exit then
-    dup word.kind@ ' dic eql if 1 exit then
+    dup not if drop EC_NO_SUCH_DICTIONARY false exit then
+    dup word.kind@ ' dic eql if true exit then
     drop
-    "not a dictionary" 1 failure 0
+    EC_NOT_A_DICTIONARY false
 ;
 
 

@@ -51,25 +51,25 @@
 ;
 
 : checkInTables
-    withinTables if 1 exit then
-    EM_NOT_IN_TABLES EC_NOT_IN_TABLES failure 0
+    withinTables if true exit then
+    EC_NOT_IN_TABLES false
 ;
 
 : checkIsTable ( word )
 
-  dup not if drop EM_NO_SUCH_TABLE EC_NO_SUCH_TABLE failure 0 exit then
+  dup not if drop EC_NO_SUCH_TABLE false exit then
 
-  dup word.kind@ ' table eql if 1 exit then
+  dup word.kind@ ' table eql if true exit then
   drop
-  EM_NOT_A_TABLE EC_NOT_A_TABLE failure 0
+  EC_NOT_A_TABLE false
 ;
 
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
-    find checkIsKnown
+    find checkIsWord
 
-    not if EM_NO_SUCH_TABLE EC_NO_SUCH_TABLE failure 0 exit then
+    not if EC_NO_SUCH_TABLE false exit then
 
     execute table.dic dic.push
 

@@ -2,7 +2,7 @@
 /* errorCodes.sen -- error codes for se                                       */
 /*============================================================================*/
 
-"seErrorCodes.sen" .
+"errorCodes.sen" .
 
   0  constant  EC_SUCCESS
 
@@ -15,49 +15,69 @@
  12  constant  EC_NO_SUCH_CATALOG
  13  constant  EC_NO_SUCH_SCHEMA
  14  constant  EC_NO_SUCH_TABLE
+ 15 constant   EC_NO_SUCH_DICTIONARY
 
  21  constant  EC_NOT_A_TENANT
  22  constant  EC_NOT_A_CATALOG
  23  constant  EC_NOT_A_SCHEMA
  24  constant  EC_NOT_A_TABLE
+ 25  constant  EC_NOT_A_DICTIONARY
 
-"success"          constant  EM_SUCCESS
+999  constant  EC_NO_SUCH_WORD
+998  constant  EC_NO_COLUMNS_DIC
+997  constant  EC_NOT_IN_COLUMNS
 
-"not in tenants"   constant  EM_NOT_IN_TENANTS
-"not in catalogs"  constant  EM_NOT_IN_CATALOGS
-"not in schemas"   constant  EM_NOT_IN_SCHEMAS
-"not in tables"    constant  EM_NOT_IN_TABLES
+"success"            constant  EM_SUCCESS
 
-"no such tenant"   constant  EM_NO_SUCH_TENANT
-"no such catalog"  constant  EM_NO_SUCH_CATALOG
-"no such schema"   constant  EM_NO_SUCH_SCHEMA
-"no such table"    constant  EM_NO_SUCH_TABLE
+"not in tenants"     constant  EM_NOT_IN_TENANTS
+"not in catalogs"    constant  EM_NOT_IN_CATALOGS
+"not in schemas"     constant  EM_NOT_IN_SCHEMAS
+"not in tables"      constant  EM_NOT_IN_TABLES
 
-"not a tenant"     constant  EM_NOT_A_TENANT
-"not a catalog"    constant  EM_NOT_A_CATALOG
-"not a schema"     constant  EM_NOT_A_SCHEMA
-"not a table"      constant  EM_NOT_A_TABLE
+"no such tenant"     constant  EM_NO_SUCH_TENANT
+"no such catalog"    constant  EM_NO_SUCH_CATALOG
+"no such schema"     constant  EM_NO_SUCH_SCHEMA
+"no such table"      constant  EM_NO_SUCH_TABLE
+"no such dictionary" constant  EM_NO_SUCH_DICTIONARY
+
+"not a tenant"       constant  EM_NOT_A_TENANT
+"not a catalog"      constant  EM_NOT_A_CATALOG
+"not a schema"       constant  EM_NOT_A_SCHEMA
+"not a table"        constant  EM_NOT_A_TABLE
+"not a dictionary"   constant  EM_NOT_A_DICTIONARY
+
+"no such word"       constant  EM_NO_SUCH_WORD
+"no columns dic"     constant  EM_NO_COLUMNS_DIC
+"not in tables"      constant  EM_NOT_IN_COLUMNS
 
 /*----------------------------------------------------------------------------*/
 /* convert EC error code to EM error message                                  */
 /*----------------------------------------------------------------------------*/
+
 : toEM
 
   dup EC_SUCCESS == if drop EM_NOT_IN_TENANTS exit then
 
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_IN_TENANTS     == if drop EM_NOT_IN_TENANTS     exit then
+  dup EC_NOT_IN_CATALOGS    == if drop EM_NOT_IN_CATALOGS    exit then
+  dup EC_NOT_IN_SCHEMAS     == if drop EM_NOT_IN_SCHEMAS     exit then
+  dup EC_NOT_IN_TABLES      == if drop EM_NOT_IN_TABLES      exit then
 
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NO_SUCH_TENANT     == if drop EM_NO_SUCH_TENANT     exit then
+  dup EC_NO_SUCH_CATALOG    == if drop EM_NO_SUCH_CATALOG    exit then
+  dup EC_NO_SUCH_SCHEMA     == if drop EM_NO_SUCH_SCHEMA     exit then
+  dup EC_NO_SUCH_TABLE      == if drop EM_NO_SUCH_TABLE      exit then
 
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
-  dup EC_NOT_IN_TENANTS == if drop EM_NOT_IN_TENANTS exit then
+  dup EC_NOT_A_TENANT       == if drop EM_NOT_A_TENANT       exit then
+  dup EC_NOT_A_CATALOG      == if drop EM_NOT_A_CATALOG      exit then
+  dup EC_NOT_A_SCHEMA       == if drop EM_NOT_A_SCHEMA       exit then
+  dup EC_NOT_A_TABLE        == if drop EM_NOT_A_TABLE        exit then
+
+  dup EC_NO_SUCH_WORD       == if drop EM_NO_SUCH_WORD       exit then
+  dup EC_NO_COLUMNS_DIC     == if drop EM_NO_COLUMNS_DIC     exit then
+  dup EC_NOT_IN_COLUMNS     == if drop EM_NOT_IN_COLUMNS     exit then
+  dup EC_NO_SUCH_DICTIONARY == if drop EM_NO_SUCH_DICTIONARY exit then
+  dup EC_NOT_A_DICTIONARY   == if drop EM_NOT_A_DICTIONARY   exit then
 
   "unknown error code " swap concat
 ;

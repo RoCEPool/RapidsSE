@@ -18,16 +18,16 @@
 
 : checkInCatalogs
     withinCatalogs if true exit then
-    EM_NOT_IN_CATALOGS EC_NOT_IN_CATALOGS failure false
+    EC_NOT_IN_CATALOGS false
 ;
 
 : checkIsCatalog ( word )
 
-    dup not if drop EM_NO_SUCH_CATALOG EC_NO_SUCH_CATALOG failure false exit then
+    dup not if drop EC_NO_SUCH_CATALOG false exit then
 
     dup word.kind@ ' catalog eql if true exit then
     drop
-    EM_NOT_A_CATALOG EC_NOT_A_CATALOG failure false
+    EC_NOT_A_CATALOG false
 ;
 
 /*============================================================================*/

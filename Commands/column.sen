@@ -15,15 +15,15 @@
 ;
 
 : checkInColumns
-    withinColumns if 1 exit then
-    "not in columns" 1 failure 0
+    withinColumns if true exit then
+    EC_NOT_IN_COLUMNS false
 ;
 
 : pushColumns ( -- )
 
-    "columns" find checkIsKnown
+    "columns" find checkIsWord
 
-    not if "no columns dic" 1 failure 0 exit then
+    not if EC_NO_COLUMNS_DIC false exit then
 
     execute dic.push
 

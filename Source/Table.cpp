@@ -79,6 +79,7 @@ Table::~Table(void)
 i8 Table::iRowBuffers(void)
 {
   _poolAddress_(this);
+  _class_(CN_TABLE);
   
   i8 iBuffers = 0;
 

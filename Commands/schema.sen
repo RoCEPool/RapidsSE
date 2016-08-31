@@ -18,16 +18,16 @@
 
 : checkInSchemas
     withinSchemas if true exit then
-    EM_NOT_IN_SCHEMAS EC_NOT_IN_SCHEMAS failure false
+    EC_NOT_IN_SCHEMAS false
 ;
 
 : checkIsSchema ( word )
 
-    dup not if drop EM_NO_SUCH_SCHEMA EC_NO_SUCH_SCHEMA failure false exit then
+    dup not if drop EC_NO_SUCH_SCHEMA false exit then
 
     dup word.kind@ ' schema eql if true exit then
     drop
-    EM_NOT_A_SCHEMA EC_NOT_A_SCHEMA failure false
+    EC_NOT_A_SCHEMA false
 ;
 
 /*============================================================================*/

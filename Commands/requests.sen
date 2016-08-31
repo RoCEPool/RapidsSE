@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* requests.sen -- the set of requests from se>                               */
+/* requests.sen -- the set of requests supported by requestTask               */
 /*============================================================================*/
 
 "requests.sen" .
@@ -61,6 +61,16 @@ Misc Requests:
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+: <ERROR> dup toEM swap 2 ;
+
+: <SUCCESS> 0 2 ;
+
+: <OK> "<ok>" 0 2 ;
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -70,14 +80,16 @@ Misc Requests:
 /* connect to SE                                                              */
 /*----------------------------------------------------------------------------*/
 : connect
-    "connected" success
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* disconnect from SE                                                         */
 /*----------------------------------------------------------------------------*/
 : disconnect
-    "disconnected" success
+
+    <SUCCESS>
 ;
 
 
@@ -88,41 +100,41 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-: create_tenant
+: create_tenant ( "<tenantNm>" -- <R> )
 
-    checkInTenants not if exit then
+    checkInTenants not if <ERROR> exit then
 
     :tenant execute makeCatalogs
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get list of tenants                                                        */
 /*----------------------------------------------------------------------------*/
-: list_tenants
+: list_tenants ( -- <R> )
 
-    checkInTenants not if exit then
+    checkInTenants not if <ERROR> exit then
 
-    contents_string             // get contents of dic as a string
+    contents_string
 
-    success
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-: drop_tenant ( "<tenantname>" -- "dropped tenant" 1 2 )
+: drop_tenant ( "<tenantNm>" -- <R> )
 
-  checkInTenants not if exit then
+    checkInTenants not if <ERROR> exit then
 
-  find
+    find
 
-  checkIsTenant not if exit then
+    checkIsTenant not if <ERROR> exit then
 
-  >forget
+    >forget
 
-  "<ok>" success
+    <OK>
 ;
 
 
@@ -133,41 +145,41 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-: create_catalog
+: create_catalog ( "<catalogNm>" -- <R> )
 
-    checkInCatalogs not if exit then
+    checkInCatalogs not if <ERROR> exit then
 
     :catalog execute makeSchemas
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get list of catalogs                                                       */
 /*----------------------------------------------------------------------------*/
-: list_catalogs
+: list_catalogs ( -- <R> )
 
-    checkInCatalogs not if exit then
+    checkInCatalogs not if <ERROR> exit then
 
-    contents_string             // get contents of dic as a string
+    contents_string
 
-    success
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-: drop_catalog ( "<catalogname>" -- "dropped catalog" 1 2 )
+: drop_catalog ( "<catalogNm>" -- <R> )
 
-    checkInCatalogs not if exit then
+    checkInCatalogs not if <ERROR> exit then
 
     find
 
-    checkIsCatalog not if exit then
+    checkIsCatalog not if <ERROR> exit then
 
     >forget
 
-    "<ok>" success
+    <SUCCESS>
 ;
 
 
@@ -178,41 +190,41 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-: create_schema
+: create_schema ( "<schemaNm>" -- <R> )
 
-    checkInSchemas not if exit then
+    checkInSchemas not if <ERROR> exit then
 
     :schema execute makeTables
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get list of schemas                                                        */
 /*----------------------------------------------------------------------------*/
-: list_schemas
+: list_schemas ( -- <R> )
 
-    checkInSchemas not if exit then
+    checkInSchemas not if <ERROR> exit then
 
-    contents_string             // get contents of dic as a string
+    contents_string
 
-    success
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-: drop_schema ( "<schemaname>" -- "dropped schema" 1 2 )
+: drop_schema ( "<schemaNm>" -- <R> )
 
-    checkInSchemas not if exit then
+    checkInSchemas not if <ERROR> exit then
 
     find
 
-    checkIsSchema not if exit then
+    checkIsSchema not if <ERROR> exit then
 
     >forget
 
-    "<ok>" success
+    <OK>
 ;
 
 
@@ -223,38 +235,39 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-: create_table
+: create_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     :table execute makeColumns
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get list of tables                                                         */
 /*----------------------------------------------------------------------------*/
-: list_tables
+: list_tables ( -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
-    contents_string             // get contents of dic as a string
-    success
+    contents_string
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-: load_table ( "filename" "tablename" )
+: load_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     //freespace .
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     execute ( "filename" table )
 
@@ -262,37 +275,37 @@ Misc Requests:
 
     //freespace .
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-: export_table ( "filename" "tablename" )
+: export_table ( "<fileNm>" "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     execute ( "filename" table )
 
     tableExporter
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* copy a table. from-table must exist & to-table is created                  */
 /*----------------------------------------------------------------------------*/
-: copy_table ( "<to-tableNm>" "<from-tableNm>" -- "text" n 2 )
+: copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     execute        ( "<to-tableNm>" ^fromTable )
 
@@ -304,57 +317,55 @@ Misc Requests:
 
     tableCopier
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* dump table                                                                 */
 /*----------------------------------------------------------------------------*/
-: dump_table ( "<tableNm>" )
+: dump_table ( "<tableNm>" -- <R> )
 
-  checkInTables not if exit then
+  checkInTables not if <ERROR> exit then
 
   find
 
-  checkIsTable not if exit then
+  checkIsTable not if <ERROR> exit then
 
   execute ( table )
 
   rowDump
 
-  "<ok>" success
-
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
-: size_table ( "tablename" )
+: size_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     execute ( table )
 
-    table.space
-    >str success
+    table.space >str
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get row cursor for table                                                   */
 /*----------------------------------------------------------------------------*/
-: select_table ( "tablename" )
+: select_table ( "<tableNm>" -- <R> )
 
-//traceon
-
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if traceoff exit then
+    checkIsTable not if <ERROR> exit then
 
     queryCount ++
 
@@ -364,61 +375,61 @@ Misc Requests:
 
     >str
 
-    success
-
-//traceoff
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get address of table                                                       */
 /*----------------------------------------------------------------------------*/
-: address_table ( "tablename" )
+: address_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     execute ( table )
 
-    >str success
+    >str
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
-: truncate_table ( "tablename" )
+: truncate_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     execute ( table )
 
     table.truncate
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-: drop_table ( "<tablename>" -- "dropped table" 1 2 )
+: drop_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
     find
 
-    checkIsTable not if exit then
+    checkIsTable not if <ERROR> exit then
 
     dup execute table.truncate
 
     >forget
 
-    "<ok>" success
+    <OK>
 ;
 
 
@@ -429,33 +440,33 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-: add_column ( "<columnType>" "<columnName" "<tableName>" -- <response> )
+: add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
-    pushTable not if exit then
+    pushTable not if <ERROR> exit then
 
-    pushColumns not if exit then
+    pushColumns not if <ERROR> exit then
 
-    addColumn not if exit then
+    addColumn not if <ERROR> exit then
 
     popColumns
 
     popTable
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get list of columns                                                        */
 /*----------------------------------------------------------------------------*/
-: list_columns ( "<tableName>" -- <response> )
+: list_columns ( "<tableNm>" -- <R> )
 
-    checkInTables not if exit then
+    checkInTables not if <ERROR> exit then
 
-    pushTable not if exit then
+    pushTable not if <ERROR> exit then
 
-    pushColumns not if exit then
+    pushColumns not if <ERROR> exit then
 
     listColumns
 
@@ -463,7 +474,7 @@ Misc Requests:
 
     popTable
 
-    success
+    <SUCCESS>
 ;
 
 
@@ -487,17 +498,17 @@ Misc Requests:
         dup "tenants" streql if
           begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
           find
-          checkIsKnown not if exit then
+          checkIsWord not if <ERROR> exit then
           execute dic.push
         else
           find
-          checkIsKnown not if exit then
+          checkIsWord not if <ERROR> exit then
           execute dic.push
         then
       then
     then
 
-    "<ok>" success
+    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -512,7 +523,7 @@ Misc Requests:
       "/" concat
     loop
 
-    success
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -539,13 +550,14 @@ Misc Requests:
       object@ prevWord object!
 
     next
-    success
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* drop a dictionary                                                          */
 /*----------------------------------------------------------------------------*/
-: drop_dictionary ( "<dicname>" -- "dropped dictionary" 1 2 )
+: drop_dictionary ( "<dicNm>" -- <R> )
 
     find
 
@@ -553,7 +565,7 @@ Misc Requests:
 
     >forget
 
-    "<ok>" success
+    <OK>
 ;
 
 
@@ -564,15 +576,21 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
-: get_monitor
-    monitorString@ success
+: get_monitor ( -- <R> )
+
+    monitorString@
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
 /*----------------------------------------------------------------------------*/
-: ping
-    "pong" success
+: ping ( -- <R> )
+
+    "pong"
+
+    <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -580,7 +598,10 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : x
     words
-    "x" success
+
+    "x"
+
+    <SUCCESS>
 ;
 
 /*============================================================================*/

@@ -16,16 +16,16 @@
 
 : checkInTenants
     withinTenants if true exit then
-    EM_NOT_IN_TENANTS EC_NOT_IN_TENANTS failure false
+    EC_NOT_IN_TENANTS false
 ;
 
 : checkIsTenant ( word )
 
-    dup not if drop EM_NO_SUCH_TENANT EC_NO_SUCH_TENANT failure 0 exit then
+    dup not if drop EC_NO_SUCH_TENANT false exit then
 
-    dup word.kind@ ' tenant eql if 1 exit then
+    dup word.kind@ ' tenant eql if true exit then
     drop
-    "not a tenant" 1 failure 0
+    EC_NOT_A_TENANT false
 ;
 
 /*============================================================================*/

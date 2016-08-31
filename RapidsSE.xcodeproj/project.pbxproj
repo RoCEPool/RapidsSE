@@ -385,7 +385,7 @@
 		F246DFFF1D75530B000E54C0 /* jData.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = jData.sen; path = Commands/jData.sen; sourceTree = "<group>"; };
 		F246E0001D75531E000E54C0 /* miscTesting.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = miscTesting.sen; path = Commands/miscTesting.sen; sourceTree = "<group>"; };
 		F246E0011D75533A000E54C0 /* common.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = common.sen; path = Commands/common.sen; sourceTree = "<group>"; };
-		F246E0031D7553A3000E54C0 /* requestSet.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = requestSet.sen; path = Commands/requestSet.sen; sourceTree = "<group>"; };
+		F246E0031D7553A3000E54C0 /* request.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = request.sen; path = Commands/request.sen; sourceTree = "<group>"; };
 		F246E0041D7553CC000E54C0 /* requests.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = requests.sen; path = Commands/requests.sen; sourceTree = "<group>"; };
 		F246E0051D7553EA000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
 		F246E0061D75548A000E54C0 /* compile.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = compile.sen; path = Commands/compile.sen; sourceTree = "<group>"; };
@@ -818,7 +818,7 @@
 			children = (
 				F2389CDD1D47EFB6008DF3D9 /* Compile */,
 				F2D9BF771D5D379300129097 /* Testing */,
-				F2A595E01D726E40007C66B1 /* RequestSet */,
+				F2A595E01D726E40007C66B1 /* Request */,
 				F246DFFE1D7552C9000E54C0 /* Actors */,
 				F246E00B1D755579000E54C0 /* SystemObjects */,
 				F2A595E21D726F1C007C66B1 /* GridModel */,
@@ -895,7 +895,6 @@
 				F226E74D1D44088C00E10FC3 /* column.sen */,
 				F226E7561D440BBF00E10FC3 /* row.sen */,
 				F201DDDF1D6E4D8900A26858 /* rowCursor.sen */,
-				F246E0101D775A35000E54C0 /* errorCodes.sen */,
 			);
 			name = DBobjects;
 			sourceTree = "<group>";
@@ -929,6 +928,7 @@
 			isa = PBXGroup;
 			children = (
 				F226E7481D4312F300E10FC3 /* core.sen */,
+				F246E0101D775A35000E54C0 /* errorCodes.sen */,
 				F226E71D1D40286400E10FC3 /* dic.sen */,
 				F2389D0D1D4AD133008DF3D9 /* useful.sen */,
 				F2F2365C1D4BFCD50028A9C2 /* var.sen */,
@@ -1080,16 +1080,16 @@
 			path = Source;
 			sourceTree = SOURCE_ROOT;
 		};
-		F2A595E01D726E40007C66B1 /* RequestSet */ = {
+		F2A595E01D726E40007C66B1 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				F246E0031D7553A3000E54C0 /* requestSet.sen */,
+				F246E0031D7553A3000E54C0 /* request.sen */,
 				F201DDE11D6E688D00A26858 /* copier.sen */,
 				F201DDE01D6E597F00A26858 /* exporter.sen */,
 				F2DD65871D6A8BE7009B684A /* loader.sen */,
 				F246E0041D7553CC000E54C0 /* requests.sen */,
 			);
-			name = RequestSet;
+			name = Request;
 			sourceTree = "<group>";
 		};
 		F2A595E11D726EED007C66B1 /* Tasks */ = {

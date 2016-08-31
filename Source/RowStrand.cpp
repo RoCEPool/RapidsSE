@@ -36,6 +36,9 @@ RowStrand::RowStrand(void)
   m_iRowBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
+  
+  m_pPrevStrand  = nullptr;
+  m_pNextStrand  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +108,8 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 i8 RowStrand::iRowBuffers(void)
 {
   _poolAddress_(this);
-  
+  _class_(CN_ROWSTRAND);
+
   return m_iRowBuffers;
 }
 
