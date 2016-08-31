@@ -92,7 +92,7 @@ Misc Commands:
 
     checkInTenants not if exit then
 
-    :tenant execute {{ "catalogs" :dic drop }}
+    :tenant execute makeCatalogs
 
     "<ok>" success
 ;
@@ -113,6 +113,8 @@ Misc Commands:
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
 : drop_tenant ( "<tenantname>" -- "dropped tenant" 1 2 )
+
+  checkInTenants not if exit then
 
   find
 
@@ -157,6 +159,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : drop_catalog ( "<catalogname>" -- "dropped catalog" 1 2 )
 
+    checkInCatalogs not if exit then
+
     find
 
     checkIsCatalog not if exit then
@@ -188,6 +192,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : list_schemas
 
+    checkInSchemas not if exit then
+
     contents_string             // get contents of dic as a string
 
     success
@@ -197,6 +203,8 @@ Misc Commands:
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
 : drop_schema ( "<schemaname>" -- "dropped schema" 1 2 )
+
+    checkInSchemas not if exit then
 
     find
 
@@ -240,6 +248,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : load_table ( "filename" "tablename" )
 
+    checkInTables not if exit then
+
     //freespace .
 
     find
@@ -260,6 +270,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : export_table ( "filename" "tablename" )
 
+    checkInTables not if exit then
+
     find
 
     checkIsTable not if exit then
@@ -275,6 +287,8 @@ Misc Commands:
 /* copy a table. from-table must exist & to-table is created                  */
 /*----------------------------------------------------------------------------*/
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- "text" n 2 )
+
+    checkInTables not if exit then
 
     find
 
@@ -298,6 +312,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : dump_table ( "<tableNm>" )
 
+  checkInTables not if exit then
+
   find
 
   checkIsTable not if exit then
@@ -315,6 +331,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : size_table ( "tablename" )
 
+    checkInTables not if exit then
+
     find
 
     checkIsTable not if exit then
@@ -331,6 +349,8 @@ Misc Commands:
 : select_table ( "tablename" )
 
 //traceon
+
+    checkInTables not if exit then
 
     find
 
@@ -354,6 +374,8 @@ Misc Commands:
 /*----------------------------------------------------------------------------*/
 : address_table ( "tablename" )
 
+    checkInTables not if exit then
+
     find
 
     checkIsTable not if exit then
@@ -367,6 +389,8 @@ Misc Commands:
 /* truncate table                                                             */
 /*----------------------------------------------------------------------------*/
 : truncate_table ( "tablename" )
+
+    checkInTables not if exit then
 
     find
 
@@ -383,6 +407,8 @@ Misc Commands:
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : drop_table ( "<tablename>" -- "dropped table" 1 2 )
+
+    checkInTables not if exit then
 
     find
 
@@ -440,10 +466,10 @@ Misc Commands:
     success
 ;
 
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* change dictionary                                                          */
