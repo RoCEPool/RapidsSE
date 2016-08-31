@@ -7696,14 +7696,18 @@ void Task::vTableInsert(NNP_Task nnpTask)
   nnpTask->vPrimitive("vTableInsert");
   
   PtrVal xPtrTable;
+  PtrVal xPtrTxRef;
   ValWsp xRow;
-  if ( ! nnpTask->bPopParam(xPtrTable,xRow) )
+  if ( ! nnpTask->bPopParam(xPtrTable,xPtrTxRef,xRow) )
     THROW_INVALID_PARAM("table.insert");
   
   Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
   ASSERT(CN_TABLE == pTable->eClass());
+
+  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
+  ASSERT(CN_TXREF == pTxRef->eClass());
   
-  pTable->vInsertRow(0,nullptr,xRow.pAsStrVal());
+  pTable->vInsertRow(0,pTxRef,xRow.pAsStrVal());
 }
 
 /*----------------------------------------------------------------------------*/

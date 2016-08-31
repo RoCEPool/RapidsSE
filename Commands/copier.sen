@@ -24,34 +24,39 @@
 
   r2 r0 rowcursor.table!
 
-  beginTransaction
+  beginTransaction >r
+  // r0 ^txRefCursor
+  // r1 ^rowCursor
+  // r2 ^toTable
+  // r3 ^fromTable
 
   partitions 0
   do
-    // r2 ^rowCursor
-    // r3 ^toTable
-    // r4 ^fromTable
+    // r2 ^txRefCursor
+    // r3 ^rowCursor
+    // r4 ^toTable
+    // r5 ^fromTable
 
-    I r2 rowcursor.begin
-    r2 rowcursor.first
+    I r3 rowcursor.begin
+    r3 rowcursor.first
 
     begin
       while
-      //r2 rowcursor.get .
-      r2 rowcursor.get r3 table.insert
-      r2 rowcursor.next
+      r3 rowcursor.get r2 r4 table.insert
+      r3 rowcursor.next
     repeat
 
-    r2 rowcursor.end
+    r3 rowcursor.end
   loop
 
   commitTransaction
 
-  // r0 ^rowCursor
-  // r1 ^toTable
-  // r2 ^fromTable
+  // r0 ^txRefCursor
+  // r1 ^rowCursor
+  // r2 ^toTable
+  // r3 ^fromTable
 
-  rdrop rdrop rdrop
+  rdrop rdrop rdrop rdrop
 
   true
 ;
