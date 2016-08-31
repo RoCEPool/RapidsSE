@@ -393,6 +393,7 @@
 		F246E00A1D755566000E54C0 /* systemObjects.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemObjects.sen; path = Commands/systemObjects.sen; sourceTree = "<group>"; };
 		F246E00D1D75560A000E54C0 /* interface.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = interface.sen; path = Commands/interface.sen; sourceTree = "<group>"; };
 		F246E00E1D75562E000E54C0 /* tasks.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tasks.sen; path = Commands/tasks.sen; sourceTree = "<group>"; };
+		F246E00F1D76519A000E54C0 /* dir.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = dir.sen; path = Commands/dir.sen; sourceTree = "<group>"; };
 		F24D1FB61D639F64005031F5 /* monitorTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = monitorTask.sen; path = Commands/monitorTask.sen; sourceTree = "<group>"; };
 		F24D1FB71D63F17E005031F5 /* reclaimTask.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reclaimTask.sen; path = Commands/reclaimTask.sen; sourceTree = "<group>"; };
 		F24D1FBC1D64009A005031F5 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = Source/Timer.cpp; sourceTree = "<group>"; };
@@ -915,6 +916,7 @@
 			isa = PBXGroup;
 			children = (
 				F246E0011D75533A000E54C0 /* common.sen */,
+				F246E00F1D76519A000E54C0 /* dir.sen */,
 				F226E7241D41918800E10FC3 /* file.sen */,
 				F22056DC1D62F11400E8EF5B /* lock.sen */,
 				F24D1FC01D64109C005031F5 /* timer.sen */,

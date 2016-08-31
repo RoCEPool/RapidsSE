@@ -270,8 +270,7 @@ namespace Tasks
     static void vCompiling(NNP_Task nnpTask);
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
-    static void vCwd(NNP_Task nnpTask);
-    static void vDivide(NNP_Task nnpTask);         
+    static void vDivide(NNP_Task nnpTask);
     static void vDepth(NNP_Task nnpTask);          
     static void vDo(NNP_Task nnpTask);             
     static void vDo_RT(NNP_Task nnpTask);          
@@ -297,8 +296,7 @@ namespace Tasks
     static void vFreeSpace(NNP_Task nnpTask);
     static void vGreater(NNP_Task nnpTask);
     static void vGreaterEqual(NNP_Task nnpTask);   
-    static void vGwd(NNP_Task nnpTask);            
-    static void vHazard(NNP_Task nnpTask);         
+    static void vHazard(NNP_Task nnpTask);
     static void vHash(NNP_Task nnpTask);
     static void vI(NNP_Task nnpTask);
     static void vIf(NNP_Task nnpTask);             
@@ -448,7 +446,25 @@ namespace Tasks
     static void vDirExists(NNP_Task nnpTask);
     static void vDirMake(NNP_Task nnpTask);
     static void vDirRemove(NNP_Task nnpTask);
+    static void vGwd(NNP_Task nnpTask);
+    static void vCwd(NNP_Task nnpTask);
     
+    static void vDirClose(NNP_Task nnpTask);
+    static void vDirDelete(NNP_Task nnpTask);
+    static void vDirEntryName(NNP_Task nnpTask);
+    static void vDirEntryType(NNP_Task nnpTask);
+    static void vDirInit(NNP_Task nnpTask);
+    static void vDirIsClosed(NNP_Task nnpTask);
+    static void vDirIsOpen(NNP_Task nnpTask);
+    static void vDirNew(NNP_Task nnpTask);
+    static void vDirOpen(NNP_Task nnpTask);
+    static void vDirPathGet(NNP_Task nnpTask);
+    static void vDirPathSet(NNP_Task nnpTask);
+    static void vDirRead(NNP_Task nnpTask);
+    static void vDirRewind(NNP_Task nnpTask);
+    static void vDirSeek(NNP_Task nnpTask);
+    static void vDirTell(NNP_Task nnpTask);
+
     // file
     static void vFileClose(NNP_Task nnpTask);     
     static void vFileDelete(NNP_Task nnpTask);

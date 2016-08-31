@@ -4,6 +4,7 @@
 
 "common.sen" .
 
+"dir.sen" >>:
 "file.sen" >>:
 "lock.sen" >>:
 "timer.sen" >>:

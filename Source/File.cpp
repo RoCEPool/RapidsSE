@@ -33,9 +33,9 @@ const char* C_OPEN_READ_APPEND = "a+";
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* File::operator new(size_t, void* pFileAddress)
+void* File::operator new(size_t, File* pFile)
 {
-  return pFileAddress;
+  return pFile;
 }
 
 /*----------------------------------------------------------------------------*/

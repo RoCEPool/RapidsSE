@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* dir.sen -- directory related words                                         */
+/*============================================================================*/
+
+"dir.sen" .
+
+/*----------------------------------------------------------------------------*/
+/* dir is use as a kind of word to identify directories                       */
+/*----------------------------------------------------------------------------*/
+: dir ;
+
+: isDir word.kind@ ' dir eql ;
+
+/*----------------------------------------------------------------------------*/
+/* create a dir using name from input stream                                  */
+/*----------------------------------------------------------------------------*/
+: dir:
+    create
+    object!!
+    sizeof_dir allot
+    word.this >body magic!!
+    word.this >body CN_DIR class!
+    ' dir word.this word.kind!
+    word.this >body dir.init
+    does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a dir using name on stack                    (leaves file on stack) */
+/*----------------------------------------------------------------------------*/
+: :dir
+    >create
+    object!!
+    sizeof_dir allot
+    word.this >body magic!!
+    word.this >body CN_DIR class!
+    ' dir word.this word.kind!
+    word.this >body dir.init
+    word.this
+    does>
+;
+
+
+: dirtest
+
+//traceon
+
+    "__dir" :dir execute >r
+
+    "/tmp" r0 dir.path!
+
+    r0 dir.open if "opened" . else "not opened" . rdrop exit then
+
+    begin
+      r0 dir.read
+      while
+        r0 dir.entryName .
+    repeat
+
+    r0 dir.close
+
+    rdrop
+
+    "__dir" find >forget
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

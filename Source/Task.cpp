@@ -447,7 +447,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("cwd",             &vCwd,              false);
   vAddPrimitive("depth",           &vDepth,            false);
   vAddPrimitive("/",               &vDivide,           false);
   vAddPrimitive("do",              &vDo,               true );
@@ -476,7 +475,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
   vAddPrimitive(">",               &vGreater,          false);
   vAddPrimitive(">=",              &vGreaterEqual,     false);
-  vAddPrimitive("gwd",             &vGwd,              false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
@@ -615,7 +613,25 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.exists",      &vDirExists,        false);
   vAddPrimitive("dir.make",        &vDirMake,          false);
   vAddPrimitive("dir.remove",      &vDirRemove,        false);
-  
+  vAddPrimitive("cwd",             &vCwd,              false);
+  vAddPrimitive("gwd",             &vGwd,              false);
+
+  vAddPrimitive("dir.close",       &vDirClose,         false);
+  vAddPrimitive("dir.delete",      &vDirDelete,        false);
+  vAddPrimitive("dir.entryName",   &vDirEntryName,     false);
+  vAddPrimitive("dir.entryType",   &vDirEntryType,     false);
+  vAddPrimitive("dir.init",        &vDirInit,          false);
+  vAddPrimitive("dir.isClosed",    &vDirIsClosed,      false);
+  vAddPrimitive("dir.isOpen",      &vDirIsOpen,        false);
+  vAddPrimitive("dir.new",         &vDirNew,          false);
+  vAddPrimitive("dir.open",        &vDirOpen,          false);
+  vAddPrimitive("dir.path@",       &vDirPathGet,       false);
+  vAddPrimitive("dir.path!",       &vDirPathSet,       false);
+  vAddPrimitive("dir.read",        &vDirRead,          false);
+  vAddPrimitive("dir.rewind",      &vDirRewind,        false);
+  vAddPrimitive("dir.seek",        &vDirSeek,          false);
+  vAddPrimitive("dir.tell",        &vDirTell,          false);
+
   vAddPrimitive("file.close",      &vFileClose,        false);
   vAddPrimitive("file.delete",     &vFileDelete,       false);
   vAddPrimitive("file.init",       &vFileInit,         false);
@@ -2693,22 +2709,6 @@ void Task::vCursorStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cwd -- change working directory                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vCwd(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vCwd");
-  
-  s256 sDir;
-  if ( ! nnpTask->bPopParam(sDir) )
-    THROW_INVALID_PARAM("cwd");
-  
-  Dir xDir;
-  if ( ! xDir.bSetCurrent(sDir) )
-    THROW("Unable to set current directory");
-}
-
-/*----------------------------------------------------------------------------*/
 /* depth -- push depth of parameters stack onto stack                         */
 /*----------------------------------------------------------------------------*/
 void Task::vDepth(NNP_Task nnpTask)
@@ -3165,27 +3165,6 @@ void Task::vGreaterEqual(NNP_Task nnpTask)
   r = i >= j;
   
   nnpTask->vPushParam(r);
-}
-
-/*----------------------------------------------------------------------------*/
-/* gwd -- get working directory                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vGwd(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vGwd");
-  
-  ValWsp xStrVal;
-  
-  Dir xDir;
-  s256 sDir;
-  
-  if (xDir.bGetCurrent(sDir)) {
-    xStrVal = sDir.a();
-    nnpTask->vPushParam(&xStrVal);
-  }
-  else {
-    THROW("Unable to get current directory");
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5534,6 +5513,336 @@ void Task::vDirRemove(NNP_Task nnpTask)
   nnpTask->vPushParam(iResult);
 }
 
+/*----------------------------------------------------------------------------*/
+/* cwd -- change working directory                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vCwd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vCwd");
+  
+  s256 sDir;
+  if ( ! nnpTask->bPopParam(sDir) )
+    THROW_INVALID_PARAM("cwd");
+  
+  Dir xDir;
+  if ( ! xDir.bSetCurrent(sDir) )
+    THROW("Unable to set current directory");
+}
+
+/*----------------------------------------------------------------------------*/
+/* gwd -- get working directory                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vGwd(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vGwd");
+  
+  ValWsp xStrVal;
+  
+  Dir xDir;
+  s256 sDir;
+  
+  if (xDir.bGetCurrent(sDir)) {
+    xStrVal = sDir.a();
+    nnpTask->vPushParam(&xStrVal);
+  }
+  else {
+    THROW("Unable to get current directory");
+  }
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* dir.close -- close directory                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDirClose(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirClose");
+  
+  PtrVal xPtrDir;
+
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.close");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  pDir->vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.delete -- delete instance of dir                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDirDelete(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirDelete");
+  
+  PtrVal xDirPtr;
+  
+  if ( ! nnpTask->bPopParam(xDirPtr) )
+    THROW_INVALID_PARAM("file.delete");
+  
+  Dir* pDir = _pDir(xDirPtr.pPtr());
+  
+  delete pDir;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.entryName -- get dir entry name                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vDirEntryName(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirEntryName");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.close");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  s256 sEntryName;
+  
+  sEntryName = pDir->sEntryName();
+  
+  nnpTask->vPushParam(sEntryName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.entryType -- get dir entry type                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vDirEntryType(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirEntryType");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.close");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  i8 iEntryType;
+  
+  iEntryType = pDir->iEntryType();
+  
+  nnpTask->vPushParam(iEntryType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.init -- init directory                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDirInit(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirInit");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.init");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  new(pDir) Dir;
+  
+  pDir->vInit();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.isClosed -- is dir closed?                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vDirIsClosed(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirIsClosed");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.close");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  bool bIsClosed = pDir->bIsClosed();
+  
+  nnpTask->vPushParam(bIsClosed);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.isOpen -- is dir open?                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDirIsOpen(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirIsOpen");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.close");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  bool bIsOpen = pDir->bIsOpen();
+  
+  nnpTask->vPushParam(bIsOpen);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.new -- new instance of dir                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vDirNew(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirNew");
+  
+  Dir* pDir = new Dir;
+  
+  PtrVal xPtrDir;
+  xPtrDir = pDir;
+  
+  nnpTask->vPushParam(xPtrDir);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.open -- open dir for reading                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDirOpen(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirOpen");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.open");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  bool bOpened = pDir->bOpen();
+  
+  nnpTask->vPushParam(bOpened);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.path@ -- get path                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vDirPathGet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirPathGet");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.path@");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  s256 sPath;
+  
+  sPath = pDir->sPath();
+  
+  nnpTask->vPushParam(sPath);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.path! -- set path                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vDirPathSet(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirPathSet");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.path!");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  ValWsp xWspPath;
+
+  if ( ! nnpTask->bPopParam(xWspPath) )
+    THROW_INVALID_PARAM("dir.path!");
+  
+  s256 sPath;
+  sPath = xWspPath.sStr();
+  
+  pDir->vPath(sPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.read -- read next dir entry                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vDirRead(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirRead");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.read");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  bool bRead  = pDir->bRead();
+  
+  nnpTask->vPushParam(bRead);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.rewind -- rewind dir pointer                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDirRewind(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirRewind");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.rewind");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  pDir->vRewind();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.seek -- seek dir ptr to a given position                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDirSeek(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirSeek");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.seek");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  i8 iPosition;
+  if ( ! nnpTask->bPopParam(iPosition) )
+    THROW_INVALID_PARAM("dir.seek");
+  
+  pDir->vSeek(iPosition);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.tell -- tel current dir position                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vDirTell(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vDirTell");
+  
+  PtrVal xPtrDir;
+  
+  if ( ! nnpTask->bPopParam(xPtrDir) )
+    THROW_INVALID_PARAM("dir.tell");
+  
+  Dir* pDir = _pDir(xPtrDir.pPtr());
+  
+  i8 iPosition = pDir->iTell();
+  
+  nnpTask->vPushParam(iPosition);
+}
+
+
 // file: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -5597,8 +5906,8 @@ void Task::vFileNew(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vFileNew");
   
-  void* pFileAddress = gpSmallHeap->pAllocObject();
-  File* pFile = new(pFileAddress) File;
+  File* pFile = reinterpret_cast<File*>(gpSmallHeap->pAllocObject());
+  new(pFile) File;
   
   PtrVal xFilePtr;
   xFilePtr = pFile;

@@ -20,6 +20,10 @@ namespace Common
     SysCall m_xSysCall;   // system call handler
     
   public:
+    void* operator new(size_t);
+    void* operator new(size_t, Dir* pDir);
+    void operator delete(void* pDirAddress);
+    
     Dir(void);
    ~Dir(void);
 
@@ -35,19 +39,19 @@ namespace Common
     void vClose(void);
     s&   sEntryName(void);
     i8   iEntryType(void);
-    bool bExists(void);
-    bool bGetCurrent(void);
+    //bool bExists(void);
+    //bool bGetCurrent(void);
     bool bIsClosed(void);
     bool bIsOpen(void);
-    bool bMake(void);
+    //bool bMake(void);
     bool bOpen(void);
     s&   sPath(void);
     void vPath(s256& sPath);
     bool bRead(void);
-    bool bRemove(void);
+    //bool bRemove(void);
     void vRewind(void);
     void vSeek(i8 iPosition);
-    bool bSetCurrent(void);
+    //bool bSetCurrent(void);
     i8   iTell(void);
     
     
@@ -72,6 +76,7 @@ namespace Common
 //    static void   vDumpFileList(Skip* pFileList, Canon& canon);
   };
 
+  Dir* _pDir(void* pAddr);
 }
 
 /*============================================================================*/

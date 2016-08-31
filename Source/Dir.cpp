@@ -3,6 +3,46 @@
 /*============================================================================*/
 
 #include "Dir.hpp"
+#include "StorageEngine.h"
+
+extern Heap* gpSmallHeap;
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Dir* Common::_pDir(void* pAddr)
+{
+  Dir* pDir = reinterpret_cast<Dir*>(pAddr);
+  return pDir;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* Dir::operator new(size_t)
+{
+  Dir* pDir = reinterpret_cast<Dir*>(gpSmallHeap->pAllocObject());
+  
+  return pDir;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* Dir::operator new(size_t, Dir* pDir)
+{
+  return pDir;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void Dir::operator delete(void* pDirAddress)
+{
+  Object* pObject = reinterpret_cast<Object*>(pDirAddress);
+  
+  gpSmallHeap->vFreeObject(pObject);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Dir: constructor                                                           */
@@ -83,6 +123,8 @@ bool Dir::bGetCurrent(s256& rPath)
 /*----------------------------------------------------------------------------*/
 void Dir::vInit(void)
 {
+  m_xSysCall.vSetMagic();
+  
   m_sDirPath = "";
   m_xSysCall.vClear();
 }
@@ -187,58 +229,58 @@ i8 Dir::iEntryType(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test if directory path exists                                              */
-/*----------------------------------------------------------------------------*/
-bool Dir::bExists(void)
-{
-  m_xSysCall.vClear();
-  
-  struct stat xStat;
-  
-  char* wPath = m_sDirPath.a();
-  
-  int iResult = stat(wPath,&xStat);
-  
-  // dir exists?
-  if (0 == iResult && (xStat.st_mode & S_IFDIR)) {
-    m_xSysCall.vSuccess();
-    return true;
-  }
-  
-  // dir doesnt exist?
-  if (iResult && ENOENT == errno) {
-    m_xSysCall.vSuccess();
-    return false;
-  }
-  
-  // some error has occurred
-  m_xSysCall.vError(errno);
-  vError("Dir::bExists: stat(%s) error; errno=%d",wPath,errno);
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current working directory                                              */
-/*----------------------------------------------------------------------------*/
-bool Dir::bGetCurrent(void)
-{
-  m_xSysCall.vClear();
-  
-  char* wPath = m_sDirPath.a();
-  
-  char* aDirPath = getcwd(wPath,m_sDirPath.iSize());                    // CHECK
-  
-  m_sDirPath = aDirPath;
-  
-  if ( ! aDirPath ) {
-    m_xSysCall.vError(errno);
-    vWarn("Dir::bGetCurrent: getcwd() error; errno=%d",errno);
-    return false;
-  }
-  
-  m_xSysCall.vSuccess();
-  return true;
-}
+///* test if directory path exists                                              */
+///*----------------------------------------------------------------------------*/
+//bool Dir::bExists(void)
+//{
+//  m_xSysCall.vClear();
+//  
+//  struct stat xStat;
+//  
+//  char* wPath = m_sDirPath.a();
+//  
+//  int iResult = stat(wPath,&xStat);
+//  
+//  // dir exists?
+//  if (0 == iResult && (xStat.st_mode & S_IFDIR)) {
+//    m_xSysCall.vSuccess();
+//    return true;
+//  }
+//  
+//  // dir doesnt exist?
+//  if (iResult && ENOENT == errno) {
+//    m_xSysCall.vSuccess();
+//    return false;
+//  }
+//  
+//  // some error has occurred
+//  m_xSysCall.vError(errno);
+//  vError("Dir::bExists: stat(%s) error; errno=%d",wPath,errno);
+//  return false;
+//}
+//
+///*----------------------------------------------------------------------------*/
+///* get current working directory                                              */
+///*----------------------------------------------------------------------------*/
+//bool Dir::bGetCurrent(void)
+//{
+//  m_xSysCall.vClear();
+//  
+//  char* wPath = m_sDirPath.a();
+//  
+//  char* aDirPath = getcwd(wPath,m_sDirPath.iSize());                    // CHECK
+//  
+//  m_sDirPath = aDirPath;
+//  
+//  if ( ! aDirPath ) {
+//    m_xSysCall.vError(errno);
+//    vWarn("Dir::bGetCurrent: getcwd() error; errno=%d",errno);
+//    return false;
+//  }
+//  
+//  m_xSysCall.vSuccess();
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* is this directory currently closed?                                        */
@@ -262,29 +304,29 @@ bool Dir::bIsOpen(void)
     return false;
 }
 
-/*---------------------------------------------------------------------------*/
-/* make directory                                                            */
-/*---------------------------------------------------------------------------*/
-bool Dir::bMake(void)
-{
-  m_xSysCall.vClear();
-  
-  char* wPath = m_sDirPath.a();
-  
-  i8 iResult = mkdir(wPath,0777);
-  
-  // check for error
-  if (iResult != 0 && EEXIST != errno) {
-    m_xSysCall.vError(errno);
-    vWarn("Dir::bMake: mkdir() error; errno=%d",errno);
-    return false;
-  }
-  
-  // dir hase been made
-  m_xSysCall.vSuccess();
-  return true;
-}
-
+///*---------------------------------------------------------------------------*/
+///* make directory                                                            */
+///*---------------------------------------------------------------------------*/
+//bool Dir::bMake(void)
+//{
+//  m_xSysCall.vClear();
+//  
+//  char* wPath = m_sDirPath.a();
+//  
+//  i8 iResult = mkdir(wPath,0777);
+//  
+//  // check for error
+//  if (iResult != 0 && EEXIST != errno) {
+//    m_xSysCall.vError(errno);
+//    vWarn("Dir::bMake: mkdir() error; errno=%d",errno);
+//    return false;
+//  }
+//  
+//  // dir hase been made
+//  m_xSysCall.vSuccess();
+//  return true;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* open the directory for reading                                             */
 /*----------------------------------------------------------------------------*/
@@ -343,33 +385,34 @@ bool Dir::bRead(void)
   }
   
   m_sEntryName = pDirEnt->d_name;
+  
   m_iEntryType = pDirEnt->d_type;
   
   m_xSysCall.vSuccess();
   return true;
 }
 
-/*---------------------------------------------------------------------------*/
-/* remove directory                                                          */
-/*---------------------------------------------------------------------------*/
-bool Dir::bRemove(void)
-{
-  m_xSysCall.vClear();
-  
-  char* wPath = m_sDirPath.a();
-  
-  i8 iResult = rmdir(wPath);
-  
-  if (-1 == iResult) {
-    m_xSysCall.vError(errno);
-    vWarn("Dir::bRemove: rmdir() error; errno=%d",errno);
-    return false;
-  }
-  
-  m_xSysCall.vSuccess();
-  return true;
-}
-
+///*---------------------------------------------------------------------------*/
+///* remove directory                                                          */
+///*---------------------------------------------------------------------------*/
+//bool Dir::bRemove(void)
+//{
+//  m_xSysCall.vClear();
+//  
+//  char* wPath = m_sDirPath.a();
+//  
+//  i8 iResult = rmdir(wPath);
+//  
+//  if (-1 == iResult) {
+//    m_xSysCall.vError(errno);
+//    vWarn("Dir::bRemove: rmdir() error; errno=%d",errno);
+//    return false;
+//  }
+//  
+//  m_xSysCall.vSuccess();
+//  return true;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* rewind within directory                                                    */
 /*----------------------------------------------------------------------------*/
@@ -396,27 +439,27 @@ void Dir::vSeek(i8 iPosition)
   m_xSysCall.vSuccess();
 }
 
-/*----------------------------------------------------------------------------*/
-/* set current working directory                                              */
-/*----------------------------------------------------------------------------*/
-bool Dir::bSetCurrent(void)
-{
-  m_xSysCall.vClear();
-  
-  char* wPath = m_sDirPath.a();
-
-  i8 iResult = chdir(wPath);
-  
-  if (iResult) {
-    m_xSysCall.vError(errno);
-    vWarn("Dir::bSetCurrent : chdir() error; errno=%d",errno);
-    return false;
-  }
-  
-  m_xSysCall.vSuccess();
-  return true;
-}
-
+///*----------------------------------------------------------------------------*/
+///* set current working directory                                              */
+///*----------------------------------------------------------------------------*/
+//bool Dir::bSetCurrent(void)
+//{
+//  m_xSysCall.vClear();
+//  
+//  char* wPath = m_sDirPath.a();
+//
+//  i8 iResult = chdir(wPath);
+//  
+//  if (iResult) {
+//    m_xSysCall.vError(errno);
+//    vWarn("Dir::bSetCurrent : chdir() error; errno=%d",errno);
+//    return false;
+//  }
+//  
+//  m_xSysCall.vSuccess();
+//  return true;
+//}
+//
 /*----------------------------------------------------------------------------*/
 /* tell direcrtory position                                                  */
 /*----------------------------------------------------------------------------*/
