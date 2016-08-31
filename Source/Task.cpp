@@ -1026,13 +1026,13 @@ void Task::vAddRoutines(void)
   
   //-----------------------------------------------------
   sDefinition =
-  ": ::dicInitialise"
-  "  \"::dicInitialise\" ."
+  ": ::dicCompile"
+  "  \"::dicCompile\" ."
   "  gwd ."
   "  \"../../../commands\" cwd"
   "  gwd ."
-  "  \"initialise.sen\" >>:"
-  "  \"::dicInitialise exit\" ."
+  "  \"compile.sen\" >>:"
+  "  \"::dicCompile exit\" ."
   "  ::exit"
   "  ;";
   
@@ -1468,11 +1468,11 @@ void Task::vNextInSet(NP_Task npNextInSet)
 
 
 /*----------------------------------------------------------------------------*/
-/* seed task to run ::dicInitialise                                           */
+/* seed task to run ::dicCompile                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vSeedDicInitialiseSen(void)
+void Task::vSeedDicCompileSen(void)
 {
-  Word* pBootSen = pFindWord("::dicInitialise");
+  Word* pBootSen = pFindWord("::dicCompile");
   ASSERT(pBootSen);
   
   m_pCell = pBootSen->pFirstCell();
@@ -3374,7 +3374,7 @@ void Task::vIsBooted(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsBooted");
   
-  Word* pWord = nnpTask->pFindWord("__initialised__");
+  Word* pWord = nnpTask->pFindWord("__compiled__");
   
   i8 bIsBooted = pWord ? true : false;
   

@@ -375,15 +375,15 @@ void RapidsSE::vCreateRegion(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* intialise the main dictionary                                              */
+/* compile the main dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void RapidsSE::vDicInitialise(NP_Task npRootTask)
+void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
   npRootTask->vInitialiseDictionary();
   
-  npRootTask->vSeedDicInitialiseSen();
+  npRootTask->vSeedDicCompileSen();
   
-  vTrace("[[mainThread]] RapidsSE::vDicInitialise running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
+  vTrace("[[mainThread]] RapidsSE::vDicCom[ile running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
   npRootTask->vLoop();
 }
 
@@ -465,7 +465,7 @@ void RapidsSE::vSystemInit(void)
   sName = "rootTask";
   gnpRootTask->vName(sName);
   
-  vDicInitialise(gnpRootTask);
+  vDicCompile(gnpRootTask);
   
   gpAttachMap->vRecordGlobals();
   

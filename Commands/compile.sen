@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* initialise.sen -- initialise the dictionary                                */
+/* compile.sen -- compile the dictionary                                      */
 /*============================================================================*/
 
-"initialise.sen" .
+"compile.sen" .
 
 //
 // step 1: compile all the words
@@ -32,7 +32,7 @@ rootThread thread.spawn
 ( leave root thread on stack )
 rootThread
 
-: __initialised__ ;
+: __compiled__ ;
 
 /*============================================================================*/
 /* end                                                                        */

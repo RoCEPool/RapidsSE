@@ -388,7 +388,7 @@
 		F246E0031D7553A3000E54C0 /* commands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = commands.sen; path = Commands/commands.sen; sourceTree = "<group>"; };
 		F246E0041D7553CC000E54C0 /* seitfCommands.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = seitfCommands.sen; path = Commands/seitfCommands.sen; sourceTree = "<group>"; };
 		F246E0051D7553EA000E54C0 /* gridModel.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gridModel.sen; path = Commands/gridModel.sen; sourceTree = "<group>"; };
-		F246E0061D75548A000E54C0 /* initialise.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = initialise.sen; path = Commands/initialise.sen; sourceTree = "<group>"; };
+		F246E0061D75548A000E54C0 /* compile.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = compile.sen; path = Commands/compile.sen; sourceTree = "<group>"; };
 		F246E0081D7554F5000E54C0 /* structures.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = structures.sen; path = Commands/structures.sen; sourceTree = "<group>"; };
 		F246E00A1D755566000E54C0 /* systemObjects.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = systemObjects.sen; path = Commands/systemObjects.sen; sourceTree = "<group>"; };
 		F246E00D1D75560A000E54C0 /* interface.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = interface.sen; path = Commands/interface.sen; sourceTree = "<group>"; };
@@ -804,18 +804,18 @@
 			name = GridModel;
 			sourceTree = "<group>";
 		};
-		F2389CDD1D47EFB6008DF3D9 /* Initialise */ = {
+		F2389CDD1D47EFB6008DF3D9 /* Compile */ = {
 			isa = PBXGroup;
 			children = (
-				F246E0061D75548A000E54C0 /* initialise.sen */,
+				F246E0061D75548A000E54C0 /* compile.sen */,
 			);
-			name = Initialise;
+			name = Compile;
 			sourceTree = "<group>";
 		};
 		F2389CE01D47F291008DF3D9 /* SEN */ = {
 			isa = PBXGroup;
 			children = (
-				F2389CDD1D47EFB6008DF3D9 /* Initialise */,
+				F2389CDD1D47EFB6008DF3D9 /* Compile */,
 				F2D9BF771D5D379300129097 /* Testing */,
 				F2A595E01D726E40007C66B1 /* Commands */,
 				F246DFFE1D7552C9000E54C0 /* Actors */,

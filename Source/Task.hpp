@@ -160,7 +160,7 @@ namespace Tasks
     s&   sName(void);
     void vName(s& sName);
     void vNextInSet(NP_Task npNext);
-    void vSeedDicInitialiseSen(void);
+    void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(const char *aWord);
     NP_Task npPrevInSet(void);
