@@ -1,35 +1,35 @@
 /*============================================================================*/
-/* seCommands.sen -- the set of commands from se>                             */
+/* requests.sen -- the set of requests from se>                               */
 /*============================================================================*/
 
-"seCommands.sen" .
+"requests.sen" .
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-Connection Commands:
+Connection Requests:
 
   con     connect
   dis     disconnect
 
-Tenant Commands:
+Tenant Requests:
 
   mkten   create_tenant
   lsten   list_tenants
   rmten   drop_tenant
 
-Catalog Commands:
+Catalog Requests:
 
   mkcat   create_catalog
   lscat   list_catalogs
   rmcat   drop_catalog
 
-Schema Commands:
+Schema Requests:
 
   mksch   create_schema
   lssch   list_schemas
   rmsch   drop_schema
 
-Table Commands:
+Table Requests:
 
   mktbl   create_table
   lstbl   list_tables
@@ -44,7 +44,7 @@ Table Commands:
   tr      truncate_table
   rmtbl   drop_table
 
-Dictionary Commands:
+Dictionary Requests:
 
   cd      cd ..
           cd ~
@@ -53,7 +53,7 @@ Dictionary Commands:
   ls      ls
   rmdic   drop_dictionary
 
-Misc Commands:
+Misc Requests:
 
   mon     get_monitor
   ping    ping
