@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Common.h"
+#include "Pool.h"
+//#include "Chard.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -10,6 +12,8 @@
 void Common::vCheckAssumptions(void)
 {
   ASSERT(Process::bTestPid(Process::iGetPid()));
+  
+  //ASSERT(sizeof(Chard) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

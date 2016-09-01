@@ -2,7 +2,7 @@
 /* Addressing.cpp -- functions for manipulating addresses                     */
 /*============================================================================*/
 
-#include "Common.h"
+#include "Magic.h"
 
 /*----------------------------------------------------------------------------*/
 /* add bytes to address                                                       */

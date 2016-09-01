@@ -42,6 +42,8 @@
 #include "Timer.hpp"
 #include "Since.hpp"
 
+
+
 //-----------------------------------------------------------------------------
 namespace Common
 {
@@ -49,6 +51,7 @@ namespace Common
 }
 
 using namespace Common;
+#include "Chard.hpp"
 
 /*============================================================================*/
 /* end                                                                        */
