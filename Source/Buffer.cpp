@@ -29,10 +29,10 @@ void Buffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Buffer::Buffer(eCN eClass)
-: Object(eClass)
+Buffer::Buffer(eCN eClassNo)
+: Object(eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_MAGIC_, eClassNo);
   
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
@@ -46,27 +46,18 @@ Buffer::~Buffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
+  ASSERT(eClass() != CN_NONE);
+  
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
 }
 
-///*----------------------------------------------------------------------------*/
-///* ASSERT class no                                                            */
-///*----------------------------------------------------------------------------*/
-//void Buffer::vAssertClass(eCN eClassNo) const
-//{
-//  _magic_();
-//  
-//  _class_(eClassNo);
-//}
-//
 /*----------------------------------------------------------------------------*/
 /* get buffer number                                                          */
 /*----------------------------------------------------------------------------*/
 bn Buffer::nBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  //_class_(CN_BUFFER);
   
   return m_nBufferNo;
 }
@@ -77,7 +68,6 @@ bn Buffer::nBufferNo(void)
 char* Buffer::pBufferLimit(void) const
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  //_class_(CN_BUFFER);
   
   char* pLimit = (char*)this + gpBufferPool->iBufferSize();
   
@@ -90,30 +80,9 @@ char* Buffer::pBufferLimit(void) const
 void Buffer::vBufferNo(bn nBufferNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  //_class_(CN_BUFFER);
   
   m_nBufferNo = nBufferNo;
 }
-
-///*----------------------------------------------------------------------------*/
-///* get class number                                                           */
-///*----------------------------------------------------------------------------*/
-//eCN Buffer::eClassNo(void)
-//{
-//  _precondition_(this);
-//  
-//  return m_nClassNo.eClass();
-//}
-//
-///*----------------------------------------------------------------------------*/
-///* set class number                                                           */
-///*----------------------------------------------------------------------------*/
-//void Buffer::vClass(eCN eClassNo)
-//{
-//  _precondition_(this);
-//  
-//  m_nClassNo = eClassNo;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* get address of last byte in buffer                                         */
@@ -133,7 +102,6 @@ char* Buffer::pLastByte(void)
 bn Buffer::nOverflowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  //_class_(CN_BUFFER);
   
   return m_nOverflowBuffer;
 }
@@ -144,7 +112,6 @@ bn Buffer::nOverflowBuffer(void)
 void Buffer::vOverflowBuffer(bn nOverflowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  //_class_(CN_BUFFER);
   
   m_nOverflowBuffer = nOverflowBuffer;
 }

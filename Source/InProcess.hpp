@@ -12,7 +12,7 @@ namespace StorageEngine
                     public cn
   {
   public:
-    InProcess(cn eClass);
+    InProcess(eCN eClass);
     ~InProcess(void);
   };
 }

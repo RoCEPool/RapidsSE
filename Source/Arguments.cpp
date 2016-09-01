@@ -10,6 +10,8 @@
 Arguments::Arguments(void)
 : InProcess(CN_ARGUMENTS)
 {
+  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  
   m_sRegionName = "/RapidsSE_DefaultRegion";
   m_iRegionSize = 1_GB * 4 ;
   m_iPartitions = 1;
@@ -34,6 +36,7 @@ Arguments::Arguments(void)
 /*----------------------------------------------------------------------------*/
 Arguments::~Arguments(void)
 {
+  _precondition_(_MAGIC_,CN_ARGUMENTS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +44,8 @@ Arguments::~Arguments(void)
 /*----------------------------------------------------------------------------*/
 bool Arguments::bParse(int argc, const char* argv[])
 {
+  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
     if (String::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
@@ -127,6 +132,8 @@ bool Arguments::bParse(int argc, const char* argv[])
 /*----------------------------------------------------------------------------*/
 void Arguments::vPrint(void)
 {
+  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  
   vTrace("Args:\n");
   
   if (m_bCommand)  vTrace("  --command\n");
@@ -149,6 +156,8 @@ void Arguments::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vPrintHelp(void)
 {
+  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  
   printf("\n");
   
   printf("Help:\n");
