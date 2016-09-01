@@ -11,10 +11,11 @@
 #define REPORT_FATAL
 
 #ifdef _DEBUG
-  #define DEBUG_CHECKS
   #define ADDRESS_CHECK
   #define CLASS_CHECK
+  #define DEBUG_CHECKS
   #define MAGIC_CHECK
+  //#define FOOTER_CHECK
 #endif
 
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide

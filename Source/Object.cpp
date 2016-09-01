@@ -10,10 +10,10 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* initialize magic                                                           */
 /*----------------------------------------------------------------------------*/
-Object::Object(eCN eClass)
-: cn(eClass)
+Object::Object(eCN eClassNo)
+: cn(eClassNo)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_, _MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,7 +21,7 @@ Object::Object(eCN eClass)
 /*----------------------------------------------------------------------------*/
 void Object::vInitMagic(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_, _MAGIC_);
   
   vSetMagic();
 }
