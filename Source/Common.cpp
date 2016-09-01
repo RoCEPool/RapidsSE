@@ -4,7 +4,7 @@
 
 #include "Common.h"
 #include "Pool.h"
-//#include "Chard.hpp"
+//#include "Charred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
@@ -13,7 +13,7 @@ void Common::vCheckAssumptions(void)
 {
   ASSERT(Process::bTestPid(Process::iGetPid()));
   
-  //ASSERT(sizeof(Chard) < C_SIZE_SMALL_OBJECT);
+  //ASSERT(sizeof(Charred) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

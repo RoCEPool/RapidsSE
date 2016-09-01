@@ -123,8 +123,8 @@
 		F22056D91D62DEA400E8EF5B /* AttachMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7211D41805500E10FC3 /* AttachMap.cpp */; };
 		F22056DA1D62DEA800E8EF5B /* Arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7811D45D65000E10FC3 /* Arguments.cpp */; };
 		F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */; };
-		F225274F1D78035B0086D20A /* Chard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F225274D1D78035B0086D20A /* Chard.cpp */; };
-		F22527501D78035B0086D20A /* Chard.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F225274E1D78035B0086D20A /* Chard.hpp */; };
+		F225274F1D78035B0086D20A /* Charred.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F225274D1D78035B0086D20A /* Charred.cpp */; };
+		F22527501D78035B0086D20A /* Charred.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F225274E1D78035B0086D20A /* Charred.hpp */; };
 		F246DFF11D74EB02000E54C0 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFEF1D74EB02000E54C0 /* History.cpp */; };
 		F246DFF21D74EB02000E54C0 /* History.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F246DFF01D74EB02000E54C0 /* History.hpp */; };
 		F246DFF51D74F75B000E54C0 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFF31D74F75B000E54C0 /* Input.cpp */; };
@@ -267,8 +267,8 @@
 		F21D29D31D0F6668000F8C45 /* BodyField.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BodyField.hpp; sourceTree = "<group>"; };
 		F22056631D62D39F00E8EF5B /* libRapidsSE.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libRapidsSE.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		F22056DC1D62F11400E8EF5B /* lock.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lock.sen; path = Commands/lock.sen; sourceTree = "<group>"; };
-		F225274D1D78035B0086D20A /* Chard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Chard.cpp; path = Source/Chard.cpp; sourceTree = "<group>"; };
-		F225274E1D78035B0086D20A /* Chard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Chard.hpp; path = Source/Chard.hpp; sourceTree = "<group>"; };
+		F225274D1D78035B0086D20A /* Charred.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Charred.cpp; path = Source/Charred.cpp; sourceTree = "<group>"; };
+		F225274E1D78035B0086D20A /* Charred.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Charred.hpp; path = Source/Charred.hpp; sourceTree = "<group>"; };
 		F226E7131D3F3F6700E10FC3 /* Dictionaries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionaries.h; sourceTree = "<group>"; };
 		F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalDictionary.cpp; sourceTree = "<group>"; };
 		F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalDictionary.hpp; sourceTree = "<group>"; };
@@ -997,8 +997,8 @@
 			children = (
 				982ECD8B1D071EF70001919C /* Common.h */,
 				F2389CD91D4774D0008DF3D9 /* Common.cpp */,
-				F225274D1D78035B0086D20A /* Chard.cpp */,
-				F225274E1D78035B0086D20A /* Chard.hpp */,
+				F225274D1D78035B0086D20A /* Charred.cpp */,
+				F225274E1D78035B0086D20A /* Charred.hpp */,
 				F2A595CD1D6FD1DA007C66B1 /* Debug.cpp */,
 				982ECD8A1D071EF70001919C /* Debug.hpp */,
 				F23907951D2318CD00120B0F /* Dir.cpp */,
@@ -1236,7 +1236,7 @@
 				F2DD65931D6B86B7009B684A /* RowStrand.hpp in Headers */,
 				F2DD65821D6A51A5009B684A /* ScanBuffer.hpp in Headers */,
 				982243421D6347A800670ED5 /* Api.hpp in Headers */,
-				F22527501D78035B0086D20A /* Chard.hpp in Headers */,
+				F22527501D78035B0086D20A /* Charred.hpp in Headers */,
 				F2A595D21D6FF2C4007C66B1 /* ThreadCursor.hpp in Headers */,
 				9859A6001D73FF45008BBCDD /* StringLiterals.hpp in Headers */,
 				F2DD65861D6A53B4009B684A /* Loader.hpp in Headers */,
@@ -1340,7 +1340,7 @@
 				F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */,
 				F22056B81D62DDDD00E8EF5B /* Table.cpp in Sources */,
 				F22056D71D62DE9D00E8EF5B /* InProcess.cpp in Sources */,
-				F225274F1D78035B0086D20A /* Chard.cpp in Sources */,
+				F225274F1D78035B0086D20A /* Charred.cpp in Sources */,
 				F220567B1D62DAAB00E8EF5B /* Lock.cpp in Sources */,
 				F22056941D62DCB000E8EF5B /* FreeChunk.cpp in Sources */,
 				F2DD65921D6B86B7009B684A /* RowStrand.cpp in Sources */,

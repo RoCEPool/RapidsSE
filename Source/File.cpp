@@ -359,6 +359,21 @@ void File::vPath(const char* aFilePath)
   
 }
 
+/*----------------------------------------------------------------------------*/
+/* set path                                                                   */
+/*----------------------------------------------------------------------------*/
+void File::vPath(s& sFilePath)
+{
+  m_xSysCall.vClear();
+  
+  if (m_pFilePtr) {
+    vWarn("File::vPath: previous file not closed: %s\n",m_sFilePath.a());
+    vClose();
+  }
+  
+  m_sFilePath = sFilePath;
+}
+
 /*---------------------------------------------------------------------------*/
 /* vPrint: formatted print                                                   */
 /*---------------------------------------------------------------------------*/
