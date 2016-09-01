@@ -51,7 +51,6 @@ Dictionary Requests:
           cd
   pwd     pwd
   ls      ls
-  rmdic   drop_dictionary
 
 Misc Requests:
 
@@ -102,7 +101,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_tenant ( "<tenantNm>" -- <R> )
 
-    checkInTenants not if <ERROR> exit then
+    checkInTenants not if swap drop <ERROR> exit then
 
     :tenant execute makeCatalogs
 
@@ -126,7 +125,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : drop_tenant ( "<tenantNm>" -- <R> )
 
-    checkInTenants not if <ERROR> exit then
+    checkInTenants not if swap drop <ERROR> exit then
 
     find
 
@@ -147,7 +146,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_catalog ( "<catalogNm>" -- <R> )
 
-    checkInCatalogs not if <ERROR> exit then
+    checkInCatalogs not if swap drop <ERROR> exit then
 
     :catalog execute makeSchemas
 
@@ -171,11 +170,11 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : drop_catalog ( "<catalogNm>" -- <R> )
 
-    checkInCatalogs not if <ERROR> exit then
+    checkInCatalogs not if swap drop <ERROR> exit then
 
     find
 
-    checkIsCatalog not if <ERROR> exit then
+    checkIsCatalog not if swap drop <ERROR> exit then
 
     >forget
 
@@ -192,7 +191,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_schema ( "<schemaNm>" -- <R> )
 
-    checkInSchemas not if <ERROR> exit then
+    checkInSchemas not if swap drop <ERROR> exit then
 
     :schema execute makeTables
 
@@ -216,11 +215,11 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : drop_schema ( "<schemaNm>" -- <R> )
 
-    checkInSchemas not if <ERROR> exit then
+    checkInSchemas not if swap drop <ERROR> exit then
 
     find
 
-    checkIsSchema not if <ERROR> exit then
+    checkIsSchema not if swap drop <ERROR> exit then
 
     >forget
 
@@ -237,7 +236,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop <ERROR> exit then
 
     :table execute makeColumns
 
@@ -261,13 +260,13 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : load_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop <ERROR> exit then
 
     //freespace .
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop <ERROR> exit then
 
     execute ( "filename" table )
 
@@ -283,11 +282,11 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : export_table ( "<fileNm>" "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if rot drop drop <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if rot drop drop <ERROR> exit then
 
     execute ( "filename" table )
 
@@ -303,11 +302,11 @@ Misc Requests:
 
 freespace .
 
-    checkInTables not if swap drop <ERROR> exit then
+    checkInTables not if rot drop drop <ERROR> exit then
 
     find
 
-    checkIsTable not if swap drop <ERROR> exit then
+    checkIsTable not if rot drop drop <ERROR> exit then
 
     execute        ( "<to-tableNm>" ^fromTable )
 
@@ -329,11 +328,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : dump_table ( "<tableNm>" -- <R> )
 
-  checkInTables not if <ERROR> exit then
+  checkInTables not if swap drop <ERROR> exit then
 
   find
 
-  checkIsTable not if <ERROR> exit then
+  checkIsTable not if swap drop <ERROR> exit then
 
   execute ( table )
 
@@ -347,11 +346,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : size_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop  <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop  <ERROR> exit then
 
     execute ( table )
 
@@ -365,11 +364,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop  <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop  <ERROR> exit then
 
     queryCount ++
 
@@ -387,11 +386,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : address_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop  <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop  <ERROR> exit then
 
     execute ( table )
 
@@ -405,11 +404,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : truncate_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop  <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop  <ERROR> exit then
 
     execute ( table )
 
@@ -423,11 +422,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : drop_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop  <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop  <ERROR> exit then
 
     dup execute table.truncate
 
@@ -446,13 +445,13 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop rot drop drop <ERROR> exit then
 
-    pushTable not if <ERROR> exit then
+    pushTable not if swap drop rot drop drop <ERROR> exit then
 
-    pushColumns not if <ERROR> exit then
+    pushColumns not if swap drop rot drop drop <ERROR> exit then
 
-    addColumn not if <ERROR> exit then
+    addColumn not if swap drop rot drop drop <ERROR> exit then
 
     popColumns
 
@@ -466,11 +465,11 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : list_columns ( "<tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+    checkInTables not if swap drop <ERROR> exit then
 
-    pushTable not if <ERROR> exit then
+    pushTable not if swap drop <ERROR> exit then
 
-    pushColumns not if <ERROR> exit then
+    pushColumns not if swap drop <ERROR> exit then
 
     listColumns
 
@@ -559,21 +558,6 @@ freespace .
 
     <SUCCESS>
 ;
-
-/*----------------------------------------------------------------------------*/
-/* drop a dictionary                                                          */
-/*----------------------------------------------------------------------------*/
-: drop_dictionary ( "<dicNm>" -- <R> )
-
-    find
-
-    checkIsDic not if exit then
-
-    >forget
-
-    <OK>
-;
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
