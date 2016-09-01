@@ -15,7 +15,7 @@
  12  constant  EC_NO_SUCH_CATALOG
  13  constant  EC_NO_SUCH_SCHEMA
  14  constant  EC_NO_SUCH_TABLE
- 15 constant   EC_NO_SUCH_DICTIONARY
+ 15  constant  EC_NO_SUCH_DICTIONARY
 
  21  constant  EC_NOT_A_TENANT
  22  constant  EC_NOT_A_CATALOG

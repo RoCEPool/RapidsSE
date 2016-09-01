@@ -9,7 +9,7 @@
 namespace StorageEngine
 {
   class InProcess : public mn,
-                   public cn
+                    public cn
   {
   public:
     InProcess(cn eClass);
