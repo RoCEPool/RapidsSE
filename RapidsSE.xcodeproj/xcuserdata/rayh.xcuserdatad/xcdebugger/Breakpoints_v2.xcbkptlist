@@ -42,12 +42,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Source/Task.cpp"
-            timestampString = "494377487.478259"
+            timestampString = "494383732.071291"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "7417"
-            endingLineNumber = "7417"
+            startingLineNumber = "7418"
+            endingLineNumber = "7418"
             landmarkName = "Task::vStackClass(NNP_Task nnpTask)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Source/SEitf.cpp"
+            timestampString = "494385414.192116"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1017"
+            endingLineNumber = "1017"
+            landmarkName = "SEitf::bPopResponse(i8&amp; iResult, s&amp; sResponse)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

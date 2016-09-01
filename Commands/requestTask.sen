@@ -74,7 +74,15 @@ thread:  requestThread
     1 stack.class CN_INTVAL != if "incorrect reponse value 1" . quit then
     2 stack.class CN_STRVAL != if "incorrect reponse value 2" . quit then
 
+
     >valset
+
+//    valset>
+//traceon
+//    rot rot drop "..substitute.." rot
+//traceoff
+//    >valset
+
     "rspque" find execute queue.append
     0 task.this task.seitf!
 ;
@@ -93,6 +101,7 @@ thread:  requestThread
     "Request Server running..." .
 
     begin
+      depth 0 != if "request task has grown" . debug.trap then
       req>
       !req
       >rsp

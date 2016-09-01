@@ -32,6 +32,8 @@
 
   partitions 0
   do
+    // r0 partition
+    // r1 partitions
     // r2 ^txRefCursor
     // r3 ^rowCursor
     // r4 ^toTable
@@ -42,7 +44,7 @@
 
     begin
       while
-      r3 rowcursor.get r2 r4 table.insert
+      r0 r3 rowcursor.get r2 r4 table.insert
       r3 rowcursor.next
     repeat
 

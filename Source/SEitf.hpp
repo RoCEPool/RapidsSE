@@ -36,17 +36,18 @@ namespace Interface
     i8     m_iPartitions;      // number of partitions in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
+    Dictionary m_xDictionary;    // private dictionary
+    DictionaryStack m_xDicStack; // dictionary stack
+    
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // reponse queue
-    s8K    m_sResponse;        // response
     
     eIE    m_eInterfaceError;  // error code
     s256   m_sInterfaceError;  // error string
     
     i8     m_iErrorCode;       //
     
-    Dictionary m_xDictionary;    // private dictionary
-    DictionaryStack m_xDicStack; // dictionary stack
+    s8K    m_sResponse;        // response
     
     // must be last
     Footer m_xFooter;

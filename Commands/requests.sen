@@ -301,11 +301,13 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
 
-    checkInTables not if <ERROR> exit then
+freespace .
+
+    checkInTables not if swap drop <ERROR> exit then
 
     find
 
-    checkIsTable not if <ERROR> exit then
+    checkIsTable not if swap drop <ERROR> exit then
 
     execute        ( "<to-tableNm>" ^fromTable )
 
@@ -316,6 +318,8 @@ Misc Requests:
 //    swap           ( ^toTable ^fromTable )
 
     tableCopier
+
+freespace .
 
     <OK>
 ;
@@ -550,6 +554,8 @@ Misc Requests:
       object@ prevWord object!
 
     next
+
+//    128 clip
 
     <SUCCESS>
 ;

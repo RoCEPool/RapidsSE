@@ -1011,6 +1011,9 @@ bool SEitf::bPopResponse(i8& iResult, s& sResponse)
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(! b);
   
+//  vTrace("sResponse: >>>\n%s\n<<<\n\n",sResponse.a());
+//  vTrace("\n---\n\n",sResponse.a());
+  
   return true;
 }
 
@@ -1040,14 +1043,17 @@ void SEitf::vClearLastError(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vSetLastError(eIE eInterfaceError)
 {
+  ASSERT(eInterfaceError >= IE_NONE);
+  ASSERT(eInterfaceError <  IE_ENUMS);
+  
   m_eInterfaceError = eInterfaceError;
   String::vCopy(m_sInterfaceError.a(), pIE[m_eInterfaceError]);
   
-  if (String::iLength(m_sResponse.a()) != 0) {
-    String::vConcat(m_sInterfaceError.a(), " (");
-    String::vConcat(m_sInterfaceError.a(), m_sResponse.a());
-    String::vConcat(m_sInterfaceError.a(), ") ");
-  }
+//  if (String::iLength(m_sResponse.a()) != 0) {
+//    String::vConcat(m_sInterfaceError.a(), " (");
+//    String::vConcat(m_sInterfaceError.a(), m_sResponse.a());
+//    String::vConcat(m_sInterfaceError.a(), ") ");
+//  }
 }
 
 /*============================================================================*/

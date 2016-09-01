@@ -11,7 +11,7 @@ Arguments::Arguments(void)
 : InProcess(CN_ARGUMENTS)
 {
   m_sRegionName = "/RapidsSE_DefaultRegion";
-  m_iRegionSize = 1_GB * 2;
+  m_iRegionSize = 1_GB * 4 ;
   m_iPartitions = 1;
   
   m_sCommand    = "";
