@@ -6472,7 +6472,7 @@ void Task::vMemoryWordDump(NNP_Task nnpTask)
   i8 iSize;
   
   if ( ! nnpTask->bPopParam(iSize) )
-    THROW_INVALID_PARAM("memory.bytedump");
+    THROW_INVALID_PARAM("memory.worddump");
   
   if ( ! nnpTask->bPopParam(pWord) )
     THROW_INVALID_PARAM("memory.worddump");

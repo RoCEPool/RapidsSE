@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Platform.h"
 
-namespace Common
+namespace Platform
 {
 #ifdef __APPLE__  
   #define SYSCTL_CORE_COUNT   "machdep.cpu.core_count"

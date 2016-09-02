@@ -15,6 +15,10 @@
 		9859A6001D73FF45008BBCDD /* StringLiterals.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9859A5FE1D73FF45008BBCDD /* StringLiterals.hpp */; };
 		9859A6031D7447FB008BBCDD /* SePrompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9859A6011D7447FB008BBCDD /* SePrompt.cpp */; };
 		9859A6041D7447FB008BBCDD /* SePrompt.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 9859A6021D7447FB008BBCDD /* SePrompt.hpp */; };
+		988FD9221D792FD500C02AB8 /* PosixThread.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 988FD91E1D792FD500C02AB8 /* PosixThread.hpp */; };
+		988FD9231D792FD500C02AB8 /* PosixThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 988FD91F1D792FD500C02AB8 /* PosixThread.cpp */; };
+		988FD9241D792FD500C02AB8 /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 988FD9201D792FD500C02AB8 /* System.cpp */; };
+		988FD9251D792FD500C02AB8 /* System.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 988FD9211D792FD500C02AB8 /* System.hpp */; };
 		98A3C4831CF74E6200BD2B80 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98A3C4821CF74E6200BD2B80 /* main.cpp */; };
 		F201DDE61D6F965D00A26858 /* NodeCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F201DDE41D6F965D00A26858 /* NodeCursor.cpp */; };
 		F201DDE71D6F965D00A26858 /* NodeCursor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F201DDE51D6F965D00A26858 /* NodeCursor.hpp */; };
@@ -37,7 +41,6 @@
 		F220567B1D62DAAB00E8EF5B /* Lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 98686CD51D1A7C8D00A4CC3E /* Lock.cpp */; };
 		F220567C1D62DAAF00E8EF5B /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F25309991D023E58000F6728 /* Memory.cpp */; };
 		F220567D1D62DAB200E8EF5B /* NP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E71E1D408B6100E10FC3 /* NP.cpp */; };
-		F220567E1D62DAB500E8EF5B /* PosixThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */; };
 		F220567F1D62DAB800E8EF5B /* Process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F28DF4DE1D59060700013BBC /* Process.cpp */; };
 		F22056801D62DABC00E8EF5B /* Prompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F28DF4E11D5936DC00013BBC /* Prompt.cpp */; };
 		F22056811D62DAC000E8EF5B /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 981C8FDF1D19577200530F3B /* Random.cpp */; };
@@ -49,7 +52,6 @@
 		F22056871D62DADB00E8EF5B /* Shm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7431D42B61F00E10FC3 /* Shm.cpp */; };
 		F22056881D62DAE000E8EF5B /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A61D0E0236000F8C45 /* String.cpp */; };
 		F22056891D62DAE300E8EF5B /* SysCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F25309961D023B18000F6728 /* SysCall.cpp */; };
-		F220568A1D62DAE700E8EF5B /* System.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2CC758E1D4FDC4A00261B4D /* System.cpp */; };
 		F220568B1D62DAEA00E8EF5B /* Time_se.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F21D29A91D0E0E15000F8C45 /* Time_se.cpp */; };
 		F220568D1D62DAF300E8EF5B /* xxhash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E7961D46A04700E10FC3 /* xxhash.cpp */; };
 		F22056921D62DCA700E8EF5B /* HeapBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2B3B1631D51E0F70049597E /* HeapBuffer.cpp */; };
@@ -225,6 +227,10 @@
 		98686CD11D1A7C7B00A4CC3E /* Row.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Row.hpp; sourceTree = "<group>"; };
 		98686CD51D1A7C8D00A4CC3E /* Lock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Lock.cpp; path = Source/Lock.cpp; sourceTree = "<group>"; };
 		98686CD61D1A7C8D00A4CC3E /* Lock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Lock.hpp; path = Source/Lock.hpp; sourceTree = "<group>"; };
+		988FD91E1D792FD500C02AB8 /* PosixThread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PosixThread.hpp; path = Source/PosixThread.hpp; sourceTree = "<group>"; };
+		988FD91F1D792FD500C02AB8 /* PosixThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PosixThread.cpp; path = Source/PosixThread.cpp; sourceTree = "<group>"; };
+		988FD9201D792FD500C02AB8 /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = System.cpp; path = Source/System.cpp; sourceTree = "<group>"; };
+		988FD9211D792FD500C02AB8 /* System.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = System.hpp; path = Source/System.hpp; sourceTree = "<group>"; };
 		989056F91D59C0650000D247 /* NNP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = NNP.hpp; path = Source/NNP.hpp; sourceTree = "<group>"; };
 		989056FA1D59C0650000D247 /* NNP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NNP.cpp; path = Source/NNP.cpp; sourceTree = "<group>"; };
 		989056FE1D59D2AD0000D247 /* Mersenne.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mersenne.cpp; path = Source/Mersenne.cpp; sourceTree = "<group>"; };
@@ -256,8 +262,6 @@
 		F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Time_se.hpp; path = Source/Time_se.hpp; sourceTree = "<group>"; };
 		F21D29B61D0E193E000F8C45 /* Threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Threads.h; sourceTree = "<group>"; };
 		F21D29B71D0E199B000F8C45 /* DBobjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBobjects.h; sourceTree = "<group>"; };
-		F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PosixThread.cpp; path = Source/PosixThread.cpp; sourceTree = "<group>"; };
-		F21D29B91D0E21DE000F8C45 /* PosixThread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PosixThread.hpp; path = Source/PosixThread.hpp; sourceTree = "<group>"; };
 		F21D29BC1D0E3BCA000F8C45 /* StorageEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StorageEngine.h; sourceTree = "<group>"; };
 		F21D29BD1D0E3F8F000F8C45 /* RapidsSE.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RapidsSE.hpp; sourceTree = "<group>"; };
 		F21D29BE1D0E3F9A000F8C45 /* RapidsSE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RapidsSE.cpp; sourceTree = "<group>"; };
@@ -477,8 +481,6 @@
 		F2C6E9851D29A749007C624C /* CodeField.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CodeField.hpp; sourceTree = "<group>"; };
 		F2C6E9871D29A819007C624C /* Cell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cell.cpp; sourceTree = "<group>"; };
 		F2C6E9881D29A819007C624C /* Cell.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Cell.hpp; sourceTree = "<group>"; };
-		F2CC758E1D4FDC4A00261B4D /* System.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = System.cpp; path = Source/System.cpp; sourceTree = "<group>"; };
-		F2CC758F1D4FDC4A00261B4D /* System.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = System.hpp; path = Source/System.hpp; sourceTree = "<group>"; };
 		F2D753071D6FB55200CDB0A5 /* nodeCursor.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = nodeCursor.sen; path = Commands/nodeCursor.sen; sourceTree = "<group>"; };
 		F2D9BF761D5D375900129097 /* socket.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = socket.sen; path = Commands/socket.sen; sourceTree = "<group>"; };
 		F2D9BF781D5D37BB00129097 /* testing.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = testing.sen; path = Commands/testing.sen; sourceTree = "<group>"; };
@@ -670,6 +672,10 @@
 				F21D29811D078B99000F8C45 /* _types.h */,
 				F2BD2EB41D13E226009D7467 /* Asm.h */,
 				F2BD2EB51D13E226009D7467 /* Asm.s */,
+				988FD91E1D792FD500C02AB8 /* PosixThread.hpp */,
+				988FD91F1D792FD500C02AB8 /* PosixThread.cpp */,
+				988FD9201D792FD500C02AB8 /* System.cpp */,
+				988FD9211D792FD500C02AB8 /* System.hpp */,
 				F2B3B16F1D53F3D80049597E /* SystemIncludes.h */,
 			);
 			name = Platform;
@@ -1025,8 +1031,6 @@
 				989056FA1D59C0650000D247 /* NNP.cpp */,
 				F226E71E1D408B6100E10FC3 /* NP.cpp */,
 				F226E71F1D408B6100E10FC3 /* NP.hpp */,
-				F21D29B81D0E21DE000F8C45 /* PosixThread.cpp */,
-				F21D29B91D0E21DE000F8C45 /* PosixThread.hpp */,
 				F28DF4DE1D59060700013BBC /* Process.cpp */,
 				F28DF4DF1D59060700013BBC /* Process.hpp */,
 				F28DF4E11D5936DC00013BBC /* Prompt.cpp */,
@@ -1055,8 +1059,6 @@
 				F21D29A71D0E0236000F8C45 /* String.hpp */,
 				F25309961D023B18000F6728 /* SysCall.cpp */,
 				F25309971D023B18000F6728 /* SysCall.hpp */,
-				F2CC758E1D4FDC4A00261B4D /* System.cpp */,
-				F2CC758F1D4FDC4A00261B4D /* System.hpp */,
 				F21D29A91D0E0E15000F8C45 /* Time_se.cpp */,
 				F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */,
 				F24D1FBC1D64009A005031F5 /* Timer.cpp */,
@@ -1231,11 +1233,13 @@
 				F2DD657A1D655BE6009B684A /* RowCursor.hpp in Headers */,
 				F22527541D792A710086D20A /* InputParser.hpp in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
+				988FD9251D792FD500C02AB8 /* System.hpp in Headers */,
 				F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */,
 				F246DFF61D74F75B000E54C0 /* Input.hpp in Headers */,
 				F2DD657E1D66428F009B684A /* TaskCursor.hpp in Headers */,
 				9859A5FA1D73FD21008BBCDD /* Object.hpp in Headers */,
 				F2A595DE1D70FA28007C66B1 /* TxRef.hpp in Headers */,
+				988FD9221D792FD500C02AB8 /* PosixThread.hpp in Headers */,
 				F2A0FAFF1D6457CA0032B090 /* Since.hpp in Headers */,
 				F2DD65711D652D47009B684A /* lz4.h in Headers */,
 				F246DFF21D74EB02000E54C0 /* History.hpp in Headers */,
@@ -1393,10 +1397,10 @@
 				F22056841D62DACF00E8EF5B /* s32.cpp in Sources */,
 				F22056A51D62DD2A00E8EF5B /* Skip.cpp in Sources */,
 				F22056AD1D62DDA300E8EF5B /* Cell.cpp in Sources */,
-				F220568A1D62DAE700E8EF5B /* System.cpp in Sources */,
 				F22056BF1D62DDF900E8EF5B /* Stack.cpp in Sources */,
 				F246DFF51D74F75B000E54C0 /* Input.cpp in Sources */,
 				F22056CF1D62DE6300E8EF5B /* Interface.cpp in Sources */,
+				988FD9231D792FD500C02AB8 /* PosixThread.cpp in Sources */,
 				F22056A01D62DD1300E8EF5B /* ObjVal.cpp in Sources */,
 				F22056731D62DA8800E8EF5B /* NNP.cpp in Sources */,
 				F22056A11D62DD1700E8EF5B /* IntVal.cpp in Sources */,
@@ -1406,6 +1410,7 @@
 				F2A0FAFE1D6457CA0032B090 /* Since.cpp in Sources */,
 				F22056CC1D62DE4B00E8EF5B /* Transactions.cpp in Sources */,
 				F2A595DD1D70FA28007C66B1 /* TxRef.cpp in Sources */,
+				988FD9241D792FD500C02AB8 /* System.cpp in Sources */,
 				F22056721D62DA8200E8EF5B /* Mersenne.cpp in Sources */,
 				F22056BA1D62DDE700E8EF5B /* Socket.cpp in Sources */,
 				F2A595D11D6FF2C4007C66B1 /* ThreadCursor.cpp in Sources */,
@@ -1453,7 +1458,6 @@
 				F22056801D62DABC00E8EF5B /* Prompt.cpp in Sources */,
 				F2DD65851D6A53B4009B684A /* Loader.cpp in Sources */,
 				F22056951D62DCB300E8EF5B /* BufferPoolIter.cpp in Sources */,
-				F220567E1D62DAB500E8EF5B /* PosixThread.cpp in Sources */,
 				9859A5FB1D73FD21008BBCDD /* Object.cpp in Sources */,
 				F22056701D62DA3F00E8EF5B /* Magic.cpp in Sources */,
 				F22056AC1D62DD6300E8EF5B /* CodeField.cpp in Sources */,

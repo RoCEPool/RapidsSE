@@ -27,8 +27,6 @@
 #include "String.hpp"
 #include "Today.hpp"
 #include "Time_se.hpp"
-#include "System.hpp"
-#include "PosixThread.hpp"
 #include "Random.hpp"
 #include "Lock.hpp"
 #include "Asm.h"

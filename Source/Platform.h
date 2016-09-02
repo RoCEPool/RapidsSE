@@ -8,6 +8,8 @@
 #include "_types.h"
 
 #include "SystemIncludes.h"
+#include "System.hpp"
+#include "PosixThread.hpp"
 
 #include "Asm.h"
 

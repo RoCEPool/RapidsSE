@@ -86,7 +86,7 @@ s16K Random::sRandomString(i8 iLength) {
   char sCharSet[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
   s16K sRandomString;
   
-  ASSERT(iLength < sizeof(s16K));
+  ASSERT(iLength < static_cast<i8>(sizeof(s16K)));
   
   i8 iCharSetSize = String::iSize(sCharSet);
   

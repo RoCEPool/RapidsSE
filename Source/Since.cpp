@@ -25,7 +25,7 @@ Since::~Since(void)
 /*----------------------------------------------------------------------------*/
 void Since::vAdd(i8 iMicroseconds)
 {
-  iMicroseconds = m_iMicroseconds;
+  m_iMicroseconds += iMicroseconds;
 }
 
 /*----------------------------------------------------------------------------*/
