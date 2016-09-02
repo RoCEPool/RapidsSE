@@ -167,6 +167,46 @@ void Charred::vUnget(char c)
   vRewindOne(c);
 }
 
+/*----------------------------------------------------------------------------*/
+/* is there a nested chain?                                                   */
+/*----------------------------------------------------------------------------*/
+bool Charred::bNest(void)
+{
+  if (m_pChain)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop charred chain                                                          */
+/*----------------------------------------------------------------------------*/
+bool Charred::bPop(void)
+{
+  if (! m_pChain)
+    return false;
+  
+  Charred* pCopy = m_pChain;
+  
+  Memory::vCopy(this,pCopy,sizeof(Charred));
+  
+  delete pCopy;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push this charred onto chain                                               */
+/*----------------------------------------------------------------------------*/
+void Charred::vPush(void)
+{
+  Charred* pCopy = new(m_bMalloc) Charred;
+  
+  Memory::vCopy(pCopy,this,sizeof(Charred));
+  
+  m_pChain = pCopy;
+}
+
 
 // private: ////////////////////////////////////////////////////////////////////
 
@@ -303,17 +343,18 @@ void Charred::vResetAll(void)
   ASSERT(! m_xFile.bIsOpen());
   
   m_eSource  = IS_NONE;
-  m_bPrompt  = false;
-  m_eComment = CT_NONE;
-  
   m_xFile.vReset();
-  
   m_sString  = "";
   m_pChar    = m_sString.a();
   m_pEnd     = m_pChar;
+
+  m_sPrompt  = "";
+  m_bPrompt  = false;
+  
   m_nChars   = 0;
   m_cOne     = '\0';
   m_cTwo     = '\0';
+  m_eComment = CT_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

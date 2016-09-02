@@ -50,6 +50,10 @@ namespace Common
 
     char cGet(void);
     void vUnget(char c);
+
+    bool bNest(void);
+    bool bPop(void);
+    void vPush(void);
     
   private:
     

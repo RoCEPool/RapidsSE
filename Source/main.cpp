@@ -19,7 +19,16 @@ int main(int argc, const char* argv[])
   RapidsSE::vCheckAssumptions();
   
 //  Charred* pCharred = new(true) Charred;
-
+//
+//  s32 sPrompt("char> ");
+//  pCharred->vPrompt(sPrompt);
+//  pCharred->vUseStdin();
+//  
+//  vTrace(">>>");
+//  while (char c = pCharred->cGet())
+//    vTrace("%c",c);
+//  vTrace("<<<\n");
+  
 //  s256 sString("\n");
 //  s256 sString("abc \n");
 //  s256 sString("a/* block comment */def//linecomment\n");
