@@ -37,7 +37,7 @@ void SePrompt::vPrompt(void)
 {
   // initialise the onput handler
   m_xInput.vInit(m_wWorkarea,m_pWords);
-  m_xInput.vPrompt("se> ");
+  //m_xInput.vPrompt("se> ");
   
   // open the command history file
   m_xHistory.vOpen();

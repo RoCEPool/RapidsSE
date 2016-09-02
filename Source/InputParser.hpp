@@ -15,6 +15,7 @@ namespace Tasks
     bool     m_bMalloc;   // malloc or pool heap?
     bool     m_bNormal;   // normal tokens?
     
+    s32      m_sPrompt;   // prompt
     char     m_cCurrChar; // current char
     
   public:
@@ -30,6 +31,7 @@ namespace Tasks
     
     void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
+    void vPrompt(const char* pPrompt);
     void vBegin(void);
     
     bool bUseFile(s& sPath);
@@ -53,15 +55,25 @@ namespace Tasks
     eLT  eParseSpecialString(char* wLiteral);
     
     void vSkipWhitespace(void);
+    
     bool bStartNormalInteger(void);
     bool bStartNormalName(void);
     bool bStartNormalString(void);
+    bool bEndNormalString(void);
     bool bStartSpecialInteger(void);
     bool bStartSpecialName(void);
     bool bStartSpecialString(void);
+    bool bEndSpecialString(void);
+   
+    bool bIsDigit(void);
+    bool bIsHex(void);
+    bool bIsX(void);
+    bool bIsWhite(void);
 
     void vGetChar(void);
     void vUngetChar(void);
+    
+    bool bEndInput(void);
   };
 }
 

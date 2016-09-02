@@ -15,7 +15,8 @@ private:
   s256        m_sInputLine;  // line of input
   i8          m_iInputDepth; // depth in input array
   InputStream m_xInputStream[C_INPUT_DEPTH]; // input stream handler
-  
+  InputParser m_xInputParser; // input stream parser
+
 public:
   Input(void);
   ~Input(void);

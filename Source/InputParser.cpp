@@ -37,6 +37,8 @@ InputParser::InputParser(void)
   m_pCharred = nullptr;
   m_bMalloc  = false;
   m_bNormal  = false;
+  
+  //m_sPrompt
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +53,12 @@ InputParser::~InputParser(void)
 /*----------------------------------------------------------------------------*/
 void InputParser::vPush(void)
 {
-  m_pCharred->vPush();
+  if (m_pCharred)
+    m_pCharred->vPush();
+  else
+    m_pCharred = new(m_bMalloc) Charred;
+    
+  m_pCharred->vPrompt(m_sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,9 +66,19 @@ void InputParser::vPush(void)
 /*----------------------------------------------------------------------------*/
 bool InputParser::bPop(void)
 {
-  bool bPopped = m_pCharred->bPop();
+  if (m_pCharred) {
+    if (1 == m_pCharred->iDepth()) {
+      delete m_pCharred;
+      m_pCharred = nullptr;
+      return true;
+    }
+    else {
+      bool bPopped = m_pCharred->bPop();
+      return bPopped;
+    }
+  }
   
-  return bPopped;
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,6 +111,14 @@ void InputParser::vNormal(bool bNormal)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set prompt                                                                 */
+/*----------------------------------------------------------------------------*/
+void InputParser::vPrompt(const char* pPrompt)
+{
+  m_sPrompt = pPrompt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* use file                                                                   */
 /*----------------------------------------------------------------------------*/
 bool InputParser::bUseFile(s& sPath)
@@ -117,6 +142,13 @@ void InputParser::vUseStdin(void)
 void InputParser::vUseString(s& sString)
 {
   m_pCharred->vUseString(sString);
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin                                                                      */
+/*----------------------------------------------------------------------------*/
+void InputParser::vBegin(void)
+{
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,9 +238,31 @@ eLT InputParser::eParseNormalString(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 eLT InputParser::eParseSpecial(char* wLiteral)
 {
+  vGetChar();
+  
   vSkipWhitespace();
   
-  return LT_NONE;
+  // end of input?
+  if (! bEndInput()) {
+    *wLiteral = '\0';
+    return LT_NONE;
+  }
+  
+  // collect integer literal?
+  if (bStartSpecialInteger()) {
+    eLT eLiteral = eParseSpecialInteger(wLiteral);
+    return eLiteral;
+  }
+  
+  // collect string literal?
+  if (bStartSpecialString()) {
+    eLT eLiteral = eParseSpecialString(wLiteral);
+    return eLiteral;
+  }
+  
+  // collect name literal
+  eLT eLiteral = eParseSpecialName(wLiteral);
+  return eLiteral;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +270,50 @@ eLT InputParser::eParseSpecial(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 eLT InputParser::eParseSpecialInteger(char* wLiteral)
 {
-  return LT_NONE;
+  i8 iNoDigits = 0;
+  char *z = wLiteral;
+  
+  // we have seen a digit
+  ASSERT(bStartSpecialInteger());
+  
+  // - start parsing an integer
+  
+  // collect initial digits
+  while (bIsDigit()) {
+    *z++ = m_cCurrChar;
+    iNoDigits++;
+    vGetChar();
+  }
+  
+  // 0x hex number?
+  if (1 == iNoDigits && bIsX()) {
+
+    // add the 'x'
+    *z++ = m_cCurrChar;
+    
+    // collect the hex digits
+    while (bIsHex()) {
+      *z++ = m_cCurrChar;
+      vGetChar();
+    }
+  }
+  
+  // - handle the case where we have a name like 1_ugh
+  
+  // just a number?
+  if ( bIsWhite() || bStartSpecialString() ) {
+    
+    // push back the unconsumed char
+    vUngetChar();
+    
+    // terminate an intlit
+    *z = '\0';
+    return LT_INTLIT;
+  }
+  
+  // its actually a name; complete parsing name
+  eLT eLiteral = eParseSpecialName(z);
+  return eLiteral;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,7 +321,23 @@ eLT InputParser::eParseSpecialInteger(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 eLT InputParser::eParseSpecialName(char* wLiteral)
 {
-  return LT_NONE;
+  char *z = wLiteral;
+  
+  ASSERT(bStartSpecialName());
+  
+  // collect the characters of the name
+  while ( !bIsWhite() && !bStartSpecialString() ) {
+    *z++ = m_cCurrChar;
+    vGetChar();
+  }
+  
+  // push back the unconsumed char
+  vUngetChar();
+  
+  // terminate a namelit
+  *z = '\0';
+
+  return LT_NAMELIT;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -232,7 +345,35 @@ eLT InputParser::eParseSpecialName(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 eLT InputParser::eParseSpecialString(char* wLiteral)
 {
-  return LT_NONE;
+  char *z = wLiteral;
+  
+  ASSERT(bStartSpecialString());
+  
+  // skip the leading '"'
+  vGetChar();
+  
+  // collect the chars in the string
+  while ( ! bEndSpecialString() ) {
+    
+    // test for \n
+    if ('\\' == m_cCurrChar) {
+      vGetChar();
+      if ('n' == m_cCurrChar)
+        m_cCurrChar = '\n';
+      else {
+        vUngetChar();
+        m_cCurrChar = '\\';
+      }
+    }
+    
+    *z++ = m_cCurrChar;
+    vGetChar();
+  }
+  
+  // terminate the strlit
+  *z = '\0';
+
+  return LT_STRLIT;
 }
 
 
@@ -283,6 +424,17 @@ bool InputParser::bStartNormalString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for end of normal string                                              */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bEndNormalString(void)
+{
+  if ('"' == m_cCurrChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test for start of special integer                                          */
 /*----------------------------------------------------------------------------*/
 bool InputParser::bStartSpecialInteger(void)
@@ -316,10 +468,66 @@ bool InputParser::bStartSpecialString(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for end of special string                                             */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bEndSpecialString(void)
+{
+  if ('"' == m_cCurrChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a base-10 digit                                                   */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bIsDigit(void)
+{
+  if (String::bIsDigit(m_cCurrChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a base-16 digit                                                   */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bIsHex(void)
+{
+  if (String::bIsHex(m_cCurrChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for an 'x' or 'X'                                                     */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bIsX(void)
+{
+  if ('x' == m_cCurrChar || 'X' == m_cCurrChar)
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a white character                                                 */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bIsWhite(void)
+{
+  if (String::bIsWhite(m_cCurrChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
 void InputParser::vGetChar(void)
 {
+  m_cCurrChar = m_pCharred->cGet();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -327,6 +535,18 @@ void InputParser::vGetChar(void)
 /*----------------------------------------------------------------------------*/
 void InputParser::vUngetChar(void)
 {
+  m_pCharred->vUnget(m_cCurrChar);
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for end of input                                                      */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bEndInput(void)
+{
+  if ('\0' == m_cCurrChar)
+    return true;
+  
+  return false;
 }
 
 /*============================================================================*/

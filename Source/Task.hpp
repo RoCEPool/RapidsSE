@@ -93,6 +93,7 @@ namespace Tasks
     s256  m_sLiteral;      // current literal
     eLT   m_eLiteral;      // literal type
     InputStream m_xInputStream; // input stream parser
+//    InputParser m_xInputParser; // input stream parser
     
     union {
       Cell*       m_pCell;

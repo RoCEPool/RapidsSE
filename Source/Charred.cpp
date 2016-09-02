@@ -366,7 +366,7 @@ void Charred::vResetAll(void)
   m_pChar    = m_sString.a();
   m_pEnd     = m_pChar;
 
-  m_sPrompt  = "";
+  //m_sPrompt  = "";
   m_bPrompt  = false;
   
   m_nChars   = 0;
@@ -575,6 +575,7 @@ void Charred::vReadLineStdin(void)
   m_pChar = m_sString.a();
   
   printf("%s",m_sPrompt.a());
+  fflush(stdin);
   
   do {
     c = m_xFile.cGetChar();

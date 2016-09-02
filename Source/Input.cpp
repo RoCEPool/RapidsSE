@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 Input::Input(void)
 {
-  m_sPrompt     = "> ";
+  m_sPrompt     = "se> ";
   m_sInputLine  = "";
   m_iInputDepth = 0;
   //m_xInputStream

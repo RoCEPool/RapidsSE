@@ -15,24 +15,25 @@ namespace Common
     enum eCT { CT_NONE=0, CT_BLOCK, CT_LINE };
     
   private:
-    bool   m_bMalloc;  // is this object in malloc heap (or small heap)?
-    i8     m_iDepth;   // depth of this parser
-    Charred* m_pChain; // next chard in chain
+    bool   m_bMalloc;   // is this object in malloc heap (or small heap)?
+    i8     m_iDepth;    // depth of this parser
+    Charred* m_pChain;  // next chard in chain
     
-    eIS    m_eSource;  // what source are we charring? given file or given string?
-    File   m_xFile;    // given file
-    s256   m_sString;  // either string read from file or given string being charred
-    char*  m_pChar;    // ptr into string
-    char*  m_pEnd;     // m_pChar must be < m_pEnd (note its not <=)
+    eIS    m_eSource;   // what source are we charring? given file or given string?
+    File   m_xFile;     // given file
+    s256   m_sString;   // either string read from file or given string being charred
+    char*  m_pChar;     // ptr into string
+    char*  m_pEnd;      // m_pChar must be < m_pEnd (note its not <=)
+    bool   m_bLineMode; // stdin line mode
+    bool   m_bPrompt;   // prompt user for more input
     
-    s256   m_sPrompt;  // user prompt when reading from stdin
-    bool   m_bPrompt;  // prompt user for input
+    s256   m_sPrompt;   // user prompt when reading from stdin
 
     // regs
-    i8     m_nChars;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
-    char   m_cOne;     // first single char buffer
-    char   m_cTwo;     // second single char buffer
-    eCT    m_eComment; // comment type currently being processed
+    i8     m_nChars;    // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
+    char   m_cOne;      // first single char buffer
+    char   m_cTwo;      // second single char buffer
+    eCT    m_eComment;  // comment type currently being processed
     
     
   public:
