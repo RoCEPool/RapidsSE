@@ -16,7 +16,29 @@ int main(int argc, const char* argv[])
 {  
   printf("RapidsSE %s (%s %s)\n",RAPIDSSE_VERSION_STRING,__DATE__,__TIME__);
   
-  vTrace("Task::vWord %p\n",Task::vWord);
+  RapidsSE::vCheckAssumptions();
+  
+//  Charred* pCharred = new(true) Charred;
+
+//  s256 sString("\n");
+//  s256 sString("abc \n");
+//  s256 sString("a/* block comment */def//linecomment\n");
+//  s256 sString("quick brown() fox jump over lazy fox\n");
+//  s256 sString("quick brown() fox /* didn't */jump over lazy fox\n");
+//  pCharred->vUseString(sString);
+
+//  s256 sPath("/tmp/_tpch");
+//  bool b = pCharred->bUseFile(sPath);
+//  assert(b);
+//  
+//  vTrace(">>>");
+//  while (char c = pCharred->cGet())
+//    vTrace("%c",c);
+//  vTrace("<<<\n");
+//  
+//  sleep(100000);
+  
+//  vTrace("Task::vWord %p\n",Task::vWord);
   
 //  Timer xTimer;
 //  
@@ -27,8 +49,7 @@ int main(int argc, const char* argv[])
 //  xTimer.vUpdate();
 //  
 //  vTrace("duration %lldns\n",xTimer.iNanoseconds());
-  
-  RapidsSE::vCheckAssumptions();
+
   
   if ( ! gxArguments.bParse(argc,argv) )
     exit(EXIT_FAILURE);

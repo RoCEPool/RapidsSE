@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Charred.hpp -- char input processor which removes line abd block comments  */
+/* Charred.cpp -- input processor, removing line and block comments           */
 /*============================================================================*/
 #pragma once
 
@@ -11,15 +11,18 @@ namespace Common
                   public cn
   {
   private:
-    enum eCW { CW_NONE=0, CW_FILE,  CW_STDIN, CW_STRING };
+    enum eIS { IS_NONE=0, IS_FILE,  IS_STDIN, IS_STRING };
     enum eCT { CT_NONE=0, CT_BLOCK, CT_LINE };
     
   private:
     bool   m_bMalloc;  // is this object in malloc heap (or small heap)?
-    eCW    m_eWhich;   // what are we charring? given file or given string?
+    Charred* m_pChain; // next chard in chain
+    
+    eIS    m_eSource;  // what source are we charring? given file or given string?
     File   m_xFile;    // given file
     s256   m_sString;  // either string read from file or given string being charred
     char*  m_pChar;    // ptr into string
+    char*  m_pEnd;     // m_pChar must be < m_pEnd (note its not <=)
     
     s256   m_sPrompt;  // user prompt when reading from stdin
     bool   m_bPrompt;  // prompt user for input
@@ -30,7 +33,6 @@ namespace Common
     char   m_cTwo;     // second single char buffer
     eCT    m_eComment; // comment type currently being processed
     
-    Charred* m_pChain; // next chard in chain
     
   public:
     void* operator new(size_t, bool bMalloc);
@@ -52,30 +54,30 @@ namespace Common
   private:
     
     // Character Processing
-    void vAdvanceOne(void);
-    void vConsumeOne(void);
-    void vDiscardOne(void);
-    void vRewindOne(char c);
-    
-    // Register Management
     void vClearRegs(void);
+    char cConsumeOne(void);
+    void vDiscardOne(void);
+    void vGetFirst(void);
     void vGetMore(void);
-    void vReset(void);
+    void vGetSecond(void);
+    void vGetTwo(void);
+    void vResetAll(void);
+    void vRewindOne(char c);
     
     // Comment Processing
     bool bBlockCommentEnd(void);
+    void vBlockCommentSkip(void);
     bool bBlockCommentStart(void);
-    bool bCommentStart(void);
+    bool bPossibleComment(void);
     eCT  eCommentType(void);
     bool bLineCommentEnd(void);
+    void vLineCommentSkip(void);
     bool bLineCommentStart(void);
-    void vSkipBlockComment(void);
-    void vSkipLineComment(void);
     
-    // File Reading
-    bool bEndLine(void);
-    void vReadLineFile(void);
-    void vReadLineStdin(void);
+    // Reading
+    char  cNextChar(void);
+    void  vReadLineFile(void);
+    void  vReadLineStdin(void);
   };
 }
 
