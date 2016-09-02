@@ -125,6 +125,8 @@
 		F22056DB1D62DEAB00E8EF5B /* StorageEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CC31D4770A7008DF3D9 /* StorageEngine.cpp */; };
 		F225274F1D78035B0086D20A /* Charred.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F225274D1D78035B0086D20A /* Charred.cpp */; };
 		F22527501D78035B0086D20A /* Charred.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F225274E1D78035B0086D20A /* Charred.hpp */; };
+		F22527531D792A710086D20A /* InputParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F22527511D792A710086D20A /* InputParser.cpp */; };
+		F22527541D792A710086D20A /* InputParser.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F22527521D792A710086D20A /* InputParser.hpp */; };
 		F246DFF11D74EB02000E54C0 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFEF1D74EB02000E54C0 /* History.cpp */; };
 		F246DFF21D74EB02000E54C0 /* History.hpp in Headers */ = {isa = PBXBuildFile; fileRef = F246DFF01D74EB02000E54C0 /* History.hpp */; };
 		F246DFF51D74F75B000E54C0 /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F246DFF31D74F75B000E54C0 /* Input.cpp */; };
@@ -269,6 +271,8 @@
 		F22056DC1D62F11400E8EF5B /* lock.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lock.sen; path = Commands/lock.sen; sourceTree = "<group>"; };
 		F225274D1D78035B0086D20A /* Charred.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Charred.cpp; path = Source/Charred.cpp; sourceTree = "<group>"; };
 		F225274E1D78035B0086D20A /* Charred.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Charred.hpp; path = Source/Charred.hpp; sourceTree = "<group>"; };
+		F22527511D792A710086D20A /* InputParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputParser.cpp; sourceTree = "<group>"; };
+		F22527521D792A710086D20A /* InputParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InputParser.hpp; sourceTree = "<group>"; };
 		F226E7131D3F3F6700E10FC3 /* Dictionaries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionaries.h; sourceTree = "<group>"; };
 		F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalDictionary.cpp; sourceTree = "<group>"; };
 		F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalDictionary.hpp; sourceTree = "<group>"; };
@@ -641,6 +645,8 @@
 			children = (
 				F21D297F1D0773B4000F8C45 /* Tasks.h */,
 				F2389CCD1D477280008DF3D9 /* Tasks.cpp */,
+				F22527511D792A710086D20A /* InputParser.cpp */,
+				F22527521D792A710086D20A /* InputParser.hpp */,
 				F2EC32D41D2DB24F00791294 /* InputStream.cpp */,
 				F2EC32D51D2DB24F00791294 /* InputStream.hpp */,
 				98C42CE11D0069D1007DD84F /* Task.cpp */,
@@ -1223,6 +1229,7 @@
 				9859A6041D7447FB008BBCDD /* SePrompt.hpp in Headers */,
 				F2DD656C1D652B1E009B684A /* ThirdParty.h in Headers */,
 				F2DD657A1D655BE6009B684A /* RowCursor.hpp in Headers */,
+				F22527541D792A710086D20A /* InputParser.hpp in Headers */,
 				F24D1FBF1D64009A005031F5 /* Timer.hpp in Headers */,
 				F2DD658B1D6AB589009B684A /* s8K.hpp in Headers */,
 				F246DFF61D74F75B000E54C0 /* Input.hpp in Headers */,
@@ -1457,6 +1464,7 @@
 				F22056B11D62DDC600E8EF5B /* IndexColumn.cpp in Sources */,
 				F220566C1D62DA0900E8EF5B /* Addressing.cpp in Sources */,
 				F22056C81D62DE3F00E8EF5B /* TxArray.cpp in Sources */,
+				F22527531D792A710086D20A /* InputParser.cpp in Sources */,
 				F22056B61D62DDD600E8EF5B /* Ring.cpp in Sources */,
 				F22056CB1D62DE4900E8EF5B /* Tx.cpp in Sources */,
 			);

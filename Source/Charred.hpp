@@ -16,6 +16,7 @@ namespace Common
     
   private:
     bool   m_bMalloc;  // is this object in malloc heap (or small heap)?
+    i8     m_iDepth;   // depth of this parser
     Charred* m_pChain; // next chard in chain
     
     eIS    m_eSource;  // what source are we charring? given file or given string?
@@ -54,8 +55,11 @@ namespace Common
     bool bNest(void);
     bool bPop(void);
     void vPush(void);
+    i8   iDepth(void);
     
   private:
+    
+    void vDepth(i8 iDepth);
     
     // Character Processing
     void vClearRegs(void);
