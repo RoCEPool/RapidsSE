@@ -168,10 +168,6 @@ void Task::vInit(const char* aLambda)
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vBeginTokenizing();
   
-  m_xInputStream.vUseText(m_sLambda);
-  m_sLiteral = "";
-  m_eLiteral = LT_NONE;
-  
   m_pSEitf   = nullptr;
 }
 
@@ -517,13 +513,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("i",               &vI,                false);
   vAddPrimitive("if",              &vIf,               true );
   vAddPrimitive("immediate",       &vImmediate,        true );
-  vAddPrimitive("input.close",     &vInputClose,       false);
-  vAddPrimitive("input.depth",     &vInputDepth,       false);
-  vAddPrimitive("input.open",      &vInputOpen,        false);
-  vAddPrimitive("input.pop",       &vInputPop,         false);
-  vAddPrimitive("input.push",      &vInputPush,        false);
-  vAddPrimitive("input.stdin",     &vInputStdin,       false);
-  vAddPrimitive("input.text",      &vInputText,        false);
   vAddPrimitive("interpreting",    &vInterpreting,     false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
@@ -542,10 +531,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jumpTrue",        &vJumpTrue,         false);
   vAddPrimitive("<",               &vLess,             false);
   vAddPrimitive("<=",              &vLessEqual,        false);
-  vAddPrimitive("literal",         &vLiteral,          false);
-  //  vAddPrimitive("literal>",        &vLiteralGet,       false);
-  vAddPrimitive("litNext",         &vLitNext,          false);
-  vAddPrimitive("litType",         &vLitType,          false);
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("loop",            &vLoop,             true );
   vAddPrimitive("loop_rt",         &vLoop_RT,          false);
@@ -683,6 +668,17 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
+  
+  vAddPrimitive("input.close",     &vInputClose,       false);
+  vAddPrimitive("input.depth",     &vInputDepth,       false);
+  vAddPrimitive("input.open",      &vInputOpen,        false);
+  vAddPrimitive("input.pop",       &vInputPop,         false);
+  vAddPrimitive("input.push",      &vInputPush,        false);
+  vAddPrimitive("input.stdin",     &vInputStdin,       false);
+  vAddPrimitive("input.text",      &vInputText,        false);
+  vAddPrimitive("literal",         &vLiteral,          false);
+  vAddPrimitive("litNext",         &vLitNext,          false);
+  vAddPrimitive("litType",         &vLitType,          false);
   
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
@@ -1092,38 +1088,37 @@ Word* Task::pCompileColon(s& sDefinition)
   Word* pFoundWord;
   ValWsp xValWsp;
   
-  m_xInputStream.vUseText(sDefinition);
   m_xTokenizer.vUseString(sDefinition);
   m_xTokenizer.vBeginTokenizing();
   
   // get :
   vLiteralNext();
-  vTrace("CompileColon: %s\n",m_sLiteral.a());
+  vTrace("CompileColon: %s\n",m_sToken.a());
   
   // get name of word
   vLiteralNext();
-  vTrace("CompileColon: %s\n",m_sLiteral.a());
+  vTrace("CompileColon: %s\n",m_sToken.a());
   
-  pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sLiteral.a());
+  pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sToken.a());
   
   vLiteralNext();
   
-  while (LT_NONE != m_eLiteral) {
+  while (LT_NONE != m_eToken) {
     
-    vTrace("CompileColon: %s\n",m_sLiteral.a());
+    vTrace("CompileColon: %s\n",m_sToken.a());
     
-    if (String::bEqualTo(";",m_sLiteral.a()))
+    if (String::bEqualTo(";",m_sToken.a()))
       break;
     
-    switch (m_eLiteral) {
+    switch (m_eToken) {
         
       case LT_INTLIT:
-        xValWsp = String::iToI8(m_sLiteral.a());
+        xValWsp = String::iToI8(m_sToken.a());
         pNewWord->vEncode("push",&xValWsp);
         break;
         
       case LT_NAMELIT:
-        pFoundWord = pFindWord(m_sLiteral);
+        pFoundWord = pFindWord(m_sToken);
         if (WT_PRIMITIVE == pFoundWord->eWordType()) {
           pFunc = pFoundWord->pFunc();
           if (pFoundWord->bImmediate())
@@ -1141,7 +1136,7 @@ Word* Task::pCompileColon(s& sDefinition)
         break;
         
       case LT_STRLIT: {
-        xValWsp = m_sLiteral.a();
+        xValWsp = m_sToken.a();
         pNewWord->vEncode("push",&xValWsp);
         break;
       }
@@ -1157,8 +1152,6 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
-  m_xInputStream.vReset();
-  
   m_xTokenizer.vEndTokenizing();
   
   return pNewWord;
@@ -1448,11 +1441,7 @@ bool Task::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 void Task::vLiteralNext(void)
 {
-#ifdef USE_INPUTSTREAM
-  m_eLiteral = m_xInputStream.eNextLiteral(m_sLiteral.a());
-#else
-  m_eLiteral = m_xTokenizer.eNextLiteral(m_sLiteral.a());
-#endif
+  m_eToken = m_xTokenizer.eNextLiteral(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1518,7 +1507,6 @@ void Task::vSeedDicCompileSen(void)
   m_xReturnStack.vReset();
   
   m_sLambda = "";
-  m_xInputStream.vUseText(m_sLambda);
   
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vBeginTokenizing();
@@ -1541,7 +1529,6 @@ void Task::vSeedWord(const char* aLambda)
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
     String::vConcat(m_sLambda.a()," ::exit");
-  m_xInputStream.vUseText(m_sLambda);
   
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vBeginTokenizing();
@@ -1562,7 +1549,6 @@ void Task::vSeedDocol(void)
   m_xReturnStack.vReset();
   
   m_sLambda = "";
-  m_xInputStream.vUseText(m_sLambda);
   
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vBeginTokenizing();
@@ -1630,7 +1616,7 @@ void Task::vReset(void)
   m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_sLiteral = "";
+  m_sToken = "";
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -1644,7 +1630,7 @@ void Task::vRetry(void)
   m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_sLiteral = "";
+  m_sToken = "";
   
   m_xParamStack.vRetry();
   m_xReturnStack.vRetry();
@@ -1731,19 +1717,12 @@ void Task::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 void Task::vUndirect(void)
 {
-  m_xInputStream.vCloseFile();
-  
   //vTrace("undirect return stack: %lld\n",nnpTask->m_xReturnStack.iValues());
   
   bool bPopped;
   
-#ifdef USE_INPUTSTREAM
-  bPopped = bPopReturn(m_xInputStream);
-  ASSERT(bPopped);
-#else
   bPopped = m_xTokenizer.bPop();
   ASSERT(bPopped);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2692,7 +2671,7 @@ void Task::vColon(NNP_Task nnpTask)
 
   nnpTask->vLiteralNext();
   
-  new(nnpTask->m_xDictionaryStack.pTop())  Word(nnpTask->m_sLiteral.a());
+  new(nnpTask->m_xDictionaryStack.pTop())  Word(nnpTask->m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2721,7 +2700,7 @@ void Task::vComment(NNP_Task nnpTask)
   
   for (;;) {
     nnpTask->vLiteralNext();
-    if (String::bEqualTo(")",nnpTask->m_sLiteral.a()))
+    if (String::bEqualTo(")",nnpTask->m_sToken.a()))
       break;
   }
 }
@@ -3373,7 +3352,7 @@ void Task::vIsIntLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsIntLit");
   
-  i8 iIsIntLit = LT_INTLIT == nnpTask->m_eLiteral ? 1 : 0;
+  i8 iIsIntLit = LT_INTLIT == nnpTask->m_eToken ? 1 : 0;
   
   nnpTask->vPushParam(iIsIntLit);
 }
@@ -3385,7 +3364,7 @@ void Task::vIsNameLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsNameLit");
   
-  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_eLiteral ? 1 : 0;
+  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_eToken ? 1 : 0;
   
   nnpTask->vPushParam(iIsNameLit);
 }
@@ -3414,7 +3393,7 @@ void Task::vIsStrLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsStrLit");
   
-  i8 iIsStrLit = LT_STRLIT == nnpTask->m_eLiteral ? 1 : 0;
+  i8 iIsStrLit = LT_STRLIT == nnpTask->m_eToken ? 1 : 0;
   
   nnpTask->vPushParam(iIsStrLit);
 }
@@ -3577,7 +3556,7 @@ void Task::vLiteral(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vLiteral");
   
-  nnpTask->vPushParam(nnpTask->m_sLiteral.a());
+  nnpTask->vPushParam(nnpTask->m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4350,10 +4329,10 @@ void Task::vSee(NNP_Task nnpTask)
   
   nnpTask->vLiteralNext();
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sLiteral);
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
 
   if ( ! pWord )
-    THROW("See: %s unknown",nnpTask->m_sLiteral.a());
+    THROW("See: %s unknown",nnpTask->m_sToken.a());
   
   vTrace("See: %s\n",pWord->sName().a());
   
@@ -4563,10 +4542,10 @@ void Task::vTick(NNP_Task nnpTask)
 //    throw (i8)__LINE__;
 //  }
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sLiteral);
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
 
   if ( ! pWord )
-    THROW("No word: %s ",nnpTask->m_sLiteral.a());
+    THROW("No word: %s ",nnpTask->m_sToken.a());
 
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -6004,11 +5983,7 @@ void Task::vInputClose(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputClose");
   
-#ifdef USE_INPUTSTREAM
-  nnpTask->m_xInputStream.vCloseFile();
-#else
   nnpTask->m_xTokenizer.vEndTokenizing();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6018,11 +5993,7 @@ void Task::vInputDepth(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputDepth");
   
-#ifdef USE_INPUTSTREAM
-  i8 iDepth = nnpTask->m_xInputStream.iDepth();
-#else
   i8 iDepth = nnpTask->m_xTokenizer.iDepth();
-#endif
   
   nnpTask->vPushParam(iDepth);
 }
@@ -6039,13 +6010,8 @@ void Task::vInputOpen(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sFilePath) )
     THROW_INVALID_PARAM("input.open");
   
-#ifdef USE_INPUTSTREAM
-  bool bOpened = nnpTask->m_xInputStream.bOpenFile(nnpTask->m_sLambda,
-                                                   sFilePath.a());
-#else
   //nnpTask->m_xTokenizer.vPush();
   bool bOpened = nnpTask->m_xTokenizer.bUseFile(sFilePath);
-#endif
   
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
@@ -6058,26 +6024,12 @@ void Task::vInputPop(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPop");
   
-#ifdef USE_INPUTSTREAM
-  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
-  
-  bool bPopped = nnpTask->bPopReturn(nnpTask->m_xInputStream);
-  ASSERT(bPopped);
-  
-  ASSERT(iInputDepth = nnpTask->m_xInputStream.iDepth() + 1);
-  
-  bPopped = nnpTask->bPopReturn(nnpTask->m_sLambda);
-  
-  ASSERT(bPopped);
-#else
-  i8 iDepth = nnpTask->m_xInputStream.iDepth();
+  i8 iDepth = nnpTask->m_xTokenizer.iDepth();
   
   bool bPopped = nnpTask->m_xTokenizer.bPop();
   ASSERT(bPopped);
   
-  ASSERT(iDepth = nnpTask->m_xInputStream.iDepth() + 1);
-#endif
-  
+  ASSERT(iDepth = nnpTask->m_xTokenizer.iDepth() + 1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6087,20 +6039,7 @@ void Task::vInputPush(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPush");
   
-#ifdef USE_INPUTSTREAM
-  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
-  
-  nnpTask->vPushReturn(nnpTask->m_sLambda);
-  
-  nnpTask->vPushReturn(nnpTask->m_xInputStream);
-  
-  nnpTask->m_xInputStream.vReset();
-  
-  nnpTask->m_xInputStream.vDepth(iInputDepth + 1);
-#else
-  
   nnpTask->m_xTokenizer.vPush();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6110,16 +6049,7 @@ void Task::vInputStdin(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputStdin");
   
-#ifdef USE_INPUTSTREAM
-  //nnpTask->vPushReturn(nnpTask->m_xInputStream);
-  
-  nnpTask->m_xInputStream.vReset();
-  
-  nnpTask->m_xInputStream.vUseStdin(nnpTask->m_sLambda);
-#else
-  
   nnpTask->m_xTokenizer.vUseStdin();
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6136,28 +6066,7 @@ void Task::vInputText(NNP_Task nnpTask)
   
   nnpTask->m_sLambda = sInput;
   
-#ifdef USE_INPUTSTREAM
-  nnpTask->m_xInputStream.vUseText(nnpTask->m_sLambda);
-#else
-  
   nnpTask->m_xTokenizer.vUseString(sInput);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* literalGet -- get next literal and push onto stack                         */
-/*----------------------------------------------------------------------------*/
-void Task::vLiteralGet(NNP_Task nnpTask)
-{
-  ASSERT(0);
-  
-  nnpTask->vPrimitive("vLiteralGet");
-  
-  char* aLiteral = nnpTask->m_sLiteral.a();
-  
-  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
-  
-  nnpTask->vPushParam(nnpTask->m_sLiteral.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6172,14 +6081,9 @@ void Task::vLitNext(NNP_Task nnpTask)
   
   // litNext is only used in docol
   
-  char* aLiteral = nnpTask->m_sLiteral.a();
+  char* aLiteral = nnpTask->m_sToken.a();
   
-#ifdef USE_INPUTSTREAM
-  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
-#else
-  nnpTask->m_eLiteral = nnpTask->m_xTokenizer.eNextLiteral(aLiteral);
-  
-#endif
+  nnpTask->m_eToken = nnpTask->m_xTokenizer.eNextLiteral(aLiteral);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6189,7 +6093,7 @@ void Task::vLitType(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vLitType");
   
-  eLT eLiteralType = nnpTask->m_eLiteral;
+  eLT eLiteralType = nnpTask->m_eToken;
   
   nnpTask->vPushParam(eLiteralType);
 }
@@ -9443,7 +9347,7 @@ void Task::vCreate(NNP_Task nnpTask)
   else
     pDictionary = nnpTask->m_xDictionaryStack.pTop();
   
-  new(pDictionary) Word(nnpTask->m_sLiteral.a());
+  new(pDictionary) Word(nnpTask->m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9508,12 +9412,12 @@ void Task::vForget(NNP_Task nnpTask)
   
   nnpTask->vLiteralNext();
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sLiteral);
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
   
   if ( ! pWord )
-    THROW("No such word: %s",nnpTask->m_sLiteral.a());
+    THROW("No such word: %s",nnpTask->m_sToken.a());
   
-  bool bResult = nnpTask->bForgetWord(nnpTask->m_sLiteral);
+  bool bResult = nnpTask->bForgetWord(nnpTask->m_sToken);
   ASSERT(bResult);
 }
 
