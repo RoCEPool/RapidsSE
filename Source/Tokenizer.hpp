@@ -8,7 +8,7 @@
 
 namespace Tasks
 {
-  class InputParser : public ObjVal
+  class Tokenizer: public ObjVal
   {
   private:
     Charred* m_pCharred;  // parser
@@ -22,13 +22,14 @@ namespace Tasks
     void* operator new(size_t);
     void  operator delete(void*);
     
-    InputParser(void);
-    ~InputParser(void);
+    Tokenizer(void);
+    ~Tokenizer(void);
     
     void vPush(void);
     bool bPop(void);
     i8   iDepth(void);
     
+    void vLineMode(bool bLineMode);
     void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
     void vPrompt(const char* pPrompt);
@@ -39,6 +40,8 @@ namespace Tasks
     void vUseString(s& sString);
 
     eLT  eNextLiteral(char* wLiteral);
+    
+    bool bEOF(void);
     
   private:
     eLT  eNextNormal(char* wLiteral);

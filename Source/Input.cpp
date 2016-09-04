@@ -1,61 +1,50 @@
 /*============================================================================*/
-/* Input.cpp -- Input Processing                                              */
+/* Input2.cpp -- Input Processing                                             */
 /*============================================================================*/
 
-#include "Input.hpp"
+#include "Input2.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Input::Input(void)
+Input2::Input2(void)
 {
-  m_sPrompt     = "se> ";
-  m_sInputLine  = "";
-  m_iInputDepth = 0;
-  //m_xInputStream
+  m_xTokenizer.vMalloc(true);
+  m_xTokenizer.vPrompt("se.2> ");
+  
+  m_xTokenizer.vPush();
+  m_xTokenizer.vUseStdin();
+  m_xTokenizer.vLineMode(true);
+  m_xTokenizer.vBegin();
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Input::~Input(void)
+Input2::~Input2(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void Input::vNext(char* pWords[])
+void Input2::vNext(char* pWords[])
 {
-  InputStream* pInput;
-  
   while (true) {
    
     for (i8 i = 0; i < 16; i++)
       *pWords[i] = '\0';
     
-    pInput = pTopInput();
-    
-    if (pInput->bStdin()) {
-      pInput->vUseStdin(m_sInputLine);
-      pInput->bGetLine(m_sInputLine);
-      pInput->vUseText(m_sInputLine);
-    }
-    else {
-      pInput->vUseFile(m_sInputLine);
-      if (! pInput->bFirstChar() ) {
-        if ( ! pInput->bGetLine(m_sInputLine) ) {
-          vPopFile();
-          continue;
-        }
-      }
-      pInput->vUseText(m_sInputLine);
-    }
-    
     i8 i = 0;
-    while (LT_NONE != pInput->eNextLiteral(pWords[i])) {
+    while (LT_NONE != m_xTokenizer.eNextLiteral(pWords[i])) {
       //vTrace("Word [%lld] %s\n",i,pWords[i]);
       i++;
+      ASSERT(i < 16);
+    }
+    
+    if (m_xTokenizer.bEOF()) {
+      vPopFile();
+      continue;
     }
     
     break;
@@ -66,7 +55,7 @@ void Input::vNext(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void Input::vInit(char* wWorkarea, char* pWords[])
+void Input2::vInit(char* wWorkarea, char* pWords[])
 {
   pWords[0]  = &wWorkarea[C_1KB * 0];
   pWords[1]  = &wWorkarea[C_1KB * 1];
@@ -84,60 +73,61 @@ void Input::vInit(char* wWorkarea, char* pWords[])
   pWords[13] = &wWorkarea[C_1KB * 13];
   pWords[14] = &wWorkarea[C_1KB * 14];
   pWords[15] = &wWorkarea[C_1KB * 15];
- 
-  InputStream* pInput = pTopInput();
-
-  pInput->vUseStdin(m_sInputLine);
-  pInput->vPrompt(m_sPrompt.a());
-}
+ }
 
 /*----------------------------------------------------------------------------*/
-/* set prmpt                                                                  */
+/* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Input::vPrompt(const char* wPrompt)
+void Input2::vPrompt(const char* wPrompt)
 {
-  m_sPrompt = wPrompt;
+  m_xTokenizer.vPrompt("se.2> ");
+}
+
+/*----------------------------------------------------------------------------*/
+/* get EOF?                                                                   */
+/*----------------------------------------------------------------------------*/
+bool Input2::bEOF(void)
+{
+  bool bEOF = m_xTokenizer.bEOF();
+  
+  return bEOF;
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void Input2::vLineMode(bool bLineMode)
+{
+  m_xTokenizer.vLineMode(bLineMode);
+}
 
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void Input::vPushFile(char* pWord)
+void Input2::vPushFile(char* pPath)
 {
-  ASSERT(m_iInputDepth < C_INPUT_DEPTH - 1);
-  m_iInputDepth++;
+  s256 sPath(pPath);
   
-  InputStream* pInput = &m_xInputStream[m_iInputDepth];
+  m_xTokenizer.vPush();
   
-  bool b = pInput->bOpenFile(m_sInputLine,pWord);
+  bool b = m_xTokenizer.bUseFile(sPath);
   ASSERT(b);
   
+  m_xTokenizer.vBegin();
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop command file                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vPopFile(void)
+void Input2::vPopFile(void)
 {
-  ASSERT(m_iInputDepth);
+  bool b = m_xTokenizer.bPop();
   
-  InputStream* pInput = &m_xInputStream[m_iInputDepth];
-  
-  pInput->vCloseFile();
-  
-  m_iInputDepth--;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current input stream                                                   */
-/*----------------------------------------------------------------------------*/
-InputStream* Input::pTopInput(void)
-{
-  return &m_xInputStream[m_iInputDepth];
+  ASSERT(b);
 }
 
 /*============================================================================*/

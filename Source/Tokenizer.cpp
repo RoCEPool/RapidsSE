@@ -67,7 +67,7 @@ void InputParser::vPush(void)
 bool InputParser::bPop(void)
 {
   if (m_pCharred) {
-    if (1 == m_pCharred->iDepth()) {
+    if (0 == m_pCharred->iDepth()) {
       delete m_pCharred;
       m_pCharred = nullptr;
       return true;
@@ -92,6 +92,14 @@ i8 InputParser::iDepth(void)
     iParserDepth = m_pCharred->iDepth();
   
   return iParserDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void InputParser::vLineMode(bool bLineMode)
+{
+  m_pCharred->vLineMode(bLineMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +173,17 @@ eLT InputParser::eNextLiteral(char* wLiteral)
   
   return eLiteral;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get EOF?                                                                   */
+/*----------------------------------------------------------------------------*/
+bool InputParser::bEOF(void)
+{
+  bool bEOF = m_pCharred->bEOF();
+  
+  return bEOF;
+}
+
 
 
 // private: ////////////////////////////////////////////////////////////////////
@@ -243,7 +262,7 @@ eLT InputParser::eParseSpecial(char* wLiteral)
   vSkipWhitespace();
   
   // end of input?
-  if (! bEndInput()) {
+  if (bEndInput()) {
     *wLiteral = '\0';
     return LT_NONE;
   }
