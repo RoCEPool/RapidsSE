@@ -333,7 +333,7 @@ void Task::vAddConstants(void)
   /* 10 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
   /* 11 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPool));
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLITER",    sizeof(BufferPoolAnalyzer));
-  /* 13 */ vAddConstant("SIZEOF_CHARRED",           sizeof(Parser));
+  /* 13 */ vAddConstant("SIZEOF_PARSER",            sizeof(Parser));
   /* 14 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
   /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
   /* 16 */ vAddConstant("SIZEOF_FILE",              sizeof(File));

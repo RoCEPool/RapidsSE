@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Charred.cpp -- input parser, removing line and block comments              */
+/* Parser.cpp -- input parser, removing line and block comments              */
 /*============================================================================*/
 #pragma once
 

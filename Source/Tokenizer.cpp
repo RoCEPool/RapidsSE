@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* InputStream.cpp - Input Stream Handler                                     */
+/* Tokenizer.cpp -- Tokenizer : divide input stream into tokens               */
 /*============================================================================*/
 
 #include "Tasks.h"
@@ -32,11 +32,10 @@ void Tokenizer::operator delete(void*)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tokenizer::Tokenizer(void)
-: ObjVal(sizeof(Tokenizer))
 {
-  m_pCharred = nullptr;
-  m_bMalloc  = false;
-  m_bNormal  = false;
+  m_pParser = nullptr;
+  m_bMalloc = false;
+  m_bNormal = false;
   
   //m_sPrompt
 }
@@ -53,12 +52,12 @@ Tokenizer::~Tokenizer(void)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vPush(void)
 {
-  if (m_pCharred)
-    m_pCharred->vPush();
+  if (m_pParser)
+    m_pParser->vPush();
   else
-    m_pCharred = new(m_bMalloc) Parser;
+    m_pParser = new(m_bMalloc) Parser;
     
-  m_pCharred->vPrompt(m_sPrompt);
+  m_pParser->vPrompt(m_sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,14 +65,14 @@ void Tokenizer::vPush(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bPop(void)
 {
-  if (m_pCharred) {
-    if (0 == m_pCharred->iDepth()) {
-      delete m_pCharred;
-      m_pCharred = nullptr;
+  if (m_pParser) {
+    if (0 == m_pParser->iDepth()) {
+      delete m_pParser;
+      m_pParser = nullptr;
       return true;
     }
     else {
-      bool bPopped = m_pCharred->bPop();
+      bool bPopped = m_pParser->bPop();
       return bPopped;
     }
   }
@@ -88,8 +87,8 @@ i8 Tokenizer::iDepth(void)
 {
   i8 iParserDepth = 0;
   
-  if (m_pCharred)
-    iParserDepth = m_pCharred->iDepth();
+  if (m_pParser)
+    iParserDepth = m_pParser->iDepth();
   
   return iParserDepth;
 }
@@ -99,7 +98,7 @@ i8 Tokenizer::iDepth(void)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vLineMode(bool bLineMode)
 {
-  m_pCharred->vLineMode(bLineMode);
+  m_pParser->vLineMode(bLineMode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,7 +130,7 @@ void Tokenizer::vPrompt(const char* pPrompt)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bUseFile(s& sPath)
 {
-  bool bOpened = m_pCharred->bUseFile(sPath);
+  bool bOpened = m_pParser->bUseFile(sPath);
   
   return bOpened;
 }
@@ -141,7 +140,7 @@ bool Tokenizer::bUseFile(s& sPath)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vUseStdin(void)
 {
-  m_pCharred->vUseStdin();
+  m_pParser->vUseStdin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +148,7 @@ void Tokenizer::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vUseString(s& sString)
 {
-  m_pCharred->vUseString(sString);
+  m_pParser->vUseString(sString);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +178,7 @@ eLT Tokenizer::eNextLiteral(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bEOF(void)
 {
-  bool bEOF = m_pCharred->bEOF();
+  bool bEOF = m_pParser->bEOF();
   
   return bEOF;
 }
@@ -546,7 +545,7 @@ bool Tokenizer::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vGetChar(void)
 {
-  m_cCurrChar = m_pCharred->cGet();
+  m_cCurrChar = m_pParser->cGet();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,7 +553,7 @@ void Tokenizer::vGetChar(void)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vUngetChar(void)
 {
-  m_pCharred->vUnget(m_cCurrChar);
+  m_pParser->vUnget(m_cCurrChar);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -40,6 +40,8 @@
 #include "Timer.hpp"
 #include "Since.hpp"
 
+#include "Parser.hpp"
+#include "Tokenizer.hpp"
 
 
 //-----------------------------------------------------------------------------
@@ -49,7 +51,6 @@ namespace Common
 }
 
 using namespace Common;
-#include "Parser.hpp"
 
 /*============================================================================*/
 /* end                                                                        */

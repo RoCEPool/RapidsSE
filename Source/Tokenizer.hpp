@@ -1,17 +1,35 @@
 /*============================================================================*/
-/* InputStream.hpp - Input Stream Handler                                     */
+/* Tokenizer.hpp -- Tokenizer : divide input stream into tokens               */
 /*============================================================================*/
 
 #pragma once
 
-#include "Tasks.h"
+#include "Common.h"
 
-namespace Tasks
+namespace Common
 {
-  class Tokenizer: public ObjVal
+  enum eLT // literal type
+  {
+    /*  0 */ LT_NONE=0,  // none
+    /*  1 */ LT_NAMELIT, // name literal, e.g. WASHER or ++ etc
+    /*  2 */ LT_INTLIT,  // int literal, e.g. 1, 42
+    /*  3 */ LT_STRLIT,  // str litera, e.g. "the answer"
+    /*  4 */ LT_ENUMS
+  };
+  
+  static const char *pLT[]
+  {
+    /*  0 */ "NONE",
+    /*  1 */ "NAMELIT",
+    /*  2 */ "INTLIT",
+    /*  3 */ "STRLIT",
+    /*  4 */ "ENUMS",
+  };
+  class Tokenizer : public mn,
+                    public cn
   {
   private:
-    Parser* m_pCharred;  // parser
+    Parser* m_pParser;   // parser
     bool    m_bMalloc;   // malloc or pool heap?
     bool    m_bNormal;   // normal tokens?
     

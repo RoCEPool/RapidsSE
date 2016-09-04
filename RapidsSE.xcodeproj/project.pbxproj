@@ -273,8 +273,8 @@
 		F22056DC1D62F11400E8EF5B /* lock.sen */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lock.sen; path = Commands/lock.sen; sourceTree = "<group>"; };
 		F225274D1D78035B0086D20A /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Parser.cpp; path = Source/Parser.cpp; sourceTree = "<group>"; };
 		F225274E1D78035B0086D20A /* Parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Parser.hpp; path = Source/Parser.hpp; sourceTree = "<group>"; };
-		F22527511D792A710086D20A /* Tokenizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tokenizer.cpp; sourceTree = "<group>"; };
-		F22527521D792A710086D20A /* Tokenizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tokenizer.hpp; sourceTree = "<group>"; };
+		F22527511D792A710086D20A /* Tokenizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tokenizer.cpp; path = Source/Tokenizer.cpp; sourceTree = "<group>"; };
+		F22527521D792A710086D20A /* Tokenizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Tokenizer.hpp; path = Source/Tokenizer.hpp; sourceTree = "<group>"; };
 		F226E7131D3F3F6700E10FC3 /* Dictionaries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dictionaries.h; sourceTree = "<group>"; };
 		F226E71A1D3F6E2300E10FC3 /* GlobalDictionary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalDictionary.cpp; sourceTree = "<group>"; };
 		F226E71B1D3F6E2300E10FC3 /* GlobalDictionary.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GlobalDictionary.hpp; sourceTree = "<group>"; };
@@ -643,8 +643,6 @@
 			children = (
 				F21D297F1D0773B4000F8C45 /* Tasks.h */,
 				F2389CCD1D477280008DF3D9 /* Tasks.cpp */,
-				F22527511D792A710086D20A /* Tokenizer.cpp */,
-				F22527521D792A710086D20A /* Tokenizer.hpp */,
 				F2EC32D41D2DB24F00791294 /* InputStream.cpp */,
 				F2EC32D51D2DB24F00791294 /* InputStream.hpp */,
 				98C42CE11D0069D1007DD84F /* Task.cpp */,
@@ -1057,6 +1055,8 @@
 				F21D29AA1D0E0E15000F8C45 /* Time_se.hpp */,
 				F24D1FBC1D64009A005031F5 /* Timer.cpp */,
 				F24D1FBD1D64009A005031F5 /* Timer.hpp */,
+				F22527511D792A710086D20A /* Tokenizer.cpp */,
+				F22527521D792A710086D20A /* Tokenizer.hpp */,
 			);
 			name = Common;
 			sourceTree = SOURCE_ROOT;
