@@ -88,12 +88,15 @@ namespace Tasks
     
     Stack  m_xParamStack;  // parameter stack
     Stack  m_xReturnStack; // return stack
-    
-    s256  m_sInputLine;    // input line buffer
+
+    s256  m_sLambda;       // lambda input
     s256  m_sLiteral;      // current literal
     eLT   m_eLiteral;      // literal type
     InputStream m_xInputStream; // input stream parser
-//    InputParser m_xInputParser; // input stream parser
+    
+    Tokenizer m_xTokenizer; // input stream tokenizer
+    s256      m_sToken;     // current token
+    eLT       m_eToken;     // token type
     
     union {
       Cell*       m_pCell;
@@ -130,8 +133,8 @@ namespace Tasks
     
     Task(void);
     Task(NNP_Task nnpTask);
-    Task(const char* aCommand);
-    void vInit(const char* aCommand);
+    Task(const char* aLambda);
+    void vInit(const char* aLambda);
     ~Task(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);

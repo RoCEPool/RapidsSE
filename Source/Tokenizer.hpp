@@ -52,6 +52,7 @@ namespace Common
     void vNormal(bool bNormal);
     void vPrompt(const char* pPrompt);
     void vBegin(void);
+    void vEnd(void);
     
     bool bUseFile(s& sPath);
     void vUseStdin(void);
