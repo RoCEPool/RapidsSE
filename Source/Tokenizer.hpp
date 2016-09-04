@@ -51,8 +51,8 @@ namespace Common
     void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
     void vPrompt(const char* pPrompt);
-    void vBegin(void);
-    void vEnd(void);
+    void vBeginTokenizing(void);
+    void vEndTokenizing(void);
     
     bool bUseFile(s& sPath);
     void vUseStdin(void);

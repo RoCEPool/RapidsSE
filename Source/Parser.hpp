@@ -24,7 +24,7 @@ namespace Common
     eIS     m_eSource;   // what source are we parsing? given file or given string?
     File    m_xFile;     // given file
     bool    m_bEOF;      // eof hit?
-    s256    m_sRawLine;  // either line read from file or the given string being parsed
+    s8K     m_sRawLine;  // either line read from file or the given string being parsed
     char*   m_aRawLine;  // ptr into m_sLine.a() -- debug help
     char*   m_pRawInput; // next input char (ptr into line)
     bool    m_bLineMode; // line mode

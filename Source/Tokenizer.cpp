@@ -154,15 +154,17 @@ void Tokenizer::vUseString(s& sString)
 /*----------------------------------------------------------------------------*/
 /* begin                                                                      */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vBegin(void)
+void Tokenizer::vBeginTokenizing(void)
 {
+  m_pParser->vBeginParsing();
 }
 
 /*----------------------------------------------------------------------------*/
 /* end                                                                        */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vEnd(void)
+void Tokenizer::vEndTokenizing(void)
 {
+  m_pParser->vEndParsing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -351,7 +353,7 @@ eLT Tokenizer::eParseSpecialName(char* wLiteral)
   ASSERT(bStartSpecialName());
   
   // collect the characters of the name
-  while ( !bIsWhite() && !bStartSpecialString() ) {
+  while ( !bEOF() && !bIsWhite() && !bStartSpecialString() ) {
     *z++ = m_cCurrChar;
     vGetChar();
   }

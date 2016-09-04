@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #define USE_INPUTSTREAM
-//#define USE_TOKENIZER
 
 #include "StorageEngine.h"
 //#include "Tasks.h"
@@ -167,7 +166,7 @@ void Task::vInit(const char* aLambda)
   m_eToken     = LT_NONE;
   m_xTokenizer.vPush();
   m_xTokenizer.vUseString(m_sLambda);
-  m_xTokenizer.vBegin();
+  m_xTokenizer.vBeginTokenizing();
   
   m_xInputStream.vUseText(m_sLambda);
   m_sLiteral = "";
@@ -175,6 +174,22 @@ void Task::vInit(const char* aLambda)
   
   m_pSEitf   = nullptr;
 }
+
+/*----------------------------------------------------------------------------*/
+/* add initial set of words into dictionary                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vInitialiseDictionary(void)
+{
+  vAddPrimitives();
+  
+  vAddConstants();
+  
+  vAddRoutines();
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add constant                                                               */
@@ -905,6 +920,12 @@ void Task::vAddRoutines(void)
   s16K sDefinition;
 
   sDefinition =
+  ": __nil ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
   ": docol "
   
   "  retryPoint"
@@ -1044,6 +1065,7 @@ void Task::vAddRoutines(void)
   "  gwd ."
   "  \"../../../commands\" cwd"
   "  gwd ."
+//  "  traceon"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" ."
   "  ::exit"
@@ -1072,18 +1094,23 @@ Word* Task::pCompileColon(s& sDefinition)
   
   m_xInputStream.vUseText(sDefinition);
   m_xTokenizer.vUseString(sDefinition);
+  m_xTokenizer.vBeginTokenizing();
   
   // get :
   vLiteralNext();
+  vTrace("CompileColon: %s\n",m_sLiteral.a());
   
   // get name of word
   vLiteralNext();
+  vTrace("CompileColon: %s\n",m_sLiteral.a());
   
   pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sLiteral.a());
   
   vLiteralNext();
   
   while (LT_NONE != m_eLiteral) {
+    
+    vTrace("CompileColon: %s\n",m_sLiteral.a());
     
     if (String::bEqualTo(";",m_sLiteral.a()))
       break;
@@ -1132,7 +1159,7 @@ Word* Task::pCompileColon(s& sDefinition)
   // reset scanning
   m_xInputStream.vReset();
   
-  m_xTokenizer.vEnd();
+  m_xTokenizer.vEndTokenizing();
   
   return pNewWord;
 }
@@ -1405,18 +1432,6 @@ bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const
 
 
 /*----------------------------------------------------------------------------*/
-/* add initial set of words into dictionary                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vInitialiseDictionary(void)
-{
-  vAddPrimitives();
-
-  vAddConstants();
-  
-  vAddRoutines();
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsName(s& sName)
@@ -1506,6 +1521,7 @@ void Task::vSeedDicCompileSen(void)
   m_xInputStream.vUseText(m_sLambda);
   
   m_xTokenizer.vUseString(m_sLambda);
+  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1528,6 +1544,7 @@ void Task::vSeedWord(const char* aLambda)
   m_xInputStream.vUseText(m_sLambda);
   
   m_xTokenizer.vUseString(m_sLambda);
+  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1548,6 +1565,7 @@ void Task::vSeedDocol(void)
   m_xInputStream.vUseText(m_sLambda);
   
   m_xTokenizer.vUseString(m_sLambda);
+  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3283,153 +3301,6 @@ void Task::vImmediate(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.close -- close current input                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vInputClose(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputClose");
-  
-#ifdef USE_INPUTSTREAM
-  nnpTask->m_xInputStream.vCloseFile();
-#else
-  nnpTask->m_xTokenizer.vEnd();
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* input.depth -- push current depth of input onto param stack                */
-/*----------------------------------------------------------------------------*/
-void Task::vInputDepth(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputDepth");
-
-#ifdef USE_INPUTSTREAM
-  i8 iDepth = nnpTask->m_xInputStream.iDepth();
-#else
-  i8 iDepth = nnpTask->m_xTokenizer.iDepth();
-#endif
-  
-  nnpTask->vPushParam(iDepth);
-}
-
-/*----------------------------------------------------------------------------*/
-/* input.open -- open new input using filepath on param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vInputOpen(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputOpen");
-  
-  s256 sFilePath;
-  
-  if ( ! nnpTask->bPopParam(sFilePath) )
-    THROW_INVALID_PARAM("input.open");
-  
-#ifdef USE_INPUTSTREAM
-  bool bOpened = nnpTask->m_xInputStream.bOpenFile(nnpTask->m_sLambda,
-                                                   sFilePath.a());
-#else
-  nnpTask->m_xTokenizer.vPush();
-  bool bOpened = nnpTask->m_xTokenizer.bUseFile(sFilePath);
-#endif
-  
-  if ( ! bOpened )
-    THROW("No such file: %s",sFilePath.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* input.pop -- pop previous input from return stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vInputPop(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputPop");
-  
-#ifdef USE_INPUTSTREAM
-  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
-  
-  bool bPopped = nnpTask->bPopReturn(nnpTask->m_xInputStream);
-  ASSERT(bPopped);
-  
-  ASSERT(iInputDepth = nnpTask->m_xInputStream.iDepth() + 1);
-
-  bPopped = nnpTask->bPopReturn(nnpTask->m_sLambda);
-  
-  ASSERT(bPopped);
-#else
-  i8 iDepth = nnpTask->m_xInputStream.iDepth();
-
-  bool bPopped = nnpTask->m_xTokenizer.bPop();
-  ASSERT(bPopped);
-  
-  ASSERT(iDepth = nnpTask->m_xInputStream.iDepth() + 1);
-#endif
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* input.push -- push current input onto return stack (resets input)          */
-/*----------------------------------------------------------------------------*/
-void Task::vInputPush(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputPush");
-  
-#ifdef USE_INPUTSTREAM
-  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
-  
-  nnpTask->vPushReturn(nnpTask->m_sLambda);
-
-  nnpTask->vPushReturn(nnpTask->m_xInputStream);
-  
-  nnpTask->m_xInputStream.vReset();
-  
-  nnpTask->m_xInputStream.vDepth(iInputDepth + 1);
-#else
-
-  nnpTask->m_xTokenizer.vPush();
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* input.stdin -- set input to stdin                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vInputStdin(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputStdin");
-  
-#ifdef USE_INPUTSTREAM
-  //nnpTask->vPushReturn(nnpTask->m_xInputStream);
-  
-  nnpTask->m_xInputStream.vReset();
-  
-  nnpTask->m_xInputStream.vUseStdin(nnpTask->m_sLambda);
-#else
-  
-  nnpTask->m_xTokenizer.vUseStdin();
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* input.text -- redirect input parsining to string on param stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vInputText(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vInputText");
-  
-  s256 sInput;
-  
-  if ( ! nnpTask->bPopParam(sInput) )
-    THROW_INVALID_PARAM("input.text");
-    
-  nnpTask->m_sLambda = sInput;
-  
-#ifdef USE_INPUTSTREAM
-  nnpTask->m_xInputStream.vUseText(nnpTask->m_sLambda);
-#else
-  
-  nnpTask->m_xTokenizer.vUseString(sInput);
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
 /* interpreting -- enter interpreting mode                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vInterpreting(NNP_Task nnpTask)
@@ -3707,56 +3578,6 @@ void Task::vLiteral(NNP_Task nnpTask)
   nnpTask->vPrimitive("vLiteral");
   
   nnpTask->vPushParam(nnpTask->m_sLiteral.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* literalGet -- get next literal and push onto stack                         */
-/*----------------------------------------------------------------------------*/
-void Task::vLiteralGet(NNP_Task nnpTask)
-{
-  ASSERT(0);
-  
-  nnpTask->vPrimitive("vLiteralGet");
-  
-  char* aLiteral = nnpTask->m_sLiteral.a();
-  
-  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
-  
-  nnpTask->vPushParam(nnpTask->m_sLiteral.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* litNext -- get next literal                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vLitNext(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vLitNext");
-  
-  if (nnpTask->m_bTracing)
-    ASSERT(nnpTask->m_bTracing);
-  
-  // litNext is only used in docol
-  
-  char* aLiteral = nnpTask->m_sLiteral.a();
-  
-#ifdef USE_INPUTSTREAM
-  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
-#else
-  nnpTask->m_eLiteral = nnpTask->m_xTokenizer.eNextLiteral(aLiteral);
-  
-#endif
-}
-
-/*----------------------------------------------------------------------------*/
-/* litType -- push literal type                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vLitType(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vLitType");
-  
-  eLT eLiteralType = nnpTask->m_eLiteral;
-  
-  nnpTask->vPushParam(eLiteralType);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6172,6 +5993,205 @@ void Task::vGridInit(NNP_Task nnpTask)
   new(pGrid) Grid;
 
   pGrid->vInit();
+}
+
+// input: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* input.close -- close current input                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vInputClose(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputClose");
+  
+#ifdef USE_INPUTSTREAM
+  nnpTask->m_xInputStream.vCloseFile();
+#else
+  nnpTask->m_xTokenizer.vEndTokenizing();
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.depth -- push current depth of input onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vInputDepth(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputDepth");
+  
+#ifdef USE_INPUTSTREAM
+  i8 iDepth = nnpTask->m_xInputStream.iDepth();
+#else
+  i8 iDepth = nnpTask->m_xTokenizer.iDepth();
+#endif
+  
+  nnpTask->vPushParam(iDepth);
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.open -- open new input using filepath on param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vInputOpen(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputOpen");
+  
+  s256 sFilePath;
+  
+  if ( ! nnpTask->bPopParam(sFilePath) )
+    THROW_INVALID_PARAM("input.open");
+  
+#ifdef USE_INPUTSTREAM
+  bool bOpened = nnpTask->m_xInputStream.bOpenFile(nnpTask->m_sLambda,
+                                                   sFilePath.a());
+#else
+  //nnpTask->m_xTokenizer.vPush();
+  bool bOpened = nnpTask->m_xTokenizer.bUseFile(sFilePath);
+#endif
+  
+  if ( ! bOpened )
+    THROW("No such file: %s",sFilePath.a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.pop -- pop previous input from return stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vInputPop(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputPop");
+  
+#ifdef USE_INPUTSTREAM
+  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
+  
+  bool bPopped = nnpTask->bPopReturn(nnpTask->m_xInputStream);
+  ASSERT(bPopped);
+  
+  ASSERT(iInputDepth = nnpTask->m_xInputStream.iDepth() + 1);
+  
+  bPopped = nnpTask->bPopReturn(nnpTask->m_sLambda);
+  
+  ASSERT(bPopped);
+#else
+  i8 iDepth = nnpTask->m_xInputStream.iDepth();
+  
+  bool bPopped = nnpTask->m_xTokenizer.bPop();
+  ASSERT(bPopped);
+  
+  ASSERT(iDepth = nnpTask->m_xInputStream.iDepth() + 1);
+#endif
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.push -- push current input onto return stack (resets input)          */
+/*----------------------------------------------------------------------------*/
+void Task::vInputPush(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputPush");
+  
+#ifdef USE_INPUTSTREAM
+  i8 iInputDepth = nnpTask->m_xInputStream.iDepth();
+  
+  nnpTask->vPushReturn(nnpTask->m_sLambda);
+  
+  nnpTask->vPushReturn(nnpTask->m_xInputStream);
+  
+  nnpTask->m_xInputStream.vReset();
+  
+  nnpTask->m_xInputStream.vDepth(iInputDepth + 1);
+#else
+  
+  nnpTask->m_xTokenizer.vPush();
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.stdin -- set input to stdin                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vInputStdin(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputStdin");
+  
+#ifdef USE_INPUTSTREAM
+  //nnpTask->vPushReturn(nnpTask->m_xInputStream);
+  
+  nnpTask->m_xInputStream.vReset();
+  
+  nnpTask->m_xInputStream.vUseStdin(nnpTask->m_sLambda);
+#else
+  
+  nnpTask->m_xTokenizer.vUseStdin();
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* input.text -- redirect input parsining to string on param stack            */
+/*----------------------------------------------------------------------------*/
+void Task::vInputText(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputText");
+  
+  s256 sInput;
+  
+  if ( ! nnpTask->bPopParam(sInput) )
+    THROW_INVALID_PARAM("input.text");
+  
+  nnpTask->m_sLambda = sInput;
+  
+#ifdef USE_INPUTSTREAM
+  nnpTask->m_xInputStream.vUseText(nnpTask->m_sLambda);
+#else
+  
+  nnpTask->m_xTokenizer.vUseString(sInput);
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* literalGet -- get next literal and push onto stack                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLiteralGet(NNP_Task nnpTask)
+{
+  ASSERT(0);
+  
+  nnpTask->vPrimitive("vLiteralGet");
+  
+  char* aLiteral = nnpTask->m_sLiteral.a();
+  
+  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
+  
+  nnpTask->vPushParam(nnpTask->m_sLiteral.a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* litNext -- get next literal                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vLitNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLitNext");
+  
+  if (nnpTask->m_bTracing)
+    ASSERT(nnpTask->m_bTracing);
+  
+  // litNext is only used in docol
+  
+  char* aLiteral = nnpTask->m_sLiteral.a();
+  
+#ifdef USE_INPUTSTREAM
+  nnpTask->m_eLiteral = nnpTask->m_xInputStream.eNextLiteral(aLiteral);
+#else
+  nnpTask->m_eLiteral = nnpTask->m_xTokenizer.eNextLiteral(aLiteral);
+  
+#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* litType -- push literal type                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vLitType(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vLitType");
+  
+  eLT eLiteralType = nnpTask->m_eLiteral;
+  
+  nnpTask->vPushParam(eLiteralType);
 }
 
 // loader: /////////////////////////////////////////////////////////////////////

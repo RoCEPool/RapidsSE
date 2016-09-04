@@ -5,7 +5,7 @@
 #include "Common.h"
 #include "StorageEngine.h"
 
-extern Heap* gpSmallHeap;
+extern Heap* gpMediumHeap;
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -17,7 +17,7 @@ void* Parser::operator new(size_t, bool bMalloc)
   if (bMalloc)
     pParser = reinterpret_cast<Parser*>(malloc(sizeof(Parser)));
   else
-    pParser = reinterpret_cast<Parser*>(gpSmallHeap->pAllocObject());
+    pParser = reinterpret_cast<Parser*>(gpMediumHeap->pAllocObject());
   
   pParser->m_bMalloc = bMalloc;
   
@@ -34,7 +34,7 @@ void Parser::operator delete(void* pParserAddress)
   if (pParser->m_bMalloc)
     free(pParser);
   else
-    gpSmallHeap->vFreeObject((Object*)pParser);
+    gpMediumHeap->vFreeObject((Object*)pParser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,6 +66,9 @@ Parser::~Parser(void)
 void Parser::vBeginParsing(void)
 {
   ASSERT(IS_NONE != m_eSource);
+  
+  m_bEOF = false;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -607,6 +610,7 @@ char Parser::cFromRawInput(void)
       
     case IS_STRING:
       c = '\0';
+      m_bEOF = true;
       break;
       
     default:

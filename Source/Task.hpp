@@ -305,13 +305,6 @@ namespace Tasks
     static void vI(NNP_Task nnpTask);
     static void vIf(NNP_Task nnpTask);             
     static void vImmediate(NNP_Task nnpTask);      
-    static void vInputClose(NNP_Task nnpTask);     
-    static void vInputDepth(NNP_Task nnpTask);     
-    static void vInputOpen(NNP_Task nnpTask);      
-    static void vInputPop(NNP_Task nnpTask);       
-    static void vInputPush(NNP_Task nnpTask);      
-    static void vInputStdin(NNP_Task nnpTask);     
-    static void vInputText(NNP_Task nnpTask);      
     static void vIterate(NNP_Task nnpTask);
     static void vIterate_RT_A(NNP_Task nnpTask);
     static void vIterate_RT_B(NNP_Task nnpTask);
@@ -330,11 +323,7 @@ namespace Tasks
     static void vJumpTrue(NNP_Task nnpTask);       
     static void vLess(NNP_Task nnpTask);           
     static void vLessEqual(NNP_Task nnpTask);      
-    static void vLiteral(NNP_Task nnpTask);        
-    static void vLiteralGet(NNP_Task nnpTask);
-    static void vLitNext(NNP_Task nnpTask);
-    static void vLitType(NNP_Task nnpTask);        
-    static void vLocate(NNP_Task nnpTask);         
+    static void vLocate(NNP_Task nnpTask);
     static void vLoop(NNP_Task nnpTask);           
     static void vLoop_RT(NNP_Task nnpTask);        
     static void vLoopPlus(NNP_Task nnpTask);       
@@ -485,6 +474,20 @@ namespace Tasks
     // grid
     static void vGridAppendNode(NNP_Task nnpTask);
     static void vGridInit(NNP_Task nnpTask);
+    
+    // input
+    static void vInputClose(NNP_Task nnpTask);
+    static void vInputDepth(NNP_Task nnpTask);
+    static void vInputOpen(NNP_Task nnpTask);
+    static void vInputPop(NNP_Task nnpTask);
+    static void vInputPush(NNP_Task nnpTask);
+    static void vInputStdin(NNP_Task nnpTask);
+    static void vInputText(NNP_Task nnpTask);
+    
+    static void vLiteral(NNP_Task nnpTask);
+    static void vLiteralGet(NNP_Task nnpTask);
+    static void vLitNext(NNP_Task nnpTask);
+    static void vLitType(NNP_Task nnpTask);
     
     // loader
     static void vLoaderNew(NNP_Task nnpTask);

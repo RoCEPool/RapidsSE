@@ -12,7 +12,7 @@ void Common::vCheckAssumptions(void)
 {
   ASSERT(Process::bTestPid(Process::iGetPid()));
   
-  ASSERT(sizeof(Parser) < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(Parser) < C_SIZE_MEDIUM_OBJECT);
 }
 
 /*============================================================================*/
