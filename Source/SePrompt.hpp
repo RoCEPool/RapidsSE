@@ -6,7 +6,6 @@
 
 #include "Api.hpp"
 #include "Input.hpp"
-#include "Input2.hpp"
 #include "History.hpp"
 
 class SePrompt
@@ -16,7 +15,6 @@ private:
   SEitf*   m_pSEitf;     // interface into rapidsse
   
   Input    m_xInput;     // input processing
-  //Input2   m_xInput;     // input processing
   s8K      m_sResponse;  // response from seitf
   History  m_xHistory;   // command history
   

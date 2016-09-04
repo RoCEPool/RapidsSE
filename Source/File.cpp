@@ -598,6 +598,19 @@ void File::vUngetChar(char cChar)
     vWarn("File::vUngetChar: unget failed: '%c' %s\n",cChar,m_sFilePath.a());
 }
 
+/*----------------------------------------------------------------------------*/
+/* zero this structure -- used only in special/nesting cases                  */
+/*----------------------------------------------------------------------------*/
+void File::vZero(void)
+{
+  m_xSysCall.vClear();
+  
+  m_sFilePath   = "";
+  m_sOpenMode   = "";
+  m_iTraceLevel = 0;
+  m_pFilePtr    = nullptr;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

@@ -277,6 +277,7 @@ void SePrompt::vProcess(void)
   
   if (bTestFile(m_pWords[0])) {
     m_xInput.vPushFile(m_pWords[0]);
+    m_xInput.vLineMode(true);
     return;
   }
   

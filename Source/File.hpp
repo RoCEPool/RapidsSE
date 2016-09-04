@@ -72,6 +72,7 @@ namespace Common
     i8   iTraceLevel(void);
     void vTraceLevel(i8 iTraceLevel);
     void vUngetChar(char cChar);
+    void vZero(void);
   
   //    File(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel);
   //    File(FILE* pFile, const char* aFilePath, const char* saOpenMode, i8 iTraceLevel);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Charred.cpp -- input processor, removing line and block comments           */
+/* Charred.cpp -- input parser, removing line and block comments              */
 /*============================================================================*/
 #pragma once
 
@@ -17,22 +17,23 @@ namespace Common
   private:
     bool   m_bMalloc;   // is this object in malloc heap (or small heap)?
     i8     m_iDepth;    // depth of this parser
-    Charred* m_pChain;  // next chard in chain
-    
-    eIS    m_eSource;   // what source are we charring? given file or given string?
-    File   m_xFile;     // given file
-    s256   m_sString;   // either string read from file or given string being charred
-    char*  m_pChar;     // ptr into string
-    char*  m_pEnd;      // m_pChar must be < m_pEnd (note its not <=)
-    bool   m_bLineMode; // stdin line mode
-    bool   m_bPrompt;   // prompt user for more input
-    
+    Charred* m_pChain;  // next parser in push chain
     s256   m_sPrompt;   // user prompt when reading from stdin
+    
+    // input sources
+    eIS    m_eSource;   // what source are we parsing? given file or given string?
+    File   m_xFile;     // given file
+    bool   m_bEOF;      // eof hit?
+    s256   m_sRawLine;  // either line read from file or the given string being parsed
+    char*  m_aRawLine;  // ptr into m_sLine.a() -- debug help
+    char*  m_pRawInput; // next input char (ptr into line)
+    bool   m_bLineMode; // line mode
+    bool   m_bPrompt;   // prompt user for more input
 
-    // regs
-    i8     m_nChars;    // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
-    char   m_cOne;      // first single char buffer
-    char   m_cTwo;      // second single char buffer
+    // registers
+    i8     m_nLoaded;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
+    char   m_cFirst;    // first single char
+    char   m_cSecond;   // second single char
     eCT    m_eComment;  // comment type currently being processed
     
     
@@ -43,9 +44,10 @@ namespace Common
     Charred(void);
     ~Charred(void);
     
-    void vBeginUse(void);
-    void vEndUse(void);
+    void vBeginParsing(void);
+    void vEndParsing(void);
     void vPrompt(s& sPrompt);
+    void vLineMode(bool bLineMode);
     bool bUseFile(s& sPath);
     void vUseStdin(void);
     void vUseString(s& sString);
@@ -53,25 +55,27 @@ namespace Common
     char cGet(void);
     void vUnget(char c);
 
-    bool bNest(void);
     bool bPop(void);
     void vPush(void);
     i8   iDepth(void);
+    bool bEOF(void);
+    
+    void vZero(void);
     
   private:
     
     void vDepth(i8 iDepth);
+    void vResetParser(void);
     
     // Character Processing
-    void vClearRegs(void);
-    char cConsumeOne(void);
-    void vDiscardOne(void);
-    void vGetFirst(void);
-    void vGetMore(void);
-    void vGetSecond(void);
-    void vGetTwo(void);
-    void vResetAll(void);
-    void vRewindOne(char c);
+    void vClearRegisters(void);
+    char cConsumeFirst(void);
+    void vDiscardFirst(void);
+    void vLoadBoth(void);
+    void vLoadFirst(void);
+    void vLoadRegisters(void);
+    void vLoadSecond(void);
+    void vRewindRegisters(char c);
     
     // Comment Processing
     bool bBlockCommentEnd(void);
@@ -82,9 +86,10 @@ namespace Common
     bool bLineCommentEnd(void);
     void vLineCommentSkip(void);
     bool bLineCommentStart(void);
+    void vStripComment(void);
     
     // Reading
-    char  cNextChar(void);
+    char  cFromRawInput(void);
     void  vReadLineFile(void);
     void  vReadLineStdin(void);
   };

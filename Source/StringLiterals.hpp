@@ -7,6 +7,9 @@
 
 namespace Magic
 {
+  const char  C_END_OF_FILE = '\0';
+  const char  C_END_OF_LINE = '\n';
+  
   const char* pSingleTab(void);
   const char* pDoubleTab(void);
 }

@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* InputParser::operator new(size_t)
+void* Tokenizer::operator new(size_t)
 {
-  vFatal("fatal: InputParser class cannot be new'd");
+  vFatal("fatal: Tokenizer class cannot be new'd");
   
   //vExitFatal();
   
@@ -19,9 +19,9 @@ void* InputParser::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void InputParser::operator delete(void*)
+void Tokenizer::operator delete(void*)
 {
-  vFatal("fatal: InputParser class cannot be deleted");
+  vFatal("fatal: Tokenizer class cannot be deleted");
   
   //vExitFatal();
   
@@ -31,8 +31,8 @@ void InputParser::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-InputParser::InputParser(void)
-: ObjVal(sizeof(InputParser))
+Tokenizer::Tokenizer(void)
+: ObjVal(sizeof(Tokenizer))
 {
   m_pCharred = nullptr;
   m_bMalloc  = false;
@@ -44,14 +44,14 @@ InputParser::InputParser(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-InputParser::~InputParser(void)
+Tokenizer::~Tokenizer(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/
-void InputParser::vPush(void)
+void Tokenizer::vPush(void)
 {
   if (m_pCharred)
     m_pCharred->vPush();
@@ -64,7 +64,7 @@ void InputParser::vPush(void)
 /*----------------------------------------------------------------------------*/
 /* pop a parser                                                               */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bPop(void)
+bool Tokenizer::bPop(void)
 {
   if (m_pCharred) {
     if (0 == m_pCharred->iDepth()) {
@@ -84,7 +84,7 @@ bool InputParser::bPop(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of parser                                                        */
 /*----------------------------------------------------------------------------*/
-i8 InputParser::iDepth(void)
+i8 Tokenizer::iDepth(void)
 {
   i8 iParserDepth = 0;
   
@@ -97,7 +97,7 @@ i8 InputParser::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void InputParser::vLineMode(bool bLineMode)
+void Tokenizer::vLineMode(bool bLineMode)
 {
   m_pCharred->vLineMode(bLineMode);
 }
@@ -105,7 +105,7 @@ void InputParser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* set malloc flag                                                            */
 /*----------------------------------------------------------------------------*/
-void InputParser::vMalloc(bool bMalloc)
+void Tokenizer::vMalloc(bool bMalloc)
 {
   m_bMalloc = bMalloc;
 }
@@ -113,7 +113,7 @@ void InputParser::vMalloc(bool bMalloc)
 /*----------------------------------------------------------------------------*/
 /* set normal token flag                                                      */
 /*----------------------------------------------------------------------------*/
-void InputParser::vNormal(bool bNormal)
+void Tokenizer::vNormal(bool bNormal)
 {
   m_bNormal = bNormal;
 }
@@ -121,7 +121,7 @@ void InputParser::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void InputParser::vPrompt(const char* pPrompt)
+void Tokenizer::vPrompt(const char* pPrompt)
 {
   m_sPrompt = pPrompt;
 }
@@ -129,7 +129,7 @@ void InputParser::vPrompt(const char* pPrompt)
 /*----------------------------------------------------------------------------*/
 /* use file                                                                   */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bUseFile(s& sPath)
+bool Tokenizer::bUseFile(s& sPath)
 {
   bool bOpened = m_pCharred->bUseFile(sPath);
   
@@ -139,7 +139,7 @@ bool InputParser::bUseFile(s& sPath)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void InputParser::vUseStdin(void)
+void Tokenizer::vUseStdin(void)
 {
   m_pCharred->vUseStdin();
 }
@@ -147,7 +147,7 @@ void InputParser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use string                                                                 */
 /*----------------------------------------------------------------------------*/
-void InputParser::vUseString(s& sString)
+void Tokenizer::vUseString(s& sString)
 {
   m_pCharred->vUseString(sString);
 }
@@ -155,14 +155,14 @@ void InputParser::vUseString(s& sString)
 /*----------------------------------------------------------------------------*/
 /* begin                                                                      */
 /*----------------------------------------------------------------------------*/
-void InputParser::vBegin(void)
+void Tokenizer::vBegin(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse next literal into given buffer                                       */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eNextLiteral(char* wLiteral)
+eLT Tokenizer::eNextLiteral(char* wLiteral)
 {
   eLT eLiteral;
   
@@ -177,7 +177,7 @@ eLT InputParser::eNextLiteral(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* get EOF?                                                                   */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bEOF(void)
+bool Tokenizer::bEOF(void)
 {
   bool bEOF = m_pCharred->bEOF();
   
@@ -192,7 +192,7 @@ bool InputParser::bEOF(void)
 /*----------------------------------------------------------------------------*/
 /* parse next normal literal into given buffer                                */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eNextNormal(char* wLiteral)
+eLT Tokenizer::eNextNormal(char* wLiteral)
 {
   *wLiteral = '\0';
   
@@ -204,7 +204,7 @@ eLT InputParser::eNextNormal(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse next special literal into given buffer                               */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eNextSpecial(char* wLiteral)
+eLT Tokenizer::eNextSpecial(char* wLiteral)
 {
   *wLiteral = '\0';
 
@@ -221,7 +221,7 @@ eLT InputParser::eNextSpecial(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse normal                                                               */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseNormal(char* wLiteral)
+eLT Tokenizer::eParseNormal(char* wLiteral)
 {
   vSkipWhitespace();
   
@@ -231,7 +231,7 @@ eLT InputParser::eParseNormal(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse normal integer                                                       */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseNormalInteger(char* wLiteral)
+eLT Tokenizer::eParseNormalInteger(char* wLiteral)
 {
   return LT_NONE;
 }
@@ -239,7 +239,7 @@ eLT InputParser::eParseNormalInteger(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse normal name                                                          */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseNormalName(char* wLiteral)
+eLT Tokenizer::eParseNormalName(char* wLiteral)
 {
   return LT_NONE;
 }
@@ -247,7 +247,7 @@ eLT InputParser::eParseNormalName(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse normal string                                                        */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseNormalString(char* wLiteral)
+eLT Tokenizer::eParseNormalString(char* wLiteral)
 {
   return LT_NONE;
 }
@@ -255,7 +255,7 @@ eLT InputParser::eParseNormalString(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse special                                                              */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseSpecial(char* wLiteral)
+eLT Tokenizer::eParseSpecial(char* wLiteral)
 {
   vGetChar();
   
@@ -287,7 +287,7 @@ eLT InputParser::eParseSpecial(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse special integer                                                      */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseSpecialInteger(char* wLiteral)
+eLT Tokenizer::eParseSpecialInteger(char* wLiteral)
 {
   i8 iNoDigits = 0;
   char *z = wLiteral;
@@ -338,7 +338,7 @@ eLT InputParser::eParseSpecialInteger(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse special name                                                         */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseSpecialName(char* wLiteral)
+eLT Tokenizer::eParseSpecialName(char* wLiteral)
 {
   char *z = wLiteral;
   
@@ -362,7 +362,7 @@ eLT InputParser::eParseSpecialName(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse special string                                                       */
 /*----------------------------------------------------------------------------*/
-eLT InputParser::eParseSpecialString(char* wLiteral)
+eLT Tokenizer::eParseSpecialString(char* wLiteral)
 {
   char *z = wLiteral;
   
@@ -403,7 +403,7 @@ eLT InputParser::eParseSpecialString(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-void InputParser::vSkipWhitespace(void)
+void Tokenizer::vSkipWhitespace(void)
 {
   while ( m_cCurrChar && String::bIsWhite(m_cCurrChar) )
     vGetChar();
@@ -412,7 +412,7 @@ void InputParser::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal integer                                           */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bStartNormalInteger(void)
+bool Tokenizer::bStartNormalInteger(void)
 {
   if (String::bIsDigit(m_cCurrChar))
     return true;
@@ -423,7 +423,7 @@ bool InputParser::bStartNormalInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal name                                              */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bStartNormalName(void)
+bool Tokenizer::bStartNormalName(void)
 {
   if (bStartNormalInteger() || bStartNormalString())
     return false;
@@ -434,7 +434,7 @@ bool InputParser::bStartNormalName(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal string                                            */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bStartNormalString(void)
+bool Tokenizer::bStartNormalString(void)
 {
   if ('"' == m_cCurrChar)
     return true;
@@ -445,7 +445,7 @@ bool InputParser::bStartNormalString(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of normal string                                              */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bEndNormalString(void)
+bool Tokenizer::bEndNormalString(void)
 {
   if ('"' == m_cCurrChar)
     return true;
@@ -456,7 +456,7 @@ bool InputParser::bEndNormalString(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of special integer                                          */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bStartSpecialInteger(void)
+bool Tokenizer::bStartSpecialInteger(void)
 {
   if (String::bIsDigit(m_cCurrChar))
     return true;
@@ -467,7 +467,7 @@ bool InputParser::bStartSpecialInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of special name                                             */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bStartSpecialName(void)
+bool Tokenizer::bStartSpecialName(void)
 {
   if (bStartSpecialInteger() || bStartSpecialString())
     return false;
@@ -478,7 +478,7 @@ bool InputParser::bStartSpecialName(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of special string                                           */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bStartSpecialString(void)
+bool Tokenizer::bStartSpecialString(void)
 {
   if ('"' == m_cCurrChar)
     return true;
@@ -489,7 +489,7 @@ bool InputParser::bStartSpecialString(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of special string                                             */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bEndSpecialString(void)
+bool Tokenizer::bEndSpecialString(void)
 {
   if ('"' == m_cCurrChar)
     return true;
@@ -500,7 +500,7 @@ bool InputParser::bEndSpecialString(void)
 /*----------------------------------------------------------------------------*/
 /* test for a base-10 digit                                                   */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bIsDigit(void)
+bool Tokenizer::bIsDigit(void)
 {
   if (String::bIsDigit(m_cCurrChar))
     return true;
@@ -511,7 +511,7 @@ bool InputParser::bIsDigit(void)
 /*----------------------------------------------------------------------------*/
 /* test for a base-16 digit                                                   */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bIsHex(void)
+bool Tokenizer::bIsHex(void)
 {
   if (String::bIsHex(m_cCurrChar))
     return true;
@@ -522,7 +522,7 @@ bool InputParser::bIsHex(void)
 /*----------------------------------------------------------------------------*/
 /* test for an 'x' or 'X'                                                     */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bIsX(void)
+bool Tokenizer::bIsX(void)
 {
   if ('x' == m_cCurrChar || 'X' == m_cCurrChar)
     return true;
@@ -533,7 +533,7 @@ bool InputParser::bIsX(void)
 /*----------------------------------------------------------------------------*/
 /* test for a white character                                                 */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bIsWhite(void)
+bool Tokenizer::bIsWhite(void)
 {
   if (String::bIsWhite(m_cCurrChar))
     return true;
@@ -544,7 +544,7 @@ bool InputParser::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
-void InputParser::vGetChar(void)
+void Tokenizer::vGetChar(void)
 {
   m_cCurrChar = m_pCharred->cGet();
 }
@@ -552,7 +552,7 @@ void InputParser::vGetChar(void)
 /*----------------------------------------------------------------------------*/
 /* unget current input character                                              */
 /*----------------------------------------------------------------------------*/
-void InputParser::vUngetChar(void)
+void Tokenizer::vUngetChar(void)
 {
   m_pCharred->vUnget(m_cCurrChar);
 }
@@ -560,7 +560,7 @@ void InputParser::vUngetChar(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of input                                                      */
 /*----------------------------------------------------------------------------*/
-bool InputParser::bEndInput(void)
+bool Tokenizer::bEndInput(void)
 {
   if ('\0' == m_cCurrChar)
     return true;

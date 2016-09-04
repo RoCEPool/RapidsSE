@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Charred.cpp -- input processor, removing line and block comments           */
+/* Charred.cpp -- input processor, stripping out line and block comments      */
 /*============================================================================*/
 
 #include "Common.h"
@@ -18,6 +18,8 @@ void* Charred::operator new(size_t, bool bMalloc)
     pChard = reinterpret_cast<Charred*>(malloc(sizeof(Charred)));
   else
     pChard = reinterpret_cast<Charred*>(gpSmallHeap->pAllocObject());
+  
+  pChard->m_bMalloc = bMalloc;
   
   return pChard;
 }
@@ -42,10 +44,11 @@ Charred::Charred(void)
 : cn(CN_DIR)
 {
   //m_bMalloc set in new
-  m_iDepth = 1;
+  m_iDepth = 0;
+  m_bEOF   = false;
   m_pChain = nullptr;
   
-  vResetAll();
+  vResetParser();
 };
 
 /*----------------------------------------------------------------------------*/
@@ -58,17 +61,17 @@ Charred::~Charred(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin using                                                                */
+/* begin parsing                                                              */
 /*----------------------------------------------------------------------------*/
-void Charred::vBeginUse(void)
+void Charred::vBeginParsing(void)
 {
   ASSERT(IS_NONE != m_eSource);
 }
 
 /*----------------------------------------------------------------------------*/
-/* end use                                                                    */
+/* end parsing                                                                */
 /*----------------------------------------------------------------------------*/
-void Charred::vEndUse(void)
+void Charred::vEndParsing(void)
 {
   switch (m_eSource) {
 
@@ -86,11 +89,11 @@ void Charred::vEndUse(void)
     default: ;
   }
 
-  vResetAll();
+  vResetParser();
 }
 
 /*----------------------------------------------------------------------------*/
-/* set prompt                                                                 */
+/* set user prompt                                                            */
 /*----------------------------------------------------------------------------*/
 void Charred::vPrompt(s& sPrompt)
 {
@@ -98,11 +101,20 @@ void Charred::vPrompt(s& sPrompt)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use given file for charring                                                */
+/* set line mode                                                              */
+/*----------------------------------------------------------------------------*/
+void Charred::vLineMode(bool bLineMode)
+{
+  m_bLineMode = bLineMode;
+  m_bPrompt   = bLineMode ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use given file for parsing                                                 */
 /*----------------------------------------------------------------------------*/
 bool Charred::bUseFile(s& sPath)
 {
-  vResetAll();
+  vResetParser();
   
   m_xFile.vPath(sPath);
   
@@ -115,11 +127,11 @@ bool Charred::bUseFile(s& sPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use stdin for charring                                                     */
+/* use stdin for parsing                                                      */
 /*----------------------------------------------------------------------------*/
 void Charred::vUseStdin(void)
 {
-  vResetAll();
+  vResetParser();
   
   m_xFile.vSet(stdin,"stdin",C_OPEN_READ);
   
@@ -129,58 +141,47 @@ void Charred::vUseStdin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* use given string for charring                                              */
+/* use given string for parsing                                               */
 /*----------------------------------------------------------------------------*/
 void Charred::vUseString(s& sString)
 {
-  vResetAll();
+  vResetParser();
   
-  m_sString = sString;
-  //String::vStrip(m_sString.a(),'\n');
+  m_sRawLine = sString;
+  //String::vStrip(m_sRawLine.a(),'\n');
   
   m_eSource = IS_STRING;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next charred char                                                      */
+/* get next parsed char                                                       */
 /*----------------------------------------------------------------------------*/
 char Charred::cGet(void)
 {
   // do we have any chars in the regs?
-  if (! m_nChars)
-    vGetMore();
+  if (! m_nLoaded)
+    vLoadRegisters();
   
-  if (! m_nChars)
+  if (! m_nLoaded)
     return '\0';
   
-  // consume the first char
-  char c = cConsumeOne();
+  // consume the first char reg
+  char cParsedChar = cConsumeFirst();
   
   // return the consumed char
-  return c;
+  return cParsedChar;
 }
 
 /*----------------------------------------------------------------------------*/
-/* put char back into charred stream                                          */
+/* put char back into parsing stream                                          */
 /*----------------------------------------------------------------------------*/
-void Charred::vUnget(char c)
+void Charred::vUnget(char cParsed)
 {
-  vRewindOne(c);
+  vRewindRegisters(cParsed);
 }
 
 /*----------------------------------------------------------------------------*/
-/* is there a nested chain?                                                   */
-/*----------------------------------------------------------------------------*/
-bool Charred::bNest(void)
-{
-  if (m_pChain)
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop charred chain                                                          */
+/* pop parsing stack                                                          */
 /*----------------------------------------------------------------------------*/
 bool Charred::bPop(void)
 {
@@ -191,13 +192,15 @@ bool Charred::bPop(void)
   
   Memory::vCopy(this,pCopy,sizeof(Charred));
   
+  pCopy->vZero();
+  
   delete pCopy;
   
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
-/* push this charred onto chain                                               */
+/* push copy of this parser onto stack                                        */
 /*----------------------------------------------------------------------------*/
 void Charred::vPush(void)
 {
@@ -206,6 +209,18 @@ void Charred::vPush(void)
   Memory::vCopy(pCopy,this,sizeof(Charred));
   
   m_pChain = pCopy;
+  m_iDepth++;
+  
+  m_eSource = IS_NONE;
+  m_xFile.vZero();
+  m_sRawLine = "";
+  m_pRawInput = m_sRawLine.a();
+  m_bLineMode = false;
+  m_bPrompt = false;
+  m_nLoaded = 0;
+  m_cFirst  = 0;
+  m_cSecond  = 0;
+  m_eComment = CT_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,6 +229,22 @@ void Charred::vPush(void)
 i8 Charred::iDepth(void)
 {
   return m_iDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* have we seen an EOF?                                                       */
+/*----------------------------------------------------------------------------*/
+bool Charred::bEOF(void)
+{
+  return m_bEOF;
+}
+
+/*----------------------------------------------------------------------------*/
+/* zero this parser                                                           */
+/*----------------------------------------------------------------------------*/
+void Charred::vZero(void)
+{
+  m_xFile.vZero();
 }
 
 
@@ -228,6 +259,27 @@ void Charred::vDepth(i8 iDepth)
   m_iDepth = iDepth;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset this parser                                                          */
+/*----------------------------------------------------------------------------*/
+void Charred::vResetParser(void)
+{
+  ASSERT(! m_xFile.bIsOpen());
+  
+  m_eSource   = IS_NONE;
+  m_xFile.vReset();
+  m_sRawLine  = "";
+  m_aRawLine  = m_sRawLine.a();
+  m_pRawInput = m_sRawLine.a();
+  
+  m_bPrompt   = false;
+  
+  m_nLoaded   = 0;
+  m_cFirst    = '\0';
+  m_cSecond   = '\0';
+  m_eComment  = CT_NONE;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Character Processing ----------------------------------------------------*/
@@ -236,157 +288,145 @@ void Charred::vDepth(i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* clear char registers                                                       */
 /*----------------------------------------------------------------------------*/
-void Charred::vClearRegs(void)
+void Charred::vClearRegisters(void)
 {
-  m_nChars = 0;
-  m_cOne   = '\0';
-  m_cTwo   = '\0';
+  m_nLoaded = 0;
+  m_cFirst  = '\0';
+  m_cSecond = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
-/* consume the first char                                                     */
+/* consume the char in the first register                                     */
 /*----------------------------------------------------------------------------*/
-char Charred::cConsumeOne(void)
+char Charred::cConsumeFirst(void)
 {
-  ASSERT(m_nChars);
+  ASSERT(m_nLoaded);
   
-  char c = m_cOne;
-  m_cOne = m_cTwo;
-  m_cTwo = '\0';
+  char cWasFirst = m_cFirst;
   
-  m_nChars--;
+  m_cFirst  = m_cSecond;
+  m_cSecond = '\0';
   
-  return c;
+  m_nLoaded--;
+  
+  return cWasFirst;
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard the first char                                                     */
+/* discard the char in the first register                                     */
 /*----------------------------------------------------------------------------*/
-void Charred::vDiscardOne(void)
+void Charred::vDiscardFirst(void)
 {
-  ASSERT(m_nChars);
+  ASSERT(m_nLoaded);
   
-  m_cOne = m_cTwo;
-  m_cTwo = '\0';
+  m_cFirst  = m_cSecond;
+  m_cSecond = '\0';
   
-  m_nChars--;
+  m_nLoaded--;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next first char                                                        */
+/* load both the first and second registers from raw input stream             */
 /*----------------------------------------------------------------------------*/
-void Charred::vGetFirst(void)
+void Charred::vLoadBoth(void)
 {
-  ASSERT(! m_nChars);
+  ASSERT(! m_nLoaded);
   
-  m_cOne = cNextChar();
+  m_cFirst = cFromRawInput();
   
-  if (m_cOne)
-    m_nChars++;
-}
-
-/*----------------------------------------------------------------------------*/
-/* no char(s) in regs, so get more char(s) from input                         */
-/*----------------------------------------------------------------------------*/
-void Charred::vGetMore(void)
-{
-  ASSERT(0 == m_nChars);
-  
-  while (! m_nChars) {
+  if (m_cFirst) {
     
-    vGetFirst();
+    m_nLoaded++;
     
-    if (! m_nChars)
+    m_cSecond = cFromRawInput();
+    
+    if (m_cSecond)
+      m_nLoaded++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* load first register from input stream                                      */
+/*----------------------------------------------------------------------------*/
+void Charred::vLoadFirst(void)
+{
+  ASSERT(! m_nLoaded);
+  
+  m_cFirst = cFromRawInput();
+  
+  if (m_cFirst)
+    m_nLoaded++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* load first (and maybe) second register from input stream, strip comments   */
+/*----------------------------------------------------------------------------*/
+void Charred::vLoadRegisters(void)
+{
+  ASSERT(0 == m_nLoaded);
+  
+  while (! m_nLoaded) {
+    
+    vLoadFirst();
+    
+    if (! m_nLoaded)
       break;
     
-    if (! bPossibleComment() )
-      continue;
+    if (! bPossibleComment())  // this may leave a char in second register
+      continue;                // e.g. /t
     
-    switch (eCommentType()) {
-        
-      case CT_BLOCK:
-        vBlockCommentSkip();
-        vRewindOne(' ');
-        break;
-        
-      case CT_LINE:
-        vLineCommentSkip();
-        vRewindOne(' ');
-        break;
-        
-      default:
-        break;
-    }
+    vStripComment();
   }
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next second char                                                       */
+/* load second register from input stream                                     */
 /*----------------------------------------------------------------------------*/
-void Charred::vGetSecond(void)
+void Charred::vLoadSecond(void)
 {
-  ASSERT(1 == m_nChars);
-  ASSERT(m_cOne);
+  ASSERT(1 == m_nLoaded);
+  ASSERT(m_cFirst);
   
-  m_cTwo = cNextChar();
+  m_cSecond = cFromRawInput();
   
-  if (m_cTwo)
-    m_nChars++;
+  if (m_cSecond)
+    m_nLoaded++;
 }
 
 /*----------------------------------------------------------------------------*/
-/* no char(s) in regs, get two more                                           */
+/* rewind registers by one character                                          */
 /*----------------------------------------------------------------------------*/
-void Charred::vGetTwo(void)
+void Charred::vRewindRegisters(char cParsed)
 {
-  ASSERT(! m_nChars);
+  ASSERT(m_nLoaded < 2);
+  ASSERT('\0' == m_cSecond);
   
-  m_cOne = cNextChar();
+  m_cSecond = m_cFirst;
+  m_cFirst  = cParsed;
   
-  if (m_cOne) {
-    m_nChars++;
+  m_nLoaded++;
+}
 
-    m_cTwo = cNextChar();
-    
-    if (m_cTwo)
-      m_nChars++;
+/*----------------------------------------------------------------------------*/
+/* strip a possible line or block comment                                     */
+/*----------------------------------------------------------------------------*/
+void Charred::vStripComment(void)
+{
+  switch (eCommentType()) {
+      
+    case CT_BLOCK:
+      vBlockCommentSkip();
+      vRewindRegisters(' ');
+      break;
+      
+    case CT_LINE:
+      vLineCommentSkip();
+      vRewindRegisters(' ');
+      break;
+      
+    default:
+      break;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* reset                                                                      */
-/*----------------------------------------------------------------------------*/
-void Charred::vResetAll(void)
-{
-  ASSERT(! m_xFile.bIsOpen());
-  
-  m_eSource  = IS_NONE;
-  m_xFile.vReset();
-  m_sString  = "";
-  m_pChar    = m_sString.a();
-  m_pEnd     = m_pChar;
-
-  //m_sPrompt  = "";
-  m_bPrompt  = false;
-  
-  m_nChars   = 0;
-  m_cOne     = '\0';
-  m_cTwo     = '\0';
-  m_eComment = CT_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* rewind charred stream by one character                                     */
-/*----------------------------------------------------------------------------*/
-void Charred::vRewindOne(char c)
-{
-  ASSERT(m_nChars < 2);
-  ASSERT('\0' == m_cTwo);
-  
-  m_cTwo = m_cOne;
-  m_cOne = c;
-  
-  m_nChars++;
 }
 
 
@@ -399,7 +439,7 @@ void Charred::vRewindOne(char c)
 /*----------------------------------------------------------------------------*/
 bool Charred::bBlockCommentEnd(void)
 {
-  if ('*' == m_cOne && '/' == m_cTwo)
+  if ('*' == m_cFirst && '/' == m_cSecond)
     return true;
   else
     return false;
@@ -410,15 +450,16 @@ bool Charred::bBlockCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 void Charred::vBlockCommentSkip(void)
 {
-  vClearRegs();
+  vClearRegisters();
   
-  vGetTwo();
+  vLoadBoth();
+  
   while (! bBlockCommentEnd()) {
-    vDiscardOne();
-    vGetSecond();
+    vDiscardFirst();
+    vLoadSecond();
   }
   
-  vClearRegs();
+  vClearRegisters();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -426,7 +467,7 @@ void Charred::vBlockCommentSkip(void)
 /*----------------------------------------------------------------------------*/
 bool Charred::bBlockCommentStart(void)
 {
-  if ('/' == m_cOne && '*' == m_cTwo)
+  if ('/' == m_cFirst && '*' == m_cSecond)
     return true;
   else
     return false;
@@ -437,11 +478,11 @@ bool Charred::bBlockCommentStart(void)
 /*----------------------------------------------------------------------------*/
 bool Charred::bPossibleComment(void)
 {
-  ASSERT(m_nChars);
+  ASSERT(m_nLoaded);
   
-  if ('/' == m_cOne) {
-    if (1 == m_nChars)
-      vGetSecond();
+  if ('/' == m_cFirst) {
+    if (1 == m_nLoaded)
+      vLoadSecond();
     return true;
   }
   else {
@@ -468,7 +509,7 @@ Charred::eCT Charred::eCommentType(void)
 /*----------------------------------------------------------------------------*/
 bool Charred::bLineCommentEnd(void)
 {
-  if ('\n' == m_cOne)
+  if ('\n' == m_cFirst)
     return true;
   else
     return false;
@@ -479,15 +520,16 @@ bool Charred::bLineCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 void Charred::vLineCommentSkip(void)
 {
-  vClearRegs();
+  vClearRegisters();
   
-  vGetFirst();
+  vLoadFirst();
+  
   while (! bLineCommentEnd()) {
-    vDiscardOne();
-    vGetFirst();
+    vDiscardFirst();
+    vLoadFirst();
   }
   
-  //vClearRegs();
+  ASSERT('\n' == m_cFirst || '\0' == m_cFirst);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -495,7 +537,7 @@ void Charred::vLineCommentSkip(void)
 /*----------------------------------------------------------------------------*/
 bool Charred::bLineCommentStart(void)
 {
-  if ('/' == m_cOne && '/' == m_cTwo)
+  if ('/' == m_cFirst && '/' == m_cSecond)
     return true;
   else
     return false;
@@ -509,11 +551,11 @@ bool Charred::bLineCommentStart(void)
 /*----------------------------------------------------------------------------*/
 /* get next char from input source                                            */
 /*----------------------------------------------------------------------------*/
-char Charred::cNextChar(void)
+char Charred::cFromRawInput(void)
 {
   char c;
 
-  c = *m_pChar++;
+  c = *m_pRawInput++;
   
   if (c)
     return c;
@@ -522,15 +564,45 @@ char Charred::cNextChar(void)
       
     case IS_FILE:
       ASSERT(m_xFile.bIsOpen());
-      vReadLineFile();
-      c = *m_pChar++;
+      if (m_bLineMode) {
+        if (m_bPrompt) {
+          m_bPrompt = false;
+          vReadLineFile();
+          c = *m_pRawInput++;
+        }
+        else {
+          m_bPrompt = true;
+          m_pRawInput  = m_sRawLine.a();
+          *m_pRawInput = '\0';
+          c = '\0';
+        }
+      }
+      else {
+        vReadLineFile();
+        c = *m_pRawInput++;
+      }
       break;
       
     case IS_STDIN:
       ASSERT(m_xFile.bIsOpen());
       ASSERT(m_xFile.bIsStdin());
-      vReadLineStdin();
-      c = *m_pChar++;
+      if (m_bLineMode) {
+        if (m_bPrompt) {
+          m_bPrompt = false;
+          vReadLineStdin();
+          c = *m_pRawInput++;
+        }
+        else {
+          m_bPrompt = true;
+          m_pRawInput = m_sRawLine.a();
+          *m_pRawInput = '\0';
+          c = '\0';
+        }
+      }
+      else {
+        vReadLineStdin();
+        c = *m_pRawInput++;
+      }
       break;
       
     case IS_STRING:
@@ -545,24 +617,31 @@ char Charred::cNextChar(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* read line from file                                                        */
+/* read line from input file                                                  */
 /*----------------------------------------------------------------------------*/
 void Charred::vReadLineFile(void)
 {
   char c;
   
-  m_pChar = m_sString.a();
+  char* pCharInLine = m_sRawLine.a();
   
   do {
+    
     c = m_xFile.cGetChar();
-    *m_pChar++ = c;
-    if ('\n' == c)
+    
+    *pCharInLine++ = c;
+    
+    if (C_END_OF_LINE == c)
       break;
+    
   } while (c);
   
-  *m_pChar++ = '\0';
+  if (C_END_OF_FILE == c)
+    m_bEOF = true;
   
-  m_pChar = m_sString.a();
+  *pCharInLine++ = '\0';
+  
+  m_pRawInput = m_sRawLine.a();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -572,21 +651,27 @@ void Charred::vReadLineStdin(void)
 {
   char c;
   
-  m_pChar = m_sString.a();
+  m_pRawInput = m_sRawLine.a();
   
   printf("%s",m_sPrompt.a());
   fflush(stdin);
   
-  do {
+  for (;;) {
+    
     c = m_xFile.cGetChar();
-    *m_pChar++ = c;
-    if ('\n' == c)
+    
+    *m_pRawInput++ = c;
+    
+    if (C_END_OF_LINE == c)
       break;
-  } while (c);
 
-  *m_pChar++ = '\0';
+  }
   
-  m_pChar = m_sString.a();
+  ASSERT(c);
+
+  *m_pRawInput++ = '\0';
+  
+  m_pRawInput = m_sRawLine.a();
 }
 
 /*============================================================================*/

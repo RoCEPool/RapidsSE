@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* Input2.cpp -- Input Processing                                             */
+/* Input.cpp -- Input Processing                                             */
 /*============================================================================*/
 
-#include "Input2.hpp"
+#include "Input.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Input2::Input2(void)
+Input::Input(void)
 {
   m_xTokenizer.vMalloc(true);
   m_xTokenizer.vPrompt("se.2> ");
@@ -21,14 +21,14 @@ Input2::Input2(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Input2::~Input2(void)
+Input::~Input(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void Input2::vNext(char* pWords[])
+void Input::vNext(char* pWords[])
 {
   while (true) {
    
@@ -55,7 +55,7 @@ void Input2::vNext(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
 /*----------------------------------------------------------------------------*/
-void Input2::vInit(char* wWorkarea, char* pWords[])
+void Input::vInit(char* wWorkarea, char* pWords[])
 {
   pWords[0]  = &wWorkarea[C_1KB * 0];
   pWords[1]  = &wWorkarea[C_1KB * 1];
@@ -78,7 +78,7 @@ void Input2::vInit(char* wWorkarea, char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Input2::vPrompt(const char* wPrompt)
+void Input::vPrompt(const char* wPrompt)
 {
   m_xTokenizer.vPrompt("se.2> ");
 }
@@ -86,7 +86,7 @@ void Input2::vPrompt(const char* wPrompt)
 /*----------------------------------------------------------------------------*/
 /* get EOF?                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Input2::bEOF(void)
+bool Input::bEOF(void)
 {
   bool bEOF = m_xTokenizer.bEOF();
   
@@ -100,7 +100,7 @@ bool Input2::bEOF(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void Input2::vLineMode(bool bLineMode)
+void Input::vLineMode(bool bLineMode)
 {
   m_xTokenizer.vLineMode(bLineMode);
 }
@@ -108,7 +108,7 @@ void Input2::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* push command file                                                          */
 /*----------------------------------------------------------------------------*/
-void Input2::vPushFile(char* pPath)
+void Input::vPushFile(char* pPath)
 {
   s256 sPath(pPath);
   
@@ -123,7 +123,7 @@ void Input2::vPushFile(char* pPath)
 /*----------------------------------------------------------------------------*/
 /* pop command file                                                           */
 /*----------------------------------------------------------------------------*/
-void Input2::vPopFile(void)
+void Input::vPopFile(void)
 {
   bool b = m_xTokenizer.bPop();
   
