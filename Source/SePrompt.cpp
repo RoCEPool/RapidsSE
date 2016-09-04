@@ -10,18 +10,21 @@
 SePrompt::SePrompt(i8 iPartition)
 {
   m_iPartition = iPartition;
+
   eIE eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition);
   ASSERT(IE_NONE == eResult);
-  //m_xInput
-  m_sResponse  = "";
-  //m_xHistory
-  
-  //m_wWorkarea
-  //m_pTokens
   
   m_bContinue = true;
   
+  m_sResponse  = "";
+  //m_xHistory
+  //m_wWorkarea
+  //m_pTokens
+  
   //----
+  
+  // initialise the onput handler
+  vInit(m_wWorkarea,m_pTokens);
   
   m_xTokenizer.vMalloc(true);
   m_xTokenizer.vPrompt("se.2> ");
@@ -30,7 +33,6 @@ SePrompt::SePrompt(i8 iPartition)
   m_xTokenizer.vUseStdin();
   m_xTokenizer.vLineMode(true);
   m_xTokenizer.vBegin();
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,27 +44,23 @@ SePrompt::~SePrompt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* prompt for commands and process                                            */
+/* prompt for commands and process them                                       */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPrompt(void)
+void SePrompt::vLoop(void)
 {
-  // initialise the onput handler
-  vInit(m_wWorkarea,m_pTokens);
-  //m_xInput.vPrompt("se> ");
-  
   // open the command history file
   m_xHistory.vOpen();
   
   // get and process commands
   while (m_bContinue) {
-    vNext(m_pTokens);
-    vProcess();
+    vGetCommand();
+    vProcessCommand();
   }
   
   // close history file
   m_xHistory.vClose();
   
-  // should remove history file?
+  // SHOULD REMOVE HISTORY FILE?
 }
 
 
@@ -71,22 +69,125 @@ void SePrompt::vPrompt(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute command                                                            */
+/* get command                                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vExecute(void)
+void SePrompt::vGetCommand(void)
+{
+  while (true) {
+    
+    for (i8 i = 0; i < 16; i++)
+      *m_pTokens[i] = '\0';
+    
+    i8 i = 0;
+    while (LT_NONE != m_xTokenizer.eNextLiteral(m_pTokens[i])) {
+      //vTrace("Word [%lld] %s\n",i,pWords[i]);
+      i++;
+      ASSERT(i < 16);
+    }
+    
+    // end of file? if so, pop and retry
+    if (m_xTokenizer.bEOF()) {
+      bool b = m_xTokenizer.bPop();
+      ASSERT(b);
+      continue;
+    }
+    
+    break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* process command                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vProcessCommand(void)
+{
+  // - test for builtin comands
+  
+  if (String::bEqualTo("?",   m_pTokens[0],C_NO_CASE) ||
+      String::bEqualTo("help",m_pTokens[0],C_NO_CASE)) {
+    vHelp();
+    return;
+  }
+  
+  if (String::bEqualTo("bye",m_pTokens[0],C_NO_CASE)) {
+    m_bContinue = false;
+    return;
+  }
+  
+  if (String::bEqualTo("history",m_pTokens[0],C_NO_CASE)) {
+    m_xHistory.vPrint();
+    return;
+  }
+  
+  if (String::bEqualTo("!!",m_pTokens[0],C_NO_CASE)) {
+    if (! m_xHistory.bRecall(m_pTokens))
+      return;
+  }
+  
+  if ('!' == *m_pTokens[0]) {
+    if (! m_xHistory.bRecall(m_pTokens))
+      return;
+  }
+  
+  if (String::bEqualTo("create",m_pTokens[0],C_NO_CASE)) {
+    vCreateTable();
+    return;
+  }
+  
+  m_xHistory.vAppend(m_pTokens);
+  
+  if (bTestFile(m_pTokens[0])) {
+    vPushFile(m_pTokens[0]);
+    m_xTokenizer.vLineMode(true);
+    return;
+  }
+  
+  // - execute seitf request
+  
+  vExecuteRequest();
+  
+  // - post process requests
+  
+  if (String::bEqualTo("sel",m_pTokens[0],C_NO_CASE)) {
+    vIterateRows();
+    return;
+  }
+  
+  // - the following never return
+  
+  if (String::bEqualTo("mon",m_pTokens[0],C_NO_CASE)) {
+    while (true) {
+      PosixThread::vSleepSec(10);
+      vExecuteRequest();
+    }
+  }
+  
+  if (String::bEqualTo("x",m_pTokens[0],C_NO_CASE)) {
+    while (true) {
+      vExecuteRequest();
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute an se request                                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vExecuteRequest(void)
 {
   Timer xTimer;
   char* aResponse = nullptr;
   
-// ALKA ECHO
-//  for (i8 i = 0; i < 16 && *m_pTokens[i]; i++)
-//    vTrace("%s ",m_pTokens[i]);
-//  vTrace("\n");
-
+  // ALKA ECHO
+  //  for (i8 i = 0; i < 16 && *m_pTokens[i]; i++)
+  //    vTrace("%s ",m_pTokens[i]);
+  //  vTrace("\n");
+  
   xTimer.vStart();
-
+  
   eIE eResult = RapidsSE_ExecuteCommand(m_pSEitf,m_pTokens,&aResponse);
-
+  
   if (aResponse)
     m_sResponse = aResponse;
   
@@ -128,6 +229,81 @@ void SePrompt::vIterateRows(void)
   pRowCursor->vEnd();
   delete pRowCursor;
 }
+
+/*----------------------------------------------------------------------------*/
+/* test for command file                                                      */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bTestFile(char* pWord)
+{
+  File xFile;
+  
+  if (xFile.bExists(pWord))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push command file                                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPushFile(char* pPath)
+{
+  s256 sPath(pPath);
+  
+  m_xTokenizer.vPush();
+  
+  bool b = m_xTokenizer.bUseFile(sPath);
+  ASSERT(b);
+  
+  m_xTokenizer.vBegin();
+}
+
+/*----------------------------------------------------------------------------*/
+/* help                                                                       */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vHelp(void)
+{
+  vTrace("se temporary commands:\n");
+  vTrace("add    -- add column to table\n");
+  vTrace("adr    -- get address of table\n");
+  vTrace("bye    -- quit seitf\n");
+  vTrace("cd     -- change dictionary\n");
+  vTrace("con    -- connect\n");
+  vTrace("cp     -- copy table\n");
+  vTrace("create -- create table\n");
+  vTrace("dis    -- disconnect\n");
+  vTrace("do     -- do shorthand\n");
+  vTrace("dump   -- dump table\n");
+  vTrace("ex     -- export table t\n");
+  vTrace("ld     -- load table t\n");
+  vTrace("ls     -- list dictionary contents\n");
+  vTrace("lscat  -- list catalogs contents\n");
+  vTrace("lscol  -- list columns\n");
+  vTrace("lssch  -- list schemas contents\n");
+  vTrace("lstbl  -- list tables contents\n");
+  vTrace("lsten  -- list tenants contents\n");
+  vTrace("mkcat  -- create catalog\n");
+  vTrace("mksch  -- create schema\n");
+  vTrace("mktbl  -- create table\n");
+  vTrace("mkten  -- create tenant\n");
+  vTrace("pwd    -- print working dictionary\n");
+  vTrace("rmcat  -- drop catalog\n");
+  vTrace("rmdic -- drop dictionary\n");
+  vTrace("rmsch  -- drop schema\n");
+  vTrace("rmtbl  -- drop table\n");
+  vTrace("rmten  -- drop tenant\n");
+  vTrace("sel    -- select * from table\n");
+  vTrace("sz     -- size of table\n");
+  vTrace("tpch   -- tpch shorthand\n");
+  vTrace("tr     -- truncate table\n");
+  vTrace("?      -- print this help\n");
+  vTrace("help   -- print this help\n");
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* parse the create table words                                               */
@@ -212,7 +388,7 @@ void SePrompt::vCreateTable(void)
   // create a table
   String::vCopy(m_pTokens[0], "mktbl");
   String::vCopy(m_pTokens[1], pWords[2]);
-  vExecute();
+  vExecuteRequest();
   
   i8 iCurrentToken = 3;
   while(iCurrentToken < iTokens - 1) {
@@ -241,96 +417,9 @@ void SePrompt::vCreateTable(void)
     iCurrentToken++;
     
     // add the column
-    vExecute();
+    vExecuteRequest();
   }
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* process input                                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vProcess(void)
-{
-  // - test for builtin comands
-  
-  if (String::bEqualTo("?",   m_pTokens[0],C_NO_CASE) ||
-      String::bEqualTo("help",m_pTokens[0],C_NO_CASE)) {
-    vHelp();
-    return;
-  }
-
-  if (String::bEqualTo("bye",m_pTokens[0],C_NO_CASE)) {
-    m_bContinue = false;
-    return;
-  }
-  
-  if (String::bEqualTo("history",m_pTokens[0],C_NO_CASE)) {
-    m_xHistory.vPrint();
-    return;
-  }
-  
-  if (String::bEqualTo("!!",m_pTokens[0],C_NO_CASE)) {
-    if (! m_xHistory.bRecall(m_pTokens))
-      return;
-  }
-  
-  if ('!' == *m_pTokens[0]) {
-    if (! m_xHistory.bRecall(m_pTokens))
-      return;
-  }
-  
-  if (String::bEqualTo("create",m_pTokens[0],C_NO_CASE)) {
-    vCreateTable();
-    return;
-  }
-  
-  m_xHistory.vAppend(m_pTokens);
-  
-  if (bTestFile(m_pTokens[0])) {
-    vPushFile(m_pTokens[0]);
-    vLineMode(true);
-    return;
-  }
-  
-  // - execute seitf commands
-  
-  vExecute();
-  
-  // - post process commands
-  
-  if (String::bEqualTo("sel",m_pTokens[0],C_NO_CASE)) {
-    vIterateRows();
-    return;
-  }
-  
-  // - the following never return
-  
-  if (String::bEqualTo("mon",m_pTokens[0],C_NO_CASE)) {
-    while (true) {
-      PosixThread::vSleepSec(10);
-      vExecute();
-    }
-  }
-  
-  if (String::bEqualTo("x",m_pTokens[0],C_NO_CASE)) {
-    while (true) {
-      vExecute();
-    }
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for command file                                                      */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bTestFile(char* pWord)
-{
-  File xFile;
-  
-  if (xFile.bExists(pWord))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,78 +445,9 @@ bool SePrompt::bValidateType(char* pType)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* help                                                                       */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vHelp(void)
-{
-  vTrace("se temporary commands:\n");
-  vTrace("add    -- add column to table\n");
-  vTrace("adr    -- get address of table\n");
-  vTrace("bye    -- quit seitf\n");
-  vTrace("cd     -- change dictionary\n");
-  vTrace("con    -- connect\n");
-  vTrace("cp     -- copy table\n");
-  vTrace("create -- create table\n");
-  vTrace("dis    -- disconnect\n");
-  vTrace("do     -- do shorthand\n");
-  vTrace("dump   -- dump table\n");
-  vTrace("ex     -- export table t\n");
-  vTrace("ld     -- load table t\n");
-  vTrace("ls     -- list dictionary contents\n");
-  vTrace("lscat  -- list catalogs contents\n");
-  vTrace("lscol  -- list columns\n");
-  vTrace("lssch  -- list schemas contents\n");
-  vTrace("lstbl  -- list tables contents\n");
-  vTrace("lsten  -- list tenants contents\n");
-  vTrace("mkcat  -- create catalog\n");
-  vTrace("mksch  -- create schema\n");
-  vTrace("mktbl  -- create table\n");
-  vTrace("mkten  -- create tenant\n");
-  vTrace("pwd    -- print working dictionary\n");
-  vTrace("rmcat  -- drop catalog\n");
-  vTrace("rmdic -- drop dictionary\n");
-  vTrace("rmsch  -- drop schema\n");
-  vTrace("rmtbl  -- drop table\n");
-  vTrace("rmten  -- drop tenant\n");
-  vTrace("sel    -- select * from table\n");
-  vTrace("sz     -- size of table\n");
-  vTrace("tpch   -- tpch shorthand\n");
-  vTrace("tr     -- truncate table\n");
-  vTrace("?      -- print this help\n");
-  vTrace("help   -- print this help\n");
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
-
-/*----------------------------------------------------------------------------*/
-/* run seitf>                                                                 */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vNext(char* pWords[])
-{
-  while (true) {
-    
-    for (i8 i = 0; i < 16; i++)
-      *pWords[i] = '\0';
-    
-    i8 i = 0;
-    while (LT_NONE != m_xTokenizer.eNextLiteral(pWords[i])) {
-      //vTrace("Word [%lld] %s\n",i,pWords[i]);
-      i++;
-      ASSERT(i < 16);
-    }
-    
-    if (m_xTokenizer.bEOF()) {
-      vPopFile();
-      continue;
-    }
-    
-    break;
-  }
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* run seitf>                                                                 */
@@ -453,57 +473,6 @@ void SePrompt::vInit(char* wWorkarea, char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
-/* set prompt                                                                 */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPrompt(const char* wPrompt)
-{
-  m_xTokenizer.vPrompt("se.2> ");
-}
-
-/*----------------------------------------------------------------------------*/
-/* get EOF?                                                                   */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bEOF(void)
-{
-  bool bEOF = m_xTokenizer.bEOF();
-  
-  return bEOF;
-}
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set line mode                                                              */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vLineMode(bool bLineMode)
-{
-  m_xTokenizer.vLineMode(bLineMode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push command file                                                          */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPushFile(char* pPath)
-{
-  s256 sPath(pPath);
-  
-  m_xTokenizer.vPush();
-  
-  bool b = m_xTokenizer.bUseFile(sPath);
-  ASSERT(b);
-  
-  m_xTokenizer.vBegin();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop command file                                                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vPopFile(void)
-{
-  bool b = m_xTokenizer.bPop();
-  
-  ASSERT(b);
-}
 
