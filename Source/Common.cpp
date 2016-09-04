@@ -13,7 +13,7 @@ void Common::vCheckAssumptions(void)
 {
   ASSERT(Process::bTestPid(Process::iGetPid()));
   
-  //ASSERT(sizeof(Charred) < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(Parser) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

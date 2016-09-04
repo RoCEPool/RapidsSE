@@ -265,7 +265,7 @@ void Task::vAddConstants(void)
   /* 10 */ vAddConstant("CN_BUFFERPOOL",            CN_BUFFERPOOL);
   /* 11 */ vAddConstant("CN_BUFFERPOOLANALYZER",    CN_BUFFERPOOLANALYZER);
   /* 12 */ vAddConstant("CN_BUFFERPOOLITER",        CN_BUFFERPOOLITER);
-  /* 13 */ vAddConstant("CN_CHARRED",               CN_CHARRED);
+  /* 13 */ vAddConstant("CN_PARSER",                CN_PARSER);
   /* 14 */ vAddConstant("CN_DICTIONARY",            CN_DICTIONARY);
   /* 15 */ vAddConstant("CN_DIR",                   CN_DIR);
   /* 16 */ vAddConstant("CN_FILE",                  CN_FILE);
@@ -333,7 +333,7 @@ void Task::vAddConstants(void)
   /* 10 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
   /* 11 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPool));
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLITER",    sizeof(BufferPoolAnalyzer));
-  /* 13 */ vAddConstant("SIZEOF_CHARRED",           sizeof(Charred));
+  /* 13 */ vAddConstant("SIZEOF_CHARRED",           sizeof(Parser));
   /* 14 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
   /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
   /* 16 */ vAddConstant("SIZEOF_FILE",              sizeof(File));

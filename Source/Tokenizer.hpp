@@ -11,12 +11,12 @@ namespace Tasks
   class Tokenizer: public ObjVal
   {
   private:
-    Charred* m_pCharred;  // parser
-    bool     m_bMalloc;   // malloc or pool heap?
-    bool     m_bNormal;   // normal tokens?
+    Parser* m_pCharred;  // parser
+    bool    m_bMalloc;   // malloc or pool heap?
+    bool    m_bNormal;   // normal tokens?
     
-    s32      m_sPrompt;   // prompt
-    char     m_cCurrChar; // current char
+    s32     m_sPrompt;   // prompt
+    char    m_cCurrChar; // current char
     
   public:
     void* operator new(size_t);

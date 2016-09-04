@@ -28,7 +28,7 @@ namespace Magic
     /* 10 */ CN_BUFFERPOOL,
     /* 11 */ CN_BUFFERPOOLANALYZER,
     /* 12 */ CN_BUFFERPOOLITER,
-    /* 13 */ CN_CHARRED,
+    /* 13 */ CN_PARSER,
     /* 14 */ CN_DICTIONARY,
     /* 15 */ CN_DIR,
     /* 16 */ CN_FILE,
@@ -95,7 +95,7 @@ namespace Magic
     /* 10 */ "BUFFERPOOL",
     /* 11 */ "BUFFERPOOLANALYZER",
     /* 12 */ "BUFFERPOOLITER",
-    /* 13 */ "CHARRED"
+    /* 13 */ "PARSER"
     /* 14 */ "DICTIONARY",
     /* 15 */ "DIR",
     /* 16 */ "FILE",

@@ -56,7 +56,7 @@ void Tokenizer::vPush(void)
   if (m_pCharred)
     m_pCharred->vPush();
   else
-    m_pCharred = new(m_bMalloc) Charred;
+    m_pCharred = new(m_bMalloc) Parser;
     
   m_pCharred->vPrompt(m_sPrompt);
 }

@@ -7,42 +7,42 @@
 
 namespace Common
 {
-  class Charred : public mn,
-                  public cn
+  class Parser : public mn,
+                 public cn
   {
   private:
     enum eIS { IS_NONE=0, IS_FILE,  IS_STDIN, IS_STRING };
     enum eCT { CT_NONE=0, CT_BLOCK, CT_LINE };
     
   private:
-    bool   m_bMalloc;   // is this object in malloc heap (or small heap)?
-    i8     m_iDepth;    // depth of this parser
-    Charred* m_pChain;  // next parser in push chain
-    s256   m_sPrompt;   // user prompt when reading from stdin
+    bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
+    i8      m_iDepth;    // depth of this parser
+    Parser* m_pChain;    // next parser in push chain
+    s256    m_sPrompt;   // user prompt when reading from stdin
     
     // input sources
-    eIS    m_eSource;   // what source are we parsing? given file or given string?
-    File   m_xFile;     // given file
-    bool   m_bEOF;      // eof hit?
-    s256   m_sRawLine;  // either line read from file or the given string being parsed
-    char*  m_aRawLine;  // ptr into m_sLine.a() -- debug help
-    char*  m_pRawInput; // next input char (ptr into line)
-    bool   m_bLineMode; // line mode
-    bool   m_bPrompt;   // prompt user for more input
+    eIS     m_eSource;   // what source are we parsing? given file or given string?
+    File    m_xFile;     // given file
+    bool    m_bEOF;      // eof hit?
+    s256    m_sRawLine;  // either line read from file or the given string being parsed
+    char*   m_aRawLine;  // ptr into m_sLine.a() -- debug help
+    char*   m_pRawInput; // next input char (ptr into line)
+    bool    m_bLineMode; // line mode
+    bool    m_bPrompt;   // prompt user for more input
 
     // registers
-    i8     m_nLoaded;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
-    char   m_cFirst;    // first single char
-    char   m_cSecond;   // second single char
-    eCT    m_eComment;  // comment type currently being processed
+    i8      m_nLoaded;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
+    char    m_cFirst;    // first single char
+    char    m_cSecond;   // second single char
+    eCT     m_eComment;  // comment type currently being processed
     
     
   public:
     void* operator new(size_t, bool bMalloc);
     void operator delete(void* pDirAddress);
     
-    Charred(void);
-    ~Charred(void);
+    Parser(void);
+    ~Parser(void);
     
     void vBeginParsing(void);
     void vEndParsing(void);
