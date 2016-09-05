@@ -577,6 +577,7 @@ char Parser::cFromRawInput(void)
         }
         else {
           m_bPrompt = true;
+          m_bEOL = false;
           m_pRawInput  = m_sRawLine.a();
           *m_pRawInput = '\0';
           c = '\0';
@@ -599,6 +600,7 @@ char Parser::cFromRawInput(void)
         }
         else {
           m_bPrompt = true;
+          m_bEOL = false;
           m_pRawInput = m_sRawLine.a();
           *m_pRawInput = '\0';
           c = '\0';
@@ -612,6 +614,7 @@ char Parser::cFromRawInput(void)
       
     case IS_STRING:
       c = '\0';
+      m_bEOL = true;
       m_bEOF = true;
       break;
       
@@ -638,12 +641,13 @@ void Parser::vReadLineFile(void)
     *pCharInLine++ = c;
     
     if (C_END_OF_LINE == c) {
+      m_bEOL = true;
       break;
     }
     
   } while (c);
   
-  if (C_END_OF_FILE == c && m_bLineMode)
+  if (C_END_OF_FILE == c)
     m_bEOF = true;
   
   *pCharInLine++ = '\0';
@@ -669,9 +673,11 @@ void Parser::vReadLineStdin(void)
     
     *m_pRawInput++ = c;
     
-    if (C_END_OF_LINE == c)
+    if (C_END_OF_LINE == c) {
+      m_bEOL = true;
       break;
-
+    }
+    
   }
   
   ASSERT(c);
