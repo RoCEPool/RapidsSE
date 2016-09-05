@@ -560,67 +560,116 @@ char Parser::cFromRawInput(void)
 {
   char c;
 
-  c = *m_pRawInput++;
-  
-  if (c)
-    return c;
-  
   switch (m_eSource) {
       
     case IS_FILE:
-      ASSERT(m_xFile.bIsOpen());
-      if (m_bLineMode) {
-        if (m_bPrompt) {
-          m_bPrompt = false;
-          vReadLineFile();
-          c = *m_pRawInput++;
-        }
-        else {
-          m_bPrompt = true;
-          m_bEOL = false;
-          m_pRawInput  = m_sRawLine.a();
-          *m_pRawInput = '\0';
-          c = '\0';
-        }
-      }
-      else {
-        vReadLineFile();
-        c = *m_pRawInput++;
-      }
+      c = cFromRawFile();
       break;
       
     case IS_STDIN:
-      ASSERT(m_xFile.bIsOpen());
-      ASSERT(m_xFile.bIsStdin());
-      if (m_bLineMode) {
-        if (m_bPrompt) {
-          m_bPrompt = false;
-          vReadLineStdin();
-          c = *m_pRawInput++;
-        }
-        else {
-          m_bPrompt = true;
-          m_bEOL = false;
-          m_pRawInput = m_sRawLine.a();
-          *m_pRawInput = '\0';
-          c = '\0';
-        }
-      }
-      else {
-        vReadLineStdin();
-        c = *m_pRawInput++;
-      }
+      c = cFromRawStdin();
       break;
       
     case IS_STRING:
-      c = '\0';
-      m_bEOL = true;
-      m_bEOF = true;
+      c = cFromRawString();
       break;
       
     default:
       ASSERT(0);
   }
+  
+  return c;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next char from input source                                            */
+/*----------------------------------------------------------------------------*/
+char Parser::cFromRawFile(void)
+{
+  char c;
+  
+  c = *m_pRawInput++;
+  
+  if (c)
+    return c;
+  
+  ASSERT(m_xFile.bIsOpen());
+  
+  if (m_bLineMode) {
+    if (m_bPrompt) {
+      m_bPrompt = false;
+      vReadLineFile();
+      c = *m_pRawInput++;
+    }
+    else {
+      m_bPrompt = true;
+      m_bEOL = false;
+      m_pRawInput  = m_sRawLine.a();
+      *m_pRawInput = '\0';
+      c = '\0';
+    }
+  }
+  else {
+    vReadLineFile();
+    c = *m_pRawInput++;
+  }
+  
+  return c;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next char from input source                                            */
+/*----------------------------------------------------------------------------*/
+char Parser::cFromRawStdin(void)
+{
+  char c;
+  
+  c = *m_pRawInput++;
+  
+  if (c)
+    return c;
+  
+  ASSERT(m_xFile.bIsOpen());
+  ASSERT(m_xFile.bIsStdin());
+  
+  if (m_bLineMode) {
+    if (m_bPrompt) {
+      m_bPrompt = false;
+      vReadLineStdin();
+      c = *m_pRawInput++;
+    }
+    else {
+      m_bPrompt = true;
+      m_bEOL = false;
+      m_pRawInput = m_sRawLine.a();
+      *m_pRawInput = '\0';
+      c = '\0';
+    }
+  }
+  else {
+    vReadLineStdin();
+    c = *m_pRawInput++;
+  }
+  
+  return c;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next char from input source                                            */
+/*----------------------------------------------------------------------------*/
+char Parser::cFromRawString(void)
+{
+  char c;
+  
+  c = *m_pRawInput++;
+  
+  if (c)
+    return c;
+  
+  c = '\0';
+  
+  m_bEOL = true;
+  m_bEOF = true;
   
   return c;
 }
@@ -641,11 +690,12 @@ void Parser::vReadLineFile(void)
     *pCharInLine++ = c;
     
     if (C_END_OF_LINE == c) {
-      m_bEOL = true;
       break;
     }
     
   } while (c);
+  
+  m_bEOL = true;
   
   if (C_END_OF_FILE == c)
     m_bEOF = true;
@@ -662,7 +712,7 @@ void Parser::vReadLineStdin(void)
 {
   char c;
   
-  m_pRawInput = m_sRawLine.a();
+  char* pCharInLine = m_sRawLine.a();
   
   printf("%s",m_sPrompt.a());
   fflush(stdin);
@@ -671,10 +721,9 @@ void Parser::vReadLineStdin(void)
     
     c = m_xFile.cGetChar();
     
-    *m_pRawInput++ = c;
+    *pCharInLine++ = c;
     
     if (C_END_OF_LINE == c) {
-      m_bEOL = true;
       break;
     }
     
@@ -682,7 +731,9 @@ void Parser::vReadLineStdin(void)
   
   ASSERT(c);
 
-  *m_pRawInput++ = '\0';
+  m_bEOL = true;
+  
+  *pCharInLine++ = '\0';
   
   m_pRawInput = m_sRawLine.a();
 }

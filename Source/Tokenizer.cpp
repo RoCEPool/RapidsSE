@@ -123,6 +123,8 @@ void Tokenizer::vNormal(bool bNormal)
 void Tokenizer::vPrompt(const char* pPrompt)
 {
   m_sPrompt = pPrompt;
+  
+  m_pParser->vPrompt(m_sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/

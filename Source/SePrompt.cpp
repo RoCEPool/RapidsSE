@@ -28,9 +28,9 @@ SePrompt::SePrompt(i8 iPartition)
     m_pToken[iToken] = &m_wTokenArea[C_TOKEN_SPACE * iToken];
   
   m_xTokenizer.vMalloc(true);
-  m_xTokenizer.vPrompt("se.2> ");
   
   m_xTokenizer.vPush();
+  m_xTokenizer.vPrompt("se.2> ");
   m_xTokenizer.vUseStdin();
   m_xTokenizer.vLineMode(true);
   m_xTokenizer.vBeginTokenizing();

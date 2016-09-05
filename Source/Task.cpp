@@ -1541,7 +1541,7 @@ void Task::vSeedDocol(void)
   
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vPrompt("docol> ");
-  m_xTokenizer.vLineMode(true);
+  m_xTokenizer.vLineMode(false);
   m_xTokenizer.vBeginTokenizing();
 }
 
