@@ -9,6 +9,10 @@
 
 class SePrompt
 {
+  static const i8 C_TOKENS      = 10240;
+  static const i8 C_TOKEN_SPACE = C_1KB;
+  static const i8 C_TOKEN_AREA  = C_TOKEN_SPACE * C_TOKENS;
+  
 private:
   i8        m_iPartition; // which partition
   SEitf*    m_pSEitf;     // interface into rapidsse
@@ -17,10 +21,10 @@ private:
   s8K       m_sResponse;  // response from seitf
   History   m_xHistory;   // command history
   
-  char      m_wWorkarea[C_16KB];
-  char*     m_pTokens[16];
+  char*     m_pToken[C_TOKENS];
   Tokenizer m_xTokenizer; // input stream parser
-  
+
+  char      m_wTokenArea[C_TOKEN_AREA];
   
 public:
   SePrompt(i8 iPartition);
@@ -39,10 +43,9 @@ private:
   void vPushFile(char* pWord);
   
   void vCreateTable(void);
+  void vCreateTable2(void);
   bool bValidateType(char* pType);
-  
-  void vInit(char* wWorkarea, char* pWords[]);
-};
+ };
 
 /*============================================================================*/
 /* end                                                                        */

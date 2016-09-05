@@ -17,16 +17,16 @@ public:
   History(void);
   ~History(void);
   
-  void vAppend(char* pTokens[]);
+  void vAppend(char* pToken[]);
   void vClose(void);
   void vOpen(void);
   void vPrint(void);
-  bool bRecall(char* pTokens[]);
+  bool bRecall(char* pToken[]);
   
 private:
   void vSeekStart(void);
   void vSeekEnd(void);
-  bool bGet(i8 iCommand, char* pTokens[]);
+  bool bGet(i8 iCommand, char* pToken[]);
   bool bRead(char* wCommand);
 };
 

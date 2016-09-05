@@ -27,14 +27,14 @@ History::~History(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void History::vAppend(char* pTokens[])
+void History::vAppend(char* pToken[])
 {
   vSeekEnd();
   
-  for (i8 i = 0; *pTokens[i]; i++) {
+  for (i8 i = 0; *pToken[i]; i++) {
     if (i)
       m_xFile.vPrint("%s"," ");
-    m_xFile.vPrint("%s",pTokens[i]);
+    m_xFile.vPrint("%s",pToken[i]);
   }
   m_xFile.vPrint("%s","\n");
   m_xFile.vFlush();
@@ -81,26 +81,26 @@ void History::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool History::bRecall(char* pTokens[])
+bool History::bRecall(char* pToken[])
 {
   i8 iCommand;
   
-  if (String::bEqualTo("!!",pTokens[0],C_NO_CASE)) {
+  if (String::bEqualTo("!!",pToken[0],C_NO_CASE)) {
     iCommand = m_iCommands;
     if (! iCommand)
       return false;
   }
   else {
     // get command number
-    if (String::iLength(pTokens[0]) < 2)
+    if (String::iLength(pToken[0]) < 2)
       return false;
     
-    iCommand = String::iToI8(pTokens[0]+1);
+    iCommand = String::iToI8(pToken[0]+1);
   }
   
   vTrace("Recall: %lld\n",iCommand);
   
-  bool bRecalled = bGet(iCommand,pTokens);
+  bool bRecalled = bGet(iCommand,pToken);
   
   return bRecalled;
 }
@@ -112,7 +112,7 @@ bool History::bRecall(char* pTokens[])
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool History::bGet(i8 iCommand, char* pTokens[])
+bool History::bGet(i8 iCommand, char* pToken[])
 {
   vSeekStart();
   
@@ -130,10 +130,10 @@ bool History::bGet(i8 iCommand, char* pTokens[])
       m_xTokenizer.vBeginTokenizing();
       
       for (i8 i = 0; i < 16; i++)
-        *pTokens[i] = '\0';
+        *pToken[i] = '\0';
       
       i8 i = 0;
-      while (TK_NONE != m_xTokenizer.eNextToken(pTokens[i])) {
+      while (TK_NONE != m_xTokenizer.eNextToken(pToken[i])) {
         //vTrace("Word [%lld] %s\n",i,pWords[i]);
         i++;
       }

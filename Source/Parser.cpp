@@ -45,6 +45,7 @@ Parser::Parser(void)
 {
   //m_bMalloc set in new
   m_iDepth = 0;
+  m_bEOL   = false;
   m_bEOF   = false;
   m_pChain = nullptr;
   
@@ -67,6 +68,7 @@ void Parser::vBeginParsing(void)
 {
   ASSERT(IS_NONE != m_eSource);
   
+  m_bEOL = false;
   m_bEOF = false;
   
 }
@@ -635,12 +637,13 @@ void Parser::vReadLineFile(void)
     
     *pCharInLine++ = c;
     
-    if (C_END_OF_LINE == c)
+    if (C_END_OF_LINE == c) {
       break;
+    }
     
   } while (c);
   
-  if (C_END_OF_FILE == c)
+  if (C_END_OF_FILE == c && m_bLineMode)
     m_bEOF = true;
   
   *pCharInLine++ = '\0';
