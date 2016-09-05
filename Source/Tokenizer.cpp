@@ -160,7 +160,8 @@ void Tokenizer::vBeginTokenizing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end                                                                        */
+/* end                                           
+ */
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vEndTokenizing(void)
 {
@@ -168,18 +169,18 @@ void Tokenizer::vEndTokenizing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next literal into given buffer                                       */
+/* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eNextToken(char* wToken)
 {
-  eTK eLiteral;
+  eTK eToken;
   
   if (m_bNormal)
-    eLiteral = eNextNormal(wToken);
+    eToken = eNextNormal(wToken);
   else
-    eLiteral = eNextSpecial(wToken);
+    eToken = eNextSpecial(wToken);
   
-  return eLiteral;
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,27 +199,27 @@ bool Tokenizer::bEOF(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* parse next normal literal into given buffer                                */
+/* parse next normal token into given buffer                                  */
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eNextNormal(char* wToken)
 {
   *wToken = '\0';
   
-  eTK eLiteral = eParseNormal(wToken);
+  eTK eToken = eParseNormal(wToken);
   
-  return eLiteral;
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse next special literal into given buffer                               */
+/* parse next special token into given buffer                                 */
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eNextSpecial(char* wToken)
 {
   *wToken = '\0';
 
-  eTK eLiteral = eParseSpecial(wToken);
+  eTK eToken = eParseSpecial(wToken);
   
-  return eLiteral;
+  return eToken;
 }
 
 
@@ -283,13 +284,13 @@ eTK Tokenizer::eParseSpecial(char* wToken)
   
   // collect string literal?
   if (bStartSpecialString()) {
-    eTK eLiteral = eParseSpecialString(wToken);
-    return eLiteral;
+    eTK eToken = eParseSpecialString(wToken);
+    return eToken;
   }
   
-  // collect name literal
-  eTK eLiteral = eParseSpecialName(wToken);
-  return eLiteral;
+  // collect name token
+  eTK eToken = eParseSpecialName(wToken);
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -339,8 +340,8 @@ eTK Tokenizer::eParseSpecialInteger(char* wToken)
   }
   
   // its actually a name; complete parsing name
-  eTK eLiteral = eParseSpecialName(z);
-  return eLiteral;
+  eTK eToken = eParseSpecialName(z);
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/

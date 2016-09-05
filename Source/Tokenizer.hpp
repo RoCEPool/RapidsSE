@@ -8,7 +8,7 @@
 
 namespace Common
 {
-  enum eTK // literal type
+  enum eTK // token type
   {
     /*  0 */ TK_NONE=0,  // none
     /*  1 */ TK_NAME,    // name token, e.g. WASHER or ++ etc

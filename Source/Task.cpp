@@ -516,12 +516,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("interpreting",    &vInterpreting,     false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
-  vAddPrimitive("isIntLit",        &vIsIntLit,         false);
   vAddPrimitive("isImmediate",     &vIsImmediate,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
-  vAddPrimitive("isNameLit",       &vIsNameLit,        false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
-  vAddPrimitive("isStrLit",        &vIsStrLit,         false);
   vAddPrimitive("iterate",         &vIterate,          true );
   vAddPrimitive("iterate_rt_A",    &vIterate_RT_A,     false);
   vAddPrimitive("iterate_rt_B",    &vIterate_RT_B,     false);
@@ -671,14 +668,14 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("input.close",     &vInputClose,       false);
   vAddPrimitive("input.depth",     &vInputDepth,       false);
+  vAddPrimitive("input.next",      &vInputNext,        false);
   vAddPrimitive("input.open",      &vInputOpen,        false);
   vAddPrimitive("input.pop",       &vInputPop,         false);
   vAddPrimitive("input.push",      &vInputPush,        false);
   vAddPrimitive("input.stdin",     &vInputStdin,       false);
   vAddPrimitive("input.text",      &vInputText,        false);
-  vAddPrimitive("literal",         &vLiteral,          false);
-  vAddPrimitive("litNext",         &vLitNext,          false);
-  vAddPrimitive("litType",         &vLitType,          false);
+  vAddPrimitive("input.token",     &vInputToken,       false);
+  vAddPrimitive("input.type",      &vInputType,        false);
   
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
@@ -927,17 +924,17 @@ void Task::vAddRoutines(void)
   "  retryPoint"
   
   "  begin_"
-  "    litNext"
+  "    input.next"
   
   // end of input
-  "    litType TK_NONE == if"
+  "    input.type TK_NONE == if"
   "      exit"
   "    then"
   
   // integer
-  "    litType TK_INTEGER == if"
+  "    input.type TK_INTEGER == if"
   
-  "      literal >int"            // convert str to int, leave on stack
+  "      input.token >int"        // convert str to int, leave on stack
   
   "      isinterpreting if"       // interpret leaves int on stack
   "        again_"
@@ -951,9 +948,9 @@ void Task::vAddRoutines(void)
   "    then"
   
   // string
-  "    litType TK_STRING == if"
+  "    input.type TK_STRING == if"
   
-  "      literal"                 // put str on stack
+  "      input.token"             // put str on stack
   
   "      isinterpreting if"       // interpret leaves str on stack
   "        again_"
@@ -967,17 +964,17 @@ void Task::vAddRoutines(void)
   "    then"
   
   // what?
-  "    litType TK_NAME != if"           // double check we have a name
-  "      \"strange literal\" . litType ."
+  "    input.type TK_NAME != if"  // double check we have a name
+  "      \"strange token\" . input.type ."
   "      again_"
   "    then"
   
   // known name?
-  "    literal find"              // attempt to find
+  "    input.token find"         // attempt to find
   "    dup not if"
   "      drop"
   "      \"unknown\" ."
-  "      literal ."
+  "      input.token ."
   "      isBooted not if processExit then "
   "      again_"
   "    then"
@@ -1092,16 +1089,16 @@ Word* Task::pCompileColon(s& sDefinition)
   m_xTokenizer.vBeginTokenizing();
   
   // get :
-  vLiteralNext();
+  vTokenNext();
   vTrace("CompileColon: %s\n",m_sToken.a());
   
   // get name of word
-  vLiteralNext();
+  vTokenNext();
   vTrace("CompileColon: %s\n",m_sToken.a());
   
   pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sToken.a());
   
-  vLiteralNext();
+  vTokenNext();
   
   while (TK_NONE != m_eToken) {
     
@@ -1145,7 +1142,7 @@ Word* Task::pCompileColon(s& sDefinition)
         ASSERT(0);
     }
     
-    vLiteralNext();
+    vTokenNext();
   }
   
   pNewWord->vEncode("exit");
@@ -1437,14 +1434,6 @@ bool Task::bIsName(s& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next input literal                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vLiteralNext(void)
-{
-  m_eToken = m_xTokenizer.eNextToken(m_sToken.a());
-}
-
-/*----------------------------------------------------------------------------*/
 /* locate word based on cell                                                  */
 /*----------------------------------------------------------------------------*/
 Word* Task::pLocateWord(Cell* pCell)
@@ -1690,6 +1679,14 @@ void Task::vState(eTS eState)
   m_xLock.vGrabWrite();
   m_eState = eState;
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next input token                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vTokenNext(void)
+{
+  m_eToken = m_xTokenizer.eNextToken(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2669,7 +2666,7 @@ void Task::vColon(NNP_Task nnpTask)
   
   nnpTask->m_bCompiling = true;
 
-  nnpTask->vLiteralNext();
+  nnpTask->vTokenNext();
   
   new(nnpTask->m_xDictionaryStack.pTop())  Word(nnpTask->m_sToken.a());
 }
@@ -2699,7 +2696,7 @@ void Task::vComment(NNP_Task nnpTask)
   nnpTask->vPrimitive("vComment");
   
   for (;;) {
-    nnpTask->vLiteralNext();
+    nnpTask->vTokenNext();
     if (String::bEqualTo(")",nnpTask->m_sToken.a()))
       break;
   }
@@ -3346,30 +3343,6 @@ void Task::vIsInterpreting(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* isIntLit -- is integer literal?                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vIsIntLit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vIsIntLit");
-  
-  i8 iIsIntLit = TK_INTEGER == nnpTask->m_eToken ? 1 : 0;
-  
-  nnpTask->vPushParam(iIsIntLit);
-}
-
-/*----------------------------------------------------------------------------*/
-/* isNameLit -- is name literal?                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vIsNameLit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vIsNameLit");
-  
-  i8 iIsNameLit = TK_NAME == nnpTask->m_eToken ? 1 : 0;
-  
-  nnpTask->vPushParam(iIsNameLit);
-}
-
-/*----------------------------------------------------------------------------*/
 /* isPrimitive -- is word a primitive?                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vIsPrimitive(NNP_Task nnpTask)
@@ -3384,18 +3357,6 @@ void Task::vIsPrimitive(NNP_Task nnpTask)
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
   nnpTask->vPushParam(iIsPrimitive);
-}
-
-/*----------------------------------------------------------------------------*/
-/* isStrLit -- is string literal?                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vIsStrLit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vIsStrLit");
-  
-  i8 iIsStrLit = TK_STRING == nnpTask->m_eToken ? 1 : 0;
-  
-  nnpTask->vPushParam(iIsStrLit);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3547,16 +3508,6 @@ void Task::vLessEqual(NNP_Task nnpTask)
   r = i <= j;
   
   nnpTask->vPushParam(r);
-}
-
-/*----------------------------------------------------------------------------*/
-/* literal -- push contents of literal buffer as string onto param stack      */
-/*----------------------------------------------------------------------------*/
-void Task::vLiteral(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vLiteral");
-  
-  nnpTask->vPushParam(nnpTask->m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4327,7 +4278,7 @@ void Task::vSee(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vSee");
   
-  nnpTask->vLiteralNext();
+  nnpTask->vTokenNext();
   
   Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
 
@@ -4534,7 +4485,7 @@ void Task::vTick(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vTick");
   
-  nnpTask->vLiteralNext();
+  nnpTask->vTokenNext();
   
 //  if ( ! bExtracted ) {
 //    String::vSprint(nnpTask->m_sException,"No name: ' ");
@@ -5999,6 +5950,21 @@ void Task::vInputDepth(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* input.next -- get next input token                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vInputNext(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInputNext");
+  
+  if (nnpTask->m_bTracing)
+    ASSERT(nnpTask->m_bTracing);
+  
+  char* aToken = nnpTask->m_sToken.a();
+  
+  nnpTask->m_eToken = nnpTask->m_xTokenizer.eNextToken(aToken);
+}
+
+/*----------------------------------------------------------------------------*/
 /* input.open -- open new input using filepath on param stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vInputOpen(NNP_Task nnpTask)
@@ -6070,32 +6036,25 @@ void Task::vInputText(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* litNext -- get next literal                                                */
+/* input.token -- push token buffer as string onto param stack                */
 /*----------------------------------------------------------------------------*/
-void Task::vLitNext(NNP_Task nnpTask)
+void Task::vInputToken(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLitNext");
+  nnpTask->vPrimitive("vInputToken");
   
-  if (nnpTask->m_bTracing)
-    ASSERT(nnpTask->m_bTracing);
-  
-  // litNext is only used in docol
-  
-  char* aToken = nnpTask->m_sToken.a();
-  
-  nnpTask->m_eToken = nnpTask->m_xTokenizer.eNextToken(aToken);
+  nnpTask->vPushParam(nnpTask->m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
-/* litType -- push literal type                                               */
+/* input.type -- push token type                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vLitType(NNP_Task nnpTask)
+void Task::vInputType(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLitType");
+  nnpTask->vPrimitive("vInputType");
   
-  eTK eLiteralType = nnpTask->m_eToken;
+  eTK eTokenType = nnpTask->m_eToken;
   
-  nnpTask->vPushParam(eLiteralType);
+  nnpTask->vPushParam(eTokenType);
 }
 
 // loader: /////////////////////////////////////////////////////////////////////
@@ -9339,7 +9298,7 @@ void Task::vCreate(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vCreate");
   
-  nnpTask->vLiteralNext();
+  nnpTask->vTokenNext();
   
   Dictionary* pDictionary;
   if (nnpTask->m_pSEitf)
@@ -9410,7 +9369,7 @@ void Task::vForget(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vForget");
   
-  nnpTask->vLiteralNext();
+  nnpTask->vTokenNext();
   
   Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
   
