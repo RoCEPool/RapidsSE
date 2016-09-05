@@ -33,7 +33,6 @@ SePrompt::SePrompt(i8 iPartition)
   m_xTokenizer.vPrompt("se.2> ");
   m_xTokenizer.vUseStdin();
   m_xTokenizer.vLineMode(true);
-  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,8 +259,6 @@ void SePrompt::vPushFile(char* pPath)
   
   bool b = m_xTokenizer.bUseFile(sPath);
   ASSERT(b);
-  
-  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/

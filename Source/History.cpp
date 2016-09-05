@@ -127,7 +127,6 @@ bool History::bGet(i8 iCommand, char* pToken[])
       sCommand = wCommand;
       
       m_xTokenizer.vUseString(sCommand);
-      m_xTokenizer.vBeginTokenizing();
       
       for (i8 i = 0; i < 16; i++)
         *pToken[i] = '\0';

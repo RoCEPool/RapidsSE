@@ -166,7 +166,6 @@ void Task::vInit(const char* aLambda)
   m_eToken     = TK_NONE;
   m_xTokenizer.vPush();
   m_xTokenizer.vUseString(m_sLambda);
-  m_xTokenizer.vBeginTokenizing();
   
   m_pSEitf   = nullptr;
 }
@@ -1086,7 +1085,6 @@ Word* Task::pCompileColon(s& sDefinition)
   ValWsp xValWsp;
   
   m_xTokenizer.vUseString(sDefinition);
-  m_xTokenizer.vBeginTokenizing();
   
   // get :
   vTokenNext();
@@ -1498,7 +1496,6 @@ void Task::vSeedDicCompileSen(void)
   m_sLambda = "";
   
   m_xTokenizer.vUseString(m_sLambda);
-  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1520,7 +1517,6 @@ void Task::vSeedWord(const char* aLambda)
     String::vConcat(m_sLambda.a()," ::exit");
   
   m_xTokenizer.vUseString(m_sLambda);
-  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1542,7 +1538,6 @@ void Task::vSeedDocol(void)
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vPrompt("docol> ");
   m_xTokenizer.vLineMode(false);
-  m_xTokenizer.vBeginTokenizing();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5930,7 +5925,7 @@ void Task::vGridInit(NNP_Task nnpTask)
 // input: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* input.close -- close current input                                         */
+/* input.close -- close current input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInputClose(NNP_Task nnpTask)
 {
@@ -5940,7 +5935,7 @@ void Task::vInputClose(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.depth -- push current depth of input onto param stack                */
+/* input.depth -- push current depth of input stream onto param stack        */
 /*----------------------------------------------------------------------------*/
 void Task::vInputDepth(NNP_Task nnpTask)
 {
@@ -5952,7 +5947,7 @@ void Task::vInputDepth(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.next -- get next input token                                         */
+/* input.next -- get next input token from current input stream               */
 /*----------------------------------------------------------------------------*/
 void Task::vInputNext(NNP_Task nnpTask)
 {
@@ -5978,7 +5973,6 @@ void Task::vInputOpen(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sFilePath) )
     THROW_INVALID_PARAM("input.open");
   
-  //nnpTask->m_xTokenizer.vPush();
   bool bOpened = nnpTask->m_xTokenizer.bUseFile(sFilePath);
   
   if ( ! bOpened )
@@ -5986,22 +5980,18 @@ void Task::vInputOpen(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.pop -- pop previous input from return stack                          */
+/* input.pop -- pop to previous input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInputPop(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPop");
   
-  i8 iDepth = nnpTask->m_xTokenizer.iDepth();
-  
   bool bPopped = nnpTask->m_xTokenizer.bPop();
   ASSERT(bPopped);
-  
-  ASSERT(iDepth = nnpTask->m_xTokenizer.iDepth() + 1);
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.push -- push current input onto return stack (resets input)          */
+/* input.push -- push input stream, allowing for new input stream             */
 /*----------------------------------------------------------------------------*/
 void Task::vInputPush(NNP_Task nnpTask)
 {
@@ -6011,7 +6001,7 @@ void Task::vInputPush(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.stdin -- set input to stdin                                          */
+/* input.stdin -- use stdin as new input stream                               */
 /*----------------------------------------------------------------------------*/
 void Task::vInputStdin(NNP_Task nnpTask)
 {
@@ -6021,7 +6011,7 @@ void Task::vInputStdin(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.text -- redirect input parsining to string on param stack            */
+/* input.text -- use string as new input stream                               */
 /*----------------------------------------------------------------------------*/
 void Task::vInputText(NNP_Task nnpTask)
 {
@@ -6032,13 +6022,13 @@ void Task::vInputText(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sInput) )
     THROW_INVALID_PARAM("input.text");
   
-  nnpTask->m_sLambda = sInput;
+  //nnpTask->m_sLambda = sInput;
   
   nnpTask->m_xTokenizer.vUseString(sInput);
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.token -- push token buffer as string onto param stack                */
+/* input.token -- push current token of input stream onto param stack         */
 /*----------------------------------------------------------------------------*/
 void Task::vInputToken(NNP_Task nnpTask)
 {
@@ -6048,7 +6038,7 @@ void Task::vInputToken(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.type -- push token type                                              */
+/* input.type -- push current token type onto param stack                     */
 /*----------------------------------------------------------------------------*/
 void Task::vInputType(NNP_Task nnpTask)
 {

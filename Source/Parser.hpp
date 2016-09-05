@@ -27,15 +27,14 @@ namespace Common
     s8K     m_sRawLine;  // either line read from file or the given string being parsed
     char*   m_aRawLine;  // ptr into m_sLine.a() -- debug help
     char*   m_pRawInput; // next input char (ptr into line)
-    bool    m_bEOL;      // eol hit? (in line mode)
-    bool    m_bEOF;      // eof hit?
+    bool    m_bEOF;      // eof seen?
 
     // registers
     i8      m_nLoaded;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
     char    m_cFirst;    // first single char
     char    m_cSecond;   // second single char
     eCT     m_eComment;  // comment type currently being processed
-    bool    m_bPrompt;   // prompt user for more input
+    bool    m_bRead;     // prompt user for more input
     
     
   public:
@@ -45,7 +44,6 @@ namespace Common
     Parser(void);
     ~Parser(void);
     
-    void vBeginParsing(void);
     void vEndParsing(void);
     void vPrompt(s& sPrompt);
     void vLineMode(bool bLineMode);
