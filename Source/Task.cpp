@@ -1056,7 +1056,7 @@ void Task::vAddRoutines(void)
   ": ::dicCompile"
   "  \"::dicCompile\" ."
   "  gwd ."
-  "  \"../../../commands\" cwd"
+  "  \"../../../../commands\" cwd"
   "  gwd ."
 //  "  traceon"
   "  \"compile.sen\" >>:"
