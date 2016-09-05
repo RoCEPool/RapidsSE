@@ -163,7 +163,7 @@ void Task::vInit(const char* aLambda)
     String::vConcat(m_sLambda.a()," exit");
   
   m_sToken     = "";
-  m_eToken     = LT_NONE;
+  m_eToken     = TK_NONE;
   m_xTokenizer.vPush();
   m_xTokenizer.vUseString(m_sLambda);
   m_xTokenizer.vBeginTokenizing();
@@ -334,11 +334,11 @@ void Task::vAddConstants(void)
   /* 59 */ vAddConstant("CN_WORD",                  CN_WORD);
   /* 60 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
   
-  /*  0 */ vAddConstant("LT_NONE",                  LT_NONE);
-  /*  1 */ vAddConstant("LT_NAMELIT",               LT_NAMELIT);
-  /*  2 */ vAddConstant("LT_INTLIT",                LT_INTLIT);
-  /*  3 */ vAddConstant("LT_STRLIT",                LT_STRLIT);
-  /*  4 */ vAddConstant("LT_ENUMS",                 LT_ENUMS);
+  /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
+  /*  1 */ vAddConstant("TK_NAME",               TK_NAME);
+  /*  2 */ vAddConstant("TK_INTEGER",                TK_INTEGER);
+  /*  3 */ vAddConstant("TK_STRING",                TK_STRING);
+  /*  4 */ vAddConstant("TK_ENUMS",                 TK_ENUMS);
   
   /*  1 */ vAddConstant("SIZEOF_INTVAL",            sizeof(IntVal));
   /*  2 */ vAddConstant("SIZEOF_OBJVAL",            sizeof(ObjVal));
@@ -930,12 +930,12 @@ void Task::vAddRoutines(void)
   "    litNext"
   
   // end of input
-  "    litType LT_NONE == if"
+  "    litType TK_NONE == if"
   "      exit"
   "    then"
   
   // integer
-  "    litType LT_INTLIT == if"
+  "    litType TK_INTEGER == if"
   
   "      literal >int"            // convert str to int, leave on stack
   
@@ -951,7 +951,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // string
-  "    litType LT_STRLIT == if"
+  "    litType TK_STRING == if"
   
   "      literal"                 // put str on stack
   
@@ -967,7 +967,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // what?
-  "    litType LT_NAMELIT != if"           // double check we have a name
+  "    litType TK_NAME != if"           // double check we have a name
   "      \"strange literal\" . litType ."
   "      again_"
   "    then"
@@ -1103,7 +1103,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
   vLiteralNext();
   
-  while (LT_NONE != m_eToken) {
+  while (TK_NONE != m_eToken) {
     
     vTrace("CompileColon: %s\n",m_sToken.a());
     
@@ -1112,12 +1112,12 @@ Word* Task::pCompileColon(s& sDefinition)
     
     switch (m_eToken) {
         
-      case LT_INTLIT:
+      case TK_INTEGER:
         xValWsp = String::iToI8(m_sToken.a());
         pNewWord->vEncode("push",&xValWsp);
         break;
         
-      case LT_NAMELIT:
+      case TK_NAME:
         pFoundWord = pFindWord(m_sToken);
         if (WT_PRIMITIVE == pFoundWord->eWordType()) {
           pFunc = pFoundWord->pFunc();
@@ -1135,7 +1135,7 @@ Word* Task::pCompileColon(s& sDefinition)
         }
         break;
         
-      case LT_STRLIT: {
+      case TK_STRING: {
         xValWsp = m_sToken.a();
         pNewWord->vEncode("push",&xValWsp);
         break;
@@ -1441,7 +1441,7 @@ bool Task::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 void Task::vLiteralNext(void)
 {
-  m_eToken = m_xTokenizer.eNextLiteral(m_sToken.a());
+  m_eToken = m_xTokenizer.eNextToken(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3352,7 +3352,7 @@ void Task::vIsIntLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsIntLit");
   
-  i8 iIsIntLit = LT_INTLIT == nnpTask->m_eToken ? 1 : 0;
+  i8 iIsIntLit = TK_INTEGER == nnpTask->m_eToken ? 1 : 0;
   
   nnpTask->vPushParam(iIsIntLit);
 }
@@ -3364,7 +3364,7 @@ void Task::vIsNameLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsNameLit");
   
-  i8 iIsNameLit = LT_NAMELIT == nnpTask->m_eToken ? 1 : 0;
+  i8 iIsNameLit = TK_NAME == nnpTask->m_eToken ? 1 : 0;
   
   nnpTask->vPushParam(iIsNameLit);
 }
@@ -3393,7 +3393,7 @@ void Task::vIsStrLit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vIsStrLit");
   
-  i8 iIsStrLit = LT_STRLIT == nnpTask->m_eToken ? 1 : 0;
+  i8 iIsStrLit = TK_STRING == nnpTask->m_eToken ? 1 : 0;
   
   nnpTask->vPushParam(iIsStrLit);
 }
@@ -6081,9 +6081,9 @@ void Task::vLitNext(NNP_Task nnpTask)
   
   // litNext is only used in docol
   
-  char* aLiteral = nnpTask->m_sToken.a();
+  char* aToken = nnpTask->m_sToken.a();
   
-  nnpTask->m_eToken = nnpTask->m_xTokenizer.eNextLiteral(aLiteral);
+  nnpTask->m_eToken = nnpTask->m_xTokenizer.eNextToken(aToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6093,7 +6093,7 @@ void Task::vLitType(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vLitType");
   
-  eLT eLiteralType = nnpTask->m_eToken;
+  eTK eLiteralType = nnpTask->m_eToken;
   
   nnpTask->vPushParam(eLiteralType);
 }

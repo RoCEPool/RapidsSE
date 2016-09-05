@@ -8,21 +8,21 @@
 
 namespace Common
 {
-  enum eLT // literal type
+  enum eTK // literal type
   {
-    /*  0 */ LT_NONE=0,  // none
-    /*  1 */ LT_NAMELIT, // name literal, e.g. WASHER or ++ etc
-    /*  2 */ LT_INTLIT,  // int literal, e.g. 1, 42
-    /*  3 */ LT_STRLIT,  // str litera, e.g. "the answer"
-    /*  4 */ LT_ENUMS
+    /*  0 */ TK_NONE=0,  // none
+    /*  1 */ TK_NAME,    // name token, e.g. WASHER or ++ etc
+    /*  2 */ TK_INTEGER, // integer literal, e.g. 1, 42
+    /*  3 */ TK_STRING,  // string literal, e.g. "the answer"
+    /*  4 */ TK_ENUMS
   };
   
-  static const char *pLT[]
+  static const char *pTK[]
   {
     /*  0 */ "NONE",
-    /*  1 */ "NAMELIT",
-    /*  2 */ "INTLIT",
-    /*  3 */ "STRLIT",
+    /*  1 */ "NAME",
+    /*  2 */ "INTEGER",
+    /*  3 */ "STRING",
     /*  4 */ "ENUMS",
   };
   class Tokenizer : public mn,
@@ -58,23 +58,23 @@ namespace Common
     void vUseStdin(void);
     void vUseString(s& sString);
 
-    eLT  eNextLiteral(char* wLiteral);
+    eTK  eNextToken(char* wToken);
     
     bool bEOF(void);
     
   private:
-    eLT  eNextNormal(char* wLiteral);
-    eLT  eNextSpecial(char* wLiteral);
+    eTK  eNextNormal(char* wToken);
+    eTK  eNextSpecial(char* wToken);
     
-    eLT  eParseNormal(char* wLiteral);
-    eLT  eParseNormalInteger(char* wLiteral);
-    eLT  eParseNormalName(char* wLiteral);
-    eLT  eParseNormalString(char* wLiteral);
+    eTK  eParseNormal(char* wToken);
+    eTK  eParseNormalInteger(char* wToken);
+    eTK  eParseNormalName(char* wToken);
+    eTK  eParseNormalString(char* wToken);
     
-    eLT  eParseSpecial(char* wLiteral);
-    eLT  eParseSpecialInteger(char* wLiteral);
-    eLT  eParseSpecialName(char* wLiteral);
-    eLT  eParseSpecialString(char* wLiteral);
+    eTK  eParseSpecial(char* wToken);
+    eTK  eParseSpecialInteger(char* wToken);
+    eTK  eParseSpecialName(char* wToken);
+    eTK  eParseSpecialString(char* wToken);
     
     void vSkipWhitespace(void);
     

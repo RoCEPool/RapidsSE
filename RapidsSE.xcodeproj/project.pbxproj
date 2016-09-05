@@ -99,7 +99,6 @@
 		F22056BF1D62DDF900E8EF5B /* Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2E66A4A1D10AEB1009B5882 /* Stack.cpp */; };
 		F22056C01D62DDFC00E8EF5B /* QueueBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2C6E9751D25B519007C624C /* QueueBuffer.cpp */; };
 		F22056C11D62DDFF00E8EF5B /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F226E73D1D41E2ED00E10FC3 /* Queue.cpp */; };
-		F22056C21D62DE0400E8EF5B /* InputStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2EC32D41D2DB24F00791294 /* InputStream.cpp */; };
 		F22056C31D62DE0700E8EF5B /* DictionaryStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F25C6F1B1D30512C000886A8 /* DictionaryStack.cpp */; };
 		F22056C41D62DE0C00E8EF5B /* Tasks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CCD1D477280008DF3D9 /* Tasks.cpp */; };
 		F22056C51D62DE1300E8EF5B /* ThreadList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F2389CEE1D4842F2008DF3D9 /* ThreadList.cpp */; };
@@ -509,8 +508,6 @@
 		F2EC32CF1D2C751D00791294 /* TaskSet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TaskSet.hpp; sourceTree = "<group>"; };
 		F2EC32D11D2DAFDB00791294 /* ObjVal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjVal.cpp; sourceTree = "<group>"; };
 		F2EC32D21D2DAFDB00791294 /* ObjVal.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ObjVal.hpp; sourceTree = "<group>"; };
-		F2EC32D41D2DB24F00791294 /* InputStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputStream.cpp; sourceTree = "<group>"; };
-		F2EC32D51D2DB24F00791294 /* InputStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InputStream.hpp; sourceTree = "<group>"; };
 		F2F1250A1D21BB0500CA8E5A /* s256.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = s256.cpp; path = Source/s256.cpp; sourceTree = "<group>"; };
 		F2F1250B1D21BB0500CA8E5A /* s256.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = s256.hpp; path = Source/s256.hpp; sourceTree = "<group>"; };
 		F2F1250D1D21C72700CA8E5A /* s.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = s.cpp; path = Source/s.cpp; sourceTree = "<group>"; };
@@ -643,8 +640,6 @@
 			children = (
 				F21D297F1D0773B4000F8C45 /* Tasks.h */,
 				F2389CCD1D477280008DF3D9 /* Tasks.cpp */,
-				F2EC32D41D2DB24F00791294 /* InputStream.cpp */,
-				F2EC32D51D2DB24F00791294 /* InputStream.hpp */,
 				98C42CE11D0069D1007DD84F /* Task.cpp */,
 				98C42CE21D0069D1007DD84F /* Task.hpp */,
 				F2DD657B1D66428F009B684A /* TaskCursor.cpp */,
@@ -1337,7 +1332,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F22056D51D62DE8B00E8EF5B /* RapidsSE.cpp in Sources */,
-				F22056C21D62DE0400E8EF5B /* InputStream.cpp in Sources */,
 				F22056CE1D62DE6000E8EF5B /* SEitf.cpp in Sources */,
 				F22056A21D62DD1A00E8EF5B /* Values.cpp in Sources */,
 				F2A595CE1D6FD1DA007C66B1 /* Debug.cpp in Sources */,

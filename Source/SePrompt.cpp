@@ -79,7 +79,7 @@ void SePrompt::vGetCommand(void)
       *m_pTokens[i] = '\0';
     
     i8 i = 0;
-    while (LT_NONE != m_xTokenizer.eNextLiteral(m_pTokens[i])) {
+    while (TK_NONE != m_xTokenizer.eNextToken(m_pTokens[i])) {
       //vTrace("Word [%lld] %s\n",i,pWords[i]);
       i++;
       ASSERT(i < 16);

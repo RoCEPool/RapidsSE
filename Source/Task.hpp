@@ -92,7 +92,7 @@ namespace Tasks
     s256      m_sLambda;    // lambda input
     Tokenizer m_xTokenizer; // input stream tokenizer
     s256      m_sToken;     // current token
-    eLT       m_eToken;     // token type
+    eTK       m_eToken;     // token type
     
     union {
       Cell*       m_pCell;

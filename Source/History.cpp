@@ -133,7 +133,7 @@ bool History::bGet(i8 iCommand, char* pTokens[])
         *pTokens[i] = '\0';
       
       i8 i = 0;
-      while (LT_NONE != m_xTokenizer.eNextLiteral(pTokens[i])) {
+      while (TK_NONE != m_xTokenizer.eNextToken(pTokens[i])) {
         //vTrace("Word [%lld] %s\n",i,pWords[i]);
         i++;
       }

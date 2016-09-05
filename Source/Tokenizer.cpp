@@ -170,14 +170,14 @@ void Tokenizer::vEndTokenizing(void)
 /*----------------------------------------------------------------------------*/
 /* parse next literal into given buffer                                       */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eNextLiteral(char* wLiteral)
+eTK Tokenizer::eNextToken(char* wToken)
 {
-  eLT eLiteral;
+  eTK eLiteral;
   
   if (m_bNormal)
-    eLiteral = eNextNormal(wLiteral);
+    eLiteral = eNextNormal(wToken);
   else
-    eLiteral = eNextSpecial(wLiteral);
+    eLiteral = eNextSpecial(wToken);
   
   return eLiteral;
 }
@@ -200,11 +200,11 @@ bool Tokenizer::bEOF(void)
 /*----------------------------------------------------------------------------*/
 /* parse next normal literal into given buffer                                */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eNextNormal(char* wLiteral)
+eTK Tokenizer::eNextNormal(char* wToken)
 {
-  *wLiteral = '\0';
+  *wToken = '\0';
   
-  eLT eLiteral = eParseNormal(wLiteral);
+  eTK eLiteral = eParseNormal(wToken);
   
   return eLiteral;
 }
@@ -212,11 +212,11 @@ eLT Tokenizer::eNextNormal(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse next special literal into given buffer                               */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eNextSpecial(char* wLiteral)
+eTK Tokenizer::eNextSpecial(char* wToken)
 {
-  *wLiteral = '\0';
+  *wToken = '\0';
 
-  eLT eLiteral = eParseSpecial(wLiteral);
+  eTK eLiteral = eParseSpecial(wToken);
   
   return eLiteral;
 }
@@ -229,41 +229,41 @@ eLT Tokenizer::eNextSpecial(char* wLiteral)
 /*----------------------------------------------------------------------------*/
 /* parse normal                                                               */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseNormal(char* wLiteral)
+eTK Tokenizer::eParseNormal(char* wToken)
 {
   vSkipWhitespace();
   
-  return LT_NONE;
+  return TK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse normal integer                                                       */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseNormalInteger(char* wLiteral)
+eTK Tokenizer::eParseNormalInteger(char* wToken)
 {
-  return LT_NONE;
+  return TK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse normal name                                                          */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseNormalName(char* wLiteral)
+eTK Tokenizer::eParseNormalName(char* wToken)
 {
-  return LT_NONE;
+  return TK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse normal string                                                        */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseNormalString(char* wLiteral)
+eTK Tokenizer::eParseNormalString(char* wToken)
 {
-  return LT_NONE;
+  return TK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special                                                              */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseSpecial(char* wLiteral)
+eTK Tokenizer::eParseSpecial(char* wToken)
 {
   vGetChar();
   
@@ -271,34 +271,34 @@ eLT Tokenizer::eParseSpecial(char* wLiteral)
   
   // end of input?
   if (bEndInput()) {
-    *wLiteral = '\0';
-    return LT_NONE;
+    *wToken = '\0';
+    return TK_NONE;
   }
   
   // collect integer literal?
   if (bStartSpecialInteger()) {
-    eLT eLiteral = eParseSpecialInteger(wLiteral);
+    eTK eLiteral = eParseSpecialInteger(wToken);
     return eLiteral;
   }
   
   // collect string literal?
   if (bStartSpecialString()) {
-    eLT eLiteral = eParseSpecialString(wLiteral);
+    eTK eLiteral = eParseSpecialString(wToken);
     return eLiteral;
   }
   
   // collect name literal
-  eLT eLiteral = eParseSpecialName(wLiteral);
+  eTK eLiteral = eParseSpecialName(wToken);
   return eLiteral;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special integer                                                      */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseSpecialInteger(char* wLiteral)
+eTK Tokenizer::eParseSpecialInteger(char* wToken)
 {
   i8 iNoDigits = 0;
-  char *z = wLiteral;
+  char *z = wToken;
   
   // we have seen a digit
   ASSERT(bStartSpecialInteger());
@@ -335,20 +335,20 @@ eLT Tokenizer::eParseSpecialInteger(char* wLiteral)
     
     // terminate an intlit
     *z = '\0';
-    return LT_INTLIT;
+    return TK_INTEGER;
   }
   
   // its actually a name; complete parsing name
-  eLT eLiteral = eParseSpecialName(z);
+  eTK eLiteral = eParseSpecialName(z);
   return eLiteral;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special name                                                         */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseSpecialName(char* wLiteral)
+eTK Tokenizer::eParseSpecialName(char* wToken)
 {
-  char *z = wLiteral;
+  char *z = wToken;
   
   ASSERT(bStartSpecialName());
   
@@ -364,15 +364,15 @@ eLT Tokenizer::eParseSpecialName(char* wLiteral)
   // terminate a namelit
   *z = '\0';
 
-  return LT_NAMELIT;
+  return TK_NAME;
 }
 
 /*----------------------------------------------------------------------------*/
 /* parse special string                                                       */
 /*----------------------------------------------------------------------------*/
-eLT Tokenizer::eParseSpecialString(char* wLiteral)
+eTK Tokenizer::eParseSpecialString(char* wToken)
 {
-  char *z = wLiteral;
+  char *z = wToken;
   
   ASSERT(bStartSpecialString());
   
@@ -400,7 +400,7 @@ eLT Tokenizer::eParseSpecialString(char* wLiteral)
   // terminate the strlit
   *z = '\0';
 
-  return LT_STRLIT;
+  return TK_STRING;
 }
 
 
