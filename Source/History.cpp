@@ -27,7 +27,7 @@ History::~History(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void History::vAppend(char* pToken[])
+void History::vAppend(char* pToken[], i8 nTokens)
 {
   vSeekEnd();
   
@@ -81,7 +81,7 @@ void History::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool History::bRecall(char* pToken[])
+bool History::bRecall(char* pToken[], i8 nTokens)
 {
   i8 iCommand;
   
@@ -100,7 +100,7 @@ bool History::bRecall(char* pToken[])
   
   vTrace("Recall: %lld\n",iCommand);
   
-  bool bRecalled = bGet(iCommand,pToken);
+  bool bRecalled = bGet(iCommand,pToken,nTokens);
   
   return bRecalled;
 }
@@ -112,7 +112,7 @@ bool History::bRecall(char* pToken[])
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool History::bGet(i8 iCommand, char* pToken[])
+bool History::bGet(i8 iCommand, char* pToken[], i8 nTokens)
 {
   vSeekStart();
   
@@ -128,8 +128,7 @@ bool History::bGet(i8 iCommand, char* pToken[])
       
       m_xTokenizer.vUseString(sCommand);
       
-      for (i8 i = 0; i < 16; i++)
-        *pToken[i] = '\0';
+      m_xTokenizer.vResetTokens(pToken,nTokens);
       
       i8 i = 0;
       while (TK_NONE != m_xTokenizer.eNextToken(pToken[i])) {

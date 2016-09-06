@@ -56,6 +56,7 @@ namespace Common
     void vUseEnd(void);
 
     eTK  eNextToken(char* wToken);
+    void vResetTokens(char* pToken[], i8 nTokens);
     
     bool bEOF(void);
     bool bLineMode(void);

@@ -73,8 +73,7 @@ void SePrompt::vGetCommand(void)
 {
   while (true) {
     
-    for (i8 i = 0; i < 16; i++)
-      *m_pToken[i] = '\0';
+    m_xTokenizer.vResetTokens(m_pToken,C_TOKENS);
     
     i8 i = 0;
     while (TK_NONE != m_xTokenizer.eNextToken(m_pToken[i])) {
@@ -119,12 +118,12 @@ void SePrompt::vProcessCommand(void)
   }
   
   if (String::bEqualTo("!!",m_pToken[0],C_NO_CASE)) {
-    if (! m_xHistory.bRecall(m_pToken))
+    if (! m_xHistory.bRecall(m_pToken,C_TOKENS))
       return;
   }
   
   if ('!' == *m_pToken[0]) {
-    if (! m_xHistory.bRecall(m_pToken))
+    if (! m_xHistory.bRecall(m_pToken,C_TOKENS))
       return;
   }
   
@@ -138,7 +137,7 @@ void SePrompt::vProcessCommand(void)
     return;
   }
   
-  m_xHistory.vAppend(m_pToken);
+  m_xHistory.vAppend(m_pToken,C_TOKENS);
   
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
@@ -429,23 +428,34 @@ void SePrompt::vCreateTable(void)
 void SePrompt::vCreateTable2(void)
 {
   // for the moment >>create2<< should be the only token
+  ASSERT(String::bEqualTo(m_pToken[0],"create2"));
   ASSERT(String::bEqualTo(m_pToken[1],""));
   
-  vTrace("CreateTable2: %s\n", m_pToken[0]);
-
+  // switch to terminal mode
   m_xTokenizer.vLineMode(false);
   
   for (i8 iToken = 1; iToken < C_TOKENS; iToken++) {
-    if (TK_NONE == m_xTokenizer.eNextToken(m_pToken[iToken]))
-      break;
     
-    vTrace("CreateTable2: %s\n", m_pToken[iToken]);
+    eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
+    ASSERT(TK_NONE != eToken);
     
+    //vTrace("CreateTable2: %s\n", m_pToken[iToken]);
+    
+    // look for terminal
     if (String::bEqualTo(m_pToken[iToken],";"))
       break;
   }
 
+  // switch back to line mode
   m_xTokenizer.vLineMode(true);
+
+  vTrace("CreateTable2 : ");
+  for (i8 iToken = 1; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    vTrace("%s ", m_pToken[iToken]);
+  }
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/
