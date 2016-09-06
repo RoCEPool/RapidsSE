@@ -1051,18 +1051,31 @@ void Task::vAddRoutines(void)
   pCompileColon(sDefinition);
   
   //-----------------------------------------------------
+  // Temporary ifdef till we get sen files embedded in the executable
+#ifdef __APPLE__
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" ."
   "  gwd ."
-  "  \"../../../../commands\" cwd"
+  "  \"../../../../Commands\" cwd"
   "  gwd ."
 //  "  traceon"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" ."
   "  ::exit"
   "  ;";
-  
+#else
+  sDefinition =
+  ": ::dicCompile"
+  "  \"::dicCompile\" ."
+  "  gwd ."
+  "  \"../../Commands\" cwd"
+  "  gwd ."
+  "  \"compile.sen\" >>:"
+  "  \"::dicCompile exit\" ."
+  "  ::exit"
+  "  ;";
+#endif
   pCompileColon(sDefinition);
 }
 

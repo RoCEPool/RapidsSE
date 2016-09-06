@@ -24,8 +24,37 @@ i8 System::iClockFrequency(void)
   return freq;
   
 #else
-  vWarn("System::iClockFrequency not implemented on LINUX!");
-  return 0;
+  const i8 C_BUFSIZ=512;
+  char buf[C_BUFSIZ];
+  double dFreq;
+  i8 iFreq;
+  
+  // open the /Proc/cpuinfo file
+  FILE* fp = fopen("/proc/cpuinfo", "r");
+  if ( !fp ) {
+    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d", errno);
+    return 0;
+  }
+  
+  // look for cpu MHz
+  while(fgets(buf, C_BUFSIZ, fp) != NULL) {
+    if (strstr(buf, "cpu MHz") == NULL)
+      continue;
+    
+    char*p = strchr(buf,':');
+    if (p == NULL)
+      continue;
+    p++;
+    while(isspace(*p))
+      p++;
+    sscanf(p,"%lf", &dFreq);
+    iFreq = static_cast<i8>(dFreq * (double)C_1M);
+  }
+
+  vTrace("Clock frequency: %lld\n", iFreq);
+
+  return iFreq;
+
 #endif
   
 }
@@ -41,7 +70,7 @@ i8 System::iCoreCount(void)
     vWarn("Error while getting cpu count %lld\n", iCount);
     return 0;
   }
-  
+ 
   return iCount;
 }
 
@@ -65,13 +94,9 @@ i8 System::iCpuCount(void)
   
 #else
   
-  i8 iCount = get_nprocs();
-  if (iCount == -1) {
-    vWarn("Error while getting cpu count %lld\n", iCount);
-    return 0;
-  }
-  
-  return iCount;
+  vWarn("iCpuCount() not implemented on LINUX!\n");
+  return 0;
+
 #endif
   
 }
@@ -92,8 +117,9 @@ i8 System::iPhysicalMemory(void)
     return 0;
   }
 
-  i8 MemQty = iNumPages * iPageSize;
-  return MemQty;
+  i8 iMemQty = iNumPages * iPageSize;
+  
+  return iMemQty;
 }
 
 /*============================================================================*/
