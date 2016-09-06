@@ -31,6 +31,7 @@ SePrompt::SePrompt(i8 iPartition)
   m_xTokenizer.vPrompt(m_sPrompt);
   m_xTokenizer.vUseStdin();
   m_xTokenizer.vLineMode(true);
+  m_xTokenizer.vNormal(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +78,9 @@ void SePrompt::vGetCommand(void)
     
     i8 i = 0;
     while (TK_NONE != m_xTokenizer.eNextToken(m_pToken[i])) {
-      //vTrace("Word [%lld] %s\n",i,pWords[i]);
+      
+//      vTrace("Word [%lld] %s\n",i,m_pToken[i]);
+      
       i++;
       ASSERT(i < 16);
     }
@@ -434,12 +437,14 @@ void SePrompt::vCreateTable2(void)
   // switch to terminal mode
   m_xTokenizer.vLineMode(false);
   
+  // get tokens delimited by ';'
   for (i8 iToken = 1; iToken < C_TOKENS; iToken++) {
     
     eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
     ASSERT(TK_NONE != eToken);
     
-    //vTrace("CreateTable2: %s\n", m_pToken[iToken]);
+//    vTrace("CreateTable2: %12s %s\n",
+//           m_pToken[iToken],pTK[eToken]);
     
     // look for terminal
     if (String::bEqualTo(m_pToken[iToken],";"))
@@ -450,7 +455,7 @@ void SePrompt::vCreateTable2(void)
   m_xTokenizer.vLineMode(true);
 
   vTrace("CreateTable2 : ");
-  for (i8 iToken = 1; iToken < C_TOKENS; iToken++) {
+  for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_pToken[iToken])
       break;
     vTrace("%s ", m_pToken[iToken]);
