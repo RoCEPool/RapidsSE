@@ -1,2 +1,3 @@
-create2 
-table x(a1 1,b2 2 "two",c1 3 _3_);
+create2 table x(a1 1,b2 2 "two",c1 3 _3_);
+create2
+table y(a1 1,b2 2 "two",c1 3 _3_);

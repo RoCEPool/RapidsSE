@@ -180,6 +180,47 @@ void Tokenizer::vResetTokens(char* pToken[], i8 nTokens)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find token in token array                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Tokenizer::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
+{
+  for (i8 iToken = 0; iToken < nTokens; iToken++)
+    if (String::bEqualTo(pLookFor,pToken[iToken],C_NO_CASE))
+      return iToken;
+  
+  return -1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* count tokens in token array                                                */
+/*----------------------------------------------------------------------------*/
+i8 Tokenizer::iCountTokens(char* pToken[], i8 nTokens)
+{
+  for (i8 iToken = 0; iToken < nTokens; iToken++)
+    if (String::bEqualTo("",pToken[iToken]))
+      return iToken;
+  
+  ASSERT(0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump token array                                                           */
+/*----------------------------------------------------------------------------*/
+void Tokenizer::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
+{
+  vTrace("%s",pTitle);
+  
+  for (i8 iToken = 0; iToken < nTokens; iToken++) {
+    
+    if (! *pToken[iToken])
+      break;
+    
+    vTrace("%s ", pToken[iToken]);
+  }
+  vTrace("\n");
+}
+
+/*----------------------------------------------------------------------------*/
 /* get EOF?                                                                   */
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bEOF(void)

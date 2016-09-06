@@ -15,7 +15,7 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(IE_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se.2> ";
+  m_sPrompt = "se> ";
   
   m_sResponse  = "";
   //m_xHistory
@@ -76,17 +76,17 @@ void SePrompt::vGetCommand(void)
     
     m_xTokenizer.vResetTokens(m_pToken,C_TOKENS);
     
-    i8 i = 0;
-    while (TK_NONE != m_xTokenizer.eNextToken(m_pToken[i])) {
+    i8 iToken = 0;
+    while (TK_NONE != m_xTokenizer.eNextToken(m_pToken[iToken])) {
       
-//      vTrace("Word [%lld] %s\n",i,m_pToken[i]);
+//      vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
       
-      i++;
-      ASSERT(i < 16);
+      iToken++;
+      ASSERT(iToken < C_TOKENS);
     }
     
     // end of file? if so, pop and retry
-    if (m_xTokenizer.bEOF()) {
+    if (!iToken && m_xTokenizer.bEOF()) {
       bool b = m_xTokenizer.bPop();
       ASSERT(b);
       continue;
@@ -136,7 +136,7 @@ void SePrompt::vProcessCommand(void)
   }
   
   if (String::bEqualTo("create2",m_pToken[0],C_NO_CASE)) {
-    vCreateTable2();
+    vCollectStatement();
     return;
   }
   
@@ -432,28 +432,35 @@ void SePrompt::vCreateTable2(void)
 {
   // for the moment >>create2<< should be the only token
   ASSERT(String::bEqualTo(m_pToken[0],"create2"));
-  ASSERT(String::bEqualTo(m_pToken[1],""));
+//  ASSERT(String::bEqualTo(m_pToken[1],""));
   
-  // switch to terminal mode
-  m_xTokenizer.vLineMode(false);
+  i8 iToken = m_xTokenizer.iFindToken(";",m_pToken,C_TOKENS);
   
-  // get tokens delimited by ';'
-  for (i8 iToken = 1; iToken < C_TOKENS; iToken++) {
-    
-    eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
-    ASSERT(TK_NONE != eToken);
-    
-//    vTrace("CreateTable2: %12s %s\n",
-//           m_pToken[iToken],pTK[eToken]);
-    
-    // look for terminal
-    if (String::bEqualTo(m_pToken[iToken],";"))
-      break;
+  if (-1 == iToken) {
+
+    iToken = m_xTokenizer.iCountTokens(m_pToken,C_TOKENS);
+  
+    // switch to terminal mode
+    m_xTokenizer.vLineMode(false);
+  
+    // get tokens delimited by ';'
+    for ( ; iToken < C_TOKENS; iToken++) {
+      
+      eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
+      ASSERT(TK_NONE != eToken);
+      
+  //    vTrace("CreateTable2: %12s %s\n",
+  //           m_pToken[iToken],pTK[eToken]);
+      
+      // look for terminal
+      if (String::bEqualTo(m_pToken[iToken],";"))
+        break;
+    }
+
+    // switch back to line mode
+    m_xTokenizer.vLineMode(true);
   }
-
-  // switch back to line mode
-  m_xTokenizer.vLineMode(true);
-
+  
   vTrace("CreateTable2 : ");
   for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_pToken[iToken])
@@ -461,6 +468,51 @@ void SePrompt::vCreateTable2(void)
     vTrace("%s ", m_pToken[iToken]);
   }
   vTrace("\n");
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect ';' delimited statement                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCollectStatement(void)
+{
+  // we should have a first token (e.g. create or drop)
+  ASSERT(! String::bEqualTo(m_pToken[0],""));
+
+  // have we already seen the ';'
+  i8 iToken = m_xTokenizer.iFindToken(";",m_pToken,C_TOKENS);
+  
+  if (iToken >= 0) {
+    m_xTokenizer.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+    return;
+  }
+  
+  iToken = m_xTokenizer.iCountTokens(m_pToken,C_TOKENS);
+  
+  // switch to terminal mode
+  m_xTokenizer.vLineMode(false);
+  
+  s32 sContinuation("  > ");
+  m_xTokenizer.vPrompt(sContinuation);
+  
+  // get tokens delimited by ';'
+  for ( ; iToken < C_TOKENS; iToken++) {
+    
+    eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
+    ASSERT(TK_NONE != eToken);
+    
+    //    vTrace("CreateTable2: %12s %s\n",
+    //           m_pToken[iToken],pTK[eToken]);
+    
+    // look for terminal
+    if (String::bEqualTo(m_pToken[iToken],";"))
+      break;
+  }
+  
+  // switch back to line mode
+  m_xTokenizer.vLineMode(true);
+  m_xTokenizer.vPrompt(m_sPrompt);
+  
+  m_xTokenizer.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

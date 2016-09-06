@@ -46,6 +46,8 @@ private:
   void vCreateTable(void);
   void vCreateTable2(void);
   bool bValidateType(char* pType);
+  
+  void vCollectStatement(void);
  };
 
 /*============================================================================*/
