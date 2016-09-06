@@ -36,24 +36,13 @@ i8 System::iClockFrequency(void)
 i8 System::iCoreCount(void)
 {
   
-#ifdef __APPLE__
-  
-  i8     iCount = 0;
-  size_t len = sizeof(iCount);
-  
-  i8 iReturn = sysctlbyname("hw.logicalcpu", &iCount, &len, 0, 0);
-  if (iReturn) {
-    vWarn("Error while getting cpu count %lld\n", iReturn);
+  i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
+  if (iCount == -1) {
+    vWarn("Error while getting cpu count %lld\n", iCount);
     return 0;
   }
+  
   return iCount;
-
-  
-#else
-  vWarn("System::iPhysicalMemory not implemented on LINUX!");
-  return 0;
-#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +50,7 @@ i8 System::iCoreCount(void)
 /*----------------------------------------------------------------------------*/
 i8 System::iCpuCount(void)
 {
-  
+ 
 #ifdef __APPLE__
   
   i8     iCount = 0;
@@ -75,8 +64,14 @@ i8 System::iCpuCount(void)
   return iCount;
   
 #else
-  vWarn("System::iCpuCount not implemented on LINUX!");
-  return 0;
+  
+  i8 iCount = get_nprocs();
+  if (iCount == -1) {
+    vWarn("Error while getting cpu count %lld\n", iCount);
+    return 0;
+  }
+  
+  return iCount;
 #endif
   
 }
@@ -86,25 +81,19 @@ i8 System::iCpuCount(void)
 /*----------------------------------------------------------------------------*/
 i8 System::iPhysicalMemory(void)
 {
-  
-#ifdef __APPLE__
-  
-  int mib[2];
-  u8 iMemQty;
-  size_t len;
-  
-  mib[0] = CTL_HW;
-  mib[1] = HW_MEMSIZE;
-  len = sizeof(iMemQty);
-  sysctl(mib, 2, &iMemQty, &len, NULL, 0);
-  
-  return iMemQty;
-  
-#else
-  vWarn("System::iPhysicalMemory not implemented on LINUX!");
-  return 0;
-#endif
-  
+  i8 iNumPages = sysconf(_SC_PHYS_PAGES);
+  if (iNumPages == -1) {
+    vWarn("Error while getting physical memory %lld\n", iNumPages);
+    return 0;
+  }
+  i8 iPageSize = sysconf(_SC_PAGESIZE);
+  if (iPageSize == -1) {
+    vWarn("Error while getting physical memory %lld\n", iPageSize);
+    return 0;
+  }
+
+  i8 MemQty = iNumPages * iPageSize;
+  return MemQty;
 }
 
 /*============================================================================*/
