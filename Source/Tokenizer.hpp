@@ -11,20 +11,23 @@ namespace Common
   enum eTK // token type
   {
     /*  0 */ TK_NONE=0,  // none
-    /*  1 */ TK_NAME,    // name token, e.g. WASHER or ++ etc
-    /*  2 */ TK_INTEGER, // integer literal, e.g. 1, 42
-    /*  3 */ TK_STRING,  // string literal, e.g. "the answer"
-    /*  4 */ TK_ENUMS
+    /*  1 */ TK_INTEGER, // integer literal, e.g. 1, 42
+    /*  2 */ TK_NAME,    // name token, e.g. WASHER (or ++ in special mode)
+    /*  3 */ TK_OTHER,   // other literal, e.g. {, ~
+    /*  4 */ TK_STRING,  // string literal, e.g. "the answer"
+    /*  5 */ TK_ENUMS
   };
   
   static const char *pTK[]
   {
     /*  0 */ "NONE",
-    /*  1 */ "NAME",
-    /*  2 */ "INTEGER",
-    /*  3 */ "STRING",
-    /*  4 */ "ENUMS",
+    /*  1 */ "INTEGER",
+    /*  2 */ "NAME",
+    /*  3 */ "OTHER",
+    /*  4 */ "STRING",
+    /*  5 */ "ENUMS",
   };
+  
   class Tokenizer : public mn,
                     public cn
   {
@@ -69,6 +72,7 @@ namespace Common
     eTK  eParseNormal(char* wToken);
     eTK  eParseNormalInteger(char* wToken);
     eTK  eParseNormalName(char* wToken);
+    eTK  eParseNormalOther(char* wToken);
     eTK  eParseNormalString(char* wToken);
     
     eTK  eParseSpecial(char* wToken);
@@ -81,8 +85,10 @@ namespace Common
     
     bool bStartNormalInteger(void);
     bool bStartNormalName(void);
+    bool bStartNormalOther(void);
     bool bStartNormalString(void);
     bool bEndNormalString(void);
+
     bool bStartSpecialInteger(void);
     bool bStartSpecialName(void);
     bool bStartSpecialString(void);

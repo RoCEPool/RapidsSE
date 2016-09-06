@@ -248,33 +248,156 @@ eTK Tokenizer::eNextSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eParseNormal(char* wToken)
 {
+  vGetNextStripped();
+  
   vSkipWhitespace();
   
-  return TK_NONE;
+  // end of input?
+  if (bEndInput()) {
+    *wToken = '\0';
+    return TK_NONE;
+  }
+  
+  // collect integer literal?
+  if (bStartNormalInteger()) {
+    eTK eLiteral = eParseNormalInteger(wToken);
+    return eLiteral;
+  }
+  
+  // collect string literal?
+  if (bStartNormalString()) {
+    eTK eToken = eParseNormalString(wToken);
+    return eToken;
+  }
+  
+  // collect name token?
+  if (bStartNormalName()) {
+    eTK eToken = eParseNormalName(wToken);
+    return eToken;
+  }
+  
+  eTK eToken = eParseNormalOther(wToken);
+  return eToken;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse normal integer                                                       */
+/* parse normal integer literal                                               */
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eParseNormalInteger(char* wToken)
 {
-  return TK_NONE;
+  i8 iNoDigits = 0;
+  char *z = wToken;
+  
+  // we have seen a digit
+  ASSERT(bStartNormalInteger());
+  
+  // - start parsing an integer
+  
+  // collect initial digits
+  while (bIsDigit()) {
+    *z++ = m_cStrippedChar;
+    iNoDigits++;
+    vGetNextStripped();
+  }
+  
+  // 0x hex number?
+  if (1 == iNoDigits && bIsX()) {
+    
+    // add the 'x'
+    *z++ = m_cStrippedChar;
+    
+    // collect the hex digits
+    while (bIsHex()) {
+      *z++ = m_cStrippedChar;
+      vGetNextStripped();
+    }
+  }
+  
+  // push back the unconsumed character
+  vUngetStrippedChar();
+    
+  // terminate the integer literal
+  *z = '\0';
+  
+  return TK_INTEGER;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse normal name                                                          */
+/* parse normal name token                                                    */
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eParseNormalName(char* wToken)
 {
-  return TK_NONE;
+  char *z = wToken;
+  
+  ASSERT(bStartNormalName());
+  
+  // collect the characters of the name
+  while ( String::bIsAlphaDigitUnder(m_cStrippedChar) ) {
+    *z++ = m_cStrippedChar;
+    vGetNextStripped();
+  }
+  
+  // push back the unconsumed char
+  vUngetStrippedChar();
+  
+  // terminate the name
+  *z = '\0';
+  
+  return TK_NAME;
 }
 
 /*----------------------------------------------------------------------------*/
-/* parse normal string                                                        */
+/* parse other token                                                          */
+/*----------------------------------------------------------------------------*/
+eTK Tokenizer::eParseNormalOther(char* wToken)
+{
+  char *z = wToken;
+  
+  ASSERT(bStartNormalOther());
+  
+  // collect a single character
+  *z++ = m_cStrippedChar;
+  
+  // terminate the other token
+  *z = '\0';
+  
+  return TK_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse normal string literal                                                */
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eParseNormalString(char* wToken)
 {
-  return TK_NONE;
+  char *z = wToken;
+  
+  ASSERT(bStartSpecialString());
+  
+  // skip the leading '"'
+  vGetNextStripped();
+  
+  // collect the characters within the string
+  while ( ! bEndNormalString() ) {
+    
+    // test for \n
+    if ('\\' == m_cStrippedChar) {
+      vGetNextStripped();
+      if ('n' == m_cStrippedChar)
+        m_cStrippedChar = '\n';
+      else {
+        vUngetStrippedChar();
+        m_cStrippedChar = '\\';
+      }
+    }
+    
+    *z++ = m_cStrippedChar;
+    vGetNextStripped();
+  }
+  
+  // terminate the string literal
+  *z = '\0';
+  
+  return TK_STRING;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -477,10 +600,21 @@ bool Tokenizer::bStartNormalInteger(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bStartNormalName(void)
 {
-  if (bStartNormalInteger() || bStartNormalString())
-    return false;
+  if (String::bIsAlphaUnder(m_cStrippedChar))
+    return true;
   
-  return true;
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for start of normal other                                             */
+/*----------------------------------------------------------------------------*/
+bool Tokenizer::bStartNormalOther(void)
+{
+  if (! String::bIsAlphaDigitUnder(m_cStrippedChar))
+    return true;
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -62,11 +62,15 @@ namespace Common
     
     static i8    iHexToInw(const char c);
     
+    static bool  bIsAlpha(const char c);
+    static bool  bIsAlphaDigit(const char c);
+    static bool  bIsAlphaDigitUnder(const char c);
+    static bool  bIsAlphaUnder(const char c);
     static bool  bIsDigit(const char c);
     static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);
    
-    static const char*  sLast(const char* s);
+    static const char* sLast(const char* s);
     static i8    iLength(const char* s);
     static i8    iLength(const char* s, const char cTerm, i8 iMax);
     

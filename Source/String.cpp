@@ -802,6 +802,50 @@ i8 String::iHexToInw(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsAlpha: is char an alphabetic character?                                 */
+/*----------------------------------------------------------------------------*/
+bool String::bIsAlpha(const char c)
+{
+  if (isalpha(c))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAlphaDigit: is char an alphabetic or numeric digit character?           */
+/*----------------------------------------------------------------------------*/
+bool String::bIsAlphaDigit(const char c)
+{
+  if (isalpha(c) || isdigit(c))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is char an alphabetic, numeric digit or '_' character?                     */
+/*----------------------------------------------------------------------------*/
+bool String::bIsAlphaDigitUnder(const char c)
+{
+  if (isalpha(c) || isdigit(c) || '_' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsAlphaUnder: is char an alphabetic or '_' character?                     */
+/*----------------------------------------------------------------------------*/
+bool String::bIsAlphaUnder(const char c)
+{
+  if (isalpha(c) || '_' == c)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsDigit: is char a numeric decimal digit?                                 */
 /*----------------------------------------------------------------------------*/
 bool String::bIsDigit(const char c)
