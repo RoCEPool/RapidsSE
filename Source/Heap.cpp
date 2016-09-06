@@ -77,6 +77,8 @@ Object* Heap::pAllocObject(void)
 
   m_zLock.vDropWrite();
   
+  //Memory::vScribble(pObject,m_iObjectSize);
+  
   return pObject;
 }
 
