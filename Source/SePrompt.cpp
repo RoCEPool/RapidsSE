@@ -86,7 +86,7 @@ void SePrompt::vGetCommand(void)
     }
     
     // end of file? if so, pop and retry
-    if (!iToken && m_xTokenizer.bEOF()) {
+    if (! iToken && m_xTokenizer.bEOF()) {
       bool b = m_xTokenizer.bPop();
       ASSERT(b);
       continue;
