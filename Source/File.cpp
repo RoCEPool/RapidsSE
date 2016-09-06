@@ -4,6 +4,10 @@
 
 #include "Common.h"
 
+#include "Pool.h"
+
+extern Heap*  gpSmallHeap;
+
 // Opens for reading. If the file does not exist or cannot be found, the
 // fopen call fails.
 const char* C_OPEN_READ = "r";
@@ -33,9 +37,11 @@ const char* C_OPEN_READ_APPEND = "a+";
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* File::operator new(size_t, File* pFile)
+void* File::operator new(size_t)
 {
-  return pFile;
+  void* pObject = gpSmallHeap->pAllocObject();
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,8 +49,9 @@ void* File::operator new(size_t, File* pFile)
 /*----------------------------------------------------------------------------*/
 void File::operator delete(void* pFileAddress)
 {
-  // do nothing
-  // must be explicitly free'd by caller
+  Object* pObject = reinterpret_cast<Object*>(pFileAddress);
+  
+  gpSmallHeap->vFreeObject(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

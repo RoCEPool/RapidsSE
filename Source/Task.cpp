@@ -5741,10 +5741,8 @@ void Task::vFileDelete(NNP_Task nnpTask)
   
   File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
 
-  Object* pFileObject = reinterpret_cast<Object*>(pFile);
   delete pFile;
   
-  gpSmallHeap->vFreeObject(pFileObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5771,8 +5769,7 @@ void Task::vFileNew(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vFileNew");
   
-  File* pFile = reinterpret_cast<File*>(gpSmallHeap->pAllocObject());
-  new(pFile) File;
+  File* pFile = new File;
   
   PtrVal xFilePtr;
   xFilePtr = pFile;

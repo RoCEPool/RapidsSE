@@ -37,7 +37,7 @@ namespace Common
     SysCall m_xSysCall;
     
   public:
-    void* operator new(size_t, File* pFile);
+    void* operator new(size_t);
     void operator delete(void* pFileAddress);
     File(void);
    ~File();
