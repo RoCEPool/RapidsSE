@@ -444,9 +444,9 @@ void Task::vAddConstants(void)
   /* 10 */ vAddConstant("FILE_LNK",                 DT_LNK);
   /* 12 */ vAddConstant("FILE_SOCK",                DT_SOCK);
 
-  vAddConstant("listerTaskPrint",false);
-  vAddConstant("monitorTaskPrint",false);
-  vAddConstant("reclaimTaskPrint",false);
+  vAddConstant("listerTaskPrint",(i8)0);
+  vAddConstant("monitorTaskPrint",(i8)0);
+  vAddConstant("reclaimTaskPrint",(i8)0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1051,18 +1051,31 @@ void Task::vAddRoutines(void)
   pCompileColon(sDefinition);
   
   //-----------------------------------------------------
+  // Temporary ifdef till we get sen files embedded in the executable
+#ifdef __APPLE__
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" ."
   "  gwd ."
-  "  \"../../../../commands\" cwd"
+  "  \"../../../../Commands\" cwd"
   "  gwd ."
 //  "  traceon"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" ."
   "  ::exit"
   "  ;";
-  
+#else
+  sDefinition =
+  ": ::dicCompile"
+  "  \"::dicCompile\" ."
+  "  gwd ."
+  "  \"../../Commands\" cwd"
+  "  gwd ."
+  "  \"compile.sen\" >>:"
+  "  \"::dicCompile exit\" ."
+  "  ::exit"
+  "  ;";
+#endif
   pCompileColon(sDefinition);
 }
 

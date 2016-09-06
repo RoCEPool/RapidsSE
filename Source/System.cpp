@@ -24,8 +24,37 @@ i8 System::iClockFrequency(void)
   return freq;
   
 #else
-  vWarn("System::iClockFrequency not implemented on LINUX!");
-  return 0;
+  const i8 C_BUFSIZ=512;
+  char buf[C_BUFSIZ];
+  double dFreq;
+  i8 iFreq;
+  
+  // open the /Proc/cpuinfo file
+  FILE* fp = fopen("/proc/cpuinfo", "r");
+  if ( !fp ) {
+    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d", errno);
+    return 0;
+  }
+  
+  // look for cpu MHz
+  while(fgets(buf, C_BUFSIZ, fp) != NULL) {
+    if (strstr(buf, "cpu MHz") == NULL)
+      continue;
+    
+    char*p = strchr(buf,':');
+    if (p == NULL)
+      continue;
+    p++;
+    while(isspace(*p))
+      p++;
+    sscanf(p,"%lf", &dFreq);
+    iFreq = static_cast<i8>(dFreq * (double)C_1M);
+  }
+
+  vTrace("Clock frequency: %lld\n", iFreq);
+
+  return iFreq;
+
 #endif
   
 }
@@ -36,24 +65,13 @@ i8 System::iClockFrequency(void)
 i8 System::iCoreCount(void)
 {
   
-#ifdef __APPLE__
-  
-  i8     iCount = 0;
-  size_t len = sizeof(iCount);
-  
-  i8 iReturn = sysctlbyname("hw.logicalcpu", &iCount, &len, 0, 0);
-  if (iReturn) {
-    vWarn("Error while getting cpu count %lld\n", iReturn);
+  i8 iCount = sysconf(_SC_NPROCESSORS_ONLN);
+  if (iCount == -1) {
+    vWarn("Error while getting cpu count %lld\n", iCount);
     return 0;
   }
+ 
   return iCount;
-
-  
-#else
-  vWarn("System::iPhysicalMemory not implemented on LINUX!");
-  return 0;
-#endif
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +79,7 @@ i8 System::iCoreCount(void)
 /*----------------------------------------------------------------------------*/
 i8 System::iCpuCount(void)
 {
-  
+ 
 #ifdef __APPLE__
   
   i8     iCount = 0;
@@ -75,8 +93,10 @@ i8 System::iCpuCount(void)
   return iCount;
   
 #else
-  vWarn("System::iCpuCount not implemented on LINUX!");
+  
+  vWarn("iCpuCount() not implemented on LINUX!\n");
   return 0;
+
 #endif
   
 }
@@ -86,25 +106,20 @@ i8 System::iCpuCount(void)
 /*----------------------------------------------------------------------------*/
 i8 System::iPhysicalMemory(void)
 {
-  
-#ifdef __APPLE__
-  
-  int mib[2];
-  u8 iMemQty;
-  size_t len;
-  
-  mib[0] = CTL_HW;
-  mib[1] = HW_MEMSIZE;
-  len = sizeof(iMemQty);
-  sysctl(mib, 2, &iMemQty, &len, NULL, 0);
+  i8 iNumPages = sysconf(_SC_PHYS_PAGES);
+  if (iNumPages == -1) {
+    vWarn("Error while getting physical memory %lld\n", iNumPages);
+    return 0;
+  }
+  i8 iPageSize = sysconf(_SC_PAGESIZE);
+  if (iPageSize == -1) {
+    vWarn("Error while getting physical memory %lld\n", iPageSize);
+    return 0;
+  }
+
+  i8 iMemQty = iNumPages * iPageSize;
   
   return iMemQty;
-  
-#else
-  vWarn("System::iPhysicalMemory not implemented on LINUX!");
-  return 0;
-#endif
-  
 }
 
 /*============================================================================*/

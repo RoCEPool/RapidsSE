@@ -105,7 +105,7 @@ Word* Dictionary::pAllocWord(i8 iBytes)
   
   ASSERT(!m_bFrozen);
   
-  ASSERT(iBytes >= (i8)sizeof(Word));
+  ASSERT(iBytes >= static_cast<i8>(sizeof(Word)));
   
   Word* pWord = reinterpret_cast<Word*>(gpMediumHeap->pAllocObject());
   

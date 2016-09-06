@@ -61,11 +61,11 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
     
     // beginning of line, dump the address
     if (iByte == 0) {
-      vTrace("0x%016x ", (i8)((unsigned char*)pAddress + iOffset));
+      vTrace("0x%016x ", (i8)((u1*)pAddress + iOffset));
       vTrace("0x%06x ", iOffset);
     }
     
-    vTrace("%02x ", (i8)(*((unsigned char*)pAddress + i)));
+    vTrace("%02x ", (i8)(*((u1*)pAddress + i)));
     
     iByte++;
     
@@ -79,7 +79,7 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
       
       for (i8 i = 0; i < C_BYTES_PER_LINE; i++) {
         
-        char cChar = *((unsigned char*)pAddress + iOffset + i);
+        u1 cChar = *((u1*)pAddress + iOffset + i);
         
         if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
           vTrace("%c", '.');
@@ -110,7 +110,7 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
     }
     
     for (i8 i= 0; i < iByte; i++) {
-      char cChar = *((unsigned char*)pAddress + iOffset + i);
+      u1 cChar = *((u1*)pAddress + iOffset + i);
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
         vTrace("%c", '.');
       } else {
@@ -130,7 +130,7 @@ void Memory::vWordDump(void *pAddress, i8 iBytes)
   
   i8 iOffset = 0;
   i8 iWord = 0;
-  i8 iWords = iBytes/sizeof(i8);
+  i8 iWords = iBytes/SIZEOF_WORD;
 
   // dump a header
   vTrace("\n%18s %8s %16s %8s\n",
@@ -144,7 +144,7 @@ void Memory::vWordDump(void *pAddress, i8 iBytes)
     
     // beginning of line, dump the address
     if (iWord == 0) {
-      vTrace("0x%016x ", (i8)((unsigned char*)pAddress + iOffset));
+      vTrace("0x%016x ", (i8)((u1*)pAddress + iOffset));
       vTrace("0x%06x ", iOffset);
     }
     
@@ -152,9 +152,9 @@ void Memory::vWordDump(void *pAddress, i8 iBytes)
     
     iWord++;
       
-    for (i8 i = 0; i < sizeof(i8); i++) {
+    for (i8 i = 0; i < SIZEOF_WORD; i++) {
       
-      char cChar = *((unsigned char*)pAddress + iOffset + i);
+      u1 cChar = *((u1*)pAddress + iOffset + i);
       
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
         vTrace("%c", '.');
@@ -164,15 +164,15 @@ void Memory::vWordDump(void *pAddress, i8 iBytes)
     }
     
     iWord = 0;
-    iOffset += sizeof(i8);
+    iOffset += SIZEOF_WORD;
     vTrace("\n");
   }
   
   // end of buffer and not at 16-byte boundary ?
-  if (iWord > 0 && iWord < sizeof(i8)) {
+  if (iWord > 0 && iWord < SIZEOF_WORD) {
     
     for (i8 i= 0; i < iWord; i++) {
-      char cChar = *((unsigned char*)pAddress + iOffset + i);
+      u1 cChar = *((u1*)pAddress + iOffset + i);
       if (cChar < C_ASCII_MIN || cChar > C_ASCII_MAX) {
         vTrace("%c", '.');
       } else {
