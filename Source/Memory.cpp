@@ -17,27 +17,25 @@ void* Memory::pAddBytes(void* pAddress, i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check memory has been intialised                                           */
+/*----------------------------------------------------------------------------*/
+void Memory::vCheckInitialised(void* pAddress, i8 nBytes)
+{
+  u8* pWord = reinterpret_cast<u8*>(pAddress);
+  i8  nWords = nBytes / 8;
+
+  for (i8 iWord = 0; iWord < nWords; iWord++) {
+    ASSERT(C_SCRIBBLE_PATTERN != *pWord);
+    pWord++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy from src to dst                                                       */
 /*----------------------------------------------------------------------------*/
 void Memory::vCopy(void* pDst, const void* pSrc, i8 iBytes)
 {
   memcpy(pDst,pSrc,iBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* memset dst                                                                 */
-/*----------------------------------------------------------------------------*/
-void Memory::vSet(void* pDst, char iByte, i8 iTimes)
-{
-  memset(pDst,iByte,iTimes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* move from src to dst                                                       */
-/*----------------------------------------------------------------------------*/
-void Memory::vMove(void* pDst, const void* pSrc, i8 iBytes)
-{
-  memmove(pDst,pSrc,iBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,8 +51,8 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
   vTrace("\n%18s %8s %49s %16s\n",
          "Memory address", "Offset", "Hex dump", "Context");
   vTrace("%18s %8s %49s %16s\n",
-    "------------------", "--------",
-    "-------------------------------------------------", "----------------");
+         "------------------", "--------",
+         "-------------------------------------------------", "----------------");
   
   // dump the memory
   for (i8 i = 0; i < iBytes; i++) {
@@ -87,7 +85,7 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
           vTrace("%c", cChar);
         }
       }
-    
+      
       iByte = 0;
       iOffset += C_BYTES_PER_LINE;
       vTrace("\n");
@@ -123,11 +121,38 @@ void Memory::vHexDump(void *pAddress, i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* memset dst                                                                 */
+/*----------------------------------------------------------------------------*/
+void Memory::vSet(void* pDst, char iByte, i8 iTimes)
+{
+  memset(pDst,iByte,iTimes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* move from src to dst                                                       */
+/*----------------------------------------------------------------------------*/
+void Memory::vMove(void* pDst, const void* pSrc, i8 iBytes)
+{
+  memmove(pDst,pSrc,iBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* scribble on memory                                                         */
+/*----------------------------------------------------------------------------*/
+void Memory::vScribble(void* pAddress, i8 nBytes)
+{
+  u8* pWord = reinterpret_cast<u8*>(pAddress);
+  i8  nWords = nBytes / 8;
+  
+  for (i8 iWord = 0; iWord < nWords; iWord++)
+    *pWord++ = C_SCRIBBLE_PATTERN;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump given words of memory at given address                                */
 /*----------------------------------------------------------------------------*/
 void Memory::vWordDump(void *pAddress, i8 iBytes)
 {
-  
   i8 iOffset = 0;
   i8 iWord = 0;
   i8 iWords = iBytes/SIZEOF_WORD;
