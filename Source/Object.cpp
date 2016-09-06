@@ -2,7 +2,7 @@
 /* Object.cpp - root class for objects in buffer pool                         */
 /*============================================================================*/
 
-#include "Values.h"
+#include "Magic.h"
 #include "StorageEngine.h"
 
 extern BufferPool*  gpBufferPool;

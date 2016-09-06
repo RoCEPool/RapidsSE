@@ -6,7 +6,6 @@
 
 #include "Common.h"
 
-#include "Object.hpp"
 
 #include "Value.hpp"
 #include "ValWsp.hpp"

@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Values.h"
+#include "Magic.h"
 
-namespace Pool
+namespace Magic
 {
   class Object : public mn,
                  public cn

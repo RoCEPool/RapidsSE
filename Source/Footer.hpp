@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* footer.hpp - footer for concrete classes                                   */
+/* footer.hpp -- Footer for Concrete Classes                                  */
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "Magic.h"
 
-namespace Common
+namespace Magic
 {
   static const u8 FOOTER = 0x24464F4F54455224; // $FOOTER$
 

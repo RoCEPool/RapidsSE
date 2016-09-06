@@ -5,14 +5,27 @@
 
 #include "Platform.h"
 
+#include "Magnitudes.h"
+
 #include "an.hpp"
 #include "mn.hpp"
 #include "cn.hpp"
 
+#include "s.hpp"
+#include "s32.hpp"
+#include "s256.hpp"
+#include "s8K.hpp"
+#include "s16K.hpp"
+
+#include "Error.hpp"
+
 #include "ByteLiterals.hpp"
 #include "StringLiterals.hpp"
 #include "Addressing.hpp"
-#include "Magnitudes.h"
+#include "Debug.hpp"
+#include "Footer.hpp"
+#include "Object.hpp"
+
 
 namespace Magic
 {

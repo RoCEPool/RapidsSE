@@ -24,7 +24,7 @@ namespace Values
     
     i8      iSize(void) const;
     void*   pPtr(void) const;
-    Pool::Object* pObject(void) const;
+    Object* pObject(void) const;
     
     void vFetch(ValWsp& xValWsp);
     void vStore(ValWsp& xValWsp);
