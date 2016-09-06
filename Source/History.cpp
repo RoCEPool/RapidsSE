@@ -143,7 +143,7 @@ bool History::bGet(i8 iCommand, char* pToken[])
   
   vSeekEnd();
   
-  m_xTokenizer.vEndTokenizing();
+  m_xTokenizer.vUseEnd();
   
   return false;
 }

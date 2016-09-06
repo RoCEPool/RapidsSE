@@ -15,22 +15,20 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(IE_NONE == eResult);
   
   m_bContinue = true;
+  m_sPrompt = "se.2> ";
   
   m_sResponse  = "";
   //m_xHistory
-  //m_wWorkarea
-  //m_pToken
   
-  //----
-  
-  // initialise the onput handler
+  // initialise the token set
   for (i8 iToken = 0; iToken < C_TOKENS; iToken++)
     m_pToken[iToken] = &m_wTokenArea[C_TOKEN_SPACE * iToken];
+  //m_wWorkarea
   
+  //----
   m_xTokenizer.vMalloc(true);
-  
   m_xTokenizer.vPush();
-  m_xTokenizer.vPrompt("se.2> ");
+  m_xTokenizer.vPrompt(m_sPrompt);
   m_xTokenizer.vUseStdin();
   m_xTokenizer.vLineMode(true);
 }

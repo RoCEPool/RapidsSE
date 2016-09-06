@@ -16,7 +16,8 @@ class SePrompt
 private:
   i8        m_iPartition; // which partition
   SEitf*    m_pSEitf;     // interface into rapidsse
-  bool      m_bContinue;  // continue proecssing commands?
+  bool      m_bContinue;  // continue processing commands?
+  s32       m_sPrompt;    // prompt
   
   s8K       m_sResponse;  // response from seitf
   History   m_xHistory;   // command history

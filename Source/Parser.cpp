@@ -44,9 +44,9 @@ Parser::Parser(void)
 : cn(CN_PARSER)
 {
   //m_bMalloc set in new
-  m_iDepth = 0;
-  m_bEOF   = false;
-  m_pChain = nullptr;
+  m_pChain  = nullptr;
+  m_iDepth  = 0;
+  m_sPrompt = "Parser> ";
   
   vResetParser();
 };
@@ -61,28 +61,8 @@ Parser::~Parser(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end parsing                                                                */
+/*-- Options -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Parser::vEndParsing(void)
-{
-  switch (m_eSource) {
-
-    case IS_FILE:
-      ASSERT( m_xFile.bIsOpen() );
-      m_xFile.vClose();
-      break;
-      
-    case IS_STDIN:
-      break;
-    
-    case IS_STRING:
-      break;
-    
-    default: ;
-  }
-
-  vResetParser();
-}
 
 /*----------------------------------------------------------------------------*/
 /* set user prompt                                                            */
@@ -98,8 +78,11 @@ void Parser::vPrompt(s& sPrompt)
 void Parser::vLineMode(bool bLineMode)
 {
   m_bLineMode = bLineMode;
-  m_bRead   = bLineMode ? true : false;
 }
+
+/*----------------------------------------------------------------------------*/
+/*-- Use What ----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* use given file for parsing                                                 */
@@ -142,6 +125,97 @@ void Parser::vUseString(s& sString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end usage of source                                                        */
+/*----------------------------------------------------------------------------*/
+void Parser::vUseEnd(void)
+{
+  switch (m_eSource) {
+      
+    case IS_FILE:
+      ASSERT( m_xFile.bIsOpen() );
+      m_xFile.vClose();
+      break;
+      
+    case IS_STDIN:
+      break;
+      
+    case IS_STRING:
+      break;
+      
+    default: ;
+  }
+  
+  vResetParser();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Parsing Stack -----------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* pop parsing stack                                                          */
+/*----------------------------------------------------------------------------*/
+bool Parser::bPop(void)
+{
+  if (! m_pChain)
+    return false;
+  
+  Parser* pCopy = m_pChain;
+  
+  Memory::vCopy(this,pCopy,sizeof(Parser));
+  
+  pCopy->m_xFile.vZero();
+  
+  delete pCopy;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push copy of this parser onto stack, reset this parser                     */
+/*----------------------------------------------------------------------------*/
+void Parser::vPush(void)
+{
+  // n.b. don't call vReset.  File may be open
+  
+  // create a copy of this parser
+  Parser* pCopy = new(m_bMalloc) Parser;
+  Memory::vCopy(pCopy,this,sizeof(Parser));
+  
+  // push it onto stack
+  m_pChain = pCopy;
+  m_iDepth++;
+  // m_sPrompt we leave as is
+  
+  // reset input sources
+  m_eSource   = IS_NONE;
+  m_xFile.vZero();
+  m_bLineMode = false;
+  m_sRawLine  = "";
+  m_pRawChar  = m_sRawLine.a();
+  
+  // reset registers
+  m_nLoaded   = 0;
+  m_cFirst    = 0;
+  m_cSecond   = 0;
+  m_eComment  = CT_NONE;
+  m_bRead     = false;
+  m_bEOF      = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* depth of this parser                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Parser::iDepth(void)
+{
+  return m_iDepth;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Parsing -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* get next parsed char                                                       */
 /*----------------------------------------------------------------------------*/
 char Parser::cGet(void)
@@ -169,58 +243,6 @@ void Parser::vUnget(char cParsed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop parsing stack                                                          */
-/*----------------------------------------------------------------------------*/
-bool Parser::bPop(void)
-{
-  if (! m_pChain)
-    return false;
-  
-  Parser* pCopy = m_pChain;
-  
-  Memory::vCopy(this,pCopy,sizeof(Parser));
-  
-  pCopy->vZero();
-  
-  delete pCopy;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push copy of this parser onto stack                                        */
-/*----------------------------------------------------------------------------*/
-void Parser::vPush(void)
-{
-  Parser* pCopy = new(m_bMalloc) Parser;
-  
-  Memory::vCopy(pCopy,this,sizeof(Parser));
-  
-  m_pChain = pCopy;
-  m_iDepth++;
-  
-  m_eSource = IS_NONE;
-  m_xFile.vZero();
-  m_sRawLine = "";
-  m_pRawInput = m_sRawLine.a();
-  m_bLineMode = false;
-  m_bRead = false;
-  m_nLoaded = 0;
-  m_cFirst  = 0;
-  m_cSecond  = 0;
-  m_eComment = CT_NONE;
-  m_bEOF = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* depth of this parser                                                       */
-/*----------------------------------------------------------------------------*/
-i8 Parser::iDepth(void)
-{
-  return m_iDepth;
-}
-
-/*----------------------------------------------------------------------------*/
 /* have we seen an EOF?                                                       */
 /*----------------------------------------------------------------------------*/
 bool Parser::bEOF(void)
@@ -229,24 +251,29 @@ bool Parser::bEOF(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* zero this parser                                                           */
+/* linemode?                                                                  */
 /*----------------------------------------------------------------------------*/
-void Parser::vZero(void)
+bool Parser::bLineMode(void)
 {
-  m_xFile.vZero();
+  return m_bLineMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* stdin?                                                                     */
+/*----------------------------------------------------------------------------*/
+bool Parser::bStdin(void)
+{
+  if (IS_STDIN != m_eSource)
+    return false;
+
+  bool bIsStdin = m_xFile.bIsStdin();
+
+  return bIsStdin;
 }
 
 
 // private: ////////////////////////////////////////////////////////////////////
 
-
-/*----------------------------------------------------------------------------*/
-/* set depth of this parser                                                   */
-/*----------------------------------------------------------------------------*/
-void Parser::vDepth(i8 iDepth)
-{
-  m_iDepth = iDepth;
-}
 
 /*----------------------------------------------------------------------------*/
 /* reset this parser                                                          */
@@ -255,18 +282,20 @@ void Parser::vResetParser(void)
 {
   ASSERT(! m_xFile.bIsOpen());
   
+  // reset input sources
   m_eSource   = IS_NONE;
-  m_xFile.vReset();
+  m_xFile.vZero();
+  m_bLineMode = false;
   m_sRawLine  = "";
   m_aRawLine  = m_sRawLine.a();
-  m_pRawInput = m_sRawLine.a();
-  
-  m_bRead   = false;
-  
+  m_pRawChar  = m_sRawLine.a();
+ 
   m_nLoaded   = 0;
   m_cFirst    = '\0';
   m_cSecond   = '\0';
   m_eComment  = CT_NONE;
+  m_bRead     = false;
+  m_bEOF      = false;
 }
 
 
@@ -275,7 +304,7 @@ void Parser::vResetParser(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* clear char registers                                                       */
+/* clear character registers                                                  */
 /*----------------------------------------------------------------------------*/
 void Parser::vClearRegisters(void)
 {
@@ -285,7 +314,7 @@ void Parser::vClearRegisters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* consume the char in the first register                                     */
+/* consume the character in the first register                                */
 /*----------------------------------------------------------------------------*/
 char Parser::cConsumeFirst(void)
 {
@@ -302,7 +331,7 @@ char Parser::cConsumeFirst(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard the char in the first register                                     */
+/* discard the character in the first register                                */
 /*----------------------------------------------------------------------------*/
 void Parser::vDiscardFirst(void)
 {
@@ -439,6 +468,9 @@ bool Parser::bBlockCommentEnd(void)
 /*----------------------------------------------------------------------------*/
 void Parser::vBlockCommentSkip(void)
 {
+//  bool bLineMode = m_bLineMode;
+//  m_bLineMode = false;
+  
   vClearRegisters();
   
   vLoadBoth();
@@ -449,6 +481,8 @@ void Parser::vBlockCommentSkip(void)
   }
   
   vClearRegisters();
+
+//  m_bLineMode = bLineMode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -534,191 +568,200 @@ bool Parser::bLineCommentStart(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* -- File Reading -----------------------------------------------------------*/
+/* -- Reading ----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get next char from input source                                            */
+/* get next raw character from input source                                   */
 /*----------------------------------------------------------------------------*/
 char Parser::cFromRawInput(void)
 {
-  char c;
+  char cRaw;
 
   switch (m_eSource) {
       
     case IS_FILE:
-      c = cFromRawFile();
+      cRaw = cFromRawFile();
+      ASSERT( (cRaw) || (!cRaw && (m_bEOF || m_bLineMode)) );
       break;
       
     case IS_STDIN:
-      c = cFromRawStdin();
+      cRaw = cFromRawStdin();
+      ASSERT(! m_bEOF);
       break;
       
     case IS_STRING:
-      c = cFromRawString();
+      cRaw = cFromRawString();
+      ASSERT(m_bEOF);
       break;
       
     default:
       ASSERT(0);
   }
   
-  return c;
+  return cRaw;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next raw char from given file                                          */
+/* get next raw character from source file                                    */
 /*----------------------------------------------------------------------------*/
 char Parser::cFromRawFile(void)
 {
-  char c;
+  char cRaw;
   
-  c = *m_pRawInput++;
+  cRaw = *m_pRawChar++;
   
-  if (c)
-    return c;
+  if (cRaw)
+    return cRaw;
   
   if (m_bEOF) {
-    c = '\0';
-    return c;
+    cRaw = '\0';
+    return cRaw;
   }
   
   ASSERT(m_xFile.bIsOpen());
   
   if (! m_bLineMode) {
     vReadLineFile();
-    c = *m_pRawInput++;
-    return c;
+    cRaw = *m_pRawChar++;
+    return cRaw;
   }
   
   if (! m_bRead) {
     m_bRead = true;
-    m_pRawInput = m_sRawLine.a();
-    *m_pRawInput = '\0';
-    c = '\0';
-    return c;
+    m_pRawChar = m_sRawLine.a();
+    *m_pRawChar = '\0';
+    return '\0';
   }
   
   m_bRead = false;
   vReadLineFile();
-  c = *m_pRawInput++;
+  cRaw = *m_pRawChar++;
   
-  return c;
+  ASSERT( (cRaw) || (!cRaw && m_bEOF) );
+  
+  return cRaw;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next raw char from stdin                                               */
+/* get next raw character from stdin                                          */
 /*----------------------------------------------------------------------------*/
 char Parser::cFromRawStdin(void)
 {
-  char c;
+  ASSERT(! m_bEOF);
   
-  c = *m_pRawInput++;
+  char cRaw;
   
-  if (c)
-    return c;
+  cRaw = *m_pRawChar++;
+  
+  if (cRaw) {
+    ASSERT(! m_bEOF);
+    return cRaw;
+  }
   
   ASSERT(m_xFile.bIsStdin());
   ASSERT(m_xFile.bIsOpen());
   
   if (! m_bLineMode) {
     vReadLineStdin();
-    c = *m_pRawInput++;
-    return c;
+    cRaw = *m_pRawChar++;
+    ASSERT(! m_bEOF);
+    return cRaw;
   }
   
   if (! m_bRead) {
     m_bRead = true;
-    m_pRawInput = m_sRawLine.a();
-    *m_pRawInput = '\0';
-    c = '\0';
-    return c;
+    m_pRawChar = m_sRawLine.a();
+    *m_pRawChar = '\0';
+    ASSERT(! m_bEOF);
+    return '\0';
   }
   
   m_bRead = false;
   vReadLineStdin();
-  c = *m_pRawInput++;
+  cRaw = *m_pRawChar++;
   
-  return c;
+  ASSERT(! m_bEOF);
+  return cRaw;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next char from input source                                            */
+/* get next raw character from string                                         */
 /*----------------------------------------------------------------------------*/
 char Parser::cFromRawString(void)
 {
-  char c;
+  ASSERT(m_bEOF);
   
-  c = *m_pRawInput++;
+  char cRaw;
   
-  if (c)
-    return c;
+  cRaw = *m_pRawChar++;
   
-  c = '\0';
+  if (cRaw)
+    return cRaw;
   
   ASSERT(m_bEOF);
   
-  return c;
+  return '\0';
 }
 
 /*----------------------------------------------------------------------------*/
-/* read line from input file                                                  */
+/* read raw line from input file                                              */
 /*----------------------------------------------------------------------------*/
 void Parser::vReadLineFile(void)
 {
   ASSERT(! m_bEOF);
 
-  char c;
+  char cInput;
   
-  char* pCharInLine = m_sRawLine.a();
+  m_pRawChar = m_sRawLine.a();
   
   do {
     
-    c = m_xFile.cGetChar();
+    cInput = m_xFile.cGetChar();
     
-    *pCharInLine++ = c;
+    *m_pRawChar++ = cInput;
     
-    if (C_END_OF_LINE == c) {
+    if (C_END_OF_LINE == cInput)
       break;
-    }
     
-  } while (c);
+  } while (cInput);
   
   ASSERT(! m_bEOF);
-  if (! c)
+  if (! cInput)
     m_bEOF = true;
   
-  *pCharInLine++ = '\0';
+  *m_pRawChar++ = '\0';
   
-  m_pRawInput = m_sRawLine.a();
+  m_pRawChar = m_sRawLine.a();
 }
 
 /*----------------------------------------------------------------------------*/
-/* read line from stdin                                                       */
+/* read raw line from stdin                                                   */
 /*----------------------------------------------------------------------------*/
 void Parser::vReadLineStdin(void)
 {
-  char c;
+  ASSERT(! m_bEOF);
   
-  char* pCharInLine = m_sRawLine.a();
+  m_pRawChar = m_sRawLine.a();
   
   printf("%s",m_sPrompt.a());
   fflush(stdin);
   
   for (;;) {
     
-    c = m_xFile.cGetChar();
+    char cInput = m_xFile.cGetChar();
     
-    *pCharInLine++ = c;
+    *m_pRawChar++ = cInput;
     
-    if (C_END_OF_LINE == c) {
+    if (C_END_OF_LINE == cInput)
       break;
-    }
-    
   }
   
-  *pCharInLine++ = '\0';
+  *m_pRawChar++ = '\0';
   
-  m_pRawInput = m_sRawLine.a();
+  m_pRawChar = m_sRawLine.a();
+  
+  ASSERT(! m_bEOF);
 }
 
 /*============================================================================*/

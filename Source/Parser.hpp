@@ -16,18 +16,17 @@ namespace Common
     
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
-    i8      m_iDepth;    // depth of this parser
     Parser* m_pChain;    // next parser in push chain
+    i8      m_iDepth;    // depth of this parser
     s256    m_sPrompt;   // user prompt when reading from stdin
-    bool    m_bLineMode; // line mode
     
     // input sources
     eIS     m_eSource;   // what source are we parsing? given file or given string?
     File    m_xFile;     // given file
-    s8K     m_sRawLine;  // either line read from file or the given string being parsed
+    bool    m_bLineMode; // line mode?
+    s8K     m_sRawLine;  // either raw line read from file or given string
     char*   m_aRawLine;  // ptr into m_sLine.a() -- debug help
-    char*   m_pRawInput; // next input char (ptr into line)
-    bool    m_bEOF;      // eof seen?
+    char*   m_pRawChar;  // next raw char in raw line
 
     // registers
     i8      m_nLoaded;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
@@ -35,6 +34,7 @@ namespace Common
     char    m_cSecond;   // second single char
     eCT     m_eComment;  // comment type currently being processed
     bool    m_bRead;     // prompt user for more input
+    bool    m_bEOF;      // eof seen?
     
     
   public:
@@ -44,26 +44,30 @@ namespace Common
     Parser(void);
     ~Parser(void);
     
-    void vEndParsing(void);
+    // Options
     void vPrompt(s& sPrompt);
     void vLineMode(bool bLineMode);
+    
+    // Use What
     bool bUseFile(s& sPath);
     void vUseStdin(void);
     void vUseString(s& sString);
+    void vUseEnd(void);
 
-    char cGet(void);
-    void vUnget(char c);
-
+    // Parsing Stack
     bool bPop(void);
     void vPush(void);
     i8   iDepth(void);
+    
+    // Parsing
+    char cGet(void);
+    void vUnget(char c);
     bool bEOF(void);
-    
-    void vZero(void);
-    
+    bool bLineMode(void);
+    bool bStdin(void);
+
   private:
     
-    void vDepth(i8 iDepth);
     void vResetParser(void);
     
     // Character Processing

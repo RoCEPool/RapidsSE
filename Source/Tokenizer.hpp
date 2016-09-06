@@ -29,12 +29,10 @@ namespace Common
                     public cn
   {
   private:
-    Parser* m_pParser;   // parser
-    bool    m_bMalloc;   // malloc or pool heap?
-    bool    m_bNormal;   // normal tokens?
-    
-    s32     m_sPrompt;   // prompt
-    char    m_cCurrChar; // current char
+    Parser* m_pParser; // parser
+    bool    m_bMalloc; // malloc or pool heap?
+    bool    m_bNormal; // normal tokens?
+    char    m_cStrippedChar; // character from parser, stripped of comments
     
   public:
     void* operator new(size_t);
@@ -50,16 +48,18 @@ namespace Common
     void vLineMode(bool bLineMode);
     void vMalloc(bool bMalloc);
     void vNormal(bool bNormal);
-    void vPrompt(const char* pPrompt);
-    void vEndTokenizing(void);
+    void vPrompt(s& sPrompt);
     
     bool bUseFile(s& sPath);
     void vUseStdin(void);
     void vUseString(s& sString);
+    void vUseEnd(void);
 
     eTK  eNextToken(char* wToken);
     
     bool bEOF(void);
+    bool bLineMode(void);
+    bool bStdin(void);
     
   private:
     eTK  eNextNormal(char* wToken);
@@ -76,6 +76,7 @@ namespace Common
     eTK  eParseSpecialString(char* wToken);
     
     void vSkipWhitespace(void);
+    bool bHaveWhitespace(void);
     
     bool bStartNormalInteger(void);
     bool bStartNormalName(void);
@@ -91,8 +92,8 @@ namespace Common
     bool bIsX(void);
     bool bIsWhite(void);
 
-    void vGetChar(void);
-    void vUngetChar(void);
+    void vGetNextStripped(void);
+    void vUngetStrippedChar(void);
     
     bool bEndInput(void);
   };

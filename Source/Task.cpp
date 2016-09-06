@@ -1147,7 +1147,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
-  m_xTokenizer.vEndTokenizing();
+  m_xTokenizer.vUseEnd();
   
   return pNewWord;
 }
@@ -1535,8 +1535,10 @@ void Task::vSeedDocol(void)
   
   m_sLambda = "";
   
+  s32 sPrompt("docol> ");
+  m_xTokenizer.vPrompt(sPrompt);
+ 
   m_xTokenizer.vUseString(m_sLambda);
-  m_xTokenizer.vPrompt("docol> ");
   m_xTokenizer.vLineMode(false);
 }
 
@@ -5931,7 +5933,7 @@ void Task::vInputClose(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputClose");
   
-  nnpTask->m_xTokenizer.vEndTokenizing();
+  nnpTask->m_xTokenizer.vUseEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6021,9 +6023,7 @@ void Task::vInputText(NNP_Task nnpTask)
   
   if ( ! nnpTask->bPopParam(sInput) )
     THROW_INVALID_PARAM("input.text");
-  
-  //nnpTask->m_sLambda = sInput;
-  
+    
   nnpTask->m_xTokenizer.vUseString(sInput);
 }
 

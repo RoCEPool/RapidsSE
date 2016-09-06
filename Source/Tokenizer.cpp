@@ -36,8 +36,6 @@ Tokenizer::Tokenizer(void)
   m_pParser = nullptr;
   m_bMalloc = false;
   m_bNormal = false;
-  
-  //m_sPrompt
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,8 +54,6 @@ void Tokenizer::vPush(void)
     m_pParser->vPush();
   else
     m_pParser = new(m_bMalloc) Parser;
-    
-  m_pParser->vPrompt(m_sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,11 +116,9 @@ void Tokenizer::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vPrompt(const char* pPrompt)
-{
-  m_sPrompt = pPrompt;
-  
-  m_pParser->vPrompt(m_sPrompt);
+void Tokenizer::vPrompt(s& sPrompt)
+{  
+  m_pParser->vPrompt(sPrompt);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,12 +148,11 @@ void Tokenizer::vUseString(s& sString)
 }
 
 /*----------------------------------------------------------------------------*/
-/* end                                           
- */
+/* end use of source                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vEndTokenizing(void)
+void Tokenizer::vUseEnd(void)
 {
-  m_pParser->vEndParsing();
+  m_pParser->vUseEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -185,6 +178,26 @@ bool Tokenizer::bEOF(void)
   bool bEOF = m_pParser->bEOF();
   
   return bEOF;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get LineMode?                                                              */
+/*----------------------------------------------------------------------------*/
+bool Tokenizer::bLineMode(void)
+{
+  bool bLineMode = m_pParser->bLineMode();
+  
+  return bLineMode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stdin?                                                                 */
+/*----------------------------------------------------------------------------*/
+bool Tokenizer::bStdin(void)
+{
+  bool bStdin = m_pParser->bStdin();
+  
+  return bStdin;
 }
 
 
@@ -260,7 +273,7 @@ eTK Tokenizer::eParseNormalString(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokenizer::eParseSpecial(char* wToken)
 {
-  vGetChar();
+  vGetNextStripped();
   
   vSkipWhitespace();
   
@@ -302,21 +315,21 @@ eTK Tokenizer::eParseSpecialInteger(char* wToken)
   
   // collect initial digits
   while (bIsDigit()) {
-    *z++ = m_cCurrChar;
+    *z++ = m_cStrippedChar;
     iNoDigits++;
-    vGetChar();
+    vGetNextStripped();
   }
   
   // 0x hex number?
   if (1 == iNoDigits && bIsX()) {
 
     // add the 'x'
-    *z++ = m_cCurrChar;
+    *z++ = m_cStrippedChar;
     
     // collect the hex digits
     while (bIsHex()) {
-      *z++ = m_cCurrChar;
-      vGetChar();
+      *z++ = m_cStrippedChar;
+      vGetNextStripped();
     }
   }
   
@@ -326,7 +339,7 @@ eTK Tokenizer::eParseSpecialInteger(char* wToken)
   if ( bIsWhite() || bStartSpecialString() ) {
     
     // push back the unconsumed char
-    vUngetChar();
+    vUngetStrippedChar();
     
     // terminate an intlit
     *z = '\0';
@@ -348,13 +361,13 @@ eTK Tokenizer::eParseSpecialName(char* wToken)
   ASSERT(bStartSpecialName());
   
   // collect the characters of the name
-  while ( m_cCurrChar && !bIsWhite() && !bStartSpecialString() ) {
-    *z++ = m_cCurrChar;
-    vGetChar();
+  while ( m_cStrippedChar && !bIsWhite() && !bStartSpecialString() ) {
+    *z++ = m_cStrippedChar;
+    vGetNextStripped();
   }
   
   // push back the unconsumed char
-  vUngetChar();
+  vUngetStrippedChar();
   
   // terminate a namelit
   *z = '\0';
@@ -372,24 +385,24 @@ eTK Tokenizer::eParseSpecialString(char* wToken)
   ASSERT(bStartSpecialString());
   
   // skip the leading '"'
-  vGetChar();
+  vGetNextStripped();
   
   // collect the chars in the string
   while ( ! bEndSpecialString() ) {
     
     // test for \n
-    if ('\\' == m_cCurrChar) {
-      vGetChar();
-      if ('n' == m_cCurrChar)
-        m_cCurrChar = '\n';
+    if ('\\' == m_cStrippedChar) {
+      vGetNextStripped();
+      if ('n' == m_cStrippedChar)
+        m_cStrippedChar = '\n';
       else {
-        vUngetChar();
-        m_cCurrChar = '\\';
+        vUngetStrippedChar();
+        m_cStrippedChar = '\\';
       }
     }
     
-    *z++ = m_cCurrChar;
-    vGetChar();
+    *z++ = m_cStrippedChar;
+    vGetNextStripped();
   }
   
   // terminate the strlit
@@ -408,8 +421,35 @@ eTK Tokenizer::eParseSpecialString(char* wToken)
 /*----------------------------------------------------------------------------*/
 void Tokenizer::vSkipWhitespace(void)
 {
-  while ( m_cCurrChar && String::bIsWhite(m_cCurrChar) )
-    vGetChar();
+  while (bHaveWhitespace())
+    vGetNextStripped();
+}
+
+/*----------------------------------------------------------------------------*/
+/* have whitespace                                                            */
+/*----------------------------------------------------------------------------*/
+bool Tokenizer::bHaveWhitespace(void)
+{
+  // do we have a current parsed character, which is a white char?
+  if (m_cStrippedChar) {
+    if (String::bIsWhite(m_cStrippedChar))
+      return true;
+    else
+      return false;
+  }
+
+  // - no current parsed character
+  
+  // a '\0' in line mode indicates end of line; not considered whitespace
+  if (bLineMode())
+    return false;
+  
+  // a '\0' at eof is the eof marker; not considered whitespace
+  if (bEOF())
+    return false;
+
+  // a '\0' is otherwise whitespace
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -417,7 +457,7 @@ void Tokenizer::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bStartNormalInteger(void)
 {
-  if (String::bIsDigit(m_cCurrChar))
+  if (String::bIsDigit(m_cStrippedChar))
     return true;
   
   return false;
@@ -439,7 +479,7 @@ bool Tokenizer::bStartNormalName(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bStartNormalString(void)
 {
-  if ('"' == m_cCurrChar)
+  if ('"' == m_cStrippedChar)
     return true;
   
   return false;
@@ -450,7 +490,7 @@ bool Tokenizer::bStartNormalString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bEndNormalString(void)
 {
-  if ('"' == m_cCurrChar)
+  if ('"' == m_cStrippedChar)
     return true;
   
   return false;
@@ -461,7 +501,7 @@ bool Tokenizer::bEndNormalString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bStartSpecialInteger(void)
 {
-  if (String::bIsDigit(m_cCurrChar))
+  if (String::bIsDigit(m_cStrippedChar))
     return true;
   
   return false;
@@ -483,7 +523,7 @@ bool Tokenizer::bStartSpecialName(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bStartSpecialString(void)
 {
-  if ('"' == m_cCurrChar)
+  if ('"' == m_cStrippedChar)
     return true;
   
   return false;
@@ -494,7 +534,7 @@ bool Tokenizer::bStartSpecialString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bEndSpecialString(void)
 {
-  if ('"' == m_cCurrChar)
+  if ('"' == m_cStrippedChar)
     return true;
   
   return false;
@@ -505,7 +545,7 @@ bool Tokenizer::bEndSpecialString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bIsDigit(void)
 {
-  if (String::bIsDigit(m_cCurrChar))
+  if (String::bIsDigit(m_cStrippedChar))
     return true;
   
   return false;
@@ -516,7 +556,7 @@ bool Tokenizer::bIsDigit(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bIsHex(void)
 {
-  if (String::bIsHex(m_cCurrChar))
+  if (String::bIsHex(m_cStrippedChar))
     return true;
   
   return false;
@@ -527,7 +567,7 @@ bool Tokenizer::bIsHex(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bIsX(void)
 {
-  if ('x' == m_cCurrChar || 'X' == m_cCurrChar)
+  if ('x' == m_cStrippedChar || 'X' == m_cStrippedChar)
     return true;
   
   return false;
@@ -538,7 +578,7 @@ bool Tokenizer::bIsX(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bIsWhite(void)
 {
-  if (String::bIsWhite(m_cCurrChar))
+  if (String::bIsWhite(m_cStrippedChar))
     return true;
   
   return false;
@@ -547,17 +587,17 @@ bool Tokenizer::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vGetChar(void)
+void Tokenizer::vGetNextStripped(void)
 {
-  m_cCurrChar = m_pParser->cGet();
+  m_cStrippedChar = m_pParser->cGet();
 }
 
 /*----------------------------------------------------------------------------*/
 /* unget current input character                                              */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vUngetChar(void)
+void Tokenizer::vUngetStrippedChar(void)
 {
-  m_pParser->vUnget(m_cCurrChar);
+  m_pParser->vUnget(m_cStrippedChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -565,7 +605,7 @@ void Tokenizer::vUngetChar(void)
 /*----------------------------------------------------------------------------*/
 bool Tokenizer::bEndInput(void)
 {
-  if ('\0' == m_cCurrChar)
+  if ('\0' == m_cStrippedChar)
     return true;
   
   return false;
