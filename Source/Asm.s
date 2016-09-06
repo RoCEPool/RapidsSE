@@ -14,10 +14,21 @@
 #-----------------------------------------------------------------------------#
 # _iAtomicDec: atomically decrement integer at [rdi]                          #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iAtomicDec
 .intel_syntax noprefix
 
 _iAtomicDec:
+
+#else
+
+.globl iAtomicDec
+.intel_syntax noprefix
+
+iAtomicDec:
+
+#endif
 
   mov rcx,-1
   lock xadd [rdi], rcx
@@ -29,11 +40,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iAtomicInc: atomically increment integer at [rdi]                          #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iAtomicInc
 .intel_syntax noprefix
 
 _iAtomicInc:
 
+#else
+
+.globl iAtomicInc
+.intel_syntax noprefix
+
+iAtomicInc:
+
+#endif
   mov rcx,1
   lock xadd [rdi], rcx
   mov rax, rcx
@@ -44,11 +65,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iCpuid: cpuid with arg in rdi, register to return in rsi                   #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iCpuid
 .intel_syntax noprefix
 
 _iCpuid:
 
+#else
+
+.globl iCpuid
+.intel_syntax noprefix
+
+iCpuid:
+
+#endif
   mov rax,0
   mov rax,rdi
 
@@ -95,11 +126,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iDropRead: drop read lock at [rdi] (no wait)                               #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iDropRead
 .intel_syntax noprefix
 
 _iDropRead:
 
+#else
+
+.globl iDropRead
+.intel_syntax noprefix
+
+iDropRead:
+
+#endif
   mov rsi, [rdi]  # get value at rdi
   mov rdx, rsi
   dec rdx         # remove one read lock
@@ -107,7 +148,12 @@ _iDropRead:
   call _iTestSet  # attempt to drop read lock
 
   cmp rax,0
+
+  #ifdef __APPLE__
   je _iDropRead
+  #else
+  je iDropRead
+  #endif
 
   mov rax, 1
 
@@ -116,11 +162,22 @@ ret
 #-----------------------------------------------------------------------------#
 # _iDropWrite: drop write lock at [rdi] (no wait)                             #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iDropWrite
 .intel_syntax noprefix
 
 _iDropWrite:
 
+#else
+
+.globl iDropWrite
+.intel_syntax noprefix
+
+iDropWrite:
+
+
+#endif
   mov rax, 0
   mov [rdi], rax  # clear the write lock
 
@@ -131,11 +188,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iGrabRead: grab read lock at [rdi] (no wait)                               #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iGrabRead
 .intel_syntax noprefix
 
 _iGrabRead:
 
+#else
+
+.globl iGrabRead
+.intel_syntax noprefix
+
+iGrabRead:
+
+#endif
   mov r9, 1       # construct mask
   shl r9, 63
 
@@ -169,11 +236,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iGrabWrite: grab write lock at [rdi] (no wait)                             #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iGrabWrite
 .intel_syntax noprefix
 
 _iGrabWrite:
 
+#else
+
+.globl iGrabWrite
+.intel_syntax noprefix
+
+iGrabWrite:
+
+#endif
   mov rax, [rdi]  # get value at rdi
   mov r8, rax     # keep copy in r8
   mov r9, 1       # construct mask
@@ -209,11 +286,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iIsLocked: return true if locked                                           #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iIsLocked
 .intel_syntax noprefix
 
 _iIsLocked:
 
+#else
+
+.globl iIsLocked
+.intel_syntax noprefix
+
+iIsLocked:
+
+#endif
   mov rax, [rdi]  # get value at rdi
 
   mov r9, 0
@@ -234,11 +321,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iRdtscp: read time-stamp counter                                           #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iRdtscp
 .intel_syntax noprefix
 
 _iRdtscp:
 
+#else
+
+.globl iRdtscp
+.intel_syntax noprefix
+
+iRdtscp:
+
+#endif
   push rbx
   push rcx
   push rdx
@@ -256,10 +353,21 @@ ret
 #-----------------------------------------------------------------------------#
 # _iTestSet: atomic test and set                                              #
 #-----------------------------------------------------------------------------#
+#ifdef __APPLE__
+
 .globl _iTestSet
 .intel_syntax noprefix
 
 _iTestSet:
+
+#else
+
+.globl iTestSet
+.intel_syntax noprefix
+
+iTestSet:
+
+#endif
 
   mov rax, rsi
 
@@ -280,3 +388,4 @@ _Failed:
 #-----------------------------------------------------------------------------#
 # end of file                                                                 #
 #-----------------------------------------------------------------------------#
+
