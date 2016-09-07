@@ -32,6 +32,14 @@ void* Dictionary::operator new(size_t iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* Dictionary::operator new(size_t iSize, Dictionary* pDictionary)
+{
+  return pDictionary;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void Dictionary::operator delete(void* pBufferAddress)

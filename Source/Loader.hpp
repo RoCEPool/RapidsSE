@@ -24,7 +24,7 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* pLoaderAddress);
+    void* operator new(size_t, Loader* pLoader);
     void  operator delete(void* pLoaderAddress);
  
     Loader(void);

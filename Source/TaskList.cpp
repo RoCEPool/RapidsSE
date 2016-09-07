@@ -19,6 +19,14 @@ void* TaskList::operator new(size_t iSize)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* TaskList::operator new(size_t iSize, TaskList* pTaskList)
+{
+  return pTaskList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void TaskList::operator delete(void* pTaskListAddress)

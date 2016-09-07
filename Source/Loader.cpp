@@ -21,9 +21,9 @@ void* Loader::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Loader::operator new(size_t, void* pLoaderAddress)
+void* Loader::operator new(size_t, Loader* pLoader)
 {
-  return pLoaderAddress;
+  return pLoader;
 }
 
 /*----------------------------------------------------------------------------*/
