@@ -21,7 +21,6 @@ namespace Values
     void operator =(void* pPtr);
     void operator =(char* pStr);
     void operator =(const char* pStr);
-    
   };
 }
 

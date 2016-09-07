@@ -14,7 +14,7 @@ namespace Pool
   {
   private:
     bn m_nNextFree;  // next buffer in free chain
-
+        
   public:
     BufferFree(void);
     ~BufferFree(void);

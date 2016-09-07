@@ -20,6 +20,9 @@ namespace Pool
     i8          m_iFreeCount;    // number of free chunks
     FreeChunk*  m_pFreeHead;     // head of free chunk chain
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

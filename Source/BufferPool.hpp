@@ -34,7 +34,10 @@ namespace Pool
     i8   m_iAllocCount;  // number of buffers currently in use
     i8   m_iFreeCount;   // number of buffers in free chain
     bn   m_nFreeHead;    // head of free chain
-
+    
+    // must be last
+    Footer m_xFooter;
+    
   public:    
     static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor);
     static Buffer* pAttachRegion(s& sRegionName,
