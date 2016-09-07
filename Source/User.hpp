@@ -18,6 +18,7 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, User* pUser);
     void  operator delete(void*);
   };
 }

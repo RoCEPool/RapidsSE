@@ -21,6 +21,7 @@ namespace Common
         
   public:
     void* operator new(size_t);
+    void* operator new(size_t, Socket* pSocket);
     void  operator delete(void*);
     
     Socket();

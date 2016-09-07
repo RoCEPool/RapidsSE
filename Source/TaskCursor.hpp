@@ -17,7 +17,7 @@ namespace Tasks
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, void* pTaskCursorAddress);
+    void* operator new(size_t, TaskCursor* pTaskCursor);
     void  operator delete(void*);
     
     TaskCursor(List_t<Task>* pList);

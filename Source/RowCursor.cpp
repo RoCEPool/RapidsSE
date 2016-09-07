@@ -19,9 +19,9 @@ void* RowCursor::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowCursor::operator new(size_t, void* pRowCursorAddress)
+void* RowCursor::operator new(size_t, RowCursor* pRowCursor)
 {
-  return pRowCursorAddress;
+  return pRowCursor;
 }
 
 /*----------------------------------------------------------------------------*/

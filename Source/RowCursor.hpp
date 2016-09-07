@@ -24,7 +24,7 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* pRowCursorAddress);
+    void* operator new(size_t, RowCursor* pRowCursor);
     void  operator delete(void*);
     
     RowCursor(void);

@@ -23,6 +23,7 @@ namespace Structures
     
    public:
     void* operator new(size_t);
+    void* operator new(size_t, Queue* pQueue);
     void  operator delete(void* pQueueAddress);
  
     Queue(void);

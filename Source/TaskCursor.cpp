@@ -10,9 +10,9 @@ extern TaskList*   gpTaskList;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* TaskCursor::operator new(size_t iSize, void* pTaskCursorAddress)
+void* TaskCursor::operator new(size_t iSize, TaskCursor* pTaskCursor)
 {
-  return pTaskCursorAddress;
+  return pTaskCursor;
 }
 
 /*----------------------------------------------------------------------------*/

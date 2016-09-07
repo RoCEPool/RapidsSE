@@ -17,7 +17,7 @@ namespace Interface {
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t, void* pSEitfCursorAddress);
+    void* operator new(size_t, SEitfCursor* pSEitfCursor);
     void  operator delete(void*);
     
     SEitfCursor(List_t<SEitf>* pList);

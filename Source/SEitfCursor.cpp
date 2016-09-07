@@ -10,9 +10,9 @@ extern SEitfList*   gpSEitfList;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SEitfCursor::operator new(size_t iSize, void* pSEitfCursorAddress)
+void* SEitfCursor::operator new(size_t iSize, SEitfCursor* pSEitfCursor)
 {
-  return pSEitfCursorAddress;
+  return pSEitfCursor;
 }
 
 /*----------------------------------------------------------------------------*/

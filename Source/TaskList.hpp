@@ -18,6 +18,7 @@ namespace Tasks {
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, TaskList* pTaskList);
     void  operator delete(void*);
     
     TaskList(void);

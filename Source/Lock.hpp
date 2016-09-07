@@ -14,7 +14,7 @@ namespace Common
     u8 m_uValue;
     
   public:
-    void* operator new(size_t, void* pLockAddress);
+    void* operator new(size_t, Lock* pLock);
     void  operator delete(void* pLockAddress);
     
     Lock(void);

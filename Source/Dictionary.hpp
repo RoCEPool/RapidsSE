@@ -23,6 +23,7 @@ namespace Dictionaries
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, Dictionary* pDic);
     void  operator delete(void*);
     
     Dictionary(void);
