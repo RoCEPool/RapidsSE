@@ -34,35 +34,76 @@ bool PosixThread::bBindThread(i8 iCpu)
   
   i8 iCpuCount = System::iCpuCount();
   
+  if (iCpu > iCpuCount) {
+    vWarn("Unable to bind to Cpu %lld on a system having %lld cores!", iCpu, iCpuCount);
+    return false;
+  }
+  
   #ifdef __APPLE__
   
     thread_port_t mach_thread;
-  
-    if (iCpu > iCpuCount) {
-        vWarn("Unable to bind to Cpu %lld on a system having %lld cores!", iCpu, iCpuCount);
-      return false;
-    }
-    printf("binding to core %d\n", (int)iCpu);
+
+    vWarn("binding to core %d\n", (int)iCpu);
   
     thread_affinity_policy_data_t policy = { (int)iCpu };
     mach_thread = pthread_mach_thread_np(m_iPosixThreadId);
     thread_policy_set(mach_thread, THREAD_AFFINITY_POLICY,
                       (thread_policy_t)&policy, 1);
-      return true;
+    return true;
 
-    #else
-      vWarn("Cpu Binding not implemented on LINUX!");
-      return true;
+  #else
+  
+    i8 iResult;
+  
+    cpu_set_t xAffinity;
+  
+    CPU_ZERO(&xAffinity);
+    CPU_SET(iCpu, &xAffinity);
+  
+    ASSERT(pthread_self() == m_iPosixThread);
+  
+    iResult = pthread_setafffinity_np(m_iPosixThread, sizeof(cpu_set_t), &xAffinity);
+    if (iResult == -1) {
+      vWarn("Error in pthread_setafffinity_np() : %lld\n", errno);
+      
+    }
+  
+    return true;
     #endif
 }
 
 /*----------------------------------------------------------------------------*/
-/* get cpu this of this thread                                                */
+/* get cpu of this thread                                                     */
 /*----------------------------------------------------------------------------*/
 i8 PosixThread::iThreadCpu(void)
 {
-  vWarn("Getting thread Cpu affinity not implemented!");
+  #ifdef __APPLE__
+    vWarn("Getting thread Cpu affinity not implemented!");
+    return 0;
+#else
+  i8 iResult;
+  
+  cpu_set_t xAffinity;
+  
+  CPU_ZERO(&xAffinity);
+  
+  ASSERT(pthread_self() == m_iPosixThread);
+  
+  iResult = pthread_getafffinity_np(m_iPosixThread, sizeof(cpu_set_t), &xAffinity);
+  if (iResult == -1) {
+    vWarn("Error in pthread_getafffinity_np() : %lld\n", errno);
+  }
+  
+  i8 cpu_set_size = static_cast<i8>(sizeof(cpu_set_t));
+  
+  for (i8 i = 0; i < cpu_set_size; i++) {
+    if (CPU_ISSET(i, &xAffinity)
+        return i;
+  }
   return 0;
+
+#endif
+  
 }
 
 

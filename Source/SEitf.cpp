@@ -210,7 +210,7 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("cd",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("cld",pWords[0],C_NO_CASE)) {
     bPushDic(pWords);
     return true;
   }
@@ -230,6 +230,11 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
+  if (String::bEqualTo("drop",pWords[0],C_NO_CASE)) {
+    bDropTable(pWords);
+    return true;
+  }
+
   if (String::bEqualTo("dump",pWords[0],C_NO_CASE)) {
     bDumpTable(pWords);
     return true;
@@ -295,7 +300,7 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("pwd",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("pld",pWords[0],C_NO_CASE)) {
     bGetDicPath(pWords);
     return true;
   }
@@ -843,7 +848,7 @@ bool SEitf::bPushDic(char* pWords[])
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
   
-  String::vConcat(a," cd");
+  String::vConcat(a," cld");
   
   vAppendRequest(sRequest);
   
@@ -867,7 +872,7 @@ bool SEitf::bGetDicPath(char* pWords[])
 {
   s256 sRequest;
   
-  sRequest = "pwd";
+  sRequest = "pld";
   vAppendRequest(sRequest);
   
   return true;
