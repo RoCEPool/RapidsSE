@@ -13,6 +13,9 @@ namespace Tasks
   {
   private:
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t, void* pTaskCursorAddress);
     void  operator delete(void*);

@@ -17,6 +17,9 @@ namespace Tasks
     NP_Task m_npHead;
     NP_Task m_npTail;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t, TaskSet* pTaskSet);
     void  operator delete(void*);
