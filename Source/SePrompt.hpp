@@ -27,6 +27,9 @@ private:
 
   char      m_wTokenArea[C_TOKEN_AREA];
   
+  // must be last
+  Footer m_xFooter;
+  
 public:
   void* operator new(size_t);
   void  operator delete(void*);

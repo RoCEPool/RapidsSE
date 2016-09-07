@@ -13,6 +13,9 @@ private:
   i8    m_iCommands;      // number of commands in history
   Tokeniser m_xTokeniser; // tokenizer while reading file
   
+  // must be last
+  Footer m_xFooter;
+  
 public:
   SeHistory(void);
   ~SeHistory(void);
