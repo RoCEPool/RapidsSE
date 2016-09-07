@@ -25,13 +25,12 @@ namespace Values
   class ValSet;
   class ValWsp;
   
-  class Value : public mn,
-                public cn
+  class Value : public Header
   {
   public:
     void* operator new(size_t);
     
-    Value(cn eClass);
+    Value(eCN eClass);
     
     void operator =(i8 iVal);
     

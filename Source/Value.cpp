@@ -19,8 +19,8 @@ void* Value::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Value::Value(cn eClass)
-: cn(eClass)
+Value::Value(eCN eClass)
+: Header(eClass)
 {
 }
 
