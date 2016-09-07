@@ -23,9 +23,11 @@ private:
   SeHistory m_xHistory;   // command history
   
   char*     m_pToken[C_TOKENS];
+  char*     m_pToken2[C_TOKENS];
   Tokeniser m_xTokeniser; // input stream tokeniser
 
   char      m_wTokenArea[C_TOKEN_AREA];
+  char      m_wTokenArea2[C_TOKEN_AREA];
   
   // must be last
   Footer m_xFooter;
@@ -54,6 +56,7 @@ private:
   bool bValidateType(char* pType);
   
   void vCollectStatement(void);
+  void vDropTable(void);
  };
 
 /*============================================================================*/

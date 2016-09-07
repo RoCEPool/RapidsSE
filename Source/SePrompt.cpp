@@ -45,9 +45,13 @@ SePrompt::SePrompt(i8 iPartition)
   //m_xHistory
   
   // initialise the token set
-  for (i8 iToken = 0; iToken < C_TOKENS; iToken++)
+  for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
     m_pToken[iToken] = &m_wTokenArea[C_TOKEN_SPACE * iToken];
+    m_pToken2[iToken] = &m_wTokenArea2[C_TOKEN_SPACE * iToken];
+  }
+  
   //m_wWorkarea
+  
   
   //----
   m_xTokeniser.vMalloc(false);
@@ -161,6 +165,11 @@ void SePrompt::vProcessCommand(void)
   
   if (String::bEqualTo("create2",m_pToken[0],C_NO_CASE)) {
     vCollectStatement();
+    return;
+  }
+ 
+  if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
+    vDropTable();
     return;
   }
   
@@ -300,6 +309,7 @@ void SePrompt::vHelp(void)
   vTrace("create -- create table\n");
   vTrace("dis    -- disconnect\n");
   vTrace("do     -- do shorthand\n");
+  vTrace("drop   -- dropTable\n");
   vTrace("dump   -- dump table\n");
   vTrace("ex     -- export table t\n");
   vTrace("ld     -- load table t\n");
@@ -333,105 +343,45 @@ void SePrompt::vHelp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parse the create table words                                               */
+/* create table                                                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCreateTable(void)
 {
-  int iTokens = 0;
-  char xArray[C_1KB * 16];
-  char* pWords[16] = {
-    &xArray[C_1KB * 0],
-    &xArray[C_1KB * 1],
-    &xArray[C_1KB * 2],
-    &xArray[C_1KB * 3],
-    &xArray[C_1KB * 4],
-    &xArray[C_1KB * 5],
-    &xArray[C_1KB * 6],
-    &xArray[C_1KB * 7],
-    &xArray[C_1KB * 8],
-    &xArray[C_1KB * 9],
-    &xArray[C_1KB * 10],
-    &xArray[C_1KB * 11],
-    &xArray[C_1KB * 12],
-    &xArray[C_1KB * 13],
-    &xArray[C_1KB * 14],
-    &xArray[C_1KB * 15]
-  };
+  i8 iTokens = 0;
 
-  // remove all braces
-  for (int i = 0; i < 16 ; i++) {
-    if (String::iLength(m_pToken[i]) != 0) {
-      
-      // ignore )
-      if (String::bEqualTo(m_pToken[i], ")")) {
-        continue;
-      }
-      
-      // ignore (
-      if (String::bEqualTo(m_pToken[i], "(")) {
-        continue;
-      }
-      
-      // ignore ,
-      if (String::bEqualTo(m_pToken[i], ",")) {
-        continue;
-      }
-      
-      // ignore not
-      if (String::bEqualTo(m_pToken[i], "not", C_NO_CASE)) {
-        continue;
-      }
-      
-      // ignore null
-      if (String::bEqualTo(m_pToken[i], "null", C_NO_CASE)) {
-        continue;
-      }
-
-      // copy all other words
-      String::vCopy(pWords[iTokens], m_pToken[i]);
-      
-      // clear m_pToken for later use
-      String::vCopy(m_pToken[i], "");
-      
-      iTokens++;
-    }
-  }
+  ASSERT(String::bEqualTo(m_pToken[0],"create"));
+  vCollectStatement();
   
-  // last token should be a ;
-  if (!String::bEqualTo(pWords[iTokens-1], ";")) {
-    m_sResponse = "Invalid create table command. Not properly terminated.";
-    vTrace("Error: %s\n", m_sResponse.a());
-    return;
+  i8 iToken;
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
   }
+  vTrace("\n");
   
-  // validate create table
-  ASSERT(String::bEqualTo(pWords[0], "create", C_NO_CASE));
-  if (!String::bEqualTo(pWords[1], "table", C_NO_CASE)) {
-    m_sResponse = "Invalid create table command";
-    vTrace("Error: %s\n", m_sResponse.a());
-    return;
-  }
+  iTokens = iToken - 1;
   
   // create a table
   String::vCopy(m_pToken[0], "mktbl");
-  String::vCopy(m_pToken[1], pWords[2]);
+  String::vCopy(m_pToken[1], m_pToken2[2]);
   vExecuteRequest();
   
-  i8 iCurrentToken = 3;
+  i8 iCurrentToken = 4;
   while(iCurrentToken < iTokens - 1) {
   
     // add columns to the table
     i8 j = 0;
     String::vCopy(m_pToken[j++], "add");
-    String::vCopy(m_pToken[j++], pWords[2]);
-    String::vCopy(m_pToken[j++], pWords[iCurrentToken]);
-    iCurrentToken++;
+    String::vCopy(m_pToken[j++], m_pToken2[2]);
+    String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken]);
+    iCurrentToken ++;
     
     // now we should see a column type
     // validate it
-    if (!bValidateType(pWords[iCurrentToken])) {
+    if (!bValidateType(m_pToken2[iCurrentToken])) {
       String::vCopy(m_sResponse.a(),"Invalid type '");
-      String::vConcat(m_sResponse.a(),pWords[iCurrentToken]);
+      String::vConcat(m_sResponse.a(),m_pToken2[iCurrentToken]);
       String::vConcat(m_sResponse.a(),"' for column '");
       String::vConcat(m_sResponse.a(),m_pToken[j - 1]);
       String::vConcat(m_sResponse.a(),"'");
@@ -440,8 +390,8 @@ void SePrompt::vCreateTable(void)
     }
     
     // copy the column type
-    String::vCopy(m_pToken[j++], pWords[iCurrentToken]);
-    iCurrentToken++;
+    String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken]);
+    iCurrentToken += 2;
     
     // add the column
     vExecuteRequest();
@@ -524,9 +474,6 @@ void SePrompt::vCollectStatement(void)
     eTK eToken = m_xTokeniser.eNextToken(m_pToken[iToken]);
     ASSERT(TK_NONE != eToken);
     
-    //    vTrace("CreateTable2: %12s %s\n",
-    //           m_pToken[iToken],pTK[eToken]);
-    
     // look for terminal
     if (String::bEqualTo(m_pToken[iToken],";"))
       break;
@@ -537,6 +484,33 @@ void SePrompt::vCollectStatement(void)
   m_xTokeniser.vPrompt(m_sPrompt);
   
   m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop table                                                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDropTable(void)
+{
+  i8 iToken;
+  i8 iTokens = 0;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
+  
+  vCollectStatement();
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  vTrace("\n");
+  
+  iTokens = iToken - 1;
+  ASSERT(iTokens == 3);
+  
+  // create a table
+  String::vCopy(m_pToken[0], "drop");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  vExecuteRequest();
 }
 
 /*----------------------------------------------------------------------------*/
