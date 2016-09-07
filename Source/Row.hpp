@@ -8,8 +8,7 @@
 
 namespace DBobjects
 {
-  class Row : public mn,
-              public cn
+  class Row : public Header
   {
   private:
     i8  m_iTxId;       // transaction id

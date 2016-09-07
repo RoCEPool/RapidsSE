@@ -28,7 +28,7 @@ void* Row::operator new(size_t, Row* pRow)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Row::Row(void)
-: cn(CN_ROW)
+: Header(CN_ROW)
 {
   _poolAddress_(this);
   _magic_();
