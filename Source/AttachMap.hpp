@@ -22,9 +22,8 @@ namespace StorageEngine
     BufferPool*        m_pBufferPool;
     Heap*              m_pMediumHeap;
     Heap*              m_pSmallHeap;
-    GlobalDictionary*  m_pGlobalDictionary;
-    Dictionary*        m_pDictionary;
-    
+    Dictionary         m_xMainDic;
+
     Grid*              m_pGrid;
     TaskList*          m_pTaskList;
     SEitfList*         m_pSEitfList;

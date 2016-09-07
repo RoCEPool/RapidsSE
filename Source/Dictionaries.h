@@ -11,7 +11,6 @@
 #include "CodeField.hpp"
 #include "Dictionary.hpp"
 #include "DictionaryStack.hpp"
-#include "GlobalDictionary.hpp"
 #include "Word.hpp"
 
 //-----------------------------------------------------------------------------

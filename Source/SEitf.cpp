@@ -6,7 +6,7 @@
 #include "StorageEngine.h"
 
 extern Heap*        gpMediumHeap;
-extern Dictionary*  gpDictionary;
+extern Dictionary*  gpMainDic;
 extern SEitfList*   gpSEitfList;
 extern AttachMap*   gpAttachMap;
 
@@ -124,7 +124,7 @@ void SEitf::vInit(void)
   m_xDictionary.vAddConstant("pid",m_iPid);
   
   // response queue
-  Word* pQueueWord = gpDictionary->pFind("queue");
+  Word* pQueueWord = gpMainDic->pFind("queue");
   Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
@@ -137,17 +137,17 @@ void SEitf::vInit(void)
   m_pResponseQueue->vInitialize();
   
   // request queue
-  Word* pReqQueWord = gpDictionary->pFind("requestQueue");
+  Word* pReqQueWord = gpMainDic->pFind("requestQueue");
   ASSERT(pReqQueWord);
   
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pBodyArea());
   
   // dictionary stack
-  m_xDicStack.vPush(gpDictionary);
+  m_xDicStack.vPush(gpMainDic);
   m_xDicStack.vPush(&m_xDictionary);
   
   // find tenants
-  Word* pTenants = gpDictionary->pFind("tenants");
+  Word* pTenants = gpMainDic->pFind("tenants");
   ASSERT(pTenants);
   
   Cell* pCell = pTenants->pFirstCell();

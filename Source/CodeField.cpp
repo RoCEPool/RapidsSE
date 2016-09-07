@@ -5,7 +5,7 @@
 #include "Dictionaries.h"
 
 extern BufferPool*  gpBufferPool;
-extern Dictionary*  gpDictionary;
+extern Dictionary*  gpMainDic;
 
 /*============================================================================*/
 /* end                                                                        */

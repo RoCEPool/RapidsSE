@@ -7,8 +7,7 @@
 extern BufferPool*           gpBufferPool;
 
 extern Heap*                 gpMediumHeap;
-extern GlobalDictionary*     gpGlobalDictionary;
-extern Dictionary*           gpDictionary;
+extern Dictionary*           gpMainDic;
 
 extern Grid*                 gpGrid;
 extern TaskList*             gpTaskList;
@@ -59,8 +58,7 @@ void AttachMap::vGetGlobals(void)
 {
   gpMediumHeap       = m_pMediumHeap;
   gpSmallHeap        = m_pSmallHeap;
-  gpGlobalDictionary = m_pGlobalDictionary;
-  gpDictionary       = m_pDictionary;
+  gpMainDic          = &m_xMainDic;
   
   gpGrid             = m_pGrid;
   gpTaskList         = m_pTaskList;
@@ -85,8 +83,6 @@ void AttachMap::vRecordGlobals(void)
   
   m_pMediumHeap       = gpMediumHeap;
   m_pSmallHeap        = gpSmallHeap;
-  m_pGlobalDictionary = gpGlobalDictionary;
-  m_pDictionary       = gpDictionary;
   
   m_pGrid             = gpGrid;
   m_pTaskList         = gpTaskList;

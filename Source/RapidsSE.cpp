@@ -10,8 +10,7 @@ BufferPool*         gpBufferPool       = nullptr;
 AttachMap *         gpAttachMap        = nullptr;
 Heap*               gpMediumHeap       = nullptr;
 Heap*               gpSmallHeap        = nullptr;
-GlobalDictionary*   gpGlobalDictionary = nullptr;
-Dictionary*         gpDictionary       = nullptr;
+Dictionary*         gpMainDic       = nullptr;
 Word*               gpWord             = nullptr;
 
 Grid*               gpGrid             = nullptr;
@@ -329,11 +328,10 @@ void RapidsSE::vAttachRegion(void)
 void RapidsSE::vCreateObjects(void)
 {
   // create global objects
-  gpAttachMap        = new AttachMap();
-  gpMediumHeap       = new Heap(CN_MEDIUMHEAP,C_SIZE_MEDIUM_OBJECT);
-  gpSmallHeap        = new Heap(CN_SMALLHEAP,C_SIZE_SMALL_OBJECT);
-  gpGlobalDictionary = new GlobalDictionary;
-  gpDictionary       = &gpGlobalDictionary->m_xDictionary;
+  gpAttachMap  = new AttachMap;
+  gpMediumHeap = new Heap(CN_MEDIUMHEAP,C_SIZE_MEDIUM_OBJECT);
+  gpSmallHeap  = new Heap(CN_SMALLHEAP,C_SIZE_SMALL_OBJECT);
+  gpMainDic = &gpAttachMap->m_xMainDic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -451,7 +449,7 @@ void RapidsSE::vRunDocol(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemInit(void)
 {
-  ASSERT( ! gpDictionary->bHasWords() );
+  ASSERT( ! gpMainDic->bHasWords() );
   
   // init the tls keys
   vTlsInit();
@@ -470,7 +468,7 @@ void RapidsSE::vSystemInit(void)
   gpAttachMap->vRecordGlobals();
   
   // get the trace file
-  Word* pTraceFileWord = gpDictionary->pFind("trace_file");
+  Word* pTraceFileWord = gpMainDic->pFind("trace_file");
   gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->pBodyArea());
   
   // the root thread is on pstack of root task
@@ -496,7 +494,7 @@ void RapidsSE::vStartActors(void)
   
   // the system is now running
   
-  while (! gpDictionary->pFind("requestQueue"))
+  while (! gpMainDic->pFind("requestQueue"))
     ;
 
   PosixThread::vSleepNano(250_MB);

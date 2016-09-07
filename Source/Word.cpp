@@ -5,7 +5,7 @@
 #include "Tasks.h" // needed for Task::vEnter
 
 extern BufferPool*  gpBufferPool;
-extern Dictionary*  gpDictionary;
+extern Dictionary*  gpMainDic;
 extern Word*        gpWord;
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +108,7 @@ char* Word::pAllot(i8 iBytes)
 
   char* pAddress = pcAdd(pFirstCell(),m_iDataBytes);
   
-  //gpDictionary->vExtendLinear(iBytes);
+  //gpMainDic->vExtendLinear(iBytes);
   
   m_iDataBytes += iBytes;
 
@@ -370,7 +370,7 @@ void Word::vDump(void)
   
   s32 sFuncName;
   
-  Word* pFuncWord = gpDictionary->pFindFunc(m_xCode.m_pFunc);
+  Word* pFuncWord = gpMainDic->pFindFunc(m_xCode.m_pFunc);
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
          "Func %p %s ..Data.. %p\n",
          this,
@@ -414,7 +414,7 @@ void Word::vEncode(const char* aWord)
 {
   _poolAddress_(this);
   
-  Word* pCalledWord = gpDictionary->pFind(aWord);
+  Word* pCalledWord = gpMainDic->pFind(aWord);
   
   vAppend(pCalledWord->pCodeField());
 }
