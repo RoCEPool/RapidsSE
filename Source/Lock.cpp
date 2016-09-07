@@ -24,6 +24,7 @@ void Lock::operator delete(void* pLockAddress)
 // Lock: constructor                                                         //
 //---------------------------------------------------------------------------//
 Lock::Lock(void)
+: Header(CN_LOCK)
 {
   vInit();
 }
@@ -39,9 +40,7 @@ Lock::~Lock(void)
 // init                                                                      //
 //---------------------------------------------------------------------------//
 void Lock::vInit(void)
-{
-  vClass(CN_LOCK);
-  
+{  
   m_uValue = 0;
 }
 

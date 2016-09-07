@@ -58,7 +58,7 @@ void File::operator delete(void* pFileAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 File::File(void)
-: cn(CN_FILE)
+: Header(CN_FILE)
 {
   vInit();
 }

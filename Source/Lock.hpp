@@ -8,8 +8,7 @@
 
 namespace Common
 {
-  class Lock : public mn,
-               public cn
+  class Lock : public Header
   {
   private:
     u8 m_uValue;

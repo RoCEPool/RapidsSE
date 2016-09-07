@@ -48,7 +48,7 @@ void Dir::operator delete(void* pDirAddress)
 /* Dir: constructor                                                           */
 /*----------------------------------------------------------------------------*/
 Dir::Dir(void)
-: cn(CN_DIR)
+: Header(CN_DIR)
 {
   m_sDirPath   = "<none>";
   

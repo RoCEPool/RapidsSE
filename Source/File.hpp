@@ -23,8 +23,7 @@ namespace Common
 //  static const char* C_OPEN_READ_WRITE_CREATE;
 //  static const char* C_OPEN_READ_APPEND;
 
-  class File : public mn,
-               public cn
+  class File : public Header
   {
   public:
   
