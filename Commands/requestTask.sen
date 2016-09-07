@@ -52,10 +52,10 @@ thread:  requestThread
     valset>
 
     // check stack
-    depth 3 != if "incorrect request stack depth" . quit then
-    0 stack.class CN_INTVAL != if "incorrect request value 0" . quit then
-    1 stack.class CN_STRVAL != if "incorrect request value 1" . quit then
-    2 stack.class CN_STRVAL != if "incorrect request value 2" . quit then
+    depth 3 != if "incorrect request stack depth" . process.quit then
+    0 stack.class CN_INTVAL != if "incorrect request value 0" . process.quit then
+    1 stack.class CN_STRVAL != if "incorrect request value 1" . process.quit then
+    2 stack.class CN_STRVAL != if "incorrect request value 2" . process.quit then
 
     drop // the count
     >:   // execute the response return address
@@ -68,11 +68,11 @@ thread:  requestThread
 : >rsp ( send response    )
 
     // check stack
-    depth 3 != if "incorrect reponse stack depth" . quit then
+    depth 3 != if "incorrect reponse stack depth" . process.quit then
 
-    0 stack.class CN_INTVAL != if "incorrect reponse value 0" . quit then
-    1 stack.class CN_INTVAL != if "incorrect reponse value 1" . quit then
-    2 stack.class CN_STRVAL != if "incorrect reponse value 2" . quit then
+    0 stack.class CN_INTVAL != if "incorrect reponse value 0" . process.quit then
+    1 stack.class CN_INTVAL != if "incorrect reponse value 1" . process.quit then
+    2 stack.class CN_STRVAL != if "incorrect reponse value 2" . process.quit then
 
 
     >valset

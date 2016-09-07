@@ -550,11 +550,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("pick",            &vPick,             false);
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
-  vAddPrimitive("processExit",     &vProcessExit,      false);
   vAddPrimitive("push",            &vPush,             false);
   vAddPrimitive(".put",            &vPut,              false);
   vAddPrimitive(".\\n",            &vPutNewline,       false);
-  vAddPrimitive("quit",            &vQuit,             false);
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
   vAddPrimitive("repeat",          &vRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
@@ -717,6 +715,7 @@ void Task::vAddPrimitives(void)
 
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
+  vAddPrimitive("process.quit",    &vProcessQuit,      false);
   
   vAddPrimitive("pstack.class",    &vPstackClass,      false);
   vAddPrimitive("p.depth",         &vPstackDepth,      false);
@@ -976,7 +975,7 @@ void Task::vAddRoutines(void)
   "      drop"
   "      \"unknown\" ."
   "      input.token ."
-  "      isBooted not if processExit then "
+  "      isBooted not if process.quit then "
   "      again_"
   "    then"
   
@@ -3938,11 +3937,11 @@ void Task::vPrint(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* processExit -- process exits early                                         */
+/* processQuit -- process exits early                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vProcessExit(NNP_Task nnpTask)
+void Task::vProcessQuit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vProcessExit");
+  nnpTask->vPrimitive("vProcessQuit");
   
   exit(EXIT_SUCCESS);
 }
@@ -3999,16 +3998,6 @@ void Task::vPutNewline(NNP_Task nnpTask)
   nnpTask->vPrimitive("vPut");
   
   vTrace("\n");
-}
-
-/*----------------------------------------------------------------------------*/
-/* quit -- system quit (aka process exits)                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vQuit(NNP_Task nnpTask)
-{
-  nnpTask->vPrimitive("vQuit");
-
-  exit(EXIT_SUCCESS);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -347,13 +347,11 @@ namespace Tasks
     static void vPrevWord(NNP_Task nnpTask);       
     static void vPrint(NNP_Task nnpTask);          
     static void vPstackDepth(NNP_Task nnpTask);
-    static void vProcessExit(NNP_Task nnpTask);
-    static void vPush(NNP_Task nnpTask);           
+    static void vPush(NNP_Task nnpTask);
     static void vPushEmbedded(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
     static void vPutNewline(NNP_Task nnpTask);     
-    static void vQuit(NNP_Task nnpTask);           
-    static void vRdtscp(NNP_Task nnpTask);         
+    static void vRdtscp(NNP_Task nnpTask);
     static void vRepeat(NNP_Task nnpTask);         
     static void vRetryPoint(NNP_Task nnpTask);
     static void vRot(NNP_Task nnpTask);
@@ -535,6 +533,7 @@ namespace Tasks
 
     // process
     static void vProcessGetPid(NNP_Task nnpTask);
+    static void vProcessQuit(NNP_Task nnpTask);
     static void vProcessTestPid(NNP_Task nnpTask);
     
     // pstack
