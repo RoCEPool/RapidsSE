@@ -12,7 +12,10 @@ namespace Threads {
                      public List_t<Thread>
   {
   private:
-    
+
+    // must be last
+    Footer m_xFooter;
+
   public:
     void* operator new(size_t, ThreadList* pThreadList);
     void  operator delete(void*);

@@ -19,6 +19,9 @@ namespace Threads
     TaskSet*    m_pTaskSet;     // task set this thread serves
     NP_Task     m_npTask;       // the task being executed
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t, Thread* pThread);
     void  operator delete(void*);
