@@ -3921,7 +3921,7 @@ void Task::vProcessExit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vProcessExit");
   
-  exit(EXIT_FAILURE);
+  exit(EXIT_SUCCESS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3985,7 +3985,7 @@ void Task::vQuit(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vQuit");
 
-  exit(EXIT_FAILURE);
+  exit(EXIT_SUCCESS);
 }
 
 /*----------------------------------------------------------------------------*/

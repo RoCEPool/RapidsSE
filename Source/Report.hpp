@@ -25,9 +25,6 @@ namespace Common
   void  vFatal(const char* pFormat,...);
 
   void  vReport(i8 iLevel, const char* pFormat, va_list xArgs);
-    
-  void  vExitFatal(void);
-  void  vExitSuccess(void);
 }
 
 /*============================================================================*/
