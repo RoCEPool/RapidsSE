@@ -16,9 +16,9 @@ extern Arguments gxArguments;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BufferPoolAnalyzer::BufferPoolAnalyzer(void)
+: Header(CN_BUFFERPOOLANALYZER)
 {
   _magic_();
-  m_nClassNo = CN_BUFFERPOOLANALYZER;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -26,7 +26,8 @@ BufferPoolAnalyzer::BufferPoolAnalyzer(void)
 /*----------------------------------------------------------------------------*/
 BufferPoolAnalyzer::~BufferPoolAnalyzer(void)
 {
-  ASSERT(m_nClassNo == CN_BUFFERPOOLANALYZER);
+  _magic_();
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +35,7 @@ BufferPoolAnalyzer::~BufferPoolAnalyzer(void)
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vAnalyze(void)
 {
-  ASSERT(m_nClassNo == CN_BUFFERPOOLANALYZER);
+  _magic_();
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -129,7 +130,7 @@ void BufferPoolAnalyzer::vAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vDump(void)
 {
-  ASSERT(m_nClassNo == CN_BUFFERPOOLANALYZER);
+  _magic_();
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -191,7 +192,6 @@ void BufferPoolAnalyzer::vAssertClass(eCN eClassNo) const
 {
   _magic_();
   
-  ASSERT(m_nClassNo == eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/

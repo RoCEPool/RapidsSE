@@ -11,10 +11,9 @@ namespace Pool
 {
   class Heap;
   
-  class BufferPoolAnalyzer : public mn
+  class BufferPoolAnalyzer : public Header
   {
   private:
-    cn m_nClassNo;
     
   public:
     

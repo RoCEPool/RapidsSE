@@ -12,8 +12,7 @@ namespace Pool
   class Buffer;
   class BufferPoolIter;
 
-  class BufferPool : public mn,
-                     public cn
+  class BufferPool : public Header
   {
     
     friend class BufferPoolAnalyzer;

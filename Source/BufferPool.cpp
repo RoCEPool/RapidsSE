@@ -110,9 +110,8 @@ Buffer* BufferPool::pCreateRegion(s& sRegionName,
 /* attach to an existing buffer pool                                          */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(s& sRegionName)
+: Header(CN_BUFFERPOOL)
 {
-  vClass(CN_BUFFERPOOL);
-  
   m_iRegionSize    = 10_MB;
   m_iBufferSize  = 1_MB;
   m_sShmName     = sRegionName;
@@ -142,9 +141,8 @@ BufferPool::BufferPool(s& sRegionName)
 /* create a new buffer pool                                                   */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
+: Header(CN_BUFFERPOOL)
 {
-  vClass(CN_BUFFERPOOL);
-  
   gpBufferPool   = this;
   m_iRegionSize    = iRegionSize;
   m_iBufferSize  = iBufferSize;
@@ -195,9 +193,8 @@ void BufferPool::operator delete(void* pRegion)
 /* initialise a new buffer pool                                               */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(void)
+: Header(CN_BUFFERPOOL)
 {
-  vClass(CN_BUFFERPOOL);
-  
   gpBufferPool   = this;
   m_iRegionSize    = gxArguments.m_iRegionSize;
   m_iBufferSize  = C_SIZE_LARGE_BUFFER;
