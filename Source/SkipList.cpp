@@ -1,13 +1,14 @@
 /*===========================================================================*/
-/* Skip.cpp -- a skip list                                                   */
+/* SkipList.cpp -- a skip list                                                   */
 /*===========================================================================*/
 
 #include "Structures.h"
 
 //---------------------------------------------------------------------------//
-// Skip: constructor                                                         //
+// SkipList: constructor                                                         //
 //---------------------------------------------------------------------------//
-Skip::Skip(bool bIsUniqueKey, compare fCompare)
+SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
+: Object(CN_SKIPLIST)
 {
   m_iObjects = 0;
   m_iHeight  = 0;
@@ -23,9 +24,9 @@ Skip::Skip(bool bIsUniqueKey, compare fCompare)
 }
 
 //---------------------------------------------------------------------------//
-// ~Skip: destructor                                                         //
+// ~SkipList: destructor                                                         //
 //---------------------------------------------------------------------------//
-Skip::~Skip()
+SkipList::~SkipList()
 {
   ASSERT( ! m_iObjects ); // logic check
 
@@ -39,7 +40,7 @@ Skip::~Skip()
 //---------------------------------------------------------------------------//
 // bExists: test if given object is in list                                  //
 //---------------------------------------------------------------------------//
-bool Skip::bExists(void* pObject)
+bool SkipList::bExists(void* pObject)
 {  
   bool bEqualTo;
   
@@ -55,7 +56,7 @@ bool Skip::bExists(void* pObject)
 //---------------------------------------------------------------------------//
 // bInsert: insert given object                                              //
 //---------------------------------------------------------------------------//
-bool Skip::bInsert(void* pObject)
+bool SkipList::bInsert(void* pObject)
 {
   bool bEqualTo;
   SkipNode* pRevise[MAX_LEVELS];
@@ -87,7 +88,7 @@ bool Skip::bInsert(void* pObject)
 //---------------------------------------------------------------------------//
 // iObjects: get numbr of objects in list                                    //
 //---------------------------------------------------------------------------//
-i8 Skip::iObjects()
+i8 SkipList::iObjects()
 {
   return m_iObjects;
 }
@@ -95,7 +96,7 @@ i8 Skip::iObjects()
 //---------------------------------------------------------------------------//
 // pPop: pop top/first object from list                                      //
 //---------------------------------------------------------------------------//
-void* Skip::pPop(bool* bWasRemoved, i8 iFrom)
+void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
 {
   SkipNode* pFirstNode = pFirst();
   if (!pFirstNode)
@@ -116,7 +117,7 @@ void* Skip::pPop(bool* bWasRemoved, i8 iFrom)
 //---------------------------------------------------------------------------//
 // bRemove: remove given object (do not run finalize function on object)     //
 //---------------------------------------------------------------------------//
-bool Skip::bRemove(void* pObject)
+bool SkipList::bRemove(void* pObject)
 {
   i4 l;
   bool bEqualTo;
@@ -127,7 +128,7 @@ bool Skip::bRemove(void* pObject)
   ASSERT(pNode); // logic check
   
   if ( ! bEqualTo ) {
-    vTrace("Skip::bRemove: failed to match");
+    vTrace("SkipList::bRemove: failed to match");
     return false;
   }
   
@@ -156,7 +157,7 @@ bool Skip::bRemove(void* pObject)
 //---------------------------------------------------------------------------//
 // find first object matching search                                         //
 //---------------------------------------------------------------------------//
-void* Skip::pFindFirst(void* pObject)
+void* SkipList::pFindFirst(void* pObject)
 {
   bool bEqualTo;
   
@@ -174,7 +175,7 @@ void* Skip::pFindFirst(void* pObject)
 //---------------------------------------------------------------------------//
 // pFirst: get first object matching search                                  //
 //---------------------------------------------------------------------------//
-//void* Skip::pFirst(void* pObject)
+//void* SkipList::pFirst(void* pObject)
 //{
 //  bool bEqualTo;
 //  
@@ -190,7 +191,7 @@ void* Skip::pFindFirst(void* pObject)
 //---------------------------------------------------------------------------//
 // pNext: get next object matching search                                    //
 //---------------------------------------------------------------------------//
-//void* Skip::pNext(void* pObject)
+//void* SkipList::pNext(void* pObject)
 //{
 //  return nullptr;
 //}
@@ -198,7 +199,7 @@ void* Skip::pFindFirst(void* pObject)
 //---------------------------------------------------------------------------//
 // vDump: dump the list                                                      //
 //---------------------------------------------------------------------------//
-void Skip::vDump(void (*fvDump)(void* pObject))
+void SkipList::vDump(void (*fvDump)(void* pObject))
 {
   for (SkipNode* pScan = m_pHead->m_pForward[0];
        pScan && pScan != m_pTail;
@@ -210,7 +211,7 @@ void Skip::vDump(void (*fvDump)(void* pObject))
 //---------------------------------------------------------------------------//
 // vCheck: check integrity of the list                                       //
 //---------------------------------------------------------------------------//
-void Skip::vCheck()
+void SkipList::vCheck()
 {
   for (SkipNode* pNode = m_pHead->m_pForward[0];
        pNode && pNode != m_pTail;
@@ -228,7 +229,7 @@ void Skip::vCheck()
 //---------------------------------------------------------------------------//
 // pEach: get each object                                                    //
 //---------------------------------------------------------------------------//
-void* Skip::pEach(SkipCursor* pCursor)
+void* SkipList::pEach(SkipCursor* pCursor)
 {
   if ( ! pCursor->m_pCurrentNode )
     pCursor->m_pCurrentNode = pFirst();
@@ -244,7 +245,7 @@ void* Skip::pEach(SkipCursor* pCursor)
 //---------------------------------------------------------------------------//
 // pFirst: get first node                                                    //
 //---------------------------------------------------------------------------//
-SkipNode* Skip::pFirst()
+SkipNode* SkipList::pFirst()
 {
   if (m_pHead->m_pForward[0] != m_pTail)
     return m_pHead->m_pForward[0];
@@ -255,7 +256,7 @@ SkipNode* Skip::pFirst()
 //---------------------------------------------------------------------------//
 // pNext: get next node                                                      //
 //---------------------------------------------------------------------------//
-SkipNode* Skip::pNext(SkipNode* pPrev)
+SkipNode* SkipList::pNext(SkipNode* pPrev)
 {
   if (pPrev->m_pForward[0] != m_pTail)
     return pPrev->m_pForward[0];
@@ -266,7 +267,7 @@ SkipNode* Skip::pNext(SkipNode* pPrev)
 //---------------------------------------------------------------------------//
 // pHead: get head bookend                                                   //
 //---------------------------------------------------------------------------//
-SkipNode* Skip::pHead()
+SkipNode* SkipList::pHead()
 {
   return m_pHead;
 }
@@ -274,7 +275,7 @@ SkipNode* Skip::pHead()
 //---------------------------------------------------------------------------//
 // pTail: get tail bookend                                                   //
 //---------------------------------------------------------------------------//
-SkipNode* Skip::pTail()
+SkipNode* SkipList::pTail()
 {
   return m_pTail;
 }
@@ -282,7 +283,7 @@ SkipNode* Skip::pTail()
 //---------------------------------------------------------------------------//
 // bDeleteAll: delete all objects                                            //
 //---------------------------------------------------------------------------//
-bool Skip::bDeleteAll(void)
+bool SkipList::bDeleteAll(void)
 {
 //  bool bWasRemoved;
 //  
@@ -313,7 +314,7 @@ bool Skip::bDeleteAll(void)
 //---------------------------------------------------------------------------//
 // iLevel: choose a random level for new node                                //
 //---------------------------------------------------------------------------//
-i4 Skip::iLevel()
+i4 SkipList::iLevel()
 {
   i4 iRandomBits = Random::iRandom(256*256-1);
   i4 _BitsInRandom = 16;
@@ -338,7 +339,7 @@ i4 Skip::iLevel()
 //---------------------------------------------------------------------------//
 // pPosition: position search on node just prior to lower bound              //
 //---------------------------------------------------------------------------//
-SkipNode* Skip::pPosition(void* pObject, bool* bEqualTo)
+SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
 {
   SkipNode* pNext = nullptr;
   
@@ -362,7 +363,7 @@ SkipNode* Skip::pPosition(void* pObject, bool* bEqualTo)
 //---------------------------------------------------------------------------//
 // pPosition: position search on node just prior to lower bound              //
 //---------------------------------------------------------------------------//
-SkipNode* Skip::pPosition(void* pObject, bool* bEqualTo, SkipNode** pRevise)
+SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo, SkipNode** pRevise)
 {
   SkipNode* pNext = nullptr;
   

@@ -7,10 +7,8 @@
 
 namespace Structures
 {
-  
-  class SkipNode : public mn
+  class SkipNode : public Object
   {
-
   public:
     i4        m_iForward;    // number of forward pointers in the node
     void*     m_pObject;     // ptr to object
@@ -20,7 +18,6 @@ namespace Structures
     SkipNode(void* pObject);
     SkipNode();
   };
-  
 }
 
 /*============================================================================*/

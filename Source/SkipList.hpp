@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  Skip.hpp - a list                                                         */
+/*  SkipList.hpp - a list                                                         */
 /*============================================================================*/
 #pragma once
 
@@ -7,10 +7,9 @@
 
 namespace Structures
 {
-  
   typedef bool (*compare)(void* pSearchEntry, void* pListEntry, bool *bMatch);
   
-  class Skip : public mn
+  class SkipList : public Object
   {
   protected:
     static const i4 MAX_LEVELS = 16;
@@ -26,8 +25,8 @@ namespace Structures
     
   public:
 
-    Skip(bool bIsUniqueKey, compare fCompare);
-   ~Skip();
+    SkipList(bool bIsUniqueKey, compare fCompare);
+   ~SkipList();
     
     bool  bExists (void* pObject);
     bool  bInsert (void* pObject);

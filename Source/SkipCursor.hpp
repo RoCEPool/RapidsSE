@@ -7,10 +7,9 @@
 
 namespace Structures
 {
-  
-  class SkipCursor : public mn
+  class SkipCursor : public Object
   {
-    friend class Skip;
+    friend class SkipList;
     
   private:
     SkipNode* m_pCurrentNode;

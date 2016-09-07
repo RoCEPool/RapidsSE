@@ -67,12 +67,12 @@ namespace Common
 //    static void   vGetFileList(FileList* pList, const char* sDirPath, bool bRecursive);
 //    static bool   bIsDir(const char* sDirPath);
 //    static bool   bIsReg(const char* sFilePath);
-//    static FileEnt* pFindFirst(Skip* pList, const char* sSuffix);
+//    static FileEnt* pFindFirst(SkipList* pList, const char* sSuffix);
 //    static void   vRemoveDir(const char* sDirPath, Canon& canon);
 //    static void   vRemoveRecursive(const char* sDirPath, Canon& canon);
 //    
-//    static void   vDumpDirList(Skip* pDirList, Canon& canon);
-//    static void   vDumpFileList(Skip* pFileList, Canon& canon);
+//    static void   vDumpDirList(SkipList* pDirList, Canon& canon);
+//    static void   vDumpFileList(SkipList* pFileList, Canon& canon);
   };
 
   Dir* _pDir(void* pAddr);

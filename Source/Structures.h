@@ -20,7 +20,7 @@
 
 #include "SkipNode.hpp"
 #include "SkipCursor.hpp"
-#include "Skip.hpp"
+#include "SkipList.hpp"
 
 #include "Stack.hpp"
 

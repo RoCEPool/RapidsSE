@@ -780,7 +780,7 @@ i8 Dir::iTell(void)
 ///*---------------------------------------------------------------------------*/
 ///* pFindFirst: find first file in list matching suffix                       */
 ///*---------------------------------------------------------------------------*/
-//FileEnt* Dir::pFindFirst(Skip* pFileList, const char* sSuffix)
+//FileEnt* Dir::pFindFirst(SkipList* pFileList, const char* sSuffix)
 //{
 //  bool bWasRemoved;
 //  
@@ -916,7 +916,7 @@ i8 Dir::iTell(void)
 ///*---------------------------------------------------------------------------*/
 ///* vDumpDirList: dump dir list                                               */
 ///*---------------------------------------------------------------------------*/
-//void Dir::vDumpDirList(Skip* pDirList, Canon& canon)
+//void Dir::vDumpDirList(SkipList* pDirList, Canon& canon)
 //{
 //  DirEntry* pDirEnt;
 //  
@@ -929,7 +929,7 @@ i8 Dir::iTell(void)
 ///*---------------------------------------------------------------------------*/
 ///* vDumpFileList: dump file list                                             */
 ///*---------------------------------------------------------------------------*/
-//void Dir::vDumpFileList(Skip* pFileList, Canon& canon)
+//void Dir::vDumpFileList(SkipList* pFileList, Canon& canon)
 //{
 //  FileEnt* pFileEnt;
 //  

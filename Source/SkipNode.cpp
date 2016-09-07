@@ -22,6 +22,7 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SkipNode::SkipNode(void* pObject)
+: Object(CN_SKIPNODE)
 {
   m_pObject = pObject;
 }
@@ -30,6 +31,7 @@ SkipNode::SkipNode(void* pObject)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SkipNode::SkipNode()
+: Object(CN_SKIPNODE)
 {
   
 }
