@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Magic.h"
 
-namespace Common
+namespace Magic
 {
   enum eEC // error code
   {
