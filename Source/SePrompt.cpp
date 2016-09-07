@@ -318,7 +318,7 @@ void SePrompt::vHelp(void)
   vTrace("add    -- add column to table\n");
   vTrace("adr    -- get address of table\n");
   vTrace("bye    -- quit seitf\n");
-  vTrace("cp     -- change directory\n");
+  vTrace("cd     -- change directory\n");
   vTrace("cld    -- change local dictionary\n");
   vTrace("con    -- connect\n");
   vTrace("cp     -- copy table\n");
@@ -347,6 +347,7 @@ void SePrompt::vHelp(void)
   vTrace("rmtbl  -- drop table\n");
   vTrace("rmten  -- drop tenant\n");
   vTrace("sel    -- select * from table\n");
+  vTrace("space  -- pool space\n");
   vTrace("sz     -- size of table\n");
   vTrace("tpch   -- tpch shorthand\n");
   vTrace("tr     -- truncate table\n");
