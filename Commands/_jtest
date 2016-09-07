@@ -4,19 +4,19 @@
 
 ping
 
-cd tenants
+cld tenants
 mkten boray
 
-cd boray
-cd catalogs
+cld boray
+cld catalogs
 mkcat borayCatalog
 
-cd borayCatalog
-cd schemas
+cld borayCatalog
+cld schemas
 mksch boraySchema
 
-cd boraySchema
-cd tables
+cld boraySchema
+cld tables
 
 mktbl j1000
 add j1000 j1000_key   "INTEGER NOT NULL"
@@ -42,7 +42,7 @@ ld j100 "../JTEST/j100.csv"
 print "loading j10.tbl..."
 ld j10 "../JTEST/j10.csv"
 
-pwd
+pld
 ls
 
 sel j10
