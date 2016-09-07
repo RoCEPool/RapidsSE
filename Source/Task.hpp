@@ -112,13 +112,11 @@ namespace Tasks
     bool  m_bTracing;
     
     // exception
+  public: // ugh!
     s256  m_sFile;
     s256  m_sException;
-    
-    // registers
-//    Table*   m_pTable;
-//    Index*   m_pIndex;
-    
+
+  private:
     Interface::SEitf* m_pSEitf;
     
     // test

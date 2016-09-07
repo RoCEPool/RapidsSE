@@ -4,6 +4,7 @@
 
 #include "Values.h"
 #include "Dictionaries.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -51,7 +52,7 @@ void* PtrVal::pPtr(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* as pointer to in memory pool object                                                              */
+/* as pointer to in memory pool object                                        */
 /*----------------------------------------------------------------------------*/
 Object* PtrVal::pObject(void) const
 {
@@ -81,7 +82,7 @@ void PtrVal::vFetch(ValWsp& xValWsp)
       break;
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
   }
 }
 
@@ -111,7 +112,7 @@ void PtrVal::vStore(ValWsp& xValWsp)
       break;
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
   }
 }
 
@@ -120,7 +121,7 @@ void PtrVal::vStore(ValWsp& xValWsp)
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToCommand(char* aWorkspace)
 {
-  ASSERT(0);
+  ASSERT("Should never be called");
 }
 
 /*----------------------------------------------------------------------------*/

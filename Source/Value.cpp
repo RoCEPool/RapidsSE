@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Values.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -194,7 +195,7 @@ i8 Value::iSize(void)
     }
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
       break;
   }
   
@@ -228,7 +229,7 @@ void Value::vToCommand(char* aWorkspace)
     }
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
       break;
   }
 }
@@ -267,7 +268,7 @@ void Value::vToString(char* aWorkspace)
     }
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
       break;
   }
 }

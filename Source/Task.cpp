@@ -1139,7 +1139,7 @@ Word* Task::pCompileColon(s& sDefinition)
           pNewWord->vEncode(pFoundWord->pCodeField());
         }
         else {
-          ASSERT(0);
+          THROW("Invalid eWordType %lld",pFoundWord->eWordType());
         }
         break;
         
@@ -1150,7 +1150,7 @@ Word* Task::pCompileColon(s& sDefinition)
       }
         
       default:
-        ASSERT(0);
+        THROW("Invalid m_eToken %lld",m_eToken);
     }
     
     vTokenNext();
@@ -2935,7 +2935,6 @@ void Task::vEncodeEmb(NNP_Task nnpTask)
   xPtrObject = nnpTask->m_pWord->pFirstCell();
   
   if (nnpTask->m_bCompiling) {
-    //ASSERT(0);
     Word* pCurrentWord = nnpTask->pCurrentWord();
     pCurrentWord->vEncode("push",&xPtrObject);
   }

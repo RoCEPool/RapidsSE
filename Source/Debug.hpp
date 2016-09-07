@@ -70,7 +70,7 @@ namespace Common
         _footer_();                        \
       }                                    \
       else {                               \
-        ASSERT(0);                         \
+        ASSERT("Should never be reached"); \
       }                                    \
     }                                      \
     else {                                 \

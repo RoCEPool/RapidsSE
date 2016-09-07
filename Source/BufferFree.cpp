@@ -14,7 +14,7 @@ BufferFree::BufferFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER);
   
-  ASSERT(0);
+  ASSERT("Should never be reached");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +24,7 @@ BufferFree::~BufferFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER);
   
-  ASSERT(0);
+  ASSERT("Should never be reached");
 }
 
 /*----------------------------------------------------------------------------*/
