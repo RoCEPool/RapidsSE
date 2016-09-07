@@ -13,6 +13,7 @@ namespace Pool
   private:
     bn m_nBufferNo;        // this buffer number
     bn m_nOverflowBuffer;  // logical overflow
+    // ..data..
     
   public:
     void* operator new(size_t);

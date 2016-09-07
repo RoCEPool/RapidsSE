@@ -15,6 +15,9 @@ namespace Pool
   private:
     bn m_nNextFree;  // next buffer in free chain
         
+    // must be last
+    Footer m_xFooter;
+    
   public:
     BufferFree(void);
     ~BufferFree(void);

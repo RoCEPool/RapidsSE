@@ -15,12 +15,12 @@ namespace Structures
     
   private:
     Value* m_pTop;    // current top of stack
-    i8       m_iValues; // number of values currently on stack
+    i8     m_iValues; // number of values currently on stack
 
     Value* m_pRetryTop;    // reset to this top of stack
-    i8       m_iRetryValues; // reset with this many values on stack
+    i8     m_iRetryValues; // reset with this many values on stack
     
-    char     m_mSpace[C_STACK_AREA];
+    char   m_mSpace[C_STACK_AREA];
     
     // must be last
     Footer m_xFooter;

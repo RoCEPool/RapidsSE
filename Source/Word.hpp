@@ -38,8 +38,7 @@ namespace Dictionaries
     Word*       m_pPrevWord;   // offset of previous word
     CodeField   m_xCode;       // function pointer
     BodyField   m_xBody;       // body pointer
-
-    // ..body..
+    // ..data..
     
    public:
     void* operator new(size_t, Dictionary* pDictionary);
