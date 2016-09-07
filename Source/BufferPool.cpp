@@ -521,26 +521,6 @@ BufferFree* BufferPool::pToBufferFree(Buffer* pBuffer) const
   return pPoolCheck<BufferFree*>(pBufferFree);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get first iteration                                                        */
-/*----------------------------------------------------------------------------*/
-BufferPoolIter BufferPool::begin(void) const
-{
-  _class_(CN_BUFFERPOOL);
-  
-  return BufferPoolIter(this,static_cast<BufferFree*>(m_pBase));
-}
-
-/*----------------------------------------------------------------------------*/
-/* get last iteration limit                                                   */
-/*----------------------------------------------------------------------------*/
-BufferPoolIter BufferPool::end(void) const
-{
-  _class_(CN_BUFFERPOOL);
-  
-  return BufferPoolIter(this,static_cast<BufferFree*>(m_pLimit));
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

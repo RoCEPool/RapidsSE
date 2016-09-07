@@ -10,7 +10,6 @@ using namespace Common;
 namespace Pool
 {
   class Buffer;
-  class BufferPoolIter;
 
   class BufferPool : public Header
   {
@@ -72,10 +71,7 @@ namespace Pool
     Buffer* pToBuffer(bn nBuffer) const;
     BufferFree* pToBufferFree(bn nBuffer) const;
     BufferFree* pToBufferFree(Buffer* pBuffer) const;
- 
-    BufferPoolIter begin(void) const;
-    BufferPoolIter end(void) const;
-  };
+   };
 }
 
 /*============================================================================*/

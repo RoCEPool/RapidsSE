@@ -14,7 +14,6 @@ static const u8 C_SIZE_SMALL_OBJECT  = C_1KB;
 #include "Buffer.hpp"
 #include "BufferFree.hpp"
 #include "BufferPool.hpp"
-#include "BufferPoolIter.hpp"
 #include "BufferPoolAnalyzer.hpp"
 
 #include "FreeChunk.hpp"
