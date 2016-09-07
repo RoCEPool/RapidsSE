@@ -56,20 +56,24 @@ namespace Tasks
       
     #define THROW1(p1) \
     { \
+      s256 sFile(__FILE__); \
+      s256 sException; \
+      String::vSprint(sException.a(),p1); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
-      String::vSprint(pTask->m_sException.a(),p1); \
-      pTask->m_sFile = __FILE__; \
+      pTask->vException(sFile,sException); \
       throw (i8)__LINE__; \
     }
       
     #define THROW2(p1, p2) \
     { \
+      s256 sFile(__FILE__); \
+      s256 sException; \
+      String::vSprint(sException.a(),p1,p2); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
-      String::vSprint(pTask->m_sException.a(),p1,p2); \
-      pTask->m_sFile = __FILE__; \
+      pTask->vException(sFile,sException); \
       throw (i8)__LINE__; \
     }
-      
+    
     // throw invalid parameter
     #define THROW_INVALID_PARAM(primitive) \
     { \
@@ -112,7 +116,6 @@ namespace Tasks
     bool  m_bTracing;
     
     // exception
-  public: // ugh!
     s256  m_sFile;
     s256  m_sException;
 
@@ -151,6 +154,7 @@ namespace Tasks
     Word* pCurrentWord(void);
     static void vDebug(void);
     void vDump(void);
+    void vException(s& sFile, s& eException);
     Word* pFindWord(s& sName);
     Word* pFindWord(const char* aName);
     bool  bForgetWord(s& sName);
