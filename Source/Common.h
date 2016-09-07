@@ -26,7 +26,6 @@
 #include "Env.hpp"
 #include "Shm.hpp"
 #include "Process.hpp"
-#include "Prompt.hpp"
 
 #include "Timer.hpp"
 #include "Since.hpp"
