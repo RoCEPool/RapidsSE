@@ -28,6 +28,8 @@ Timer::Timer(void)
 : Header(CN_TIMER)
 {
   vInit();
+  
+  Memory::vCheckInitialised(this,sizeof(Timer));
 }
 
 /*----------------------------------------------------------------------------*/

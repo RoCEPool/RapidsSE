@@ -65,6 +65,8 @@ Dictionary::Dictionary(void)
   
   // this is because of GlobalDictionary (ugh)
   //vInit();
+  
+  Memory::vCheckInitialised(this,sizeof(Dictionary));
 }
 
 /*----------------------------------------------------------------------------*/

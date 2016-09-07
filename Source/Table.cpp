@@ -49,6 +49,8 @@ Table::Table(void)
   //m_xDictionary
   //m_xRing
   //m_xPartitions
+  
+  Memory::vCheckInitialised(this,sizeof(Table));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,6 +11,8 @@ SkipCursor::SkipCursor(void)
 : Object(CN_SKIPCURSOR)
 {
   m_pCurrentNode = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(SkipCursor));
 }
 
 /*----------------------------------------------------------------------------*/

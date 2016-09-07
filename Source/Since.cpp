@@ -12,6 +12,8 @@ Since::Since(void)
 {
   m_iSeconds      = 0;
   m_iMicroseconds = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(Since));
 }
 
 /*----------------------------------------------------------------------------*/

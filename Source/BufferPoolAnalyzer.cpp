@@ -19,6 +19,8 @@ BufferPoolAnalyzer::BufferPoolAnalyzer(void)
 : Header(CN_BUFFERPOOLANALYZER)
 {
   _magic_();
+  
+  Memory::vCheckInitialised(this,sizeof(BufferPoolAnalyzer));
 }
 
 /*----------------------------------------------------------------------------*/

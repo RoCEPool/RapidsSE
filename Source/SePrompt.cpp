@@ -60,6 +60,8 @@ SePrompt::SePrompt(i8 iPartition)
   m_xTokeniser.vUseStdin();
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vNormal(true);
+  
+  Memory::vCheckInitialised(this,sizeof(SePrompt));
 }
 
 /*----------------------------------------------------------------------------*/

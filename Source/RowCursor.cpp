@@ -48,6 +48,8 @@ RowCursor::RowCursor(void)
   m_pRowStrand = nullptr;
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(RowCursor));
 }
 
 /*----------------------------------------------------------------------------*/

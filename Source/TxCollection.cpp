@@ -52,6 +52,8 @@ TxCollection::TxCollection(void)
   }
   
   gpTxCollection = this;
+  
+  Memory::vCheckInitialised(this,sizeof(TxCollection));
 }
 
 /*----------------------------------------------------------------------------*/

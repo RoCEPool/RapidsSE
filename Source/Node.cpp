@@ -39,6 +39,8 @@ Node::Node(void)
 : Object(CN_NODE)
 {
   m_iNodeNo = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(Node));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,6 +37,7 @@ Buffer::Buffer(eCN eClassNo)
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
   
+  Memory::vCheckInitialised(this,sizeof(Buffer));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -35,6 +35,8 @@ Index::Index(const char* pIndexName)
   m_sIndexName = pIndexName;
   
   _class_(CN_INDEX);
+  
+  Memory::vCheckInitialised(this,sizeof(Index));
 }
 
 /*----------------------------------------------------------------------------*/

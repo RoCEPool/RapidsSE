@@ -73,6 +73,8 @@ Collection_t<OBJECT>::Collection_t(void)
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   m_pFree  = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(Collection_t<OBJECT>));
 }
 
 /*----------------------------------------------------------------------------*/

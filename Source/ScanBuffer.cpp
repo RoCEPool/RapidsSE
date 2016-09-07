@@ -38,6 +38,8 @@ ScanBuffer::ScanBuffer(void)
   vReset();
   
   ASSERT(m_pEndData);
+  
+  Memory::vCheckInitialised(this,sizeof(ScanBuffer));
 }
 
 /*----------------------------------------------------------------------------*/

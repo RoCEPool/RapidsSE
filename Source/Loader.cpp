@@ -48,6 +48,8 @@ Loader::Loader(void)
   //m_xFile
   m_pRecord = nullptr;
   m_pScanBuffer = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(Loader));
 }
 
 /*----------------------------------------------------------------------------*/

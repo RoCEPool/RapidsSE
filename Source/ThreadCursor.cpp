@@ -44,6 +44,8 @@ ThreadCursor::ThreadCursor(List_t<Thread>* pList)
   ListCursor_t<Thread>(pList)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(ThreadCursor));
 }
 
 /*----------------------------------------------------------------------------*/

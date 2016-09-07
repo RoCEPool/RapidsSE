@@ -39,6 +39,8 @@ TxMap::TxMap(void)
   m_pTxArray  = new TxArray;
   
   gpTxMap = this;
+  
+  Memory::vCheckInitialised(this,sizeof(TxMap));
 }
 
 /*----------------------------------------------------------------------------*/

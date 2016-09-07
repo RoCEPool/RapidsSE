@@ -54,6 +54,8 @@ CollectionNode_t<OBJECT>::CollectionNode_t(void)
 {
   m_pNextNode = nullptr;
   m_pPrevNode = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(CollectionNode_t<OBJECT>));
 }
 
 /*---------------------------------------------------------------------------*/

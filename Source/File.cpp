@@ -69,6 +69,8 @@ File::File(void)
 : Header(CN_FILE)
 {
   vInit();
+  
+  Memory::vCheckInitialised(this,sizeof(File));
 }
 
 /*----------------------------------------------------------------------------*/

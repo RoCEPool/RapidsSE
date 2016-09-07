@@ -39,6 +39,8 @@ QueueBuffer::QueueBuffer(void)
   m_pTopValue = pFirstValue();
   m_pNextFree = m_pTopValue;
   m_iCount    = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(QueueBuffer));
 }
 
 /*----------------------------------------------------------------------------*/

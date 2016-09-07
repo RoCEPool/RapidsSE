@@ -190,7 +190,7 @@ void BufferPool::operator delete(void* pRegion)
 }
 
 /*----------------------------------------------------------------------------*/
-/* initialise a new buffer pool                                               */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(void)
 : Header(CN_BUFFERPOOL)
@@ -210,6 +210,8 @@ BufferPool::BufferPool(void)
   m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   
   vInitialise();
+  
+  Memory::vCheckInitialised(this,sizeof(BufferPool));
 }
 
 /*----------------------------------------------------------------------------*/

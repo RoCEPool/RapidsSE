@@ -38,6 +38,8 @@ ThreadList::ThreadList(void)
   ASSERT( ! gpThreadList );
   
   gpThreadList = this;
+  
+  Memory::vCheckInitialised(this,sizeof(ThreadList));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,6 +38,8 @@ FreeChunk::FreeChunk(void)
   
   //vExitFatal();
   
+  Memory::vCheckInitialised(this,sizeof(FreeChunk));
+  
   exit(EXIT_FAILURE);
 }
 

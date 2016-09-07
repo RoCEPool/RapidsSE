@@ -38,6 +38,8 @@ SEitfList::SEitfList(void)
   ASSERT( ! gpSEitfList );
   
   gpSEitfList = this;
+  
+  Memory::vCheckInitialised(this,sizeof(SEitfList));
 }
 
 /*----------------------------------------------------------------------------*/

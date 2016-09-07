@@ -37,6 +37,8 @@ Row::Row(void)
   m_iDataBytes = 0;
   
   _class_(CN_ROW);
+  
+  Memory::vCheckInitialised(this,sizeof(Row));
 }
 
 /*----------------------------------------------------------------------------*/

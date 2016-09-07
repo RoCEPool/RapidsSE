@@ -12,6 +12,8 @@ SysCall::SysCall(void)
 {
   m_eStatus  = eSysCall_NOTSET;
   m_iErrNo   = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(SysCall));
 }
 
 /*----------------------------------------------------------------------------*/

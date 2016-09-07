@@ -34,6 +34,8 @@ TxRef::TxRef(void)
 : Object(CN_TXREF)
 {
   m_pTx = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(TxRef));
 }
 
 /*----------------------------------------------------------------------------*/

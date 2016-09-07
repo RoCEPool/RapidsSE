@@ -34,6 +34,7 @@ SkipNode::SkipNode()
 : Object(CN_SKIPNODE)
 {
   
+  Memory::vCheckInitialised(this,sizeof(SkipNode));
 }
 
 /*===========================================================================*/

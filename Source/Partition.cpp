@@ -40,6 +40,8 @@ Partition::Partition(void)
   m_iRowStrands = 0;
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(Partition));
 }
 
 /*----------------------------------------------------------------------------*/

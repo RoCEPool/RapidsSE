@@ -27,6 +27,8 @@ Lock::Lock(void)
 : Header(CN_LOCK)
 {
   vInit();
+  
+  Memory::vCheckInitialised(this,sizeof(Lock));
 }
 
 //---------------------------------------------------------------------------//

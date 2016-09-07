@@ -42,6 +42,8 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_pLastBuffer  = nullptr;
   m_iFreeCount   = 0;
   m_pFreeHead    = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(Heap));
 }
 
 /*----------------------------------------------------------------------------*/

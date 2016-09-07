@@ -35,6 +35,8 @@ Grid::Grid(void)
   gpGrid = this;
   
   vInit();
+  
+  Memory::vCheckInitialised(this,sizeof(Grid));
 }
 
 /*----------------------------------------------------------------------------*/

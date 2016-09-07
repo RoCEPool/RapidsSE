@@ -23,6 +23,7 @@ void* Value::operator new(size_t iSize)
 Value::Value(eCN eClass)
 : Header(eClass)
 {
+  Memory::vCheckInitialised(this,sizeof(Value));
 }
 
 /*----------------------------------------------------------------------------*/

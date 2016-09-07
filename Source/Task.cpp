@@ -77,6 +77,8 @@ Task::Task(void)
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
+  
+  Memory::vCheckInitialised(this,sizeof(Task));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -94,6 +96,8 @@ Task::Task(NNP_Task nnpTask)
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
+  
+  Memory::vCheckInitialised(this,sizeof(Task));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,6 +117,8 @@ Task::Task(const char* aLambdaInput)
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
+  
+  Memory::vCheckInitialised(this,sizeof(Task));
 }
 
 /*----------------------------------------------------------------------------*/

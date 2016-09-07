@@ -32,11 +32,13 @@ void Socket::operator delete(void* pSocketAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Socket::Socket()
+Socket::Socket(void)
 : Object(CN_SOCKET)
 {
   m_iSocketId = -1;
   m_bBlocking = true;
+  
+  Memory::vCheckInitialised(this,sizeof(Socket));
 }
 
 /*----------------------------------------------------------------------------*/

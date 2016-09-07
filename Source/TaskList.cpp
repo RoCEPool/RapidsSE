@@ -42,6 +42,7 @@ void TaskList::operator delete(void* pTaskListAddress)
 TaskList::TaskList(void)
 : Object(CN_TASKLIST)
 {
+  Memory::vCheckInitialised(this,sizeof(TaskList));
 }
 
 /*----------------------------------------------------------------------------*/

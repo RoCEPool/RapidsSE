@@ -15,6 +15,8 @@ SeHistory::SeHistory(void)
   
   //m_xInputStream
   m_xTokeniser.vPush();
+  
+  Memory::vCheckInitialised(this,sizeof(SeHistory));
 }
 
 /*----------------------------------------------------------------------------*/

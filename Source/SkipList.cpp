@@ -21,6 +21,8 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
     m_pHead->m_pForward[l] = m_pTail;
   
   m_pTail->m_pForward[0] = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(SkipList));
 }
 
 //---------------------------------------------------------------------------//

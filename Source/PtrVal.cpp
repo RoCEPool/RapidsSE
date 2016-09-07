@@ -25,6 +25,8 @@ PtrVal::PtrVal(void)
 : Value(CN_PTRVAL)
 {
   m_pPtr = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(PtrVal));
 }
 
 /*----------------------------------------------------------------------------*/

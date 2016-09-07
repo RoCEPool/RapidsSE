@@ -67,6 +67,8 @@ List_t<OBJECT>::List_t(void)
   m_iCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(List_t<OBJECT>));
 }
 
 /*----------------------------------------------------------------------------*/

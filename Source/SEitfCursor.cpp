@@ -30,6 +30,8 @@ SEitfCursor::SEitfCursor(List_t<SEitf>* pList)
   ListCursor_t<SEitf>(pList)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(SEitfCursor));
 }
 
 /*----------------------------------------------------------------------------*/

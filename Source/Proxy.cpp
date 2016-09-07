@@ -34,6 +34,8 @@ void Proxy::operator delete(void* pBufferAddress)
 Proxy::Proxy(void)
 : Object(CN_PROXY)
 {
+  
+  Memory::vCheckInitialised(this,sizeof(Proxy));
 }
 
 /*----------------------------------------------------------------------------*/

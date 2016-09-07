@@ -44,6 +44,8 @@ NodeCursor::NodeCursor(List_t<Node>* pList)
   ListCursor_t<Node>(pList)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(NodeCursor));
 }
 
 /*----------------------------------------------------------------------------*/

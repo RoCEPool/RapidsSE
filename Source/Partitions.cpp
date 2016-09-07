@@ -38,6 +38,8 @@ void Partitions::operator delete(void* pBufferAddress)
 Partitions::Partitions(void)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(Partitions));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -37,6 +37,8 @@ Tx::Tx(void)
   m_iTxSlot = -1;
   m_iTxId   = -1;
   m_ePhase  = TP_NONE;
+  
+  Memory::vCheckInitialised(this,sizeof(Tx));
 }
 
 /*----------------------------------------------------------------------------*/

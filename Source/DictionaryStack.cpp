@@ -39,6 +39,8 @@ DictionaryStack::DictionaryStack(void)
 
   for (i8 i = 0; i < C_DICTIONARY_STACK; i++)
     m_pDictionary[i] = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(DictionaryStack));
 }
 
 /*----------------------------------------------------------------------------*/

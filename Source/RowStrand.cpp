@@ -43,6 +43,8 @@ RowStrand::RowStrand(void)
   pFooter()->vSetFooter();
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  
+  Memory::vCheckInitialised(this,sizeof(RowStrand));
 }
 
 /*----------------------------------------------------------------------------*/

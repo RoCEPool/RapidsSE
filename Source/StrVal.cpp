@@ -23,6 +23,8 @@ StrVal::StrVal(void)
 : Value(CN_STRVAL)
 {
   m_iChars = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(StrVal));
 }
 
 /*----------------------------------------------------------------------------*/

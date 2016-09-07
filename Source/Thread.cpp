@@ -48,6 +48,8 @@ Thread::Thread(void)
 
   Thread* pThread = this;
   gpThreadList->vAppend(pThread);
+  
+  Memory::vCheckInitialised(this,sizeof(Thread));
 }
 
 /*----------------------------------------------------------------------------*/

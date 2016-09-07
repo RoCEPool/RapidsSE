@@ -36,6 +36,8 @@ TxArray::TxArray(void)
 {
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
     m_pTx[iTx] = nullptr;
+
+  Memory::vCheckInitialised(this,sizeof(Tx));
 }
 
 /*----------------------------------------------------------------------------*/

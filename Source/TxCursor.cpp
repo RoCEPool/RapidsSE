@@ -42,6 +42,8 @@ TxCursor::TxCursor(Collection_t<Tx>* gpTxCollection)
   CollectionCursor_t<Tx>(gpTxCollection)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(TxCursor));
 }
 
 /*----------------------------------------------------------------------------*/

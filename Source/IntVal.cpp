@@ -23,6 +23,8 @@ IntVal::IntVal(void)
 : Value(CN_INTVAL)
 {
   m_iInt = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(IntVal));
 }
 
 /*----------------------------------------------------------------------------*/

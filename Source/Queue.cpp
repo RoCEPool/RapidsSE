@@ -44,7 +44,7 @@ Queue::Queue(void)
   
   vInitialize();
   
-  //Memory::vCheckInitialised(this,sizeof(Queue));
+  Memory::vCheckInitialised(this,sizeof(Queue));
 }
 
 /*----------------------------------------------------------------------------*/

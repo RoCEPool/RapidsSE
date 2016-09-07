@@ -39,6 +39,8 @@ TaskSet::TaskSet(void)
   m_iCount = 0;
   m_npHead = nullptr;
   m_npTail = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(TaskSet));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -51,6 +51,8 @@ Word::Word(void)
   _magic_();
   
   _class_(CN_WORD);
+  
+  Memory::vCheckInitialised(this,sizeof(Word));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -65,6 +67,8 @@ Word::Word(const char* sName)
   _class_(CN_WORD);
   
   vName(sName);
+  
+  Memory::vCheckInitialised(this,sizeof(Word));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +84,8 @@ Word::Word(eWT eWordType, pFUN pFunc)
   
   m_eWordType     = eWordType;
   m_xCode.m_pFunc = pFunc;
+  
+  Memory::vCheckInitialised(this,sizeof(Word));
 }
 
 /*----------------------------------------------------------------------------*/

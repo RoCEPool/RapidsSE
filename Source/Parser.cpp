@@ -49,6 +49,8 @@ Parser::Parser(void)
   m_sPrompt = "Parser> ";
   
   vResetParser();
+  
+  Memory::vCheckInitialised(this,sizeof(Parser));
 };
 
 /*----------------------------------------------------------------------------*/

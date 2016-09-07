@@ -45,6 +45,8 @@ CollectionCursor_t<OBJECT>::CollectionCursor_t(Collection_t<OBJECT>* pCollection
   m_pCollection = pCollection;
   m_pObject = nullptr;
   m_bHasLock = false;
+  
+  Memory::vCheckInitialised(this,sizeof(CollectionCursor_t<OBJECT>));
 }
 
 /*----------------------------------------------------------------------------*/

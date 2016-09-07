@@ -38,6 +38,8 @@ HeapBuffer::HeapBuffer(void)
   
   m_pNextBuffer = nullptr;
   m_pPrevBuffer = nullptr;
+  
+  Memory::vCheckInitialised(this,sizeof(HeapBuffer));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,6 +50,8 @@ SEitf::SEitf(i8 iPartition)
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
+  
+  Memory::vCheckInitialised(this,sizeof(SEitf));
 }
 
 /*----------------------------------------------------------------------------*/

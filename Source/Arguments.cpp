@@ -29,6 +29,8 @@ Arguments::Arguments(void)
 
   m_bBgTasks    = false;
   m_iPartition  = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(Arguments));
 }
 
 /*----------------------------------------------------------------------------*/

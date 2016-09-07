@@ -25,6 +25,8 @@ ValSet::ValSet(void)
   ASSERT(sizeof(ValSet) <= sizeof(ValWsp));
   
   m_iBytes = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(ValSet));
 }
 
 /*----------------------------------------------------------------------------*/

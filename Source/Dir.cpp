@@ -59,6 +59,8 @@ Dir::Dir(void)
   //m_xSysCall
   
   ASSERT(bIsClosed());
+  
+  Memory::vCheckInitialised(this,sizeof(Dir));
 };
 
 /*----------------------------------------------------------------------------*/

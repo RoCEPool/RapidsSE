@@ -34,6 +34,8 @@ void Ring::operator delete(void* pBufferAddress)
 Ring::Ring(void)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(Ring));
 }
 
 /*----------------------------------------------------------------------------*/

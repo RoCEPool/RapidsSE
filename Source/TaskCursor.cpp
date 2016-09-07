@@ -30,6 +30,8 @@ TaskCursor::TaskCursor(List_t<Task>* pList)
   ListCursor_t<Task>(pList)
 {
   _poolAddress_(this);
+  
+  Memory::vCheckInitialised(this,sizeof(TaskCursor));
 }
 
 /*----------------------------------------------------------------------------*/

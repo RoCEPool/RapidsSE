@@ -29,6 +29,8 @@ Time::Time(void)
   m_iMinute = 0;
   m_iSecond = 0;
   m_iMicro  = 0;
+  
+  Memory::vCheckInitialised(this,sizeof(Time));
 }
 
 /*----------------------------------------------------------------------------*/

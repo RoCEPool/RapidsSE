@@ -37,6 +37,8 @@ Tokeniser::Tokeniser(void)
   m_pParser = nullptr;
   m_bMalloc = false;
   m_bNormal = false;
+  
+  Memory::vCheckInitialised(this,sizeof(Tokeniser));
 }
 
 /*----------------------------------------------------------------------------*/
