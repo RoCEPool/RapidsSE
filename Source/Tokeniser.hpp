@@ -28,8 +28,7 @@ namespace Common
     /*  5 */ "ENUMS",
   };
   
-  class Tokenizer : public mn,
-                    public cn
+  class Tokeniser : public Object
   {
   private:
     Parser* m_pParser; // parser
@@ -41,8 +40,8 @@ namespace Common
     void* operator new(size_t);
     void  operator delete(void*);
     
-    Tokenizer(void);
-    ~Tokenizer(void);
+    Tokeniser(void);
+    ~Tokeniser(void);
     
     void vPush(void);
     bool bPop(void);

@@ -23,7 +23,7 @@ private:
   SeHistory m_xHistory;   // command history
   
   char*     m_pToken[C_TOKENS];
-  Tokenizer m_xTokenizer; // input stream parser
+  Tokeniser m_xTokeniser; // input stream tokeniser
 
   char      m_wTokenArea[C_TOKEN_AREA];
   

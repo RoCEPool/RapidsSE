@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Tokenizer.cpp -- Tokenizer : divide input stream into tokens               */
+/* Tokeniser.cpp -- Tokeniser : divide input stream into tokens               */
 /*============================================================================*/
 
 #include "Tasks.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Tokenizer::operator new(size_t)
+void* Tokeniser::operator new(size_t)
 {
-  vFatal("fatal: Tokenizer class cannot be new'd");
+  vFatal("fatal: Tokeniser class cannot be new'd");
   
   //vExitFatal();
   
@@ -19,9 +19,9 @@ void* Tokenizer::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::operator delete(void*)
+void Tokeniser::operator delete(void*)
 {
-  vFatal("fatal: Tokenizer class cannot be deleted");
+  vFatal("fatal: Tokeniser class cannot be deleted");
   
   //vExitFatal();
   
@@ -31,7 +31,8 @@ void Tokenizer::operator delete(void*)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Tokenizer::Tokenizer(void)
+Tokeniser::Tokeniser(void)
+: Object(CN_TOKENISER)
 {
   m_pParser = nullptr;
   m_bMalloc = false;
@@ -41,14 +42,14 @@ Tokenizer::Tokenizer(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Tokenizer::~Tokenizer(void)
+Tokeniser::~Tokeniser(void)
 {
 }
 
 /*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vPush(void)
+void Tokeniser::vPush(void)
 {
   if (m_pParser)
     m_pParser->vPush();
@@ -59,7 +60,7 @@ void Tokenizer::vPush(void)
 /*----------------------------------------------------------------------------*/
 /* pop a parser                                                               */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bPop(void)
+bool Tokeniser::bPop(void)
 {
   if (m_pParser) {
     if (0 == m_pParser->iDepth()) {
@@ -79,7 +80,7 @@ bool Tokenizer::bPop(void)
 /*----------------------------------------------------------------------------*/
 /* get depth of parser                                                        */
 /*----------------------------------------------------------------------------*/
-i8 Tokenizer::iDepth(void)
+i8 Tokeniser::iDepth(void)
 {
   i8 iParserDepth = 0;
   
@@ -92,7 +93,7 @@ i8 Tokenizer::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* set line mode                                                              */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vLineMode(bool bLineMode)
+void Tokeniser::vLineMode(bool bLineMode)
 {
   m_pParser->vLineMode(bLineMode);
 }
@@ -100,7 +101,7 @@ void Tokenizer::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 /* set malloc flag                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vMalloc(bool bMalloc)
+void Tokeniser::vMalloc(bool bMalloc)
 {
   m_bMalloc = bMalloc;
 }
@@ -108,7 +109,7 @@ void Tokenizer::vMalloc(bool bMalloc)
 /*----------------------------------------------------------------------------*/
 /* set normal token flag                                                      */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vNormal(bool bNormal)
+void Tokeniser::vNormal(bool bNormal)
 {
   m_bNormal = bNormal;
 }
@@ -116,7 +117,7 @@ void Tokenizer::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 /* set prompt                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vPrompt(s& sPrompt)
+void Tokeniser::vPrompt(s& sPrompt)
 {  
   m_pParser->vPrompt(sPrompt);
 }
@@ -124,7 +125,7 @@ void Tokenizer::vPrompt(s& sPrompt)
 /*----------------------------------------------------------------------------*/
 /* use file                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bUseFile(s& sPath)
+bool Tokeniser::bUseFile(s& sPath)
 {
   bool bOpened = m_pParser->bUseFile(sPath);
   
@@ -134,7 +135,7 @@ bool Tokenizer::bUseFile(s& sPath)
 /*----------------------------------------------------------------------------*/
 /* use stdin                                                                  */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vUseStdin(void)
+void Tokeniser::vUseStdin(void)
 {
   m_pParser->vUseStdin();
 }
@@ -142,7 +143,7 @@ void Tokenizer::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 /* use string                                                                 */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vUseString(s& sString)
+void Tokeniser::vUseString(s& sString)
 {
   m_pParser->vUseString(sString);
 }
@@ -150,7 +151,7 @@ void Tokenizer::vUseString(s& sString)
 /*----------------------------------------------------------------------------*/
 /* end use of source                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vUseEnd(void)
+void Tokeniser::vUseEnd(void)
 {
   m_pParser->vUseEnd();
 }
@@ -158,7 +159,7 @@ void Tokenizer::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* parse next token into given buffer                                         */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eNextToken(char* wToken)
+eTK Tokeniser::eNextToken(char* wToken)
 {
   eTK eToken;
   
@@ -173,7 +174,7 @@ eTK Tokenizer::eNextToken(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* reset token array                                                          */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vResetTokens(char* pToken[], i8 nTokens)
+void Tokeniser::vResetTokens(char* pToken[], i8 nTokens)
 {
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     *pToken[iToken] = '\0';
@@ -182,7 +183,7 @@ void Tokenizer::vResetTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* find token in token array                                                  */
 /*----------------------------------------------------------------------------*/
-i8 Tokenizer::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
+i8 Tokeniser::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
 {
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     if (String::bEqualTo(pLookFor,pToken[iToken],C_NO_CASE))
@@ -194,7 +195,7 @@ i8 Tokenizer::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* count tokens in token array                                                */
 /*----------------------------------------------------------------------------*/
-i8 Tokenizer::iCountTokens(char* pToken[], i8 nTokens)
+i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
 {
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     if (String::bEqualTo("",pToken[iToken]))
@@ -206,7 +207,7 @@ i8 Tokenizer::iCountTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* dump token array                                                           */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
+void Tokeniser::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
 {
   vTrace("%s",pTitle);
   
@@ -223,7 +224,7 @@ void Tokenizer::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get EOF?                                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bEOF(void)
+bool Tokeniser::bEOF(void)
 {
   bool bEOF = m_pParser->bEOF();
   
@@ -233,7 +234,7 @@ bool Tokenizer::bEOF(void)
 /*----------------------------------------------------------------------------*/
 /* get LineMode?                                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bLineMode(void)
+bool Tokeniser::bLineMode(void)
 {
   bool bLineMode = m_pParser->bLineMode();
   
@@ -243,7 +244,7 @@ bool Tokenizer::bLineMode(void)
 /*----------------------------------------------------------------------------*/
 /* get stdin?                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStdin(void)
+bool Tokeniser::bStdin(void)
 {
   bool bStdin = m_pParser->bStdin();
   
@@ -258,7 +259,7 @@ bool Tokenizer::bStdin(void)
 /*----------------------------------------------------------------------------*/
 /* parse next normal token into given buffer                                  */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eNextNormal(char* wToken)
+eTK Tokeniser::eNextNormal(char* wToken)
 {
   *wToken = '\0';
   
@@ -270,7 +271,7 @@ eTK Tokenizer::eNextNormal(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse next special token into given buffer                                 */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eNextSpecial(char* wToken)
+eTK Tokeniser::eNextSpecial(char* wToken)
 {
   *wToken = '\0';
 
@@ -287,7 +288,7 @@ eTK Tokenizer::eNextSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse normal                                                               */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseNormal(char* wToken)
+eTK Tokeniser::eParseNormal(char* wToken)
 {
   vGetNextStripped();
   
@@ -324,7 +325,7 @@ eTK Tokenizer::eParseNormal(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse normal integer literal                                               */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseNormalInteger(char* wToken)
+eTK Tokeniser::eParseNormalInteger(char* wToken)
 {
   i8 iNoDigits = 0;
   char *z = wToken;
@@ -366,7 +367,7 @@ eTK Tokenizer::eParseNormalInteger(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse normal name token                                                    */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseNormalName(char* wToken)
+eTK Tokeniser::eParseNormalName(char* wToken)
 {
   char *z = wToken;
   
@@ -390,7 +391,7 @@ eTK Tokenizer::eParseNormalName(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse other token                                                          */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseNormalOther(char* wToken)
+eTK Tokeniser::eParseNormalOther(char* wToken)
 {
   char *z = wToken;
   
@@ -408,7 +409,7 @@ eTK Tokenizer::eParseNormalOther(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse normal string literal                                                */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseNormalString(char* wToken)
+eTK Tokeniser::eParseNormalString(char* wToken)
 {
   char *z = wToken;
   
@@ -444,7 +445,7 @@ eTK Tokenizer::eParseNormalString(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse special                                                              */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseSpecial(char* wToken)
+eTK Tokeniser::eParseSpecial(char* wToken)
 {
   vGetNextStripped();
   
@@ -476,7 +477,7 @@ eTK Tokenizer::eParseSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse special integer                                                      */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseSpecialInteger(char* wToken)
+eTK Tokeniser::eParseSpecialInteger(char* wToken)
 {
   i8 iNoDigits = 0;
   char *z = wToken;
@@ -527,7 +528,7 @@ eTK Tokenizer::eParseSpecialInteger(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse special name                                                         */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseSpecialName(char* wToken)
+eTK Tokeniser::eParseSpecialName(char* wToken)
 {
   char *z = wToken;
   
@@ -551,7 +552,7 @@ eTK Tokenizer::eParseSpecialName(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* parse special string                                                       */
 /*----------------------------------------------------------------------------*/
-eTK Tokenizer::eParseSpecialString(char* wToken)
+eTK Tokeniser::eParseSpecialString(char* wToken)
 {
   char *z = wToken;
   
@@ -592,7 +593,7 @@ eTK Tokenizer::eParseSpecialString(char* wToken)
 /*----------------------------------------------------------------------------*/
 /* skip whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vSkipWhitespace(void)
+void Tokeniser::vSkipWhitespace(void)
 {
   while (bHaveWhitespace())
     vGetNextStripped();
@@ -601,7 +602,7 @@ void Tokenizer::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 /* have whitespace                                                            */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bHaveWhitespace(void)
+bool Tokeniser::bHaveWhitespace(void)
 {
   // do we have a current parsed character, which is a white char?
   if (m_cStrippedChar) {
@@ -628,7 +629,7 @@ bool Tokenizer::bHaveWhitespace(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal integer                                           */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartNormalInteger(void)
+bool Tokeniser::bStartNormalInteger(void)
 {
   if (String::bIsDigit(m_cStrippedChar))
     return true;
@@ -639,7 +640,7 @@ bool Tokenizer::bStartNormalInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal name                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartNormalName(void)
+bool Tokeniser::bStartNormalName(void)
 {
   if (String::bIsAlphaUnder(m_cStrippedChar))
     return true;
@@ -650,7 +651,7 @@ bool Tokenizer::bStartNormalName(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal other                                             */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartNormalOther(void)
+bool Tokeniser::bStartNormalOther(void)
 {
   if (! String::bIsAlphaDigitUnder(m_cStrippedChar))
     return true;
@@ -661,7 +662,7 @@ bool Tokenizer::bStartNormalOther(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of normal string                                            */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartNormalString(void)
+bool Tokeniser::bStartNormalString(void)
 {
   if ('"' == m_cStrippedChar)
     return true;
@@ -672,7 +673,7 @@ bool Tokenizer::bStartNormalString(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of normal string                                              */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bEndNormalString(void)
+bool Tokeniser::bEndNormalString(void)
 {
   if ('"' == m_cStrippedChar)
     return true;
@@ -683,7 +684,7 @@ bool Tokenizer::bEndNormalString(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of special integer                                          */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartSpecialInteger(void)
+bool Tokeniser::bStartSpecialInteger(void)
 {
   if (String::bIsDigit(m_cStrippedChar))
     return true;
@@ -694,7 +695,7 @@ bool Tokenizer::bStartSpecialInteger(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of special name                                             */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartSpecialName(void)
+bool Tokeniser::bStartSpecialName(void)
 {
   if (bStartSpecialInteger() || bStartSpecialString())
     return false;
@@ -705,7 +706,7 @@ bool Tokenizer::bStartSpecialName(void)
 /*----------------------------------------------------------------------------*/
 /* test for start of special string                                           */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bStartSpecialString(void)
+bool Tokeniser::bStartSpecialString(void)
 {
   if ('"' == m_cStrippedChar)
     return true;
@@ -716,7 +717,7 @@ bool Tokenizer::bStartSpecialString(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of special string                                             */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bEndSpecialString(void)
+bool Tokeniser::bEndSpecialString(void)
 {
   if ('"' == m_cStrippedChar)
     return true;
@@ -727,7 +728,7 @@ bool Tokenizer::bEndSpecialString(void)
 /*----------------------------------------------------------------------------*/
 /* test for a base-10 digit                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bIsDigit(void)
+bool Tokeniser::bIsDigit(void)
 {
   if (String::bIsDigit(m_cStrippedChar))
     return true;
@@ -738,7 +739,7 @@ bool Tokenizer::bIsDigit(void)
 /*----------------------------------------------------------------------------*/
 /* test for a base-16 digit                                                   */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bIsHex(void)
+bool Tokeniser::bIsHex(void)
 {
   if (String::bIsHex(m_cStrippedChar))
     return true;
@@ -749,7 +750,7 @@ bool Tokenizer::bIsHex(void)
 /*----------------------------------------------------------------------------*/
 /* test for an 'x' or 'X'                                                     */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bIsX(void)
+bool Tokeniser::bIsX(void)
 {
   if ('x' == m_cStrippedChar || 'X' == m_cStrippedChar)
     return true;
@@ -760,7 +761,7 @@ bool Tokenizer::bIsX(void)
 /*----------------------------------------------------------------------------*/
 /* test for a white character                                                 */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bIsWhite(void)
+bool Tokeniser::bIsWhite(void)
 {
   if (String::bIsWhite(m_cStrippedChar))
     return true;
@@ -771,7 +772,7 @@ bool Tokenizer::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vGetNextStripped(void)
+void Tokeniser::vGetNextStripped(void)
 {
   m_cStrippedChar = m_pParser->cGet();
 }
@@ -779,7 +780,7 @@ void Tokenizer::vGetNextStripped(void)
 /*----------------------------------------------------------------------------*/
 /* unget current input character                                              */
 /*----------------------------------------------------------------------------*/
-void Tokenizer::vUngetStrippedChar(void)
+void Tokeniser::vUngetStrippedChar(void)
 {
   m_pParser->vUnget(m_cStrippedChar);
 }
@@ -787,7 +788,7 @@ void Tokenizer::vUngetStrippedChar(void)
 /*----------------------------------------------------------------------------*/
 /* test for end of input                                                      */
 /*----------------------------------------------------------------------------*/
-bool Tokenizer::bEndInput(void)
+bool Tokeniser::bEndInput(void)
 {
   if ('\0' == m_cStrippedChar)
     return true;

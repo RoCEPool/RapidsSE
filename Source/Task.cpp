@@ -164,8 +164,8 @@ void Task::vInit(const char* aLambda)
   
   m_sToken     = "";
   m_eToken     = TK_NONE;
-  m_xTokenizer.vPush();
-  m_xTokenizer.vUseString(m_sLambda);
+  m_xTokeniser.vPush();
+  m_xTokeniser.vUseString(m_sLambda);
   
   m_pSEitf   = nullptr;
 }
@@ -1097,7 +1097,7 @@ Word* Task::pCompileColon(s& sDefinition)
   Word* pFoundWord;
   ValWsp xValWsp;
   
-  m_xTokenizer.vUseString(sDefinition);
+  m_xTokeniser.vUseString(sDefinition);
   
   // get :
   vTokenNext();
@@ -1160,7 +1160,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
-  m_xTokenizer.vUseEnd();
+  m_xTokeniser.vUseEnd();
   
   return pNewWord;
 }
@@ -1508,7 +1508,7 @@ void Task::vSeedDicCompileSen(void)
   
   m_sLambda = "";
   
-  m_xTokenizer.vUseString(m_sLambda);
+  m_xTokeniser.vUseString(m_sLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1529,7 +1529,7 @@ void Task::vSeedWord(const char* aLambda)
   if (m_sLambda.iLength())
     String::vConcat(m_sLambda.a()," ::exit");
   
-  m_xTokenizer.vUseString(m_sLambda);
+  m_xTokeniser.vUseString(m_sLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1549,10 +1549,10 @@ void Task::vSeedDocol(void)
   m_sLambda = "";
   
   s32 sPrompt("docol> ");
-  m_xTokenizer.vPrompt(sPrompt);
+  m_xTokeniser.vPrompt(sPrompt);
  
-  m_xTokenizer.vUseString(m_sLambda);
-  m_xTokenizer.vLineMode(false);
+  m_xTokeniser.vUseString(m_sLambda);
+  m_xTokeniser.vLineMode(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1698,7 +1698,7 @@ void Task::vState(eTS eState)
 /*----------------------------------------------------------------------------*/
 void Task::vTokenNext(void)
 {
-  m_eToken = m_xTokenizer.eNextToken(m_sToken.a());
+  m_eToken = m_xTokeniser.eNextToken(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1730,7 +1730,7 @@ void Task::vUndirect(void)
   
   bool bPopped;
   
-  bPopped = m_xTokenizer.bPop();
+  bPopped = m_xTokeniser.bPop();
   ASSERT(bPopped);
 }
 
@@ -5943,7 +5943,7 @@ void Task::vInputClose(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputClose");
   
-  nnpTask->m_xTokenizer.vUseEnd();
+  nnpTask->m_xTokeniser.vUseEnd();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5953,7 +5953,7 @@ void Task::vInputDepth(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputDepth");
   
-  i8 iDepth = nnpTask->m_xTokenizer.iDepth();
+  i8 iDepth = nnpTask->m_xTokeniser.iDepth();
   
   nnpTask->vPushParam(iDepth);
 }
@@ -5970,7 +5970,7 @@ void Task::vInputNext(NNP_Task nnpTask)
   
   char* aToken = nnpTask->m_sToken.a();
   
-  nnpTask->m_eToken = nnpTask->m_xTokenizer.eNextToken(aToken);
+  nnpTask->m_eToken = nnpTask->m_xTokeniser.eNextToken(aToken);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5985,7 +5985,7 @@ void Task::vInputOpen(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sFilePath) )
     THROW_INVALID_PARAM("input.open");
   
-  bool bOpened = nnpTask->m_xTokenizer.bUseFile(sFilePath);
+  bool bOpened = nnpTask->m_xTokeniser.bUseFile(sFilePath);
   
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
@@ -5998,7 +5998,7 @@ void Task::vInputPop(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPop");
   
-  bool bPopped = nnpTask->m_xTokenizer.bPop();
+  bool bPopped = nnpTask->m_xTokeniser.bPop();
   ASSERT(bPopped);
 }
 
@@ -6009,7 +6009,7 @@ void Task::vInputPush(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputPush");
   
-  nnpTask->m_xTokenizer.vPush();
+  nnpTask->m_xTokeniser.vPush();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6019,7 +6019,7 @@ void Task::vInputStdin(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vInputStdin");
   
-  nnpTask->m_xTokenizer.vUseStdin();
+  nnpTask->m_xTokeniser.vUseStdin();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6034,7 +6034,7 @@ void Task::vInputText(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(sInput) )
     THROW_INVALID_PARAM("input.text");
     
-  nnpTask->m_xTokenizer.vUseString(sInput);
+  nnpTask->m_xTokeniser.vUseString(sInput);
 }
 
 /*----------------------------------------------------------------------------*/

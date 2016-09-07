@@ -14,7 +14,7 @@ SeHistory::SeHistory(void)
   m_iCommands = 0;
   
   //m_xInputStream
-  m_xTokenizer.vPush();
+  m_xTokeniser.vPush();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,12 +127,12 @@ bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
       vSeekEnd();
       sCommand = wCommand;
       
-      m_xTokenizer.vUseString(sCommand);
+      m_xTokeniser.vUseString(sCommand);
       
-      m_xTokenizer.vResetTokens(pToken,nTokens);
+      m_xTokeniser.vResetTokens(pToken,nTokens);
       
       i8 i = 0;
-      while (TK_NONE != m_xTokenizer.eNextToken(pToken[i])) {
+      while (TK_NONE != m_xTokeniser.eNextToken(pToken[i])) {
         //vTrace("Word [%lld] %s\n",i,pWords[i]);
         i++;
       }
@@ -143,7 +143,7 @@ bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
   
   vSeekEnd();
   
-  m_xTokenizer.vUseEnd();
+  m_xTokeniser.vUseEnd();
   
   return false;
 }

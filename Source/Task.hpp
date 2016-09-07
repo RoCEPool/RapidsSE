@@ -90,7 +90,7 @@ namespace Tasks
     Stack  m_xReturnStack;  // return stack
 
     s256      m_sLambda;    // lambda input
-    Tokenizer m_xTokenizer; // input stream tokenizer
+    Tokeniser m_xTokeniser; // input stream tokenizer
     s256      m_sToken;     // current token
     eTK       m_eToken;     // token type
     

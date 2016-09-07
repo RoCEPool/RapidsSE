@@ -70,14 +70,15 @@ namespace Magic
     /* 52 */ CN_THREADCURSOR,
     /* 53 */ CN_THREADLIST,
     /* 54 */ CN_TIMER,
-    /* 55 */ CN_TX,
-    /* 56 */ CN_TXARRAY,
-    /* 57 */ CN_TXCOLLECTION,
-    /* 58 */ CN_TXCURSOR,
-    /* 59 */ CN_TXMAP,
-    /* 60 */ CN_TXREF,
-    /* 61 */ CN_WORD,
-    /* 62 */ CN_ENUMS
+    /* 55 */ CN_TOKENISER,
+    /* 56 */ CN_TX,
+    /* 57 */ CN_TXARRAY,
+    /* 58 */ CN_TXCOLLECTION,
+    /* 59 */ CN_TXCURSOR,
+    /* 60 */ CN_TXMAP,
+    /* 61 */ CN_TXREF,
+    /* 62 */ CN_WORD,
+    /* 63 */ CN_ENUMS
   };
   
   static const char *pCN[]
@@ -139,14 +140,15 @@ namespace Magic
     /* 52 */ "THREADCURSOR",
     /* 53 */ "THREADLIST",
     /* 54 */ "TIMER",
-    /* 55 */ "TX",
-    /* 56 */ "TXARRAY",
-    /* 57 */ "TXCOLLECTION",
-    /* 58 */ "TXCURSOR",
-    /* 59 */ "TXMAP",
-    /* 60 */ "TXREF",
-    /* 61 */ "WORD",
-    /* 62 */ "ENUMS"
+    /* 55 */ "TOKENISER",
+    /* 56 */ "TX",
+    /* 57 */ "TXARRAY",
+    /* 58 */ "TXCOLLECTION",
+    /* 59 */ "TXCURSOR",
+    /* 60 */ "TXMAP",
+    /* 61 */ "TXREF",
+    /* 62 */ "WORD",
+    /* 63 */ "ENUMS"
   };
   
   class cn

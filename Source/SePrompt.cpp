@@ -50,12 +50,12 @@ SePrompt::SePrompt(i8 iPartition)
   //m_wWorkarea
   
   //----
-  m_xTokenizer.vMalloc(true);
-  m_xTokenizer.vPush();
-  m_xTokenizer.vPrompt(m_sPrompt);
-  m_xTokenizer.vUseStdin();
-  m_xTokenizer.vLineMode(true);
-  m_xTokenizer.vNormal(true);
+  m_xTokeniser.vMalloc(true);
+  m_xTokeniser.vPush();
+  m_xTokeniser.vPrompt(m_sPrompt);
+  m_xTokeniser.vUseStdin();
+  m_xTokeniser.vLineMode(true);
+  m_xTokeniser.vNormal(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,10 +98,10 @@ void SePrompt::vGetCommand(void)
 {
   while (true) {
     
-    m_xTokenizer.vResetTokens(m_pToken,C_TOKENS);
+    m_xTokeniser.vResetTokens(m_pToken,C_TOKENS);
     
     i8 iToken = 0;
-    while (TK_NONE != m_xTokenizer.eNextToken(m_pToken[iToken])) {
+    while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
       
 //      vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
       
@@ -110,8 +110,8 @@ void SePrompt::vGetCommand(void)
     }
     
     // end of file? if so, pop and retry
-    if (! iToken && m_xTokenizer.bEOF()) {
-      bool b = m_xTokenizer.bPop();
+    if (! iToken && m_xTokeniser.bEOF()) {
+      bool b = m_xTokeniser.bPop();
       ASSERT(b);
       continue;
     }
@@ -168,7 +168,7 @@ void SePrompt::vProcessCommand(void)
   
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
-    m_xTokenizer.vLineMode(true);
+    m_xTokeniser.vLineMode(true);
     return;
   }
   
@@ -279,9 +279,9 @@ void SePrompt::vPushFile(char* pPath)
 {
   s256 sPath(pPath);
   
-  m_xTokenizer.vPush();
+  m_xTokeniser.vPush();
   
-  bool b = m_xTokenizer.bUseFile(sPath);
+  bool b = m_xTokeniser.bUseFile(sPath);
   ASSERT(b);
 }
 
@@ -458,19 +458,19 @@ void SePrompt::vCreateTable2(void)
   ASSERT(String::bEqualTo(m_pToken[0],"create2"));
 //  ASSERT(String::bEqualTo(m_pToken[1],""));
   
-  i8 iToken = m_xTokenizer.iFindToken(";",m_pToken,C_TOKENS);
+  i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
   
   if (-1 == iToken) {
 
-    iToken = m_xTokenizer.iCountTokens(m_pToken,C_TOKENS);
+    iToken = m_xTokeniser.iCountTokens(m_pToken,C_TOKENS);
   
     // switch to terminal mode
-    m_xTokenizer.vLineMode(false);
+    m_xTokeniser.vLineMode(false);
   
     // get tokens delimited by ';'
     for ( ; iToken < C_TOKENS; iToken++) {
       
-      eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
+      eTK eToken = m_xTokeniser.eNextToken(m_pToken[iToken]);
       ASSERT(TK_NONE != eToken);
       
   //    vTrace("CreateTable2: %12s %s\n",
@@ -482,7 +482,7 @@ void SePrompt::vCreateTable2(void)
     }
 
     // switch back to line mode
-    m_xTokenizer.vLineMode(true);
+    m_xTokeniser.vLineMode(true);
   }
   
   vTrace("CreateTable2 : ");
@@ -503,25 +503,25 @@ void SePrompt::vCollectStatement(void)
   ASSERT(! String::bEqualTo(m_pToken[0],""));
 
   // have we already seen the ';'
-  i8 iToken = m_xTokenizer.iFindToken(";",m_pToken,C_TOKENS);
+  i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
   
   if (iToken >= 0) {
-    m_xTokenizer.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+    m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
     return;
   }
   
-  iToken = m_xTokenizer.iCountTokens(m_pToken,C_TOKENS);
+  iToken = m_xTokeniser.iCountTokens(m_pToken,C_TOKENS);
   
   // switch to terminal mode
-  m_xTokenizer.vLineMode(false);
+  m_xTokeniser.vLineMode(false);
   
   s32 sContinuation("  > ");
-  m_xTokenizer.vPrompt(sContinuation);
+  m_xTokeniser.vPrompt(sContinuation);
   
   // get tokens delimited by ';'
   for ( ; iToken < C_TOKENS; iToken++) {
     
-    eTK eToken = m_xTokenizer.eNextToken(m_pToken[iToken]);
+    eTK eToken = m_xTokeniser.eNextToken(m_pToken[iToken]);
     ASSERT(TK_NONE != eToken);
     
     //    vTrace("CreateTable2: %12s %s\n",
@@ -533,10 +533,10 @@ void SePrompt::vCollectStatement(void)
   }
   
   // switch back to line mode
-  m_xTokenizer.vLineMode(true);
-  m_xTokenizer.vPrompt(m_sPrompt);
+  m_xTokeniser.vLineMode(true);
+  m_xTokeniser.vPrompt(m_sPrompt);
   
-  m_xTokenizer.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+  m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

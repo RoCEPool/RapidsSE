@@ -11,7 +11,7 @@ class SeHistory : public Object
 private:
   File  m_xFile;          // history file
   i8    m_iCommands;      // number of commands in history
-  Tokenizer m_xTokenizer; // tokenizer while reading file
+  Tokeniser m_xTokeniser; // tokenizer while reading file
   
 public:
   SeHistory(void);
