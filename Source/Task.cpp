@@ -5246,6 +5246,9 @@ void Task::vDicInit(NNP_Task nnpTask)
   
   Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
 
+  new (pDictionary) Dictionary;
+  
+  // this is because of GlobalDictionary (ugh)
   pDictionary->vInit();
 }
 
@@ -5782,7 +5785,7 @@ void Task::vFileInit(NNP_Task nnpTask)
   
   File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
   
-  pFile->vInit();
+  new (pFile) File;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5953,8 +5956,6 @@ void Task::vGridInit(NNP_Task nnpTask)
   ASSERT(CN_GRID == pGrid->eClass());
   
   new(pGrid) Grid;
-
-  pGrid->vInit();
 }
 
 // input: //////////////////////////////////////////////////////////////////////
@@ -6416,10 +6417,11 @@ void Task::vLockInit(NNP_Task nnpTask)
     THROW_INVALID_PARAM("lock.init");
   
   Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  
+  new(pLock) Lock;
+  
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
-  
-  pLock->vInit();
 }
 
 // memory: /////////////////////////////////////////////////////////////////////
@@ -6479,7 +6481,7 @@ void Task::vNodeInit(NNP_Task nnpTask)
   Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
   ASSERT(CN_NODE == pNode->eClass());
   
-  pNode->vInit();
+  new(pNode) Node;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6494,9 +6496,11 @@ void Task::vNodeNew(NNP_Task nnpTask)
   if ( ! nnpTask->bPopParam(iNodeNo) )
     THROW_INVALID_PARAM("node.new");
   
-  Node* pNode = new Node(iNodeNo);
+  Node* pNode = new Node;
   ASSERT(CN_NODE == pNode->eClass());
 
+  pNode->vNodeNo(iNodeNo);
+  
   PtrVal xNodePtr;
   xNodePtr = pNode;
   
@@ -6808,7 +6812,7 @@ void Task::vQueueInit(NNP_Task nnpTask)
   
   Queue* pQueue = static_cast<Queue*>(pObject);
   
-  pQueue->vInitialize();
+  new(pQueue) Queue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7781,8 +7785,6 @@ void Task::vTaskInit(NNP_Task nnpTask)
   
   Task* pThatTask = reinterpret_cast<Task*>(xPtrVal.pPtr());
   ASSERT(CN_TASK == pThatTask->eClass());
-  
-  //  pThatTask->vInit("");
   
   new(pThatTask) Task;
 }

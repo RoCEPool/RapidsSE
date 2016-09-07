@@ -62,6 +62,9 @@ Dictionary::Dictionary(void)
   m_sName  = "<main>";
   m_bFrozen = false;
   m_pCurrentWord = nullptr;
+  
+  // this is because of GlobalDictionary (ugh)
+  //vInit();
 }
 
 /*----------------------------------------------------------------------------*/

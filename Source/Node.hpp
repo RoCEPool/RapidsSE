@@ -22,13 +22,14 @@ namespace GridModel
     void* operator new(size_t, Node* pNode);
     void  operator delete(void*);
     
-    Node(i8 iNodeNo);
+    Node(void);
     ~Node(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     void vInit(void);
     i8   iNodeNo(void);
+    void vNodeNo(i8 iNodeNo);
   };
 }
 
