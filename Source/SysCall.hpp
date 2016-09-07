@@ -23,7 +23,7 @@ namespace Common
     /* 1  */ "SUCCESS"
   };
 
-  class SysCall : public mn
+  class SysCall : public Header
   {
   public:
     cn       m_nClassNo; // class number

@@ -8,14 +8,8 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SysCall::SysCall(void)
+: Header(CN_SYSCALL)
 {
-  //_magic_();
-  i8 iMag = iMagic();
-  i8 iMAG = MAGIC;
-  if (iMag != iMAG)
-    throw __LINE__;
-  
-  m_nClassNo = CN_SYSCALL;
   m_eStatus  = eSysCall_NOTSET;
   m_iErrNo   = 0;
 }
