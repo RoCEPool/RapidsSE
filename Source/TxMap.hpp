@@ -16,6 +16,9 @@ namespace Transactions
     i8       m_iId;        // id generated
     TxArray* m_pTxArray;   // the mapping array
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t, TxMap* pTxMap);
     void  operator delete(void*);

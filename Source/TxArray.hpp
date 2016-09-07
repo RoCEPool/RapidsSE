@@ -18,6 +18,9 @@ namespace Transactions
     
     Tx* m_pTx[C_TX_ARRAY];
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

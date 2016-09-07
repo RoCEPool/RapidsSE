@@ -13,6 +13,9 @@ namespace Transactions
   {
   private:
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t, TxCollection* pTxCollection);
     void  operator delete(void*);

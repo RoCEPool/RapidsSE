@@ -45,6 +45,9 @@ namespace Transactions
     i8    m_iTxId;    // transaction id
     eTP   m_ePhase;   // phase (executing, committing, ...)
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
