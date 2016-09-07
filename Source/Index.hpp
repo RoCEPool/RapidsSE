@@ -27,6 +27,9 @@ namespace DBobjects
     s32   m_sIndexName;
     eIT   m_eIndexType;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

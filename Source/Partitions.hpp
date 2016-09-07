@@ -15,6 +15,9 @@ namespace DBobjects
   private:
     Partition m_xPartition[C_TABLE_PARTITIONS];
     
+    // must be last
+    Footer m_xFooter;
+
   public:
     void* operator new(size_t);
     void  operator delete(void*);

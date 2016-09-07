@@ -17,6 +17,9 @@ namespace DBobjects
     i8    m_iIndexColumnNo;
     i8    m_iColumnNo;
     i8    m_nIndexColumnMgr;
+    
+    // must be last
+    Footer m_xFooter;
   };
 }
 

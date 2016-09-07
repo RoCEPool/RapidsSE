@@ -21,7 +21,6 @@ namespace DBobjects
     RowStrand* m_pPrevStrand; // prev strand
     RowStrand* m_pNextStrand; // next strand
     
-
     // must be last
     Footer m_xFooter;
     

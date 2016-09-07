@@ -19,6 +19,9 @@ namespace DBobjects
     RowBuffer* m_pRowBuffer;
     Row*       m_pRow;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* pRowCursorAddress);

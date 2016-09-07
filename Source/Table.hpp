@@ -30,6 +30,9 @@ namespace DBobjects
     Ring       m_xRing;
     Partitions m_xPartitions;
         
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, Table* pTable);

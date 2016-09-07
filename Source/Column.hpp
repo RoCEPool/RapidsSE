@@ -31,6 +31,9 @@ namespace DBobjects
     eCT   m_eColumnType;
     bool  m_bIsNullable;
     i8    m_nColumnMgr;
+    
+    // must be last
+    Footer m_xFooter;
   };
 
 }
