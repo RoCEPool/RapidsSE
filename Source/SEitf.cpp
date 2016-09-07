@@ -145,6 +145,13 @@ void SEitf::vInit(void)
   // dictionary stack
   m_xDicStack.vPush(gpDictionary);
   m_xDicStack.vPush(&m_xDictionary);
+  
+  // find tenants
+  Word* pTenants = gpDictionary->pFind("tenants");
+  ASSERT(pTenants);
+  
+  Cell* pCell = pTenants->pFirstCell();
+  m_xDicStack.vPush(reinterpret_cast<Dictionary*>(pCell));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,6 +249,21 @@ bool SEitf::bDecode(char* pWords[])
   
   if (String::bEqualTo("ex",pWords[0],C_NO_CASE)) {
     bExportTable(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("getFreeSpace",pWords[0],C_NO_CASE)) {
+    bGetFreeSpace(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("getInUseSpace",pWords[0],C_NO_CASE)) {
+    bGetInUseSpace(pWords);
+    return true;
+  }
+  
+  if (String::bEqualTo("getTotalSpace",pWords[0],C_NO_CASE)) {
+    bGetTotalSpace(pWords);
     return true;
   }
   
@@ -911,6 +933,46 @@ bool SEitf::bGetMonitor(char* pWords[])
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get free space                                                             */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetFreeSpace(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "getFreeSpace";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get inUse space                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetInUseSpace(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "getInUseSpace";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total space                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetTotalSpace(char* pWords[])
+{
+  s256 sRequest;
+  
+  sRequest = "getTotalSpace";
+  vAppendRequest(sRequest);
+  
+  return true;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */

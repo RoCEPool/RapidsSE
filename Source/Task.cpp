@@ -513,6 +513,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("if",              &vIf,               true );
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("interpreting",    &vInterpreting,     false);
+  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
   vAddPrimitive("isImmediate",     &vIsImmediate,      false);
@@ -570,6 +571,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("test",            &vTest,             false);
   vAddPrimitive("then",            &vThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
+  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive(">body",           &vToBody,           false);
   vAddPrimitive(">cmd",            &vToCmd,            false);
@@ -3380,6 +3382,18 @@ void Task::vIsPrimitive(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inUseSpace -- push in-use space in buffer pool onto stack                  */
+/*----------------------------------------------------------------------------*/
+void Task::vInUseSpace(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vInUseSpace");
+  
+  i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
+  
+  nnpTask->vPushParam(iInUseSpace);
+}
+
+/*----------------------------------------------------------------------------*/
 /* iterate -- compile time of iterate ... next                      immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vIterate(NNP_Task nnpTask)
@@ -4660,6 +4674,18 @@ void Task::vToStr(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* TotalSpace -- push total space in buffer pool onto stack                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTotalSpace(NNP_Task nnpTask)
+{
+  nnpTask->vPrimitive("vTotalSpace");
+  
+  i8 iTotalSpace = gpBufferPool->iRegionSize();
+  
+  nnpTask->vPushParam(iTotalSpace);
+}
+
+/*----------------------------------------------------------------------------*/
 /* >task -- convert int to task ptr                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vToTask(NNP_Task nnpTask)
@@ -5271,11 +5297,11 @@ void Task::vDicMain(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicName(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicNain");
+  nnpTask->vPrimitive("vDicName");
  
   PtrVal xDicPtr;
   if ( ! nnpTask->bPopParam(xDicPtr) )
-    THROW_INVALID_PARAM("dic.push");
+    THROW_INVALID_PARAM("dic.name");
   
   Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
 

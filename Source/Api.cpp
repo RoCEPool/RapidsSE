@@ -53,18 +53,6 @@ eIE RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   // clear the last error
   pSEitf->vClearLastError();
   
-  // change directory to tenants
-  eResult = eExecuteCommand(pSEitf, "cld", "tenants");
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
   // change directory to boray
   eResult = eExecuteCommand(pSEitf, "cld", "boray");
   if (IE_NONE != eResult) {
@@ -125,18 +113,6 @@ eIE RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   
   if (!pSchema)
     return IE_INVALID_PARAMETER;
-  
-  // change directory to tenants
-  eResult = eExecuteCommand(pSEitf, "cld", "tenants");
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
   
   // change directory to boray
   eResult = eExecuteCommand(pSEitf, "cld", "boray");
@@ -311,18 +287,6 @@ eIE RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   if (!pCatalog)
     return IE_INVALID_PARAMETER;
   
-  // change directory to tenants
-  eResult = eExecuteCommand(pSEitf, "cld", "tenants");
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
   // change directory to boray
   eResult = eExecuteCommand(pSEitf, "cld", "boray");
   if (IE_NONE != eResult) {
@@ -406,18 +370,6 @@ eIE RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   
   if (!pSchema)
     return IE_INVALID_PARAMETER;
-  
-  // change directory to tenants
-  eResult = eExecuteCommand(pSEitf, "cld", "tenants");
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
   
   // change directory to boray
   eResult = eExecuteCommand(pSEitf, "cld", "boray");
@@ -545,18 +497,6 @@ eIE RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   
   if (!pTable)
     return IE_INVALID_PARAMETER;
-
-  // change directory to tenants
-  eResult = eExecuteCommand(pSEitf, "cld", "tenants");
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
-  
-  // get response
-  eResult = eGetResponse(pSEitf);
-  if (IE_NONE != eResult) {
-    return eResult;
-  }
   
   // change directory to boray
   eResult = eExecuteCommand(pSEitf, "cld", "boray");

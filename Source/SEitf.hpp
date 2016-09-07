@@ -118,6 +118,9 @@ namespace Interface
     bool bGetDicContents(char* pWords[]);
 
     bool bGetMonitor(char* pWords[]);
+    bool bGetFreeSpace(char* pWords[]);
+    bool bGetInUseSpace(char* pWords[]);
+    bool bGetTotalSpace(char* pWords[]);
     
     bool bPing(char* pWords[]);
     

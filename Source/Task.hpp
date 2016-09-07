@@ -312,6 +312,7 @@ namespace Tasks
     static void vIterate_RT_A(NNP_Task nnpTask);
     static void vIterate_RT_B(NNP_Task nnpTask);
     static void vInterpreting(NNP_Task nnpTask);
+    static void vInUseSpace(NNP_Task nnpTask);
     static void vIsBooted(NNP_Task nnpTask);       
     static void vIsCompiling(NNP_Task nnpTask);    
     static void vIsImmediate(NNP_Task nnpTask);    
@@ -377,6 +378,7 @@ namespace Tasks
     static void vToRstack(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
     static void vToStr(NNP_Task nnpTask);
+    static void vTotalSpace(NNP_Task nnpTask);
     static void vToTask(NNP_Task nnpTask);
     static void vToValSet(NNP_Task nnpTask);
     static void vToValues(NNP_Task nnpTask);
