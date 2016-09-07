@@ -35,6 +35,8 @@ namespace Common
     
     bool bIsLocked(void);
     
+    // must be last
+    Footer m_xFooter;
   };
   
   const u8 C_WRITELOCK = 0x8000000000000000;

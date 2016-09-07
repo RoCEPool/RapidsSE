@@ -25,6 +25,9 @@ namespace Common
                   // 64 bits
     };
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     

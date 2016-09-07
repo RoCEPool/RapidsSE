@@ -36,6 +36,9 @@ namespace Common
     bool    m_bNormal; // normal tokens?
     char    m_cStrippedChar; // character from parser, stripped of comments
     
+    // must be last
+    Footer m_xFooter;    
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

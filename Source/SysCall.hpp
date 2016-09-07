@@ -30,6 +30,9 @@ namespace Common
     eSysCall m_eStatus;  // return status
     i8       m_iErrNo;   // error number
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     SysCall(void);
     ~SysCall(void);

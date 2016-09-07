@@ -18,6 +18,9 @@ namespace Common
  
     SysCall m_xSysCall;   // system call handler
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, Dir* pDir);

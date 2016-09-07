@@ -15,6 +15,9 @@ namespace Common
     i8      m_iStart;
     i8      m_iUpdate;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void* operator new(size_t, void* pTimerAddress);

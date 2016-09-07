@@ -35,6 +35,8 @@ namespace Common
     bool    m_bRead;     // prompt user for more input
     bool    m_bEOF;      // eof seen?
     
+    // must be last
+    Footer m_xFooter;
     
   public:
     void* operator new(size_t, bool bMalloc);

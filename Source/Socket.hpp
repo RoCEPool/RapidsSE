@@ -16,6 +16,9 @@ namespace Common
     
     struct sockaddr_in m_xServAddr;
     
+    // must be last
+    Footer m_xFooter;
+        
   public:
     void* operator new(size_t);
     void  operator delete(void*);

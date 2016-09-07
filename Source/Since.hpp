@@ -14,6 +14,9 @@ namespace Common
     i8 m_iSeconds;
     i8 m_iMicroseconds;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     Since();
     ~Since();
