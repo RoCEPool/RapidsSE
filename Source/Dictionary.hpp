@@ -18,6 +18,9 @@ namespace Dictionaries
     bool  m_bFrozen;      // no more words can be added?
     Word* m_pCurrentWord; // last word
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

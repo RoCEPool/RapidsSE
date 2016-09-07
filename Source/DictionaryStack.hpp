@@ -17,6 +17,9 @@ namespace Dictionaries
     i8           m_iTop;
     Dictionary*  m_pDictionary[C_DICTIONARY_STACK];
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
