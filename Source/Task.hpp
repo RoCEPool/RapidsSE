@@ -6,6 +6,8 @@
 
 #include "Tasks.h"
 
+extern pthread_key_t  giTLS_TaskKey;
+
 namespace Interface
 {
   class SEitf;
@@ -49,23 +51,26 @@ namespace Tasks
                public ListNode_t<Task>
   {
     #define GET_THROW(_1,_2,NAME,...) NAME
+    
     #define THROW(...) GET_THROW(__VA_ARGS__, THROW2, THROW1)(__VA_ARGS__)
       
     #define THROW1(p1) \
     { \
-      String::vSprint(nnpTask->m_sException.a(),p1); \
-      nnpTask->m_sFile = __FILE__; \
+      Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
+      String::vSprint(pTask->m_sException.a(),p1); \
+      pTask->m_sFile = __FILE__; \
       throw (i8)__LINE__; \
     }
       
     #define THROW2(p1, p2) \
     { \
-      String::vSprint(nnpTask->m_sException.a(),p1,p2); \
-      nnpTask->m_sFile = __FILE__; \
+      Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
+      String::vSprint(pTask->m_sException.a(),p1,p2); \
+      pTask->m_sFile = __FILE__; \
       throw (i8)__LINE__; \
     }
       
-      // throw invalid parameter
+    // throw invalid parameter
     #define THROW_INVALID_PARAM(primitive) \
     { \
       THROW("Invalid param stack for: %s",primitive); \
@@ -107,13 +112,11 @@ namespace Tasks
     bool  m_bTracing;
     
     // exception
+  public: // ugh!
     s256  m_sFile;
     s256  m_sException;
-    
-    // registers
-//    Table*   m_pTable;
-//    Index*   m_pIndex;
-    
+
+  private:
     Interface::SEitf* m_pSEitf;
     
     // test

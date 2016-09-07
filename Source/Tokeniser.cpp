@@ -201,7 +201,8 @@ i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
     if (String::bEqualTo("",pToken[iToken]))
       return iToken;
   
-  ASSERT(0);
+  ASSERT("Should never be reached");
+  return -1;
 }
 
 /*----------------------------------------------------------------------------*/

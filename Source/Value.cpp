@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Values.h"
+#include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -194,7 +195,7 @@ i8 Value::iSize(void)
     }
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
       break;
   }
   
@@ -228,7 +229,7 @@ void Value::vToCommand(char* aWorkspace)
     }
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
       break;
   }
 }
@@ -239,6 +240,7 @@ void Value::vToCommand(char* aWorkspace)
 void Value::vToString(char* aWorkspace)
 {
   eCN eClass = this->eClass();
+  
   switch(eClass) {
       
     case CN_INTVAL: {
@@ -266,7 +268,7 @@ void Value::vToString(char* aWorkspace)
     }
       
     default:
-      ASSERT(0);
+      THROW("Invalid eClass %lld",eClass);
       break;
   }
 }
