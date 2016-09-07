@@ -145,6 +145,13 @@ void SEitf::vInit(void)
   // dictionary stack
   m_xDicStack.vPush(gpDictionary);
   m_xDicStack.vPush(&m_xDictionary);
+  
+  // find tenants
+  Word* pTenants = gpDictionary->pFind("tenants");
+  ASSERT(pTenants);
+  
+  Cell* pCell = pTenants->pFirstCell();
+  m_xDicStack.vPush(reinterpret_cast<Dictionary*>(pCell));
 }
 
 /*----------------------------------------------------------------------------*/

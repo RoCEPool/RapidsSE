@@ -5288,11 +5288,11 @@ void Task::vDicMain(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicName(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicNain");
+  nnpTask->vPrimitive("vDicName");
  
   PtrVal xDicPtr;
   if ( ! nnpTask->bPopParam(xDicPtr) )
-    THROW_INVALID_PARAM("dic.push");
+    THROW_INVALID_PARAM("dic.name");
   
   Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
 
