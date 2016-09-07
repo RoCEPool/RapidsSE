@@ -20,6 +20,7 @@ void* Time::operator new(size_t)
 /* Time: constructor                                                          */
 /*----------------------------------------------------------------------------*/
 Time::Time(void)
+: Object(CN_TIME)
 {
   m_iYear   = 0;
   m_iMonth  = 0;

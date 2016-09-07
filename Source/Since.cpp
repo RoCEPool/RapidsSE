@@ -8,6 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Since::Since(void)
+: Object(CN_SINCE)
 {
   m_iSeconds      = 0;
   m_iMicroseconds = 0;

@@ -5,15 +5,14 @@
 
 #include "Common.h"
 
-namespace Common {
-  
+namespace Common
+{
   class Process
   {
   public:
     static i8   iGetPid(void);
     static bool bTestPid(i8 iPid);
   };
-
 }
 
 /*============================================================================*/
