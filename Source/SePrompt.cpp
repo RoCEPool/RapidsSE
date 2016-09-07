@@ -183,6 +183,11 @@ void SePrompt::vProcessCommand(void)
     return;
   }
   
+  if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
+    vPoolSpace();
+    return;
+  }
+  
   m_xHistory.vAppend(m_pToken,C_TOKENS);
   
   if (bTestFile(m_pToken[0])) {
@@ -547,6 +552,21 @@ void SePrompt::vDropTable(void)
   String::vCopy(m_pToken[0], "drop");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   vExecuteRequest();
+}
+
+/*----------------------------------------------------------------------------*/
+/* print pool space                                                           */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPoolSpace(void)
+{
+  ASSERT(String::bEqualTo(m_pToken[0],"space"));
+
+  i8 iSize = gpBufferPool->iRegionSize()/C_1MB;
+  i8 iFree = gpBufferPool->iFreeSpace()/C_1MB;
+  i8 iInUse = iSize - iFree;
+  
+  vTrace("Pool: Size(%lldMb) InUse(%lldMb) Free(%lldMb)\n",
+         iSize, iInUse, iFree);
 }
 
 /*----------------------------------------------------------------------------*/
