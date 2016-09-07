@@ -34,6 +34,9 @@ namespace StorageEngine
     // seitf options
     i8   m_iPartition;  // which partition
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     Arguments(void);
     ~Arguments(void);

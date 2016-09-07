@@ -16,6 +16,9 @@ namespace StorageEngine
   {
   private:
 
+    // must be last
+    Footer m_xFooter;
+
   public:
     static void   vCheckAssumptions(void);
     

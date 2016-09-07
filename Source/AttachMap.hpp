@@ -32,6 +32,9 @@ namespace StorageEngine
     i8                 m_iQuit;
     i8                 m_iStop;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     void  operator delete(void*);

@@ -15,6 +15,9 @@ namespace Pool
   {
   private:
     
+    // must be last
+    Footer m_xFooter;
+
   public:
     
     BufferPoolAnalyzer(void);
