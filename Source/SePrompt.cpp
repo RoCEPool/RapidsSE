@@ -4,14 +4,15 @@
 
 #include "SePrompt.hpp"
 
-extern Heap* gpMediumHeap;
+extern BufferPool*  gpBufferPool;
+extern Heap*        gpMediumHeap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* SePrompt::operator new(size_t iSize)
 {
-  SePrompt* pSePrompt = (SePrompt*)gpMediumHeap->pAllocObject();
+  SePrompt* pSePrompt = (SePrompt*)gpBufferPool->pAllocBuffer();
   
   return pSePrompt;
 }
@@ -21,9 +22,9 @@ void* SePrompt::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void SePrompt::operator delete(void* pSePromptAddress)
 {
-  Object* pObject = reinterpret_cast<Object*>(pSePromptAddress);
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(pSePromptAddress);
   
-  gpMediumHeap->vFreeObject(pObject);
+  gpBufferPool->vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

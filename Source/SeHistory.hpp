@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* History.hpp -- command history                                             */
+/* SeHistory.hpp -- SePrompt History                                          */
 /*============================================================================*/
 
 #pragma once
 
 #include "Api.hpp"
 
-class History
+class SeHistory : public Object
 {
 private:
   File  m_xFile;          // history file
@@ -14,8 +14,8 @@ private:
   Tokenizer m_xTokenizer; // tokenizer while reading file
   
 public:
-  History(void);
-  ~History(void);
+  SeHistory(void);
+  ~SeHistory(void);
   
   void vAppend(char* pToken[], i8 nTokens);
   void vClose(void);

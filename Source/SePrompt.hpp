@@ -5,12 +5,12 @@
 #pragma once
 
 #include "Api.hpp"
-#include "History.hpp"
+#include "SeHistory.hpp"
 
 class SePrompt : public Object
 {
-  static const i8 C_TOKENS      = 10240;
-  static const i8 C_TOKEN_SPACE = C_1KB;
+  static const i8 C_TOKENS      = 1024;
+  static const i8 C_TOKEN_SPACE = 256;
   static const i8 C_TOKEN_AREA  = C_TOKEN_SPACE * C_TOKENS;
   
 private:
@@ -20,7 +20,7 @@ private:
   s32       m_sPrompt;    // prompt
   
   s8K       m_sResponse;  // response from seitf
-  History   m_xHistory;   // command history
+  SeHistory m_xHistory;   // command history
   
   char*     m_pToken[C_TOKENS];
   Tokenizer m_xTokenizer; // input stream parser

@@ -1,13 +1,14 @@
 /*============================================================================*/
-/* History.cpp -- command history                                             */
+/* SeHistory.cpp -- SePrompt History                                          */
 /*============================================================================*/
 
-#include "History.hpp"
+#include "SeHistory.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-History::History(void)
+SeHistory::SeHistory(void)
+: Object(CN_SEHISTORY)
 {
   //m_xFile
   m_iCommands = 0;
@@ -19,7 +20,7 @@ History::History(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-History::~History(void)
+SeHistory::~SeHistory(void)
 {
   vClose();
 }
@@ -27,7 +28,7 @@ History::~History(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void History::vAppend(char* pToken[], i8 nTokens)
+void SeHistory::vAppend(char* pToken[], i8 nTokens)
 {
   vSeekEnd();
   
@@ -45,7 +46,7 @@ void History::vAppend(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* close command history file                                                 */
 /*----------------------------------------------------------------------------*/
-void History::vClose(void)
+void SeHistory::vClose(void)
 {
   m_xFile.vClose();
 }
@@ -53,7 +54,7 @@ void History::vClose(void)
 /*----------------------------------------------------------------------------*/
 /* open command history file                                                  */
 /*----------------------------------------------------------------------------*/
-void History::vOpen(void)
+void SeHistory::vOpen(void)
 {
   char wFileName[C_1KB];
   
@@ -66,7 +67,7 @@ void History::vOpen(void)
 /*----------------------------------------------------------------------------*/
 /* print command history file                                                 */
 /*----------------------------------------------------------------------------*/
-void History::vPrint(void)
+void SeHistory::vPrint(void)
 {
   char wCommand[C_4KB];
   
@@ -81,7 +82,7 @@ void History::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* recall command from history file                                           */
 /*----------------------------------------------------------------------------*/
-bool History::bRecall(char* pToken[], i8 nTokens)
+bool SeHistory::bRecall(char* pToken[], i8 nTokens)
 {
   i8 iCommand;
   
@@ -112,7 +113,7 @@ bool History::bRecall(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* get command from history file                                              */
 /*----------------------------------------------------------------------------*/
-bool History::bGet(i8 iCommand, char* pToken[], i8 nTokens)
+bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
 {
   vSeekStart();
   
@@ -150,7 +151,7 @@ bool History::bGet(i8 iCommand, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 /* read line from command history file                                        */
 /*----------------------------------------------------------------------------*/
-bool History::bRead(char* wCommand)
+bool SeHistory::bRead(char* wCommand)
 {
   bool bResult = m_xFile.bReadLine(wCommand);
   
@@ -160,7 +161,7 @@ bool History::bRead(char* wCommand)
 /*----------------------------------------------------------------------------*/
 /* seek to start of command history file                                      */
 /*----------------------------------------------------------------------------*/
-void History::vSeekStart(void)
+void SeHistory::vSeekStart(void)
 {
   m_xFile.vSeek(0);
 }
@@ -168,7 +169,7 @@ void History::vSeekStart(void)
 /*----------------------------------------------------------------------------*/
 /* seek to end of command history file                                        */
 /*----------------------------------------------------------------------------*/
-void History::vSeekEnd(void)
+void SeHistory::vSeekEnd(void)
 {
   m_xFile.vSeekEnd();
 }
