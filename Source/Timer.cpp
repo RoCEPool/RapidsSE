@@ -25,7 +25,7 @@ void Timer::operator delete(void* pTimerAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Timer::Timer(void)
-: cn(CN_TIMER)
+: Header(CN_TIMER)
 {
   vInit();
 }

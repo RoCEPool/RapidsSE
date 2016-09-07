@@ -8,7 +8,7 @@
 
 namespace StorageEngine
 {
-  class Arguments : public InProcess
+  class Arguments : public Header
   {
   public:
     // configuration

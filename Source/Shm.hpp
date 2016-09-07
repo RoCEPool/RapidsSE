@@ -5,8 +5,8 @@
 
 #include "Common.h"
 
-namespace Common {
-  
+namespace Common
+{
   class Shm
   {
   public:
@@ -17,7 +17,6 @@ namespace Common {
     static bool  bUnmap(void* pAddress, i8 iBytes, SysCall& xSysCall);
     static bool  bUnlink(const char* aName, SysCall& xSysCall);
   };
-
 }
 
 /*============================================================================*/

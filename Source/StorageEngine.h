@@ -6,9 +6,6 @@
 
 #include "GridModel.h"
 
-#include "InProcess.hpp"
-#include "OnHeap.hpp"
-
 #include "Arguments.hpp"
 #include "RapidsSE.hpp"
 #include "AttachMap.hpp"

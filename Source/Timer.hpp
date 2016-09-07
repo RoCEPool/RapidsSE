@@ -7,8 +7,7 @@
 
 namespace Common
 {
-  class Timer : public mn,
-                public cn
+  class Timer : public Header
   {
   public:
   
@@ -34,7 +33,6 @@ namespace Common
     i8   iSeconds(void);
     i8   iTicks(void);
   };
-
 }
 
 /*============================================================================*/

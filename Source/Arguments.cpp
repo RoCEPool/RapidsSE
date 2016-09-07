@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Arguments::Arguments(void)
-: InProcess(CN_ARGUMENTS)
+: Header(CN_ARGUMENTS)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS);
   
