@@ -23,6 +23,9 @@ namespace Structures
     i8        m_iObjects;  // number of objects in the list
     i4        m_iHeight;   // current max level in the list
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
 
     SkipList(bool bIsUniqueKey, compare fCompare);

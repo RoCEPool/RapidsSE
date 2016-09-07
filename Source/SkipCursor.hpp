@@ -14,6 +14,9 @@ namespace Structures
   private:
     SkipNode* m_pCurrentNode;
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     SkipCursor(void);
     ~SkipCursor(void);

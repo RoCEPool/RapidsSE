@@ -15,9 +15,12 @@ namespace Structures
   {
   private:
     Collection_t<OBJECT>* m_pCollection; // the collection
-    bool            m_bHasLock; // does the cursor have the lock?
-   OBJECT* m_pObject;     // current node
+    bool    m_bHasLock; // does the cursor have the lock?
+    OBJECT* m_pObject;  // current node
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
     CollectionCursor_t(Collection_t<OBJECT>* pCollection);
     

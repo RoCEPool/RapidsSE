@@ -18,6 +18,9 @@ namespace Structures
     OBJECT* m_pTail;   // tail node of list
     OBJECT* m_pFree;   // head node of free chain
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     

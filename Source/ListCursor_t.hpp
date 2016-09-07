@@ -18,6 +18,9 @@ namespace Structures
     OBJECT*         m_pObject;  // current node
     bool            m_bHasLock; // does the cursor have the lock?
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
     ListCursor_t(List_t<OBJECT>* pList);
     

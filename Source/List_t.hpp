@@ -17,6 +17,9 @@ namespace Structures
     OBJECT* m_pHead;   // head node
     OBJECT* m_pTail;   // tail node
 
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     

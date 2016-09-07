@@ -14,6 +14,9 @@ namespace Structures
     OBJECT* m_pPrevNode;   // prev node
     OBJECT* m_pNextNode;   // next node
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     void* operator new(size_t);
     
