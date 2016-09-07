@@ -143,6 +143,11 @@ void SePrompt::vProcessCommand(void)
     return;
   }
   
+  if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
+    vChangeWorkingDir();
+    return;
+  }
+  
   if (String::bEqualTo("history",m_pToken[0],C_NO_CASE)) {
     m_xHistory.vPrint();
     return;
@@ -170,6 +175,11 @@ void SePrompt::vProcessCommand(void)
  
   if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
     vDropTable();
+    return;
+  }
+  
+  if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
+    vPrintWorkingDir();
     return;
   }
   
@@ -303,6 +313,7 @@ void SePrompt::vHelp(void)
   vTrace("add    -- add column to table\n");
   vTrace("adr    -- get address of table\n");
   vTrace("bye    -- quit seitf\n");
+  vTrace("cp     -- change directory\n");
   vTrace("cld    -- change local dictionary\n");
   vTrace("con    -- connect\n");
   vTrace("cp     -- copy table\n");
@@ -324,6 +335,7 @@ void SePrompt::vHelp(void)
   vTrace("mktbl  -- create table\n");
   vTrace("mkten  -- create tenant\n");
   vTrace("pld    -- print local dictionary\n");
+  vTrace("pwd    -- print working directory\n");
   vTrace("rmcat  -- drop catalog\n");
   vTrace("rmdic -- drop dictionary\n");
   vTrace("rmsch  -- drop schema\n");
@@ -341,6 +353,29 @@ void SePrompt::vHelp(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* change working directory                                                   */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vChangeWorkingDir(void)
+{
+  s256 sDir;
+  Dir xDir;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"cd"));
+  
+  String::vCopy(sDir.a(), m_pToken[1]);
+  
+  i8 iToken;
+  for (iToken = 2; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vConcat(sDir.a(), m_pToken[iToken]);
+  }
+
+  if ( ! xDir.bSetCurrent(sDir) )
+    vTrace("Unable to set current directory\n");
+}
 
 /*----------------------------------------------------------------------------*/
 /* create table                                                               */
@@ -497,6 +532,7 @@ void SePrompt::vDropTable(void)
   ASSERT(String::bEqualTo(m_pToken[0],"drop"));
   
   vCollectStatement();
+  
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_pToken[iToken])
       break;
@@ -511,6 +547,22 @@ void SePrompt::vDropTable(void)
   String::vCopy(m_pToken[0], "drop");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   vExecuteRequest();
+}
+
+/*----------------------------------------------------------------------------*/
+/* print working directory                                                    */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vPrintWorkingDir(void)
+{
+  Dir xDir;
+  s256 sDir;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"pwd"));
+  
+  if (xDir.bGetCurrent(sDir)) {
+    vTrace("%s\n", sDir.a());
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -51,12 +51,14 @@ private:
   bool bTestFile(char* pPath);
   void vPushFile(char* pWord);
   
+  void vChangeWorkingDir(void);
   void vCreateTable(void);
   void vCreateTable2(void);
-  bool bValidateType(char* pType);
-  
   void vCollectStatement(void);
   void vDropTable(void);
+  void vPrintWorkingDir(void);
+  bool bValidateType(char* pType);
+
  };
 
 /*============================================================================*/
