@@ -4,10 +4,33 @@
 
 #include "SePrompt.hpp"
 
+extern Heap* gpMediumHeap;
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* SePrompt::operator new(size_t iSize)
+{
+  SePrompt* pSePrompt = (SePrompt*)gpMediumHeap->pAllocObject();
+  
+  return pSePrompt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::operator delete(void* pSePromptAddress)
+{
+  Object* pObject = reinterpret_cast<Object*>(pSePromptAddress);
+  
+  gpMediumHeap->vFreeObject(pObject);
+}
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(i8 iPartition)
+: Object(CN_SEPROMPT)
 {
   m_iPartition = iPartition;
 

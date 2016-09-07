@@ -7,7 +7,7 @@
 #include "Api.hpp"
 #include "History.hpp"
 
-class SePrompt
+class SePrompt : public Object
 {
   static const i8 C_TOKENS      = 10240;
   static const i8 C_TOKEN_SPACE = C_1KB;
@@ -28,6 +28,9 @@ private:
   char      m_wTokenArea[C_TOKEN_AREA];
   
 public:
+  void* operator new(size_t);
+  void  operator delete(void*);
+
   SePrompt(i8 iPartition);
   ~SePrompt(void);
   
