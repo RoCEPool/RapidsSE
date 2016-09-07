@@ -239,6 +239,7 @@ void Value::vToCommand(char* aWorkspace)
 void Value::vToString(char* aWorkspace)
 {
   eCN eClass = this->eClass();
+  
   switch(eClass) {
       
     case CN_INTVAL: {

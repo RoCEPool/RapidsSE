@@ -35,6 +35,8 @@ Queue::Queue(void)
   _poolAddress_(this);
   
   vInitialize();
+  
+  //Memory::vCheckInitialised(this,sizeof(Queue));
 }
 
 /*----------------------------------------------------------------------------*/
