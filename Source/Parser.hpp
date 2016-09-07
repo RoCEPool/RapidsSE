@@ -7,8 +7,7 @@
 
 namespace Common
 {
-  class Parser : public mn,
-                 public cn
+  class Parser : public Object
   {
   private:
     enum eIS { IS_NONE=0, IS_FILE,  IS_STDIN, IS_STRING };

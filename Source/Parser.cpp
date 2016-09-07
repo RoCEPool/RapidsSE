@@ -41,7 +41,7 @@ void Parser::operator delete(void* pParserAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parser::Parser(void)
-: cn(CN_PARSER)
+: Object(CN_PARSER)
 {
   //m_bMalloc set in new
   m_pChain  = nullptr;

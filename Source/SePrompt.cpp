@@ -50,7 +50,7 @@ SePrompt::SePrompt(i8 iPartition)
   //m_wWorkarea
   
   //----
-  m_xTokeniser.vMalloc(true);
+  m_xTokeniser.vMalloc(false);
   m_xTokeniser.vPush();
   m_xTokeniser.vPrompt(m_sPrompt);
   m_xTokeniser.vUseStdin();
