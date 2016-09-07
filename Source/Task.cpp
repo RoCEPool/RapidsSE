@@ -4671,9 +4671,9 @@ void Task::vTotalSpace(NNP_Task nnpTask)
 {
   nnpTask->vPrimitive("vTotalSpace");
   
-  i8 iFreeSpace = gpBufferPool->iRegionSize();
+  i8 iTotalSpace = gpBufferPool->iRegionSize();
   
-  nnpTask->vPushParam(iFreeSpace);
+  nnpTask->vPushParam(iTotalSpace);
 }
 
 /*----------------------------------------------------------------------------*/

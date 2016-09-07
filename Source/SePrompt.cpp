@@ -342,7 +342,7 @@ void SePrompt::vHelp(void)
   vTrace("pld    -- print local dictionary\n");
   vTrace("pwd    -- print working directory\n");
   vTrace("rmcat  -- drop catalog\n");
-  vTrace("rmdic -- drop dictionary\n");
+  vTrace("rmdic  -- drop dictionary\n");
   vTrace("rmsch  -- drop schema\n");
   vTrace("rmtbl  -- drop table\n");
   vTrace("rmten  -- drop tenant\n");
@@ -560,13 +560,25 @@ void SePrompt::vDropTable(void)
 void SePrompt::vPoolSpace(void)
 {
   ASSERT(String::bEqualTo(m_pToken[0],"space"));
-
-  i8 iSize = gpBufferPool->iRegionSize()/C_1MB;
-  i8 iFree = gpBufferPool->iFreeSpace()/C_1MB;
-  i8 iInUse = iSize - iFree;
   
-  vTrace("Pool: Size(%lldMb) InUse(%lldMb) Free(%lldMb)\n",
-         iSize, iInUse, iFree);
+  i8 iFree;
+  i8 iInUse;
+  i8 iTotal;
+
+  String::vCopy(m_pToken[0], "getTotalSpace");
+  vExecuteRequest();
+  iTotal = String::iToI8(m_sResponse.a());
+  
+  String::vCopy(m_pToken[0], "getInUseSpace");
+  vExecuteRequest();
+  iInUse = String::iToI8(m_sResponse.a());
+  
+  String::vCopy(m_pToken[0], "getFreeSpace");
+  vExecuteRequest();
+  iFree = String::iToI8(m_sResponse.a());
+  
+  vTrace("Pool: Size(%lld) InUse(%lld) Free(%lld)\n",
+         iTotal, iInUse, iFree);
 }
 
 /*----------------------------------------------------------------------------*/
