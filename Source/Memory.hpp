@@ -7,7 +7,7 @@
 
 namespace Common
 {
-  class Memory
+  class Memory : public Static
   {
   private:
     static const u1 C_ASCII_MIN = 32;

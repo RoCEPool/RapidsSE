@@ -7,7 +7,7 @@
 
 namespace Common {
   
-  class Env
+  class Env : public Static
   {
   public:
     static bool bGetEnv(const char* aEnvName, char* aEnvValue);

@@ -7,7 +7,7 @@
 
 namespace Common
 {
-  class Shm
+  class Shm : public Static
   {
   public:
     static bool  bAttach(const char* aName, int& iDescriptor, SysCall& SysCall);

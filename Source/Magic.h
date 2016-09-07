@@ -26,6 +26,7 @@
 #include "Header.hpp"
 #include "Footer.hpp"
 #include "Object.hpp"
+#include "Static.hpp"
 
 
 namespace Magic
