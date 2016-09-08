@@ -55,6 +55,7 @@ private:
   void vCreateTable(void);
   void vCreateTable2(void);
   void vCollectStatement(void);
+  void vListDir(void);
   void vDropTable(void);
   void vPoolSpace(void);
   void vPrintWorkingDir(void);

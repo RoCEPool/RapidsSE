@@ -185,6 +185,11 @@ void SePrompt::vProcessCommand(void)
     return;
   }
   
+  if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
+    vListDir();
+    return;
+  }
+  
   if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
     vPoolSpace();
     return;
@@ -675,6 +680,41 @@ void SePrompt::vDropTable(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* list directory                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vListDir(void)
+{
+  Dir  xDir;
+  s256 sDir;
+  s256 sDirEntry;
+  i8 iEntryType;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"ls"));
+  
+  // get the current directory
+  if (!xDir.bGetCurrent(sDir)) {
+    vTrace("Invalid current dir\n");
+    return;
+  }
+  
+  // open the current directory
+  if (!xDir.bOpen()) {
+    vTrace("Unable to open current dir\n");
+    return;
+  }
+  
+  // read the current directory
+  while(xDir.bRead()) {
+    sDirEntry = xDir.sEntryName();
+    iEntryType = xDir.iEntryType();
+    vTrace("%c %s\n", iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.a());
+  }
+  
+  // close the current directory
+  xDir.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
