@@ -39,6 +39,8 @@ namespace DBobjects
     
     char* pIndexName(void);
     void vDump(void);
+    
+    Footer* pFooter(void);
   };
 }
 

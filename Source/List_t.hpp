@@ -37,6 +37,8 @@ namespace Structures
 
     OBJECT* pHead(void);
     OBJECT* pTail(void);
+    
+    Footer* pFooter(void);
   };
 }
 

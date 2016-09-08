@@ -31,6 +31,8 @@ private:
   void vSeekEnd(void);
   bool bGet(i8 iCommand, char* pToken[], i8 nTokens);
   bool bRead(char* wCommand);
+  
+  Footer* pFooter(void);
 };
 
 /*============================================================================*/

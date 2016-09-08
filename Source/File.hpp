@@ -77,6 +77,7 @@ namespace Common
     void vUngetChar(char cChar);
     void vZero(void);
   
+    Footer* pFooter(void);
   //    File(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel);
   //    File(FILE* pFile, const char* aFilePath, const char* saOpenMode, i8 iTraceLevel);
   

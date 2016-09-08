@@ -22,6 +22,8 @@ namespace Tasks
     
     TaskCursor(List_t<Task>* pList);
     ~TaskCursor(void);
+    
+    Footer* pFooter(void);
   };
 }
 

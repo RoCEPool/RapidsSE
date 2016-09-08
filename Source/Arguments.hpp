@@ -46,6 +46,8 @@ namespace StorageEngine
     void vPrint(void);
     
     void vPrintHelp(void);
+    
+    Footer* pFooter(void);
   };
 }
 

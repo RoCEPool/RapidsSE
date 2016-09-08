@@ -25,6 +25,8 @@ namespace GridModel
     ~NodeCursor(void);
     
     void vInit(void);
+    
+    Footer* pFooter(void);
   };
 }
 

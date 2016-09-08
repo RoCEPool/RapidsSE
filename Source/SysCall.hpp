@@ -44,6 +44,8 @@ namespace Common
     void vSuccess(void);
     
     bool bHadError(void);
+    
+    Footer* pFooter(void);
   };
 }
 

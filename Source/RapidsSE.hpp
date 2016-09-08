@@ -50,6 +50,8 @@ namespace StorageEngine
     static bool bTestRegion(void);
     static void vTlsInit(void);
     static void vWaitFlag(void);
+
+    Footer* pFooter(void);
   };
 }
 

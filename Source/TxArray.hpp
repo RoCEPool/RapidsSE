@@ -29,6 +29,8 @@ namespace Transactions
     ~TxArray(void);
     
     static void vDump(eCN eClass, Object* pObject, const char * pTab);
+    
+    Footer* pFooter(void);
   };
 }
 

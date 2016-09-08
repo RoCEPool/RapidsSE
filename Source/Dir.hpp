@@ -56,26 +56,7 @@ namespace Common
     //bool bSetCurrent(void);
     i8   iTell(void);
     
-    
-
-//class FileEnt;
-//class DirList;
-    
-//    static bool   bChgCwd(const char* sDirPath);
-//    static void   vDeleteFiles(const char* sDirPath, inw iDepth, Canon& canon);
-//    static void   vGetCwd(char* sDirPath, inw nBytes);
-//    static DirList* pGetDirList(const char* sDirPath, bool bRecursive);
-//    static void   vGetDirList(DirList* pDirList, const char* sDirPath, bool bRecursive);
-//    static FileList* pGetFileList(const char* sDirPath, bool bRecursive);
-//    static void   vGetFileList(FileList* pList, const char* sDirPath, bool bRecursive);
-//    static bool   bIsDir(const char* sDirPath);
-//    static bool   bIsReg(const char* sFilePath);
-//    static FileEnt* pFindFirst(SkipList* pList, const char* sSuffix);
-//    static void   vRemoveDir(const char* sDirPath, Canon& canon);
-//    static void   vRemoveRecursive(const char* sDirPath, Canon& canon);
-//    
-//    static void   vDumpDirList(SkipList* pDirList, Canon& canon);
-//    static void   vDumpFileList(SkipList* pFileList, Canon& canon);
+    Footer* pFooter(void);
   };
 
   Dir* _pDir(void* pAddr);

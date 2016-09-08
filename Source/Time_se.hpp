@@ -40,6 +40,8 @@ namespace Common
     bool bExtractUTC(char** ps);
     
     void vUTC(s& sUTC);
+    
+    Footer* pFooter(void);
   };
 
 }

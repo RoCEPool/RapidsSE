@@ -47,6 +47,8 @@ namespace Dictionaries
     Word* pLocate(Cell* pCell);
     s&    sName(void);
     void  vName(const char* aName);
+    
+    Footer* pFooter(void);
   };
   
   Dictionary* _pDic(void* pAddr);

@@ -56,6 +56,8 @@ namespace DBobjects
     //--------------------------------------------------------------------------
     
     Partition* pPartition(i8);
+    
+    Footer* pFooter(void);
   };
 }
 

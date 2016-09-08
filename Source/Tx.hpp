@@ -63,7 +63,9 @@ namespace Transactions
     eTP ePhase(void);
     void vPhase(eTP ePhase);
     
-    void vDump(void);    
+    void vDump(void);
+    
+    Footer* pFooter(void);
   };
     
 }

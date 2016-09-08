@@ -34,6 +34,8 @@ namespace Tasks
     
   private:
     void vVerify(void);
+    
+    Footer* pFooter(void);
   };
 }
 

@@ -108,6 +108,8 @@ namespace Common
     void vUngetStrippedChar(void);
     
     bool bEndInput(void);
+    
+    Footer* pFooter(void);
   };
 }
 

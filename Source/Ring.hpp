@@ -24,6 +24,8 @@ namespace DBobjects
     
     Ring(void);
     ~Ring(void);
+    
+    Footer* pFooter(void);
   };
 }
 

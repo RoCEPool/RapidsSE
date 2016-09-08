@@ -29,6 +29,8 @@ namespace Transactions
     bool bCommitTx(void);
     bool bEndTx(void);
     bool bRollbackTx(void);
+    
+    Footer* pFooter(void);
   };
 }
 

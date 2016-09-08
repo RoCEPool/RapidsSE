@@ -37,6 +37,8 @@ namespace Common
     
     // must be last
     Footer m_xFooter;
+    
+    Footer* pFooter(void);
   };
   
   const u8 C_WRITELOCK = 0x8000000000000000;

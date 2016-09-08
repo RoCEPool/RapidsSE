@@ -60,7 +60,8 @@ private:
   void vPrintWorkingDir(void);
   bool bValidateType(char* pType);
 
- };
+  Footer* pFooter(void);
+};
 
 /*============================================================================*/
 /* end                                                                        */

@@ -30,6 +30,8 @@ namespace GridModel
     void vInit(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
+    
+    Footer* pFooter(void);
   };
 }
 

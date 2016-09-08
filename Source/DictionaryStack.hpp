@@ -39,6 +39,8 @@ namespace Dictionaries
     Dictionary* pPick(i8 iDic);
     void vPush(Dictionary* pDictionary);
     Dictionary* pTop(void);
+    
+    Footer* pFooter(void);
   };
 }
 

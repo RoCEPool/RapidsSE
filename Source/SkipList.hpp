@@ -56,6 +56,8 @@ namespace Structures
     i4 iLevel();
     SkipNode* pPosition(void* Ent, bool* bEqualTo);
     SkipNode* pPosition(void* Ent, bool* bEqualTo, SkipNode** pRevise);
+    
+    Footer* pFooter(void);
   };
   
 }

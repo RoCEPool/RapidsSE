@@ -45,6 +45,8 @@ namespace DBobjects
     bool   bInsertRow(i8 iPartn);
     void   vEnd(void);
     void   vCloseFile(void);
+    
+    Footer* pFooter(void);
   };
 }
 

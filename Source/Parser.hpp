@@ -100,6 +100,8 @@ namespace Common
     
     void  vReadLineFile(void);
     void  vReadLineStdin(void);
+    
+    Footer* pFooter(void);
   };
 }
 

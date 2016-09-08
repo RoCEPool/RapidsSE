@@ -38,6 +38,8 @@ namespace DBobjects
     char*   pRowAsStr(void);
     Table*  pTable(void);
     void    vTable(Table* pTable);
+    
+    Footer* pFooter(void);
   };
 }
 

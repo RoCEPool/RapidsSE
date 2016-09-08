@@ -74,6 +74,8 @@ namespace Pool
     Buffer* pToBuffer(bn nBuffer) const;
     BufferFree* pToBufferFree(bn nBuffer) const;
     BufferFree* pToBufferFree(Buffer* pBuffer) const;
+    
+    Footer* pFooter(void);
    };
 }
 

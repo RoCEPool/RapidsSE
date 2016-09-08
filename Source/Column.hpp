@@ -34,6 +34,8 @@ namespace DBobjects
     
     // must be last
     Footer m_xFooter;
+    
+    Footer* pFooter(void);
   };
 
 }

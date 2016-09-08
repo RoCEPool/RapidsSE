@@ -23,6 +23,7 @@ namespace Interface {
     SEitfCursor(List_t<SEitf>* pList);
     ~SEitfCursor(void);
     
+    Footer* pFooter(void);
   };
     
 }

@@ -25,6 +25,8 @@ namespace Interface {
     
     SEitf* pAllocSEitf(void);
     void   vFreeSEitf(SEitf* pSEitf);
+    
+    Footer* pFooter(void);
   };
     
 }

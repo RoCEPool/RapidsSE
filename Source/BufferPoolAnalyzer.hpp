@@ -27,6 +27,8 @@ namespace Pool
     void vDumpHeap(Heap* pBuffer);
     void vAnalyze(void);
     void vAssertClass(eCN eClassNo) const;
+    
+    Footer* pFooter(void);
   };
 };
 

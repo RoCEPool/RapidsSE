@@ -49,6 +49,8 @@ namespace Pool
     FreeChunk* pPopFree(void);
     void vPushFree(FreeChunk* pFreeChunk);
     void vVerify(void);
+    
+    Footer* pFooter(void);
   };
 }
 

@@ -25,6 +25,8 @@ namespace Threads {
     
     Thread* pAllocThread(void);
     void    vFreeThread(Thread* pThread);
+    
+    Footer* pFooter(void);
   };
     
 }

@@ -51,6 +51,8 @@ namespace Structures
     Value* pStackBase(void);
     Value* pStackLimit(void) const;
     Value* pTopValue(void) const;
+    
+    Footer* pFooter(void);
   };
 }
 

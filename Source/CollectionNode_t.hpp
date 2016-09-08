@@ -26,6 +26,8 @@ namespace Structures
     void    vNextNode(OBJECT* pNext);
     OBJECT* pPrevNode(void);
     void    vPrevNode(OBJECT* pPrev);
+    
+    Footer* pFooter(void);
   };
 }
 

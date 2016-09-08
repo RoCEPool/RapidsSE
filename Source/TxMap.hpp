@@ -33,6 +33,8 @@ namespace Transactions
     void vGiveSlot(Tx* pTx);
     void vFindSlot(void);
     void vTakeSlot(Tx* pTx);
+    
+    Footer* pFooter(void);
   };
 }
 

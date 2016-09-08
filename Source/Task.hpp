@@ -766,7 +766,9 @@ namespace Tasks
     static void vSocketSend(NNP_Task nnpTask);     
     
     static void vClient(NNP_Task nnpTask);         
-    static void vServer(NNP_Task nnpTask);         
+    static void vServer(NNP_Task nnpTask);
+    
+    Footer* pFooter(void);
   };
   
 }

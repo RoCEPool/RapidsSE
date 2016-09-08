@@ -55,6 +55,7 @@ namespace Common
     bool bSendTo(int nBytes, void* pBuffer, SysCall& SysCall);
     bool bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall);
 
+    Footer* pFooter(void);
   };
   
 }

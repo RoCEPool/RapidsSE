@@ -25,6 +25,8 @@ namespace Threads
     ~ThreadCursor(void);
     
     void vInit(void);
+    
+    Footer* pFooter(void);
   };
 }
 

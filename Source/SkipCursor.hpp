@@ -20,6 +20,8 @@ namespace Structures
   public:
     SkipCursor(void);
     ~SkipCursor(void);
+    
+    Footer* pFooter(void);
   };
 }
 

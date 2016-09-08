@@ -40,6 +40,8 @@ namespace Structures
     void vExpand(void);
     void vDiscard(void);
     void vVerify(void);
+    
+    Footer* pFooter(void);
   };
 }
 

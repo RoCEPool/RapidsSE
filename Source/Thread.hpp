@@ -40,6 +40,8 @@ namespace Threads
     s&   sName(void);
     void vName(s& sName);
     void vSpawn(void);
+    
+    Footer* pFooter(void);
   };
 }
 

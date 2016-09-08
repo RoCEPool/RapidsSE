@@ -29,6 +29,8 @@ namespace Tasks {
     Task* pAllocTask(void);
     void  vFreeTask(Task* pTask);
     void vDump(void);
+    
+    Footer* pFooter(void);
   };
     
 }

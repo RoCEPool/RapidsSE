@@ -137,6 +137,8 @@ namespace Interface
     void         vClearLastError(void);
     const char*  pGetLastError(void);
     void         vSetLastError(eIE eInterfaceError);
+    
+    Footer* pFooter(void);
   };
 }
 

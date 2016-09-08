@@ -24,6 +24,8 @@ namespace GridModel
     ~Grid(void);
     
     void vInit(void);
+    
+    Footer* pFooter(void);
   };
     
 }

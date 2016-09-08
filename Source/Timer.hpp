@@ -35,6 +35,8 @@ namespace Common
     i8   iMilliseconds(void);
     i8   iSeconds(void);
     i8   iTicks(void);
+
+    Footer* pFooter(void);
   };
 }
 

@@ -20,6 +20,8 @@ namespace Structures
     void* operator new(size_t iSize, i4 iLevel);
     SkipNode(void* pObject);
     SkipNode();
+    
+    Footer* pFooter(void);
   };
 }
 

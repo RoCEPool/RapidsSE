@@ -40,6 +40,8 @@ namespace Structures
     void  vReset(void);
     void  vWipe(void);
     void  vWipe(char* pFrom);
+    
+    Footer* pFooter(void);
   };
 }
 

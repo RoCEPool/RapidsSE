@@ -28,6 +28,8 @@ namespace DBobjects
     Partition* pPartition(i8 iPartition);
     
     void vTruncate(void);
+    
+    Footer* pFooter(void);
   };
 }
 
