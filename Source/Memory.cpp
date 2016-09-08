@@ -165,18 +165,18 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
 
   // dump a header
   vTrace("\n");
-  vTrace("%6s %18s %8s %16s %8s\n",
+  vTrace("%6s %8s %18s %16s %8s\n",
          "Word",
-         "Memory address",
          "Offset",
-         "Hex dump",
-         "Context");
+         "Address",
+         "Hex",
+         "Ascii");
   
-  vTrace("%6s %18s %8s %16s %8s\n",
+  vTrace("%6s %8s %18s %16s %8s\n",
          "------",
-         "------------------",
          "--------",
-         "----------------",
+         "------------------",
+         "-------><-------",
          "--------");
   
   // dump the memory
@@ -185,8 +185,8 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
     // beginning of line, dump the address
     if (iWord == 0) {
       vTrace("%6d ", i);
-      vTrace("0x%016llx ", (i8)((u1*)pAddress + iOffset));
       vTrace("0x%06llx ", iOffset);
+      vTrace("0x%016llx ", (i8)((u1*)pAddress + iOffset));
     }
     
     vTrace("%016llx ", (i8)(*((i8*)pAddress + i)));
@@ -205,7 +205,7 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
     }
     
     if (i == iHighlightWord)
-      vTrace(" <<==== word %lld",iHighlightWord);
+      vTrace(" <<==== OBSERVE");
     
     if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER0)
       vTrace(" <<==== MARKER 0");

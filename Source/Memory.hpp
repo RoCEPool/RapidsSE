@@ -14,8 +14,6 @@ namespace Common
     static const u1 C_ASCII_MAX = 127;
     static const i8 C_BYTES_PER_LINE = 16;
     static const i8 SIZEOF_WORD = static_cast<i8>(sizeof(i8));
-
-    static const u8 C_SCRIBBLE_PATTERN = 0xfeed00face00cafe;
     
   public:
     static void* pAddBytes(void* pAddress, i8 iBytes);

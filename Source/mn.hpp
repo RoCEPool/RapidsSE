@@ -12,7 +12,7 @@ namespace Magic
 
   static const u8 MAGIC = 0x4F4E434947414D5E;
   
-  static const u8 C_SCRIBBLE_PATTERN = 0xfeed00face00cafe;
+  static const u8 C_SCRIBBLE_PATTERN = 0x21454D54494E4921;
   static const u8 C_MEMORY_MARKER0   = 0x0706050403020100;
   static const u8 C_MEMORY_MARKER1   = 0x0706050403020101;
   static const u8 C_MEMORY_MARKER2   = 0x0706050403020102;
