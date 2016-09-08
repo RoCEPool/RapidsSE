@@ -190,7 +190,7 @@ void RapidsSE::vExecute(void)
     }
     else {
       vTrace("Unknown command line argument\n");
-      exit(EXIT_FAILURE);
+      ASSERT(0);
     }
   }
   catch (Error* pError) {
@@ -276,7 +276,7 @@ void RapidsSE::vAttachRegion(void)
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttachRegion: failed to open region: %s\n",
            gxArguments.m_sRegionName.a());
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // allocate a temporary extent of memory
@@ -284,7 +284,7 @@ void RapidsSE::vAttachRegion(void)
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttachRegion failed to map\n");
     Shm::bClose(iFD,xSysCall);
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // overlay attach map onto 2nd buffer (buffer #1)
@@ -305,7 +305,7 @@ void RapidsSE::vAttachRegion(void)
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttachRegion: failed to open region: %s\n",
            gxArguments.m_sRegionName.a());
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // allocate the full extent of memory required
@@ -313,7 +313,7 @@ void RapidsSE::vAttachRegion(void)
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttachRegion failed to map\n");
     Shm::bClose(iFD,xSysCall);
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // overlay buffer pool onto 1st buffer (buffer #0)
@@ -352,7 +352,7 @@ void RapidsSE::vCreateRegion(void)
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreateRegion: failed to create region %s\n",
            gxArguments.m_sRegionName.a());
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // allocate memory for the shm region
@@ -364,7 +364,7 @@ void RapidsSE::vCreateRegion(void)
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vCreateRegion failed to map!\n");
     Shm::bClose(iFD,xSysCall);
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   gpBufferPool = new(mpRegion) BufferPool;

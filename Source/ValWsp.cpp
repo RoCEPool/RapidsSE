@@ -11,9 +11,7 @@ void* ValWsp::operator new(size_t iSize)
 {
   vFatal("fatal: ValWsp class cannot be new'd\n");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

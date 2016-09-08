@@ -22,9 +22,7 @@ void ThreadList::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: ThreadList class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

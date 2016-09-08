@@ -32,7 +32,7 @@ int main(int argc, const char* argv[])
 
   
   if ( ! gxArguments.bParse(argc,argv) )
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   
   gxArguments.vPrint();
   

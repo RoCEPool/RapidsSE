@@ -11,9 +11,7 @@ void* Partition::operator new(size_t iSize)
 {
   vFatal("fatal: Partition class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,9 +21,7 @@ void Partition::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: Partition class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

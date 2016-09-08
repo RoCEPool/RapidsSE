@@ -43,9 +43,7 @@ void* CollectionNode_t<OBJECT>::operator new(size_t iSize)
 {
   vFatal("fatal: ListNode_t class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*---------------------------------------------------------------------------*/

@@ -11,9 +11,7 @@ void* Proxy::operator new(size_t iSize)
 {
   vFatal("fatal: Dictionary class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,9 +21,7 @@ void Proxy::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: Dictionary class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +30,6 @@ void Proxy::operator delete(void* pBufferAddress)
 Proxy::Proxy(void)
 : Object(CN_PROXY)
 {
-  
   Memory::vCheckInitialised(this,sizeof(Proxy));
 }
 

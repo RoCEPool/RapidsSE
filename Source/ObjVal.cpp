@@ -11,9 +11,7 @@ void* ObjVal::operator new(size_t iSize)
 {
   vFatal("fatal: StrVal class cannot be new'd\n");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

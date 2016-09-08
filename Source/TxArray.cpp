@@ -23,9 +23,7 @@ void TxArray::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: TxArray class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

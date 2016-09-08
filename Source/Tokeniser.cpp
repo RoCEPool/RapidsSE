@@ -11,9 +11,7 @@ void* Tokeniser::operator new(size_t)
 {
   vFatal("fatal: Tokeniser class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,9 +21,7 @@ void Tokeniser::operator delete(void*)
 {
   vFatal("fatal: Tokeniser class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,9 +11,7 @@ void* FreeChunk::operator new(size_t iSize)
 {
   vFatal("fatal: FreeChunk class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,9 +21,7 @@ void FreeChunk::operator delete(void* pFreeChunkAddress)
 {
   vFatal("fatal: FreeChunk class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,12 +31,8 @@ FreeChunk::FreeChunk(void)
 : Object(CN_NONE)
 {
   vFatal("fatal: FreeChunk class cannot be new'd");
-  
-  //vExitFatal();
-  
-  Memory::vCheckInitialised(this,sizeof(FreeChunk));
-  
-  exit(EXIT_FAILURE);
+    
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,9 +42,7 @@ FreeChunk::~FreeChunk(void)
 {
   vFatal("fatal: FreeChunk class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

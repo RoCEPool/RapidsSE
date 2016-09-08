@@ -21,9 +21,7 @@ void Grid::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: GridModel class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

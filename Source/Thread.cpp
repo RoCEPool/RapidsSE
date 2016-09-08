@@ -26,10 +26,8 @@ void* Thread::operator new(size_t iSize, Thread* pThread)
 void Thread::operator delete(void* pTxAddress)
 {
   vFatal("fatal: Thread class cannot be deleted");
-  
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

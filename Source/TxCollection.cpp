@@ -23,9 +23,7 @@ void TxCollection::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: gpTxCollection class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

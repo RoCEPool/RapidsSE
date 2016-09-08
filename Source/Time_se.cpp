@@ -11,9 +11,7 @@ void* Time::operator new(size_t)
 {
   vFatal("fatal: Time class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

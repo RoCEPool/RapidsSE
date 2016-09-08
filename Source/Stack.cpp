@@ -13,9 +13,7 @@ void* Stack::operator new(size_t)
 {
   vFatal("fatal: Stack class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,9 +23,7 @@ void Stack::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: Stack class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

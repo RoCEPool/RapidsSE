@@ -12,9 +12,7 @@ void* s::operator new(size_t)
 {
   vFatal("fatal: s class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

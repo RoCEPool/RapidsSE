@@ -11,9 +11,7 @@ void* Ring::operator new(size_t iSize)
 {
   vFatal("fatal: Ring class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,9 +21,7 @@ void Ring::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: Ring class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

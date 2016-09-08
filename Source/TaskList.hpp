@@ -6,8 +6,8 @@
 
 #include "Tasks.h"
 
-namespace Tasks {
-    
+namespace Tasks
+{
   class TaskList : public Object,
                    public List_t<Task>
   {
@@ -32,7 +32,6 @@ namespace Tasks {
     
     Footer* pFooter(void);
   };
-    
 }
 
 /*============================================================================*/

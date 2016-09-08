@@ -13,9 +13,7 @@ void* PtrVal::operator new(size_t iSize)
 {
   vFatal("fatal: PtrVal class cannot be new'd\n");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,9 +11,7 @@ void* User::operator new(size_t iSize)
 {
   vFatal("fatal: User class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,9 +29,7 @@ void User::operator delete(void* pBufferAddress)
 {
   vFatal("fatal: User class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*============================================================================*/

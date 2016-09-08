@@ -11,9 +11,7 @@ void* Row::operator new(size_t)
 {
   vFatal("fatal: Row class cannot be new'd\n");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

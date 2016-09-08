@@ -12,9 +12,7 @@ Static::Static(void)
 {
   vFatal("fatal: Static class cannot be new'd");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,9 +22,7 @@ Static::~Static(void)
 {
   vFatal("fatal: Static class cannot be deleted");
   
-  //vExitFatal();
-  
-  exit(EXIT_FAILURE);
+  ASSERT(0);
 }
 
 /*============================================================================*/

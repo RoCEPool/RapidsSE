@@ -25,7 +25,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
   if ( ! bResult ) {
     vTrace("BufferPool::pAttachRegion Shared Memory Region failed to open region: %s\n",
            sRegionName.a());
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // map the opened shared memory region to memory
@@ -33,7 +33,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
     Shm::bClose(iDescriptor,xSysCall);
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   vTrace("Shm mapped at %p\n",pRegion);
@@ -56,7 +56,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
   if ( ! bResult ) {
     vTrace("BufferPool::pAttachRegion Shared Memory Region failed to open region: %s\n",
            sRegionName.a());
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   // map the opened shared memory region to memory
@@ -64,7 +64,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
     Shm::bClose(iDescriptor,xSysCall);
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   vTrace("Shm mapped at %p\n",pRegion);
@@ -87,14 +87,14 @@ Buffer* BufferPool::pCreateRegion(s& sRegionName,
   if ( ! bResult ) {
     vTrace("BufferPool::pCreateRegion Shared Memory Region failed to open region %s\n",
            sRegionName.a());
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   // map the opened shared memory region to memory
   void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iRegionSize,true,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pCreateRegion failed to map!\n");
     Shm::bClose(iDescriptor,xSysCall);
-    exit(EXIT_FAILURE);
+    ASSERT(0);
   }
   
   vTrace("Shm mapped at %p\n",pRegion);
