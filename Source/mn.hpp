@@ -7,8 +7,11 @@
 
 namespace Magic
 {
-  static const u4 MAGIC = 0X4347414d;
+  //static const u4 MAGIC = 0X4347414d;
   //static const u8 HEADER = 0x5E4845414445525E;  // ^HEADER^
+
+  static const u8 MAGIC = 0x4F4E434947414D5E;
+  
   static const u8 C_SCRIBBLE_PATTERN = 0xfeed00face00cafe;
   static const u8 C_MEMORY_MARKER0   = 0x0706050403020100;
   static const u8 C_MEMORY_MARKER1   = 0x0706050403020101;
@@ -31,7 +34,7 @@ namespace Magic
   {
   private:
     
-    u4 m_uMagicNo;
+    u8 m_uMagicNo;
     
   public:
     mn(void);

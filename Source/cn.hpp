@@ -163,6 +163,7 @@ namespace Magic
   {
   private:
     eCN m_eClassNo;
+    //u4  m_uFiller;
     
   public:
     cn(void);

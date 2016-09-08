@@ -27,7 +27,7 @@ namespace DBobjects
     eTT m_eTableType;
     
     Dictionary m_xDictionary;
-    Ring       m_xRing;
+    //Ring       m_xRing;
     Partitions m_xPartitions;
         
     // must be last
