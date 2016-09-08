@@ -13,7 +13,7 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 void* Loader::operator new(size_t)
 {
-  void* pObject = gpSmallHeap->pAllocObject();
+  void* pObject = gpSmallHeap->pAllocObject(CN_LOADER);
   
   return pObject;
 }

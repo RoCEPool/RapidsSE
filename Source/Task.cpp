@@ -30,7 +30,7 @@ void* Task::operator new(size_t iSize)
 {
   ASSERT(gpTaskList);
   
-  Task* pTask = (Task*)gpMediumHeap->pAllocObject();
+  Task* pTask = (Task*)gpMediumHeap->pAllocObject(CN_TASK);
   
   return pTask;
 }
@@ -7891,7 +7891,7 @@ ENTRY("vSEitfCursorNew");
   SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrVal.pPtr());
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject());
+  SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject(CN_SEITFCURSOR));
   new(pSEitfCursor) SEitfCursor(pSEitfList);
   
   PtrVal xSEitfCursorPtr;
@@ -8774,7 +8774,7 @@ ENTRY("vTaskCursorNew");
   TaskList* pTaskList = reinterpret_cast<TaskList*>(xPtrTaskCursor.pPtr());
   ASSERT(CN_TASKCURSOR == pTaskList->eClass());
   
-  TaskCursor* pTaskCursor = static_cast<TaskCursor*>(gpSmallHeap->pAllocObject());
+  TaskCursor* pTaskCursor = static_cast<TaskCursor*>(gpSmallHeap->pAllocObject(CN_TASKCURSOR));
   new(pTaskCursor) TaskCursor(pTaskList);
   
   PtrVal xSEitfCursorPtr;
@@ -9612,7 +9612,7 @@ void Task::vTimerNew(NNP_Task nnpTask)
 {
 ENTRY("vTimerNew");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(gpSmallHeap->pAllocObject());
+  Timer* pTimer = reinterpret_cast<Timer*>(gpSmallHeap->pAllocObject(CN_TIMER));
 
   new(pTimer) Timer;
  

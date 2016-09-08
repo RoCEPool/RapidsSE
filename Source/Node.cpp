@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t iSize)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpSmallHeap->pAllocObject(CN_NODE);
   
   return pObject;
 }

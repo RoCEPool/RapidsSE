@@ -59,9 +59,13 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 /* allocate an object from the heap                                           */
 /*----------------------------------------------------------------------------*/
-Object* Heap::pAllocObject(void)
+Object* Heap::pAllocObject(eCN eAllocClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  static eCN eLastClass = CN_ENUMS;
+  
+  vVerify();
   
   m_zLock.vGrabWrite();
 
@@ -73,6 +77,9 @@ Object* Heap::pAllocObject(void)
       m_zLock.vDropWrite();
       return nullptr;
     }
+    m_zLock.vDropWrite();
+    vVerify();
+    m_zLock.vGrabWrite();
   }
 
   Object* pObject = static_cast<Object*>(pPopFree());
@@ -82,6 +89,13 @@ Object* Heap::pAllocObject(void)
   m_zLock.vDropWrite();
   
   Memory::vScribble(pObject,m_iObjectSize);
+  
+  //vVerify();
+  
+  eLastClass = eAllocClass;
+  
+  if (CN_TX == eAllocClass)
+    i8 i = 0;
   
   return pObject;
 }
@@ -229,6 +243,8 @@ void Heap::vFreeObject(Object* pObject)
   m_iAllocCount--;
 
   m_zLock.vDropWrite();
+  
+  vVerify();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -281,8 +297,10 @@ bool Heap::bExtendHeap(void)
   for (pFreeChunk = pHeapBuffer->pFirstChunk();
        pFreeChunk;
        pFreeChunk = pHeapBuffer->pNextChunk(pFreeChunk,m_iObjectSize)) {
-    pFreeChunk->vSetMagic();
+    //pFreeChunk->vSetMagic();
+    new(pFreeChunk) FreeChunk;
     vPushFree(pFreeChunk);
+    //vTrace("bExtendHeap %p : %p\n",pHeapBuffer,pFreeChunk);
   }
   
   return true;
@@ -321,11 +339,21 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
 }
 
 /*----------------------------------------------------------------------------*/
-/* verify Medium pool                                                         */
+/* verify heap                                                                */
 /*----------------------------------------------------------------------------*/
 void Heap::vVerify(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_zLock.vGrabWrite();
+  
+  HeapBuffer* pHeapBuffer = m_pFirstBuffer;
+  while (pHeapBuffer) {
+    pHeapBuffer->vVerify(m_iObjectSize);
+    pHeapBuffer = pHeapBuffer->pNextBuffer();
+  }
+  
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

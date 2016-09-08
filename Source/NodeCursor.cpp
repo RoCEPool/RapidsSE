@@ -13,7 +13,7 @@ extern Grid*   gpGrid;
 /*----------------------------------------------------------------------------*/
 void* NodeCursor::operator new(size_t iSize)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpSmallHeap->pAllocObject(CN_NODECURSOR);
   
   return pObject;
 }

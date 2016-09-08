@@ -11,7 +11,7 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 void* RowCursor::operator new(size_t)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpSmallHeap->pAllocObject(CN_ROWCURSOR);
   
   return pObject;
 }

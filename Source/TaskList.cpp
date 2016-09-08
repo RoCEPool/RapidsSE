@@ -13,7 +13,7 @@ extern TaskList*    gpTaskList;
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t iSize)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpSmallHeap->pAllocObject(CN_TASKLIST);
   
   return pObject;
 }
@@ -64,7 +64,7 @@ Task* TaskList::pAllocTask(void)
 {
   _poolAddress_(this);
   
-  Task* pTask = reinterpret_cast<Task*>(gpMediumHeap->pAllocObject());
+  Task* pTask = reinterpret_cast<Task*>(gpMediumHeap->pAllocObject(CN_TASK));
   
   vAppend(pTask);
   

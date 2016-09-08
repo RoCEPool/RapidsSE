@@ -32,6 +32,8 @@ SeHistory::~SeHistory(void)
 /*----------------------------------------------------------------------------*/
 void SeHistory::vAppend(char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   vSeekEnd();
   
   for (i8 i = 0; *pToken[i]; i++) {
@@ -50,6 +52,8 @@ void SeHistory::vAppend(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 void SeHistory::vClose(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   m_xFile.vClose();
 }
 
@@ -58,6 +62,8 @@ void SeHistory::vClose(void)
 /*----------------------------------------------------------------------------*/
 void SeHistory::vOpen(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   char wFileName[C_1KB];
   
   String::vSprint(wFileName,"/tmp/SEitf_%lld_history.txt",Process::iGetPid());
@@ -71,6 +77,8 @@ void SeHistory::vOpen(void)
 /*----------------------------------------------------------------------------*/
 void SeHistory::vPrint(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   char wCommand[C_4KB];
   
   vSeekStart();
@@ -86,6 +94,8 @@ void SeHistory::vPrint(void)
 /*----------------------------------------------------------------------------*/
 bool SeHistory::bRecall(char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   i8 iCommand;
   
   if (String::bEqualTo("!!",pToken[0],C_NO_CASE)) {
@@ -117,6 +127,8 @@ bool SeHistory::bRecall(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   vSeekStart();
   
   char wCommand[C_4KB];
@@ -155,6 +167,8 @@ bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 bool SeHistory::bRead(char* wCommand)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   bool bResult = m_xFile.bReadLine(wCommand);
   
   return bResult;
@@ -165,6 +179,8 @@ bool SeHistory::bRead(char* wCommand)
 /*----------------------------------------------------------------------------*/
 void SeHistory::vSeekStart(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   m_xFile.vSeek(0);
 }
 
@@ -173,6 +189,8 @@ void SeHistory::vSeekStart(void)
 /*----------------------------------------------------------------------------*/
 void SeHistory::vSeekEnd(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
+  
   m_xFile.vSeekEnd();
 }
 
@@ -185,7 +203,9 @@ void SeHistory::vSeekEnd(void)
 /*----------------------------------------------------------------------------*/
 Footer* SeHistory::pFooter(void)
 {
-  return &m_xFooter;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY);
+  
+ return &m_xFooter;
 }
 
 /*============================================================================*/

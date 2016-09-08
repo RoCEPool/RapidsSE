@@ -50,6 +50,7 @@ namespace Transactions
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, Tx* pTx);
     void  operator delete(void*);
     
     Tx(void);

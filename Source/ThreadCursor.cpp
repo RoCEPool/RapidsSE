@@ -13,7 +13,7 @@ extern ThreadList* gpThreadList;
 /*----------------------------------------------------------------------------*/
 void* ThreadCursor::operator new(size_t iSize)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpSmallHeap->pAllocObject(CN_THREADCURSOR);
   
   return pObject;
 }

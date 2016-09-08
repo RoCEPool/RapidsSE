@@ -40,9 +40,10 @@ TxCollection::TxCollection(void)
   for (i8 iTxSlot = 0; iTxSlot < C_TX_ARRAY; iTxSlot++) {
     
     // allocate tx
-    Tx* pTx = reinterpret_cast<Tx*>(gpSmallHeap->pAllocObject());
+    Tx* pTx = reinterpret_cast<Tx*>(gpSmallHeap->pAllocObject(CN_TX));
     
     // initialize it
+    new(pTx) Tx;
     pTx->vTxSlot(iTxSlot);
     
     // push in onto the freelist

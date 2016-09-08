@@ -11,7 +11,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t)
 {
-  void* pObject = gpSmallHeap->pAllocObject();
+  void* pObject = gpSmallHeap->pAllocObject(CN_QUEUE);
   
   return pObject;
 }

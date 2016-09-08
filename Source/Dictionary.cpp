@@ -116,7 +116,7 @@ Word* Dictionary::pAllocWord(i8 iBytes)
   
   ASSERT(iBytes >= static_cast<i8>(sizeof(Word)));
   
-  Word* pWord = reinterpret_cast<Word*>(gpMediumHeap->pAllocObject());
+  Word* pWord = reinterpret_cast<Word*>(gpMediumHeap->pAllocObject(CN_WORD));
   
   pWord->vPrevWord(m_pCurrentWord);
   

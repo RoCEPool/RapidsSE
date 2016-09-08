@@ -10,7 +10,7 @@
 Arguments::Arguments(void)
 : Header(CN_ARGUMENTS)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   m_sRegionName = "/RapidsSE_DefaultRegion";
   m_iRegionSize = 1_GB * 4 ;
@@ -38,7 +38,7 @@ Arguments::Arguments(void)
 /*----------------------------------------------------------------------------*/
 Arguments::~Arguments(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +46,7 @@ Arguments::~Arguments(void)
 /*----------------------------------------------------------------------------*/
 bool Arguments::bParse(int argc, const char* argv[])
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
@@ -134,7 +134,7 @@ bool Arguments::bParse(int argc, const char* argv[])
 /*----------------------------------------------------------------------------*/
 void Arguments::vPrint(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   vTrace("Args:\n");
   
@@ -158,7 +158,7 @@ void Arguments::vPrint(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vPrintHelp(void)
 {
-  _precondition_(_MAGIC_,CN_ARGUMENTS);
+  _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   printf("\n");
   

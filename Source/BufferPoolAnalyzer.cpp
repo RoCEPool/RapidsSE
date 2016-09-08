@@ -37,7 +37,7 @@ BufferPoolAnalyzer::~BufferPoolAnalyzer(void)
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vAnalyze(void)
 {
-  _magic_();
+  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -125,6 +125,8 @@ void BufferPoolAnalyzer::vAnalyze(void)
   }
   
   vTrace("**************************************************************\n");
+  
+  _postcondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +134,7 @@ void BufferPoolAnalyzer::vAnalyze(void)
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vDump(void)
 {
-  _magic_();
+  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -185,6 +187,8 @@ void BufferPoolAnalyzer::vDump(void)
     iCountObjects[pBuffer->eClass()]++;
   }
   vTrace("**************************************************************\n");
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -192,8 +196,6 @@ void BufferPoolAnalyzer::vDump(void)
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vAssertClass(eCN eClassNo) const
 {
-  _magic_();
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,7 +203,7 @@ void BufferPoolAnalyzer::vAssertClass(eCN eClassNo) const
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
 {
-  _magic_();
+  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
   
   pDUMPFUN* pDumpFun =gpDump[pBuffer->eClass()];
   (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
@@ -217,7 +219,7 @@ void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
 {
-  _magic_();
+  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
   
   HeapBuffer* pHeapBuffer;
   
@@ -251,6 +253,7 @@ void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
 /*----------------------------------------------------------------------------*/
 Footer* BufferPoolAnalyzer::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER);
   return &m_xFooter;
 }
 

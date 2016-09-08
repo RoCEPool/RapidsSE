@@ -23,12 +23,11 @@ namespace Pool
     ~Buffer(void);
     
     //void  vAssertClass(eCN eClassNo) const;
-    char* pBufferLimit(void);
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);
     //void  vClass(eCN eClassNo);
     //eCN   eClassNo(void);
-    char* pLastByte(void);
+    char* pLastUsableByte(void);
     bn    nOverflowBuffer(void);
     void  vOverflowBuffer(bn nOverflowBuffer);
     

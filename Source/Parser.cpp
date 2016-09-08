@@ -17,7 +17,7 @@ void* Parser::operator new(size_t, bool bMalloc)
   if (bMalloc)
     pParser = reinterpret_cast<Parser*>(malloc(sizeof(Parser)));
   else
-    pParser = reinterpret_cast<Parser*>(gpMediumHeap->pAllocObject());
+    pParser = reinterpret_cast<Parser*>(gpMediumHeap->pAllocObject(CN_PARSER));
   
   pParser->m_bMalloc = bMalloc;
   

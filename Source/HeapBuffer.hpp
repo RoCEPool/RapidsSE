@@ -33,6 +33,8 @@ namespace Pool
     FreeChunk*  pFirstChunk(void);
     FreeChunk*  pNextChunk(FreeChunk* pChunk, i8 nBytes);
     
+    void vVerify(i8 iChunkSize);
+    
   private:
     char* pChunkEnd(FreeChunk* pChunk, i8 nBytes);
     

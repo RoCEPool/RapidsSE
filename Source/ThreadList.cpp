@@ -54,7 +54,7 @@ Thread* ThreadList::pAllocThread(void)
 {
   _poolAddress_(this);
 
-  Thread* pThread = reinterpret_cast<Thread*>(gpSmallHeap->pAllocObject());
+  Thread* pThread = reinterpret_cast<Thread*>(gpSmallHeap->pAllocObject(CN_THREADLIST));
   
   vAppend(pThread);
   

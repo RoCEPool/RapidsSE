@@ -63,7 +63,7 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   char* pFinalByteOfValue = pcAdd(m_pNextFree,nBytes-1);
   
-  if (pFinalByteOfValue > Buffer::pLastByte())
+  if (pFinalByteOfValue > Buffer::pLastUsableByte())
     return false;
   
   Memory::vCopy(m_pNextFree,pValue,nBytes);

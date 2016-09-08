@@ -45,7 +45,7 @@ Row::Row(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 Row::~Row(void)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ Row::~Row(void)
 /*----------------------------------------------------------------------------*/
 char* Row::pData(void)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   char* pDataAddr = pcAdd(this,sizeof(Row));
   
@@ -65,7 +65,7 @@ char* Row::pData(void)
 /*----------------------------------------------------------------------------*/
 i8 Row::iDataBytes(void)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   return m_iDataBytes;
 }
@@ -75,7 +75,7 @@ i8 Row::iDataBytes(void)
 /*----------------------------------------------------------------------------*/
 void Row::vDataBytes(i8 iDataBytes)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   m_iDataBytes = iDataBytes;
 }
@@ -85,7 +85,7 @@ void Row::vDataBytes(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 void Row::vDump(void) 
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes)\n",
          this,
@@ -101,7 +101,7 @@ void Row::vDump(void)
 /*----------------------------------------------------------------------------*/
 i8 Row::iSize(void)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
   i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iDataBytes;
   
@@ -113,7 +113,7 @@ i8 Row::iSize(void)
 /*----------------------------------------------------------------------------*/
 i8 Row::iTxId(void)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
   return m_iTxId;
 }
@@ -123,7 +123,7 @@ i8 Row::iTxId(void)
 /*----------------------------------------------------------------------------*/
 void Row::vTxId(i8 iTxId)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 
   m_iTxId = iTxId;
 }

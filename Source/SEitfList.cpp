@@ -55,7 +55,7 @@ SEitf* SEitfList::pAllocSEitf(void)
 {
   _poolAddress_(this);
 
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(gpSmallHeap->pAllocObject());
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(gpSmallHeap->pAllocObject(CN_SEITFLIST));
   
   vAppend(pSEitf);
   

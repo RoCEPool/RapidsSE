@@ -17,7 +17,7 @@ namespace Pool
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t);
+    void* operator new(size_t, FreeChunk* pFreeChunk);
     void  operator delete(void*);
 
     FreeChunk(void);

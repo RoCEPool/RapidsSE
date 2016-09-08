@@ -68,18 +68,6 @@ bn Buffer::nBufferNo(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of the byte after buffer                                       */
-/*----------------------------------------------------------------------------*/
-char* Buffer::pBufferLimit(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  char* pLimit = (char*)this + gpBufferPool->iBufferSize();
-  
-  return pPoolCheck<char*>(pLimit);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set buffer number                                                          */
 /*----------------------------------------------------------------------------*/
 void Buffer::vBufferNo(bn nBufferNo)
@@ -92,15 +80,17 @@ void Buffer::vBufferNo(bn nBufferNo)
 /*----------------------------------------------------------------------------*/
 /* get address of last usable byte in buffer                                  */
 /*----------------------------------------------------------------------------*/
-char* Buffer::pLastByte(void)
+char* Buffer::pLastUsableByte(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
+  // last byte in buffer
   char* pLastByte = reinterpret_cast<char*>(this) + C_SIZE_LARGE_BUFFER - 1;
   
-  pLastByte -= sizeof(FOOTER);
+  // last byte before footer
+  char* pLastUsableByte = pLastByte - sizeof(FOOTER);
   
-  return pLastByte;
+  return pLastUsableByte;
 }
 
 /*----------------------------------------------------------------------------*/

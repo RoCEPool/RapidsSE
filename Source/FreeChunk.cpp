@@ -7,11 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
 /*----------------------------------------------------------------------------*/
-void* FreeChunk::operator new(size_t iSize)
+void* FreeChunk::operator new(size_t iSize, FreeChunk* pFreeChunk)
 {
-  vFatal("fatal: FreeChunk class cannot be new'd");
-  
-  ASSERT(0);
+  return pFreeChunk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,9 +28,7 @@ void FreeChunk::operator delete(void* pFreeChunkAddress)
 FreeChunk::FreeChunk(void)
 : Object(CN_NONE)
 {
-  vFatal("fatal: FreeChunk class cannot be new'd");
-    
-  ASSERT(0);
+  m_pNextFree = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

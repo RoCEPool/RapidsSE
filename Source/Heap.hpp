@@ -32,7 +32,7 @@ namespace Pool
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    Object* pAllocObject(void);
+    Object* pAllocObject(eCN eClass);
     void    vAnalyse(i8 xCounts[]);
     i8      iAllocCount(void);
     i8      iBufferCount(void);
@@ -43,7 +43,7 @@ namespace Pool
     void    vFreeObject(Object* pObject);
     void    vGrabLock(void);
     i8      iObjectSize(void);
-    
+        
   private:
     bool bExtendHeap(void);
     FreeChunk* pPopFree(void);

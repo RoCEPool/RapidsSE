@@ -62,19 +62,6 @@ int main(int argc, const char* argv[])
 /*----------------------------------------------------------------------------*/
 void vTest1(void)
 {
-  using namespace StorageEngine;
-  
-//  Task* xTask[1024];
-//  
-//  Heap* pHeap = new Heap(CN_MEDIUMHEAP,C_SIZE_MEDIUM_OBJECT);
-//  
-//  for (i8 i = 0; i < 1024; i++)
-//    xTask[i] = (Task*)pHeap->pAllocObject();
-//  
-//  for (i8 i = 0; i < 1024; i++)
-//    pHeap->vFreeObject(xTask[i]);
-//  
-//  i8 a = 1;
 }
 
 /*============================================================================*/

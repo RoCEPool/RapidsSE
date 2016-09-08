@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* RowStrand::operator new(size_t)
 {
-  Object* pObject = gpSmallHeap->pAllocObject();
+  Object* pObject = gpSmallHeap->pAllocObject(CN_ROWSTRAND);
   
   return pObject;
 }

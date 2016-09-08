@@ -39,7 +39,7 @@ const char* C_OPEN_READ_APPEND = "a+";
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t)
 {
-  void* pObject = gpSmallHeap->pAllocObject();
+  void* pObject = gpSmallHeap->pAllocObject(CN_FILE);
   
   return pObject;
 }

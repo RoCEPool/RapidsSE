@@ -59,11 +59,14 @@ void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
  
+  i8 iChunk = 0;
   for (FreeChunk* pChunk = pFirstChunk();
        pChunk;
-       pChunk = pNextChunk(pChunk,nBytes)) {
+       pChunk = pNextChunk(pChunk,nBytes), iChunk++) {
 
     eCN eClass = pChunk->eClass();
+    //vTrace("Analyse %p : %p %lld\n",this,pChunk,eClass);
+    
     if (CN_FREECHUNK == eClass)
       continue;
     
@@ -149,10 +152,27 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
   FreeChunk* pNextChunk = static_cast<FreeChunk*>(pvAdd(pChunk,nBytes));
 
   // check next buffer ends within this segment
-  if (pChunkEnd(pNextChunk,nBytes) > pLastByte())
+  if (pChunkEnd(pNextChunk,nBytes) > pLastUsableByte())
     return nullptr;
   
   return pNextChunk;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyse the objects in this heap buffer                                    */
+/*----------------------------------------------------------------------------*/
+void HeapBuffer::vVerify(i8 iChunkSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
+  
+  i8 iChunk = 0;
+  for (FreeChunk* pChunk = pFirstChunk();
+       pChunk;
+       pChunk = pNextChunk(pChunk,iChunkSize), iChunk++) {
+    
+    eCN eClass = pChunk->eClass();
+    ASSERT(eClass < CN_ENUMS);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -160,7 +180,7 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate address of the last byte of given Medium buffer                  */
+/* calculate address of the last byte of given buffer                         */
 /*----------------------------------------------------------------------------*/
 char* HeapBuffer::pChunkEnd(FreeChunk* pChunk, i8 nBytes)
 {

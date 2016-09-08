@@ -33,6 +33,8 @@ void SePrompt::operator delete(void* pSePromptAddress)
 SePrompt::SePrompt(i8 iPartition)
 : Object(CN_SEPROMPT)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   m_iPartition = iPartition;
 
   eIE eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition);
@@ -69,6 +71,8 @@ SePrompt::SePrompt(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 SePrompt::~SePrompt(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   RapidsSE_SEitfDelete(m_pSEitf);
 }
 
@@ -77,6 +81,8 @@ SePrompt::~SePrompt(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vLoop(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
   // open the command history file
   m_xHistory.vOpen();
   
@@ -102,6 +108,8 @@ void SePrompt::vLoop(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   while (true) {
     
     m_xTokeniser.vResetTokens(m_pToken,C_TOKENS);
@@ -132,6 +140,8 @@ void SePrompt::vGetCommand(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vProcessCommand(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   // - test for builtin comands
   
   if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
@@ -238,6 +248,8 @@ void SePrompt::vProcessCommand(void)
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteRequest(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   Timer xTimer;
   char* aResponse = nullptr;
   
@@ -279,6 +291,8 @@ bool SePrompt::bExecuteRequest(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vIterateRows(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   i8 iAddress = String::iToI8(m_sResponse.a());
   
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
@@ -302,6 +316,8 @@ void SePrompt::vIterateRows(void)
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bTestFile(char* pWord)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   File xFile;
   
   if (xFile.bExists(pWord))
@@ -315,6 +331,8 @@ bool SePrompt::bTestFile(char* pWord)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPushFile(char* pPath)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   s256 sPath(pPath);
   
   m_xTokeniser.vPush();
@@ -328,6 +346,8 @@ void SePrompt::vPushFile(char* pPath)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vHelp(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   vTrace("se temporary commands:\n");
   vTrace("add    -- add column to table\n");
   vTrace("adr    -- get address of table\n");
@@ -379,6 +399,8 @@ void SePrompt::vHelp(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vChangeWorkingDir(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   s256 sDir;
   Dir xDir;
   
@@ -402,6 +424,7 @@ void SePrompt::vChangeWorkingDir(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCreateTable(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   ASSERT(String::bEqualTo(m_pToken[0],"create"));
   vCollectStatement();
@@ -568,6 +591,8 @@ void SePrompt::vCreateTable(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCreateTable2(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   // for the moment >>create2<< should be the only token
   ASSERT(String::bEqualTo(m_pToken[0],"create2"));
 //  ASSERT(String::bEqualTo(m_pToken[1],""));
@@ -613,6 +638,8 @@ void SePrompt::vCreateTable2(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCollectStatement(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   // we should have a first token (e.g. create or drop)
   ASSERT(! String::bEqualTo(m_pToken[0],""));
 
@@ -655,6 +682,8 @@ void SePrompt::vCollectStatement(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDropTable(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   i8 iToken;
   i8 iTokens = 0;
   
@@ -687,6 +716,8 @@ void SePrompt::vDropTable(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vListDir(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   Dir  xDir;
   s256 sDir;
   s256 sDirEntry;
@@ -722,6 +753,8 @@ void SePrompt::vListDir(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPoolSpace(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   ASSERT(String::bEqualTo(m_pToken[0],"space"));
   
   i8 iFree;
@@ -752,6 +785,8 @@ void SePrompt::vPoolSpace(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vPrintWorkingDir(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   Dir xDir;
   s256 sDir;
   
@@ -768,6 +803,8 @@ void SePrompt::vPrintWorkingDir(void)
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bValidateType(char* pType)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
   if (String::bContains(pType, "date"))
     return true;
   
@@ -798,6 +835,8 @@ bool SePrompt::bValidateType(char* pType)
 /*----------------------------------------------------------------------------*/
 Footer* SePrompt::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT);
+  
   return &m_xFooter;
 }
 
