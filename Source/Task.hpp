@@ -187,7 +187,7 @@ namespace Tasks
     eTS  eState(void);
     void vState(eTS eState);
     void vTokenNext(void);
-    i8   iTxId(void) const;
+    i8   iTxId(void);
     void vTxId(i8 iTxId);
     void vUndirect(void);
     
@@ -195,17 +195,17 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
 
-    bool bGuardParam(i8 iCount) const;
+    bool bGuardParam(i8 iCount);
     
-    bool bGuardParam(eCN eClass0) const;
-    bool bGuardParam(eCN eClass0, eCN eClass1) const;
-    bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const;
+    bool bGuardParam(eCN eClass0);
+    bool bGuardParam(eCN eClass0, eCN eClass1);
+    bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    bool bGuardReturn(i8 iCount) const;
+    bool bGuardReturn(i8 iCount);
     
-    bool bGuardReturn(eCN eClass0) const;
-    bool bGuardReturn(eCN eClass0, eCN eClass1) const;
-    bool bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const;
+    bool bGuardReturn(eCN eClass0);
+    bool bGuardReturn(eCN eClass0, eCN eClass1);
+    bool bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2);
     
     bool bPopParam(Cell*& pCell);
     bool bPopParam(i8& iArg1);

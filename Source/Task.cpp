@@ -61,8 +61,7 @@ void Task::operator delete(void* pTaskAddress)
 Task::Task(void)
 : Object(CN_TASK)
 {
- _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
   ASSERT(gpTaskList);
   
@@ -79,6 +78,8 @@ Task::Task(void)
   gpTaskList->vAppend(pTask);
   
   Memory::vCheckInitialised(this,sizeof(Task));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,8 +88,7 @@ Task::Task(void)
 Task::Task(NNP_Task nnpTask)
 : Object(CN_TASK)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   ASSERT(gpTaskList);
   
@@ -98,6 +98,8 @@ Task::Task(NNP_Task nnpTask)
   gpTaskList->vAppend(pTask);
   
   Memory::vCheckInitialised(this,sizeof(Task));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -106,8 +108,7 @@ Task::Task(NNP_Task nnpTask)
 Task::Task(const char* aLambdaInput)
 : Object(CN_TASK)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   ASSERT(gpTaskList);
 
@@ -119,6 +120,8 @@ Task::Task(const char* aLambdaInput)
   gpTaskList->vAppend(pTask);
   
   Memory::vCheckInitialised(this,sizeof(Task));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +129,7 @@ Task::Task(const char* aLambdaInput)
 /*----------------------------------------------------------------------------*/
 Task::~Task(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Task* pTask = this;
   gpTaskList->vRemove(pTask);
@@ -137,10 +140,7 @@ Task::~Task(void)
 /*----------------------------------------------------------------------------*/
 void Task::vInit(const char* aLambda)
 {
-  _poolAddress_(this);
-  _magic_();
-  
-  _class_(CN_TASK);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   static i8 iTaskNo = 0;
   
@@ -182,6 +182,8 @@ void Task::vInit(const char* aLambda)
 /*----------------------------------------------------------------------------*/
 void Task::vInitialiseDictionary(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vAddPrimitives();
   
   vAddConstants();
@@ -198,6 +200,8 @@ void Task::vInitialiseDictionary(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstant(const char* aName, i8 iVal)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+
   Dictionary* pDic = m_xDictionaryStack.pTop();
   
   pDic->vAddConstant(aName,iVal);
@@ -208,6 +212,8 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstant(const char* aName, const char* aValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Dictionary* pDic = m_xDictionaryStack.pTop();
   
   pDic->vAddConstant(aName,aValue);
@@ -218,6 +224,8 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Dictionary* pDic = m_xDictionaryStack.pTop();
   
   Word* pWord = new(pDic) Word(WT_PRIMITIVE,pFunc);
@@ -231,6 +239,8 @@ void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
 /*----------------------------------------------------------------------------*/
 void Task::vAdjustNext(i8 iBytes)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_pCell = reinterpret_cast<Cell*>(pcAdd(m_pCell,iBytes));
 }
 
@@ -239,6 +249,8 @@ void Task::vAdjustNext(i8 iBytes)
 /*----------------------------------------------------------------------------*/
 Object* Task::pArgObject(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Object* pObject = reinterpret_cast<Object*>(m_pCell);
   
   return pObject;
@@ -249,6 +261,8 @@ Object* Task::pArgObject(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstants(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vAddConstant("largebuffersize",  C_SIZE_LARGE_BUFFER);
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
@@ -459,6 +473,8 @@ void Task::vAddConstants(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vAddPrimitive("word",            &vWord,             false);
   gpWord = pFindWord("word");
   
@@ -915,6 +931,8 @@ void Task::vAddPrimitives(void)
 /*----------------------------------------------------------------------------*/
 void Task::vAddRoutines(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   s16K sDefinition;
 
   sDefinition =
@@ -1090,6 +1108,8 @@ void Task::vAddRoutines(void)
 /*----------------------------------------------------------------------------*/
 void Task::vCheckLocked(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xLock.vCheckWrite();
 }
 
@@ -1098,6 +1118,8 @@ void Task::vCheckLocked(void)
 /*----------------------------------------------------------------------------*/
 Word* Task::pCompileColon(s& sDefinition)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Word* pNewWord;
   pFUN  pFunc;
   Word* pFoundWord;
@@ -1176,6 +1198,8 @@ Word* Task::pCompileColon(s& sDefinition)
 /*----------------------------------------------------------------------------*/
 Word* Task::pCurrentWord(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Dictionary* pDictionary;
   
   if (m_pSEitf)
@@ -1231,6 +1255,8 @@ void Task::vDump(void)
 /*----------------------------------------------------------------------------*/
 void Task::vException(s& sFile, s& eException)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_sFile = sFile;
   m_sException = eException;
 }
@@ -1240,7 +1266,7 @@ void Task::vException(s& sFile, s& eException)
 /*----------------------------------------------------------------------------*/
 Word* Task::pFindWord(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pWord = nullptr;
   
@@ -1262,7 +1288,7 @@ Word* Task::pFindWord(s& sName)
 /*----------------------------------------------------------------------------*/
 Word* Task::pFindWord(const char* aName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pWord = m_xDictionaryStack.pFind(aName);
   
@@ -1274,7 +1300,7 @@ Word* Task::pFindWord(const char* aName)
 /*----------------------------------------------------------------------------*/
 bool Task::bForgetWord(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   bool bResult;
   if (m_pSEitf)
@@ -1288,9 +1314,9 @@ bool Task::bForgetWord(s& sName)
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack                                                      */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(i8 iCount) const
+bool Task::bGuardParam(i8 iCount)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xParamStack.iValues() < iCount)
     return false;
@@ -1303,9 +1329,9 @@ bool Task::bGuardParam(i8 iCount) const
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 1                                                    */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(eCN eClass0) const
+bool Task::bGuardParam(eCN eClass0)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xParamStack.iValues() < 1)
     return false;
@@ -1320,9 +1346,9 @@ bool Task::bGuardParam(eCN eClass0) const
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 2                                                    */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(eCN eClass0, eCN eClass1) const
+bool Task::bGuardParam(eCN eClass0, eCN eClass1)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xParamStack.iValues() < 2)
     return false;
@@ -1341,9 +1367,9 @@ bool Task::bGuardParam(eCN eClass0, eCN eClass1) const
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 3                                                    */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const
+bool Task::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xParamStack.iValues() < 3)
     return false;
@@ -1368,9 +1394,9 @@ bool Task::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2) const
 /*----------------------------------------------------------------------------*/
 /* guard return stack                                                         */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(i8 iCount) const
+bool Task::bGuardReturn(i8 iCount)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xReturnStack.iValues() < iCount)
     return false;
@@ -1381,9 +1407,9 @@ bool Task::bGuardReturn(i8 iCount) const
 /*----------------------------------------------------------------------------*/
 /* guard return stack 1                                                       */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(eCN eClass0) const
+bool Task::bGuardReturn(eCN eClass0)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xReturnStack.iValues() < 1)
     return false;
@@ -1398,9 +1424,9 @@ bool Task::bGuardReturn(eCN eClass0) const
 /*----------------------------------------------------------------------------*/
 /* guard return stack 2                                                       */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(eCN eClass0, eCN eClass1) const
+bool Task::bGuardReturn(eCN eClass0, eCN eClass1)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xReturnStack.iValues() < 2)
     return false;
@@ -1419,9 +1445,9 @@ bool Task::bGuardReturn(eCN eClass0, eCN eClass1) const
 /*----------------------------------------------------------------------------*/
 /* guard return stack 3                                                       */
 /*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const
+bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   if (m_xReturnStack.iValues() < 3)
     return false;
@@ -1452,7 +1478,7 @@ bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2) const
 /*----------------------------------------------------------------------------*/
 bool Task::bIsName(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
@@ -1464,6 +1490,8 @@ bool Task::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 Word* Task::pLocateWord(Cell* pCell)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Word* pWord = m_xDictionaryStack.pLocate(pCell);
   
   return pWord;
@@ -1474,7 +1502,7 @@ Word* Task::pLocateWord(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 s& Task::sName(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_sName;
 }
@@ -1484,7 +1512,7 @@ s& Task::sName(void)
 /*----------------------------------------------------------------------------*/
 void Task::vName(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_sName = sName;
 }
@@ -1494,6 +1522,8 @@ void Task::vName(s& sName)
 /*----------------------------------------------------------------------------*/
 NP_Task Task::npNextInSet(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   return m_npNextInSet;
 }
 
@@ -1502,6 +1532,8 @@ NP_Task Task::npNextInSet(void)
 /*----------------------------------------------------------------------------*/
 void Task::vNextInSet(NP_Task npNextInSet)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_npNextInSet = npNextInSet;
 }
 
@@ -1511,6 +1543,8 @@ void Task::vNextInSet(NP_Task npNextInSet)
 /*----------------------------------------------------------------------------*/
 void Task::vSeedDicCompileSen(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Word* pBootSen = pFindWord("::dicCompile");
   ASSERT(pBootSen);
   
@@ -1531,6 +1565,8 @@ void Task::vSeedDicCompileSen(void)
 /*----------------------------------------------------------------------------*/
 void Task::vSeedWord(const char* aLambda)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Word* pShellEnter = pFindWord("::docmd");
   
   m_pCell = pShellEnter->pFirstCell();
@@ -1552,6 +1588,8 @@ void Task::vSeedWord(const char* aLambda)
 /*----------------------------------------------------------------------------*/
 void Task::vSeedDocol(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Word* pShellEnter = pFindWord("::enter");
   
   m_pCell = pShellEnter->pFirstCell();
@@ -1575,6 +1613,8 @@ void Task::vSeedDocol(void)
 /*----------------------------------------------------------------------------*/
 NP_Task Task::npPrevInSet(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   return m_npPrevInSet;
 }
 
@@ -1583,6 +1623,8 @@ NP_Task Task::npPrevInSet(void)
 /*----------------------------------------------------------------------------*/
 void Task::vPrevInSet(NP_Task npPrevInSet)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_npPrevInSet = npPrevInSet;
 }
 
@@ -1591,6 +1633,8 @@ void Task::vPrevInSet(NP_Task npPrevInSet)
 /*----------------------------------------------------------------------------*/
 void Task::vPrimitive(const char* aPrimitive)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if (!m_bTracing)
     return;
   
@@ -1629,6 +1673,8 @@ void Task::vPrimitive(const char* aPrimitive)
 /*----------------------------------------------------------------------------*/
 void Task::vReset(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
@@ -1643,6 +1689,8 @@ void Task::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRetry(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
@@ -1657,6 +1705,8 @@ void Task::vRetry(void)
 /*----------------------------------------------------------------------------*/
 Thread* Task::pRootThread(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   Object* pThreadEmb;
   
   if ( ! bPopParam(pThreadEmb) ) {
@@ -1677,6 +1727,8 @@ Thread* Task::pRootThread(void)
 /*----------------------------------------------------------------------------*/
 void Task::vRoutineCall(Word* pWord)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   ASSERT(WT_ROUTINE == pWord->eWordType());
     
   vPushReturn(m_pCell);
@@ -1691,7 +1743,7 @@ void Task::vRoutineCall(Word* pWord)
 /*----------------------------------------------------------------------------*/
 eTS Task::eState(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_eState;
 }
@@ -1701,7 +1753,7 @@ eTS Task::eState(void)
 /*----------------------------------------------------------------------------*/
 void Task::vState(eTS eState)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_xLock.vGrabWrite();
   m_eState = eState;
@@ -1713,15 +1765,17 @@ void Task::vState(eTS eState)
 /*----------------------------------------------------------------------------*/
 void Task::vTokenNext(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_eToken = m_xTokeniser.eNextToken(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
 /* get transaction id                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Task::iTxId(void) const
+i8 Task::iTxId(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   return m_iTxId;
 }
@@ -1731,7 +1785,7 @@ i8 Task::iTxId(void) const
 /*----------------------------------------------------------------------------*/
 void Task::vTxId(i8 iTxId)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_iTxId = iTxId;
 }
@@ -1741,6 +1795,8 @@ void Task::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 void Task::vUndirect(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   //vTrace("undirect return stack: %lld\n",nnpTask->m_xReturnStack.iValues());
   
   bool bPopped;
@@ -1758,6 +1814,8 @@ void Task::vUndirect(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLoop(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   while (TS_RUNNING == m_eState) {
     
     pFUN pFunc = m_pCell->m_pCodeField->m_pFunc;
@@ -1814,6 +1872,8 @@ void Task::vLoop(void)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Cell*& pCell)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
@@ -1831,6 +1891,8 @@ bool Task::bPopParam(Cell*& pCell)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_INTVAL) )
     return false;
   
@@ -1847,6 +1909,8 @@ bool Task::bPopParam(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1, i8& iArg2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_INTVAL,CN_INTVAL) )
     return false;
   
@@ -1868,6 +1932,8 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1, Value& xArg2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
     return false;
   
@@ -1886,6 +1952,8 @@ bool Task::bPopParam(i8& iArg1, Value& xArg2)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
   
@@ -1909,6 +1977,8 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Object*& pObject)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
@@ -1925,6 +1995,8 @@ bool Task::bPopParam(Object*& pObject)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Object*& pObject1, Object*& pObject2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_PTRVAL,CN_PTRVAL) )
     return false;
   
@@ -1946,6 +2018,8 @@ bool Task::bPopParam(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Object*& pObject, Value& xValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
@@ -1962,6 +2036,8 @@ bool Task::bPopParam(Object*& pObject, Value& xValue)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(s32& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_STRVAL) )
     return false;
   
@@ -1978,6 +2054,8 @@ bool Task::bPopParam(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(s256& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_STRVAL) )
     return false;
   
@@ -1994,6 +2072,8 @@ bool Task::bPopParam(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(s16K& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_STRVAL) )
     return false;
   
@@ -2010,6 +2090,8 @@ bool Task::bPopParam(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(s16K& sArg1, s16K& sArg2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_STRVAL) )
     return false;
   
@@ -2031,6 +2113,8 @@ bool Task::bPopParam(s16K& sArg1, s16K& sArg2)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Task*& pTask1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xPtrTask;
   
   if ( ! bGuardParam(CN_PTRVAL) )
@@ -2050,6 +2134,8 @@ bool Task::bPopParam(Task*& pTask1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Value& xArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(1) )
     return false;
   
@@ -2063,6 +2149,8 @@ bool Task::bPopParam(Value& xArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Value& pValue1, Value& pValue2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(2) )
     return false;
   
@@ -2078,6 +2166,8 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(3) )
     return false;
   
@@ -2095,6 +2185,8 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Word*& pWord1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
@@ -2113,6 +2205,8 @@ bool Task::bPopParam(Word*& pWord1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParamInt(i8& iArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardParam(1) )
     return false;
   
@@ -2129,6 +2223,8 @@ bool Task::bPopParamInt(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPopParam(Value* pValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xParamStack.vPop(pValue);
 }
 
@@ -2137,6 +2233,8 @@ void Task::vPopParam(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Cell* pCell)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xPtrIP;
   
   xPtrIP = pCell;
@@ -2149,6 +2247,8 @@ void Task::vPushParam(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(const char* aString)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   ValWsp xStrVal1;
   xStrVal1 = aString;
   
@@ -2160,6 +2260,8 @@ void Task::vPushParam(const char* aString)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Object* pObject1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xEmbVal1;
   xEmbVal1 = pObject1;
   
@@ -2171,6 +2273,8 @@ void Task::vPushParam(Object* pObject1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(i8 iArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   IntVal xIntVal1;
   xIntVal1 = iArg1;
   
@@ -2182,6 +2286,8 @@ void Task::vPushParam(i8 iArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(s32& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vPushParam(sArg1.a());
 }
 
@@ -2190,6 +2296,8 @@ void Task::vPushParam(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(s256& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vPushParam(sArg1.a());
 }
 
@@ -2198,6 +2306,8 @@ void Task::vPushParam(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(s16K& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vPushParam(sArg1.a());
 }
 
@@ -2214,6 +2324,8 @@ void Task::vPushParam(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Value& xVal1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xParamStack.vPush(&xVal1);
 }
 
@@ -2222,6 +2334,8 @@ void Task::vPushParam(Value& xVal1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Value* pValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xParamStack.vPush(pValue);
 }
 
@@ -2230,6 +2344,8 @@ void Task::vPushParam(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(NNP_Task pnnArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xPtrTask;
   xPtrTask = *pnnArg1;
   
@@ -2241,6 +2357,8 @@ void Task::vPushParam(NNP_Task pnnArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Word* pArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xPtrWord;
   xPtrWord = pArg1;
   
@@ -2252,6 +2370,8 @@ void Task::vPushParam(Word* pArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(const char* aString)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   ValWsp xStrVal1;
   xStrVal1 = aString;
   
@@ -2263,6 +2383,8 @@ void Task::vPushReturn(const char* aString)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(i8 iArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   IntVal xIntVal1;
   xIntVal1 = iArg1;
   
@@ -2274,6 +2396,8 @@ void Task::vPushReturn(i8 iArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(s32& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vPushReturn(sArg1.a());
 }
 
@@ -2282,6 +2406,8 @@ void Task::vPushReturn(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(s256& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vPushReturn(sArg1.a());
 }
 
@@ -2290,6 +2416,8 @@ void Task::vPushReturn(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(s16K& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   vPushReturn(sArg1.a());
 }
 
@@ -2298,6 +2426,8 @@ void Task::vPushReturn(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(Cell* pCell)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xPtrIP;
   xPtrIP = pCell;
   
@@ -2309,6 +2439,8 @@ void Task::vPushReturn(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(Value* pValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xReturnStack.vPush(pValue);
 }
 
@@ -2317,6 +2449,8 @@ void Task::vPushReturn(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(Value& xValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xReturnStack.vPush(&xValue);
 }
 
@@ -2325,6 +2459,8 @@ void Task::vPushReturn(Value& xValue)
 /*----------------------------------------------------------------------------*/
 void Task::vPopReturn(Cell*& pCell)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   PtrVal xPtrIP;
   
   m_xReturnStack.vPop(&xPtrIP);
@@ -2337,6 +2473,8 @@ void Task::vPopReturn(Cell*& pCell)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(i8& iArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardReturn(CN_INTVAL) )
     return false;
   
@@ -2353,6 +2491,8 @@ bool Task::bPopReturn(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(i8& iArg1, i8& iArg2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardReturn(CN_INTVAL,CN_INTVAL) )
     return false;
   
@@ -2374,6 +2514,8 @@ bool Task::bPopReturn(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(Value& xValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   // need to check the parameter stack
   
   vPopReturn(&xValue);
@@ -2386,6 +2528,8 @@ bool Task::bPopReturn(Value& xValue)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(Value& xValue1, Value& xValue2)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardReturn(2) )
     return false;
   
@@ -2400,6 +2544,8 @@ bool Task::bPopReturn(Value& xValue1, Value& xValue2)
 /*----------------------------------------------------------------------------*/
 void Task::vPopReturn(Value* pValue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   m_xReturnStack.vPop(pValue);
 }
 
@@ -2408,6 +2554,8 @@ void Task::vPopReturn(Value* pValue)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(s32& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardReturn(CN_STRVAL) )
     return false;
   
@@ -2424,6 +2572,8 @@ bool Task::bPopReturn(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(s256& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardReturn(CN_STRVAL) )
     return false;
   
@@ -2440,6 +2590,8 @@ bool Task::bPopReturn(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(s16K& sArg1)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
   if ( ! bGuardReturn(CN_STRVAL) )
     return false;
   
@@ -10574,6 +10726,8 @@ ENTRY("vServer");
 /*----------------------------------------------------------------------------*/
 Footer* Task::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK);
+  
   return &m_xFooter;
 }
 
