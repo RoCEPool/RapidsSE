@@ -32,12 +32,16 @@ void Buffer::operator delete(void* pBufferAddress)
 Buffer::Buffer(eCN eClassNo)
 : Object(eClassNo)
 {
-  _precondition_(_MAGIC_, eClassNo);
+  _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
+  
+  pFooter()->vSetFooter();
   
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
   
   Memory::vCheckInitialised(this,sizeof(Buffer));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +49,7 @@ Buffer::Buffer(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Buffer::~Buffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(eClass() != CN_NONE);
   
@@ -58,7 +62,7 @@ Buffer::~Buffer(void)
 /*----------------------------------------------------------------------------*/
 bn Buffer::nBufferNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_nBufferNo;
 }
@@ -66,9 +70,9 @@ bn Buffer::nBufferNo(void)
 /*----------------------------------------------------------------------------*/
 /* get address of the byte after buffer                                       */
 /*----------------------------------------------------------------------------*/
-char* Buffer::pBufferLimit(void) const
+char* Buffer::pBufferLimit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   char* pLimit = (char*)this + gpBufferPool->iBufferSize();
   
@@ -80,19 +84,21 @@ char* Buffer::pBufferLimit(void) const
 /*----------------------------------------------------------------------------*/
 void Buffer::vBufferNo(bn nBufferNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_nBufferNo = nBufferNo;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of last byte in buffer                                         */
+/* get address of last usable byte in buffer                                  */
 /*----------------------------------------------------------------------------*/
 char* Buffer::pLastByte(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  char* pLastByte = reinterpret_cast<char*>(this) + 1_MB - 1;     // to be fixed
+  char* pLastByte = reinterpret_cast<char*>(this) + C_SIZE_LARGE_BUFFER - 1;
+  
+  pLastByte -= sizeof(FOOTER);
   
   return pLastByte;
 }
@@ -102,7 +108,7 @@ char* Buffer::pLastByte(void)
 /*----------------------------------------------------------------------------*/
 bn Buffer::nOverflowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_nOverflowBuffer;
 }
@@ -112,7 +118,7 @@ bn Buffer::nOverflowBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Buffer::vOverflowBuffer(bn nOverflowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_nOverflowBuffer = nOverflowBuffer;
 }
@@ -127,7 +133,7 @@ void Buffer::vOverflowBuffer(bn nOverflowBuffer)
 Footer* Buffer::pFooter(void)
 {
   // Note: cannot check _FOOTER_ here
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_);
   
   Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
   

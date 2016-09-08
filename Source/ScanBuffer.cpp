@@ -32,14 +32,15 @@ void ScanBuffer::operator delete(void* pBufferAddress)
 ScanBuffer::ScanBuffer(void)
 : Buffer(CN_SCANBUFFER)
 {
-  _poolAddress_(this);
-  _magic_();
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+
   vReset();
   
   ASSERT(m_pEndData);
   
   Memory::vCheckInitialised(this,sizeof(ScanBuffer));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,8 +48,7 @@ ScanBuffer::ScanBuffer(void)
 /*----------------------------------------------------------------------------*/
 ScanBuffer::~ScanBuffer(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,6 +75,8 @@ char* ScanBuffer::pInto(i8& iAvailableBytes)
   // +---------------------------------------------------------------------+
   //              ^- m_pEndData (of copied up dangling portion)
   //
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
   iAvailableBytes = iBytesAvailable();
   
@@ -106,6 +108,8 @@ void ScanBuffer::vMore(i8& iBytesRead)
   // +---------------------------------------------------------------------+
   //                                              m_pEndData -^
   
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   m_pEndData = pcAdd(m_pEndData,iBytesRead);
   
   m_pNextMsg = pFirstByte();
@@ -135,6 +139,8 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
   // +---------------------------------------------------------------------+
   //         ^- m_pNextMsg                                     m_pEndData -^
   //
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
   // initial case of no data
   if ( ! m_pNextMsg ) {
@@ -199,6 +205,9 @@ i8 ScanBuffer::iBytesAvailable(void)
   // +---------------------------------------------------------------------+
   //              ^- m_pEndData (of prev copied up dangling portion)
   //
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
   
@@ -213,6 +222,8 @@ i8 ScanBuffer::iBytesAvailable(void)
 /*----------------------------------------------------------------------------*/
 void ScanBuffer::vCopyUp(char* pDangling)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   // used all of the workarea?
   if (pDangling > pLastByte()) {
     vReset();
@@ -270,6 +281,8 @@ void ScanBuffer::vCopyUp(char* pDangling)
 /*----------------------------------------------------------------------------*/
 char* ScanBuffer::pFirstByte(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   char* pFirst = &m_wWorkarea[0];
   
   return pFirst;
@@ -280,6 +293,8 @@ char* ScanBuffer::pFirstByte(void)
 /*----------------------------------------------------------------------------*/
 char* ScanBuffer::pLastByte(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   char* pLast = &m_wWorkarea[C_WORKAREA - 1];
   
   return pLast;
@@ -298,6 +313,8 @@ void ScanBuffer::vReset(void)
   // ^- m_pEnd
   //
   
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   m_pEndData = pFirstByte() - 1;
   ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
@@ -313,7 +330,11 @@ void ScanBuffer::vReset(void)
 /*----------------------------------------------------------------------------*/
 void ScanBuffer::vWipe(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   Memory::vSet(m_wWorkarea,0xEF,C_WORKAREA);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,23 +342,15 @@ void ScanBuffer::vWipe(void)
 /*----------------------------------------------------------------------------*/
 void ScanBuffer::vWipe(char* pFrom)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
   ASSERT(pFrom >= m_wWorkarea);
   
   i8 iBytes = iSub(pLastByte(),pFrom) + 1;
   
   Memory::vSet(pFrom,0xEF,iBytes);
-}
 
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* ScanBuffer::pFooter(void)
-{
-  return &m_xFooter;
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
 
 /*============================================================================*/

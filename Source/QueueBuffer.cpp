@@ -32,15 +32,16 @@ void QueueBuffer::operator delete(void* pBufferAddress)
 QueueBuffer::QueueBuffer(void)
 : Buffer(CN_QUEUEBUFFER)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  m_pNext     = nullptr;
+  m_nValues   = 0;
   m_pTopValue = pFirstValue();
   m_pNextFree = m_pTopValue;
-  m_iCount    = 0;
+  m_pNext     = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(QueueBuffer));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,8 +49,7 @@ QueueBuffer::QueueBuffer(void)
 /*----------------------------------------------------------------------------*/
 QueueBuffer::~QueueBuffer(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ QueueBuffer::~QueueBuffer(void)
 /*----------------------------------------------------------------------------*/
 bool QueueBuffer::bAppend(Value* pValue)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   i8 nBytes = pValue->iSize();
   
@@ -70,7 +70,7 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   m_pNextFree = static_cast<Value*>(pvAdd(m_pNextFree,nBytes));
   
-  m_iCount++;
+  m_nValues++;
   
   return true;
 }
@@ -80,9 +80,9 @@ bool QueueBuffer::bAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 i8 QueueBuffer::iCount(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  return m_iCount;
+  return m_nValues;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -90,11 +90,11 @@ i8 QueueBuffer::iCount(void)
 /*----------------------------------------------------------------------------*/
 void QueueBuffer::vDump(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   vTrace("QueueBuffer: %p Count %lld TopValue %p NextFree %p\n",
          this,
-         m_iCount,
+         m_nValues,
          m_pTopValue,
          m_pNextFree);
 }
@@ -104,7 +104,7 @@ void QueueBuffer::vDump(void)
 /*----------------------------------------------------------------------------*/
 QueueBuffer* QueueBuffer::pNext(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   return m_pNext;
 }
@@ -114,7 +114,7 @@ QueueBuffer* QueueBuffer::pNext(void)
 /*----------------------------------------------------------------------------*/
 void QueueBuffer::vNext(QueueBuffer* pQbuffer)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   m_pNext = pQbuffer;
 }
@@ -124,11 +124,11 @@ void QueueBuffer::vNext(QueueBuffer* pQbuffer)
 /*----------------------------------------------------------------------------*/
 bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 
   bDiscardable = false;
   
-  if (0 == m_iCount) {
+  if (0 == m_nValues) {
     //ASSERT(m_pTopValue == m_pNextFree);
     return false;
   }
@@ -140,9 +140,9 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = static_cast<Value*>(pvAdd(m_pTopValue,nBytes));
   
-  m_iCount--;
+  m_nValues--;
   
-  if (0 == m_iCount) {
+  if (0 == m_nValues) {
     if (m_pNext) {
       bDiscardable = true;
     }
@@ -160,11 +160,11 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
 /*----------------------------------------------------------------------------*/
 bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
 {
-  _poolAddress_(this);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
+ 
   bDiscardable = false;
   
-  if (0 == m_iCount) {
+  if (0 == m_nValues) {
     //ASSERT(m_pTopValue == m_pNextFree);
     return false;
   }
@@ -176,9 +176,9 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
   //m_pTopValue = pNextValue(m_pTopValue);
   m_pTopValue = static_cast<Value*>(pvAdd(m_pTopValue,nBytes));
   
-  m_iCount--;
+  m_nValues--;
   
-  if (0 == m_iCount) {
+  if (0 == m_nValues) {
     if (m_pNext) {
       bDiscardable = true;
     }
@@ -200,7 +200,7 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
 /*----------------------------------------------------------------------------*/
 Value* QueueBuffer::pFirstValue(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   Value* pFirstValue = static_cast<Value*>(pvAdd(this,sizeof(QueueBuffer)));
   
@@ -212,7 +212,7 @@ Value* QueueBuffer::pFirstValue(void)
 /*----------------------------------------------------------------------------*/
 Value* QueueBuffer::pNextValue(Value* pValue)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   i8 nBytes = pValue->iSize();
   
@@ -229,30 +229,13 @@ Value* QueueBuffer::pNextValue(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void QueueBuffer::vVerify(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
   i8 iCount = 0;
   for (Value* pValue = pFirstValue(); pValue; pValue = pNextValue(pValue))
     iCount++;
   
-  ASSERT(iCount == m_iCount);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* QueueBuffer::pFooter(void)
-{
-  // Note: cannot check _FOOTER_ here
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
-  
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
-  
-  return pFooter;
+  ASSERT(iCount == m_nValues);
 }
 
 /*============================================================================*/

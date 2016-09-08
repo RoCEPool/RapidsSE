@@ -14,9 +14,7 @@ namespace Pool
   {
   private:
     bn m_nNextFree;  // next buffer in free chain
-        
-    // must be last
-    Footer m_xFooter;
+    // ..data..
     
   public:
     BufferFree(void);
@@ -24,8 +22,6 @@ namespace Pool
     
     bn   nNextFree(void);
     void vNextFree(bn nBuffer);
-    
-    Footer* pFooter(void);
   };
 }
 

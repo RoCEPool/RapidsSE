@@ -48,8 +48,6 @@ namespace DBobjects
     i8      iFreeSpace(void);
     bool    bIsExhausted(void);
     void    vSetExhausted(void);
-    
-    Footer* pFooter(void);
   };
 }
 

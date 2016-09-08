@@ -23,7 +23,7 @@ namespace Pool
     ~Buffer(void);
     
     //void  vAssertClass(eCN eClassNo) const;
-    char* pBufferLimit(void) const;
+    char* pBufferLimit(void);
     bn    nBufferNo(void);
     void  vBufferNo(bn nBufferNo);
     //void  vClass(eCN eClassNo);

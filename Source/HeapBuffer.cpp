@@ -32,14 +32,14 @@ void HeapBuffer::operator delete(void* pHeapBufferAddress)
 HeapBuffer::HeapBuffer(void)
 : Buffer(CN_HEAPBUFFER)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   m_pNextBuffer = nullptr;
   m_pPrevBuffer = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(HeapBuffer));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ HeapBuffer::~HeapBuffer(void)
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vAnalyse(i8 nBytes, i8 xCounts[])
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
  
   for (FreeChunk* pChunk = pFirstChunk();
        pChunk;
@@ -91,7 +91,7 @@ void HeapBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 HeapBuffer* HeapBuffer::pNextBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   return m_pNextBuffer;
 }
@@ -101,7 +101,7 @@ HeapBuffer* HeapBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vNextBuffer(HeapBuffer* pNextBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   m_pNextBuffer = pNextBuffer;
 }
@@ -111,7 +111,7 @@ void HeapBuffer::vNextBuffer(HeapBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 HeapBuffer* HeapBuffer::pPrevBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   return m_pPrevBuffer;
 }
@@ -121,7 +121,7 @@ HeapBuffer* HeapBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 void HeapBuffer::vPrevBuffer(HeapBuffer* pPrevBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
 }
@@ -131,7 +131,7 @@ void HeapBuffer::vPrevBuffer(HeapBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 FreeChunk* HeapBuffer::pFirstChunk(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   FreeChunk* pFirstChunk = static_cast<FreeChunk*>(pvAdd(this,sizeof(HeapBuffer)));
   
@@ -143,7 +143,7 @@ FreeChunk* HeapBuffer::pFirstChunk(void)
 /*----------------------------------------------------------------------------*/
 FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   // calculate address of next buffer
   FreeChunk* pNextChunk = static_cast<FreeChunk*>(pvAdd(pChunk,nBytes));
@@ -164,30 +164,11 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 char* HeapBuffer::pChunkEnd(FreeChunk* pChunk, i8 nBytes)
 {
-  _poolAddress_(this);
-  _magic_();
-  _class_(CN_HEAPBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   char* pChunkEnd = pcAdd(pChunk,nBytes - 1);
   
   return pChunkEnd;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* HeapBuffer::pFooter(void)
-{
-  // Note: cannot check _FOOTER_ here
-  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER);
-  
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
-  
-  return pFooter;
 }
 
 /*============================================================================*/

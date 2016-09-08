@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  BufferFree.cpp - buffer when its in the buffer pool free chain            */
+/* BufferFree.cpp -- buffer when its in the buffer pool free chain            */
 /*============================================================================*/
 
 #include "Pool.h"
@@ -10,9 +10,9 @@ extern BufferPool* gpBufferPool;
 /* constructor -- never called                                                */
 /*----------------------------------------------------------------------------*/
 BufferFree::BufferFree(void)
-: Buffer(CN_BUFFER)
+: Buffer(CN_BUFFER) // correct
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(BufferFree));
   ASSERT("Should never be reached");
@@ -23,7 +23,7 @@ BufferFree::BufferFree(void)
 /*----------------------------------------------------------------------------*/
 BufferFree::~BufferFree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
   
   ASSERT("Should never be reached");
 }
@@ -33,7 +33,7 @@ BufferFree::~BufferFree(void)
 /*----------------------------------------------------------------------------*/
 bn BufferFree::nNextFree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
   
   return m_nNextFree;
 }
@@ -43,21 +43,9 @@ bn BufferFree::nNextFree(void)
 /*----------------------------------------------------------------------------*/
 void BufferFree::vNextFree(bn nBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
   
   m_nNextFree = nBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* BufferFree::pFooter(void)
-{
-  return &m_xFooter;
 }
 
 /*============================================================================*/

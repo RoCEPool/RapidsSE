@@ -15,6 +15,8 @@ namespace Magic
     
   public:
     Header(eCN eClass);
+    
+    Footer* pFooter(void);
   };
 }
 

@@ -13,10 +13,10 @@ namespace Structures
     friend class Queue;
     
   private:
-    QueueBuffer* m_pNext;
-    i8       m_iCount;
-    Value* m_pTopValue;
-    Value* m_pNextFree;
+    i8     m_nValues;     // number of values in the queue
+    Value* m_pTopValue;   // the top value
+    Value* m_pNextFree;   // free space pointer
+    QueueBuffer* m_pNext; // next buffer
     // ..data..
     
   public:
@@ -38,8 +38,6 @@ namespace Structures
     Value*   pFirstValue(void);
     Value*   pNextValue(Value* pValue);
     void     vVerify(void);
-    
-    Footer* pFooter(void);
   };
 }
 

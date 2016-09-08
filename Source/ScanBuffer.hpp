@@ -18,9 +18,6 @@ namespace Structures
     
     char  m_wWorkarea[C_WORKAREA];
     
-    // must be last
-    Footer m_xFooter;
-    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -40,8 +37,6 @@ namespace Structures
     void  vReset(void);
     void  vWipe(void);
     void  vWipe(char* pFrom);
-    
-    Footer* pFooter(void);
   };
 }
 

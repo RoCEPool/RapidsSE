@@ -17,6 +17,7 @@ namespace Magic
     Object(eCN eClass);
     void vInitMagic(void);
     
+    Footer* pFooter(void);
   };
 }
 

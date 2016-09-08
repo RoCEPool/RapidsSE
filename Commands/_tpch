@@ -139,8 +139,8 @@ ld supplier "/tpch/supplier.tbl"
 //cp nation nation_copy
 //ex nation_copy "/tmp/nation_copy.txt"
 
-pld
-ls
+pwf
+lf
 
 //tr t
 //sz t

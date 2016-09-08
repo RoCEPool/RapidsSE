@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Heap.cpp - heap allocator                                                  */
+/* Heap.cpp -- Heap Allocator                                                 */
 /*============================================================================*/
 
 #include "Pool.h"
@@ -44,6 +44,8 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_pFreeHead    = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(Heap));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +53,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
 /*----------------------------------------------------------------------------*/
 Heap::~Heap(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +61,7 @@ Heap::~Heap(void)
 /*----------------------------------------------------------------------------*/
 Object* Heap::pAllocObject(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_zLock.vGrabWrite();
 
@@ -89,7 +91,7 @@ Object* Heap::pAllocObject(void)
 /*----------------------------------------------------------------------------*/
 i8 Heap::iAllocCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_iAllocCount;
 }
@@ -99,7 +101,7 @@ i8 Heap::iAllocCount(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vAnalyse(i8 xCounts[])
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -117,7 +119,7 @@ void Heap::vAnalyse(i8 xCounts[])
 /*----------------------------------------------------------------------------*/
 i8 Heap::iBufferCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_iBufferCount;
 }
@@ -127,7 +129,7 @@ i8 Heap::iBufferCount(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vGrabLock()
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(!m_zLock.bIsLocked());
   m_zLock.vGrabWrite();
@@ -139,7 +141,7 @@ void Heap::vGrabLock()
 /*----------------------------------------------------------------------------*/
 HeapBuffer* Heap::pFirstBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(m_zLock.bIsLocked());
   
@@ -151,7 +153,7 @@ HeapBuffer* Heap::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vDropLock(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(m_zLock.bIsLocked());
   m_zLock.vDropWrite();
@@ -196,7 +198,7 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   ASSERT(m_zLock.bIsLocked());
   
@@ -208,7 +210,7 @@ HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 i8 Heap::iFreeCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_iFreeCount;
 }
@@ -218,7 +220,7 @@ i8 Heap::iFreeCount(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vFreeObject(Object* pObject)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   m_zLock.vGrabWrite();
   
@@ -234,7 +236,7 @@ void Heap::vFreeObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 i8 Heap::iObjectSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   return m_iObjectSize;
 }
@@ -248,7 +250,7 @@ i8 Heap::iObjectSize(void)
 /*----------------------------------------------------------------------------*/
 bool Heap::bExtendHeap(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   // - firstly, get a new heap buffer (from buffer pool)
   
@@ -291,7 +293,7 @@ bool Heap::bExtendHeap(void)
 /*----------------------------------------------------------------------------*/
 FreeChunk* Heap::pPopFree(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   // free chain must exist
   ASSERT(m_pFreeHead);
@@ -309,7 +311,7 @@ FreeChunk* Heap::pPopFree(void)
 /*----------------------------------------------------------------------------*/
 void Heap::vPushFree(FreeChunk* pFreeChunk)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   pFreeChunk->vClass(CN_FREECHUNK);
   pFreeChunk->vNextFree(m_pFreeHead);
@@ -323,7 +325,7 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
 /*----------------------------------------------------------------------------*/
 void Heap::vVerify(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -335,6 +337,8 @@ void Heap::vVerify(void)
 /*----------------------------------------------------------------------------*/
 Footer* Heap::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
   return &m_xFooter;
 }
 

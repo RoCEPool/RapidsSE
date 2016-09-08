@@ -205,7 +205,7 @@ void SePrompt::vProcessCommand(void)
   
   // - execute seitf request
   
-  if (!bExecuteRequest())
+  if (! bExecuteRequest())
     return;
   
   // - post process requests
@@ -261,7 +261,7 @@ bool SePrompt::bExecuteRequest(void)
   if (IE_NONE == eResult) {
     if ( ! String::bEqualTo(aResponse, "<ok>") ) {
       vTrace("%s\n",aResponse);
-      return false;
+      return true;
     }
   }
   else {

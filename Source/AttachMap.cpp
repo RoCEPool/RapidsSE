@@ -40,10 +40,14 @@ void AttachMap::operator delete(void* pBufferAddress)
 AttachMap::AttachMap(void)
 : Buffer(CN_ATTACHMAP)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
+  
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
   Memory::vCheckInitialised(this,sizeof(AttachMap));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +55,7 @@ AttachMap::AttachMap(void)
 /*----------------------------------------------------------------------------*/
 AttachMap::~AttachMap(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,6 +63,8 @@ AttachMap::~AttachMap(void)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vGetGlobals(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
   gpMediumHeap       = m_pMediumHeap;
   gpSmallHeap        = m_pSmallHeap;
   gpMainDic          = &m_xMainDic;
@@ -72,6 +79,8 @@ void AttachMap::vGetGlobals(void)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vRecordGlobals(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
   m_iPid              = Process::iGetPid();
   
   m_xSince.vSet();
@@ -118,6 +127,8 @@ void AttachMap::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 Footer* AttachMap::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP);
+  
   return &m_xFooter;
 }
 

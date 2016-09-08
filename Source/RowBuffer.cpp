@@ -32,16 +32,14 @@ void RowBuffer::operator delete(void* pRowBufferAddress)
 RowBuffer::RowBuffer(void)
 : Buffer(CN_ROWBUFFER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+
   m_bHasSpace   = true;
   m_pFreeSpace  = pDataArea();
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
-  pFooter()->vSetFooter();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
   Memory::vCheckInitialised(this,sizeof(RowBuffer));
 }
@@ -51,7 +49,7 @@ RowBuffer::RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 RowBuffer::~RowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +57,7 @@ RowBuffer::~RowBuffer(void)
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pAllocRow(i8 iDataBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 iBytes = Row::iBytesRequired(iDataBytes);
 
@@ -108,7 +106,7 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pFirstRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   Row* pFirst = reinterpret_cast<Row*>(pDataArea());
   
@@ -123,7 +121,7 @@ Row* RowBuffer::pFirstRow(void)
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pNextRow(Row* pCurr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 iSize = pCurr->iSize();
   
@@ -140,7 +138,7 @@ Row* RowBuffer::pNextRow(Row* pCurr)
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowBuffer::pNextBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   return m_pNextBuffer;
 }
@@ -150,7 +148,7 @@ RowBuffer* RowBuffer::pNextBuffer(void)
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_pNextBuffer = pNextBuffer;
 }
@@ -160,7 +158,7 @@ void RowBuffer::vNextBuffer(RowBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowBuffer::pPrevBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   return m_pPrevBuffer;
 }
@@ -170,7 +168,7 @@ RowBuffer* RowBuffer::pPrevBuffer(void)
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_pPrevBuffer = pPrevBuffer;
 }
@@ -180,7 +178,7 @@ void RowBuffer::vPrevBuffer(RowBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iBytesUsed(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 iBytes = iSub(m_pFreeSpace,pDataArea());
   
@@ -192,7 +190,7 @@ i8 RowBuffer::iBytesUsed(void)
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_bHasSpace = pFromBuffer->bHasSpace();
   
@@ -212,7 +210,7 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bHasSpace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   return m_bHasSpace;
 }
@@ -222,7 +220,7 @@ bool RowBuffer::bHasSpace(void)
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 iDataBytes  = pRowStr->iSize();
   
@@ -253,7 +251,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 /*----------------------------------------------------------------------------*/
 Object* RowBuffer::pDataArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(RowBuffer)));
   
@@ -265,9 +263,11 @@ Object* RowBuffer::pDataArea(void)
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iFreeSpace(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   i8 nBytes = iSub(pLastByte(),m_pFreeSpace);
+
+  nBytes -= sizeof(Footer);
   
   return nBytes;
 }
@@ -277,7 +277,7 @@ i8 RowBuffer::iFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 bool RowBuffer::bIsExhausted(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   return m_bHasSpace ? false : true;
 }
@@ -287,26 +287,9 @@ bool RowBuffer::bIsExhausted(void)
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vSetExhausted(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_bHasSpace = false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* calculate location of footer                                               */
-/*----------------------------------------------------------------------------*/
-Footer* RowBuffer::pFooter(void)
-{
-  // Note: cannot check _FOOTER_ here
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
-  
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
-  
-  return pFooter;
 }
 
 /*============================================================================*/
