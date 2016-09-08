@@ -25,18 +25,19 @@ void* Row::operator new(size_t, Row* pRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Row::Row(void)
+Row::Row(i8 iDataBytes)
 : Header(CN_ROW)
 {
-  _poolAddress_(this);
-  _magic_();
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+   
   m_iTxId      = -1;
-  m_iDataBytes = 0;
-  
-  _class_(CN_ROW);
+  m_iDataBytes = iDataBytes;
+
+  pFooter()->vSetFooter();
   
   Memory::vCheckInitialised(this,sizeof(Row));
+  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +45,7 @@ Row::Row(void)
 /*----------------------------------------------------------------------------*/
 Row::~Row(void)
 {
-  _poolAddress_(this);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +53,7 @@ Row::~Row(void)
 /*----------------------------------------------------------------------------*/
 char* Row::pData(void)
 {
-  _poolAddress_(this);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   char* pDataAddr = pcAdd(this,sizeof(Row));
   
@@ -64,7 +65,7 @@ char* Row::pData(void)
 /*----------------------------------------------------------------------------*/
 i8 Row::iDataBytes(void)
 {
-  _poolAddress_(this);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   return m_iDataBytes;
 }
@@ -74,7 +75,7 @@ i8 Row::iDataBytes(void)
 /*----------------------------------------------------------------------------*/
 void Row::vDataBytes(i8 iDataBytes)
 {
-  _poolAddress_(this);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   m_iDataBytes = iDataBytes;
 }
@@ -84,7 +85,7 @@ void Row::vDataBytes(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 void Row::vDump(void) 
 {
-  _poolAddress_(this);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
   vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes)\n",
          this,
@@ -100,7 +101,9 @@ void Row::vDump(void)
 /*----------------------------------------------------------------------------*/
 i8 Row::iSize(void)
 {
-  i8 iBytes = sizeof(Row) + m_iDataBytes;
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+
+  i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iDataBytes;
   
   return iBytes;
 }
@@ -110,6 +113,8 @@ i8 Row::iSize(void)
 /*----------------------------------------------------------------------------*/
 i8 Row::iTxId(void)
 {
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+
   return m_iTxId;
 }
 
@@ -118,6 +123,8 @@ i8 Row::iTxId(void)
 /*----------------------------------------------------------------------------*/
 void Row::vTxId(i8 iTxId)
 {
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+
   m_iTxId = iTxId;
 }
 
@@ -126,21 +133,21 @@ void Row::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                               */
+/* get bytes required for row                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Row::iBytesRequired(const char* w)
 {
-  i8 iBytes = sizeof(Row) + String::iSize(w);
+  i8 iBytes = sizeof(Row) + sizeof(Footer) + String::iSize(w);
   
   return iBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                               */
+/* get bytes required for row                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Row::iBytesRequired(i8 iDataBytes)
 {
-  i8 iBytes = sizeof(Row) + iDataBytes;
+  i8 iBytes = sizeof(Row) + sizeof(Footer) + iDataBytes;
   
   return iBytes;
 }
@@ -154,8 +161,12 @@ i8 Row::iBytesRequired(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 Footer* Row::pFooter(void)
 {
-  // hmmmm....
-  return nullptr;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+  
+  Footer* pFooter = static_cast<Footer*>(
+                      pvAdd(this,sizeof(Row) + m_iDataBytes));
+  
+  return pFooter;
 }
 
 /*============================================================================*/

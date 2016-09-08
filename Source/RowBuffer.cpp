@@ -75,10 +75,8 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
 
   m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,iBytes));
   
-  new(pRow) Row;
-  
-  pRow->vDataBytes(iDataBytes);
-  
+  new(pRow) Row(iDataBytes);
+    
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
   return pRow;

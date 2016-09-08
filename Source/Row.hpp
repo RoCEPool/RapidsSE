@@ -19,7 +19,7 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, Row*);
     
-    Row(void);
+    Row(i8 iDataBytes);
     ~Row(void);
     
     char* pData(void);
