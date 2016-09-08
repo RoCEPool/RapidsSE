@@ -42,7 +42,11 @@ void TaskList::operator delete(void* pTaskListAddress)
 TaskList::TaskList(void)
 : Object(CN_TASKLIST)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
+  
   Memory::vCheckInitialised(this,sizeof(TaskList));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +54,7 @@ TaskList::TaskList(void)
 /*----------------------------------------------------------------------------*/
 TaskList::~TaskList(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
   ASSERT( ! gpTaskList );
   
@@ -62,7 +66,7 @@ TaskList::~TaskList(void)
 /*----------------------------------------------------------------------------*/
 Task* TaskList::pAllocTask(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
   Task* pTask = reinterpret_cast<Task*>(gpMediumHeap->pAllocObject(CN_TASK));
   
@@ -101,7 +105,7 @@ void TaskList::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void TaskList::vFreeTask(Task* pTask)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
   vRemove(pTask);
   
@@ -117,6 +121,8 @@ void TaskList::vFreeTask(Task* pTask)
 /*----------------------------------------------------------------------------*/
 Footer* TaskList::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST);
+  
   return &m_xFooter;
 }
 

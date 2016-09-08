@@ -29,9 +29,11 @@ TaskCursor::TaskCursor(List_t<Task>* pList)
 : Object(CN_TASKCURSOR),
   ListCursor_t<Task>(pList)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(TaskCursor));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +41,7 @@ TaskCursor::TaskCursor(List_t<Task>* pList)
 /*----------------------------------------------------------------------------*/
 TaskCursor::~TaskCursor(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +53,8 @@ TaskCursor::~TaskCursor(void)
 /*----------------------------------------------------------------------------*/
 Footer* TaskCursor::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR);
+  
   return &m_xFooter;
 }
 

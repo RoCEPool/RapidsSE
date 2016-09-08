@@ -30,7 +30,7 @@ void TaskSet::operator delete(void* pAddress)
 TaskSet::TaskSet(void)
 : Object(CN_TASKSET)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
   m_xLock.vCheckInit();
   
@@ -39,6 +39,8 @@ TaskSet::TaskSet(void)
   m_npTail = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(TaskSet));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,7 +48,7 @@ TaskSet::TaskSet(void)
 /*----------------------------------------------------------------------------*/
 void TaskSet::vAppend(NNP_Task nnpTask)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
   m_xLock.vGrabWrite();
   
@@ -107,7 +109,7 @@ void TaskSet::vDump(void)
 /*----------------------------------------------------------------------------*/
 NP_Task TaskSet::npPop(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
   NP_Task npTask = nullptr;
 
@@ -139,7 +141,7 @@ NP_Task TaskSet::npPop(void)
 /*----------------------------------------------------------------------------*/
 void TaskSet::vRemove(NNP_Task nnpTask)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
   m_xLock.vGrabWrite();
   
@@ -174,7 +176,7 @@ void TaskSet::vRemove(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void TaskSet::vVerify(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
   
   m_xLock.vCheckWrite();
   
@@ -215,6 +217,8 @@ void TaskSet::vVerify(void)
 /*----------------------------------------------------------------------------*/
 Footer* TaskSet::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKSET);
+  
   return &m_xFooter;
 }
 
