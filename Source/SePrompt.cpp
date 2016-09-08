@@ -243,7 +243,7 @@ bool SePrompt::bExecuteRequest(void)
   
   xTimer.vStart();
   
-  eIE eResult = RapidsSE_ExecuteCommand(m_pSEitf,m_pToken,&aResponse);
+  eIE eResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,&aResponse);
   
   if (aResponse)
     m_sResponse = aResponse;
