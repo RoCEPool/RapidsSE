@@ -48,7 +48,7 @@ void BufferPoolAnalyzer::vAnalyze(void)
   
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
-      nBuffer++) {
+       nBuffer++) {
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
     iCountObjects[pBuffer->eClass()]++;

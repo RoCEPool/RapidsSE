@@ -17,6 +17,7 @@ extern Dictionary*           gpMainDic;
 extern Word*                 gpWord;
 
 extern Grid*                 gpGrid;
+extern StepArray*            gpStepArray;
 extern ThreadList*           gpThreadList;
 extern TaskList*             gpTaskList;
 extern TxCollection*         gpTxCollection;

@@ -10,10 +10,11 @@ BufferPool*         gpBufferPool       = nullptr;
 AttachMap *         gpAttachMap        = nullptr;
 Heap*               gpMediumHeap       = nullptr;
 Heap*               gpSmallHeap        = nullptr;
-Dictionary*         gpMainDic       = nullptr;
+Dictionary*         gpMainDic          = nullptr;
 Word*               gpWord             = nullptr;
 
 Grid*               gpGrid             = nullptr;
+StepArray*          gpStepArray        = nullptr;
 TaskList*           gpTaskList         = nullptr;
 ThreadList*         gpThreadList       = nullptr;
 TxCollection*       gpTxCollection     = nullptr;
@@ -453,6 +454,8 @@ void RapidsSE::vSystemInit(void)
   
   // init the tls keys
   vTlsInit();
+  
+  new StepArray;
   
   // tasklist is new'd here as the exception-to-the-rule
   // so as to be boot the system

@@ -6,6 +6,8 @@
 
 #include "DBobjects.h"
 
+#include "StepAccum.hpp"
+#include "StepArray.hpp"
 
 #include "Task.hpp"
 #include "TaskList.hpp"
