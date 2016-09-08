@@ -38,6 +38,8 @@ namespace Structures
     Value*   pFirstValue(void);
     Value*   pNextValue(Value* pValue);
     void     vVerify(void);
+    
+    Footer* pFooter(void);
   };
 }
 

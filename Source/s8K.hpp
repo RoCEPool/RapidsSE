@@ -14,6 +14,9 @@ namespace Magic
     
     char m_mWorkspace[C_S_SIZE]; // string workspace
     
+    // must be last
+    Footer m_xFooter;
+    
   public:
     s8K(void);
     s8K(s8K& rArg);
@@ -24,6 +27,8 @@ namespace Magic
     void operator = (const char* aArg);
     void operator = (char* aArg);
     void operator = (s& rArg);
+    
+    Footer* pFooter(void);
   };
 }
 

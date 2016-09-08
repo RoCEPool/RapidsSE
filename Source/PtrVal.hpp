@@ -14,7 +14,7 @@ namespace Values
   {
   private:
     void* m_pPtr;
-    
+        
   public:
     void* operator new(size_t);
     

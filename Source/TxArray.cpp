@@ -37,7 +37,7 @@ TxArray::TxArray(void)
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
     m_pTx[iTx] = nullptr;
 
-  Memory::vCheckInitialised(this,sizeof(Tx));
+  Memory::vCheckInitialised(this,sizeof(TxArray));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,6 +64,18 @@ void TxArray::vDump(eCN eClass, Object* pObject, const char* pTab)
     if (pTxArray->m_pTx[iTx] != nullptr)
       iTxCount++;
   vTrace("%s  txs: %lld\n\n", pTab, iTxCount);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* TxArray::pFooter(void)
+{
+  return &m_xFooter;
 }
 
 /*============================================================================*/

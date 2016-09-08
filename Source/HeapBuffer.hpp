@@ -35,6 +35,8 @@ namespace Pool
     
   private:
     char* pChunkEnd(FreeChunk* pChunk, i8 nBytes);
+    
+    Footer* pFooter(void);
   };
 }
 

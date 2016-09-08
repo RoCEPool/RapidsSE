@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Magic.h"
+#include "Footer.hpp"
 
 namespace Magic
 {
@@ -13,6 +14,9 @@ namespace Magic
     static const i8 C_S_SIZE = 32;
     
     char m_mWorkspace[C_S_SIZE]; // string workspace 
+    
+    // must be last
+    Footer m_xFooter;
     
   public:    
     s32(void);
@@ -26,6 +30,8 @@ namespace Magic
     void operator = (s& rArg);
     
     void vInit(void);
+    
+    Footer* pFooter(void);
   };
 }
 

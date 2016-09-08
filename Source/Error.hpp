@@ -34,6 +34,8 @@ namespace Magic
     i8    m_iLineNumber;
     s256  m_sErrorMsg;
     
+    Footer m_xFooter;
+    
   public:
     Error(eEC eErrorCode, const char* sFile, i8 iLine);
     Error(eEC eErrorCode, const char *errormsg, const char* sFile, i8 iLine);
@@ -41,6 +43,8 @@ namespace Magic
     const char* pErrorMsg(void);
     char*       pFileName(void);
     i8          iLineNumber(void);
+    
+    Footer* pFooter(void);
   };
   
 }

@@ -31,6 +31,8 @@ namespace Pool
     char* pLastByte(void);
     bn    nOverflowBuffer(void);
     void  vOverflowBuffer(bn nOverflowBuffer);
+    
+    Footer* pFooter(void);
   };
 }
 

@@ -113,6 +113,8 @@ namespace Dictionaries
     void  vWordType(eWT eWordType);
     
     static Word* pToWord(void* pBody);
+    
+    Footer* pFooter(void);
   };
 }
 

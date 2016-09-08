@@ -32,6 +32,8 @@ namespace DBobjects
     
     static i8 iBytesRequired(const char* w);
     static i8 iBytesRequired(i8 iDataBytes);
+    
+    Footer* pFooter(void);
   };
 }
 
