@@ -36,6 +36,8 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 SEitf::SEitf(i8 iPartition)
 : Object(CN_SEITF)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   m_iPid = 0;
   m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;
@@ -53,6 +55,8 @@ SEitf::SEitf(i8 iPartition)
   gpSEitfList->vAppend(pSEitf);
   
   Memory::vCheckInitialised(this,sizeof(SEitf));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +64,8 @@ SEitf::SEitf(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 SEitf::~SEitf(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+
   SEitf* pSEitf = this;
   
   gpSEitfList->vRemove(pSEitf);
@@ -70,6 +76,8 @@ SEitf::~SEitf(void)
 /*----------------------------------------------------------------------------*/
 DictionaryStack* SEitf::pDicStack(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+
   return &m_xDicStack;
 }
 
@@ -78,6 +86,8 @@ DictionaryStack* SEitf::pDicStack(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vPushDic(Dictionary* pDictionary)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+
   m_xDicStack.vPush(pDictionary);
 }
 
@@ -86,6 +96,8 @@ void SEitf::vPushDic(Dictionary* pDictionary)
 /*----------------------------------------------------------------------------*/
 void SEitf::vPopDic(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+
   m_xDicStack.vDiscard();
 }
 
@@ -94,7 +106,7 @@ void SEitf::vPopDic(void)
 /*----------------------------------------------------------------------------*/
 Word* SEitf::pFindWord(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   Word* pWord = m_xDicStack.pFind(sName.a());
   
@@ -122,6 +134,8 @@ void SEitf::vDump(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   // pid
   m_iPid = Process::iGetPid();
   m_xDictionary.vAddConstant("pid",m_iPid);
@@ -162,6 +176,8 @@ void SEitf::vInit(void)
 /*----------------------------------------------------------------------------*/
 i8 SEitf::iPartition(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   return m_iPartition;
 }
 
@@ -170,6 +186,8 @@ i8 SEitf::iPartition(void)
 /*----------------------------------------------------------------------------*/
 Queue* SEitf::pRequestQueue(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   return m_pRequestQueue;
 }
 
@@ -178,6 +196,8 @@ Queue* SEitf::pRequestQueue(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vRequestQueue(Queue* pRequestQueue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   m_pRequestQueue = pRequestQueue;
 }
 /*----------------------------------------------------------------------------*/
@@ -185,6 +205,8 @@ void SEitf::vRequestQueue(Queue* pRequestQueue)
 /*----------------------------------------------------------------------------*/
 Queue* SEitf::pResponseQueue(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   return m_pResponseQueue;
 }
 
@@ -193,6 +215,8 @@ Queue* SEitf::pResponseQueue(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vResponseQueue(Queue* pResponseQueue)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   m_pResponseQueue = pResponseQueue;
 }
 
@@ -206,6 +230,8 @@ void SEitf::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDecode(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   if (0 == String::iLength(pWords[0])) {
     return false;
   }
@@ -397,6 +423,8 @@ bool SEitf::bDecode(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bConnect(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "connect";
@@ -410,6 +438,8 @@ bool SEitf::bConnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDisconnect(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "disconnect";
@@ -423,6 +453,8 @@ bool SEitf::bDisconnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDropDictionary(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -442,6 +474,8 @@ bool SEitf::bDropDictionary(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bCreateTenant(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -461,6 +495,8 @@ bool SEitf::bCreateTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bListTenants(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "list_tenants";
@@ -474,6 +510,8 @@ bool SEitf::bListTenants(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDropTenant(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -493,6 +531,8 @@ bool SEitf::bDropTenant(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bCreateCatalog(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -512,6 +552,8 @@ bool SEitf::bCreateCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bListCatalogs(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "list_catalogs";
@@ -525,6 +567,8 @@ bool SEitf::bListCatalogs(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDropCatalog(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -544,6 +588,8 @@ bool SEitf::bDropCatalog(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bCreateSchema(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -563,6 +609,8 @@ bool SEitf::bCreateSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bListSchemas(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "list_schemas";
@@ -576,6 +624,8 @@ bool SEitf::bListSchemas(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDropSchema(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -595,6 +645,8 @@ bool SEitf::bDropSchema(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bCreateTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -614,6 +666,8 @@ bool SEitf::bCreateTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bListTables(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "list_tables";
@@ -627,6 +681,8 @@ bool SEitf::bListTables(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDumpTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -646,6 +702,8 @@ bool SEitf::bDumpTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDropTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -665,6 +723,8 @@ bool SEitf::bDropTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bAddColumn(char* pWords[16])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -692,6 +752,8 @@ bool SEitf::bAddColumn(char* pWords[16])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bListColumns(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -711,6 +773,8 @@ bool SEitf::bListColumns(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bCopyTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -734,6 +798,8 @@ bool SEitf::bCopyTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bExportTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -757,6 +823,8 @@ bool SEitf::bExportTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bLoadTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -780,6 +848,8 @@ bool SEitf::bLoadTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bSelectTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -799,6 +869,8 @@ bool SEitf::bSelectTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bAddressTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -818,6 +890,8 @@ bool SEitf::bAddressTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bSizeTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -837,6 +911,8 @@ bool SEitf::bSizeTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bTruncateTable(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -857,6 +933,8 @@ bool SEitf::bTruncateTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPopDic(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   return false;
 }
 
@@ -865,6 +943,8 @@ bool SEitf::bPopDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPushDic(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   char* a = sRequest.a();
@@ -885,6 +965,8 @@ bool SEitf::bPushDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPrint(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   printf("%s\n",pWords[1]);
   
   return true;
@@ -895,6 +977,8 @@ bool SEitf::bPrint(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetDicPath(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "pwf";
@@ -908,6 +992,8 @@ bool SEitf::bGetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bSetDicPath(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   return true;
 }
 
@@ -916,6 +1002,8 @@ bool SEitf::bSetDicPath(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetDicContents(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "lf";
@@ -929,6 +1017,8 @@ bool SEitf::bGetDicContents(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetMonitor(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "get_monitor";
@@ -942,6 +1032,8 @@ bool SEitf::bGetMonitor(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetFreeSpace(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "getFreeSpace";
@@ -955,6 +1047,8 @@ bool SEitf::bGetFreeSpace(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetInUseSpace(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "getInUseSpace";
@@ -968,6 +1062,8 @@ bool SEitf::bGetInUseSpace(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetTotalSpace(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "getTotalSpace";
@@ -982,6 +1078,8 @@ bool SEitf::bGetTotalSpace(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPing(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   s256 sRequest;
   
   sRequest = "ping";
@@ -995,6 +1093,7 @@ bool SEitf::bPing(char* pWords[])
 /*----------------------------------------------------------------------------*/
 bool SEitf::bX(char* pWords[])
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
@@ -1023,6 +1122,8 @@ bool SEitf::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 void SEitf::vAppendRequest(s& sRequest)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   char wItfAddr[32];
   char wWorkspace[C_1KB * 16];
   char* pCursor = nullptr;
@@ -1050,6 +1151,8 @@ void SEitf::vAppendRequest(s& sRequest)
 /*----------------------------------------------------------------------------*/
 i8 SEitf::iGetResponse(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   while (! bPopResponse(m_iErrorCode, m_sResponse))
     ;
   
@@ -1061,6 +1164,8 @@ i8 SEitf::iGetResponse(void)
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPopResponse(i8& iResult, s& sResponse)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   bool b;
   ValSet xValSet;
   char* pCursor = nullptr;
@@ -1096,6 +1201,8 @@ bool SEitf::bPopResponse(i8& iResult, s& sResponse)
 /*----------------------------------------------------------------------------*/
 const char* SEitf::pGetLastError(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   return m_sInterfaceError.a();
 }
 
@@ -1104,6 +1211,8 @@ const char* SEitf::pGetLastError(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vClearLastError(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   m_eInterfaceError = IE_NONE;
   String::vCopy(m_sInterfaceError.a(), "");
 }
@@ -1113,6 +1222,8 @@ void SEitf::vClearLastError(void)
 /*----------------------------------------------------------------------------*/
 void SEitf::vSetLastError(eIE eInterfaceError)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
   ASSERT(eInterfaceError >= IE_NONE);
   ASSERT(eInterfaceError <  IE_ENUMS);
   
@@ -1135,6 +1246,8 @@ void SEitf::vSetLastError(eIE eInterfaceError)
 /*----------------------------------------------------------------------------*/
 Footer* SEitf::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF);
+  
   return &m_xFooter;
 }
 

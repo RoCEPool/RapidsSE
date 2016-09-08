@@ -31,13 +31,15 @@ void SEitfList::operator delete(void* pBufferAddress)
 SEitfList::SEitfList(void)
 : Object(CN_SEITFLIST)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
   
   ASSERT( ! gpSEitfList );
   
   gpSEitfList = this;
   
   Memory::vCheckInitialised(this,sizeof(SEitfList));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +47,7 @@ SEitfList::SEitfList(void)
 /*----------------------------------------------------------------------------*/
 SEitfList::~SEitfList(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +55,7 @@ SEitfList::~SEitfList(void)
 /*----------------------------------------------------------------------------*/
 SEitf* SEitfList::pAllocSEitf(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
 
   SEitf* pSEitf = reinterpret_cast<SEitf*>(gpSmallHeap->pAllocObject(CN_SEITFLIST));
   
@@ -67,7 +69,7 @@ SEitf* SEitfList::pAllocSEitf(void)
 /*----------------------------------------------------------------------------*/
 void SEitfList::vFreeSEitf(SEitf* pSEitf)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
   
   vRemove(pSEitf);
   
@@ -83,6 +85,8 @@ void SEitfList::vFreeSEitf(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 Footer* SEitfList::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST);
+  
   return &m_xFooter;
 }
 

@@ -29,9 +29,11 @@ SEitfCursor::SEitfCursor(List_t<SEitf>* pList)
 : Object(CN_SEITFCURSOR),
   ListCursor_t<SEitf>(pList)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(SEitfCursor));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +41,7 @@ SEitfCursor::SEitfCursor(List_t<SEitf>* pList)
 /*----------------------------------------------------------------------------*/
 SEitfCursor::~SEitfCursor(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,6 +53,8 @@ SEitfCursor::~SEitfCursor(void)
 /*----------------------------------------------------------------------------*/
 Footer* SEitfCursor::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR);
+  
   return &m_xFooter;
 }
 
