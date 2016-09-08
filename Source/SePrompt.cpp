@@ -642,7 +642,7 @@ void SePrompt::vCollectStatement(void)
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vPrompt(m_sPrompt);
   
-  m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+  //m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -728,6 +728,9 @@ void SePrompt::vPrintWorkingDir(void)
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bValidateType(char* pType)
 {
+  if (String::bContains(pType, "date"))
+    return true;
+  
   if (String::bContains(pType, "int"))
     return true;
   
