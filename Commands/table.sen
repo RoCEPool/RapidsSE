@@ -64,6 +64,11 @@
   EC_NOT_A_TABLE false
 ;
 
+: checkIsNotTable ( word )
+  dup find not if true exit then
+  EC_TABLE_EXISTS false
+;
+
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 

@@ -45,7 +45,7 @@ private:
   void vGetCommand(void);
   void vProcessCommand(void);
   
-  void vExecuteRequest(void);
+  bool bExecuteRequest(void);
   void vIterateRows(void);
   void vHelp(void);
   bool bTestFile(char* pPath);

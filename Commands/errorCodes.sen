@@ -23,6 +23,8 @@
  24  constant  EC_NOT_A_TABLE
  25  constant  EC_NOT_A_DICTIONARY
 
+ 26  constant  EC_TABLE_EXISTS
+
 999  constant  EC_NO_SUCH_WORD
 998  constant  EC_NO_COLUMNS_DIC
 997  constant  EC_NOT_IN_COLUMNS
@@ -49,6 +51,9 @@
 "no such word"       constant  EM_NO_SUCH_WORD
 "no columns dic"     constant  EM_NO_COLUMNS_DIC
 "not in tables"      constant  EM_NOT_IN_COLUMNS
+
+"table exists"       constant  EM_TABLE_EXISTS
+
 
 /*----------------------------------------------------------------------------*/
 /* convert EC error code to EM error message                                  */
@@ -78,6 +83,8 @@
   dup EC_NOT_IN_COLUMNS     == if drop EM_NOT_IN_COLUMNS     exit then
   dup EC_NO_SUCH_DICTIONARY == if drop EM_NO_SUCH_DICTIONARY exit then
   dup EC_NOT_A_DICTIONARY   == if drop EM_NOT_A_DICTIONARY   exit then
+
+  dup EC_TABLE_EXISTS       == if drop EM_TABLE_EXISTS       exit then
 
   "unknown error code " swap concat
 ;

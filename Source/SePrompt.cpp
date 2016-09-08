@@ -200,7 +200,8 @@ void SePrompt::vProcessCommand(void)
   
   // - execute seitf request
   
-  vExecuteRequest();
+  if (!bExecuteRequest())
+    return;
   
   // - post process requests
   
@@ -214,13 +215,14 @@ void SePrompt::vProcessCommand(void)
   if (String::bEqualTo("mon",m_pToken[0],C_NO_CASE)) {
     while (true) {
       PosixThread::vSleepSec(10);
-      vExecuteRequest();
+      if (!bExecuteRequest())
+        return;
     }
   }
   
   if (String::bEqualTo("x",m_pToken[0],C_NO_CASE)) {
     while (true) {
-      vExecuteRequest();
+      bExecuteRequest();
     }
   }
   
@@ -229,7 +231,7 @@ void SePrompt::vProcessCommand(void)
 /*----------------------------------------------------------------------------*/
 /* execute an se request                                                      */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vExecuteRequest(void)
+bool SePrompt::bExecuteRequest(void)
 {
   Timer xTimer;
   char* aResponse = nullptr;
@@ -247,19 +249,24 @@ void SePrompt::vExecuteRequest(void)
     m_sResponse = aResponse;
   
   if (IE_INVALID_COMMAND == eResult)
-    return;
+    return false;
   
   xTimer.vUpdate();
   
   if (IE_NONE == eResult) {
-    if ( ! String::bEqualTo(aResponse, "<ok>") )
+    if ( ! String::bEqualTo(aResponse, "<ok>") ) {
       vTrace("%s\n",aResponse);
+      return false;
+    }
   }
   else {
     i8 iError = 0;
     RapidsSE_GetErrorCode(m_pSEitf,&iError);
     vTrace("Error %lld : %s\n",iError,aResponse);
+    return false;
   }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -390,55 +397,164 @@ void SePrompt::vChangeWorkingDir(void)
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCreateTable(void)
 {
-  i8 iTokens = 0;
 
   ASSERT(String::bEqualTo(m_pToken[0],"create"));
   vCollectStatement();
   
   i8 iToken;
+  
+  // copy tokens from m_pToken to m_pToken2
+  // while doing that also validate the create statament
   for (iToken = 0; iToken < C_TOKENS; iToken++) {
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
-  vTrace("\n");
   
-  iTokens = iToken - 1;
+  i8 iNumTokens = iToken - 1;
+  i8 iValue;
   
   // create a table
   String::vCopy(m_pToken[0], "mktbl");
   String::vCopy(m_pToken[1], m_pToken2[2]);
-  vExecuteRequest();
+  
+  if (!bExecuteRequest())
+    return;
   
   i8 iCurrentToken = 4;
-  while(iCurrentToken < iTokens - 1) {
+  while(iCurrentToken < iNumTokens - 1) {
   
+    if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
+      vTrace("Error: %s\n", "Invalid statement\n");
+      return;
+    }
+
     // add columns to the table
     i8 j = 0;
     String::vCopy(m_pToken[j++], "add");
     String::vCopy(m_pToken[j++], m_pToken2[2]);
-    String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken]);
-    iCurrentToken ++;
+    String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken++]);
+    
+    if (String::bEqualTo(m_pToken2[iCurrentToken], "varchar", C_NO_CASE) ||
+        String::bEqualTo(m_pToken2[iCurrentToken], "char", C_NO_CASE)) {
+      
+      // copy varchar/char
+      String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+      
+      if (String::bEqualTo(m_pToken2[iCurrentToken], "(")) {
+        
+        // concat '('
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        
+        // concat the size
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
+        
+        // check if it was numeric
+        if (!String::bExtractInw(&m_pToken2[iCurrentToken++], &iValue)) {
+          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          return;
+        }
+        
+        if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
+          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          return;
+        }
+        
+        // concat ')'
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+
+      }
+    }
+    else if (String::bEqualTo(m_pToken2[iCurrentToken], "decimal", C_NO_CASE)) {
+      
+      // copy varchar/char
+      String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+      
+      if (String::bEqualTo(m_pToken2[iCurrentToken], "(")) {
+        
+        // concat '('
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        
+        // concat the size
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
+        
+        // check if it was numeric
+        if (!String::bExtractInw(&m_pToken2[iCurrentToken++], &iValue)) {
+          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          return;
+        }
+        
+        if (!String::bEqualTo(m_pToken2[iCurrentToken],",")) {
+          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          return;
+        }
+        
+        // concat ','
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+        
+        // concat the size
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
+        
+        // check if it was numeric
+        if (!String::bExtractInw(&m_pToken2[iCurrentToken++], &iValue)) {
+          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          return;
+        }
+        
+        if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
+          String::vCopy(m_sResponse.a(),"Invalid statement");
+          return;
+        }
+        
+        // concat ')'
+        String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      }
+    }
+    else {
+      String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+    }
+    
+    // check for NOT NULL
+    if (String::bEqualTo(m_pToken2[iCurrentToken],"not", C_NO_CASE)) {
+      
+      String::vConcat(m_pToken[j], " ");
+      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      
+      if (!String::bEqualTo(m_pToken2[iCurrentToken],"null", C_NO_CASE)) {
+        String::vCopy(m_sResponse.a(),"Invalid statement");
+        return;
+      }
+      String::vConcat(m_pToken[j], " ");
+      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+    }
     
     // now we should see a column type
     // validate it
-    if (!bValidateType(m_pToken2[iCurrentToken])) {
-      String::vCopy(m_sResponse.a(),"Invalid type '");
-      String::vConcat(m_sResponse.a(),m_pToken2[iCurrentToken]);
-      String::vConcat(m_sResponse.a(),"' for column '");
-      String::vConcat(m_sResponse.a(),m_pToken[j - 1]);
-      String::vConcat(m_sResponse.a(),"'");
-      vTrace("Error: %s\n", m_sResponse.a());
+    String::vToLower(m_pToken[j]);
+    if (!bValidateType(m_pToken[j])) {
+      
+      // drop the table that was created
+      String::vCopy(m_pToken[0], "drop");
+      String::vCopy(m_pToken[1], m_pToken2[2]);
+      if (!bExecuteRequest())
+        return;
+      
+      vTrace("Error: Invalid type %s for column '%s' \n", m_pToken[j], m_pToken[j - 1]);
       return;
     }
     
-    // copy the column type
-    String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken]);
-    iCurrentToken += 2;
-    
     // add the column
-    vExecuteRequest();
+    if (!bExecuteRequest())
+      return;
   }
+  
+  // create statement should end with a ')'
+  if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
+    vTrace("Error: %s\n", "Invalid statement\n");
+    return;
+  }
+  
   
 }
 
@@ -499,7 +615,7 @@ void SePrompt::vCollectStatement(void)
   i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
   
   if (iToken >= 0) {
-    m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+    //m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
     return;
   }
   
@@ -549,12 +665,16 @@ void SePrompt::vDropTable(void)
   vTrace("\n");
   
   iTokens = iToken - 1;
-  ASSERT(iTokens == 3);
+  if (iTokens != 3) {
+    vTrace("Invalid drop table command\n");
+    return;
+  }
   
   // create a table
   String::vCopy(m_pToken[0], "drop");
   String::vCopy(m_pToken[1], m_pToken2[2]);
-  vExecuteRequest();
+  if (!bExecuteRequest())
+    return;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,15 +689,18 @@ void SePrompt::vPoolSpace(void)
   i8 iTotal;
 
   String::vCopy(m_pToken[0], "getTotalSpace");
-  vExecuteRequest();
+  if (!bExecuteRequest())
+    return;
   iTotal = String::iToI8(m_sResponse.a());
   
   String::vCopy(m_pToken[0], "getInUseSpace");
-  vExecuteRequest();
+  if (!bExecuteRequest())
+    return;
   iInUse = String::iToI8(m_sResponse.a());
   
   String::vCopy(m_pToken[0], "getFreeSpace");
-  vExecuteRequest();
+  if (!bExecuteRequest())
+    return;
   iFree = String::iToI8(m_sResponse.a());
   
   vTrace("Pool: Size(%lld) InUse(%lld) Free(%lld)\n",
@@ -605,19 +728,19 @@ void SePrompt::vPrintWorkingDir(void)
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bValidateType(char* pType)
 {
-  if (String::bEqualTo(pType, "int", C_NO_CASE))
+  if (String::bContains(pType, "int"))
     return true;
   
-  if (String::bEqualTo(pType, "integer", C_NO_CASE))
+  if (String::bContains(pType, "integer"))
     return true;
   
-  if (String::bFind(&pType, "varchar", C_NO_CASE))
+  if (String::bContains(pType, "varchar"))
     return true;
   
-  if (String::bFind(&pType, "char", C_NO_CASE))
+  if (String::bContains(pType, "char"))
     return true;
 
-  if (String::bFind(&pType, "decimal", C_NO_CASE))
+  if (String::bContains(pType, "decimal"))
     return true;
 
   return false;

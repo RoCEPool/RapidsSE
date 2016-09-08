@@ -238,6 +238,8 @@ Misc Requests:
 
     checkInTables not if swap drop <ERROR> exit then
 
+    checkIsNotTable not if swap drop <ERROR> exit then
+
     :table execute makeColumns
 
     <OK>
@@ -426,7 +428,7 @@ freespace .
 
     find
 
-    checkIsTable not if swap drop  <ERROR> exit then
+    checkIsTable not if <ERROR> exit then
 
     dup execute table.truncate
 
