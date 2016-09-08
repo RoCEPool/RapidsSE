@@ -30,11 +30,15 @@ void Grid::operator delete(void* pBufferAddress)
 Grid::Grid(void)
 : Object(CN_GRID)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
   gpGrid = this;
   
   vInit();
   
   Memory::vCheckInitialised(this,sizeof(Grid));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,6 +46,7 @@ Grid::Grid(void)
 /*----------------------------------------------------------------------------*/
 Grid::~Grid(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +54,7 @@ Grid::~Grid(void)
 /*----------------------------------------------------------------------------*/
 void Grid::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +66,8 @@ void Grid::vInit(void)
 /*----------------------------------------------------------------------------*/
 Footer* Grid::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID);
+  
   return &m_xFooter;
 }
 

@@ -30,7 +30,11 @@ void Proxy::operator delete(void* pBufferAddress)
 Proxy::Proxy(void)
 : Object(CN_PROXY)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROXY,_FOOTER_);
+  
   Memory::vCheckInitialised(this,sizeof(Proxy));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PROXY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,6 +42,7 @@ Proxy::Proxy(void)
 /*----------------------------------------------------------------------------*/
 Proxy::~Proxy(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROXY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +54,8 @@ Proxy::~Proxy(void)
 /*----------------------------------------------------------------------------*/
 Footer* Proxy::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PROXY);
+  
   return &m_xFooter;
 }
 

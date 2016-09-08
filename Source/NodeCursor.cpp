@@ -43,9 +43,11 @@ NodeCursor::NodeCursor(List_t<Node>* pList)
 : Object(CN_NODECURSOR),
   ListCursor_t<Node>(pList)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(NodeCursor));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +55,7 @@ NodeCursor::NodeCursor(List_t<Node>* pList)
 /*----------------------------------------------------------------------------*/
 NodeCursor::~NodeCursor(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,6 +63,7 @@ NodeCursor::~NodeCursor(void)
 /*----------------------------------------------------------------------------*/
 void NodeCursor::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +75,8 @@ void NodeCursor::vInit(void)
 /*----------------------------------------------------------------------------*/
 Footer* NodeCursor::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR);
+  
   return &m_xFooter;
 }
 

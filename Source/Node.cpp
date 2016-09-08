@@ -38,9 +38,13 @@ void Node::operator delete(void* pNodeAddress)
 Node::Node(void)
 : Object(CN_NODE)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  
   m_iNodeNo = 0;
   
   Memory::vCheckInitialised(this,sizeof(Node));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,6 +52,7 @@ Node::Node(void)
 /*----------------------------------------------------------------------------*/
 Node::~Node(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,6 +60,7 @@ Node::~Node(void)
 /*----------------------------------------------------------------------------*/
 void Node::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +84,7 @@ void Node::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 i8 Node::iNodeNo(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   return m_iNodeNo;
 }
 
@@ -86,6 +93,7 @@ i8 Node::iNodeNo(void)
 /*----------------------------------------------------------------------------*/
 void Node::vNodeNo(i8 iNodeNo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   m_iNodeNo = iNodeNo;
 }
 
@@ -98,6 +106,8 @@ void Node::vNodeNo(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 Footer* Node::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE);
+  
   return &m_xFooter;
 }
 
