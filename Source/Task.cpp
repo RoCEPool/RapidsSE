@@ -2460,7 +2460,8 @@ bool Task::bPopReturn(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 void Task::vWord(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWord");
+ENTRY("vWord");
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2468,7 +2469,7 @@ void Task::vWord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAccept(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAccept");
+ENTRY("vAccept");
   
   ValWsp xWsp;
   xWsp.vClass(CN_STRVAL);
@@ -2483,6 +2484,8 @@ void Task::vAccept(NNP_Task nnpTask)
   xWsp.pAsStrVal()->vSize();
   
   nnpTask->vPushParam(xWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2490,7 +2493,7 @@ void Task::vAccept(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAdd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAdd");
+ENTRY("vAdd");
   
   i8 r, j, i;
   
@@ -2500,6 +2503,8 @@ void Task::vAdd(NNP_Task nnpTask)
   r = i + j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2507,7 +2512,7 @@ void Task::vAdd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAgain(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAgain");
+ENTRY("vAgain");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -2515,6 +2520,8 @@ void Task::vAgain(NNP_Task nnpTask)
   nnpTask->vPopReturn(pBeginLoc);
   
   pCurrentWord->vEncode("jump",pBeginLoc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2522,9 +2529,11 @@ void Task::vAgain(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAgain_(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAgain_");
+ENTRY("vAgain_");
   
   nnpTask->m_pCell = nnpTask->m_pBeginIP;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2532,7 +2541,7 @@ void Task::vAgain_(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAllot(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAllot");
+ENTRY("vAllot");
   
   i8 iBytes;
   
@@ -2543,6 +2552,8 @@ void Task::vAllot(NNP_Task nnpTask)
 
   char* pAddress = pCurrentWord->pAllot(iBytes);
   ASSERT(pAddress);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2550,7 +2561,7 @@ void Task::vAllot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAnd");
+ENTRY("vAnd");
   
   i8 iArgB;
   if ( ! nnpTask->bPopParamInt(iArgB) )
@@ -2563,6 +2574,8 @@ void Task::vAnd(NNP_Task nnpTask)
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
   nnpTask->vPushParam(iArgR);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2570,7 +2583,7 @@ void Task::vAnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vBegin");
+ENTRY("vBegin");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -2579,6 +2592,8 @@ void Task::vBegin(NNP_Task nnpTask)
   xPtrBeginLoc = pCurrentWord->pLastCell();
   
   nnpTask->vPushReturn(&xPtrBeginLoc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2586,9 +2601,11 @@ void Task::vBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBegin_(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vBegin_");
+ENTRY("vBegin_");
   
   nnpTask->m_pBeginIP = nnpTask->m_pCell;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2598,11 +2615,13 @@ void Task::vBoot(NNP_Task nnpTask)
 {
   static bool bHasRun = false;
   
-  nnpTask->vPrimitive("vBoot");
+ENTRY("vBoot");
   ASSERT( ! bHasRun );
   bHasRun = true;
 
   nnpTask->vAddConstants();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2610,13 +2629,15 @@ void Task::vBoot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpa(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vBpa");
+ENTRY("vBpa");
   
   BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
   
   pBPA->vAnalyze();
   
   delete pBPA;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2624,13 +2645,15 @@ void Task::vBpa(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vBpdump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vBpdump");
+ENTRY("vBpdump");
   
   BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
   
   pBPA->vDump();
   
   delete pBPA;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2638,7 +2661,7 @@ void Task::vBpdump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vClassFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vClassFetch");
+ENTRY("vClassFetch");
   
   PtrVal xPtrObject;
   nnpTask->vPopParam(&xPtrObject);
@@ -2647,6 +2670,8 @@ void Task::vClassFetch(NNP_Task nnpTask)
   xClassNoVal = xPtrObject.pObject()->eClass();
   
   nnpTask->vPushParam(&xClassNoVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2654,7 +2679,7 @@ void Task::vClassFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vClassStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vClassStore");
+ENTRY("vClassStore");
 
   IntVal xClassNoVal;
   nnpTask->vPopParam(&xClassNoVal);
@@ -2665,6 +2690,8 @@ void Task::vClassStore(NNP_Task nnpTask)
   eCN eClassNo = static_cast<eCN>(xClassNoVal.iInt());
 
   xPtrObject.pObject()->vClass(eClassNo);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2672,7 +2699,7 @@ void Task::vClassStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCodeAssign(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCodeAssign");
+ENTRY("vCodeAssign");
   
   PtrVal xThatWord;
   nnpTask->vPopParam(&xThatWord);
@@ -2682,6 +2709,8 @@ void Task::vCodeAssign(NNP_Task nnpTask)
   
   ASSERT(pThatWord->pFunc() == pThatWord->pFunc());
   pThisWord->vFunc(pThatWord->pFunc());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2689,13 +2718,15 @@ void Task::vCodeAssign(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vColon(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vColon");
+ENTRY("vColon");
   
   nnpTask->m_bCompiling = true;
 
   nnpTask->vTokenNext();
   
   new(nnpTask->m_xDictionaryStack.pTop())  Word(nnpTask->m_sToken.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2703,7 +2734,7 @@ void Task::vColon(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vComma(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vComma");
+ENTRY("vComma");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -2713,6 +2744,8 @@ void Task::vComma(NNP_Task nnpTask)
     
   pCurrentWord->vEncode("push",&xValWsp);
   pCurrentWord->vEncode("exit");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2720,13 +2753,15 @@ void Task::vComma(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vComment(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vComment");
+ENTRY("vComment");
   
   for (;;) {
     nnpTask->vTokenNext();
     if (String::bEqualTo(")",nnpTask->m_sToken.a()))
       break;
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2734,9 +2769,11 @@ void Task::vComment(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCompiling(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCompiling");
+ENTRY("vCompiling");
   
   nnpTask->m_bCompiling = true;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2744,7 +2781,7 @@ void Task::vCompiling(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCursorFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCursorFetch");
+ENTRY("vCursorFetch");
   
   i8 iPick = 1;
   
@@ -2753,6 +2790,8 @@ void Task::vCursorFetch(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(iPick,&xCursorWsp);
   
   nnpTask->vPushParam(xCursorWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2760,7 +2799,7 @@ void Task::vCursorFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCursorStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCursorStore");
+ENTRY("vCursorStore");
   
   i8 iPeek = 1;
   
@@ -2770,6 +2809,8 @@ void Task::vCursorStore(NNP_Task nnpTask)
     THROW_INVALID_PARAM("cursor!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2777,11 +2818,13 @@ void Task::vCursorStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDepth(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDepth");
+ENTRY("vDepth");
   
   i8 iDepth = nnpTask->m_xParamStack.iValues();
   
   nnpTask->vPushParam(iDepth);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2789,7 +2832,7 @@ void Task::vDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDivide(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDivide");
+ENTRY("vDivide");
   
   i8 r, j, i;
   
@@ -2799,6 +2842,8 @@ void Task::vDivide(NNP_Task nnpTask)
   r = DIV(i,j);
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2806,7 +2851,7 @@ void Task::vDivide(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDo(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDo");
+ENTRY("vDo");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -2815,6 +2860,8 @@ void Task::vDo(NNP_Task nnpTask)
   Cell* pDoLoc = pCurrentWord->pLastCell();
   
   nnpTask->vPushReturn(pDoLoc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2822,7 +2869,7 @@ void Task::vDo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDo_RT(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDo_RT");
+ENTRY("vDo_RT");
   
   i8 iIndex;
   i8 iLimit;
@@ -2831,6 +2878,8 @@ void Task::vDo_RT(NNP_Task nnpTask)
   
   nnpTask->vPushReturn(iLimit);
   nnpTask->vPushReturn(iIndex); // index is on top
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2838,12 +2887,14 @@ void Task::vDo_RT(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDrop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDrop");
+ENTRY("vDrop");
   
   // should just discard on stack
   
   ValWsp xValA;
   nnpTask->vPopParam(&xValA);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2851,7 +2902,7 @@ void Task::vDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDup(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDup");
+ENTRY("vDup");
   
   // could just copy from stack back into stack
   
@@ -2861,6 +2912,8 @@ void Task::vDup(NNP_Task nnpTask)
   
   nnpTask->vPushParam(xValA);
   nnpTask->vPushParam(xValA);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2868,7 +2921,7 @@ void Task::vDup(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDump");
+ENTRY("vDump");
   
   s16K sWorkspace;
   
@@ -2880,6 +2933,8 @@ void Task::vDump(NNP_Task nnpTask)
   char* aClass = xValWsp.aClass();
   
   vTrace("[%s] %s (%s)\n",nnpTask->m_sName.a(),sWorkspace.a(),aClass);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2887,7 +2942,7 @@ void Task::vDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vElse(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vElse");
+ENTRY("vElse");
 
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -2906,6 +2961,8 @@ void Task::vElse(NNP_Task nnpTask)
   //-------------------------------------------------------------------------
   
   pIfJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2913,7 +2970,7 @@ void Task::vElse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeCall(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEncodeCall");
+ENTRY("vEncodeCall");
   
   Word* pCalledWord;
   if ( ! nnpTask->bPopParam(pCalledWord) )
@@ -2924,6 +2981,8 @@ void Task::vEncodeCall(NNP_Task nnpTask)
   CodeField* pCode = pCalledWord->pCodeField();
   
   pCurrentWord->vEncode(pCode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2931,12 +2990,14 @@ void Task::vEncodeCall(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeDoes(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEncodeDoes");
+ENTRY("vEncodeDoes");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vFunc(&Task::vEnter);
   pCurrentWord->vAddr(nnpTask->m_pCell+1);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2944,7 +3005,7 @@ void Task::vEncodeDoes(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeEmb(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEncodeEmb");
+ENTRY("vEncodeEmb");
   
   PtrVal xPtrObject;
   xPtrObject = nnpTask->m_pWord->pFirstCell();
@@ -2956,6 +3017,8 @@ void Task::vEncodeEmb(NNP_Task nnpTask)
   else {
     nnpTask->vPushParam(&xPtrObject);
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2963,7 +3026,7 @@ void Task::vEncodeEmb(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeFun(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEncodeFun");
+ENTRY("vEncodeFun");
   
   Word* pCalledWord;
   if ( ! nnpTask->bPopParam(pCalledWord) )
@@ -2974,6 +3037,8 @@ void Task::vEncodeFun(NNP_Task nnpTask)
   CodeField* pCode = pCalledWord->pCodeField();
   
   pCurrentWord->vAppend(pCode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2981,7 +3046,7 @@ void Task::vEncodeFun(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeVal(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEncodeVal");
+ENTRY("vEncodeVal");
   
   ValWsp xValA;
   if ( ! nnpTask->bPopParam(xValA) )
@@ -2990,6 +3055,8 @@ void Task::vEncodeVal(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vEncode("push",&xValA);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2997,7 +3064,7 @@ void Task::vEncodeVal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEnter(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEnter");
+ENTRY("vEnter");
   
   if (nnpTask->m_bTracing)
     vDebug();
@@ -3024,6 +3091,8 @@ void Task::vEnter(NNP_Task nnpTask)
   //nnpTask->m_pCell = pCell;
   
   nnpTask->m_pCell = pBody->m_pCell;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3031,9 +3100,11 @@ void Task::vEnter(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEnterCompiler(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEnterCompiler");
+ENTRY("vEnterCompiler");
   
   nnpTask->m_bCompiling = true;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3041,9 +3112,11 @@ void Task::vEnterCompiler(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEnterInterpreter(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEnterInterpreter");
+ENTRY("vEnterInterpreter");
 
   nnpTask->m_bCompiling = false;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3051,7 +3124,7 @@ void Task::vEnterInterpreter(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEnvGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEnvGet");
+ENTRY("vEnvGet");
   
   s256 sEnvName;
   
@@ -3064,6 +3137,8 @@ void Task::vEnvGet(NNP_Task nnpTask)
     sEnvVal = "";
   
   nnpTask->vPushParam(sEnvVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3071,7 +3146,7 @@ void Task::vEnvGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEqual");
+ENTRY("vEqual");
   
   i8 r, j, i;
   
@@ -3081,6 +3156,8 @@ void Task::vEqual(NNP_Task nnpTask)
   r = i == j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3088,7 +3165,7 @@ void Task::vEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vEqualAddress(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vEql");
+ENTRY("vEql");
   
   ValWsp xAddressA;
   ValWsp xAddressB;
@@ -3102,6 +3179,8 @@ void Task::vEqualAddress(NNP_Task nnpTask)
   i8 r = iA == iB;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3109,7 +3188,7 @@ void Task::vEqualAddress(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vExecute(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vExecute");
+ENTRY("vExecute");
   
   Word* pWord;
   
@@ -3140,6 +3219,8 @@ void Task::vExecute(NNP_Task nnpTask)
   else {
     nnpTask->vRoutineCall(pWord);
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3147,11 +3228,13 @@ void Task::vExecute(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vExit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vExit");
+ENTRY("vExit");
   
   //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
   
   nnpTask->vPopReturn(nnpTask->m_pCell);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3159,7 +3242,7 @@ void Task::vExit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFetch");
+ENTRY("vFetch");
   
   PtrVal xPtr;
   nnpTask->vPopParam(&xPtr);
@@ -3169,6 +3252,8 @@ void Task::vFetch(NNP_Task nnpTask)
   xPtr.vFetch(xVal);
   
   nnpTask->vPushParam(xVal);
+  
+  EXIT();
 }
 
 
@@ -3177,11 +3262,13 @@ void Task::vFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreePercent(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFreePercent");
+ENTRY("vFreePercent");
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
   nnpTask->vPushParam(iFreePercent);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3189,11 +3276,13 @@ void Task::vFreePercent(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFreeSpace(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFreeSpace");
+ENTRY("vFreeSpace");
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
   nnpTask->vPushParam(iFreeSpace);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3201,7 +3290,7 @@ void Task::vFreeSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGreater(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vGreater");
+ENTRY("vGreater");
   
   i8 r, j, i;
   
@@ -3211,6 +3300,8 @@ void Task::vGreater(NNP_Task nnpTask)
   r = i > j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3218,7 +3309,7 @@ void Task::vGreater(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGreaterEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vGreaterEqual");
+ENTRY("vGreaterEqual");
   
   i8 r, j, i;
   
@@ -3228,6 +3319,8 @@ void Task::vGreaterEqual(NNP_Task nnpTask)
   r = i >= j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3235,7 +3328,7 @@ void Task::vGreaterEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vHash(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vHash");
+ENTRY("vHash");
   
   ValWsp xString;
   if ( ! nnpTask->bPopParam(xString) )
@@ -3248,6 +3341,8 @@ void Task::vHash(NNP_Task nnpTask)
   i8 iHash = XXH32(pStrVal->sStr(),iLength,0);
   
   nnpTask->vPushParam(iHash);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3255,9 +3350,11 @@ void Task::vHash(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vHazard(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vHazard");
+ENTRY("vHazard");
   
   THROW("Entered hazard");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3265,11 +3362,13 @@ void Task::vHazard(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vI(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vI");
+ENTRY("vI");
   
   Value* pI = nnpTask->m_xReturnStack.pPeek();
   
   nnpTask->vPushParam(pI);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3277,7 +3376,7 @@ void Task::vI(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIf(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIf");
+ENTRY("vIf");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -3288,6 +3387,8 @@ void Task::vIf(NNP_Task nnpTask)
   pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
   nnpTask->vPushReturn(pIfJumpArg);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3295,11 +3396,13 @@ void Task::vIf(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vImmediate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vImmediate");
+ENTRY("vImmediate");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
 
   pCurrentWord->vImmediate(true);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3307,9 +3410,11 @@ void Task::vImmediate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInterpreting(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInterpreting");
+ENTRY("vInterpreting");
   
   nnpTask->m_bCompiling = false;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3317,13 +3422,15 @@ void Task::vInterpreting(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIsBooted(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIsBooted");
+ENTRY("vIsBooted");
   
   Word* pWord = nnpTask->pFindWord("__compiled__");
   
   i8 bIsBooted = pWord ? true : false;
   
   nnpTask->vPushParam(bIsBooted);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3331,11 +3438,13 @@ void Task::vIsBooted(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIsCompiling(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIsCompiling");
+ENTRY("vIsCompiling");
   
   i8 iIsCompiling = nnpTask->m_bCompiling ? 1 : 0;
   
   nnpTask->vPushParam(iIsCompiling);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3343,7 +3452,7 @@ void Task::vIsCompiling(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIsImmediate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIsImmediate");
+ENTRY("vIsImmediate");
   
   // we should just modify the pointers rather than actually pop
   
@@ -3354,6 +3463,8 @@ void Task::vIsImmediate(NNP_Task nnpTask)
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
   nnpTask->vPushParam(iIsImmediate);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3361,11 +3472,13 @@ void Task::vIsImmediate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIsInterpreting(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIsInterpreting");
+ENTRY("vIsInterpreting");
   
   i8 iIsInterpreting = nnpTask->m_bCompiling ? 0 : 1;
   
   nnpTask->vPushParam(iIsInterpreting);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3373,7 +3486,7 @@ void Task::vIsInterpreting(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIsPrimitive(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIsPrimitive");
+ENTRY("vIsPrimitive");
   
   Word* pWord;
 
@@ -3383,6 +3496,8 @@ void Task::vIsPrimitive(NNP_Task nnpTask)
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
   nnpTask->vPushParam(iIsPrimitive);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3390,11 +3505,13 @@ void Task::vIsPrimitive(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInUseSpace(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInUseSpace");
+ENTRY("vInUseSpace");
   
   i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
   
   nnpTask->vPushParam(iInUseSpace);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3402,7 +3519,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIterate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIterate");
+ENTRY("vIterate");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -3415,6 +3532,8 @@ void Task::vIterate(NNP_Task nnpTask)
   pCurrentWord->vEncode("jumpFalse");
   Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
   nnpTask->vPushReturn(pJumpFalseArg);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3422,7 +3541,7 @@ void Task::vIterate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIterate_RT_A(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIterate_RT_A");
+ENTRY("vIterate_RT_A");
   
   PtrVal xPtrObject;
   PtrVal xPtrCursor;
@@ -3432,6 +3551,8 @@ void Task::vIterate_RT_A(NNP_Task nnpTask)
   
   nnpTask->vPushReturn(xPtrCursor);
   nnpTask->vPushReturn(xPtrObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3439,7 +3560,7 @@ void Task::vIterate_RT_A(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vIterate_RT_B(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vIterate_RT_B");
+ENTRY("vIterate_RT_B");
   
   i8 iPick = 0;
   
@@ -3454,6 +3575,8 @@ void Task::vIterate_RT_B(NNP_Task nnpTask)
     if ( !nnpTask->bPopReturn(xWsp,xWsp) )
       THROW_INVALID_PARAM("iterate_rt_b");
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3461,11 +3584,13 @@ void Task::vIterate_RT_B(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vJ(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vJ");
+ENTRY("vJ");
   
   Value* pI = nnpTask->m_xReturnStack.pPeek(3);
   
   nnpTask->vPushParam(pI);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3473,9 +3598,11 @@ void Task::vJ(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vJump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vJump");
+ENTRY("vJump");
   
   nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpLocn;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3483,7 +3610,7 @@ void Task::vJump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vJumpFalse(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vJumpFalse");
+ENTRY("vJumpFalse");
   
   i8 iVal;
   if ( ! nnpTask->bPopParamInt(iVal) )
@@ -3494,6 +3621,8 @@ void Task::vJumpFalse(NNP_Task nnpTask)
     nnpTask->m_pCell++;
   else
     nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpLocn;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3501,7 +3630,7 @@ void Task::vJumpFalse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vJumpTrue(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vJumpTrue");
+ENTRY("vJumpTrue");
   
   i8 iVal;
   if ( ! nnpTask->bPopParamInt(iVal) )
@@ -3512,6 +3641,8 @@ void Task::vJumpTrue(NNP_Task nnpTask)
     nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpLocn;
   else
     nnpTask->m_pCell++;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3519,7 +3650,7 @@ void Task::vJumpTrue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLess(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLess");
+ENTRY("vLess");
   
   i8 r, j, i;
   
@@ -3529,6 +3660,8 @@ void Task::vLess(NNP_Task nnpTask)
   r = i < j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3536,7 +3669,7 @@ void Task::vLess(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLessEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLessEqual");
+ENTRY("vLessEqual");
   
   i8 r, j, i;
   
@@ -3546,6 +3679,8 @@ void Task::vLessEqual(NNP_Task nnpTask)
   r = i <= j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3553,7 +3688,7 @@ void Task::vLessEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLocate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLocate");
+ENTRY("vLocate");
   
   Cell* pCell;
   
@@ -3564,6 +3699,8 @@ void Task::vLocate(NNP_Task nnpTask)
   ASSERT(pLocatedWord);
   
   nnpTask->vPushParam(pLocatedWord->sName().a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3571,7 +3708,7 @@ void Task::vLocate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoop");
+ENTRY("vLoop");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -3583,6 +3720,8 @@ void Task::vLoop(NNP_Task nnpTask)
   pCurrentWord->vEncode("Loop_RT");
   
   pCurrentWord->vEncode("jump",pDoLoc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3590,7 +3729,7 @@ void Task::vLoop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoop_RT(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoop_RT");
+ENTRY("vLoop_RT");
   
   i8 iIndex;
   i8 iLimit;
@@ -3607,6 +3746,8 @@ void Task::vLoop_RT(NNP_Task nnpTask)
   else {
     nnpTask->m_pCell += 2;
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3614,7 +3755,7 @@ void Task::vLoop_RT(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoopPlus(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoopPlus");
+ENTRY("vLoopPlus");
 
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -3624,6 +3765,8 @@ void Task::vLoopPlus(NNP_Task nnpTask)
   pCurrentWord->vEncode("+Loop_RT");
   
   pCurrentWord->vEncode("jump",pDoLoc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3631,7 +3774,7 @@ void Task::vLoopPlus(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoopPlus_RT(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoopPlus_RT");
+ENTRY("vLoopPlus_RT");
   
   i8 iIndex;
   i8 iLimit;
@@ -3652,14 +3795,16 @@ void Task::vLoopPlus_RT(NNP_Task nnpTask)
   else {
     nnpTask->m_pCell += 2;
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* magicFetch -- fetch magic number from Object object                      */
+/* magicFetch -- fetch magic number from Object object                        */
 /*----------------------------------------------------------------------------*/
 void Task::vMagicFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vMagicFetch");
+ENTRY("vMagicFetch");
 
   PtrVal xPtrObject;
   nnpTask->vPopParam(&xPtrObject);
@@ -3667,6 +3812,8 @@ void Task::vMagicFetch(NNP_Task nnpTask)
   i8 iMagic = xPtrObject.pObject()->iMagic();
 
   nnpTask->vPushParam(iMagic);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3674,12 +3821,14 @@ void Task::vMagicFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vMagicMark(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vMagicMark");
+ENTRY("vMagicMark");
   
   PtrVal xPtrObject;
   nnpTask->vPopParam(&xPtrObject);
   
   xPtrObject.pObject()->vSetMagic();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3687,7 +3836,7 @@ void Task::vMagicMark(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vModulo(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vModulo");
+ENTRY("vModulo");
   
   i8 r, j, i;
   
@@ -3697,6 +3846,8 @@ void Task::vModulo(NNP_Task nnpTask)
   r = MOD(i,j);
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3704,7 +3855,7 @@ void Task::vModulo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vMultiply(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vMultiply");
+ENTRY("vMultiply");
   
   i8 r, j, i;
   
@@ -3714,6 +3865,8 @@ void Task::vMultiply(NNP_Task nnpTask)
   r = i * j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3721,7 +3874,7 @@ void Task::vMultiply(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNameWord(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNameWord");
+ENTRY("vNameWord");
   
   Word* pWord;
 
@@ -3729,6 +3882,8 @@ void Task::vNameWord(NNP_Task nnpTask)
     THROW_INVALID_PARAM("nameWord");
   
   nnpTask->vPushParam(pWord->sName().a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3736,7 +3891,7 @@ void Task::vNameWord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNeg(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNeg");
+ENTRY("vNeg");
   
   i8 r, i;
   
@@ -3746,6 +3901,8 @@ void Task::vNeg(NNP_Task nnpTask)
   r = -1 * i;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3753,7 +3910,7 @@ void Task::vNeg(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNext");
+ENTRY("vNext");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -3768,6 +3925,8 @@ void Task::vNext(NNP_Task nnpTask)
   pCurrentWord->vEncode("jump",pIterateLoc);
   
   pJumpFalseArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3775,7 +3934,9 @@ void Task::vNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNop");
+ENTRY("vNop");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3783,7 +3944,7 @@ void Task::vNop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNot(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNot");
+ENTRY("vNot");
   
   i8 iValA;
   if ( ! nnpTask->bPopParamInt(iValA) )
@@ -3792,6 +3953,8 @@ void Task::vNot(NNP_Task nnpTask)
   i8 iNotA = iValA ? 0 : 1;
   
   nnpTask->vPushParam(iNotA);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3799,7 +3962,7 @@ void Task::vNot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNotEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNotEqual");
+ENTRY("vNotEqual");
   
   i8 r, j, i;
   
@@ -3809,6 +3972,8 @@ void Task::vNotEqual(NNP_Task nnpTask)
   r = i != j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3816,7 +3981,7 @@ void Task::vNotEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vObjectFetch");
+ENTRY("vObjectFetch");
   
   i8 iPick = 0;
   
@@ -3825,6 +3990,8 @@ void Task::vObjectFetch(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
   
   nnpTask->vPushParam(xObjectWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3832,7 +3999,7 @@ void Task::vObjectFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vObjectStore");
+ENTRY("vObjectStore");
   
   i8 iPeek = 0;
   
@@ -3842,6 +4009,8 @@ void Task::vObjectStore(NNP_Task nnpTask)
     THROW_INVALID_PARAM("object!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3849,13 +4018,15 @@ void Task::vObjectStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectMark(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vObjectMark");
+ENTRY("vObjectMark");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   //pCurrentWord->vImmediate(true);
   pCurrentWord->vWordType(WT_OBJECT);
   pCurrentWord->vFunc(&vEncodeEmb);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3863,7 +4034,7 @@ void Task::vObjectMark(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vOr(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vOr");
+ENTRY("vOr");
   
   i8 iArgB;
   if ( ! nnpTask->bPopParamInt(iArgB) )
@@ -3876,6 +4047,8 @@ void Task::vOr(NNP_Task nnpTask)
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
   nnpTask->vPushParam(iArgR);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3883,9 +4056,11 @@ void Task::vOr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSwitch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSwitch");
+ENTRY("vSwitch");
   
   nnpTask->vState(TS_SWITCH);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3893,7 +4068,7 @@ void Task::vSwitch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPick(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPick");
+ENTRY("vPick");
 
   i8 iPick;
   if ( ! nnpTask->bPopParamInt(iPick) )
@@ -3906,6 +4081,8 @@ void Task::vPick(NNP_Task nnpTask)
   nnpTask->m_xParamStack.vPeek(iPick,&xValWsp);
 
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3913,7 +4090,7 @@ void Task::vPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPrevWord(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPrevWord");
+ENTRY("vPrevWord");
   
   Word* pWord;
   if ( ! nnpTask->bPopParam(pWord) )
@@ -3922,6 +4099,8 @@ void Task::vPrevWord(NNP_Task nnpTask)
   Word* pPrevWord = pWord->pPrevWord();
   
   nnpTask->vPushParam(pPrevWord);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3929,7 +4108,7 @@ void Task::vPrevWord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPrint(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPrint");
+ENTRY("vPrint");
   
   s16K sWorkspace;
   
@@ -3939,6 +4118,8 @@ void Task::vPrint(NNP_Task nnpTask)
   
   xValWsp.vToString(sWorkspace.a());
   vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3946,9 +4127,11 @@ void Task::vPrint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessQuit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vProcessQuit");
+ENTRY("vProcessQuit");
   
   exit(EXIT_FAILURE);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3956,13 +4139,15 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPush(NNP_Task nnpTask)
 { 
-  nnpTask->vPrimitive("vPush");
+ENTRY("vPush");
   
   Value* pValue = nnpTask->m_pValue;
   
   nnpTask->vPushParam(pValue);
   
   nnpTask->vAdjustNext(pValue->iSize());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3970,12 +4155,14 @@ void Task::vPush(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPushEmbedded(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPushEmbedded");
+ENTRY("vPushEmbedded");
   
   PtrVal xPtrObject;
   xPtrObject = nnpTask->m_pValue;
   
   nnpTask->vPushParam(&xPtrObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3983,7 +4170,7 @@ void Task::vPushEmbedded(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPut(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPut");
+ENTRY("vPut");
   
   s16K sWorkspace;
   
@@ -3993,6 +4180,8 @@ void Task::vPut(NNP_Task nnpTask)
   
   xValWsp.vToString(sWorkspace.a());
   vTrace("%s",sWorkspace.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4000,9 +4189,11 @@ void Task::vPut(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPutNewline(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPut");
+ENTRY("vPut");
   
   vTrace("\n");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4010,12 +4201,14 @@ void Task::vPutNewline(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRdtscp(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRdtscp");
+ENTRY("vRdtscp");
   
   IntVal xValInt;
   xValInt = iRdtscp();
 
   nnpTask->vPushParam(&xValInt);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4023,7 +4216,7 @@ void Task::vRdtscp(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRepeat(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRepeat");
+ENTRY("vRepeat");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
 
@@ -4040,6 +4233,8 @@ void Task::vRepeat(NNP_Task nnpTask)
   //-------------------------------------------------------------------------
   
   pWhileJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4047,12 +4242,14 @@ void Task::vRepeat(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRetryPoint(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRetryMark");
+ENTRY("vRetryMark");
   
   nnpTask->m_pResetIP = nnpTask->m_pCell;
   
   nnpTask->m_xParamStack.vRetryPoint();
   nnpTask->m_xReturnStack.vRetryPoint();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4060,7 +4257,7 @@ void Task::vRetryPoint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRot(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRot");
+ENTRY("vRot");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -4072,6 +4269,8 @@ void Task::vRot(NNP_Task nnpTask)
   nnpTask->vPushParam(&xValA);
   nnpTask->vPushParam(&xValC);
   nnpTask->vPushParam(&xValB);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4079,11 +4278,13 @@ void Task::vRot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDepth(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstackDepth");
+ENTRY("vRstackDepth");
   
   i8 iDepth = nnpTask->m_xReturnStack.iValues();
   
   nnpTask->vPushParam(iDepth);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4091,12 +4292,14 @@ void Task::vRstackDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDrop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstackDrop");
+ENTRY("vRstackDrop");
   
   // should just discard on stack
   
   ValWsp xValA;
   nnpTask->vPopReturn(&xValA);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4104,7 +4307,7 @@ void Task::vRstackDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstackFetch");
+ENTRY("vRstackFetch");
   
   i8 iPick;
   if ( ! nnpTask->bPopParamInt(iPick) )
@@ -4117,6 +4320,8 @@ void Task::vRstackFetch(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4124,7 +4329,7 @@ void Task::vRstackFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstackPick(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstackPick");
+ENTRY("vRstackPick");
   
   i8 iPick;
   if ( ! nnpTask->bPopParamInt(iPick) )
@@ -4137,6 +4342,8 @@ void Task::vRstackPick(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4144,7 +4351,7 @@ void Task::vRstackPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack0(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack0");
+ENTRY("vRstack0");
   
   // could do this directly on stack
   
@@ -4153,6 +4360,8 @@ void Task::vRstack0(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4160,7 +4369,7 @@ void Task::vRstack0(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack1(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack1");
+ENTRY("vRstack1");
   
   // could do this directly on stack
   
@@ -4169,6 +4378,8 @@ void Task::vRstack1(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(1,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4176,7 +4387,7 @@ void Task::vRstack1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack2(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack2");
+ENTRY("vRstack2");
   
   // could do this directly on stack
   
@@ -4185,6 +4396,8 @@ void Task::vRstack2(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(2,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4192,7 +4405,7 @@ void Task::vRstack2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack3(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack3");
+ENTRY("vRstack3");
   
   // could do this directly on stack
   
@@ -4201,6 +4414,8 @@ void Task::vRstack3(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(3,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4208,7 +4423,7 @@ void Task::vRstack3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack4(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack4");
+ENTRY("vRstack4");
   
   // could do this directly on stack
   
@@ -4217,6 +4432,8 @@ void Task::vRstack4(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(4,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4224,7 +4441,7 @@ void Task::vRstack4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack5(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack5");
+ENTRY("vRstack5");
   
   // could do this directly on stack
   
@@ -4233,6 +4450,8 @@ void Task::vRstack5(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(5,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4240,7 +4459,7 @@ void Task::vRstack5(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack6(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack6");
+ENTRY("vRstack6");
   
   // could do this directly on stack
   
@@ -4249,6 +4468,8 @@ void Task::vRstack6(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(6,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4256,7 +4477,7 @@ void Task::vRstack6(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack7(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack7");
+ENTRY("vRstack7");
   
   // could do this directly on stack
   
@@ -4265,6 +4486,8 @@ void Task::vRstack7(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(7,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4272,7 +4495,7 @@ void Task::vRstack7(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack8(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack8");
+ENTRY("vRstack8");
   
   // could do this directly on stack
   
@@ -4281,6 +4504,8 @@ void Task::vRstack8(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(8,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4288,7 +4513,7 @@ void Task::vRstack8(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRstack9(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRstack9");
+ENTRY("vRstack9");
   
   // could do this directly on stack
   
@@ -4297,6 +4522,8 @@ void Task::vRstack9(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(9,&xValWsp);
   
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4304,7 +4531,7 @@ void Task::vRstack9(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSee(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSee");
+ENTRY("vSee");
   
   nnpTask->vTokenNext();
   
@@ -4361,6 +4588,8 @@ void Task::vSee(NNP_Task nnpTask)
     }
     
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4368,13 +4597,15 @@ void Task::vSee(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSemicolon(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSemicolon");
+ENTRY("vSemicolon");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
 
   pCurrentWord->vEncode("exit");
   
   nnpTask->m_bCompiling = false;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4382,9 +4613,11 @@ void Task::vSemicolon(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSignal(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSignal");
+ENTRY("vSignal");
   
   // ..tbd..
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4392,7 +4625,7 @@ void Task::vSignal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSleep(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSleep");
+ENTRY("vSleep");
   
   i8 nSeconds;
   
@@ -4402,6 +4635,8 @@ void Task::vSleep(NNP_Task nnpTask)
   Thread* pThread = Thread::pThread();
   
   pThread->m_xPosixThread.vSleepSec(nSeconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4409,11 +4644,13 @@ void Task::vSleep(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSnooze(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSnooze");
+ENTRY("vSnooze");
   
   Thread* pThread = Thread::pThread();
   
   pThread->m_xPosixThread.vSleepNano(100_MB);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4421,7 +4658,7 @@ void Task::vSnooze(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vStore");
+ENTRY("vStore");
   
   PtrVal xPtr;
   nnpTask->vPopParam(&xPtr);
@@ -4432,6 +4669,8 @@ void Task::vStore(NNP_Task nnpTask)
     THROW_INVALID_PARAM("!");
     
   xPtr.vStore(xVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4439,7 +4678,7 @@ void Task::vStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSubtract(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSubtract");
+ENTRY("vSubtract");
   
   i8 r, j, i;
   
@@ -4449,6 +4688,8 @@ void Task::vSubtract(NNP_Task nnpTask)
   r = i - j;
   
   nnpTask->vPushParam(r);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4456,7 +4697,7 @@ void Task::vSubtract(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSwap(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSwap");
+ENTRY("vSwap");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -4466,6 +4707,8 @@ void Task::vSwap(NNP_Task nnpTask)
   
   nnpTask->vPushParam(&xValA);
   nnpTask->vPushParam(&xValB);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4473,8 +4716,10 @@ void Task::vSwap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTest(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTest");
+ENTRY("vTest");
   vTrace("[%s] Test\n",nnpTask->m_sName.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4482,7 +4727,7 @@ void Task::vTest(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThen(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThen");
+ENTRY("vThen");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -4490,6 +4735,8 @@ void Task::vThen(NNP_Task nnpTask)
   nnpTask->vPopReturn(pIfJumpArg);
   
   pIfJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4497,13 +4744,15 @@ void Task::vThen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThrow(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThrow");
+ENTRY("vThrow");
   
   char wBuffer[256];
   
   String::vSprint(wBuffer,"THROW TEST");
   
   throw wBuffer;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4511,7 +4760,7 @@ void Task::vThrow(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTick(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTick");
+ENTRY("vTick");
   
   nnpTask->vTokenNext();
   
@@ -4533,6 +4782,8 @@ void Task::vTick(NNP_Task nnpTask)
   else {
     nnpTask->vPushParam(pWord);
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4540,7 +4791,7 @@ void Task::vTick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToBody(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToBody");
+ENTRY("vToBody");
   
   Word* pWord;
   if ( ! nnpTask->bPopParam(pWord) )
@@ -4550,6 +4801,8 @@ void Task::vToBody(NNP_Task nnpTask)
   xPtrBody = pcAdd(pWord,sizeof(Word));
 
   nnpTask->vPushParam(&xPtrBody);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4557,7 +4810,7 @@ void Task::vToBody(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToCmd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToCmd");
+ENTRY("vToCmd");
 
   if ( ! nnpTask->bGuardParam(CN_INTVAL) )
     THROW_INVALID_PARAM(">cmd");
@@ -4583,6 +4836,8 @@ void Task::vToCmd(NNP_Task nnpTask)
   xStr = sCmd.a();
   
   nnpTask->vPushParam(&xStr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4590,7 +4845,7 @@ void Task::vToCmd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToInt(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToInt");
+ENTRY("vToInt");
   
   ValWsp xStr;
   if ( ! nnpTask->bPopParam(xStr) )
@@ -4602,6 +4857,8 @@ void Task::vToInt(NNP_Task nnpTask)
   i8 i = String::iToI8(sBuff.a());
 
   nnpTask->vPushParam(i);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4609,13 +4866,15 @@ void Task::vToInt(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToPstack(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToPstack");
+ENTRY("vToPstack");
   
   ValWsp xVal;
   if ( ! nnpTask->bPopReturn(xVal) )
     THROW_INVALID_PARAM("r>");
   
   nnpTask->vPushParam(xVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4623,13 +4882,15 @@ void Task::vToPstack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToRstack(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToRstack");
+ENTRY("vToRstack");
   
   ValWsp xVal;
   if ( ! nnpTask->bPopParam(xVal) )
     THROW_INVALID_PARAM(">r");
 
   nnpTask->vPushReturn(xVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4637,7 +4898,7 @@ void Task::vToRstack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToSEitf(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToSEitf");
+ENTRY("vToSEitf");
   
   i8 iVal;
   
@@ -4648,6 +4909,8 @@ void Task::vToSEitf(NNP_Task nnpTask)
   xPtrSEitf = reinterpret_cast<SEitf*>(iVal);
   
   nnpTask->vPushParam(&xPtrSEitf);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4655,7 +4918,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToStr(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToStr");
+ENTRY("vToStr");
   
   ValWsp xVal;
   if ( ! nnpTask->bPopParam(xVal) )
@@ -4665,6 +4928,8 @@ void Task::vToStr(NNP_Task nnpTask)
   xVal.vToString(wBuffer);
 
   nnpTask->vPushParam(wBuffer);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4672,11 +4937,13 @@ void Task::vToStr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTotalSpace(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTotalSpace");
+ENTRY("vTotalSpace");
   
   i8 iTotalSpace = gpBufferPool->iRegionSize();
   
   nnpTask->vPushParam(iTotalSpace);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4684,7 +4951,7 @@ void Task::vTotalSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToTask(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToTask");
+ENTRY("vToTask");
   
   i8 iVal;
 
@@ -4695,6 +4962,8 @@ void Task::vToTask(NNP_Task nnpTask)
   xPtrTask = reinterpret_cast<Task*>(iVal);
   
   nnpTask->vPushParam(xPtrTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4702,7 +4971,7 @@ void Task::vToTask(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToValSet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToValSet");
+ENTRY("vToValSet");
 
   i8 nVal;
 
@@ -4728,6 +4997,8 @@ void Task::vToValSet(NNP_Task nnpTask)
 //  vTrace("ValSet %lld bytes\n",xValSet.iSize());
   
   nnpTask->vPushParam(xValSet);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4735,7 +5006,7 @@ void Task::vToValSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToValues(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToValues");
+ENTRY("vToValues");
  
   ValSet xValSet;
   
@@ -4753,6 +5024,8 @@ void Task::vToValues(NNP_Task nnpTask)
     nnpTask->vPushParam(pValWsp[iVal]);
 
   nnpTask->vPushParam(nVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4760,9 +5033,11 @@ void Task::vToValues(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOff(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTraceOff");
+ENTRY("vTraceOff");
   
   nnpTask->m_bTracing = false;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4770,9 +5045,11 @@ void Task::vTraceOff(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOn(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTraceOn");
+ENTRY("vTraceOn");
   
   nnpTask->m_bTracing = true;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4780,11 +5057,13 @@ void Task::vTraceOn(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vUnloop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vUnloop");
+ENTRY("vUnloop");
   
   // we should just modify the pointers rather than actually pop
   ValWsp xVal;
   nnpTask->vPopReturn(&xVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4792,7 +5071,7 @@ void Task::vUnloop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vUntil(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vUntil");
+ENTRY("vUntil");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -4802,6 +5081,8 @@ void Task::vUntil(NNP_Task nnpTask)
   //-------------------------------------------------------------------------
   
   pCurrentWord->vEncode("jumpFalse",pBeginLoc);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4809,12 +5090,14 @@ void Task::vUntil(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vVersion(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSersion");
+ENTRY("vSersion");
   
   s256 sVersion;
   sVersion = RAPIDSSE_VERSION_STRING;
   
   nnpTask->vPushParam(sVersion);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4822,9 +5105,11 @@ void Task::vVersion(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWait(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWait");
+ENTRY("vWait");
   
   // ..tbd..
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4832,9 +5117,11 @@ void Task::vWait(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWake(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWake");
+ENTRY("vWake");
   
   // ..tbd..
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4842,7 +5129,7 @@ void Task::vWake(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWhile(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWhile");
+ENTRY("vWhile");
 
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -4850,6 +5137,8 @@ void Task::vWhile(NNP_Task nnpTask)
   Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
   nnpTask->vPushReturn(pWhileJumpArg);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4857,7 +5146,7 @@ void Task::vWhile(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroLess(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vZeroLess");
+ENTRY("vZeroLess");
   
   i8 iZero;
   if ( ! nnpTask->bPopParamInt(iZero) )
@@ -4867,6 +5156,8 @@ void Task::vZeroLess(NNP_Task nnpTask)
     nnpTask->vPushParam((i8)1);
   else
     nnpTask->vPushParam((i8)0);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4874,7 +5165,7 @@ void Task::vZeroLess(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroLessEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vZeroLessEqual");
+ENTRY("vZeroLessEqual");
   
   i8 iZero;
   if ( ! nnpTask->bPopParamInt(iZero) )
@@ -4884,6 +5175,8 @@ void Task::vZeroLessEqual(NNP_Task nnpTask)
     nnpTask->vPushParam((i8)1);
   else
     nnpTask->vPushParam((i8)0);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4891,7 +5184,7 @@ void Task::vZeroLessEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vZeroEqual");
+ENTRY("vZeroEqual");
   
   i8 iZero;
   if ( ! nnpTask->bPopParamInt(iZero) )
@@ -4901,6 +5194,8 @@ void Task::vZeroEqual(NNP_Task nnpTask)
     nnpTask->vPushParam((i8)1);
   else
     nnpTask->vPushParam((i8)0);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4908,7 +5203,7 @@ void Task::vZeroEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroNotEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vZeroNotEqual");
+ENTRY("vZeroNotEqual");
   
   i8 iZero;
   if ( ! nnpTask->bPopParamInt(iZero) )
@@ -4918,6 +5213,8 @@ void Task::vZeroNotEqual(NNP_Task nnpTask)
     nnpTask->vPushParam((i8)1);
   else
     nnpTask->vPushParam((i8)0);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4925,7 +5222,7 @@ void Task::vZeroNotEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroGreaterEqual(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vZeroGreaterEqual");
+ENTRY("vZeroGreaterEqual");
   
   i8 iZero;
   if ( ! nnpTask->bPopParamInt(iZero) )
@@ -4935,6 +5232,8 @@ void Task::vZeroGreaterEqual(NNP_Task nnpTask)
     nnpTask->vPushParam((i8)1);
   else
     nnpTask->vPushParam((i8)0);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4942,7 +5241,7 @@ void Task::vZeroGreaterEqual(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vZeroGreater(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vZeroGreater");
+ENTRY("vZeroGreater");
   
   i8 iZero;
   if ( ! nnpTask->bPopParamInt(iZero) )
@@ -4952,6 +5251,8 @@ void Task::vZeroGreater(NNP_Task nnpTask)
     nnpTask->vPushParam((i8)1);
   else
     nnpTask->vPushParam((i8)0);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4965,12 +5266,14 @@ void Task::vZeroGreater(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_0(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_0");
+ENTRY("vAssertStack_0");
 
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (0 == iStackValues)  )
     THROW("assert.stack_0");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4978,12 +5281,14 @@ void Task::vAssertStack_0(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_0more(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_0more");
+ENTRY("vAssertStack_0more");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack0+");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4991,12 +5296,14 @@ void Task::vAssertStack_0more(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_1(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_1");
+ENTRY("vAssertStack_1");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (1 == iStackValues)  )
     THROW("assert.stack_1");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5004,12 +5311,14 @@ void Task::vAssertStack_1(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_1more(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_1more");
+ENTRY("vAssertStack_1more");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (1 <= iStackValues) )
     THROW("assert.stack1+");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5017,12 +5326,14 @@ void Task::vAssertStack_1more(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_2(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_2");
+ENTRY("vAssertStack_2");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (2 == iStackValues)  )
     THROW("assert.stack_2");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5030,12 +5341,14 @@ void Task::vAssertStack_2(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_2more(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_2more");
+ENTRY("vAssertStack_2more");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (2 <= iStackValues) )
     THROW("assert.stack0+");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5043,12 +5356,14 @@ void Task::vAssertStack_2more(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_3(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_3");
+ENTRY("vAssertStack_3");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (3 == iStackValues)  )
     THROW("assert.stack_3");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5056,12 +5371,14 @@ void Task::vAssertStack_3(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_3more(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_3more");
+ENTRY("vAssertStack_3more");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack3+");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5069,12 +5386,14 @@ void Task::vAssertStack_3more(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_4(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_4");
+ENTRY("vAssertStack_4");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (4 == iStackValues)  )
     THROW("assert.stack_4");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5082,12 +5401,14 @@ void Task::vAssertStack_4(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAssertStack_4more(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vAssertStack_4more");
+ENTRY("vAssertStack_4more");
   
   i8 iStackValues = nnpTask->m_xParamStack.iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack4+");
+  
+  EXIT();
 }
 
 // args: ///////////////////////////////////////////////////////////////////////
@@ -5097,9 +5418,11 @@ void Task::vAssertStack_4more(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vArgsPartition(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vArgsPartition");
+ENTRY("vArgsPartition");
   
   nnpTask->vPushParam(gxArguments.m_iPartition);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5107,9 +5430,11 @@ void Task::vArgsPartition(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vArgsPrint(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vArgsPrint");
+ENTRY("vArgsPrint");
   
   gxArguments.vPrint();
+  
+  EXIT();
 }
 
 // csv: ////////////////////////////////////////////////////////////////////////
@@ -5119,7 +5444,7 @@ void Task::vArgsPrint(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCsvFirstValue(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCsvFirstValue");
+ENTRY("vCsvFirstValue");
   
   ValWsp xStr;
   if ( ! nnpTask->bPopParam(xStr) )
@@ -5133,6 +5458,8 @@ void Task::vCsvFirstValue(NNP_Task nnpTask)
     sFirstValue = "";
   
   nnpTask->vPushParam(sFirstValue);
+  
+  EXIT();
 }
 
 // debug: //////////////////////////////////////////////////////////////////////
@@ -5142,9 +5469,11 @@ void Task::vCsvFirstValue(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDebugTrap(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDebugTrap");
+ENTRY("vDebugTrap");
 
   Common::vDebugTrap();
+  
+  EXIT();
 }
 
 // dic: ////////////////////////////////////////////////////////////////////////
@@ -5154,7 +5483,7 @@ void Task::vDebugTrap(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicCount(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicCount");
+ENTRY("vDicCount");
   
   i8 iCount;
   
@@ -5166,6 +5495,8 @@ void Task::vDicCount(NNP_Task nnpTask)
   }
   
   nnpTask->vPushParam(iCount);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5173,7 +5504,7 @@ void Task::vDicCount(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicDrop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicDrop");
+ENTRY("vDicDrop");
   
   if (nnpTask->m_pSEitf) {
     nnpTask->m_pSEitf->vPopDic();
@@ -5181,6 +5512,8 @@ void Task::vDicDrop(NNP_Task nnpTask)
   else {
     nnpTask->m_xDictionaryStack.vDiscard();
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5188,7 +5521,7 @@ void Task::vDicDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicFrozenGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicFrozenGet");
+ENTRY("vDicFrozenGet");
   
   PtrVal xPtrDic;
   
@@ -5200,6 +5533,8 @@ void Task::vDicFrozenGet(NNP_Task nnpTask)
   bool bFrozen = pDic->bFrozen();
   
   nnpTask->vPushParam(bFrozen);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5207,7 +5542,7 @@ void Task::vDicFrozenGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicFrozenSet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicFrozenSet");
+ENTRY("vDicFrozenSet");
 
   IntVal xIntFrozen;
   PtrVal xPtrDic;
@@ -5220,6 +5555,8 @@ void Task::vDicFrozenSet(NNP_Task nnpTask)
   bool bFrozen = xIntFrozen.iInt();
 
   pDic->vFrozen(bFrozen);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5227,7 +5564,7 @@ void Task::vDicFrozenSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicStack(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicDump");
+ENTRY("vDicDump");
   
   if (nnpTask->m_pSEitf) {
     nnpTask->m_pSEitf->pDicStack()->vDump();
@@ -5235,6 +5572,8 @@ void Task::vDicStack(NNP_Task nnpTask)
   else {
     nnpTask->m_xDictionaryStack.vDump();
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5242,7 +5581,7 @@ void Task::vDicStack(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicInit");
+ENTRY("vDicInit");
   
   PtrVal xDicPtr;
   
@@ -5255,6 +5594,8 @@ void Task::vDicInit(NNP_Task nnpTask)
   
   // this is because of GlobalDictionary (ugh)
   pDictionary->vInit();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5262,7 +5603,7 @@ void Task::vDicInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicLast(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicLast");
+ENTRY("vDicLast");
   
   PtrVal xDicPtr;
   
@@ -5274,6 +5615,8 @@ void Task::vDicLast(NNP_Task nnpTask)
   Word* pLastWord = pDictionary->pCurrentWord();
   
   nnpTask->vPushParam(pLastWord);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5281,12 +5624,14 @@ void Task::vDicLast(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicMain(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicMain");
+ENTRY("vDicMain");
   
   PtrVal xPtrDic;
   xPtrDic = gpMainDic;
   
   nnpTask->vPushParam(xPtrDic);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5294,7 +5639,7 @@ void Task::vDicMain(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicName(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicName");
+ENTRY("vDicName");
  
   PtrVal xDicPtr;
   if ( ! nnpTask->bPopParam(xDicPtr) )
@@ -5306,6 +5651,8 @@ void Task::vDicName(NNP_Task nnpTask)
   sName = pDictionary->sName().a();
   
   nnpTask->vPushParam(sName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5313,7 +5660,7 @@ void Task::vDicName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPick(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicPick");
+ENTRY("vDicPick");
   
   i8 iDic;
   if ( ! nnpTask->bPopParam(iDic) )
@@ -5329,6 +5676,8 @@ void Task::vDicPick(NNP_Task nnpTask)
   }
   
   nnpTask->vPushParam(xPtrDic);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5336,7 +5685,7 @@ void Task::vDicPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDicPush(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDicPush");
+ENTRY("vDicPush");
   
   PtrVal xDicPtr;
   
@@ -5351,6 +5700,8 @@ void Task::vDicPush(NNP_Task nnpTask)
   else {
     nnpTask->m_xDictionaryStack.vPush(pDictionary);
   }
+  
+  EXIT();
 }
 
 // dir: ////////////////////////////////////////////////////////////////////////
@@ -5360,7 +5711,7 @@ void Task::vDicPush(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirExists(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirExists");
+ENTRY("vDirExists");
   
   s256 sPath;
   
@@ -5371,6 +5722,8 @@ void Task::vDirExists(NNP_Task nnpTask)
   
   i8 iResult = xDir.bExists(sPath);
   nnpTask->vPushParam(iResult);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5378,7 +5731,7 @@ void Task::vDirExists(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirMake(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirMake");
+ENTRY("vDirMake");
   
   s256 sPath;
   
@@ -5389,6 +5742,8 @@ void Task::vDirMake(NNP_Task nnpTask)
   
   i8 iResult = xDir.bMake(sPath);
   nnpTask->vPushParam(iResult);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5396,7 +5751,7 @@ void Task::vDirMake(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirRemove(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirRemove");
+ENTRY("vDirRemove");
   
   s256 sPath;
   
@@ -5407,6 +5762,8 @@ void Task::vDirRemove(NNP_Task nnpTask)
   
   i8 iResult = xDir.bRemove(sPath);
   nnpTask->vPushParam(iResult);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5414,7 +5771,7 @@ void Task::vDirRemove(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCwd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCwd");
+ENTRY("vCwd");
   
   s256 sDir;
   if ( ! nnpTask->bPopParam(sDir) )
@@ -5423,6 +5780,8 @@ void Task::vCwd(NNP_Task nnpTask)
   Dir xDir;
   if ( ! xDir.bSetCurrent(sDir) )
     THROW("Unable to set current directory");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5430,7 +5789,7 @@ void Task::vCwd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGwd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vGwd");
+ENTRY("vGwd");
   
   ValWsp xStrVal;
   
@@ -5444,6 +5803,8 @@ void Task::vGwd(NNP_Task nnpTask)
   else {
     THROW("Unable to get current directory");
   }
+  
+  EXIT();
 }
 
 
@@ -5453,7 +5814,7 @@ void Task::vGwd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirClose(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirClose");
+ENTRY("vDirClose");
   
   PtrVal xPtrDir;
 
@@ -5463,6 +5824,8 @@ void Task::vDirClose(NNP_Task nnpTask)
   Dir* pDir = _pDir(xPtrDir.pPtr());
   
   pDir->vClose();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5470,7 +5833,7 @@ void Task::vDirClose(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirDelete");
+ENTRY("vDirDelete");
   
   PtrVal xDirPtr;
   
@@ -5480,6 +5843,8 @@ void Task::vDirDelete(NNP_Task nnpTask)
   Dir* pDir = _pDir(xDirPtr.pPtr());
   
   delete pDir;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5487,7 +5852,7 @@ void Task::vDirDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirEntryName(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirEntryName");
+ENTRY("vDirEntryName");
   
   PtrVal xPtrDir;
   
@@ -5501,6 +5866,8 @@ void Task::vDirEntryName(NNP_Task nnpTask)
   sEntryName = pDir->sEntryName();
   
   nnpTask->vPushParam(sEntryName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5508,7 +5875,7 @@ void Task::vDirEntryName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirEntryType(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirEntryType");
+ENTRY("vDirEntryType");
   
   PtrVal xPtrDir;
   
@@ -5522,6 +5889,8 @@ void Task::vDirEntryType(NNP_Task nnpTask)
   iEntryType = pDir->iEntryType();
   
   nnpTask->vPushParam(iEntryType);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5529,7 +5898,7 @@ void Task::vDirEntryType(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirInit");
+ENTRY("vDirInit");
   
   PtrVal xPtrDir;
   
@@ -5541,6 +5910,8 @@ void Task::vDirInit(NNP_Task nnpTask)
   new(pDir) Dir;
   
   pDir->vInit();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5548,7 +5919,7 @@ void Task::vDirInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirIsClosed(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirIsClosed");
+ENTRY("vDirIsClosed");
   
   PtrVal xPtrDir;
   
@@ -5560,6 +5931,8 @@ void Task::vDirIsClosed(NNP_Task nnpTask)
   bool bIsClosed = pDir->bIsClosed();
   
   nnpTask->vPushParam(bIsClosed);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5567,7 +5940,7 @@ void Task::vDirIsClosed(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirIsOpen(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirIsOpen");
+ENTRY("vDirIsOpen");
   
   PtrVal xPtrDir;
   
@@ -5579,6 +5952,8 @@ void Task::vDirIsOpen(NNP_Task nnpTask)
   bool bIsOpen = pDir->bIsOpen();
   
   nnpTask->vPushParam(bIsOpen);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5586,7 +5961,7 @@ void Task::vDirIsOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirNew");
+ENTRY("vDirNew");
   
   Dir* pDir = new Dir;
   
@@ -5594,6 +5969,8 @@ void Task::vDirNew(NNP_Task nnpTask)
   xPtrDir = pDir;
   
   nnpTask->vPushParam(xPtrDir);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5601,7 +5978,7 @@ void Task::vDirNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirOpen(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirOpen");
+ENTRY("vDirOpen");
   
   PtrVal xPtrDir;
   
@@ -5613,6 +5990,8 @@ void Task::vDirOpen(NNP_Task nnpTask)
   bool bOpened = pDir->bOpen();
   
   nnpTask->vPushParam(bOpened);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5620,7 +5999,7 @@ void Task::vDirOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirPathGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirPathGet");
+ENTRY("vDirPathGet");
   
   PtrVal xPtrDir;
   
@@ -5635,6 +6014,8 @@ void Task::vDirPathGet(NNP_Task nnpTask)
   
   nnpTask->vPushParam(sPath);
 
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5642,7 +6023,7 @@ void Task::vDirPathGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirPathSet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirPathSet");
+ENTRY("vDirPathSet");
   
   PtrVal xPtrDir;
   
@@ -5660,6 +6041,8 @@ void Task::vDirPathSet(NNP_Task nnpTask)
   sPath = xWspPath.sStr();
   
   pDir->vPath(sPath);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5667,7 +6050,7 @@ void Task::vDirPathSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirRead(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirRead");
+ENTRY("vDirRead");
   
   PtrVal xPtrDir;
   
@@ -5679,6 +6062,8 @@ void Task::vDirRead(NNP_Task nnpTask)
   bool bRead  = pDir->bRead();
   
   nnpTask->vPushParam(bRead);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5686,7 +6071,7 @@ void Task::vDirRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirRewind(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirRewind");
+ENTRY("vDirRewind");
   
   PtrVal xPtrDir;
   
@@ -5696,6 +6081,8 @@ void Task::vDirRewind(NNP_Task nnpTask)
   Dir* pDir = _pDir(xPtrDir.pPtr());
   
   pDir->vRewind();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5703,7 +6090,7 @@ void Task::vDirRewind(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirSeek(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirSeek");
+ENTRY("vDirSeek");
   
   PtrVal xPtrDir;
   
@@ -5717,6 +6104,8 @@ void Task::vDirSeek(NNP_Task nnpTask)
     THROW_INVALID_PARAM("dir.seek");
   
   pDir->vSeek(iPosition);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5724,7 +6113,7 @@ void Task::vDirSeek(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDirTell(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDirTell");
+ENTRY("vDirTell");
   
   PtrVal xPtrDir;
   
@@ -5736,6 +6125,8 @@ void Task::vDirTell(NNP_Task nnpTask)
   i8 iPosition = pDir->iTell();
   
   nnpTask->vPushParam(iPosition);
+  
+  EXIT();
 }
 
 
@@ -5746,7 +6137,7 @@ void Task::vDirTell(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileClose(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileClose");
+ENTRY("vFileClose");
   
   PtrVal xFilePtr;
   
@@ -5756,6 +6147,8 @@ void Task::vFileClose(NNP_Task nnpTask)
   File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
   
   pFile->vClose();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5763,7 +6156,7 @@ void Task::vFileClose(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileDelete");
+ENTRY("vFileDelete");
   
   PtrVal xFilePtr;
   
@@ -5774,6 +6167,8 @@ void Task::vFileDelete(NNP_Task nnpTask)
 
   delete pFile;
   
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5781,7 +6176,7 @@ void Task::vFileDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileInit");
+ENTRY("vFileInit");
   
   PtrVal xFilePtr;
   
@@ -5791,6 +6186,8 @@ void Task::vFileInit(NNP_Task nnpTask)
   File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
   
   new (pFile) File;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5798,7 +6195,7 @@ void Task::vFileInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileNew");
+ENTRY("vFileNew");
   
   File* pFile = new File;
   
@@ -5806,6 +6203,8 @@ void Task::vFileNew(NNP_Task nnpTask)
   xFilePtr = pFile;
   
   nnpTask->vPushParam(xFilePtr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5813,7 +6212,7 @@ void Task::vFileNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileOpen(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileOpen");
+ENTRY("vFileOpen");
   
   PtrVal xFilePtr;
   
@@ -5830,6 +6229,8 @@ void Task::vFileOpen(NNP_Task nnpTask)
   bool bOpened = pFile->bOpen(sMode.a());
   
   nnpTask->vPushParam(bOpened);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5837,7 +6238,7 @@ void Task::vFileOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFilePathGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFilePathGet");
+ENTRY("vFilePathGet");
   
   PtrVal xFilePtr;
   
@@ -5849,6 +6250,8 @@ void Task::vFilePathGet(NNP_Task nnpTask)
   s256 sPath = pFile->sPath();
   
   nnpTask->vPushParam(sPath);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5856,7 +6259,7 @@ void Task::vFilePathGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFilePathSet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFilePathSet");
+ENTRY("vFilePathSet");
   
   PtrVal xFilePtr;
   
@@ -5871,6 +6274,8 @@ void Task::vFilePathSet(NNP_Task nnpTask)
     THROW_INVALID_PARAM("file.path!");
   
   pFile->vPath(sPath.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5878,7 +6283,7 @@ void Task::vFilePathSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileRead(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileRead");
+ENTRY("vFileRead");
   
   PtrVal xFilePtr;
   
@@ -5897,6 +6302,8 @@ void Task::vFileRead(NNP_Task nnpTask)
   else {
     nnpTask->vPushParam((i8)0);
   }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5904,7 +6311,7 @@ void Task::vFileRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFileWrite(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFileWrite");
+ENTRY("vFileWrite");
   
   PtrVal xFilePtr;
   
@@ -5922,6 +6329,8 @@ void Task::vFileWrite(NNP_Task nnpTask)
   char* wStr = xValue.pAsStrVal()->sStr();
   
   pFile->vPrint("%s",wStr);
+  
+  EXIT();
 }
 
 // grid: ///////////////////////////////////////////////////////////////////////
@@ -5931,7 +6340,7 @@ void Task::vFileWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridAppendNode(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vGridAppendNode");
+ENTRY("vGridAppendNode");
   
   PtrVal xNodePtr;
   
@@ -5943,6 +6352,8 @@ void Task::vGridAppendNode(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   gpGrid->vAppend(pNode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5950,7 +6361,7 @@ void Task::vGridAppendNode(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vGridInit");
+ENTRY("vGridInit");
   
   PtrVal xGridPtr;
   
@@ -5961,6 +6372,8 @@ void Task::vGridInit(NNP_Task nnpTask)
   ASSERT(CN_GRID == pGrid->eClass());
   
   new(pGrid) Grid;
+  
+  EXIT();
 }
 
 // input: //////////////////////////////////////////////////////////////////////
@@ -5970,9 +6383,11 @@ void Task::vGridInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputClose(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputClose");
+ENTRY("vInputClose");
   
   nnpTask->m_xTokeniser.vUseEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5980,11 +6395,13 @@ void Task::vInputClose(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputDepth(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputDepth");
+ENTRY("vInputDepth");
   
   i8 iDepth = nnpTask->m_xTokeniser.iDepth();
   
   nnpTask->vPushParam(iDepth);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5992,7 +6409,7 @@ void Task::vInputDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputNext");
+ENTRY("vInputNext");
   
   if (nnpTask->m_bTracing)
     ASSERT(nnpTask->m_bTracing);
@@ -6000,6 +6417,8 @@ void Task::vInputNext(NNP_Task nnpTask)
   char* aToken = nnpTask->m_sToken.a();
   
   nnpTask->m_eToken = nnpTask->m_xTokeniser.eNextToken(aToken);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6007,7 +6426,7 @@ void Task::vInputNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputOpen(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputOpen");
+ENTRY("vInputOpen");
   
   s256 sFilePath;
   
@@ -6018,6 +6437,8 @@ void Task::vInputOpen(NNP_Task nnpTask)
   
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6025,10 +6446,12 @@ void Task::vInputOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputPop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputPop");
+ENTRY("vInputPop");
   
   bool bPopped = nnpTask->m_xTokeniser.bPop();
   ASSERT(bPopped);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6036,9 +6459,11 @@ void Task::vInputPop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputPush(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputPush");
+ENTRY("vInputPush");
   
   nnpTask->m_xTokeniser.vPush();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6046,9 +6471,11 @@ void Task::vInputPush(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputStdin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputStdin");
+ENTRY("vInputStdin");
   
   nnpTask->m_xTokeniser.vUseStdin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6056,7 +6483,7 @@ void Task::vInputStdin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputText(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputText");
+ENTRY("vInputText");
   
   s256 sInput;
   
@@ -6064,6 +6491,8 @@ void Task::vInputText(NNP_Task nnpTask)
     THROW_INVALID_PARAM("input.text");
     
   nnpTask->m_xTokeniser.vUseString(sInput);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6071,9 +6500,11 @@ void Task::vInputText(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputToken(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputToken");
+ENTRY("vInputToken");
   
   nnpTask->vPushParam(nnpTask->m_sToken.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6081,11 +6512,13 @@ void Task::vInputToken(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vInputType(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vInputType");
+ENTRY("vInputType");
   
   eTK eTokenType = nnpTask->m_eToken;
   
   nnpTask->vPushParam(eTokenType);
+  
+  EXIT();
 }
 
 // loader: /////////////////////////////////////////////////////////////////////
@@ -6095,7 +6528,7 @@ void Task::vInputType(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderDelete");
+ENTRY("vLoaderDelete");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6105,6 +6538,8 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   delete pLoader;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6112,12 +6547,14 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderNew");
+ENTRY("vLoaderNew");
   
   Loader* pLoader = new Loader;
   ASSERT(CN_LOADER == pLoader->eClass());
   
   nnpTask->vPushParam(pLoader);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6125,7 +6562,7 @@ void Task::vLoaderNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderInit");
+ENTRY("vLoaderInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6135,6 +6572,8 @@ void Task::vLoaderInit(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   new(pLoader) Loader;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6142,7 +6581,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTableStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderTableStore");
+ENTRY("vLoaderTableStore");
   
   PtrVal xPtrTable;
   PtrVal xPtrLoader;
@@ -6156,6 +6595,8 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
 
   pLoader->vTable(pTable);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6163,7 +6604,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPathStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderPathStore");
+ENTRY("vLoaderPathStore");
   
   ValWsp xWspPath;
   PtrVal xPtrLoader;
@@ -6177,6 +6618,8 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
   sPath = xWspPath.sStr();
   
   pLoader->vPath(sPath);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6184,7 +6627,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderTxRefStore");
+ENTRY("vLoaderTxRefStore");
   
   PtrVal xPtrLoader;
   PtrVal xPtrTxRef;
@@ -6198,6 +6641,8 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   pLoader->vTxRef(pTxRef);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6205,7 +6650,7 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderOpenFile(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderOpenFile");
+ENTRY("vLoaderOpenFile");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6217,6 +6662,8 @@ void Task::vLoaderOpenFile(NNP_Task nnpTask)
   bool bOpened = pLoader->bOpenFile();
   
   nnpTask->vPushParam(bOpened);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6224,7 +6671,7 @@ void Task::vLoaderOpenFile(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderCloseFile(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderCloseFile");
+ENTRY("vLoaderCloseFile");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6234,6 +6681,8 @@ void Task::vLoaderCloseFile(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   pLoader->vCloseFile();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6241,7 +6690,7 @@ void Task::vLoaderCloseFile(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderFetchRecord(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderFetchReord");
+ENTRY("vLoaderFetchReord");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6253,6 +6702,8 @@ void Task::vLoaderFetchRecord(NNP_Task nnpTask)
   bool bFetched = pLoader->bFetchRecord();
   
   nnpTask->vPushParam(bFetched);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6260,7 +6711,7 @@ void Task::vLoaderFetchRecord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPushRecord(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderPushReord");
+ENTRY("vLoaderPushReord");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6276,6 +6727,8 @@ void Task::vLoaderPushRecord(NNP_Task nnpTask)
   pLoader->vGetRecord(sRecord);
   
   nnpTask->vPushParam(xRecord);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6283,7 +6736,7 @@ void Task::vLoaderPushRecord(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInsertRow(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderFetchReord");
+ENTRY("vLoaderFetchReord");
   
   PtrVal xPtrLoader;
   if ( ! nnpTask->bPopParam(xPtrLoader) )
@@ -6300,6 +6753,8 @@ void Task::vLoaderInsertRow(NNP_Task nnpTask)
   bool bInserted = pLoader->bInsertRow(iPartn);
   
   nnpTask->vPushParam(bInserted);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6307,7 +6762,7 @@ void Task::vLoaderInsertRow(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderBegin");
+ENTRY("vLoaderBegin");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6317,6 +6772,8 @@ void Task::vLoaderBegin(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   pLoader->vBegin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6324,7 +6781,7 @@ void Task::vLoaderBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLoaderEnd");
+ENTRY("vLoaderEnd");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6334,6 +6791,8 @@ void Task::vLoaderEnd(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   pLoader->vEnd();
+  
+  EXIT();
 }
 
 // lock: ///////////////////////////////////////////////////////////////////////
@@ -6343,7 +6802,7 @@ void Task::vLoaderEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropRead(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLockDropRead");
+ENTRY("vLockDropRead");
   
   PtrVal xLockPtr;
   if ( ! nnpTask->bPopParam(xLockPtr) )
@@ -6354,6 +6813,8 @@ void Task::vLockDropRead(NNP_Task nnpTask)
   ASSERT(CN_LOCK == pLock->eClass());
   
   pLock->vDropRead();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6361,7 +6822,7 @@ void Task::vLockDropRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropWrite(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLockDropWrite");
+ENTRY("vLockDropWrite");
 
   PtrVal xLockPtr;
   if ( ! nnpTask->bPopParam(xLockPtr) )
@@ -6372,6 +6833,8 @@ void Task::vLockDropWrite(NNP_Task nnpTask)
   ASSERT(CN_LOCK == pLock->eClass());
 
   pLock->vDropWrite();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6379,7 +6842,7 @@ void Task::vLockDropWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLockGrabRead(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLockGrabRead");
+ENTRY("vLockGrabRead");
 
   PtrVal xLockPtr;
   if ( ! nnpTask->bPopParam(xLockPtr) )
@@ -6390,6 +6853,8 @@ void Task::vLockGrabRead(NNP_Task nnpTask)
   ASSERT(CN_LOCK == pLock->eClass());
 
   pLock->vGrabRead();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6397,7 +6862,7 @@ void Task::vLockGrabRead(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLockGrabWrite(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLockGrabWrite");
+ENTRY("vLockGrabWrite");
 
   PtrVal xLockPtr;
   if ( ! nnpTask->bPopParam(xLockPtr) )
@@ -6408,6 +6873,8 @@ void Task::vLockGrabWrite(NNP_Task nnpTask)
   ASSERT(CN_LOCK == pLock->eClass());
   
   pLock->vGrabWrite();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6415,7 +6882,7 @@ void Task::vLockGrabWrite(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vLockInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vLockInit");
+ENTRY("vLockInit");
   
   PtrVal xLockPtr;
   if ( ! nnpTask->bPopParam(xLockPtr) )
@@ -6427,6 +6894,8 @@ void Task::vLockInit(NNP_Task nnpTask)
   
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
+  
+  EXIT();
 }
 
 // memory: /////////////////////////////////////////////////////////////////////
@@ -6436,7 +6905,7 @@ void Task::vLockInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryByteDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vMemoryByteDump");
+ENTRY("vMemoryByteDump");
   
   Word* pWord;
   i8 iSize;
@@ -6448,6 +6917,8 @@ void Task::vMemoryByteDump(NNP_Task nnpTask)
     THROW_INVALID_PARAM("memory.bytedump");
   
   pWord->vByteDump(iSize);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6455,7 +6926,7 @@ void Task::vMemoryByteDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryWordDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vMemoryWordDump");
+ENTRY("vMemoryWordDump");
   
   Word* pWord;
   i8 iSize;
@@ -6467,6 +6938,8 @@ void Task::vMemoryWordDump(NNP_Task nnpTask)
     THROW_INVALID_PARAM("memory.worddump");
   
   pWord->vWordDump(iSize);
+  
+  EXIT();
 }
 
 // node: ///////////////////////////////////////////////////////////////////////
@@ -6476,7 +6949,7 @@ void Task::vMemoryWordDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeInit");
+ENTRY("vNodeInit");
   
   PtrVal xNodePtr;
   
@@ -6487,6 +6960,8 @@ void Task::vNodeInit(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   new(pNode) Node;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6494,7 +6969,7 @@ void Task::vNodeInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeNew");
+ENTRY("vNodeNew");
   
   i8 iNodeNo;
   
@@ -6510,6 +6985,8 @@ void Task::vNodeNew(NNP_Task nnpTask)
   xNodePtr = pNode;
   
   nnpTask->vPushParam(xNodePtr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6517,7 +6994,7 @@ void Task::vNodeNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNo(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeNo");
+ENTRY("vNodeNo");
   
   PtrVal xNodePtr;
   
@@ -6528,6 +7005,8 @@ void Task::vNodeNo(NNP_Task nnpTask)
   ASSERT(CN_NODE == pNode->eClass());
   
   nnpTask->vPushParam(pNode->iNodeNo());
+  
+  EXIT();
 }
 
 // nodecursor: /////////////////////////////////////////////////////////////////
@@ -6537,7 +7016,7 @@ void Task::vNodeNo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorBegin");
+ENTRY("vNodeCursorBegin");
   
   PtrVal xPtrNodeCursor;
   if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
@@ -6547,6 +7026,8 @@ void Task::vNodeCursorBegin(NNP_Task nnpTask)
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   pNodeCursor->vBegin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6554,7 +7035,7 @@ void Task::vNodeCursorBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorDelete");
+ENTRY("vNodeCursorDelete");
   
   PtrVal xPtrNodeCursor;
   if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
@@ -6564,6 +7045,8 @@ void Task::vNodeCursorDelete(NNP_Task nnpTask)
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   delete pNodeCursor;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6571,7 +7054,7 @@ void Task::vNodeCursorDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorEnd");
+ENTRY("vNodeCursorEnd");
   
   PtrVal xPtrNodeCursor;
   if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
@@ -6581,6 +7064,8 @@ void Task::vNodeCursorEnd(NNP_Task nnpTask)
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   pNodeCursor->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6588,7 +7073,7 @@ void Task::vNodeCursorEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorFirst(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorFirst");
+ENTRY("vNodeCursorFirst");
   
   PtrVal xPtrNodeCursor;
   if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
@@ -6603,6 +7088,8 @@ void Task::vNodeCursorFirst(NNP_Task nnpTask)
   xPtrNode = pNodeCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6610,7 +7097,7 @@ void Task::vNodeCursorFirst(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorGet");
+ENTRY("vNodeCursorGet");
   
   PtrVal xPtrNodeCursor;
   if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
@@ -6623,6 +7110,8 @@ void Task::vNodeCursorGet(NNP_Task nnpTask)
   xPtrNode = pNodeCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6630,7 +7119,7 @@ void Task::vNodeCursorGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorInit");
+ENTRY("vNodeCursorInit");
   
   PtrVal xPtrNodeCursor;
   if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
@@ -6640,6 +7129,8 @@ void Task::vNodeCursorInit(NNP_Task nnpTask)
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   new(pNodeCursor) NodeCursor(gpGrid);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6647,7 +7138,7 @@ void Task::vNodeCursorInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorNew");
+ENTRY("vNodeCursorNew");
   
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -6656,6 +7147,8 @@ void Task::vNodeCursorNew(NNP_Task nnpTask)
   xPtrNodeCursor = pNodeCursor;
   
   nnpTask->vPushParam(xPtrNodeCursor);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6663,7 +7156,7 @@ void Task::vNodeCursorNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vNodeCursorNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vNodeCursorNext");
+ENTRY("vNodeCursorNext");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6678,6 +7171,8 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
   xPtrNode = pNodeCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
+  
+  EXIT();
 }
 
 // object: /////////////////////////////////////////////////////////////////////
@@ -6687,7 +7182,7 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vObjectDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vObjectDump");
+ENTRY("vObjectDump");
   
   IntVal xObject;
   if ( ! nnpTask->bPopParam(xObject) )
@@ -6697,6 +7192,8 @@ void Task::vObjectDump(NNP_Task nnpTask)
   
   pDUMPFUN* pDumpFun =gpDump[pObject->eClass()];
   (pDumpFun)(pObject->eClass(), pObject, pSingleTab());
+  
+  EXIT();
 }
 
 // process: ////////////////////////////////////////////////////////////////////
@@ -6706,11 +7203,13 @@ void Task::vObjectDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessGetPid(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vProcessGetPid");
+ENTRY("vProcessGetPid");
   
   i8 iPid = Process::iGetPid();
   
   nnpTask->vPushParam(iPid);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6718,7 +7217,7 @@ void Task::vProcessGetPid(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vProcessTestPid(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vProcessTestPid");
+ENTRY("vProcessTestPid");
 
   i8 iPid;
   if ( ! nnpTask->bPopParam(iPid) )
@@ -6727,6 +7226,8 @@ void Task::vProcessTestPid(NNP_Task nnpTask)
   i8 iExists = Process::bTestPid(iPid);
   
   nnpTask->vPushParam(iExists);
+  
+  EXIT();
 }
 
 // pstack: /////////////////////////////////////////////////////////////////////
@@ -6736,11 +7237,13 @@ void Task::vProcessTestPid(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPstackDepth(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPstackDepth");
+ENTRY("vPstackDepth");
   
   i8 iDepth = nnpTask->m_xParamStack.iValues();
   
   nnpTask->vPushParam(iDepth);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6748,7 +7251,7 @@ void Task::vPstackDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vPstackClass(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vPstackClass");
+ENTRY("vPstackClass");
   
   if ( ! nnpTask->bGuardParam(1) )
     THROW("pstack.class");
@@ -6758,6 +7261,8 @@ void Task::vPstackClass(NNP_Task nnpTask)
   eCN eClass = pValWsp->eClass();
   
   nnpTask->vPushParam(eClass);
+  
+  EXIT();
 }
 
 // queue: //////////////////////////////////////////////////////////////////////
@@ -6767,7 +7272,7 @@ void Task::vPstackClass(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vQueueAppend(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vQueueAppend");
+ENTRY("vQueueAppend");
   
   Object* pObject;
   ValWsp xValWsp;
@@ -6780,6 +7285,8 @@ void Task::vQueueAppend(NNP_Task nnpTask)
   ASSERT(CN_QUEUE == pObject->eClass());
   
   pQueue->bAppend(&xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6787,7 +7294,7 @@ void Task::vQueueAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vQueueDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vQueueDump");
+ENTRY("vQueueDump");
   
   Object* pObject;
   
@@ -6799,6 +7306,8 @@ void Task::vQueueDump(NNP_Task nnpTask)
   Queue* pQueue = static_cast<Queue*>(pObject);
   
   pQueue->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6806,7 +7315,7 @@ void Task::vQueueDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vQueueInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vQueueInit");
+ENTRY("vQueueInit");
   
   Object* pObject;
   
@@ -6818,6 +7327,8 @@ void Task::vQueueInit(NNP_Task nnpTask)
   Queue* pQueue = static_cast<Queue*>(pObject);
   
   new(pQueue) Queue;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6825,7 +7336,7 @@ void Task::vQueueInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vQueuePop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vQueuePop");
+ENTRY("vQueuePop");
   
   Object* pObject;
   ValWsp xValWsp;
@@ -6845,6 +7356,8 @@ void Task::vQueuePop(NNP_Task nnpTask)
   else
     nnpTask->vPushParam((i8)0);
   
+  
+  EXIT();
 }
 
 // rowcursor: //////////////////////////////////////////////////////////////////
@@ -6854,7 +7367,7 @@ void Task::vQueuePop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorBegin");
+ENTRY("vRowCursorBegin");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6868,6 +7381,8 @@ void Task::vRowCursorBegin(NNP_Task nnpTask)
     THROW_INVALID_PARAM("rowcursor.begin");
   
   pRowCursor->vBegin(iPartn);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6875,7 +7390,7 @@ void Task::vRowCursorBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorDelete");
+ENTRY("vRowCursorDelete");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6888,6 +7403,8 @@ void Task::vRowCursorDelete(NNP_Task nnpTask)
   delete pRowCursor;
   
   gpSmallHeap->vFreeObject(pObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6895,7 +7412,7 @@ void Task::vRowCursorDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorEnd");
+ENTRY("vRowCursorEnd");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6905,6 +7422,8 @@ void Task::vRowCursorEnd(NNP_Task nnpTask)
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   pRowCursor->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6912,7 +7431,7 @@ void Task::vRowCursorEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorFirst(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorFirst");
+ENTRY("vRowCursorFirst");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6927,6 +7446,8 @@ void Task::vRowCursorFirst(NNP_Task nnpTask)
   xPtrRow = pRowCursor->pRowAsStr();
   
   nnpTask->vPushParam(xPtrRow);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6934,7 +7455,7 @@ void Task::vRowCursorFirst(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorGet");
+ENTRY("vRowCursorGet");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6947,6 +7468,8 @@ void Task::vRowCursorGet(NNP_Task nnpTask)
   xRow = pRowCursor->pRowAsStr();
   
   nnpTask->vPushParam(xRow);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6954,7 +7477,7 @@ void Task::vRowCursorGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorInit");
+ENTRY("vRowCursorInit");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -6964,6 +7487,8 @@ void Task::vRowCursorInit(NNP_Task nnpTask)
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   new(pRowCursor) RowCursor;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6971,7 +7496,7 @@ void Task::vRowCursorInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorNew");
+ENTRY("vRowCursorNew");
   
   RowCursor* pRowCursor = new RowCursor;
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -6980,6 +7505,8 @@ void Task::vRowCursorNew(NNP_Task nnpTask)
   xPtrRowCursor = pRowCursor;
   
   nnpTask->vPushParam(xPtrRowCursor);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -6987,7 +7514,7 @@ void Task::vRowCursorNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorNext");
+ENTRY("vRowCursorNext");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -7002,6 +7529,8 @@ void Task::vRowCursorNext(NNP_Task nnpTask)
   xPtrRow = pRowCursor->pRowAsStr();
   
   nnpTask->vPushParam(xPtrRow);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7009,7 +7538,7 @@ void Task::vRowCursorNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorTableFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorTableFetch");
+ENTRY("vRowCursorTableFetch");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -7022,6 +7551,8 @@ void Task::vRowCursorTableFetch(NNP_Task nnpTask)
   xPtrTable = pRowCursor->pTable();
   
   nnpTask->vPushParam(xPtrTable);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7029,7 +7560,7 @@ void Task::vRowCursorTableFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorTableStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vRowCursorTableStore");
+ENTRY("vRowCursorTableStore");
   
   PtrVal xPtrRowCursor;
   if ( ! nnpTask->bPopParam(xPtrRowCursor) )
@@ -7046,6 +7577,8 @@ void Task::vRowCursorTableStore(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pRowCursor->vTable(pTable);
+  
+  EXIT();
 }
 
 // seitf: //////////////////////////////////////////////////////////////////////
@@ -7055,7 +7588,7 @@ void Task::vRowCursorTableStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfDelete");
+ENTRY("vSEitfDelete");
   
   PtrVal xPtrSEitf;
   
@@ -7066,6 +7599,8 @@ void Task::vSEitfDelete(NNP_Task nnpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   delete pSEitf;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7073,7 +7608,7 @@ void Task::vSEitfDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfDump");
+ENTRY("vSEitfDump");
   
   PtrVal xPtrSEitf;
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
@@ -7083,6 +7618,8 @@ void Task::vSEitfDump(NNP_Task nnpTask)
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7090,7 +7627,7 @@ void Task::vSEitfDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfNew");
+ENTRY("vSEitfNew");
   
   SEitf* pSEitf = new SEitf(0);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -7099,6 +7636,8 @@ void Task::vSEitfNew(NNP_Task nnpTask)
   xPtrSEitf = pSEitf;
   
   nnpTask->vPushParam(xPtrSEitf);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7106,7 +7645,7 @@ void Task::vSEitfNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfReqFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfReqFetch");
+ENTRY("vSEitfReqFetch");
   
   PtrVal xPtrSEitf;
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
@@ -7119,6 +7658,8 @@ void Task::vSEitfReqFetch(NNP_Task nnpTask)
   xPtrQueue = pSEitf->pRequestQueue();
   
   nnpTask->vPushParam(xPtrQueue);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7126,7 +7667,7 @@ void Task::vSEitfReqFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfReqStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfReqStore");
+ENTRY("vSEitfReqStore");
   
   PtrVal xPtrSEitf;
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
@@ -7144,6 +7685,8 @@ void Task::vSEitfReqStore(NNP_Task nnpTask)
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vRequestQueue(pQueue);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7151,7 +7694,7 @@ void Task::vSEitfReqStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRspFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfRspFetch");
+ENTRY("vSEitfRspFetch");
   
   PtrVal xPtrSEitf;
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
@@ -7164,6 +7707,8 @@ void Task::vSEitfRspFetch(NNP_Task nnpTask)
   xPtrQueue = pSEitf->pResponseQueue();
   
   nnpTask->vPushParam(xPtrQueue);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7171,7 +7716,7 @@ void Task::vSEitfRspFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfRspStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfRspStore");
+ENTRY("vSEitfRspStore");
   
   PtrVal xPtrSEitf;
   if ( ! nnpTask->bPopParam(xPtrSEitf) )
@@ -7189,6 +7734,8 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vResponseQueue(pQueue);
+  
+  EXIT();
 }
 
 // seitfcursor: ////////////////////////////////////////////////////////////////
@@ -7198,7 +7745,7 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorBegin");
+ENTRY("vSEitfCursorBegin");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7214,6 +7761,8 @@ void Task::vSEitfCursorBegin(NNP_Task nnpTask)
   xPtrVal = pSEitfCursor->pObject();
   
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7221,7 +7770,7 @@ void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorDelete");
+ENTRY("vSEitfCursorDelete");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7234,6 +7783,8 @@ void Task::vSEitfCursorDelete(NNP_Task nnpTask)
   delete pSEitfCursor;
   
   gpSmallHeap->vFreeObject(pObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7241,7 +7792,7 @@ void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorEnd");
+ENTRY("vSEitfCursorEnd");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7251,6 +7802,8 @@ void Task::vSEitfCursorEnd(NNP_Task nnpTask)
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   pSEitfCursor->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7258,7 +7811,7 @@ void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorFirst");
+ENTRY("vSEitfCursorFirst");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7273,6 +7826,8 @@ void Task::vSEitfCursorFirst(NNP_Task nnpTask)
   xPtrVal = pSEitfCursor->pObject();
   
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7280,7 +7835,7 @@ void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorGet");
+ENTRY("vSEitfCursorGet");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7293,6 +7848,8 @@ void Task::vSEitfCursorGet(NNP_Task nnpTask)
   xPtrVal = pSEitfCursor->pObject();
   
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7300,7 +7857,7 @@ void Task::vSEitfCursorGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorInit");
+ENTRY("vSEitfCursorInit");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7316,6 +7873,8 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   new(pSEitfCursor) SEitfCursor(pSEitfList);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7323,7 +7882,7 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorNew");
+ENTRY("vSEitfCursorNew");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -7339,6 +7898,8 @@ void Task::vSEitfCursorNew(NNP_Task nnpTask)
   xSEitfCursorPtr = pSEitfCursor;
   
   nnpTask->vPushParam(xSEitfCursorPtr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7346,7 +7907,7 @@ void Task::vSEitfCursorNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfCursorNext");
+ENTRY("vSEitfCursorNext");
   
   PtrVal xPtrSEitfCursor;
   if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
@@ -7361,6 +7922,8 @@ void Task::vSEitfCursorNext(NNP_Task nnpTask)
   xPtrVal = pSEitfCursor->pObject();
   
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 // seitflist: //////////////////////////////////////////////////////////////////
@@ -7370,7 +7933,7 @@ void Task::vSEitfCursorNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfListDump");
+ENTRY("vSEitfListDump");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -7380,6 +7943,8 @@ void Task::vSEitfListDump(NNP_Task nnpTask)
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   pSEitfList->vDump("SEitfList:");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7387,7 +7952,7 @@ void Task::vSEitfListDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSEitfListInit");
+ENTRY("vSEitfListInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -7397,6 +7962,8 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   new(pSEitfList) SEitfList;
+  
+  EXIT();
 }
 
 // stack: //////////////////////////////////////////////////////////////////////
@@ -7406,7 +7973,7 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStackClass(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vStackClass");
+ENTRY("vStackClass");
 
   i8 nTh;
   if ( ! nnpTask->bPopParam(nTh) )
@@ -7419,6 +7986,8 @@ void Task::vStackClass(NNP_Task nnpTask)
   eCN eClass = xValWsp.eClass();
   
   nnpTask->vPushParam(eClass);
+  
+  EXIT();
 }
 
 // string: /////////////////////////////////////////////////////////////////////
@@ -7428,7 +7997,7 @@ void Task::vStackClass(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStringPad(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vStringPad");
+ENTRY("vStringPad");
   
   i8 iLength;
 
@@ -7442,6 +8011,8 @@ void Task::vStringPad(NNP_Task nnpTask)
   xStringA.pAsStrVal()->vSize();
   
   nnpTask->vPushParam(xStringA);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7449,7 +8020,7 @@ void Task::vStringPad(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrEql(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vStrEql");
+ENTRY("vStrEql");
   
   ValWsp xStringA;
   ValWsp xStringB;
@@ -7461,6 +8032,8 @@ void Task::vStrEql(NNP_Task nnpTask)
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
   nnpTask->vPushParam(iEqual);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7468,7 +8041,7 @@ void Task::vStrEql(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vStrLen(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vStrLen");
+ENTRY("vStrLen");
   
   i8 iLength;
   ValWsp xString;
@@ -7482,6 +8055,8 @@ void Task::vStrLen(NNP_Task nnpTask)
   iLength = String::iLength(pStrVal->sStr());
   
   nnpTask->vPushParam(iLength);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7489,7 +8064,7 @@ void Task::vStrLen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSubStr(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vSubStr");
+ENTRY("vSubStr");
   
   i8 iLength;
   i8 iStart;
@@ -7521,6 +8096,8 @@ void Task::vSubStr(NNP_Task nnpTask)
   xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
   
   nnpTask->vPushParam(&xSubStr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7528,7 +8105,7 @@ void Task::vSubStr(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vConcat(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vConcat");
+ENTRY("vConcat");
   
   ValWsp xStrR;
   ValWsp xStrB;
@@ -7543,6 +8120,8 @@ void Task::vConcat(NNP_Task nnpTask)
   xStrR.pAsStrVal()->vSize();
   
   nnpTask->vPushParam(xStrR);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7550,7 +8129,7 @@ void Task::vConcat(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vClip(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vClip");
+ENTRY("vClip");
   
   i8 iLength;
   ValWsp xString;
@@ -7578,6 +8157,8 @@ void Task::vClip(NNP_Task nnpTask)
   xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
   
   nnpTask->vPushParam(&xSubStr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7585,7 +8166,7 @@ void Task::vClip(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vToDigitName(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vToDigitName");
+ENTRY("vToDigitName");
   
   i8 iDigit;
   
@@ -7610,6 +8191,8 @@ void Task::vToDigitName(NNP_Task nnpTask)
   }
 
   nnpTask->vPushParam(sName);
+  
+  EXIT();
 }
 
 // table: //////////////////////////////////////////////////////////////////////
@@ -7619,7 +8202,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableDic(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableDic");
+ENTRY("vTableDic");
   
   PtrVal xPtrTable;
   if ( ! nnpTask->bPopParam(xPtrTable) )
@@ -7631,6 +8214,8 @@ void Task::vTableDic(NNP_Task nnpTask)
   Dictionary* pDictionary = pTable->pDic();
   
   nnpTask->vPushParam(pDictionary);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7638,7 +8223,7 @@ void Task::vTableDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableDrop(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableDrop");
+ENTRY("vTableDrop");
   
   PtrVal xPtrTable;
   if ( ! nnpTask->bPopParam(xPtrTable) )
@@ -7646,6 +8231,8 @@ void Task::vTableDrop(NNP_Task nnpTask)
   
   Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
   ASSERT(CN_TABLE == pTable->eClass());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7653,7 +8240,7 @@ void Task::vTableDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableDump");
+ENTRY("vTableDump");
   
   vTrace("TableDump\n");
   
@@ -7665,6 +8252,8 @@ void Task::vTableDump(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7672,7 +8261,7 @@ void Task::vTableDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableInit");
+ENTRY("vTableInit");
   
   PtrVal xPtrTable;
   if ( ! nnpTask->bPopParam(xPtrTable) )
@@ -7682,6 +8271,8 @@ void Task::vTableInit(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   new(pTable) Table;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7689,7 +8280,7 @@ void Task::vTableInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableInsert(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableInsert");
+ENTRY("vTableInsert");
   
   PtrVal xPtrTable;
   PtrVal xPtrTxRef;
@@ -7708,6 +8299,8 @@ void Task::vTableInsert(NNP_Task nnpTask)
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   pTable->vInsertRow(iPartition,pTxRef,xRow.pAsStrVal());       // MISSING PARTN NUMBER??
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7715,7 +8308,7 @@ void Task::vTableInsert(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableTruncate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableTruncate");
+ENTRY("vTableTruncate");
   
   PtrVal xPtrTable;
   if ( ! nnpTask->bPopParam(xPtrTable) )
@@ -7725,6 +8318,8 @@ void Task::vTableTruncate(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vTruncate();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7732,7 +8327,7 @@ void Task::vTableTruncate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTableSpace(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTableSpace");
+ENTRY("vTableSpace");
   
   PtrVal xPtrTable;
   if ( ! nnpTask->bPopParam(xPtrTable) )
@@ -7745,6 +8340,8 @@ void Task::vTableSpace(NNP_Task nnpTask)
   i8 iSpace   = iBuffers * C_SIZE_LARGE_BUFFER;
   
   nnpTask->vPushParam(iSpace);
+  
+  EXIT();
 }
 
 // task: ///////////////////////////////////////////////////////////////////////
@@ -7754,12 +8351,14 @@ void Task::vTableSpace(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDic(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskDic");
+ENTRY("vTaskDic");
   
   PtrVal xDicPtr;
   xDicPtr = (void*)&nnpTask->m_xTaskDictionary;
   
   nnpTask->vPushParam(xDicPtr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7767,7 +8366,7 @@ void Task::vTaskDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskDump");
+ENTRY("vTaskDump");
   
   Task* pThatTask;
   
@@ -7775,6 +8374,8 @@ void Task::vTaskDump(NNP_Task nnpTask)
     THROW_INVALID_PARAM("task.dump");
   
   pThatTask->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7782,7 +8383,7 @@ void Task::vTaskDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskInit");
+ENTRY("vTaskInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -7792,6 +8393,8 @@ void Task::vTaskInit(NNP_Task nnpTask)
   ASSERT(CN_TASK == pThatTask->eClass());
   
   new(pThatTask) Task;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7799,7 +8402,7 @@ void Task::vTaskInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskSeitfFetch");
+ENTRY("vTaskSeitfFetch");
   
   Task* pThatTask;
   
@@ -7812,6 +8415,8 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
   xPtrSEitf = pSEitf;
   
   nnpTask->vPushParam(xPtrSEitf);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7819,7 +8424,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskSeitfStore");
+ENTRY("vTaskSeitfStore");
   
   Task* pThatTask;
   
@@ -7835,6 +8440,8 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
   ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7842,7 +8449,7 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNameFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskNameFetch");
+ENTRY("vTaskNameFetch");
   
   Task* pThatTask;
   
@@ -7850,6 +8457,8 @@ void Task::vTaskNameFetch(NNP_Task nnpTask)
     THROW_INVALID_PARAM("task.name@");
   
   nnpTask->vPushParam(pThatTask->m_sName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7857,7 +8466,7 @@ void Task::vTaskNameFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNameStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskNameStore");
+ENTRY("vTaskNameStore");
   
   Task* pThatTask;
   
@@ -7868,6 +8477,8 @@ void Task::vTaskNameStore(NNP_Task nnpTask)
   nnpTask->vPopParam(&xWspName);
   
   pThatTask->m_sName = xWspName.pAsStrVal()->sStr();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7875,7 +8486,7 @@ void Task::vTaskNameStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskNew");
+ENTRY("vTaskNew");
   
   if ( ! nnpTask->bGuardParam(CN_STRVAL) )
     THROW_INVALID_PARAM("task.new");
@@ -7893,6 +8504,8 @@ void Task::vTaskNew(NNP_Task nnpTask)
   gpTaskList->vAppend(pNewTask);
   
   nnpTask->vPushParam(nnpNewTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7900,7 +8513,7 @@ void Task::vTaskNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQfetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskQfetch");
+ENTRY("vTaskQfetch");
   
   Task* pThatTask;
   
@@ -7912,6 +8525,8 @@ void Task::vTaskQfetch(NNP_Task nnpTask)
   Object* pQueueEmb = static_cast<Object*>(pQueue);
   
   nnpTask->vPushParam(pQueueEmb);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7919,7 +8534,7 @@ void Task::vTaskQfetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQstore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskQstore");
+ENTRY("vTaskQstore");
   
   Task* pThatTask;
   
@@ -7934,6 +8549,8 @@ void Task::vTaskQstore(NNP_Task nnpTask)
   Queue* pQueue = static_cast<Queue*>(pQueueEmb);
   
   pThatTask->m_pQueue = pQueue;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7941,7 +8558,7 @@ void Task::vTaskQstore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeed(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskSeed");
+ENTRY("vTaskSeed");
   
   ValWsp xStrWsp;
   
@@ -7951,6 +8568,8 @@ void Task::vTaskSeed(NNP_Task nnpTask)
   char* pSeed = xStrWsp.pAsStrVal()->sStr();
   
   nnpTask->vSeedWord(pSeed);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7958,7 +8577,7 @@ void Task::vTaskSeed(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskStateFetch");
+ENTRY("vTaskStateFetch");
   
   Task* pThatTask;
   
@@ -7968,6 +8587,8 @@ void Task::vTaskStateFetch(NNP_Task nnpTask)
   eTS eState = pThatTask->m_eState;
   
   nnpTask->vPushParam((i8)eState);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7975,7 +8596,7 @@ void Task::vTaskStateFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskStateStore");
+ENTRY("vTaskStateStore");
   
   Task* pThatTask;
   
@@ -7988,6 +8609,8 @@ void Task::vTaskStateStore(NNP_Task nnpTask)
     THROW_INVALID_PARAM("task.state!");
   
   pThatTask->m_eState = (eTS)iState;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7995,9 +8618,11 @@ void Task::vTaskStateStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskThis(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskThis");
+ENTRY("vTaskThis");
   
   nnpTask->vPushParam(nnpTask);
+  
+  EXIT();
 }
 
 // taskCursor: /////////////////////////////////////////////////////////////////
@@ -8007,7 +8632,7 @@ void Task::vTaskThis(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorBegin");
+ENTRY("vTaskCursorBegin");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8017,6 +8642,8 @@ void Task::vTaskCursorBegin(NNP_Task nnpTask)
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vBegin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8024,7 +8651,7 @@ void Task::vTaskCursorBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorDelete");
+ENTRY("vTaskCursorDelete");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8037,6 +8664,8 @@ void Task::vTaskCursorDelete(NNP_Task nnpTask)
   delete pTaskCursor;
   
   gpSmallHeap->vFreeObject(pObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8044,7 +8673,7 @@ void Task::vTaskCursorDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorEnd");
+ENTRY("vTaskCursorEnd");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8054,6 +8683,8 @@ void Task::vTaskCursorEnd(NNP_Task nnpTask)
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8061,7 +8692,7 @@ void Task::vTaskCursorEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorFirst(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorFirst");
+ENTRY("vTaskCursorFirst");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8076,6 +8707,8 @@ void Task::vTaskCursorFirst(NNP_Task nnpTask)
   xPtrTask = pTaskCursor->pObject();
   
   nnpTask->vPushParam(xPtrTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8083,7 +8716,7 @@ void Task::vTaskCursorFirst(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorGet");
+ENTRY("vTaskCursorGet");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8098,6 +8731,8 @@ void Task::vTaskCursorGet(NNP_Task nnpTask)
   xPtrTask = pThatTask;
   
   nnpTask->vPushParam(xPtrTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8105,7 +8740,7 @@ void Task::vTaskCursorGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorInit");
+ENTRY("vTaskCursorInit");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8121,6 +8756,8 @@ void Task::vTaskCursorInit(NNP_Task nnpTask)
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   new(pTaskCursor) TaskCursor(gpTaskList);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8128,7 +8765,7 @@ void Task::vTaskCursorInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorNew");
+ENTRY("vTaskCursorNew");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8144,6 +8781,8 @@ void Task::vTaskCursorNew(NNP_Task nnpTask)
   xSEitfCursorPtr = pTaskCursor;
   
   nnpTask->vPushParam(xSEitfCursorPtr);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8151,7 +8790,7 @@ void Task::vTaskCursorNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskCursorNext");
+ENTRY("vTaskCursorNext");
   
   PtrVal xPtrTaskCursor;
   if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
@@ -8166,6 +8805,8 @@ void Task::vTaskCursorNext(NNP_Task nnpTask)
   xPtrTask = pTaskCursor->pObject();
   
   nnpTask->vPushParam(xPtrTask);
+  
+  EXIT();
 }
 
 // tasklist: ///////////////////////////////////////////////////////////////////
@@ -8175,9 +8816,11 @@ void Task::vTaskCursorNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskList(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskList");
+ENTRY("vTaskList");
   
   nnpTask->vPushParam(gpTaskList);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8185,7 +8828,7 @@ void Task::vTaskList(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListAppend(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskListAppend");
+ENTRY("vTaskListAppend");
   
   PtrVal xPtrTaskList;
   if ( ! nnpTask->bPopParam(xPtrTaskList) )
@@ -8200,6 +8843,8 @@ void Task::vTaskListAppend(NNP_Task nnpTask)
     THROW_INVALID_PARAM("tasklist.append");
   
   pTaskList->vAppend(pThatTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8207,7 +8852,7 @@ void Task::vTaskListAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskListDump");
+ENTRY("vTaskListDump");
   
   PtrVal xPtrTaskList;
   if ( ! nnpTask->bPopParam(xPtrTaskList) )
@@ -8217,6 +8862,8 @@ void Task::vTaskListDump(NNP_Task nnpTask)
   ASSERT(CN_TASKLIST == pTaskList->eClass());
  
   pTaskList->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8224,7 +8871,9 @@ void Task::vTaskListDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskListInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskListInit");
+ENTRY("vTaskListInit");
+  
+  EXIT();
 }
 
 // taskset: ////////////////////////////////////////////////////////////////////
@@ -8234,7 +8883,7 @@ void Task::vTaskListInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetAppend(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskSetAppend");
+ENTRY("vTaskSetAppend");
   
   Object* pObject;
   
@@ -8251,6 +8900,8 @@ void Task::vTaskSetAppend(NNP_Task nnpTask)
     THROW_INVALID_PARAM("taskset.append");
   
   pTaskSet->vAppend(pThatTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8258,7 +8909,7 @@ void Task::vTaskSetAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskSetDump");
+ENTRY("vTaskSetDump");
   
   Object* pObject;
   
@@ -8270,6 +8921,8 @@ void Task::vTaskSetDump(NNP_Task nnpTask)
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
   pTaskSet->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8277,7 +8930,7 @@ void Task::vTaskSetDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSetInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTaskSetInit");
+ENTRY("vTaskSetInit");
   
   Object* pObject;
   
@@ -8289,6 +8942,8 @@ void Task::vTaskSetInit(NNP_Task nnpTask)
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
   new(pTaskSet) TaskSet;
+  
+  EXIT();
 }
 
 // thread: /////////////////////////////////////////////////////////////////////
@@ -8298,7 +8953,7 @@ void Task::vTaskSetInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadAppend(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadAppend");
+ENTRY("vThreadAppend");
   
   Object* pThreadEmb;
   
@@ -8317,6 +8972,8 @@ void Task::vThreadAppend(NNP_Task nnpTask)
     THROW_INVALID_PARAM("thread.append");
   
   pTaskSet->vAppend(pThatTask);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8324,7 +8981,7 @@ void Task::vThreadAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadBind(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadBind");
+ENTRY("vThreadBind");
   
   i8 iCpu;
   Object* pObject;
@@ -8340,6 +8997,8 @@ void Task::vThreadBind(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   pThread->vBind(iCpu);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8347,7 +9006,7 @@ void Task::vThreadBind(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCpu(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCpu");
+ENTRY("vThreadCpu");
   
   Object* pObject;
   
@@ -8359,6 +9018,8 @@ void Task::vThreadCpu(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   nnpTask->vPushParam(pThread->iCpu());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8366,7 +9027,7 @@ void Task::vThreadCpu(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadDump");
+ENTRY("vThreadDump");
   
   Object* pObject;
   
@@ -8380,6 +9041,8 @@ void Task::vThreadDump(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   pThread->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8387,7 +9050,7 @@ void Task::vThreadDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadId(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadId");
+ENTRY("vThreadId");
   
   Object* pObject;
   
@@ -8399,6 +9062,8 @@ void Task::vThreadId(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   nnpTask->vPushParam(pThread->m_xPosixThread.m_iOpSysThreadId);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8406,7 +9071,7 @@ void Task::vThreadId(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadInit");
+ENTRY("vThreadInit");
   
   Object* pObject;
   
@@ -8418,6 +9083,8 @@ void Task::vThreadInit(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pObject);
   
   new(pThread) Thread;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8425,7 +9092,7 @@ void Task::vThreadInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadNameFetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadNameFetch");
+ENTRY("vThreadNameFetch");
   
   Object* pObject;
   
@@ -8440,6 +9107,8 @@ void Task::vThreadNameFetch(NNP_Task nnpTask)
   sName = pThread->sName();
   
   nnpTask->vPushParam(sName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8447,7 +9116,7 @@ void Task::vThreadNameFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadNameStore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadNameStore");
+ENTRY("vThreadNameStore");
   
   Object* pObject;
   
@@ -8466,6 +9135,8 @@ void Task::vThreadNameStore(NNP_Task nnpTask)
   sName = xNameWsp.sStr();
   
   pThread->vName(sName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8473,7 +9144,7 @@ void Task::vThreadNameStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSfetch(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSfetch");
+ENTRY("vThreadSfetch");
  
   Object* pThreadEmb;
   
@@ -8489,6 +9160,8 @@ void Task::vThreadSfetch(NNP_Task nnpTask)
   Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);;
 
   nnpTask->vPushParam(pTaskSetEmb);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8496,7 +9169,7 @@ void Task::vThreadSfetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSstore(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSstore");
+ENTRY("vThreadSstore");
   
   Object* pThreadEmb;
   
@@ -8517,6 +9190,8 @@ void Task::vThreadSstore(NNP_Task nnpTask)
   TaskSet* pTaskSet = static_cast<TaskSet*>(pTaskSetEmb);
   
   pThread->m_pTaskSet = pTaskSet;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8524,7 +9199,7 @@ void Task::vThreadSstore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_s(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSleep_s");
+ENTRY("vThreadSleep_s");
   
   i8 nSeconds;
   
@@ -8534,6 +9209,8 @@ void Task::vThreadSleep_s(NNP_Task nnpTask)
   Thread* pThread = Thread::pThread();
   
   pThread->m_xPosixThread.vSleepSec(nSeconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8541,7 +9218,7 @@ void Task::vThreadSleep_s(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_ms(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSleep_ms");
+ENTRY("vThreadSleep_ms");
   
   i8 nMilliseconds;
   
@@ -8551,6 +9228,8 @@ void Task::vThreadSleep_ms(NNP_Task nnpTask)
   Thread* pThread = Thread::pThread();
   
   pThread->m_xPosixThread.vSleepMilli(nMilliseconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8558,7 +9237,7 @@ void Task::vThreadSleep_ms(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_us(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSleep_us");
+ENTRY("vThreadSleep_us");
   
   i8 nMicroseconds;
   
@@ -8568,6 +9247,8 @@ void Task::vThreadSleep_us(NNP_Task nnpTask)
   Thread* pThread = Thread::pThread();
   
   pThread->m_xPosixThread.vSleepMicro(nMicroseconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8575,7 +9256,7 @@ void Task::vThreadSleep_us(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSleep_ns(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSleep_ns");
+ENTRY("vThreadSleep_ns");
   
   i8 nNanoseconds;
   
@@ -8585,6 +9266,8 @@ void Task::vThreadSleep_ns(NNP_Task nnpTask)
   Thread* pThread = Thread::pThread();
   
   pThread->m_xPosixThread.vSleepNano(nNanoseconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8592,7 +9275,7 @@ void Task::vThreadSleep_ns(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSpawn(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadSpawn");
+ENTRY("vThreadSpawn");
   
   Object* pThreadEmb;
   
@@ -8604,6 +9287,8 @@ void Task::vThreadSpawn(NNP_Task nnpTask)
   Thread* pThread = static_cast<Thread*>(pThreadEmb);
   
   pThread->vSpawn();
+  
+  EXIT();
 }
 
 // threadCursor: ///////////////////////////////////////////////////////////////
@@ -8613,7 +9298,7 @@ void Task::vThreadSpawn(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorBegin");
+ENTRY("vThreadCursorBegin");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8623,6 +9308,8 @@ void Task::vThreadCursorBegin(NNP_Task nnpTask)
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   pThreadCursor->vBegin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8630,7 +9317,7 @@ void Task::vThreadCursorBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTheadCursorDelete");
+ENTRY("vTheadCursorDelete");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8640,6 +9327,8 @@ void Task::vThreadCursorDelete(NNP_Task nnpTask)
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   delete pThreadCursor;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8647,7 +9336,7 @@ void Task::vThreadCursorDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorEnd");
+ENTRY("vThreadCursorEnd");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8657,6 +9346,8 @@ void Task::vThreadCursorEnd(NNP_Task nnpTask)
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   pThreadCursor->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8664,7 +9355,7 @@ void Task::vThreadCursorEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorFirst(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorFirst");
+ENTRY("vThreadCursorFirst");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8679,6 +9370,8 @@ void Task::vThreadCursorFirst(NNP_Task nnpTask)
   xPtrThread = pThreadCursor->pObject();
   
   nnpTask->vPushParam(xPtrThread);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8686,7 +9379,7 @@ void Task::vThreadCursorFirst(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorGet");
+ENTRY("vThreadCursorGet");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8699,6 +9392,8 @@ void Task::vThreadCursorGet(NNP_Task nnpTask)
   xPtrNode = pThreadCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8706,7 +9401,7 @@ void Task::vThreadCursorGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorInit");
+ENTRY("vThreadCursorInit");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8716,6 +9411,8 @@ void Task::vThreadCursorInit(NNP_Task nnpTask)
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   new(pThreadCursor) ThreadCursor(gpThreadList);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8723,7 +9420,7 @@ void Task::vThreadCursorInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorNew");
+ENTRY("vThreadCursorNew");
   
   ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -8732,6 +9429,8 @@ void Task::vThreadCursorNew(NNP_Task nnpTask)
   xPtrThreadCursor = pThreadCursor;
   
   nnpTask->vPushParam(xPtrThreadCursor);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8739,7 +9438,7 @@ void Task::vThreadCursorNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadCursorNext");
+ENTRY("vThreadCursorNext");
   
   PtrVal xPtrThreadCursor;
   if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
@@ -8754,6 +9453,8 @@ void Task::vThreadCursorNext(NNP_Task nnpTask)
   xPtrThread = pThreadCursor->pObject();
   
   nnpTask->vPushParam(xPtrThread);
+  
+  EXIT();
 }
 
 // threadlist: //////////////////////////////////////////////////////////////////
@@ -8763,7 +9464,7 @@ void Task::vThreadCursorNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadListDump");
+ENTRY("vThreadListDump");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -8773,6 +9474,8 @@ void Task::vThreadListDump(NNP_Task nnpTask)
   ASSERT(CN_THREADLIST == pThreadList->eClass());
 
   pThreadList->vDump("ThreadList:");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8780,7 +9483,7 @@ void Task::vThreadListDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vThreadListInit");
+ENTRY("vThreadListInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -8790,6 +9493,8 @@ void Task::vThreadListInit(NNP_Task nnpTask)
   ASSERT(CN_THREADLIST == pThreadList->eClass());
   
   new(pThreadList) ThreadList;
+  
+  EXIT();
 }
 
 // timer: //////////////////////////////////////////////////////////////////////
@@ -8799,7 +9504,7 @@ void Task::vThreadListInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimeDelete");
+ENTRY("vTimeDelete");
   
   PtrVal xPtrSession;
   
@@ -8814,6 +9519,8 @@ void Task::vTimerDelete(NNP_Task nnpTask)
   delete pTimer;
   
   gpSmallHeap->vFreeObject(pTimerObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8821,7 +9528,7 @@ void Task::vTimerDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerInit");
+ENTRY("vTimerInit");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8831,6 +9538,8 @@ void Task::vTimerInit(NNP_Task nnpTask)
   ASSERT(CN_TIMER == pTimer->eClass());
   
   new(pTimer) Timer;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8838,7 +9547,7 @@ void Task::vTimerInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerMicrosecs(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerMicrosecs");
+ENTRY("vTimerMicrosecs");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8850,6 +9559,8 @@ void Task::vTimerMicrosecs(NNP_Task nnpTask)
   i8 iMicroseconds = pTimer->iMicroseconds();
   
   nnpTask->vPushParam(iMicroseconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8857,7 +9568,7 @@ void Task::vTimerMicrosecs(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerMillisecs(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerMillisecs");
+ENTRY("vTimerMillisecs");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8869,6 +9580,8 @@ void Task::vTimerMillisecs(NNP_Task nnpTask)
   i8 iMilliseconds = pTimer->iMilliseconds();
   
   nnpTask->vPushParam(iMilliseconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8876,7 +9589,7 @@ void Task::vTimerMillisecs(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNanosecs(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerNanosecs");
+ENTRY("vTimerNanosecs");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8888,6 +9601,8 @@ void Task::vTimerNanosecs(NNP_Task nnpTask)
   i8 iNanoseconds = pTimer->iNanoseconds();
   
   nnpTask->vPushParam(iNanoseconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8895,7 +9610,7 @@ void Task::vTimerNanosecs(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerNew");
+ENTRY("vTimerNew");
   
   Timer* pTimer = reinterpret_cast<Timer*>(gpSmallHeap->pAllocObject());
 
@@ -8907,6 +9622,8 @@ void Task::vTimerNew(NNP_Task nnpTask)
   xPtrTimer = pTimer;
   
   nnpTask->vPushParam(xPtrTimer);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8914,7 +9631,7 @@ void Task::vTimerNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerReset(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerReset");
+ENTRY("vTimerReset");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8924,6 +9641,8 @@ void Task::vTimerReset(NNP_Task nnpTask)
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vReset();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8931,7 +9650,7 @@ void Task::vTimerReset(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerSecs(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerSecs");
+ENTRY("vTimerSecs");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8943,6 +9662,8 @@ void Task::vTimerSecs(NNP_Task nnpTask)
   i8 iSeconds = pTimer->iSeconds();
   
   nnpTask->vPushParam(iSeconds);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8950,7 +9671,7 @@ void Task::vTimerSecs(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerStart(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerStart");
+ENTRY("vTimerStart");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8960,6 +9681,8 @@ void Task::vTimerStart(NNP_Task nnpTask)
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vStart();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8967,7 +9690,7 @@ void Task::vTimerStart(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerTicks(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerTicks");
+ENTRY("vTimerTicks");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8979,6 +9702,8 @@ void Task::vTimerTicks(NNP_Task nnpTask)
   i8 iTicks = pTimer->iTicks();
   
   nnpTask->vPushParam(iTicks);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8986,7 +9711,7 @@ void Task::vTimerTicks(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTimerUpdate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTimerUpdate");
+ENTRY("vTimerUpdate");
   
   PtrVal xPtrTimer;
   if ( ! nnpTask->bPopParam(xPtrTimer) )
@@ -8996,6 +9721,8 @@ void Task::vTimerUpdate(NNP_Task nnpTask)
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vUpdate();
+  
+  EXIT();
 }
 
 // tx: /////////////////////////////////////////////////////////////////////////
@@ -9005,7 +9732,7 @@ void Task::vTimerUpdate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxDump");
+ENTRY("vTxDump");
   
   PtrVal xPtrSession;
   
@@ -9016,6 +9743,8 @@ void Task::vTxDump(NNP_Task nnpTask)
   ASSERT(CN_TX == pTx->eClass());
 
   pTx->vDump();
+  
+  EXIT();
 }
 
 // txCollection: ///////////////////////////////////////////////////////////////
@@ -9025,7 +9754,7 @@ void Task::vTxDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCollectionDump");
+ENTRY("vTxCollectionDump");
   
   PtrVal xPtrTxCollection;
   if ( ! nnpTask->bPopParam(xPtrTxCollection) )
@@ -9035,6 +9764,8 @@ void Task::vTxCollectionDump(NNP_Task nnpTask)
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
   pTxCollection->vDump("gpTxCollection:");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9042,7 +9773,7 @@ void Task::vTxCollectionDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCollectionInit");
+ENTRY("vTxCollectionInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -9052,6 +9783,8 @@ void Task::vTxCollectionInit(NNP_Task nnpTask)
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
   new(pTxCollection) TxCollection;
+  
+  EXIT();
 }
 
 // txCursor: ///////////////////////////////////////////////////////////////////
@@ -9061,7 +9794,7 @@ void Task::vTxCollectionInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorBegin");
+ENTRY("vTxCursorBegin");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9071,6 +9804,8 @@ void Task::vTxCursorBegin(NNP_Task nnpTask)
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
   
   pTxCursor->vBegin();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9078,7 +9813,7 @@ void Task::vTxCursorBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorDelete(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorDelete");
+ENTRY("vTxCursorDelete");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9088,6 +9823,8 @@ void Task::vTxCursorDelete(NNP_Task nnpTask)
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
   
   delete pTxCursor;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9095,7 +9832,7 @@ void Task::vTxCursorDelete(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorEnd");
+ENTRY("vTxCursorEnd");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9105,6 +9842,8 @@ void Task::vTxCursorEnd(NNP_Task nnpTask)
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
   
   pTxCursor->vEnd();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9112,7 +9851,7 @@ void Task::vTxCursorEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorFirst(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorFirst");
+ENTRY("vTxCursorFirst");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9127,6 +9866,8 @@ void Task::vTxCursorFirst(NNP_Task nnpTask)
   xPtrThread = pTxCursor->pObject();
   
   nnpTask->vPushParam(xPtrThread);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9134,7 +9875,7 @@ void Task::vTxCursorFirst(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorGet");
+ENTRY("vTxCursorGet");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9147,6 +9888,8 @@ void Task::vTxCursorGet(NNP_Task nnpTask)
   xPtrNode = pTxCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9154,7 +9897,7 @@ void Task::vTxCursorGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorInit");
+ENTRY("vTxCursorInit");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9164,6 +9907,8 @@ void Task::vTxCursorInit(NNP_Task nnpTask)
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
   
   new(pTxCursor) TxCursor(gpTxCollection);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9171,7 +9916,7 @@ void Task::vTxCursorInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorNew(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorNew");
+ENTRY("vTxCursorNew");
   
   TxCursor* pTxCursor = new TxCursor(gpTxCollection);
   ASSERT(CN_THREADCURSOR == pTxCursor->eClass());
@@ -9180,6 +9925,8 @@ void Task::vTxCursorNew(NNP_Task nnpTask)
   xPtrThreadCursor = pTxCursor;
   
   nnpTask->vPushParam(xPtrThreadCursor);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9187,7 +9934,7 @@ void Task::vTxCursorNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxCursorNext(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxCursorNext");
+ENTRY("vTxCursorNext");
   
   PtrVal xPtrTxCursor;
   if ( ! nnpTask->bPopParam(xPtrTxCursor) )
@@ -9202,6 +9949,8 @@ void Task::vTxCursorNext(NNP_Task nnpTask)
   xPtrTx = pTxCursor->pObject();
   
   nnpTask->vPushParam(xPtrTx);
+  
+  EXIT();
 }
 
 // txMap: //////////////////////////////////////////////////////////////////////
@@ -9211,7 +9960,7 @@ void Task::vTxCursorNext(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxMapInit");
+ENTRY("vTxMapInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -9221,6 +9970,8 @@ void Task::vTxMapInit(NNP_Task nnpTask)
   ASSERT(CN_TXMAP == pTxMap->eClass());
   
   new(pTxMap) TxMap;
+  
+  EXIT();
 }
 
 // txRef: //////////////////////////////////////////////////////////////////////
@@ -9230,7 +9981,7 @@ void Task::vTxMapInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefInit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxRefInit");
+ENTRY("vTxRefInit");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -9240,6 +9991,8 @@ void Task::vTxRefInit(NNP_Task nnpTask)
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   new(pTxRef) TxRef;
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9247,7 +10000,7 @@ void Task::vTxRefInit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefBegin(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxRefBegin");
+ENTRY("vTxRefBegin");
   
   PtrVal xPtrTxRef;
   
@@ -9260,6 +10013,8 @@ void Task::vTxRefBegin(NNP_Task nnpTask)
   bool bBegun = pTxRef->bBeginTx();
   
   nnpTask->vPushParam(bBegun);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9267,7 +10022,7 @@ void Task::vTxRefBegin(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefEnd(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxRefEnd");
+ENTRY("vTxRefEnd");
   
   PtrVal xPtrTxRef;
   
@@ -9280,6 +10035,8 @@ void Task::vTxRefEnd(NNP_Task nnpTask)
   bool bEnded = pTxRef->bEndTx();
   
   nnpTask->vPushParam(bEnded);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9287,7 +10044,7 @@ void Task::vTxRefEnd(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefCommit(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxRefCommit");
+ENTRY("vTxRefCommit");
   
   PtrVal xPtrTxRef;
   
@@ -9300,6 +10057,8 @@ void Task::vTxRefCommit(NNP_Task nnpTask)
   bool bCommitted = pTxRef->bCommitTx();
   
   nnpTask->vPushParam(bCommitted);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9307,7 +10066,7 @@ void Task::vTxRefCommit(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefRollback(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vTxRefRollback");
+ENTRY("vTxRefRollback");
   
   PtrVal xPtrTxRef;
   
@@ -9320,6 +10079,8 @@ void Task::vTxRefRollback(NNP_Task nnpTask)
   bool bRolledBack = pTxRef->bRollbackTx();
   
   nnpTask->vPushParam(bRolledBack);
+  
+  EXIT();
 }
 
 // words: //////////////////////////////////////////////////////////////////////
@@ -9329,7 +10090,7 @@ void Task::vTxRefRollback(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCreate(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCreate");
+ENTRY("vCreate");
   
   nnpTask->vTokenNext();
   
@@ -9340,6 +10101,8 @@ void Task::vCreate(NNP_Task nnpTask)
     pDictionary = nnpTask->m_xDictionaryStack.pTop();
   
   new(pDictionary) Word(nnpTask->m_sToken.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9347,7 +10110,7 @@ void Task::vCreate(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vCreateFrom(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vCreateFrom");
+ENTRY("vCreateFrom");
 
   s32 sName;
   if ( ! nnpTask->bPopParam(sName) )
@@ -9360,6 +10123,8 @@ void Task::vCreateFrom(NNP_Task nnpTask)
     pDictionary = nnpTask->m_xDictionaryStack.pTop();
   
   new(pDictionary) Word(sName.a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9367,12 +10132,14 @@ void Task::vCreateFrom(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vDoes(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vDoes");
+ENTRY("vDoes");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vEncode("encodeDoes");
   pCurrentWord->vEncode("exit");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9380,7 +10147,7 @@ void Task::vDoes(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFind(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vFind");
+ENTRY("vFind");
   
   s256 sName;
   if ( ! nnpTask->bPopParam(sName) )
@@ -9393,6 +10160,8 @@ void Task::vFind(NNP_Task nnpTask)
   Word* pWord = nnpTask->pFindWord(sName);
   
   nnpTask->vPushParam(pWord);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9400,7 +10169,7 @@ void Task::vFind(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vForget(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vForget");
+ENTRY("vForget");
   
   nnpTask->vTokenNext();
   
@@ -9411,6 +10180,8 @@ void Task::vForget(NNP_Task nnpTask)
   
   bool bResult = nnpTask->bForgetWord(nnpTask->m_sToken);
   ASSERT(bResult);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9418,7 +10189,7 @@ void Task::vForget(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordForget(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordForget");
+ENTRY("vWordForget");
   
   Word* pWord;
   
@@ -9427,6 +10198,8 @@ void Task::vWordForget(NNP_Task nnpTask)
   
   bool bResult = nnpTask->bForgetWord(pWord->sName());
   ASSERT(bResult);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9434,7 +10207,7 @@ void Task::vWordForget(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordDump(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordDump");
+ENTRY("vWordDump");
   
   Word* pWord;
   
@@ -9442,6 +10215,8 @@ void Task::vWordDump(NNP_Task nnpTask)
     THROW_INVALID_PARAM("word.dump");
   
   pWord->vDump();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9449,7 +10224,7 @@ void Task::vWordDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordDic(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordDic");
+ENTRY("vWordDic");
   
   Word* pWord;
   
@@ -9459,6 +10234,8 @@ void Task::vWordDic(NNP_Task nnpTask)
   Dictionary* pDictionary = pWord->pDictionary();
   
   nnpTask->vPushParam(pDictionary->sName().a());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9466,7 +10243,7 @@ void Task::vWordDic(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindGet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordKindGet");
+ENTRY("vWordKindGet");
   
   Word* pWord;
   
@@ -9476,6 +10253,8 @@ void Task::vWordKindGet(NNP_Task nnpTask)
   Word* pWordKind = pWord->pKind();
   
   nnpTask->vPushParam(pWordKind);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9483,7 +10262,7 @@ void Task::vWordKindGet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindSet(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordKindSet");
+ENTRY("vWordKindSet");
   
   Word* pWord;
   
@@ -9496,6 +10275,8 @@ void Task::vWordKindSet(NNP_Task nnpTask)
     THROW_INVALID_PARAM("word.kind!");
   
   pWord->vKind(pWordKind);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9503,7 +10284,7 @@ void Task::vWordKindSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordName(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordName");
+ENTRY("vWordName");
   
   Word* pWord;
   
@@ -9513,6 +10294,8 @@ void Task::vWordName(NNP_Task nnpTask)
   char* pWordName = pWord->sName().a();
   
   nnpTask->vPushParam(pWordName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9520,11 +10303,13 @@ void Task::vWordName(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vWordThis(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vWordThis");
+ENTRY("vWordThis");
   
   Word* pWord = nnpTask->pCurrentWord();
   
   nnpTask->vPushParam(pWord);
+  
+  EXIT();
 }
 
 // sockets: ////////////////////////////////////////////////////////////////////
@@ -9539,7 +10324,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   int     iSocketId;
   Object* pObject;
   
-  nnpTask->vPrimitive("vSocketAccept");
+ENTRY("vSocketAccept");
   
   if ( ! nnpTask->bPopParam(pObject) )
     THROW_INVALID_PARAM("socketaccept");
@@ -9553,6 +10338,8 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   IntVal xIntVal;
   xIntVal = iSocketId;
   nnpTask->vPushParam(xIntVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9564,7 +10351,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
   Socket* pSocket;
   Object* pObject;
   
-  nnpTask->vPrimitive("vSocketClose");
+ENTRY("vSocketClose");
   
   if ( ! nnpTask->bPopParam(pObject) )
     THROW_INVALID_PARAM("socketclose");
@@ -9574,6 +10361,8 @@ void Task::vSocketClose(NNP_Task nnpTask)
   
   if ( ! bResult )
     THROW("Unable to close socket: Errno %d!", xSysCall.iError());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9586,7 +10375,7 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   Object* pObject;
   IntVal xPort;
   
-  nnpTask->vPrimitive("vSocketConnect");
+ENTRY("vSocketConnect");
   
   if ( ! nnpTask->bPopParam(pObject, xPort) )
     THROW_INVALID_PARAM("socketconnect");
@@ -9603,6 +10392,8 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   PtrVal xPtrVal;
   xPtrVal = (void*)pSocket;
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9614,7 +10405,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   Socket* pSocket;
   i8      iPort;
   
-  nnpTask->vPrimitive("vSocketListen");
+ENTRY("vSocketListen");
   
   if ( ! nnpTask->bPopParam(iPort) )
     THROW_INVALID_PARAM("socketlisten");
@@ -9628,6 +10419,8 @@ void Task::vSocketListen(NNP_Task nnpTask)
   PtrVal xPtrVal;
   xPtrVal = (void*)pSocket;
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9638,7 +10431,7 @@ void Task::vSocketOpen(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   
-  nnpTask->vPrimitive("vSocketOpen");
+ENTRY("vSocketOpen");
   
   pSocket = new Socket;
   bool bResult = pSocket->bSocket(xSysCall);
@@ -9649,6 +10442,8 @@ void Task::vSocketOpen(NNP_Task nnpTask)
   PtrVal xPtrVal;
   xPtrVal = (void*)pSocket;
   nnpTask->vPushParam(xPtrVal);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9656,6 +10451,8 @@ void Task::vSocketOpen(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(NNP_Task nnpTask)
 {
+ENTRY("vSocketSend");
+
   SysCall xSysCall;
   Socket* pSocket;
   char* pData;
@@ -9663,7 +10460,6 @@ void Task::vSocketSend(NNP_Task nnpTask)
   s16K  sWorkspace;
   ValWsp xValWsp;
   
-  nnpTask->vPrimitive("vSocketSend");
   
   if ( ! nnpTask->bPopParam(xValWsp) )
     THROW_INVALID_PARAM("socketsend");
@@ -9680,6 +10476,8 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   if ( ! bResult )
     THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9687,13 +10485,14 @@ void Task::vSocketSend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vSocketRecv(NNP_Task nnpTask)
 {
+  ENTRY("vSocketRecv");
+  
   SysCall xSysCall;
   Socket* pSocket;
   ValWsp xValWsp;
   s16K   sWorkspace;
   i8 iSocketId;
   
-  nnpTask->vPrimitive("vSocketRecv");
   
   if ( ! nnpTask->bPopParam(iSocketId) )
     THROW_INVALID_PARAM("socketrecv");
@@ -9707,6 +10506,8 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   xValWsp = pData;
   nnpTask->vPushParam(xValWsp);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9714,7 +10515,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vClient(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vClient");
+ENTRY("vClient");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -9732,6 +10533,8 @@ void Task::vClient(NNP_Task nnpTask)
   NNP_Task nnpTaskNew = new Task(nnpTask);
   nnpTaskNew->vSeedWord("client_code:");
   pThread->vAppend(nnpTaskNew);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -9739,7 +10542,7 @@ void Task::vClient(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vServer(NNP_Task nnpTask)
 {
-  nnpTask->vPrimitive("vServer");
+ENTRY("vServer");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -9758,6 +10561,8 @@ void Task::vServer(NNP_Task nnpTask)
   //NNP_Task nnpTaskNew = new Task();
   //nnpTaskNew->vSeedWord("server_code:");
   //pThread->vAppend(nnpTaskNew);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

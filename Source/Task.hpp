@@ -80,6 +80,13 @@ namespace Tasks
       THROW("Invalid param stack for: %s",primitive); \
     }
 
+    #define ENTRY(p1) \
+    { \
+      nnpTask->vPrimitive(p1); \
+    }
+  
+    #define EXIT()
+    
   private:
     Lock  m_xLock;
     i8    m_iTaskNo;    // task
