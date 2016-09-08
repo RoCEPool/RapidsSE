@@ -10,10 +10,10 @@ namespace Values
 {
   class ValSet : public Value
   {
-    static const i8 C_VALSET_SPACE = C_1KB * 16 - 128; // fudge
+    static const i8 C_VALSET_ARRAY = C_1KB*14;
   private:
     i8   m_iBytes; // bytes used out of space
-    char m_mSpace[C_VALSET_SPACE];
+    char m_mSpace[C_VALSET_ARRAY];
     
   public:
     void* operator new(size_t);

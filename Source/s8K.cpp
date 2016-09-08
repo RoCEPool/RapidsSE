@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Magic.h"
+#include "Memory.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -10,6 +11,9 @@
 s8K::s8K(void)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  
+  Memory::vCheckInitialised(this,sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -18,7 +22,11 @@ s8K::s8K(void)
 s8K::s8K(s8K& rArg)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  
   s::vCopy(rArg.a());
+  
+  Memory::vCheckInitialised(this,sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +35,11 @@ s8K::s8K(s8K& rArg)
 s8K::s8K(const char* aArg)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  
   s::vCopy(aArg);
+  
+  Memory::vCheckInitialised(this,sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +48,11 @@ s8K::s8K(const char* aArg)
 s8K::s8K(const char* aArg, i8 nChars)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  
   s::vCopy(aArg,nChars);
+  
+  Memory::vCheckInitialised(this,sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/

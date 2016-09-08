@@ -9,12 +9,16 @@
 /*----------------------------------------------------------------------------*/
 PosixThread::PosixThread()
 {
+  Memory::vZero(this,sizeof(PosixThread));
+  
   m_iOpSysThreadId = 0;
   m_iPosixThreadId = 0;
   m_bLocked        = false;
 
   pthread_mutex_init(&m_xMutex,NULL);
   pthread_cond_init(&m_xCond,NULL);
+  
+  Memory::vCheckInitialised(this,sizeof(PosixThread));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,7 +7,7 @@
 
 namespace Magic
 {
-  static const u8 FOOTER = 0x24464F4F54455224; // $FOOTER$
+  static const u8 FOOTER = 0x245245544F4F4624; // $FOOTER$
 
   class Footer
   {

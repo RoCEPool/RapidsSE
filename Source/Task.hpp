@@ -106,9 +106,11 @@ namespace Tasks
     union {
       Cell*       m_pCell;
       CodeField*  m_pCodeField;
-      Value*    m_pValue;
+      Value*      m_pValue;
     };
     
+    
+//  u8    m_uMarker1;
     Cell* m_pResetIP;
     Cell* m_pBeginIP;
     Word* m_pWord;
@@ -119,7 +121,6 @@ namespace Tasks
     s256  m_sFile;
     s256  m_sException;
 
-  private:
     Interface::SEitf* m_pSEitf;
     
     // test

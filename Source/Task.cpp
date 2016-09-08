@@ -161,6 +161,7 @@ void Task::vInit(const char* aLambda)
   m_pCell      = nullptr;
   m_pResetIP   = nullptr;
   m_pBeginIP   = nullptr;
+  m_pWord      = nullptr;
   m_bCompiling = false;
   m_bTracing   = false;
   

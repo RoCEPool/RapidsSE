@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Magic.h"
+#include "Memory.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -10,6 +11,9 @@
 s32::s32(void)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  
+  Memory::vCheckInitialised(this,sizeof(s32));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -18,7 +22,10 @@ s32::s32(void)
 s32::s32(s32& rArg)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(rArg.a());
+  
+  Memory::vCheckInitialised(this,sizeof(s32));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +34,10 @@ s32::s32(s32& rArg)
 s32::s32(const char* aArg)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(aArg);
+  
+  Memory::vCheckInitialised(this,sizeof(s32));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +46,10 @@ s32::s32(const char* aArg)
 s32::s32(const char* aArg, i8 nChars)
 : s(C_S_SIZE)
 {
+  Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(aArg,nChars);
+  
+  Memory::vCheckInitialised(this,sizeof(s32));
 }
 
 /*----------------------------------------------------------------------------*/

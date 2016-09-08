@@ -45,6 +45,8 @@ Stack::Stack(void)
   m_pRetryTop    = pStackBase();
   m_iRetryValues = 0;
   
+  Memory::vZero(m_mSpace,C_STACK_AREA);
+  
   Memory::vCheckInitialised(this,sizeof(Stack));
 }
 

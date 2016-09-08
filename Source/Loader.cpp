@@ -44,10 +44,12 @@ Loader::Loader(void)
 {
   _poolAddress_(this);
   
-  m_pTable  = nullptr;
+  m_pTable      = nullptr;
   //m_xFile
-  m_pRecord = nullptr;
+  m_pRecord     = nullptr;
   m_pScanBuffer = nullptr;
+  m_iLength     = 0;
+  m_pTxRef      = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(Loader));
 }

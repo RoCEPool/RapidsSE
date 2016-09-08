@@ -10,8 +10,10 @@ namespace DBobjects
 {
   class Ring
   {
+    static const i8 C_ASSIGNMENT = 16;
+
   private:
-    i8 m_iAssignment[16];
+    i8 m_iAssignment[C_ASSIGNMENT];
     
     // must be last
     Footer m_xFooter;

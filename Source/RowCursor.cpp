@@ -44,6 +44,8 @@ RowCursor::RowCursor(void)
   _magic_();
   
   m_pTable     = nullptr;
+  m_iPartition = 0;
+  
   m_pPartition = nullptr;
   m_pRowStrand = nullptr;
   m_pRowBuffer = nullptr;

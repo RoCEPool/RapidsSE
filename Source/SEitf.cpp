@@ -42,11 +42,12 @@ SEitf::SEitf(i8 iPartition)
   
   m_xDictionary.vName("seitf");
   //m_xDicStack;
-  m_pRequestQueue  = nullptr;
-  m_pResponseQueue = nullptr;
+  m_pRequestQueue   = nullptr;
+  m_pResponseQueue  = nullptr;
+  m_eInterfaceError = IE_NONE;
+  //m_sInterfaceError
+  m_iErrorCode      = 0;
   //m_sResponse
-  //m_xInputStream[]
-  //m_sPrompt
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
@@ -136,7 +137,7 @@ void SEitf::vInit(void)
   m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pBodyArea());
   m_pResponseQueue->vSetMagic();
   m_pResponseQueue->vClass(CN_QUEUE);
-  m_pResponseQueue->vInitialize();
+  new(m_pResponseQueue) Queue;
   
   // request queue
   Word* pReqQueWord = gpMainDic->pFind("requestQueue");

@@ -35,6 +35,9 @@ Ring::Ring(void)
 {
   _poolAddress_(this);
   
+  for (auto i = 0; i < C_ASSIGNMENT; i++)
+    m_iAssignment[i] = 0;
+  
   Memory::vCheckInitialised(this,sizeof(Ring));
 }
 
