@@ -31,13 +31,15 @@ void ThreadList::operator delete(void* pBufferAddress)
 ThreadList::ThreadList(void)
 : Object(CN_THREADLIST)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
   
   ASSERT( ! gpThreadList );
   
   gpThreadList = this;
   
   Memory::vCheckInitialised(this,sizeof(ThreadList));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,8 +54,8 @@ ThreadList::~ThreadList(void)
 /*----------------------------------------------------------------------------*/
 Thread* ThreadList::pAllocThread(void)
 {
-  _poolAddress_(this);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
+  
   Thread* pThread = reinterpret_cast<Thread*>(gpSmallHeap->pAllocObject(CN_THREADLIST));
   
   vAppend(pThread);
@@ -66,7 +68,7 @@ Thread* ThreadList::pAllocThread(void)
 /*----------------------------------------------------------------------------*/
 void ThreadList::vFreeThread(Thread* pThread)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
   
   vRemove(pThread);
   
@@ -82,6 +84,8 @@ void ThreadList::vFreeThread(Thread* pThread)
 /*----------------------------------------------------------------------------*/
 Footer* ThreadList::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST);
+  
   return &m_xFooter;
 }
 

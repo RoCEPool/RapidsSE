@@ -43,9 +43,11 @@ ThreadCursor::ThreadCursor(List_t<Thread>* pList)
 : Object(CN_THREADCURSOR),
   ListCursor_t<Thread>(pList)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(ThreadCursor));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +55,7 @@ ThreadCursor::ThreadCursor(List_t<Thread>* pList)
 /*----------------------------------------------------------------------------*/
 ThreadCursor::~ThreadCursor(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,6 +63,7 @@ ThreadCursor::~ThreadCursor(void)
 /*----------------------------------------------------------------------------*/
 void ThreadCursor::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +75,8 @@ void ThreadCursor::vInit(void)
 /*----------------------------------------------------------------------------*/
 Footer* ThreadCursor::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR);
+  
   return &m_xFooter;
 }
 

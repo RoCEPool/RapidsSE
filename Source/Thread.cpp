@@ -36,7 +36,7 @@ void Thread::operator delete(void* pTxAddress)
 Thread::Thread(void)
 : Object(CN_THREAD)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
   ASSERT( gpThreadList );
   
@@ -48,6 +48,8 @@ Thread::Thread(void)
   gpThreadList->vAppend(pThread);
   
   Memory::vCheckInitialised(this,sizeof(Thread));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +57,7 @@ Thread::Thread(void)
 /*----------------------------------------------------------------------------*/
 Thread::~Thread(void)
 {
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +83,7 @@ void* Thread::vEntry(void* pArg)
 /*----------------------------------------------------------------------------*/
 void Thread::vAppend(NNP_Task nnpTask)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
  
   //m_pTxQueue->vAppend(pTx);
 
@@ -93,7 +95,7 @@ void Thread::vAppend(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Thread::vBind(i8 iCpu)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_xPosixThread.bBindThread(iCpu);
   ASSERT(bResult);
@@ -104,7 +106,7 @@ void Thread::vBind(i8 iCpu)
 /*----------------------------------------------------------------------------*/
 i8 Thread::iCpu(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   return m_xPosixThread.iThreadCpu();
 }
@@ -114,8 +116,6 @@ i8 Thread::iCpu(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vDump(void) const
 {
-  _poolAddress_(this);
-  
   vTrace("Thread %p: OpSysThreadId %lld PosixThreadId %llx\n",
          this,
          m_xPosixThread.m_iOpSysThreadId,
@@ -127,7 +127,7 @@ void Thread::vDump(void) const
 /*----------------------------------------------------------------------------*/
 void Thread::vLoop(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
 //  vTrace("Thread %p: loop\n",
 //         this
@@ -201,8 +201,8 @@ void Thread::vLoop(void)
 /*----------------------------------------------------------------------------*/
 s& Thread::sName(void)
 {
-  _poolAddress_(this);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+  
   return m_sName;
 }
 
@@ -211,7 +211,7 @@ s& Thread::sName(void)
 /*----------------------------------------------------------------------------*/
 void Thread::vName(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   m_sName = sName;
 }
@@ -221,7 +221,7 @@ void Thread::vName(s& sName)
 /*----------------------------------------------------------------------------*/
 void Thread::vSpawn(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
   bool bResult = m_xPosixThread.bSpawnThread(Thread::vEntry,this);
   ASSERT(bResult);
@@ -246,6 +246,8 @@ Thread* Thread::pThread(void)
 /*----------------------------------------------------------------------------*/
 Footer* Thread::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD);
+  
   return &m_xFooter;
 }
 
