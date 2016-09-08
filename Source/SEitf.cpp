@@ -275,7 +275,7 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("ls",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("lf",pWords[0],C_NO_CASE)) {
     bGetDicContents(pWords);
     return true;
   }
@@ -918,7 +918,7 @@ bool SEitf::bGetDicContents(char* pWords[])
 {
   s256 sRequest;
   
-  sRequest = "ls";
+  sRequest = "lf";
   vAppendRequest(sRequest);
   
   return true;

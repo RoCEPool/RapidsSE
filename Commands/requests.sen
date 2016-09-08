@@ -50,7 +50,7 @@ Dictionary Requests:
           cf ~
           cf
   pwf     pwf
-  ls      ls
+  lf      lf
 
 Misc Requests:
 
@@ -532,9 +532,9 @@ freespace .
 ;
 
 /*----------------------------------------------------------------------------*/
-/* list dictionary contents                                                   */
+/* list folder contents                                                       */
 /*----------------------------------------------------------------------------*/
-: ls
+: lf
 
     ""
     word.this dup iterate

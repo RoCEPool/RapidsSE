@@ -46,8 +46,8 @@ ld j100 "../JTEST/j100.csv"
 print "loading j10.tbl..."
 ld j10 "../JTEST/j10.csv"
 
-pld
-ls
+pwf
+lf
 
 sel j10
 
