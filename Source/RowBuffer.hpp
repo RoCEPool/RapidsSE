@@ -45,11 +45,11 @@ namespace DBobjects
     
   private:
     Object* pDataArea(void);
-    Footer* pFooter(void);
     i8      iFreeSpace(void);
     bool    bIsExhausted(void);
     void    vSetExhausted(void);
     
+    Footer* pFooter(void);
   };
 }
 

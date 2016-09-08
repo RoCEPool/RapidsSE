@@ -182,7 +182,12 @@ char* HeapBuffer::pChunkEnd(FreeChunk* pChunk, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 Footer* HeapBuffer::pFooter(void)
 {
-  return nullptr;
+  // Note: cannot check _FOOTER_ here
+  _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER);
+  
+  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
+  
+  return pFooter;
 }
 
 /*============================================================================*/

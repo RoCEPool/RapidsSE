@@ -261,19 +261,6 @@ Object* RowBuffer::pDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calculate location of footer                                               */
-/*----------------------------------------------------------------------------*/
-Footer* RowBuffer::pFooter(void)
-{
-  // Note: cannot check _FOOTER_ here
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
-  
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
-  
-  return pFooter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* how much free space (in bytes) left in segment?                            */
 /*----------------------------------------------------------------------------*/
 i8 RowBuffer::iFreeSpace(void)
@@ -303,6 +290,23 @@ void RowBuffer::vSetExhausted(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
   m_bHasSpace = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* calculate location of footer                                               */
+/*----------------------------------------------------------------------------*/
+Footer* RowBuffer::pFooter(void)
+{
+  // Note: cannot check _FOOTER_ here
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER);
+  
+  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
+  
+  return pFooter;
 }
 
 /*============================================================================*/
