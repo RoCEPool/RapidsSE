@@ -328,7 +328,7 @@ void SePrompt::vHelp(void)
   vTrace("adr    -- get address of table\n");
   vTrace("bye    -- quit seitf\n");
   vTrace("cd     -- change directory\n");
-  vTrace("cld    -- change local dictionary\n");
+  vTrace("cf     -- change folder\n");
   vTrace("con    -- connect\n");
   vTrace("cp     -- copy table\n");
   vTrace("create -- create table\n");
@@ -348,7 +348,7 @@ void SePrompt::vHelp(void)
   vTrace("mksch  -- create schema\n");
   vTrace("mktbl  -- create table\n");
   vTrace("mkten  -- create tenant\n");
-  vTrace("pld    -- print local dictionary\n");
+  vTrace("pwf    -- print working folder\n");
   vTrace("pwd    -- print working directory\n");
   vTrace("rmcat  -- drop catalog\n");
   vTrace("rmdic  -- drop dictionary\n");

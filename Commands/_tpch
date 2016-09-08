@@ -4,19 +4,19 @@
 
 ping
 
-cld tenants
+cf tenants
 mkten boray
 
-cld boray
-cld catalogs
+cf boray
+cf catalogs
 mkcat borayCatalog
 
-cld borayCatalog
-cld schemas
+cf borayCatalog
+cf schemas
 mksch boraySchema
 
-cld boraySchema
-cld tables
+cf boraySchema
+cf tables
 
 create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,

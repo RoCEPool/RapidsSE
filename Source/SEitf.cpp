@@ -220,7 +220,7 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("cld",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("cf",pWords[0],C_NO_CASE)) {
     bPushDic(pWords);
     return true;
   }
@@ -325,7 +325,7 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("pld",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("pwf",pWords[0],C_NO_CASE)) {
     bGetDicPath(pWords);
     return true;
   }
@@ -873,7 +873,7 @@ bool SEitf::bPushDic(char* pWords[])
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
   
-  String::vConcat(a," cld");
+  String::vConcat(a," cf");
   
   vAppendRequest(sRequest);
   
@@ -897,7 +897,7 @@ bool SEitf::bGetDicPath(char* pWords[])
 {
   s256 sRequest;
   
-  sRequest = "pld";
+  sRequest = "pwf";
   vAppendRequest(sRequest);
   
   return true;
