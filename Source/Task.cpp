@@ -6,6 +6,8 @@
 
 #include "StorageEngine.h"
 //#include "Tasks.h"
+#include "SePrompt.hpp"
+
 
 extern Arguments             gxArguments;
 
@@ -307,7 +309,6 @@ void Task::vAddConstants(void)
   /*  9 */ vAddConstant("CN_BUFFER",                CN_BUFFER);
   /* 10 */ vAddConstant("CN_BUFFERPOOL",            CN_BUFFERPOOL);
   /* 11 */ vAddConstant("CN_BUFFERPOOLANALYZER",    CN_BUFFERPOOLANALYZER);
-  /* 12 */ vAddConstant("CN_BUFFERPOOLITER",        CN_BUFFERPOOLITER);
   /* 13 */ vAddConstant("CN_PARSER",                CN_PARSER);
   /* 14 */ vAddConstant("CN_DICTIONARY",            CN_DICTIONARY);
   /* 15 */ vAddConstant("CN_DIR",                   CN_DIR);
@@ -357,8 +358,8 @@ void Task::vAddConstants(void)
   /* 59 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
   
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
-  /*  1 */ vAddConstant("TK_NAME",               TK_NAME);
-  /*  2 */ vAddConstant("TK_INTEGER",                TK_INTEGER);
+  /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
+  /*  2 */ vAddConstant("TK_INTEGER",               TK_INTEGER);
   /*  3 */ vAddConstant("TK_STRING",                TK_STRING);
   /*  4 */ vAddConstant("TK_ENUMS",                 TK_ENUMS);
   
@@ -370,13 +371,13 @@ void Task::vAddConstants(void)
   /*  6 */ vAddConstant("SIZEOF_VALWSP",            sizeof(ValWsp)); // correct
   
   /*  7 */ vAddConstant("SIZEOF_ARGUMENTS",         sizeof(Arguments));
-  /*  8 */ vAddConstant("SIZEOF_ATTACHMAP",         sizeof(AttachMap));
-  /*  9 */ vAddConstant("SIZEOF_BUFFER",            sizeof(Buffer));
-  /* 10 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
-  /* 11 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPool));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLITER",    sizeof(BufferPoolAnalyzer));
-  /* 13 */ vAddConstant("SIZEOF_PARSER",            sizeof(Parser));
-  /* 14 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
+  /*  8 */ vAddConstant("SIZEOF_ATOMIC",            sizeof(Atomic));
+  /*  9 */ vAddConstant("SIZEOF_ATTACHMAP",         sizeof(AttachMap));
+  /* 10 */ vAddConstant("SIZEOF_BUFFER",            sizeof(Buffer));
+  /* 11 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
+  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPoolAnalyzer));
+  /* 13 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
+  /* 14 */ vAddConstant("SIZEOF_DICTIONARYSTACK",   sizeof(DictionaryStack));
   /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
   /* 16 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
   /* 17 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
@@ -388,39 +389,52 @@ void Task::vAddConstants(void)
   /* 23 */ vAddConstant("SIZEOF_MEDIUMHEAP",        sizeof(Heap));
   /* 24 */ vAddConstant("SIZEOF_NODE",              sizeof(Node));
   /* 25 */ vAddConstant("SIZEOF_NODECURSOR",        sizeof(NodeCursor));
-  /* 26 */ vAddConstant("SIZEOF_PARTITION",         sizeof(Partition));
-  /* 27 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
-  /* 28 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
-  /* 29 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
-  /* 30 */ vAddConstant("SIZEOF_QUEUEBUFFER",       sizeof(QueueBuffer));
-  /* 31 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
-  /* 32 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
-  /* 33 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
-  /* 34 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
-  /* 35 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
-  /* 36 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
-  /* 37 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
-  /* 38 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
-  /* 39 */ vAddConstant("SIZEOF_SMALLHEAP",        sizeof(Heap));
-  /* 40 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
-  /* 41 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
-  /* 42 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
-  /* 43 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
-  /* 44 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
-  /* 45 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
-  /* 46 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskSet));
-  /* 47 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
-  /* 48 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
-  /* 49 */ vAddConstant("SIZEOF_THREADCURSOR",      sizeof(ThreadCursor));
-  /* 50 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
-  /* 51 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
-  /* 52 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
-  /* 53 */ vAddConstant("SIZEOF_TXARRAY",           sizeof(TxArray));
-  /* 54 */ vAddConstant("SIZEOF_TXCOLLECTION",      sizeof(TxCollection));
-  /* 55 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
-  /* 56 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
-  /* 57 */ vAddConstant("SIZEOF_TXREF",             sizeof(TxRef));
-  /* 58 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
+  /* 26 */ vAddConstant("SIZEOF_PARSER",            sizeof(Parser));
+  /* 27 */ vAddConstant("SIZEOF_PARTITION",         sizeof(Partition));
+  /* 28 */ vAddConstant("SIZEOF_PARTITIONS",        sizeof(Partitions));
+  /* 29 */ vAddConstant("SIZEOF_PROXY",             sizeof(Proxy));
+  /* 30 */ vAddConstant("SIZEOF_PROXYSET",          sizeof(ProxySet));
+  /* 31 */ vAddConstant("SIZEOF_QUEUE",             sizeof(Queue));
+  /* 32 */ vAddConstant("SIZEOF_QUEUEBUFFER",       sizeof(QueueBuffer));
+  /* 33 */ vAddConstant("SIZEOF_RING",              sizeof(Ring));
+  /* 34 */ vAddConstant("SIZEOF_ROW",               sizeof(Row));
+  /* 35 */ vAddConstant("SIZEOF_ROWBUFFER",         sizeof(RowBuffer));
+  /* 36 */ vAddConstant("SIZEOF_ROWCURSOR",         sizeof(RowCursor));
+  /* 37 */ vAddConstant("SIZEOF_ROWSTRAND",         sizeof(RowStrand));
+  /* 38 */ vAddConstant("SIZEOF_SCANBUFFER",        sizeof(ScanBuffer));
+  /* 39 */ vAddConstant("SIZEOF_SEHISTORY",         sizeof(SeHistory));
+  /* 40 */ vAddConstant("SIZEOF_SEITF",             sizeof(SEitf));
+  /* 41 */ vAddConstant("SIZEOF_SEITFCURSOR",       sizeof(SEitfCursor));
+  /* 42 */ vAddConstant("SIZEOF_SEITFLIST",         sizeof(SEitfList));
+  /* 43 */ vAddConstant("SIZEOF_SEPROMPT",          sizeof(SePrompt));
+  /* 44 */ vAddConstant("SIZEOF_SINCE",             sizeof(Since));
+  /* 45 */ vAddConstant("SIZEOF_SKIPCURSOR",        sizeof(SkipCursor));
+  /* 46 */ vAddConstant("SIZEOF_SKIPLIST",          sizeof(SkipList));
+  /* 47 */ vAddConstant("SIZEOF_SKIPNODE",          sizeof(SkipNode));
+  /* 48 */ vAddConstant("SIZEOF_SMALLHEAP",         sizeof(Heap));
+  /* 49 */ vAddConstant("SIZEOF_SOCKET",            sizeof(Socket));
+  /* 50 */ vAddConstant("SIZEOF_STACK",             sizeof(Stack));
+  /* 51 */ vAddConstant("SIZEOF_STEPACCUM",         sizeof(StepAccum));
+  /* 52 */ vAddConstant("SIZEOF_STEPARRAY",         sizeof(StepArray));
+  /* 53 */ vAddConstant("SIZEOF_SYSCALL",           sizeof(SysCall));
+  /* 54 */ vAddConstant("SIZEOF_TABLE",             sizeof(Table));
+  /* 55 */ vAddConstant("SIZEOF_TASK",              sizeof(Task));
+  /* 56 */ vAddConstant("SIZEOF_TASKCURSOR",        sizeof(TaskCursor));
+  /* 57 */ vAddConstant("SIZEOF_TASKLIST",          sizeof(TaskList));
+  /* 58 */ vAddConstant("SIZEOF_TASKSET",           sizeof(TaskSet));
+  /* 59 */ vAddConstant("SIZEOF_THREAD",            sizeof(Thread));
+  /* 60 */ vAddConstant("SIZEOF_THREADCURSOR",      sizeof(ThreadCursor));
+  /* 61 */ vAddConstant("SIZEOF_THREADLIST",        sizeof(ThreadList));
+  /* 62 */ vAddConstant("SIZEOF_TIME",              sizeof(Time));
+  /* 63 */ vAddConstant("SIZEOF_TIMER",             sizeof(Timer));
+  /* 64 */ vAddConstant("SIZEOF_TOKENISER",         sizeof(Tokeniser));
+  /* 65 */ vAddConstant("SIZEOF_TX",                sizeof(Tx));
+  /* 66 */ vAddConstant("SIZEOF_TXARRAY",           sizeof(TxArray));
+  /* 67 */ vAddConstant("SIZEOF_TXCOLLECTION",      sizeof(TxCollection));
+  /* 68 */ vAddConstant("SIZEOF_TXCURSOR",          sizeof(TxCursor));
+  /* 69 */ vAddConstant("SIZEOF_TXMAP",             sizeof(TxMap));
+  /* 70 */ vAddConstant("SIZEOF_TXREF",             sizeof(TxRef));
+  /* 71 */ vAddConstant("SIZEOF_WORD",              sizeof(Word));
 
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
