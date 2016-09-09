@@ -47,12 +47,11 @@ void Word::operator delete(void* pWordAddress)
 Word::Word(void)
 : Object(CN_WORD)
 {
-  _poolAddress_(this);
-  _magic_();
-  
-  _class_(CN_WORD);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Memory::vCheckInitialised(this,sizeof(Word));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,14 +60,13 @@ Word::Word(void)
 Word::Word(const char* sName)
 : Object(CN_WORD)
 {
-  _poolAddress_(this);
-  _magic_();
-  
-  _class_(CN_WORD);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   vName(sName);
   
   Memory::vCheckInitialised(this,sizeof(Word));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,8 +75,7 @@ Word::Word(const char* sName)
 Word::Word(eWT eWordType, pFUN pFunc)
 : Object(CN_WORD)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   _class_(CN_WORD);
   
@@ -86,6 +83,8 @@ Word::Word(eWT eWordType, pFUN pFunc)
   m_xCode.m_pFunc = pFunc;
   
   Memory::vCheckInitialised(this,sizeof(Word));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,6 +92,7 @@ Word::Word(eWT eWordType, pFUN pFunc)
 /*----------------------------------------------------------------------------*/
 Word::~Word(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -100,7 +100,7 @@ Word::~Word(void)
 /*----------------------------------------------------------------------------*/
 void Word::vAddr(Cell* pCell)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   m_xBody.m_pCell = pCell;
 }
@@ -110,7 +110,7 @@ void Word::vAddr(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 char* Word::pAllot(i8 iBytes)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   char* pAddress = pcAdd(pFirstCell(),m_iDataBytes);
   
@@ -126,7 +126,7 @@ char* Word::pAllot(i8 iBytes)
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(i8 wVal)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   void* pAddress = pAppend(wVal);
   ASSERT(pAddress);
@@ -137,7 +137,7 @@ void Word::vAppend(i8 wVal)
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(i8 wVal)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   char* pAddress = pAllot(8);
   
@@ -151,7 +151,7 @@ void* Word::pAppend(i8 wVal)
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(Cell* pCell)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   void* pAddress = pAppend(pCell);
   ASSERT(pAddress);
@@ -162,7 +162,7 @@ void Word::vAppend(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(Cell* pCell)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Cell* pAllottedCell = (Cell*)pAllot(sizeof(pCell));
   
@@ -176,7 +176,7 @@ void* Word::pAppend(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(CodeField* pCode)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   void* pAddress = pAppend(pCode);
   ASSERT(pAddress);
@@ -187,7 +187,7 @@ void Word::vAppend(CodeField* pCode)
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(CodeField* pCode)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Cell* pAllottedCell = (Cell*)pAllot(sizeof(pCode));
   
@@ -201,7 +201,7 @@ void* Word::pAppend(CodeField* pCode)
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(Value* pValue)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   void* pAddress = pAppend(pValue);
   ASSERT(pAddress);
@@ -212,7 +212,7 @@ void Word::vAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(Value* pValue)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   i8 iSize = pValue->iSize();
   
@@ -228,7 +228,7 @@ void* Word::pAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(pFUN pFunc)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   void* pAddress = pAppend(pFunc);
   ASSERT(pAddress);
@@ -239,7 +239,7 @@ void Word::vAppend(pFUN pFunc)
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(pFUN pFunc)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   char* pAddress = pAllot(sizeof(pFunc));
   
@@ -253,7 +253,7 @@ void* Word::pAppend(pFUN pFunc)
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(pFUN* ppFunc)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   void* pAddress = pAppend(ppFunc);
   ASSERT(pAddress);
@@ -264,7 +264,7 @@ void Word::vAppend(pFUN* ppFunc)
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(pFUN* ppFunc)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   char* pAddress = pAllot(sizeof(ppFunc));
   
@@ -278,7 +278,7 @@ void* Word::pAppend(pFUN* ppFunc)
 /*----------------------------------------------------------------------------*/
 CodeField* Word::pCodeField(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return &m_xCode;
 }
@@ -288,7 +288,7 @@ CodeField* Word::pCodeField(void)
 /*----------------------------------------------------------------------------*/
 BodyField* Word::pBodyField(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return &m_xBody;
 }
@@ -298,7 +298,7 @@ BodyField* Word::pBodyField(void)
 /*----------------------------------------------------------------------------*/
 Dictionary* Word::pDictionary(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_pDictionary;
 }

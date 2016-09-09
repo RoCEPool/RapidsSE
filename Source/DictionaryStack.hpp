@@ -8,7 +8,7 @@
 
 namespace Dictionaries
 {
-  class DictionaryStack
+  class DictionaryStack : public Object
   {
   private:
     static const i8 C_DICTIONARY_STACK = 32;
