@@ -32,6 +32,7 @@
 
 #include "Parser.hpp"
 #include "Tokeniser.hpp"
+#include "Atomic.hpp"
 
 
 //-----------------------------------------------------------------------------

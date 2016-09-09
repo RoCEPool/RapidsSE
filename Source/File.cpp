@@ -8,7 +8,7 @@
 
 extern Heap*  gpSmallHeap;
 
-i8 giFileOpenCount = 0;
+Atomic gzFileOpenCount;
 
 /*----------------------------------------------------------------------------*/
 
@@ -137,7 +137,7 @@ void File::vClose(void)
     return;
   }
   
-  giFileOpenCount--;
+  --gzFileOpenCount;
   
   vReset();
   
@@ -297,7 +297,7 @@ bool File::bOpen(void)
     return false;
   }
   
-  giFileOpenCount++;
+  ++gzFileOpenCount;
   
   return true;
 }
@@ -328,7 +328,7 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
     return false;
   }
   
-  giFileOpenCount++;
+  ++gzFileOpenCount;
   
   return true;
 }
@@ -359,7 +359,7 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
     return false;
   }
   
-  giFileOpenCount++;
+  ++gzFileOpenCount;
   
   return true;
 }

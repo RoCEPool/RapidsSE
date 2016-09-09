@@ -567,7 +567,8 @@ void RapidsSE::vTlsInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vWaitFlag(void)
 {
-  vTrace("[[mainThread]] Waiting on stop %s\n","...");
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] Waiting on stop %s\n","...");
 
   // this primary thread waits for flag indicationg systems is to stop
   while ( ! gpAttachMap->m_iQuit && ! gpAttachMap->m_iStop )

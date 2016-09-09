@@ -5,7 +5,7 @@
 #include "Dir.hpp"
 #include "StorageEngine.h"
 
-i8 giDirOpenCount = 0;
+Atomic gzDirOpenCount;
 
 extern Heap* gpSmallHeap;
 
@@ -211,7 +211,7 @@ void Dir::vClose(void)
     return;
   }
 
-  giDirOpenCount--;
+  --gzDirOpenCount;
 
   m_pDirPtr = nullptr;
   
@@ -349,7 +349,7 @@ bool Dir::bOpen(void)
     return false;
   }
 
-  giDirOpenCount++;
+  ++gzDirOpenCount;
   
   ASSERT(bIsOpen());
   return true;

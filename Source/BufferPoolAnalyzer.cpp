@@ -8,6 +8,11 @@ extern Heap* gpMediumHeap;
 extern Heap* gpSmallHeap;
 extern Arguments gxArguments;
 
+extern Atomic gzDirOpenCount;
+extern Atomic gzFileOpenCount;
+extern Atomic gzShmOpenCount;
+extern Atomic gzSocketOpenCount;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
@@ -124,6 +129,13 @@ void BufferPoolAnalyzer::vAnalyze(void)
     vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
   }
   
+  vTrace("**************************************************************\n");
+  vTrace(" dir %lld file %lld shm %lld socket %lld\n",
+         *gzDirOpenCount,
+         *gzFileOpenCount,
+         *gzShmOpenCount,
+         *gzSocketOpenCount
+         );
   vTrace("**************************************************************\n");
   
   _postcondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
