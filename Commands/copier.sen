@@ -11,8 +11,8 @@
   // r0 ^toTable
   // r1 ^fromtable
 
-  "row_cursor" find dup if else
-    drop "row_cursor" :rowCursor
+  "__row_cursor" find dup if else
+    drop "__row_cursor" :rowCursor
   then
   execute
 
@@ -59,6 +59,8 @@
   // r3 ^fromTable
 
   rdrop rdrop rdrop rdrop
+
+  "__row_cursor" find >forget
 
   true
 ;
