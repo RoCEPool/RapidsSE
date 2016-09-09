@@ -23,6 +23,14 @@
 "testing.sen" >>:
 
 //
+// step 2: runs some bassic unit tests
+//
+
+stk
+ut
+
+
+//
 // step 2: spawn the root thread
 //
 
