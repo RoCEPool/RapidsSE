@@ -42,7 +42,7 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(IE_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se> ";
+  m_sPrompt = "se 0.0.7> ";
   
   m_sResponse  = "";
   //m_xHistory

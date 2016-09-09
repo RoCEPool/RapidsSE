@@ -13,8 +13,20 @@ void vTest1(void);
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
-{  
-  printf("RapidsSE v%s (%s %s)\n",RAPIDSSE_VERSION_STRING,__DATE__,__TIME__);
+{
+  const char *aRelDbg;
+#ifdef _DEBUG
+  aRelDbg = "debug";
+#else
+  aRelDbg = "release";
+#endif
+ 
+  printf("RapidsSE v%s (%s %s -- %s)\n",
+         RAPIDSSE_VERSION_STRING,
+         __DATE__,
+         __TIME__,
+         aRelDbg
+         );
   
   RapidsSE::vCheckAssumptions();
     

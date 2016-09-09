@@ -12,7 +12,7 @@ Arguments::Arguments(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
-  m_sRegionName = "/RapidsSE_DefaultRegion";
+  m_sRegionName = "/RapidsSE_Instance1";
   m_iRegionSize = 1_GB * 4 ;
   m_iPartitions = 1;
   
