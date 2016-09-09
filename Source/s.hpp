@@ -7,7 +7,7 @@
 
 namespace Magic
 {
-  class s
+  class s : public Header
   {
   private:
     i8   m_iSize;  // fixed size of the workspace (not the length of the string)
@@ -15,7 +15,8 @@ namespace Magic
     
   public:
     void* operator new(size_t);
-    s(i8 iSize);
+    
+    s(eCN eClass, i8 iSize);
    ~s(void);
     
     void operator = (const char* aArg);

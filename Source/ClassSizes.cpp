@@ -8,6 +8,11 @@
 i8 giClassSize[]
 {
   /*  0 */ 0,
+
+  /*  1 */ sizeof(s32),
+  /*  1 */ sizeof(s256),
+  /*  1 */ sizeof(s8K),
+  
   /*  1 */ sizeof(IntVal),
   /*  2 */ sizeof(ObjVal),
   /*  3 */ sizeof(PtrVal),

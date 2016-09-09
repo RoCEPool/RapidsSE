@@ -15,6 +15,10 @@ namespace Magic
     
     /*  0 */ CN_NONE=0,
     
+    /*  1 */ CN_S32,
+    /*  2 */ CN_S256,
+    /*  3 */ CN_S8K,
+    
     /*  1 */ CN_INTVAL,
     /*  2 */ CN_OBJVAL,
     /*  3 */ CN_PTRVAL,
@@ -93,6 +97,10 @@ namespace Magic
   static const char *pCN[]
   {
     /*  0 */ "NONE",
+    
+    /*  1 */ "S32",
+    /*  2 */ "S256",
+    /*  3 */ "S8K",
     
     /*  1 */ "INTVAL",
     /*  2 */ "OBJVAL",

@@ -9,7 +9,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s8K::s8K(void)
-: s(C_S_SIZE)
+: s(CN_S8K,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
@@ -20,7 +20,7 @@ s8K::s8K(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s8K::s8K(s8K& rArg)
-: s(C_S_SIZE)
+: s(CN_S8K,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
@@ -33,7 +33,7 @@ s8K::s8K(s8K& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s8K::s8K(const char* aArg)
-: s(C_S_SIZE)
+: s(CN_S8K,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
@@ -46,7 +46,7 @@ s8K::s8K(const char* aArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s8K::s8K(const char* aArg, i8 nChars)
-: s(C_S_SIZE)
+: s(CN_S8K,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   

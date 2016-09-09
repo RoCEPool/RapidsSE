@@ -11,6 +11,7 @@
 void* s::operator new(size_t iSize)
 {
   ASSERT(iSize);
+  
   vFatal("fatal: s class cannot be new'd");
   
   ASSERT(0);
@@ -19,7 +20,8 @@ void* s::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-s::s(i8 iSize)
+s::s(eCN eClass, i8 iSize)
+: Header(eClass)
 {
   m_iSize = iSize;
   *aWorkspace() = '\0';

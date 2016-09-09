@@ -9,7 +9,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(void)
-: s(C_S_SIZE)
+: s(CN_S256,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
@@ -20,7 +20,7 @@ s256::s256(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(s256& rArg)
-: s(C_S_SIZE)
+: s(CN_S256,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
@@ -33,7 +33,7 @@ s256::s256(s256& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(const char* aArg)
-: s(C_S_SIZE)
+: s(CN_S256,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
@@ -46,7 +46,7 @@ s256::s256(const char* aArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(const char* aArg, i8 nChars)
-: s(C_S_SIZE)
+: s(CN_S256,C_S_SIZE)
 {
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
