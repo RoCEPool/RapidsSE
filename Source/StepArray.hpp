@@ -27,6 +27,8 @@ namespace Tasks
     ~StepArray(void);
     
     StepAccum* pAllocAccum(const char* pFnName);
+    void vList(void);
+    void vReset(void);
     
     Footer* pFooter(void);
   };

@@ -81,12 +81,19 @@ namespace Tasks
     }
 
     #define ENTRY(p1) \
-    { \
-      nnpTask->vPrimitive(p1); \
-    }
+      static StepAccum* pStepAccum = nullptr; \
+      if (! pStepAccum) \
+        pStepAccum = gpStepArray->pAllocAccum(p1); \
+      i8 _iTscEntry = iRdtscp(); \
+      nnpTask->vPrimitive(p1);
+
+    #define EXIT() \
+      ASSERT(pStepAccum); \
+      i8 _iTscExit = iRdtscp(); \
+      i8 _iTscDiff = _iTscExit - _iTscEntry; \
+      pStepAccum->m_nInvoked++; \
+      pStepAccum->m_nCycles += _iTscDiff;
   
-    #define EXIT()
-    
   private:
     Lock  m_xLock;
     i8    m_iTaskNo;    // task
@@ -616,6 +623,10 @@ namespace Tasks
     static void vStackClass7(NNP_Task nnpTask);
     static void vStackClass8(NNP_Task nnpTask);
     static void vStackClass9(NNP_Task nnpTask);
+    
+    // steps
+    static void vStepsList(NNP_Task nnpTask);
+    static void vStepsReset(NNP_Task nnpTask);
     
     // string
     static void vStringPad(NNP_Task nnpTask);

@@ -30,6 +30,39 @@ StepAccum::~StepAccum(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vPrint(void)
+{
+  if (0 == m_nInvoked)
+    return;
+  
+  i8 iTicksPerSecond = System::iClockFrequency();
+  i8 iTicksPerNanos = DIV(iTicksPerSecond,1000000000);
+  
+  i8 iTicksPerInvoke = DIV(m_nCycles,m_nInvoked);
+  
+  i8 iInvokeMircos = DIV(iTicksPerInvoke,iTicksPerNanos);
+
+  
+  vTrace("  %20s %12lld %12lld %8lldns\n",
+         m_aFnName,
+         m_nInvoked,
+         m_nCycles,
+         iInvokeMircos
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void StepAccum::vReset(void)
+{
+  m_nInvoked = 0;
+  m_nCycles  = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

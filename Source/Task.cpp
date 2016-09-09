@@ -794,6 +794,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
 
   vAddPrimitive("stack.class",  &vStackClass,  false);
+
+  vAddPrimitive("steps.list",  &vStepsList,  false);
+  vAddPrimitive("steps.reset", &vStepsReset, false);
   
   vAddPrimitive("strpad", &vStringPad, false);
   vAddPrimitive("streql", &vStrEql,    false);
@@ -8139,6 +8142,32 @@ ENTRY("vStackClass");
   eCN eClass = xValWsp.eClass();
   
   nnpTask->vPushParam(eClass);
+  
+  EXIT();
+}
+
+// steps: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* steps.list -- list steps                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vStepsList(NNP_Task nnpTask)
+{
+ENTRY("vStepsList");
+
+  gpStepArray->vList();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* steps.reset -- reset steps                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vStepsReset(NNP_Task nnpTask)
+{
+  ENTRY("vStepsReset");
+  
+  gpStepArray->vReset();
   
   EXIT();
 }

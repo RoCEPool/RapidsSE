@@ -15,7 +15,7 @@ void* StepArray::operator new(size_t iSize)
 {
   ASSERT(! gpStepArray);
   
-  StepArray* gpStepArray = (StepArray*)gpBufferPool->pAllocBuffer();
+  gpStepArray = (StepArray*)gpBufferPool->pAllocBuffer();
   
   return gpStepArray;
 }
@@ -61,6 +61,32 @@ StepAccum* StepArray::pAllocAccum(const char* pFnName)
   m_xStepAccum[iAccum].m_aFnName = pFnName;
   
   return &m_xStepAccum[iAccum];
+}
+
+/*----------------------------------------------------------------------------*/
+/* list steps                                                                 */
+/*----------------------------------------------------------------------------*/
+void StepArray::vList(void)
+{
+  m_zLock.vGrabWrite();
+  
+  for (i8 iStep = 0; iStep < m_iNext; iStep++)
+    m_xStepAccum[iStep].vPrint();
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset steps                                                                */
+/*----------------------------------------------------------------------------*/
+void StepArray::vReset(void)
+{
+  m_zLock.vGrabWrite();
+  
+  for (i8 iStep = 0; iStep < m_iNext; iStep++)
+    m_xStepAccum[iStep].vReset();
+  
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

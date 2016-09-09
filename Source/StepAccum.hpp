@@ -21,7 +21,10 @@ namespace Tasks
   public:
     StepAccum(void);
     ~StepAccum(void);
-        
+    
+    void vPrint(void);
+    void vReset(void);
+    
     Footer* pFooter(void);
   };
 }

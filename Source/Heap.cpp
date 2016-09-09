@@ -93,10 +93,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   //vVerify();
   
   eLastClass = eAllocClass;
-  
-  if (CN_TX == eAllocClass)
-    i8 i = 0;
-  
+    
   return pObject;
 }
 
