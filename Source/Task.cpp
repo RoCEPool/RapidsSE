@@ -6868,7 +6868,7 @@ ENTRY("vLoaderCloseFile");
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderFetchRecord(NNP_Task nnpTask)
 {
-ENTRY("vLoaderFetchReord");
+ENTRY("vLoaderFetchRecord");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6889,7 +6889,7 @@ ENTRY("vLoaderFetchReord");
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPushRecord(NNP_Task nnpTask)
 {
-ENTRY("vLoaderPushReord");
+ENTRY("vLoaderPushRecord");
   
   PtrVal xPtrVal;
   if ( ! nnpTask->bPopParam(xPtrVal) )
@@ -6914,7 +6914,7 @@ ENTRY("vLoaderPushReord");
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInsertRow(NNP_Task nnpTask)
 {
-ENTRY("vLoaderFetchReord");
+ENTRY("vLoaderInsertRow");
   
   PtrVal xPtrLoader;
   if ( ! nnpTask->bPopParam(xPtrLoader) )
