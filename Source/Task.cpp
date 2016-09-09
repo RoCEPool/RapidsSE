@@ -929,6 +929,9 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("client",          &vClient,           false);
   vAddPrimitive("server",          &vServer,           false);
+  
+  //----------------------------------------------------------
+  vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8542,6 +8545,7 @@ ENTRY("vTableSpace");
   
   i8 iBuffers = pTable->iRowBuffers();
   i8 iSpace   = iBuffers * C_SIZE_LARGE_BUFFER;
+  s256 sMag;
   
   nnpTask->vPushParam(iSpace);
   
@@ -10765,6 +10769,27 @@ ENTRY("vServer");
   //NNP_Task nnpTaskNew = new Task();
   //nnpTaskNew->vSeedWord("server_code:");
   //pThread->vAppend(nnpTaskNew);
+  
+  EXIT();
+}
+
+// sockets: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* bytes.magnitude -- return magnitude of bytes                               */
+/*----------------------------------------------------------------------------*/
+void Task::vBytesMagnitude(NNP_Task nnpTask)
+{
+  ENTRY("vBytesMagnitude");
+  
+  i8 iBytes;
+  if ( ! nnpTask->bPopParam(iBytes) )
+    THROW_INVALID_PARAM("bytes.magnitude");
+  
+  s256 sMag;
+  Magnitudes::vMagnitude(iBytes, sMag.a());
+
+  nnpTask->vPushParam(sMag);
   
   EXIT();
 }
