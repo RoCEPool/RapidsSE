@@ -74,13 +74,13 @@ namespace Dictionaries
     
     BodyField* pBodyField(void);
     
-    Tasks::pFUN  pFunc(void) const;
+    Tasks::pFUN  pFunc(void);
     void  vFunc(Tasks::pFUN pFunc);
     
     char* pBodyArea(void);
     void  vByteDump(i8 iSize);
     char* pDataEnd(void);
-    i8    iDataBytes(void) const;
+    i8    iDataBytes(void);
     void  vDump(void);
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
@@ -90,26 +90,26 @@ namespace Dictionaries
     void  vEncode(const char* aWord, Word* pWord);
     void  vEncode(CodeField* pCode);
     
-    Cell* pFirstCell(void) const;
+    Cell* pFirstCell(void);
     
     bool  bHasLocation(Cell* pCell);
     
-    bool  bImmediate(void) const;
+    bool  bImmediate(void);
     bool  bIsName(s& sName);
     void  vImmediate(bool bImmediate);
     Word* pKind(void);
     void  vKind(Word* pKind);
-    Cell* pLastCell(void) const;
+    Cell* pLastCell(void);
     char* aName(void);
     s&    sName(void);
     void  vName(const char* sName);
-    Word* pPrevWord(void) const;
+    Word* pPrevWord(void);
     void  vPrevWord(Word* pPrevWord);
     void  vReset(void);
-    i8    iSize(void) const;
+    i8    iSize(void);
     Value* pValue(void);
     void  vWordDump(i8 iSize);
-    eWT   eWordType(void) const;
+    eWT   eWordType(void);
     void  vWordType(eWT eWordType);
     
     static Word* pToWord(void* pBody);

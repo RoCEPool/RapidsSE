@@ -306,9 +306,9 @@ Dictionary* Word::pDictionary(void)
 /*----------------------------------------------------------------------------*/
 /* get func ptr                                                               */
 /*----------------------------------------------------------------------------*/
-pFUN Word::pFunc(void) const
+pFUN Word::pFunc(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_xCode.m_pFunc;
 }
@@ -318,7 +318,7 @@ pFUN Word::pFunc(void) const
 /*----------------------------------------------------------------------------*/
 void Word::vFunc(pFUN pFunc)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   m_xCode.m_pFunc = pFunc;
 }
@@ -328,7 +328,7 @@ void Word::vFunc(pFUN pFunc)
 /*----------------------------------------------------------------------------*/
 char* Word::pBodyArea(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   char* pAddress = pcAdd(this,sizeof(Word));
   
@@ -340,7 +340,7 @@ char* Word::pBodyArea(void)
 /*----------------------------------------------------------------------------*/
 void Word::vByteDump(i8 iSize)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Memory::vHexDump(this, iSize);
 }
@@ -350,7 +350,7 @@ void Word::vByteDump(i8 iSize)
 /*----------------------------------------------------------------------------*/
 char* Word::pDataEnd(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   char* pAddress = reinterpret_cast<char*>(this) + sizeof(Word) + m_iDataBytes;
   
@@ -360,9 +360,9 @@ char* Word::pDataEnd(void)
 /*----------------------------------------------------------------------------*/
 /* get data bytes                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Word::iDataBytes(void) const
+i8 Word::iDataBytes(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_iDataBytes;
 }
@@ -372,7 +372,7 @@ i8 Word::iDataBytes(void) const
 /*----------------------------------------------------------------------------*/
 void Word::vDump(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   s32 sFuncName;
   
@@ -396,7 +396,7 @@ void Word::vDump(void)
 /*----------------------------------------------------------------------------*/
 void Word::vDump(const char* pTab)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   s32 sFuncName;
   
@@ -418,7 +418,7 @@ void Word::vDump(const char* pTab)
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Word* pCalledWord = gpMainDic->pFind(aWord);
   
@@ -430,7 +430,7 @@ void Word::vEncode(const char* aWord)
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Cell* pCell)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   vEncode(aWord);
   
@@ -443,7 +443,7 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, CodeField* pCode)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   vEncode(aWord);
   
@@ -456,7 +456,7 @@ void Word::vEncode(const char* aWord, CodeField* pCode)
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Value* pValue)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   vEncode(aWord);
     
@@ -468,7 +468,7 @@ void Word::vEncode(const char* aWord, Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Word* pWord)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   vEncode(aWord);
   
@@ -486,8 +486,8 @@ void Word::vEncode(const char* aWord, Word* pWord)
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(CodeField* pCode)
 {
-  _poolAddress_(this);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
+  
   // needs to be corrected
   vAppend(pCode);
 }
@@ -495,9 +495,9 @@ void Word::vEncode(CodeField* pCode)
 /*----------------------------------------------------------------------------*/
 /* get pointer to first cell                                                  */
 /*----------------------------------------------------------------------------*/
-Cell* Word::pFirstCell(void) const
+Cell* Word::pFirstCell(void)
 {
-  _poolAddress_(this);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   Cell* pFirst = reinterpret_cast<Cell*>(pcAdd((void*)this,sizeof(Word)));
                                          
@@ -509,7 +509,7 @@ Cell* Word::pFirstCell(void) const
 /*----------------------------------------------------------------------------*/
 bool Word::bHasLocation(Cell* pCell) 
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   if ((char*)pCell >= pBodyArea() && (char*)pCell <= pDataEnd())
     return true;
@@ -520,9 +520,9 @@ bool Word::bHasLocation(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* get immediate flag                                                         */
 /*----------------------------------------------------------------------------*/
-bool Word::bImmediate(void) const
+bool Word::bImmediate(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_bImmediate;
 }
@@ -532,7 +532,7 @@ bool Word::bImmediate(void) const
 /*----------------------------------------------------------------------------*/
 void Word::vImmediate(bool bImmediate)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   m_bImmediate = bImmediate;
 }
@@ -542,7 +542,7 @@ void Word::vImmediate(bool bImmediate)
 /*----------------------------------------------------------------------------*/
 bool Word::bIsName(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
@@ -554,7 +554,7 @@ bool Word::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 Word* Word::pKind(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_pKind;
 }
@@ -564,7 +564,7 @@ Word* Word::pKind(void)
 /*----------------------------------------------------------------------------*/
 void Word::vKind(Word* pKind)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   m_pKind = pKind;
 }
@@ -572,9 +572,9 @@ void Word::vKind(Word* pKind)
 /*----------------------------------------------------------------------------*/
 /* get pointer to last cell                                                   */
 /*----------------------------------------------------------------------------*/
-Cell* Word::pLastCell(void) const
+Cell* Word::pLastCell(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Cell* pLast = reinterpret_cast<Cell*>(pcAdd((void*)this,sizeof(Word) + m_iDataBytes));
   
@@ -586,7 +586,7 @@ Cell* Word::pLastCell(void) const
 /*----------------------------------------------------------------------------*/
 char* Word::aName(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   return pPoolCheck<char*>((void*)m_sName.a());
 }
@@ -596,7 +596,7 @@ char* Word::aName(void)
 /*----------------------------------------------------------------------------*/
 s& Word::sName(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_sName;
 }
@@ -606,7 +606,7 @@ s& Word::sName(void)
 /*----------------------------------------------------------------------------*/
 void Word::vName(const char* aName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   m_sName = aName;
 }
@@ -614,9 +614,9 @@ void Word::vName(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* get previous word                                                          */
 /*----------------------------------------------------------------------------*/
-Word* Word::pPrevWord(void) const
+Word* Word::pPrevWord(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
 
   return pPoolCheck<Word*>(m_pPrevWord);
 }
@@ -626,7 +626,7 @@ Word* Word::pPrevWord(void) const
 /*----------------------------------------------------------------------------*/
 void Word::vPrevWord(Word* pPrevWord)
 {
-  _poolAddress_(this);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   m_pPrevWord = pPrevWord;
 }
@@ -634,9 +634,9 @@ void Word::vPrevWord(Word* pPrevWord)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this word                                             */
 /*----------------------------------------------------------------------------*/
-i8 Word::iSize(void) const
+i8 Word::iSize(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return sizeof(Word) - 1 + m_iDataBytes;
 }
@@ -646,7 +646,7 @@ i8 Word::iSize(void) const
 /*----------------------------------------------------------------------------*/
 Value* Word::pValue(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Value* pValue = reinterpret_cast<Value*>(pFirstCell());
   
@@ -658,7 +658,7 @@ Value* Word::pValue(void)
 /*----------------------------------------------------------------------------*/
 void Word::vWordDump(i8 iSize)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   Memory::vWordDump(this, iSize);
 }
@@ -666,9 +666,9 @@ void Word::vWordDump(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* get word type                                                              */
 /*----------------------------------------------------------------------------*/
-eWT Word::eWordType(void) const
+eWT Word::eWordType(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   return m_eWordType;
 }
@@ -678,7 +678,7 @@ eWT Word::eWordType(void) const
 /*----------------------------------------------------------------------------*/
 void Word::vWordType(eWT eWordType)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
   m_eWordType = eWordType;
 }
@@ -709,6 +709,8 @@ Word* Word::pToWord(void* pBody)
 /*----------------------------------------------------------------------------*/
 Footer* Word::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
+  
   return nullptr;
 }
 
