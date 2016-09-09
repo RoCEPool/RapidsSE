@@ -15,7 +15,6 @@
 #include "s32.hpp"
 #include "s256.hpp"
 #include "s8K.hpp"
-#include "s16K.hpp"
 
 #include "Error.hpp"
 

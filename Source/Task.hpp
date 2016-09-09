@@ -227,8 +227,8 @@ namespace Tasks
     bool bPopParam(Value& xArg1, Value& xArg2, Value& xArg3);
     bool bPopParam(s32&  sArg1);
     bool bPopParam(s256& sArg1);
-    bool bPopParam(s16K& sArg1);
-    bool bPopParam(s16K& sArg1, s16K& sArg2);
+    bool bPopParam(s8K& sArg1);
+    bool bPopParam(s8K& sArg1, s8K& sArg2);
     bool bPopParam(Task*& pTask);
     bool bPopParam(Word*& pArg1);
     bool bPopParamInt(i8& iArg1);
@@ -244,7 +244,7 @@ namespace Tasks
     void vPushParam(Value* pValue);
     void vPushParam(s32&  sArg1);
     void vPushParam(s256& sArg1);
-    void vPushParam(s16K& sArg1);
+    void vPushParam(s8K& sArg1);
     void vPushParam(Threads::Thread* pThread);
     void vPushParam(NNP_Task nnpTask);
     void vPushParam(Word* pWord);
@@ -256,7 +256,7 @@ namespace Tasks
     void vPushReturn(Value& xValue);
     void vPushReturn(s32& sArg1);
     void vPushReturn(s256& sArg1);
-    void vPushReturn(s16K& sArg1);
+    void vPushReturn(s8K& sArg1);
 
     void vPopReturn(Cell*& pCell);
     bool bPopReturn(i8& iArg1);
@@ -266,7 +266,7 @@ namespace Tasks
     void vPopReturn(Value* pValue);
     bool bPopReturn(s32&  sArg1);
     bool bPopReturn(s256& sArg1);
-    bool bPopReturn(s16K& sArg1);
+    bool bPopReturn(s8K& sArg1);
     
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/

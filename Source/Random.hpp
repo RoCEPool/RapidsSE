@@ -19,7 +19,7 @@ namespace Common
     static u8 uRandom(u8 uMax);
     static u8 uRandom(u8 uLow, u8 uHigh);
     
-    static s16K sRandomString(i8 iLength);
+    static s8K sRandomString(i8 iLength);
   };
 }
 

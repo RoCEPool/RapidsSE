@@ -439,7 +439,7 @@ void Task::vAddConstants(void)
 
   /*  0 */ vAddConstant("SIZEOF_S32",               sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",              sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S16K",              sizeof(s16K));
+  /*  2 */ vAddConstant("SIZEOF_S16K",              sizeof(s8K));
 
   /*  0 */ vAddConstant("TS_NONE",                  TS_NONE);
   /*  1 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
@@ -958,7 +958,7 @@ void Task::vAddRoutines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  s16K sDefinition;
+  s8K sDefinition;
 
   sDefinition =
   ": __nil ;";
@@ -2095,7 +2095,7 @@ bool Task::bPopParam(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s from param stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(s16K& sArg1)
+bool Task::bPopParam(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -2113,7 +2113,7 @@ bool Task::bPopParam(s16K& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from param stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopParam(s16K& sArg1, s16K& sArg2)
+bool Task::bPopParam(s8K& sArg1, s8K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -2327,9 +2327,9 @@ void Task::vPushParam(s256& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s16K onto param stack                                                 */
+/* push s8K onto param stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPushParam(s16K& sArg1)
+void Task::vPushParam(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -2437,9 +2437,9 @@ void Task::vPushReturn(s256& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s16K onto param stack                                                 */
+/* push s8K onto param stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPushReturn(s16K& sArg1)
+void Task::vPushReturn(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -2613,7 +2613,7 @@ bool Task::bPopReturn(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s from return stack                                                    */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopReturn(s16K& sArg1)
+bool Task::bPopReturn(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -3100,7 +3100,7 @@ void Task::vDump(NNP_Task nnpTask)
 {
 ENTRY("vDump");
   
-  s16K sWorkspace;
+  s8K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->bPopParam(xValWsp) )
@@ -3308,7 +3308,7 @@ ENTRY("vEnvGet");
   if ( ! nnpTask->bPopParam(sEnvName) )
     THROW_INVALID_PARAM("env@");
   
-  s16K sEnvVal;
+  s8K sEnvVal;
   
   if (! Env::bGetEnv(sEnvName.a(),sEnvVal.a()))
     sEnvVal = "";
@@ -4287,7 +4287,7 @@ void Task::vPrint(NNP_Task nnpTask)
 {
 ENTRY("vPrint");
   
-  s16K sWorkspace;
+  s8K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->bPopParam(xValWsp) )
@@ -4349,7 +4349,7 @@ void Task::vPut(NNP_Task nnpTask)
 {
 ENTRY("vPut");
   
-  s16K sWorkspace;
+  s8K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->bPopParam(xValWsp) )
@@ -4368,7 +4368,7 @@ void Task::vPutVerbose(NNP_Task nnpTask)
 {
   ENTRY("vPutVerbose");
   
-  s16K sWorkspace;
+  s8K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->bPopParam(xValWsp) )
@@ -4744,7 +4744,7 @@ ENTRY("vSee");
   BodyField* pBody = pWord->pBodyField();
   Cell* pCell = pBody->m_pCell;
   
-  s16K sWorkspace;
+  s8K sWorkspace;
   
   while ((char*)pCell < pcAdd(pWord->pBodyArea(),pWord->iDataBytes())) {
  
@@ -5016,7 +5016,7 @@ ENTRY("vToCmd");
   IntVal xNumValues;
   nnpTask->vPopParam(&xNumValues);
 
-  s16K sCmd;
+  s8K sCmd;
 
   ValWsp xStr;
   xStr = "<cmd>";
@@ -6491,7 +6491,7 @@ ENTRY("vFileRead");
   File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
   ASSERT(pFile);
   
-  s16K sLine;
+  s8K sLine;
 
   if (pFile->bReadLine(sLine)) {
     nnpTask->vPushParam(sLine);
@@ -7662,7 +7662,7 @@ ENTRY("vRowCursorGet");
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  s16K xRow;
+  s8K xRow;
   xRow = pRowCursor->pRowAsStr();
   
   nnpTask->vPushParam(xRow);
@@ -10682,7 +10682,7 @@ ENTRY("vSocketSend");
   Socket* pSocket;
   char* pData;
   Object* pObject;
-  s16K  sWorkspace;
+  s8K  sWorkspace;
   ValWsp xValWsp;
   
   
@@ -10715,7 +10715,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   ValWsp xValWsp;
-  s16K   sWorkspace;
+  s8K   sWorkspace;
   i8 iSocketId;
   
   
