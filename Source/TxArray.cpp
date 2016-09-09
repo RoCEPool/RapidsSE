@@ -32,10 +32,14 @@ void TxArray::operator delete(void* pBufferAddress)
 TxArray::TxArray(void)
 : Object(CN_TXARRAY)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY,_FOOTER_);
+  
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
     m_pTx[iTx] = nullptr;
 
   Memory::vCheckInitialised(this,sizeof(TxArray));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +47,7 @@ TxArray::TxArray(void)
 /*----------------------------------------------------------------------------*/
 TxArray::~TxArray(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,6 +78,8 @@ void TxArray::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 Footer* TxArray::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY);
+  
   return &m_xFooter;
 }
 

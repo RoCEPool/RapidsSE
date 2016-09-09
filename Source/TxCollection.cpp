@@ -32,7 +32,7 @@ void TxCollection::operator delete(void* pBufferAddress)
 TxCollection::TxCollection(void)
 : Object(CN_TXCOLLECTION)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
   
   ASSERT( ! gpTxCollection );
   
@@ -53,6 +53,8 @@ TxCollection::TxCollection(void)
   gpTxCollection = this;
   
   Memory::vCheckInitialised(this,sizeof(TxCollection));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +62,7 @@ TxCollection::TxCollection(void)
 /*----------------------------------------------------------------------------*/
 Tx* TxCollection::pAllocTx(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
   
   Tx* pTx = pAllocObject();
   
@@ -72,7 +74,7 @@ Tx* TxCollection::pAllocTx(void)
 /*----------------------------------------------------------------------------*/
 void TxCollection::vFreeTx(Tx* pTx)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
   
   vFreeObject(pTx);
 }
@@ -86,6 +88,8 @@ void TxCollection::vFreeTx(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 Footer* TxCollection::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION);
+  
   return &m_xFooter;
 }
 

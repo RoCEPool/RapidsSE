@@ -31,9 +31,13 @@ void TxRef::operator delete(void* pBufferAddress)
 TxRef::TxRef(void)
 : Object(CN_TXREF)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
+  
   m_pTx = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(TxRef));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +45,7 @@ TxRef::TxRef(void)
 /*----------------------------------------------------------------------------*/
 TxRef::~TxRef(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,6 +53,8 @@ TxRef::~TxRef(void)
 /*----------------------------------------------------------------------------*/
 i8 TxRef::iTxId(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
+  
   i8 iTxId = m_pTx->iTxId();
   
   return iTxId;
@@ -58,6 +65,8 @@ i8 TxRef::iTxId(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bBeginTx(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
+  
   ASSERT( ! m_pTx );
   
   m_pTx = gpTxMap->pBeginTx();
@@ -72,6 +81,8 @@ bool TxRef::bBeginTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bCommitTx(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
+  
   m_pTx->vPhase(TP_COMMITTING);
   m_pTx->vPhase(TP_COMMITTED);
   
@@ -83,6 +94,8 @@ bool TxRef::bCommitTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bEndTx(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
+  
   gpTxMap->vEndTx(m_pTx);
   m_pTx = nullptr;
   
@@ -94,6 +107,8 @@ bool TxRef::bEndTx(void)
 /*----------------------------------------------------------------------------*/
 bool TxRef::bRollbackTx(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
+  
   m_pTx->vPhase(TP_ROLLINGBACK);
   m_pTx->vPhase(TP_ROLLEDBACK);
   return true;
@@ -108,6 +123,8 @@ bool TxRef::bRollbackTx(void)
 /*----------------------------------------------------------------------------*/
 Footer* TxRef::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXREF);
+  
   return &m_xFooter;
 }
 

@@ -41,9 +41,11 @@ TxCursor::TxCursor(Collection_t<Tx>* gpTxCollection)
 : Object(CN_TXCURSOR),
   CollectionCursor_t<Tx>(gpTxCollection)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(TxCursor));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +53,7 @@ TxCursor::TxCursor(Collection_t<Tx>* gpTxCollection)
 /*----------------------------------------------------------------------------*/
 TxCursor::~TxCursor(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,6 +61,7 @@ TxCursor::~TxCursor(void)
 /*----------------------------------------------------------------------------*/
 void TxCursor::vInit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,6 +73,8 @@ void TxCursor::vInit(void)
 /*----------------------------------------------------------------------------*/
 Footer* TxCursor::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR);
+  
   return &m_xFooter;
 }
 

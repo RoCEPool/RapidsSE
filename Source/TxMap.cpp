@@ -31,6 +31,8 @@ void TxMap::operator delete(void* pBufferAddress)
 TxMap::TxMap(void)
 : Object(CN_TXMAP)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
+  
   m_xLock.vCheckInit();
   m_iSlot = -1;
   m_iId   = -1;
@@ -39,6 +41,8 @@ TxMap::TxMap(void)
   gpTxMap = this;
   
   Memory::vCheckInitialised(this,sizeof(TxMap));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,6 +50,7 @@ TxMap::TxMap(void)
 /*----------------------------------------------------------------------------*/
 TxMap::~TxMap(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,6 +58,8 @@ TxMap::~TxMap(void)
 /*----------------------------------------------------------------------------*/
 Tx* TxMap::pBeginTx(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
+  
   // allocate a transaction object
   Tx* pTx = gpTxCollection->pAllocTx();
 
@@ -79,6 +86,8 @@ Tx* TxMap::pBeginTx(void)
 /*----------------------------------------------------------------------------*/
 void TxMap::vEndTx(Tx* pTx)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
+  
   ASSERT(TP_COMMITTED == pTx->ePhase() || TP_ROLLEDBACK == pTx->ePhase());
   pTx->vPhase(TP_NONE);
   
@@ -100,6 +109,8 @@ void TxMap::vEndTx(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 void TxMap::vGiveSlot(Tx* pTx)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
+  
   i8 iSlot = pTx->iTxSlot();
   
   ASSERT(pTx == m_pTxArray->m_pTx[iSlot]);
@@ -112,6 +123,8 @@ void TxMap::vGiveSlot(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 void TxMap::vFindSlot(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
+  
   m_iSlot++;
   m_iId++;
   
@@ -132,6 +145,8 @@ void TxMap::vFindSlot(void)
 /*----------------------------------------------------------------------------*/
 void TxMap::vTakeSlot(Tx* pTx)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
+  
   pTx->vTxSlot(m_iSlot);
   pTx->vTxId(m_iId);
 
@@ -147,6 +162,8 @@ void TxMap::vTakeSlot(Tx* pTx)
 /*----------------------------------------------------------------------------*/
 Footer* TxMap::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP);
+  
   return &m_xFooter;
 }
 

@@ -42,11 +42,15 @@ void Tx::operator delete(void* pTxAddress)
 Tx::Tx(void)
 : Object(CN_TX)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+
   m_iTxSlot = -1;
   m_iTxId   = -1;
   m_ePhase  = TP_NONE;
   
   Memory::vCheckInitialised(this,sizeof(Tx));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,6 +58,8 @@ Tx::Tx(void)
 /*----------------------------------------------------------------------------*/
 i8 Tx::iTxSlot(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   return m_iTxSlot;
 }
 
@@ -62,6 +68,8 @@ i8 Tx::iTxSlot(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vTxSlot(i8 iTxSlot)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   m_iTxSlot = iTxSlot;
 }
 
@@ -70,6 +78,8 @@ void Tx::vTxSlot(i8 iTxSlot)
 /*----------------------------------------------------------------------------*/
 i8 Tx::iTxId(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   return m_iTxId;
 }
 
@@ -78,6 +88,8 @@ i8 Tx::iTxId(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vTxId(i8 iTxId)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   m_iTxId = iTxId;
 }
 
@@ -86,6 +98,8 @@ void Tx::vTxId(i8 iTxId)
 /*----------------------------------------------------------------------------*/
 eTP Tx::ePhase(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   return m_ePhase;
 }
 
@@ -94,6 +108,8 @@ eTP Tx::ePhase(void)
 /*----------------------------------------------------------------------------*/
 void Tx::vPhase(eTP ePhase)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   m_ePhase = ePhase;
 }
 
@@ -102,6 +118,8 @@ void Tx::vPhase(eTP ePhase)
 /*----------------------------------------------------------------------------*/
 void Tx::vDump(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
+  
   vTrace("Tx: %p %lld %s\n",
          this,
          m_ePhase,
@@ -117,6 +135,8 @@ void Tx::vDump(void)
 /*----------------------------------------------------------------------------*/
 Footer* Tx::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TX);
+  
   return &m_xFooter;
 }
 
