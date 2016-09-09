@@ -67,7 +67,7 @@ void* Collection_t<OBJECT>::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
 Collection_t<OBJECT>::Collection_t(void)
-{
+{ 
   m_zLock.vCheckInit();
   m_iCount = 0;
   m_pHead  = nullptr;

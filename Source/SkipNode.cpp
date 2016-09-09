@@ -24,7 +24,13 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel)
 SkipNode::SkipNode(void* pObject)
 : Object(CN_SKIPNODE)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
+  
   m_pObject = pObject;
+  
+  Memory::vCheckInitialised(this,sizeof(SkipNode));
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,8 +39,11 @@ SkipNode::SkipNode(void* pObject)
 SkipNode::SkipNode()
 : Object(CN_SKIPNODE)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
+ 
   Memory::vCheckInitialised(this,sizeof(SkipNode));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,6 +55,8 @@ SkipNode::SkipNode()
 /*----------------------------------------------------------------------------*/
 Footer* SkipNode::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE);
+  
   return &m_xFooter;
 }
 

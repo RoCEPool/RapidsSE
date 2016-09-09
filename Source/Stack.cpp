@@ -32,8 +32,7 @@ void Stack::operator delete(void* pBufferAddress)
 Stack::Stack(void)
 : Object(CN_STACK)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_pTop    = pStackBase();
   m_iValues = 0;
@@ -44,6 +43,8 @@ Stack::Stack(void)
   Memory::vZero(m_mSpace,C_STACK_AREA);
   
   Memory::vCheckInitialised(this,sizeof(Stack));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,8 +52,7 @@ Stack::Stack(void)
 /*----------------------------------------------------------------------------*/
 Stack::~Stack(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,8 +60,7 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vDiscard(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   Value* pValue = reinterpret_cast<Value*>(m_pTop);
   i8 iSize = pValue->iSize();
@@ -73,10 +72,9 @@ void Stack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pPeek(void) const
+Value* Stack::pPeek(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   return pTopValue();
 }
@@ -84,10 +82,9 @@ Value* Stack::pPeek(void) const
 /*----------------------------------------------------------------------------*/
 /* peek at given value on stack                                               */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pPeek(i8 iNthValue) const
+Value* Stack::pPeek(i8 iNthValue)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   return pGetValue(iNthValue);
 }
@@ -97,8 +94,7 @@ Value* Stack::pPeek(i8 iNthValue) const
 /*----------------------------------------------------------------------------*/
 void Stack::vPeek(i8 iNthValue, Value* pValue)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   Value* pPeekedValue = pPeek(iNthValue);
 
@@ -114,8 +110,7 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Stack::vPoke(i8 iNthValue, Value* pValue)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   i8 iSize = pValue->iSize();
   
@@ -129,8 +124,7 @@ void Stack::vPoke(i8 iNthValue, Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Stack::vPop(Value* pValue)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 iSize = pTopValue()->iSize();
 
@@ -144,8 +138,7 @@ void Stack::vPop(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Stack::vPush(Value* pValue)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   i8 iSize = pValue->iSize();
   
@@ -159,8 +152,7 @@ void Stack::vPush(Value* pValue)
 /*----------------------------------------------------------------------------*/
 void Stack::vReset(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_pTop    = pStackBase();
   m_iValues = 0;
@@ -174,8 +166,7 @@ void Stack::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vRetry(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   m_pTop    = m_pRetryTop;
   m_iValues = m_iRetryValues;
@@ -186,8 +177,7 @@ void Stack::vRetry(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vRetryPoint(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   m_pRetryTop    = m_pTop;
   m_iRetryValues = m_iValues;
@@ -196,10 +186,9 @@ void Stack::vRetryPoint(void)
 /*----------------------------------------------------------------------------*/
 /* get number of values on stack                                              */
 /*----------------------------------------------------------------------------*/
-i8 Stack::iValues(void) const
+i8 Stack::iValues(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   return m_iValues;
 }
@@ -211,10 +200,9 @@ i8 Stack::iValues(void) const
 /*----------------------------------------------------------------------------*/
 /* get address of given value on stack                                        */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pGetValue(i8 iNthValue) const
+Value* Stack::pGetValue(i8 iNthValue)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   Value* pValue = pTopValue();
   while (iNthValue--) {
@@ -232,8 +220,7 @@ Value* Stack::pGetValue(i8 iNthValue) const
 /*----------------------------------------------------------------------------*/
 void Stack::vPushBy(i8 iBytes)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   char* pTop = reinterpret_cast<char*>(m_pTop);
   
@@ -247,8 +234,7 @@ void Stack::vPushBy(i8 iBytes)
 /*----------------------------------------------------------------------------*/
 void Stack::vPopBy(i8 iBytes)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
   char* pTop = reinterpret_cast<char*>(m_pTop);
   
@@ -262,8 +248,7 @@ void Stack::vPopBy(i8 iBytes)
 /*----------------------------------------------------------------------------*/
 Value* Stack::pStackBase(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* pBase = &m_mSpace[C_STACK_AREA-1];
   
@@ -273,10 +258,9 @@ Value* Stack::pStackBase(void)
 /*----------------------------------------------------------------------------*/
 /* limit of this stack                                                        */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pStackLimit(void) const
+Value* Stack::pStackLimit(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   char* pLimit = (char*)this + sizeof(Stack);
   
@@ -286,10 +270,9 @@ Value* Stack::pStackLimit(void) const
 /*----------------------------------------------------------------------------*/
 /* get address of value on top of stack                                       */
 /*----------------------------------------------------------------------------*/
-Value* Stack::pTopValue(void) const
+Value* Stack::pTopValue(void)
 {
-  _poolAddress_(this);
-  //_magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   Value* pValue = reinterpret_cast<Value*>(m_pTop);
   
@@ -305,6 +288,8 @@ Value* Stack::pTopValue(void) const
 /*----------------------------------------------------------------------------*/
 Footer* Stack::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK);
+  
   return &m_xFooter;
 }
 

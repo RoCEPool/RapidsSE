@@ -33,8 +33,8 @@ namespace Structures
     ~Stack(void);
     
     void   vDiscard(void);
-    Value* pPeek(void) const;
-    Value* pPeek(i8 iNthValue) const;
+    Value* pPeek(void);
+    Value* pPeek(i8 iNthValue);
     void   vPeek(i8 iNthValue, Value* pValue);
     void   vPoke(i8 iNthValue, Value* pValue);
     void   vPop(Value* pValue);
@@ -42,15 +42,15 @@ namespace Structures
     void   vRetry(void);
     void   vRetryPoint(void);
     void   vReset(void);
-    i8     iValues(void) const;
+    i8     iValues(void);
     
   private:
-    Value* pGetValue(i8 iValue) const;
+    Value* pGetValue(i8 iValue);
     void   vPushBy(i8 iBytes);
     void   vPopBy(i8 iBytes);
     Value* pStackBase(void);
-    Value* pStackLimit(void) const;
-    Value* pTopValue(void) const;
+    Value* pStackLimit(void);
+    Value* pTopValue(void);
     
     Footer* pFooter(void);
   };

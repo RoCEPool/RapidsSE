@@ -40,11 +40,13 @@ void Queue::operator delete(void* pQueueAddress)
 Queue::Queue(void)
 : Object(CN_QUEUE)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   vInitialize();
   
   Memory::vCheckInitialised(this,sizeof(Queue));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +54,7 @@ Queue::Queue(void)
 /*----------------------------------------------------------------------------*/
 Queue::~Queue(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +62,7 @@ Queue::~Queue(void)
 /*----------------------------------------------------------------------------*/
 bool Queue::bAppend(Value* pValue)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -91,7 +93,7 @@ bool Queue::bAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 i8 Queue::iCount(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   return m_iCount;
 }
@@ -101,7 +103,7 @@ i8 Queue::iCount(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vDump(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   vTrace("Queue: %p Count %lld TopBuffer %p EndBuffer%p\n",
          this,
@@ -118,7 +120,7 @@ void Queue::vDump(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vInitialize(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   m_iCount = 0;
   m_pTopBuffer = nullptr;
@@ -130,7 +132,7 @@ void Queue::vInitialize(void)
 /*----------------------------------------------------------------------------*/
 bool Queue::bPop(ValWsp* pValWsp)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 
   m_zLock.vGrabWrite();
   
@@ -163,7 +165,7 @@ bool Queue::bPop(ValWsp* pValWsp)
 /*----------------------------------------------------------------------------*/
 bool Queue::bPop(ValSet* pValSet)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -200,7 +202,7 @@ bool Queue::bPop(ValSet* pValSet)
 /*----------------------------------------------------------------------------*/
 void Queue::vDiscard(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   QueueBuffer* pQueueBufferTBD = m_pTopBuffer;
   
@@ -218,7 +220,7 @@ void Queue::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vExpand(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   QueueBuffer* pNewQueueBuffer = new QueueBuffer;
   
@@ -236,7 +238,7 @@ void Queue::vExpand(void)
 /*----------------------------------------------------------------------------*/
 void Queue::vVerify(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
   i8 iCount = 0;
   
@@ -257,6 +259,8 @@ void Queue::vVerify(void)
 /*----------------------------------------------------------------------------*/
 Footer* Queue::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE);
+  
   return &m_xFooter;
 }
 

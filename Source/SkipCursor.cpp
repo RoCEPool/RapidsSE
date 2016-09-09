@@ -10,9 +10,13 @@
 SkipCursor::SkipCursor(void)
 : Object(CN_SKIPCURSOR)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR,_FOOTER_);
+  
   m_pCurrentNode = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(SkipCursor));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -20,6 +24,7 @@ SkipCursor::SkipCursor(void)
 /*----------------------------------------------------------------------------*/
 SkipCursor::~SkipCursor(void)
 {
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,6 +36,8 @@ SkipCursor::~SkipCursor(void)
 /*----------------------------------------------------------------------------*/
 Footer* SkipCursor::pFooter(void)
 {
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR);
+  
   return &m_xFooter;
 }
 

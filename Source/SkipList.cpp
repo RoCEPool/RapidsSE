@@ -10,6 +10,8 @@
 SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
 : Object(CN_SKIPLIST)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+  
   m_iObjects = 0;
   m_iHeight  = 0;
   m_bIsUniqueKey = bIsUniqueKey;
@@ -23,6 +25,8 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
   m_pTail->m_pForward[0] = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(SkipList));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 }
 
 //---------------------------------------------------------------------------//
@@ -30,6 +34,8 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
 //---------------------------------------------------------------------------//
 SkipList::~SkipList()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   ASSERT( ! m_iObjects ); // logic check
 
 // alka
@@ -44,6 +50,8 @@ SkipList::~SkipList()
 //---------------------------------------------------------------------------//
 bool SkipList::bExists(void* pObject)
 {  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   bool bEqualTo;
   
   SkipNode* pNode = pPosition(pObject,&bEqualTo);
@@ -60,6 +68,8 @@ bool SkipList::bExists(void* pObject)
 //---------------------------------------------------------------------------//
 bool SkipList::bInsert(void* pObject)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   bool bEqualTo;
   SkipNode* pRevise[MAX_LEVELS];
   
@@ -92,6 +102,8 @@ bool SkipList::bInsert(void* pObject)
 //---------------------------------------------------------------------------//
 i8 SkipList::iObjects()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   return m_iObjects;
 }
 
@@ -100,6 +112,8 @@ i8 SkipList::iObjects()
 //---------------------------------------------------------------------------//
 void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   SkipNode* pFirstNode = pFirst();
   if (!pFirstNode)
     return nullptr;
@@ -121,6 +135,8 @@ void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
 //---------------------------------------------------------------------------//
 bool SkipList::bRemove(void* pObject)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   i4 l;
   bool bEqualTo;
   SkipNode* pRevision[MAX_LEVELS];
@@ -161,6 +177,8 @@ bool SkipList::bRemove(void* pObject)
 //---------------------------------------------------------------------------//
 void* SkipList::pFindFirst(void* pObject)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   bool bEqualTo;
   
   SkipNode* pNode = pPosition(pObject,&bEqualTo);
@@ -203,6 +221,8 @@ void* SkipList::pFindFirst(void* pObject)
 //---------------------------------------------------------------------------//
 void SkipList::vDump(void (*fvDump)(void* pObject))
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   for (SkipNode* pScan = m_pHead->m_pForward[0];
        pScan && pScan != m_pTail;
        pScan = pScan->m_pForward[0]) {
@@ -215,6 +235,8 @@ void SkipList::vDump(void (*fvDump)(void* pObject))
 //---------------------------------------------------------------------------//
 void SkipList::vCheck()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   for (SkipNode* pNode = m_pHead->m_pForward[0];
        pNode && pNode != m_pTail;
        pNode = pNode->m_pForward[0])
@@ -233,6 +255,8 @@ void SkipList::vCheck()
 //---------------------------------------------------------------------------//
 void* SkipList::pEach(SkipCursor* pCursor)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   if ( ! pCursor->m_pCurrentNode )
     pCursor->m_pCurrentNode = pFirst();
   else
@@ -249,6 +273,8 @@ void* SkipList::pEach(SkipCursor* pCursor)
 //---------------------------------------------------------------------------//
 SkipNode* SkipList::pFirst()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   if (m_pHead->m_pForward[0] != m_pTail)
     return m_pHead->m_pForward[0];
   
@@ -260,6 +286,8 @@ SkipNode* SkipList::pFirst()
 //---------------------------------------------------------------------------//
 SkipNode* SkipList::pNext(SkipNode* pPrev)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   if (pPrev->m_pForward[0] != m_pTail)
     return pPrev->m_pForward[0];
   
@@ -271,6 +299,8 @@ SkipNode* SkipList::pNext(SkipNode* pPrev)
 //---------------------------------------------------------------------------//
 SkipNode* SkipList::pHead()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   return m_pHead;
 }
 
@@ -279,6 +309,8 @@ SkipNode* SkipList::pHead()
 //---------------------------------------------------------------------------//
 SkipNode* SkipList::pTail()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   return m_pTail;
 }
 
@@ -318,6 +350,8 @@ bool SkipList::bDeleteAll(void)
 //---------------------------------------------------------------------------//
 i4 SkipList::iLevel()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   i4 iRandomBits = Random::iRandom(256*256-1);
   i4 _BitsInRandom = 16;
   i4 iRandomsLeft = _BitsInRandom/2;
@@ -343,6 +377,8 @@ i4 SkipList::iLevel()
 //---------------------------------------------------------------------------//
 SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   SkipNode* pNext = nullptr;
   
   i4 l = m_iHeight;
@@ -367,6 +403,8 @@ SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
 //---------------------------------------------------------------------------//
 SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo, SkipNode** pRevise)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
+
   SkipNode* pNext = nullptr;
   
   *bEqualTo = false;
@@ -400,6 +438,8 @@ SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo, SkipNode** pRevise)
 /*----------------------------------------------------------------------------*/
 Footer* SkipList::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST);
+  
   return &m_xFooter;
 }
 
