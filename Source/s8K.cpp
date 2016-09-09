@@ -4,6 +4,9 @@
 
 #include "Magic.h"
 #include "Memory.hpp"
+#include "StorageEngine.h"
+
+extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -11,6 +14,8 @@
 s8K::s8K(void)
 : s(CN_S8K,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   Memory::vCheckInitialised(this,sizeof(s8K));
@@ -22,6 +27,8 @@ s8K::s8K(void)
 s8K::s8K(s8K& rArg)
 : s(CN_S8K,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(rArg.a());
@@ -35,6 +42,8 @@ s8K::s8K(s8K& rArg)
 s8K::s8K(const char* aArg)
 : s(CN_S8K,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(aArg);
@@ -48,6 +57,8 @@ s8K::s8K(const char* aArg)
 s8K::s8K(const char* aArg, i8 nChars)
 : s(CN_S8K,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(aArg,nChars);
@@ -60,6 +71,8 @@ s8K::s8K(const char* aArg, i8 nChars)
 /*----------------------------------------------------------------------------*/
 s8K::~s8K(void)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +80,8 @@ s8K::~s8K(void)
 /*----------------------------------------------------------------------------*/
 void s8K::operator = (const char* aArg)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
   s::vCopy(aArg);
 }
 
@@ -75,6 +90,8 @@ void s8K::operator = (const char* aArg)
 /*----------------------------------------------------------------------------*/
 void s8K::operator = (char* aArg)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
   s::vCopy(aArg);
 }
 
@@ -83,6 +100,8 @@ void s8K::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 void s8K::operator = (s& rArg)
 {
+  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  
   vCopy(rArg.a());
 }
 
@@ -95,6 +114,8 @@ void s8K::operator = (s& rArg)
 /*----------------------------------------------------------------------------*/
 Footer* s8K::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_S8K);
+  
   return &m_xFooter;
 }
 

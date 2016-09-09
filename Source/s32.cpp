@@ -4,6 +4,9 @@
 
 #include "Magic.h"
 #include "Memory.hpp"
+#include "StorageEngine.h"
+
+extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -11,9 +14,13 @@
 s32::s32(void)
 : s(CN_S32,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   Memory::vCheckInitialised(this,sizeof(s32));
+  
+  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,10 +29,14 @@ s32::s32(void)
 s32::s32(s32& rArg)
 : s(CN_S32,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(rArg.a());
   
   Memory::vCheckInitialised(this,sizeof(s32));
+  
+  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,10 +45,14 @@ s32::s32(s32& rArg)
 s32::s32(const char* aArg)
 : s(CN_S32,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(aArg);
   
   Memory::vCheckInitialised(this,sizeof(s32));
+  
+  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -46,10 +61,14 @@ s32::s32(const char* aArg)
 s32::s32(const char* aArg, i8 nChars)
 : s(CN_S32,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(aArg,nChars);
   
   Memory::vCheckInitialised(this,sizeof(s32));
+  
+  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +76,7 @@ s32::s32(const char* aArg, i8 nChars)
 /*----------------------------------------------------------------------------*/
 s32::~s32(void)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,6 +84,8 @@ s32::~s32(void)
 /*----------------------------------------------------------------------------*/
 void s32::operator = (const char* aArg)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   s::vCopy(aArg);
 }
 
@@ -72,6 +94,8 @@ void s32::operator = (const char* aArg)
 /*----------------------------------------------------------------------------*/
 void s32::operator = (char* aArg)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   s::vCopy(aArg);
 }
 
@@ -80,6 +104,8 @@ void s32::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 void s32::operator = (s& rArg)
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   vCopy(rArg.a());
 }
 
@@ -88,6 +114,8 @@ void s32::operator = (s& rArg)
 /*----------------------------------------------------------------------------*/
 void s32::vInit()
 {
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
   s::vInit(C_S_SIZE);
 }
 
@@ -100,6 +128,8 @@ void s32::vInit()
 /*----------------------------------------------------------------------------*/
 Footer* s32::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_S32);
+  
   return &m_xFooter;
 }
 

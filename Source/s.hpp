@@ -11,7 +11,7 @@ namespace Magic
   {
   private:
     i8   m_iSize;  // fixed size of the workspace (not the length of the string)
-    // ..workspace..
+    // ..data..
     
   public:
     void* operator new(size_t);
@@ -37,6 +37,7 @@ namespace Magic
     char* a(void);
     char* z(void);
     
+    Footer* pFooter(void);
   };
   
 }

@@ -4,6 +4,9 @@
 
 #include "Magic.h"
 #include "Memory.hpp"
+#include "StorageEngine.h"
+
+extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -11,9 +14,13 @@
 s256::s256(void)
 : s(CN_S256,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   Memory::vCheckInitialised(this,sizeof(s256));
+  
+  _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -22,11 +29,15 @@ s256::s256(void)
 s256::s256(s256& rArg)
 : s(CN_S256,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(rArg.a());
   
   Memory::vCheckInitialised(this,sizeof(s256));
+  
+  _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,11 +46,15 @@ s256::s256(s256& rArg)
 s256::s256(const char* aArg)
 : s(CN_S256,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(aArg);
   
   Memory::vCheckInitialised(this,sizeof(s256));
+  
+  _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,11 +63,15 @@ s256::s256(const char* aArg)
 s256::s256(const char* aArg, i8 nChars)
 : s(CN_S256,C_S_SIZE)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(aArg,nChars);
   
   Memory::vCheckInitialised(this,sizeof(s256));
+  
+  _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,6 +79,7 @@ s256::s256(const char* aArg, i8 nChars)
 /*----------------------------------------------------------------------------*/
 s256::~s256(void)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +87,8 @@ s256::~s256(void)
 /*----------------------------------------------------------------------------*/
 void s256::operator = (const char* aArg)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   s::vCopy(aArg);
 }
 
@@ -75,6 +97,8 @@ void s256::operator = (const char* aArg)
 /*----------------------------------------------------------------------------*/
 void s256::operator = (char* aArg)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   s::vCopy(aArg);
 }
 
@@ -83,6 +107,8 @@ void s256::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 void s256::operator = (s& rArg)
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   vCopy(rArg.a());
 }
 
@@ -91,6 +117,8 @@ void s256::operator = (s& rArg)
 /*----------------------------------------------------------------------------*/
 void s256::vInit()
 {
+  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
+  
   s::vInit(C_S_SIZE);
 }
 
@@ -103,6 +131,8 @@ void s256::vInit()
 /*----------------------------------------------------------------------------*/
 Footer* s256::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_S256);
+  
   return &m_xFooter;
 }
 

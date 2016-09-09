@@ -4,6 +4,9 @@
 
 #include "Magic.h"
 #include "String.hpp"
+#include "StorageEngine.h"
+
+extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
@@ -20,9 +23,11 @@ void* s::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-s::s(eCN eClass, i8 iSize)
-: Header(eClass)
+s::s(eCN eClassNo, i8 iSize)
+: Header(eClassNo)
 {
+  _precondition_(_MAGIC_,eClassNo);
+  
   m_iSize = iSize;
   *aWorkspace() = '\0';
 }
@@ -32,6 +37,7 @@ s::s(eCN eClass, i8 iSize)
 /*----------------------------------------------------------------------------*/
 s::~s(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,7 +45,11 @@ s::~s(void)
 /*----------------------------------------------------------------------------*/
 void s::operator = (const char* aArg)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   String::vCopyLen(aWorkspace(),aArg,m_iSize);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +57,11 @@ void s::operator = (const char* aArg)
 /*----------------------------------------------------------------------------*/
 void s::operator = (char* aArg)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+
   String::vCopyLen(aWorkspace(),aArg,m_iSize);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +69,11 @@ void s::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 void s::operator = (s& rArg)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   vCopy(rArg.a());
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,9 +81,13 @@ void s::operator = (s& rArg)
 /*----------------------------------------------------------------------------*/
 void s::vAppend(const char c)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   // limit???
   
   String::vConcat(aWorkspace(),c);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +95,11 @@ void s::vAppend(const char c)
 /*----------------------------------------------------------------------------*/
 void s::vAppend(const char* aArg)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   String::vConcat(aWorkspace(),aArg);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,6 +107,8 @@ void s::vAppend(const char* aArg)
 /*----------------------------------------------------------------------------*/
 char* s::aWorkspace(void)
 {
+  //_precondition_(_MAGIC_,_FOOTER_);
+  
   char* p = pcAdd(this,sizeof(s));
 
   return p;
@@ -91,7 +119,11 @@ char* s::aWorkspace(void)
 /*----------------------------------------------------------------------------*/
 void s::vCopy(const char* aArg)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   String::vCopyLen(aWorkspace(),aArg,m_iSize);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +131,11 @@ void s::vCopy(const char* aArg)
 /*----------------------------------------------------------------------------*/
 void s::vCopy(const char* aArg, i8 nChars)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   String::vCopyLen(aWorkspace(),aArg,nChars);
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,6 +143,8 @@ void s::vCopy(const char* aArg, i8 nChars)
 /*----------------------------------------------------------------------------*/
 bool s::bEnds(const char* aSuffix)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   bool b = String::bEnds(aWorkspace(),aSuffix);
   
   return b;
@@ -117,8 +155,12 @@ bool s::bEnds(const char* aSuffix)
 /*----------------------------------------------------------------------------*/
 void s::vInit(i8 iSize)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   m_iSize = iSize;
   *aWorkspace() = '\0';  
+
+  _postcondition_(_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,6 +168,8 @@ void s::vInit(i8 iSize)
 /*----------------------------------------------------------------------------*/
 bool s::bIsEqual(s& sArg, i8 iCase) 
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   bool b = String::bEqualTo(aWorkspace(),sArg.aWorkspace(),iCase);
   
   return b;
@@ -136,6 +180,8 @@ bool s::bIsEqual(s& sArg, i8 iCase)
 /*----------------------------------------------------------------------------*/
 i8 s::iLength(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   return String::iLength(aWorkspace());
 }
 
@@ -144,6 +190,8 @@ i8 s::iLength(void)
 /*----------------------------------------------------------------------------*/
 i8 s::iSize(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   return m_iSize;
 }
 
@@ -152,6 +200,8 @@ i8 s::iSize(void)
 /*----------------------------------------------------------------------------*/
 void s::vSize(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   m_iSize = String::iSize(aWorkspace());
 }
 
@@ -160,6 +210,8 @@ void s::vSize(void)
 /*----------------------------------------------------------------------------*/
 char* s::a(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   return aWorkspace();
 }
 
@@ -168,7 +220,25 @@ char* s::a(void)
 /*----------------------------------------------------------------------------*/
 char* s::z(void)
 {
+  _precondition_(_MAGIC_,_FOOTER_);
+  
   return String::zTerminator(aWorkspace());
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* s::pFooter(void)
+{
+  _precondition_(_MAGIC_);
+  
+  Footer* pFooter = static_cast<Footer*>(pvAdd(this,sizeof(s)+m_iSize));
+  
+  return pFooter;
 }
 
 /*============================================================================*/
