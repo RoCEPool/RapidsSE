@@ -494,7 +494,7 @@ freespace .
 
     dup ".." streql if
       drop
-      dic.drop
+      0 dic.pick dic.name "tenants" streql not if dic.drop then
     else
       dup "~" streql if
         drop
