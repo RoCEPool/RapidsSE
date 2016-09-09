@@ -760,24 +760,31 @@ void SePrompt::vPoolSpace(void)
   i8 iFree;
   i8 iInUse;
   i8 iTotal;
+  
+  s256 sFree;
+  s256 sInUse;
+  s256 sTotal;
 
   String::vCopy(m_pToken[0], "getTotalSpace");
   if (!bExecuteRequest())
     return;
   iTotal = String::iToI8(m_sResponse.a());
-  
+  Magnitudes::vMagnitude(iTotal, sTotal.a());
+             
   String::vCopy(m_pToken[0], "getInUseSpace");
   if (!bExecuteRequest())
     return;
   iInUse = String::iToI8(m_sResponse.a());
-  
+  Magnitudes::vMagnitude(iInUse, sInUse.a());
+             
   String::vCopy(m_pToken[0], "getFreeSpace");
   if (!bExecuteRequest())
     return;
   iFree = String::iToI8(m_sResponse.a());
-  
-  vTrace("Pool: Size(%lld) InUse(%lld) Free(%lld)\n",
-         iTotal, iInUse, iFree);
+  Magnitudes::vMagnitude(iFree, sFree.a());
+             
+  vTrace("Pool: Size(%s) InUse(%s) Free(%s)\n",
+         sTotal.a(), sInUse.a(), sFree.a());
 }
 
 /*----------------------------------------------------------------------------*/

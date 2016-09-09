@@ -5,7 +5,7 @@
 
 #include "Platform.h"
 
-#include "Magnitudes.h"
+#include "Magnitudes.hpp"
 
 #include "an.hpp"
 #include "mn.hpp"

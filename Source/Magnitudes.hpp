@@ -33,6 +33,11 @@ const i8 C_1K  = 1000LL;          // 1 thousand
 const i8 C_1M  = C_1K * C_1K;     // 1 million
 const i8 C_1Bn = C_1M * C_1K;     // 1 billion
 
+class Magnitudes {
+public:
+  static void vMagnitude(i8 iValue, char* psBuf);
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
