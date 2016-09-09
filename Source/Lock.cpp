@@ -1,7 +1,9 @@
 /*============================================================================*/
 /* Lock.cpp -- locking                                                        */
 /*============================================================================*/
+
 #include "Common.h"
+#include "Pool.h"
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -27,9 +29,13 @@ void Lock::operator delete(void* pLockAddress)
 Lock::Lock(void)
 : Header(CN_LOCK)
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   vInit();
   
   Memory::vCheckInitialised(this,sizeof(Lock));
+  
+  _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
 
 //---------------------------------------------------------------------------//
@@ -37,6 +43,7 @@ Lock::Lock(void)
 //---------------------------------------------------------------------------//
 Lock::~Lock(void)
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }
 
 //---------------------------------------------------------------------------//
@@ -44,6 +51,8 @@ Lock::~Lock(void)
 //---------------------------------------------------------------------------//
 void Lock::vInit(void)
 {  
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   m_uValue = 0;
 }
 
@@ -52,6 +61,8 @@ void Lock::vInit(void)
 //---------------------------------------------------------------------------//
 void Lock::vCheckInit()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   ASSERT(0 == m_uValue); // logic check
 }
 
@@ -60,6 +71,8 @@ void Lock::vCheckInit()
 //---------------------------------------------------------------------------//
 void Lock::vCheckRead()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   ASSERT(m_uValue > 0 && m_uValue != C_WRITELOCK); // logic check
 }
 
@@ -68,6 +81,8 @@ void Lock::vCheckRead()
 //---------------------------------------------------------------------------//
 void Lock::vCheckWrite()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   ASSERT(m_uValue >= C_WRITELOCK); // logic check
 }
 
@@ -76,6 +91,8 @@ void Lock::vCheckWrite()
 //---------------------------------------------------------------------------//
 void Lock::vDropRead()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   vCheckRead();
   
   i8 rCode = iDropRead(&m_uValue);
@@ -89,6 +106,8 @@ void Lock::vDropRead()
 //---------------------------------------------------------------------------//
 void Lock::vDropWrite()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   vCheckWrite();
   
   i8 rCode = iDropWrite(&m_uValue);
@@ -104,6 +123,8 @@ void Lock::vDropWrite()
 //---------------------------------------------------------------------------//
 bool Lock::bGrabRead()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   i8 rCode = iGrabRead(&m_uValue);
   
   if (rCode) {
@@ -119,6 +140,8 @@ bool Lock::bGrabRead()
 //---------------------------------------------------------------------------//
 void Lock::vGrabRead()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   i8 rCode;
   
   do {
@@ -133,6 +156,8 @@ void Lock::vGrabRead()
 //---------------------------------------------------------------------------//
 bool Lock::bGrabWrite()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   i8 rCode = iGrabWrite(&m_uValue);
   
   if (rCode) {
@@ -148,6 +173,8 @@ bool Lock::bGrabWrite()
 //---------------------------------------------------------------------------//
 void Lock::vGrabWrite()
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
   i8 rCode;
   
   do {
@@ -162,6 +189,8 @@ void Lock::vGrabWrite()
 //---------------------------------------------------------------------------//
 bool Lock::bIsLocked(void)
 {
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
     return iIsLocked(&m_uValue);
 }
 
@@ -174,6 +203,8 @@ bool Lock::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 Footer* Lock::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_LOCK);
+  
   return &m_xFooter;
 }
 

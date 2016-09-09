@@ -8,7 +8,7 @@
 
 namespace Common
 {
-  class Socket : public Object
+  class Socket : public Header
   {
   public:
     int  m_iSocketId;

@@ -4,16 +4,24 @@
 
 #include "Common.h"
 
+#include "Pool.h"
+
+extern BufferPool* gpBufferPool;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Since::Since(void)
-: Object(CN_SINCE)
+: Header(CN_SINCE)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   m_iSeconds      = 0;
   m_iMicroseconds = 0;
   
   Memory::vCheckInitialised(this,sizeof(Since));
+  
+  _postcondition_(_MAGIC_,CN_SINCE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -21,6 +29,7 @@ Since::Since(void)
 /*----------------------------------------------------------------------------*/
 Since::~Since(void)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -28,6 +37,8 @@ Since::~Since(void)
 /*----------------------------------------------------------------------------*/
 void Since::vAdd(i8 iMicroseconds)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   m_iMicroseconds += iMicroseconds;
 }
 
@@ -36,6 +47,8 @@ void Since::vAdd(i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 void Since::vGet(i8& iSeconds, i8& iMicroseconds)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   iSeconds      = m_iSeconds;
   iMicroseconds = m_iMicroseconds;
 }
@@ -45,6 +58,8 @@ void Since::vGet(i8& iSeconds, i8& iMicroseconds)
 /*----------------------------------------------------------------------------*/
 void Since::vSet(void)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   SysCall xSysCall;
   
   vGetTimeOfDay(m_iSeconds,m_iMicroseconds,xSysCall);
@@ -55,6 +70,8 @@ void Since::vSet(void)
 /*----------------------------------------------------------------------------*/
 void Since::vSet(Time* pTime)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   struct tm xTM;
   
   xTM.tm_year   = pTime->m_iYear;
@@ -78,6 +95,8 @@ void Since::vSet(Time* pTime)
 /*----------------------------------------------------------------------------*/
 void Since::vSet(i8 iSeconds, i8 iMicroseconds)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   ASSERT(iMicroseconds < C_1M);
 
   m_iSeconds    = iSeconds;
@@ -89,6 +108,8 @@ void Since::vSet(i8 iSeconds, i8 iMicroseconds)
 /*----------------------------------------------------------------------------*/
 i8 Since::iSeconds()
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   return m_iSeconds;
 }
 
@@ -97,6 +118,8 @@ i8 Since::iSeconds()
 /*----------------------------------------------------------------------------*/
 i8 Since::iMicroseconds()
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   return m_iMicroseconds;
 }
 
@@ -105,6 +128,8 @@ i8 Since::iMicroseconds()
 /*----------------------------------------------------------------------------*/
 void Since::vToTime(Time* pTime)
 {
+  _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
+  
   struct tm xTimeResult;
   
   time_t iSeconds = m_iSeconds;
@@ -162,6 +187,8 @@ void Since::vGetTimeOfDay(i8& iSeconds, i8& iMicroseconds, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 Footer* Since::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_SINCE);
+  
   return &m_xFooter;
 }
 

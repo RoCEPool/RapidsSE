@@ -37,20 +37,26 @@ void Socket::operator delete(void* pSocketAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(void)
-: Object(CN_SOCKET)
+: Header(CN_SOCKET)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   m_iSocketId = -1;
   m_bBlocking = true;
   
   Memory::vCheckInitialised(this,sizeof(Socket));
+  
+  _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(int iSocketId)
-: Object(CN_SOCKET)
+: Header(CN_SOCKET)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   m_iSocketId = iSocketId;
   m_bBlocking = true;
 }
@@ -60,8 +66,9 @@ Socket::Socket(int iSocketId)
 /*----------------------------------------------------------------------------*/
 Socket::~Socket()
 {
-  if (-1 != m_iSocketId)
-  {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  if (-1 != m_iSocketId) {
     vWarn("Socket %d not closed!\n", m_iSocketId);
   }
 }
@@ -71,6 +78,8 @@ Socket::~Socket()
 /*----------------------------------------------------------------------------*/
 void Socket::vAddrInit(sockaddr_in* pAddr, int iPort)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   Memory::vZero(pAddr,sizeof(sockaddr_in));
   
   pAddr->sin_family      = AF_INET;
@@ -83,6 +92,8 @@ void Socket::vAddrInit(sockaddr_in* pAddr, int iPort)
 /*----------------------------------------------------------------------------*/
 void Socket::vAddrInit(sockaddr_in* pAddr, const char* sAddr, int iPort)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   Memory::vZero(pAddr,sizeof(sockaddr_in));
   
   pAddr->sin_family      = AF_INET;
@@ -95,6 +106,8 @@ void Socket::vAddrInit(sockaddr_in* pAddr, const char* sAddr, int iPort)
 /*----------------------------------------------------------------------------*/
 void Socket::vCopy(Socket* pSource)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   m_iSocketId    = pSource->m_iSocketId;
   m_bBlocking = pSource->m_bBlocking;
 }
@@ -104,6 +117,8 @@ void Socket::vCopy(Socket* pSource)
 /*----------------------------------------------------------------------------*/
 bool Socket::bIsOpen()
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   if (-1 != m_iSocketId)
     return true;
   
@@ -115,6 +130,8 @@ bool Socket::bIsOpen()
 /*----------------------------------------------------------------------------*/
 bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   sockaddr_in xClientAddr;
@@ -141,6 +158,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bClose(SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   int iError = shutdown(m_iSocketId, SHUT_RDWR);
@@ -169,6 +188,8 @@ bool Socket::bClose(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bConnectServer(const char* sAddr, int iPort, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   int iResult;
   int iOpt = 1;
   struct sockaddr_in xServerAddr;
@@ -213,6 +234,8 @@ bool Socket::bConnectServer(const char* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bCreateServer(int iPort, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   int iResult;
   int iOpt = 1;
   sockaddr_in xServerAddr;
@@ -268,6 +291,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bReadVch(char** ppChar, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   char aWorkspace[16_KB];
   
   SysCall.vClear();
@@ -290,6 +315,8 @@ bool Socket::bReadVch(char** ppChar, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bRecvBytes(int nBytes, void* pWS, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   int nSoFar = 0;
   int nMore = nBytes;
   char* pSoFar = (char*)pWS;
@@ -326,6 +353,8 @@ bool Socket::bRecvBytes(int nBytes, void* pWS, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   i8 nSent = send(m_iSocketId,pBuffer,nBytes,0);
@@ -348,6 +377,8 @@ bool Socket::bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bSetNonBlocking(SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   // get current socket flags
@@ -378,6 +409,8 @@ bool Socket::bSetNonBlocking(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bTestForData(SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   ASSERT(m_bBlocking); // logic check                                  //! fix
   
   SysCall.vClear();
@@ -405,6 +438,8 @@ bool Socket::bTestForData(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bWriteVch(char* pChar, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   i8 nBytes = String::iLength(pChar);
@@ -427,6 +462,8 @@ bool Socket::bWriteVch(char* pChar, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bSocket(SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   m_iSocketId = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
@@ -445,6 +482,8 @@ bool Socket::bSocket(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bBind(SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   return bBind(0, SysCall);
@@ -455,6 +494,8 @@ bool Socket::bBind(SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bBind(int iPort, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   struct sockaddr_in xAddr;
@@ -485,6 +526,8 @@ bool Socket::bBind(int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bBind(const char* sAddr, int iPort, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   struct sockaddr_in xAddr;
   
   SysCall.vClear();
@@ -516,6 +559,8 @@ bool Socket::bBind(const char* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bRecvBuffer(int nBytes, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   int iResult;
   int iOpt = nBytes;
   
@@ -542,6 +587,8 @@ bool Socket::bRecvBuffer(int nBytes, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bServer(const char* sAddr, int iPort, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   //  struct hostent *hp;     /* host information */
   
   SysCall.vClear();
@@ -578,6 +625,8 @@ bool Socket::bServer(const char* sAddr, int iPort, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bSendTo(int nBytes, void* pBuffer, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   SysCall.vClear();
   
   i8 iResult = sendto(m_iSocketId
@@ -619,6 +668,8 @@ bool Socket::bSendTo(int nBytes, void* pBuffer, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 bool Socket::bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall)
 {
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
   struct sockaddr_in xRemoteAddr;
   socklen_t iRemoteLen = sizeof(xRemoteAddr);
   
@@ -653,6 +704,8 @@ bool Socket::bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 Footer* Socket::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_SOCKET);
+  
   return &m_xFooter;
 }
 

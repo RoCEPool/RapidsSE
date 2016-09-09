@@ -74,9 +74,13 @@ void File::operator delete(void* pFileAddress)
 File::File(void)
 : Header(CN_FILE)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
   vInit();
   
   Memory::vCheckInitialised(this,sizeof(File));
+  
+  _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,6 +88,8 @@ File::File(void)
 /*----------------------------------------------------------------------------*/
 File::~File(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
   if (m_pFilePtr) {
     vWarn("File::~File file not closed: %s %s\n",m_sFilePath.a(),m_sOpenMode.a());
 
@@ -103,6 +109,8 @@ File::~File(void)
 /*----------------------------------------------------------------------------*/
 void File::vClear(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
   m_xSysCall.vClear();
     
   m_sFilePath   = "";
@@ -116,6 +124,8 @@ void File::vClear(void)
 /*----------------------------------------------------------------------------*/
 void File::vClose(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
 
   // never close stdin
@@ -151,6 +161,8 @@ void File::vClose(void)
 /*----------------------------------------------------------------------------*/
 void File::vDump(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   vTrace("%sFile:\n", m_sFilePath.a());
   vTrace("%s  Open Mode %s\n", m_sOpenMode.a());
   vTrace("%s  Trace level %lld\n", m_iTraceLevel);
@@ -158,10 +170,12 @@ void File::vDump(void)
 }
 
 /*---------------------------------------------------------------------------*/
-/* bExists: test if named file exists                                        */
+/* test if named file exists                                                 */
 /*---------------------------------------------------------------------------*/
 bool File::bExists(const char *psFileName)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   struct stat xStat;
@@ -185,10 +199,12 @@ bool File::bExists(const char *psFileName)
 }
 
 /*---------------------------------------------------------------------------*/
-/* vFlush: flush file                                                        */
+/* flush file                                                                */
 /*---------------------------------------------------------------------------*/
 void File::vFlush(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   i8 rCode = fflush(m_pFilePtr);
@@ -207,6 +223,8 @@ void File::vFlush(void)
 /*----------------------------------------------------------------------------*/
 char File::cGetChar(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   if ( ! m_pFilePtr )
     return 0;
 
@@ -222,6 +240,8 @@ char File::cGetChar(void)
 /*----------------------------------------------------------------------------*/
 void File::vInit(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vSetMagic();
   
   m_sFilePath.vInit();
@@ -237,6 +257,8 @@ void File::vInit(void)
 /*----------------------------------------------------------------------------*/
 bool File::bIsClosed(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   if ( ! m_pFilePtr )
     return true;
   else
@@ -248,6 +270,8 @@ bool File::bIsClosed(void)
 /*----------------------------------------------------------------------------*/
 bool File::bIsOpen(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   if (m_pFilePtr)
     return true;
   else
@@ -259,6 +283,8 @@ bool File::bIsOpen(void)
 /*----------------------------------------------------------------------------*/
 bool File::bIsStdin(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   if (stdin == m_pFilePtr)
     return true;
   else
@@ -270,6 +296,8 @@ bool File::bIsStdin(void)
 /*----------------------------------------------------------------------------*/
 bool File::bIsStdout(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   if (stdout == m_pFilePtr)
     return true;
   else
@@ -281,6 +309,8 @@ bool File::bIsStdout(void)
 /*----------------------------------------------------------------------------*/
 bool File::bOpen(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   if (m_pFilePtr) {
@@ -309,6 +339,8 @@ bool File::bOpen(void)
 /*----------------------------------------------------------------------------*/
 bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   if (m_pFilePtr) {
@@ -340,6 +372,8 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
 
   if (m_pFilePtr) {
@@ -371,6 +405,8 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 s256& File::sPath(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   return m_sFilePath;
 }
 
@@ -379,6 +415,8 @@ s256& File::sPath(void)
 /*----------------------------------------------------------------------------*/
 void File::vPath(const char* aFilePath)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   if (m_pFilePtr) {
@@ -394,6 +432,8 @@ void File::vPath(const char* aFilePath)
 /*----------------------------------------------------------------------------*/
 void File::vPath(s& sFilePath)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   if (m_pFilePtr) {
@@ -404,11 +444,13 @@ void File::vPath(s& sFilePath)
   m_sFilePath = sFilePath;
 }
 
-/*---------------------------------------------------------------------------*/
-/* vPrint: formatted print                                                   */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* formatted print                                                            */
+/*----------------------------------------------------------------------------*/
 void File::vPrint(const char* sFormat, ...)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   va_list args;
@@ -431,6 +473,8 @@ void File::vPrint(const char* sFormat, ...)
 /*----------------------------------------------------------------------------*/
 i8 File::iReadChunk(void* pChunk, i8 nBytes)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   i8 iBytesRead = fread(pChunk,1,nBytes,m_pFilePtr);
@@ -443,6 +487,8 @@ i8 File::iReadChunk(void* pChunk, i8 nBytes)
 /*----------------------------------------------------------------------------*/
 bool File::bReadLine(char* aBuffer)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   // nb: man fscanf does not indicate that errno gets set???
@@ -481,6 +527,8 @@ bool File::bReadLine(char* aBuffer)
 /*----------------------------------------------------------------------------*/
 bool File::bReadLine(s& s)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   // nb: man fscanf does not indicate that errno gets set???
@@ -515,15 +563,19 @@ bool File::bReadLine(s& s)
 /*----------------------------------------------------------------------------*/
 void File::vReset(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_pFilePtr = nullptr;
   vSet("","");
 }
 
-/*---------------------------------------------------------------------------*/
-/* vSeek: seek to offset                                                     */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* seek to offset                                                             */
+/*----------------------------------------------------------------------------*/
 void File::vSeek(i8 iOffset)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   i8 rCode = fseek(m_pFilePtr,iOffset,SEEK_SET);
@@ -537,11 +589,13 @@ void File::vSeek(i8 iOffset)
   m_xSysCall.vSuccess();
 }
 
-/*---------------------------------------------------------------------------*/
-/* vSeek: seek to end                                                        */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* seek to end                                                                */
+/*----------------------------------------------------------------------------*/
 void File::vSeekEnd(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   i8 rCode = fseek(m_pFilePtr,0,SEEK_END);
@@ -560,6 +614,8 @@ void File::vSeekEnd(void)
 /*----------------------------------------------------------------------------*/
 void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   if (m_pFilePtr) {
@@ -577,6 +633,8 @@ void File::vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 void File::vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   if (m_pFilePtr) {
@@ -591,10 +649,12 @@ void File::vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8
 }
 
 /*----------------------------------------------------------------------------*/
-/* get SysCall                                                                 */
+/* get SysCall                                                                */
 /*----------------------------------------------------------------------------*/
 SysCall& File::rSysCall(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   return m_xSysCall;
 }
 
@@ -603,6 +663,8 @@ SysCall& File::rSysCall(void)
 /*----------------------------------------------------------------------------*/
 i8 File::iTraceLevel(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   return m_iTraceLevel;
 }
 
@@ -611,6 +673,8 @@ i8 File::iTraceLevel(void)
 /*----------------------------------------------------------------------------*/
 void File::vTraceLevel(i8 iTraceLevel)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_iTraceLevel = iTraceLevel;
 }
 
@@ -619,6 +683,8 @@ void File::vTraceLevel(i8 iTraceLevel)
 /*----------------------------------------------------------------------------*/
 void File::vUngetChar(char cChar)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   if ( ! m_pFilePtr )
     return;
   
@@ -633,6 +699,8 @@ void File::vUngetChar(char cChar)
 /*----------------------------------------------------------------------------*/
 void File::vZero(void)
 {
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+
   m_xSysCall.vClear();
   
   m_sFilePath   = "";
@@ -1314,6 +1382,8 @@ void File::vZero(void)
 /*----------------------------------------------------------------------------*/
 Footer* File::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_FILE);
+  
   return &m_xFooter;
 }
 

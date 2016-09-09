@@ -10,7 +10,7 @@ namespace Common
 {
   class Since;
   
-  class Time : public Object
+  class Time : public Header
   {
   public:
     struct {

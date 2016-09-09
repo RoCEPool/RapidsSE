@@ -31,11 +31,15 @@ void Tokeniser::operator delete(void*)
 Tokeniser::Tokeniser(void)
 : Object(CN_TOKENISER)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser = nullptr;
   m_bMalloc = false;
   m_bNormal = false;
   
   Memory::vCheckInitialised(this,sizeof(Tokeniser));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +47,8 @@ Tokeniser::Tokeniser(void)
 /*----------------------------------------------------------------------------*/
 Tokeniser::~Tokeniser(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,6 +56,8 @@ Tokeniser::~Tokeniser(void)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vPush(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (m_pParser)
     m_pParser->vPush();
   else
@@ -61,6 +69,8 @@ void Tokeniser::vPush(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bPop(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (m_pParser) {
     if (0 == m_pParser->iDepth()) {
       delete m_pParser;
@@ -81,6 +91,8 @@ bool Tokeniser::bPop(void)
 /*----------------------------------------------------------------------------*/
 i8 Tokeniser::iDepth(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   i8 iParserDepth = 0;
   
   if (m_pParser)
@@ -94,6 +106,8 @@ i8 Tokeniser::iDepth(void)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vLineMode(bool bLineMode)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser->vLineMode(bLineMode);
 }
 
@@ -102,6 +116,8 @@ void Tokeniser::vLineMode(bool bLineMode)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vMalloc(bool bMalloc)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_bMalloc = bMalloc;
 }
 
@@ -110,6 +126,8 @@ void Tokeniser::vMalloc(bool bMalloc)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vNormal(bool bNormal)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_bNormal = bNormal;
 }
 
@@ -118,6 +136,8 @@ void Tokeniser::vNormal(bool bNormal)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vPrompt(s& sPrompt)
 {  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser->vPrompt(sPrompt);
 }
 
@@ -126,6 +146,8 @@ void Tokeniser::vPrompt(s& sPrompt)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bUseFile(s& sPath)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   bool bOpened = m_pParser->bUseFile(sPath);
   
   return bOpened;
@@ -136,6 +158,8 @@ bool Tokeniser::bUseFile(s& sPath)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vUseStdin(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser->vUseStdin();
 }
 
@@ -144,6 +168,8 @@ void Tokeniser::vUseStdin(void)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vUseString(s& sString)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser->vUseString(sString);
 }
 
@@ -152,6 +178,8 @@ void Tokeniser::vUseString(s& sString)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vUseEnd(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser->vUseEnd();
 }
 
@@ -160,6 +188,8 @@ void Tokeniser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eNextToken(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   eTK eToken;
   
   if (m_bNormal)
@@ -175,6 +205,8 @@ eTK Tokeniser::eNextToken(char* wToken)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vResetTokens(char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     *pToken[iToken] = '\0';
 }
@@ -184,6 +216,8 @@ void Tokeniser::vResetTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 i8 Tokeniser::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     if (String::bEqualTo(pLookFor,pToken[iToken],C_NO_CASE))
       return iToken;
@@ -196,6 +230,8 @@ i8 Tokeniser::iFindToken(const char* pLookFor, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   for (i8 iToken = 0; iToken < nTokens; iToken++)
     if (String::bEqualTo("",pToken[iToken]))
       return iToken;
@@ -209,6 +245,8 @@ i8 Tokeniser::iCountTokens(char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   vTrace("%s",pTitle);
   
   for (i8 iToken = 0; iToken < nTokens; iToken++) {
@@ -226,6 +264,8 @@ void Tokeniser::vDumpTokens(const char* pTitle, char* pToken[], i8 nTokens)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEOF(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   bool bEOF = m_pParser->bEOF();
   
   return bEOF;
@@ -236,6 +276,8 @@ bool Tokeniser::bEOF(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bLineMode(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   bool bLineMode = m_pParser->bLineMode();
   
   return bLineMode;
@@ -246,6 +288,8 @@ bool Tokeniser::bLineMode(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStdin(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   bool bStdin = m_pParser->bStdin();
   
   return bStdin;
@@ -261,6 +305,8 @@ bool Tokeniser::bStdin(void)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eNextNormal(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   *wToken = '\0';
   
   eTK eToken = eParseNormal(wToken);
@@ -273,6 +319,8 @@ eTK Tokeniser::eNextNormal(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eNextSpecial(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   *wToken = '\0';
 
   eTK eToken = eParseSpecial(wToken);
@@ -290,6 +338,8 @@ eTK Tokeniser::eNextSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseNormal(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   vGetNextStripped();
   
   vSkipWhitespace();
@@ -327,6 +377,8 @@ eTK Tokeniser::eParseNormal(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseNormalInteger(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   i8 iNoDigits = 0;
   char *z = wToken;
   
@@ -369,6 +421,8 @@ eTK Tokeniser::eParseNormalInteger(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseNormalName(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   char *z = wToken;
   
   ASSERT(bStartNormalName());
@@ -393,6 +447,8 @@ eTK Tokeniser::eParseNormalName(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseNormalOther(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   char *z = wToken;
   
   ASSERT(bStartNormalOther());
@@ -411,6 +467,8 @@ eTK Tokeniser::eParseNormalOther(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseNormalString(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   char *z = wToken;
   
   ASSERT(bStartSpecialString());
@@ -447,6 +505,8 @@ eTK Tokeniser::eParseNormalString(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseSpecial(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   vGetNextStripped();
   
   vSkipWhitespace();
@@ -479,6 +539,8 @@ eTK Tokeniser::eParseSpecial(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseSpecialInteger(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   i8 iNoDigits = 0;
   char *z = wToken;
   
@@ -530,6 +592,8 @@ eTK Tokeniser::eParseSpecialInteger(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseSpecialName(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   char *z = wToken;
   
   ASSERT(bStartSpecialName());
@@ -554,6 +618,8 @@ eTK Tokeniser::eParseSpecialName(char* wToken)
 /*----------------------------------------------------------------------------*/
 eTK Tokeniser::eParseSpecialString(char* wToken)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   char *z = wToken;
   
   ASSERT(bStartSpecialString());
@@ -595,6 +661,8 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vSkipWhitespace(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   while (bHaveWhitespace())
     vGetNextStripped();
 }
@@ -604,6 +672,8 @@ void Tokeniser::vSkipWhitespace(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bHaveWhitespace(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   // do we have a current parsed character, which is a white char?
   if (m_cStrippedChar) {
     if (String::bIsWhite(m_cStrippedChar))
@@ -631,6 +701,8 @@ bool Tokeniser::bHaveWhitespace(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartNormalInteger(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (String::bIsDigit(m_cStrippedChar))
     return true;
   
@@ -642,6 +714,8 @@ bool Tokeniser::bStartNormalInteger(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartNormalName(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (String::bIsAlphaUnder(m_cStrippedChar))
     return true;
   
@@ -653,6 +727,8 @@ bool Tokeniser::bStartNormalName(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartNormalOther(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (! String::bIsAlphaDigitUnder(m_cStrippedChar))
     return true;
   
@@ -664,6 +740,8 @@ bool Tokeniser::bStartNormalOther(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartNormalString(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if ('"' == m_cStrippedChar)
     return true;
   
@@ -675,6 +753,8 @@ bool Tokeniser::bStartNormalString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEndNormalString(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if ('"' == m_cStrippedChar)
     return true;
   
@@ -686,6 +766,8 @@ bool Tokeniser::bEndNormalString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartSpecialInteger(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (String::bIsDigit(m_cStrippedChar))
     return true;
   
@@ -697,6 +779,8 @@ bool Tokeniser::bStartSpecialInteger(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartSpecialName(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (bStartSpecialInteger() || bStartSpecialString())
     return false;
   
@@ -708,6 +792,8 @@ bool Tokeniser::bStartSpecialName(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bStartSpecialString(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if ('"' == m_cStrippedChar)
     return true;
   
@@ -719,6 +805,8 @@ bool Tokeniser::bStartSpecialString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEndSpecialString(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if ('"' == m_cStrippedChar)
     return true;
   
@@ -730,6 +818,8 @@ bool Tokeniser::bEndSpecialString(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsDigit(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (String::bIsDigit(m_cStrippedChar))
     return true;
   
@@ -741,6 +831,8 @@ bool Tokeniser::bIsDigit(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsHex(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (String::bIsHex(m_cStrippedChar))
     return true;
   
@@ -752,6 +844,8 @@ bool Tokeniser::bIsHex(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsX(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if ('x' == m_cStrippedChar || 'X' == m_cStrippedChar)
     return true;
   
@@ -763,6 +857,8 @@ bool Tokeniser::bIsX(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bIsWhite(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if (String::bIsWhite(m_cStrippedChar))
     return true;
   
@@ -774,6 +870,8 @@ bool Tokeniser::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vGetNextStripped(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_cStrippedChar = m_pParser->cGet();
 }
 
@@ -782,6 +880,8 @@ void Tokeniser::vGetNextStripped(void)
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vUngetStrippedChar(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   m_pParser->vUnget(m_cStrippedChar);
 }
 
@@ -790,6 +890,8 @@ void Tokeniser::vUngetStrippedChar(void)
 /*----------------------------------------------------------------------------*/
 bool Tokeniser::bEndInput(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
   if ('\0' == m_cStrippedChar)
     return true;
   
@@ -805,6 +907,8 @@ bool Tokeniser::bEndInput(void)
 /*----------------------------------------------------------------------------*/
 Footer* Tokeniser::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER);
+  
   return &m_xFooter;
 }
 

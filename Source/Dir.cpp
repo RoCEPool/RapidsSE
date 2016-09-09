@@ -49,11 +49,13 @@ void Dir::operator delete(void* pDirAddress)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Dir: constructor                                                           */
+/* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Dir::Dir(void)
 : Header(CN_DIR)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_sDirPath   = "<none>";
   
   m_pDirPtr    = nullptr;
@@ -65,13 +67,17 @@ Dir::Dir(void)
   ASSERT(bIsClosed());
   
   Memory::vCheckInitialised(this,sizeof(Dir));
+  
+  _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
 };
 
 /*----------------------------------------------------------------------------*/
-/* ~Dir: destructor                                                           */
+/* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Dir::~Dir(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   vInit();
 }
 
@@ -80,6 +86,8 @@ Dir::~Dir(void)
 /*----------------------------------------------------------------------------*/
 bool Dir::bExists(s256& rPath)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_xSysCall.vClear();
   
   struct stat xStat;
@@ -108,6 +116,8 @@ bool Dir::bExists(s256& rPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bGetCurrent(s256& rPath)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_xSysCall.vClear();
   
   char* aDirPath = getcwd(rPath.a(),rPath.iSize());
@@ -129,17 +139,21 @@ bool Dir::bGetCurrent(s256& rPath)
 /*----------------------------------------------------------------------------*/
 void Dir::vInit(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_xSysCall.vSetMagic();
   
   m_sDirPath = "";
   m_xSysCall.vClear();
 }
 
-/*---------------------------------------------------------------------------*/
-/* bMake: make specified directory                                           */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* make specified directory                                                   */
+/*----------------------------------------------------------------------------*/
 bool Dir::bMake(s256& rPath)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_xSysCall.vClear();
   
   char* aPath = rPath.a();
@@ -154,11 +168,13 @@ bool Dir::bMake(s256& rPath)
   return true;
 }
 
-/*---------------------------------------------------------------------------*/
-/* bRemove: remove specified directory                                       */
-/*---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* remove specified directory                                                 */
+/*----------------------------------------------------------------------------*/
 bool Dir::bRemove(s256& rPath)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_xSysCall.vClear();
   
   char* aPath = rPath.a();
@@ -180,6 +196,8 @@ bool Dir::bRemove(s256& rPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bSetCurrent(s256& rPath)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   m_xSysCall.vClear();
   i8 iCode = chdir(rPath.a());
   
@@ -204,6 +222,8 @@ bool Dir::bSetCurrent(s256& rPath)
 /*----------------------------------------------------------------------------*/
 void Dir::vClose(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsOpen());
   
   i8 iResult = closedir(m_pDirPtr);
@@ -225,6 +245,8 @@ void Dir::vClose(void)
 /*----------------------------------------------------------------------------*/
 s& Dir::sEntryName(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   return m_sEntryName;
 }
 
@@ -233,6 +255,8 @@ s& Dir::sEntryName(void)
 /*----------------------------------------------------------------------------*/
 i8 Dir::iEntryType(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   return m_iEntryType;
 }
 
@@ -295,6 +319,8 @@ i8 Dir::iEntryType(void)
 /*----------------------------------------------------------------------------*/
 bool Dir::bIsClosed(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   if (! m_pDirPtr)
     return true;
   else
@@ -306,6 +332,8 @@ bool Dir::bIsClosed(void)
 /*----------------------------------------------------------------------------*/
 bool Dir::bIsOpen(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   if (m_pDirPtr)
     return true;
   else
@@ -340,6 +368,8 @@ bool Dir::bIsOpen(void)
 /*----------------------------------------------------------------------------*/
 bool Dir::bOpen(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsClosed());
   
   char* wPath = m_sDirPath.a();
@@ -362,6 +392,8 @@ bool Dir::bOpen(void)
 /*----------------------------------------------------------------------------*/
 s& Dir::sPath(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   return m_sDirPath;
 }
 
@@ -370,6 +402,8 @@ s& Dir::sPath(void)
 /*---------------------------------------------------------------------------*/
 void Dir::vPath(s256& sPath)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsClosed());
   
   m_sDirPath = sPath;
@@ -380,6 +414,8 @@ void Dir::vPath(s256& sPath)
 /*----------------------------------------------------------------------------*/
 bool Dir::bRead(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsOpen());
   m_xSysCall.vClear();
   
@@ -428,6 +464,8 @@ bool Dir::bRead(void)
 /*----------------------------------------------------------------------------*/
 void Dir::vRewind(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsOpen());
   m_xSysCall.vClear();
   
@@ -441,6 +479,8 @@ void Dir::vRewind(void)
 /*----------------------------------------------------------------------------*/
 void Dir::vSeek(i8 iPosition)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsOpen());
   m_xSysCall.vClear();
 
@@ -475,6 +515,8 @@ void Dir::vSeek(i8 iPosition)
 /*----------------------------------------------------------------------------*/
 i8 Dir::iTell(void)
 {
+  _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
+  
   ASSERT(bIsOpen());
   m_xSysCall.vClear();
   
@@ -961,6 +1003,8 @@ i8 Dir::iTell(void)
 /*----------------------------------------------------------------------------*/
 Footer* Dir::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_DIR);
+  
   return &m_xFooter;
 }
 

@@ -4,6 +4,10 @@
 
 #include "Timer.hpp"
 
+#include "Pool.h"
+
+extern BufferPool* gpBufferPool;
+
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
@@ -28,9 +32,13 @@ void Timer::operator delete(void* pTimerAddress)
 Timer::Timer(void)
 : Header(CN_TIMER)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   vInit();
   
   Memory::vCheckInitialised(this,sizeof(Timer));
+
+  _postcondition_(_MAGIC_,CN_TIMER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,6 +46,7 @@ Timer::Timer(void)
 /*----------------------------------------------------------------------------*/
 Timer::~Timer(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,6 +54,8 @@ Timer::~Timer(void)
 /*----------------------------------------------------------------------------*/
 void Timer::vInit(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+
   m_iStart  = 0;
   m_iUpdate = 0;
 }
@@ -54,6 +65,8 @@ void Timer::vInit(void)
 /*----------------------------------------------------------------------------*/
 void Timer::vReset(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   m_iStart  = 0;
   m_iUpdate = 0;
 }
@@ -63,6 +76,8 @@ void Timer::vReset(void)
 /*----------------------------------------------------------------------------*/
 void Timer::vStart(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   m_iStart  = iRdtscp();
   m_iUpdate = 0;
 }
@@ -72,6 +87,8 @@ void Timer::vStart(void)
 /*----------------------------------------------------------------------------*/
 void Timer::vUpdate(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   ASSERT(m_iStart);
   m_iUpdate = iRdtscp();
 }
@@ -81,6 +98,8 @@ void Timer::vUpdate(void)
 /*----------------------------------------------------------------------------*/
 i8 Timer::iNanoseconds(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
@@ -97,6 +116,8 @@ i8 Timer::iNanoseconds(void)
 /*----------------------------------------------------------------------------*/
 i8 Timer::iMicroseconds(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
@@ -113,6 +134,8 @@ i8 Timer::iMicroseconds(void)
 /*----------------------------------------------------------------------------*/
 i8 Timer::iMilliseconds(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
@@ -129,6 +152,8 @@ i8 Timer::iMilliseconds(void)
 /*----------------------------------------------------------------------------*/
 i8 Timer::iSeconds(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   ASSERT(m_iStart);
   ASSERT(m_iUpdate);
   
@@ -145,6 +170,8 @@ i8 Timer::iSeconds(void)
 /*----------------------------------------------------------------------------*/
 i8 Timer::iTicks(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
+  
   ASSERT(m_iStart);
   ASSERT(m_iUpdate);
 
@@ -162,6 +189,8 @@ i8 Timer::iTicks(void)
 /*----------------------------------------------------------------------------*/
 Footer* Timer::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_TIMER);
+  
   return &m_xFooter;
 }
 

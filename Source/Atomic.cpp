@@ -4,6 +4,10 @@
 
 #include "Common.h"
 
+#include "Pool.h"
+
+extern BufferPool* gpBufferPool;
+
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
@@ -31,6 +35,8 @@ Atomic::Atomic(void)
   vInit();
   
   Memory::vCheckInitialised(this,sizeof(Atomic));
+  
+  _postcondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,6 +44,7 @@ Atomic::Atomic(void)
 /*----------------------------------------------------------------------------*/
 Atomic::~Atomic(void)
 {
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,6 +52,8 @@ Atomic::~Atomic(void)
 /*----------------------------------------------------------------------------*/
 void Atomic::vInit(void)
 {  
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+
   m_iValue = 0;
 }
 
@@ -53,6 +62,8 @@ void Atomic::vInit(void)
 /*----------------------------------------------------------------------------*/
 void Atomic::vCheckInit()
 {
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+  
   ASSERT(0 == m_iValue); // logic check
 }
 
@@ -61,7 +72,11 @@ void Atomic::vCheckInit()
 /*----------------------------------------------------------------------------*/
 i8 Atomic::iInc()
 {
-  return 0;
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+
+  i8 i = iAtomicInc(&m_iValue);
+  
+  return i;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +84,11 @@ i8 Atomic::iInc()
 /*----------------------------------------------------------------------------*/
 i8 Atomic::iDec()
 {
-  return 0;
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+
+  i8 i = iAtomicDec(&m_iValue);
+  
+  return i;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,6 +96,8 @@ i8 Atomic::iDec()
 /*----------------------------------------------------------------------------*/
 i8 Atomic::operator *(void)
 {
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+  
   return m_iValue;
 }
 
@@ -85,6 +106,8 @@ i8 Atomic::operator *(void)
 /*----------------------------------------------------------------------------*/
 i8 Atomic::operator ++(void)
 {
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+  
   i8 i = iAtomicInc(&m_iValue);
   
   return i;
@@ -95,6 +118,8 @@ i8 Atomic::operator ++(void)
 /*----------------------------------------------------------------------------*/
 i8 Atomic::operator --(void)
 {
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+  
   i8 i = iAtomicDec(&m_iValue);
 
   return i;
@@ -110,6 +135,8 @@ i8 Atomic::operator --(void)
 /*----------------------------------------------------------------------------*/
 Footer* Atomic::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_ATOMIC);
+  
   return &m_xFooter;
 }
 

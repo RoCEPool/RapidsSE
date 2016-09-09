@@ -4,6 +4,10 @@
 
 #include "Common.h"
 
+#include "Pool.h"
+
+extern BufferPool* gpBufferPool;
+
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
 /*----------------------------------------------------------------------------*/
@@ -19,8 +23,10 @@ void* Time::operator new(size_t iSize)
 /* Time: constructor                                                          */
 /*----------------------------------------------------------------------------*/
 Time::Time(void)
-: Object(CN_TIME)
+: Header(CN_TIME)
 {
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+  
   m_iYear   = 0;
   m_iMonth  = 0;
   m_iDay    = 0;
@@ -30,6 +36,8 @@ Time::Time(void)
   m_iMicro  = 0;
   
   Memory::vCheckInitialised(this,sizeof(Time));
+  
+  _postcondition_(_MAGIC_,CN_TIME,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,6 +45,7 @@ Time::Time(void)
 /*----------------------------------------------------------------------------*/
 Time::~Time(void)
 {
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,6 +53,8 @@ Time::~Time(void)
 /*----------------------------------------------------------------------------*/
 void Time::vSet(Since* pSince)
 {
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+
   struct tm xTimeResult;
   
   time_t iSeconds = pSince->iSeconds();
@@ -67,6 +78,8 @@ void Time::vSet(Since* pSince)
 /*----------------------------------------------------------------------------*/
 void Time::vAppendUtc(char** pz)
 {
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   char* z = *pz;
@@ -112,6 +125,8 @@ void Time::vAppendUtc(char** pz)
 /*----------------------------------------------------------------------------*/
 bool Time::bExtractUTC(char** ps)
 {
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+
   // refer: http://en.wikipedia.org/wiki/ISO_8601
   
   if ( ! *ps )
@@ -173,6 +188,8 @@ bool Time::bExtractUTC(char** ps)
 /*----------------------------------------------------------------------------*/
 void Time::vUTC(s& sUTC)
 {
+  _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
+
   char* pz = sUTC.a();
   
   vAppendUtc(&pz);
@@ -187,6 +204,8 @@ void Time::vUTC(s& sUTC)
 /*----------------------------------------------------------------------------*/
 Footer* Time::pFooter(void)
 {
+  _precondition_(_MAGIC_,CN_TIME);
+  
   return &m_xFooter;
 }
 
