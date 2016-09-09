@@ -4,6 +4,8 @@
 
 #include "Env.hpp"
 
+i8 giShmOpenCount = 0;
+
 /*----------------------------------------------------------------------------*/
 /* attach/open to an existing shared memory region                            */
 /*----------------------------------------------------------------------------*/
@@ -19,6 +21,8 @@ bool Shm::bAttach(const char* aName, int& iFD, SysCall& xSysCall)
     vTrace("shm_open() error; errno=%d %s\n",errno, strerror(errno));
     return false;
   }
+  
+  giShmOpenCount++;
   
   return true;
 }
@@ -37,6 +41,8 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
     //vReportWarning("munmap() error; errno=%d",errno);
     return false;
   }
+  
+  giShmOpenCount--;
   
   xSysCall.vSuccess();
   
@@ -64,6 +70,8 @@ bool Shm::bCreate(const char* aName, i8 iSize, int& iFD, SysCall& xSysCall)
     return false;
   }
   
+  giShmOpenCount++;
+
   // fill with 0's
   rCode = ftruncate(iFD, iSize);
   

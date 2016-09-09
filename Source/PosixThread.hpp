@@ -20,11 +20,11 @@ namespace Platform
     ~PosixThread(void);
     
     bool bBindThread(i8 iCpu);
-    i8   iThreadCpu(void);
     void vSetOSThreadId(void);
-    bool bSpawnThread(void* pFun(void*), void* pArg);
-    
     void vSignalThread(void);
+    bool bSpawnThread(void* pFun(void*), void* pArg);
+    i8   iThreadCpu(void);
+    void vThreadExit(void);
     
     //---------------------------------------------------------------------------
 

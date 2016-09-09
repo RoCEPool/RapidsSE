@@ -4,6 +4,8 @@
 
 #include "Common.h"
 
+i8 giThreadOpenCount = 0;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -76,40 +78,6 @@ bool PosixThread::bBindThread(i8 iCpu)
     #endif
 }
 
-/*----------------------------------------------------------------------------*/
-/* get cpu of this thread                                                     */
-/*----------------------------------------------------------------------------*/
-i8 PosixThread::iThreadCpu(void)
-{
-  #ifdef __APPLE__
-    vWarn("Getting thread Cpu affinity not implemented!");
-    return 0;
-#else
-  i8 iResult;
-  
-  cpu_set_t xAffinity;
-  
-  CPU_ZERO(&xAffinity);
-  
-  ASSERT(pthread_self() == m_iPosixThread);
-  
-  iResult = pthread_getafffinity_np(m_iPosixThread, sizeof(cpu_set_t), &xAffinity);
-  if (iResult == -1) {
-    vWarn("Error in pthread_getafffinity_np() : %lld\n", errno);
-  }
-  
-  i8 cpu_set_size = static_cast<i8>(sizeof(cpu_set_t));
-  
-  for (i8 i = 0; i < cpu_set_size; i++) {
-    if (CPU_ISSET(i, &xAffinity)
-        return i;
-  }
-  return 0;
-
-#endif
-  
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get os thread id                                                           */
@@ -147,6 +115,8 @@ bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
     return false;
   }
   
+  giThreadOpenCount++;
+  
   // this is important otherwise resources are not released
   pthread_detach(m_iPosixThreadId);
   
@@ -163,6 +133,51 @@ void PosixThread::vSignalThread(void)
   vMutexUnlock();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get cpu of this thread                                                     */
+/*----------------------------------------------------------------------------*/
+i8 PosixThread::iThreadCpu(void)
+{
+#ifdef __APPLE__
+  
+  vWarn("Get thread Cpu affinity not implemented!");
+  return 0;
+  
+#else
+  
+  i8 iResult;
+  
+  cpu_set_t xAffinity;
+  
+  CPU_ZERO(&xAffinity);
+  
+  ASSERT(pthread_self() == m_iPosixThread);
+  
+  iResult = pthread_getafffinity_np(m_iPosixThread, sizeof(cpu_set_t), &xAffinity);
+  if (iResult == -1) {
+    vWarn("Error in pthread_getafffinity_np() : %lld\n", errno);
+  }
+  
+  i8 cpu_set_size = static_cast<i8>(sizeof(cpu_set_t));
+  
+  for (i8 i = 0; i < cpu_set_size; i++) {
+    if (CPU_ISSET(i, &xAffinity)
+      return i;
+    }
+  return 0;
+        
+#endif
+      
+}
+      
+/*----------------------------------------------------------------------------*/
+/* thread notifies its exiting                                                */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vThreadExit(void)
+{
+  giThreadOpenCount--;
+}
+        
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -8,6 +8,10 @@
 
 extern Heap*  gpSmallHeap;
 
+i8 giFileOpenCount = 0;
+
+/*----------------------------------------------------------------------------*/
+
 // Opens for reading. If the file does not exist or cannot be found, the
 // fopen call fails.
 const char* C_OPEN_READ = "r";
@@ -132,6 +136,8 @@ void File::vClose(void)
           m_pFilePtr,errno,m_sFilePath.a(),m_sOpenMode.a());
     return;
   }
+  
+  giFileOpenCount--;
   
   vReset();
   
@@ -291,6 +297,8 @@ bool File::bOpen(void)
     return false;
   }
   
+  giFileOpenCount++;
+  
   return true;
 }
 
@@ -319,6 +327,8 @@ bool File::bOpen(const char* aOpenMode, i8 iTraceLevel)
           m_sFilePath.a(),m_sOpenMode.a(),errno);
     return false;
   }
+  
+  giFileOpenCount++;
   
   return true;
 }
@@ -349,6 +359,8 @@ bool File::bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel)
     return false;
   }
   
+  giFileOpenCount++;
+  
   return true;
 }
 
@@ -373,7 +385,6 @@ void File::vPath(const char* aFilePath)
   }
   
   m_sFilePath = aFilePath;
-  
 }
 
 /*----------------------------------------------------------------------------*/

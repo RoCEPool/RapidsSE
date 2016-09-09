@@ -4,6 +4,8 @@
 
 #include "Tasks.h"
 
+i8 giSocketOpenCount = 0;
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -126,6 +128,8 @@ bool Socket::bAcceptClient(int& iSocketId, SysCall& SysCall)
     return false;
   }
   
+  giSocketOpenCount++;
+  
   SysCall.vSuccess();
   return true;
 }
@@ -151,6 +155,8 @@ bool Socket::bClose(SysCall& SysCall)
   }
   
   m_iSocketId = -1;
+  
+  giSocketOpenCount--;
   
   SysCall.vSuccess();
   return true;
@@ -194,6 +200,8 @@ bool Socket::bConnectServer(const char* sAddr, int iPort, SysCall& SysCall)
     return false;
   }
   
+  giSocketOpenCount++;
+
   SysCall.vSuccess();
   return true;
 }
@@ -247,6 +255,8 @@ bool Socket::bCreateServer(int iPort, SysCall& SysCall)
     return false;
   }
   
+  giSocketOpenCount++;
+
   SysCall.vSuccess();
   return true;
 }

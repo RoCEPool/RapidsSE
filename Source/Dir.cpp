@@ -5,6 +5,8 @@
 #include "Dir.hpp"
 #include "StorageEngine.h"
 
+i8 giDirOpenCount = 0;
+
 extern Heap* gpSmallHeap;
 
 /*----------------------------------------------------------------------------*/
@@ -209,6 +211,8 @@ void Dir::vClose(void)
     return;
   }
 
+  giDirOpenCount--;
+
   m_pDirPtr = nullptr;
   
   ASSERT(bIsClosed());
@@ -344,6 +348,8 @@ bool Dir::bOpen(void)
     vWarn("Dir::bOpen: opendir() error; errno=%d",errno);
     return false;
   }
+
+  giDirOpenCount++;
   
   ASSERT(bIsOpen());
   return true;
