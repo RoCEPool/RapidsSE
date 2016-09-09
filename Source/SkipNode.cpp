@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* SkipNode::operator new(size_t iSize, i4 iLevel)
 {
+  ASSERT(iSize);
   int nBytes = sizeof(SkipNode) + ((int)iLevel * sizeof(SkipNode*));
   
   void* pNode = static_cast<void*>(malloc(nBytes));

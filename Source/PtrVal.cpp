@@ -11,6 +11,7 @@
 /*----------------------------------------------------------------------------*/
 void* PtrVal::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: PtrVal class cannot be new'd\n");
   
   ASSERT(0);

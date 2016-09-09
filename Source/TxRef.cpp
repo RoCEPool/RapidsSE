@@ -12,6 +12,7 @@ extern TxCollection* gpTxCollection;
 /*----------------------------------------------------------------------------*/
 void* TxRef::operator new(size_t iSize, TxRef* pTxRef)
 {
+  ASSERT(iSize);
   return pTxRef;
 }
 

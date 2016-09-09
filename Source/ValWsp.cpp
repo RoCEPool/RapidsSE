@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* ValWsp::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: ValWsp class cannot be new'd\n");
   
   ASSERT(0);

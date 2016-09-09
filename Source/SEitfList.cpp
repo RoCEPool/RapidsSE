@@ -12,6 +12,7 @@ extern SEitfList*   gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void* SEitfList::operator new(size_t iSize, SEitfList* pSEitfList)
 {
+  ASSERT(iSize);
   return pSEitfList;
 }
 

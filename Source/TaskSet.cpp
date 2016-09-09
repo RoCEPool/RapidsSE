@@ -11,6 +11,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 {
+  ASSERT(iSize);
   return pTaskSet;
 }
 

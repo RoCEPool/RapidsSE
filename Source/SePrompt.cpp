@@ -12,6 +12,7 @@ extern Heap*        gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 void* SePrompt::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   SePrompt* pSePrompt = (SePrompt*)gpBufferPool->pAllocBuffer();
   
   return pSePrompt;

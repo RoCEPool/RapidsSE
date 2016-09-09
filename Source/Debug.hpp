@@ -33,7 +33,6 @@ namespace Common
   #define _poolAddress_(pArg)
   #endif
   
-  // ASSERT
   #define ASSERT(condition) \
   { \
     if ( !(condition) ) { \

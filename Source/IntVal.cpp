@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* IntVal::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: IntVal class cannot be new'd\n");
   
   ASSERT(0);

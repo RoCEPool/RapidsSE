@@ -24,6 +24,7 @@ Dictionary* Dictionaries::_pDic(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Dictionary::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Dictionary class cannot be new'd");
   
   ASSERT(0);
@@ -34,6 +35,7 @@ void* Dictionary::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Dictionary::operator new(size_t iSize, Dictionary* pDictionary)
 {
+  ASSERT(iSize);
   return pDictionary;
 }
 

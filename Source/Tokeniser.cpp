@@ -7,8 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Tokeniser::operator new(size_t)
+void* Tokeniser::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Tokeniser class cannot be new'd");
   
   ASSERT(0);

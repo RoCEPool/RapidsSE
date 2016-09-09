@@ -10,8 +10,9 @@ extern Heap* gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Parser::operator new(size_t, bool bMalloc)
+void* Parser::operator new(size_t iSize, bool bMalloc)
 {
+  ASSERT(iSize);
   Parser* pParser;
   
   if (bMalloc)

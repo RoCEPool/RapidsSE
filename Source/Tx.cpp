@@ -11,6 +11,7 @@ extern TxCollection*  gpTxCollection;
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   ASSERT(gpTxCollection);
   
   Tx* pTx = gpTxCollection->pAllocTx();
@@ -23,6 +24,7 @@ void* Tx::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t iSize, Tx* pTx)
 {
+  ASSERT(iSize);
   return pTx;
 }
 

@@ -6,8 +6,9 @@
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Lock::operator new(size_t, Lock* pLock)
+void* Lock::operator new(size_t iSize, Lock* pLock)
 {
+  ASSERT(iSize);
   return pLock;
 }
 

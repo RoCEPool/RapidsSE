@@ -8,8 +8,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
 /*----------------------------------------------------------------------------*/
-void* s::operator new(size_t)
+void* s::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: s class cannot be new'd");
   
   ASSERT(0);

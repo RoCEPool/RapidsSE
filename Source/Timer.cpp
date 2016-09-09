@@ -7,8 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Timer::operator new(size_t, Timer* pTimer)
+void* Timer::operator new(size_t iSize, Timer* pTimer)
 {
+  ASSERT(iSize);
   return pTimer;
 }
 

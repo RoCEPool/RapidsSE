@@ -20,6 +20,7 @@ extern pthread_key_t  giTLS_ThreadKey;
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t iSize, Thread* pThread)
 {
+  ASSERT(iSize);
   return pThread;
 }
 

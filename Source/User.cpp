@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* User::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: User class cannot be new'd");
   
   ASSERT(0);
@@ -17,8 +18,9 @@ void* User::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* User::operator new(size_t, User* pUser)
+void* User::operator new(size_t iSize, User* pUser)
 {
+  ASSERT(iSize);
   return pUser;
 }
 

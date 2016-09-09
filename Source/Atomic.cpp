@@ -7,8 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Atomic::operator new(size_t, Atomic* pAtomic)
+void* Atomic::operator new(size_t iSize, Atomic* pAtomic)
 {
+  ASSERT(iSize);
   return pAtomic;
 }
 

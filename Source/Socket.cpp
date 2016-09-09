@@ -11,6 +11,7 @@ Atomic gzSocketOpenCount;
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Socket* pSocket = nullptr;
   
   return pSocket;
@@ -19,8 +20,9 @@ void* Socket::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Socket::operator new(size_t, Socket* pSocket)
+void* Socket::operator new(size_t iSize, Socket* pSocket)
 {
+  ASSERT(iSize);
   return pSocket;
 }
 

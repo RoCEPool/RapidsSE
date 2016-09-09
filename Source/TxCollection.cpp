@@ -13,6 +13,7 @@ extern TxMap*           gpTxMap;
 /*----------------------------------------------------------------------------*/
 void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)
 {
+  ASSERT(iSize);
   return pTxCollection;
 }
 

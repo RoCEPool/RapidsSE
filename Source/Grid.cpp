@@ -11,6 +11,7 @@ extern Grid* gpGrid;
 /*----------------------------------------------------------------------------*/
 void* Grid::operator new(size_t iSize, Grid* pGrid)
 {
+  ASSERT(iSize);
   return pGrid;
 }
 

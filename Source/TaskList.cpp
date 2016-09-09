@@ -13,6 +13,7 @@ extern TaskList*    gpTaskList;
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_TASKLIST);
   
   return pObject;
@@ -23,6 +24,7 @@ void* TaskList::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t iSize, TaskList* pTaskList)
 {
+  ASSERT(iSize);
   return pTaskList;
 }
 

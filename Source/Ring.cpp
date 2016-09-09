@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* Ring::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Ring class cannot be new'd");
   
   ASSERT(0);

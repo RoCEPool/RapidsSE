@@ -12,6 +12,7 @@ extern SEitfList*   gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void* SEitfCursor::operator new(size_t iSize, SEitfCursor* pSEitfCursor)
 {
+  ASSERT(iSize);
   return pSEitfCursor;
 }
 

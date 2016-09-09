@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* ValSet::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: ValSet class cannot be new'd\n");
   
   ASSERT(0);

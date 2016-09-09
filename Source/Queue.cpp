@@ -9,8 +9,9 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Queue::operator new(size_t)
+void* Queue::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   void* pObject = gpSmallHeap->pAllocObject(CN_QUEUE);
   
   return pObject;
@@ -19,8 +20,9 @@ void* Queue::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Queue::operator new(size_t, Queue* pQueue)
+void* Queue::operator new(size_t iSize, Queue* pQueue)
 {
+  ASSERT(iSize);
   return pQueue;
 }
 

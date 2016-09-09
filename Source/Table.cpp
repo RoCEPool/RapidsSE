@@ -12,6 +12,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Table* pTable = nullptr;
   
   return pTable;
@@ -22,6 +23,7 @@ void* Table::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t iSize, Table* pTable)
 {
+  ASSERT(iSize);
   return pTable;
 }
 

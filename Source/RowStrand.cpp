@@ -7,8 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* allocate a row strand from small object heap                               */
 /*----------------------------------------------------------------------------*/
-void* RowStrand::operator new(size_t)
+void* RowStrand::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_ROWSTRAND);
   
   return pObject;

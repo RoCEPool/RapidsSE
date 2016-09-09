@@ -7,8 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Row::operator new(size_t)
+void* Row::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Row class cannot be new'd\n");
   
   ASSERT(0);
@@ -17,8 +18,9 @@ void* Row::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Row::operator new(size_t, Row* pRow)
+void* Row::operator new(size_t iSize, Row* pRow)
 {
+  ASSERT(iSize);
   return pRow;
 }
 

@@ -13,6 +13,7 @@ extern StepArray* gpStepArray ;
 /*----------------------------------------------------------------------------*/
 void* StepArray::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   ASSERT(! gpStepArray);
   
   gpStepArray = (StepArray*)gpBufferPool->pAllocBuffer();

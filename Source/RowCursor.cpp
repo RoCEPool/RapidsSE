@@ -9,8 +9,9 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowCursor::operator new(size_t)
+void* RowCursor::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_ROWCURSOR);
   
   return pObject;
@@ -19,8 +20,9 @@ void* RowCursor::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowCursor::operator new(size_t, RowCursor* pRowCursor)
+void* RowCursor::operator new(size_t iSize, RowCursor* pRowCursor)
 {
+  ASSERT(iSize);
   return pRowCursor;
 }
 

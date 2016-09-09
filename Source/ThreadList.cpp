@@ -12,6 +12,7 @@ extern ThreadList*  gpThreadList;
 /*----------------------------------------------------------------------------*/
 void* ThreadList::operator new(size_t iSize, ThreadList* pThreadList)
 {
+  ASSERT(iSize);
   return pThreadList;
 }
 

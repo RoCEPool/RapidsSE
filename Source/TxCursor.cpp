@@ -11,6 +11,7 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 void* TxCursor::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_TXCURSOR);
   
   return pObject;
@@ -21,6 +22,7 @@ void* TxCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* TxCursor::operator new(size_t iSize, TxCursor* pTxCursor)
 {
+  ASSERT(iSize);
   return pTxCursor;
 }
 

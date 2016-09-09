@@ -29,6 +29,7 @@ extern NP_Task               gnpRootTask;
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   ASSERT(gpTaskList);
   
   Task* pTask = (Task*)gpMediumHeap->pAllocObject(CN_TASK);
@@ -41,6 +42,7 @@ void* Task::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize, Task* pTask)
 {
+  ASSERT(iSize);
   ASSERT(gpTaskList);
   
   return pTask;

@@ -11,8 +11,9 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Loader::operator new(size_t)
+void* Loader::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   void* pObject = gpSmallHeap->pAllocObject(CN_LOADER);
   
   return pObject;
@@ -21,8 +22,9 @@ void* Loader::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Loader::operator new(size_t, Loader* pLoader)
+void* Loader::operator new(size_t iSize, Loader* pLoader)
 {
+  ASSERT(iSize);
   return pLoader;
 }
 

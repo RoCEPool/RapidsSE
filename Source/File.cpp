@@ -41,8 +41,9 @@ const char* C_OPEN_READ_APPEND = "a+";
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* File::operator new(size_t)
+void* File::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   void* pObject = gpSmallHeap->pAllocObject(CN_FILE);
   
   return pObject;
@@ -53,6 +54,7 @@ void* File::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t iSize, File* pFile)
 {
+  ASSERT(iSize);
   return pFile;
 }
 

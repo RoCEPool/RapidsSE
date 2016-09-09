@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* Proxy::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Dictionary class cannot be new'd");
   
   ASSERT(0);

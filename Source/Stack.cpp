@@ -9,8 +9,9 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Stack::operator new(size_t)
+void* Stack::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Stack class cannot be new'd");
   
   ASSERT(0);

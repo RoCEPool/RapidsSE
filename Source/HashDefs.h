@@ -16,6 +16,7 @@
   #define DEBUG_CHECKS
   #define MAGIC_CHECK
   #define FOOTER_CHECK
+  #define ASSERT_CHECKS
 #endif
 
 #define VERBOSE_TRACE

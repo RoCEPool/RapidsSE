@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* FreeChunk::operator new(size_t iSize, FreeChunk* pFreeChunk)
 {
+  ASSERT(iSize);
   return pFreeChunk;
 }
 

@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_NODE);
   
   return pObject;
@@ -17,8 +18,9 @@ void* Node::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* Node::operator new(size_t, Node* pNode)
+void* Node::operator new(size_t iSize, Node* pNode)
 {
+  ASSERT(iSize);
   return pNode;
 }
 

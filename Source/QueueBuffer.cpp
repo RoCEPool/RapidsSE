@@ -9,8 +9,9 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* QueueBuffer::operator new(size_t)
+void* QueueBuffer::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pBuffer);

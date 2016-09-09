@@ -7,8 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */
 /*----------------------------------------------------------------------------*/
-void* Time::operator new(size_t)
+void* Time::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: Time class cannot be new'd");
   
   ASSERT(0);

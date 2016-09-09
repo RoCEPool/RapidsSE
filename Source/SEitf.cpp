@@ -15,6 +15,7 @@ extern AttachMap*   gpAttachMap;
 /*----------------------------------------------------------------------------*/
 void* SEitf::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Object* pObject = gpMediumHeap->pAllocObject(CN_SEITF);
   
   return pObject;

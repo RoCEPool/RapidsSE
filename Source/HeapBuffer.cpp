@@ -9,8 +9,9 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* get a new heap buffer from buffer pool                                     */
 /*----------------------------------------------------------------------------*/
-void* HeapBuffer::operator new(size_t)
+void* HeapBuffer::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pBuffer);

@@ -179,8 +179,9 @@ BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* BufferPool::operator new(size_t)
+void* BufferPool::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   void* pBufferPool = malloc(sizeof(BufferPool));
   
   return pBufferPool;
@@ -189,8 +190,9 @@ void* BufferPool::operator new(size_t)
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
-void* BufferPool::operator new(size_t, void* pRegion)
+void* BufferPool::operator new(size_t iSize, void* pRegion)
 {
+  ASSERT(iSize);
   return pRegion;
 }
 

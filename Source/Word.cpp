@@ -11,8 +11,9 @@ extern Word*        gpWord;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Word::operator new(size_t, Dictionary* pDictionary)
+void* Word::operator new(size_t iSize, Dictionary* pDictionary)
 {
+  ASSERT(iSize);
   i8 iWordSize = sizeof(Word);
   Word* pWord = pDictionary->pAllocWord(iWordSize);
   

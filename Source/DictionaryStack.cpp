@@ -9,6 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* DictionaryStack::operator new(size_t iSize)
 {
+  ASSERT(iSize);
   vFatal("fatal: DictionaryStack class cannot be new'd");
   
    ASSERT(0);

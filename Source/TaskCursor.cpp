@@ -12,6 +12,7 @@ extern TaskList*   gpTaskList;
 /*----------------------------------------------------------------------------*/
 void* TaskCursor::operator new(size_t iSize, TaskCursor* pTaskCursor)
 {
+  ASSERT(iSize);
   return pTaskCursor;
 }
 
