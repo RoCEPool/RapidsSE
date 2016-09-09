@@ -28,8 +28,9 @@ void DictionaryStack::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 DictionaryStack::DictionaryStack(void)
+: Object(CN_DICTIONARYSTACK)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
 
   m_iTop = -1;
 
@@ -37,6 +38,8 @@ DictionaryStack::DictionaryStack(void)
     m_pDictionary[i] = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(DictionaryStack));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +47,7 @@ DictionaryStack::DictionaryStack(void)
 /*----------------------------------------------------------------------------*/
 DictionaryStack::~DictionaryStack(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +55,7 @@ DictionaryStack::~DictionaryStack(void)
 /*----------------------------------------------------------------------------*/
 i8 DictionaryStack::iCount(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   return m_iTop + 1;
 }
@@ -62,7 +65,7 @@ i8 DictionaryStack::iCount(void)
 /*----------------------------------------------------------------------------*/
 void DictionaryStack::vDiscard(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
   ASSERT(m_iTop <  C_DICTIONARY_STACK);
@@ -77,7 +80,7 @@ void DictionaryStack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 void DictionaryStack::vDump(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   for (i8 i = m_iTop; i >= 0; i--)
     vTrace("Dic %p %lld %s\n",m_pDictionary[i],i,m_pDictionary[i]->sName().a());
@@ -88,7 +91,7 @@ void DictionaryStack::vDump(void)
 /*----------------------------------------------------------------------------*/
 Word* DictionaryStack::pFind(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
 
@@ -102,7 +105,7 @@ Word* DictionaryStack::pFind(s& sName)
 /*----------------------------------------------------------------------------*/
 Word* DictionaryStack::pFind(const char* aName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
   
@@ -121,7 +124,7 @@ Word* DictionaryStack::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 Word* DictionaryStack::pFindFunc(Tasks::pFUN pFunc)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   for (i8 i = m_iTop; i >= 0; i--) {
     for (Word* pWord = m_pDictionary[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
@@ -137,7 +140,7 @@ Word* DictionaryStack::pFindFunc(Tasks::pFUN pFunc)
 /*----------------------------------------------------------------------------*/
 bool DictionaryStack::bForget(s& sName)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
     
@@ -154,7 +157,7 @@ bool DictionaryStack::bForget(s& sName)
 /*----------------------------------------------------------------------------*/
 Word* DictionaryStack::pLocate(Cell* pCell)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
 
   for (i8 i = m_iTop; i >= 0; i--) {
     for (Word* pWord = m_pDictionary[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
@@ -171,7 +174,7 @@ Word* DictionaryStack::pLocate(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 Dictionary* DictionaryStack::pPick(i8 iPick)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   Dictionary* pDic = m_pDictionary[m_iTop - iPick];
   
@@ -183,7 +186,7 @@ Dictionary* DictionaryStack::pPick(i8 iPick)
 /*----------------------------------------------------------------------------*/
 void DictionaryStack::vPush(Dictionary* pDictionary)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= -1);
   ASSERT(m_iTop <  C_DICTIONARY_STACK - 1);
@@ -200,7 +203,7 @@ void DictionaryStack::vPush(Dictionary* pDictionary)
 /*----------------------------------------------------------------------------*/
 Dictionary* DictionaryStack::pTop(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
 
   Dictionary* pTop = m_pDictionary[m_iTop];
   
@@ -216,6 +219,8 @@ Dictionary* DictionaryStack::pTop(void)
 /*----------------------------------------------------------------------------*/
 Footer* DictionaryStack::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK);
+  
   return &m_xFooter;
 }
 

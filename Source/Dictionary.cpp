@@ -53,7 +53,7 @@ void Dictionary::operator delete(void* pBufferAddress)
 Dictionary::Dictionary(void)
 : Object(CN_DICTIONARY)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   m_sName  = "<main>";
   m_bFrozen = false;
@@ -63,6 +63,8 @@ Dictionary::Dictionary(void)
   //vInit();
   
   Memory::vCheckInitialised(this,sizeof(Dictionary));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,7 @@ Dictionary::Dictionary(void)
 /*----------------------------------------------------------------------------*/
 Dictionary::~Dictionary(void)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +80,7 @@ Dictionary::~Dictionary(void)
 /*----------------------------------------------------------------------------*/
 void Dictionary::vAddConstant(const char* aName, i8 iVal)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   Word* pNewWord = new(this) Word(aName);
   
@@ -94,7 +96,7 @@ void Dictionary::vAddConstant(const char* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 void Dictionary::vAddConstant(const char* aName, const char* aValue)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   Word* pNewWord = new(this) Word(aName);
   
@@ -110,7 +112,7 @@ void Dictionary::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 Word* Dictionary::pAllocWord(i8 iBytes)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   ASSERT(!m_bFrozen);
   
@@ -130,7 +132,7 @@ Word* Dictionary::pAllocWord(i8 iBytes)
 /*----------------------------------------------------------------------------*/
 Word* Dictionary::pCurrentWord(void)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   return m_pCurrentWord;
 }
@@ -158,7 +160,7 @@ void Dictionary::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 Word* Dictionary::pFind(const char* aName)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
     if (String::bEqualTo(aName,pWord->sName().a(),C_NO_CASE))
@@ -172,7 +174,7 @@ Word* Dictionary::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 Word* Dictionary::pFindFunc(Tasks::pFUN pFunc)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
     if (WT_PRIMITIVE == pWord->eWordType() && pFunc == pWord->pFunc())
@@ -186,7 +188,7 @@ Word* Dictionary::pFindFunc(Tasks::pFUN pFunc)
 /*----------------------------------------------------------------------------*/
 bool Dictionary::bForget(s& sName)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
 
   Word* pWordDelete = nullptr;
   
@@ -224,7 +226,7 @@ bool Dictionary::bForget(s& sName)
 /*----------------------------------------------------------------------------*/
 void Dictionary::vFreeWord(Word* pWord)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   gpSmallHeap->vFreeObject(pWord);
 }
@@ -234,7 +236,7 @@ void Dictionary::vFreeWord(Word* pWord)
 /*----------------------------------------------------------------------------*/
 bool Dictionary::bFrozen(void)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   return m_bFrozen;
 }
@@ -244,7 +246,7 @@ bool Dictionary::bFrozen(void)
 /*----------------------------------------------------------------------------*/
 void Dictionary::vFrozen(bool bFrozen)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   m_bFrozen = bFrozen;
 }
@@ -254,7 +256,7 @@ void Dictionary::vFrozen(bool bFrozen)
 /*----------------------------------------------------------------------------*/
 bool Dictionary::bHasWords(void)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
 
   if (m_pCurrentWord)
     return true;
@@ -267,7 +269,7 @@ bool Dictionary::bHasWords(void)
 /*----------------------------------------------------------------------------*/
 void Dictionary::vInit(void)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   m_pCurrentWord = nullptr;
   
@@ -282,7 +284,7 @@ void Dictionary::vInit(void)
 /*----------------------------------------------------------------------------*/
 bool Dictionary::bIsName(s& sName)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
@@ -294,7 +296,7 @@ bool Dictionary::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 s& Dictionary::sName(void)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   return m_sName;
 }
@@ -304,7 +306,7 @@ s& Dictionary::sName(void)
 /*----------------------------------------------------------------------------*/
 void Dictionary::vName(const char* aName)
 {
-  _precondition_(_MAGIC_,_ADDRESS_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   m_sName = aName;
 }
@@ -318,6 +320,8 @@ void Dictionary::vName(const char* aName)
 /*----------------------------------------------------------------------------*/
 Footer* Dictionary::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY);
+  
   return &m_xFooter;
 }
 
