@@ -787,6 +787,9 @@ namespace Tasks
     static void vClient(NNP_Task nnpTask);         
     static void vServer(NNP_Task nnpTask);
     
+    // utilities
+    static void vBytesMagnitude(NNP_Task nnpTask);
+    
     Footer* pFooter(void);
   };
   

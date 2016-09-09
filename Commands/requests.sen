@@ -548,7 +548,7 @@ freespace .
 
       object@ isTable if
         " " concat
-        object@ execute table.space >str concat " bytes" concat
+        object@ execute table.space bytes.magnitude concat
       then
       ")" concat
 
