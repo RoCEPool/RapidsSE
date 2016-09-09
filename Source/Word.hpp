@@ -28,6 +28,8 @@ namespace Dictionaries
   
   class Word : public Object
   {
+    friend class Dictionary;
+    
   private:
     s32         m_sName;       // the name of this word
     eWT         m_eWordType;   // type of word
@@ -44,9 +46,7 @@ namespace Dictionaries
     void* operator new(size_t, Dictionary* pDictionary);
     void  operator delete(void* pWordAddress);
     
-    Word(void);
     Word(const char* sName);
-    Word(eWT eWordType, Tasks::pFUN pFunc);
     ~Word(void);
     
     void  vAddr(Cell* pCell);

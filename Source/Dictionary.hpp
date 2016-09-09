@@ -33,7 +33,7 @@ namespace Dictionaries
 
     void  vAddConstant(const char* aName, i8 iVal);
     void  vAddConstant(const char* aName, const char* aValue);
-    Word* pAllocWord(i8 iBytes);
+    Word* pAllocWord(eCN eClassNo);
     Word* pCurrentWord(void);
     Word* pFind(const char* aName);
     Word* pFindFunc(Tasks::pFUN pFunc);

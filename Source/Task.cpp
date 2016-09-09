@@ -233,9 +233,10 @@ void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
   
   Dictionary* pDic = m_xDictionaryStack.pTop();
   
-  Word* pWord = new(pDic) Word(WT_PRIMITIVE,pFunc);
+  Word* pWord = new(pDic) Word(pName);
   
-  pWord->vName(pName);
+  pWord->vWordType(WT_PRIMITIVE);
+  pWord->vFunc(pFunc);
   pWord->vImmediate(bImmediate);
 }
 

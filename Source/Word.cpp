@@ -14,18 +14,10 @@ extern Word*        gpWord;
 void* Word::operator new(size_t iSize, Dictionary* pDictionary)
 {
   ASSERT(iSize);
-  i8 iWordSize = sizeof(Word);
-  Word* pWord = pDictionary->pAllocWord(iWordSize);
+
+  Word* pWord = pDictionary->pAllocWord(CN_WORD);
   
-  pWord->m_sName       = "";
-  pWord->m_eWordType   = WT_ROUTINE;
   pWord->m_pDictionary = pDictionary;
-  pWord->m_pKind       = gpWord ? gpWord : pWord;
-  pWord->m_bImmediate  = false;
-  pWord->m_iDataBytes  = 0;
-  
-  pWord->m_xCode.m_pFunc = &Tasks::Task::vEnter;
-  pWord->m_xBody.m_pCell = pWord->pFirstCell();
   
   return pWord;
 }
@@ -45,43 +37,20 @@ void Word::operator delete(void* pWordAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Word::Word(void)
-: Object(CN_WORD)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
-  
-  Memory::vCheckInitialised(this,sizeof(Word));
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
 Word::Word(const char* sName)
 : Object(CN_WORD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  vName(sName);
+  m_sName       = sName;
+  m_eWordType   = WT_ROUTINE;
+  //m_pDictionary = pDictionary;
+  m_pKind       = gpWord ? gpWord : this;
+  m_bImmediate  = false;
+  m_iDataBytes  = 0;
   
-  Memory::vCheckInitialised(this,sizeof(Word));
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Word::Word(eWT eWordType, pFUN pFunc)
-: Object(CN_WORD)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
-  
-  _class_(CN_WORD);
-  
-  m_eWordType     = eWordType;
-  m_xCode.m_pFunc = pFunc;
+  m_xCode.m_pFunc = &Tasks::Task::vEnter;
+  m_xBody.m_pCell = pFirstCell();
   
   Memory::vCheckInitialised(this,sizeof(Word));
   

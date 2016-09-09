@@ -112,17 +112,17 @@ void Dictionary::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 /* allocate a word                                                            */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pAllocWord(i8 iBytes)
+Word* Dictionary::pAllocWord(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   ASSERT(!m_bFrozen);
   
-  ASSERT(iBytes >= static_cast<i8>(sizeof(Word)));
+  ASSERT(eClassNo == CN_WORD);
   
   Word* pWord = reinterpret_cast<Word*>(gpMediumHeap->pAllocObject(CN_WORD));
   
-  pWord->vPrevWord(m_pCurrentWord);
+  pWord->m_pPrevWord = m_pCurrentWord;
   
   m_pCurrentWord = pWord;
   
