@@ -30,7 +30,7 @@ void Partition::operator delete(void* pBufferAddress)
 Partition::Partition(void)
 : Object(CN_PARTITION)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   m_zLock.vCheckInit();
   m_iRowStrands = 0;
@@ -38,6 +38,8 @@ Partition::Partition(void)
   m_pTailStrand = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(Partition));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,6 +47,7 @@ Partition::Partition(void)
 /*----------------------------------------------------------------------------*/
 Partition::~Partition(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
 }
 
@@ -69,7 +72,7 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 bool Partition::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -104,6 +107,7 @@ bool Partition::bInsertRow(Transactions::TxRef* pTxRef, StrVal* pRowStr)
 /*----------------------------------------------------------------------------*/
 RowStrand* Partition::pHeadStrand(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   return m_pHeadStrand;
 }
 
@@ -112,6 +116,7 @@ RowStrand* Partition::pHeadStrand(void)
 /*----------------------------------------------------------------------------*/
 RowStrand* Partition::pTailStrand(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   return m_pTailStrand;
 }
 
@@ -120,7 +125,7 @@ RowStrand* Partition::pTailStrand(void)
 /*----------------------------------------------------------------------------*/
 void Partition::vTruncate(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -146,7 +151,7 @@ void Partition::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 bool Partition::bExtendPartition(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
    RowStrand* pNewStrand = new RowStrand;
   
@@ -183,6 +188,8 @@ bool Partition::bExtendPartition(void)
 /*----------------------------------------------------------------------------*/
 Footer* Partition::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION);
+  
   return &m_xFooter;
 }
 

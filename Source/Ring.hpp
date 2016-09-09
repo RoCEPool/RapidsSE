@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Ring
+  class Ring : public Object
   {
     static const i8 C_ASSIGNMENT = 16;
 

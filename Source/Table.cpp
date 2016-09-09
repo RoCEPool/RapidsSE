@@ -38,8 +38,7 @@ void Table::operator delete(void* pTableAddress)
 Table::Table(void)
 : Object(CN_TABLE)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   Word* pWord = Word::pToWord(this);
   
@@ -51,6 +50,8 @@ Table::Table(void)
   //m_xPartitions
   
   Memory::vCheckInitialised(this,sizeof(Table));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,8 +60,7 @@ Table::Table(void)
 Table::Table(const char* pTableName)
 : Object(CN_TABLE)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   m_sTableName = pTableName;
   
@@ -72,7 +72,7 @@ Table::Table(const char* pTableName)
 /*----------------------------------------------------------------------------*/
 Table::~Table(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,8 +80,7 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 i8 Table::iRowBuffers(void)
 {
-  _poolAddress_(this);
-  _class_(CN_TABLE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   i8 iBuffers = 0;
 
@@ -99,7 +98,7 @@ i8 Table::iRowBuffers(void)
 /*----------------------------------------------------------------------------*/
 Dictionary* Table::pDic(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return &m_xDictionary;
 }
@@ -109,7 +108,7 @@ Dictionary* Table::pDic(void)
 /*----------------------------------------------------------------------------*/
 void Table::vDump(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   vDump(CN_TABLE, this, pSingleTab());
 }
@@ -133,7 +132,7 @@ void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRowStr)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   Partition* pPartn = pPartition(iPartition);
   
@@ -147,7 +146,7 @@ void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRowStr)
 /*----------------------------------------------------------------------------*/
 void Table::vTruncate(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   m_xPartitions.vTruncate();
 }
@@ -157,7 +156,7 @@ void Table::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 char* Table::pTableName(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_sTableName.a();
 }
@@ -167,7 +166,7 @@ char* Table::pTableName(void)
 /*----------------------------------------------------------------------------*/
 Partition* Table::pPartition(i8 iPartition)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   Partition* pPart = m_xPartitions.pPartition(iPartition);
   
@@ -183,6 +182,8 @@ Partition* Table::pPartition(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 Footer* Table::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE);
+  
   return &m_xFooter;
 }
 

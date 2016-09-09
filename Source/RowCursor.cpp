@@ -40,8 +40,7 @@ void RowCursor::operator delete(void* pRowCursorAddress)
 RowCursor::RowCursor(void)
 : Object(CN_ROWCURSOR)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   m_pTable     = nullptr;
   m_iPartition = 0;
@@ -52,6 +51,8 @@ RowCursor::RowCursor(void)
   m_pRow       = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(RowCursor));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,8 +60,7 @@ RowCursor::RowCursor(void)
 /*----------------------------------------------------------------------------*/
 RowCursor::~RowCursor(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,8 +68,7 @@ RowCursor::~RowCursor(void)
 /*----------------------------------------------------------------------------*/
 void RowCursor::vBegin(i8 iPartition)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
 
   m_iPartition = iPartition;
   
@@ -84,8 +83,7 @@ void RowCursor::vBegin(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 void RowCursor::vEnd(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   m_pPartition = nullptr;
   m_pRowStrand = nullptr;
@@ -98,8 +96,7 @@ void RowCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 void RowCursor::vFirst(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   m_pPartition = m_pTable->pPartition(m_iPartition);
   m_pRowStrand = m_pPartition->pHeadStrand();
@@ -121,8 +118,7 @@ void RowCursor::vFirst(void)
 /*----------------------------------------------------------------------------*/
 void RowCursor::vNext(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   ASSERT(m_pRow);
   
@@ -155,8 +151,7 @@ void RowCursor::vNext(void)
 /*----------------------------------------------------------------------------*/
 Row* RowCursor::pRow(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   return m_pRow;
 }
@@ -166,8 +161,7 @@ Row* RowCursor::pRow(void)
 /*----------------------------------------------------------------------------*/
 char* RowCursor::pRowAsStr(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   if (! m_pRow)
     return nullptr;
@@ -185,8 +179,7 @@ char* RowCursor::pRowAsStr(void)
 /*----------------------------------------------------------------------------*/
 Table* RowCursor::pTable(void)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   return m_pTable;
 }
@@ -196,8 +189,7 @@ Table* RowCursor::pTable(void)
 /*----------------------------------------------------------------------------*/
 void RowCursor::vTable(Table* pTable)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
   m_pTable = pTable;
   m_pRow   = nullptr;
@@ -212,6 +204,8 @@ void RowCursor::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 Footer* RowCursor::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR);
+  
   return &m_xFooter;
 }
 

@@ -29,7 +29,7 @@ Row::Row(i8 iDataBytes)
 : Header(CN_ROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
-   
+  
   m_iTxId      = -1;
   m_iDataBytes = iDataBytes;
 
@@ -37,7 +37,7 @@ Row::Row(i8 iDataBytes)
   
   Memory::vCheckInitialised(this,sizeof(Row));
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +136,7 @@ void Row::vTxId(i8 iTxId)
 /* get bytes required for row                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Row::iBytesRequired(const char* w)
-{
+{ 
   i8 iBytes = sizeof(Row) + sizeof(Footer) + String::iSize(w);
   
   return iBytes;

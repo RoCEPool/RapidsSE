@@ -30,7 +30,7 @@ void RowStrand::operator delete(void* pRowStrandAddress)
 RowStrand::RowStrand(void)
 : Object(CN_ROWSTRAND)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   m_zLock.vCheckInit();
   m_iRowBuffers  = 0;
@@ -40,11 +40,9 @@ RowStrand::RowStrand(void)
   m_pPrevStrand  = nullptr;
   m_pNextStrand  = nullptr;
   
-  pFooter()->vSetFooter();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
-  
   Memory::vCheckInitialised(this,sizeof(RowStrand));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +50,7 @@ RowStrand::RowStrand(void)
 /*----------------------------------------------------------------------------*/
 RowStrand::~RowStrand(void)
 {
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +76,7 @@ void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -106,7 +104,7 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
   
   m_zLock.vDropWrite();
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return bInserted;
 }
@@ -116,7 +114,7 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 /*----------------------------------------------------------------------------*/
 i8 RowStrand::iRowBuffers(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
 
   return m_iRowBuffers;
 }
@@ -126,7 +124,7 @@ i8 RowStrand::iRowBuffers(void)
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowStrand::pFirstBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return m_pFirstBuffer;
 }
@@ -136,7 +134,7 @@ RowBuffer* RowStrand::pFirstBuffer(void)
 /*----------------------------------------------------------------------------*/
 RowBuffer* RowStrand::pLastBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return m_pLastBuffer;
 }
@@ -146,7 +144,7 @@ RowBuffer* RowStrand::pLastBuffer(void)
 /*----------------------------------------------------------------------------*/
 RowStrand* RowStrand::pNextStrand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return m_pNextStrand;
 }
@@ -156,7 +154,7 @@ RowStrand* RowStrand::pNextStrand(void)
 /*----------------------------------------------------------------------------*/
 void RowStrand::vNextStrand(RowStrand* pNextStrand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   m_pNextStrand = pNextStrand;
 }
@@ -166,7 +164,7 @@ void RowStrand::vNextStrand(RowStrand* pNextStrand)
 /*----------------------------------------------------------------------------*/
 RowStrand* RowStrand::pPrevStrand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return m_pPrevStrand;
 }
@@ -176,7 +174,7 @@ RowStrand* RowStrand::pPrevStrand(void)
 /*----------------------------------------------------------------------------*/
 void RowStrand::vPrevStrand(RowStrand* pPrevStrand)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   m_pPrevStrand = pPrevStrand;
 }
@@ -186,7 +184,7 @@ void RowStrand::vPrevStrand(RowStrand* pPrevStrand)
 /*----------------------------------------------------------------------------*/
 void RowStrand::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -204,7 +202,7 @@ void RowStrand::vTruncate(void)
   
   m_zLock.vDropWrite();
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,7 +214,7 @@ void RowStrand::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 bool RowStrand::bExtendStrand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   if (m_iRowBuffers >= C_STRAND_LENGTH)
     return false;
@@ -244,7 +242,7 @@ bool RowStrand::bExtendStrand(void)
     m_iRowBuffers++;
   }
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWSTRAND);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return true;
 }
@@ -258,6 +256,8 @@ bool RowStrand::bExtendStrand(void)
 /*----------------------------------------------------------------------------*/
 Footer* RowStrand::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND);
+  
   return &m_xFooter;
 }
 

@@ -29,14 +29,15 @@ void Index::operator delete(void* pTableAddress)
 Index::Index(const char* pIndexName)
 : Object(CN_INDEX)
 {
-  _poolAddress_(this);
-  _magic_();
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_sIndexName = pIndexName;
   
   _class_(CN_INDEX);
   
   Memory::vCheckInitialised(this,sizeof(Index));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -44,7 +45,7 @@ Index::Index(const char* pIndexName)
 /*----------------------------------------------------------------------------*/
 Index::~Index(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -52,7 +53,7 @@ Index::~Index(void)
 /*----------------------------------------------------------------------------*/
 char* Index::pIndexName(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   return m_sIndexName.a();
 }
@@ -62,7 +63,7 @@ char* Index::pIndexName(void)
 /*----------------------------------------------------------------------------*/
 void Index::vDump(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   vTrace("Index %p: %s\n",
          this,
@@ -79,6 +80,8 @@ void Index::vDump(void)
 /*----------------------------------------------------------------------------*/
 Footer* Index::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX);
+  
   return &m_xFooter;
 }
 

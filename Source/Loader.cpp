@@ -42,7 +42,7 @@ void Loader::operator delete(void* pLoaderAddress)
 Loader::Loader(void)
 : Object(CN_LOADER)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   m_pTable      = nullptr;
   //m_xFile
@@ -52,6 +52,8 @@ Loader::Loader(void)
   m_pTxRef      = nullptr;
   
   Memory::vCheckInitialised(this,sizeof(Loader));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +61,7 @@ Loader::Loader(void)
 /*----------------------------------------------------------------------------*/
 Loader::~Loader(void)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   if (m_pScanBuffer)
     delete m_pScanBuffer;
@@ -70,6 +72,8 @@ Loader::~Loader(void)
 /*----------------------------------------------------------------------------*/
 Table* Loader::pTable(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
   return m_pTable;
 }
 
@@ -78,6 +82,8 @@ Table* Loader::pTable(void)
 /*----------------------------------------------------------------------------*/
 void Loader::vTable(Table* pTable)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
   m_pTable = pTable;
 }
 
@@ -86,6 +92,8 @@ void Loader::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 void Loader::vPath(s& sPath)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
   const char* pPath = sPath.a();
   
   m_xFile.vPath(pPath);
@@ -96,6 +104,8 @@ void Loader::vPath(s& sPath)
 /*----------------------------------------------------------------------------*/
 void Loader::vTxRef(TxRef* pTxRef)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
   m_pTxRef = pTxRef;
   
   vTrace("TxId %lld\n",pTxRef->iTxId());
@@ -107,6 +117,8 @@ void Loader::vTxRef(TxRef* pTxRef)
 /*----------------------------------------------------------------------------*/
 bool Loader::bOpenFile(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   bool b = m_xFile.bOpen(C_OPEN_READ);
   
   return b;
@@ -117,6 +129,8 @@ bool Loader::bOpenFile(void)
 /*----------------------------------------------------------------------------*/
 void Loader::vBegin(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   ASSERT( ! m_pScanBuffer );
   
   m_pScanBuffer = new ScanBuffer;
@@ -143,6 +157,8 @@ void Loader::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 bool Loader::bFetchRecord(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   m_pRecord = m_pScanBuffer->pScan(m_iLength);
   if ( m_pRecord )
     return true;
@@ -166,6 +182,8 @@ bool Loader::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 bool Loader::bInsertRow(i8 iPartn)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   ASSERT(iPartn < gxArguments.m_iPartitions);
   
   ValWsp xRow;
@@ -189,6 +207,8 @@ bool Loader::bInsertRow(i8 iPartn)
 /*----------------------------------------------------------------------------*/
 void Loader::vGetRecord(StrVal* pStrVal)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
   pStrVal->sStr()[m_iLength] = '\0';
   pStrVal->vSize();
@@ -199,6 +219,8 @@ void Loader::vGetRecord(StrVal* pStrVal)
 /*----------------------------------------------------------------------------*/
 void Loader::vEnd(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   delete m_pScanBuffer;
   m_pScanBuffer = nullptr;
 }
@@ -208,6 +230,8 @@ void Loader::vEnd(void)
 /*----------------------------------------------------------------------------*/
 void Loader::vCloseFile(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
   m_xFile.vClose();
 }
 
@@ -220,6 +244,8 @@ void Loader::vCloseFile(void)
 /*----------------------------------------------------------------------------*/
 Footer* Loader::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
+  
   return &m_xFooter;
 }
 

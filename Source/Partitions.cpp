@@ -32,8 +32,9 @@ void Partitions::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Partitions::Partitions(void)
+: Object(CN_PARTITIONS)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
   
   Memory::vCheckInitialised(this,sizeof(Partitions));
 }
@@ -43,6 +44,7 @@ Partitions::Partitions(void)
 /*----------------------------------------------------------------------------*/
 Partitions::~Partitions(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,6 +52,7 @@ Partitions::~Partitions(void)
 /*----------------------------------------------------------------------------*/
 Partition* Partitions::pPartition(i8 iPartition)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
   return &m_xPartition[iPartition];
 }
 
@@ -58,6 +61,7 @@ Partition* Partitions::pPartition(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 void Partitions::vTruncate(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
   i8 iPartn;
   for (iPartn = 0; iPartn < gxArguments.m_iPartitions; iPartn++)
     m_xPartition[iPartn].vTruncate();
@@ -72,6 +76,8 @@ void Partitions::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 Footer* Partitions::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS);
+  
   return &m_xFooter;
 }
 

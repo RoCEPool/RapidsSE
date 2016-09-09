@@ -10,7 +10,7 @@ namespace DBobjects
 {
   static const i8 C_TABLE_PARTITIONS = 8;
   
-  class Partitions
+  class Partitions : public Object
   {
   private:
     Partition m_xPartition[C_TABLE_PARTITIONS];

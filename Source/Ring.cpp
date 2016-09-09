@@ -28,8 +28,9 @@ void Ring::operator delete(void* pBufferAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Ring::Ring(void)
+: Object(CN_RING)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RING,_FOOTER_);
   
   for (auto i = 0; i < C_ASSIGNMENT; i++)
     m_iAssignment[i] = 0;
@@ -42,6 +43,7 @@ Ring::Ring(void)
 /*----------------------------------------------------------------------------*/
 Ring::~Ring(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RING,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,6 +55,8 @@ Ring::~Ring(void)
 /*----------------------------------------------------------------------------*/
 Footer* Ring::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RING);
+  
   return &m_xFooter;
 }
 
