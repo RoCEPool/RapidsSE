@@ -115,6 +115,8 @@ Buffer* BufferPool::pCreateRegion(s& sRegionName,
 BufferPool::BufferPool(s& sRegionName)
 : Header(CN_BUFFERPOOL)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
   m_iRegionSize    = 10_MB;
   m_iBufferSize  = 1_MB;
   m_sShmName     = sRegionName;
@@ -137,7 +139,9 @@ BufferPool::BufferPool(s& sRegionName)
   m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
   
-  // do not initialise
+  // do not initialise existing pool
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,6 +150,8 @@ BufferPool::BufferPool(s& sRegionName)
 BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
 : Header(CN_BUFFERPOOL)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
   gpBufferPool   = this;
   m_iRegionSize    = iRegionSize;
   m_iBufferSize  = iBufferSize;
@@ -160,8 +166,15 @@ BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
   m_pBase        = pCreateRegion(m_sShmName,m_iRegionSize,m_iBufferSize,m_iShmDescriptor);
   m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   
+  // initialise new pool
   vInitialise();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -172,10 +185,6 @@ void* BufferPool::operator new(size_t)
   
   return pBufferPool;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -215,6 +224,8 @@ BufferPool::BufferPool(void)
   vInitialise();
   
   Memory::vCheckInitialised(this,sizeof(BufferPool));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,7 +233,7 @@ BufferPool::BufferPool(void)
 /*----------------------------------------------------------------------------*/
 BufferPool::~BufferPool(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   bDetachPool();
 }
@@ -232,7 +243,7 @@ BufferPool::~BufferPool(void)
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAllocBuffer(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
@@ -254,7 +265,7 @@ Buffer* BufferPool::pAllocBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* check address is in pool                                                   */
 /*----------------------------------------------------------------------------*/
-void BufferPool::vCheckAddress(const void* pAddress) const
+void BufferPool::vCheckAddress(const void* pAddress)
 {
   ASSERT(pAddress >= m_pBase);
   ASSERT(pAddress <  m_pLimit);
@@ -263,9 +274,9 @@ void BufferPool::vCheckAddress(const void* pAddress) const
 /*----------------------------------------------------------------------------*/
 /* get buffer number of first usable buffer in pool                           */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferFirst(void) const
+bn BufferPool::nBufferFirst(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return 1_bn;
 }
@@ -273,9 +284,9 @@ bn BufferPool::nBufferFirst(void) const
 /*----------------------------------------------------------------------------*/
 /* get buffer number of last buffer in pool                                   */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferLast(void) const
+bn BufferPool::nBufferLast(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_iBufferCount - 1;
 }
@@ -283,9 +294,9 @@ bn BufferPool::nBufferLast(void) const
 /*----------------------------------------------------------------------------*/
 /* calculate next buffer number from given buffer number                      */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferNext(bn nBuffer) const
+bn BufferPool::nBufferNext(bn nBuffer)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // ALKA:
   //if (nBuffer + 1 == nBufferLast())
@@ -298,9 +309,9 @@ bn BufferPool::nBufferNext(bn nBuffer) const
 /*----------------------------------------------------------------------------*/
 /* calculate previous buffer number from given buffer number                  */
 /*----------------------------------------------------------------------------*/
-bn BufferPool::nBufferPrev(bn nBuffer) const
+bn BufferPool::nBufferPrev(bn nBuffer)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   // ALKA:
   //if (nBuffer - 1 == nBufferFirst())
@@ -313,9 +324,9 @@ bn BufferPool::nBufferPrev(bn nBuffer) const
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of a buffer                                              */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iBufferSize(void) const
+i8 BufferPool::iBufferSize(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_iBufferSize;
 }
@@ -325,7 +336,7 @@ i8 BufferPool::iBufferSize(void) const
 /*----------------------------------------------------------------------------*/
 bool BufferPool::bDetachPool(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   SysCall xSysCall;
   
@@ -341,7 +352,7 @@ bool BufferPool::bDetachPool(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vDump(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
          "InUse %lld FreeCount %lld FreeHead %lld\n",
@@ -379,7 +390,7 @@ void BufferPool::vDump(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vFree(Buffer* pBuffer)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   BufferFree* pFreeBuffer = pToBufferFree(pBuffer);
   
@@ -406,7 +417,7 @@ void BufferPool::vFree(Buffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::iFreePercent(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   i8 iFreePercent = DIV(iFreeSpace() * 100,iRegionSize());
   
@@ -418,7 +429,7 @@ i8 BufferPool::iFreePercent(void)
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::iFreeSpace(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   i8 iFreeSpace = m_iFreeCount * m_iBufferSize;
   
@@ -430,7 +441,7 @@ i8 BufferPool::iFreeSpace(void)
 /*----------------------------------------------------------------------------*/
 bool BufferPool::bHasDataSpace(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   i8   iPercent = iFreePercent();
   
@@ -444,7 +455,7 @@ bool BufferPool::bHasDataSpace(void)
 /*----------------------------------------------------------------------------*/
 void BufferPool::vInitialise(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   m_iAllocCount = 0;
   m_iFreeCount  = m_iBufferCount;
@@ -484,9 +495,9 @@ void BufferPool::vInitialise(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of pool                                                  */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iRegionSize(void) const
+i8 BufferPool::iRegionSize(void)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   return m_iRegionSize;
 }
@@ -494,9 +505,9 @@ i8 BufferPool::iRegionSize(void) const
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to allocated buffer                               */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pToBuffer(bn nBuffer) const
+Buffer* BufferPool::pToBuffer(bn nBuffer)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   i8 iOffset = m_iBufferSize * *nBuffer;
   
@@ -508,9 +519,9 @@ Buffer* BufferPool::pToBuffer(bn nBuffer) const
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
 /*----------------------------------------------------------------------------*/
-BufferFree* BufferPool::pToBufferFree(bn nBuffer) const
+BufferFree* BufferPool::pToBufferFree(bn nBuffer)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   BufferFree* pBufferFree = static_cast<BufferFree*>(pToBuffer(nBuffer));
   
@@ -520,9 +531,9 @@ BufferFree* BufferPool::pToBufferFree(bn nBuffer) const
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
 /*----------------------------------------------------------------------------*/
-BufferFree* BufferPool::pToBufferFree(Buffer* pBuffer) const
+BufferFree* BufferPool::pToBufferFree(Buffer* pBuffer)
 {
-  _class_(CN_BUFFERPOOL);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   BufferFree* pBufferFree = static_cast<BufferFree*>(pBuffer);
   
@@ -538,6 +549,8 @@ BufferFree* BufferPool::pToBufferFree(Buffer* pBuffer) const
 /*----------------------------------------------------------------------------*/
 Footer* BufferPool::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL);
+  
   return &m_xFooter;
 }
 

@@ -57,12 +57,12 @@ namespace Pool
     ~BufferPool(void);
     
     Buffer* pAllocBuffer(void);
-    bn   nBufferFirst(void) const;
-    bn   nBufferLast(void) const;
-    bn   nBufferNext(bn nBuffer) const;
-    bn   nBufferPrev(bn nBuffer) const;
-    i8   iBufferSize(void) const;
-    void vCheckAddress(const void* pAddress) const;
+    bn   nBufferFirst(void);
+    bn   nBufferLast(void);
+    bn   nBufferNext(bn nBuffer);
+    bn   nBufferPrev(bn nBuffer);
+    i8   iBufferSize(void);
+    void vCheckAddress(const void* pAddress);
     bool bDetachPool(void);
     void vDump(void);
     void vFree(Buffer* pBuffer);
@@ -70,10 +70,10 @@ namespace Pool
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(void);
-    i8   iRegionSize(void) const;
-    Buffer* pToBuffer(bn nBuffer) const;
-    BufferFree* pToBufferFree(bn nBuffer) const;
-    BufferFree* pToBufferFree(Buffer* pBuffer) const;
+    i8   iRegionSize(void);
+    Buffer* pToBuffer(bn nBuffer);
+    BufferFree* pToBufferFree(bn nBuffer);
+    BufferFree* pToBufferFree(Buffer* pBuffer);
     
     Footer* pFooter(void);
    };

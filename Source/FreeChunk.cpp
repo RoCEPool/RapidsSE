@@ -44,12 +44,12 @@ FreeChunk::~FreeChunk(void)
 /*----------------------------------------------------------------------------*/
 /* initialize a free chunk                                                    */
 /*----------------------------------------------------------------------------*/
-void FreeChunk::vInit(eCN eClass)
+void FreeChunk::vInit(eCN eClassNo)
 {
-  _poolAddress_(this);
+  _precondition_(_ADDRESS_,_MAGIC_);
 
   vSetMagic();
-  vClass(eClass);
+  vClass(eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,6 +81,8 @@ void FreeChunk::vNextFree(FreeChunk* pNextFree)
 /*----------------------------------------------------------------------------*/
 Footer* FreeChunk::pFooter(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
   return &m_xFooter;
 }
 
