@@ -2,7 +2,7 @@
 /* interface.sen -- interface group                                           */
 /*============================================================================*/
 
-"interface.sen" .
+"interface.sen" .putVerbose
 
 "seitfList.sen" >>:
 "seitfCursor.sen" >>:

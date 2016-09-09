@@ -2,7 +2,7 @@
 /* loader.sen -- Table Loader                                                 */
 /*============================================================================*/
 
-"loader.sen" .
+"loader.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create a loader using name from input stream (doesnt leave loader on stk)  */

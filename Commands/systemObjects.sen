@@ -2,7 +2,7 @@
 /* systemObjects.sen -- create "the system" objects                           */
 /*============================================================================*/
 
-"systemObjects.sen" .
+"systemObjects.sen" .putVerbose
 
 ( tasklist will already exist )
 

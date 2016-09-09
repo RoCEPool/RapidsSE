@@ -2,7 +2,7 @@
 /* socket.sen -- socket related words                                         */
 /*============================================================================*/
 
-"socket.sen" .
+"socket.sen" .putVerbose
 
 "socket_server.sen" >>:
 "socket_client.sen" >>:

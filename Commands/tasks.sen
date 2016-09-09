@@ -2,7 +2,7 @@
 /* tasks.sen -- tasks group                                                   */
 /*============================================================================*/
 
-"tasks.sen" .
+"tasks.sen" .putVerbose
 
 "task.sen" >>:
 "taskList.sen" >>:

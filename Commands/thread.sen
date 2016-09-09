@@ -2,7 +2,7 @@
 /* thread.sen -- thread related words                                         */
 /*============================================================================*/
 
-"thread.sen" .
+"thread.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create a thread using string from input stream as name                     */

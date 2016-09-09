@@ -2,7 +2,7 @@
 /* trace.sen -- trace file related words                                      */
 /*============================================================================*/
 
-"trace.sen" .
+"trace.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* define the trace file                                                      */
@@ -16,7 +16,7 @@ file: trace_file
 : open_trace
   "/tmp/se_trace.txt" trace_file file.path!
   open_append trace_file file.open
-  if "trace file opened" . else "trace file not opened" . then
+  if "trace file opened" .putVerbose else "trace file not opened" . then
 ;
 
 open_trace

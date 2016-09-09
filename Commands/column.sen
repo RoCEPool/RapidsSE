@@ -2,7 +2,7 @@
 /* column.sen -- column related words                                         */
 /*============================================================================*/
 
-"column.sen" .
+"column.sen" .putVerbose
 
 : column: ;
 

@@ -2,7 +2,7 @@
 /* gridModel.sen -- grid model group                                          */
 /*============================================================================*/
 
-"gridModel.sen" .
+"gridModel.sen" .putVerbose
 
 "node.sen" >>:
 "grid.sen" >>:

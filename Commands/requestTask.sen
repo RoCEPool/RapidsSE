@@ -2,7 +2,7 @@
 /* requestTask.sen -- request processing task                                 */
 /*============================================================================*/
 
-"requestServer.sen" .
+"requestServer.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -92,13 +92,13 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : requestLoop
 
-    "renaming to Request Task" .
+    "renaming to Request Task" .putVerbose
 
     "requestTask" task.this task.name!
 
     requestQueue  task.this task.queue!
 
-    "Request Server running..." .
+    "Request Server running..." .putVerbose
 
     begin
       depth 0 != if "request task has grown" . debug.trap then

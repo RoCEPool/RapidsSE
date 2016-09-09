@@ -28,6 +28,8 @@ Arguments::Arguments(void)
   m_bStop       = false;
 
   m_bBgTasks    = false;
+  m_bVerbose    = false;
+  
   m_iPartition  = 0;
   
   Memory::vCheckInitialised(this,sizeof(Arguments));
@@ -113,6 +115,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
       m_bBgTasks = true;
+      continue;
+    }
+
+    if (String::bEqualTo("--verbose",argv[iArg],C_NO_CASE)) {
+      m_bVerbose = true;
       continue;
     }
     

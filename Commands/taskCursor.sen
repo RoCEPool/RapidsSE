@@ -2,7 +2,7 @@
 /* taskCursor.sen -- Task Cursor                                              */
 /*============================================================================*/
 
-"taskCursor.sen" .
+"taskCursor.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create a taskCursor using name from input stream                           */

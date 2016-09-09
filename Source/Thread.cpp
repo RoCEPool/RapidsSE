@@ -3,11 +3,14 @@
 /*============================================================================*/
 
 #include "Threads.h"
+#include "Arguments.hpp"
 
 extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
 
 extern NP_Task      gnpRootTask;
+
+extern Arguments    gxArguments;
 
 extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
@@ -67,11 +70,13 @@ void* Thread::vEntry(void* pArg)
 {
   Thread* pThread = static_cast<Thread*>(pArg);
   
-  vTrace("[[%s]] Thread::vEntry %p\n",pThread->sName().a(),pThread);
+  if (gxArguments.m_bVerbose)
+    vTrace("[[%s]] Thread::vEntry %p\n",pThread->sName().a(),pThread);
   
   pThread->vLoop();
 
-  vTrace("[[%s]] Thread:;vEntry %p exiting\n",pThread->sName().a(),pThread);
+  if (gxArguments.m_bVerbose)
+    vTrace("[[%s]] Thread:;vEntry %p exiting\n",pThread->sName().a(),pThread);
   
   delete pThread;
   
@@ -159,7 +164,7 @@ void Thread::vLoop(void)
       m_npTask = m_pTaskSet->npPop();
       
       if ( ! m_npTask ) {
-        if (bWarn)
+        if (bWarn && gxArguments.m_bVerbose)
           vTrace("[[%s]] Thread::vLoop no task\n",m_sName.a());
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
@@ -175,7 +180,8 @@ void Thread::vLoop(void)
       
       m_npTask->vState(TS_RUNNING);
       
-      vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.a(),m_npTask->sName().a(),*m_npTask);
+      if (gxArguments.m_bVerbose)
+        vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.a(),m_npTask->sName().a(),*m_npTask);
       
       // set rdtscp
       m_npTask->vLoop();

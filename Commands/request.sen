@@ -2,7 +2,7 @@
 /* requestSet.sen -- request set group                                        */
 /*============================================================================*/
 
-"requestSet.sen" .
+"requestSet.sen" .putVerbose
 
 "copier.sen" >>:
 "exporter.sen" >>:

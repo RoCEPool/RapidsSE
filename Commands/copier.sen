@@ -2,7 +2,7 @@
 /* copier.sen -- table copier                                                 */
 /*============================================================================*/
 
-"copier.sen" .
+"copier.sen" .putVerbose
 
 : copy ( ^fromTable ^toTable )
 

@@ -2,7 +2,7 @@
 /* jData.sen -- generate jTest data                                           */
 /*============================================================================*/
 
-"jData.sen" .
+"jData.sen" .putVerbose
 
 : >DigitWords
 

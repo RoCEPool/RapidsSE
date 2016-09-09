@@ -30,6 +30,7 @@ namespace StorageEngine
     
     // options
     bool m_bBgTasks;    // start background tasks
+    bool m_bVerbose;    // print extra stuff
     
     // seitf options
     i8   m_iPartition;  // which partition

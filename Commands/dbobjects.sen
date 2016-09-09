@@ -2,7 +2,7 @@
 /* dbObjects.sen -- dbObjects group                                           */
 /*============================================================================*/
 
-"dbObjects.sen" .
+"dbObjects.sen" .putVerbose
 
 "tenant.sen" >>:
 "user.sen" >>:

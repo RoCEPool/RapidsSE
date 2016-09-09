@@ -2,7 +2,7 @@
 /* taskList.sen -- task list related words                                    */
 /*============================================================================*/
 
-"taskList.sen" .
+"taskList.sen" .putVerbose
 
 : taskList:
     create

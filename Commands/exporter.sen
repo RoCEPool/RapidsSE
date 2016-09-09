@@ -2,7 +2,7 @@
 /* exporter.sen -- table exporter                                              */
 /*============================================================================*/
 
-"exporter.sen" .
+"exporter.sen" .putVerbose
 
 : export ( "<fileNm>" ^table )
 

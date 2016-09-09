@@ -4,6 +4,8 @@
 
 #include "Api.hpp"
 
+extern Arguments gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
@@ -614,7 +616,8 @@ eIE RapidsSE_SEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 eIE RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition)
 {
-  vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
+  if (gxArguments.m_bVerbose)
+    vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
   
   //SEitf* pSEitf = pSEitf = RapidsSE::pSEitfNew();
   SEitf* pSEitf = new SEitf(iPartition);

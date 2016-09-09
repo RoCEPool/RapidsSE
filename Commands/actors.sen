@@ -2,7 +2,7 @@
 /* actors.sen -- actors group                                                 */
 /*============================================================================*/
 
-"actors.sen" .
+"actors.sen" .putVerbose
 
 int: queryCount
 
@@ -16,7 +16,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : startActors
 
-  "startActors" .
+  "startActors" .putVerbose
 
   bgtasks if
 

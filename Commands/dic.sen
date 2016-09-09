@@ -2,7 +2,7 @@
 /* dic.sen -- dictionary related words                                        */
 /*============================================================================*/
 
-"dic.sen" .
+"dic.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* dic is use as a kind of word to identify dictionaries                      */

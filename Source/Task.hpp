@@ -366,6 +366,7 @@ namespace Tasks
     static void vPushEmbedded(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
     static void vPutNewline(NNP_Task nnpTask);     
+    static void vPutVerbose(NNP_Task nnpTask);
     static void vRdtscp(NNP_Task nnpTask);
     static void vRepeat(NNP_Task nnpTask);         
     static void vRetryPoint(NNP_Task nnpTask);

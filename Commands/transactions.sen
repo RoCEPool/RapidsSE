@@ -2,7 +2,7 @@
 /* transactions.sen -- transactions group                                     */
 /*============================================================================*/
 
-"transactions.sen" .
+"transactions.sen" .putVerbose
 
 "txCollection.sen" >>:
 "txCursor.sen" >>:

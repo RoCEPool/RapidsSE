@@ -2,7 +2,7 @@
 /* errorCodes.sen -- error codes for se                                       */
 /*============================================================================*/
 
-"errorCodes.sen" .
+"errorCodes.sen" .putVerbose
 
   0  constant  EC_SUCCESS
 

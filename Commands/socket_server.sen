@@ -1,4 +1,4 @@
-"server.sen" .
+"server.sen" .putVerbose
 : server_code:
     "server running" .
     4334 SocketListen

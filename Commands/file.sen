@@ -2,7 +2,7 @@
 /* file.sen -- file related words                                             */
 /*============================================================================*/
 
-"file.sen" .
+"file.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* file is use as a kind of word to identify files                            */

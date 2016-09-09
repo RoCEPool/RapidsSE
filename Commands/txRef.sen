@@ -2,7 +2,7 @@
 /* txRef.sen -- Tx Reference                                                  */
 /*============================================================================*/
 
-"txref.sen" .
+"txref.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create a txRef using name on the stack                   (leaves on stack) */

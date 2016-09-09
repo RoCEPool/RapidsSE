@@ -2,7 +2,7 @@
 /* seitfList.sen -- list of se interfaces                                     */
 /*============================================================================*/
 
-"seitfList.sen" .
+"seitfList.sen" .putVerbose
 
 : seitfList:
     create

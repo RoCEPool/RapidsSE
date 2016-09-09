@@ -2,7 +2,7 @@
 /* tenant.sen -- tenant related words                                         */
 /*============================================================================*/
 
-"tenant.sen" .
+"tenant.sen" .putVerbose
 
 : tenant ;
 

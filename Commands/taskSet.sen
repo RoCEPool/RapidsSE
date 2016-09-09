@@ -2,7 +2,7 @@
 /* taskSet.sen -- task set related words                                      */
 /*============================================================================*/
 
-"taskSet.sen" .
+"taskSet.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create a task set using string from input stream as name                   */

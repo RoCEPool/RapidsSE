@@ -36,7 +36,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
     ASSERT(0);
   }
   
-  vTrace("Shm mapped at %p\n",pRegion);
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm mapped at %p\n",pRegion);
   
   return reinterpret_cast<Buffer*>(pRegion);
 }
@@ -67,7 +68,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
     ASSERT(0);
   }
   
-  vTrace("Shm mapped at %p\n",pRegion);
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm mapped at %p\n",pRegion);
   
   return reinterpret_cast<Buffer*>(pRegion);
 }
@@ -97,7 +99,8 @@ Buffer* BufferPool::pCreateRegion(s& sRegionName,
     ASSERT(0);
   }
   
-  vTrace("Shm mapped at %p\n",pRegion);
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm mapped at %p\n",pRegion);
   
   return reinterpret_cast<Buffer*>(pRegion);
 }

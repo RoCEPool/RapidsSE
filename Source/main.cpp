@@ -14,7 +14,7 @@ void vTest1(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {  
-  printf("RapidsSE %s (%s %s)\n",RAPIDSSE_VERSION_STRING,__DATE__,__TIME__);
+  printf("RapidsSE v%s (%s %s)\n",RAPIDSSE_VERSION_STRING,__DATE__,__TIME__);
   
   RapidsSE::vCheckAssumptions();
     
@@ -34,7 +34,8 @@ int main(int argc, const char* argv[])
   if ( ! gxArguments.bParse(argc,argv) )
     ASSERT(0);
   
-  gxArguments.vPrint();
+  if (gxArguments.m_bVerbose)
+    gxArguments.vPrint();
   
   // either create new shm region
   // or attach to an existing one

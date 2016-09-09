@@ -575,6 +575,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("push",            &vPush,             false);
   vAddPrimitive(".put",            &vPut,              false);
   vAddPrimitive(".\\n",            &vPutNewline,       false);
+  vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
   vAddPrimitive("repeat",          &vRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
@@ -1083,13 +1084,13 @@ void Task::vAddRoutines(void)
 #ifdef __APPLE__
   sDefinition =
   ": ::dicCompile"
-  "  \"::dicCompile\" ."
-  "  gwd ."
+  "  \"::dicCompile\" .putVerbose"
+  "  gwd .putVerbose"
   "  \"../../../../Commands\" cwd"
-  "  gwd ."
+  "  gwd .putVerbose"
 //  "  traceon"
   "  \"compile.sen\" >>:"
-  "  \"::dicCompile exit\" ."
+  "  \"::dicCompile exit\" .putVerbose"
   "  ::exit"
   "  ;";
 #else
@@ -1100,7 +1101,7 @@ void Task::vAddRoutines(void)
   "  \"../../Commands\" cwd"
   "  gwd ."
   "  \"compile.sen\" >>:"
-  "  \"::dicCompile exit\" ."
+  "  \"::dicCompile exit\" .putVerbose"
   "  ::exit"
   "  ;";
 #endif
@@ -1133,11 +1134,11 @@ Word* Task::pCompileColon(s& sDefinition)
   
   // get :
   vTokenNext();
-  vTrace("CompileColon: %s\n",m_sToken.a());
+  //vTrace("CompileColon: %s\n",m_sToken.a());
   
   // get name of word
   vTokenNext();
-  vTrace("CompileColon: %s\n",m_sToken.a());
+  //vTrace("CompileColon: %s\n",m_sToken.a());
   
   pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sToken.a());
   
@@ -1145,7 +1146,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
   while (TK_NONE != m_eToken) {
     
-    vTrace("CompileColon: %s\n",m_sToken.a());
+    //vTrace("CompileColon: %s\n",m_sToken.a());
     
     if (String::bEqualTo(";",m_sToken.a()))
       break;
@@ -4336,6 +4337,27 @@ ENTRY("vPut");
   
   xValWsp.vToString(sWorkspace.a());
   vTrace("%s",sWorkspace.a());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* .putVerbose -- print top value on stack if arg.m_bverbose                  */
+/*----------------------------------------------------------------------------*/
+void Task::vPutVerbose(NNP_Task nnpTask)
+{
+  ENTRY("vPutVerbose");
+  
+  s16K sWorkspace;
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->bPopParam(xValWsp) )
+    THROW_INVALID_PARAM(".put");
+  
+  if (gxArguments.m_bVerbose) {
+    xValWsp.vToString(sWorkspace.a());
+    vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
+  }
   
   EXIT();
 }

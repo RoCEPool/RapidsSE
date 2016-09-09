@@ -2,7 +2,7 @@
 /* var.sen -- variable related words                                          */
 /*============================================================================*/
 
-"var.sen" .
+"var.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create int variable in current dictionary using name from input stream     */

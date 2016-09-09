@@ -2,7 +2,7 @@
 /* table.sen -- table related words                                           */
 /*============================================================================*/
 
-"table.sen" .
+"table.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* table is use as a kind of word to identify tables                          */

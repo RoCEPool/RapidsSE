@@ -2,7 +2,7 @@
 /* lock.sen -- lock related words                                             */
 /*============================================================================*/
 
-"lock.sen" .
+"lock.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* lock is used as a kind of word to identify locks                           */

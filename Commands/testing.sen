@@ -2,7 +2,7 @@
 /* testing.sen -- testing related words                                       */
 /*============================================================================*/
 
-"testing.sen" .
+"testing.sen" .putVerbose
 
 "jData.sen" >>:
 

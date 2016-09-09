@@ -2,7 +2,7 @@
 /* queue.sen -- a generic queue                                               */
 /*============================================================================*/
 
-"queue.sen" .
+"queue.sen" .putVerbose
 
 : queue ;
 

@@ -320,7 +320,8 @@ void RapidsSE::vAttachRegion(void)
   // overlay buffer pool onto 1st buffer (buffer #0)
   gpBufferPool = reinterpret_cast<BufferPool*>(mpRegion);
   
-  vTrace("Shm mapped at %p\n",mpRegion);
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm mapped at %p\n",mpRegion);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -370,7 +371,8 @@ void RapidsSE::vCreateRegion(void)
   
   gpBufferPool = new(mpRegion) BufferPool;
   
-  vTrace("Shm mapped at %p\n",mpRegion);
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm mapped at %p\n",mpRegion);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -382,7 +384,8 @@ void RapidsSE::vDicCompile(NP_Task npRootTask)
   
   npRootTask->vSeedDicCompileSen();
   
-  vTrace("[[mainThread]] RapidsSE::vDicCom[ile running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] RapidsSE::vDicCompile running [%s] %p\n",npRootTask->sName().a(),*npRootTask);
   npRootTask->vLoop();
 }
 
@@ -483,12 +486,14 @@ void RapidsSE::vSystemInit(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vStartActors(void)
 {
-  vTrace("Shm region initialised at: %s\n",gpAttachMap->m_sUTC.a());
+  if (gxArguments.m_bVerbose)
+    vTrace("Shm region initialised at: %s\n",gpAttachMap->m_sUTC.a());
 
   // seed root task to start the system
   gnpRootTask->vSeedWord("startActors");
   
-  vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n",
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] RapidsSE::vStartActors launching [%s] %p\n",
          gnpRootTask->sName().a(),*gnpRootTask);
   
   // append root task onto root thread's task set
