@@ -12,6 +12,7 @@ extern Atomic gzDirOpenCount;
 extern Atomic gzFileOpenCount;
 extern Atomic gzShmOpenCount;
 extern Atomic gzSocketOpenCount;
+extern Atomic gzThreadOpenCount;
 
 /*============================================================================*/
 /* end                                                                        */
@@ -130,11 +131,12 @@ void BufferPoolAnalyzer::vAnalyze(void)
   }
   
   vTrace("**************************************************************\n");
-  vTrace(" dir %lld file %lld shm %lld socket %lld\n",
+  vTrace(" dir %lld file %lld shm %lld socket %lld thread %lld\n",
          *gzDirOpenCount,
          *gzFileOpenCount,
          *gzShmOpenCount,
-         *gzSocketOpenCount
+         *gzSocketOpenCount,
+         *gzThreadOpenCount
          );
   vTrace("**************************************************************\n");
   

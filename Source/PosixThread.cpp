@@ -4,7 +4,7 @@
 
 #include "Common.h"
 
-i8 giThreadOpenCount = 0;
+Atomic gzThreadOpenCount;
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -115,7 +115,7 @@ bool PosixThread::bSpawnThread(void* pFun(void*), void* pArg)
     return false;
   }
   
-  giThreadOpenCount++;
+  ++gzThreadOpenCount;
   
   // this is important otherwise resources are not released
   pthread_detach(m_iPosixThreadId);
@@ -175,7 +175,7 @@ i8 PosixThread::iThreadCpu(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vThreadExit(void)
 {
-  giThreadOpenCount--;
+  --gzThreadOpenCount;
 }
         
 /*----------------------------------------------------------------------------*/
