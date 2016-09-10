@@ -9,6 +9,48 @@
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAssumptions(void)
 {
+  // No of entries in eCN , pCN and gpDump should match
+  i8 iEntriesECN = CN_ENUMS;
+  i8 iEntriesPCN = 0;
+  i8 iEntriesGPDUMP = 0;
+  
+  bool bFoundEnum = false;
+  
+  // find number of entries in pCN
+  for (i8 i = 0; i <= CN_ENUMS; i++) {
+    if (String::bEqualTo(pCN[i], "ENUMS")) {
+      bFoundEnum = true;
+      break;
+    }
+    iEntriesPCN++;
+  }
+  
+  if (!bFoundEnum)
+    vFatal("Entry for CN_ENUM not found in pCN\n");
+    
+  if (iEntriesECN != iEntriesPCN) {
+    vFatal("\n!!!ALERT!!! No of entries in pCN (%lld) do not match the no in eCN (%lld)\n\n",
+           iEntriesECN, iEntriesPCN);
+  }
+  
+  bFoundEnum = false;
+  // find number of entries in gpDump
+  for (i8 i = 0; i <= CN_ENUMS; i++) {
+    if (gpDump[i] == &RapidsSE::vDumpEnums) {
+      bFoundEnum = true;
+      break;
+    }
+    iEntriesGPDUMP++;
+  }
+  
+  if (!bFoundEnum)
+    vFatal("Entry for CN_ENUM not found in gpDump\n");
+    
+  if (iEntriesECN != iEntriesGPDUMP) {
+    vFatal("\n!!!ALERT!!! No of entries in pCN (%lld) do not match the no in gpDump (%lld)\n\n",
+           iEntriesECN, iEntriesGPDUMP);
+  }
+
 }
 
 /*============================================================================*/

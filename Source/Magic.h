@@ -30,12 +30,6 @@
 #include "Debug.hpp"
 
 
-namespace Magic
-{
-  void vCheckAssumptions(void);
-}
-
-
 //-----------------------------------------------------------------------------
 namespace Magic
 {

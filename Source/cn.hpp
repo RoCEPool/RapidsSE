@@ -108,11 +108,11 @@ namespace Magic
     /*  4 */ "STRVAL",
     /*  5 */ "VALSET",
     /*  6 */ "VALWSP",
-    
     /*  7 */ "ARGUMENTS",
     /*  8 */ "ATOMIC",
     /*  9 */ "ATTACHMAP",
     /* 10 */ "BUFFER",
+    
     /* 11 */ "BUFFERPOOL",
     /* 12 */ "BUFFERPOOLANALYZER",
     /* 13 */ "BUFFERPOOLITER",
@@ -123,6 +123,7 @@ namespace Magic
     /* 18 */ "FILE",
     /* 19 */ "FREECHUNK",
     /* 20 */ "GRID",
+    
     /* 21 */ "HEAPBUFFER",
     /* 22 */ "INDEX",
     /* 23 */ "LOADER",
@@ -133,6 +134,7 @@ namespace Magic
     /* 28 */ "PARTITION",
     /* 29 */ "PARTITIONS",
     /* 30 */ "PROXY",
+    
     /* 31 */ "PROXYSET",
     /* 32 */ "QUEUE",
     /* 33 */ "QUEUEBUFFER",
@@ -143,6 +145,7 @@ namespace Magic
     /* 38 */ "ROWSTRAND",
     /* 39 */ "SCANBUFFER",
     /* 40 */ "SEHISTORY",
+    
     /* 41 */ "SEITF",
     /* 42 */ "SEITFCURSOR",
     /* 43 */ "SEITFLIST",
@@ -153,6 +156,7 @@ namespace Magic
     /* 48 */ "SKIPNODE",
     /* 49 */ "SMALLHEAP",
     /* 50 */ "SOCKET",
+    
     /* 51 */ "STACK",
     /* 52 */ "STEPACCUM",
     /* 53 */ "STEPARRAY",
@@ -163,6 +167,7 @@ namespace Magic
     /* 58 */ "TASKLIST",
     /* 59 */ "TASKSET",
     /* 60 */ "THREAD",
+    
     /* 61 */ "THREADCURSOR",
     /* 62 */ "THREADLIST",
     /* 63 */ "TIME",

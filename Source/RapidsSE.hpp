@@ -23,6 +23,7 @@ namespace StorageEngine
     static void   vCheckAssumptions(void);
     
     static void   vDumpDummy(eCN eClass, Object* pObject, const char* pTab);
+    static void   vDumpEnums(eCN eClass, Object* pObject, const char* pTab);
     static void   vDumpInvalid(eCN eClass, Object* pObject, const char* pTab);
     static void   vDumpUndefined(eCN eClass, Object* pObject, const char* pTab);
 

@@ -34,6 +34,12 @@ Thread*             gnpRootThread      = nullptr;
 void*               mpRegion           = nullptr;
 void* C_ADDR_POOL = (void*)0x204800000;
 
+
+// Object's : Class::vDump
+// Object's with no vDump defined : RapidsSE::vDumpUndefined
+// Header : RapidsSE::vDumpInvalid
+// Objects we don't want to dump (eg Word) : RapidsSE::vDumpDummy
+
 pDUMPFUN *gpDump[]
 {
   /*  0 */ &RapidsSE::vDumpInvalid,    // CN_NONE
@@ -44,60 +50,81 @@ pDUMPFUN *gpDump[]
   /*  4 */ &RapidsSE::vDumpInvalid,    // CN_STRVAL
   /*  5 */ &RapidsSE::vDumpInvalid,    // CN_VALSET
   /*  6 */ &RapidsSE::vDumpInvalid,    // CN_VALWSP
-  
   /*  7 */ &RapidsSE::vDumpInvalid,    // CN_ARGUMENTS
-  /*  8 */ &AttachMap::vDump,
-  /*  9 */ &RapidsSE::vDumpDummy,
-  /* 10 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOL
-  /* 11 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLANALYZER
-  /* 12 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLITER
-  /* 13 */ &Dictionary::vDump,
-  /* 14 */ &RapidsSE::vDumpInvalid,    // CN_DIR
-  /* 15 */ &RapidsSE::vDumpInvalid,    // CN_FILE
-  /* 16 */ &RapidsSE::vDumpDummy,
-  /* 17 */ &RapidsSE::vDumpDummy,
-  /* 18 */ &RapidsSE::vDumpUndefined,
-  /* 19 */ &HeapBuffer::vDump,
-  /* 20 */ &RapidsSE::vDumpUndefined,
-  /* 21 */ &Loader::vDump,
-  /* 22 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
-  /* 23 */ &Heap::vDump,
-  /* 24 */ &Node::vDump,
-  /* 25 */ &RapidsSE::vDumpUndefined,
-  /* 26 */ &Partition::vDump,
-  /* 27 */ &RapidsSE::vDumpUndefined,
-  /* 28 */ &RapidsSE::vDumpUndefined,
-  /* 29 */ &RapidsSE::vDumpUndefined,
-  /* 30 */ &RapidsSE::vDumpUndefined,
-  /* 31 */ &RapidsSE::vDumpUndefined,
-  /* 32 */ &RowBuffer::vDump,
-  /* 33 */ &RapidsSE::vDumpUndefined,
-  /* 34 */ &RowStrand::vDump,
-  /* 35 */ &RapidsSE::vDumpUndefined,
-  /* 36 */ &RapidsSE::vDumpUndefined,
-  /* 37 */ &RapidsSE::vDumpUndefined,
-  /* 38 */ &RapidsSE::vDumpUndefined,
-  /* 39 */ &Heap::vDump,
-  /* 40 */ &RapidsSE::vDumpUndefined,
-  /* 41 */ &RapidsSE::vDumpUndefined,
-  /* 42 */ &RapidsSE::vDumpInvalid,     // CN_SYSCALL
-  /* 43 */ &Table::vDump,
-  /* 44 */ &Task::vDump,
-  /* 45 */ &RapidsSE::vDumpUndefined,
-  /* 46 */ &TaskList::vDump,
-  /* 47 */ &RapidsSE::vDumpUndefined,
-  /* 48 */ &RapidsSE::vDumpUndefined,
-  /* 49 */ &RapidsSE::vDumpUndefined,
-  /* 50 */ &RapidsSE::vDumpUndefined,
-  /* 51 */ &RapidsSE::vDumpInvalid,    // CN_TIMER
-  /* 52 */ &RapidsSE::vDumpUndefined,
-  /* 53 */ &TxArray::vDump,
-  /* 54 */ &RapidsSE::vDumpUndefined,
-  /* 55 */ &RapidsSE::vDumpUndefined,
-  /* 56 */ &RapidsSE::vDumpUndefined,
-  /* 57 */ &RapidsSE::vDumpUndefined,
-  /* 58 */ &RapidsSE::vDumpDummy,
-  /* 59 */ &RapidsSE::vDumpUndefined
+  /*  8 */ &RapidsSE::vDumpInvalid,    // CN_ATOMIC
+  /*  9 */ &AttachMap::vDump,          // CN_ATTACHMAP
+  /* 10 */ &RapidsSE::vDumpDummy,      // CN_BUFFER
+  
+  /* 11 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOL
+  /* 12 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLANALYZER
+  /* 13 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLITER
+  /* 14 */ &RapidsSE::vDumpDummy,      // CN_PARSER
+  /* 15 */ &Dictionary::vDump,         // CN_DICTIONARY
+  /* 16 */ &RapidsSE::vDumpDummy,      // CN_DICTIONARYSTACK
+  /* 17 */ &RapidsSE::vDumpInvalid,    // CN_DIR
+  /* 18 */ &RapidsSE::vDumpInvalid,    // CN_FILE
+  /* 19 */ &RapidsSE::vDumpUndefined,  // CN_FREECHUNK
+  /* 20 */ &RapidsSE::vDumpUndefined,  // CN_GRID
+  
+  /* 21 */ &HeapBuffer::vDump,        // CN_HEAPBUFFER
+  /* 22 */ &RapidsSE::vDumpUndefined, // CN_INDEX
+  /* 23 */ &Loader::vDump,            // CN_LOADER
+  /* 24 */ &RapidsSE::vDumpInvalid,   // CN_LOCK
+  /* 25 */ &Heap::vDump,              // CN_MEDIUMHEAP
+  /* 26 */ &Node::vDump,              // CN_NODE
+  /* 27 */ &RapidsSE::vDumpUndefined, // CN_NODECURSOR
+  /* 28 */ &Partition::vDump,         // CN_PARTITION
+  /* 29 */ &RapidsSE::vDumpUndefined, // CN_PARTITIONS
+  /* 30 */ &RapidsSE::vDumpUndefined, // CN_PROXY
+
+  
+  /* 31 */ &RapidsSE::vDumpUndefined, // CN_PROXYSET
+  /* 32 */ &RapidsSE::vDumpUndefined, // CN_QUEUE
+  /* 33 */ &RapidsSE::vDumpUndefined, // CN_QUEUEBUFFER
+  /* 34 */ &RapidsSE::vDumpUndefined, // CN_RING
+  /* 35 */ &RapidsSE::vDumpUndefined, // CN_ROW
+  /* 36 */ &RowBuffer::vDump,         // CN_ROWBUFFER
+  /* 37 */ &RapidsSE::vDumpUndefined, // CN_ROWCURSOR
+  /* 38 */ &RowStrand::vDump,         // CN_ROWSTRAND
+  /* 39 */ &RapidsSE::vDumpUndefined, // CN_SCANBUFFER
+  /* 40 */ &RapidsSE::vDumpUndefined, // CN_SEHISTORY
+  
+  /* 41 */ &RapidsSE::vDumpUndefined, // CN_SEITF
+  /* 42 */ &RapidsSE::vDumpUndefined, // CN_SEITFCURSOR
+  /* 43 */ &RapidsSE::vDumpUndefined, // CN_SEITFLIST
+  /* 44 */ &RapidsSE::vDumpUndefined, // CN_SEPROMPT
+  /* 45 */ &RapidsSE::vDumpUndefined, // CN_SINCE
+  /* 46 */ &RapidsSE::vDumpUndefined, // CN_SKIPCURSOR
+  /* 47 */ &RapidsSE::vDumpUndefined, // CN_SKIPLIST
+  /* 48 */ &RapidsSE::vDumpUndefined, // CN_SKIPNODE
+  /* 49 */ &Heap::vDump,              // CN_SMALLHEAP
+  /* 50 */ &RapidsSE::vDumpUndefined, // CN_SOCKET
+
+  /* 51 */ &RapidsSE::vDumpUndefined,  // CN_STACK
+  /* 52 */ &RapidsSE::vDumpInvalid,    // CN_STEPACCUM
+  /* 53 */ &RapidsSE::vDumpInvalid,    // CN_STEPARRAY
+  /* 54 */ &RapidsSE::vDumpInvalid,    // CN_SYSCALL
+  /* 55 */ &Table::vDump,              // CN_TABLE
+  /* 56 */ &Task::vDump,               // CN_TASK
+  /* 57 */ &RapidsSE::vDumpUndefined,  // CN_TASKCURSOR
+  /* 58 */ &TaskList::vDump,           // CN_TASKLIST
+  /* 59 */ &RapidsSE::vDumpUndefined,  // CN_TASKSET
+  /* 60 */ &RapidsSE::vDumpUndefined,  // CN_THREAD
+  
+  /* 61 */ &RapidsSE::vDumpUndefined,  // CN_THREADCURSOR
+  /* 62 */ &RapidsSE::vDumpUndefined,  // CN_THREADLIST
+  /* 63 */ &RapidsSE::vDumpUndefined,  // CN_TIME
+  /* 64 */ &RapidsSE::vDumpInvalid,    // CN_TIMER
+  /* 65 */ &RapidsSE::vDumpInvalid,    // CN_TOKENIZER
+  /* 66 */ &RapidsSE::vDumpUndefined,  // CN_TX
+  /* 67 */ &TxArray::vDump,            // CN_TXARRAY
+  /* 68 */ &RapidsSE::vDumpUndefined,  // CN_TXCOLLECTION
+  /* 69 */ &RapidsSE::vDumpUndefined,  // CN_TXCURSOR
+  /* 70 */ &RapidsSE::vDumpUndefined,  // CN_TXMAP
+  /* 71 */ &RapidsSE::vDumpUndefined,  // CN_TXREF
+  
+  /* 72 */ &RapidsSE::vDumpDummy,      // CN_WORD
+  /* 73 */ &RapidsSE::vDumpEnums       // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/
@@ -125,6 +152,14 @@ void RapidsSE::vCheckAssumptions(void)
 /* dummy dump                                                                 */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDumpDummy(eCN eClass, Object* pObject, const char* pTab)
+{
+  // do nothing
+}
+
+/*----------------------------------------------------------------------------*/
+/* dummy dump                                                                 */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vDumpEnums(eCN eClass, Object* pObject, const char* pTab)
 {
   // do nothing
 }
