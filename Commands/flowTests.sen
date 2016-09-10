@@ -8,7 +8,6 @@
 
   "  flow control tests" .put .\n
 
-traceon
   assert.stack_0
   0
   assert.stack_1

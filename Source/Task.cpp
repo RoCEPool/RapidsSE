@@ -3109,7 +3109,17 @@ ENTRY("vDump");
   xValWsp.vToString(sWorkspace.a());
   char* aClass = xValWsp.aClass();
   
-  vTrace("[%s] %s (%s)\n",nnpTask->m_sName.a(),sWorkspace.a(),aClass);
+  eCN eClass = xValWsp.eClass();
+  
+  if (CN_PTRVAL == eClass) {
+    eCN ePtdClass = xValWsp.pAsPtrVal()->pObject()->eClass();
+    vTrace("[%s] %s (%s %s)\n",
+          nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
+  }
+  else {
+    vTrace("[%s] %s (%s)\n",
+           nnpTask->m_sName.a(),sWorkspace.a(),aClass);
+  }
   
   EXIT();
 }
