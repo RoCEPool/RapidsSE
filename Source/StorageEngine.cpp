@@ -47,7 +47,7 @@ void StorageEngine::vCheckAssumptions(void)
     vFatal("Entry for CN_ENUM not found in gpDump\n");
     
   if (iEntriesECN != iEntriesGPDUMP) {
-    vFatal("\n!!!ALERT!!! No of entries in pCN (%lld) do not match the no in gpDump (%lld)\n\n",
+    vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n",
            iEntriesECN, iEntriesGPDUMP);
   }
 
