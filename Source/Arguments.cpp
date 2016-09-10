@@ -14,7 +14,7 @@ Arguments::Arguments(void)
   
   m_sRegionName = "/RapidsSE_Instance1";
   m_iRegionSize = 1_GB * 4 ;
-  m_iPartitions = 1;
+  m_nPartitions = 1;
   
   m_sCommand    = "";
   
@@ -33,6 +33,8 @@ Arguments::Arguments(void)
   m_iPartition  = 0;
   
   Memory::vCheckInitialised(this,sizeof(Arguments));
+  
+  vEnvironmentVariables();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +43,25 @@ Arguments::Arguments(void)
 Arguments::~Arguments(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* check for environment variables                                            */
+/*----------------------------------------------------------------------------*/
+void Arguments::vEnvironmentVariables(void)
+{
+  s256 sRegionName;
+  s256 sRegionSize;
+  s256 sPartitions;
+  
+  if (Env::bGetEnv("SE_INSTANCE_NAME",sRegionName.a()))
+    m_sRegionName = sRegionName;
+
+  if (Env::bGetEnv("SE_INSTANCE_SIZE",sRegionSize.a()))
+    m_iRegionSize = String::iToI8(sRegionSize.a());
+
+  if (Env::bGetEnv("SE_PARTITIONS",sPartitions.a()))
+    m_nPartitions = String::iToI8(sPartitions.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,12 +102,16 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
-      m_iPartitions = String::iToI8(argv[++iArg]);
-      ASSERT(m_iPartitions <= C_TABLE_PARTITIONS);
+      m_nPartitions = String::iToI8(argv[++iArg]);
+      ASSERT(m_nPartitions <= C_TABLE_PARTITIONS);
       continue;
     }
     
     if (String::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
+      m_bSePrompt = true;
+      continue;
+    }
+    if (String::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
       m_bSePrompt = true;
       continue;
     }
@@ -157,7 +182,7 @@ void Arguments::vPrint(void)
   vTrace("  --regionName %s\n",m_sRegionName.a());
   vTrace("  --regionSize %lld\n",m_iRegionSize);
   vTrace("  --partition %lld\n",m_iPartition);
-  vTrace("  --partitions %lld\n",m_iPartitions);
+  vTrace("  --partitions %lld\n",m_nPartitions);
 }
 
 /*----------------------------------------------------------------------------*/

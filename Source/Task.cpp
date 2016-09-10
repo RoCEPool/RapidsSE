@@ -275,7 +275,7 @@ void Task::vAddConstants(void)
   vAddConstant("magic",            MAGIC);
   vAddConstant("regionsize",       gxArguments.m_iRegionSize);
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
-  vAddConstant("partitions",       gxArguments.m_iPartitions);
+  vAddConstant("partitions",       gxArguments.m_nPartitions);
   
   vAddConstant("true",  1);
   vAddConstant("false", (i8)0);
@@ -6957,7 +6957,7 @@ ENTRY("vLoaderInsertRow");
   if ( ! nnpTask->bPopParam(iPartn) )
     THROW_INVALID_PARAM("loader.insertRow");
   
-  ASSERT(iPartn < gxArguments.m_iPartitions);
+  ASSERT(iPartn < gxArguments.m_nPartitions);
   bool bInserted = pLoader->bInsertRow(iPartn);
   
   nnpTask->vPushParam(bInserted);

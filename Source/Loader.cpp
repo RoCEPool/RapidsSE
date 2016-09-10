@@ -186,7 +186,7 @@ bool Loader::bInsertRow(i8 iPartn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  ASSERT(iPartn < gxArguments.m_iPartitions);
+  ASSERT(iPartn < gxArguments.m_nPartitions);
   
   ValWsp xRow;
   xRow.vClass(CN_STRVAL);

@@ -64,7 +64,7 @@ void Partitions::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
   i8 iPartn;
-  for (iPartn = 0; iPartn < gxArguments.m_iPartitions; iPartn++)
+  for (iPartn = 0; iPartn < gxArguments.m_nPartitions; iPartn++)
     m_xPartition[iPartn].vTruncate();
 }
 

@@ -1,0 +1,35 @@
+.TH se 1
+.SH NAME
+se \- RapidsSE command 
+.SH SYNOPSIS
+...is intended to give a short overview on available program options. 
+For functions this sections lists corresponding include files and the prototype 
+so the programmer knows the type and number of arguments as well as the return type.
+.SH DESCRIPTION
+...eloquently explains why your sequence of 0s and 1s is worth anything at all. 
+Here is where you write down all your knowledge. This is the Hall Of Fame. 
+Win other programmers' and users' admiration by making this section the source of 
+reliable and detailed information. Explain what the arguments are for, the file format, 
+what algorithms do the dirty jobs.
+.SH OPTIONS
+...gives a description of how each option affects program behaviour. 
+You knew that, did you not?
+.SH FILES
+...lists files the program or function uses. For example, it lists configuration files, 
+startup files, and files the program directly operates on. It is a good idea to give the 
+full pathname of these files and to make the install process modify the directory part 
+to match user preferences: the groff manuals have a default prefix of /usr/local, so 
+they reference /usr/local/lib/groff/* by default. However, if you install using 
+'make prefix=/opt/gnu' the references in the man page change to /opt/gnu/lib/groff/*
+.SH ENVIRONMENT
+...lists all environment variables that affect your program or function and tells how, 
+of course. Most commonly the variables will hold pathnames, filenames or default options.
+.SH DIAGNOSTICS
+...should give an overview of the most common error messages from your program and 
+how to cope with them. There is no need to explain system error error messages 
+(from perror(3)) or fatal signals (from psignal(3)) as they can appear during 
+execution of any program.
+.SH SEE ALSO
+...is a list of related man pages in alphabetical order. Conventionally, it is the 
+last section. You are free to invent other sections if they really do not fit in 
+one of those described so far.

@@ -15,13 +15,13 @@
  12  constant  EC_NO_SUCH_CATALOG
  13  constant  EC_NO_SUCH_SCHEMA
  14  constant  EC_NO_SUCH_TABLE
- 15  constant  EC_NO_SUCH_DICTIONARY
+ 15  constant  EC_NO_SUCH_FOLDER
 
  21  constant  EC_NOT_A_TENANT
  22  constant  EC_NOT_A_CATALOG
  23  constant  EC_NOT_A_SCHEMA
  24  constant  EC_NOT_A_TABLE
- 25  constant  EC_NOT_A_DICTIONARY
+ 25  constant  EC_NOT_A_FOLDER
 
  26  constant  EC_TABLE_EXISTS
 
@@ -40,13 +40,13 @@
 "no such catalog"    constant  EM_NO_SUCH_CATALOG
 "no such schema"     constant  EM_NO_SUCH_SCHEMA
 "no such table"      constant  EM_NO_SUCH_TABLE
-"no such dictionary" constant  EM_NO_SUCH_DICTIONARY
+"no such dictionary" constant  EM_NO_SUCH_FOLDER
 
 "not a tenant"       constant  EM_NOT_A_TENANT
 "not a catalog"      constant  EM_NOT_A_CATALOG
 "not a schema"       constant  EM_NOT_A_SCHEMA
 "not a table"        constant  EM_NOT_A_TABLE
-"not a dictionary"   constant  EM_NOT_A_DICTIONARY
+"not a dictionary"   constant  EM_NOT_A_FOLDER
 
 "no such word"       constant  EM_NO_SUCH_WORD
 "no columns dic"     constant  EM_NO_COLUMNS_DIC
@@ -81,8 +81,8 @@
   dup EC_NO_SUCH_WORD       == if drop EM_NO_SUCH_WORD       exit then
   dup EC_NO_COLUMNS_DIC     == if drop EM_NO_COLUMNS_DIC     exit then
   dup EC_NOT_IN_COLUMNS     == if drop EM_NOT_IN_COLUMNS     exit then
-  dup EC_NO_SUCH_DICTIONARY == if drop EM_NO_SUCH_DICTIONARY exit then
-  dup EC_NOT_A_DICTIONARY   == if drop EM_NOT_A_DICTIONARY   exit then
+  dup EC_NO_SUCH_FOLDER     == if drop EM_NO_SUCH_FOLDER     exit then
+  dup EC_NOT_A_FOLDER       == if drop EM_NOT_A_FOLDER       exit then
 
   dup EC_TABLE_EXISTS       == if drop EM_TABLE_EXISTS       exit then
 

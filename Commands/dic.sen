@@ -5,11 +5,11 @@
 "dic.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* dic is use as a kind of word to identify dictionaries                      */
+/* folder is use as a kind of word to identify folders                        */
 /*----------------------------------------------------------------------------*/
-: dic ;
+: folder ;
 
-: isDic word.kind@ ' dic eql ;
+: isFolder word.kind@ ' folder eql ;
 
 /*----------------------------------------------------------------------------*/
 /* create a dictionary using name from input stream (doesnt leave dic on stk) */
@@ -20,7 +20,7 @@
     sizeof_dictionary allot
     word.this >body magic!!
     word.this >body CN_DICTIONARY class!
-    ' dic word.this word.kind!
+    ' folder word.this word.kind!
     word.this >body dic.init
     does>
 ;
@@ -34,21 +34,19 @@
     sizeof_dictionary allot
     word.this >body magic!!
     word.this >body CN_DICTIONARY class!
-    ' dic word.this word.kind!
+    ' folder word.this word.kind!
     word.this >body dic.init
     word.this
     does>
 ;
 
-
 : checkIsDic ( word )
 
-    dup not if drop EC_NO_SUCH_DICTIONARY false exit then
-    dup word.kind@ ' dic eql if true exit then
+    dup not if drop EC_NO_SUCH_FOLDER false exit then
+    dup word.kind@ ' folder eql if true exit then
     drop
-    EC_NOT_A_DICTIONARY false
+    EC_NOT_A_FOLDER false
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
