@@ -481,7 +481,7 @@ void Task::vAddConstants(void)
   /* 10 */ vAddConstant("FILE_LNK",                 DT_LNK);
   /* 12 */ vAddConstant("FILE_SOCK",                DT_SOCK);
 
-  vAddConstant("listerTaskPrint",(i8)0);
+  vAddConstant("listerTaskPrint", (i8)0);
   vAddConstant("monitorTaskPrint",(i8)0);
   vAddConstant("reclaimTaskPrint",(i8)0);
 }

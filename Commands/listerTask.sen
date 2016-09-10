@@ -12,7 +12,7 @@ taskset: listerTaskSet
 
 thread:  listerThread
 
-tasklist taskCursor: taskCrs
+taskCursor: taskCrs
 
 /*----------------------------------------------------------------------------*/
 /* start the lister task                                                      */
@@ -41,7 +41,6 @@ tasklist taskCursor: taskCrs
       "task list..." .
     then
 
-//traceon
   taskcrs taskcrs taskcursor.begin
           taskcrs taskcursor.first
   iterate

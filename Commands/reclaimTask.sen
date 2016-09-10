@@ -16,7 +16,7 @@ taskset: reclaimTaskSet
 
 thread:  reclaimThread
 
-seitflist seitfCursor: seitfCrs
+seitfCursor: seitfCrs
 
 /*----------------------------------------------------------------------------*/
 /* start the reclaim task                                                     */

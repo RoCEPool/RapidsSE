@@ -8,6 +8,7 @@
 // step 1: compile all the words
 //
 
+
 "core.sen" >>:
 "common.sen" >>:
 "structures.sen" >>:
@@ -21,17 +22,18 @@
 "actors.sen" >>:
 "request.sen" >>:
 "testing.sen" >>:
+assert.stack_0
 
 //
-// step 2: runs some bassic unit tests
+// step 2: runs some basic unit tests
 //
 
-stk
 ut
 
+assert.stack_0
 
 //
-// step 2: spawn the root thread
+// step 3: spawn the root thread
 //
 
 ( spawn the posix thread for the root thread )
@@ -39,6 +41,8 @@ rootThread thread.spawn
 
 ( leave root thread on stack )
 rootThread
+
+assert.stack_1
 
 : __compiled__ ;
 
