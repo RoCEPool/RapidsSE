@@ -529,21 +529,25 @@ void Parser::vBlockCommentSkip(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-//  bool bLineMode = m_bLineMode;
-//  m_bLineMode = false;
-  
   vClearRegisters();
   
   vLoadBoth();
   
   while (! bBlockCommentEnd()) {
-    vDiscardFirst();
-    vLoadSecond();
+    
+    if (m_nLoaded)
+      vDiscardFirst();
+    
+    if (0 == m_nLoaded)
+      vLoadFirst();
+    else
+      vLoadSecond();
+    
+    if (0 == m_nLoaded && bEOF())
+      break;
   }
   
   vClearRegisters();
-
-//  m_bLineMode = bLineMode;
 }
 
 /*----------------------------------------------------------------------------*/
