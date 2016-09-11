@@ -207,37 +207,37 @@ void Memory::vWordDump(void *pAddress, i8 iBytes, i8 iHighlightWord)
     if (i == iHighlightWord)
       vTrace(" <<==== OBSERVE");
     
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER0)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER0)
       vTrace(" <<==== MARKER 0");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER1)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER1)
       vTrace(" <<==== MARKER 1");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER2)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER2)
       vTrace(" <<==== MARKER 2");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER3)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER3)
       vTrace(" <<==== MARKER 3");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER4)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER4)
       vTrace(" <<==== MARKER 4");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER5)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER5)
       vTrace(" <<==== MARKER 5");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER6)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER6)
       vTrace(" <<==== MARKER 6");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER7)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER7)
       vTrace(" <<==== MARKER 7");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER8)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER8)
       vTrace(" <<==== MARKER 8");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER9)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKER9)
       vTrace(" <<==== MARKER 9");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERA)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERA)
       vTrace(" <<==== MARKER A");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERB)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERB)
       vTrace(" <<==== MARKER B");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERC)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERC)
       vTrace(" <<==== MARKER C");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERD)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERD)
       vTrace(" <<==== MARKER D");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERE)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERE)
       vTrace(" <<==== MARKER E");
-    if ((i8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERF)
+    if ((u8)(*((i8*)pAddress + i)) == C_MEMORY_MARKERF)
       vTrace(" <<==== MARKER F");
     
     iWord = 0;

@@ -21,6 +21,7 @@ void* TxMap::operator new(size_t iSize, TxMap* pTxMap)
 /*----------------------------------------------------------------------------*/
 void TxMap::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: TxMap class cannot be deleted");
   
   ASSERT(0);

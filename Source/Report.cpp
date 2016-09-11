@@ -101,6 +101,7 @@ void Common::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
   char* s = gaReportBuffer;
   *s = '\0';
   
+  ASSERT(iLevel != 0);
   vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,psFormat,xArgs);
     
   // print to file

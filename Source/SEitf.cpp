@@ -428,6 +428,7 @@ bool SEitf::bConnect(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"con"));
   sRequest = "connect";
   vAppendRequest(sRequest);
   
@@ -443,6 +444,7 @@ bool SEitf::bDisconnect(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"dic"));
   sRequest = "disconnect";
   vAppendRequest(sRequest);
   
@@ -500,6 +502,7 @@ bool SEitf::bListTenants(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"lsten"));
   sRequest = "list_tenants";
   vAppendRequest(sRequest);
   
@@ -557,6 +560,7 @@ bool SEitf::bListCatalogs(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"lscat"));
   sRequest = "list_catalogs";
   vAppendRequest(sRequest);
   
@@ -614,6 +618,7 @@ bool SEitf::bListSchemas(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"lssch"));
   sRequest = "list_schemas";
   vAppendRequest(sRequest);
   
@@ -671,6 +676,7 @@ bool SEitf::bListTables(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"lstbl"));
   sRequest = "list_tables";
   vAppendRequest(sRequest);
   
@@ -982,18 +988,9 @@ bool SEitf::bGetDicPath(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"pwf"));
   sRequest = "pwf";
   vAppendRequest(sRequest);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set dictionary path                                                        */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bSetDicPath(char* pWords[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   return true;
 }
@@ -1007,6 +1004,7 @@ bool SEitf::bGetDicContents(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"lf"));
   sRequest = "lf";
   vAppendRequest(sRequest);
   
@@ -1022,6 +1020,7 @@ bool SEitf::bGetMonitor(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"mon"));
   sRequest = "get_monitor";
   vAppendRequest(sRequest);
   
@@ -1037,6 +1036,7 @@ bool SEitf::bGetFreeSpace(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"getFreeSpace"));
   sRequest = "getFreeSpace";
   vAppendRequest(sRequest);
   
@@ -1052,6 +1052,7 @@ bool SEitf::bGetInUseSpace(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"getInUseSpace"));
   sRequest = "getInUseSpace";
   vAppendRequest(sRequest);
   
@@ -1067,6 +1068,7 @@ bool SEitf::bGetTotalSpace(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"getTotalSpace"));
   sRequest = "getTotalSpace";
   vAppendRequest(sRequest);
   
@@ -1083,6 +1085,7 @@ bool SEitf::bPing(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
   vAppendRequest(sRequest);
   
@@ -1098,6 +1101,7 @@ bool SEitf::bX(char* pWords[])
   
   s256 sRequest;
   
+  ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
   vAppendRequest(sRequest);
   

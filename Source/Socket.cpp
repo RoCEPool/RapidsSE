@@ -31,6 +31,7 @@ void* Socket::operator new(size_t iSize, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 void Socket::operator delete(void* pSocketAddress)
 {
+  ASSERT(pSocketAddress);
 }
 
 /*----------------------------------------------------------------------------*/

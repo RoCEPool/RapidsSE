@@ -29,6 +29,7 @@ void* User::operator new(size_t iSize, User* pUser)
 /*----------------------------------------------------------------------------*/
 void User::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: User class cannot be deleted");
   
   ASSERT(0);

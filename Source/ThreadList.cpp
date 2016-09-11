@@ -21,6 +21,7 @@ void* ThreadList::operator new(size_t iSize, ThreadList* pThreadList)
 /*----------------------------------------------------------------------------*/
 void ThreadList::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: ThreadList class cannot be deleted");
   
   ASSERT(0);

@@ -22,6 +22,7 @@ void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)
 /*----------------------------------------------------------------------------*/
 void TxCollection::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: gpTxCollection class cannot be deleted");
   
   ASSERT(0);

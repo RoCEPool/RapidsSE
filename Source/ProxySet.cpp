@@ -20,6 +20,7 @@ void* ProxySet::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void ProxySet::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: ProxySet class cannot be deleted");
   
   ASSERT(0);

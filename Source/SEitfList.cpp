@@ -21,6 +21,7 @@ void* SEitfList::operator new(size_t iSize, SEitfList* pSEitfList)
 /*----------------------------------------------------------------------------*/
 void SEitfList::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: SEitfList class cannot be deleted");
   
   ASSERT(0);

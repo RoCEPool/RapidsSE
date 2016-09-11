@@ -20,6 +20,7 @@ void* DictionaryStack::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void DictionaryStack::operator delete(void* pAddress)
 {
+  ASSERT(pAddress);
   vFatal("fatal: DictionaryStack class cannot be deleted");
   
   ASSERT(0);

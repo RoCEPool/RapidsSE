@@ -164,6 +164,9 @@ void RapidsSE::vCheckAssumptions(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDumpDummy(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass != CN_NONE);
+  ASSERT(pObject != nullptr);
+  ASSERT(pTab != nullptr);
   // do nothing
 }
 
@@ -172,6 +175,9 @@ void RapidsSE::vDumpDummy(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDumpEnums(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass == CN_ENUMS);
+  ASSERT(pObject != nullptr);
+  ASSERT(pTab != nullptr);
   // do nothing
 }
 
@@ -180,6 +186,9 @@ void RapidsSE::vDumpEnums(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDumpInvalid(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass != CN_ENUMS);
+  ASSERT(pObject != nullptr);
+  ASSERT(pTab != nullptr);
   vTrace("%sInvalid Class %s in Buffer Pool\n", pTab, pCN[eClass]);
 }
 
@@ -188,6 +197,9 @@ void RapidsSE::vDumpInvalid(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDumpUndefined(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(eClass != CN_NONE);
+  ASSERT(pObject != nullptr);
+  ASSERT(pTab != nullptr);
   vTrace("%sDump function not defined for class %s\n", pTab, pCN[eClass]);
 }
 

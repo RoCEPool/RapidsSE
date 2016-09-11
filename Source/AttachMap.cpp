@@ -109,8 +109,9 @@ void AttachMap::vRecordGlobals(void)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
+  ASSERT(CN_ATTACHMAP == eClass);
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
-  ASSERT(pAttachMap->eClass() == CN_ATTACHMAP);
+  ASSERT(pAttachMap->eClass() == eClass);
   
   vTrace("%sAttachMap %p:\n", pTab, pAttachMap);
   vTrace("%s  pid %lld\n", pTab, pAttachMap->m_iPid);

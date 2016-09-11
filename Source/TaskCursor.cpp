@@ -21,6 +21,7 @@ void* TaskCursor::operator new(size_t iSize, TaskCursor* pTaskCursor)
 /*----------------------------------------------------------------------------*/
 void TaskCursor::operator delete(void* pTaskCursorAddress)
 {
+  ASSERT(pTaskCursorAddress);
 }
 
 /*----------------------------------------------------------------------------*/

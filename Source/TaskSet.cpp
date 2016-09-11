@@ -20,6 +20,7 @@ void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 /*----------------------------------------------------------------------------*/
 void TaskSet::operator delete(void* pAddress)
 {
+  ASSERT(pAddress);
   vFatal("fatal: TaskSet class cannot be deleted");
   
   ASSERT(0);

@@ -68,7 +68,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   ASSERT(giClassSize[eAllocClass] < m_iObjectSize);
   
-  static eCN eLastClass = CN_ENUMS;
+  //static eCN eLastClass = CN_ENUMS;
   
   vVerify();
   
@@ -97,7 +97,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //vVerify();
   
-  eLastClass = eAllocClass;
+  //eLastClass = eAllocClass;
     
   return pObject;
 }

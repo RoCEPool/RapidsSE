@@ -24,7 +24,7 @@ namespace Pool
     bool operator >=(bn n);
     bool operator <=(bn n);
     i8 operator *(void);
-    bn operator ++(int i);
+    bn operator ++(int);
     bn operator +(int i);
     bn operator -(int i);
   };

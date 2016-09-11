@@ -32,6 +32,7 @@ void* Table::operator new(size_t iSize, Table* pTable)
 /*----------------------------------------------------------------------------*/
 void Table::operator delete(void* pTableAddress)
 {
+  ASSERT(pTableAddress);
 }
 
 /*----------------------------------------------------------------------------*/

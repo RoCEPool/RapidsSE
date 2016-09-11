@@ -22,6 +22,7 @@ void* Stack::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Stack::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: Stack class cannot be deleted");
   
   ASSERT(0);

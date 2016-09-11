@@ -41,9 +41,9 @@ namespace Pool
   public:    
     static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor);
     static Buffer* pAttachRegion(s& sRegionName,
-                                 i8 iRegionSize, i8 iBufferSize, int& iDescriptor);
+                                 i8 iRegionSize, int& iDescriptor);
     static Buffer* pCreateRegion(s& sRegionName,
-                                 i8 iRegionSize, i8 iBufferSize, int& iDescriptor);
+                                 i8 iRegionSize, int& iDescriptor);
 
     BufferPool(s& sRegionName);
     BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize);

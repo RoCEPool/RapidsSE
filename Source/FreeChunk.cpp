@@ -18,6 +18,8 @@ void* FreeChunk::operator new(size_t iSize, FreeChunk* pFreeChunk)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::operator delete(void* pFreeChunkAddress)
 {
+  ASSERT(pFreeChunkAddress);
+  
   vFatal("fatal: FreeChunk class cannot be deleted");
   
   ASSERT(0);

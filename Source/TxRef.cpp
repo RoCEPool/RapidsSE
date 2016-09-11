@@ -21,6 +21,7 @@ void* TxRef::operator new(size_t iSize, TxRef* pTxRef)
 /*----------------------------------------------------------------------------*/
 void TxRef::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: TxMap class cannot be deleted");
   
   ASSERT(0);

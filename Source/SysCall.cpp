@@ -65,7 +65,7 @@ void SysCall::vFailure(i8 iErrNo)
   _magic_();
   
   m_eStatus = eSysCall_SUCCESS;
-  m_iErrNo  = 0;
+  m_iErrNo  = iErrNo;
 }
 
 /*----------------------------------------------------------------------------*/

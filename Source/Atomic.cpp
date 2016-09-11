@@ -22,6 +22,7 @@ void* Atomic::operator new(size_t iSize, Atomic* pAtomic)
 /*----------------------------------------------------------------------------*/
 void Atomic::operator delete(void* pAtomicAddress)
 {
+  ASSERT(pAtomicAddress);
   // do nothing
   // must be explicitly free'd by caller
 }

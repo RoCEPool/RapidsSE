@@ -95,6 +95,7 @@ Task::Task(NNP_Task nnpTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  ASSERT(*nnpTask);
   ASSERT(gpTaskList);
   
   vInit("");

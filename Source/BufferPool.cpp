@@ -46,7 +46,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
 /* attach to an existing shared buffer pool                                   */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAttachRegion(s& sRegionName,
-                                  i8 iRegionSize, i8 iBufferSize, int& iDescriptor)
+                                  i8 iRegionSize, int& iDescriptor)
 {
   SysCall xSysCall;
   
@@ -78,7 +78,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
 /* create a new shared buffer pool                                            */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pCreateRegion(s& sRegionName,
-                                  i8 iRegionSize, i8 iBufferSize, int& iDescriptor)
+                                  i8 iRegionSize, int& iDescriptor)
 {
   SysCall xSysCall;
   
@@ -135,7 +135,7 @@ BufferPool::BufferPool(s& sRegionName)
   bool bResult = bDetachPool();
   ASSERT(bResult);
 
-  m_pBase  = pAttachRegion(sRegionName,m_iRegionSize,m_iBufferSize,m_iShmDescriptor);
+  m_pBase  = pAttachRegion(sRegionName,m_iRegionSize,m_iShmDescriptor);
   m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
   
@@ -163,7 +163,7 @@ BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
   m_iFreeCount   = 0;
   
   m_nFreeHead    = bn::nNil();
-  m_pBase        = pCreateRegion(m_sShmName,m_iRegionSize,m_iBufferSize,m_iShmDescriptor);
+  m_pBase        = pCreateRegion(m_sShmName,m_iBufferSize,m_iShmDescriptor);
   m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   
   // initialise new pool
@@ -201,6 +201,7 @@ void* BufferPool::operator new(size_t iSize, void* pRegion)
 /*----------------------------------------------------------------------------*/
 void BufferPool::operator delete(void* pRegion)
 {
+  ASSERT(pRegion);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -21,6 +21,7 @@ void* SEitfCursor::operator new(size_t iSize, SEitfCursor* pSEitfCursor)
 /*----------------------------------------------------------------------------*/
 void SEitfCursor::operator delete(void* pSEitfCursorAddress)
 {
+  ASSERT(pSEitfCursorAddress);
 }
 
 /*----------------------------------------------------------------------------*/

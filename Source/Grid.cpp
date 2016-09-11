@@ -20,6 +20,7 @@ void* Grid::operator new(size_t iSize, Grid* pGrid)
 /*----------------------------------------------------------------------------*/
 void Grid::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: GridModel class cannot be deleted");
   
   ASSERT(0);

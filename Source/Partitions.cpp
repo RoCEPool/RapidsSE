@@ -24,6 +24,7 @@ void* Partitions::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Partitions::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: Partitions class cannot be deleted");
   
   ASSERT(0);

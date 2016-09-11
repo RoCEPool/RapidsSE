@@ -44,6 +44,7 @@ void* Dictionary::operator new(size_t iSize, Dictionary* pDictionary)
 /*----------------------------------------------------------------------------*/
 void Dictionary::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: Dictionary class cannot be deleted");
   
   ASSERT(0);
