@@ -202,7 +202,7 @@ void BufferPoolAnalyzer::vDump(void)
   }
   vTrace("**************************************************************\n");
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
