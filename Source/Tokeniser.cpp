@@ -51,6 +51,26 @@ Tokeniser::~Tokeniser(void)
   
 }
 
+Parser* m_pParser; // parser
+bool    m_bMalloc; // malloc or pool heap?
+bool    m_bNormal; // normal tokens?
+char    m_cStrippedChar; // character from parser, stripped of comments
+
+/*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_TOKENISER);
+  ASSERT(pObject->eClass() == CN_TOKENISER);
+  
+  Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pObject);
+  
+  vTrace("%sTokeniser %p:\n", pTab, pTokeniser);
+  vTrace("%s  parser %p\n", pTab, pTokeniser->m_pParser);
+  vTrace("%s  %s %p\n\n", pTab, pTokeniser->m_bMalloc == true ? "malloc" : "pool");
+}
+
 /*----------------------------------------------------------------------------*/
 /* push a parser                                                              */
 /*----------------------------------------------------------------------------*/

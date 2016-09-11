@@ -10,8 +10,7 @@ namespace Dictionaries
 {
   class Word;
   
-  class Dictionary : public Object
-  
+  class Dictionary : public Object  
   {
   private:
     s32   m_sName;        // name of this dictionary

@@ -34,12 +34,12 @@ namespace DBobjects
     void* operator new(size_t);
     void  operator delete(void*);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     Index(const char* pIndexName);
     ~Index(void);
     
     char* pIndexName(void);
-    void vDump(void);
-    
     Footer* pFooter(void);
   };
 }

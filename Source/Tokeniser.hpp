@@ -46,6 +46,8 @@ namespace Common
     Tokeniser(void);
     ~Tokeniser(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     void vPush(void);
     bool bPop(void);
     i8   iDepth(void);

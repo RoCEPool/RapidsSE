@@ -73,7 +73,7 @@ pDUMPFUN *gpDump[]
   
   /* 22 */ &HeapBuffer::vDump,         // CN_HEAPBUFFER
   
-  /* 23 */ &RapidsSE::vDumpUndefined,  // CN_INDEX
+  /* 23 */ &Index::vDump,              // CN_INDEX
   
   /* 24 */ &Loader::vDump,             // CN_LOADER
   /* 25 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
@@ -112,7 +112,7 @@ pDUMPFUN *gpDump[]
   /* 52 */ &RapidsSE::vDumpUndefined,  // CN_SOCKET
   /* 53 */ &RapidsSE::vDumpUndefined,  // CN_STACK
   /* 54 */ &RapidsSE::vDumpInvalid,    // CN_STEPACCUM
-  /* 55 */ &RapidsSE::vDumpInvalid,    // CN_STEPARRAY
+  /* 55 */ &RapidsSE::vDumpUndefined,  // CN_STEPARRAY
   /* 56 */ &RapidsSE::vDumpInvalid,    // CN_SYSCALL
   
   /* 57 */ &Table::vDump,              // CN_TABLE
@@ -125,8 +125,8 @@ pDUMPFUN *gpDump[]
   /* 64 */ &RapidsSE::vDumpUndefined,  // CN_THREADLIST
   /* 65 */ &RapidsSE::vDumpUndefined,  // CN_TIME
   /* 66 */ &RapidsSE::vDumpInvalid,    // CN_TIMER
-  /* 67 */ &RapidsSE::vDumpInvalid,    // CN_TOKENIZER
-  /* 68 */ &RapidsSE::vDumpUndefined,  // CN_TX
+  /* 67 */ &Tokeniser::vDump,          // CN_TOKENISER
+  /* 68 */ &Tx::vDump,                 // CN_TX
   /* 69 */ &TxArray::vDump,            // CN_TXARRAY
   /* 70 */ &RapidsSE::vDumpUndefined,  // CN_TXCOLLECTION
   /* 71 */ &RapidsSE::vDumpUndefined,  // CN_TXCURSOR

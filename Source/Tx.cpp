@@ -122,10 +122,22 @@ void Tx::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   
-  vTrace("Tx: %p %lld %s\n",
-         this,
-         m_ePhase,
-         pTP[m_ePhase]);
+  vDump(CN_TX, this, pSingleTab());
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Tx::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_TX);
+  ASSERT(pObject->eClass() == CN_TX);
+  
+  Tx* pTx = reinterpret_cast<Tx*>(pObject);
+  
+  vTrace("%sTx %p:\n", pTab, pTx);
+  vTrace("%s  id %lld\n", pTab, pTx->m_iTxId);
+  vTrace("%s  phase %s\n\n", pTab, pTP[pTx->m_ePhase]);
 }
 
 /*----------------------------------------------------------------------------*/

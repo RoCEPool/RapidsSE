@@ -127,6 +127,7 @@ void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   vTrace("%sTable %p:\n", pTab, pTable);
   vTrace("%s  name %s \n", pTab, pTable->m_sTableName.a());
+  vTrace("%s  type %s \n", pTab, pTT[pTable->m_eTableType]);
 }
 
 /*----------------------------------------------------------------------------*/
