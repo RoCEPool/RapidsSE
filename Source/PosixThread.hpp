@@ -7,6 +7,8 @@
 
 namespace Platform
 {
+  static const i8 C_THREAD_BOOST = 8;
+  
   class PosixThread
   {
   public:
@@ -25,6 +27,10 @@ namespace Platform
     bool bSpawnThread(void* pFun(void*), void* pArg);
     i8   iThreadCpu(void);
     void vThreadExit(void);
+    
+    i8   iThreadPriority(void);
+    void vThreadBoost(i8 nPoints);
+    void vThreadPriority(i8 iPriority);
     
     //---------------------------------------------------------------------------
 

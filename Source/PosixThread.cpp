@@ -179,6 +179,53 @@ void PosixThread::vThreadExit(void)
 }
         
 /*----------------------------------------------------------------------------*/
+/* get thread priority                                                        */
+/*----------------------------------------------------------------------------*/
+i8 PosixThread::iThreadPriority(void)
+{
+  int iPolicy;
+  struct sched_param xSched;
+  
+  i8 iError = pthread_getschedparam(m_iPosixThreadId,&iPolicy,&xSched);
+  ASSERT(! iError);
+  
+  return xSched.sched_priority;
+}
+        
+/*----------------------------------------------------------------------------*/
+/* boost thread priority                                                      */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vThreadBoost(i8 nPoints)
+{
+  int iPolicy;
+  struct sched_param xSched;
+  
+  i8 iError = pthread_getschedparam(m_iPosixThreadId,&iPolicy,&xSched);
+  ASSERT(! iError);
+  
+  xSched.sched_priority += (int)nPoints;
+  iError = pthread_setschedparam(m_iPosixThreadId,iPolicy,&xSched);
+  ASSERT(! iError);
+}
+        
+/*----------------------------------------------------------------------------*/
+/* set thread priority                                                        */
+/*----------------------------------------------------------------------------*/
+void PosixThread::vThreadPriority(i8 iPriority)
+{
+  int iPolicy;
+  struct sched_param xSched;
+  
+  i8 iError = pthread_getschedparam(m_iPosixThreadId,&iPolicy,&xSched);
+  ASSERT(! iError);
+  
+  xSched.sched_priority = (int)iPriority;
+  iError = pthread_setschedparam(m_iPosixThreadId,iPolicy,&xSched);
+  ASSERT(! iError);
+  
+}
+        
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

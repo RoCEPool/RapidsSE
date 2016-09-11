@@ -54,6 +54,7 @@ void Arguments::vEnvironmentVariables(void)
   s256 sRegionName;
   s256 sRegionSize;
   s256 sPartitions;
+  s256 sFolder;
   
   if (Env::bGetEnv("SE_INSTANCE_NAME",sRegionName.a()))
     m_sRegionName = sRegionName;
@@ -63,6 +64,9 @@ void Arguments::vEnvironmentVariables(void)
 
   if (Env::bGetEnv("SE_PARTITIONS",sPartitions.a()))
     m_nPartitions = String::iToI8(sPartitions.a());
+  
+  if (Env::bGetEnv("SE_WORKING_FOLDER",sFolder.a()))
+    m_sFolder = sFolder;
 }
 
 /*----------------------------------------------------------------------------*/

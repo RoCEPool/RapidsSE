@@ -142,6 +142,18 @@ void Thread::vLoop(void)
   
   m_xPosixThread.vSetOSThreadId();
   
+//  vTrace("Thread %p: priority %lld\n",
+//         this,
+//         m_xPosixThread.iThreadPriority()
+//         );
+  
+  m_xPosixThread.vThreadBoost(C_THREAD_BOOST);
+  
+//  vTrace("Thread %p: priority %lld\n",
+//         this,
+//         m_xPosixThread.iThreadPriority()
+//         );
+  
   bool bWarn = true;
 
   m_xPosixThread.vTlsSet(giTLS_ThreadKey,this);
