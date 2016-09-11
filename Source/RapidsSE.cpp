@@ -271,6 +271,13 @@ void RapidsSE::vPoolClose(void)
 void RapidsSE::vPoolOpen(void)
 {
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
+    
+    if (! gxArguments.m_bRestart && bTestRegion()) {
+      vTrace("Error: instance %s already started\n",gxArguments.m_sRegionName.a());
+      exit(EXIT_FAILURE);
+      return;
+    }
+    
     vCreateRegion();
     vCreateObjects();
     return;
@@ -410,7 +417,8 @@ void RapidsSE::vCreateRegion(void)
   bool bResult = Shm::bCreate(gxArguments.m_sRegionName.a(),
                               gxArguments.m_iRegionSize,
                               iFD,
-                              xSysCall);
+                              xSysCall,
+                              gxArguments.m_bRestart);
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreateRegion: failed to create region %s\n",
            gxArguments.m_sRegionName.a());

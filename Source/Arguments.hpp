@@ -33,6 +33,7 @@ namespace StorageEngine
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
     s256 m_sFolder;     // working folder
+    bool m_bRestart;    // restart if system already started
     
     // seitf options
     i8   m_iPartition;  // which partition

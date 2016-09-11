@@ -165,6 +165,11 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
+      m_bRestart = true;
+      continue;
+    }
+    
     // seitf options -----------------------------------------------------------
     if (String::bEqualTo("--partition",argv[iArg],C_NO_CASE)) {
       m_iPartition = String::iToI8(argv[++iArg]);

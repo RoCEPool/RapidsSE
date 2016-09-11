@@ -52,12 +52,15 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* create/open a new shared memory region                                     */
 /*----------------------------------------------------------------------------*/
-bool Shm::bCreate(const char* aName, i8 iSize, int& iFD, SysCall& xSysCall)
+bool Shm::bCreate(const char* aName, i8 iSize, int& iFD, SysCall& xSysCall, bool bRecreate)
 {
+  int rCode;
+  
   xSysCall.vClear();
   
   // unlink the shm region (in case created earlier; this needs work)
-  int rCode = shm_unlink(aName);
+  if (bRecreate)
+    rCode = shm_unlink(aName);
   
   // we ignore the error
   
