@@ -43,6 +43,9 @@ public:
   
 private:
   void vGetCommand(void);
+  void vGetCommandArgument(void);
+  void vGetCommandInput(void);
+  
   void vProcessCommand(void);
   
   bool bExecuteRequest(void);

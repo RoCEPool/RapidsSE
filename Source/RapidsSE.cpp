@@ -211,9 +211,9 @@ void RapidsSE::vExecute(void)
   try {
     if (gxArguments.m_bCommand) {
       ASSERT(gpBufferPool);
-      vSystemInit();
-      vRunCommand();
-      vWaitFlag();
+      //vSystemInit();
+      //vRunCommand();
+      //vWaitFlag();
     }
     else if (gxArguments.m_bStart) {
       ASSERT(gpBufferPool);
@@ -223,7 +223,7 @@ void RapidsSE::vExecute(void)
         vRunDocol();
         vWaitFlag();
       }
-      else if (gxArguments.m_bSePrompt) {
+      else if (gxArguments.m_bPrompt) {
         ASSERT(gpBufferPool);
         return;
       }
@@ -236,7 +236,7 @@ void RapidsSE::vExecute(void)
       vRunDocol();
       vWaitFlag();
     }
-    else if (gxArguments.m_bSePrompt) {
+    else if (gxArguments.m_bPrompt) {
       ASSERT(gpBufferPool);
       return;
     }
@@ -316,7 +316,8 @@ void RapidsSE::vAttachObjects(void)
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
   
-  AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, pSingleTab());
+  if (gxArguments.m_bVerbose)
+    AttachMap::vDump(CN_ATTACHMAP, gpAttachMap, pSingleTab());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -328,7 +329,8 @@ void RapidsSE::vAttachRegion(void)
   SysCall xSysCall;
   bool bResult;
   
-  vTrace("Attaching shm region %s\n",gxArguments.m_sRegionName.a());
+  if (gxArguments.m_bWelcome)
+    vTrace("Attaching shm region %s\n",gxArguments.m_sRegionName.a());
   
   // open existing shm region
   bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);

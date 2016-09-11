@@ -397,7 +397,7 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("x",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("__x",pWords[0],C_NO_CASE)) {
     bX(pWords);
     return true;
   }

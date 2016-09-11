@@ -21,15 +21,19 @@ int main(int argc, const char* argv[])
   aRelDbg = "release";
 #endif
  
-  printf("RapidsSE v%s (%s %s -- %s)\n",
-         RAPIDSSE_VERSION_STRING,
-         __DATE__,
-         __TIME__,
-         aRelDbg
-         );
-  
   RapidsSE::vCheckAssumptions();
-    
+  
+  if ( ! gxArguments.bParse(argc,argv) )
+    ASSERT(0);
+  
+  if (gxArguments.m_bWelcome)
+    printf("RapidsSE v%s (%s %s -- %s)\n",
+           RAPIDSSE_VERSION_STRING,
+           __DATE__,
+           __TIME__,
+           aRelDbg
+           );
+  
 //  vTrace("Task::vWord %p\n",Task::vWord);
   
 //  Timer xTimer;
@@ -43,8 +47,6 @@ int main(int argc, const char* argv[])
 //  vTrace("duration %lldns\n",xTimer.iNanoseconds());
 
   
-  if ( ! gxArguments.bParse(argc,argv) )
-    ASSERT(0);
   
   if (gxArguments.m_bVerbose)
     gxArguments.vPrint();
@@ -57,7 +59,7 @@ int main(int argc, const char* argv[])
   RapidsSE::vExecute();
   
   // optionally execute se> prompt
-  if (gxArguments.m_bSePrompt) {
+  if (gxArguments.m_bPrompt) {
     SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);
     pSePrompt->vLoop();
   }
@@ -65,7 +67,8 @@ int main(int argc, const char* argv[])
   // unmap from shm and optionally unlink it
   RapidsSE::vPoolClose();
 
-  printf("RapidsSE exits\n");
+  if (gxArguments.m_bVerbose)
+    printf("RapidsSE exits\n");
     
   return EXIT_SUCCESS;
 }

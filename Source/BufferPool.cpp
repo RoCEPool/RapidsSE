@@ -18,7 +18,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
 {
   SysCall xSysCall;
   
-  vTrace("Attaching region %s\n",sRegionName.a());
+  if (gxArguments.m_bWelcome)
+    vTrace("Attaching region %s\n",sRegionName.a());
   
   // open a shared memory region
   bool bResult = Shm::bAttach(sRegionName.a(),iDescriptor,xSysCall);
@@ -50,7 +51,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
 {
   SysCall xSysCall;
   
-  vTrace("Attaching region %s\n",sRegionName.a());
+  if (gxArguments.m_bWelcome)
+    vTrace("Attaching region %s\n",sRegionName.a());
   
   // open a shared memory region
   bool bResult = Shm::bAttach(sRegionName.a(),iDescriptor,xSysCall);
@@ -82,7 +84,8 @@ Buffer* BufferPool::pCreateRegion(s& sRegionName,
 {
   SysCall xSysCall;
   
-  vTrace("Creating region %s\n",sRegionName.a());
+  if (gxArguments.m_bWelcome)
+    vTrace("Creating region %s\n",sRegionName.a());
   
   // open a shared memory region
   bool bResult = Shm::bCreate(sRegionName.a(),iRegionSize,iDescriptor,xSysCall);

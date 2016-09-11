@@ -22,13 +22,14 @@ Arguments::Arguments(void)
   m_bDocol      = false;
   m_bHelp       = false;
   m_bList       = false;
-  m_bSePrompt   = false;
+  m_bPrompt   = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
 
   m_bBgTasks    = false;
   m_bVerbose    = false;
+  m_bWelcome    = true;
   
   m_iPartition  = 0;
   
@@ -76,6 +77,8 @@ bool Arguments::bParse(int argc, const char* argv[])
     if (String::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
       m_sCommand = argv[++iArg];
       m_bCommand = true;
+      m_bPrompt  = true;
+      m_bWelcome = false;
       continue;
     }
     
@@ -108,11 +111,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     if (String::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
-      m_bSePrompt = true;
+      m_bPrompt = true;
       continue;
     }
     if (String::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
-      m_bSePrompt = true;
+      m_bPrompt = true;
       continue;
     }
     
@@ -148,14 +151,33 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    if (String::bEqualTo("--welcome",argv[iArg],C_NO_CASE)) {
+      m_bWelcome = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
+      m_bWelcome = false;
+      continue;
+    }
+    
     // seitf options -----------------------------------------------------------
     if (String::bEqualTo("--partition",argv[iArg],C_NO_CASE)) {
       m_iPartition = String::iToI8(argv[++iArg]);
       continue;
     }
+
+    if (String::iLength(m_sCommand.a()))
+      String::vConcat(m_sCommand.a(),' ');
     
-    vTrace("Unrecognized command argument: %s\n",argv[iArg]);
-    return false;
+    String::vConcat(m_sCommand.a(),argv[iArg]);
+    m_bCommand = true;
+    m_bPrompt  = true;
+    m_bWelcome = false;
+    continue;
+    
+    //vTrace("Unrecognized command argument: %s\n",argv[iArg]);
+    //return false;
   }
 
   return true;
@@ -174,7 +196,7 @@ void Arguments::vPrint(void)
   if (m_bDocol)    vTrace("  --docol\n");
   if (m_bHelp)     vTrace("  --help\n");
   if (m_bList)     vTrace("  --list\n");
-  if (m_bSePrompt) vTrace("  --seprompt\n");
+  if (m_bPrompt)   vTrace("  --seprompt\n");
   if (m_bStart)    vTrace("  --start\n");
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");

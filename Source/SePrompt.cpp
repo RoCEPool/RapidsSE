@@ -6,6 +6,7 @@
 
 extern BufferPool*  gpBufferPool;
 extern Heap*        gpMediumHeap;
+extern Arguments    gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -59,8 +60,14 @@ SePrompt::SePrompt(i8 iPartition)
   //----
   m_xTokeniser.vMalloc(false);
   m_xTokeniser.vPush();
-  m_xTokeniser.vPrompt(m_sPrompt);
-  m_xTokeniser.vUseStdin();
+  
+  if (gxArguments.m_bCommand) {
+    m_xTokeniser.vUseString(gxArguments.m_sCommand);
+  }
+  else {
+    m_xTokeniser.vPrompt(m_sPrompt);
+    m_xTokeniser.vUseStdin();
+  }
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vNormal(true);
   
@@ -108,6 +115,41 @@ void SePrompt::vLoop(void)
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  if (gxArguments.m_bCommand)
+    vGetCommandArgument();
+  else
+    vGetCommandInput();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command from arguments                                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vGetCommandArgument(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  //String::vCopy(m_pToken[0],gxArguments.m_sCommand.a());
+  //String::vCopy(m_pToken[1],"");
+
+  i8 iToken = 0;
+  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+    
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    
+    iToken++;
+    ASSERT(iToken < C_TOKENS);
+  }
+  
+  m_bContinue = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get command from input                                                     */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vGetCommandInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

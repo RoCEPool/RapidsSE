@@ -23,7 +23,7 @@ namespace StorageEngine
     bool m_bDocol;      // run the docol> interpreter
     bool m_bHelp;       // display help
     bool m_bList;       // list shm regions using /tmp
-    bool m_bSePrompt;   // run the se> prompt
+    bool m_bPrompt;   // run the se> prompt
     bool m_bStart;      // start system (shm not exist, shm create, root thread & task)
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
@@ -31,6 +31,7 @@ namespace StorageEngine
     // options
     bool m_bBgTasks;    // start background tasks
     bool m_bVerbose;    // print extra stuff
+    bool m_bWelcome;    // print banner
     
     // seitf options
     i8   m_iPartition;  // which partition
