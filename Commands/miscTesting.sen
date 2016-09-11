@@ -23,6 +23,17 @@
     next                        // next iteration
 ;
 
+: string_blowup
+
+traceon
+    "abcdefghijklmnopqrstuvwxyz"
+    1000000 0 do
+      "abcdefghijklmnopqrstuvwxyz"
+      concat
+    loop
+;
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
