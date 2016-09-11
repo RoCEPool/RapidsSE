@@ -30,7 +30,7 @@ void StorageEngine::vCheckAssumptions(void)
     
   if (iEntriesECN != iEntriesPCN) {
     vFatal("\n!!!ALERT!!! No of entries in pCN (%lld) do not match the no in eCN (%lld)\n\n",
-           iEntriesECN, iEntriesPCN);
+           iEntriesPCN, iEntriesECN);
   }
   
   bFoundEnum = false;
