@@ -6398,12 +6398,12 @@ void Task::vFileClose(NNP_Task nnpTask)
 {
 ENTRY("vFileClose");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.close");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
   
   pFile->vClose();
   
@@ -6417,12 +6417,12 @@ void Task::vFileDelete(NNP_Task nnpTask)
 {
 ENTRY("vFileDelete");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.delete");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
 
   delete pFile;
   
@@ -6437,12 +6437,12 @@ void Task::vFileInit(NNP_Task nnpTask)
 {
 ENTRY("vFileInit");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.init");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
   
   new (pFile) File;
   
@@ -6458,10 +6458,10 @@ ENTRY("vFileNew");
   
   File* pFile = new File;
   
-  PtrVal xPtrFile;
-  xPtrFile = pFile;
+  Object* pPtrFile;
+  pPtrFile = (Object*)pFile;
   
-  nnpTask->vPushParam(xPtrFile);
+  nnpTask->vPushParam(pPtrFile);
   
   EXIT();
 }
@@ -6473,12 +6473,12 @@ void Task::vFileOpen(NNP_Task nnpTask)
 {
 ENTRY("vFileOpen");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.open");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
   
@@ -6499,12 +6499,12 @@ void Task::vFilePathGet(NNP_Task nnpTask)
 {
 ENTRY("vFilePathGet");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.path@");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
 
   s256 sPath = pFile->sPath();
   
@@ -6520,12 +6520,12 @@ void Task::vFilePathSet(NNP_Task nnpTask)
 {
 ENTRY("vFilePathSet");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.path!");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
   
   s256 sPath;
   
@@ -6544,12 +6544,12 @@ void Task::vFileRead(NNP_Task nnpTask)
 {
 ENTRY("vFileRead");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.read");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   s8K sLine;
@@ -6572,12 +6572,12 @@ void Task::vFileWrite(NNP_Task nnpTask)
 {
 ENTRY("vFileWrite");
   
-  PtrVal xPtrFile;
+  Object* pPtrFile;
   
-  if ( ! nnpTask->bPopParam(xPtrFile) )
+  if ( ! nnpTask->bPopParam(pPtrFile) )
     THROW_INVALID_PARAM("file.write");
   
-  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
+  File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   ValWsp xValue;

@@ -39,6 +39,16 @@ const char* C_OPEN_READ_WRITE_CREATE = "w+";
 const char* C_OPEN_READ_APPEND = "a+";
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+File* Common::_pFile(void* pAddr)
+{
+  File* pFile = reinterpret_cast<File*>(pAddr);
+  
+  return pFile;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t iSize)

@@ -118,6 +118,8 @@ namespace Common
 //    void vPrint(const char* sFormat,...);
 //    
   };
+  
+  File* _pFile(void* pAddr);
 
 }
 
