@@ -242,7 +242,6 @@ namespace Tasks
     void vPushParam(const char* aString);
     void vPushParam(i8 iArg1);
     void vPushParam(Object* pObject);
-    //    void vPushParam(Object* pObject);
     void vPushParam(Value& xArg1);
     void vPushParam(Value* pValue);
     void vPushParam(s32&  sArg1);
@@ -252,14 +251,12 @@ namespace Tasks
     void vPushParam(NNP_Task nnpTask);
     void vPushParam(Word* pWord);
     
-    void vPushReturn(Cell* pCell);
-    void vPushReturn(const char* aString);
     void vPushReturn(i8 iArg1);
-    void vPushReturn(Value* pValue);
-    void vPushReturn(Value& xValue);
     void vPushReturn(s32& sArg1);
     void vPushReturn(s256& sArg1);
     void vPushReturn(s8K& sArg1);
+    void vPushReturn(ValWsp& xValOpaque);
+    void vPushReturnVoid(void* pAddress);
 
     void vPopReturn(Cell*& pCell);
     bool bPopReturn(i8& iArg1);

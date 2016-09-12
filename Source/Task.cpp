@@ -1759,7 +1759,7 @@ void Task::vRoutineCall(Word* pWord)
   
   ASSERT(WT_ROUTINE == pWord->eWordType());
     
-  vPushReturn(m_pCell);
+  vPushReturnVoid(m_pCell);
     
   BodyField* pBody = pWord->pBodyField();
     
@@ -2410,14 +2410,6 @@ void Task::vPushParam(s8K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push object onto parameter stack                                           */
-/*----------------------------------------------------------------------------*/
-//void Task::vPushParam(Object* pObject)
-//{
-//  m_xParamStack.vPush(pObject);
-//}
-
-/*----------------------------------------------------------------------------*/
 /* push value onto parameter stack                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vPushParam(Value& xVal1)
@@ -2464,92 +2456,39 @@ void Task::vPushParam(Word* pArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push char* onto return stack                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(const char* aString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  ValWsp xStrVal1;
-  xStrVal1 = aString;
-  
-  vPushReturn(&xStrVal1);
-}
-
-/*----------------------------------------------------------------------------*/
 /* push i8 onto return stack                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vPushReturn(i8 iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
+
   IntVal xIntVal1;
   xIntVal1 = iArg1;
   
-  vPushReturn(&xIntVal1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s32 onto param stack                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(s32& sArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vPushReturn(sArg1.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s256 onto param stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(s256& sArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vPushReturn(sArg1.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* push s8K onto param stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(s8K& sArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vPushReturn(sArg1.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* push function address onto return stack                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(Cell* pCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  PtrVal xPtrIP;
-  xPtrIP = pCell;
-  
-  m_xReturnStack.vPush(&xPtrIP);
+  m_xReturnStack.vPush(&xIntVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push value onto return stack                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vPushReturn(Value* pValue)
+void Task::vPushReturn(ValWsp& xValOpaque)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_xReturnStack.vPush(pValue);
+  m_xReturnStack.vPush(&xValOpaque);
 }
 
 /*----------------------------------------------------------------------------*/
-/* push value onto return stack                                               */
+/* push address onto return stack                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vPushReturn(Value& xValue)
+void Task::vPushReturnVoid(void* pAddress)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_xReturnStack.vPush(&xValue);
+  PtrVal xPtrAddress;
+  xPtrAddress = pAddress;
+  
+  m_xReturnStack.vPush(&xPtrAddress);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2837,12 +2776,10 @@ ENTRY("vBegin");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  PtrVal xPtrBeginLoc;
+  Cell* pLastCell = pCurrentWord->pLastCell();
+  
+  nnpTask->vPushReturnVoid(pLastCell);
 
-  xPtrBeginLoc = pCurrentWord->pLastCell();
-  
-  nnpTask->vPushReturn(&xPtrBeginLoc);
-  
   EXIT();
 }
 
@@ -3106,9 +3043,9 @@ ENTRY("vDo");
   
   pCurrentWord->vEncode("do_rt");
   
-  Cell* pDoLoc = pCurrentWord->pLastCell();
+  Cell* pLastCell = pCurrentWord->pLastCell();
   
-  nnpTask->vPushReturn(pDoLoc);
+  nnpTask->vPushReturnVoid(pLastCell);
   
   EXIT();
 }
@@ -3215,7 +3152,7 @@ ENTRY("vElse");
   pCurrentWord->vEncode("jump");
   pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
-  nnpTask->vPushReturn(pElseJumpArg);
+  nnpTask->vPushReturnVoid(pElseJumpArg);
   
   //-------------------------------------------------------------------------
   
@@ -3328,7 +3265,7 @@ ENTRY("vEnter");
   if (nnpTask->m_bTracing)
     vDebug();
   
-  nnpTask->vPushReturn(nnpTask->m_pCell);
+  nnpTask->vPushReturnVoid(nnpTask->m_pCell);
   
   Cell* pPrevCell = nnpTask->m_pCell - 1;
   CodeField* pCode = pPrevCell->m_pCodeField;
@@ -3459,7 +3396,7 @@ ENTRY("vExecute");
     (pFunc)(nnpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->vPushReturn(nnpTask->m_pCell);
+    nnpTask->vPushReturnVoid(nnpTask->m_pCell);
 
     PtrVal xPtrVal;
     xPtrVal = pWord->pFirstCell();
@@ -3643,7 +3580,7 @@ ENTRY("vIf");
   
   pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
-  nnpTask->vPushReturn(pIfJumpArg);
+  nnpTask->vPushReturnVoid(pIfJumpArg);
   
   EXIT();
 }
@@ -3783,12 +3720,12 @@ ENTRY("vIterate");
   pCurrentWord->vEncode("iterate_rt_a");
   
   Cell* pIterateLoc = pCurrentWord->pLastCell();
-  nnpTask->vPushReturn(pIterateLoc);
+  nnpTask->vPushReturnVoid(pIterateLoc);
   pCurrentWord->vEncode("iterate_rt_b");
 
   pCurrentWord->vEncode("jumpFalse");
   Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  nnpTask->vPushReturn(pJumpFalseArg);
+  nnpTask->vPushReturnVoid(pJumpFalseArg);
   
   EXIT();
 }
@@ -3806,8 +3743,8 @@ ENTRY("vIterate_RT_A");
   if ( ! nnpTask->bPopParam(xPtrObject,xPtrCursor) )
     THROW_INVALID_PARAM("iterate_rt_a");
   
-  nnpTask->vPushReturn(xPtrCursor);
-  nnpTask->vPushReturn(xPtrObject);
+  nnpTask->vPushReturnVoid(xPtrCursor.pPtr());
+  nnpTask->vPushReturnVoid(xPtrObject.pPtr());
   
   EXIT();
 }
@@ -5159,11 +5096,11 @@ void Task::vToRstack(NNP_Task nnpTask)
 {
 ENTRY("vToRstack");
   
-  ValWsp xVal;
-  if ( ! nnpTask->bPopParam(xVal) )
+  ValWsp xValOpaque;
+  if ( ! nnpTask->bPopParam(xValOpaque) )
     THROW_INVALID_PARAM(">r");
 
-  nnpTask->vPushReturn(xVal);
+  nnpTask->vPushReturn(xValOpaque);
   
   EXIT();
 }
@@ -5411,7 +5348,7 @@ ENTRY("vWhile");
   pCurrentWord->vEncode("jumpFalse");
   Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
-  nnpTask->vPushReturn(pWhileJumpArg);
+  nnpTask->vPushReturnVoid(pWhileJumpArg);
   
   EXIT();
 }
