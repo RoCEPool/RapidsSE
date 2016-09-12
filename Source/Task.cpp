@@ -6842,15 +6842,16 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
 {
 ENTRY("vLoaderTableStore");
   
-  PtrVal xPtrTable;
-  PtrVal xPtrLoader;
-  if ( ! nnpTask->bPopParam(xPtrLoader,xPtrTable) )
+  Object* pPtrTable;
+  Object* pPtrLoader;
+  if ( ! nnpTask->bPopParam(pPtrLoader,pPtrTable) )
     THROW_INVALID_PARAM("loader.tableStore");
   
-  Loader* pLoader = reinterpret_cast<Loader*>(xPtrLoader.pPtr());
+  Loader* pLoader = reinterpret_cast<Loader*>(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
+  
   ASSERT(CN_TABLE == pTable->eClass());
 
   pLoader->vTable(pTable);
@@ -7785,10 +7786,9 @@ ENTRY("vRowCursorTableFetch");
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  PtrVal xPtrTable;
-  xPtrTable = pRowCursor->pTable();
+  Object* pPtrTable = pRowCursor->pTable();
   
-  nnpTask->vPushParam(xPtrTable);
+  nnpTask->vPushParam(pPtrTable);
   
   EXIT();
 }
@@ -7807,11 +7807,11 @@ ENTRY("vRowCursorTableStore");
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(xPtrRowCursor.pPtr());
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("rowcursor.table!");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   pRowCursor->vTable(pTable);
@@ -8552,11 +8552,11 @@ void Task::vTableDic(NNP_Task nnpTask)
 {
 ENTRY("vTableDic");
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.dic");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   Dictionary* pDictionary = pTable->pDic();
@@ -8573,11 +8573,11 @@ void Task::vTableDrop(NNP_Task nnpTask)
 {
 ENTRY("vTableDrop");
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.drop");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   EXIT();
@@ -8592,11 +8592,11 @@ ENTRY("vTableDump");
   
   vTrace("TableDump\n");
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.dump");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vDump();
@@ -8611,11 +8611,11 @@ void Task::vTableInit(NNP_Task nnpTask)
 {
 ENTRY("vTableInit");
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.init");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   new(pTable) Table;
@@ -8630,17 +8630,22 @@ void Task::vTableInsert(NNP_Task nnpTask)
 {
 ENTRY("vTableInsert");
   
-  PtrVal xPtrTable;
+  Object* pPtrTable;
   PtrVal xPtrTxRef;
   ValWsp xRow;
-  if ( ! nnpTask->bPopParam(xPtrTable,xPtrTxRef,xRow) )
+  
+  if ( ! nnpTask->bPopParam(pPtrTable) )
+    THROW_INVALID_PARAM("table.insert");
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+    THROW_INVALID_PARAM("table.insert");
+  if ( ! nnpTask->bPopParam(xRow) )
     THROW_INVALID_PARAM("table.insert");
 
   i8 iPartition;
   if ( ! nnpTask->bPopParam(iPartition) )
     THROW_INVALID_PARAM("table.insert");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
 
   TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
@@ -8658,11 +8663,11 @@ void Task::vTableTruncate(NNP_Task nnpTask)
 {
 ENTRY("vTableTruncate");
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.truncate");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   pTable->vTruncate();
@@ -8677,11 +8682,11 @@ void Task::vTableSpace(NNP_Task nnpTask)
 {
 ENTRY("vTableSpace");
   
-  PtrVal xPtrTable;
-  if ( ! nnpTask->bPopParam(xPtrTable) )
+  Object* pPtrTable;
+  if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.spave");
   
-  Table* pTable = reinterpret_cast<Table*>(xPtrTable.pPtr());
+  Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iBuffers = pTable->iRowBuffers();
@@ -10084,12 +10089,12 @@ void Task::vTxDump(NNP_Task nnpTask)
 {
 ENTRY("vTxDump");
   
-  PtrVal xPtrSession;
+  PtrVal xPtrTx;
   
-  if ( ! nnpTask->bPopParam(xPtrSession) )
+  if ( ! nnpTask->bPopParam(xPtrTx) )
     THROW_INVALID_PARAM("tx.delete");
   
-  Tx* pTx = static_cast<Tx*>(xPtrSession.pPtr());
+  Tx* pTx = static_cast<Tx*>(xPtrTx.pPtr());
   ASSERT(CN_TX == pTx->eClass());
 
   pTx->vDump();
