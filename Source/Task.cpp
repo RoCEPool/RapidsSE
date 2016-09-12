@@ -9640,11 +9640,11 @@ void Task::vThreadCursorBegin(NNP_Task nnpTask)
 {
 ENTRY("vThreadCursorBegin");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadCursor.begin");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   pThreadCursor->vBegin();
@@ -9659,11 +9659,11 @@ void Task::vThreadCursorDelete(NNP_Task nnpTask)
 {
 ENTRY("vTheadCursorDelete");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadCursor.delete");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   delete pThreadCursor;
@@ -9678,11 +9678,11 @@ void Task::vThreadCursorEnd(NNP_Task nnpTask)
 {
 ENTRY("vThreadCursorEnd");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadcursor.end");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   pThreadCursor->vEnd();
@@ -9697,11 +9697,11 @@ void Task::vThreadCursorFirst(NNP_Task nnpTask)
 {
 ENTRY("vThreadCursorFirst");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadCursor.first");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   pThreadCursor->vFirst();
@@ -9721,11 +9721,11 @@ void Task::vThreadCursorGet(NNP_Task nnpTask)
 {
 ENTRY("vThreadCursorGet");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadCursor.get");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   PtrVal xPtrNode;
@@ -9743,11 +9743,11 @@ void Task::vThreadCursorInit(NNP_Task nnpTask)
 {
 ENTRY("vThreadCursorInit");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadCursor.init");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   new(pThreadCursor) ThreadCursor(gpThreadList);
@@ -9765,10 +9765,7 @@ ENTRY("vThreadCursorNew");
   ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
-  PtrVal xPtrThreadCursor;
-  xPtrThreadCursor = pThreadCursor;
-  
-  nnpTask->vPushParam(xPtrThreadCursor);
+  nnpTask->vPushParam(pThreadCursor);
   
   EXIT();
 }
@@ -9780,11 +9777,11 @@ void Task::vThreadCursorNext(NNP_Task nnpTask)
 {
 ENTRY("vThreadCursorNext");
   
-  PtrVal xPtrThreadCursor;
-  if ( ! nnpTask->bPopParam(xPtrThreadCursor) )
+  Object* pPtrThreadCursor;
+  if ( ! nnpTask->bPopParam(pPtrThreadCursor) )
     THROW_INVALID_PARAM("threadCursor.next");
   
-  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(xPtrThreadCursor.pPtr());
+  ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
   pThreadCursor->vNext();
@@ -10257,14 +10254,6 @@ ENTRY("vTxCursorInit");
 void Task::vTxCursorNew(NNP_Task nnpTask)
 {
 ENTRY("vTxCursorNew");
-  
-  TxCursor* pTxCursor = new TxCursor(gpTxCollection);
-  ASSERT(CN_THREADCURSOR == pTxCursor->eClass());
-  
-  PtrVal xPtrThreadCursor;
-  xPtrThreadCursor = pTxCursor;
-  
-  nnpTask->vPushParam(xPtrThreadCursor);
   
   EXIT();
 }

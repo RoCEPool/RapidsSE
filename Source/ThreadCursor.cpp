@@ -9,6 +9,16 @@ extern Heap* gpSmallHeap;
 extern ThreadList* gpThreadList;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ThreadCursor* Threads::_pThreadCursor(void* pAddr)
+{
+  ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(pAddr);
+  
+  return pThreadCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* ThreadCursor::operator new(size_t iSize)
