@@ -203,6 +203,11 @@ void SePrompt::vProcessCommand(void)
     return;
   }
   
+  if (String::bEqualTo("docol",m_pToken[0],C_NO_CASE)) {
+    vDocol();
+    return;
+  }
+  
   if (String::bEqualTo("history",m_pToken[0],C_NO_CASE)) {
     m_xHistory.vPrint();
     return;
@@ -460,6 +465,18 @@ void SePrompt::vChangeWorkingDir(void)
 
   if ( ! xDir.bSetCurrent(sDir) )
     vTrace("Unable to set current directory\n");
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol                                                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDocol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"docol"));
+  if (!bExecuteRequest())
+    return;
 }
 
 /*----------------------------------------------------------------------------*/

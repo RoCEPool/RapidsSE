@@ -267,6 +267,11 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
+  if (String::bEqualTo("docol",pWords[0],C_NO_CASE)) {
+    bDocol(pWords);
+    return true;
+  }
+  
   if (String::bEqualTo("drop",pWords[0],C_NO_CASE)) {
     bDropTable(pWords);
     return true;
@@ -699,6 +704,28 @@ bool SEitf::bDumpTable(char* pWords[])
   String::vConcat(a,"\"");
   
   String::vConcat(a," dump_table");
+  
+  vAppendRequest(sRequest);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol                                                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDocol(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  //
+  String::vConcat(a," docol_command");
   
   vAppendRequest(sRequest);
   return true;
