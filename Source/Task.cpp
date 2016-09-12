@@ -6075,12 +6075,12 @@ void Task::vDirClose(NNP_Task nnpTask)
 {
 ENTRY("vDirClose");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
 
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.close");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   pDir->vClose();
   
@@ -6094,12 +6094,12 @@ void Task::vDirDelete(NNP_Task nnpTask)
 {
 ENTRY("vDirDelete");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("file.delete");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   delete pDir;
   
@@ -6113,12 +6113,12 @@ void Task::vDirEntryName(NNP_Task nnpTask)
 {
 ENTRY("vDirEntryName");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.close");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   s256 sEntryName;
   
@@ -6136,12 +6136,12 @@ void Task::vDirEntryType(NNP_Task nnpTask)
 {
 ENTRY("vDirEntryType");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.close");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   i8 iEntryType;
   
@@ -6159,12 +6159,12 @@ void Task::vDirInit(NNP_Task nnpTask)
 {
 ENTRY("vDirInit");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.init");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   new(pDir) Dir;
   
@@ -6180,12 +6180,12 @@ void Task::vDirIsClosed(NNP_Task nnpTask)
 {
 ENTRY("vDirIsClosed");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.close");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   bool bIsClosed = pDir->bIsClosed();
   
@@ -6201,12 +6201,12 @@ void Task::vDirIsOpen(NNP_Task nnpTask)
 {
 ENTRY("vDirIsOpen");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.close");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   bool bIsOpen = pDir->bIsOpen();
   
@@ -6224,10 +6224,10 @@ ENTRY("vDirNew");
   
   Dir* pDir = new Dir;
   
-  PtrVal xPtrDir;
-  xPtrDir = pDir;
+  Object* pPtrDir;
+  pPtrDir = (Object*)pDir;
   
-  nnpTask->vPushParam(xPtrDir);
+  nnpTask->vPushParam(pPtrDir);
   
   EXIT();
 }
@@ -6239,12 +6239,12 @@ void Task::vDirOpen(NNP_Task nnpTask)
 {
 ENTRY("vDirOpen");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.open");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   bool bOpened = pDir->bOpen();
   
@@ -6260,12 +6260,12 @@ void Task::vDirPathGet(NNP_Task nnpTask)
 {
 ENTRY("vDirPathGet");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.path@");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   s256 sPath;
   
@@ -6284,12 +6284,12 @@ void Task::vDirPathSet(NNP_Task nnpTask)
 {
 ENTRY("vDirPathSet");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.path!");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   ValWsp xWspPath;
 
@@ -6311,12 +6311,12 @@ void Task::vDirRead(NNP_Task nnpTask)
 {
 ENTRY("vDirRead");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.read");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   bool bRead  = pDir->bRead();
   
@@ -6332,12 +6332,12 @@ void Task::vDirRewind(NNP_Task nnpTask)
 {
 ENTRY("vDirRewind");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.rewind");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   pDir->vRewind();
   
@@ -6351,12 +6351,12 @@ void Task::vDirSeek(NNP_Task nnpTask)
 {
 ENTRY("vDirSeek");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.seek");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
   if ( ! nnpTask->bPopParam(iPosition) )
@@ -6374,12 +6374,12 @@ void Task::vDirTell(NNP_Task nnpTask)
 {
 ENTRY("vDirTell");
   
-  PtrVal xPtrDir;
+  Object* pPtrDir;
   
-  if ( ! nnpTask->bPopParam(xPtrDir) )
+  if ( ! nnpTask->bPopParam(pPtrDir) )
     THROW_INVALID_PARAM("dir.tell");
   
-  Dir* pDir = _pDir(xPtrDir.pPtr());
+  Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition = pDir->iTell();
   
