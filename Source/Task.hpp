@@ -224,6 +224,7 @@ namespace Tasks
     bool bPopParam(eCN& eArg1);
     bool bPopParam(i8& iArg1);
     bool bPopParam(i8& iArg1, i8& iArg2);
+    bool bPopParam(i8& iArg1, Object*& pObject);
     bool bPopParam(i8& iArg1, Value& xArg1);
     bool bPopParam(i8& iArg1, s8K& sArg2);
     bool bPopParam(i8& iArg1, i8& iArg2, Value& xArg3);
