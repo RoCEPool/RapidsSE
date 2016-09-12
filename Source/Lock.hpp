@@ -41,6 +41,8 @@ namespace Common
     Footer* pFooter(void);
   };
   
+  Lock* _pLock(void* pAddr);
+  
   const u8 C_WRITELOCK = 0x8000000000000000;
 }
 

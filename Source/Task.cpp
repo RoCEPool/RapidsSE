@@ -7063,11 +7063,11 @@ void Task::vLockDropRead(NNP_Task nnpTask)
 {
 ENTRY("vLockDropRead");
   
-  PtrVal xPtrLock;
-  if ( ! nnpTask->bPopParam(xPtrLock) )
+  Object* pPtrLock;;
+  if ( ! nnpTask->bPopParam(pPtrLock) )
     THROW_INVALID_PARAM("lock.dropread");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
+  Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
@@ -7083,11 +7083,11 @@ void Task::vLockDropWrite(NNP_Task nnpTask)
 {
 ENTRY("vLockDropWrite");
 
-  PtrVal xPtrLock;
-  if ( ! nnpTask->bPopParam(xPtrLock) )
+  Object* pPtrLock;;
+  if ( ! nnpTask->bPopParam(pPtrLock) )
     THROW_INVALID_PARAM("lock.dropwrite");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
+  Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
 
@@ -7103,11 +7103,11 @@ void Task::vLockGrabRead(NNP_Task nnpTask)
 {
 ENTRY("vLockGrabRead");
 
-  PtrVal xPtrLock;
-  if ( ! nnpTask->bPopParam(xPtrLock) )
+  Object* pPtrLock;;
+  if ( ! nnpTask->bPopParam(pPtrLock) )
     THROW_INVALID_PARAM("lock.grabread");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
+  Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
 
@@ -7123,11 +7123,11 @@ void Task::vLockGrabWrite(NNP_Task nnpTask)
 {
 ENTRY("vLockGrabWrite");
 
-  PtrVal xPtrLock;
-  if ( ! nnpTask->bPopParam(xPtrLock) )
+  Object* pPtrLock;;
+  if ( ! nnpTask->bPopParam(pPtrLock) )
     THROW_INVALID_PARAM("lock.grabwrite");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
+  Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
@@ -7143,11 +7143,11 @@ void Task::vLockInit(NNP_Task nnpTask)
 {
 ENTRY("vLockInit");
   
-  PtrVal xPtrLock;
-  if ( ! nnpTask->bPopParam(xPtrLock) )
+  Object* pPtrLock;;
+  if ( ! nnpTask->bPopParam(pPtrLock) )
     THROW_INVALID_PARAM("lock.init");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
+  Lock* pLock = _pLock(pPtrLock);
   
   new(pLock) Lock;
   
