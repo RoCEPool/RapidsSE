@@ -2350,10 +2350,10 @@ void Task::vPushParam(Object* pObject1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  PtrVal xEmbVal1;
-  xEmbVal1 = pObject1;
+  PtrVal xPtrObject;
+  xPtrObject = pObject1;
   
-  vPushParam(&xEmbVal1);
+  vPushParam(&xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5822,12 +5822,12 @@ void Task::vDicInit(NNP_Task nnpTask)
 {
 ENTRY("vDicInit");
   
-  PtrVal xDicPtr;
+  PtrVal xPtrDic;
   
-  if ( ! nnpTask->bPopParam(xDicPtr) )
+  if ( ! nnpTask->bPopParam(xPtrDic) )
     THROW_INVALID_PARAM("dic.init");
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
+  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
 
   new (pDictionary) Dictionary;
   
@@ -5844,12 +5844,12 @@ void Task::vDicLast(NNP_Task nnpTask)
 {
 ENTRY("vDicLast");
   
-  PtrVal xDicPtr;
+  PtrVal xPtrDic;
   
-  if ( ! nnpTask->bPopParam(xDicPtr) )
+  if ( ! nnpTask->bPopParam(xPtrDic) )
     THROW_INVALID_PARAM("dic.last");
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
+  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
   
   Word* pLastWord = pDictionary->pCurrentWord();
   
@@ -5880,11 +5880,11 @@ void Task::vDicName(NNP_Task nnpTask)
 {
 ENTRY("vDicName");
  
-  PtrVal xDicPtr;
-  if ( ! nnpTask->bPopParam(xDicPtr) )
+  PtrVal xPtrDic;
+  if ( ! nnpTask->bPopParam(xPtrDic) )
     THROW_INVALID_PARAM("dic.name");
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
+  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
 
   ValWsp sName;
   sName = pDictionary->sName().a();
@@ -5926,12 +5926,12 @@ void Task::vDicPush(NNP_Task nnpTask)
 {
 ENTRY("vDicPush");
   
-  PtrVal xDicPtr;
+  PtrVal xPtrDic;
   
-  if ( ! nnpTask->bPopParam(xDicPtr) )
+  if ( ! nnpTask->bPopParam(xPtrDic) )
     THROW_INVALID_PARAM("dic.push");
 
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xDicPtr.pPtr());
+  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
   
   if (nnpTask->m_pSEitf) {
     nnpTask->m_pSEitf->vPushDic(pDictionary);
@@ -6074,12 +6074,12 @@ void Task::vDirDelete(NNP_Task nnpTask)
 {
 ENTRY("vDirDelete");
   
-  PtrVal xDirPtr;
+  PtrVal xPtrDir;
   
-  if ( ! nnpTask->bPopParam(xDirPtr) )
+  if ( ! nnpTask->bPopParam(xPtrDir) )
     THROW_INVALID_PARAM("file.delete");
   
-  Dir* pDir = _pDir(xDirPtr.pPtr());
+  Dir* pDir = _pDir(xPtrDir.pPtr());
   
   delete pDir;
   
@@ -6378,12 +6378,12 @@ void Task::vFileClose(NNP_Task nnpTask)
 {
 ENTRY("vFileClose");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.close");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
   
   pFile->vClose();
   
@@ -6397,12 +6397,12 @@ void Task::vFileDelete(NNP_Task nnpTask)
 {
 ENTRY("vFileDelete");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.delete");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
 
   delete pFile;
   
@@ -6417,12 +6417,12 @@ void Task::vFileInit(NNP_Task nnpTask)
 {
 ENTRY("vFileInit");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.init");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
   
   new (pFile) File;
   
@@ -6438,10 +6438,10 @@ ENTRY("vFileNew");
   
   File* pFile = new File;
   
-  PtrVal xFilePtr;
-  xFilePtr = pFile;
+  PtrVal xPtrFile;
+  xPtrFile = pFile;
   
-  nnpTask->vPushParam(xFilePtr);
+  nnpTask->vPushParam(xPtrFile);
   
   EXIT();
 }
@@ -6453,12 +6453,12 @@ void Task::vFileOpen(NNP_Task nnpTask)
 {
 ENTRY("vFileOpen");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.open");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
   
   s32 sMode;
   
@@ -6479,12 +6479,12 @@ void Task::vFilePathGet(NNP_Task nnpTask)
 {
 ENTRY("vFilePathGet");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.path@");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
 
   s256 sPath = pFile->sPath();
   
@@ -6500,12 +6500,12 @@ void Task::vFilePathSet(NNP_Task nnpTask)
 {
 ENTRY("vFilePathSet");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.path!");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
   
   s256 sPath;
   
@@ -6524,12 +6524,12 @@ void Task::vFileRead(NNP_Task nnpTask)
 {
 ENTRY("vFileRead");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.read");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
   ASSERT(pFile);
   
   s8K sLine;
@@ -6552,12 +6552,12 @@ void Task::vFileWrite(NNP_Task nnpTask)
 {
 ENTRY("vFileWrite");
   
-  PtrVal xFilePtr;
+  PtrVal xPtrFile;
   
-  if ( ! nnpTask->bPopParam(xFilePtr) )
+  if ( ! nnpTask->bPopParam(xPtrFile) )
     THROW_INVALID_PARAM("file.write");
   
-  File* pFile = reinterpret_cast<File*>(xFilePtr.pPtr());
+  File* pFile = reinterpret_cast<File*>(xPtrFile.pPtr());
   ASSERT(pFile);
   
   ValWsp xValue;
@@ -6581,12 +6581,12 @@ void Task::vGridAppendNode(NNP_Task nnpTask)
 {
 ENTRY("vGridAppendNode");
   
-  PtrVal xNodePtr;
+  PtrVal xPtrNode;
   
-  if ( ! nnpTask->bPopParam(xNodePtr) )
+  if ( ! nnpTask->bPopParam(xPtrNode) )
     THROW_INVALID_PARAM("grid.addNode");
 
-  Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
+  Node* pNode = reinterpret_cast<Node*>(xPtrNode.pPtr());
   ASSERT(pNode);
   ASSERT(CN_NODE == pNode->eClass());
   
@@ -6602,12 +6602,12 @@ void Task::vGridInit(NNP_Task nnpTask)
 {
 ENTRY("vGridInit");
   
-  PtrVal xGridPtr;
+  PtrVal xPtrGrid;
   
-  if ( ! nnpTask->bPopParam(xGridPtr) )
+  if ( ! nnpTask->bPopParam(xPtrGrid) )
     THROW_INVALID_PARAM("grid.init");
   
-  Grid* pGrid = reinterpret_cast<Grid*>(xGridPtr.pPtr());
+  Grid* pGrid = reinterpret_cast<Grid*>(xPtrGrid.pPtr());
   ASSERT(CN_GRID == pGrid->eClass());
   
   new(pGrid) Grid;
@@ -7043,11 +7043,11 @@ void Task::vLockDropRead(NNP_Task nnpTask)
 {
 ENTRY("vLockDropRead");
   
-  PtrVal xLockPtr;
-  if ( ! nnpTask->bPopParam(xLockPtr) )
+  PtrVal xPtrLock;
+  if ( ! nnpTask->bPopParam(xPtrLock) )
     THROW_INVALID_PARAM("lock.dropread");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
@@ -7063,11 +7063,11 @@ void Task::vLockDropWrite(NNP_Task nnpTask)
 {
 ENTRY("vLockDropWrite");
 
-  PtrVal xLockPtr;
-  if ( ! nnpTask->bPopParam(xLockPtr) )
+  PtrVal xPtrLock;
+  if ( ! nnpTask->bPopParam(xPtrLock) )
     THROW_INVALID_PARAM("lock.dropwrite");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
 
@@ -7083,11 +7083,11 @@ void Task::vLockGrabRead(NNP_Task nnpTask)
 {
 ENTRY("vLockGrabRead");
 
-  PtrVal xLockPtr;
-  if ( ! nnpTask->bPopParam(xLockPtr) )
+  PtrVal xPtrLock;
+  if ( ! nnpTask->bPopParam(xPtrLock) )
     THROW_INVALID_PARAM("lock.grabread");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
 
@@ -7103,11 +7103,11 @@ void Task::vLockGrabWrite(NNP_Task nnpTask)
 {
 ENTRY("vLockGrabWrite");
 
-  PtrVal xLockPtr;
-  if ( ! nnpTask->bPopParam(xLockPtr) )
+  PtrVal xPtrLock;
+  if ( ! nnpTask->bPopParam(xPtrLock) )
     THROW_INVALID_PARAM("lock.grabwrite");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
@@ -7123,11 +7123,11 @@ void Task::vLockInit(NNP_Task nnpTask)
 {
 ENTRY("vLockInit");
   
-  PtrVal xLockPtr;
-  if ( ! nnpTask->bPopParam(xLockPtr) )
+  PtrVal xPtrLock;
+  if ( ! nnpTask->bPopParam(xPtrLock) )
     THROW_INVALID_PARAM("lock.init");
   
-  Lock* pLock = reinterpret_cast<Lock*>(xLockPtr.pPtr());
+  Lock* pLock = reinterpret_cast<Lock*>(xPtrLock.pPtr());
   
   new(pLock) Lock;
   
@@ -7190,12 +7190,12 @@ void Task::vNodeInit(NNP_Task nnpTask)
 {
 ENTRY("vNodeInit");
   
-  PtrVal xNodePtr;
+  PtrVal xPtrNode;
   
-  if ( ! nnpTask->bPopParam(xNodePtr) )
+  if ( ! nnpTask->bPopParam(xPtrNode) )
     THROW_INVALID_PARAM("node.init");
   
-  Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
+  Node* pNode = reinterpret_cast<Node*>(xPtrNode.pPtr());
   ASSERT(CN_NODE == pNode->eClass());
   
   new(pNode) Node;
@@ -7220,10 +7220,10 @@ ENTRY("vNodeNew");
 
   pNode->vNodeNo(iNodeNo);
   
-  PtrVal xNodePtr;
-  xNodePtr = pNode;
+  PtrVal xPtrNode;
+  xPtrNode = pNode;
   
-  nnpTask->vPushParam(xNodePtr);
+  nnpTask->vPushParam(xPtrNode);
   
   EXIT();
 }
@@ -7235,12 +7235,12 @@ void Task::vNodeNo(NNP_Task nnpTask)
 {
 ENTRY("vNodeNo");
   
-  PtrVal xNodePtr;
+  PtrVal xPtrNode;
   
-  if ( ! nnpTask->bPopParam(xNodePtr) )
+  if ( ! nnpTask->bPopParam(xPtrNode) )
     THROW_INVALID_PARAM("node.no");
   
-  Node* pNode = reinterpret_cast<Node*>(xNodePtr.pPtr());
+  Node* pNode = reinterpret_cast<Node*>(xPtrNode.pPtr());
   ASSERT(CN_NODE == pNode->eClass());
   
   nnpTask->vPushParam(pNode->iNodeNo());
@@ -8112,10 +8112,10 @@ ENTRY("vSEitfCursorNew");
   SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject(CN_SEITFCURSOR));
   new(pSEitfCursor) SEitfCursor(pSEitfList);
   
-  PtrVal xSEitfCursorPtr;
-  xSEitfCursorPtr = pSEitfCursor;
+  PtrVal xPtrSEitfCursor;
+  xPtrSEitfCursor = pSEitfCursor;
   
-  nnpTask->vPushParam(xSEitfCursorPtr);
+  nnpTask->vPushParam(xPtrSEitfCursor);
   
   EXIT();
 }
@@ -8682,10 +8682,10 @@ void Task::vTaskDic(NNP_Task nnpTask)
 {
 ENTRY("vTaskDic");
   
-  PtrVal xDicPtr;
-  xDicPtr = (void*)&nnpTask->m_xTaskDictionary;
+  PtrVal xPtrDic;
+  xPtrDic = (void*)&nnpTask->m_xTaskDictionary;
   
-  nnpTask->vPushParam(xDicPtr);
+  nnpTask->vPushParam(xPtrDic);
   
   EXIT();
 }
@@ -9108,10 +9108,10 @@ ENTRY("vTaskCursorNew");
   TaskCursor* pTaskCursor = static_cast<TaskCursor*>(gpSmallHeap->pAllocObject(CN_TASKCURSOR));
   new(pTaskCursor) TaskCursor(pTaskList);
   
-  PtrVal xSEitfCursorPtr;
-  xSEitfCursorPtr = pTaskCursor;
+  PtrVal xPtrSEitfCursor;
+  xPtrSEitfCursor = pTaskCursor;
   
-  nnpTask->vPushParam(xSEitfCursorPtr);
+  nnpTask->vPushParam(xPtrSEitfCursor);
   
   EXIT();
 }
