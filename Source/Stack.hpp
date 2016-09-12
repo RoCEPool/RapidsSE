@@ -20,6 +20,8 @@ namespace Structures
     Value* m_pRetryTop;    // reset to this top of stack
     i8     m_iRetryValues; // reset with this many values on stack
     
+    Footer m_xHazard;
+    
     char   m_mSpace[C_STACK_AREA];
     
     // must be last
@@ -53,6 +55,7 @@ namespace Structures
     Value* pTopValue(void);
     
     Footer* pFooter(void);
+    Footer* pHazard(void);
   };
 }
 

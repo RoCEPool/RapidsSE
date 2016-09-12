@@ -47,6 +47,7 @@ Stack::Stack(void)
   Memory::vCheckInitialised(this,sizeof(Stack));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  m_xHazard.vAssertFooter(); 
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,12 +64,15 @@ Stack::~Stack(void)
 void Stack::vDiscard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  m_xHazard.vAssertFooter();
 
   Value* pValue = reinterpret_cast<Value*>(m_pTop);
   i8 iSize = pValue->iSize();
   
   vPopBy(iSize);
   m_iValues--;
+  
+  m_xHazard.vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,12 +131,15 @@ void Stack::vPoke(i8 iNthValue, Value* pValue)
 void Stack::vPop(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  m_xHazard.vAssertFooter();
   
   i8 iSize = pTopValue()->iSize();
 
   Memory::vCopy(pValue,m_pTop,iSize);
   vPopBy(iSize);
   m_iValues--;
+
+  m_xHazard.vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -141,12 +148,15 @@ void Stack::vPop(Value* pValue)
 void Stack::vPush(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  m_xHazard.vAssertFooter();
   
   i8 iSize = pValue->iSize();
   
   vPushBy(iSize);
   Memory::vCopy(m_pTop,pValue,iSize);
   m_iValues++;
+
+  m_xHazard.vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -228,6 +238,8 @@ void Stack::vPushBy(i8 iBytes)
   
   pTop -= iBytes;
   
+  ASSERT(pTop >= (char*)pStackLimit());
+  
   m_pTop = reinterpret_cast<Value*>(pTop);
 }
 
@@ -264,7 +276,7 @@ Value* Stack::pStackLimit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  char* pLimit = (char*)this + sizeof(Stack);
+  char* pLimit = &m_mSpace[0];
   
   return pPoolCheck<Value*>(pLimit);
 }
@@ -293,6 +305,16 @@ Footer* Stack::pFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK);
   
   return &m_xFooter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get location of hazard                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* Stack::pHazard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK);
+  
+  return &m_xHazard;
 }
 
 /*============================================================================*/
