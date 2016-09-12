@@ -8989,11 +8989,11 @@ void Task::vTaskCursorBegin(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorBegin");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.begin");
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vBegin();
@@ -9008,11 +9008,11 @@ void Task::vTaskCursorDelete(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorDelete");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.delete");
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   Object* pObject = reinterpret_cast<Object*>(pTaskCursor);
@@ -9030,11 +9030,11 @@ void Task::vTaskCursorEnd(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorEnd");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.end");
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vEnd();
@@ -9049,11 +9049,11 @@ void Task::vTaskCursorFirst(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorFirst");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.first");
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vFirst();
@@ -9073,11 +9073,11 @@ void Task::vTaskCursorGet(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorGet");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.get");
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   Task* pThatTask = pTaskCursor->pObject();
@@ -9097,8 +9097,8 @@ void Task::vTaskCursorInit(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorInit");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.init");
   
 //  s32 sName;
@@ -9107,7 +9107,7 @@ ENTRY("vTaskCursorInit");
 //  ASSERT(pWord);
 //  TaskList* pTaskList = reinterpret_cast<TaskList*>(pWord->pBodyArea());
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   new(pTaskCursor) TaskCursor(gpTaskList);
@@ -9122,21 +9122,6 @@ void Task::vTaskCursorNew(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorNew");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.new");
-  
-  TaskList* pTaskList = reinterpret_cast<TaskList*>(xPtrTaskCursor.pPtr());
-  ASSERT(CN_TASKCURSOR == pTaskList->eClass());
-  
-  TaskCursor* pTaskCursor = static_cast<TaskCursor*>(gpSmallHeap->pAllocObject(CN_TASKCURSOR));
-  new(pTaskCursor) TaskCursor(pTaskList);
-  
-  PtrVal xPtrSEitfCursor;
-  xPtrSEitfCursor = pTaskCursor;
-  
-  nnpTask->vPushParam(xPtrSEitfCursor);
-  
   EXIT();
 }
 
@@ -9147,11 +9132,11 @@ void Task::vTaskCursorNext(NNP_Task nnpTask)
 {
 ENTRY("vTaskCursorNext");
   
-  PtrVal xPtrTaskCursor;
-  if ( ! nnpTask->bPopParam(xPtrTaskCursor) )
+  Object* pPtrTaskCursor;
+  if ( ! nnpTask->bPopParam(pPtrTaskCursor) )
     THROW_INVALID_PARAM("taskCursor.next");
   
-  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(xPtrTaskCursor.pPtr());
+  TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   
   pTaskCursor->vNext();

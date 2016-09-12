@@ -8,6 +8,16 @@ extern Heap*       gpSmallHeap;
 extern TaskList*   gpTaskList;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+TaskCursor* Tasks::_pTaskCursor(void* pAddr)
+{
+  TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(pAddr);
+  
+  return pTaskCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* TaskCursor::operator new(size_t iSize, TaskCursor* pTaskCursor)
