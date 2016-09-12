@@ -97,6 +97,7 @@ pDUMPFUN *gpDump[]
   /* 38 */ &RowBuffer::vDump,          // CN_ROWBUFFER
   /* 39 */ &RapidsSE::vDumpUndefined,  // CN_ROWCURSOR
   /* 40 */ &RowStrand::vDump,          // CN_ROWSTRAND
+  /*    */ &RapidsSE::vDumpUndefined,  // CN_ROWWSP
   
   /* 41 */ &RapidsSE::vDumpUndefined,  // CN_SCANBUFFER
   /* 42 */ &RapidsSE::vDumpUndefined,  // CN_SEHISTORY
