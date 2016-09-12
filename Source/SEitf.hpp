@@ -111,7 +111,6 @@ namespace Interface
     bool bSizeTable(char* pWords[]);
     bool bTruncateTable(char* pWords[]);
     
-    bool bPopDic(char* pWords[]);
     bool bPushDic(char* pWords[]);
     bool bGetDicPath(char* pWords[]);
     bool bGetDicContents(char* pWords[]);

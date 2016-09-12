@@ -248,7 +248,7 @@ void SePrompt::vProcessCommand(void)
     return;
   }
   
-  m_xHistory.vAppend(m_pToken,C_TOKENS);
+  m_xHistory.vAppend(m_pToken);
   
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);

@@ -218,10 +218,13 @@ namespace Magic
     cn(eCN eClassNo);
     ~cn(void);
     
+    static const char* pClassName(eCN eClassNo);
+    
     void operator =(eCN eClassNo);
     bool operator ==(eCN eClassNo) const;
     eCN  eClass(void) const;
     void vClass(eCN eClassNo);
+    
   };
   
 }

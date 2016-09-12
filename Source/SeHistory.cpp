@@ -30,11 +30,10 @@ SeHistory::~SeHistory(void)
 /*----------------------------------------------------------------------------*/
 /* append command to history file                                             */
 /*----------------------------------------------------------------------------*/
-void SeHistory::vAppend(char* pToken[], i8 nTokens)
+void SeHistory::vAppend(char* pToken[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEHISTORY,_FOOTER_);
   
-  ASSERT(nTokens);
   vSeekEnd();
   
   for (i8 i = 0; *pToken[i]; i++) {
