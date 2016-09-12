@@ -215,6 +215,7 @@ namespace Tasks
     bool bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2);
     
     bool bPopParam(Cell*& pCell);
+    bool bPopParam(eCN& eArg1);
     bool bPopParam(i8& iArg1);
     bool bPopParam(i8& iArg1, i8& iArg2);
     bool bPopParam(i8& iArg1, Value& xArg1);
@@ -546,9 +547,6 @@ namespace Tasks
     static void vNodeCursorNew(NNP_Task nnpTask);
     static void vNodeCursorNext(NNP_Task nnpTask);
     
-    // object
-    static void vObjectDump(NNP_Task nnpTask);
-
     // process
     static void vProcessGetPid(NNP_Task nnpTask);
     static void vProcessQuit(NNP_Task nnpTask);

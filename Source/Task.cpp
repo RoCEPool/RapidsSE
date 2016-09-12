@@ -754,8 +754,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
-  vAddPrimitive("object.dump",     &vObjectDump,       false);
-
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
@@ -1917,6 +1915,24 @@ bool Task::bPopParam(Cell*& pCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop eCN from param stack                                                   */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopParam(eCN& iArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPopParam(&xIntVal1);
+  
+  iArg1 = static_cast<eCN>(xIntVal1.iInt());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop i8 from param stack                                                    */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1)
@@ -2779,7 +2795,7 @@ ENTRY("vAllot");
   
   i8 iBytes;
   
-  if ( ! nnpTask->bPopParam(iBytes) )
+  if ( !  nnpTask->bPopParam(iBytes) )
     THROW_INVALID_PARAM("allot");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -2900,10 +2916,10 @@ ENTRY("vClassFetch");
   PtrVal xPtrObject;
   nnpTask->vPopParam(&xPtrObject);
   
-  IntVal xClassNoVal;
-  xClassNoVal = xPtrObject.pObject()->eClass();
+  eCN eClassNo;
+  eClassNo = xPtrObject.pObject()->eClass();
   
-  nnpTask->vPushParam(&xClassNoVal);
+  nnpTask->vPushParam(eClassNo);
   
   EXIT();
 }
@@ -2915,14 +2931,13 @@ void Task::vClassStore(NNP_Task nnpTask)
 {
 ENTRY("vClassStore");
 
-  IntVal xClassNoVal;
-  nnpTask->vPopParam(&xClassNoVal);
+  eCN eClassNo;
+  if ( ! nnpTask->bPopParam(eClassNo) )
+    THROW_INVALID_PARAM("class!");
   
   PtrVal xPtrObject;
   nnpTask->vPopParam(&xPtrObject);
   
-  eCN eClassNo = static_cast<eCN>(xClassNoVal.iInt());
-
   xPtrObject.pObject()->vClass(eClassNo);
   
   EXIT();
@@ -4466,10 +4481,9 @@ void Task::vRdtscp(NNP_Task nnpTask)
 {
 ENTRY("vRdtscp");
   
-  IntVal xValInt;
-  xValInt = iRdtscp();
+  i8 iTscp = iRdtscp();
 
-  nnpTask->vPushParam(&xValInt);
+  nnpTask->vPushParam(iTscp);
   
   EXIT();
 }
@@ -5075,18 +5089,16 @@ void Task::vToCmd(NNP_Task nnpTask)
 {
 ENTRY("vToCmd");
 
-  if ( ! nnpTask->bGuardParam(CN_INTVAL) )
+  i8 nValues;
+  if ( ! nnpTask->bPopParam(nValues) )
     THROW_INVALID_PARAM(">cmd");
-  
-  IntVal xNumValues;
-  nnpTask->vPopParam(&xNumValues);
 
   s8K sCmd;
 
   ValWsp xStr;
   xStr = "<cmd>";
   
-  for (i8 i = 0; i < xNumValues.iInt(); i++) {
+  for (i8 i = 0; i < nValues; i++) {
     ValWsp xValWsp;
     nnpTask->m_xParamStack.vPeek(i,&xValWsp);
 
@@ -5807,17 +5819,15 @@ void Task::vDicFrozenSet(NNP_Task nnpTask)
 {
 ENTRY("vDicFrozenSet");
 
-  IntVal xIntFrozen;
+  i8 iFrozen;
   PtrVal xPtrDic;
   
-  if ( ! nnpTask->bPopParam(xIntFrozen,xPtrDic) )
+  if ( ! nnpTask->bPopParam(iFrozen,xPtrDic) )
     THROW_INVALID_PARAM("dic.frozen@");
   
   Dictionary* pDic = _pDic(xPtrDic.pPtr());
   
-  bool bFrozen = xIntFrozen.iInt();
-
-  pDic->vFrozen(bFrozen);
+  pDic->vFrozen(iFrozen);
   
   EXIT();
 }
@@ -7434,27 +7444,6 @@ ENTRY("vNodeCursorNext");
   xPtrNode = pNodeCursor->pObject();
   
   nnpTask->vPushParam(xPtrNode);
-  
-  EXIT();
-}
-
-// object: /////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* object.dump -- dump the given object                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectDump(NNP_Task nnpTask)
-{
-ENTRY("vObjectDump");
-  
-  IntVal xObject;
-  if ( ! nnpTask->bPopParam(xObject) )
-    THROW_INVALID_PARAM("object.dump");
-
-  Object* pObject = reinterpret_cast<Object*>(xObject.iInt());
-  
-  pDUMPFUN* pDumpFun =gpDump[pObject->eClass()];
-  (pDumpFun)(pObject->eClass(), pObject, pSingleTab());
   
   EXIT();
 }
@@ -10709,9 +10698,7 @@ ENTRY("vSocketAccept");
   if ( ! bResult )
     THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
   
-  IntVal xIntVal;
-  xIntVal = iSocketId;
-  nnpTask->vPushParam(xIntVal);
+  nnpTask->vPushParam(iSocketId);
   
   EXIT();
 }
@@ -10747,18 +10734,21 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   Object* pObject;
-  IntVal xPort;
+  i8 iPort;
   
 ENTRY("vSocketConnect");
   
-  if ( ! nnpTask->bPopParam(pObject, xPort) )
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("socketconnect");
+
+  if ( ! nnpTask->bPopParam(iPort) )
     THROW_INVALID_PARAM("socketconnect");
     
   //const char* sAddr = reinterpret_cast<char*>(pObject);
   //pSocket = new Socket;
   const char* sAddr = "127.0.0.1";
   pSocket = reinterpret_cast<Socket*>(pObject);
-  bool bResult = pSocket->bConnectServer(sAddr, (int)xPort.iInt(), xSysCall);
+  bool bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
   
   if ( ! bResult )
     THROW("Unable to connect: Errno %d!", xSysCall.iError());
