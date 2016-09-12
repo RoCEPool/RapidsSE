@@ -25,6 +25,8 @@
 
 #include "User.hpp"
 
+#include "RowWsp.hpp"
+
 //------------------------------------------------------------------------------
 namespace DBobjects
 {

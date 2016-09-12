@@ -68,6 +68,7 @@ namespace Magic
     /* 38 */ CN_ROWBUFFER,
     /* 39 */ CN_ROWCURSOR,
     /* 40 */ CN_ROWSTRAND,
+    /*    */ CN_ROWWSP,
     
     /* 41 */ CN_SCANBUFFER,
     /* 42 */ CN_SEHISTORY,
@@ -166,6 +167,7 @@ namespace Magic
     /* 38 */ "ROWBUFFER",
     /* 39 */ "ROWCURSOR",
     /* 40 */ "ROWSTRAND",
+    /*    */ "ROWWSP",
     
     /* 41 */ "SCANBUFFER",
     /* 42 */ "SEHISTORY",
