@@ -3275,9 +3275,8 @@ ENTRY("vEnter");
 
   Word* pWord = reinterpret_cast<Word*>(pcAdd(pBody, -(sizeof(Word)-sizeof(BodyField)) ));
   if (WT_OBJECT == pWord->eWordType()) {
-    PtrVal xPtrVal;
-    xPtrVal = pWord->pFirstCell();
-    nnpTask->vPushParam(xPtrVal);
+    Cell* pCell = pWord->pFirstCell();
+    nnpTask->vPushParam(pCell);
 
     //nnpTask->vPushParam(pWord->pFirstCell());
   }
@@ -3397,9 +3396,8 @@ ENTRY("vExecute");
   else if (WT_OBJECT == pWord->eWordType()) {
     nnpTask->vPushReturnVoid(nnpTask->m_pCell);
 
-    PtrVal xPtrVal;
-    xPtrVal = pWord->pFirstCell();
-    nnpTask->vPushParam(xPtrVal);
+    Cell* pCell = pWord->pFirstCell();
+    nnpTask->vPushParam(pCell);
     
     pFUN pFunc = pWord->pFunc();
     if (!pFunc || Task::vNop == pFunc) {
