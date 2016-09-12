@@ -41,6 +41,8 @@ namespace DBobjects
     
     Footer* pFooter(void);
   };
+  
+  RowCursor* _pRowCursor(void* pAddr);
 }
 
 /*============================================================================*/

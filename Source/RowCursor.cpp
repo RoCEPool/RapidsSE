@@ -7,6 +7,16 @@
 extern Heap* gpSmallHeap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+RowCursor* DBobjects::_pRowCursor(void* pAddr)
+{
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(pAddr);
+  
+  return pRowCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* RowCursor::operator new(size_t iSize)
