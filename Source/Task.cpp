@@ -1976,6 +1976,29 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from param stack                                                */
 /*----------------------------------------------------------------------------*/
+bool Task::bPopParam(i8& iArg1, Object*& pArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_PTRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  m_xParamStack.vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  PtrVal xPtrVal1;
+  m_xParamStack.vPop(&xPtrVal1);
+  
+  pArg2 = xPtrVal1.pObject();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,val from param stack                                                */
+/*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1, Value& xArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
@@ -5764,12 +5787,12 @@ void Task::vDicFrozenGet(NNP_Task nnpTask)
 {
 ENTRY("vDicFrozenGet");
   
-  PtrVal xPtrDic;
+  Object* pPtrDic;
   
-  if ( ! nnpTask->bPopParam(xPtrDic) )
+  if ( ! nnpTask->bPopParam(pPtrDic) )
     THROW_INVALID_PARAM("dic.frozen@");
   
-  Dictionary* pDic = _pDic(xPtrDic.pPtr());
+  Dictionary* pDic = _pDic(pPtrDic);
   
   bool bFrozen = pDic->bFrozen();
   
@@ -5786,12 +5809,12 @@ void Task::vDicFrozenSet(NNP_Task nnpTask)
 ENTRY("vDicFrozenSet");
 
   i8 iFrozen;
-  PtrVal xPtrDic;
+  Object* pPtrDic;
   
-  if ( ! nnpTask->bPopParam(iFrozen,xPtrDic) )
+  if ( ! nnpTask->bPopParam(iFrozen,pPtrDic) )
     THROW_INVALID_PARAM("dic.frozen@");
   
-  Dictionary* pDic = _pDic(xPtrDic.pPtr());
+  Dictionary* pDic = _pDic(pPtrDic);
   
   pDic->vFrozen(iFrozen);
   
@@ -5822,17 +5845,17 @@ void Task::vDicInit(NNP_Task nnpTask)
 {
 ENTRY("vDicInit");
   
-  PtrVal xPtrDic;
+  Object* pPtrDic;
   
-  if ( ! nnpTask->bPopParam(xPtrDic) )
+  if ( ! nnpTask->bPopParam(pPtrDic) )
     THROW_INVALID_PARAM("dic.init");
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
+  Dictionary* pDic = _pDic(pPtrDic);
 
-  new (pDictionary) Dictionary;
+  new (pDic) Dictionary;
   
   // this is because of GlobalDictionary (ugh)
-  pDictionary->vInit();
+  pDic->vInit();
   
   EXIT();
 }
@@ -5844,14 +5867,14 @@ void Task::vDicLast(NNP_Task nnpTask)
 {
 ENTRY("vDicLast");
   
-  PtrVal xPtrDic;
+  Object* pPtrDic;
   
-  if ( ! nnpTask->bPopParam(xPtrDic) )
+  if ( ! nnpTask->bPopParam(pPtrDic) )
     THROW_INVALID_PARAM("dic.last");
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
+  Dictionary* pDic = _pDic(pPtrDic);
   
-  Word* pLastWord = pDictionary->pCurrentWord();
+  Word* pLastWord = pDic->pCurrentWord();
   
   nnpTask->vPushParam(pLastWord);
   
@@ -5865,10 +5888,7 @@ void Task::vDicMain(NNP_Task nnpTask)
 {
 ENTRY("vDicMain");
   
-  PtrVal xPtrDic;
-  xPtrDic = gpMainDic;
-  
-  nnpTask->vPushParam(xPtrDic);
+  nnpTask->vPushParam(gpMainDic);
   
   EXIT();
 }
@@ -5880,14 +5900,14 @@ void Task::vDicName(NNP_Task nnpTask)
 {
 ENTRY("vDicName");
  
-  PtrVal xPtrDic;
-  if ( ! nnpTask->bPopParam(xPtrDic) )
+  Object* pPtrDic;
+  if ( ! nnpTask->bPopParam(pPtrDic) )
     THROW_INVALID_PARAM("dic.name");
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
+  Dictionary* pDic = _pDic(pPtrDic);
 
   ValWsp sName;
-  sName = pDictionary->sName().a();
+  sName = pDic->sName().a();
   
   nnpTask->vPushParam(sName);
   
@@ -5905,16 +5925,16 @@ ENTRY("vDicPick");
   if ( ! nnpTask->bPopParam(iDic) )
     THROW_INVALID_PARAM("dic.pick");
   
-  PtrVal xPtrDic;
+  Object* pPtrDic;
 
   if (nnpTask->m_pSEitf) {
-    xPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
+    pPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
   }
   else {
-    xPtrDic = nnpTask->m_xDictionaryStack.pPick(iDic);
+    pPtrDic = nnpTask->m_xDictionaryStack.pPick(iDic);
   }
   
-  nnpTask->vPushParam(xPtrDic);
+  nnpTask->vPushParam(pPtrDic);
   
   EXIT();
 }
@@ -5926,18 +5946,18 @@ void Task::vDicPush(NNP_Task nnpTask)
 {
 ENTRY("vDicPush");
   
-  PtrVal xPtrDic;
+  Object* pPtrDic;
   
-  if ( ! nnpTask->bPopParam(xPtrDic) )
+  if ( ! nnpTask->bPopParam(pPtrDic) )
     THROW_INVALID_PARAM("dic.push");
 
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(xPtrDic.pPtr());
+  Dictionary* pDic = _pDic(pPtrDic);
   
   if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->vPushDic(pDictionary);
+    nnpTask->m_pSEitf->vPushDic(pDic);
   }
   else {
-    nnpTask->m_xDictionaryStack.vPush(pDictionary);
+    nnpTask->m_xDictionaryStack.vPush(pDic);
   }
   
   EXIT();
@@ -8682,10 +8702,9 @@ void Task::vTaskDic(NNP_Task nnpTask)
 {
 ENTRY("vTaskDic");
   
-  PtrVal xPtrDic;
-  xPtrDic = (void*)&nnpTask->m_xTaskDictionary;
+  Object* pPtrDic = &nnpTask->m_xTaskDictionary;
   
-  nnpTask->vPushParam(xPtrDic);
+  nnpTask->vPushParam(pPtrDic);
   
   EXIT();
 }
