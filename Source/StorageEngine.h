@@ -12,6 +12,7 @@
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, const char*);
 extern pDUMPFUN *gpDump[];
+extern i8 giClassSize[];
 
 //-----------------------------------------------------------------------------
 namespace StorageEngine

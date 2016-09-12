@@ -51,6 +51,7 @@ i8 giClassSize[]
   /* 35 */ sizeof(RowBuffer),
   /* 36 */ sizeof(RowCursor),
   /* 37 */ sizeof(RowStrand),
+  /*    */ sizeof(RowWsp),
   /* 38 */ sizeof(ScanBuffer),
   /* 39 */ sizeof(SeHistory),
   /* 40 */ sizeof(SEitf),
@@ -84,7 +85,8 @@ i8 giClassSize[]
   /* 68 */ sizeof(TxCursor),
   /* 69 */ sizeof(TxMap),
   /* 70 */ sizeof(TxRef),
-  /* 71 */ sizeof(Word)
+  /* 71 */ sizeof(Word),
+  /* 72 */ -1
 };
 
 /*============================================================================*/

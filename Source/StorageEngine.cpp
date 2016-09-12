@@ -13,6 +13,7 @@ void StorageEngine::vCheckAssumptions(void)
   i8 iEntriesECN = CN_ENUMS;
   i8 iEntriesPCN = 0;
   i8 iEntriesGPDUMP = 0;
+  i8 iEntriesGCLASSSIZE = 0;
   
   bool bFoundEnum = false;
   
@@ -49,6 +50,24 @@ void StorageEngine::vCheckAssumptions(void)
   if (iEntriesECN != iEntriesGPDUMP) {
     vFatal("\n!!!ALERT!!! No of entries in gpDump (%lld) do not match the no in eCN (%lld)\n\n",
            iEntriesECN, iEntriesGPDUMP);
+  }
+
+  bFoundEnum = false;
+  // find number of entries in giClassSize
+  for (i8 i = 0; i <= CN_ENUMS; i++) {
+    if (giClassSize[i] == -1) {
+      bFoundEnum = true;
+      break;
+    }
+    iEntriesGCLASSSIZE++;
+  }
+  
+  if (!bFoundEnum)
+    vFatal("Entry for CN_ENUM not found in giClassSize\n");
+  
+  if (iEntriesECN != iEntriesGCLASSSIZE) {
+    vFatal("\n!!!ALERT!!! No of entries in giClassSize (%lld) do not match the no in eCN (%lld)\n\n",
+           iEntriesGCLASSSIZE, iEntriesECN);
   }
 
 }
