@@ -121,19 +121,7 @@ void s::vCopy(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aWorkspace(),aArg,m_iSize);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy argument                                                              */
-/*----------------------------------------------------------------------------*/
-void s::vCopy(const char* aArg, i8 nChars)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  String::vCopyLen(aWorkspace(),aArg,nChars);
+  String::vCopyLen(aWorkspace(),aArg,m_iSize-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }

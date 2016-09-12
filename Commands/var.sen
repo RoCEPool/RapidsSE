@@ -25,6 +25,7 @@
     sizeof_strval sizeof_s256 + allot
     word.this >body magic!!
     word.this >body CN_STRVAL class!
+    word.this >body s256.init
     does>
 ;
 

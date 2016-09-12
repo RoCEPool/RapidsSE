@@ -637,6 +637,8 @@ namespace Tasks
     static void vConcat(NNP_Task nnpTask);
     static void vClip(NNP_Task nnpTask);
     
+    static void vS256Init(NNP_Task nnpTask);
+    
     // table
     static void vTableDic(NNP_Task nnpTask);
     static void vTableDrop(NNP_Task nnpTask);

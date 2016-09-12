@@ -56,22 +56,6 @@ s32::s32(const char* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-s32::s32(const char* aArg, i8 nChars)
-: s(CN_S32,C_S_SIZE)
-{
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
-  
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
-  s::vCopy(aArg,nChars);
-  
-  Memory::vCheckInitialised(this,sizeof(s32));
-  
-  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 s32::~s32(void)

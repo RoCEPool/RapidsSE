@@ -18,6 +18,8 @@ namespace Magic
     Footer m_xFooter;
     
   public:
+    void* operator new(size_t, s256* pS256);
+    
     s256(void);
     s256(s256& rArg);
     s256(const char* aArg);

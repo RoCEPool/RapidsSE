@@ -21,6 +21,13 @@ int main(int argc, const char* argv[])
   aRelDbg = "release";
 #endif
  
+  s32 sTest;
+  sTest =
+    "abcdefghijklmnopqrstuvwxuz"
+    "abcdefghijklmnopqrstuvwxuz"
+    "abcdefghijklmnopqrstuvwxuz"
+  ;
+  
   RapidsSE::vCheckAssumptions();
   
   if ( ! gxArguments.bParse(argc,argv) )

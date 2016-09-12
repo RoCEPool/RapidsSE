@@ -12,12 +12,14 @@ namespace Values
   {
   private:
     i8   m_iChars;
-    char m_sStr[8];
+    char m_sStr[8];  // should be ..data..
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, StrVal* pStrVal);
     
     StrVal(void);
+    StrVal(i8 iChars);
     
     void operator =(const char* sStr);
     
@@ -26,6 +28,8 @@ namespace Values
     i8   iSize(void) const;
     void vSize(void);
     char* sStr(void);
+    
+    char* pData(void);
 
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);

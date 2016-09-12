@@ -9,6 +9,16 @@
 extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* new a thread from existing memory                                          */
+/*----------------------------------------------------------------------------*/
+void* s256::operator new(size_t iSize, s256* pS256)
+{
+  ASSERT(iSize);
+  
+  return pS256;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(void)
@@ -51,23 +61,6 @@ s256::s256(const char* aArg)
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(aArg);
-  
-  Memory::vCheckInitialised(this,sizeof(s256));
-  
-  _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-s256::s256(const char* aArg, i8 nChars)
-: s(CN_S256,C_S_SIZE)
-{
-  _precondition_(_MAGIC_,CN_S256,_FOOTER_);
-  
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
-  
-  s::vCopy(aArg,nChars);
   
   Memory::vCheckInitialised(this,sizeof(s256));
   

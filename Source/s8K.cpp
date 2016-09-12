@@ -52,21 +52,6 @@ s8K::s8K(const char* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-s8K::s8K(const char* aArg, i8 nChars)
-: s(CN_S8K,C_S_SIZE)
-{
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
-  
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
-  
-  s::vCopy(aArg,nChars);
-  
-  Memory::vCheckInitialised(this,sizeof(s8K));
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 s8K::~s8K(void)

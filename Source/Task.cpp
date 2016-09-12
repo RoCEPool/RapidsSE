@@ -825,6 +825,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("clip",   &vClip,      false);
   vAddPrimitive("toDigitName",&vToDigitName, false);
   
+  vAddPrimitive("s256.init", &vS256Init, false);
+ 
   vAddPrimitive("table.dic",         &vTableDic,         false);
   vAddPrimitive("table.drop",        &vTableDrop,        false);
   vAddPrimitive("table.init",        &vTableInit,        false);
@@ -2103,10 +2105,10 @@ bool Task::bPopParam(s8K& sArg1)
   if ( ! bGuardParam(CN_STRVAL) )
     return false;
   
-  StrVal xStrVal1;
-  vPopParam(&xStrVal1);
+  ValWsp xValWsp1;
+  vPopParam(&xValWsp1);
   
-  sArg1 = xStrVal1.sStr();
+  sArg1 = xValWsp1.sStr();
   
   return true;
 }
@@ -2118,18 +2120,18 @@ bool Task::bPopParam(s8K& sArg1, s8K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! bGuardParam(CN_STRVAL,CN_STRVAL) )
     return false;
   
-  StrVal xStrVal1;
-  vPopParam(&xStrVal1);
+  ValWsp xValWsp1;
+  vPopParam(&xValWsp1);
   
-  sArg1 = xStrVal1.sStr();
+  sArg1 = xValWsp1.sStr();
   
-  StrVal xStrVal2;
-  vPopParam(&xStrVal2);
+  ValWsp xValWsp2;
+  vPopParam(&xValWsp2);
   
-  sArg2 = xStrVal2.sStr();
+  sArg2 = xValWsp2.sStr();
   
   return true;
 }
@@ -2621,10 +2623,10 @@ bool Task::bPopReturn(s8K& sArg1)
   if ( ! bGuardReturn(CN_STRVAL) )
     return false;
   
-  StrVal xStrVal1;
-  vPopReturn(&xStrVal1);
+  ValWsp xValWsp1;
+  vPopReturn(&xValWsp1);
   
-  sArg1 = xStrVal1.sStr();
+  sArg1 = xValWsp1.sStr();
   
   return true;
 }
@@ -3518,15 +3520,13 @@ void Task::vHash(NNP_Task nnpTask)
 {
 ENTRY("vHash");
   
-  ValWsp xString;
-  if ( ! nnpTask->bPopParam(xString) )
-    THROW_INVALID_PARAM("strlen");
+  s8K sString;
+  if ( ! nnpTask->bPopParam(sString) )
+    THROW_INVALID_PARAM("hash");
   
-  StrVal* pStrVal = xString.pAsStrVal();
+  i8 iLength = String::iLength(sString.a());
   
-  i8 iLength = String::iLength(pStrVal->sStr());
-  
-  i8 iHash = XXH32(pStrVal->sStr(),iLength,0);
+  i8 iHash = XXH32(sString.a(),iLength,0);
   
   nnpTask->vPushParam(iHash);
   
@@ -8279,15 +8279,13 @@ void Task::vStrLen(NNP_Task nnpTask)
 ENTRY("vStrLen");
   
   i8 iLength;
-  ValWsp xString;
+  s8K sString;
   
   // get the arguments
-  if ( ! nnpTask->bPopParam(xString) )
+  if ( ! nnpTask->bPopParam(sString) )
     THROW_INVALID_PARAM("strlen");
   
-  StrVal* pStrVal = xString.pAsStrVal();
-  
-  iLength = String::iLength(pStrVal->sStr());
+  iLength = String::iLength(sString.a());
   
   nnpTask->vPushParam(iLength);
   
@@ -8426,6 +8424,27 @@ ENTRY("vToDigitName");
   }
 
   nnpTask->vPushParam(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* s256.init -- initialise an s256                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vS256Init(NNP_Task nnpTask)
+{
+  ENTRY("vS256Init");
+  
+  PtrVal xPtrStrVal;
+  
+  if ( ! nnpTask->bPopParam(xPtrStrVal) )
+    THROW_INVALID_PARAM("s256.init");
+  
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(xPtrStrVal.pPtr());
+  
+  ASSERT(CN_STRVAL == pStrVal->eClass());
+  
+  new(pStrVal) StrVal(256);
   
   EXIT();
 }

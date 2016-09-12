@@ -27,7 +27,6 @@ namespace Magic
     void  vAppend(const char* aArg);
     char* aWorkspace(void);
     void  vCopy(const char* aArg);
-    void  vCopy(const char* aArg, i8 nChars);
     bool  bEnds(const char* aSuffix);
     void  vInit(i8 iSize);
     bool  bIsEqual(s& sArg, i8 iCase) ;

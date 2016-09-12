@@ -103,10 +103,10 @@ void Dictionary::vAddConstant(const char* aName, const char* aValue)
   
   Word* pNewWord = new(this) Word(aName);
   
-  StrVal xStrVal;
-  xStrVal = aValue;
+  ValWsp xWspStr;
+  xWspStr = aValue;
   
-  pNewWord->vEncode("push",&xStrVal);
+  pNewWord->vEncode("push",&xWspStr);
   pNewWord->vEncode("exit");
 }
 

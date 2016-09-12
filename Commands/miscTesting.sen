@@ -33,6 +33,19 @@ traceon
     loop
 ;
 
+str: strvar
+
+: strvar_blowup
+
+
+traceon
+
+  "a" strvar !
+  1000000 0 do
+    strvar @ "a" concat strvar !
+  loop
+
+;
 
 /*============================================================================*/
 /* end                                                                        */
