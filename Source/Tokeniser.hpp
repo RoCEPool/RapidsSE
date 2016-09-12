@@ -18,7 +18,7 @@ namespace Common
     /*  5 */ TK_ENUMS
   };
   
-  static const char *pTK[]
+  static const char* const pTK[]
   {
     /*  0 */ "NONE",
     /*  1 */ "INTEGER",

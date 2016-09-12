@@ -17,7 +17,7 @@ namespace Interface
     /* 4 */ IE_ENUMS
   };
   
-  static const char *pIE[]
+  static const char* const pIE[]
   {
     /* 0 */ "NONE",
     /* 1 */ "COMMAND FAILED",
@@ -111,7 +111,6 @@ namespace Interface
     bool bSizeTable(char* pWords[]);
     bool bTruncateTable(char* pWords[]);
     
-    bool bPopDic(char* pWords[]);
     bool bPushDic(char* pWords[]);
     bool bGetDicPath(char* pWords[]);
     bool bGetDicContents(char* pWords[]);

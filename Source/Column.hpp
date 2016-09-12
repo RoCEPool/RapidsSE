@@ -17,7 +17,7 @@ namespace DBobjects
     /* 1 */ CT_XYZ
   };
 
-  static const char *pCT[]
+  static const char* const pCT[]
   {
     /* 0 */ "NONE",
     /* 1 */ "XYZ"

@@ -20,8 +20,9 @@ void* Index::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Index::operator delete(void* pTableAddress)
+void Index::operator delete(void* pIndexAddress)
 {
+  ASSERT(pIndexAddress);
 }
 
 /*----------------------------------------------------------------------------*/

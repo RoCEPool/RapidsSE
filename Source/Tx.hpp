@@ -22,7 +22,7 @@ namespace Transactions
     /* 9 */ TP_ENUMS
   };
   
-  static const char *pTP[]
+  static const char* const pTP[]
   {
     /* 0 */ "FREE",
     /* 1 */ "ALLOCATED",

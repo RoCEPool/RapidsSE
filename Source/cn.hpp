@@ -110,7 +110,7 @@ namespace Magic
     /* 75 */ CN_ENUMS
   };
   
-  static const char *pCN[]
+  static const char* const pCN[]
   {
     /*  0 */ "NONE",
     
@@ -224,6 +224,7 @@ namespace Magic
     bool operator ==(eCN eClassNo) const;
     eCN  eClass(void) const;
     void vClass(eCN eClassNo);
+    
   };
   
 }

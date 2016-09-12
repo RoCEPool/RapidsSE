@@ -17,7 +17,7 @@ namespace Dictionaries
     /*  4 */ WT_ENUMS
   };
   
-  static const char *pWT[]
+  static const char* const pWT[]
   {
     /*  0 */ "NONE",
     /*  1 */ "Object",

@@ -20,7 +20,7 @@ public:
   SeHistory(void);
   ~SeHistory(void);
   
-  void vAppend(char* pToken[], i8 nTokens);
+  void vAppend(char* pToken[]);
   void vClose(void);
   void vOpen(void);
   void vPrint(void);

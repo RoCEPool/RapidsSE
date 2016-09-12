@@ -20,6 +20,7 @@ void* Proxy::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Proxy::operator delete(void* pBufferAddress)
 {
+  ASSERT(pBufferAddress);
   vFatal("fatal: Dictionary class cannot be deleted");
   
   ASSERT(0);
