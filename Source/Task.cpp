@@ -2494,15 +2494,20 @@ void Task::vPushReturnVoid(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* pop cell from return stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPopReturn(Cell*& pCell)
+bool Task::bPopReturn(Cell*& pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! bGuardReturn(CN_PTRVAL) )
+    return false;
   
   PtrVal xPtrIP;
   
   m_xReturnStack.vPop(&xPtrIP);
   
   pCell = reinterpret_cast<Cell*>(xPtrIP.pPtr());
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2516,7 +2521,7 @@ bool Task::bPopReturn(i8& iArg1)
     return false;
   
   IntVal xIntVal1;
-  vPopReturn(&xIntVal1);
+  m_xReturnStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
@@ -2534,12 +2539,12 @@ bool Task::bPopReturn(i8& iArg1, i8& iArg2)
     return false;
   
   IntVal xIntVal1;
-  vPopReturn(&xIntVal1);
+  m_xReturnStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPopReturn(&xIntVal2);
+  m_xReturnStack.vPop(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
@@ -2555,7 +2560,7 @@ bool Task::bPopReturn(Value& xValue)
   
   // need to check the parameter stack
   
-  vPopReturn(&xValue);
+  m_xReturnStack.vPop(&xValue);
   
   return true;
 }
@@ -2570,20 +2575,10 @@ bool Task::bPopReturn(Value& xValue1, Value& xValue2)
   if ( ! bGuardReturn(2) )
     return false;
   
-  vPopReturn(&xValue1);
-  vPopReturn(&xValue2);
+  m_xReturnStack.vPop(&xValue1);
+  m_xReturnStack.vPop(&xValue2);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from return stack                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vPopReturn(Value* pValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_xReturnStack.vPop(pValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2597,7 +2592,7 @@ bool Task::bPopReturn(s32& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopReturn(&xValWsp1);
+  m_xReturnStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -2615,7 +2610,7 @@ bool Task::bPopReturn(s256& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopReturn(&xValWsp1);
+  m_xReturnStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -2633,7 +2628,7 @@ bool Task::bPopReturn(s8K& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopReturn(&xValWsp1);
+  m_xReturnStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -2706,7 +2701,8 @@ ENTRY("vAgain");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pBeginLoc;
-  nnpTask->vPopReturn(pBeginLoc);
+  if ( ! nnpTask->bPopReturn(pBeginLoc) )
+    THROW_INVALID_RETURN("again");
   
   pCurrentWord->vEncode("jump",pBeginLoc);
   
@@ -3143,7 +3139,8 @@ ENTRY("vElse");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pIfJumpArg;
-  nnpTask->vPopReturn(pIfJumpArg);
+  if ( ! nnpTask->bPopReturn(pIfJumpArg) )
+    THROW_INVALID_RETURN("else");
   
   //-------------------------------------------------------------------------
   
@@ -3404,7 +3401,8 @@ ENTRY("vExecute");
     
     pFUN pFunc = pWord->pFunc();
     if (!pFunc || Task::vNop == pFunc) {
-      nnpTask->vPopReturn(nnpTask->m_pCell);
+      if ( ! nnpTask->bPopReturn(nnpTask->m_pCell) )
+        THROW_INVALID_RETURN("execute");
     }
     else {
       // does> inherited code
@@ -3428,7 +3426,8 @@ ENTRY("vExit");
   
   //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
   
-  nnpTask->vPopReturn(nnpTask->m_pCell);
+  if ( ! nnpTask->bPopReturn(nnpTask->m_pCell) )
+    THROW_INVALID_RETURN("exit");
   
   EXIT();
 }
@@ -3906,10 +3905,9 @@ ENTRY("vLoop");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  PtrVal xPtrDoLoc;
-  nnpTask->vPopReturn(&xPtrDoLoc);
-  
-  Cell* pDoLoc = reinterpret_cast<Cell*>(xPtrDoLoc.pPtr());
+  Cell* pDoLoc;
+  if ( ! nnpTask->bPopReturn(pDoLoc) )
+    THROW_INVALID_RETURN("loop");
   
   pCurrentWord->vEncode("Loop_RT");
   
@@ -3954,7 +3952,8 @@ ENTRY("vLoopPlus");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pDoLoc;
-  nnpTask->vPopReturn(pDoLoc);
+  if ( ! nnpTask->bPopReturn(pDoLoc) )
+    THROW_INVALID_RETURN("+loop");
     
   pCurrentWord->vEncode("+Loop_RT");
   
@@ -4109,10 +4108,12 @@ ENTRY("vNext");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pJumpFalseArg;
-  nnpTask->vPopReturn(pJumpFalseArg);
+  if ( ! nnpTask->bPopReturn(pJumpFalseArg) )
+    THROW_INVALID_RETURN("next");
   
   Cell* pIterateLoc;
-  nnpTask->vPopReturn(pIterateLoc);
+  if ( ! nnpTask->bPopReturn(pIterateLoc) )
+    THROW_INVALID_RETURN("next");
   
   //----------------------------------------------------------------------------
   
@@ -4435,12 +4436,14 @@ ENTRY("vRepeat");
   Word* pCurrentWord = nnpTask->pCurrentWord();
 
   Cell* pWhileJumpArg;
-  nnpTask->vPopReturn(pWhileJumpArg);
+  if ( ! nnpTask->bPopReturn(pWhileJumpArg) )
+    THROW_INVALID_RETURN("repeat");
   
   //-------------------------------------------------------------------------
 
   Cell* pBeginLoc;
-  nnpTask->vPopReturn(pBeginLoc);
+  if ( ! nnpTask->bPopReturn(pBeginLoc) )
+    THROW_INVALID_RETURN("repeat");
 
   pCurrentWord->vEncode("jump",pBeginLoc);
   
@@ -4511,7 +4514,8 @@ ENTRY("vRstackDrop");
   // should just discard on stack
   
   ValWsp xValA;
-  nnpTask->vPopReturn(&xValA);
+  if ( ! nnpTask->bPopReturn(xValA) )
+    THROW_INVALID_RETURN("rdrop");
   
   EXIT();
 }
@@ -4946,7 +4950,8 @@ ENTRY("vThen");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pIfJumpArg;
-  nnpTask->vPopReturn(pIfJumpArg);
+  if ( ! nnpTask->bPopReturn(pIfJumpArg) )
+    THROW_INVALID_RETURN("then");
   
   pIfJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
   
@@ -5272,8 +5277,9 @@ void Task::vUnloop(NNP_Task nnpTask)
 ENTRY("vUnloop");
   
   // we should just modify the pointers rather than actually pop
-  ValWsp xVal;
-  nnpTask->vPopReturn(&xVal);
+  ValWsp xValOpaque;
+  if ( ! nnpTask->bPopReturn(xValOpaque) )
+    THROW_INVALID_RETURN("unloop");
   
   EXIT();
 }
@@ -5288,7 +5294,8 @@ ENTRY("vUntil");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pBeginLoc;
-  nnpTask->vPopReturn(pBeginLoc);
+  if ( ! nnpTask->bPopReturn(pBeginLoc) )
+    THROW_INVALID_RETURN("until");
   
   //-------------------------------------------------------------------------
   

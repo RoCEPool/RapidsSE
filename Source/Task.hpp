@@ -74,12 +74,18 @@ namespace Tasks
       throw (i8)__LINE__; \
     }
     
-    // throw invalid parameter
+    // throw invalid parameter stack
     #define THROW_INVALID_PARAM(primitive) \
     { \
       THROW("Invalid param stack for: %s",primitive); \
     }
 
+    // throw invalid return stack
+    #define THROW_INVALID_RETURN(primitive) \
+    { \
+      THROW("Invalid return stack for: %s",primitive); \
+    }
+    
     #define ENTRY(p1) \
       static StepAccum* pStepAccum = nullptr; \
       if (! pStepAccum) \
@@ -258,12 +264,11 @@ namespace Tasks
     void vPushReturn(ValWsp& xValOpaque);
     void vPushReturnVoid(void* pAddress);
 
-    void vPopReturn(Cell*& pCell);
+    bool bPopReturn(Cell*& pCell);
     bool bPopReturn(i8& iArg1);
     bool bPopReturn(i8& iArg1, i8& iArg2);
     bool bPopReturn(Value& xValue);
     bool bPopReturn(Value& xValue1, Value& xValue2);
-    void vPopReturn(Value* pValue);
     bool bPopReturn(s32&  sArg1);
     bool bPopReturn(s256& sArg1);
     bool bPopReturn(s8K& sArg1);
