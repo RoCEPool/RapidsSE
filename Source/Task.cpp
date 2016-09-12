@@ -7276,11 +7276,11 @@ void Task::vNodeCursorBegin(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorBegin");
   
-  PtrVal xPtrNodeCursor;
-  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodeCursor.begin");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   pNodeCursor->vBegin();
@@ -7295,11 +7295,11 @@ void Task::vNodeCursorDelete(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorDelete");
   
-  PtrVal xPtrNodeCursor;
-  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodeCursor.delete");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   delete pNodeCursor;
@@ -7314,11 +7314,11 @@ void Task::vNodeCursorEnd(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorEnd");
   
-  PtrVal xPtrNodeCursor;
-  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodecursor.end");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   pNodeCursor->vEnd();
@@ -7333,11 +7333,11 @@ void Task::vNodeCursorFirst(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorFirst");
   
-  PtrVal xPtrNodeCursor;
-  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodeCursor.first");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   pNodeCursor->vFirst();
@@ -7357,11 +7357,11 @@ void Task::vNodeCursorGet(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorGet");
   
-  PtrVal xPtrNodeCursor;
-  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodeCursor.get");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   PtrVal xPtrNode;
@@ -7379,11 +7379,11 @@ void Task::vNodeCursorInit(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorInit");
   
-  PtrVal xPtrNodeCursor;
-  if ( ! nnpTask->bPopParam(xPtrNodeCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodeCursor.init");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrNodeCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   new(pNodeCursor) NodeCursor(gpGrid);
@@ -7401,10 +7401,7 @@ ENTRY("vNodeCursorNew");
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
-  PtrVal xPtrNodeCursor;
-  xPtrNodeCursor = pNodeCursor;
-  
-  nnpTask->vPushParam(xPtrNodeCursor);
+  nnpTask->vPushParam(pNodeCursor);
   
   EXIT();
 }
@@ -7416,11 +7413,11 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
 {
 ENTRY("vNodeCursorNext");
   
-  PtrVal xPtrRowCursor;
-  if ( ! nnpTask->bPopParam(xPtrRowCursor) )
+  Object* pPtrNodeCursor;
+  if ( ! nnpTask->bPopParam(pPtrNodeCursor) )
     THROW_INVALID_PARAM("nodeCursor.next");
   
-  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(xPtrRowCursor.pPtr());
+  NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
   pNodeCursor->vNext();
