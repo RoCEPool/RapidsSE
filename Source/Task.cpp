@@ -2001,7 +2001,36 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop Object* from param stack                                             */
+/* pop i8,i8,val from param stack                                             */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPopParam(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  IntVal xIntVal2;
+  vPopParam(&xIntVal2);
+  
+  iArg2 = xIntVal2.iInt();
+  
+  
+  ValWsp xValWsp3;
+  vPopParam(&xValWsp3);
+  
+  sArg3 = xValWsp3.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop Object* from param stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Object*& pObject)
 {
@@ -8295,40 +8324,74 @@ ENTRY("vStrLen");
 /*----------------------------------------------------------------------------*/
 /* substr -- substring ( start length str == substr )                         */
 /*----------------------------------------------------------------------------*/
+//void Task::vSubStr(NNP_Task nnpTask)
+//{
+//ENTRY("vSubStr");
+//  
+//  i8 iLength;
+//  i8 iStart;
+//  ValWsp xString;
+//  ValWsp xSubStr;
+//  
+//  StrVal* pStrVal = xString.pAsStrVal();
+//  
+//  // get the arguments
+//  if ( ! nnpTask->bPopParam(iStart,iLength,xString) )
+//    THROW_INVALID_PARAM("substr");
+//  
+//  // validate start index
+//  if ( iStart < 0 || iStart >= pStrVal->iChars())
+//    THROW("Invalid start index for: subStr");
+//  
+//  // handle to end of string case
+//  if (-1 == iLength)
+//    iLength = pStrVal->iChars() - iStart;
+//  
+//  if ( iLength <= 0 || iStart + iLength > pStrVal->iChars())
+//    THROW("Invalid length for: substr");
+//  
+//  // compute substring
+//  //xSubStr.vCopyString(xString.sStr() + iStartIndex,iLength);
+//  
+//  char* pStart = xString.sStr() + iStart;
+//  
+//  xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
+//  
+//  nnpTask->vPushParam(&xSubStr);
+//  
+//  EXIT();
+//}
 void Task::vSubStr(NNP_Task nnpTask)
 {
-ENTRY("vSubStr");
+  ENTRY("vSubStr");
   
   i8 iLength;
   i8 iStart;
-  ValWsp xString;
-  ValWsp xSubStr;
-  
-  StrVal* pStrVal = xString.pAsStrVal();
+  s8K sString;
+  s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->bPopParam(iStart,iLength,xString) )
+  if ( ! nnpTask->bPopParam(iStart,iLength,sString) )
     THROW_INVALID_PARAM("substr");
   
+  i8 iHasLength = String::iLength(sString.a());
+  
   // validate start index
-  if ( iStart < 0 || iStart >= pStrVal->iChars())
+  if ( iStart < 0 || iStart >= iHasLength)
     THROW("Invalid start index for: subStr");
   
   // handle to end of string case
   if (-1 == iLength)
-    iLength = pStrVal->iChars() - iStart;
+    iLength = iHasLength - iStart;
   
-  if ( iLength <= 0 || iStart + iLength > pStrVal->iChars())
+  if ( iLength <= 0 || iStart + iLength > iHasLength)
     THROW("Invalid length for: substr");
   
-  // compute substring
-  //xSubStr.vCopyString(xString.sStr() + iStartIndex,iLength);
+  char* pStart = sString.a() + iStart;
   
-  char* pStart = xString.sStr() + iStart;
+  String::vCopyLen(sSubStr.a(),pStart,iLength);
   
-  xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
-  
-  nnpTask->vPushParam(&xSubStr);
+  nnpTask->vPushParam(sSubStr);
   
   EXIT();
 }
