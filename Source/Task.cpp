@@ -1976,6 +1976,29 @@ bool Task::bPopParam(i8& iArg1, Value& xArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop i8,s from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopParam(i8& iArg1, s8K& sArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPopParam(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  ValWsp xValWsp2;
+  vPopParam(&xValWsp2);
+  
+  sArg2 = xValWsp2.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from param stack                                             */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
@@ -8423,36 +8446,67 @@ ENTRY("vConcat");
 /*----------------------------------------------------------------------------*/
 /* clip -- clip string ( length str -- str )                                  */
 /*----------------------------------------------------------------------------*/
+//void Task::vClip(NNP_Task nnpTask)
+//{
+//ENTRY("vClip");
+//  
+//  i8 iLength;
+//  ValWsp xString;
+//  ValWsp xSubStr;
+//  
+//  StrVal* pStrVal = xString.pAsStrVal();
+//  
+//  // get the arguments
+//  if ( ! nnpTask->bPopParam(iLength,xString) )
+//    THROW_INVALID_PARAM("clip");
+//  
+//  // validate length
+//  i8 iStrLength = pStrVal->iChars();
+//  
+//  if ( iLength == 0 || llabs(iLength) >= iStrLength)
+//    THROW("Invalid length for: clip");
+//  
+//  char* pStart;
+//  
+//  if (iLength > 0)
+//    pStart = xString.sStr();
+//  else
+//    pStart = xString.sStr() + iStrLength - 1 - llabs(iLength);
+//  
+//  xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
+//  
+//  nnpTask->vPushParam(&xSubStr);
+//  
+//  EXIT();
+//}
 void Task::vClip(NNP_Task nnpTask)
 {
-ENTRY("vClip");
+  ENTRY("vClip");
   
   i8 iLength;
-  ValWsp xString;
-  ValWsp xSubStr;
-  
-  StrVal* pStrVal = xString.pAsStrVal();
+  s8K sString;
+  s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->bPopParam(iLength,xString) )
+  if ( ! nnpTask->bPopParam(iLength,sString) )
     THROW_INVALID_PARAM("clip");
   
   // validate length
-  i8 iStrLength = pStrVal->iChars();
+  i8 iHasLength = String::iLength(sString.a());
   
-  if ( iLength == 0 || llabs(iLength) >= iStrLength)
+  if ( iLength == 0 || llabs(iLength) >= iHasLength)
     THROW("Invalid length for: clip");
   
   char* pStart;
   
   if (iLength > 0)
-    pStart = xString.sStr();
+    pStart = sString.a();
   else
-    pStart = xString.sStr() + iStrLength - 1 - llabs(iLength);
+    pStart = sString.a() + iHasLength - 1 - llabs(iLength);
   
-  xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
+  String::vCopyLen(sSubStr.a(),pStart,llabs(iLength));
   
-  nnpTask->vPushParam(&xSubStr);
+  nnpTask->vPushParam(sSubStr);
   
   EXIT();
 }
