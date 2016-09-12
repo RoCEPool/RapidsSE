@@ -26,8 +26,6 @@ namespace Values
     void*   pPtr(void) const;
     Object* pObject(void) const;
     
-    void vFetch(ValWsp& xValWsp);
-    void vStore(ValWsp& xValWsp);
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);
   };

@@ -1925,7 +1925,7 @@ bool Task::bPopParam(eCN& iArg1)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = static_cast<eCN>(xIntVal1.iInt());
   
@@ -1943,7 +1943,7 @@ bool Task::bPopParam(i8& iArg1)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
@@ -1961,12 +1961,12 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPopParam(&xIntVal2);
+  m_xParamStack.vPop(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
@@ -1984,7 +1984,7 @@ bool Task::bPopParam(i8& iArg1, Value& xArg2)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
@@ -2004,12 +2004,12 @@ bool Task::bPopParam(i8& iArg1, s8K& sArg2)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   ValWsp xValWsp2;
-  vPopParam(&xValWsp2);
+  m_xParamStack.vPop(&xValWsp2);
   
   sArg2 = xValWsp2.sStr();
   
@@ -2027,12 +2027,12 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPopParam(&xIntVal2);
+  m_xParamStack.vPop(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
@@ -2052,18 +2052,18 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3)
     return false;
   
   IntVal xIntVal1;
-  vPopParam(&xIntVal1);
+  m_xParamStack.vPop(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPopParam(&xIntVal2);
+  m_xParamStack.vPop(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
   
   ValWsp xValWsp3;
-  vPopParam(&xValWsp3);
+  m_xParamStack.vPop(&xValWsp3);
   
   sArg3 = xValWsp3.sStr();
   
@@ -2081,7 +2081,7 @@ bool Task::bPopParam(Object*& pObject)
     return false;
   
   PtrVal xPtrVal1;
-  vPopParam(&xPtrVal1);
+  m_xParamStack.vPop(&xPtrVal1);
   
   pObject = xPtrVal1.pObject();
   
@@ -2099,12 +2099,12 @@ bool Task::bPopParam(Object*& pObject1, Object*& pObject2)
     return false;
   
   PtrVal xPtrVal1;
-  vPopParam(&xPtrVal1);
+  m_xParamStack.vPop(&xPtrVal1);
   
   pObject1 = xPtrVal1.pObject();
   
   PtrVal xPtrVal2;
-  vPopParam(&xPtrVal2);
+  m_xParamStack.vPop(&xPtrVal2);
   
   pObject2 = xPtrVal2.pObject();
   
@@ -2122,7 +2122,7 @@ bool Task::bPopParam(Object*& pObject, Value& xValue)
     return false;
   
   PtrVal xPtrVal1;
-  vPopParam(&xPtrVal1);
+  m_xParamStack.vPop(&xPtrVal1);
   
   pObject = xPtrVal1.pObject();
   
@@ -2140,7 +2140,7 @@ bool Task::bPopParam(s32& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopParam(&xValWsp1);
+  m_xParamStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -2158,7 +2158,7 @@ bool Task::bPopParam(s256& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopParam(&xValWsp1);
+  m_xParamStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -2176,7 +2176,7 @@ bool Task::bPopParam(s8K& sArg1)
     return false;
   
   ValWsp xValWsp1;
-  vPopParam(&xValWsp1);
+  m_xParamStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -2194,12 +2194,12 @@ bool Task::bPopParam(s8K& sArg1, s8K& sArg2)
     return false;
   
   ValWsp xValWsp1;
-  vPopParam(&xValWsp1);
+  m_xParamStack.vPop(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
   ValWsp xValWsp2;
-  vPopParam(&xValWsp2);
+  m_xParamStack.vPop(&xValWsp2);
   
   sArg2 = xValWsp2.sStr();
   
@@ -2218,7 +2218,7 @@ bool Task::bPopParam(Task*& pTask1)
   if ( ! bGuardParam(CN_PTRVAL) )
     return false;
   
-  vPopParam(&xPtrTask);
+  m_xParamStack.vPop(&xPtrTask);
 
   pTask1 = reinterpret_cast<Task*>(xPtrTask.pPtr());
   if (CN_TASK != pTask1->eClass())
@@ -2289,7 +2289,7 @@ bool Task::bPopParam(Word*& pWord1)
     return false;
   
   PtrVal xPtrWord1;
-  vPopParam(&xPtrWord1);
+  m_xParamStack.vPop(&xPtrWord1);
   
   pWord1 = reinterpret_cast<Word*>(xPtrWord1.pPtr());
   if (CN_WORD != pWord1->eClass())
@@ -2309,21 +2309,11 @@ bool Task::bPopParamInt(i8& iArg1)
     return false;
   
   ValWsp xWspVal1;
-  vPopParam(&xWspVal1);
+  m_xParamStack.vPop(&xWspVal1);
   
   iArg1 = xWspVal1.iAsInt();
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from param stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vPopParam(Value* pValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_xParamStack.vPop(pValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2554,29 +2544,14 @@ bool Task::bPopReturn(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop val from return stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Task::bPopReturn(Value& xValue)
+bool Task::bPopReturn(ValWsp& xValOpaque)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  // need to check the parameter stack
-  
-  m_xReturnStack.vPop(&xValue);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop val from return stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopReturn(Value& xValue1, Value& xValue2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! bGuardReturn(2) )
+  if ( ! bGuardReturn(1) )
     return false;
   
-  m_xReturnStack.vPop(&xValue1);
-  m_xReturnStack.vPop(&xValue2);
+  m_xReturnStack.vPop(&xValOpaque);
   
   return true;
 }
@@ -2846,11 +2821,12 @@ void Task::vClassFetch(NNP_Task nnpTask)
 {
 ENTRY("vClassFetch");
   
-  PtrVal xPtrObject;
-  nnpTask->vPopParam(&xPtrObject);
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("classFetch");
   
   eCN eClassNo;
-  eClassNo = xPtrObject.pObject()->eClass();
+  eClassNo = pObject->eClass();
   
   nnpTask->vPushParam(eClassNo);
   
@@ -2868,10 +2844,11 @@ ENTRY("vClassStore");
   if ( ! nnpTask->bPopParam(eClassNo) )
     THROW_INVALID_PARAM("class!");
   
-  PtrVal xPtrObject;
-  nnpTask->vPopParam(&xPtrObject);
-  
-  xPtrObject.pObject()->vClass(eClassNo);
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("classStore");
+
+  pObject->vClass(eClassNo);
   
   EXIT();
 }
@@ -2883,9 +2860,10 @@ void Task::vCodeAssign(NNP_Task nnpTask)
 {
 ENTRY("vCodeAssign");
   
-  PtrVal xThatWord;
-  nnpTask->vPopParam(&xThatWord);
-  Word* pThatWord = xThatWord.pWord();
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("codeAssign");
+  Word* pThatWord = _pWord(pObject);
   
   Word* pThisWord = nnpTask->pCurrentWord();
   
@@ -3074,7 +3052,8 @@ ENTRY("vDrop");
   // should just discard on stack
   
   ValWsp xValA;
-  nnpTask->vPopParam(&xValA);
+  if ( ! nnpTask->bPopParam(xValA) )
+    THROW_INVALID_PARAM("drop");
   
   EXIT();
 }
@@ -3437,16 +3416,36 @@ ENTRY("vExit");
 /*----------------------------------------------------------------------------*/
 void Task::vFetch(NNP_Task nnpTask)
 {
-ENTRY("vFetch");
+  ENTRY("vFetch");
   
-  PtrVal xPtr;
-  nnpTask->vPopParam(&xPtr);
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("@");
   
-  ValWsp xVal;
+  ValWsp xValFetched;
   
-  xPtr.vFetch(xVal);
+  eCN eClass = pObject->eClass();
   
-  nnpTask->vPushParam(xVal);
+  Value* pValue = reinterpret_cast<Value*>(pObject);
+  
+  switch (eClass) {
+    case CN_INTVAL:
+      xValFetched = pValue->pAsIntVal()->iInt();
+      break;
+      
+    case CN_STRVAL:
+      xValFetched = pValue->pAsStrVal()->sStr();
+      break;
+      
+    case CN_PTRVAL:
+      xValFetched = pValue->pAsPtrVal()->pPtr();
+      break;
+      
+    default:
+      THROW("Invalid eClass %lld",eClass);
+  }
+  
+  nnpTask->vPushParam(xValFetched);
   
   EXIT();
 }
@@ -3765,7 +3764,9 @@ ENTRY("vIterate_RT_B");
   ValWsp xWsp;
   
   if ( ! xObjectWsp.iAsInt() ) {
-    if ( !nnpTask->bPopReturn(xWsp,xWsp) )
+    if ( !nnpTask->bPopReturn(xWsp) )
+      THROW_INVALID_PARAM("iterate_rt_b");
+    if ( !nnpTask->bPopReturn(xWsp) )
       THROW_INVALID_PARAM("iterate_rt_b");
   }
   
@@ -3999,10 +4000,11 @@ void Task::vMagicFetch(NNP_Task nnpTask)
 {
 ENTRY("vMagicFetch");
 
-  PtrVal xPtrObject;
-  nnpTask->vPopParam(&xPtrObject);
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_RETURN("magicFetch");
   
-  i8 iMagic = xPtrObject.pObject()->iMagic();
+  i8 iMagic = pObject->iMagic();
 
   nnpTask->vPushParam(iMagic);
   
@@ -4016,10 +4018,11 @@ void Task::vMagicMark(NNP_Task nnpTask)
 {
 ENTRY("vMagicMark");
   
-  PtrVal xPtrObject;
-  nnpTask->vPopParam(&xPtrObject);
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_RETURN("magicMark");
   
-  xPtrObject.pObject()->vSetMagic();
+  pObject->vSetMagic();
   
   EXIT();
 }
@@ -4876,17 +4879,36 @@ ENTRY("vSnooze");
 /*----------------------------------------------------------------------------*/
 void Task::vStore(NNP_Task nnpTask)
 {
-ENTRY("vStore");
+  ENTRY("vStore");
   
-  PtrVal xPtr;
-  nnpTask->vPopParam(&xPtr);
-
-  ValWsp xVal;
-  
-  if ( ! nnpTask->bPopParam(xVal) )
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
     THROW_INVALID_PARAM("!");
-    
-  xPtr.vStore(xVal);
+  
+  ValWsp xValStored;
+  if ( ! nnpTask->bPopParam(xValStored) )
+    THROW_INVALID_PARAM("!");
+  
+  Value* pValue = reinterpret_cast<Value*>(pObject);
+  
+  eCN eClass = pObject->eClass();
+  
+  switch (eClass) {
+    case CN_INTVAL:
+      *pValue->pAsIntVal() = xValStored.iInt();
+      break;
+      
+    case CN_STRVAL:
+      *pValue->pAsStrVal() = xValStored.sStr();
+      break;
+      
+    case CN_PTRVAL:
+      *pValue->pAsPtrVal() = xValStored.pPtr();
+      break;
+      
+    default:
+      THROW("Invalid eClass %lld",eClass);
+  }
   
   EXIT();
 }
@@ -8780,10 +8802,11 @@ ENTRY("vTaskNameStore");
   if ( ! nnpTask->bPopParam(pThatTask) )
     THROW_INVALID_PARAM("task.name!");
   
-  ValWsp xWspName;
-  nnpTask->vPopParam(&xWspName);
+  s32 sName;
+  if ( ! nnpTask->bPopParam(sName) )
+    THROW_INVALID_PARAM("task.name!");
   
-  pThatTask->m_sName = xWspName.pAsStrVal()->sStr();
+  pThatTask->m_sName = sName;
   
   EXIT();
 }
@@ -8798,10 +8821,11 @@ ENTRY("vTaskNew");
   if ( ! nnpTask->bGuardParam(CN_STRVAL) )
     THROW_INVALID_PARAM("task.new");
   
-  ValWsp xValWsp;
-  nnpTask->vPopParam(&xValWsp);
+  s32 sSeed;
+  if ( ! nnpTask->bPopParam(sSeed) )
+    THROW_INVALID_PARAM("task.name!");
   
-  char* aSeedWord = xValWsp.sStr();
+  char* aSeedWord = sSeed.a();
   
   NNP_Task nnpNewTask = new Task;
   

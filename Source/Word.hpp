@@ -116,6 +116,8 @@ namespace Dictionaries
     
     Footer* pFooter(void);
   };
+  
+  Word* _pWord(void* pAddr);
 }
 
 /*============================================================================*/

@@ -9,6 +9,17 @@ extern Dictionary*  gpMainDic;
 extern Word*        gpWord;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Word* Dictionaries::_pWord(void* pAddr)
+{
+  Word* pWord = reinterpret_cast<Word*>(pAddr);
+  ASSERT(pWord);
+  ASSERT(CN_WORD == pWord->eClass());
+  return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Word::operator new(size_t iSize, Dictionary* pDictionary)

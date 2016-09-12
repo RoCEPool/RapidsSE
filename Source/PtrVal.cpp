@@ -61,63 +61,6 @@ Object* PtrVal::pObject(void) const
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch value at pointer                                                     */
-/*----------------------------------------------------------------------------*/
-void PtrVal::vFetch(ValWsp& xValWsp)
-{
-  Value* pValue = reinterpret_cast<Value*>(m_pPtr);
-  
-  eCN eClass = pValue->eClass();
-  
-  switch (eClass) {
-    case CN_INTVAL:
-      xValWsp = pValue->pAsIntVal()->iInt();
-      break;
-      
-    case CN_STRVAL:
-      xValWsp = pValue->pAsStrVal()->sStr();
-      break;
-      
-    case CN_PTRVAL:
-      xValWsp = pValue->pAsPtrVal()->pPtr();
-      break;
-      
-    default:
-      THROW("Invalid eClass %lld",eClass);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* store value at pointer                                                     */
-/*----------------------------------------------------------------------------*/
-void PtrVal::vStore(ValWsp& xValWsp)
-{
-  // m_pPtr should point to a value, same as xValWsp
-  Value* pValue = reinterpret_cast<Value*>(m_pPtr);
-
-  ASSERT(pValue->eClass() == xValWsp.eClass());
-  
-  eCN eClass = pValue->eClass();
-  
-  switch (eClass) {
-    case CN_INTVAL:
-      *pValue->pAsIntVal() = xValWsp.iInt();
-      break;
-      
-    case CN_STRVAL:
-      *pValue->pAsStrVal() = xValWsp.sStr();
-      break;
-      
-    case CN_PTRVAL:
-      *pValue->pAsPtrVal() = xValWsp.pPtr();
-      break;
-      
-    default:
-      THROW("Invalid eClass %lld",eClass);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToCommand(char* aWorkspace)
