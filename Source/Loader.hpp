@@ -48,6 +48,8 @@ namespace DBobjects
     
     Footer* pFooter(void);
   };
+  
+  Loader* _pLoader(void* pAddr);
 }
 
 /*============================================================================*/

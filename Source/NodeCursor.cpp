@@ -9,6 +9,16 @@ extern Heap*   gpSmallHeap;
 extern Grid*   gpGrid;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+NodeCursor* GridModel::_pNodeCursor(void* pAddr)
+{
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pAddr);
+  
+  return pNodeCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* NodeCursor::operator new(size_t iSize)
