@@ -15,6 +15,7 @@ namespace Common
   #define UM 0xFFFFFFFF80000000ULL /* Most significant 33 bits */
   #define LM 0x7FFFFFFFULL /* Least significant 31 bits */
   
+#pragma GCC diagnostic ignored "-Wunused-varaiable"
   /* The array for the state vector */
   static unsigned long long mt[NN];
   

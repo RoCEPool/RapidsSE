@@ -58,7 +58,7 @@ bool PosixThread::bBindThread(i8 iCpu)
     return true;
 
   #else
-  
+  /*
     i8 iResult;
   
     cpu_set_t xAffinity;
@@ -66,14 +66,14 @@ bool PosixThread::bBindThread(i8 iCpu)
     CPU_ZERO(&xAffinity);
     CPU_SET(iCpu, &xAffinity);
   
-    ASSERT(pthread_self() == m_iPosixThread);
+    ASSERT(pthread_self() == m_iPosixThreadId);
   
-    iResult = pthread_setafffinity_np(m_iPosixThread, sizeof(cpu_set_t), &xAffinity);
+    iResult = pthread_setafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
     if (iResult == -1) {
       vWarn("Error in pthread_setafffinity_np() : %lld\n", errno);
       
     }
-  
+  */
     return true;
     #endif
 }
@@ -144,16 +144,16 @@ i8 PosixThread::iThreadCpu(void)
   return 0;
   
 #else
-  
+  /*
   i8 iResult;
   
   cpu_set_t xAffinity;
   
   CPU_ZERO(&xAffinity);
   
-  ASSERT(pthread_self() == m_iPosixThread);
+  ASSERT(pthread_self() == m_iPosixThreadId);
   
-  iResult = pthread_getafffinity_np(m_iPosixThread, sizeof(cpu_set_t), &xAffinity);
+  iResult = pthread_getafffinity_np(m_iPosixThreadId, sizeof(cpu_set_t), &xAffinity);
   if (iResult == -1) {
     vWarn("Error in pthread_getafffinity_np() : %lld\n", errno);
   }
@@ -164,6 +164,7 @@ i8 PosixThread::iThreadCpu(void)
     if (CPU_ISSET(i, &xAffinity)
       return i;
     }
+   */
   return 0;
         
 #endif
