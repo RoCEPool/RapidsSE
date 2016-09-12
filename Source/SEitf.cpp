@@ -941,7 +941,7 @@ bool SEitf::bTruncateTable(char* pWords[])
 bool SEitf::bPopDic(char* pWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
+  ASSERT(pWords);
   return false;
 }
 

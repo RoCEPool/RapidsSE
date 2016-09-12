@@ -122,6 +122,7 @@ void PtrVal::vStore(ValWsp& xValWsp)
 /*----------------------------------------------------------------------------*/
 void PtrVal::vToCommand(char* aWorkspace)
 {
+  ASSERT(aWorkspace);
   ASSERT("Should never be called");
 }
 

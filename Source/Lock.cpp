@@ -19,6 +19,7 @@ void* Lock::operator new(size_t iSize, Lock* pLock)
 /*----------------------------------------------------------------------------*/
 void Lock::operator delete(void* pLockAddress)
 {
+  ASSERT(pLockAddress);
   // do nothing
   // must be explicitly free'd by caller
 }
