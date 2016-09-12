@@ -14,7 +14,7 @@ namespace DBobjects
     /* 1 */ TT_NORMAL
   };
 
-  static const char *pTT[]
+  static const char* const pTT[]
   {
     /* 0 */ "NONE",
     /* 1 */ "NORMAL"

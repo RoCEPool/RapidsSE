@@ -17,7 +17,7 @@ namespace Magic
     /* 4 */ EC_ENUMS
   };
   
-  static const char *pEC[]
+  static const char* const pEC[]
   {
     /* 0 */ "NONE",
     /* 1 */ "ASSERT",

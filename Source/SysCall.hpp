@@ -15,7 +15,7 @@ namespace Common
     /* 1  */ eSysCall_SUCCESS = 1,  // success status
   };
   
-  static const char *pSysCall[]
+  static const char* const pSysCall[]
   {
     /* -2 */ "NOTSET",
     /* -1 */ "ERROR",

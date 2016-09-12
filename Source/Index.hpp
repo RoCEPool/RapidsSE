@@ -14,7 +14,7 @@ namespace DBobjects
       /* 1 */ IT_XYZ
   };
   
-  static const char *pIT[]
+  static const char* const pIT[]
   {
     /* 0 */ "NONE",
     /* 1 */ "SKIP_SEQUENTIAL"

@@ -32,7 +32,7 @@ namespace Tasks
   /* 7 */ TS_ENUMS
   };
   
-  static const char *pTS[]
+  static const char* const pTS[]
   {
     /* 0 */ "NONE",
     /* 1 */ "RUNNING",

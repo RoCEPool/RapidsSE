@@ -17,7 +17,7 @@ namespace Interface
     /* 4 */ IE_ENUMS
   };
   
-  static const char *pIE[]
+  static const char* const pIE[]
   {
     /* 0 */ "NONE",
     /* 1 */ "COMMAND FAILED",
