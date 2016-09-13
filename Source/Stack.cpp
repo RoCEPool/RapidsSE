@@ -67,7 +67,7 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuardParam(i8 iCount)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (iValues() < iCount)
     return false;
@@ -82,7 +82,7 @@ bool Stack::bGuardParam(i8 iCount)
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuardParam(eCN eClass0)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (iValues() < 1)
     return false;
@@ -99,7 +99,7 @@ bool Stack::bGuardParam(eCN eClass0)
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuardParam(eCN eClass0, eCN eClass1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (iValues() < 2)
     return false;
@@ -120,7 +120,7 @@ bool Stack::bGuardParam(eCN eClass0, eCN eClass1)
 /*----------------------------------------------------------------------------*/
 bool Stack::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if (iValues() < 3)
     return false;

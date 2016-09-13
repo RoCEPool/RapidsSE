@@ -1359,85 +1359,6 @@ bool Task::bForgetWord(s& sName)
   return bResult;
 }
 
-/*----------------------------------------------------------------------------*/
-/* guard parameter stack                                                      */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(i8 iCount)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xParamStack.iValues() < iCount)
-    return false;
-  
-  return true;
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/* guard parameter stack 1                                                    */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(eCN eClass0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xParamStack.iValues() < 1)
-    return false;
-  
-  Value* pValue0 = m_xParamStack.pPeek(0);
-  if (eClass0 != pValue0->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard parameter stack 2                                                    */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(eCN eClass0, eCN eClass1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xParamStack.iValues() < 2)
-    return false;
-  
-  Value* pValue0 = m_xParamStack.pPeek(0);
-  if (eClass0 != pValue0->eClass())
-    return false;
-  
-  Value* pValue1 = m_xParamStack.pPeek(1);
-  if (eClass1 != pValue1->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard parameter stack 3                                                    */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xParamStack.iValues() < 3)
-    return false;
-  
-  Value* pValue0 = m_xParamStack.pPeek(0);
-  if (eClass0 != pValue0->eClass())
-    return false;
-  
-  Value* pValue1 = m_xParamStack.pPeek(1);
-  if (eClass1 != pValue1->eClass())
-    return false;
-  
-  Value* pValue2 = m_xParamStack.pPeek(2);
-  if (eClass2 != pValue2->eClass())
-    return false;
-  
-  return true;
-}
-
-
 
 /*----------------------------------------------------------------------------*/
 /* guard return stack                                                         */
@@ -1928,7 +1849,7 @@ bool Task::bPopParam(Cell*& pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrIP;
@@ -1947,7 +1868,7 @@ bool Task::bPopParam(Header*& pHeader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVal1;
@@ -1965,7 +1886,7 @@ bool Task::bPopParam(eCN& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -1983,7 +1904,7 @@ bool Task::bPopParam(i8& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2001,7 +1922,7 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL,CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2024,7 +1945,7 @@ bool Task::bPopParam(i8& iArg1, Object*& pArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL,CN_PTRVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2047,7 +1968,7 @@ bool Task::bPopParam(i8& iArg1, Value& xArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2067,7 +1988,7 @@ bool Task::bPopParam(i8& iArg1, s8K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2090,7 +2011,7 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2115,7 +2036,7 @@ bool Task::bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2144,7 +2065,7 @@ bool Task::bPopParam(Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) && ! m_xParamStack.bPeekZero() )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) && ! m_xParamStack.bPeekZero() )
     return false;
   
   PtrVal xPtrVal1;
@@ -2162,7 +2083,7 @@ bool Task::bPopParam(Object*& pObject1, Object*& pObject2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL,CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL,CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVal1;
@@ -2185,7 +2106,7 @@ bool Task::bPopParam(Object*& pObject, Value& xValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVal1;
@@ -2203,7 +2124,7 @@ bool Task::bPopParam(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -2221,7 +2142,7 @@ bool Task::bPopParam(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -2239,7 +2160,7 @@ bool Task::bPopParam(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -2257,7 +2178,7 @@ bool Task::bPopParam(s8K& sArg1, s8K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL,CN_STRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_STRVAL,CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -2282,7 +2203,7 @@ bool Task::bPopParam(Task*& pTask1)
   
   PtrVal xPtrTask;
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
     return false;
   
   m_xParamStack.vPop(&xPtrTask);
@@ -2301,7 +2222,7 @@ bool Task::bPopParam(Value& xArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(1) )
+  if ( ! m_xParamStack.bGuardParam(1) )
     return false;
   
   m_xParamStack.vPop(&xArg1);
@@ -2316,7 +2237,7 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(2) )
+  if ( ! m_xParamStack.bGuardParam(2) )
     return false;
   
   m_xParamStack.vPop(&pValue1);
@@ -2333,7 +2254,7 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(3) )
+  if ( ! m_xParamStack.bGuardParam(3) )
     return false;
   
   m_xParamStack.vPop(&pValue1);
@@ -2352,7 +2273,7 @@ bool Task::bPopParam(Word*& pWord1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrWord1;
@@ -2372,7 +2293,7 @@ bool Task::bPopParamInt(i8& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(1) )
+  if ( ! m_xParamStack.bGuardParam(1) )
     return false;
   
   ValWsp xWspVal1;
@@ -5115,7 +5036,7 @@ ENTRY("vToValSet");
   if ( ! nnpTask->bPopParam(nVal) )
     THROW_INVALID_PARAM(">valset");
     
-  if ( ! nnpTask->bGuardParam(nVal) )
+  if ( ! nnpTask->m_xParamStack.bGuardParam(nVal) )
     THROW_INVALID_PARAM(">valset");
 
   char* pCursor = nullptr;
@@ -7358,7 +7279,7 @@ void Task::vPstackClass(NNP_Task nnpTask)
 {
 ENTRY("vPstackClass");
   
-  if ( ! nnpTask->bGuardParam(1) )
+  if ( ! nnpTask->m_xParamStack.bGuardParam(1) )
     THROW("pstack.class");
 
   ValWsp* pValWsp = static_cast<ValWsp*>(nnpTask->m_xParamStack.pPeek(0));
@@ -8716,7 +8637,7 @@ void Task::vTaskNew(NNP_Task nnpTask)
 {
 ENTRY("vTaskNew");
   
-  if ( ! nnpTask->bGuardParam(CN_STRVAL) )
+  if ( ! nnpTask->m_xParamStack.bGuardParam(CN_STRVAL) )
     THROW_INVALID_PARAM("task.new");
   
   s32 sSeed;

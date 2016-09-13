@@ -208,12 +208,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
-
-    bool bGuardParam(i8 iCount);
-    
-    bool bGuardParam(eCN eClass0);
-    bool bGuardParam(eCN eClass0, eCN eClass1);
-    bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2);
     
     bool bGuardReturn(i8 iCount);
     
