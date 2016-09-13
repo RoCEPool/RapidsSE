@@ -1779,7 +1779,7 @@ void Task::vRoutineCall(Word* pWord)
   
   ASSERT(WT_ROUTINE == pWord->eWordType());
     
-  vPushReturnVoid(m_pCell);
+  m_xReturnStack.vPushParam((void*)m_pCell);
     
   BodyField* pBody = pWord->pBodyField();
     
@@ -2384,42 +2384,6 @@ bool Task::bPopParamInt(i8& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push i8 onto return stack                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(i8 iArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
-  IntVal xIntVal1;
-  xIntVal1 = iArg1;
-  
-  m_xReturnStack.vPush(&xIntVal1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto return stack                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturn(ValWsp& xValOpaque)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_xReturnStack.vPush(&xValOpaque);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push address onto return stack                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vPushReturnVoid(void* pAddress)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  PtrVal xPtrAddress;
-  xPtrAddress = pAddress;
-  
-  m_xReturnStack.vPush(&xPtrAddress);
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop cell from return stack                                                 */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(Cell*& pCell)
@@ -2687,7 +2651,7 @@ ENTRY("vBegin");
   
   Cell* pLastCell = pCurrentWord->pLastCell();
   
-  nnpTask->vPushReturnVoid(pLastCell);
+  nnpTask->m_xReturnStack.vPushParam(pLastCell);
 
   EXIT();
 }
@@ -2957,7 +2921,7 @@ ENTRY("vDo");
   
   Cell* pLastCell = pCurrentWord->pLastCell();
   
-  nnpTask->vPushReturnVoid(pLastCell);
+  nnpTask->m_xReturnStack.vPushParam((void*)pLastCell);
   
   EXIT();
 }
@@ -2974,8 +2938,8 @@ ENTRY("vDo_RT");
   if ( ! nnpTask->bPopParam(iIndex,iLimit) )
     THROW_INVALID_PARAM("do_rt");
   
-  nnpTask->vPushReturn(iLimit);
-  nnpTask->vPushReturn(iIndex); // index is on top
+  nnpTask->m_xReturnStack.vPushParam(iLimit);
+  nnpTask->m_xReturnStack.vPushParam(iIndex); // index is on top
   
   EXIT();
 }
@@ -3066,7 +3030,7 @@ ENTRY("vElse");
   pCurrentWord->vEncode("jump");
   pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
-  nnpTask->vPushReturnVoid(pElseJumpArg);
+  nnpTask->m_xReturnStack.vPushParam(pElseJumpArg);
   
   //-------------------------------------------------------------------------
   
@@ -3180,7 +3144,7 @@ ENTRY("vEnter");
   if (nnpTask->m_bTracing)
     vDebug();
   
-  nnpTask->vPushReturnVoid(nnpTask->m_pCell);
+  nnpTask->m_xReturnStack.vPushParam(nnpTask->m_pCell);
   
   Cell* pPrevCell = nnpTask->m_pCell - 1;
   CodeField* pCode = pPrevCell->m_pCodeField;
@@ -3310,7 +3274,7 @@ ENTRY("vExecute");
     (pFunc)(nnpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->vPushReturnVoid(nnpTask->m_pCell);
+    nnpTask->m_xReturnStack.vPushParam(nnpTask->m_pCell);
 
     Cell* pCell = pWord->pFirstCell();
     nnpTask->m_xParamStack.vPushParam(pCell);
@@ -3515,7 +3479,7 @@ ENTRY("vIf");
   
   pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
-  nnpTask->vPushReturnVoid(pIfJumpArg);
+  nnpTask->m_xReturnStack.vPushParam(pIfJumpArg);
   
   EXIT();
 }
@@ -3655,12 +3619,12 @@ ENTRY("vIterate");
   pCurrentWord->vEncode("iterate_rt_a");
   
   Cell* pIterateLoc = pCurrentWord->pLastCell();
-  nnpTask->vPushReturnVoid(pIterateLoc);
+  nnpTask->m_xReturnStack.vPushParam(pIterateLoc);
   pCurrentWord->vEncode("iterate_rt_b");
 
   pCurrentWord->vEncode("jumpFalse");
   Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  nnpTask->vPushReturnVoid(pJumpFalseArg);
+  nnpTask->m_xReturnStack.vPushParam(pJumpFalseArg);
   
   EXIT();
 }
@@ -3678,8 +3642,8 @@ ENTRY("vIterate_RT_A");
   if ( ! nnpTask->bPopParam(pPtrObject,pPtrCursor) )
     THROW_INVALID_PARAM("iterate_rt_a");
   
-  nnpTask->vPushReturnVoid(pPtrCursor);
-  nnpTask->vPushReturnVoid(pPtrObject);
+  nnpTask->m_xReturnStack.vPushParam(pPtrCursor);
+  nnpTask->m_xReturnStack.vPushParam(pPtrObject);
   
   EXIT();
 }
@@ -3870,8 +3834,8 @@ ENTRY("vLoop_RT");
   iIndex++;
   
   if (iIndex < iLimit) {
-    nnpTask->vPushReturn(iLimit);
-    nnpTask->vPushReturn(iIndex); // index is on top
+    nnpTask->m_xReturnStack.vPushParam(iLimit);
+    nnpTask->m_xReturnStack.vPushParam(iIndex); // index is on top
   }
   else {
     nnpTask->m_pCell += 2;
@@ -3920,8 +3884,8 @@ ENTRY("vLoopPlus_RT");
   iIndex += iInc;
   
   if (iIndex < iLimit) {
-    nnpTask->vPushReturn(iLimit);
-    nnpTask->vPushReturn(iIndex);
+    nnpTask->m_xReturnStack.vPushParam(iLimit);
+    nnpTask->m_xReturnStack.vPushParam(iIndex);
   }
   else {
     nnpTask->m_pCell += 2;
@@ -5064,7 +5028,7 @@ ENTRY("vToRstack");
   if ( ! nnpTask->bPopParam(xValOpaque) )
     THROW_INVALID_PARAM(">r");
 
-  nnpTask->vPushReturn(xValOpaque);
+  nnpTask->m_xReturnStack.vPushParam(xValOpaque);
   
   EXIT();
 }
@@ -5311,7 +5275,7 @@ ENTRY("vWhile");
   pCurrentWord->vEncode("jumpFalse");
   Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
-  nnpTask->vPushReturnVoid(pWhileJumpArg);
+  nnpTask->m_xReturnStack.vPushParam(pWhileJumpArg);
   
   EXIT();
 }

@@ -245,13 +245,6 @@ namespace Tasks
     bool bPopParam(Word*& pArg1);
     bool bPopParamInt(i8& iArg1);
     
-    void vPushReturn(i8 iArg1);
-    void vPushReturn(s32& sArg1);
-    void vPushReturn(s256& sArg1);
-    void vPushReturn(s8K& sArg1);
-    void vPushReturn(ValWsp& xValOpaque);
-    void vPushReturnVoid(void* pAddress);
-
     bool bPopReturn(Cell*& pCell);
     bool bPopReturn(i8& iArg1);
     bool bPopReturn(i8& iArg1, i8& iArg2);
