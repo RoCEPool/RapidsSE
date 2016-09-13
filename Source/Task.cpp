@@ -9784,11 +9784,11 @@ void Task::vThreadListDump(NNP_Task nnpTask)
 {
 ENTRY("vThreadListDump");
   
-  PtrVal xPtrThreadList;
-  if ( ! nnpTask->bPopParam(xPtrThreadList) )
+  Object* pPtrThreadList;
+  if ( ! nnpTask->bPopParam(pPtrThreadList) )
     THROW_INVALID_PARAM("threadlist.dump");
   
-  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(xPtrThreadList.pPtr());
+  ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
 
   pThreadList->vDump("ThreadList:");
@@ -9803,11 +9803,11 @@ void Task::vThreadListInit(NNP_Task nnpTask)
 {
 ENTRY("vThreadListInit");
   
-  PtrVal xPtrThreadList;
-  if ( ! nnpTask->bPopParam(xPtrThreadList) )
+  Object* pPtrThreadList;
+  if ( ! nnpTask->bPopParam(pPtrThreadList) )
     THROW_INVALID_PARAM("threadlist.init");
   
-  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(xPtrThreadList.pPtr());
+  ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
   
   new(pThreadList) ThreadList;

@@ -8,6 +8,16 @@ extern Heap*        gpSmallHeap;
 extern ThreadList*  gpThreadList;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ThreadList* Threads::_pThreadList(void* pAddr)
+{
+  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(pAddr);
+  
+  return pThreadList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* ThreadList::operator new(size_t iSize, ThreadList* pThreadList)

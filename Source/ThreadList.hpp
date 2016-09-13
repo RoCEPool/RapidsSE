@@ -29,6 +29,7 @@ namespace Threads {
     Footer* pFooter(void);
   };
     
+  ThreadList* _pThreadList(void* pAddr);
 }
 
 /*============================================================================*/
