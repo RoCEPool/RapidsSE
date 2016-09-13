@@ -33,6 +33,8 @@ namespace GridModel
     
     Footer* pFooter(void);
   };
+  
+  Node* _pNode(void* pAddr);
 }
 
 /*============================================================================*/
