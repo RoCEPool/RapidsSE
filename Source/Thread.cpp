@@ -75,7 +75,23 @@ void* Thread::vEntry(void* pArg)
   if (gxArguments.m_bVerbose)
     vTrace("[[%s]] Thread::vEntry %p\n",pThread->sName().a(),pThread);
   
-  pThread->vLoop();
+  try {
+    pThread->vLoop();
+  }
+  catch (Error* pError) {
+    char wFileName[256];
+    
+    const char* ps;
+    
+    ps = String::sLast(pError->pFileName());
+    String::bBackward(&ps,pError->pFileName(),'/');
+    String::vCopy(wFileName,ps+1);
+    vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n",
+          pError->pErrorMsg(),
+           pError->iLineNumber(),
+           wFileName);
+  }
+
 
   if (gxArguments.m_bVerbose)
     vTrace("[[%s]] Thread:;vEntry %p exiting\n",pThread->sName().a(),pThread);

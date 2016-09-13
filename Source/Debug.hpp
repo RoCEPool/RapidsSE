@@ -41,7 +41,7 @@ namespace Common
     } \
   }
   
-  // precondition for any method is a valid this pointer and valid magic
+  // precondition for any method is a valid this pointer, valid magic and a valid footer
   
   #define _ADDRESS_ 1
   #define _MAGIC_   2

@@ -90,6 +90,7 @@ void Common::vFatal(const char* psFormat, ...)
   vReport(C_REPORT_FATAL,psFormat,xArgs);
   
   va_end(xArgs);
+  exit(EXIT_FAILURE);
 }
 
 /*---------------------------------------------------------------------------*/
