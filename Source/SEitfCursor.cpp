@@ -8,6 +8,16 @@ extern Heap*        gpSmallHeap;
 extern SEitfList*   gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+SEitfCursor* Interface::_pSEitfCursor(void* pAddr)
+{
+  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(pAddr);
+  
+  return pSEitfCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* SEitfCursor::operator new(size_t iSize, SEitfCursor* pSEitfCursor)
