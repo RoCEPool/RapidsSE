@@ -6888,14 +6888,14 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 ENTRY("vLoaderTxRefStore");
   
   Object* pPtrLoader;
-  PtrVal xPtrTxRef;
-  if ( ! nnpTask->bPopParam(pPtrLoader,xPtrTxRef) )
+  Object* pPtrTxRef;
+  if ( ! nnpTask->bPopParam(pPtrLoader,pPtrTxRef) )
     THROW_INVALID_PARAM("loader.txref!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
   
-  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   pLoader->vTxRef(pTxRef);
@@ -8613,12 +8613,12 @@ void Task::vTableInsert(NNP_Task nnpTask)
 ENTRY("vTableInsert");
   
   Object* pPtrTable;
-  PtrVal xPtrTxRef;
+  Object* pPtrTxRef;
   ValWsp xRow;
   
   if ( ! nnpTask->bPopParam(pPtrTable) )
     THROW_INVALID_PARAM("table.insert");
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+  if ( ! nnpTask->bPopParam(pPtrTxRef) )
     THROW_INVALID_PARAM("table.insert");
   if ( ! nnpTask->bPopParam(xRow) )
     THROW_INVALID_PARAM("table.insert");
@@ -8630,7 +8630,7 @@ ENTRY("vTableInsert");
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
 
-  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   pTable->vInsertRow(iPartition,pTxRef,xRow.pAsStrVal());       // MISSING PARTN NUMBER??
@@ -10254,10 +10254,9 @@ ENTRY("vTxCursorNext");
   
   pTxCursor->vNext();
   
-  PtrVal xPtrTx;
-  xPtrTx = pTxCursor->pObject();
+  Object* pObject = pTxCursor->pObject();
   
-  nnpTask->vPushParam(xPtrTx);
+  nnpTask->vPushParam(pObject);
   
   EXIT();
 }
@@ -10292,11 +10291,11 @@ void Task::vTxRefInit(NNP_Task nnpTask)
 {
 ENTRY("vTxRefInit");
   
-  PtrVal xPtrTxRef;
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+  Object* pPtrTxRef;
+  if ( ! nnpTask->bPopParam(pPtrTxRef) )
     THROW_INVALID_PARAM("txRef.init");
   
-  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   new(pTxRef) TxRef;
@@ -10311,12 +10310,12 @@ void Task::vTxRefBegin(NNP_Task nnpTask)
 {
 ENTRY("vTxRefBegin");
   
-  PtrVal xPtrTxRef;
+  Object* pPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+  if ( ! nnpTask->bPopParam(pPtrTxRef) )
     THROW_INVALID_PARAM("tx.begin");
   
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   bool bBegun = pTxRef->bBeginTx();
@@ -10333,12 +10332,12 @@ void Task::vTxRefEnd(NNP_Task nnpTask)
 {
 ENTRY("vTxRefEnd");
   
-  PtrVal xPtrTxRef;
+  Object* pPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+  if ( ! nnpTask->bPopParam(pPtrTxRef) )
     THROW_INVALID_PARAM("txRef.end");
   
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   bool bEnded = pTxRef->bEndTx();
@@ -10355,12 +10354,12 @@ void Task::vTxRefCommit(NNP_Task nnpTask)
 {
 ENTRY("vTxRefCommit");
   
-  PtrVal xPtrTxRef;
+  Object* pPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+  if ( ! nnpTask->bPopParam(pPtrTxRef) )
     THROW_INVALID_PARAM("txRef.commit");
   
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   bool bCommitted = pTxRef->bCommitTx();
@@ -10377,12 +10376,12 @@ void Task::vTxRefRollback(NNP_Task nnpTask)
 {
 ENTRY("vTxRefRollback");
   
-  PtrVal xPtrTxRef;
+  Object* pPtrTxRef;
   
-  if ( ! nnpTask->bPopParam(xPtrTxRef) )
+  if ( ! nnpTask->bPopParam(pPtrTxRef) )
     THROW_INVALID_PARAM("txRef.rollback");
   
-  TxRef* pTxRef = static_cast<TxRef*>(xPtrTxRef.pPtr());
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   bool bRolledBack = pTxRef->bRollbackTx();
