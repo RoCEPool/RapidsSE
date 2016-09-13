@@ -7919,10 +7919,9 @@ ENTRY("vSEitfReqFetch");
   SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  PtrVal xPtrQueue;
-  xPtrQueue = pSEitf->pRequestQueue();
+  Object* pPtrQueue = pSEitf->pRequestQueue();
   
-  nnpTask->vPushParam(xPtrQueue);
+  nnpTask->vPushParam(pPtrQueue);
   
   EXIT();
 }
@@ -7941,12 +7940,12 @@ ENTRY("vSEitfReqStore");
   SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  PtrVal xPtrQueue;
+  Object* pPtrQueue;
   
-  if ( ! nnpTask->bPopParam(xPtrQueue) )
+  if ( ! nnpTask->bPopParam(pPtrQueue) )
     THROW_INVALID_PARAM("seitf.req!");
   
-  Queue* pQueue = reinterpret_cast<Queue*>(xPtrQueue.pPtr());
+  Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vRequestQueue(pQueue);
@@ -7968,10 +7967,9 @@ ENTRY("vSEitfRspFetch");
   SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  PtrVal xPtrQueue;
-  xPtrQueue = pSEitf->pResponseQueue();
+  Object* pPtrQueue = pSEitf->pResponseQueue();
   
-  nnpTask->vPushParam(xPtrQueue);
+  nnpTask->vPushParam(pPtrQueue);
   
   EXIT();
 }
@@ -7990,12 +7988,12 @@ ENTRY("vSEitfRspStore");
   SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  PtrVal xPtrQueue;
+  Object* pPtrQueue;
   
-  if ( ! nnpTask->bPopParam(xPtrQueue) )
+  if ( ! nnpTask->bPopParam(pPtrQueue) )
     THROW_INVALID_PARAM("seitf.rsp!");
   
-  Queue* pQueue = reinterpret_cast<Queue*>(xPtrQueue.pPtr());
+  Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vResponseQueue(pQueue);
