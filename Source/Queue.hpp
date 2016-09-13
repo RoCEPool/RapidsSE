@@ -43,6 +43,8 @@ namespace Structures
     
     Footer* pFooter(void);
   };
+  
+  Queue* _pQueue(void* pAddr);
 }
 
 /*============================================================================*/
