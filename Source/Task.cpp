@@ -37,6 +37,16 @@ Task* Tasks::_pTask(void* pAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Task* Tasks::_pTask(i8 iAddr)
+{
+  Task* pTask = reinterpret_cast<Task*>(iAddr);
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize)
@@ -3803,14 +3813,14 @@ void Task::vIterate_RT_A(NNP_Task nnpTask)
 {
 ENTRY("vIterate_RT_A");
   
-  PtrVal xPtrObject;
-  PtrVal xPtrCursor;
+  Object* pPtrObject;
+  Object* pPtrCursor;
   
-  if ( ! nnpTask->bPopParam(xPtrObject,xPtrCursor) )
+  if ( ! nnpTask->bPopParam(pPtrObject,pPtrCursor) )
     THROW_INVALID_PARAM("iterate_rt_a");
   
-  nnpTask->vPushReturnVoid(xPtrCursor.pPtr());
-  nnpTask->vPushReturnVoid(xPtrObject.pPtr());
+  nnpTask->vPushReturnVoid(pPtrCursor);
+  nnpTask->vPushReturnVoid(pPtrObject);
   
   EXIT();
 }
@@ -5261,14 +5271,12 @@ void Task::vToTask(NNP_Task nnpTask)
 ENTRY("vToTask");
   
   i8 iVal;
-
   if ( ! nnpTask->bPopParam(iVal) )
     THROW_INVALID_PARAM(">task");
   
-  PtrVal xPtrTask;
-  xPtrTask = reinterpret_cast<Task*>(iVal);
+  Object* pPtrTask = _pTask(iVal);
   
-  nnpTask->vPushParam(xPtrTask);
+  nnpTask->vPushParam(pPtrTask);
   
   EXIT();
 }
