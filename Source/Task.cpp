@@ -37,6 +37,16 @@ Task* Tasks::_pTask(void* pAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Task* Tasks::_pTask(i8 iAddr)
+{
+  Task* pTask = reinterpret_cast<Task*>(iAddr);
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize)
@@ -5255,14 +5265,12 @@ void Task::vToTask(NNP_Task nnpTask)
 ENTRY("vToTask");
   
   i8 iVal;
-
   if ( ! nnpTask->bPopParam(iVal) )
     THROW_INVALID_PARAM(">task");
   
-  PtrVal xPtrTask;
-  xPtrTask = reinterpret_cast<Task*>(iVal);
+  Object* pPtrTask = _pTask(iVal);
   
-  nnpTask->vPushParam(xPtrTask);
+  nnpTask->vPushParam(pPtrTask);
   
   EXIT();
 }
