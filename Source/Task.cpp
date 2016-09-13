@@ -3807,14 +3807,14 @@ void Task::vIterate_RT_A(NNP_Task nnpTask)
 {
 ENTRY("vIterate_RT_A");
   
-  PtrVal xPtrObject;
-  PtrVal xPtrCursor;
+  Object* pPtrObject;
+  Object* pPtrCursor;
   
-  if ( ! nnpTask->bPopParam(xPtrObject,xPtrCursor) )
+  if ( ! nnpTask->bPopParam(pPtrObject,pPtrCursor) )
     THROW_INVALID_PARAM("iterate_rt_a");
   
-  nnpTask->vPushReturnVoid(xPtrCursor.pPtr());
-  nnpTask->vPushReturnVoid(xPtrObject.pPtr());
+  nnpTask->vPushReturnVoid(pPtrCursor);
+  nnpTask->vPushReturnVoid(pPtrObject);
   
   EXIT();
 }
