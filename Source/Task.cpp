@@ -1767,44 +1767,6 @@ void Task::vLoop(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pop cell from param stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopParam(Cell*& pCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
-    return false;
-  
-  PtrVal xPtrIP;
-  
-  m_xParamStack.vPop(&xPtrIP);
-  
-  pCell = reinterpret_cast<Cell*>(xPtrIP.pPtr());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop cell from param stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopParam(void*& pVoid)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
-    return false;
-  
-  PtrVal xPtrVoid;
-  
-  m_xParamStack.vPop(&xPtrVoid);
-  
-  pVoid = xPtrVoid.pPtr();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop Header* from param stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Header*& pHeader)
@@ -2187,6 +2149,29 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* pop cell from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopParam(void*& pVoid)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVoid;
+  
+  m_xParamStack.vPop(&xPtrVoid);
+  
+  pVoid = xPtrVoid.pPtr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* pop value from param stack as integer                                      */
@@ -3611,10 +3596,10 @@ void Task::vLocate(NNP_Task nnpTask)
 {
 ENTRY("vLocate");
   
-  Cell* pCell;
-  
-  if ( ! nnpTask->bPopParam(pCell) )
+  void* pCellVoid;
+  if ( ! nnpTask->bPopParam(pCellVoid) )
     THROW_INVALID_PARAM("locate");
+  Cell* pCell = _pCell(pCellVoid);
   
   Word* pLocatedWord = nnpTask->pLocateWord(pCell);
   ASSERT(pLocatedWord);

@@ -209,8 +209,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     
-    bool bPopParam(Cell*& pCell);
-    bool bPopParam(void*& pVoid);
     bool bPopParam(eCN& eArg1);
     bool bPopParam(Header*& pHeader);
     bool bPopParam(i8& iArg1);
@@ -230,6 +228,7 @@ namespace Tasks
     bool bPopParam(s256& sArg1);
     bool bPopParam(s8K& sArg1);
     bool bPopParam(s8K& sArg1, s8K& sArg2);
+    bool bPopParam(void*& pVoid);
     bool bPopParamInt(i8& iArg1);
     
     bool bPopReturn(Cell*& pCell);

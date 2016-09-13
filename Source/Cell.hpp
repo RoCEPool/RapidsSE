@@ -18,6 +18,8 @@ namespace Dictionaries
       Cell*      m_pJumpLocn;  // pointer to jump location
     };
   };
+  
+  Cell* _pCell(void* pAddr);
 }
 
 /*============================================================================*/
