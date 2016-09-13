@@ -36,6 +36,8 @@ namespace Values
     
     void  vCopyString(char* aStr, i8 iLength);
   };
+  
+  StrVal* _pStrVal(void* pAddr);
 }
 
 /*============================================================================*/

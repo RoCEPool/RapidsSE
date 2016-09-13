@@ -30,6 +30,8 @@ namespace Values
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);
   };
+  
+  PtrVal* _pPtrVal(void* pAddr);
 }
 
 /*============================================================================*/

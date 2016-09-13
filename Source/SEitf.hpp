@@ -141,6 +141,7 @@ namespace Interface
   };
   
   SEitf* _pSEitf(void* pAddr);
+  SEitf* _pSEitf(i8 iAddr);
 }
 
 /*============================================================================*/

@@ -127,6 +127,7 @@ namespace Tasks
       Cell*       m_pCell;
       CodeField*  m_pCodeField;
       Value*      m_pValue;
+      Object*     m_pObject;
     };
     
     

@@ -5223,10 +5223,9 @@ ENTRY("vToSEitf");
   if ( ! nnpTask->bPopParam(iVal) )
     THROW_INVALID_PARAM(">seitf");
   
-  PtrVal xPtrSEitf;
-  xPtrSEitf = reinterpret_cast<SEitf*>(iVal);
+  Object* pPtrSEitf = _pSEitf(iVal);
   
-  nnpTask->vPushParam(&xPtrSEitf);
+  nnpTask->vPushParam(pPtrSEitf);
   
   EXIT();
 }
@@ -7868,12 +7867,12 @@ void Task::vSEitfDelete(NNP_Task nnpTask)
 {
 ENTRY("vSEitfDelete");
   
-  PtrVal xPtrSEitf;
+  Object* pPtrSEitf;
   
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("seitf.delete");
 
-  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   delete pSEitf;
@@ -7888,11 +7887,11 @@ void Task::vSEitfDump(NNP_Task nnpTask)
 {
 ENTRY("vSEitfDump");
   
-  PtrVal xPtrSEitf;
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  Object* pPtrSEitf;
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("seitf.dump");
   
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vDump();
@@ -7910,10 +7909,9 @@ ENTRY("vSEitfNew");
   SEitf* pSEitf = new SEitf(0);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  PtrVal xPtrSEitf;
-  xPtrSEitf = pSEitf;
+  Object* pPtrSEitf = pSEitf;
   
-  nnpTask->vPushParam(xPtrSEitf);
+  nnpTask->vPushParam(pPtrSEitf);
   
   EXIT();
 }
@@ -7925,11 +7923,11 @@ void Task::vSEitfReqFetch(NNP_Task nnpTask)
 {
 ENTRY("vSEitfReqFetch");
   
-  PtrVal xPtrSEitf;
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  Object* pPtrSEitf;
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("seitf.req@");
   
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrQueue = pSEitf->pRequestQueue();
@@ -7946,11 +7944,11 @@ void Task::vSEitfReqStore(NNP_Task nnpTask)
 {
 ENTRY("vSEitfReqStore");
   
-  PtrVal xPtrSEitf;
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  Object* pPtrSEitf;
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("seitf.req!");
   
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrQueue;
@@ -7973,11 +7971,11 @@ void Task::vSEitfRspFetch(NNP_Task nnpTask)
 {
 ENTRY("vSEitfRspFetch");
   
-  PtrVal xPtrSEitf;
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  Object* pPtrSEitf;
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("seitf.rsp@");
   
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrQueue = pSEitf->pResponseQueue();
@@ -7994,11 +7992,11 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
 {
 ENTRY("vSEitfRspStore");
   
-  PtrVal xPtrSEitf;
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  Object* pPtrSEitf;
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("seitf.rsp!");
   
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   Object* pPtrQueue;
@@ -8563,12 +8561,12 @@ void Task::vS256Init(NNP_Task nnpTask)
 {
   ENTRY("vS256Init");
   
-  PtrVal xPtrStrVal;
+  Object* pPtrStrVal;
   
-  if ( ! nnpTask->bPopParam(xPtrStrVal) )
+  if ( ! nnpTask->bPopParam(pPtrStrVal) )
     THROW_INVALID_PARAM("s256.init");
   
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(xPtrStrVal.pPtr());
+  StrVal* pStrVal = _pStrVal(pPtrStrVal);
   
   ASSERT(CN_STRVAL == pStrVal->eClass());
   
@@ -8798,10 +8796,9 @@ ENTRY("vTaskSeitfFetch");
   
   SEitf* pSEitf = pThatTask->m_pSEitf;
   
-  PtrVal xPtrSEitf;
-  xPtrSEitf = pSEitf;
+  Object* pPtrSEitf= pSEitf;
   
-  nnpTask->vPushParam(xPtrSEitf);
+  nnpTask->vPushParam(pPtrSEitf);
   
   EXIT();
 }
@@ -8818,7 +8815,7 @@ ENTRY("vTaskSeitfFetch");
 //  if ( ! nnpTask->bPopParam(pThatTask) )
 //    THROW_INVALID_PARAM("task.seitf!");
 //  
-//  PtrVal xPtrSEitf;
+//  Object* pPtrSEitf;
 //  
 //  if ( ! nnpTask->bPopParam(xPtrSEitf) )
 //    THROW_INVALID_PARAM("task.seitf!");

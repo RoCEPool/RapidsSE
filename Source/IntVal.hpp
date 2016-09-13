@@ -26,6 +26,8 @@ namespace Values
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);
   };
+  
+  IntVal* _pIntVal(void* pAddr);
 }
 
 /*============================================================================*/
