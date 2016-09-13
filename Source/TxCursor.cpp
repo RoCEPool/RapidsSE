@@ -7,6 +7,16 @@
 extern Heap* gpSmallHeap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+TxCursor* Transactions::_pTxCursor(void* pAddr)
+{
+  TxCursor* pTxCursor = reinterpret_cast<TxCursor*>(pAddr);
+  
+  return pTxCursor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* TxCursor::operator new(size_t iSize)
