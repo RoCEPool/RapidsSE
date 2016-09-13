@@ -8159,11 +8159,11 @@ void Task::vSEitfCursorNew(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorNew");
   
-  PtrVal xPtrSEitfList;
-  if ( ! nnpTask->bPopParam(xPtrSEitfList) )
+  Object* pPtrSEitfList;
+  if ( ! nnpTask->bPopParam(pPtrSEitfList) )
     THROW_INVALID_PARAM("seitfcursor.new");
   
-  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrSEitfList.pPtr());
+  SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject(CN_SEITFCURSOR));
@@ -8208,11 +8208,11 @@ void Task::vSEitfListDump(NNP_Task nnpTask)
 {
 ENTRY("vSEitfListDump");
   
-  PtrVal xPtrSEitfList;
-  if ( ! nnpTask->bPopParam(xPtrSEitfList) )
+  Object* pPtrSEitfList;
+  if ( ! nnpTask->bPopParam(pPtrSEitfList) )
     THROW_INVALID_PARAM("seitflist.dump");
   
-  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrSEitfList.pPtr());
+  SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   pSEitfList->vDump("SEitfList:");
@@ -8227,11 +8227,11 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
 {
 ENTRY("vSEitfListInit");
   
-  PtrVal xPtrSEitfList;
-  if ( ! nnpTask->bPopParam(xPtrSEitfList) )
+  Object* pPtrSEitfList;
+  if ( ! nnpTask->bPopParam(pPtrSEitfList) )
     THROW_INVALID_PARAM("seitflist.init");
   
-  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(xPtrSEitfList.pPtr());
+  SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   new(pSEitfList) SEitfList;
