@@ -28,6 +28,7 @@ namespace GridModel
     Footer* pFooter(void);
   };
     
+  Grid* _pGrid(void* pAddr);
 }
 
 /*============================================================================*/

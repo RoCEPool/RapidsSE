@@ -6661,12 +6661,12 @@ void Task::vGridInit(NNP_Task nnpTask)
 {
 ENTRY("vGridInit");
   
-  PtrVal xPtrGrid;
+  Object* pPtrGrid;
   
-  if ( ! nnpTask->bPopParam(xPtrGrid) )
+  if ( ! nnpTask->bPopParam(pPtrGrid) )
     THROW_INVALID_PARAM("grid.init");
   
-  Grid* pGrid = reinterpret_cast<Grid*>(xPtrGrid.pPtr());
+  Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
   
   new(pGrid) Grid;
