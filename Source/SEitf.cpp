@@ -11,6 +11,16 @@ extern SEitfList*   gpSEitfList;
 extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+SEitf* Interface::_pSEitf(void* pAddr)
+{
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(pAddr);
+  
+  return pSEitf;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* SEitf::operator new(size_t iSize)

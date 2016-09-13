@@ -139,6 +139,8 @@ namespace Interface
     
     Footer* pFooter(void);
   };
+  
+  SEitf* _pSEitf(void* pAddr);
 }
 
 /*============================================================================*/
