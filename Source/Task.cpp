@@ -9040,10 +9040,9 @@ ENTRY("vTaskCursorFirst");
   
   pTaskCursor->vFirst();
   
-  PtrVal xPtrTask;
-  xPtrTask = pTaskCursor->pObject();
+  Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->vPushParam(xPtrTask);
+  nnpTask->vPushParam(pPtrTask);
   
   EXIT();
 }
@@ -9064,10 +9063,9 @@ ENTRY("vTaskCursorGet");
   
   Task* pThatTask = pTaskCursor->pObject();
   
-  PtrVal xPtrTask;
-  xPtrTask = pThatTask;
+  Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->vPushParam(xPtrTask);
+  nnpTask->vPushParam(pPtrTask);
   
   EXIT();
 }
@@ -9123,10 +9121,9 @@ ENTRY("vTaskCursorNext");
   
   pTaskCursor->vNext();
   
-  PtrVal xPtrTask;
-  xPtrTask = pTaskCursor->pObject();
+  Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->vPushParam(xPtrTask);
+  nnpTask->vPushParam(pPtrTask);
   
   EXIT();
 }
