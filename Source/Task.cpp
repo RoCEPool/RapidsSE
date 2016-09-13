@@ -2384,17 +2384,17 @@ bool Task::bPopParamInt(i8& iArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push cell* onto param stack                                                */
+/* push void* onto param stack                                                */
 /*----------------------------------------------------------------------------*/
-void Task::vPushParam(Cell* pCell)
+void Task::vPushParam(void* pVoid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  PtrVal xPtrIP;
+  PtrVal xPtrVoid;
   
-  xPtrIP = pCell;
+  xPtrVoid = pVoid;
   
-  vPushParam(xPtrIP);
+  vPushParam(xPtrVoid);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2408,19 +2408,6 @@ void Task::vPushParam(Header* pHeader1)
   xPtrHeader = pHeader1;
   
   vPushParam(&xPtrHeader);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push char* onto param stack                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vPushParam(const char* aString)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  ValWsp xStrVal1;
-  xStrVal1 = aString;
-  
-  vPushParam(&xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2456,7 +2443,10 @@ void Task::vPushParam(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vPushParam(sArg1.a());
+  ValWsp xStrVal1;
+  xStrVal1 = sArg1.a();
+  
+  vPushParam(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2466,7 +2456,10 @@ void Task::vPushParam(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vPushParam(sArg1.a());
+  ValWsp xStrVal1;
+  xStrVal1 = sArg1.a();
+  
+  vPushParam(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2476,7 +2469,10 @@ void Task::vPushParam(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vPushParam(sArg1.a());
+  ValWsp xStrVal1;
+  xStrVal1 = sArg1.a();
+  
+  vPushParam(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2497,32 +2493,6 @@ void Task::vPushParam(Value* pValue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_xParamStack.vPush(pValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push tx* onto param stack                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vPushParam(NNP_Task pnnArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  PtrVal xPtrTask;
-  xPtrTask = *pnnArg1;
-  
-  vPushParam(&xPtrTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push word* onto param stack                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vPushParam(Word* pArg1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  PtrVal xPtrWord;
-  xPtrWord = pArg1;
-  
-  vPushParam(&xPtrWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5241,10 +5211,10 @@ ENTRY("vToStr");
   if ( ! nnpTask->bPopParam(xVal) )
     THROW_INVALID_PARAM(">str");
 
-  char wBuffer[64];
-  xVal.vToString(wBuffer);
-
-  nnpTask->vPushParam(wBuffer);
+  s8K sString;
+  xVal.vToString(sString.a());
+  
+  nnpTask->vPushParam(sString);
   
   EXIT();
 }
@@ -6814,7 +6784,7 @@ void Task::vInputToken(NNP_Task nnpTask)
 {
 ENTRY("vInputToken");
   
-  nnpTask->vPushParam(nnpTask->m_sToken.a());
+  nnpTask->vPushParam(nnpTask->m_sToken);
   
   EXIT();
 }
@@ -8910,7 +8880,8 @@ ENTRY("vTaskNew");
   Task* pNewTask = *nnpNewTask;
   gpTaskList->vAppend(pNewTask);
   
-  nnpTask->vPushParam(nnpNewTask);
+  Object* pTask = pNewTask;
+  nnpTask->vPushParam(pTask);
   
   EXIT();
 }
@@ -9027,7 +8998,9 @@ void Task::vTaskThis(NNP_Task nnpTask)
 {
 ENTRY("vTaskThis");
   
-  nnpTask->vPushParam(nnpTask);
+  Object* pTask = *nnpTask;
+  
+  nnpTask->vPushParam(pTask);
   
   EXIT();
 }
@@ -10662,9 +10635,9 @@ ENTRY("vWordName");
   if ( ! nnpTask->bPopParam(pWord) )
     THROW_INVALID_PARAM("word.name");
   
-  char* pWordName = pWord->sName().a();
+  s32 sWordName(pWord->sName().a());
   
-  nnpTask->vPushParam(pWordName);
+  nnpTask->vPushParam(sWordName);
   
   EXIT();
 }

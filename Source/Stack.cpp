@@ -59,6 +59,127 @@ Stack::~Stack(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* push void* onto param stack                                                */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(void* pVoid)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  PtrVal xPtrVoid;
+  
+  xPtrVoid = pVoid;
+  
+  vPushParam(xPtrVoid);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push Header* onto param stack                                              */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(Header* pHeader1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  PtrVal xPtrHeader;
+  xPtrHeader = pHeader1;
+  
+  vPushParam(&xPtrHeader);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push Object* onto param stack                                              */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(Object* pObject1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  PtrVal xPtrObject;
+  xPtrObject = pObject1;
+  
+  vPushParam(&xPtrObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push i8 onto param stack                                                   */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(i8 iArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  IntVal xIntVal1;
+  xIntVal1 = iArg1;
+  
+  vPushParam(&xIntVal1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push s32 onto param stack                                                  */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(s32& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  ValWsp xStrVal1;
+  xStrVal1 = sArg1.a();
+  
+  vPushParam(xStrVal1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push s256 onto param stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(s256& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  ValWsp xStrVal1;
+  xStrVal1 = sArg1.a();
+  
+  vPushParam(xStrVal1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push s8K onto param stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(s8K& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  ValWsp xStrVal1;
+  xStrVal1 = sArg1.a();
+  
+  vPushParam(xStrVal1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto parameter stack                                            */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(Value& xVal1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vPush(&xVal1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto parameter stack                                            */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushParam(Value* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vPush(pValue);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* discard value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
 void Stack::vDiscard(void)

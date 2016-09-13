@@ -34,6 +34,19 @@ namespace Structures
     Stack(void);
     ~Stack(void);
     
+    void vPushParam(Header* pHeader);
+    void vPushParam(i8 iInt);
+    void vPushParam(Object* pObject);
+    void vPushParam(s32& s32);
+    void vPushParam(s256& s256);
+    void vPushParam(s8K& s8K);
+    void vPushParam(Value& xValue);
+    void vPushParam(Value* pValue);
+    void vPushParam(void* pVoid);
+    
+   
+    //-------------------------------------------------------------------------
+    
     void   vDiscard(void);
     Value* pPeek(void);
     Value* pPeek(i8 iNthValue);

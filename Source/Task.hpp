@@ -245,19 +245,15 @@ namespace Tasks
     bool bPopParam(Word*& pArg1);
     bool bPopParamInt(i8& iArg1);
     
-    void vPushParam(Cell* pCell);
     void vPushParam(Header* pHeader);
-    void vPushParam(const char* aString);
-    void vPushParam(i8 iArg1);
+    void vPushParam(i8 iInt);
     void vPushParam(Object* pObject);
-    void vPushParam(Value& xArg1);
+    void vPushParam(s32& s32);
+    void vPushParam(s256& s256);
+    void vPushParam(s8K& s8K);
+    void vPushParam(Value& xValue);
     void vPushParam(Value* pValue);
-    void vPushParam(s32&  sArg1);
-    void vPushParam(s256& sArg1);
-    void vPushParam(s8K& sArg1);
-    void vPushParam(Threads::Thread* pThread);
-    void vPushParam(NNP_Task nnpTask);
-    void vPushParam(Word* pWord);
+    void vPushParam(void* pVoid);
     
     void vPushReturn(i8 iArg1);
     void vPushReturn(s32& sArg1);
