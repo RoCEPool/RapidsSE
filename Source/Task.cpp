@@ -9152,11 +9152,11 @@ void Task::vTaskListAppend(NNP_Task nnpTask)
 {
 ENTRY("vTaskListAppend");
   
-  PtrVal xPtrTaskList;
-  if ( ! nnpTask->bPopParam(xPtrTaskList) )
+  Object* pPtrTaskList;
+  if ( ! nnpTask->bPopParam(pPtrTaskList) )
     THROW_INVALID_PARAM("tasklist.append");
   
-  TaskList* pTaskList = reinterpret_cast<TaskList*>(xPtrTaskList.pPtr());
+  TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
   Task* pThatTask;
@@ -9176,11 +9176,11 @@ void Task::vTaskListDump(NNP_Task nnpTask)
 {
 ENTRY("vTaskListDump");
   
-  PtrVal xPtrTaskList;
-  if ( ! nnpTask->bPopParam(xPtrTaskList) )
+  Object* pPtrTaskList;
+  if ( ! nnpTask->bPopParam(pPtrTaskList) )
     THROW_INVALID_PARAM("tasklist.dump");
   
-  TaskList* pTaskList = reinterpret_cast<TaskList*>(xPtrTaskList.pPtr());
+  TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
  
   pTaskList->vDump();
@@ -9688,10 +9688,9 @@ ENTRY("vThreadCursorFirst");
   
   pThreadCursor->vFirst();
   
-  PtrVal xPtrThread;
-  xPtrThread = pThreadCursor->pObject();
+  Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->vPushParam(xPtrThread);
+  nnpTask->vPushParam(pThread);
   
   EXIT();
 }
@@ -9767,10 +9766,9 @@ ENTRY("vThreadCursorNext");
   
   pThreadCursor->vNext();
   
-  PtrVal xPtrThread;
-  xPtrThread = pThreadCursor->pObject();
+  Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->vPushParam(xPtrThread);
+  nnpTask->vPushParam(pThread);
   
   EXIT();
 }

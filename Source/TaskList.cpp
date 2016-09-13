@@ -9,6 +9,16 @@ extern Heap*        gpMediumHeap;
 extern TaskList*    gpTaskList;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+TaskList* Tasks::_pTaskList(void* pAddr)
+{
+  TaskList* pTaskList = reinterpret_cast<TaskList*>(pAddr);
+  
+  return pTaskList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* TaskList::operator new(size_t iSize)
