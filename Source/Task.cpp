@@ -3253,13 +3253,14 @@ ENTRY("vEncodeDoes");
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeEmb -- encode push ptr to Object object                              */
+/* encodeEmb -- encode push ptr to object                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeEmb(NNP_Task nnpTask)
 {
 ENTRY("vEncodeEmb");
   
   PtrVal xPtrObject;
+  
   xPtrObject = nnpTask->m_pWord->pFirstCell();
   
   if (nnpTask->m_bCompiling) {
@@ -4433,10 +4434,9 @@ void Task::vPushEmbedded(NNP_Task nnpTask)
 {
 ENTRY("vPushEmbedded");
   
-  PtrVal xPtrObject;
-  xPtrObject = nnpTask->m_pValue;
+  Object* pPtrObject = nnpTask->m_pObject;
   
-  nnpTask->vPushParam(&xPtrObject);
+  nnpTask->vPushParam(pPtrObject);
   
   EXIT();
 }
