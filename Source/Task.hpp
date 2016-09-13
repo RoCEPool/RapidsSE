@@ -210,6 +210,7 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     
     bool bPopParam(Cell*& pCell);
+    bool bPopParam(void*& pVoid);
     bool bPopParam(eCN& eArg1);
     bool bPopParam(Header*& pHeader);
     bool bPopParam(i8& iArg1);

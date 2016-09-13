@@ -1786,6 +1786,25 @@ bool Task::bPopParam(Cell*& pCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop cell from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopParam(void*& pVoid)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVoid;
+  
+  m_xParamStack.vPop(&xPtrVoid);
+  
+  pVoid = xPtrVoid.pPtr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop Header* from param stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Header*& pHeader)
