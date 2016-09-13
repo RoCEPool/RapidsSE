@@ -8720,11 +8720,11 @@ void Task::vTaskInit(NNP_Task nnpTask)
 {
 ENTRY("vTaskInit");
   
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
+  PtrVal xPtrTask;
+  if ( ! nnpTask->bPopParam(xPtrTask) )
     THROW_INVALID_PARAM("task.init");
   
-  Task* pThatTask = reinterpret_cast<Task*>(xPtrVal.pPtr());
+  Task* pThatTask = reinterpret_cast<Task*>(xPtrTask.pPtr());
   ASSERT(CN_TASK == pThatTask->eClass());
   
   new(pThatTask) Task;
@@ -9784,11 +9784,11 @@ void Task::vThreadListDump(NNP_Task nnpTask)
 {
 ENTRY("vThreadListDump");
   
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
+  PtrVal xPtrThreadList;
+  if ( ! nnpTask->bPopParam(xPtrThreadList) )
     THROW_INVALID_PARAM("threadlist.dump");
   
-  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(xPtrVal.pPtr());
+  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(xPtrThreadList.pPtr());
   ASSERT(CN_THREADLIST == pThreadList->eClass());
 
   pThreadList->vDump("ThreadList:");
@@ -9803,11 +9803,11 @@ void Task::vThreadListInit(NNP_Task nnpTask)
 {
 ENTRY("vThreadListInit");
   
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
+  PtrVal xPtrThreadList;
+  if ( ! nnpTask->bPopParam(xPtrThreadList) )
     THROW_INVALID_PARAM("threadlist.init");
   
-  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(xPtrVal.pPtr());
+  ThreadList* pThreadList = reinterpret_cast<ThreadList*>(xPtrThreadList.pPtr());
   ASSERT(CN_THREADLIST == pThreadList->eClass());
   
   new(pThreadList) ThreadList;
@@ -10093,11 +10093,11 @@ void Task::vTxCollectionInit(NNP_Task nnpTask)
 {
 ENTRY("vTxCollectionInit");
   
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
+  PtrVal xPtrTxCollection;
+  if ( ! nnpTask->bPopParam(xPtrTxCollection) )
     THROW_INVALID_PARAM("txCollection.init");
   
-  TxCollection* pTxCollection = reinterpret_cast<TxCollection*>(xPtrVal.pPtr());
+  TxCollection* pTxCollection = reinterpret_cast<TxCollection*>(xPtrTxCollection.pPtr());
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
   new(pTxCollection) TxCollection;
@@ -10271,11 +10271,11 @@ void Task::vTxMapInit(NNP_Task nnpTask)
 {
 ENTRY("vTxMapInit");
   
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
+  PtrVal xPtrTxMap;
+  if ( ! nnpTask->bPopParam(xPtrTxMap) )
     THROW_INVALID_PARAM("txMap.init");
   
-  TxMap* pTxMap = reinterpret_cast<TxMap*>(xPtrVal.pPtr());
+  TxMap* pTxMap = reinterpret_cast<TxMap*>(xPtrTxMap.pPtr());
   ASSERT(CN_TXMAP == pTxMap->eClass());
   
   new(pTxMap) TxMap;
@@ -10292,11 +10292,11 @@ void Task::vTxRefInit(NNP_Task nnpTask)
 {
 ENTRY("vTxRefInit");
   
-  PtrVal xPtrVal;
-  if ( ! nnpTask->bPopParam(xPtrVal) )
+  PtrVal xPtrTxRef;
+  if ( ! nnpTask->bPopParam(xPtrTxRef) )
     THROW_INVALID_PARAM("txRef.init");
   
-  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrVal.pPtr());
+  TxRef* pTxRef = reinterpret_cast<TxRef*>(xPtrTxRef.pPtr());
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   new(pTxRef) TxRef;
@@ -10699,9 +10699,9 @@ ENTRY("vSocketConnect");
   if ( ! bResult )
     THROW("Unable to connect: Errno %d!", xSysCall.iError());
   
-  PtrVal xPtrVal;
-  xPtrVal = (void*)pSocket;
-  nnpTask->vPushParam(xPtrVal);
+  PtrVal xPtrSocket;
+  xPtrSocket = (void*)pSocket;
+  nnpTask->vPushParam(xPtrSocket);
   
   EXIT();
 }
@@ -10726,9 +10726,9 @@ ENTRY("vSocketListen");
   if ( ! bResult )
     THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
   
-  PtrVal xPtrVal;
-  xPtrVal = (void*)pSocket;
-  nnpTask->vPushParam(xPtrVal);
+  PtrVal xPtrSocket;
+  xPtrSocket = (void*)pSocket;
+  nnpTask->vPushParam(xPtrSocket);
   
   EXIT();
 }
@@ -10749,9 +10749,9 @@ ENTRY("vSocketOpen");
   if ( ! bResult )
     THROW("Unable to create socker: Errno %d!", xSysCall.iError());
   
-  PtrVal xPtrVal;
-  xPtrVal = (void*)pSocket;
-  nnpTask->vPushParam(xPtrVal);
+  PtrVal xPtrSocket;
+  xPtrSocket = (void*)pSocket;
+  nnpTask->vPushParam(xPtrSocket);
   
   EXIT();
 }
