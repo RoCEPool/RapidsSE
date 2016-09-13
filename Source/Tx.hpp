@@ -71,6 +71,7 @@ namespace Transactions
     Footer* pFooter(void);
   };
     
+  Tx* _pTx(void* pAddr);
 }
 
 /*============================================================================*/

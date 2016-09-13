@@ -10052,12 +10052,12 @@ void Task::vTxDump(NNP_Task nnpTask)
 {
 ENTRY("vTxDump");
   
-  PtrVal xPtrTx;
+  Object* pPtrTx;
   
-  if ( ! nnpTask->bPopParam(xPtrTx) )
+  if ( ! nnpTask->bPopParam(pPtrTx) )
     THROW_INVALID_PARAM("tx.delete");
   
-  Tx* pTx = static_cast<Tx*>(xPtrTx.pPtr());
+  Tx* pTx = _pTx(pPtrTx);
   ASSERT(CN_TX == pTx->eClass());
 
   pTx->vDump();
