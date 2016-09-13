@@ -53,6 +53,14 @@ void* PtrVal::pPtr(void) const
 }
 
 /*----------------------------------------------------------------------------*/
+/* as pointer to in memory pool header                                        */
+/*----------------------------------------------------------------------------*/
+Header* PtrVal::pHeader(void) const
+{
+  return pPoolCheck<Header*>(m_pPtr);
+}
+
+/*----------------------------------------------------------------------------*/
 /* as pointer to in memory pool object                                        */
 /*----------------------------------------------------------------------------*/
 Object* PtrVal::pObject(void) const

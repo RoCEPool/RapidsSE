@@ -24,6 +24,7 @@ namespace Values
     
     i8      iSize(void) const;
     void*   pPtr(void) const;
+    Header* pHeader(void) const;
     Object* pObject(void) const;
     
     void vToCommand(char* aWorkspace);

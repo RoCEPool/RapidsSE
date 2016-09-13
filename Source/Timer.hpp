@@ -38,6 +38,8 @@ namespace Common
 
     Footer* pFooter(void);
   };
+  
+  Timer* _pTimer(void* pAddr);
 }
 
 /*============================================================================*/

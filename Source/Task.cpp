@@ -27,6 +27,16 @@ extern TxCollection*         gpTxCollection;
 extern NP_Task               gnpRootTask;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Task* Tasks::_pTask(void* pAddr)
+{
+  Task* pTask = reinterpret_cast<Task*>(pAddr);
+  
+  return pTask;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize)
@@ -1915,6 +1925,24 @@ bool Task::bPopParam(Cell*& pCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop Header* from param stack                                               */
+/*----------------------------------------------------------------------------*/
+bool Task::bPopParam(Header*& pHeader)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVal1;
+  m_xParamStack.vPop(&xPtrVal1);
+  
+  pHeader = xPtrVal1.pHeader();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop eCN from param stack                                                   */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(eCN& iArg1)
@@ -2351,6 +2379,19 @@ void Task::vPushParam(Cell* pCell)
   xPtrIP = pCell;
   
   vPushParam(xPtrIP);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push Header* onto param stack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vPushParam(Header* pHeader1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  PtrVal xPtrHeader;
+  xPtrHeader = pHeader1;
+  
+  vPushParam(&xPtrHeader);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8720,11 +8761,11 @@ void Task::vTaskInit(NNP_Task nnpTask)
 {
 ENTRY("vTaskInit");
   
-  PtrVal xPtrTask;
-  if ( ! nnpTask->bPopParam(xPtrTask) )
+  Object* pPtrTask;
+  if ( ! nnpTask->bPopParam(pPtrTask) )
     THROW_INVALID_PARAM("task.init");
   
-  Task* pThatTask = reinterpret_cast<Task*>(xPtrTask.pPtr());
+  Task* pThatTask = _pTask(pPtrTask);
   ASSERT(CN_TASK == pThatTask->eClass());
   
   new(pThatTask) Task;
@@ -9819,12 +9860,12 @@ void Task::vTimerDelete(NNP_Task nnpTask)
 {
 ENTRY("vTimeDelete");
   
-  PtrVal xPtrTimer;
+  Header* pPtrTimer;
   
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.delete");
   
-  Timer* pTimer = static_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   Object* pTimerObject = reinterpret_cast<Object*>(pTimer);
@@ -9843,11 +9884,11 @@ void Task::vTimerInit(NNP_Task nnpTask)
 {
 ENTRY("vTimerInit");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.init");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   new(pTimer) Timer;
@@ -9862,11 +9903,11 @@ void Task::vTimerMicrosecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerMicrosecs");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.microsecs");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iMicroseconds = pTimer->iMicroseconds();
@@ -9883,11 +9924,11 @@ void Task::vTimerMillisecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerMillisecs");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.millisecs");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iMilliseconds = pTimer->iMilliseconds();
@@ -9904,11 +9945,11 @@ void Task::vTimerNanosecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerNanosecs");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.nanosecs");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iNanoseconds = pTimer->iNanoseconds();
@@ -9931,10 +9972,9 @@ ENTRY("vTimerNew");
  
   ASSERT(CN_TIMER == pTimer->eClass());
   
-  PtrVal xPtrTimer;
-  xPtrTimer = pTimer;
+  Header* pPtrTimer = pTimer;
   
-  nnpTask->vPushParam(xPtrTimer);
+  nnpTask->vPushParam(pPtrTimer);
   
   EXIT();
 }
@@ -9946,11 +9986,11 @@ void Task::vTimerReset(NNP_Task nnpTask)
 {
 ENTRY("vTimerReset");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.reset");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vReset();
@@ -9965,11 +10005,11 @@ void Task::vTimerSecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerSecs");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.secs");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iSeconds = pTimer->iSeconds();
@@ -9986,11 +10026,11 @@ void Task::vTimerStart(NNP_Task nnpTask)
 {
 ENTRY("vTimerStart");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.Start");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vStart();
@@ -10005,11 +10045,11 @@ void Task::vTimerTicks(NNP_Task nnpTask)
 {
 ENTRY("vTimerTicks");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.ticks");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   i8 iTicks = pTimer->iTicks();
@@ -10026,11 +10066,11 @@ void Task::vTimerUpdate(NNP_Task nnpTask)
 {
 ENTRY("vTimerUpdate");
   
-  PtrVal xPtrTimer;
-  if ( ! nnpTask->bPopParam(xPtrTimer) )
+  Header* pPtrTimer;
+  if ( ! nnpTask->bPopParam(pPtrTimer) )
     THROW_INVALID_PARAM("timer.update");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(xPtrTimer.pPtr());
+  Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vUpdate();

@@ -222,6 +222,7 @@ namespace Tasks
     
     bool bPopParam(Cell*& pCell);
     bool bPopParam(eCN& eArg1);
+    bool bPopParam(Header*& pHeader);
     bool bPopParam(i8& iArg1);
     bool bPopParam(i8& iArg1, i8& iArg2);
     bool bPopParam(i8& iArg1, Object*& pObject);
@@ -244,6 +245,7 @@ namespace Tasks
     bool bPopParamInt(i8& iArg1);
     
     void vPushParam(Cell* pCell);
+    void vPushParam(Header* pHeader);
     void vPushParam(const char* aString);
     void vPushParam(i8 iArg1);
     void vPushParam(Object* pObject);
@@ -795,6 +797,7 @@ namespace Tasks
     Footer* pFooter(void);
   };
   
+  Task* _pTask(void* pAddr);
 }
 
 /*============================================================================*/
