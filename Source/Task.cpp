@@ -10732,9 +10732,8 @@ ENTRY("vSocketConnect");
   if ( ! bResult )
     THROW("Unable to connect: Errno %d!", xSysCall.iError());
   
-  PtrVal xPtrSocket;
-  xPtrSocket = (void*)pSocket;
-  nnpTask->vPushParam(xPtrSocket);
+  Header* pPtrSocket = pSocket;
+  nnpTask->vPushParam(pPtrSocket);
   
   EXIT();
 }
@@ -10759,9 +10758,8 @@ ENTRY("vSocketListen");
   if ( ! bResult )
     THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
   
-  PtrVal xPtrSocket;
-  xPtrSocket = (void*)pSocket;
-  nnpTask->vPushParam(xPtrSocket);
+  Header* pPtrSocket = pSocket;
+  nnpTask->vPushParam(pPtrSocket);
   
   EXIT();
 }
@@ -10782,9 +10780,8 @@ ENTRY("vSocketOpen");
   if ( ! bResult )
     THROW("Unable to create socker: Errno %d!", xSysCall.iError());
   
-  PtrVal xPtrSocket;
-  xPtrSocket = (void*)pSocket;
-  nnpTask->vPushParam(xPtrSocket);
+  Header* pPtrSocket = pSocket;
+  nnpTask->vPushParam(pPtrSocket);
   
   EXIT();
 }
