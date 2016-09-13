@@ -5116,10 +5116,11 @@ ENTRY("vToBody");
   if ( ! nnpTask->bPopParam(pWord) )
     THROW_INVALID_PARAM(">body");
 
-  PtrVal xPtrBody;
-  xPtrBody = pcAdd(pWord,sizeof(Word));
+  char* pBody = pcAdd(pWord,sizeof(Word));
+  
+  Object* pPtrBody = reinterpret_cast<Object*>(pBody);
 
-  nnpTask->vPushParam(&xPtrBody);
+  nnpTask->vPushParam(pPtrBody);
   
   EXIT();
 }
