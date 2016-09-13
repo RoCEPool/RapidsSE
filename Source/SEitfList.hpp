@@ -29,6 +29,7 @@ namespace Interface {
     Footer* pFooter(void);
   };
     
+  SEitfList* _pSEitfList(void* pAddr);
 }
 
 /*============================================================================*/

@@ -8024,11 +8024,11 @@ void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorBegin");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.begin");
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
 
   pSEitfCursor->vBegin();
@@ -8048,11 +8048,11 @@ void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorDelete");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.delete");
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   Object* pObject = reinterpret_cast<Object*>(pSEitfCursor);
@@ -8070,11 +8070,11 @@ void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorEnd");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.end");
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   pSEitfCursor->vEnd();
@@ -8089,11 +8089,11 @@ void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorFirst");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.first");
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   pSEitfCursor->vFirst();
@@ -8112,11 +8112,11 @@ void Task::vSEitfCursorGet(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorGet");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.get");
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   Object* pObject = pSEitfCursor->pObject();
@@ -8133,9 +8133,12 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorInit");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.init");
+  
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
+  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   s32 sName;
   sName = "seitflist";
@@ -8143,8 +8146,6 @@ ENTRY("vSEitfCursorInit");
   ASSERT(pWord);
   SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pWord->pBodyArea());
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
-  ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   new(pSEitfCursor) SEitfCursor(pSEitfList);
   
@@ -8168,10 +8169,9 @@ ENTRY("vSEitfCursorNew");
   SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject(CN_SEITFCURSOR));
   new(pSEitfCursor) SEitfCursor(pSEitfList);
   
-  PtrVal xPtrSEitfCursor;
-  xPtrSEitfCursor = pSEitfCursor;
+  Object* pPtrSEitfCursor = pSEitfCursor;
   
-  nnpTask->vPushParam(xPtrSEitfCursor);
+  nnpTask->vPushParam(pPtrSEitfCursor);
   
   EXIT();
 }
@@ -8183,11 +8183,11 @@ void Task::vSEitfCursorNext(NNP_Task nnpTask)
 {
 ENTRY("vSEitfCursorNext");
   
-  PtrVal xPtrSEitfCursor;
-  if ( ! nnpTask->bPopParam(xPtrSEitfCursor) )
+  Object* pPtrSEitfCursor;
+  if ( ! nnpTask->bPopParam(pPtrSEitfCursor) )
     THROW_INVALID_PARAM("seitfcursor.next");
   
-  SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(xPtrSEitfCursor.pPtr());
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
   
   pSEitfCursor->vNext();

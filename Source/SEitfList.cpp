@@ -8,6 +8,16 @@ extern Heap*        gpSmallHeap;
 extern SEitfList*   gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+SEitfList* Interface::_pSEitfList(void* pAddr)
+{
+  SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pAddr);
+  
+  return pSEitfList;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* SEitfList::operator new(size_t iSize, SEitfList* pSEitfList)
