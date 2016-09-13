@@ -10180,10 +10180,9 @@ ENTRY("vTxCursorFirst");
   
   pTxCursor->vFirst();
   
-  PtrVal xPtrThread;
-  xPtrThread = pTxCursor->pObject();
+  Object* pObject = pTxCursor->pObject();
   
-  nnpTask->vPushParam(xPtrThread);
+  nnpTask->vPushParam(pObject);
   
   EXIT();
 }
@@ -10270,11 +10269,11 @@ void Task::vTxMapInit(NNP_Task nnpTask)
 {
 ENTRY("vTxMapInit");
   
-  PtrVal xPtrTxMap;
-  if ( ! nnpTask->bPopParam(xPtrTxMap) )
+  Object* pPtrTxMap;
+  if ( ! nnpTask->bPopParam(pPtrTxMap) )
     THROW_INVALID_PARAM("txMap.init");
   
-  TxMap* pTxMap = reinterpret_cast<TxMap*>(xPtrTxMap.pPtr());
+  TxMap* pTxMap = _pTxMap(pPtrTxMap);
   ASSERT(CN_TXMAP == pTxMap->eClass());
   
   new(pTxMap) TxMap;
