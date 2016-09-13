@@ -209,12 +209,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     
-    bool bGuardReturn(i8 iCount);
-    
-    bool bGuardReturn(eCN eClass0);
-    bool bGuardReturn(eCN eClass0, eCN eClass1);
-    bool bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2);
-    
     bool bPopParam(Cell*& pCell);
     bool bPopParam(eCN& eArg1);
     bool bPopParam(Header*& pHeader);
@@ -235,7 +229,6 @@ namespace Tasks
     bool bPopParam(s256& sArg1);
     bool bPopParam(s8K& sArg1);
     bool bPopParam(s8K& sArg1, s8K& sArg2);
-    bool bPopParam(Task*& pTask);
     bool bPopParam(Word*& pArg1);
     bool bPopParamInt(i8& iArg1);
     

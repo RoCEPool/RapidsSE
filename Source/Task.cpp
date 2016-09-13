@@ -1360,82 +1360,6 @@ bool Task::bForgetWord(s& sName)
 }
 
 
-/*----------------------------------------------------------------------------*/
-/* guard return stack                                                         */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(i8 iCount)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xReturnStack.iValues() < iCount)
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard return stack 1                                                       */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(eCN eClass0)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xReturnStack.iValues() < 1)
-    return false;
-  
-  Value* pValue0 = m_xReturnStack.pPeek(0);
-  if (eClass0 != pValue0->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard return stack 2                                                       */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(eCN eClass0, eCN eClass1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xReturnStack.iValues() < 2)
-    return false;
-  
-  Value* pValue0 = m_xReturnStack.pPeek(0);
-  if (eClass0 != pValue0->eClass())
-    return false;
-  
-  Value* pValue1 = m_xReturnStack.pPeek(1);
-  if (eClass1 != pValue1->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* guard return stack 3                                                       */
-/*----------------------------------------------------------------------------*/
-bool Task::bGuardReturn(eCN eClass0, eCN eClass1, eCN eClass2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if (m_xReturnStack.iValues() < 3)
-    return false;
-  
-  Value* pValue0 = m_xReturnStack.pPeek(0);
-  if (eClass0 != pValue0->eClass())
-    return false;
-  
-  Value* pValue1 = m_xReturnStack.pPeek(1);
-  if (eClass1 != pValue1->eClass())
-    return false;
-  
-  Value* pValue2 = m_xReturnStack.pPeek(2);
-  if (eClass2 != pValue2->eClass())
-    return false;
-  
-  return true;
-}
-
 
 
 
@@ -2195,27 +2119,6 @@ bool Task::bPopParam(s8K& sArg1, s8K& sArg2)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop tx* from param stack                                                   */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopParam(Task*& pTask1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  PtrVal xPtrTask;
-  
-  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
-    return false;
-  
-  m_xParamStack.vPop(&xPtrTask);
-
-  pTask1 = reinterpret_cast<Task*>(xPtrTask.pPtr());
-  if (CN_TASK != pTask1->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from param stack                                                 */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParam(Value& xArg1)
@@ -2311,7 +2214,7 @@ bool Task::bPopReturn(Cell*& pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(CN_PTRVAL) )
+  if ( ! m_xReturnStack.bGuardParam(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrIP;
@@ -2330,7 +2233,7 @@ bool Task::bPopReturn(i8& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(CN_INTVAL) )
+  if ( ! m_xReturnStack.bGuardParam(CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2348,7 +2251,7 @@ bool Task::bPopReturn(i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(CN_INTVAL,CN_INTVAL) )
+  if ( ! m_xReturnStack.bGuardParam(CN_INTVAL,CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
@@ -2371,7 +2274,7 @@ bool Task::bPopReturn(ValWsp& xValOpaque)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(1) )
+  if ( ! m_xReturnStack.bGuardParam(1) )
     return false;
   
   m_xReturnStack.vPop(&xValOpaque);
@@ -2386,7 +2289,7 @@ bool Task::bPopReturn(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(CN_STRVAL) )
+  if ( ! m_xReturnStack.bGuardParam(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -2404,7 +2307,7 @@ bool Task::bPopReturn(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(CN_STRVAL) )
+  if ( ! m_xReturnStack.bGuardParam(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -2422,7 +2325,7 @@ bool Task::bPopReturn(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardReturn(CN_STRVAL) )
+  if ( ! m_xReturnStack.bGuardParam(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
@@ -8496,10 +8399,10 @@ void Task::vTaskDump(NNP_Task nnpTask)
 {
 ENTRY("vTaskDump");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
     THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pObject);
   
   pThatTask->vDump();
   
@@ -8532,10 +8435,10 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 {
 ENTRY("vTaskSeitfFetch");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.seitf@");
+  Object* pObject;
+  if ( ! nnpTask->bPopParam(pObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pObject);
   
   SEitf* pSEitf = pThatTask->m_pSEitf;
   
@@ -8574,10 +8477,10 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
   ENTRY("vTaskSeitfStore");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.seitf!");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSEitf;
   
@@ -8599,10 +8502,10 @@ void Task::vTaskNameFetch(NNP_Task nnpTask)
 {
 ENTRY("vTaskNameFetch");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.name@");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   nnpTask->m_xParamStack.vPushParam(pThatTask->m_sName);
   
@@ -8616,10 +8519,10 @@ void Task::vTaskNameStore(NNP_Task nnpTask)
 {
 ENTRY("vTaskNameStore");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.name!");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   s32 sName;
   if ( ! nnpTask->bPopParam(sName) )
@@ -8666,10 +8569,10 @@ void Task::vTaskQfetch(NNP_Task nnpTask)
 {
 ENTRY("vTaskQfetch");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.queue@");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   Queue* pQueue = pThatTask->m_pQueue;
   
@@ -8687,10 +8590,10 @@ void Task::vTaskQstore(NNP_Task nnpTask)
 {
 ENTRY("vTaskQstore");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.queue!");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   Object* pQueueEmb;
   
@@ -8730,10 +8633,10 @@ void Task::vTaskStateFetch(NNP_Task nnpTask)
 {
 ENTRY("vTaskStateFetch");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.state@");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
   
@@ -8749,10 +8652,10 @@ void Task::vTaskStateStore(NNP_Task nnpTask)
 {
 ENTRY("vTaskStateStore");
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("task.state!");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   i8 iState;
   
@@ -8972,10 +8875,10 @@ ENTRY("vTaskListAppend");
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("tasklist.append");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   pTaskList->vAppend(pThatTask);
   
@@ -9029,10 +8932,10 @@ ENTRY("vTaskSetAppend");
   
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("taskset.append");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
   
@@ -9101,10 +9004,10 @@ ENTRY("vThreadAppend");
   
   TaskSet* pTaskSet = pThread->m_pTaskSet;
   
-  Task* pThatTask;
-  
-  if ( ! nnpTask->bPopParam(pThatTask) )
-    THROW_INVALID_PARAM("thread.append");
+  Object* pTaskObject;
+  if ( ! nnpTask->bPopParam(pTaskObject) )
+    THROW_INVALID_PARAM("task.dump");
+  Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
   
