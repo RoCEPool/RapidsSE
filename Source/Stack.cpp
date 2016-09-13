@@ -63,6 +63,86 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* guard parameter stack                                                      */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuardParam(i8 iCount)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (iValues() < iCount)
+    return false;
+  
+  return true;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* guard parameter stack 1                                                    */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuardParam(eCN eClass0)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (iValues() < 1)
+    return false;
+  
+  Value* pValue0 = pPeek(0);
+  if (eClass0 != pValue0->eClass())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard parameter stack 2                                                    */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuardParam(eCN eClass0, eCN eClass1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (iValues() < 2)
+    return false;
+  
+  Value* pValue0 = pPeek(0);
+  if (eClass0 != pValue0->eClass())
+    return false;
+  
+  Value* pValue1 = pPeek(1);
+  if (eClass1 != pValue1->eClass())
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* guard parameter stack 3                                                    */
+/*----------------------------------------------------------------------------*/
+bool Stack::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (iValues() < 3)
+    return false;
+  
+  Value* pValue0 = pPeek(0);
+  if (eClass0 != pValue0->eClass())
+    return false;
+  
+  Value* pValue1 = pPeek(1);
+  if (eClass1 != pValue1->eClass())
+    return false;
+  
+  Value* pValue2 = pPeek(2);
+  if (eClass2 != pValue2->eClass())
+    return false;
+  
+  return true;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
 /* push void* onto param stack                                                */
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(void* pVoid)

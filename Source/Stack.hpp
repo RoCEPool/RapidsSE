@@ -34,6 +34,12 @@ namespace Structures
     Stack(void);
     ~Stack(void);
     
+    bool bGuardParam(i8 iCount);
+    
+    bool bGuardParam(eCN eClass0);
+    bool bGuardParam(eCN eClass0, eCN eClass1);
+    bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2);
+    
     void vPushParam(Header* pHeader);
     void vPushParam(i8 iInt);
     void vPushParam(Object* pObject);
