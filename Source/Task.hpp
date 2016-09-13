@@ -229,7 +229,6 @@ namespace Tasks
     bool bPopParam(s256& sArg1);
     bool bPopParam(s8K& sArg1);
     bool bPopParam(s8K& sArg1, s8K& sArg2);
-    bool bPopParam(Word*& pArg1);
     bool bPopParamInt(i8& iArg1);
     
     bool bPopReturn(Cell*& pCell);

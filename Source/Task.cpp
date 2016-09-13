@@ -2170,26 +2170,6 @@ bool Task::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop word* from param stack                                                 */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopParam(Word*& pWord1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_xParamStack.bGuardParam(CN_PTRVAL) )
-    return false;
-  
-  PtrVal xPtrWord1;
-  m_xParamStack.vPop(&xPtrWord1);
-  
-  pWord1 = reinterpret_cast<Word*>(xPtrWord1.pPtr());
-  if (CN_WORD != pWord1->eClass())
-    return false;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop value from param stack as integer                                      */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopParamInt(i8& iArg1)
@@ -2870,9 +2850,10 @@ void Task::vEncodeCall(NNP_Task nnpTask)
 {
 ENTRY("vEncodeCall");
   
-  Word* pCalledWord;
-  if ( ! nnpTask->bPopParam(pCalledWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("encodeCall");
+  Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -2927,9 +2908,10 @@ void Task::vEncodeFun(NNP_Task nnpTask)
 {
 ENTRY("vEncodeFun");
   
-  Word* pCalledWord;
-  if ( ! nnpTask->bPopParam(pCalledWord) )
-    THROW_INVALID_PARAM("encodeFun");
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vEncodeFun");
+  Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -3088,10 +3070,10 @@ void Task::vExecute(NNP_Task nnpTask)
 {
 ENTRY("vExecute");
   
-  Word* pWord;
-  
-  if ( ! nnpTask->bPopParam(pWord) )
-    THROW_INVALID_PARAM("execute");
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vExecute");
+  Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
     pFUN pFunc = pWord->pFunc();
@@ -3373,9 +3355,10 @@ ENTRY("vIsImmediate");
   
   // we should just modify the pointers rather than actually pop
   
-  Word* pWord;
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("isImmediate");
+  Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
@@ -3405,10 +3388,10 @@ void Task::vIsPrimitive(NNP_Task nnpTask)
 {
 ENTRY("vIsPrimitive");
   
-  Word* pWord;
-
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("isPrimitive");
+  Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
@@ -3797,10 +3780,10 @@ void Task::vNameWord(NNP_Task nnpTask)
 {
 ENTRY("vNameWord");
   
-  Word* pWord;
-
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("nameWord");
+  Word* pWord = _pWord(pWordObject);
   
   nnpTask->m_xParamStack.vPushParam(pWord->sName().a());
   
@@ -4015,10 +3998,11 @@ void Task::vPrevWord(NNP_Task nnpTask)
 {
 ENTRY("vPrevWord");
   
-  Word* pWord;
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("prevWord");
-    
+  Word* pWord = _pWord(pWordObject);
+  
   Word* pPrevWord = pWord->pPrevWord();
   
   nnpTask->m_xParamStack.vPushParam(pPrevWord);
@@ -4758,9 +4742,10 @@ void Task::vToBody(NNP_Task nnpTask)
 {
 ENTRY("vToBody");
   
-  Word* pWord;
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM(">body");
+  Word* pWord = _pWord(pWordObject);
 
   char* pBody = pcAdd(pWord,sizeof(Word));
   
@@ -6866,14 +6851,14 @@ void Task::vMemoryByteDump(NNP_Task nnpTask)
 {
 ENTRY("vMemoryByteDump");
   
-  Word* pWord;
   i8 iSize;
-  
   if ( ! nnpTask->bPopParam(iSize) )
     THROW_INVALID_PARAM("memory.bytedump");
   
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("memory.bytedump");
+  Word* pWord = _pWord(pWordObject);
   
   pWord->vByteDump(iSize);
   
@@ -6887,14 +6872,14 @@ void Task::vMemoryWordDump(NNP_Task nnpTask)
 {
 ENTRY("vMemoryWordDump");
   
-  Word* pWord;
   i8 iSize;
-  
   if ( ! nnpTask->bPopParam(iSize) )
     THROW_INVALID_PARAM("memory.worddump");
   
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("memory.worddump");
+  Word* pWord = _pWord(pWordObject);
   
   pWord->vWordDump(iSize);
   
@@ -8437,7 +8422,7 @@ ENTRY("vTaskSeitfFetch");
   
   Object* pObject;
   if ( ! nnpTask->bPopParam(pObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.seitf@");
   Task* pThatTask = _pTask(pObject);
   
   SEitf* pSEitf = pThatTask->m_pSEitf;
@@ -8452,34 +8437,13 @@ ENTRY("vTaskSeitfFetch");
 /*----------------------------------------------------------------------------*/
 /* task.seitf! -- store SEitf on param stack into task on param stack         */
 /*----------------------------------------------------------------------------*/
-//void Task::vTaskSeitfStore(NNP_Task nnpTask)
-//{
-//ENTRY("vTaskSeitfStore");
-//  
-//  Task* pThatTask;
-//  
-//  if ( ! nnpTask->bPopParam(pThatTask) )
-//    THROW_INVALID_PARAM("task.seitf!");
-//  
-//  Object* pPtrSEitf;
-//  
-//  if ( ! nnpTask->bPopParam(xPtrSEitf) )
-//    THROW_INVALID_PARAM("task.seitf!");
-//  
-//  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
-//  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
-//  
-//  pThatTask->m_pSEitf = pSEitf;
-//  
-//  EXIT();
-//}
 void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
   ENTRY("vTaskSeitfStore");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.seitf!");
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSEitf;
@@ -8504,7 +8468,7 @@ ENTRY("vTaskNameFetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.name@");
   Task* pThatTask = _pTask(pTaskObject);
   
   nnpTask->m_xParamStack.vPushParam(pThatTask->m_sName);
@@ -8521,7 +8485,7 @@ ENTRY("vTaskNameStore");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.name!");
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sName;
@@ -8571,7 +8535,7 @@ ENTRY("vTaskQfetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.queue@");
   Task* pThatTask = _pTask(pTaskObject);
   
   Queue* pQueue = pThatTask->m_pQueue;
@@ -8592,7 +8556,7 @@ ENTRY("vTaskQstore");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.queue!");
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pQueueEmb;
@@ -8635,7 +8599,7 @@ ENTRY("vTaskStateFetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.state@");
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
@@ -8654,7 +8618,7 @@ ENTRY("vTaskStateStore");
   
   Object* pTaskObject;
   if ( ! nnpTask->bPopParam(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("task.state!");
   Task* pThatTask = _pTask(pTaskObject);
   
   i8 iState;
@@ -10211,10 +10175,10 @@ void Task::vWordForget(NNP_Task nnpTask)
 {
 ENTRY("vWordForget");
   
-  Word* pWord;
-  
-  if ( ! nnpTask->bPopParam(pWord) )
-    THROW_INVALID_PARAM(">forget");
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vWordForget");
+  Word* pWord = _pWord(pWordObject);
   
   bool bResult = nnpTask->bForgetWord(pWord->sName());
   ASSERT(bResult);
@@ -10229,10 +10193,10 @@ void Task::vWordDump(NNP_Task nnpTask)
 {
 ENTRY("vWordDump");
   
-  Word* pWord;
-  
-  if ( ! nnpTask->bPopParam(pWord) )
-    THROW_INVALID_PARAM("word.dump");
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vWordDump");
+  Word* pWord = _pWord(pWordObject);
   
   pWord->vDump();
   
@@ -10246,10 +10210,10 @@ void Task::vWordDic(NNP_Task nnpTask)
 {
 ENTRY("vWordDic");
   
-  Word* pWord;
-  
-  if ( ! nnpTask->bPopParam(pWord) )
-    THROW_INVALID_PARAM("word.dic");
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vWordDic");
+  Word* pWord = _pWord(pWordObject);
   
   Dictionary* pDictionary = pWord->pDictionary();
   
@@ -10265,11 +10229,11 @@ void Task::vWordKindGet(NNP_Task nnpTask)
 {
 ENTRY("vWordKindGet");
   
-  Word* pWord;
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vWordKindGet");
+  Word* pWord = _pWord(pWordObject);
   
-  if ( ! nnpTask->bPopParam(pWord) )
-    THROW_INVALID_PARAM("word.kind@");
-    
   Word* pWordKind = pWord->pKind();
   
   nnpTask->m_xParamStack.vPushParam(pWordKind);
@@ -10284,15 +10248,14 @@ void Task::vWordKindSet(NNP_Task nnpTask)
 {
 ENTRY("vWordKindSet");
   
-  Word* pWord;
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vWordKindSet");
+  Word* pWord = _pWord(pWordObject);
   
-  if ( ! nnpTask->bPopParam(pWord) )
-    THROW_INVALID_PARAM("word.kind!");
-  
-  Word* pWordKind;
-
-  if ( ! nnpTask->bPopParam(pWordKind) )
-    THROW_INVALID_PARAM("word.kind!");
+  if ( ! nnpTask->bPopParam(pWordObject) )
+    THROW_INVALID_PARAM("vWordKindSet");
+  Word* pWordKind = _pWord(pWordObject);
   
   pWord->vKind(pWordKind);
   
@@ -10306,10 +10269,10 @@ void Task::vWordName(NNP_Task nnpTask)
 {
 ENTRY("vWordName");
   
-  Word* pWord;
-  
-  if ( ! nnpTask->bPopParam(pWord) )
+  Object* pWordObject;
+  if ( ! nnpTask->bPopParam(pWordObject) )
     THROW_INVALID_PARAM("word.name");
+  Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName().a());
   
