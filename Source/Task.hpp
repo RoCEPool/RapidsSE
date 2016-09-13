@@ -245,16 +245,6 @@ namespace Tasks
     bool bPopParam(Word*& pArg1);
     bool bPopParamInt(i8& iArg1);
     
-    void vPushParam(Header* pHeader);
-    void vPushParam(i8 iInt);
-    void vPushParam(Object* pObject);
-    void vPushParam(s32& s32);
-    void vPushParam(s256& s256);
-    void vPushParam(s8K& s8K);
-    void vPushParam(Value& xValue);
-    void vPushParam(Value* pValue);
-    void vPushParam(void* pVoid);
-    
     void vPushReturn(i8 iArg1);
     void vPushReturn(s32& sArg1);
     void vPushReturn(s256& sArg1);

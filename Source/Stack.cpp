@@ -67,7 +67,7 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(void* pVoid)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   PtrVal xPtrVoid;
   
@@ -81,7 +81,7 @@ void Stack::vPushParam(void* pVoid)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(Header* pHeader1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   PtrVal xPtrHeader;
   xPtrHeader = pHeader1;
@@ -94,7 +94,7 @@ void Stack::vPushParam(Header* pHeader1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(Object* pObject1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   PtrVal xPtrObject;
   xPtrObject = pObject1;
@@ -107,7 +107,7 @@ void Stack::vPushParam(Object* pObject1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(i8 iArg1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   IntVal xIntVal1;
   xIntVal1 = iArg1;
@@ -120,7 +120,7 @@ void Stack::vPushParam(i8 iArg1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(s32& sArg1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
   xStrVal1 = sArg1.a();
@@ -133,7 +133,7 @@ void Stack::vPushParam(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(s256& sArg1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
   xStrVal1 = sArg1.a();
@@ -146,7 +146,7 @@ void Stack::vPushParam(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(s8K& sArg1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
   xStrVal1 = sArg1.a();
@@ -159,7 +159,7 @@ void Stack::vPushParam(s8K& sArg1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(Value& xVal1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   vPush(&xVal1);
 }
@@ -169,7 +169,7 @@ void Stack::vPushParam(Value& xVal1)
 /*----------------------------------------------------------------------------*/
 void Stack::vPushParam(Value* pValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   vPush(pValue);
 }
