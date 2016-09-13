@@ -7725,10 +7725,9 @@ ENTRY("vRowCursorFirst");
   
   pRowCursor->vFirst();
   
-  PtrVal xPtrRow;
-  xPtrRow = pRowCursor->pRowAsStr();
+  i8 bRow = pRowCursor->pRowAsStr() ? 1 : 0;
   
-  nnpTask->vPushParam(xPtrRow);
+  nnpTask->vPushParam(bRow);
   
   EXIT();
 }
@@ -7805,10 +7804,9 @@ ENTRY("vRowCursorNext");
   
   pRowCursor->vNext();
   
-  PtrVal xPtrRow;
-  xPtrRow = pRowCursor->pRowAsStr();
+  i8 bRow = pRowCursor->pRowAsStr() ? 1 : 0;
   
-  nnpTask->vPushParam(xPtrRow);
+  nnpTask->vPushParam(bRow);
   
   EXIT();
 }
