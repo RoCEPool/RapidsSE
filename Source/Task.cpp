@@ -2144,7 +2144,7 @@ bool Task::bPopParam(Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! bGuardParam(CN_PTRVAL) && ! m_xParamStack.bPeekZero() )
     return false;
   
   PtrVal xPtrVal1;
@@ -8809,21 +8809,42 @@ ENTRY("vTaskSeitfFetch");
 /*----------------------------------------------------------------------------*/
 /* task.seitf! -- store SEitf on param stack into task on param stack         */
 /*----------------------------------------------------------------------------*/
+//void Task::vTaskSeitfStore(NNP_Task nnpTask)
+//{
+//ENTRY("vTaskSeitfStore");
+//  
+//  Task* pThatTask;
+//  
+//  if ( ! nnpTask->bPopParam(pThatTask) )
+//    THROW_INVALID_PARAM("task.seitf!");
+//  
+//  PtrVal xPtrSEitf;
+//  
+//  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+//    THROW_INVALID_PARAM("task.seitf!");
+//  
+//  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
+//  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
+//  
+//  pThatTask->m_pSEitf = pSEitf;
+//  
+//  EXIT();
+//}
 void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
-ENTRY("vTaskSeitfStore");
+  ENTRY("vTaskSeitfStore");
   
   Task* pThatTask;
   
   if ( ! nnpTask->bPopParam(pThatTask) )
     THROW_INVALID_PARAM("task.seitf!");
   
-  PtrVal xPtrSEitf;
+  Object* pPtrSEitf;
   
-  if ( ! nnpTask->bPopParam(xPtrSEitf) )
+  if ( ! nnpTask->bPopParam(pPtrSEitf) )
     THROW_INVALID_PARAM("task.seitf!");
   
-  SEitf* pSEitf = static_cast<SEitf*>(xPtrSEitf.pPtr());
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;

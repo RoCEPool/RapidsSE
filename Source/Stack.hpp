@@ -46,6 +46,8 @@ namespace Structures
     void   vReset(void);
     i8     iValues(void);
     
+    bool   bPeekZero(void);
+    
   private:
     Value* pGetValue(i8 iValue);
     void   vPushBy(i8 iBytes);
