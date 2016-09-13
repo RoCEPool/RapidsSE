@@ -9824,12 +9824,12 @@ void Task::vTimerDelete(NNP_Task nnpTask)
 {
 ENTRY("vTimeDelete");
   
-  PtrVal xPtrSession;
+  PtrVal xPtrTimer;
   
-  if ( ! nnpTask->bPopParam(xPtrSession) )
+  if ( ! nnpTask->bPopParam(xPtrTimer) )
     THROW_INVALID_PARAM("timer.delete");
   
-  Timer* pTimer = static_cast<Timer*>(xPtrSession.pPtr());
+  Timer* pTimer = static_cast<Timer*>(xPtrTimer.pPtr());
   ASSERT(CN_TIMER == pTimer->eClass());
   
   Object* pTimerObject = reinterpret_cast<Object*>(pTimer);
@@ -10074,11 +10074,11 @@ void Task::vTxCollectionDump(NNP_Task nnpTask)
 {
 ENTRY("vTxCollectionDump");
   
-  PtrVal xPtrTxCollection;
-  if ( ! nnpTask->bPopParam(xPtrTxCollection) )
+  Object* pPtrTxCollection;
+  if ( ! nnpTask->bPopParam(pPtrTxCollection) )
     THROW_INVALID_PARAM("txCollection.dump");
   
-  TxCollection* pTxCollection = reinterpret_cast<TxCollection*>(xPtrTxCollection.pPtr());
+  TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
   pTxCollection->vDump("gpTxCollection:");
@@ -10093,11 +10093,11 @@ void Task::vTxCollectionInit(NNP_Task nnpTask)
 {
 ENTRY("vTxCollectionInit");
   
-  PtrVal xPtrTxCollection;
-  if ( ! nnpTask->bPopParam(xPtrTxCollection) )
+  Object* pPtrTxCollection;
+  if ( ! nnpTask->bPopParam(pPtrTxCollection) )
     THROW_INVALID_PARAM("txCollection.init");
   
-  TxCollection* pTxCollection = reinterpret_cast<TxCollection*>(xPtrTxCollection.pPtr());
+  TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
   new(pTxCollection) TxCollection;

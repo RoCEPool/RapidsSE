@@ -9,6 +9,16 @@ extern TxCollection*    gpTxCollection;
 extern TxMap*           gpTxMap;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+TxCollection* Transactions::_pTxCollection(void* pAddr)
+{
+  TxCollection* pTxCollection = reinterpret_cast<TxCollection*>(pAddr);
+  
+  return pTxCollection;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)

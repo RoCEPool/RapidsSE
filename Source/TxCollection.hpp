@@ -28,6 +28,8 @@ namespace Transactions
     
     Footer* pFooter(void);
   };
+  
+  TxCollection* _pTxCollection(void* pAddr);
 }
 
 /*============================================================================*/
