@@ -1873,7 +1873,13 @@ void Task::vLoop(void)
       
       ps = String::sLast(m_sFile.a());
       String::bBackward(&ps,m_sFile.a(),'/');
-      String::vCopy(wFileName,ps+1);
+      bool bBackSlash = String::bBackward(&ps,m_sFile.a(),'/');
+      if (bBackSlash) {
+        String::vCopy(wFileName,ps+1);
+      }
+      else {
+        String::vCopy(wFileName, m_sFile.a());
+      }
       vError("[%s] %s : line %lld in %s\n",
              m_sName.a(),
              m_sException.a(),
