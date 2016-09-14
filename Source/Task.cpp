@@ -2192,25 +2192,6 @@ bool Task::bPopParamInt(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* pop cell from return stack                                                 */
-/*----------------------------------------------------------------------------*/
-bool Task::bPopReturn(Cell*& pCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  if ( ! m_xReturnStack.bGuardParam(CN_PTRVAL) )
-    return false;
-  
-  PtrVal xPtrIP;
-  
-  m_xReturnStack.vPop(&xPtrIP);
-  
-  pCell = reinterpret_cast<Cell*>(xPtrIP.pPtr());
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop i8 from return stack                                                   */
 /*----------------------------------------------------------------------------*/
 bool Task::bPopReturn(i8& iArg1)
@@ -2404,9 +2385,10 @@ ENTRY("vAgain");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pBeginLoc;
-  if ( ! nnpTask->bPopReturn(pBeginLoc) )
+  void* pBeginLocVoid;
+  if ( ! nnpTask->bPopReturn(pBeginLocVoid) )
     THROW_INVALID_RETURN("again");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
   
   pCurrentWord->vEncode("jump",pBeginLoc);
   
@@ -2846,9 +2828,10 @@ ENTRY("vElse");
 
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pIfJumpArg;
-  if ( ! nnpTask->bPopReturn(pIfJumpArg) )
+  void* pIfJumpArgVoid;
+  if ( ! nnpTask->bPopReturn(pIfJumpArgVoid) )
     THROW_INVALID_RETURN("else");
+  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
   //-------------------------------------------------------------------------
   
@@ -3110,8 +3093,10 @@ ENTRY("vExecute");
     
     pFUN pFunc = pWord->pFunc();
     if (!pFunc || Task::vNop == pFunc) {
-      if ( ! nnpTask->bPopReturn(nnpTask->m_pCell) )
+      void* pCellVoid;
+      if ( ! nnpTask->bPopReturn(pCellVoid) )
         THROW_INVALID_RETURN("execute");
+      nnpTask->m_pCell = _pCell(pCellVoid);
     }
     else {
       // does> inherited code
@@ -3135,8 +3120,11 @@ ENTRY("vExit");
   
   //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
   
-  if ( ! nnpTask->bPopReturn(nnpTask->m_pCell) )
+  void* pCellVoid;
+  if ( ! nnpTask->bPopReturn(pCellVoid) )
     THROW_INVALID_RETURN("exit");
+  
+  nnpTask->m_pCell = _pCell(pCellVoid);
   
   EXIT();
 }
@@ -3637,9 +3625,10 @@ ENTRY("vLoop");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pDoLoc;
-  if ( ! nnpTask->bPopReturn(pDoLoc) )
+  void* pDoLocVoid;
+  if ( ! nnpTask->bPopReturn(pDoLocVoid) )
     THROW_INVALID_RETURN("loop");
+  Cell* pDoLoc = _pCell(pDoLocVoid);
   
   pCurrentWord->vEncode("Loop_RT");
   
@@ -3683,10 +3672,11 @@ ENTRY("vLoopPlus");
 
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pDoLoc;
-  if ( ! nnpTask->bPopReturn(pDoLoc) )
+  void* pDoLocVoid;
+  if ( ! nnpTask->bPopReturn(pDoLocVoid) )
     THROW_INVALID_RETURN("+loop");
-    
+  Cell* pDoLoc = _pCell(pDoLocVoid);
+  
   pCurrentWord->vEncode("+Loop_RT");
   
   pCurrentWord->vEncode("jump",pDoLoc);
@@ -3841,13 +3831,15 @@ ENTRY("vNext");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pJumpFalseArg;
-  if ( ! nnpTask->bPopReturn(pJumpFalseArg) )
+  void* pJumpFalseArgVoid;
+  if ( ! nnpTask->bPopReturn(pJumpFalseArgVoid) )
     THROW_INVALID_RETURN("next");
+  Cell* pJumpFalseArg = _pCell(pJumpFalseArgVoid);
   
-  Cell* pIterateLoc;
-  if ( ! nnpTask->bPopReturn(pIterateLoc) )
+  void* pIterateLocVoid;
+  if ( ! nnpTask->bPopReturn(pIterateLocVoid) )
     THROW_INVALID_RETURN("next");
+  Cell* pIterateLoc = _pCell(pIterateLocVoid);
   
   //----------------------------------------------------------------------------
   
@@ -4169,15 +4161,17 @@ ENTRY("vRepeat");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
 
-  Cell* pWhileJumpArg;
-  if ( ! nnpTask->bPopReturn(pWhileJumpArg) )
+  void* pWhileJumpArgVoid;
+  if ( ! nnpTask->bPopReturn(pWhileJumpArgVoid) )
     THROW_INVALID_RETURN("repeat");
+  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
   
   //-------------------------------------------------------------------------
 
-  Cell* pBeginLoc;
-  if ( ! nnpTask->bPopReturn(pBeginLoc) )
+  void* pBeginLocVoid;
+  if ( ! nnpTask->bPopReturn(pBeginLocVoid) )
     THROW_INVALID_RETURN("repeat");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
 
   pCurrentWord->vEncode("jump",pBeginLoc);
   
@@ -4702,9 +4696,10 @@ ENTRY("vThen");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pIfJumpArg;
-  if ( ! nnpTask->bPopReturn(pIfJumpArg) )
+  void* pIfJumpArgVoid;
+  if ( ! nnpTask->bPopReturn(pIfJumpArgVoid) )
     THROW_INVALID_RETURN("then");
+  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
   pIfJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
   
@@ -5045,9 +5040,10 @@ ENTRY("vUntil");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pBeginLoc;
-  if ( ! nnpTask->bPopReturn(pBeginLoc) )
+  void* pBeginLocVoid;
+  if ( ! nnpTask->bPopReturn(pBeginLocVoid) )
     THROW_INVALID_RETURN("until");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
   
   //-------------------------------------------------------------------------
   

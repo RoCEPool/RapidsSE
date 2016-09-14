@@ -231,7 +231,6 @@ namespace Tasks
     bool bPopParam(void*& pVoid);
     bool bPopParamInt(i8& iArg1);
     
-    bool bPopReturn(Cell*& pCell);
     bool bPopReturn(i8& iArg1);
     bool bPopReturn(i8& iArg1, i8& iArg2);
     bool bPopReturn(ValWsp& xValOpaque);
