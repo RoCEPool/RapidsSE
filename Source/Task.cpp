@@ -1626,9 +1626,7 @@ void Task::vRoutineCall(Word* pWord)
     
   m_xReturnStack.vPush((void*)m_pCell);
     
-  BodyField* pBody = pWord->pBodyField();
-    
-  m_pCell = pBody->m_pCell;
+  m_pCell = pWord->pArg();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2542,8 +2540,7 @@ ENTRY("vExecute");
     }
     else {
       // does> inherited code
-      BodyField* pBody = pWord->pBodyField();
-      nnpTask->m_pCell = pBody->m_pCell;
+      nnpTask->m_pCell = pWord->pArg();
     }
   }
   else {
@@ -3931,8 +3928,7 @@ ENTRY("vSee");
   vTrace("See: %s\n",pWord->sName().a());
   
   
-  BodyField* pBody = pWord->pBodyField();
-  Cell* pCell = pBody->m_pCell;
+  Cell* pCell = pWord->pArg();
   
   s8K sWorkspace;
   

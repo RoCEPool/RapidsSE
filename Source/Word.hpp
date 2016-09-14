@@ -38,8 +38,8 @@ namespace Dictionaries
     bool        m_bImmediate;  // immediate execution during compile?
     i8          m_iDataBytes;  // number of data bytes
     Word*       m_pPrevWord;   // offset of previous word
-    StepPtr     m_pStep;       // step
-    BodyField   m_xBody;       // body pointer
+    StepPtr     m_pStep;       // task step
+    Cell*       m_pArg;        // task step argument
     // ..data..
     
    public:
@@ -67,7 +67,7 @@ namespace Dictionaries
 
     Dictionary* pDictionary(void);
     
-    BodyField* pBodyField(void);
+    Cell* pArg(void);
     
     StepPtr  pStep(void);
     void  vStep(StepPtr pStep);

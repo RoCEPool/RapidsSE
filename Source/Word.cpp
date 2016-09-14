@@ -63,7 +63,7 @@ Word::Word(const char* sName)
   pFooter()->vSetFooter();
   
   m_pStep = &Tasks::Task::vEnter;
-  m_xBody.m_pCell = pFirstCell();
+  m_pArg  = pFirstCell();
   
   Memory::vCheckInitialised(this,sizeof(Word));
   
@@ -85,7 +85,7 @@ void Word::vAddr(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_xBody.m_pCell = pCell;
+  m_pArg = pCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,13 +221,13 @@ StepPtr* Word::ppStep(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pointer to code field                                                  */
+/* get step argument                                                          */
 /*----------------------------------------------------------------------------*/
-BodyField* Word::pBodyField(void)
+Cell* Word::pArg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_xBody;
+  return m_pArg;
 }
 
 /*----------------------------------------------------------------------------*/
