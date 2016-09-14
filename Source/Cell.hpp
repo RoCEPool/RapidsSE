@@ -14,6 +14,8 @@ namespace Dictionaries
   {
   public:
     union {
+      StepPtr    m_pStep;
+      StepPtr*   m_pCode;
       CodeField* m_pCodeField; // pointer to code field
       Cell*      m_pJumpLocn;  // pointer to jump location
     };
