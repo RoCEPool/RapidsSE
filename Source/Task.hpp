@@ -125,6 +125,7 @@ namespace Tasks
     
     union {
       Cell*       m_pCell;
+      StepPtr     m_pStep;
       CodeField*  m_pCodeField;
       Value*      m_pValue;
       Object*     m_pObject;
@@ -247,7 +248,8 @@ namespace Tasks
     static void vEncodeEmb(NNP_Task nnpTask);      
     static void vEncodeFun(NNP_Task nnpTask);      
     static void vEncodeVal(NNP_Task nnpTask);      
-    static void vEnter(NNP_Task nnpTask);          
+    static void vEnterDoes(NNP_Task nnpTask);
+    static void vEnterRoutine(NNP_Task nnpTask);
     static void vEnterCompiler(NNP_Task nnpTask);
     static void vEnterInterpreter(NNP_Task nnpTask);
     static void vEnvGet(NNP_Task nnpTask);

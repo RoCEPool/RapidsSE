@@ -556,7 +556,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("encodeFun",       &vEncodeFun,        false);
   vAddPrimitive("encodeVal",       &vEncodeVal,        false);
   vAddPrimitive("env@",            &vEnvGet,           false);
-  vAddPrimitive("enter",           &vEnter,            false);
+  vAddPrimitive("enterDoes",       &vEnterDoes,        false);
+  vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
   vAddPrimitive("]",               &vEnterCompiler,    false);
   vAddPrimitive("[",               &vEnterInterpreter, true );
   vAddPrimitive("==",              &vEqual,            false);
@@ -2319,7 +2320,7 @@ ENTRY("vEncodeDoes");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vStep(&Task::vEnter);
+  pCurrentWord->vStep(&Task::vEnterDoes);
   pCurrentWord->vAddr(nnpTask->m_pCell+1);
   
   EXIT();
@@ -2387,34 +2388,64 @@ ENTRY("vEncodeVal");
 }
 
 /*----------------------------------------------------------------------------*/
-/* enter -- enter this routine                                                */
+/* enterDoes -- enter this routine                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vEnter(NNP_Task nnpTask)
+void Task::vEnterDoes(NNP_Task nnpTask)
 {
-ENTRY("vEnter");
+  ENTRY("vEnterDoes");
   
   if (nnpTask->m_bTracing)
     vDebug();
   
   nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
   
-  Cell* pPrevCell = nnpTask->m_pCell - 1;
+  Cell* pPrevCell  = nnpTask->m_pCell - 1;
   CodeField* pCode = pPrevCell->m_pCodeField;
   
-  //Cell* pCell = reinterpret_cast<Cell*>(pcAdd(pCode,2*sizeof(Cell*)));
-
   BodyField* pBody = reinterpret_cast<BodyField*>(pcAdd(pCode,1*sizeof(Cell*)));
+  
+  //  ASSERT((i8)nnpTask->m_pCell == (i8)pBody);
+  
+  
+  Word* pWord = reinterpret_cast<Word*>(pcAdd(pBody, -(sizeof(Word)-sizeof(BodyField)) ));
+  
+  ASSERT(WT_OBJECT == pWord->eWordType());
+  
+  if (WT_OBJECT == pWord->eWordType()) {
+    Cell* pCell = pWord->pFirstCell();
+    nnpTask->m_xParamStack.vPush(pCell);
+  }
+  
+  nnpTask->m_pCell = pBody->m_pCell;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enterRoutine -- enter this routine                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vEnterRoutine(NNP_Task nnpTask)
+{
+ENTRY("vEnterRoutine");
+  
+  if (nnpTask->m_bTracing)
+    vDebug();
+  
+  nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
+  
+  Cell* pPrevCell  = nnpTask->m_pCell - 1;
+  CodeField* pCode = pPrevCell->m_pCodeField;
+  
+  BodyField* pBody = reinterpret_cast<BodyField*>(pcAdd(pCode,1*sizeof(Cell*)));
+  
+//  ASSERT((i8)nnpTask->m_pCell == (i8)pBody);
+  
 
   Word* pWord = reinterpret_cast<Word*>(pcAdd(pBody, -(sizeof(Word)-sizeof(BodyField)) ));
   if (WT_OBJECT == pWord->eWordType()) {
     Cell* pCell = pWord->pFirstCell();
     nnpTask->m_xParamStack.vPush(pCell);
-
-    //nnpTask->m_xParamStack.vPush(pWord->pFirstCell());
   }
-
-  //ASSERT(pBody->m_pCell == pCell);
-  //nnpTask->m_pCell = pCell;
   
   nnpTask->m_pCell = pBody->m_pCell;
   

@@ -62,7 +62,7 @@ Word::Word(const char* sName)
   
   pFooter()->vSetFooter();
   
-  m_pStep = &Tasks::Task::vEnter;
+  m_pStep = &Tasks::Task::vEnterRoutine;
   m_pArg  = pFirstCell();
   
   Memory::vCheckInitialised(this,sizeof(Word));
