@@ -175,12 +175,12 @@ Word* Dictionary::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given function                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pFindFunc(Tasks::pFUN pFunc)
+Word* Dictionary::pFindStep(StepPtr pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && pFunc == pWord->pFunc())
+    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pStep())
       return pWord;
   
   return nullptr;

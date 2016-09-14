@@ -10,11 +10,12 @@ namespace Tasks
 {
   typedef NNP<Task,CN_TASK> NNP_Task;
   
-  typedef void (*pFUN)(NNP_Task);
 }
 
 namespace Dictionaries
 {
+  typedef void (*StepPtr)(Tasks::NNP_Task);
+
   class CodeField
   {
   public:

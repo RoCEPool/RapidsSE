@@ -248,7 +248,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 /* add primitive word into dictionary                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
+void Task::vAddPrimitive(const char* pName, StepPtr pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -257,7 +257,7 @@ void Task::vAddPrimitive(const char* pName, pFUN pFunc, bool bImmediate)
   Word* pWord = new(pDic) Word(pName);
   
   pWord->vWordType(WT_PRIMITIVE);
-  pWord->vFunc(pFunc);
+  pWord->vStep(pStep);
   pWord->vImmediate(bImmediate);
 }
 
@@ -1169,7 +1169,7 @@ Word* Task::pCompileColon(s& sDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pNewWord;
-  pFUN  pFunc;
+  StepPtr  pStep;
   Word* pFoundWord;
   ValWsp xValWsp;
   
@@ -1204,15 +1204,15 @@ Word* Task::pCompileColon(s& sDefinition)
       case TK_NAME:
         pFoundWord = pFindWord(m_sToken);
         if (WT_PRIMITIVE == pFoundWord->eWordType()) {
-          pFunc = pFoundWord->pFunc();
+          pStep = pFoundWord->pStep();
           if (pFoundWord->bImmediate())
-            (*pFunc)(this);
+            (*pStep)(this);
           else {
-            pNewWord->vAppend(pFoundWord->pCodeField());
+            pNewWord->vAppend(pFoundWord->ppStep());
           }
         }
         else if (WT_ROUTINE == pFoundWord->eWordType()) {
-          pNewWord->vEncode(pFoundWord->pCodeField());
+          pNewWord->vEncode(pFoundWord->ppStep());
         }
         else {
           THROW("Invalid eWordType %lld",pFoundWord->eWordType());
@@ -1711,14 +1711,14 @@ void Task::vLoop(void)
   
   while (TS_RUNNING == m_eState) {
     
-    pFUN pFunc = m_pCell->m_pCodeField->m_pFunc;
+    StepPtr pStep = m_pCell->m_pCodeField->m_pFunc;
     
-    //vTrace("pFunc %p\n",pFunc);
+    //vTrace("pStep %p\n",pStep);
     
     m_pCell++;
     
     try {
-      (pFunc)(this);
+      (pStep)(this);
     }
     
     catch (i8 iException) {
@@ -2020,8 +2020,8 @@ ENTRY("vCodeAssign");
   
   Word* pThisWord = nnpTask->pCurrentWord();
   
-  ASSERT(pThatWord->pFunc() == pThatWord->pFunc());
-  pThisWord->vFunc(pThatWord->pFunc());
+  ASSERT(pThatWord->pStep() == pThatWord->pStep());
+  pThisWord->vStep(pThatWord->pStep());
   
   EXIT();
 }
@@ -2305,7 +2305,7 @@ ENTRY("vEncodeCall");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  CodeField* pCode = pCalledWord->pCodeField();
+  StepPtr* pCode = pCalledWord->ppStep();
   
   pCurrentWord->vEncode(pCode);
   
@@ -2321,7 +2321,7 @@ ENTRY("vEncodeDoes");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vFunc(&Task::vEnter);
+  pCurrentWord->vStep(&Task::vEnter);
   pCurrentWord->vAddr(nnpTask->m_pCell+1);
   
   EXIT();
@@ -2363,7 +2363,7 @@ ENTRY("vEncodeFun");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  CodeField* pCode = pCalledWord->pCodeField();
+  StepPtr* pCode = pCalledWord->ppStep();
   
   pCurrentWord->vAppend(pCode);
   
@@ -2524,8 +2524,8 @@ ENTRY("vExecute");
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
-    pFUN pFunc = pWord->pFunc();
-    (pFunc)(nnpTask);
+    StepPtr pStep = pWord->pStep();
+    (pStep)(nnpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
     nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
@@ -2533,8 +2533,8 @@ ENTRY("vExecute");
     Cell* pCell = pWord->pFirstCell();
     nnpTask->m_xParamStack.vPush(pCell);
     
-    pFUN pFunc = pWord->pFunc();
-    if (!pFunc || Task::vNop == pFunc) {
+    StepPtr pStep = pWord->pStep();
+    if (!pStep || Task::vNop == pStep) {
       void* pCellVoid;
       if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
         THROW_INVALID_RETURN("execute");
@@ -3387,7 +3387,7 @@ ENTRY("vObjectMark");
   
   //pCurrentWord->vImmediate(true);
   pCurrentWord->vWordType(WT_OBJECT);
-  pCurrentWord->vFunc(&vEncodeEmb);
+  pCurrentWord->vStep(&vEncodeEmb);
   
   EXIT();
 }
@@ -3938,7 +3938,7 @@ ENTRY("vSee");
   
   while ((char*)pCell < pcAdd(pWord->pBodyArea(),pWord->iDataBytes())) {
  
-    Word* pFuncWord = nnpTask->m_xDictionaryStack.pFindFunc(pCell->m_pCodeField->m_pFunc);
+    Word* pFuncWord = nnpTask->m_xDictionaryStack.pFindStep(pCell->m_pCodeField->m_pFunc);
 
     vTrace("%p: %s",pCell,pFuncWord->sName().a());
   

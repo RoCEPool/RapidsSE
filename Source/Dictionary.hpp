@@ -35,7 +35,7 @@ namespace Dictionaries
     Word* pAllocWord(eCN eClassNo);
     Word* pCurrentWord(void);
     Word* pFind(const char* aName);
-    Word* pFindFunc(Tasks::pFUN pFunc);
+    Word* pFindStep(StepPtr pStep);
     bool  bForget(s& sName);
     void  vFreeWord(Word* pWord);
     bool  bFrozen(void);

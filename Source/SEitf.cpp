@@ -186,7 +186,7 @@ void SEitf::vInit(void)
   Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
-  pRspQueWord->vFunc(nullptr);
+  pRspQueWord->vStep(nullptr);
   pRspQueWord->pAllot(sizeof(Queue));
   
   m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pBodyArea());

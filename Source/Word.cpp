@@ -62,7 +62,7 @@ Word::Word(const char* sName)
   
   pFooter()->vSetFooter();
   
-  m_xCode.m_pFunc = &Tasks::Task::vEnter;
+  m_pStep = &Tasks::Task::vEnter;
   m_xBody.m_pCell = pFirstCell();
   
   Memory::vCheckInitialised(this,sizeof(Word));
@@ -159,31 +159,6 @@ void* Word::pAppend(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append code                                                                */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(CodeField* pCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  void* pAddress = pAppend(pCode);
-  ASSERT(pAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append code                                                                */
-/*----------------------------------------------------------------------------*/
-void* Word::pAppend(CodeField* pCode)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Cell* pAllottedCell = (Cell*)pAllot(sizeof(pCode));
-  
-  pAllottedCell->m_pCodeField = pCode;
-  
-  return pAllottedCell;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append value                                                               */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(Value* pValue)
@@ -213,32 +188,7 @@ void* Word::pAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* append pointer                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(pFUN pFunc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  void* pAddress = pAppend(pFunc);
-  ASSERT(pAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append pointer                                                             */
-/*----------------------------------------------------------------------------*/
-void* Word::pAppend(pFUN pFunc)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  char* pAddress = pAllot(sizeof(pFunc));
-  
-  Memory::vCopy(pAddress,&pFunc,sizeof(pFunc));
-  
-  return pAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append pointer                                                             */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(pFUN* ppFunc)
+void Word::vAppend(StepPtr* ppFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -249,7 +199,7 @@ void Word::vAppend(pFUN* ppFunc)
 /*----------------------------------------------------------------------------*/
 /* append pointer                                                             */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(pFUN* ppFunc)
+void* Word::pAppend(StepPtr* ppFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -261,13 +211,13 @@ void* Word::pAppend(pFUN* ppFunc)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pointer to code field                                                  */
+/* get address of step pointer                                                */
 /*----------------------------------------------------------------------------*/
-CodeField* Word::pCodeField(void)
+StepPtr* Word::ppStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_xCode;
+  return &m_pStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -291,23 +241,23 @@ Dictionary* Word::pDictionary(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get func ptr                                                               */
+/* get step ptr                                                               */
 /*----------------------------------------------------------------------------*/
-pFUN Word::pFunc(void)
+StepPtr Word::pStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_xCode.m_pFunc;
+  return m_pStep;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set func pointer                                                           */
+/* set step pointer                                                           */
 /*----------------------------------------------------------------------------*/
-void Word::vFunc(pFUN pFunc)
+void Word::vStep(StepPtr pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_xCode.m_pFunc = pFunc;
+  m_pStep = pStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,19 +311,18 @@ void Word::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  s32 sFuncName;
+  Word* pStepWord = gpMainDic->pFindStep(m_pStep);
   
-  Word* pFuncWord = gpMainDic->pFindFunc(m_xCode.m_pFunc);
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
-         "Func %p %s ..Data.. %p\n",
+         "Step %p %s ..Data.. %p\n",
          this,
          m_sName.a(),
          pWT[m_eWordType],
          m_pKind->m_sName.a(),
          m_bImmediate,
          m_iDataBytes,
-         m_xCode.m_pFunc,
-         pFuncWord ? pFuncWord->aName() : "<not-found>",
+         m_pStep,
+         pStepWord ? pStepWord->aName() : "<not-found>",
          pFirstCell()
          );
   }
@@ -385,17 +334,15 @@ void Word::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  s32 sFuncName;
-  
   vTrace("%sWord %p: %s %s %s DataBytes %lld "
-         "Func %p ..Data.. %p\n",
+         "Step %p ..Data.. %p\n",
          pTab,
          this,
          m_sName.a(),
          pWT[m_eWordType],
          m_bImmediate ? "Immediate" : "Not Immediate",
          m_iDataBytes,
-         m_xCode.m_pFunc,
+         m_pStep,
          pFirstCell()
          );
 }
@@ -409,7 +356,7 @@ void Word::vEncode(const char* aWord)
   
   Word* pCalledWord = gpMainDic->pFind(aWord);
   
-  vAppend(pCalledWord->pCodeField());
+  vAppend(pCalledWord->ppStep());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -428,14 +375,14 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, CodeField* pCode)
+void Word::vEncode(const char* aWord, StepPtr* pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWord);
   
   // needs to be corrected
-  vAppend(pCode);
+  vAppend(pStep);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -471,12 +418,12 @@ void Word::vEncode(const char* aWord, Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(CodeField* pCode)
+void Word::vEncode(StepPtr* pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   // needs to be corrected
-  vAppend(pCode);
+  vAppend(pStep);
 }
 
 /*----------------------------------------------------------------------------*/
