@@ -85,6 +85,24 @@ SePrompt::~SePrompt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump seprompt                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_SEPROMPT);
+  ASSERT(pObject->eClass() == CN_SEPROMPT);
+  
+  SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
+  
+  vTrace("%sSePrompt %p:\n", pTab, pSePrompt);
+  vTrace("%s  partition %lld\n", pTab, pSePrompt->m_iPartition);
+  vTrace("%s  seitf %p\n", pTab, pSePrompt->m_pSEitf);
+  vTrace("%s  continue %s\n", pTab, pSePrompt->m_bContinue ? "true" : "false");
+  vTrace("%s  prompt '%s'\n", pTab, pSePrompt->m_sResponse.a());
+  vTrace("%s  response '%s'\n\n", pTab, pSePrompt->m_sResponse.a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* prompt for commands and process them                                       */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vLoop(void)

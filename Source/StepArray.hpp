@@ -26,6 +26,8 @@ namespace Tasks
     StepArray(void);
     ~StepArray(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+
     StepAccum* pAllocAccum(const char* pFnName);
     void vList(void);
     void vReset(void);

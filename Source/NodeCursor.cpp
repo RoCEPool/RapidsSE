@@ -71,6 +71,19 @@ NodeCursor::~NodeCursor(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump node cursor                                                           */
+/*----------------------------------------------------------------------------*/
+void NodeCursor::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_NODECURSOR);
+  ASSERT(pObject->eClass() == CN_NODECURSOR);
+  
+  NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pObject);
+  
+  vTrace("%sNodeCursor %p:\n", pTab, pNodeCursor);
+}
+
+/*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 void NodeCursor::vInit(void)

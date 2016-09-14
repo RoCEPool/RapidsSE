@@ -113,18 +113,30 @@ i8 Queue::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump the queue                                                             */
 /*----------------------------------------------------------------------------*/
-void Queue::vDump(void)
+void Queue::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
-  vTrace("Queue: %p Count %lld TopBuffer %p EndBuffer%p\n",
-         this,
-         m_iCount,
-         m_pTopBuffer,
-         m_pEndBuffer);
+  vTrace("%sQueue: %p\n", pTab, this);
+  vTrace("%s  Count %lld\n", pTab, m_iCount);
+  vTrace("%s  TopBuffer %p\n", pTab, m_pTopBuffer);
+  vTrace("%s  EndBuffer %p\n", pTab, m_pEndBuffer);
   
   for (QueueBuffer* pQbuffer = m_pTopBuffer; pQbuffer; pQbuffer = pQbuffer->pNext())
-    pQbuffer->vDump();
+    pQbuffer->vDump(pTab);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Queue::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_QUEUE);
+  ASSERT(pObject->eClass() == CN_QUEUE);
+  
+  Queue* pQueue = reinterpret_cast<Queue*>(pObject);
+  
+  pQueue->vDump(pTab);
 }
 
 /*----------------------------------------------------------------------------*/

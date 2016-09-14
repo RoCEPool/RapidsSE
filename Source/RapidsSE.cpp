@@ -63,13 +63,13 @@ pDUMPFUN *gpDump[]
   /* 15 */ &RapidsSE::vDumpInvalid,    // CN_BUFFERPOOLANALYZER
 
   /* 16 */ &Dictionary::vDump,         // CN_DICTIONARY
-  /* 17 */ &RapidsSE::vDumpDummy,      // CN_DICTIONARYSTACK
+  /* 17 */ &DictionaryStack::vDump,    // CN_DICTIONARYSTACK
   /* 18 */ &RapidsSE::vDumpInvalid,    // CN_DIR
   
   /* 19 */ &RapidsSE::vDumpInvalid,    // CN_FILE
-  /* 20 */ &RapidsSE::vDumpUndefined,  // CN_FREECHUNK
+  /* 20 */ &RapidsSE::vDumpDummy,      // CN_FREECHUNK
   
-  /* 21 */ &RapidsSE::vDumpUndefined,  // CN_GRID
+  /* 21 */ &Grid::vDump,               // CN_GRID
   
   /* 22 */ &HeapBuffer::vDump,         // CN_HEAPBUFFER
   
@@ -81,7 +81,7 @@ pDUMPFUN *gpDump[]
   /* 26 */ &Heap::vDump,               // CN_MEDIUMHEAP
   
   /* 27 */ &Node::vDump,               // CN_NODE
-  /* 28 */ &RapidsSE::vDumpUndefined,  // CN_NODECURSOR
+  /* 28 */ &NodeCursor::vDump,         // CN_NODECURSOR
   
   /* 29 */ &RapidsSE::vDumpDummy,      // CN_PARSER
   /* 30 */ &Partition::vDump,          // CN_PARTITION
@@ -89,8 +89,8 @@ pDUMPFUN *gpDump[]
   /* 32 */ &RapidsSE::vDumpUndefined,  // CN_PROXY
   /* 33 */ &RapidsSE::vDumpUndefined,  // CN_PROXYSET
   
-  /* 34 */ &RapidsSE::vDumpUndefined,  // CN_QUEUE
-  /* 35 */ &RapidsSE::vDumpUndefined,  // CN_QUEUEBUFFER
+  /* 34 */ &Queue::vDump,              // CN_QUEUE
+  /* 35 */ &QueueBuffer::vDump,        // CN_QUEUEBUFFER
   
   /* 36 */ &RapidsSE::vDumpUndefined,  // CN_RING
   /* 37 */ &RapidsSE::vDumpUndefined,  // CN_ROW
@@ -101,10 +101,10 @@ pDUMPFUN *gpDump[]
   
   /* 41 */ &RapidsSE::vDumpUndefined,  // CN_SCANBUFFER
   /* 42 */ &RapidsSE::vDumpUndefined,  // CN_SEHISTORY
-  /* 43 */ &RapidsSE::vDumpUndefined,  // CN_SEITF
+  /* 43 */ &SEitf::vDump,              // CN_SEITF
   /* 44 */ &RapidsSE::vDumpUndefined,  // CN_SEITFCURSOR
   /* 45 */ &RapidsSE::vDumpUndefined,  // CN_SEITFLIST
-  /* 46 */ &RapidsSE::vDumpUndefined,  // CN_SEPROMPT
+  /* 46 */ &RapidsSE::vDumpDummy,      // CN_SEPROMPT
   /* 47 */ &RapidsSE::vDumpUndefined,  // CN_SINCE
   /* 48 */ &RapidsSE::vDumpUndefined,  // CN_SKIPCURSOR
   /* 49 */ &RapidsSE::vDumpUndefined,  // CN_SKIPLIST
@@ -113,7 +113,7 @@ pDUMPFUN *gpDump[]
   /* 52 */ &RapidsSE::vDumpUndefined,  // CN_SOCKET
   /* 53 */ &RapidsSE::vDumpUndefined,  // CN_STACK
   /* 54 */ &RapidsSE::vDumpInvalid,    // CN_STEPACCUM
-  /* 55 */ &RapidsSE::vDumpUndefined,  // CN_STEPARRAY
+  /* 55 */ &StepArray::vDump,          // CN_STEPARRAY
   /* 56 */ &RapidsSE::vDumpInvalid,    // CN_SYSCALL
   
   /* 57 */ &Table::vDump,              // CN_TABLE

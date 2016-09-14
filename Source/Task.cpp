@@ -6702,7 +6702,7 @@ ENTRY("vQueueDump");
   
   Queue* pQueue = static_cast<Queue*>(pObject);
   
-  pQueue->vDump();
+  pQueue->vDump(pSingleTab());
   
   EXIT();
 }

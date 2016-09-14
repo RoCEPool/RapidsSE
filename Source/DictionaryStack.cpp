@@ -89,6 +89,26 @@ void DictionaryStack::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void DictionaryStack::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_DICTIONARYSTACK);
+  ASSERT(pObject->eClass() == CN_DICTIONARYSTACK);
+  
+  DictionaryStack* pDictionaryStack = reinterpret_cast<DictionaryStack*>(pObject);
+  
+  vTrace("%sDictionary Stack %p:\n", pTab, pDictionaryStack);
+  vTrace("%s  Top %p:\n", pTab, pDictionaryStack->m_iTop);
+  for (i8 i = pDictionaryStack->m_iTop; i >= 0; i--)
+    vTrace("%s  Dic %p %lld %s\n",pTab, pDictionaryStack->m_pDictionary[i],i,
+           pDictionaryStack->m_pDictionary[i]->sName().a());
+  
+  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //  pWord->vDump();
+}
+
+/*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
 Word* DictionaryStack::pFind(s& sName)

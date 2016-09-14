@@ -39,6 +39,8 @@ public:
   SePrompt(i8 iPartition);
   ~SePrompt(void);
   
+  static void vDump(eCN eClass, Object* pObject, const char* pTab);
+  
   void vLoop(void);
   
 private:

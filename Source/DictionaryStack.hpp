@@ -27,6 +27,8 @@ namespace Dictionaries
     DictionaryStack(void);
     ~DictionaryStack(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+
     i8   iCount(void);
 
     void vDiscard(void);

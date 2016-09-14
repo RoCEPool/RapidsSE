@@ -151,6 +151,26 @@ void SEitf::vDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump seitf                                                                 */
+/*----------------------------------------------------------------------------*/
+void SEitf::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_SEITF);
+  ASSERT(pObject->eClass() == CN_SEITF);
+  
+  SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
+  
+  vTrace("%sSEitf %p:\n", pTab, pSEitf);
+  vTrace("%s  pid %lld\n", pTab, pSEitf->m_iPid);
+  vTrace("%s  pid %s\n", pTab, Process::bTestPid(pSEitf->m_iPid) ? "exists" : "non-existant");
+  vTrace("%s  partitions %lld\n", pTab, pSEitf->m_iPartitions);
+  vTrace("%s  partition  %lld\n", pTab, pSEitf->m_iPartition);
+  vTrace("%s  requestQ   %p\n", pTab, pSEitf->m_pRequestQueue);
+  vTrace("%s  responseQ  %p\n", pTab, pSEitf->m_pResponseQueue);
+  vTrace("%s  response   '%s'\n\n", pTab, pSEitf->m_sResponse.a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialise this seitf                                                      */
 /*----------------------------------------------------------------------------*/
 void SEitf::vInit(void)

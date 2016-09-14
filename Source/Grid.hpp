@@ -23,6 +23,8 @@ namespace GridModel
     Grid(void);
     ~Grid(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     void vInit(void);
     
     Footer* pFooter(void);

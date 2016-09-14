@@ -59,6 +59,8 @@ namespace Interface
     SEitf(i8 iPartition);
     ~SEitf(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     DictionaryStack* pDicStack(void);
     void   vPushDic(Dictionary* pDictionary);
     void   vPopDic(void);
