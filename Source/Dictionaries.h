@@ -16,7 +16,6 @@ namespace Dictionaries
   typedef void (*StepPtr)(Tasks::NNP_Task);
 }
 
-#include "BodyField.hpp"
 #include "Cell.hpp"
 #include "Dictionary.hpp"
 #include "DictionaryStack.hpp"
