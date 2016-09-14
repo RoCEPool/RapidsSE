@@ -467,9 +467,9 @@ bool String::bExtractArg(char** ps, char* pArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bExtractInw: extract an integer from substr                                */
+/* bExtractI8: extract an integer from substr                                 */
 /*----------------------------------------------------------------------------*/
-bool String::bExtractInw(char** ps, i8* pInw)
+bool String::bExtractI8(char** ps, i8* pInw)
 {
   char *s = *ps;
   
@@ -854,6 +854,18 @@ bool String::bIsDigit(const char c)
     return true;
   else
     return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* bIsNumeric: is the string numeric ?                                        */
+/*----------------------------------------------------------------------------*/
+bool String::bIsNumeric(char* ps)
+{
+  for ( ; *ps; (ps)++)
+    if (!isdigit(*ps))
+      return false;
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

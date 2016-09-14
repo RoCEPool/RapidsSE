@@ -47,7 +47,7 @@ namespace Common
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(const char* sArg, const char* sEnd);
     static bool  bExtractArg(char** ps, char* pPath);
-    static bool  bExtractInw(char** ps, i8* i);
+    static bool  bExtractI8(char** ps, i8* i);
     static bool  bExtractItem(char** ps, char* pItem);
     static bool  bExtractPath(char** ps, char* pPath);
     static bool  bExtractPort(char** ps, u2* pPort);
@@ -67,6 +67,7 @@ namespace Common
     static bool  bIsAlphaDigitUnder(const char c);
     static bool  bIsAlphaUnder(const char c);
     static bool  bIsDigit(const char c);
+    static bool  bIsNumeric(char* ps);
     static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);
    

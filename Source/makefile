@@ -1,10 +1,12 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -Wall -Wextra -Wno-unused-variable -Wno-unused-parameter
+CPPFLAGS = -std=c++11 -Wall -Wextra
+
+DIR_GUARD=@mkdir -p $(@D)
 
 #Target Files
-TARGET = se.exe
-TARGETPATH=bin
+TARGETPATH=../Linux/bin
+TARGET = $(TARGETPATH)/se
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
@@ -12,6 +14,7 @@ S_SOURCES += $(wildcard *.s)
 
 #Object Files
 OBJECTS = $(SOURCES:.cpp=.o)
+ALLOBJECTS = $(OBJECTS)
 OBJECTS += $(S_SOURCES)
 
 #Dependency Files
@@ -27,7 +30,8 @@ LIBS = -lrt -lpthread
 
 #Main target
 $(TARGET): $(OBJECTS) $(DEPFILES)
-	$(CPP) $(OBJECTS) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 $(LIBS) -o $(TARGETPATH)/$(TARGET)
+	$(DIR_GUARD)
+	$(CPP) $(OBJECTS) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 $(LIBS) -o $(TARGET)
 
 #To obtain object files
 %.o: %.cpp %.d
@@ -41,7 +45,7 @@ $(TARGET): $(OBJECTS) $(DEPFILES)
 
 #To remove generated files
 clean:
-	rm -f $(EXEC) $(OBJECTS)
+	rm -f $(EXEC) $(ALLOBJECTS)
 
 #To print 
 print-% : ; @echo $* = $($*)

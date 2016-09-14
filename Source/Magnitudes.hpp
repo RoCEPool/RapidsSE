@@ -37,6 +37,7 @@ class Magnitudes {
 public:
   static void vMagnitude(i8 iValue, char* psBuf);
   static void vMagnitude(i8 iValue, i8 iDecimals, char* psBuf);
+  static i8   iBytes(char* psBuf);
 };
 
 /*============================================================================*/

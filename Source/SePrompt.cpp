@@ -557,7 +557,7 @@ void SePrompt::vCreateTable(void)
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
         
         // check if it was numeric
-        if (!String::bExtractInw(&m_pToken2[iCurrentToken++], &iValue)) {
+        if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
           String::vCopy(m_sResponse.a(),"Invalid statement.");
           return;
         }
@@ -586,7 +586,7 @@ void SePrompt::vCreateTable(void)
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
         
         // check if it was numeric
-        if (!String::bExtractInw(&m_pToken2[iCurrentToken++], &iValue)) {
+        if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
           String::vCopy(m_sResponse.a(),"Invalid statement.");
           return;
         }
@@ -603,7 +603,7 @@ void SePrompt::vCreateTable(void)
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
         
         // check if it was numeric
-        if (!String::bExtractInw(&m_pToken2[iCurrentToken++], &iValue)) {
+        if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
           String::vCopy(m_sResponse.a(),"Invalid statement.");
           return;
         }

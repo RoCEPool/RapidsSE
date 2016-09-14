@@ -13,8 +13,9 @@ namespace Magic
     /* 0 */ EC_NONE=0,
     /* 1 */ EC_ASSERT,
     /* 2 */ EC_INVALID_CLASS,
-    /* 3 */ EC_NULLPTR,
-    /* 4 */ EC_ENUMS
+    /* 3 */ EC_INVALID_ARGUMENT,
+    /* 4 */ EC_NULLPTR,
+    /* 5 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -22,8 +23,9 @@ namespace Magic
     /* 0 */ "NONE",
     /* 1 */ "ASSERT",
     /* 2 */ "INVALID_CLASS",
-    /* 3 */ "NULLPTR",
-    /* 4 */ "ENUMS"
+    /* 3 */ "INVALID_ARGUMENT",
+    /* 4 */ "NULLPTR",
+    /* 5 */ "ENUMS"
   };
 
   class Error
