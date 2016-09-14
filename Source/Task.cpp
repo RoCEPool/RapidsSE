@@ -6571,6 +6571,28 @@ ENTRY("vNodeCursorNext");
   EXIT();
 }
 
+// object: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* object.dump -- dump the given object                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectDump(NNP_Task nnpTask)
+{
+  ENTRY("vObjectDump");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPopParam(pObject) )
+    THROW_INVALID_PARAM("object.dump");
+  
+  eCN eClass = pObject->eClass();
+  
+  pDUMPFUN* pDumpFun =gpDump[eClass];
+  
+  (pDumpFun)(pObject->eClass(), pObject, pSingleTab());
+  
+  EXIT();
+}
+
 // process: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
