@@ -65,7 +65,7 @@ Stack::~Stack(void)
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack                                                      */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuardParam(i8 iCount)
+bool Stack::bGuard(i8 iCount)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -78,7 +78,7 @@ bool Stack::bGuardParam(i8 iCount)
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 1                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuardParam(eCN eClass0)
+bool Stack::bGuard(eCN eClass0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -95,7 +95,7 @@ bool Stack::bGuardParam(eCN eClass0)
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 2                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuardParam(eCN eClass0, eCN eClass1)
+bool Stack::bGuard(eCN eClass0, eCN eClass1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -116,7 +116,7 @@ bool Stack::bGuardParam(eCN eClass0, eCN eClass1)
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 3                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
+bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -146,15 +146,15 @@ bool Stack::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /* pop Header* from param stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Header*& pHeader)
+bool Stack::bPop(Header*& pHeader)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! bGuard(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVal1;
-  vPop(&xPtrVal1);
+  vPopVal(&xPtrVal1);
   
   pHeader = xPtrVal1.pHeader();
   
@@ -164,15 +164,15 @@ bool Stack::bPopParam(Header*& pHeader)
 /*----------------------------------------------------------------------------*/
 /* pop eCN from param stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(eCN& iArg1)
+bool Stack::bPop(eCN& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL) )
+  if ( ! bGuard(CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = static_cast<eCN>(xIntVal1.iInt());
   
@@ -182,15 +182,15 @@ bool Stack::bPopParam(eCN& iArg1)
 /*----------------------------------------------------------------------------*/
 /* pop i8 from param stack                                                    */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1)
+bool Stack::bPop(i8& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL) )
+  if ( ! bGuard(CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
@@ -200,20 +200,20 @@ bool Stack::bPopParam(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8 from param stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1, i8& iArg2)
+bool Stack::bPop(i8& iArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL) )
+  if ( ! bGuard(CN_INTVAL,CN_INTVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPop(&xIntVal2);
+  vPopVal(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
@@ -223,20 +223,20 @@ bool Stack::bPopParam(i8& iArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from param stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1, Object*& pArg2)
+bool Stack::bPop(i8& iArg1, Object*& pArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_PTRVAL) )
+  if ( ! bGuard(CN_INTVAL,CN_PTRVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   PtrVal xPtrVal1;
-  vPop(&xPtrVal1);
+  vPopVal(&xPtrVal1);
   
   pArg2 = xPtrVal1.pObject();
   
@@ -246,19 +246,19 @@ bool Stack::bPopParam(i8& iArg1, Object*& pArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,val from param stack                                                */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1, Value& xArg2)
+bool Stack::bPop(i8& iArg1, Value& xArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+  if ( ! bGuard(CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
-  vPop(&xArg2);
+  vPopVal(&xArg2);
   
   return true;
 }
@@ -266,20 +266,20 @@ bool Stack::bPopParam(i8& iArg1, Value& xArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,s from param stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1, s8K& sArg2)
+bool Stack::bPop(i8& iArg1, s8K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+  if ( ! bGuard(CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   ValWsp xValWsp2;
-  vPop(&xValWsp2);
+  vPopVal(&xValWsp2);
   
   sArg2 = xValWsp2.sStr();
   
@@ -289,24 +289,24 @@ bool Stack::bPopParam(i8& iArg1, s8K& sArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from param stack                                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
+bool Stack::bPop(i8& iArg1, i8& iArg2, Value& xArg3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+  if ( ! bGuard(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPop(&xIntVal2);
+  vPopVal(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
-  vPop(&xArg3);
+  vPopVal(&xArg3);
   
   return true;
 }
@@ -314,26 +314,26 @@ bool Stack::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
 /*----------------------------------------------------------------------------*/
 /* pop i8,i8,val from param stack                                             */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3)
+bool Stack::bPop(i8& iArg1, i8& iArg2, s8K& sArg3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+  if ( ! bGuard(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
     return false;
   
   IntVal xIntVal1;
-  vPop(&xIntVal1);
+  vPopVal(&xIntVal1);
   
   iArg1 = xIntVal1.iInt();
   
   IntVal xIntVal2;
-  vPop(&xIntVal2);
+  vPopVal(&xIntVal2);
   
   iArg2 = xIntVal2.iInt();
   
   
   ValWsp xValWsp3;
-  vPop(&xValWsp3);
+  vPopVal(&xValWsp3);
   
   sArg3 = xValWsp3.sStr();
   
@@ -343,15 +343,15 @@ bool Stack::bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from param stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Object*& pObject)
+bool Stack::bPop(Object*& pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) && ! bPeekZero() )
+  if ( ! bGuard(CN_PTRVAL) && ! bPeekZero() )
     return false;
   
   PtrVal xPtrVal1;
-  vPop(&xPtrVal1);
+  vPopVal(&xPtrVal1);
   
   pObject = xPtrVal1.pObject();
   
@@ -361,20 +361,20 @@ bool Stack::bPopParam(Object*& pObject)
 /*----------------------------------------------------------------------------*/
 /* pop Object*, Object* from param stack                                      */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Object*& pObject1, Object*& pObject2)
+bool Stack::bPop(Object*& pObject1, Object*& pObject2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL,CN_PTRVAL) )
+  if ( ! bGuard(CN_PTRVAL,CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVal1;
-  vPop(&xPtrVal1);
+  vPopVal(&xPtrVal1);
   
   pObject1 = xPtrVal1.pObject();
   
   PtrVal xPtrVal2;
-  vPop(&xPtrVal2);
+  vPopVal(&xPtrVal2);
   
   pObject2 = xPtrVal2.pObject();
   
@@ -384,33 +384,33 @@ bool Stack::bPopParam(Object*& pObject1, Object*& pObject2)
 /*----------------------------------------------------------------------------*/
 /* pop Object* from param stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Object*& pObject, Value& xValue)
+bool Stack::bPop(Object*& pObject, Value& xValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! bGuard(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVal1;
-  vPop(&xPtrVal1);
+  vPopVal(&xPtrVal1);
   
   pObject = xPtrVal1.pObject();
   
-  return bPopParam(xValue);
+  return bPop(xValue);
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop s from param stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(s32& sArg1)
+bool Stack::bPop(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! bGuard(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
-  vPop(&xValWsp1);
+  vPopVal(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -420,15 +420,15 @@ bool Stack::bPopParam(s32& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s from param stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(s256& sArg1)
+bool Stack::bPop(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! bGuard(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
-  vPop(&xValWsp1);
+  vPopVal(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -438,15 +438,15 @@ bool Stack::bPopParam(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s from param stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(s8K& sArg1)
+bool Stack::bPop(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL) )
+  if ( ! bGuard(CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
-  vPop(&xValWsp1);
+  vPopVal(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
@@ -456,20 +456,20 @@ bool Stack::bPopParam(s8K& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from param stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(s8K& sArg1, s8K& sArg2)
+bool Stack::bPop(s8K& sArg1, s8K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_STRVAL,CN_STRVAL) )
+  if ( ! bGuard(CN_STRVAL,CN_STRVAL) )
     return false;
   
   ValWsp xValWsp1;
-  vPop(&xValWsp1);
+  vPopVal(&xValWsp1);
   
   sArg1 = xValWsp1.sStr();
   
   ValWsp xValWsp2;
-  vPop(&xValWsp2);
+  vPopVal(&xValWsp2);
   
   sArg2 = xValWsp2.sStr();
   
@@ -479,14 +479,14 @@ bool Stack::bPopParam(s8K& sArg1, s8K& sArg2)
 /*----------------------------------------------------------------------------*/
 /* pop value from param stack                                                 */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Value& xArg1)
+bool Stack::bPop(Value& xArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(1) )
+  if ( ! bGuard(1) )
     return false;
   
-  vPop(&xArg1);
+  vPopVal(&xArg1);
   
   return true;
 }
@@ -494,16 +494,16 @@ bool Stack::bPopParam(Value& xArg1)
 /*----------------------------------------------------------------------------*/
 /* pop value, value from param stack                                          */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Value& pValue1, Value& pValue2)
+bool Stack::bPop(Value& pValue1, Value& pValue2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(2) )
+  if ( ! bGuard(2) )
     return false;
   
-  vPop(&pValue1);
+  vPopVal(&pValue1);
   
-  vPop(&pValue2);
+  vPopVal(&pValue2);
   
   return true;
 }
@@ -511,18 +511,18 @@ bool Stack::bPopParam(Value& pValue1, Value& pValue2)
 /*----------------------------------------------------------------------------*/
 /* pop value, value, value from param stack                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
+bool Stack::bPop(Value& pValue1, Value& pValue2, Value& pValue3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(3) )
+  if ( ! bGuard(3) )
     return false;
   
-  vPop(&pValue1);
+  vPopVal(&pValue1);
   
-  vPop(&pValue2);
+  vPopVal(&pValue2);
   
-  vPop(&pValue3);
+  vPopVal(&pValue3);
   
   return true;
 }
@@ -530,16 +530,16 @@ bool Stack::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
 /*----------------------------------------------------------------------------*/
 /* pop cell from param stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPopParam(void*& pVoid)
+bool Stack::bPop(void*& pVoid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(CN_PTRVAL) )
+  if ( ! bGuard(CN_PTRVAL) )
     return false;
   
   PtrVal xPtrVoid;
   
-  vPop(&xPtrVoid);
+  vPopVal(&xPtrVoid);
   
   pVoid = xPtrVoid.pPtr();
   
@@ -553,11 +553,11 @@ bool Stack::bPopParamInt(i8& iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuardParam(1) )
+  if ( ! bGuard(1) )
     return false;
   
   ValWsp xWspVal1;
-  vPop(&xWspVal1);
+  vPopVal(&xWspVal1);
   
   iArg1 = xWspVal1.iAsInt();
   
@@ -573,7 +573,7 @@ bool Stack::bPopParamInt(i8& iArg1)
 /*----------------------------------------------------------------------------*/
 /* push void* onto param stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(void* pVoid)
+void Stack::vPush(void* pVoid)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -581,105 +581,105 @@ void Stack::vPushParam(void* pVoid)
   
   xPtrVoid = pVoid;
   
-  vPushParam(xPtrVoid);
+  vPush(xPtrVoid);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push Header* onto param stack                                              */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(Header* pHeader1)
+void Stack::vPush(Header* pHeader1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   PtrVal xPtrHeader;
   xPtrHeader = pHeader1;
   
-  vPushParam(&xPtrHeader);
+  vPush(&xPtrHeader);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push Object* onto param stack                                              */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(Object* pObject1)
+void Stack::vPush(Object* pObject1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   PtrVal xPtrObject;
   xPtrObject = pObject1;
   
-  vPushParam(&xPtrObject);
+  vPush(&xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push i8 onto param stack                                                   */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(i8 iArg1)
+void Stack::vPush(i8 iArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   IntVal xIntVal1;
   xIntVal1 = iArg1;
   
-  vPushParam(&xIntVal1);
+  vPush(&xIntVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push s32 onto param stack                                                  */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(s32& sArg1)
+void Stack::vPush(s32& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
   xStrVal1 = sArg1.a();
   
-  vPushParam(xStrVal1);
+  vPush(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push s256 onto param stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(s256& sArg1)
+void Stack::vPush(s256& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
   xStrVal1 = sArg1.a();
   
-  vPushParam(xStrVal1);
+  vPush(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push s8K onto param stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(s8K& sArg1)
+void Stack::vPush(s8K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
   xStrVal1 = sArg1.a();
   
-  vPushParam(xStrVal1);
+  vPush(xStrVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push value onto parameter stack                                            */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(Value& xVal1)
+void Stack::vPush(Value& xVal1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPush(&xVal1);
+  vPushVal(&xVal1);
 }
 
 /*----------------------------------------------------------------------------*/
 /* push value onto parameter stack                                            */
 /*----------------------------------------------------------------------------*/
-void Stack::vPushParam(Value* pValue)
+void Stack::vPush(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vPush(pValue);
+  vPushVal(pValue);
 }
 
 
@@ -752,40 +752,6 @@ void Stack::vPoke(i8 iNthValue, Value* pValue)
   Value* pPokeAddress = pPeek(iNthValue);
   
   Memory::vCopy(pPokeAddress,pValue,iSize);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop value from stack                                                       */
-/*----------------------------------------------------------------------------*/
-void Stack::vPop(Value* pValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  m_xHazard.vAssertFooter();
-  
-  i8 iSize = pTopValue()->iSize();
-
-  Memory::vCopy(pValue,m_pTop,iSize);
-  vPopBy(iSize);
-  m_iValues--;
-
-  m_xHazard.vAssertFooter();
-}
-
-/*----------------------------------------------------------------------------*/
-/* push value onto stack                                                      */
-/*----------------------------------------------------------------------------*/
-void Stack::vPush(Value* pValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  m_xHazard.vAssertFooter();
-  
-  i8 iSize = pValue->iSize();
-  
-  vPushBy(iSize);
-  Memory::vCopy(m_pTop,pValue,iSize);
-  m_iValues++;
-
-  m_xHazard.vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -899,6 +865,40 @@ void Stack::vPopBy(i8 iBytes)
   pTop += iBytes;
   
   m_pTop = reinterpret_cast<Value*>(pTop);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from stack                                                       */
+/*----------------------------------------------------------------------------*/
+void Stack::vPopVal(Value* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  m_xHazard.vAssertFooter();
+  
+  i8 iSize = pTopValue()->iSize();
+  
+  Memory::vCopy(pValue,m_pTop,iSize);
+  vPopBy(iSize);
+  m_iValues--;
+  
+  m_xHazard.vAssertFooter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push value onto stack                                                      */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushVal(Value* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  m_xHazard.vAssertFooter();
+  
+  i8 iSize = pValue->iSize();
+  
+  vPushBy(iSize);
+  Memory::vCopy(m_pTop,pValue,iSize);
+  m_iValues++;
+  
+  m_xHazard.vAssertFooter();
 }
 
 /*----------------------------------------------------------------------------*/

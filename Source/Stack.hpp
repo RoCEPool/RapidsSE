@@ -34,48 +34,44 @@ namespace Structures
     Stack(void);
     ~Stack(void);
     
-    bool bGuardParam(i8 iCount);
+    bool bGuard(i8 iCount);
+    bool bGuard(eCN eClass0);
+    bool bGuard(eCN eClass0, eCN eClass1);
+    bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
-    bool bGuardParam(eCN eClass0);
-    bool bGuardParam(eCN eClass0, eCN eClass1);
-    bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2);
-    
-    
-    bool bPopParam(eCN& eArg1);
-    bool bPopParam(Header*& pHeader);
-    bool bPopParam(i8& iArg1);
-    bool bPopParam(i8& iArg1, i8& iArg2);
-    bool bPopParam(i8& iArg1, Object*& pObject);
-    bool bPopParam(i8& iArg1, Value& xArg1);
-    bool bPopParam(i8& iArg1, s8K& sArg2);
-    bool bPopParam(i8& iArg1, i8& iArg2, Value& xArg3);
-    bool bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3);
-    bool bPopParam(Object*& pObject);
-    bool bPopParam(Object*& pObject1, Object*& pObject2);
-    bool bPopParam(Object*& pObject, Value& xValue);
-    bool bPopParam(Value& xArg1);
-    bool bPopParam(Value& xArg1, Value& xArg2);
-    bool bPopParam(Value& xArg1, Value& xArg2, Value& xArg3);
-    bool bPopParam(s32&  sArg1);
-    bool bPopParam(s256& sArg1);
-    bool bPopParam(s8K& sArg1);
-    bool bPopParam(s8K& sArg1, s8K& sArg2);
-    bool bPopParam(void*& pVoid);
+    bool bPop(eCN& eArg1);
+    bool bPop(Header*& pHeader);
+    bool bPop(i8& iArg1);
+    bool bPop(i8& iArg1, i8& iArg2);
+    bool bPop(i8& iArg1, Object*& pObject);
+    bool bPop(i8& iArg1, Value& xArg1);
+    bool bPop(i8& iArg1, s8K& sArg2);
+    bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
+    bool bPop(i8& iArg1, i8& iArg2, s8K& sArg3);
+    bool bPop(Object*& pObject);
+    bool bPop(Object*& pObject1, Object*& pObject2);
+    bool bPop(Object*& pObject, Value& xValue);
+    bool bPop(Value& xArg1);
+    bool bPop(Value& xArg1, Value& xArg2);
+    bool bPop(Value& xArg1, Value& xArg2, Value& xArg3);
+    bool bPop(s32&  sArg1);
+    bool bPop(s256& sArg1);
+    bool bPop(s8K& sArg1);
+    bool bPop(s8K& sArg1, s8K& sArg2);
+    bool bPop(void*& pVoid);
     bool bPopParamInt(i8& iArg1);
     
-    
-    void vPushParam(Header* pHeader);
-    void vPushParam(i8 iInt);
-    void vPushParam(Object* pObject);
-    void vPushParam(s32& s32);
-    void vPushParam(s256& s256);
-    void vPushParam(s8K& s8K);
-    void vPushParam(Value& xValue);
-    void vPushParam(Value* pValue);
-    void vPushParam(void* pVoid);
+    void vPush(Header* pHeader);
+    void vPush(i8 iInt);
+    void vPush(Object* pObject);
+    void vPush(s32& s32);
+    void vPush(s256& s256);
+    void vPush(s8K& s8K);
+    void vPush(Value& xValue);
+    void vPush(Value* pValue);
+    void vPush(void* pVoid);
     
    
-    
     //-------------------------------------------------------------------------
     
     void   vDiscard(void);
@@ -83,19 +79,18 @@ namespace Structures
     Value* pPeek(i8 iNthValue);
     void   vPeek(i8 iNthValue, Value* pValue);
     void   vPoke(i8 iNthValue, Value* pValue);
-    void   vPop(Value* pValue);
-    void   vPush(Value* pValue);
+    bool   bPeekZero(void);
     void   vRetry(void);
     void   vRetryPoint(void);
     void   vReset(void);
     i8     iValues(void);
     
-    bool   bPeekZero(void);
-    
   private:
     Value* pGetValue(i8 iValue);
     void   vPushBy(i8 iBytes);
     void   vPopBy(i8 iBytes);
+    void   vPopVal(Value* pValue);
+    void   vPushVal(Value* pValue);
     Value* pStackBase(void);
     Value* pStackLimit(void);
     Value* pTopValue(void);
