@@ -209,13 +209,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     
-    bool bPopReturn(i8& iArg1);
-    bool bPopReturn(i8& iArg1, i8& iArg2);
-    bool bPopReturn(ValWsp& xValOpaque);
-    bool bPopReturn(s32&  sArg1);
-    bool bPopReturn(s256& sArg1);
-    bool bPopReturn(s8K& sArg1);
-    bool bPopReturn(void*& pVoid);
    
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
