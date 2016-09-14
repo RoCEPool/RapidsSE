@@ -75,8 +75,6 @@ bool Stack::bGuardParam(i8 iCount)
   return true;
 }
 
-
-
 /*----------------------------------------------------------------------------*/
 /* guard parameter stack 1                                                    */
 /*----------------------------------------------------------------------------*/
@@ -140,6 +138,436 @@ bool Stack::bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* pop Header* from param stack                                               */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Header*& pHeader)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVal1;
+  vPop(&xPtrVal1);
+  
+  pHeader = xPtrVal1.pHeader();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop eCN from param stack                                                   */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(eCN& iArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = static_cast<eCN>(xIntVal1.iInt());
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8 from param stack                                                    */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,i8 from param stack                                                 */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1, i8& iArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  IntVal xIntVal2;
+  vPop(&xIntVal2);
+  
+  iArg2 = xIntVal2.iInt();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,val from param stack                                                */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1, Object*& pArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_PTRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  PtrVal xPtrVal1;
+  vPop(&xPtrVal1);
+  
+  pArg2 = xPtrVal1.pObject();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,val from param stack                                                */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1, Value& xArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  vPop(&xArg2);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,s from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1, s8K& sArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_STRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  ValWsp xValWsp2;
+  vPop(&xValWsp2);
+  
+  sArg2 = xValWsp2.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,i8,val from param stack                                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1, i8& iArg2, Value& xArg3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  IntVal xIntVal2;
+  vPop(&xIntVal2);
+  
+  iArg2 = xIntVal2.iInt();
+  
+  vPop(&xArg3);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8,i8,val from param stack                                             */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
+    return false;
+  
+  IntVal xIntVal1;
+  vPop(&xIntVal1);
+  
+  iArg1 = xIntVal1.iInt();
+  
+  IntVal xIntVal2;
+  vPop(&xIntVal2);
+  
+  iArg2 = xIntVal2.iInt();
+  
+  
+  ValWsp xValWsp3;
+  vPop(&xValWsp3);
+  
+  sArg3 = xValWsp3.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop Object* from param stack                                               */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Object*& pObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_PTRVAL) && ! bPeekZero() )
+    return false;
+  
+  PtrVal xPtrVal1;
+  vPop(&xPtrVal1);
+  
+  pObject = xPtrVal1.pObject();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop Object*, Object* from param stack                                      */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Object*& pObject1, Object*& pObject2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_PTRVAL,CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVal1;
+  vPop(&xPtrVal1);
+  
+  pObject1 = xPtrVal1.pObject();
+  
+  PtrVal xPtrVal2;
+  vPop(&xPtrVal2);
+  
+  pObject2 = xPtrVal2.pObject();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop Object* from param stack                                               */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Object*& pObject, Value& xValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVal1;
+  vPop(&xPtrVal1);
+  
+  pObject = xPtrVal1.pObject();
+  
+  return bPopParam(xValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop s from param stack                                                     */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(s32& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_STRVAL) )
+    return false;
+  
+  ValWsp xValWsp1;
+  vPop(&xValWsp1);
+  
+  sArg1 = xValWsp1.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop s from param stack                                                     */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(s256& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_STRVAL) )
+    return false;
+  
+  ValWsp xValWsp1;
+  vPop(&xValWsp1);
+  
+  sArg1 = xValWsp1.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop s from param stack                                                     */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(s8K& sArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_STRVAL) )
+    return false;
+  
+  ValWsp xValWsp1;
+  vPop(&xValWsp1);
+  
+  sArg1 = xValWsp1.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop s,s from param stack                                                   */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(s8K& sArg1, s8K& sArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_STRVAL,CN_STRVAL) )
+    return false;
+  
+  ValWsp xValWsp1;
+  vPop(&xValWsp1);
+  
+  sArg1 = xValWsp1.sStr();
+  
+  ValWsp xValWsp2;
+  vPop(&xValWsp2);
+  
+  sArg2 = xValWsp2.sStr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from param stack                                                 */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Value& xArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(1) )
+    return false;
+  
+  vPop(&xArg1);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value, value from param stack                                          */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Value& pValue1, Value& pValue2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(2) )
+    return false;
+  
+  vPop(&pValue1);
+  
+  vPop(&pValue2);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value, value, value from param stack                                   */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(Value& pValue1, Value& pValue2, Value& pValue3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(3) )
+    return false;
+  
+  vPop(&pValue1);
+  
+  vPop(&pValue2);
+  
+  vPop(&pValue3);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop cell from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParam(void*& pVoid)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVoid;
+  
+  vPop(&xPtrVoid);
+  
+  pVoid = xPtrVoid.pPtr();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from param stack as integer                                      */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopParamInt(i8& iArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuardParam(1) )
+    return false;
+  
+  ValWsp xWspVal1;
+  vPop(&xWspVal1);
+  
+  iArg1 = xWspVal1.iAsInt();
+  
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/

@@ -40,6 +40,30 @@ namespace Structures
     bool bGuardParam(eCN eClass0, eCN eClass1);
     bool bGuardParam(eCN eClass0, eCN eClass1, eCN eClass2);
     
+    
+    bool bPopParam(eCN& eArg1);
+    bool bPopParam(Header*& pHeader);
+    bool bPopParam(i8& iArg1);
+    bool bPopParam(i8& iArg1, i8& iArg2);
+    bool bPopParam(i8& iArg1, Object*& pObject);
+    bool bPopParam(i8& iArg1, Value& xArg1);
+    bool bPopParam(i8& iArg1, s8K& sArg2);
+    bool bPopParam(i8& iArg1, i8& iArg2, Value& xArg3);
+    bool bPopParam(i8& iArg1, i8& iArg2, s8K& sArg3);
+    bool bPopParam(Object*& pObject);
+    bool bPopParam(Object*& pObject1, Object*& pObject2);
+    bool bPopParam(Object*& pObject, Value& xValue);
+    bool bPopParam(Value& xArg1);
+    bool bPopParam(Value& xArg1, Value& xArg2);
+    bool bPopParam(Value& xArg1, Value& xArg2, Value& xArg3);
+    bool bPopParam(s32&  sArg1);
+    bool bPopParam(s256& sArg1);
+    bool bPopParam(s8K& sArg1);
+    bool bPopParam(s8K& sArg1, s8K& sArg2);
+    bool bPopParam(void*& pVoid);
+    bool bPopParamInt(i8& iArg1);
+    
+    
     void vPushParam(Header* pHeader);
     void vPushParam(i8 iInt);
     void vPushParam(Object* pObject);
@@ -51,6 +75,7 @@ namespace Structures
     void vPushParam(void* pVoid);
     
    
+    
     //-------------------------------------------------------------------------
     
     void   vDiscard(void);
