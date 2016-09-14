@@ -18,7 +18,6 @@ namespace Dictionaries
 
 #include "BodyField.hpp"
 #include "Cell.hpp"
-#include "CodeField.hpp"
 #include "Dictionary.hpp"
 #include "DictionaryStack.hpp"
 #include "Word.hpp"

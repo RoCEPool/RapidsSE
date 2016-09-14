@@ -1710,7 +1710,7 @@ void Task::vLoop(void)
   
   while (TS_RUNNING == m_eState) {
     
-    StepPtr pStep = m_pCell->m_pCodeField->m_pFunc;
+    StepPtr pStep = *m_pCell->m_pCode;
     
     //vTrace("pStep %p\n",pStep);
     
@@ -2390,30 +2390,6 @@ ENTRY("vEncodeVal");
 /*----------------------------------------------------------------------------*/
 /* enterDoes -- enter this routine                                            */
 /*----------------------------------------------------------------------------*/
-//void Task::vEnterDoes(NNP_Task nnpTask)
-//{
-//  ENTRY("vEnterDoes");
-//  
-//  nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
-//  
-//  Cell* pPrevCell  = nnpTask->m_pCell - 1;
-//  CodeField* pCode = pPrevCell->m_pCodeField;
-//  
-//  BodyField* pBody = reinterpret_cast<BodyField*>(pcAdd(pCode,1*sizeof(Cell*)));
-//  
-//  Word* pWord = reinterpret_cast<Word*>(pcAdd(pBody, -(sizeof(Word)-sizeof(BodyField)) ));
-//  
-//  ASSERT(WT_OBJECT == pWord->eWordType());
-//  
-//  if (WT_OBJECT == pWord->eWordType()) {
-//    Cell* pCell = pWord->pFirstCell();
-//    nnpTask->m_xParamStack.vPush(pCell);
-//  }
-//  
-//  nnpTask->m_pCell = pBody->m_pCell;
-//  
-//  EXIT();
-//}
 void Task::vEnterDoes(NNP_Task nnpTask)
 {
   ENTRY("vEnterDoes");
@@ -3973,29 +3949,29 @@ ENTRY("vSee");
   
   while ((char*)pCell < pcAdd(pWord->pBodyArea(),pWord->iDataBytes())) {
  
-    Word* pFuncWord = nnpTask->m_xDictionaryStack.pFindStep(pCell->m_pCodeField->m_pFunc);
+    Word* pFuncWord = nnpTask->m_xDictionaryStack.pFindStep(*pCell->m_pCode);
 
     vTrace("%p: %s",pCell,pFuncWord->sName().a());
   
-    if (pCell->m_pCodeField->m_pFunc == Task::vJump) {
+    if ( *pCell->m_pCode == Task::vJump) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpLocn);
       pCell++;
     }
     else
-    if (pCell->m_pCodeField->m_pFunc == Task::vJumpFalse) {
+    if ( *pCell->m_pCode == Task::vJumpFalse) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpLocn);
       pCell++;
     }
     else
-    if (pCell->m_pCodeField->m_pFunc == Task::vJumpTrue) {
+    if ( *pCell->m_pCode == Task::vJumpTrue) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpLocn);
       pCell++;
     }
     else
-    if (pCell->m_pCodeField->m_pFunc == Task::vPush) {
+    if ( *pCell->m_pCode == Task::vPush) {
       pCell++;
       //Value* pValue = reinterpret_cast<Value*>(pCell);
       //pValue->vToString(sWorkspace.a());

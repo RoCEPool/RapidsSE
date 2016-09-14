@@ -126,9 +126,9 @@ namespace Tasks
     union {
       Cell*       m_pCell;
       StepPtr     m_pStep;
-      CodeField*  m_pCodeField;
       Value*      m_pValue;
       Object*     m_pObject;
+      Header*     m_pHeader;
     };
     
     
