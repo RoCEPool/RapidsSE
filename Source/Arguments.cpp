@@ -175,7 +175,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_iPartition = String::iToI8(argv[++iArg]);
       continue;
     }
-
+  /*
     if (String::iLength(m_sCommand.a()))
       String::vConcat(m_sCommand.a(),' ');
     
@@ -183,10 +183,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     m_bCommand = true;
     m_bPrompt  = true;
     m_bWelcome = false;
+ 
     continue;
+  */
     
-    //vTrace("Unrecognized command argument: %s\n",argv[iArg]);
-    //return false;
+    vTrace("Unrecognized command argument: %s\n",argv[iArg]);
+    return false;
   }
 
   return true;
