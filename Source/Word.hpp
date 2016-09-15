@@ -50,7 +50,6 @@ namespace Dictionaries
     ~Word(void);
     
     char* pAllot(i8 iBytes);
-    
     void* pAppend(Cell* pCell);
     void  vAppend(Cell* pCell);
     void* pAppend(i8 iInt);
@@ -59,23 +58,20 @@ namespace Dictionaries
     void  vAppend(TaskStep* ppStep);
     void* pAppend(Value* pValue);
     void  vAppend(Value* pValue);
-    
     char* pDataArea(void);
     i8    iDataBytes(void);
     char* pDataEnd(void);
-    
     Dictionary* pDictionary(void);
-    void      vDoesArg(Cell* pCell);
-    Cell*     pDoesArg(void);
-    void      vDoesStep(TaskStep pStep);
-    TaskStep  pDoesStep(void);
+    void  vDoesArg(Cell* pCell);
+    Cell* pDoesArg(void);
+    void  vDoesStep(TaskStep pStep);
+    TaskStep pDoesStep(void);
     TaskStep* ppDoesStep(void);
-    
     void  vDump(void);
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
-    void  vEncode(const char* aWord, TaskStep* pCode);
+    void  vEncode(const char* aWord, TaskStep* ppCalledDoes);
     void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
     void  vEncode(TaskStep* pCode);
@@ -87,18 +83,15 @@ namespace Dictionaries
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
-    char* aName(void);
     s&    sName(void);
-    void  vName(const char* sName);
     Word* pPrevWord(void);
     void  vPrevWord(Word* pPrevWord);
     void  vReset(void);
     i8    iSize(void);
-    Value* pValue(void);
     eWT   eWordType(void);
     void  vWordType(eWT eWordType);
     
-    static Word* pToWord(void* pBody);
+    static Word* pToWord(void* pData);
     
     Footer* pFooter(void);
   };

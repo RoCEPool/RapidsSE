@@ -314,7 +314,7 @@ void Word::vDump(void)
          m_bImmediate,
          m_iDataBytes,
          m_pDoesStep,
-         pStepWord ? pStepWord->aName() : "<not-found>",
+         pStepWord ? pStepWord->sName().a() : "<not-found>",
          pFirstCell()
          );
   }
@@ -352,7 +352,7 @@ void Word::vEncode(const char* aWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to word, with cell* argument                                   */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Cell* pCell)
 {
@@ -360,12 +360,11 @@ void Word::vEncode(const char* aWord, Cell* pCell)
   
   vEncode(aWord);
   
-  // needs to be corrected
   vAppend(pCell);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to word, with cell* argument                                   */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, TaskStep* pStep)
 {
@@ -373,12 +372,11 @@ void Word::vEncode(const char* aWord, TaskStep* pStep)
   
   vEncode(aWord);
   
-  // needs to be corrected
   vAppend(pStep);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to word, with value argument                                   */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Value* pValue)
 {
@@ -390,17 +388,14 @@ void Word::vEncode(const char* aWord, Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to word, with word* argument                                   */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vEncode(aWord);
-  
-//  WrdVal xWord;
-//  xWord = pWord;
-  
+    
   PtrVal xPtrWord;
   xPtrWord = pWord;
   
@@ -408,18 +403,17 @@ void Word::vEncode(const char* aWord, Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to word does                                                   */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(TaskStep* pStep)
+void Word::vEncode(TaskStep* ppCalledDoes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  // needs to be corrected
-  vAppend(pStep);
+  vAppend(ppCalledDoes);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pointer to first cell                                                  */
+/* get pointer to first cell in data area                                     */
 /*----------------------------------------------------------------------------*/
 Cell* Word::pFirstCell(void)
 {
@@ -437,7 +431,10 @@ bool Word::bHasCell(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  if ((char*)pCell >= pDataArea() && (char*)pCell <= pDataEnd())
+//  if ((char*)pCell >= pDataArea() && (char*)pCell <= pDataEnd())
+//    return true;
+
+  if (pCell >= pFirstCell() && pCell <= pLastCell())
     return true;
   
   return false;
@@ -510,31 +507,11 @@ Cell* Word::pLastCell(void)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-char* Word::aName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-
-  return pPoolCheck<char*>((void*)m_sName.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get name                                                                   */
-/*----------------------------------------------------------------------------*/
 s& Word::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return m_sName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set name                                                                   */
-/*----------------------------------------------------------------------------*/
-void Word::vName(const char* aName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_sName = aName;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -564,19 +541,9 @@ i8 Word::iSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return sizeof(Word) - 1 + m_iDataBytes;
-}
+  i8 nBytes = sizeof(Word) - 1 + m_iDataBytes;
 
-/*----------------------------------------------------------------------------*/
-/* get value                                                                  */
-/*----------------------------------------------------------------------------*/
-Value* Word::pValue(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Value* pValue = reinterpret_cast<Value*>(pFirstCell());
-  
-  return pPoolCheck<Value*>(pValue);
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -604,13 +571,14 @@ void Word::vWordType(eWT eWordType)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert body ptr to word ptr                                               */
+/* get the outer word of this data ptr                                        */
 /*----------------------------------------------------------------------------*/
-Word* Word::pToWord(void* pBody)
+Word* Word::pToWord(void* pData)
 {
   // static function
   
-  Word* pWord = reinterpret_cast<Word*>(pcAdd(pBody, - sizeof(Word)));
+  Word* pWord = _pWord( _pc(pData) - sizeof(Word) );
+  
   ASSERT(pWord->eClass() == CN_WORD);
   
   return pWord;

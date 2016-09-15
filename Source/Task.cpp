@@ -3946,7 +3946,8 @@ ENTRY("vSee");
   
   s8K sWorkspace;
   
-  while ((char*)pCell < pcAdd(pWord->pDataArea(),pWord->iDataBytes())) {
+//  while ((char*)pCell < pcAdd(pWord->pDataArea(),pWord->iDataBytes())) {
+  while (pCell <= pWord->pLastCell()) {
  
     Word* pDoesWord = nnpTask->m_xDictionaryStack.pFindStep(*pCell->m_ppDoesStep);
 
