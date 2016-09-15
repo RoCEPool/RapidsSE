@@ -14,8 +14,10 @@ extern Word*        gpWord;
 Word* Dictionaries::_pWord(void* pAddr)
 {
   Word* pWord = reinterpret_cast<Word*>(pAddr);
+  
   ASSERT(pWord);
   ASSERT(CN_WORD == pWord->eClass());
+  
   return pWord;
 }
 
@@ -99,32 +101,7 @@ char* Word::pAllot(i8 iBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append word                                                                */
-/*----------------------------------------------------------------------------*/
-void Word::vAppend(i8 wVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  void* pAddress = pAppend(wVal);
-  ASSERT(pAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append word                                                                */
-/*----------------------------------------------------------------------------*/
-void* Word::pAppend(i8 wVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  char* pAddress = pAllot(8);
-  
-  Memory::vCopy(pAddress,&wVal,8);
-  
-  return pAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append cell                                                                */
+/* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(Cell* pCell)
 {
@@ -135,7 +112,7 @@ void Word::vAppend(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append cell                                                                */
+/* append a pointer to cell                                                   */
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(Cell* pCell)
 {
@@ -149,7 +126,32 @@ void* Word::pAppend(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value                                                               */
+/* append an i8 integer                                                       */
+/*----------------------------------------------------------------------------*/
+void Word::vAppend(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  void* pAddress = pAppend(iInt);
+  ASSERT(pAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append an i8 integer                                                       */
+/*----------------------------------------------------------------------------*/
+void* Word::pAppend(i8 iInt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  i8* pAllottedInt = (i8*)pAllot(sizeof(i8));
+  
+  *pAllottedInt = iInt;
+  
+  return pAllottedInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
 void Word::vAppend(Value* pValue)
 {
@@ -160,7 +162,7 @@ void Word::vAppend(Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append value                                                               */
+/* append a value  (the entire value, not the pointer to it)                  */
 /*----------------------------------------------------------------------------*/
 void* Word::pAppend(Value* pValue)
 {
@@ -168,36 +170,36 @@ void* Word::pAppend(Value* pValue)
 
   i8 iSize = pValue->iSize();
   
-  char* pAddress = pAllot(iSize);
+  char* pValueAddress = pAllot(iSize);
   
-  Memory::vCopy(pAddress,pValue,iSize);
+  Memory::vCopy(pValueAddress,pValue,iSize);
   
-  return pAddress;
+  return pValueAddress;
 }
 
 /*----------------------------------------------------------------------------*/
-/* append pointer                                                             */
+/* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(TaskStep* ppFunc)
+void Word::vAppend(TaskStep* ppCalledWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  void* pAddress = pAppend(ppFunc);
+  void* pAddress = pAppend(ppCalledWord);
   ASSERT(pAddress);
 }
 
 /*----------------------------------------------------------------------------*/
-/* append pointer                                                             */
+/* append address of pointer to task step                                     */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(TaskStep* ppFunc)
+void* Word::pAppend(TaskStep* ppCalledWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  char* pAddress = pAllot(sizeof(ppFunc));
-  
-  Memory::vCopy(pAddress,&ppFunc,sizeof(ppFunc));
-  
-  return pAddress;
+  TaskStep** pppCalledWord = (TaskStep**)pAllot(sizeof(TaskStep*));
+
+  *pppCalledWord = ppCalledWord;
+
+  return pppCalledWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,19 +239,31 @@ char* Word::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* pAddress = pcAdd(this,sizeof(Word));
+  char* pDataArea = pcAdd(this,sizeof(Word));
   
-  return pPoolCheck<char*>((void*)pAddress);
+  return pPoolCheck<char*>((void*)pDataArea);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of step pointer                                                */
+/* get number of data bytes                                                   */
 /*----------------------------------------------------------------------------*/
-TaskStep* Word::ppDoesStep(void)
+i8 Word::iDataBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_pDoesStep;
+  return m_iDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current end of data                                                    */
+/*----------------------------------------------------------------------------*/
+char* Word::pDataEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  char* pDataEnd = _pc(this) + sizeof(Word) + m_iDataBytes;
+  
+  return pPoolCheck<char*>((void*)pDataEnd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,25 +287,13 @@ void Word::vDoesArg(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get end of current data                                                    */
+/* get address of does step pointer                                           */
 /*----------------------------------------------------------------------------*/
-char* Word::pDataEnd(void)
+TaskStep* Word::ppDoesStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* pAddress = reinterpret_cast<char*>(this) + sizeof(Word) + m_iDataBytes;
-  
-  return pPoolCheck<char*>((void*)pAddress);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data bytes                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Word::iDataBytes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_iDataBytes;
+  return &m_pDoesStep;
 }
 
 /*----------------------------------------------------------------------------*/

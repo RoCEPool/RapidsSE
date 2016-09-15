@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Addressing.hpp -- functions for manipulating addresses                     */
+/* Addressing.hpp -- Functions for Manipulating addresses                     */
 /*============================================================================*/
 #pragma once
 
@@ -7,6 +7,8 @@
 
 namespace Magic
 {
+  char* _pc(void* pAddress);
+  
   char* pcAdd(void* pAddress, i8 nBytes);
   void* pvAdd(void* pAddress, i8 nBytes);
 

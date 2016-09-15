@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Word.hpp - word in dictionary                                              */
+/* Word.hpp -- Word in Dictionary                                             */
 /*============================================================================*/
 
 #pragma once
@@ -53,12 +53,16 @@ namespace Dictionaries
     
     void* pAppend(Cell* pCell);
     void  vAppend(Cell* pCell);
-    void* pAppend(i8 wVal);
-    void  vAppend(i8 wVal);
+    void* pAppend(i8 iInt);
+    void  vAppend(i8 iInt);
     void* pAppend(TaskStep* ppStep);
     void  vAppend(TaskStep* ppStep);
     void* pAppend(Value* pValue);
     void  vAppend(Value* pValue);
+    
+    char* pDataArea(void);
+    i8    iDataBytes(void);
+    char* pDataEnd(void);
     
     Dictionary* pDictionary(void);
     void      vDoesArg(Cell* pCell);
@@ -67,9 +71,6 @@ namespace Dictionaries
     TaskStep  pDoesStep(void);
     TaskStep* ppDoesStep(void);
     
-    char* pDataArea(void);
-    char* pDataEnd(void);
-    i8    iDataBytes(void);
     void  vDump(void);
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
@@ -78,11 +79,8 @@ namespace Dictionaries
     void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
     void  vEncode(TaskStep* pCode);
-    
     Cell* pFirstCell(void);
-    
     bool  bHasCell(Cell* pCell);
-    
     bool  bImmediate(void);
     bool  bIsName(s& sName);
     void  vImmediate(bool bImmediate);

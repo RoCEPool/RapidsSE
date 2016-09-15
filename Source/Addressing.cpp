@@ -1,8 +1,18 @@
 /*============================================================================*/
-/* Addressing.cpp -- functions for manipulating addresses                     */
+/* Addressing.cpp -- Functions for Manipulating Addresses                     */
 /*============================================================================*/
 
 #include "Magic.h"
+
+/*----------------------------------------------------------------------------*/
+/* address as a char*                                                         */
+/*----------------------------------------------------------------------------*/
+char* Magic::_pc(void* pVoidAddress)
+{
+  char* pCharAddress = reinterpret_cast<char*>(pVoidAddress);
+  
+  return pCharAddress;
+}
 
 /*----------------------------------------------------------------------------*/
 /* add bytes to address                                                       */
