@@ -188,7 +188,7 @@ void* Word::pAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* append pointer                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(StepPtr* ppFunc)
+void Word::vAppend(DoesStep ppFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -199,7 +199,7 @@ void Word::vAppend(StepPtr* ppFunc)
 /*----------------------------------------------------------------------------*/
 /* append pointer                                                             */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(StepPtr* ppFunc)
+void* Word::pAppend(DoesStep ppFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -213,7 +213,7 @@ void* Word::pAppend(StepPtr* ppFunc)
 /*----------------------------------------------------------------------------*/
 /* get address of step pointer                                                */
 /*----------------------------------------------------------------------------*/
-StepPtr* Word::ppStep(void)
+DoesStep Word::ppStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -243,7 +243,7 @@ Dictionary* Word::pDictionary(void)
 /*----------------------------------------------------------------------------*/
 /* get step ptr                                                               */
 /*----------------------------------------------------------------------------*/
-StepPtr Word::pStep(void)
+TaskStep Word::pStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -253,7 +253,7 @@ StepPtr Word::pStep(void)
 /*----------------------------------------------------------------------------*/
 /* set step pointer                                                           */
 /*----------------------------------------------------------------------------*/
-void Word::vStep(StepPtr pStep)
+void Word::vStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -375,7 +375,7 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, StepPtr* pStep)
+void Word::vEncode(const char* aWord, DoesStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -418,7 +418,7 @@ void Word::vEncode(const char* aWord, Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(StepPtr* pStep)
+void Word::vEncode(DoesStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

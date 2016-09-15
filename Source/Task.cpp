@@ -184,7 +184,7 @@ void Task::vInit(const char* aLambda)
   
   m_pQueue = nullptr;
   
-  m_pCell      = nullptr;
+  IP.m_pCell      = nullptr;
   m_pResetIP   = nullptr;
   m_pBeginIP   = nullptr;
   m_pWord      = nullptr;
@@ -248,7 +248,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 /* add primitive word into dictionary                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitive(const char* pName, StepPtr pStep, bool bImmediate)
+void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -268,7 +268,7 @@ void Task::vAdjustNext(i8 iBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pCell = reinterpret_cast<Cell*>(pcAdd(m_pCell,iBytes));
+  IP.m_pCell = reinterpret_cast<Cell*>(pcAdd(IP.m_pCell,iBytes));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -278,7 +278,7 @@ Object* Task::pArgObject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Object* pObject = reinterpret_cast<Object*>(m_pCell);
+  Object* pObject = reinterpret_cast<Object*>(IP.m_pCell);
   
   return pObject;
 }
@@ -1170,7 +1170,7 @@ Word* Task::pCompileColon(s& sDefinition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   Word* pNewWord;
-  StepPtr  pStep;
+  TaskStep  pStep;
   Word* pFoundWord;
   ValWsp xValWsp;
   
@@ -1442,7 +1442,7 @@ void Task::vSeedDicCompileSen(void)
   Word* pBootSen = pFindWord("::dicCompile");
   ASSERT(pBootSen);
   
-  m_pCell = pBootSen->pFirstCell();
+  IP.m_pCell = pBootSen->pFirstCell();
   
   m_eState = TS_RUNNING;
   
@@ -1463,7 +1463,7 @@ void Task::vSeedWord(const char* aLambda)
   
   Word* pShellEnter = pFindWord("::docmd");
   
-  m_pCell = pShellEnter->pFirstCell();
+  IP.m_pCell = pShellEnter->pFirstCell();
   
   m_eState = TS_SWITCH;
   
@@ -1486,7 +1486,7 @@ void Task::vSeedDocol(void)
   
   Word* pShellEnter = pFindWord("::enter");
   
-  m_pCell = pShellEnter->pFirstCell();
+  IP.m_pCell = pShellEnter->pFirstCell();
   
   m_eState = TS_SWITCH;
   
@@ -1569,7 +1569,7 @@ void Task::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pCell    = m_pResetIP;
+  IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
   m_sToken = "";
@@ -1585,7 +1585,7 @@ void Task::vRetry(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_pCell    = m_pResetIP;
+  IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
   m_sToken = "";
@@ -1625,9 +1625,9 @@ void Task::vRoutineCall(Word* pWord)
   
   ASSERT(WT_ROUTINE == pWord->eWordType());
     
-  m_xReturnStack.vPush((void*)m_pCell);
+  m_xReturnStack.vPush((void*)IP.m_pCell);
     
-  m_pCell = pWord->pArg();
+  IP.m_pCell = pWord->pArg();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1710,11 +1710,11 @@ void Task::vLoop(void)
   
   while (TS_RUNNING == m_eState) {
     
-    StepPtr pTaskStep = *m_pCell->m_pDoesStep;
+    TaskStep pTaskStep = *IP.m_pCell->m_pDoesStep;
     
     //vTrace("pTaskStep %p\n",pTaskStep);
     
-    m_pCell++;
+    IP.m_pCell++;
     
     try {
       (pTaskStep)(this);
@@ -1843,7 +1843,7 @@ void Task::vAgain_(NNP_Task nnpTask)
 {
 ENTRY("vAgain_");
   
-  nnpTask->m_pCell = nnpTask->m_pBeginIP;
+  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
   
   EXIT();
 }
@@ -1913,7 +1913,7 @@ void Task::vBegin_(NNP_Task nnpTask)
 {
 ENTRY("vBegin_");
   
-  nnpTask->m_pBeginIP = nnpTask->m_pCell;
+  nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
   
   EXIT();
 }
@@ -2304,7 +2304,7 @@ ENTRY("vEncodeCall");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  StepPtr* pCode = pCalledWord->ppStep();
+  DoesStep pCode = pCalledWord->ppStep();
   
   pCurrentWord->vEncode(pCode);
   
@@ -2321,7 +2321,7 @@ ENTRY("vEncodeDoes");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vStep(&Task::vEnterDoes);
-  pCurrentWord->vAddr(nnpTask->m_pCell+1);
+  pCurrentWord->vAddr(nnpTask->IP.m_pCell+1);
   
   EXIT();
 }
@@ -2362,7 +2362,7 @@ ENTRY("vEncodeFun");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  StepPtr* pCode = pCalledWord->ppStep();
+  DoesStep pCode = pCalledWord->ppStep();
   
   pCurrentWord->vAppend(pCode);
   
@@ -2394,11 +2394,11 @@ void Task::vEnterDoes(NNP_Task nnpTask)
 {
   ENTRY("vEnterDoes");
   
-  nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
+  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
   
-  Cell*    pPrevCell = nnpTask->m_pCell - 1;
+  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
   
-  StepPtr* pWordStep = pPrevCell->m_pDoesStep;
+  DoesStep pWordStep = pPrevCell->m_pDoesStep;
   
   Cell**   pWordArg  = reinterpret_cast<Cell**>(pvAdd((void*)pWordStep,sizeof(Cell*)));
   
@@ -2411,7 +2411,7 @@ void Task::vEnterDoes(NNP_Task nnpTask)
     nnpTask->m_xParamStack.vPush(pCell);
   }
   
-  nnpTask->m_pCell = *pWordArg;
+  nnpTask->IP.m_pCell = *pWordArg;
   
   EXIT();
 }
@@ -2423,15 +2423,15 @@ void Task::vEnterRoutine(NNP_Task nnpTask)
 {
 ENTRY("vEnterRoutine");
   
-  nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
+  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
   
-  Cell*    pPrevCell = nnpTask->m_pCell - 1;
+  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
   
-  StepPtr* pWordStep = pPrevCell->m_pDoesStep;
+  DoesStep pWordStep = pPrevCell->m_pDoesStep;
   
   Cell**   pWordArg  = reinterpret_cast<Cell**>(pvAdd((void*)pWordStep,sizeof(Cell*)));
   
-  nnpTask->m_pCell = *pWordArg;
+  nnpTask->IP.m_pCell = *pWordArg;
   
   EXIT();
 }
@@ -2537,25 +2537,25 @@ ENTRY("vExecute");
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
-    StepPtr pStep = pWord->pStep();
+    TaskStep pStep = pWord->pStep();
     (pStep)(nnpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->m_xReturnStack.vPush(nnpTask->m_pCell);
+    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
 
     Cell* pCell = pWord->pFirstCell();
     nnpTask->m_xParamStack.vPush(pCell);
     
-    StepPtr pStep = pWord->pStep();
+    TaskStep pStep = pWord->pStep();
     if (!pStep || Task::vNop == pStep) {
       void* pCellVoid;
       if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
         THROW_INVALID_RETURN("execute");
-      nnpTask->m_pCell = _pCell(pCellVoid);
+      nnpTask->IP.m_pCell = _pCell(pCellVoid);
     }
     else {
       // does> inherited code
-      nnpTask->m_pCell = pWord->pArg();
+      nnpTask->IP.m_pCell = pWord->pArg();
     }
   }
   else {
@@ -2578,7 +2578,7 @@ ENTRY("vExit");
   if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
     THROW_INVALID_RETURN("exit");
   
-  nnpTask->m_pCell = _pCell(pCellVoid);
+  nnpTask->IP.m_pCell = _pCell(pCellVoid);
   
   EXIT();
 }
@@ -2967,7 +2967,7 @@ void Task::vJump(NNP_Task nnpTask)
 {
 ENTRY("vJump");
   
-  nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpTo;
+  nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
   
   EXIT();
 }
@@ -2985,9 +2985,9 @@ ENTRY("vJumpFalse");
   
   // cell points to the jump arg
   if (iVal)
-    nnpTask->m_pCell++;
+    nnpTask->IP.m_pCell++;
   else
-    nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpTo;
+    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
   
   EXIT();
 }
@@ -3005,9 +3005,9 @@ ENTRY("vJumpTrue");
   
   // cell points to the jump arg
   if (iVal)
-    nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpTo;
+    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
   else
-    nnpTask->m_pCell++;
+    nnpTask->IP.m_pCell++;
   
   EXIT();
 }
@@ -3111,7 +3111,7 @@ ENTRY("vLoop_RT");
     nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
   }
   else {
-    nnpTask->m_pCell += 2;
+    nnpTask->IP.m_pCell += 2;
   }
   
   EXIT();
@@ -3162,7 +3162,7 @@ ENTRY("vLoopPlus_RT");
     nnpTask->m_xReturnStack.vPush(iIndex);
   }
   else {
-    nnpTask->m_pCell += 2;
+    nnpTask->IP.m_pCell += 2;
   }
   
   EXIT();
@@ -3517,7 +3517,7 @@ void Task::vPush(NNP_Task nnpTask)
 { 
 ENTRY("vPush");
   
-  Value* pValue = nnpTask->m_pValue;
+  Value* pValue = nnpTask->IP.m_pValue;
   
   nnpTask->m_xParamStack.vPush(pValue);
   
@@ -3533,7 +3533,7 @@ void Task::vPushEmbedded(NNP_Task nnpTask)
 {
 ENTRY("vPushEmbedded");
   
-  Object* pPtrObject = nnpTask->m_pObject;
+  Object* pPtrObject = nnpTask->IP.m_pObject;
   
   nnpTask->m_xParamStack.vPush(pPtrObject);
   
@@ -3643,7 +3643,7 @@ void Task::vRetryPoint(NNP_Task nnpTask)
 {
 ENTRY("vRetryMark");
   
-  nnpTask->m_pResetIP = nnpTask->m_pCell;
+  nnpTask->m_pResetIP = nnpTask->IP.m_pCell;
   
   nnpTask->m_xParamStack.vRetryPoint();
   nnpTask->m_xReturnStack.vRetryPoint();

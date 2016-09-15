@@ -36,11 +36,11 @@ namespace Dictionaries
     Dictionary* m_pDictionary; // which dictionary this word in
     Word*       m_pKind;       // kind of word
     bool        m_bImmediate;  // immediate execution during compile?
+    Word*       m_pPrevWord;   // previous word in dictionary
     i8          m_iDataBytes;  // number of data bytes
-    Word*       m_pPrevWord;   // offset of previous word
-    StepPtr     m_pDoesStep;   // "entry step" for this word
+    TaskStep    m_pDoesStep;   // "entry step" for this word
     Cell*       m_pDoesArg;    // "entry step" argument
-    // ..data..
+    // ..data.. (being an array of cells)
     
    public:
     void* operator new(size_t, Dictionary* pDictionary);
@@ -60,17 +60,17 @@ namespace Dictionaries
     void* pAppend(Value* pValue);
     void  vAppend(Value* pValue);
     
-    void* pAppend(StepPtr* ppStep);
-    void  vAppend(StepPtr* ppStep);
+    void* pAppend(DoesStep ppStep);
+    void  vAppend(DoesStep ppStep);
     
-    StepPtr* ppStep(void);
+    DoesStep ppStep(void);
 
     Dictionary* pDictionary(void);
     
     Cell* pArg(void);
     
-    StepPtr  pStep(void);
-    void  vStep(StepPtr pStep);
+    TaskStep  pStep(void);
+    void  vStep(TaskStep pStep);
     
     char* pBodyArea(void);
     void  vByteDump(i8 iSize);
@@ -80,10 +80,10 @@ namespace Dictionaries
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
-    void  vEncode(const char* aWord, StepPtr* pCode);
+    void  vEncode(const char* aWord, DoesStep pCode);
     void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
-    void  vEncode(StepPtr* pCode);
+    void  vEncode(DoesStep pCode);
     
     Cell* pFirstCell(void);
     

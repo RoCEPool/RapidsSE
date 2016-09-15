@@ -175,7 +175,7 @@ Word* Dictionary::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given function                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pFindStep(StepPtr pStep)
+Word* Dictionary::pFindStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   

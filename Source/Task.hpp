@@ -124,11 +124,11 @@ namespace Tasks
     eTK       m_eToken;     // token type
     
     union {
-      Cell*   m_pCell;
-      Value*  m_pValue;
-      Object* m_pObject;
-      Header* m_pHeader;
-    };
+      Cell*   m_pCell;    // points to cell inside a word
+      Value*  m_pValue;   // points to an embedded value within a word
+      Object* m_pObject;  // points to an embedded object within a word
+      Header* m_pHeader;  // points to an embbeded header within a word
+    } IP;
     
     
 //  u8    m_uMarker1;
@@ -167,7 +167,7 @@ namespace Tasks
     void vAddConstant(const char* aName, i8 iVal);
     void vAddConstant(const char* aName, const char* aValue);
     void vAddConstants(void);
-    void vAddPrimitive(const char* aName, StepPtr pStep, bool bImmediate);
+    void vAddPrimitive(const char* aName, TaskStep pStep, bool bImmediate);
     void vAddPrimitives(void);
     void vAddRoutines(void);
     Object* pArgObject(void);

@@ -144,7 +144,7 @@ Word* DictionaryStack::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given step                                                     */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pFindStep(StepPtr pStep)
+Word* DictionaryStack::pFindStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
   
