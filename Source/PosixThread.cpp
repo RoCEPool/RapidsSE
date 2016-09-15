@@ -220,7 +220,7 @@ void PosixThread::vThreadBoost(i8 nPoints)
   
 #else
   vWarn("Get thread boost not implemented!");
-  return 0;
+  
 #endif
 
 }
@@ -243,7 +243,7 @@ void PosixThread::vThreadPriority(i8 iPriority)
   
 #else
   vWarn("Set thread priority not implemented!");
-  return 0;
+  
 #endif
 
 }
