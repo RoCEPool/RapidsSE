@@ -287,6 +287,17 @@ void RapidsSE::vPoolOpen(void)
   }
   else if (gxArguments.m_bStatus) {
   }
+  else if (gxArguments.m_bStop) {
+    if (! bTestRegion()) {
+      vTrace("Error: instance was not started\n",gxArguments.m_sRegionName.a());
+      exit(EXIT_FAILURE);
+      return;
+    }
+    vAttachRegion();
+    vAttachObjects();
+    return;
+
+  }
   else {
     vAttachRegion();
     vAttachObjects();
@@ -598,6 +609,8 @@ void RapidsSE::vSystemStop(void)
   vDropRegion();
   
   gpAttachMap->m_iStop = 1;
+  
+  vTrace("RapidsSE %s stopped\n",gxArguments.m_sRegionName.a());
   
   // the system is now stopped
 }
