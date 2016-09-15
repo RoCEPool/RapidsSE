@@ -13,8 +13,8 @@ SOURCES = $(wildcard *.cpp)
 S_SOURCES += $(wildcard *.s)
 
 #Object Files
+ALLOBJECTS = $(SOURCES:.cpp=.o)
 OBJECTS = $(SOURCES:.cpp=.o)
-ALLOBJECTS = $(OBJECTS)
 OBJECTS += $(S_SOURCES)
 
 #Dependency Files
@@ -45,7 +45,7 @@ $(TARGET): $(OBJECTS) $(DEPFILES)
 
 #To remove generated files
 clean:
-	rm -f $(EXEC) $(ALLOBJECTS)
+	rm -f $(TARGET) $(ALLOBJECTS) *.d
 
 #To print 
 print-% : ; @echo $* = $($*)
