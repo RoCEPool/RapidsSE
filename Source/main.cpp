@@ -31,7 +31,7 @@ int main(int argc, const char* argv[])
   RapidsSE::vCheckAssumptions();
   
   if ( ! gxArguments.bParse(argc,argv) )
-    ASSERT(0);
+    exit(EXIT_FAILURE);
   
   if (gxArguments.m_bWelcome)
     printf("RapidsSE v%s (%s %s -- %s)\n",
