@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Word.cpp - word in dictionary                                              */
+/* Word.cpp -- Word in Dictionary                                             */
 /*============================================================================*/
 
 #include "Tasks.h" // needed for Task::vEnter
@@ -270,16 +270,6 @@ void Word::vDoesArg(Cell* pCell)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   m_pDoesArg = pCell;
-}
-
-/*----------------------------------------------------------------------------*/
-/* byte dump                                                                  */
-/*----------------------------------------------------------------------------*/
-void Word::vByteDump(i8 iSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Memory::vHexDump(this, iSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -585,16 +575,6 @@ Value* Word::pValue(void)
   Value* pValue = reinterpret_cast<Value*>(pFirstCell());
   
   return pPoolCheck<Value*>(pValue);
-}
-
-/*----------------------------------------------------------------------------*/
-/* word dump                                                                  */
-/*----------------------------------------------------------------------------*/
-void Word::vWordDump(i8 iSize)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Memory::vWordDump(this, iSize);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -6329,7 +6329,8 @@ ENTRY("vMemoryByteDump");
     THROW_INVALID_PARAM("memory.bytedump");
   Word* pWord = _pWord(pWordObject);
   
-  pWord->vByteDump(iSize);
+  //pWord->vByteDump(iSize);
+  Memory::vHexDump(pWord,iSize);
   
   EXIT();
 }
@@ -6350,7 +6351,8 @@ ENTRY("vMemoryWordDump");
     THROW_INVALID_PARAM("memory.worddump");
   Word* pWord = _pWord(pWordObject);
   
-  pWord->vWordDump(iSize);
+  //pWord->vWordDump(iSize);
+  Memory::vWordDump(pWord,iSize);
   
   EXIT();
 }
