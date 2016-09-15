@@ -62,8 +62,8 @@ Word::Word(const char* sName)
   
   pFooter()->vSetFooter();
   
-  m_pStep = &Tasks::Task::vEnterRoutine;
-  m_pArg  = pFirstCell();
+  m_pDoesStep = &Tasks::Task::vEnterRoutine;
+  m_pDoesArg  = pFirstCell();
   
   Memory::vCheckInitialised(this,sizeof(Word));
   
@@ -85,7 +85,7 @@ void Word::vAddr(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pArg = pCell;
+  m_pDoesArg = pCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,7 +153,7 @@ void* Word::pAppend(Cell* pCell)
   
   Cell* pAllottedCell = (Cell*)pAllot(sizeof(pCell));
   
-  pAllottedCell->m_pJumpLocn = pCell;
+  pAllottedCell->m_pJumpTo = pCell;
   
   return pAllottedCell;
 }
@@ -217,7 +217,7 @@ StepPtr* Word::ppStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_pStep;
+  return &m_pDoesStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -227,7 +227,7 @@ Cell* Word::pArg(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pArg;
+  return m_pDoesArg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -247,7 +247,7 @@ StepPtr Word::pStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pStep;
+  return m_pDoesStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -257,7 +257,7 @@ void Word::vStep(StepPtr pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pStep = pStep;
+  m_pDoesStep = pStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -311,7 +311,7 @@ void Word::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pStepWord = gpMainDic->pFindStep(m_pStep);
+  Word* pStepWord = gpMainDic->pFindStep(m_pDoesStep);
   
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
          "Step %p %s ..Data.. %p\n",
@@ -321,7 +321,7 @@ void Word::vDump(void)
          m_pKind->m_sName.a(),
          m_bImmediate,
          m_iDataBytes,
-         m_pStep,
+         m_pDoesStep,
          pStepWord ? pStepWord->aName() : "<not-found>",
          pFirstCell()
          );
@@ -342,7 +342,7 @@ void Word::vDump(const char* pTab)
          pWT[m_eWordType],
          m_bImmediate ? "Immediate" : "Not Immediate",
          m_iDataBytes,
-         m_pStep,
+         m_pDoesStep,
          pFirstCell()
          );
 }

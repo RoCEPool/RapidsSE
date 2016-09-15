@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Cell.hpp - a cell in parameter/body area of word                           */
+/* Cell.hpp -- Cell in Data Area of Routine Word                              */
 /*============================================================================*/
 
 #pragma once
@@ -12,9 +12,8 @@ namespace Dictionaries
   {
   public:
     union {
-      StepPtr    m_pStep;
-      StepPtr*   m_pCode;
-      Cell*      m_pJumpLocn;  // pointer to jump location
+      StepPtr*  m_pDoesStep; // pointer the "entry step" of a word
+      Cell*     m_pJumpTo;   // pointer to another cell within same routine
     };
   };
   

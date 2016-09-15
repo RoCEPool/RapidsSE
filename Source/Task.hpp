@@ -124,11 +124,10 @@ namespace Tasks
     eTK       m_eToken;     // token type
     
     union {
-      Cell*       m_pCell;
-      StepPtr     m_pStep;
-      Value*      m_pValue;
-      Object*     m_pObject;
-      Header*     m_pHeader;
+      Cell*   m_pCell;
+      Value*  m_pValue;
+      Object* m_pObject;
+      Header* m_pHeader;
     };
     
     

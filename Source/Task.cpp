@@ -1710,14 +1710,14 @@ void Task::vLoop(void)
   
   while (TS_RUNNING == m_eState) {
     
-    StepPtr pStep = *m_pCell->m_pCode;
+    StepPtr pTaskStep = *m_pCell->m_pDoesStep;
     
-    //vTrace("pStep %p\n",pStep);
+    //vTrace("pTaskStep %p\n",pTaskStep);
     
     m_pCell++;
     
     try {
-      (pStep)(this);
+      (pTaskStep)(this);
     }
     
     catch (i8 iException) {
@@ -2285,7 +2285,7 @@ ENTRY("vElse");
   
   //-------------------------------------------------------------------------
   
-  pIfJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -2398,9 +2398,9 @@ void Task::vEnterDoes(NNP_Task nnpTask)
   
   Cell*    pPrevCell = nnpTask->m_pCell - 1;
   
-  StepPtr* pWordCode = pPrevCell->m_pCode;
+  StepPtr* pWordStep = pPrevCell->m_pDoesStep;
   
-  Cell**   pWordArg  = reinterpret_cast<Cell**>(pvAdd((void*)pWordCode,sizeof(Cell*)));
+  Cell**   pWordArg  = reinterpret_cast<Cell**>(pvAdd((void*)pWordStep,sizeof(Cell*)));
   
   Word* pWord = reinterpret_cast<Word*>(pcAdd(pWordArg, -(sizeof(Word)-sizeof(Cell*)) ));
   
@@ -2427,9 +2427,9 @@ ENTRY("vEnterRoutine");
   
   Cell*    pPrevCell = nnpTask->m_pCell - 1;
   
-  StepPtr* pWordCode = pPrevCell->m_pCode;
+  StepPtr* pWordStep = pPrevCell->m_pDoesStep;
   
-  Cell**   pWordArg  = reinterpret_cast<Cell**>(pvAdd((void*)pWordCode,sizeof(Cell*)));
+  Cell**   pWordArg  = reinterpret_cast<Cell**>(pvAdd((void*)pWordStep,sizeof(Cell*)));
   
   nnpTask->m_pCell = *pWordArg;
   
@@ -2967,7 +2967,7 @@ void Task::vJump(NNP_Task nnpTask)
 {
 ENTRY("vJump");
   
-  nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpLocn;
+  nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpTo;
   
   EXIT();
 }
@@ -2987,7 +2987,7 @@ ENTRY("vJumpFalse");
   if (iVal)
     nnpTask->m_pCell++;
   else
-    nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpLocn;
+    nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpTo;
   
   EXIT();
 }
@@ -3005,7 +3005,7 @@ ENTRY("vJumpTrue");
   
   // cell points to the jump arg
   if (iVal)
-    nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpLocn;
+    nnpTask->m_pCell = nnpTask->m_pCell->m_pJumpTo;
   else
     nnpTask->m_pCell++;
   
@@ -3299,7 +3299,7 @@ ENTRY("vNext");
   
   pCurrentWord->vEncode("jump",pIterateLoc);
   
-  pJumpFalseArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  pJumpFalseArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -3631,7 +3631,7 @@ ENTRY("vRepeat");
   
   //-------------------------------------------------------------------------
   
-  pWhileJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -3942,39 +3942,36 @@ ENTRY("vSee");
   
   vTrace("See: %s\n",pWord->sName().a());
   
-  
   Cell* pCell = pWord->pArg();
   
   s8K sWorkspace;
   
   while ((char*)pCell < pcAdd(pWord->pBodyArea(),pWord->iDataBytes())) {
  
-    Word* pFuncWord = nnpTask->m_xDictionaryStack.pFindStep(*pCell->m_pCode);
+    Word* pWordStep = nnpTask->m_xDictionaryStack.pFindStep(*pCell->m_pDoesStep);
 
-    vTrace("%p: %s",pCell,pFuncWord->sName().a());
+    vTrace("%p: %s",pCell,pWordStep->sName().a());
   
-    if ( *pCell->m_pCode == Task::vJump) {
+    if ( *pCell->m_pDoesStep == Task::vJump ) {
       pCell++;
-      vTrace(" %p\n",pCell->m_pJumpLocn);
-      pCell++;
-    }
-    else
-    if ( *pCell->m_pCode == Task::vJumpFalse) {
-      pCell++;
-      vTrace(" %p\n",pCell->m_pJumpLocn);
+      vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
     }
     else
-    if ( *pCell->m_pCode == Task::vJumpTrue) {
+    if ( *pCell->m_pDoesStep == Task::vJumpFalse ) {
       pCell++;
-      vTrace(" %p\n",pCell->m_pJumpLocn);
+      vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
     }
     else
-    if ( *pCell->m_pCode == Task::vPush) {
+    if ( *pCell->m_pDoesStep == Task::vJumpTrue ) {
       pCell++;
-      //Value* pValue = reinterpret_cast<Value*>(pCell);
-      //pValue->vToString(sWorkspace.a());
+      vTrace(" %p\n",pCell->m_pJumpTo);
+      pCell++;
+    }
+    else
+    if ( *pCell->m_pDoesStep == Task::vPush ) {
+      pCell++;
       ValWsp* pValue = reinterpret_cast<ValWsp*>(pCell);
       pValue->vToString(sWorkspace.a());
       vTrace(" %s\n",sWorkspace.a());
@@ -4154,7 +4151,7 @@ ENTRY("vThen");
     THROW_INVALID_RETURN("then");
   Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
-  pIfJumpArg->m_pJumpLocn = pCurrentWord->pLastCell();
+  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }

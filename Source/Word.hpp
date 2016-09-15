@@ -38,8 +38,8 @@ namespace Dictionaries
     bool        m_bImmediate;  // immediate execution during compile?
     i8          m_iDataBytes;  // number of data bytes
     Word*       m_pPrevWord;   // offset of previous word
-    StepPtr     m_pStep;       // task step
-    Cell*       m_pArg;        // task step argument
+    StepPtr     m_pDoesStep;   // "entry step" for this word
+    Cell*       m_pDoesArg;    // "entry step" argument
     // ..data..
     
    public:
