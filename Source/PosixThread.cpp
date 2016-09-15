@@ -184,6 +184,8 @@ void PosixThread::vThreadExit(void)
 /*----------------------------------------------------------------------------*/
 i8 PosixThread::iThreadPriority(void)
 {
+#ifdef __APPLE__
+  
   int iPolicy;
   struct sched_param xSched;
   
@@ -191,6 +193,12 @@ i8 PosixThread::iThreadPriority(void)
   ASSERT(! iError);
   
   return xSched.sched_priority;
+  
+#else
+  vWarn("Get thread priority not implemented!");
+  return 0;
+#endif
+
 }
         
 /*----------------------------------------------------------------------------*/
@@ -198,6 +206,8 @@ i8 PosixThread::iThreadPriority(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vThreadBoost(i8 nPoints)
 {
+#ifdef __APPLE__
+  
   int iPolicy;
   struct sched_param xSched;
   
@@ -207,6 +217,12 @@ void PosixThread::vThreadBoost(i8 nPoints)
   xSched.sched_priority += (int)nPoints;
   iError = pthread_setschedparam(m_iPosixThreadId,iPolicy,&xSched);
   ASSERT(! iError);
+  
+#else
+  vWarn("Get thread boost not implemented!");
+  return 0;
+#endif
+
 }
         
 /*----------------------------------------------------------------------------*/
@@ -214,6 +230,7 @@ void PosixThread::vThreadBoost(i8 nPoints)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vThreadPriority(i8 iPriority)
 {
+#ifdef __APPLE__
   int iPolicy;
   struct sched_param xSched;
   
@@ -224,6 +241,11 @@ void PosixThread::vThreadPriority(i8 iPriority)
   iError = pthread_setschedparam(m_iPosixThreadId,iPolicy,&xSched);
   ASSERT(! iError);
   
+#else
+  vWarn("Set thread priority not implemented!");
+  return 0;
+#endif
+
 }
         
 /*----------------------------------------------------------------------------*/
