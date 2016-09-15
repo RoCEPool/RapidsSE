@@ -150,7 +150,7 @@ Word* DictionaryStack::pFindStep(TaskStep pStep)
   
   for (i8 i = m_iTop; i >= 0; i--) {
     for (Word* pWord = m_pDictionary[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
-      if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pStep())
+      if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pDoesStep())
         return pWord;
   }
   

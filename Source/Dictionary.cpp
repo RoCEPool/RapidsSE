@@ -180,7 +180,7 @@ Word* Dictionary::pFindStep(TaskStep pStep)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pStep())
+    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pDoesStep())
       return pWord;
   
   return nullptr;

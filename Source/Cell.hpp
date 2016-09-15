@@ -12,8 +12,8 @@ namespace Dictionaries
   {
   public:
     union {
-      DoesStep m_pDoesStep; // pointer the "entry step" of a word
-      Cell*    m_pJumpTo;   // pointer to another cell within same routine
+      TaskStep* m_ppDoesStep; // pointer the "entry step" of a word
+      Cell*     m_pJumpTo;   // pointer to another cell within same routine
     };
   };
   

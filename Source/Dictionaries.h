@@ -14,7 +14,6 @@ namespace Tasks
 namespace Dictionaries
 {
   typedef void (*TaskStep)(Tasks::NNP_Task);
-  typedef void (**DoesStep)(Tasks::NNP_Task);
 }
 
 #include "Cell.hpp"

@@ -49,7 +49,6 @@ namespace Dictionaries
     Word(const char* sName);
     ~Word(void);
     
-    void  vAddr(Cell* pCell);
     
     char* pAllot(i8 iBytes);
     
@@ -60,19 +59,18 @@ namespace Dictionaries
     void* pAppend(Value* pValue);
     void  vAppend(Value* pValue);
     
-    void* pAppend(DoesStep ppStep);
-    void  vAppend(DoesStep ppStep);
+    void* pAppend(TaskStep* ppStep);
+    void  vAppend(TaskStep* ppStep);
     
-    DoesStep ppStep(void);
-
     Dictionary* pDictionary(void);
     
-    Cell* pArg(void);
+    void      vDoesStep(TaskStep pStep);
+    TaskStep  pDoesStep(void);
+    TaskStep* ppDoesStep(void);
+    void      vDoesArg(Cell* pCell);
+    Cell*     pDoesArg(void);
     
-    TaskStep  pStep(void);
-    void  vStep(TaskStep pStep);
-    
-    char* pBodyArea(void);
+    char* pDataArea(void);
     void  vByteDump(i8 iSize);
     char* pDataEnd(void);
     i8    iDataBytes(void);
@@ -80,10 +78,10 @@ namespace Dictionaries
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
-    void  vEncode(const char* aWord, DoesStep pCode);
+    void  vEncode(const char* aWord, TaskStep* pCode);
     void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
-    void  vEncode(DoesStep pCode);
+    void  vEncode(TaskStep* pCode);
     
     Cell* pFirstCell(void);
     

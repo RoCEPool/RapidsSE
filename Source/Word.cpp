@@ -79,16 +79,6 @@ Word::~Word(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set addr pointer                                                           */
-/*----------------------------------------------------------------------------*/
-void Word::vAddr(Cell* pCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_pDoesArg = pCell;
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot data space                                                           */
 /*----------------------------------------------------------------------------*/
 char* Word::pAllot(i8 iBytes)
@@ -188,7 +178,7 @@ void* Word::pAppend(Value* pValue)
 /*----------------------------------------------------------------------------*/
 /* append pointer                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vAppend(DoesStep ppFunc)
+void Word::vAppend(TaskStep* ppFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -199,7 +189,7 @@ void Word::vAppend(DoesStep ppFunc)
 /*----------------------------------------------------------------------------*/
 /* append pointer                                                             */
 /*----------------------------------------------------------------------------*/
-void* Word::pAppend(DoesStep ppFunc)
+void* Word::pAppend(TaskStep* ppFunc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
@@ -208,26 +198,6 @@ void* Word::pAppend(DoesStep ppFunc)
   Memory::vCopy(pAddress,&ppFunc,sizeof(ppFunc));
   
   return pAddress;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of step pointer                                                */
-/*----------------------------------------------------------------------------*/
-DoesStep Word::ppStep(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return &m_pDoesStep;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get step argument                                                          */
-/*----------------------------------------------------------------------------*/
-Cell* Word::pArg(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_pDoesArg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,7 +213,7 @@ Dictionary* Word::pDictionary(void)
 /*----------------------------------------------------------------------------*/
 /* get step ptr                                                               */
 /*----------------------------------------------------------------------------*/
-TaskStep Word::pStep(void)
+TaskStep Word::pDoesStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -251,9 +221,9 @@ TaskStep Word::pStep(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set step pointer                                                           */
+/* set does step                                                              */
 /*----------------------------------------------------------------------------*/
-void Word::vStep(TaskStep pStep)
+void Word::vDoesStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -261,15 +231,45 @@ void Word::vStep(TaskStep pStep)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to body area                                                       */
+/* get ptr to data area                                                       */
 /*----------------------------------------------------------------------------*/
-char* Word::pBodyArea(void)
+char* Word::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   char* pAddress = pcAdd(this,sizeof(Word));
   
   return pPoolCheck<char*>((void*)pAddress);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of step pointer                                                */
+/*----------------------------------------------------------------------------*/
+TaskStep* Word::ppDoesStep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return &m_pDoesStep;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get does argument                                                          */
+/*----------------------------------------------------------------------------*/
+Cell* Word::pDoesArg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_pDoesArg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set does argument                                                          */
+/*----------------------------------------------------------------------------*/
+void Word::vDoesArg(Cell* pCell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_pDoesArg = pCell;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -356,7 +356,7 @@ void Word::vEncode(const char* aWord)
   
   Word* pCalledWord = gpMainDic->pFind(aWord);
   
-  vAppend(pCalledWord->ppStep());
+  vAppend(pCalledWord->ppDoesStep());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -375,7 +375,7 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, DoesStep pStep)
+void Word::vEncode(const char* aWord, TaskStep* pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -418,7 +418,7 @@ void Word::vEncode(const char* aWord, Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* encode call to word                                                        */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(DoesStep pStep)
+void Word::vEncode(TaskStep* pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -445,7 +445,7 @@ bool Word::bHasLocation(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  if ((char*)pCell >= pBodyArea() && (char*)pCell <= pDataEnd())
+  if ((char*)pCell >= pDataArea() && (char*)pCell <= pDataEnd())
     return true;
   
   return false;
