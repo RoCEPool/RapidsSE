@@ -52,15 +52,14 @@ namespace Dictionaries
     
     char* pAllot(i8 iBytes);
     
-    void* pAppend(i8 wVal);
-    void  vAppend(i8 wVal);
     void* pAppend(Cell* pCell);
     void  vAppend(Cell* pCell);
-    void* pAppend(Value* pValue);
-    void  vAppend(Value* pValue);
-    
+    void* pAppend(i8 wVal);
+    void  vAppend(i8 wVal);
     void* pAppend(TaskStep* ppStep);
     void  vAppend(TaskStep* ppStep);
+    void* pAppend(Value* pValue);
+    void  vAppend(Value* pValue);
     
     Dictionary* pDictionary(void);
     
@@ -85,7 +84,7 @@ namespace Dictionaries
     
     Cell* pFirstCell(void);
     
-    bool  bHasLocation(Cell* pCell);
+    bool  bHasCell(Cell* pCell);
     
     bool  bImmediate(void);
     bool  bIsName(s& sName);

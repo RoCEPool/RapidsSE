@@ -183,7 +183,7 @@ Word* DictionaryStack::pLocate(Cell* pCell)
 
   for (i8 i = m_iTop; i >= 0; i--) {
     for (Word* pWord = m_pDictionary[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
-      if (pWord->bHasLocation(pCell))
+      if (pWord->bHasCell(pCell))
         return pWord;
   }
   

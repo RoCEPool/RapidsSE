@@ -439,9 +439,9 @@ Cell* Word::pFirstCell(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* does this word have given cell location?                                   */
+/* does this word have given cell?                                            */
 /*----------------------------------------------------------------------------*/
-bool Word::bHasLocation(Cell* pCell) 
+bool Word::bHasCell(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
