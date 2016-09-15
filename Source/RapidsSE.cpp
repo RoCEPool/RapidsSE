@@ -250,7 +250,9 @@ void RapidsSE::vExecute(void)
     }
     else {
       vTrace("Unknown command line argument\n");
-      ASSERT(0);
+      printf("RapidsSE exits\n");
+      exit(EXIT_FAILURE);
+
     }
   }
   catch (Error* pError) {
