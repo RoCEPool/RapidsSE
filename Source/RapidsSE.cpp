@@ -544,7 +544,7 @@ void RapidsSE::vSystemInit(void)
   
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFind("trace_file");
-  gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->pBodyArea());
+  gpTraceFile = reinterpret_cast<File*>(pTraceFileWord->pDataArea());
   
   // the root thread is on pstack of root task
   gnpRootThread = gnpRootTask->pRootThread();

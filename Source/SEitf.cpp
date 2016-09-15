@@ -186,10 +186,10 @@ void SEitf::vInit(void)
   Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
-  pRspQueWord->vStep(nullptr);
+  pRspQueWord->vDoesStep(nullptr);
   pRspQueWord->pAllot(sizeof(Queue));
   
-  m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pBodyArea());
+  m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pDataArea());
   m_pResponseQueue->vSetMagic();
   m_pResponseQueue->vClass(CN_QUEUE);
   new(m_pResponseQueue) Queue;
@@ -198,7 +198,7 @@ void SEitf::vInit(void)
   Word* pReqQueWord = gpMainDic->pFind("requestQueue");
   ASSERT(pReqQueWord);
   
-  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pBodyArea());
+  m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pDataArea());
   
   // dictionary stack
   m_xDicStack.vPush(gpMainDic);
