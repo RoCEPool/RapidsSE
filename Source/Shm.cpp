@@ -18,7 +18,7 @@ bool Shm::bAttach(const char* aName, int& iFD, SysCall& xSysCall)
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    vTrace("shm_open() error; errno=%d %s\n",errno, strerror(errno));
+    //vTrace("shm_open() error; errno=%d %s\n",errno, strerror(errno));
     return false;
   }
   
