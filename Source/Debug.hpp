@@ -98,6 +98,10 @@ namespace Common
     _checkCondition_(checkValue3); \
     _checkCondition_(checkValue4);
   
+  // check initialized
+  #define _checkInitialised_(iSize) \
+    Memory::vCheckInitialised(this,iSize);
+  
   #else
   
   #define _precondition1_(checkValue1)
@@ -112,6 +116,9 @@ namespace Common
   
   #define _checkCondition_(checkValue)
   
+  // check initialized
+  #define _checkInitialised_(iSize)
+  
   #endif
   
   // throw
@@ -120,10 +127,6 @@ namespace Common
   
   #define THROW_ERROR_MSG(exception, msg) \
     throw new Error(exception,msg,__FILE__,__LINE__);
-  
-  // check initialized
-  #define _checkInitialised_(iSize) \
-    Memory::vCheckInitialised(this,iSize);
 
 };
 
