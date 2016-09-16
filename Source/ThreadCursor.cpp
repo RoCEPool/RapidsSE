@@ -57,7 +57,7 @@ ThreadCursor::ThreadCursor(List_t<Thread>* pList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
   
-  Memory::vCheckInitialised(this,sizeof(ThreadCursor));
+  _checkInitialised_(sizeof(ThreadCursor));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
 }

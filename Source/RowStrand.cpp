@@ -41,7 +41,7 @@ RowStrand::RowStrand(void)
   m_pPrevStrand  = nullptr;
   m_pNextStrand  = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(RowStrand));
+  _checkInitialised_(sizeof(RowStrand));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
 }

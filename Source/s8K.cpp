@@ -18,7 +18,7 @@ s8K::s8K(void)
   
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
-  Memory::vCheckInitialised(this,sizeof(s8K));
+  _checkInitialised_(sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ s8K::s8K(s8K& rArg)
   
   s::vCopy(rArg.a());
   
-  Memory::vCheckInitialised(this,sizeof(s8K));
+  _checkInitialised_(sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@ s8K::s8K(const char* aArg)
   
   s::vCopy(aArg);
   
-  Memory::vCheckInitialised(this,sizeof(s8K));
+  _checkInitialised_(sizeof(s8K));
 }
 
 /*----------------------------------------------------------------------------*/

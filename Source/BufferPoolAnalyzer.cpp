@@ -26,7 +26,7 @@ BufferPoolAnalyzer::BufferPoolAnalyzer(void)
 {
   _magic_();
   
-  Memory::vCheckInitialised(this,sizeof(BufferPoolAnalyzer));
+  _checkInitialised_(sizeof(BufferPoolAnalyzer));
 }
 
 /*----------------------------------------------------------------------------*/

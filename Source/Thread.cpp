@@ -52,7 +52,7 @@ Thread::Thread(void)
   Thread* pThread = this;
   gpThreadList->vAppend(pThread);
   
-  Memory::vCheckInitialised(this,sizeof(Thread));
+  _checkInitialised_(sizeof(Thread));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 }

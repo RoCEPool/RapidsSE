@@ -23,7 +23,7 @@ ObjVal::ObjVal(i8 iSize)
 {
   m_iSize = iSize;
   
-  Memory::vCheckInitialised(this,sizeof(ObjVal));
+  _checkInitialised_(sizeof(ObjVal));
 }
 
 /*----------------------------------------------------------------------------*/

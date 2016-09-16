@@ -19,7 +19,7 @@ Since::Since(void)
   m_iSeconds      = 0;
   m_iMicroseconds = 0;
   
-  Memory::vCheckInitialised(this,sizeof(Since));
+  _checkInitialised_(sizeof(Since));
   
   _postcondition_(_MAGIC_,CN_SINCE,_FOOTER_);
 }

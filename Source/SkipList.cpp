@@ -24,7 +24,7 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
   
   m_pTail->m_pForward[0] = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(SkipList));
+  _checkInitialised_(sizeof(SkipList));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 }

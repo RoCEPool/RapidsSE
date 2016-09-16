@@ -33,7 +33,7 @@ Arguments::Arguments(void)
   
   m_iPartition  = 0;
   
-  Memory::vCheckInitialised(this,sizeof(Arguments));
+  _checkInitialised_(sizeof(Arguments));
   
   vEnvironmentVariables();
 }

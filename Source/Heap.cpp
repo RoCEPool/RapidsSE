@@ -46,7 +46,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_iFreeCount   = 0;
   m_pFreeHead    = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(Heap));
+  _checkInitialised_(sizeof(Heap));
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }

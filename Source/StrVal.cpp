@@ -43,7 +43,7 @@ StrVal::StrVal(void)
 {
   m_iChars = 0;
   
-  Memory::vCheckInitialised(this,sizeof(StrVal));
+  _checkInitialised_(sizeof(StrVal));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,7 +56,7 @@ StrVal::StrVal(i8 iChars)
   
   Memory::vZero(pData(),m_iChars);
   
-  Memory::vCheckInitialised(this,sizeof(StrVal));
+  _checkInitialised_(sizeof(StrVal));
 }
 
 /*----------------------------------------------------------------------------*/

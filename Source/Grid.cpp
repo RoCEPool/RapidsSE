@@ -48,7 +48,7 @@ Grid::Grid(void)
   
   vInit();
   
-  Memory::vCheckInitialised(this,sizeof(Grid));
+  _checkInitialised_(sizeof(Grid));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 }

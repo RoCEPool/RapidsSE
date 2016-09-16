@@ -35,7 +35,7 @@ PtrVal::PtrVal(void)
 {
   m_pPtr = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(PtrVal));
+  _checkInitialised_(sizeof(PtrVal));
 }
 
 /*----------------------------------------------------------------------------*/

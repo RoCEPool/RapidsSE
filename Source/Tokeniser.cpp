@@ -37,7 +37,7 @@ Tokeniser::Tokeniser(void)
   m_bMalloc = false;
   m_bNormal = false;
   
-  Memory::vCheckInitialised(this,sizeof(Tokeniser));
+  _checkInitialised_(sizeof(Tokeniser));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 }

@@ -14,7 +14,7 @@ SkipCursor::SkipCursor(void)
   
   m_pCurrentNode = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(SkipCursor));
+  _checkInitialised_(sizeof(SkipCursor));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPCURSOR,_FOOTER_);
 }

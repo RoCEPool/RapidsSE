@@ -16,7 +16,7 @@ StepAccum::StepAccum(void)
   m_nInvoked = 0;
   m_nCycles  = 0;
   
-  Memory::vCheckInitialised(this,sizeof(StepAccum));
+  _checkInitialised_(sizeof(StepAccum));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM,_FOOTER_);
 }

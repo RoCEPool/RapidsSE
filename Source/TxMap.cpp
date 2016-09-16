@@ -52,7 +52,7 @@ TxMap::TxMap(void)
   
   gpTxMap = this;
   
-  Memory::vCheckInitialised(this,sizeof(TxMap));
+  _checkInitialised_(sizeof(TxMap));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
 }

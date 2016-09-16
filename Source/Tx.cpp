@@ -60,7 +60,7 @@ Tx::Tx(void)
   m_iTxId   = -1;
   m_ePhase  = TP_NONE;
   
-  Memory::vCheckInitialised(this,sizeof(Tx));
+  _checkInitialised_(sizeof(Tx));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
 }

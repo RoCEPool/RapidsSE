@@ -44,7 +44,7 @@ Lock::Lock(void)
   
   vInit();
   
-  Memory::vCheckInitialised(this,sizeof(Lock));
+  _checkInitialised_(sizeof(Lock));
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }

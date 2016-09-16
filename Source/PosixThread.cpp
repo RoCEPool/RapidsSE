@@ -20,7 +20,7 @@ PosixThread::PosixThread()
   pthread_mutex_init(&m_xMutex,NULL);
   pthread_cond_init(&m_xCond,NULL);
   
-  Memory::vCheckInitialised(this,sizeof(PosixThread));
+  _checkInitialised_(sizeof(PosixThread));
 }
 
 /*----------------------------------------------------------------------------*/

@@ -46,8 +46,8 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  Memory::vCheckInitialised(this,sizeof(AttachMap));
-
+  _checkInitialised_(sizeof(AttachMap));
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }
 

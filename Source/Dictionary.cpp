@@ -65,7 +65,7 @@ Dictionary::Dictionary(void)
   // this is because of GlobalDictionary (ugh)
   //vInit();
   
-  Memory::vCheckInitialised(this,sizeof(Dictionary));
+  _checkInitialised_(sizeof(Dictionary));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
 }

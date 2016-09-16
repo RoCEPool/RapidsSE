@@ -27,7 +27,7 @@ ValSet::ValSet(void)
   
   m_iBytes = 0;
   
-  Memory::vCheckInitialised(this,sizeof(ValSet));
+  _checkInitialised_(sizeof(ValSet));
 }
 
 /*----------------------------------------------------------------------------*/

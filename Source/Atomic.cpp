@@ -35,7 +35,7 @@ Atomic::Atomic(void)
 {
   vInit();
   
-  Memory::vCheckInitialised(this,sizeof(Atomic));
+  _checkInitialised_(sizeof(Atomic));
   
   _postcondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 }

@@ -18,7 +18,7 @@ s32::s32(void)
   
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
-  Memory::vCheckInitialised(this,sizeof(s32));
+  _checkInitialised_(sizeof(s32));
   
   _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
@@ -34,7 +34,7 @@ s32::s32(s32& rArg)
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(rArg.a());
   
-  Memory::vCheckInitialised(this,sizeof(s32));
+  _checkInitialised_(sizeof(s32));
   
   _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
@@ -50,7 +50,7 @@ s32::s32(const char* aArg)
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   s::vCopy(aArg);
   
-  Memory::vCheckInitialised(this,sizeof(s32));
+  _checkInitialised_(sizeof(s32));
   
   _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }

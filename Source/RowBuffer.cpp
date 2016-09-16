@@ -42,7 +42,7 @@ RowBuffer::RowBuffer(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
-  Memory::vCheckInitialised(this,sizeof(RowBuffer));
+  _checkInitialised_(sizeof(RowBuffer));
 }
 
 /*----------------------------------------------------------------------------*/

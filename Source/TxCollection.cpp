@@ -64,7 +64,7 @@ TxCollection::TxCollection(void)
   
   gpTxCollection = this;
   
-  Memory::vCheckInitialised(this,sizeof(TxCollection));
+  _checkInitialised_(sizeof(TxCollection));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
 }

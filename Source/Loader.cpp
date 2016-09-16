@@ -63,7 +63,7 @@ Loader::Loader(void)
   m_iLength     = 0;
   m_pTxRef      = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(Loader));
+  _checkInitialised_(sizeof(Loader));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 }

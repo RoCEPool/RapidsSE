@@ -33,7 +33,7 @@ StepArray::StepArray(void)
   m_iNext = 0;
   //m_xStepAccum[]
   
-  Memory::vCheckInitialised(this,sizeof(StepArray));
+  _checkInitialised_(sizeof(StepArray));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
 }

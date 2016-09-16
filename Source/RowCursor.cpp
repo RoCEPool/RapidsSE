@@ -62,7 +62,7 @@ RowCursor::RowCursor(void)
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(RowCursor));
+  _checkInitialised_(sizeof(RowCursor));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
 }

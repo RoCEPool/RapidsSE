@@ -37,7 +37,7 @@ Row::Row(i8 iDataBytes)
 
   pFooter()->vSetFooter();
   
-  Memory::vCheckInitialised(this,sizeof(Row));
+  _checkInitialised_(sizeof(Row));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }

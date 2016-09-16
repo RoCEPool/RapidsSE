@@ -43,7 +43,7 @@ SEitfCursor::SEitfCursor(List_t<SEitf>* pList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR,_FOOTER_);
   
-  Memory::vCheckInitialised(this,sizeof(SEitfCursor));
+  _checkInitialised_(sizeof(SEitfCursor));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITFCURSOR,_FOOTER_);
 }

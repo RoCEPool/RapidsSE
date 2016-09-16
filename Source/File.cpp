@@ -87,8 +87,8 @@ File::File(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   vInit();
-  
-  Memory::vCheckInitialised(this,sizeof(File));
+ 
+  _checkInitialised_(sizeof(File));
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
 }

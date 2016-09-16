@@ -40,8 +40,8 @@ Buffer::Buffer(eCN eClassNo)
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
   
-  Memory::vCheckInitialised(this,sizeof(Buffer));
-
+  _checkInitialised_(sizeof(Buffer));
+  
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
 

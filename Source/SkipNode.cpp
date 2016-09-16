@@ -29,7 +29,7 @@ SkipNode::SkipNode(void* pObject)
   
   m_pObject = pObject;
   
-  Memory::vCheckInitialised(this,sizeof(SkipNode));
+  _checkInitialised_(sizeof(SkipNode));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }
@@ -42,7 +42,7 @@ SkipNode::SkipNode()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
  
-  Memory::vCheckInitialised(this,sizeof(SkipNode));
+  _checkInitialised_(sizeof(SkipNode));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }

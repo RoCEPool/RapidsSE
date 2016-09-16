@@ -229,7 +229,7 @@ BufferPool::BufferPool(void)
   
   vInitialise();
   
-  Memory::vCheckInitialised(this,sizeof(BufferPool));
+  _checkInitialised_(sizeof(BufferPool));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 }

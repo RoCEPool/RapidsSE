@@ -40,7 +40,7 @@ QueueBuffer::QueueBuffer(void)
   m_pNextFree = m_pTopValue;
   m_pNext     = nullptr;
   
-  Memory::vCheckInitialised(this,sizeof(QueueBuffer));
+  _checkInitialised_(sizeof(QueueBuffer));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 }

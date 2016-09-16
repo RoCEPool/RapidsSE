@@ -102,7 +102,7 @@ Task::Task(void)
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
   
-  Memory::vCheckInitialised(this,sizeof(Task));
+  _checkInitialised_(sizeof(Task));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -123,7 +123,7 @@ Task::Task(NNP_Task nnpTask)
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
   
-  Memory::vCheckInitialised(this,sizeof(Task));
+  _checkInitialised_(sizeof(Task));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -145,7 +145,7 @@ Task::Task(const char* aLambdaInput)
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
   
-  Memory::vCheckInitialised(this,sizeof(Task));
+  _checkInitialised_(sizeof(Task));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }

@@ -37,7 +37,7 @@ Index::Index(const char* pIndexName)
   
   _class_(CN_INDEX);
   
-  Memory::vCheckInitialised(this,sizeof(Index));
+  _checkInitialised_(sizeof(Index));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
 }

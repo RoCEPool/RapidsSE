@@ -33,7 +33,7 @@ IntVal::IntVal(void)
 {
   m_iInt = 0;
   
-  Memory::vCheckInitialised(this,sizeof(IntVal));
+  _checkInitialised_(sizeof(IntVal));
 }
 
 /*----------------------------------------------------------------------------*/
