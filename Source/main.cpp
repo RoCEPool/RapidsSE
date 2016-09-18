@@ -21,12 +21,14 @@ int main(int argc, const char* argv[])
   aRelDbg = "release";
 #endif
  
-  s32 sTest;
-  sTest =
-    "abcdefghijklmnopqrstuvwxuz"
-    "abcdefghijklmnopqrstuvwxuz"
-    "abcdefghijklmnopqrstuvwxuz"
-  ;
+//  s256 sTest;
+//  sTest =
+//    "abcdefghijklmnopqrstuvwxuz"
+//    "abcdefghijklmnopqrstuvwxuz"
+//    "abcdefghijklmnopqrstuvwxuz"
+//  ;
+//  s32 sTest2;
+//  sTest2 = sTest;
   
   RapidsSE::vCheckAssumptions();
   

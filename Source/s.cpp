@@ -47,7 +47,7 @@ void s::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aWorkspace(),aArg,m_iSize);
+  String::vCopyLen(aWorkspace(),aArg,m_iSize-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -59,7 +59,7 @@ void s::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  String::vCopyLen(aWorkspace(),aArg,m_iSize);
+  String::vCopyLen(aWorkspace(),aArg,m_iSize-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
