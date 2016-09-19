@@ -57,12 +57,22 @@ private:
   void vPushFile(char* pWord);
   
   void vChangeWorkingDir(void);
+  
+  void vCreateCatalog(void);
+  void vCreateSchema(void);
   void vCreateTable(void);
   void vCreateTable2(void);
+  void vCreateTenant(void);
+  
   void vCollectStatement(void);
   void vDocol(void);
   void vListDir(void);
+  
+  void vDropCatalog(void);
+  void vDropSchema(void);
   void vDropTable(void);
+  void vDropTenant(void);
+  
   void vPoolSpace(void);
   void vPrintWorkingDir(void);
   bool bValidateType(char* pType);

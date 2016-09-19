@@ -51,7 +51,7 @@ i8 System::iClockFrequency(void)
     iFreq = static_cast<i8>(dFreq * (double)C_1M);
   }
 
-  vTrace("Clock frequency: %lld\n", iFreq);
+  //vTrace("Clock frequency: %lld\n", iFreq);
 
   return iFreq;
 
@@ -94,7 +94,7 @@ i8 System::iCpuCount(void)
   
 #else
   
-  vWarn("iCpuCount() not implemented on LINUX!\n");
+  //vWarn("iCpuCount() not implemented on LINUX!\n");
   return 0;
 
 #endif

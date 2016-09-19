@@ -1140,10 +1140,10 @@ void Task::vAddRoutines(void)
 #else
   sDefinition =
   ": ::dicCompile"
-  "  \"::dicCompile\" ."
-  "  gwd ."
+  "  \"::dicCompile\" .putVerbose"
+  "  gwd .putVerbose"
   "  \"../../Commands\" cwd"
-  "  gwd ."
+  "  gwd .putVerbose"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" .putVerbose"
   "  ::exit"

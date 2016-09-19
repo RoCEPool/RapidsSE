@@ -103,6 +103,8 @@ Misc Requests:
 
     checkInTenants not if swap drop <ERROR> exit then
 
+    checkIsNotTenant not if swap drop <ERROR> exit then
+
     :tenant execute makeCatalogs
 
     <OK>
@@ -148,6 +150,8 @@ Misc Requests:
 
     checkInCatalogs not if swap drop <ERROR> exit then
 
+    checkIsNotCatalog not if swap drop <ERROR> exit then
+
     :catalog execute makeSchemas
 
     <OK>
@@ -192,6 +196,8 @@ Misc Requests:
 : create_schema ( "<schemaNm>" -- <R> )
 
     checkInSchemas not if swap drop <ERROR> exit then
+
+    checkIsNotSchema not if swap drop <ERROR> exit then
 
     :schema execute makeTables
 
