@@ -100,9 +100,9 @@ namespace Interface
     bool bCreateTable(char* pWords[]);
     bool bListTables(char* pWords[]);
     bool bDocol(char* pWords[]);
-    bool bDumpTable(char* pWords[]);
     bool bDropTable(char* pWords[]);
-
+    bool bDumpTable(char* pWords[]);
+   
     bool bAddColumn(char* pWords[]);
     bool bListColumns(char* pWords[]);
     

@@ -67,7 +67,12 @@ private:
   void vCollectStatement(void);
   void vDocol(void);
   void vListDir(void);
+  
+  void vDropCatalog(void);
+  void vDropSchema(void);
   void vDropTable(void);
+  void vDropTenant(void);
+  
   void vPoolSpace(void);
   void vPrintWorkingDir(void);
   bool bValidateType(char* pType);

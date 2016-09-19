@@ -267,8 +267,22 @@ void SePrompt::vProcessCommand(void)
   }
  
   if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
-    vDropTable();
-    return;
+    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
+      vDropTenant();
+      return;
+    }
+    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
+      vDropCatalog();
+      return;
+    }
+    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+      vDropSchema();
+      return;
+    }
+    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
+      vDropTable();
+      return;
+    }
   }
   
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
@@ -871,6 +885,76 @@ void SePrompt::vCollectStatement(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop catalog                                                               */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDropCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iTokens = 0;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_pToken[1],"catalog"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  vTrace("\n");
+  
+  iTokens = iToken - 1;
+  if (iTokens != 3) {
+    vTrace("Invalid drop catalog command\n");
+    return;
+  }
+  
+  // drop a schema
+  String::vCopy(m_pToken[0], "rmcat");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  if (!bExecuteRequest())
+    return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop schema                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDropSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iTokens = 0;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_pToken[1],"schema"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  vTrace("\n");
+  
+  iTokens = iToken - 1;
+  if (iTokens != 3) {
+    vTrace("Invalid drop schema command\n");
+    return;
+  }
+  
+  // drop a schema
+  String::vCopy(m_pToken[0], "rmsch");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  if (!bExecuteRequest())
+    return;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vDropTable(void)
@@ -881,6 +965,7 @@ void SePrompt::vDropTable(void)
   i8 iTokens = 0;
   
   ASSERT(String::bEqualTo(m_pToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_pToken[1],"table"));
   
   vCollectStatement();
   
@@ -897,12 +982,48 @@ void SePrompt::vDropTable(void)
     return;
   }
   
-  // create a table
-  String::vCopy(m_pToken[0], "drop");
+  // drop a table
+  String::vCopy(m_pToken[0], "rmtbl");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
 }
+
+/*----------------------------------------------------------------------------*/
+/* drop tenant                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDropTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iTokens = 0;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"drop"));
+  ASSERT(String::bEqualTo(m_pToken[1],"tenant"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  vTrace("\n");
+  
+  iTokens = iToken - 1;
+  if (iTokens != 3) {
+    vTrace("Invalid drop tenant command\n");
+    return;
+  }
+  
+  // drop a tenant
+  String::vCopy(m_pToken[0], "rmten");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  if (!bExecuteRequest())
+    return;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* list directory                                                             */

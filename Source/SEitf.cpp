@@ -312,11 +312,6 @@ bool SEitf::bDecode(char* pWords[])
     return true;
   }
   
-  if (String::bEqualTo("drop",pWords[0],C_NO_CASE)) {
-    bDropTable(pWords);
-    return true;
-  }
-
   if (String::bEqualTo("dump",pWords[0],C_NO_CASE)) {
     bDumpTable(pWords);
     return true;
