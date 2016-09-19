@@ -24,6 +24,7 @@
  25  constant  EC_NOT_A_FOLDER
 
  26  constant  EC_TABLE_EXISTS
+ 27  constant  EC_TENANT_EXISTS
 
 999  constant  EC_NO_SUCH_WORD
 998  constant  EC_NO_COLUMNS_DIC
@@ -53,6 +54,7 @@
 "not in tables"      constant  EM_NOT_IN_COLUMNS
 
 "table exists"       constant  EM_TABLE_EXISTS
+"tenant exists"      constant  EM_TENANT_EXISTS
 
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +87,7 @@
   dup EC_NOT_A_FOLDER       == if drop EM_NOT_A_FOLDER       exit then
 
   dup EC_TABLE_EXISTS       == if drop EM_TABLE_EXISTS       exit then
+  dup EC_TENANT_EXISTS      == if drop EM_TENANT_EXISTS      exit then
 
   "unknown error code " swap concat
 ;

@@ -57,8 +57,13 @@ private:
   void vPushFile(char* pWord);
   
   void vChangeWorkingDir(void);
+  
+  //void vCreateCatalog(void);
+  //void vCreateSchema(void);
   void vCreateTable(void);
   void vCreateTable2(void);
+  void vCreateTenant(void);
+  
   void vCollectStatement(void);
   void vDocol(void);
   void vListDir(void);

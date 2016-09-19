@@ -242,8 +242,23 @@ void SePrompt::vProcessCommand(void)
   }
   
   if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
-    vCreateTable();
-    return;
+    
+    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
+      vCreateTenant();
+      return;
+    }
+    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
+      //vCreateCatalog();
+      return;
+    }
+    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+      //vCreateSchema();
+      return;
+    }
+    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
+      vCreateTable();
+      return;
+    }
   }
   
   if (String::bEqualTo("create2",m_pToken[0],C_NO_CASE)) {
@@ -498,13 +513,47 @@ void SePrompt::vDocol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create tenant                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCreateTenant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  ASSERT(String::bEqualTo(m_pToken[0],"create"));
+  ASSERT(String::bEqualTo(m_pToken[1],"tenant"));
+  vCollectStatement();
+  
+  i8 iToken;
+  
+  // copy tokens from m_pToken to m_pToken2
+  // while doing that also validate the create statament
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
+  }
+  
+  i8 iNumTokens = iToken - 1;
+  i8 iValue;
+  
+  // create a table
+  String::vCopy(m_pToken[0], "mkten");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  
+  if (!bExecuteRequest())
+    return;  
+}
+
+/*----------------------------------------------------------------------------*/
 /* create table                                                               */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
+  
   ASSERT(String::bEqualTo(m_pToken[0],"create"));
+  ASSERT(String::bEqualTo(m_pToken[1],"table"));
   vCollectStatement();
   
   i8 iToken;
@@ -530,12 +579,12 @@ void SePrompt::vCreateTable(void)
   
   i8 iCurrentToken = 4;
   while(iCurrentToken < iNumTokens - 1) {
-  
+    
     if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
       vTrace("Error: %s\n", "Invalid statement\n");
       return;
     }
-
+    
     // add columns to the table
     i8 j = 0;
     String::vCopy(m_pToken[j++], "add");
@@ -569,7 +618,7 @@ void SePrompt::vCreateTable(void)
         
         // concat ')'
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
-
+        
       }
     }
     else if (String::bEqualTo(m_pToken2[iCurrentToken], "decimal", C_NO_CASE)) {
