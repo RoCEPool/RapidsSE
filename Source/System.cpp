@@ -94,7 +94,7 @@ i8 System::iCpuCount(void)
   
 #else
   
-  vWarn("iCpuCount() not implemented on LINUX!\n");
+  //vWarn("iCpuCount() not implemented on LINUX!\n");
   return 0;
 
 #endif
