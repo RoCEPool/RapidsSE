@@ -12,6 +12,9 @@ TARGET = $(TARGETPATH)/se
 SOURCES = $(wildcard *.cpp)
 S_SOURCES += $(wildcard *.s)
 
+#Man pages
+MAN_PAGES=../Documents/se.man
+
 #Object Files
 ALLOBJECTS = $(SOURCES:.cpp=.o)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -19,7 +22,6 @@ OBJECTS += $(S_SOURCES)
 
 #Dependency Files
 DEPFILES = $(SOURCES:.cpp=.d)
-#DEPFILES = $(SOURCES:.cpp=.d)
 
 #Include directories
 INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
@@ -31,6 +33,7 @@ LIBS = -lrt -lpthread
 #Main target
 $(TARGET): $(OBJECTS) $(DEPFILES)
 	$(DIR_GUARD)
+        cp $(MAN_PAGES) $(TARGETPATH)
 	$(CPP) $(OBJECTS) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 $(LIBS) -o $(TARGET)
 
 #To obtain object files
