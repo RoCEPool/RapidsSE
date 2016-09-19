@@ -58,8 +58,8 @@ private:
   
   void vChangeWorkingDir(void);
   
-  //void vCreateCatalog(void);
-  //void vCreateSchema(void);
+  void vCreateCatalog(void);
+  void vCreateSchema(void);
   void vCreateTable(void);
   void vCreateTable2(void);
   void vCreateTenant(void);

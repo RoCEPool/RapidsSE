@@ -30,6 +30,11 @@
     EC_NOT_A_CATALOG false
 ;
 
+: checkIsNotCatalog ( word )
+  dup find not if true exit then
+  EC_CATALOG_EXISTS false
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -248,11 +248,11 @@ void SePrompt::vProcessCommand(void)
       return;
     }
     if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
-      //vCreateCatalog();
+      vCreateCatalog();
       return;
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      //vCreateSchema();
+      vCreateSchema();
       return;
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
@@ -513,12 +513,78 @@ void SePrompt::vDocol(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* create catalog                                                             */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCreateCatalog(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"create"));
+  ASSERT(String::bEqualTo(m_pToken[1],"catalog"));
+  vCollectStatement();
+  
+  i8 iToken;
+  
+  // copy tokens from m_pToken to m_pToken2
+  // while doing that also validate the create statament
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
+  }
+  
+  i8 iNumTokens = iToken - 1;
+  i8 iValue;
+  
+  // create a table
+  String::vCopy(m_pToken[0], "mkcat");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  
+  if (!bExecuteRequest())
+    return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create schema                                                              */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vCreateSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+
+  ASSERT(String::bEqualTo(m_pToken[0],"create"));
+  ASSERT(String::bEqualTo(m_pToken[1],"schema"));
+  vCollectStatement();
+  
+  i8 iToken;
+  
+  // copy tokens from m_pToken to m_pToken2
+  // while doing that also validate the create statament
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
+  }
+  
+  i8 iNumTokens = iToken - 1;
+  i8 iValue;
+  
+  // create a table
+  String::vCopy(m_pToken[0], "mksch");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  
+  if (!bExecuteRequest())
+    return;  
+}
+
+/*----------------------------------------------------------------------------*/
 /* create tenant                                                              */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vCreateTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-
+  
   ASSERT(String::bEqualTo(m_pToken[0],"create"));
   ASSERT(String::bEqualTo(m_pToken[1],"tenant"));
   vCollectStatement();
@@ -542,7 +608,7 @@ void SePrompt::vCreateTenant(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
-    return;  
+    return;
 }
 
 /*----------------------------------------------------------------------------*/
