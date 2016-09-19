@@ -130,7 +130,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
       if (m_bStop) {
-        vTrace("Incorrect argument: %s with --stop\n",argv[iArg]);
+        vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
+        return false;
+      }
+      if (m_bStatus) {
+        vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
         return false;
       }
       m_bStart = true;
@@ -138,15 +142,28 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     if (String::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
+      if (m_bStop) {
+        vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
+        return false;
+      }
+      if (m_bStart) {
+        vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
+        return false;
+      }
       m_bStatus = true;
       continue;
     }
     
     if (String::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
       if (m_bStart) {
-        vTrace("Incorrect argument: %s with --start\n",argv[iArg]);
+        vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
         return false;
       }
+      if (m_bStatus) {
+        vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
+        return false;
+      }
+
       m_bStop = true;
       continue;
     }
