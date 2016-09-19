@@ -220,6 +220,7 @@ void RapidsSE::vExecute(void)
       ASSERT(gpBufferPool);
       vSystemInit();
       vStartActors();
+      vTrace("RapidsSE instance %s started\n",gxArguments.m_sRegionName.a());
       if (gxArguments.m_bDocol) {
         vRunDocol();
         vWaitFlag();
@@ -276,7 +277,7 @@ void RapidsSE::vPoolOpen(void)
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
     
     if (! gxArguments.m_bRestart && bTestRegion()) {
-      vTrace("Error: instance %s already started\n",gxArguments.m_sRegionName.a());
+      vTrace("Error: RapidsSE instance %s already started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
     }
@@ -289,7 +290,7 @@ void RapidsSE::vPoolOpen(void)
   }
   else if (gxArguments.m_bStop) {
     if (! bTestRegion()) {
-      vTrace("Error: instance was not started\n",gxArguments.m_sRegionName.a());
+      vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
     }
@@ -299,8 +300,10 @@ void RapidsSE::vPoolOpen(void)
 
   }
   else {
-    vAttachRegion();
-    vAttachObjects();
+    //vAttachRegion();
+    //vAttachObjects();
+    vTrace("Error: RapidsSE missing arguments\n");
+    exit(EXIT_FAILURE);
     return;
   }
 }
@@ -351,7 +354,7 @@ void RapidsSE::vAttachRegion(void)
   bool bResult;
   
   if (gxArguments.m_bWelcome)
-    vTrace("Attaching shm region %s\n",gxArguments.m_sRegionName.a());
+    vTrace("Attaching to SE instance %s\n",gxArguments.m_sRegionName.a());
   
   // open existing shm region
   bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
@@ -596,9 +599,9 @@ void RapidsSE::vStartActors(void)
 void RapidsSE::vSystemStatus(void)
 {
   if (bTestRegion())
-    vTrace("RapidsSE %s running\n",gxArguments.m_sRegionName.a());
+    vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
   else
-    vTrace("RapidsSE %s not running\n",gxArguments.m_sRegionName.a());
+    vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -610,7 +613,7 @@ void RapidsSE::vSystemStop(void)
   
   gpAttachMap->m_iStop = 1;
   
-  vTrace("RapidsSE %s stopped\n",gxArguments.m_sRegionName.a());
+  vTrace("RapidsSE instance %s stopped\n",gxArguments.m_sRegionName.a());
   
   // the system is now stopped
 }
