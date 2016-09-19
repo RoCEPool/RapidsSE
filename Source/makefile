@@ -33,7 +33,7 @@ LIBS = -lrt -lpthread
 #Main target
 $(TARGET): $(OBJECTS) $(DEPFILES)
 	$(DIR_GUARD)
-        cp $(MAN_PAGES) $(TARGETPATH)
+	cp $(MAN_PAGES) $(TARGETPATH)
 	$(CPP) $(OBJECTS) -L../ThirdParty/bzip2 -L../ThirdParty/lz4 $(LIBS) -o $(TARGET)
 
 #To obtain object files
