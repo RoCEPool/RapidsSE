@@ -51,7 +51,7 @@ i8 System::iClockFrequency(void)
     iFreq = static_cast<i8>(dFreq * (double)C_1M);
   }
 
-  vTrace("Clock frequency: %lld\n", iFreq);
+  //vTrace("Clock frequency: %lld\n", iFreq);
 
   return iFreq;
 
