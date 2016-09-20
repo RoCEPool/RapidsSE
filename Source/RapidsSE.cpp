@@ -300,10 +300,10 @@ void RapidsSE::vPoolOpen(void)
 
   }
   else {
-    //vAttachRegion();
-    //vAttachObjects();
-    vTrace("Error: RapidsSE missing arguments\n");
-    exit(EXIT_FAILURE);
+    vAttachRegion();
+    vAttachObjects();
+    //vTrace("Error: RapidsSE missing arguments\n");
+    //exit(EXIT_FAILURE);
     return;
   }
 }
