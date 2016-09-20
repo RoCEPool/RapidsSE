@@ -14,6 +14,7 @@ namespace Dictionaries
   {
   private:
     s32   m_sName;        // name of this dictionary
+    Word* m_pDicKind;     // kind of dictionary
     bool  m_bFrozen;      // no more words can be added?
     Word* m_pCurrentWord; // last word
     
@@ -34,6 +35,8 @@ namespace Dictionaries
     void  vAddConstant(const char* aName, const char* aValue);
     Word* pAllocWord(eCN eClassNo);
     Word* pCurrentWord(void);
+    Word* pDicKind(void);
+    void  vDicKind(Word* pDicKind);
     Word* pFind(const char* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(s& sName);

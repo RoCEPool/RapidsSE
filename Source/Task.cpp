@@ -686,6 +686,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
   vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
   vAddPrimitive("dic.init",        &vDicInit,          false);
+  vAddPrimitive("dic.kind@",       &vDicKindGet,       false);
+  vAddPrimitive("dic.kind!",       &vDicKindSet,       false);
   vAddPrimitive("dic.last",        &vDicLast,          false);
   vAddPrimitive("dic.main",        &vDicMain,          false);
   vAddPrimitive("dic.name",        &vDicName,          false);
@@ -4976,7 +4978,7 @@ ENTRY("vDicFrozenSet");
 }
 
 /*----------------------------------------------------------------------------*/
-/* dic.stack -- print dictionary stack                                        */
+/* dic.dump -- dump dictionary stack                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vDicStack(NNP_Task nnpTask)
 {
@@ -5010,6 +5012,50 @@ ENTRY("vDicInit");
   
   // this is because of GlobalDictionary (ugh)
   pDic->vInit();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.kind@ -- get dictionary kind                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDicKindGet(NNP_Task nnpTask)
+{
+  ENTRY("vDicFrozenGet");
+  
+  Object* pPtrDic;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
+    THROW_INVALID_PARAM("dic.kind@");
+  
+  Dictionary* pDic = _pDic(pPtrDic);
+  
+  Object* pPtrKind;
+  pPtrKind = pDic->pDicKind();
+  
+  nnpTask->m_xParamStack.vPush(pPtrKind);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.kind! -- set dictionary kind                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDicKindSet(NNP_Task nnpTask)
+{
+  ENTRY("vDicKindSet");
+  
+  Object* pPtrKind;
+  Object* pPtrDic;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrKind,pPtrDic) )
+    THROW_INVALID_PARAM("dic.kind@");
+  
+  Dictionary* pDic = _pDic(pPtrDic);
+  
+  Word* pKind = _pWord(pPtrKind);
+  
+  pDic->vDicKind(pKind);
   
   EXIT();
 }

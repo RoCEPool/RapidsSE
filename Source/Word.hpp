@@ -10,17 +10,17 @@ namespace Dictionaries
 {
   enum eWT // word type
   {
-    /*  0 */ WT_NONE=0,    // none
-    /*  1 */ WT_OBJECT,    // word is an object
-    /*  2 */ WT_PRIMITIVE, // word is a primitive (eg +, return)
-    /*  3 */ WT_ROUTINE,   // word is a subroutine
+    /*  0 */ WT_NONE=0,     // none
+    /*  1 */ WT_OBJECT,     // word is an object
+    /*  2 */ WT_PRIMITIVE,  // word is a primitive (eg +, return)
+    /*  3 */ WT_ROUTINE,    // word is a subroutine
     /*  4 */ WT_ENUMS
   };
   
   static const char* const pWT[]
   {
     /*  0 */ "NONE",
-    /*  1 */ "Object",
+    /*  1 */ "OBJECT",
     /*  2 */ "PRIMITIVE",
     /*  3 */ "ROUTINE",
     /*  4 */ "ENUMS",

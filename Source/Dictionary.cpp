@@ -58,8 +58,9 @@ Dictionary::Dictionary(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
-  m_sName  = "<main>";
-  m_bFrozen = false;
+  m_sName    = "<main>";
+  m_pDicKind = nullptr;
+  m_bFrozen  = false;
   m_pCurrentWord = nullptr;
   
   // this is because of GlobalDictionary (ugh)
@@ -138,6 +139,26 @@ Word* Dictionary::pCurrentWord(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
   
   return m_pCurrentWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dictionary kind                                                        */
+/*----------------------------------------------------------------------------*/
+Word* Dictionary::pDicKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  
+  return m_pDicKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set dictionary kind                                                        */
+/*----------------------------------------------------------------------------*/
+void Dictionary::vDicKind(Word* pDicKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  
+  m_pDicKind = pDicKind;
 }
 
 /*----------------------------------------------------------------------------*/
