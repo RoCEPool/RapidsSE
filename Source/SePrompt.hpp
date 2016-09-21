@@ -71,6 +71,7 @@ private:
   void vDropCatalog(void);
   void vDropSchema(void);
   void vDropTable(void);
+  void vDropTable(char* pTableName);
   void vDropTenant(void);
   
   void vPoolSpace(void);

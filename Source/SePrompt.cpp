@@ -178,7 +178,7 @@ void SePrompt::vGetCommandInput(void)
     i8 iToken = 0;
     while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
       
-//      vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+      //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
       
       iToken++;
       ASSERT(iToken < C_TOKENS);
@@ -647,21 +647,48 @@ void SePrompt::vCreateTable(void)
     String::vCopy(m_pToken[iToken], "");
   }
   
-  i8 iNumTokens = iToken - 1;
   i8 iValue;
+  i8 iNumTokens = iToken;
   
-  // create a table
+  // some validations
+  /// there should be a minumum of 8 tokens
+  if (iNumTokens < 8) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // token[3] should be '('
+  if (!String::bEqualTo(m_pToken2[3] , "(")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // last-1 token should be ')'
+  if (!String::bEqualTo(m_pToken2[iNumTokens-2] , ")")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+    
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[iNumTokens-1] , ";")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+      
+  // create the table
   String::vCopy(m_pToken[0], "mktbl");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
     return;
   
+  // now collect the column names and their types
   i8 iCurrentToken = 4;
-  while(iCurrentToken < iNumTokens - 1) {
+  while(iCurrentToken < iNumTokens - 2) {
     
     if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
-      vTrace("Error: %s\n", "Invalid statement\n");
+      vDropTable(m_pToken2[2]);
+      vTrace("Error: Invalid statement.\n");
       return;
     }
     
@@ -687,12 +714,14 @@ void SePrompt::vCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          vDropTable(m_pToken2[2]);
+          vTrace("Error: Invalid statement.\n");
           return;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          vDropTable(m_pToken2[2]);
+          vTrace("Error: Invalid statement.\n");
           return;
         }
         
@@ -716,12 +745,14 @@ void SePrompt::vCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          vDropTable(m_pToken2[2]);
+          vTrace("Error: Invalid statement.\n");
           return;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],",")) {
-          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          vDropTable(m_pToken2[2]);
+          vTrace("Error: Invalid statement.\n");
           return;
         }
         
@@ -733,12 +764,14 @@ void SePrompt::vCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          String::vCopy(m_sResponse.a(),"Invalid statement.");
+          vDropTable(m_pToken2[2]);
+          vTrace("Error: Invalid statement.\n");
           return;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          String::vCopy(m_sResponse.a(),"Invalid statement");
+          vDropTable(m_pToken2[2]);
+          vTrace("Error: Invalid statement.\n");
           return;
         }
         
@@ -757,7 +790,8 @@ void SePrompt::vCreateTable(void)
       String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       
       if (!String::bEqualTo(m_pToken2[iCurrentToken],"null", C_NO_CASE)) {
-        String::vCopy(m_sResponse.a(),"Invalid statement");
+        vDropTable(m_pToken2[2]);
+        vTrace("Error: Invalid statement.\n");
         return;
       }
       String::vConcat(m_pToken[j], " ");
@@ -770,11 +804,7 @@ void SePrompt::vCreateTable(void)
     if (!bValidateType(m_pToken[j])) {
       
       // drop the table that was created
-      String::vCopy(m_pToken[0], "drop");
-      String::vCopy(m_pToken[1], m_pToken2[2]);
-      if (!bExecuteRequest())
-        return;
-      
+      vDropTable(m_pToken2[2]);
       vTrace("Error: Invalid type %s for column '%s' \n", m_pToken[j], m_pToken[j - 1]);
       return;
     }
@@ -783,13 +813,6 @@ void SePrompt::vCreateTable(void)
     if (!bExecuteRequest())
       return;
   }
-  
-  // create statement should end with a ')'
-  if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-    vTrace("Error: %s\n", "Invalid statement\n");
-    return;
-  }
-  
   
 }
 
@@ -854,7 +877,7 @@ void SePrompt::vCollectStatement(void)
   i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
   
   if (iToken >= 0) {
-    //m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+    m_xTokeniser.vDumpTokens("Command : ",m_pToken,C_TOKENS);
     return;
   }
   
@@ -881,7 +904,7 @@ void SePrompt::vCollectStatement(void)
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vPrompt(m_sPrompt);
   
-  //m_xTokeniser.vDumpTokens("vCollectStatement : ",m_pToken,C_TOKENS);
+  m_xTokeniser.vDumpTokens("Command : ",m_pToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -987,6 +1010,21 @@ void SePrompt::vDropTable(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop table                                                                 */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vDropTable(char* pTableName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  String::vCopy(m_pToken[0], "drop");
+  String::vCopy(m_pToken[1], pTableName);
+  
+  if (!bExecuteRequest()) {
+    vTrace("Error: (%s) Drop Table %s\n", m_sResponse.a(), pTableName);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
