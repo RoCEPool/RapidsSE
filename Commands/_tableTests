@@ -57,3 +57,9 @@ lscol t;
 drop table t;
 
 create table t (col0 x);
+
+create table t (col0 int not);
+create table t (col0 int null);
+create table t (col0 int not null);
+lscol t
+drop table t; 
