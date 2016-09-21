@@ -33,7 +33,7 @@
 ;
 
 : checkIsNotSchema ( word )
-  dup find not if true exit then
+  dup findInCurrent not if true exit then
   EC_SCHEMA_EXISTS false
 ;
 
