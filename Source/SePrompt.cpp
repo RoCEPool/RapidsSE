@@ -548,7 +548,7 @@ void SePrompt::vCreateCatalog(void)
     String::vCopy(m_pToken[iToken], "");
   }
   
-  i8 iNumTokens = iToken - 1;
+  i8 iNumTokens = iToken;
   // there should be 4 tokens
   if (iNumTokens != 4) {
     vTrace("Error: Invalid statement.\n");
@@ -567,6 +567,8 @@ void SePrompt::vCreateCatalog(void)
   
   if (!bExecuteRequest())
     return;
+  
+  vTrace("Catalog created: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,7 +593,7 @@ void SePrompt::vCreateSchema(void)
     String::vCopy(m_pToken[iToken], "");
   }
   
-  i8 iNumTokens = iToken - 1;
+  i8 iNumTokens = iToken;
   
   // there should be 4 tokens
   if (iNumTokens != 4) {
@@ -610,7 +612,9 @@ void SePrompt::vCreateSchema(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
-    return;  
+    return;
+  
+  vTrace("Schema created: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -655,6 +659,8 @@ void SePrompt::vCreateTenant(void)
   
   if (!bExecuteRequest())
     return;
+  
+  vTrace("Tenant created: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -811,8 +817,16 @@ void SePrompt::vCreateTable(void)
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       }
     }
-    else {
+    else if (String::bEqualTo(m_pToken2[iCurrentToken], "integer", C_NO_CASE) ||
+             String::bEqualTo(m_pToken2[iCurrentToken], "int", C_NO_CASE) ||
+             String::bEqualTo(m_pToken2[iCurrentToken], "date", C_NO_CASE)) {
       String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
+    }
+    else {
+      // drop the table that was created
+      vDropTable(m_pToken2[2]);
+      vTrace("Error: Invalid type %s for column '%s' \n", m_pToken[j], m_pToken[j - 1]);
+      return;
     }
     
     // check for NOT NULL
@@ -833,19 +847,13 @@ void SePrompt::vCreateTable(void)
     // now we should see a column type
     // validate it
     String::vToLower(m_pToken[j]);
-    if (!bValidateType(m_pToken[j])) {
-      
-      // drop the table that was created
-      vDropTable(m_pToken2[2]);
-      vTrace("Error: Invalid type %s for column '%s' \n", m_pToken[j], m_pToken[j - 1]);
-      return;
-    }
     
     // add the column
     if (!bExecuteRequest())
       return;
   }
   
+  vTrace("Table created: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -909,7 +917,7 @@ void SePrompt::vCollectStatement(void)
   i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
   
   if (iToken >= 0) {
-    m_xTokeniser.vDumpTokens("Command : ",m_pToken,C_TOKENS);
+    m_xTokeniser.vDumpTokens("\nCommand : ",m_pToken,C_TOKENS);
     return;
   }
   
@@ -959,7 +967,6 @@ void SePrompt::vDropCatalog(void)
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
   }
-  vTrace("\n");
   
   iNumTokens = iToken;
   
@@ -980,6 +987,8 @@ void SePrompt::vDropCatalog(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
+  
+  vTrace("Catalog dropped: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1002,7 +1011,6 @@ void SePrompt::vDropSchema(void)
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
   }
-  vTrace("\n");
   
   iNumTokens = iToken;
   // there should be 4 tokens
@@ -1022,6 +1030,8 @@ void SePrompt::vDropSchema(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
+  
+  vTrace("Schema dropped: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1044,7 +1054,6 @@ void SePrompt::vDropTable(void)
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
   }
-  vTrace("\n");
   
   iNumTokens = iToken;
   
@@ -1065,6 +1074,8 @@ void SePrompt::vDropTable(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
+  
+  vTrace("Table dropped: %s\n", m_pToken2[2]);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1074,7 +1085,7 @@ void SePrompt::vDropTable(char* pTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  String::vCopy(m_pToken[0], "drop");
+  String::vCopy(m_pToken[0], "rmtbl");
   String::vCopy(m_pToken[1], pTableName);
   
   if (!bExecuteRequest()) {
@@ -1102,7 +1113,6 @@ void SePrompt::vDropTenant(void)
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
   }
-  vTrace("\n");
   
   iNumTokens = iToken;
   
@@ -1123,6 +1133,8 @@ void SePrompt::vDropTenant(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return;
+  
+  vTrace("Renant dropped: %s\n", m_pToken2[2]);
 }
 
 
@@ -1217,35 +1229,6 @@ void SePrompt::vPrintWorkingDir(void)
   if (xDir.bGetCurrent(sDir)) {
     vTrace("%s\n", sDir.a());
   }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* validate type                                                              */
-/*----------------------------------------------------------------------------*/
-bool SePrompt::bValidateType(char* pType)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  if (String::bContains(pType, "date"))
-    return true;
-  
-  if (String::bContains(pType, "int"))
-    return true;
-  
-  if (String::bContains(pType, "integer"))
-    return true;
-  
-  if (String::bContains(pType, "varchar"))
-    return true;
-  
-  if (String::bContains(pType, "char"))
-    return true;
-
-  if (String::bContains(pType, "decimal"))
-    return true;
-
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

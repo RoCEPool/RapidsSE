@@ -76,7 +76,6 @@ private:
   
   void vPoolSpace(void);
   void vPrintWorkingDir(void);
-  bool bValidateType(char* pType);
 
   Footer* pFooter(void);
 };
