@@ -550,15 +550,13 @@ freespace .
       object@ word.name 12 strpad concat
 
       "(" concat
-      object@ word.kind@ word.name concat
 
       object@ isTable if
-        " " concat
+        "table " concat
         object@ execute table.space bytes.magnitude concat
       then
 
       object@ isFolder if
-        " " concat
         object@ execute dic.kind@ word.name concat
       then
 
