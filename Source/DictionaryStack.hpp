@@ -35,6 +35,7 @@ namespace Dictionaries
     void vDump(void);
     Word* pFind(s& sName);
     Word* pFind(const char* aName);
+    Word* pFindInCurrent(const char* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(s& sName);
     Word* pLocate(Cell* pCell);

@@ -142,6 +142,24 @@ Word* DictionaryStack::pFind(const char* aName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find word in current dictionary                                            */
+/*----------------------------------------------------------------------------*/
+Word* DictionaryStack::pFindInCurrent(const char* aName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  
+  ASSERT(m_iTop >= 0);
+  
+  Word* pWord;
+  
+  if ( (pWord = m_pDictionary[m_iTop]->pFind(aName)) ) {
+    return pWord;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a word given step                                                     */
 /*----------------------------------------------------------------------------*/
 Word* DictionaryStack::pFindStep(TaskStep pStep)

@@ -65,6 +65,7 @@ namespace Interface
     void   vPushDic(Dictionary* pDictionary);
     void   vPopDic(void);
     Word*  pFindWord(s& sName);
+    Word*  pFindWordInCurrent(s& sName);
     
     void   vDump(void);
     

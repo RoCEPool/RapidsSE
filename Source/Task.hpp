@@ -178,6 +178,7 @@ namespace Tasks
     void vDump(void);
     void vException(s& sFile, s& eException);
     Word* pFindWord(s& sName);
+    Word* pFindWordInCurrent(s& sName);
     Word* pFindWord(const char* aName);
     bool  bForgetWord(s& sName);
     void vInitialiseDictionary(void);
@@ -708,6 +709,7 @@ namespace Tasks
     static void vCreateFrom(NNP_Task nnpTask);
     static void vDoes(NNP_Task nnpTask);
     static void vFind(NNP_Task nnpTask);
+    static void vFindInCurrent(NNP_Task nnpTask);
     static void vForget(NNP_Task nnpTask);
     static void vWord(NNP_Task nnpTask);
     static void vWordDic(NNP_Task nnpTask);

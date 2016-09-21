@@ -566,6 +566,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("exit",            &vExit,             false);
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
+  vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
   vAddPrimitive(">",               &vGreater,          false);
@@ -1330,6 +1331,30 @@ Word* Task::pFindWord(s& sName)
   
   // attempt to find word in this tasks dic stack
   pWord = m_xDictionaryStack.pFind(sName.a());
+  
+  return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find word given name in current dictionary                                 */
+/*----------------------------------------------------------------------------*/
+Word* Task::pFindWordInCurrent(s& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pWord = nullptr;
+  
+  // attempt to find word in seitf current dic
+  if (m_pSEitf) {
+    pWord = m_pSEitf->pFindWordInCurrent(sName);
+    if (pWord)
+      return pWord;
+    else
+      return nullptr;
+  }
+  
+  // attempt to find word in this tasks current dic
+  pWord = m_xDictionaryStack.pFindInCurrent(sName.a());
   
   return pWord;
 }
@@ -9682,6 +9707,28 @@ ENTRY("vFind");
   }
   
   Word* pWord = nnpTask->pFindWord(sName);
+  
+  nnpTask->m_xParamStack.vPush(pWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* findInCurrent -- find word in current dictionary                           */
+/*----------------------------------------------------------------------------*/
+void Task::vFindInCurrent(NNP_Task nnpTask)
+{
+  ENTRY("vFind");
+  
+  s256 sName;
+  if ( ! nnpTask->m_xParamStack.bPop(sName) )
+    THROW_INVALID_PARAM("findInCurrent");
+  
+  if (nnpTask->m_bTracing) {
+    i8 i = 0; i++;
+  }
+  
+  Word* pWord = nnpTask->pFindWordInCurrent(sName);
   
   nnpTask->m_xParamStack.vPush(pWord);
   
