@@ -6018,14 +6018,14 @@ ENTRY("vLoaderDelete");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.delete");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  delete pLoader;
+  delete pLoader2;
   
 #else
   
@@ -6052,10 +6052,10 @@ ENTRY("vLoaderNew");
   
 #ifdef USE_LOADER2
   
-  Loader* pLoader = new Loader;
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = new Loader2;
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  nnpTask->m_xParamStack.vPush(pLoader);
+  nnpTask->m_xParamStack.vPush(pLoader2);
   
 #else
   
@@ -6078,14 +6078,14 @@ ENTRY("vLoaderInit");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.init");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  new(pLoader) Loader;
+  new(pLoader2) Loader2;
   
 #else
   
@@ -6113,18 +6113,18 @@ ENTRY("vLoaderTableStore");
 #ifdef USE_LOADER2
   
   Object* pPtrTable;
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,pPtrTable) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2,pPtrTable) )
     THROW_INVALID_PARAM("loader.tableStore");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
   Table* pTable = _pTable(pPtrTable);
   
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pLoader->vTable(pTable);
+  pLoader2->vTable(pTable);
   
 #else
   
@@ -6157,17 +6157,17 @@ ENTRY("vLoaderPathStore");
 #ifdef USE_LOADER2
   
   ValWsp xWspPath;
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,xWspPath) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2,xWspPath) )
     THROW_INVALID_PARAM("loader.path!");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
   s256 sPath;
   sPath = xWspPath.sStr();
   
-  pLoader->vPath(sPath);
+  pLoader2->vPath(sPath);
   
 #else
   
@@ -6198,18 +6198,18 @@ ENTRY("vLoaderTxRefStore");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
+  Object* pPtrLoader2;
   Object* pPtrTxRef;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,pPtrTxRef) )
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2,pPtrTxRef) )
     THROW_INVALID_PARAM("loader.txref!");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
-  pLoader->vTxRef(pTxRef);
+  pLoader2->vTxRef(pTxRef);
   
 #else
   
@@ -6240,14 +6240,14 @@ ENTRY("vLoaderOpenFile");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.openfile");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  bool bOpened = pLoader->bOpenFile();
+  bool bOpened = pLoader2->bOpenFile();
   
   nnpTask->m_xParamStack.vPush(bOpened);
   
@@ -6278,14 +6278,14 @@ ENTRY("vLoaderCloseFile");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.closefile");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  pLoader->vCloseFile();
+  pLoader2->vCloseFile();
   
 #else
   
@@ -6312,14 +6312,14 @@ ENTRY("vLoaderFetchRecord");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.fetchRecord");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  bool bFetched = pLoader->bFetchRecord();
+  bool bFetched = pLoader2->bFetchRecord();
   
   nnpTask->m_xParamStack.vPush(bFetched);
   
@@ -6350,18 +6350,18 @@ ENTRY("vLoaderPushRecord");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.pushRecord");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
   ValWsp xRecord;
   xRecord.vClass(CN_STRVAL);
   StrVal* sRecord = xRecord.pAsStrVal();
   
-  pLoader->vGetRecord(sRecord);
+  pLoader2->vGetRecord(sRecord);
   
   nnpTask->m_xParamStack.vPush(xRecord);
   
@@ -6396,19 +6396,19 @@ ENTRY("vLoaderInsertRow");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.insertRecord");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
   i8 iPartn;
   if ( ! nnpTask->m_xParamStack.bPop(iPartn) )
     THROW_INVALID_PARAM("loader.insertRow");
   
   ASSERT(iPartn < gxArguments.m_nPartitions);
-  bool bInserted = pLoader->bInsertRow(iPartn);
+  bool bInserted = pLoader2->bInsertRow(iPartn);
   
   nnpTask->m_xParamStack.vPush(bInserted);
   
@@ -6444,14 +6444,14 @@ ENTRY("vLoaderBegin");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.begin");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  pLoader->vBegin();
+  pLoader2->vBegin();
   
 #else
   
@@ -6478,14 +6478,14 @@ ENTRY("vLoaderEnd");
   
 #ifdef USE_LOADER2
   
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+  Object* pPtrLoader2;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader2) )
     THROW_INVALID_PARAM("loader.end");
   
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
+  Loader2* pLoader2 = _pLoader2(pPtrLoader2);
+  ASSERT(CN_LOADER == pLoader2->eClass());
   
-  pLoader->vEnd();
+  pLoader2->vEnd();
   
 #else
   

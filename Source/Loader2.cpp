@@ -59,6 +59,7 @@ Loader2::Loader2(void)
   m_pTable      = nullptr;
   //m_xFile
   m_pRecord     = nullptr;
+  m_pLoadBuffer = nullptr;
   m_pScanBuffer = nullptr;
   m_iLength     = 0;
   m_pTxRef      = nullptr;
