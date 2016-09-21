@@ -10,6 +10,7 @@
 
 : :catalog
     :dic dup ' catalog swap word.kind!
+         dup ' catalog swap execute dic.kind!
 ;
 
 : withinCatalogs

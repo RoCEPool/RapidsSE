@@ -5048,7 +5048,7 @@ void Task::vDicKindSet(NNP_Task nnpTask)
   Object* pPtrKind;
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrKind,pPtrDic) )
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrDic,pPtrKind) )
     THROW_INVALID_PARAM("dic.kind@");
   
   Dictionary* pDic = _pDic(pPtrDic);

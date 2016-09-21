@@ -8,6 +8,7 @@
 
 : :tenant
     :dic dup ' tenant swap word.kind!
+         dup ' tenant swap execute dic.kind!
 ;
 
 : withinTenants
