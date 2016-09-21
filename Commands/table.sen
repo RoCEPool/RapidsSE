@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-: makeTables {{ "tables" :dic drop }} ;
+: makeTables {{ "tables" :dic ' folder swap execute dic.kind! }} ;
 
 : isTable word.kind@ ' table eql ;
 

@@ -6,10 +6,11 @@
 
 : catalog ;
 
-: makeCatalogs {{ "catalogs" :dic drop }} ;
+: makeCatalogs {{ "catalogs" :dic ' folder swap execute dic.kind! }} ;
 
 : :catalog
-    :dic dup ' catalog swap word.kind!
+    :dic
+         //dup ' catalog swap word.kind!
          dup ' catalog swap execute dic.kind!
 ;
 

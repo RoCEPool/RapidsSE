@@ -556,6 +556,12 @@ freespace .
         " " concat
         object@ execute table.space bytes.magnitude concat
       then
+
+      object@ isFolder if
+        " " concat
+        object@ execute dic.kind@ word.name concat
+      then
+
       ")" concat
 
       object@ prevWord object!

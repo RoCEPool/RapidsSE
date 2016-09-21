@@ -6,10 +6,11 @@
 
 : schema ;
 
-: makeSchemas {{ "schemas" :dic drop }} ;
+: makeSchemas {{ "schemas" :dic ' folder swap execute dic.kind! }} ;
 
 : :schema
-    :dic dup ' schema swap word.kind!
+    :dic
+         //dup ' schema swap word.kind!
          dup ' schema swap execute dic.kind!
 ;
 
