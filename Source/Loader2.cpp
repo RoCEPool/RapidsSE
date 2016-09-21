@@ -2,6 +2,8 @@
 /* Loader2.cpp -- Table Loader                                                */
 /*============================================================================*/
 
+#define USE_LOADBUFFER
+
 #include "DBobjects.h"
 
 #include "StorageEngine.h"
@@ -58,6 +60,7 @@ Loader2::Loader2(void)
   
   m_pTable      = nullptr;
   //m_xFile
+  m_iSeek       = 0;
   m_pRecord     = nullptr;
   m_pLoadBuffer = nullptr;
   m_pScanBuffer = nullptr;
@@ -166,15 +169,61 @@ void Loader2::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch next record                                                          */
+/* fetch next record from buffer, read more if necessary                      */
 /*----------------------------------------------------------------------------*/
 bool Loader2::bFetchRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+#ifdef USE_LOADBUFFER
+  
+  // fetch next record from current chunk
   m_pRecord = m_pScanBuffer->pScan(m_iLength);
   if ( m_pRecord )
     return true;
+  
+  // read next chunk
+  bool bMore = bFetchChunk();
+  if (!bMore)
+    return false;
+  
+  // fetch first record from next chunk
+  m_pRecord = m_pScanBuffer->pScan(m_iLength);
+  if ( m_pRecord )
+    return true;
+  
+  return false;
+  
+#else
+
+  // fetch next record from current chunk
+  m_pRecord = m_pScanBuffer->pScan(m_iLength);
+  if ( m_pRecord )
+    return true;
+  
+  // read next chunk
+  bool bMore = bFetchChunk();
+  if (!bMore)
+    return false;
+  
+  // fetch first record from next chunk
+  m_pRecord = m_pScanBuffer->pScan(m_iLength);
+  if ( m_pRecord )
+    return true;
+  
+  return false;
+  
+#endif  
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch next chunk from file                                                 */
+/*----------------------------------------------------------------------------*/
+bool Loader2::bFetchChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+#ifdef USE_LOADBUFFER
   
   i8 iAvailableBytes;
   char* pInto = m_pScanBuffer->pInto(iAvailableBytes);
@@ -182,12 +231,21 @@ bool Loader2::bFetchRecord(void)
   i8 iRead = m_xFile.iReadChunk(pInto,iAvailableBytes);
   //vTrace("Read %lld\n",iRead);
   m_pScanBuffer->vMore(iRead);
-
-  m_pRecord = m_pScanBuffer->pScan(m_iLength);
-  if ( m_pRecord )
-    return true;
   
-  return false;
+  return true;
+
+#else
+  
+  i8 iAvailableBytes;
+  char* pInto = m_pScanBuffer->pInto(iAvailableBytes);
+  
+  i8 iRead = m_xFile.iReadChunk(pInto,iAvailableBytes);
+  //vTrace("Read %lld\n",iRead);
+  m_pScanBuffer->vMore(iRead);
+  
+  return true;
+
+#endif
 }
 
 /*----------------------------------------------------------------------------*/

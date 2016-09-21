@@ -13,6 +13,7 @@ namespace DBobjects
   private:
     Table* m_pTable;   // table being load
     File   m_xFile;    // from which file
+    i8     m_iSeek;    // seek before next read
     char*  m_pRecord;  // record from file
     i8     m_iLength;  // length of record
     TxRef* m_pTxRef;   // tx
@@ -42,6 +43,7 @@ namespace DBobjects
     bool   bOpenFile(void);
     void   vBegin(void);
     bool   bFetchRecord(void);
+    bool   bFetchChunk(void);
     void   vGetRecord(StrVal* pStrVal);
     bool   bInsertRow(i8 iPartn);
     void   vEnd(void);
