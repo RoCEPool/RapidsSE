@@ -21,6 +21,7 @@
     EC_NOT_IN_TENANTS false
 ;
 
+/*
 : checkIsTenant ( word )
 
     dup not if drop EC_NO_SUCH_TENANT false exit then
@@ -29,6 +30,12 @@
     drop
     EC_NOT_A_TENANT false
 ;
+*/
+: checkIsTenant ( word )
+    dup findInCurrent not if drop EC_NO_SUCH_TENANT false exit then
+    true
+;
+
 
 : checkIsNotTenant ( word )
   dup findInCurrent not if true exit then

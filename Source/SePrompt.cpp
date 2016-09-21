@@ -549,9 +549,19 @@ void SePrompt::vCreateCatalog(void)
   }
   
   i8 iNumTokens = iToken - 1;
-  i8 iValue;
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
   
-  // create a table
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // create a catalog
   String::vCopy(m_pToken[0], "mkcat");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
@@ -582,9 +592,20 @@ void SePrompt::vCreateSchema(void)
   }
   
   i8 iNumTokens = iToken - 1;
-  i8 iValue;
   
-  // create a table
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // create a schema
   String::vCopy(m_pToken[0], "mksch");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
@@ -614,10 +635,21 @@ void SePrompt::vCreateTenant(void)
     String::vCopy(m_pToken[iToken], "");
   }
   
-  i8 iNumTokens = iToken - 1;
-  i8 iValue;
+  i8 iNumTokens = iToken;
   
-  // create a table
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // create a tenant
   String::vCopy(m_pToken[0], "mkten");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
@@ -915,7 +947,7 @@ void SePrompt::vDropCatalog(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iToken;
-  i8 iTokens = 0;
+  i8 iNumTokens;
   
   ASSERT(String::bEqualTo(m_pToken[0],"drop"));
   ASSERT(String::bEqualTo(m_pToken[1],"catalog"));
@@ -929,13 +961,21 @@ void SePrompt::vDropCatalog(void)
   }
   vTrace("\n");
   
-  iTokens = iToken - 1;
-  if (iTokens != 3) {
-    vTrace("Invalid drop catalog command\n");
+  iNumTokens = iToken;
+  
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
     return;
   }
   
-  // drop a schema
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // drop a catalog
   String::vCopy(m_pToken[0], "rmcat");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
@@ -950,7 +990,7 @@ void SePrompt::vDropSchema(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iToken;
-  i8 iTokens = 0;
+  i8 iNumTokens;
   
   ASSERT(String::bEqualTo(m_pToken[0],"drop"));
   ASSERT(String::bEqualTo(m_pToken[1],"schema"));
@@ -964,9 +1004,16 @@ void SePrompt::vDropSchema(void)
   }
   vTrace("\n");
   
-  iTokens = iToken - 1;
-  if (iTokens != 3) {
-    vTrace("Invalid drop schema command\n");
+  iNumTokens = iToken;
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
     return;
   }
   
@@ -985,7 +1032,7 @@ void SePrompt::vDropTable(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iToken;
-  i8 iTokens = 0;
+  i8 iNumTokens;
   
   ASSERT(String::bEqualTo(m_pToken[0],"drop"));
   ASSERT(String::bEqualTo(m_pToken[1],"table"));
@@ -999,9 +1046,17 @@ void SePrompt::vDropTable(void)
   }
   vTrace("\n");
   
-  iTokens = iToken - 1;
-  if (iTokens != 3) {
-    vTrace("Invalid drop table command\n");
+  iNumTokens = iToken;
+  
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
     return;
   }
   
@@ -1035,7 +1090,7 @@ void SePrompt::vDropTenant(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   i8 iToken;
-  i8 iTokens = 0;
+  i8 iNumTokens;
   
   ASSERT(String::bEqualTo(m_pToken[0],"drop"));
   ASSERT(String::bEqualTo(m_pToken[1],"tenant"));
@@ -1049,9 +1104,17 @@ void SePrompt::vDropTenant(void)
   }
   vTrace("\n");
   
-  iTokens = iToken - 1;
-  if (iTokens != 3) {
-    vTrace("Invalid drop tenant command\n");
+  iNumTokens = iToken;
+  
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    vTrace("Error: Invalid statement.\n");
+    return;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    vTrace("Error: Invalid statement.\n");
     return;
   }
   
