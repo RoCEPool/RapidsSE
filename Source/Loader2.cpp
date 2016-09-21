@@ -63,7 +63,6 @@ Loader2::Loader2(void)
   m_iSeek       = 0;
   m_pRecord     = nullptr;
   m_pLoadBuffer = nullptr;
-  m_pScanBuffer = nullptr;
   m_iLength     = 0;
   m_pTxRef      = nullptr;
   
@@ -79,8 +78,8 @@ Loader2::~Loader2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  if (m_pScanBuffer)
-    delete m_pScanBuffer;
+  if (m_pLoadBuffer)
+    delete m_pLoadBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,9 +146,17 @@ void Loader2::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  ASSERT( ! m_pScanBuffer );
+  ASSERT( ! m_pLoadBuffer );
   
-  m_pScanBuffer = new ScanBuffer;
+  m_pLoadBuffer = new LoadBuffer;
+  
+#ifdef USE_LOADBUFFER
+  
+  // read first chunk
+  bFetchChunk();
+  
+#endif
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -178,9 +185,14 @@ bool Loader2::bFetchRecord(void)
 #ifdef USE_LOADBUFFER
   
   // fetch next record from current chunk
-  m_pRecord = m_pScanBuffer->pScan(m_iLength);
-  if ( m_pRecord )
+//  vTrace("NextRecord @ %lld end %lld\n",
+//         m_pLoadBuffer->iNextRecord(),m_pLoadBuffer->iEndChunk());
+  
+  m_pRecord = m_pLoadBuffer->pNextRecord(m_iLength);
+  if ( m_pRecord ) {
+//    vDumpAscii(m_pRecord,m_iLength);
     return true;
+  }
   
   // read next chunk
   bool bMore = bFetchChunk();
@@ -188,7 +200,7 @@ bool Loader2::bFetchRecord(void)
     return false;
   
   // fetch first record from next chunk
-  m_pRecord = m_pScanBuffer->pScan(m_iLength);
+  m_pRecord = m_pLoadBuffer->pNextRecord(m_iLength);
   if ( m_pRecord )
     return true;
   
@@ -225,12 +237,24 @@ bool Loader2::bFetchChunk(void)
   
 #ifdef USE_LOADBUFFER
   
-  i8 iAvailableBytes;
-  char* pInto = m_pScanBuffer->pInto(iAvailableBytes);
+  i8 iBytesWorkarea = m_pLoadBuffer->iBytesWorkarea();
+  char* pWorkaread  = m_pLoadBuffer->pWorkarea();
   
-  i8 iRead = m_xFile.iReadChunk(pInto,iAvailableBytes);
-  //vTrace("Read %lld\n",iRead);
-  m_pScanBuffer->vMore(iRead);
+  m_xFile.vSeek(m_iSeek);
+  
+  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
+//  vTrace("Read %lld\n",iBytesRead);
+  
+  if ( ! iBytesRead )
+    return false;
+
+  i8 iCompleteBytes = m_pLoadBuffer->iCompleteBytes(iBytesRead);
+//  vTrace("Complete %lld; NextRecord @ %lld end %lld\n",
+//         iCompleteBytes,
+//         m_pLoadBuffer->iNextRecord(),
+//         m_pLoadBuffer->iEndChunk());
+
+  m_iSeek += iCompleteBytes;
   
   return true;
 
@@ -292,8 +316,8 @@ void Loader2::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  delete m_pScanBuffer;
-  m_pScanBuffer = nullptr;
+  delete m_pLoadBuffer;
+  m_pLoadBuffer = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

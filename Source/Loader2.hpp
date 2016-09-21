@@ -19,7 +19,6 @@ namespace DBobjects
     TxRef* m_pTxRef;   // tx
     
     LoadBuffer* m_pLoadBuffer; // loading buffer
-    ScanBuffer* m_pScanBuffer; // scanning buffer
     
     // must be last
     Footer m_xFooter;

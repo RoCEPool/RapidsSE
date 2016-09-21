@@ -39,8 +39,9 @@ LoadBuffer::LoadBuffer(void)
   
   vReset();
   
-  ASSERT(m_pEndChunk);
-  
+  ASSERT(! m_pEndChunk);
+  ASSERT(! m_pNextRecord);
+ 
   _checkInitialised_(sizeof(LoadBuffer));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
@@ -103,13 +104,43 @@ i8 LoadBuffer::iCompleteBytes(i8 iBytesRead)
   ASSERT('\n' == *pScanBackward);
   
   // compute the bytes in the chunk of complete records
-  i8 iCompleteBytes = pScanBackward - m_wWorkarea;
+  i8 iCompleteBytes = pScanBackward - m_wWorkarea + 1;
   
   // set up for scanning of first record
-  m_pEndChunk   = &m_wWorkarea[iBytesRead - 1];
+  m_pEndChunk   = &m_wWorkarea[iCompleteBytes - 1];
   m_pNextRecord = m_wWorkarea;
   
   return iCompleteBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of next record                                                  */
+/*----------------------------------------------------------------------------*/
+i8 LoadBuffer::iNextRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
+  ASSERT(m_pEndChunk);
+  ASSERT(m_pNextRecord);
+  
+  i8 iNextRecord = m_pNextRecord - m_wWorkarea;
+  
+  return iNextRecord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of end chunk                                                    */
+/*----------------------------------------------------------------------------*/
+i8 LoadBuffer::iEndChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  
+  ASSERT(m_pEndChunk);
+  ASSERT(m_pNextRecord);
+  
+  i8 iEndChunk = m_pEndChunk - m_wWorkarea;
+  
+  return iEndChunk;
 }
 
 /*----------------------------------------------------------------------------*/

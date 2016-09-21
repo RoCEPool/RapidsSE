@@ -23,6 +23,8 @@ namespace Common
   void  vWarn(const char* pFormat,...);
   void  vError(const char* pFormat,...);
   void  vFatal(const char* pFormat,...);
+  
+  void  vDumpAscii(const char* aText, i8 nBytes);
 
   void  vReport(i8 iLevel, const char* pFormat, va_list xArgs);
 }

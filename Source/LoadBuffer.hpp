@@ -27,6 +27,8 @@ namespace Structures
 
     i8    iBytesWorkarea(void);
     i8    iCompleteBytes(i8 iBytesRead);
+    i8    iNextRecord(void);
+    i8    iEndChunk(void);
     char* pNextRecord(i8& iRecordBytes);
     char* pWorkarea(void);
     
