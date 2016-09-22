@@ -20,15 +20,11 @@ taskCursor: taskCrs
 
 : listerStart
 
-     "listerLoop"  task.new
+     0 "listerLoop" nullPtr task.new listerTaskSet taskSet.Append
 
-     listerTaskSet taskSet.Append
-
-     listerTaskSet listerThread  thread.taskset!
-
+     listerTaskSet  listerThread thread.taskset!
      "listerThread" listerThread thread.name!
-
-     listerThread  thread.spawn
+                    listerThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/

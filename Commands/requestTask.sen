@@ -22,12 +22,12 @@ thread:  requestThread
 : requestStart
 
     // set up request processing task
-    "requestLoop"  task.new  requestTaskSet  taskSet.append
+    0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
 
     // set up the request thread
-    requestTaskSet  requestThread  thread.taskset!
-    "requestThread" requestThread  thread.name!
-                    requestThread   thread.spawn
+    requestTaskSet  requestThread thread.taskset!
+    "requestThread" requestThread thread.name!
+                    requestThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/

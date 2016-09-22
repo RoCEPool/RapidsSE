@@ -61,6 +61,7 @@ namespace Tasks
       String::vSprint(sException.a(),p1); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
       pTask->vException(sFile,sException); \
+      Common::vThrowTrap(); \
       throw (i8)__LINE__; \
     }
       
@@ -71,6 +72,7 @@ namespace Tasks
       String::vSprint(sException.a(),p1,p2); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
       pTask->vException(sFile,sException); \
+      Common::vThrowTrap(); \
       throw (i8)__LINE__; \
     }
     
@@ -102,11 +104,12 @@ namespace Tasks
   
   private:
     Lock  m_xLock;
-    i8    m_iTaskNo;    // task
-    s32   m_sName;      // task name
-    eTS   m_eState;     // state (running, sleeping, ...)
-    i8    m_iTxId;      // transaction id
-    i8    m_iWakeAt;    // time at which to wake this tx
+    i8    m_iTaskNo;     // task
+    s32   m_sName;       // task name
+    eTS   m_eState;      // state (running, sleeping, ...)
+    i8    m_iTxId;       // transaction id
+    i8    m_iWakeAt;     // time at which to wake this tx
+    Task* m_pParentTask; // parent of this task
     
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
@@ -298,6 +301,7 @@ namespace Tasks
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
     static void vNotEqual(NNP_Task nnpTask);       
+    static void vNullPtr(NNP_Task nnpTask);
     static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);

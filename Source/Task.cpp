@@ -174,13 +174,14 @@ void Task::vInit(const char* aLambda)
   
   // basic state
   m_xLock.vCheckInit();
-  m_iTaskNo    = iTaskNo++;
-  m_sName      = "<no task name>";
-  m_eState     = TS_NONE;
-  m_iTxId      = -1;
+  m_iTaskNo     = iTaskNo++;
+  m_sName       = "<no task name>";
+  m_eState      = TS_NONE;
+  m_iTxId       = -1;
   m_npNextInSet = nullptr;
   m_npPrevInSet = nullptr;
-  m_iWakeAt    = 0;
+  m_iWakeAt     = 0;
+  m_pParentTask = nullptr;
   
   m_xDictionaryStack.vPush(gpMainDic);
   
@@ -300,8 +301,8 @@ void Task::vAddConstants(void)
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
   vAddConstant("partitions",       gxArguments.m_nPartitions);
   
-  vAddConstant("true",  1);
-  vAddConstant("false", (i8)0);
+  vAddConstant("true",    1);
+  vAddConstant("false",   (i8)0);
 
   vAddConstant("C_1KB",   C_1KB);
   vAddConstant("C_1MB",   C_1MB);
@@ -609,6 +610,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
   vAddPrimitive("!=",              &vNotEqual,         false);
+  vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
   vAddPrimitive("object!!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
@@ -3376,6 +3378,21 @@ ENTRY("vNotEqual");
   r = i != j;
   
   nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nullPtr -- push a nullptr                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vNullPtr(NNP_Task nnpTask)
+{
+  ENTRY("vNullPtr");
+  
+  PtrVal xPtrVal;
+  xPtrVal = nullptr;
+  
+  nnpTask->m_xParamStack.vPush(xPtrVal);
   
   EXIT();
 }
@@ -8286,25 +8303,52 @@ ENTRY("vTaskNameStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.new -- create a new task                                              */
+/* task.new -- create and seed a new task                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNew(NNP_Task nnpTask)
 {
 ENTRY("vTaskNew");
-  
-  if ( ! nnpTask->m_xParamStack.bGuard(CN_STRVAL) )
+  //                                   pParent   sSeed     nTaskArgs
+  if ( ! nnpTask->m_xParamStack.bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
     THROW_INVALID_PARAM("task.new");
+  
+  Object* pParent;
+  if ( ! nnpTask->m_xParamStack.bPop(pParent) )
+    THROW_INVALID_PARAM("task.name!");
+  Task* pParentTask = _pTask(pParent);
+  ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   s32 sSeed;
   if ( ! nnpTask->m_xParamStack.bPop(sSeed) )
     THROW_INVALID_PARAM("task.name!");
-  
   char* aSeedWord = sSeed.a();
+  
+  i8 nTaskArgs;
+  if ( ! nnpTask->m_xParamStack.bPop(nTaskArgs) )
+    THROW_INVALID_PARAM("task.name!");
+  ASSERT(! nTaskArgs);
+
+  if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
+    THROW_INVALID_PARAM("task.new");
   
   NNP_Task nnpNewTask = new Task;
   
+  nnpNewTask->m_pParentTask = pParentTask;
   nnpNewTask->vSeedWord(aSeedWord);
-    
+  
+  // copy task arguments to new task (preserving stack order)
+  ValWsp xValWsp;
+  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
+    nnpTask->m_xParamStack.vPeek(iTaskArg,&xValWsp);
+    nnpNewTask->m_xParamStack.vPush(xValWsp);
+  }
+  
+  // discard original task arguments
+  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
+    bool bPopped = nnpTask->m_xParamStack.bPop(xValWsp);
+    ASSERT(bPopped);
+  }
+  
   Task* pNewTask = *nnpNewTask;
   gpTaskList->vAppend(pNewTask);
   

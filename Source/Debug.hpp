@@ -8,6 +8,7 @@ namespace Common
 {
   void vAssertTrap(void);
   void vDebugTrap(void);
+  void vThrowTrap(void);
   
   #ifdef MAGIC_CHECK
   #define _magic_() ASSERT(iMagic() == MAGIC);

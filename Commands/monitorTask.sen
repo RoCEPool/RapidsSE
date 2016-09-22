@@ -22,15 +22,11 @@ thread:  monitorThread
 
 : monitorStart
 
-     "monitorLoop"   task.new
+     0 "monitorLoop" nullPtr task.new monitorTaskSet taskSet.Append
 
-     monitorTaskSet  taskSet.Append
-
-     monitorTaskSet  monitorThread  thread.taskset!
-
-     "monitorThread" monitorThread  thread.name!
-
-     monitorThread   thread.spawn
+     monitorTaskSet  monitorThread thread.taskset!
+     "monitorThread" monitorThread thread.name!
+                     monitorThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
