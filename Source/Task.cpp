@@ -100,11 +100,12 @@ Task::Task(void)
 //  }
   
   vInit("");
+    
+  _checkInitialised_(sizeof(Task));
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
-  
-  _checkInitialised_(sizeof(Task));
+//  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -122,10 +123,11 @@ Task::Task(NNP_Task nnpTask)
   
   vInit("");
   
+  _checkInitialised_(sizeof(Task));
+  
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
-  
-  _checkInitialised_(sizeof(Task));
+//  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -144,10 +146,11 @@ Task::Task(const char* aLambdaInput)
   
   vInit(aLambdaInput);
   
+  _checkInitialised_(sizeof(Task));
+  
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
-  
-  _checkInitialised_(sizeof(Task));
+//  gpTaskList->vDump();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 }
@@ -161,6 +164,7 @@ Task::~Task(void)
   
   Task* pTask = this;
   gpTaskList->vRemove(pTask);
+//  gpTaskList->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1294,11 +1298,13 @@ void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
-  vTrace("%sTask %p: \n", pTab, pTask);
-  vTrace("%s  name: %s \n", pTab, pTask->m_sName.a());
-  vTrace("%s  taskNo %lld\n", pTab, pTask->m_iTaskNo);
-  vTrace("%s  state %s\n", pTab, pTS[pTask->m_eState]);
-  vTrace("%s  txId %lld \n\n", pTab, pTask->m_iTxId);
+  vTrace("%sTask %p: %s TaskNo %lld state %s txId %lld\n",
+         pTab,
+         pTask,
+         pTask->m_sName.a(),
+         pTask->m_iTaskNo,
+         pTS[pTask->m_eState],
+         pTask->m_iTxId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1308,11 +1314,12 @@ void Task::vDump(void)
 {
   _poolAddress_(this);
   
-  vTrace("Task %p: \n", this);
-  vTrace("   name: %16s \n", m_sName.a());
-  vTrace("   taskNo %02lld\n" ,m_iTaskNo);
-  vTrace("   state %s\n", pTS[m_eState]);
-  vTrace("   txId %lld \n", m_iTxId);
+  vTrace("Task %02lld %p: %16s state %8s txId %lld\n",
+         m_iTaskNo,
+         this,
+         m_sName.a(),
+         pTS[m_eState],
+         m_iTxId);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8314,6 +8321,7 @@ ENTRY("vTaskNew");
   if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
     THROW_INVALID_PARAM("task.new");
   
+  // create new task (will be automatically appended to task list)
   NNP_Task nnpNewTask = new Task;
   
   nnpNewTask->m_pParentTask = pParentTask;
@@ -8333,7 +8341,6 @@ ENTRY("vTaskNew");
   }
   
   Task* pNewTask = *nnpNewTask;
-  gpTaskList->vAppend(pNewTask);
   
   Object* pTask = pNewTask;
   nnpTask->m_xParamStack.vPush(pTask);

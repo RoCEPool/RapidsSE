@@ -24,15 +24,28 @@ thread:  generalThread
 ;
 
 /*----------------------------------------------------------------------------*/
-/* child test                                                                 */
+/* child testing                                                              */
 /*----------------------------------------------------------------------------*/
-: childTest
+: childTest_call
+//traceOn
+
+  // in the calling task
+  0 "childTest_loop" task.this task.new dup "childTask" swap task.name!
+  generalTaskSet taskSet.append
+
+//traceOff
+;
+
+: childTest_loop
 
   "childTest" .
+  tasklist taskList.dump
 
 // task.parentTask task.notify
 
    TS_EXITED task.this task.state!
+
+//   1000 thread.sleep_s
 ;
 
 /*----------------------------------------------------------------------------*/

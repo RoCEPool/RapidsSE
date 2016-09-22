@@ -7,6 +7,7 @@
 
 extern BufferPool*  gpBufferPool;
 extern ThreadList*  gpThreadList;
+extern TaskList*    gpTaskList;
 
 extern NP_Task      gnpRootTask;
 

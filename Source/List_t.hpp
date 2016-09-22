@@ -108,17 +108,27 @@ i8 List_t<OBJECT>::iCount(void)
 template <class OBJECT>
 void List_t<OBJECT>::vDump(const char* aTitle)
 {
-  vReadLock();
+  //vReadLock();
   
   ListCursor_t<OBJECT> xCursor(this);
   
-  vTrace("%s\n",aTitle);
-  for(xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
+  
+  xCursor.vBegin();
+  
+  vTrace("%s %p: %lld tasks; head %p tail %p\n",
+         aTitle,
+         this,
+         iCount(),
+         pHead(),
+         pTail());
+  
+  for (xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
     OBJECT* pObject = xCursor.pObject();
     pObject->vDump();
   }
+  xCursor.vEnd();
   
-  vReadUnlock();
+  //vReadUnlock();
   
 }
 

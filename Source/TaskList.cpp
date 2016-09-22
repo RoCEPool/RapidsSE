@@ -74,21 +74,6 @@ TaskList::~TaskList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a task                                                            */
-/*----------------------------------------------------------------------------*/
-Task* TaskList::pAllocTask(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
-  
-  Task* pTask = reinterpret_cast<Task*>(gpMediumHeap->pAllocObject(CN_TASK));
-  
-  vAppend(pTask);
-  
-  return pTask;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void TaskList::vDump(void)
@@ -106,22 +91,7 @@ void TaskList::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   TaskList* pTaskList = reinterpret_cast<TaskList*>(pObject);
   
-  vTrace("%sTaskList %p: \n", pTab, pTaskList);
-  vTrace("%s  count: %lld\n", pTab, pTaskList->iCount());
-  vTrace("%s  head %p\n", pTab, pTaskList->pHead());
-  vTrace("%s  tail %p\n\n", pTab, pTaskList->pTail());
-}
-
-/*----------------------------------------------------------------------------*/
-/* free a task                                                                */
-/*----------------------------------------------------------------------------*/
-void TaskList::vFreeTask(Task* pTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
-  
-  vRemove(pTask);
-  
-  gpMediumHeap->vFreeObject(pTask);
+  pTaskList->List_t<Task>::vDump("TaskList::");
 }
 
 /*----------------------------------------------------------------------------*/
