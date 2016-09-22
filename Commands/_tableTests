@@ -1,5 +1,6 @@
 cf ~
 pwf
+drop table t;
 create table t1 (col0 int);
 create tenant ten;
 cf ten;
@@ -63,3 +64,4 @@ create table t (col0 int null);
 create table t (col0 int not null);
 lscol t
 drop table t; 
+drop table ten;

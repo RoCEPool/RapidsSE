@@ -1134,7 +1134,7 @@ void SePrompt::vDropTenant(void)
   if (!bExecuteRequest())
     return;
   
-  vTrace("Renant dropped: %s\n", m_pToken2[2]);
+  vTrace("Tenant dropped: %s\n", m_pToken2[2]);
 }
 
 

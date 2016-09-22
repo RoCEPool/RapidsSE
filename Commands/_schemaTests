@@ -1,0 +1,22 @@
+cf ~
+create schema sch;
+create tenant ten;
+cf ten;
+create catalog cat;
+cf catalogs
+create catalog;
+create catalog cat;
+create schema sch;
+cf cat
+create schema sch;
+cf schemas
+create schema sch;
+create schema sch;
+drop schema;
+drop schema cat;
+drop schema sch;
+drop schema sch;
+create schema x;
+drop schema x;
+cf ~
+drop tenant ten;

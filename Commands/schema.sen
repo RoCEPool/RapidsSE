@@ -25,10 +25,8 @@
 
 : checkIsSchema ( word )
 
-    dup not if drop EC_NO_SUCH_SCHEMA false exit then
-
-    dup word.kind@ ' schema eql if true exit then
-    drop
+    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ ' schema eql if true exit then
     EC_NOT_A_SCHEMA false
 ;
 

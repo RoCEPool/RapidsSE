@@ -20,22 +20,21 @@
     withinTenants if true exit then
     EC_NOT_IN_TENANTS false
 ;
-
 /*
 : checkIsTenant ( word )
 
-    dup not if drop EC_NO_SUCH_TENANT false exit then
-
-    dup word.kind@ ' tenant eql if true exit then
+    dup word.kind@ ' folder eql if true exit then
+    dup execute dic.kind@ ' tenant eql if true exit then
     drop
     EC_NOT_A_TENANT false
 ;
 */
 : checkIsTenant ( word )
-    dup findInCurrent not if drop EC_NO_SUCH_TENANT false exit then
-    true
-;
 
+    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ ' tenant eql if true exit then
+    EC_NOT_A_TENANT false
+    ;
 
 : checkIsNotTenant ( word )
   dup findInCurrent not if true exit then

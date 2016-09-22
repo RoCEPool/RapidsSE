@@ -129,9 +129,11 @@ Misc Requests:
 
     checkInTenants not if swap drop <ERROR> exit then
 
+    find
+    checkIsWord not if <ERROR> exit then
+
     checkIsTenant not if <ERROR> exit then
 
-    find
     >forget
 
     <OK>
@@ -176,12 +178,13 @@ Misc Requests:
     checkInCatalogs not if swap drop <ERROR> exit then
 
     find
+    checkIsWord not if <ERROR> exit then
 
     checkIsCatalog not if swap drop <ERROR> exit then
 
     >forget
 
-    <SUCCESS>
+    <OK>
 ;
 
 
@@ -223,6 +226,7 @@ Misc Requests:
     checkInSchemas not if swap drop <ERROR> exit then
 
     find
+    checkIsWord not if <ERROR> exit then
 
     checkIsSchema not if swap drop <ERROR> exit then
 

@@ -25,10 +25,8 @@
 
 : checkIsCatalog ( word )
 
-    dup not if drop EC_NO_SUCH_CATALOG false exit then
-
-    dup word.kind@ ' catalog eql if true exit then
-    drop
+    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ ' catalog eql if true exit then
     EC_NOT_A_CATALOG false
 ;
 
