@@ -96,7 +96,7 @@ thread:  requestThread
 
     requestQueue  task.this task.queue!
 
-    "Request Server running..." .putVerbose
+    requestTaskPrint if "Request Server running..." . then
 
     begin
       depth 0 != if "request task has grown" . debug.trap then

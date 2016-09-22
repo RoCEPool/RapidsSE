@@ -31,9 +31,12 @@
     does>
 ;
 
-: toPartition
-
+/*----------------------------------------------------------------------------*/
+/* calculate partition number of row                                          */
+/*----------------------------------------------------------------------------*/
+: toPartition ( ^row -- i )
 //traceon
+
     csv.firstvalue
 
     hash
@@ -43,60 +46,67 @@
 //traceoff
 ;
 
+/*----------------------------------------------------------------------------*/
+/* load file into table                                                       */
+/*----------------------------------------------------------------------------*/
 : load ( "<path>" ^table -- t|f )
 //traceon
 
+    // create a Loader
     "__table_loader" find dup if else
       drop
       "__table_loader" :loader
     then
     execute
 
+    // put Loader into register 0
     >r
-    // r0 ^loader
+    // r0 ^Loader
 
+    // initialise r0:Loader
     r0 loader.table!
     r0 loader.path!
+
+    // open the file to be loaded
     r0 loader.openFile not if "file not opened" . rdrop false exit then
 
+    // begin a new transaction
     beginTransaction r0 loader.txref!
 
+    // loader loop
     r0 loader.begin
     begin
       r0 loader.fetchrecord
       while
         r0 loader.pushRecord toPartition
-        r0 loader.insertrow drop
+        r0 loader.insertrow  drop
     repeat
+    r0 loader.end
 
+    // commit the transaction
     commitTransaction
 
-    r0 loader.end
     r0 loader.closeFile
+
+    // discard r0:Loader
     rdrop
 
+    // destroy Loader
     "__table_loader" find >forget
-    true
 
+    // successful load
+    true
 
 //traceoff
 ;
 
-: loadtest
-
-traceon
-    // "/tpch/lineitem.tbl"
-    "/tpch/nation.tbl"
-    "nation" :table execute
-
-   load if "loaded!" . else . then
-;
-
+/*----------------------------------------------------------------------------*/
+/* table loader (can probably be removed)                                     */
+/*----------------------------------------------------------------------------*/
 : tableLoader ( "<fileNm>" ^table )
 
     load drop
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */

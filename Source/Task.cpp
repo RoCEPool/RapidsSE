@@ -510,6 +510,7 @@ void Task::vAddConstants(void)
   vAddConstant("listerTaskPrint", (i8)0);
   vAddConstant("monitorTaskPrint",(i8)0);
   vAddConstant("reclaimTaskPrint",(i8)0);
+  vAddConstant("requestTaskPrint",(i8)0);
 }
 
 /*----------------------------------------------------------------------------*/

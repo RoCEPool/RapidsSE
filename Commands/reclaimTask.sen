@@ -82,7 +82,7 @@ seitfCursor: seitfCrs
 
     "" reclaimString !
 
-    "reclaim Task running..." .
+    reclaimTaskPrint if "reclaim Task running..." . then
 
     begin
 

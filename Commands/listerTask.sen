@@ -61,7 +61,7 @@ taskCursor: taskCrs
 
     "listerTask" task.this task.name!
 
-    "lister Task running..." .
+    listerTaskPrint if "lister Task running..." . then
 
     begin
 

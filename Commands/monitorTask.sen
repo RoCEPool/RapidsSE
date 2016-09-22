@@ -39,7 +39,7 @@ thread:  monitorThread
 
     "" monitorString !
 
-    "Monitor Task running..." .
+    monitorTaskPrint if "Monitor Task running..." . then
 
     begin
 
@@ -57,7 +57,7 @@ thread:  monitorThread
 
       // monitorString @ .
 
-bpa
+      monitorTaskPrint if bpa then
 
       10 sleep
 
