@@ -21,15 +21,13 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : requestStart
 
-    "requestLoop"   task.new
+    // set up request processing task
+    "requestLoop"  task.new  requestTaskSet  taskSet.append
 
-    requestTaskSet  taskSet.append
-
+    // set up the request thread
     requestTaskSet  requestThread  thread.taskset!
-
     "requestThread" requestThread  thread.name!
-
-    requestThread   thread.spawn
+                    requestThread   thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +38,7 @@ thread:  requestThread
     begin
       task.this task.queue@
       queue.pop
-      dup not if 100 thread.sleep_us then
+      dup not if switch /*100 thread.sleep_us*/ then
     until
 ;
 

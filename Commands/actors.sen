@@ -11,6 +11,8 @@ int: queryCount
 "reclaimTask.sen" >>:
 "requestTask.sen" >>:
 
+"generalThread.sen" >>:
+
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */
@@ -20,6 +22,8 @@ int: queryCount
   "startActors" .putVerbose
 
   bgtasks if
+
+    snooze generalThreadStart
 
     snooze listerStart
     snooze monitorStart

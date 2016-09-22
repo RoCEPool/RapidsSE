@@ -215,8 +215,8 @@ void Thread::vLoop(void)
       
       m_npTask->vState(TS_RUNNING);
       
-      if (gxArguments.m_bVerbose)
-        vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.a(),m_npTask->sName().a(),*m_npTask);
+//      if (gxArguments.m_bVerbose)
+//        vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.a(),m_npTask->sName().a(),*m_npTask);
       
       // set rdtscp
       m_npTask->vLoop();
