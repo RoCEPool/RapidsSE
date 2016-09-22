@@ -610,6 +610,8 @@ namespace Tasks
     static void vTaskNameStore(NNP_Task nnpTask);
     static void vTaskNew(NNP_Task nnpTask);
     static void vTaskThis(NNP_Task nnpTask);
+    static void vTaskParentFetch(NNP_Task nnpTask);
+    static void vTaskParentStore(NNP_Task nnpTask);
     static void vTaskQfetch(NNP_Task nnpTask);
     static void vTaskQstore(NNP_Task nnpTask);
     static void vTaskSeed(NNP_Task nnpTask);

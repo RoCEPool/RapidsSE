@@ -871,6 +871,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
   vAddPrimitive("task.name!",      &vTaskNameStore,    false);
   vAddPrimitive("task.new",        &vTaskNew,          false);
+  vAddPrimitive("task.parent@",    &vTaskParentFetch,  false);
+  vAddPrimitive("task.parent!",    &vTaskParentStore,  false);
   vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
   vAddPrimitive("task.queue!",     &vTaskQstore,       false);
   vAddPrimitive("task.seed",       &vTaskSeed,         false);
@@ -8220,52 +8222,6 @@ ENTRY("vTaskInit");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.seitf@ -- fetch SEitf of task on param stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfFetch(NNP_Task nnpTask)
-{
-ENTRY("vTaskSeitfFetch");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("task.seitf@");
-  Task* pThatTask = _pTask(pObject);
-  
-  SEitf* pSEitf = pThatTask->m_pSEitf;
-  
-  Object* pPtrSEitf= pSEitf;
-  
-  nnpTask->m_xParamStack.vPush(pPtrSEitf);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.seitf! -- store SEitf on param stack into task on param stack         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSeitfStore(NNP_Task nnpTask)
-{
-  ENTRY("vTaskSeitfStore");
-  
-  Object* pTaskObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.seitf!");
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* pPtrSEitf;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("task.seitf!");
-  
-  SEitf* pSEitf = _pSEitf(pPtrSEitf);
-  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
-  
-  pThatTask->m_pSEitf = pSEitf;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* task.name@ -- fetch task name                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNameFetch(NNP_Task nnpTask)
@@ -8360,6 +8316,36 @@ ENTRY("vTaskNew");
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.parent@ -- fetch parent of task on param stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskParentFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskParentFetch");
+  
+  nnpTask->m_xParamStack.vPush(nnpTask->m_pParentTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.parent! -- store parent task into this task                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskParentStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskParentStore");
+  
+  Object* pParent;
+  if ( ! nnpTask->m_xParamStack.bPop(pParent) )
+    THROW_INVALID_PARAM("task.parent!");
+  Task* pParentTask = _pTask(pParent);
+  ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
+  
+  nnpTask->m_pParentTask = pParentTask;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.queue@ -- fetch queue of task on param stack                          */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQfetch(NNP_Task nnpTask)
@@ -8419,6 +8405,52 @@ ENTRY("vTaskSeed");
   char* pSeed = xStrWsp.pAsStrVal()->sStr();
   
   nnpTask->vSeedWord(pSeed);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.seitf@ -- fetch SEitf of task on param stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSeitfFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskSeitfFetch");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("task.seitf@");
+  Task* pThatTask = _pTask(pObject);
+  
+  SEitf* pSEitf = pThatTask->m_pSEitf;
+  
+  Object* pPtrSEitf= pSEitf;
+  
+  nnpTask->m_xParamStack.vPush(pPtrSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.seitf! -- store SEitf on param stack into task on param stack         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSeitfStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskSeitfStore");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.seitf!");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* pPtrSEitf;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
+    THROW_INVALID_PARAM("task.seitf!");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
+  
+  pThatTask->m_pSEitf = pSEitf;
   
   EXIT();
 }
