@@ -2,7 +2,7 @@
 /* requestTask.sen -- request processing task                                 */
 /*============================================================================*/
 
-"requestServer.sen" .putVerbose
+"requestTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
