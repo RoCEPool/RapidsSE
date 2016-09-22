@@ -283,6 +283,14 @@ void PosixThread::vCondSignal(void)
 /*----------------------------------------------------------------------------*/
 void PosixThread::vCondWait(void)
 {
+  //
+  // Calling thread must have the mutex.  Mutex will be unlocked and the
+  // thread will block atomically, waiting on the cond varable.
+  //
+  // When signalled the thread will automatically reaquire the mutex lock.
+  // The mutex must be explicitly unlocked by the caller.
+  //
+  
   ASSERT(m_bLocked);
   
   i8 rCode = pthread_cond_wait(&m_xCond,&m_xMutex);

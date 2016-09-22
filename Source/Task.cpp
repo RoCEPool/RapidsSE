@@ -182,6 +182,7 @@ void Task::vInit(const char* aLambda)
   m_npPrevInSet = nullptr;
   m_iWakeAt     = 0;
   m_pParentTask = nullptr;
+  m_pThread     = nullptr;
   
   m_xDictionaryStack.vPush(gpMainDic);
   
@@ -866,8 +867,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.dic",        &vTaskDic,          false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
   vAddPrimitive("task.init",       &vTaskInit,         false);
-  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
-  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
   vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
   vAddPrimitive("task.name!",      &vTaskNameStore,    false);
   vAddPrimitive("task.new",        &vTaskNew,          false);
@@ -876,9 +875,12 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
   vAddPrimitive("task.queue!",     &vTaskQstore,       false);
   vAddPrimitive("task.seed",       &vTaskSeed,         false);
+  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
+  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
+  vAddPrimitive("task.thread",     &vTaskThread,        false);
   
   vAddPrimitive("taskCursor.begin",  &vTaskCursorBegin,  false);
   vAddPrimitive("taskCursor.delete", &vTaskCursorDelete, false);
@@ -898,21 +900,25 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("taskSet.dump",    &vTaskSetDump,      false);
   vAddPrimitive("taskSet.init",    &vTaskSetInit,      false);
   
-  vAddPrimitive("thread.append",   &vThreadAppend,     false);
-  vAddPrimitive("thread.bind",     &vThreadBind,       false);
-  vAddPrimitive("thread.cpu",      &vThreadCpu,        false);
-  vAddPrimitive("thread.dump",     &vThreadDump,       false);
-  vAddPrimitive("thread.init",     &vThreadInit,       false);
-  vAddPrimitive("thread.id",       &vThreadId,         false);
-  vAddPrimitive("thread.name@",    &vThreadNameFetch,  false);
-  vAddPrimitive("thread.name!",    &vThreadNameStore,  false);
-  vAddPrimitive("thread.taskset@", &vThreadSfetch,     false);
-  vAddPrimitive("thread.taskset!", &vThreadSstore,     false);
-  vAddPrimitive("thread.sleep_s",  &vThreadSleep_s,    false);
-  vAddPrimitive("thread.sleep_ms", &vThreadSleep_ms,   false);
-  vAddPrimitive("thread.sleep_us", &vThreadSleep_us,   false);
-  vAddPrimitive("thread.sleep_ns", &vThreadSleep_ns,   false);
-  vAddPrimitive("thread.spawn",    &vThreadSpawn,      false);
+  vAddPrimitive("thread.append",      &vThreadAppend,      false);
+  vAddPrimitive("thread.bind",        &vThreadBind,        false);
+  vAddPrimitive("thread.condSignal",  &vThreadCondSignal,  false);
+  vAddPrimitive("thread.condWait",    &vThreadCondWait,    false);
+  vAddPrimitive("thread.cpu",         &vThreadCpu,         false);
+  vAddPrimitive("thread.dump",        &vThreadDump,        false);
+  vAddPrimitive("thread.init",        &vThreadInit,        false);
+  vAddPrimitive("thread.id",          &vThreadId,          false);
+  vAddPrimitive("thread.mutexLock",   &vThreadMutexLock,   false);
+  vAddPrimitive("thread.mutexUnlock", &vThreadMutexUnlock, false);
+  vAddPrimitive("thread.name@",       &vThreadNameFetch,   false);
+  vAddPrimitive("thread.name!",       &vThreadNameStore,   false);
+  vAddPrimitive("thread.taskset@",    &vThreadSfetch,      false);
+  vAddPrimitive("thread.taskset!",    &vThreadSstore,      false);
+  vAddPrimitive("thread.sleep_s",     &vThreadSleep_s,     false);
+  vAddPrimitive("thread.sleep_ms",    &vThreadSleep_ms,    false);
+  vAddPrimitive("thread.sleep_us",    &vThreadSleep_us,    false);
+  vAddPrimitive("thread.sleep_ns",    &vThreadSleep_ns,    false);
+  vAddPrimitive("thread.spawn",       &vThreadSpawn,       false);
   
   vAddPrimitive("threadCursor.begin",  &vThreadCursorBegin,  false);
   vAddPrimitive("threadCursor.delete", &vThreadCursorDelete, false);
@@ -1684,6 +1690,26 @@ void Task::vState(eTS eState)
   m_xLock.vGrabWrite();
   m_eState = eState;
   m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get thread                                                                 */
+/*----------------------------------------------------------------------------*/
+Threads::Thread* Task::pThread(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  return m_pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set thread                                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vThread(Threads::Thread* pThread)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  m_pThread = pThread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -8497,7 +8523,7 @@ ENTRY("vTaskStateStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.this -- push this tx                                                  */
+/* task.this -- push this task                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskThis(NNP_Task nnpTask)
 {
@@ -8506,6 +8532,24 @@ ENTRY("vTaskThis");
   Object* pTask = *nnpTask;
   
   nnpTask->m_xParamStack.vPush(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.thread -- push given tasks thread                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskThread(NNP_Task nnpTask)
+{
+  ENTRY("vTaskThread");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.thread");
+  Task* pThatTask = _pTask(pTaskObject);
+
+  Thread* pThread = pThatTask->m_pThread;
+  nnpTask->m_xParamStack.vPush(pThread);
   
   EXIT();
 }
@@ -8869,6 +8913,44 @@ ENTRY("vThreadBind");
 }
 
 /*----------------------------------------------------------------------------*/
+/* thread.condSignal -- signal condition on threads mutex                     */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadCondSignal(NNP_Task nnpTask)
+{
+ ENTRY("vThreadCondSignal");
+  
+  Object* pThreadObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
+    THROW_INVALID_PARAM("thread.condSignal");
+  
+  Thread* pThread = _pThread(pThreadObject);
+  ASSERT(CN_THREAD == pThread->eClass());
+  
+  pThread->m_xPosixThread.vCondSignal();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.condWait -- wait for cond on threads mutex                          */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadCondWait(NNP_Task nnpTask)
+{
+ ENTRY("vThreadCondWait");
+  
+  Object* pThreadObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
+    THROW_INVALID_PARAM("thread.condWait");
+  
+  Thread* pThread = _pThread(pThreadObject);
+  ASSERT(CN_THREAD == pThread->eClass());
+  
+  pThread->m_xPosixThread.vCondWait();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* thread.cpu -- get the cpu this thread is running on                        */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCpu(NNP_Task nnpTask)
@@ -8900,8 +8982,6 @@ ENTRY("vThreadDump");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("thread.dump");
-  
-  ASSERT(CN_THREAD == pObject->eClass());
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -8950,6 +9030,44 @@ ENTRY("vThreadInit");
   Thread* pThread = static_cast<Thread*>(pObject);
   
   new(pThread) Thread;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.mutexLock -- acquire a threads mutex lock                           */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadMutexLock(NNP_Task nnpTask)
+{
+ENTRY("vThreadMutexLock");
+  
+  Object* pThreadObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
+    THROW_INVALID_PARAM("thread.mutexLock");
+  
+  Thread* pThread = _pThread(pThreadObject);
+  ASSERT(CN_THREAD == pThread->eClass());
+  
+  pThread->m_xPosixThread.vMutexLock();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* thread.mutexUnlock -- release a threads mutex lock                         */
+/*----------------------------------------------------------------------------*/
+void Task::vThreadMutexUnlock(NNP_Task nnpTask)
+{
+ENTRY("vThreadMutexUnlock");
+
+  Object* pThreadObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
+    THROW_INVALID_PARAM("thread.mutexUnlock");
+  
+  Thread* pThread = _pThread(pThreadObject);
+  ASSERT(CN_THREAD == pThread->eClass());
+  
+  pThread->m_xPosixThread.vMutexUnlock();
   
   EXIT();
 }

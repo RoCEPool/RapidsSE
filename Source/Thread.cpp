@@ -16,6 +16,16 @@ extern pthread_key_t  giTLS_TaskKey;
 extern pthread_key_t  giTLS_ThreadKey;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Thread* Threads::_pThread(void* pAddr)
+{
+  Thread* pThread = reinterpret_cast<Thread*>(pAddr);
+  
+  return pThread;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new a thread from existing memory                                          */
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t iSize, Thread* pThread)
@@ -219,7 +229,9 @@ void Thread::vLoop(void)
 //        vTrace("[[%s]] Thread::vLoop running [%s] %p\n",m_sName.a(),m_npTask->sName().a(),*m_npTask);
       
       // set rdtscp
+      m_npTask->vThread(this);
       m_npTask->vLoop();
+      m_npTask->vThread(nullptr);
       // clear rdtscp
       
       if (TS_SWITCH == m_npTask->eState()) {

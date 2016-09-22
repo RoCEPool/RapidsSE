@@ -43,6 +43,8 @@ namespace Threads
     
     Footer* pFooter(void);
   };
+  
+  Thread* _pThread(void* pAddr);
 }
 
 /*============================================================================*/

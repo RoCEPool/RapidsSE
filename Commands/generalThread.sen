@@ -35,6 +35,51 @@ thread:  generalThread
    TS_EXITED task.this task.state!
 ;
 
+/*----------------------------------------------------------------------------*/
+/* signal/mutex testing                                                       */
+/*----------------------------------------------------------------------------*/
+: mutexLock
+traceOn
+
+  "mutexLock" .
+
+  task.this task.thread thread.mutexLock
+
+traceOff
+;
+
+: mutexUnlock
+traceOn
+
+  "mutexUnlock" .
+
+  task.this task.thread thread.mutexUnlock
+
+traceOff
+;
+
+: condWait
+traceOn
+
+  "condWait" .
+
+  mutexLock
+  task.this task.thread thread.condWait
+  mutexUnlock
+
+traceOff
+;
+
+: condSignal
+traceOn
+
+  "condSignal" .
+
+  task.this task.thread thread.condSignal
+
+traceOff
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

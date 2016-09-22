@@ -103,13 +103,14 @@ namespace Tasks
       pStepAccum->m_nCycles += _iTscDiff;
   
   private:
-    Lock  m_xLock;
-    i8    m_iTaskNo;     // task
-    s32   m_sName;       // task name
-    eTS   m_eState;      // state (running, sleeping, ...)
-    i8    m_iTxId;       // transaction id
-    i8    m_iWakeAt;     // time at which to wake this tx
-    Task* m_pParentTask; // parent of this task
+    Lock    m_xLock;
+    i8      m_iTaskNo;     // task
+    s32     m_sName;       // task name
+    eTS     m_eState;      // state (running, sleeping, ...)
+    i8      m_iTxId;       // transaction id
+    i8      m_iWakeAt;     // time at which to wake this tx
+    Task*   m_pParentTask; // parent of this task
+    Threads::Thread* m_pThread; // current thread
     
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
@@ -204,6 +205,8 @@ namespace Tasks
     void vRoutineCall(Word* pWord);
     eTS  eState(void);
     void vState(eTS eState);
+    Threads::Thread* pThread(void);
+    void vThread(Threads::Thread* pThread);
     void vTokenNext(void);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
@@ -604,8 +607,6 @@ namespace Tasks
     static void vTaskDic(NNP_Task nnpTask);
     static void vTaskDump(NNP_Task nnpTask);
     static void vTaskInit(NNP_Task nnpTask);
-    static void vTaskSeitfFetch(NNP_Task nnpTask);
-    static void vTaskSeitfStore(NNP_Task nnpTask);
     static void vTaskNameFetch(NNP_Task nnpTask);
     static void vTaskNameStore(NNP_Task nnpTask);
     static void vTaskNew(NNP_Task nnpTask);
@@ -615,8 +616,11 @@ namespace Tasks
     static void vTaskQfetch(NNP_Task nnpTask);
     static void vTaskQstore(NNP_Task nnpTask);
     static void vTaskSeed(NNP_Task nnpTask);
+    static void vTaskSeitfFetch(NNP_Task nnpTask);
+    static void vTaskSeitfStore(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
+    static void vTaskThread(NNP_Task nnpTask);
     
     // taskCursor
     static void vTaskCursorBegin(NNP_Task nnpTask);
@@ -642,10 +646,14 @@ namespace Tasks
     // thread
     static void vThreadAppend(NNP_Task nnpTask);  
     static void vThreadBind(NNP_Task nnpTask);
+    static void vThreadCondSignal(NNP_Task nnpTask);
+    static void vThreadCondWait(NNP_Task nnpTask);
     static void vThreadCpu(NNP_Task nnpTask);
     static void vThreadDump(NNP_Task nnpTask);
     static void vThreadId(NNP_Task nnpTask);
     static void vThreadInit(NNP_Task nnpTask);
+    static void vThreadMutexLock(NNP_Task nnpTask);
+    static void vThreadMutexUnlock(NNP_Task nnpTask);
     static void vThreadNameFetch(NNP_Task nnpTask);
     static void vThreadNameStore(NNP_Task nnpTask);
     static void vThreadSfetch(NNP_Task nnpTask);
