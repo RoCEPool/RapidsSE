@@ -80,7 +80,15 @@ Loader3Sub::~Loader3Sub(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump Loader3Sub                                                                */
+/* begin loading                                                              */
+/*----------------------------------------------------------------------------*/
+void Loader3Sub::vBegin(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump Loader3Sub                                                            */
 /*----------------------------------------------------------------------------*/
 void Loader3Sub::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
@@ -90,6 +98,14 @@ void Loader3Sub::vDump(eCN eClass, Object* pObject, const char* pTab)
   Loader3Sub* pLoader = reinterpret_cast<Loader3Sub*>(pObject);
   
   vTrace("%Loader3Sub %p:\n", pTab, pLoader);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end loading                                                                */
+/*----------------------------------------------------------------------------*/
+void Loader3Sub::vEnd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

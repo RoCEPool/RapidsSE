@@ -62,6 +62,7 @@ Loader3::Loader3(void)
   //m_xFile
   m_iSeek       = 0;
   m_pTxRef      = nullptr;
+  //m_xLock
   
   _checkInitialised_(sizeof(Loader3));
   
@@ -134,14 +135,6 @@ bool Loader3::bOpenFile(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin loading                                                              */
-/*----------------------------------------------------------------------------*/
-void Loader3::vBegin(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump Loader3                                                                */
 /*----------------------------------------------------------------------------*/
 void Loader3::vDump(eCN eClass, Object* pObject, const char* pTab)
@@ -196,14 +189,6 @@ bool Loader3::bInsertRow(i8 iPartn, StrVal* pRow)
   m_pTable->vInsertRow(iPartn,m_pTxRef,pRow);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* end loading                                                                */
-/*----------------------------------------------------------------------------*/
-void Loader3::vEnd(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

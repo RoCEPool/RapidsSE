@@ -17,6 +17,26 @@
     does>
 ;
 
+: loader3:
+    create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADER class!
+    word.this >body loader3.init
+    does>
+;
+
+: loader3Sub:
+  create
+  object!!
+  sizeof_loader allot
+  word.this >body magic!!
+  word.this >body CN_LOADERSUB class!
+  word.this >body loader3Sub.init
+  does>
+;
+
 /*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */
 /*----------------------------------------------------------------------------*/
@@ -27,6 +47,28 @@
     word.this >body magic!!
     word.this >body CN_LOADER class!
     word.this >body loader.init
+    word.this
+    does>
+;
+
+: :loader3
+    >create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADER class!
+    word.this >body loader3.init
+    word.this
+    does>
+;
+
+: :loader3Sub
+    >create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADERSUB class!
+    word.this >body loader3Sub.init
     word.this
     does>
 ;

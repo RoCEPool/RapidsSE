@@ -16,6 +16,8 @@ namespace DBobjects
     i8     m_iSeek;    // seek before next read
     TxRef* m_pTxRef;   // tx
     
+    Lock   m_xLock;    // lock
+    
     // must be last
     Footer m_xFooter;
     
@@ -29,19 +31,16 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void   vCloseFile(void);
+    bool   bOpenFile(void);
+    void   vPath(s& sPath);
     Table* pTable(void);
     void   vTable(Table* pTable);
+    void   vTxRef(TxRef* pTxRef);    
     
-    void   vPath(s& sPath);
-    void   vTxRef(TxRef* pTxRef);
-    
-    bool   bOpenFile(void);
-    void   vBegin(void);
     bool   bFetchChunk(LoadBuffer* pLoadBuffer);
     bool   bInsertRow(i8 iPartn, StrVal* pRecord);
-    void   vEnd(void);
-    void   vCloseFile(void);
-    
+
     Footer* pFooter(void);
   };
   

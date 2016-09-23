@@ -29,6 +29,8 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void   vBegin(void);
+    void   vEnd(void);
     bool   bFetchRecord(void);
     bool   bFetchChunk(void);
     void   vGetRecord(StrVal* pStrVal);
