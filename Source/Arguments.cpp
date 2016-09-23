@@ -22,7 +22,7 @@ Arguments::Arguments(void)
   m_bDocol      = false;
   m_bHelp       = false;
   m_bList       = false;
-  m_bPrompt   = false;
+  m_bPrompt     = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
@@ -165,6 +165,11 @@ bool Arguments::bParse(int argc, const char* argv[])
       }
 
       m_bStop = true;
+      continue;
+    }
+
+    if (String::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
+      m_bUnitTests = true;
       continue;
     }
 

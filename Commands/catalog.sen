@@ -31,8 +31,8 @@
 ;
 
 : checkIsNotCatalog ( word )
-  dup findInCurrent not if true exit then
-  EC_CATALOG_EXISTS false
+    dup findInCurrent not if true exit then
+    EC_CATALOG_EXISTS false
 ;
 
 /*============================================================================*/

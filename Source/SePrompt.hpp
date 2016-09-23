@@ -18,6 +18,7 @@ private:
   SEitf*    m_pSEitf;     // interface into rapidsse
   bool      m_bContinue;  // continue processing commands?
   s32       m_sPrompt;    // prompt
+  bool      m_bUseString; // use string
   
   s8K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
@@ -42,13 +43,14 @@ public:
   static void vDump(eCN eClass, Object* pObject, const char* pTab);
   
   void vLoop(void);
-  
+  bool bExecuteCommand(s& sCommand);
+
 private:
   void vGetCommand(void);
   void vGetCommandArgument(void);
   void vGetCommandInput(void);
   
-  void vProcessCommand(void);
+  bool bProcessCommand(void);
   
   bool bExecuteRequest(void);
   void vIterateRows(void);
@@ -62,7 +64,7 @@ private:
   void vCreateSchema(void);
   void vCreateTable(void);
   void vCreateTable2(void);
-  void vCreateTenant(void);
+  bool bCreateTenant(void);
   
   void vCollectStatement(void);
   void vDocol(void);

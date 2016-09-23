@@ -64,10 +64,11 @@ SePrompt::SePrompt(i8 iPartition)
   if (gxArguments.m_bCommand) {
     m_xTokeniser.vUseString(gxArguments.m_sCommand);
   }
-  else {
+  else if (gxArguments.m_bPrompt) {
     m_xTokeniser.vPrompt(m_sPrompt);
     m_xTokeniser.vUseStdin();
   }
+  
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vNormal(true);
   
@@ -115,7 +116,7 @@ void SePrompt::vLoop(void)
   // get and process commands
   while (m_bContinue) {
     vGetCommand();
-    vProcessCommand();
+    bProcessCommand();
   }
   
   // close history file
@@ -128,6 +129,26 @@ void SePrompt::vLoop(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute command from given string                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteCommand(s& sCommand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_xTokeniser.vUseString(sCommand);
+  i8 iToken = 0;
+  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+    
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    
+    iToken++;
+    ASSERT(iToken < C_TOKENS);
+  }
+  bool bResult = bProcessCommand();
+  return bResult;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get command                                                                */
@@ -199,7 +220,7 @@ void SePrompt::vGetCommandInput(void)
 /*----------------------------------------------------------------------------*/
 /* process command                                                            */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vProcessCommand(void)
+bool SePrompt::bProcessCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -208,96 +229,95 @@ void SePrompt::vProcessCommand(void)
   if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
       String::bEqualTo("help",m_pToken[0],C_NO_CASE)) {
     vHelp();
-    return;
+    return true;
   }
   
   if (String::bEqualTo("bye",m_pToken[0],C_NO_CASE)) {
     m_bContinue = false;
-    return;
+    return true;
   }
   
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
     vChangeWorkingDir();
-    return;
+    return true;
   }
   
   if (String::bEqualTo("docol",m_pToken[0],C_NO_CASE)) {
     vDocol();
-    return;
+    return true;
   }
   
   if (String::bEqualTo("history",m_pToken[0],C_NO_CASE)) {
     m_xHistory.vPrint();
-    return;
+    return true;
   }
   
   if (String::bEqualTo("!!",m_pToken[0],C_NO_CASE)) {
     if (! m_xHistory.bRecall(m_pToken,C_TOKENS))
-      return;
+      return true;
   }
   
   if ('!' == *m_pToken[0]) {
     if (! m_xHistory.bRecall(m_pToken,C_TOKENS))
-      return;
+      return true;
   }
   
   if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
     
     if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
-      vCreateTenant();
-      return;
+      return bCreateTenant();
     }
     if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
       vCreateCatalog();
-      return;
+      return true;
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
       vCreateSchema();
-      return;
+      return true;
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
       vCreateTable();
-      return;
+      return true;
     }
   }
   
   if (String::bEqualTo("create2",m_pToken[0],C_NO_CASE)) {
     vCollectStatement();
-    return;
+    return true;
   }
  
   if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
     if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
       vDropTenant();
-      return;
+      return true;
     }
     if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
       vDropCatalog();
-      return;
+      return true;
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
       vDropSchema();
-      return;
+      return true;
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
       vDropTable();
-      return;
+      return true;
     }
   }
   
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
     vPrintWorkingDir();
-    return;
+    return true;
   }
   
   if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
     vListDir();
-    return;
+    return true;
   }
   
   if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
     vPoolSpace();
-    return;
+    return true;
   }
   
   m_xHistory.vAppend(m_pToken);
@@ -305,19 +325,19 @@ void SePrompt::vProcessCommand(void)
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
     m_xTokeniser.vLineMode(true);
-    return;
+    return true;
   }
   
   // - execute seitf request
   
   if (! bExecuteRequest())
-    return;
+    return true;
   
   // - post process requests
   
   if (String::bEqualTo("sel",m_pToken[0],C_NO_CASE)) {
     vIterateRows();
-    return;
+    return true;
   }
   
   // - the following never return
@@ -326,7 +346,7 @@ void SePrompt::vProcessCommand(void)
     while (true) {
       PosixThread::vSleepSec(10);
       if (!bExecuteRequest())
-        return;
+        return true;
     }
   }
   
@@ -336,6 +356,7 @@ void SePrompt::vProcessCommand(void)
     }
   }
   
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -620,7 +641,7 @@ void SePrompt::vCreateSchema(void)
 /*----------------------------------------------------------------------------*/
 /* create tenant                                                              */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateTenant(void)
+bool SePrompt::bCreateTenant(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -644,13 +665,13 @@ void SePrompt::vCreateTenant(void)
   // there should be 4 tokens
   if (iNumTokens != 4) {
     vTrace("Error: Invalid statement.\n");
-    return;
+    return false;
   }
   
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[3] , ";")) {
     vTrace("Error: Invalid statement.\n");
-    return;
+    return false;
   }
   
   // create a tenant
@@ -658,9 +679,10 @@ void SePrompt::vCreateTenant(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
-    return;
+    return false;
   
   vTrace("Tenant created: %s\n", m_pToken2[2]);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -944,7 +966,7 @@ void SePrompt::vCollectStatement(void)
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vPrompt(m_sPrompt);
   
-  m_xTokeniser.vDumpTokens("Command : ",m_pToken,C_TOKENS);
+  //m_xTokeniser.vDumpTokens("Command : ",m_pToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/
