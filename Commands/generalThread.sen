@@ -8,7 +8,7 @@
 /* create and spawn the general processing threads                            */
 /*----------------------------------------------------------------------------*/
 
-6 constant N_GENERAL_THREADS
+CORE_COUNT 8 * 10 / constant N_GENERAL_THREADS
 
 : >genTaskSetNm ( i -- s ) "generalTaskSet" swap >str concat ;
 : >genThreadNm  ( i -- s ) "generalThread"  swap >str concat ;
