@@ -103,35 +103,59 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* child testing                                                              */
+/* child loading                                                              */
 /*----------------------------------------------------------------------------*/
-: childTest_call
-//traceOn
+: loadByChild
+  //traceOn
 
   // grab mutex lock of request thread
   task.this task.thread thread.mutexLock
 
   // creates the child task
 
-  // >r >r 0 rpick 1 rpick r> r>
-
-  2 "childTest_loop" task.this task.new dup "childTask" swap task.name!
+  2 "loadLoop_child0" task.this task.new dup "loadChild0" swap task.name!
   generalTaskSet0 taskSet.append
 
   task.this task.thread thread.condWait
 
   task.this task.thread thread.mutexUnlock
 
-  //traceOff
+//traceOff
 ;
 
-: childTest_loop
+: loadChild1
 
-  "childTest" .
+  // grab mutex lock of request thread
+  task.this task.thread thread.mutexLock
+
+  // creates the child task
+
+  0 "loadLoop_child1" task.this task.new dup "loadChild1" swap task.name!
+  generalTaskSet1 taskSet.append
+
+  task.this task.thread thread.condWait
+
+  task.this task.thread thread.mutexUnlock
+;
+
+: loadLoop_child0
+
+  "loadLoop_child0" .
+
+  loadChild1
 
   load drop
 
   //tasklist taskList.dump
+
+  task.parent@ task.thread thread.condSignal
+
+  TS_EXITED task.this task.state!
+;
+
+: LoadLoop_child1
+
+  "loadLoop_child1" .
 
   task.parent@ task.thread thread.condSignal
 
@@ -143,7 +167,7 @@
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<fileNm>" ^table )
 
-    childTest_call
+  loadByChild
 ;
 
 /*============================================================================*/
