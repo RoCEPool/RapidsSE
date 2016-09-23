@@ -65,7 +65,7 @@ i8 Magnitudes::iBytes(char* psBuf)
     
   } else if (String::bContains(psBuf, "B") ) {
     if (!String::bEqualTo(String::sLast(psBuf), "B")) {
-      THROW_ERROR(EC_INVALID_ARGUMENT);
+      THROW_ERROR(EC_INVALID_PARAMETER);
 
     }
     String::vCopyTill(sNumber.a(), psBuf, 'B');
@@ -78,14 +78,14 @@ i8 Magnitudes::iBytes(char* psBuf)
   i8 iVal;
   
   if (!String::bIsNumeric(ps)){
-     THROW_ERROR(EC_INVALID_ARGUMENT);
+     THROW_ERROR(EC_INVALID_PARAMETER);
   }
   
   if (String::bExtractI8(&ps, &iVal)) {
     return iVal*iMagnitude;
   }
   else {
-    THROW_ERROR(EC_INVALID_ARGUMENT);
+    THROW_ERROR(EC_INVALID_PARAMETER);
   }
   
   /*
