@@ -5,30 +5,6 @@
 "loader.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create a loader using name from input stream (doesnt leave loader on stk)  */
-/*----------------------------------------------------------------------------*/
-
-: loader:
-    create
-    object!!
-    sizeof_loader allot
-    word.this >body magic!!
-    word.this >body CN_LOADER class!
-    word.this >body loader.init
-    does>
-;
-
-: loaderSub:
-  create
-  object!!
-  sizeof_loader allot
-  word.this >body magic!!
-  word.this >body CN_LOADERSUB class!
-  word.this >body loaderSub.init
-  does>
-;
-
-/*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */
 /*----------------------------------------------------------------------------*/
 
@@ -57,80 +33,15 @@
 /*----------------------------------------------------------------------------*/
 /* calculate partition number of row                                          */
 /*----------------------------------------------------------------------------*/
-: toPartition ( ^row -- i )
-//traceon
-
-    csv.firstvalue
-
-    hash
-
-    partitions %
-
-//traceoff
-;
-
-
-/*----------------------------------------------------------------------------*/
-/* spawn load3Sub                                                             */
-/*----------------------------------------------------------------------------*/
-: spawnLoad3Sub_0
-
-  1 "load3Sub" task.this task.new
-
-  dup "load3Sub_0" swap task.name!
-
-  0 >genTaskSet taskSet.append
-;
-
-: spawnLoad3Sub_1
-
-  1 "load3Sub" task.this task.new
-
-  dup "load3Sub_1" swap task.name!
-
-  1 >genTaskSet taskSet.append
-;
-
-: spawnLoad3Sub_2
-
-  1 "load3Sub" task.this task.new
-
-  dup "load3Sub_2" swap task.name!
-
-  2 >genTaskSet taskSet.append
-;
-
-: spawnLoad3Sub_3
-
-  1 "load3Sub" task.this task.new
-
-  dup "load3Sub_3" swap task.name!
-
-  3 >genTaskSet taskSet.append
-;
-
-: spawnLoad3Sub_4
-
-  1 "load3Sub" task.this task.new
-
-  dup "load3Sub_4" swap task.name!
-
-  4 >genTaskSet taskSet.append
-;
-
-: spawnLoad3Sub_5
-
-  1 "load3Sub" task.this task.new
-
-  dup "load3Sub_5" swap task.name!
-
-  5 >genTaskSet taskSet.append
-;
+: toPartition ( ^row -- i ) csv.firstvalue hash partitions % ;
 
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
-: load3Sub ( ^LoaderSub )
+
+: >loadSubNm ( i -- s ) "loadSub_" swap >str concat ;
+
+: loadSub ( ^LoaderSub )
 //traceOn
 
   >r
@@ -157,7 +68,7 @@
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
-: load3 ( "<path>" ^table -- t|f )
+: tableLoader ( "<path>" ^table -- t|f )
 //traceon
 
   // create a Loader
@@ -176,25 +87,25 @@
   r0 loader.path!
 
   // open the file to be loaded
-  r0 loader.openFile not if "file not opened" . rdrop false exit then
+  r0 loader.openFile not if "file not opened" . rdrop exit then
 
   // begin a new transaction
   beginTransaction r0 loader.txref!
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  //load3Sub
-
   grabThreadMutex
 
-  2 r0 loader.subs!
+  N_GENERAL_THREADS r0 loader.subs!
 
-  r0 loader.newSub spawnLoad3Sub_0
-  r0 loader.newSub spawnLoad3Sub_1
-//r0 loader.newSub spawnLoad3Sub_2
-//r0 loader.newSub spawnLoad3Sub_3
-//r0 loader.newSub spawnLoad3Sub_4
-//r0 loader.newSub spawnLoad3Sub_5
+  N_GENERAL_THREADS 0 do
+
+    r2 loader.newSub 1 "loadSub" task.this task.new
+
+    dup I >loadSubNm swap task.name!
+
+    I >genTaskSet taskSet.append
+  loop
 
   threadCondWait
   dropThreadMutex
@@ -214,14 +125,6 @@
   "__table_loader" find >forget
 
 //traceoff
-;
-
-/*----------------------------------------------------------------------------*/
-/* table loader (can probably be removed)                                     */
-/*----------------------------------------------------------------------------*/
-: tableLoader ( "<fileNm>" ^table )
-
-  load3
 ;
 
 /*============================================================================*/
