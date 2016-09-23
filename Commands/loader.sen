@@ -205,6 +205,83 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* grab this threads mutex                                                    */
+/*----------------------------------------------------------------------------*/
+: grabThreadMutex task.this task.thread thread.mutexLock ;
+
+/*----------------------------------------------------------------------------*/
+/* drop this threads mutex                                                    */
+/*----------------------------------------------------------------------------*/
+: dropThreadMutex task.this task.thread thread.mutexUnlock ;
+
+/*----------------------------------------------------------------------------*/
+/* wait on this threads cond variable                                         */
+/*----------------------------------------------------------------------------*/
+: threadCondWait task.this task.thread thread.condWait ;
+
+/*----------------------------------------------------------------------------*/
+/* signal parent thread                                                       */
+/*----------------------------------------------------------------------------*/
+: signalParentThread task.parent@ task.thread thread.condSignal ;
+
+/*----------------------------------------------------------------------------*/
+/* spawn load3Sub                                                             */
+/*----------------------------------------------------------------------------*/
+: spawnLoad3Sub_0
+
+  1 "load3Sub" task.this task.new
+
+  dup "load3Sub_0" swap task.name!
+
+  generalTaskSet0 taskSet.append
+;
+
+: spawnLoad3Sub_1
+
+  1 "load3Sub" task.this task.new
+
+  dup "load3Sub_1" swap task.name!
+
+  generalTaskSet1 taskSet.append
+;
+
+: spawnLoad3Sub_2
+
+  1 "load3Sub" task.this task.new
+
+  dup "load3Sub_2" swap task.name!
+
+  generalTaskSet2 taskSet.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* parallel sub-loading of file into table                                    */
+/*----------------------------------------------------------------------------*/
+: load3Sub ( ^Loader3Sub )
+//traceOn
+
+  >r
+  // r0 ^Loader3Sub
+
+  r0 loader3Sub.begin
+
+  begin
+    r0 loader3Sub.fetchrecord
+    while
+      r0 loader3Sub.pushRecord toPartition
+      r0 loader3Sub.insertrow  drop
+  repeat
+
+  r0 loader3Sub.end
+
+  rdrop
+
+  signalParentThread
+
+//traceOff
+;
+
+/*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
 : load3 ( "<path>" ^table -- t|f )
@@ -232,26 +309,15 @@
   beginTransaction r0 loader3.txref!
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // loader loop
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  r0 loader3.newSub >r
-  // r0 ^Loader3Sub
-  // r1 ^Loader3
+  //load3Sub
 
-  r0 loader3Sub.begin
+  grabThreadMutex
 
-  begin
-    r0 loader3Sub.fetchrecord
-    while
-      r0 loader3Sub.pushRecord toPartition
-      r0 loader3Sub.insertrow  drop
-  repeat
+  r0 loader3.newSub spawnLoad3Sub_0
 
-  r0 loader3Sub.end
-
-  rdrop
-  // r0 ^Loader3
+  threadCondWait
+  dropThreadMutex
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -275,8 +341,8 @@
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<fileNm>" ^table )
 
-  loadByChild
-//  load3
+//  loadByChild
+  load3
 ;
 
 /*============================================================================*/
