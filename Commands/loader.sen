@@ -17,6 +17,26 @@
     does>
 ;
 
+: loader3:
+    create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADER class!
+    word.this >body loader3.init
+    does>
+;
+
+: loader3Sub:
+  create
+  object!!
+  sizeof_loader allot
+  word.this >body magic!!
+  word.this >body CN_LOADERSUB class!
+  word.this >body loader3Sub.init
+  does>
+;
+
 /*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */
 /*----------------------------------------------------------------------------*/
@@ -27,6 +47,28 @@
     word.this >body magic!!
     word.this >body CN_LOADER class!
     word.this >body loader.init
+    word.this
+    does>
+;
+
+: :loader3
+    >create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADER class!
+    word.this >body loader3.init
+    word.this
+    does>
+;
+
+: :loader3Sub
+    >create
+    object!!
+    sizeof_loader allot
+    word.this >body magic!!
+    word.this >body CN_LOADERSUB class!
+    word.this >body loader3Sub.init
     word.this
     does>
 ;
@@ -52,7 +94,7 @@
 : load ( "<path>" ^table -- t|f )
 //traceon
 
-childTest_call
+//childTest_call
 
     // create a Loader
     "__table_loader" find dup if else
@@ -103,11 +145,71 @@ childTest_call
 ;
 
 /*----------------------------------------------------------------------------*/
+/* child loading                                                              */
+/*----------------------------------------------------------------------------*/
+: loadByChild
+  //traceOn
+
+  // grab mutex lock of request thread
+  task.this task.thread thread.mutexLock
+
+  // creates the child task
+
+  2 "loadLoop_child0" task.this task.new dup "loadChild0" swap task.name!
+  generalTaskSet0 taskSet.append
+
+  task.this task.thread thread.condWait
+
+  task.this task.thread thread.mutexUnlock
+
+//traceOff
+;
+
+: loadChild1
+
+  // grab mutex lock of request thread
+  task.this task.thread thread.mutexLock
+
+  // creates the child task
+
+  0 "loadLoop_child1" task.this task.new dup "loadChild1" swap task.name!
+  generalTaskSet1 taskSet.append
+
+  task.this task.thread thread.condWait
+
+  task.this task.thread thread.mutexUnlock
+;
+
+: loadLoop_child0
+
+  "loadLoop_child0" .
+
+  loadChild1
+
+  load drop
+
+  //tasklist taskList.dump
+
+  task.parent@ task.thread thread.condSignal
+
+  TS_EXITED task.this task.state!
+;
+
+: LoadLoop_child1
+
+  "loadLoop_child1" .
+
+  task.parent@ task.thread thread.condSignal
+
+  TS_EXITED task.this task.state!
+;
+
+/*----------------------------------------------------------------------------*/
 /* table loader (can probably be removed)                                     */
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<fileNm>" ^table )
 
-    load drop
+  loadByChild
 ;
 
 /*============================================================================*/

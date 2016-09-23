@@ -471,6 +471,24 @@ namespace Tasks
     static void vLoaderEnd(NNP_Task nnpTask);
     static void vLoaderCloseFile(NNP_Task nnpTask);
 
+    static void vLoader3CloseFile(NNP_Task nnpTask);
+    static void vLoader3Delete(NNP_Task nnpTask);
+    static void vLoader3Init(NNP_Task nnpTask);
+    static void vLoader3New(NNP_Task nnpTask);
+    static void vLoader3OpenFile(NNP_Task nnpTask);
+    static void vLoader3PathStore(NNP_Task nnpTask);
+    static void vLoader3TableStore(NNP_Task nnpTask);
+    static void vLoader3TxRefStore(NNP_Task nnpTask);
+    
+    static void vLoader3SubBegin(NNP_Task nnpTask);
+    static void vLoader3SubDelete(NNP_Task nnpTask);
+    static void vLoader3SubEnd(NNP_Task nnpTask);
+    static void vLoader3SubFetchRecord(NNP_Task nnpTask);
+    static void vLoader3SubInit(NNP_Task nnpTask);
+    static void vLoader3SubInsertRow(NNP_Task nnpTask);
+    static void vLoader3SubNew(NNP_Task nnpTask);
+    static void vLoader3SubPushRecord(NNP_Task nnpTask);
+    
     // lock
     static void vLockDropRead(NNP_Task nnpTask);
     static void vLockDropWrite(NNP_Task nnpTask);
