@@ -460,27 +460,27 @@ namespace Tasks
     static void vInputType(NNP_Task nnpTask);
     
     // loader
-    static void vLoader3CloseFile(NNP_Task nnpTask);
-    static void vLoader3Delete(NNP_Task nnpTask);
-    static void vLoader3Init(NNP_Task nnpTask);
-    static void vLoader3New(NNP_Task nnpTask);
-    static void vLoader3NewSub(NNP_Task nnpTask);
-    static void vLoader3OpenFile(NNP_Task nnpTask);
-    static void vLoader3PathStore(NNP_Task nnpTask);
-    static void vLoader3SubsStore(NNP_Task nnpTask);
-    static void vLoader3TableStore(NNP_Task nnpTask);
-    static void vLoader3TxRefStore(NNP_Task nnpTask);
+    static void vLoaderCloseFile(NNP_Task nnpTask);
+    static void vLoaderDelete(NNP_Task nnpTask);
+    static void vLoaderInit(NNP_Task nnpTask);
+    static void vLoaderNew(NNP_Task nnpTask);
+    static void vLoaderNewSub(NNP_Task nnpTask);
+    static void vLoaderOpenFile(NNP_Task nnpTask);
+    static void vLoaderPathStore(NNP_Task nnpTask);
+    static void vLoaderSubsStore(NNP_Task nnpTask);
+    static void vLoaderTableStore(NNP_Task nnpTask);
+    static void vLoaderTxRefStore(NNP_Task nnpTask);
     
-    static void vLoader3SubBegin(NNP_Task nnpTask);
-    static void vLoader3SubCompleted(NNP_Task nnpTask);
-    static void vLoader3SubDelete(NNP_Task nnpTask);
-    static void vLoader3SubEnd(NNP_Task nnpTask);
-    static void vLoader3SubFetchRecord(NNP_Task nnpTask);
-    static void vLoader3SubInit(NNP_Task nnpTask);
-    static void vLoader3SubInsertRow(NNP_Task nnpTask);
-    static void vLoader3SubLoaderStore(NNP_Task nnpTask);
-    static void vLoader3SubNew(NNP_Task nnpTask);
-    static void vLoader3SubPushRecord(NNP_Task nnpTask);
+    static void vLoaderSubBegin(NNP_Task nnpTask);
+    static void vLoaderSubCompleted(NNP_Task nnpTask);
+    static void vLoaderSubDelete(NNP_Task nnpTask);
+    static void vLoaderSubEnd(NNP_Task nnpTask);
+    static void vLoaderSubFetchRecord(NNP_Task nnpTask);
+    static void vLoaderSubInit(NNP_Task nnpTask);
+    static void vLoaderSubInsertRow(NNP_Task nnpTask);
+    static void vLoaderSubLoaderStore(NNP_Task nnpTask);
+    static void vLoaderSubNew(NNP_Task nnpTask);
+    static void vLoaderSubPushRecord(NNP_Task nnpTask);
     
     // lock
     static void vLockDropRead(NNP_Task nnpTask);

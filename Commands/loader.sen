@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* loader.sen -- Table Loader                                                 */
+/* loader.sen -- Parallel Table Loader                                        */
 /*============================================================================*/
 
 "loader.sen" .putVerbose
@@ -130,11 +130,11 @@
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
-: load3Sub ( ^Loader3Sub )
+: load3Sub ( ^LoaderSub )
 //traceOn
 
   >r
-  // r0 ^Loader3Sub
+  // r0 ^LoaderSub
 
   r0 loader3Sub.begin
 
@@ -169,7 +169,7 @@
 
   // put Loader into register 0
   >r
-  // r0 ^Loader3
+  // r0 ^Loader
 
   // initialise r0:Loader
   r0 loader3.table!
@@ -207,7 +207,7 @@
   // close the file
   r0 loader3.closeFile
 
-  // discard r0:Loader3
+  // discard r0:Loader
   rdrop
 
   // destroy Loader

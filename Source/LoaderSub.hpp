@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Loader3Sub.hpp -- Subordinate Table Loader                                 */
+/* LoaderSub.hpp -- Subordinate Parallel Table Loader                         */
 /*============================================================================*/
 
 #pragma once
@@ -8,10 +8,10 @@
 
 namespace DBobjects
 {
-  class Loader3Sub : public Object
+  class LoaderSub : public Object
   {
   private:
-    Loader3* m_pLoader3; // the reference information
+    Loader* m_pLoader; // the reference information
     char*    m_pRecord;  // record from file
     i8       m_iLength;  // length of record
     bool     m_bMoreChunks;    // more chunks 
@@ -22,11 +22,11 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Loader3Sub* pLoader3Sub);
-    void  operator delete(void* pLoader3Address);
+    void* operator new(size_t, LoaderSub* pLoaderSub);
+    void  operator delete(void* pLoaderAddress);
  
-    Loader3Sub(void);
-    ~Loader3Sub(void);
+    LoaderSub(void);
+    ~LoaderSub(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
@@ -37,12 +37,12 @@ namespace DBobjects
     bool   bFetchChunk(void);
     void   vGetRecord(StrVal* pStrVal);
     bool   bInsertRow(i8 iPartn);
-    void   vLoader3(Loader3* pLoader3);
+    void   vLoader(Loader* pLoader);
     
     Footer* pFooter(void);
   };
   
-  Loader3Sub* _pLoader3Sub(void* pAddr);
+  LoaderSub* _pLoaderSub(void* pAddr);
 }
 
 /*============================================================================*/

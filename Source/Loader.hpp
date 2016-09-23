@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Loader3.hpp -- Parallel Table Loader                                       */
+/* Loader.hpp -- Parallel Table Loader                                        */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Loader3 : public Object
+  class Loader : public Object
   {
   private:
     Table* m_pTable;   // table being load
@@ -25,11 +25,11 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Loader3* pLoader3);
-    void  operator delete(void* pLoader3Address);
+    void* operator new(size_t, Loader* pLoader);
+    void  operator delete(void* pLoaderAddress);
  
-    Loader3(void);
-    ~Loader3(void);
+    Loader(void);
+    ~Loader(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
@@ -48,7 +48,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  Loader3* _pLoader3(void* pAddr);
+  Loader* _pLoader(void* pAddr);
 }
 
 /*============================================================================*/
