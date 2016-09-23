@@ -21,7 +21,6 @@
 
 #include "RowCursor.hpp"
 
-#include "Loader.hpp"
 #include "LoadBuffer.hpp"
 #include "Loader2.hpp"
 #include "Loader3.hpp"

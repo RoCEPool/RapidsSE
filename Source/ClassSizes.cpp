@@ -34,7 +34,7 @@ i8 giClassSize[]
   /* 18 */ sizeof(Grid),
   /* 19 */ sizeof(HeapBuffer),
   /* 20 */ sizeof(Index),
-  /* 21 */ sizeof(Loader),
+  /* 21 */ sizeof(Loader3),
   /* 22 */ sizeof(Loader3Sub),
   /* 23 */ sizeof(Lock),
   /* 24 */ sizeof(Heap),

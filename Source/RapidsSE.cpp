@@ -75,7 +75,7 @@ pDUMPFUN *gpDump[]
   
   /* 23 */ &Index::vDump,              // CN_INDEX
   
-  /* 24 */ &Loader::vDump,             // CN_LOADER
+  /* 24 */ &Loader3::vDump,            // CN_LOADER
   /* 25 */ &Loader3Sub::vDump,         // CN_LOADERSUB
   /* 26 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
   
