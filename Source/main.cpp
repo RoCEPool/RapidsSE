@@ -4,6 +4,7 @@
 
 #include "StorageEngine.h"
 #include "SePrompt.hpp"
+#include "UnitTests.h"
 
 extern Arguments  gxArguments;
 
@@ -66,6 +67,12 @@ int main(int argc, const char* argv[])
   
   // execute the command line
   RapidsSE::vExecute();
+  
+  // unit tests ?
+  if (gxArguments.m_bUnitTests) {
+    Tests* pTests = new Tests();
+    pTests->vRunTests();
+  }
   
   // optionally execute se> prompt
   if (gxArguments.m_bPrompt) {
