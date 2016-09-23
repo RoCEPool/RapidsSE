@@ -35,6 +35,7 @@ namespace DBobjects
     bool   bFetchChunk(void);
     void   vGetRecord(StrVal* pStrVal);
     bool   bInsertRow(i8 iPartn);
+    void   vLoader3(Loader3* pLoader3);
     
     Footer* pFooter(void);
   };

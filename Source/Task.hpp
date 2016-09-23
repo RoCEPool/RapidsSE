@@ -486,6 +486,7 @@ namespace Tasks
     static void vLoader3SubFetchRecord(NNP_Task nnpTask);
     static void vLoader3SubInit(NNP_Task nnpTask);
     static void vLoader3SubInsertRow(NNP_Task nnpTask);
+    static void vLoader3SubLoaderStore(NNP_Task nnpTask);
     static void vLoader3SubNew(NNP_Task nnpTask);
     static void vLoader3SubPushRecord(NNP_Task nnpTask);
     
