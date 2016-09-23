@@ -429,6 +429,9 @@ namespace Tasks
     
     static void vDebugTrap(NNP_Task nnpTask);
 
+    // errors
+    static void vErrorMsg(NNP_Task nnpTask);
+    
     // file
     static void vFileClose(NNP_Task nnpTask);     
     static void vFileDelete(NNP_Task nnpTask);

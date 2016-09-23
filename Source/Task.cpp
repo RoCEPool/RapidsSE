@@ -389,6 +389,44 @@ void Task::vAddConstants(void)
   /* 60 */ vAddConstant("CN_WORD",                  CN_WORD);
   /* 61 */ vAddConstant("CN_ENUMS",                 CN_ENUMS);
   
+  /*  0 */ vAddConstant("EC_NONE",                  EC_NONE);
+  /*  1 */ vAddConstant("EC_ASSERT",                EC_ASSERT);
+  /*  2 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
+  
+  /*  3 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
+  /*  4 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
+  /*  5 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
+  /*  6 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
+  
+  /*  7 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
+  
+  /*  8 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
+  /*  9 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
+  /* 10 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
+  /* 11 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
+  /* 12 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
+  /* 13 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
+  
+  /* 14 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
+  /* 15 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
+  /* 16 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
+  /* 17 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
+  /* 18 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
+  
+  /* 19 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
+  /* 20 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
+  /* 21 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
+  /* 22 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
+  /* 23 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
+  
+  /* 24 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
+  
+  /* 25 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
+  
+  /* 26 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /* 27 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
+  /* 28 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
+
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
   /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
   /*  2 */ vAddConstant("TK_INTEGER",               TK_INTEGER);
@@ -721,7 +759,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.init",        &vDirInit,          false);
   vAddPrimitive("dir.isClosed",    &vDirIsClosed,      false);
   vAddPrimitive("dir.isOpen",      &vDirIsOpen,        false);
-  vAddPrimitive("dir.new",         &vDirNew,          false);
+  vAddPrimitive("dir.new",         &vDirNew,           false);
   vAddPrimitive("dir.open",        &vDirOpen,          false);
   vAddPrimitive("dir.path@",       &vDirPathGet,       false);
   vAddPrimitive("dir.path!",       &vDirPathSet,       false);
@@ -729,7 +767,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.rewind",      &vDirRewind,        false);
   vAddPrimitive("dir.seek",        &vDirSeek,          false);
   vAddPrimitive("dir.tell",        &vDirTell,          false);
-
+ 
+  vAddPrimitive("error.msg",      &vErrorMsg,          false);
+  
   vAddPrimitive("file.close",      &vFileClose,        false);
   vAddPrimitive("file.delete",     &vFileDelete,       false);
   vAddPrimitive("file.init",       &vFileInit,         false);
@@ -5684,6 +5724,31 @@ ENTRY("vDirTell");
   i8 iPosition = pDir->iTell();
   
   nnpTask->m_xParamStack.vPush(iPosition);
+  
+  EXIT();
+}
+
+// errors: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* error.msg -- get error message given the error code                        */
+/*----------------------------------------------------------------------------*/
+void Task::vErrorMsg(NNP_Task nnpTask)
+{
+  ENTRY("vErrorMsg");
+  
+  
+  i8 iErrorCode;
+  if ( ! nnpTask->m_xParamStack.bPop(iErrorCode) )
+    THROW_INVALID_PARAM("error.msg");
+  
+  if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
+    THROW("error.msg");
+
+  s256 sErrorMsg;
+  sErrorMsg = pEC[iErrorCode];
+  
+  nnpTask->m_xParamStack.vPush(sErrorMsg);
   
   EXIT();
 }
