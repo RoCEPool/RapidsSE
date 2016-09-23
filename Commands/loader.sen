@@ -8,23 +8,23 @@
 /* create a loader using name from input stream (doesnt leave loader on stk)  */
 /*----------------------------------------------------------------------------*/
 
-: loader3:
+: loader:
     create
     object!!
     sizeof_loader allot
     word.this >body magic!!
     word.this >body CN_LOADER class!
-    word.this >body loader3.init
+    word.this >body loader.init
     does>
 ;
 
-: loader3Sub:
+: loaderSub:
   create
   object!!
   sizeof_loader allot
   word.this >body magic!!
   word.this >body CN_LOADERSUB class!
-  word.this >body loader3Sub.init
+  word.this >body loaderSub.init
   does>
 ;
 
@@ -32,24 +32,24 @@
 /* create a loader using name on the stack (leaves loader on stack)           */
 /*----------------------------------------------------------------------------*/
 
-: :loader3
+: :loader
     >create
     object!!
     sizeof_loader allot
     word.this >body magic!!
     word.this >body CN_LOADER class!
-    word.this >body loader3.init
+    word.this >body loader.init
     word.this
     does>
 ;
 
-: :loader3Sub
+: :loaderSub
     >create
     object!!
     sizeof_loader allot
     word.this >body magic!!
     word.this >body CN_LOADERSUB class!
-    word.this >body loader3Sub.init
+    word.this >body loaderSub.init
     word.this
     does>
 ;
@@ -136,18 +136,18 @@
   >r
   // r0 ^LoaderSub
 
-  r0 loader3Sub.begin
+  r0 loaderSub.begin
 
   begin
-    r0 loader3Sub.fetchrecord
+    r0 loaderSub.fetchrecord
     while
-      r0 loader3Sub.pushRecord toPartition
-      r0 loader3Sub.insertrow  drop
+      r0 loaderSub.pushRecord toPartition
+      r0 loaderSub.insertrow  drop
   repeat
 
-  r0 loader3Sub.end
+  r0 loaderSub.end
 
-  r0 loader3Sub.completed if signalParentThread then
+  r0 loaderSub.completed if signalParentThread then
 
   rdrop
 
@@ -161,9 +161,9 @@
 //traceon
 
   // create a Loader
-  "__table_loader3" find dup if else
+  "__table_loader" find dup if else
     drop
-    "__table_loader3" :loader3
+    "__table_loader" :loader
   then
   execute
 
@@ -172,14 +172,14 @@
   // r0 ^Loader
 
   // initialise r0:Loader
-  r0 loader3.table!
-  r0 loader3.path!
+  r0 loader.table!
+  r0 loader.path!
 
   // open the file to be loaded
-  r0 loader3.openFile not if "file not opened" . rdrop false exit then
+  r0 loader.openFile not if "file not opened" . rdrop false exit then
 
   // begin a new transaction
-  beginTransaction r0 loader3.txref!
+  beginTransaction r0 loader.txref!
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -187,14 +187,14 @@
 
   grabThreadMutex
 
-  2 r0 loader3.subs!
+  2 r0 loader.subs!
 
-  r0 loader3.newSub spawnLoad3Sub_0
-  r0 loader3.newSub spawnLoad3Sub_1
-//r0 loader3.newSub spawnLoad3Sub_2
-//r0 loader3.newSub spawnLoad3Sub_3
-//r0 loader3.newSub spawnLoad3Sub_4
-//r0 loader3.newSub spawnLoad3Sub_5
+  r0 loader.newSub spawnLoad3Sub_0
+  r0 loader.newSub spawnLoad3Sub_1
+//r0 loader.newSub spawnLoad3Sub_2
+//r0 loader.newSub spawnLoad3Sub_3
+//r0 loader.newSub spawnLoad3Sub_4
+//r0 loader.newSub spawnLoad3Sub_5
 
   threadCondWait
   dropThreadMutex
@@ -205,13 +205,13 @@
   commitTransaction
 
   // close the file
-  r0 loader3.closeFile
+  r0 loader.closeFile
 
   // discard r0:Loader
   rdrop
 
   // destroy Loader
-  "__table_loader3" find >forget
+  "__table_loader" find >forget
 
 //traceoff
 ;

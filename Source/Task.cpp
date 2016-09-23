@@ -795,27 +795,27 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("input.token",     &vInputToken,       false);
   vAddPrimitive("input.type",      &vInputType,        false);
   
-  vAddPrimitive("loader3.closeFile",   &vLoaderCloseFile,   false);
-  vAddPrimitive("loader3.delete",      &vLoaderDelete,      false);
-  vAddPrimitive("loader3.init",        &vLoaderInit,        false);
-  vAddPrimitive("loader3.new",         &vLoaderNew,         false);
-  vAddPrimitive("loader3.newSub",      &vLoaderNewSub,      false);
-  vAddPrimitive("loader3.openFile",    &vLoaderOpenFile,    false);
-  vAddPrimitive("loader3.path!",       &vLoaderPathStore,   false);
-  vAddPrimitive("loader3.subs!",       &vLoaderSubsStore,   false);
-  vAddPrimitive("loader3.table!",      &vLoaderTableStore,  false);
-  vAddPrimitive("loader3.txref!",      &vLoaderTxRefStore,  false);
+  vAddPrimitive("loader.closeFile",   &vLoaderCloseFile,   false);
+  vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.init",        &vLoaderInit,        false);
+  vAddPrimitive("loader.new",         &vLoaderNew,         false);
+  vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
+  vAddPrimitive("loader.openFile",    &vLoaderOpenFile,    false);
+  vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
+  vAddPrimitive("loader.subs!",       &vLoaderSubsStore,   false);
+  vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
   
-  vAddPrimitive("loader3Sub.begin",       &vLoaderSubBegin,       false);
-  vAddPrimitive("loader3Sub.completed",   &vLoaderSubCompleted,   false);
-  vAddPrimitive("loader3Sub.delete",      &vLoaderSubDelete,      false);
-  vAddPrimitive("loader3Sub.end",         &vLoaderSubEnd,         false);
-  vAddPrimitive("loader3Sub.fetchRecord", &vLoaderSubFetchRecord, false);
-  vAddPrimitive("loader3Sub.init",        &vLoaderSubInit,        false);
-  vAddPrimitive("loader3Sub.insertRow",   &vLoaderSubInsertRow,   false);
-  vAddPrimitive("loader3Sub.loader!",     &vLoaderSubLoaderStore, false);
-  vAddPrimitive("loader3Sub.new",         &vLoaderSubNew,         false);
-  vAddPrimitive("loader3Sub.pushRecord",  &vLoaderSubPushRecord,  false);
+  vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
+  vAddPrimitive("loaderSub.completed",   &vLoaderSubCompleted,   false);
+  vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
+  vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
+  vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
+  vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
+  vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
+  vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
+  vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
+  vAddPrimitive("loaderSub.pushRecord",  &vLoaderSubPushRecord,  false);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -6138,7 +6138,7 @@ ENTRY("vInputType");
 // loader: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* loader3.closefile -- close file being loaded                               */
+/* loader.closefile -- close file being loaded                               */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderCloseFile(NNP_Task nnpTask)
 {
@@ -6146,7 +6146,7 @@ void Task::vLoaderCloseFile(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader3.closefile");
+    THROW_INVALID_PARAM("loader.closefile");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6157,7 +6157,7 @@ void Task::vLoaderCloseFile(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.delete -- delete a table loader                                    */
+/* loader.delete -- delete a table loader                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
 {
@@ -6165,7 +6165,7 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader3.delete");
+    THROW_INVALID_PARAM("loader.delete");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6176,7 +6176,7 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.init -- init a table loader                                        */
+/* loader.init -- init a table loader                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInit(NNP_Task nnpTask)
 {
@@ -6184,7 +6184,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader3.init");
+    THROW_INVALID_PARAM("loader.init");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6195,7 +6195,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.new -- new a table loader                                          */
+/* loader.new -- new a table loader                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNew(NNP_Task nnpTask)
 {
@@ -6210,7 +6210,7 @@ void Task::vLoaderNew(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.newSub -- new a loader sub                                         */
+/* loader.newSub -- new a loader sub                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNewSub(NNP_Task nnpTask)
 {
@@ -6218,7 +6218,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader3.init");
+    THROW_INVALID_PARAM("loader.init");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6234,7 +6234,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.openfile -- open file to be loaded                                 */
+/* loader.openfile -- open file to be loaded                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderOpenFile(NNP_Task nnpTask)
 {
@@ -6242,7 +6242,7 @@ void Task::vLoaderOpenFile(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader3.openfile");
+    THROW_INVALID_PARAM("loader.openfile");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6255,7 +6255,7 @@ void Task::vLoaderOpenFile(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.path! -- store file path into loader                               */
+/* loader.path! -- store file path into loader                               */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPathStore(NNP_Task nnpTask)
 {
@@ -6264,7 +6264,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
   ValWsp xWspPath;
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,xWspPath) )
-    THROW_INVALID_PARAM("loader3.path!");
+    THROW_INVALID_PARAM("loader.path!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6278,7 +6278,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.subs! -- store number of subordinates into loader                  */
+/* loader.subs! -- store number of subordinates into loader                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubsStore(NNP_Task nnpTask)
 {
@@ -6287,7 +6287,7 @@ void Task::vLoaderSubsStore(NNP_Task nnpTask)
   i8 nSubs;
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,nSubs) )
-    THROW_INVALID_PARAM("loader3.subs!");
+    THROW_INVALID_PARAM("loader.subs!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6298,7 +6298,7 @@ void Task::vLoaderSubsStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.table! -- store table into loader                                  */
+/* loader.table! -- store table into loader                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTableStore(NNP_Task nnpTask)
 {
@@ -6307,7 +6307,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
   Object* pPtrTable;
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,pPtrTable) )
-    THROW_INVALID_PARAM("loader3.tableStore");
+    THROW_INVALID_PARAM("loader.tableStore");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6322,7 +6322,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3.txref! -- store txref into loader                                  */
+/* loader.txref! -- store txref into loader                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 {
@@ -6331,7 +6331,7 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
   Object* pPtrLoader;
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,pPtrTxRef) )
-    THROW_INVALID_PARAM("loader3.txref!");
+    THROW_INVALID_PARAM("loader.txref!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6348,7 +6348,7 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.begin -- begin loading                                          */
+/* loaderSub.begin -- begin loading                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubBegin(NNP_Task nnpTask)
 {
@@ -6356,7 +6356,7 @@ void Task::vLoaderSubBegin(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.begin");
+    THROW_INVALID_PARAM("loaderSub.begin");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6367,7 +6367,7 @@ void Task::vLoaderSubBegin(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.completed -- this sub-loader has completed                      */
+/* loaderSub.completed -- this sub-loader has completed                      */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubCompleted(NNP_Task nnpTask)
 {
@@ -6375,7 +6375,7 @@ void Task::vLoaderSubCompleted(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.completed");
+    THROW_INVALID_PARAM("loaderSub.completed");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6388,7 +6388,7 @@ void Task::vLoaderSubCompleted(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.delete -- delete a table loader                                 */
+/* loaderSub.delete -- delete a table loader                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubDelete(NNP_Task nnpTask)
 {
@@ -6396,7 +6396,7 @@ void Task::vLoaderSubDelete(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.delete");
+    THROW_INVALID_PARAM("loaderSub.delete");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6407,7 +6407,7 @@ void Task::vLoaderSubDelete(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.end -- end loading                                              */
+/* loaderSub.end -- end loading                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubEnd(NNP_Task nnpTask)
 {
@@ -6415,7 +6415,7 @@ void Task::vLoaderSubEnd(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.end");
+    THROW_INVALID_PARAM("loaderSub.end");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6426,7 +6426,7 @@ void Task::vLoaderSubEnd(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.fetchRecord -- fetch next record from file being loaded         */
+/* loaderSub.fetchRecord -- fetch next record from file being loaded         */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 {
@@ -6434,7 +6434,7 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.fetchRecord");
+    THROW_INVALID_PARAM("loaderSub.fetchRecord");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6447,7 +6447,7 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.init -- init a table loader                                     */
+/* loaderSub.init -- init a table loader                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInit(NNP_Task nnpTask)
 {
@@ -6455,7 +6455,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.init");
+    THROW_INVALID_PARAM("loaderSub.init");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6466,7 +6466,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.insertRow -- insert row into table being loaded                 */
+/* loaderSub.insertRow -- insert row into table being loaded                 */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 {
@@ -6474,14 +6474,14 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.insertRecord");
+    THROW_INVALID_PARAM("loaderSub.insertRecord");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   i8 iPartn;
   if ( ! nnpTask->m_xParamStack.bPop(iPartn) )
-    THROW_INVALID_PARAM("loader3Sub.insertRow");
+    THROW_INVALID_PARAM("loaderSub.insertRow");
   
   ASSERT(iPartn < gxArguments.m_nPartitions);
   bool bInserted = pLoaderSub->bInsertRow(iPartn);
@@ -6492,7 +6492,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.loader! -- store loader                                         */
+/* loaderSub.loader! -- store loader                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 {
@@ -6500,14 +6500,14 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.loader!");
+    THROW_INVALID_PARAM("loaderSub.loader!");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader3.openfile");
+    THROW_INVALID_PARAM("loader.openfile");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6516,7 +6516,7 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.new -- new a table loader                                       */
+/* loaderSub.new -- new a table loader                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubNew(NNP_Task nnpTask)
 {
@@ -6531,7 +6531,7 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader3Sub.pushRecord -- fetch record onto stack                           */
+/* loaderSub.pushRecord -- fetch record onto stack                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubPushRecord(NNP_Task nnpTask)
 {
@@ -6539,7 +6539,7 @@ void Task::vLoaderSubPushRecord(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loader3Sub.pushRecord");
+    THROW_INVALID_PARAM("loaderSub.pushRecord");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
