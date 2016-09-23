@@ -108,35 +108,34 @@
 : childTest_call
 //traceOn
 
-// grab mutex lock of request thread
-task.this task.thread thread.mutexLock
+  // grab mutex lock of request thread
+  task.this task.thread thread.mutexLock
 
-// creates the child task
+  // creates the child task
 
-// >r >r 0 rpick 1 rpick r> r>
+  // >r >r 0 rpick 1 rpick r> r>
 
-2 "childTest_loop" task.this task.new dup "childTask" swap task.name!
-generalTaskSet taskSet.append
+  2 "childTest_loop" task.this task.new dup "childTask" swap task.name!
+  generalTaskSet0 taskSet.append
 
-task.this task.thread thread.condWait
+  task.this task.thread thread.condWait
 
-task.this task.thread thread.mutexUnlock
+  task.this task.thread thread.mutexUnlock
 
-//traceOff
+  //traceOff
 ;
 
 : childTest_loop
 
-"childTest" .
+  "childTest" .
 
-stk
-load drop
+  load drop
 
-//tasklist taskList.dump
+  //tasklist taskList.dump
 
-task.parent@ task.thread thread.condSignal
+  task.parent@ task.thread thread.condSignal
 
-TS_EXITED task.this task.state!
+  TS_EXITED task.this task.state!
 ;
 
 /*----------------------------------------------------------------------------*/

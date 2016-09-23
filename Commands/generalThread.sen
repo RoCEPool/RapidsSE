@@ -8,19 +8,33 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-taskset: generalTaskSet
+taskset: generalTaskSet0
+taskset: generalTaskSet1
+taskset: generalTaskSet2
 
-thread:  generalThread
+thread:  generalThread0
+thread:  generalThread1
+thread:  generalThread2
 
 /*----------------------------------------------------------------------------*/
 /* start the general processing thread                                        */
 /*----------------------------------------------------------------------------*/
 : generalThreadStart
 
-    // set up the general processing thread
-    generalTaskSet  generalThread  thread.taskset!
-    "generalThread" generalThread  thread.name!
-                    generalThread  thread.spawn
+    // set up general processing thread (0)
+    generalTaskSet0  generalThread0  thread.taskset!
+    "generalThread0" generalThread0  thread.name!
+                     generalThread0  thread.spawn
+
+    // set up general processing thread (1)
+    generalTaskSet1  generalThread1  thread.taskset!
+    "generalThread1" generalThread1  thread.name!
+                     generalThread1  thread.spawn
+
+    // set up general processing thread (2)
+    generalTaskSet2  generalThread2  thread.taskset!
+    "generalThread2" generalThread2  thread.name!
+                     generalThread2  thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
