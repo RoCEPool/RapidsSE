@@ -815,10 +815,12 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loader3.newSub",      &vLoader3NewSub,      false);
   vAddPrimitive("loader3.openFile",    &vLoader3OpenFile,    false);
   vAddPrimitive("loader3.path!",       &vLoader3PathStore,   false);
+  vAddPrimitive("loader3.subs!",       &vLoader3SubsStore,   false);
   vAddPrimitive("loader3.table!",      &vLoader3TableStore,  false);
   vAddPrimitive("loader3.txref!",      &vLoader3TxRefStore,  false);
   
   vAddPrimitive("loader3Sub.begin",       &vLoader3SubBegin,       false);
+  vAddPrimitive("loader3Sub.completed",   &vLoader3SubCompleted,   false);
   vAddPrimitive("loader3Sub.delete",      &vLoader3SubDelete,      false);
   vAddPrimitive("loader3Sub.end",         &vLoader3SubEnd,         false);
   vAddPrimitive("loader3Sub.fetchRecord", &vLoader3SubFetchRecord, false);
@@ -6789,6 +6791,26 @@ void Task::vLoader3PathStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loader3.subs! -- store number of subordinates into loader                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoader3SubsStore(NNP_Task nnpTask)
+{
+  ENTRY("vLoader3SubsStore");
+  
+  i8 nSubs;
+  Object* pPtrLoader3;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader3,nSubs) )
+    THROW_INVALID_PARAM("loader3.subs!");
+  
+  Loader3* pLoader3 = _pLoader3(pPtrLoader3);
+  ASSERT(CN_LOADER == pLoader3->eClass());
+  
+  pLoader3->vSubs(nSubs);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loader3.table! -- store table into loader                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoader3TableStore(NNP_Task nnpTask)
@@ -6853,6 +6875,27 @@ void Task::vLoader3SubBegin(NNP_Task nnpTask)
   ASSERT(CN_LOADERSUB == pLoader3Sub->eClass());
   
   pLoader3Sub->vBegin();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader3Sub.completed -- this sub-loader has completed                      */
+/*----------------------------------------------------------------------------*/
+void Task::vLoader3SubCompleted(NNP_Task nnpTask)
+{
+  ENTRY("vLoader3SubCompleted");
+  
+  Object* pPtrLoader3Sub;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader3Sub) )
+    THROW_INVALID_PARAM("loader3Sub.completed");
+  
+  Loader3Sub* pLoader3Sub = _pLoader3Sub(pPtrLoader3Sub);
+  ASSERT(CN_LOADERSUB == pLoader3Sub->eClass());
+  
+  bool bIsDecider = pLoader3Sub->bCompleted();
+  
+  nnpTask->m_xParamStack.vPush(bIsDecider);
   
   EXIT();
 }

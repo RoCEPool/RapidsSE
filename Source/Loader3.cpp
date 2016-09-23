@@ -1,8 +1,6 @@
 /*============================================================================*/
-/* Loader3.cpp -- Table Loader                                                */
+/* Loader3.cpp -- Parallel Table Loader                                       */
 /*============================================================================*/
-
-#define USE_LOADBUFFER
 
 #include "DBobjects.h"
 
@@ -58,11 +56,12 @@ Loader3::Loader3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  m_pTable      = nullptr;
+  m_pTable   = nullptr;
   //m_xFile
-  m_iSeek       = 0;
-  m_pTxRef      = nullptr;
+  m_iSeek    = 0;
+  m_pTxRef   = nullptr;
   //m_xLock
+  m_nSubs    = 0;
   
   _checkInitialised_(sizeof(Loader3));
   
@@ -75,6 +74,87 @@ Loader3::Loader3(void)
 Loader3::~Loader3(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump Loader3                                                               */
+/*----------------------------------------------------------------------------*/
+void Loader3::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_LOADER);
+  ASSERT(pObject->eClass() == CN_LOADER);
+  
+  Loader3* pLoader = reinterpret_cast<Loader3*>(pObject);
+  
+  vTrace("%Loader3 %p:\n", pTab, pLoader);
+  vTrace("%s  table %s \n", pTab, pLoader->m_pTable->pTableName());
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* close file                                                                 */
+/*----------------------------------------------------------------------------*/
+void Loader3::vCloseFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* open file                                                                  */
+/*----------------------------------------------------------------------------*/
+bool Loader3::bOpenFile(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  bool b = m_xFile.bOpen(C_OPEN_READ);
+  
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set path                                                                   */
+/*----------------------------------------------------------------------------*/
+void Loader3::vPath(s& sPath)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  const char* pPath = sPath.a();
+  
+  m_xFile.vPath(pPath);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of subordinates                                                 */
+/*----------------------------------------------------------------------------*/
+void Loader3::vSubs(i8 nSubs)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  m_nSubs = nSubs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* subordinate completes, returns true if last one to complete                */
+/*----------------------------------------------------------------------------*/
+bool Loader3::bSubCompleted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  bool bIsDecider = false;
+  
+  m_xLock.vGrabWrite();
+  
+  if (0 == --m_nSubs)
+    bIsDecider = true;
+
+  m_xLock.vDropWrite();
+  
+  return bIsDecider;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,18 +178,6 @@ void Loader3::vTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set path                                                                   */
-/*----------------------------------------------------------------------------*/
-void Loader3::vPath(s& sPath)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-
-  const char* pPath = sPath.a();
-  
-  m_xFile.vPath(pPath);
-}
-
-/*----------------------------------------------------------------------------*/
 /* set txref                                                                  */
 /*----------------------------------------------------------------------------*/
 void Loader3::vTxRef(TxRef* pTxRef)
@@ -123,30 +191,8 @@ void Loader3::vTxRef(TxRef* pTxRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/* open file                                                                  */
+/*-- Called by Loader3Sub ----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-bool Loader3::bOpenFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  bool b = m_xFile.bOpen(C_OPEN_READ);
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump Loader3                                                                */
-/*----------------------------------------------------------------------------*/
-void Loader3::vDump(eCN eClass, Object* pObject, const char* pTab)
-{
-  ASSERT(eClass == CN_LOADER);
-  ASSERT(pObject->eClass() == CN_LOADER);
-  
-  Loader3* pLoader = reinterpret_cast<Loader3*>(pObject);
-  
-  vTrace("%Loader3 %p:\n", pTab, pLoader);
-  vTrace("%s  table %s \n", pTab, pLoader->m_pTable->pTableName());
-}
 
 /*----------------------------------------------------------------------------*/
 /* fetch next chunk from file                                                 */
@@ -195,16 +241,6 @@ bool Loader3::bInsertRow(i8 iPartn, StrVal* pRow)
   m_pTable->vInsertRow(iPartn,m_pTxRef,pRow);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void Loader3::vCloseFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_xFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/

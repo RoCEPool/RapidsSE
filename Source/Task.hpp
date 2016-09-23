@@ -481,10 +481,12 @@ namespace Tasks
     static void vLoader3NewSub(NNP_Task nnpTask);
     static void vLoader3OpenFile(NNP_Task nnpTask);
     static void vLoader3PathStore(NNP_Task nnpTask);
+    static void vLoader3SubsStore(NNP_Task nnpTask);
     static void vLoader3TableStore(NNP_Task nnpTask);
     static void vLoader3TxRefStore(NNP_Task nnpTask);
     
     static void vLoader3SubBegin(NNP_Task nnpTask);
+    static void vLoader3SubCompleted(NNP_Task nnpTask);
     static void vLoader3SubDelete(NNP_Task nnpTask);
     static void vLoader3SubEnd(NNP_Task nnpTask);
     static void vLoader3SubFetchRecord(NNP_Task nnpTask);

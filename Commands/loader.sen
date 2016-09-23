@@ -274,9 +274,9 @@
 
   r0 loader3Sub.end
 
-  rdrop
+  r0 loader3Sub.completed if signalParentThread then
 
-  signalParentThread
+  rdrop
 
 //traceOff
 ;
@@ -313,6 +313,8 @@
   //load3Sub
 
   grabThreadMutex
+
+  1 r0 loader3.subs!
 
   r0 loader3.newSub spawnLoad3Sub_0
 

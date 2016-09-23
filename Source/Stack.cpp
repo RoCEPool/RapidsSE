@@ -359,6 +359,29 @@ bool Stack::bPop(Object*& pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop Object*, i8 from param stack                                           */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(Object*& pObject, i8& iArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_PTRVAL,CN_INTVAL) )
+    return false;
+  
+  PtrVal xPtrVal1;
+  vPopVal(&xPtrVal1);
+  
+  pObject = xPtrVal1.pObject();
+  
+  IntVal xIntVal1;
+  vPopVal(&xIntVal1);
+  
+  iArg = xIntVal1.iInt();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop Object*, Object* from param stack                                      */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Object*& pObject1, Object*& pObject2)

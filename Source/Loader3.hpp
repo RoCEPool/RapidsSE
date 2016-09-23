@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Loader3.hpp -- Table Loader                                                */
+/* Loader3.hpp -- Parallel Table Loader                                       */
 /*============================================================================*/
 
 #pragma once
@@ -18,6 +18,8 @@ namespace DBobjects
     
     Lock   m_xLock;    // lock
     
+    i8     m_nSubs;    // number of subordinates remaining
+    
     // must be last
     Footer m_xFooter;
     
@@ -34,9 +36,11 @@ namespace DBobjects
     void   vCloseFile(void);
     bool   bOpenFile(void);
     void   vPath(s& sPath);
+    void   vSubs(i8 nSubs);
+    bool   bSubCompleted(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
-    void   vTxRef(TxRef* pTxRef);    
+    void   vTxRef(TxRef* pTxRef);
     
     bool   bFetchChunk(LoadBuffer* pLoadBuffer);
     bool   bInsertRow(i8 iPartn, StrVal* pRecord);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Loader3Sub.hpp -- Table Loader (sub part)                                  */
+/* Loader3Sub.hpp -- Subordinate Table Loader                                 */
 /*============================================================================*/
 
 #pragma once
@@ -30,6 +30,7 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     void   vBegin(void);
+    bool   bCompleted(void);
     void   vEnd(void);
     bool   bFetchRecord(void);
     bool   bFetchChunk(void);

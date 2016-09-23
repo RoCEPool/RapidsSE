@@ -1,8 +1,6 @@
 /*============================================================================*/
-/* Loader3Sub.cpp -- Table Loader (sub part)                                  */
+/* Loader3Sub.cpp -- Subordinate Table Loader                                 */
 /*============================================================================*/
-
-#define USE_LOADBUFFER
 
 #include "DBobjects.h"
 
@@ -80,6 +78,23 @@ Loader3Sub::~Loader3Sub(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump Loader3Sub                                                            */
+/*----------------------------------------------------------------------------*/
+void Loader3Sub::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_LOADER);
+  ASSERT(pObject->eClass() == CN_LOADERSUB);
+  
+  Loader3Sub* pLoader = reinterpret_cast<Loader3Sub*>(pObject);
+  
+  vTrace("%Loader3Sub %p:\n", pTab, pLoader);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* begin loading                                                              */
 /*----------------------------------------------------------------------------*/
 void Loader3Sub::vBegin(void)
@@ -91,16 +106,15 @@ void Loader3Sub::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump Loader3Sub                                                            */
+/* this sub-loader has completed                                              */
 /*----------------------------------------------------------------------------*/
-void Loader3Sub::vDump(eCN eClass, Object* pObject, const char* pTab)
+bool Loader3Sub::bCompleted(void)
 {
-  ASSERT(eClass == CN_LOADER);
-  ASSERT(pObject->eClass() == CN_LOADERSUB);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  Loader3Sub* pLoader = reinterpret_cast<Loader3Sub*>(pObject);
+  bool bIsDecider = m_pLoader3->bSubCompleted();
   
-  vTrace("%Loader3Sub %p:\n", pTab, pLoader);
+  return bIsDecider;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,6 +168,18 @@ bool Loader3Sub::bFetchChunk(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get record                                                                 */
+/*----------------------------------------------------------------------------*/
+void Loader3Sub::vGetRecord(StrVal* pStrVal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
+  pStrVal->sStr()[m_iLength] = '\0';
+  pStrVal->vSize();
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert row                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Loader3Sub::bInsertRow(i8 iPartn)
@@ -176,18 +202,6 @@ bool Loader3Sub::bInsertRow(i8 iPartn)
   bool bResult = m_pLoader3->bInsertRow(iPartn,pStrVal);
   
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get record                                                                 */
-/*----------------------------------------------------------------------------*/
-void Loader3Sub::vGetRecord(StrVal* pStrVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
-  pStrVal->sStr()[m_iLength] = '\0';
-  pStrVal->vSize();
 }
 
 /*----------------------------------------------------------------------------*/
