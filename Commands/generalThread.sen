@@ -33,6 +33,16 @@
   loop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* thread level IPC                                                           */
+/*----------------------------------------------------------------------------*/
+
+: grabThreadMutex ( -- ) task.this task.thread thread.mutexLock ;
+: dropThreadMutex ( -- ) task.this task.thread thread.mutexUnlock ;
+
+: threadCondWait     ( -- ) task.this task.thread thread.condWait ;
+: signalParentThread ( -- ) task.parent@ task.thread thread.condSignal ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

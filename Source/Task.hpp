@@ -460,20 +460,6 @@ namespace Tasks
     static void vInputType(NNP_Task nnpTask);
     
     // loader
-    static void vLoaderNew(NNP_Task nnpTask);
-    static void vLoaderDelete(NNP_Task nnpTask);
-    static void vLoaderInit(NNP_Task nnpTask);
-    static void vLoaderTableStore(NNP_Task nnpTask);
-    static void vLoaderPathStore(NNP_Task nnpTask);
-    static void vLoaderTxRefStore(NNP_Task nnpTask);
-    static void vLoaderOpenFile(NNP_Task nnpTask);
-    static void vLoaderBegin(NNP_Task nnpTask);
-    static void vLoaderFetchRecord(NNP_Task nnpTask);
-    static void vLoaderPushRecord(NNP_Task nnpTask);
-    static void vLoaderInsertRow(NNP_Task nnpTask);
-    static void vLoaderEnd(NNP_Task nnpTask);
-    static void vLoaderCloseFile(NNP_Task nnpTask);
-
     static void vLoader3CloseFile(NNP_Task nnpTask);
     static void vLoader3Delete(NNP_Task nnpTask);
     static void vLoader3Init(NNP_Task nnpTask);

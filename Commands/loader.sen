@@ -7,15 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /* create a loader using name from input stream (doesnt leave loader on stk)  */
 /*----------------------------------------------------------------------------*/
-: loader:
-    create
-    object!!
-    sizeof_loader allot
-    word.this >body magic!!
-    word.this >body CN_LOADER class!
-    word.this >body loader.init
-    does>
-;
 
 : loader3:
     create
@@ -40,16 +31,6 @@
 /*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */
 /*----------------------------------------------------------------------------*/
-: :loader
-    >create
-    object!!
-    sizeof_loader allot
-    word.this >body magic!!
-    word.this >body CN_LOADER class!
-    word.this >body loader.init
-    word.this
-    does>
-;
 
 : :loader3
     >create
@@ -88,81 +69,6 @@
 //traceoff
 ;
 
-/*----------------------------------------------------------------------------*/
-/* load file into table                                                       */
-/*----------------------------------------------------------------------------*/
-: load ( "<path>" ^table -- t|f )
-//traceon
-
-//childTest_call
-
-    // create a Loader
-    "__table_loader" find dup if else
-      drop
-      "__table_loader" :loader
-    then
-    execute
-
-    // put Loader into register 0
-    >r
-    // r0 ^Loader
-
-    // initialise r0:Loader
-    r0 loader.table!
-    r0 loader.path!
-
-    // open the file to be loaded
-    r0 loader.openFile not if "file not opened" . rdrop false exit then
-
-    // begin a new transaction
-    beginTransaction r0 loader.txref!
-
-    // loader loop
-    r0 loader.begin
-    begin
-      r0 loader.fetchrecord
-      while
-        r0 loader.pushRecord toPartition
-        r0 loader.insertrow  drop
-    repeat
-    r0 loader.end
-
-    // commit the transaction
-    commitTransaction
-
-    r0 loader.closeFile
-
-    // discard r0:Loader
-    rdrop
-
-    // destroy Loader
-    "__table_loader" find >forget
-
-    // successful load
-    true
-
-//traceoff
-;
-
-/*----------------------------------------------------------------------------*/
-/* grab this threads mutex                                                    */
-/*----------------------------------------------------------------------------*/
-: grabThreadMutex task.this task.thread thread.mutexLock ;
-
-/*----------------------------------------------------------------------------*/
-/* drop this threads mutex                                                    */
-/*----------------------------------------------------------------------------*/
-: dropThreadMutex task.this task.thread thread.mutexUnlock ;
-
-/*----------------------------------------------------------------------------*/
-/* wait on this threads cond variable                                         */
-/*----------------------------------------------------------------------------*/
-: threadCondWait task.this task.thread thread.condWait ;
-
-/*----------------------------------------------------------------------------*/
-/* signal parent thread                                                       */
-/*----------------------------------------------------------------------------*/
-: signalParentThread task.parent@ task.thread thread.condSignal ;
 
 /*----------------------------------------------------------------------------*/
 /* spawn load3Sub                                                             */
