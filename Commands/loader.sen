@@ -233,7 +233,7 @@
 
   dup "load3Sub_0" swap task.name!
 
-  generalTaskSet0 taskSet.append
+  0 >genTaskSet taskSet.append
 ;
 
 : spawnLoad3Sub_1
@@ -242,7 +242,7 @@
 
   dup "load3Sub_1" swap task.name!
 
-  generalTaskSet1 taskSet.append
+  1 >genTaskSet taskSet.append
 ;
 
 : spawnLoad3Sub_2
@@ -251,7 +251,7 @@
 
   dup "load3Sub_2" swap task.name!
 
-  generalTaskSet2 taskSet.append
+  2 >genTaskSet taskSet.append
 ;
 
 : spawnLoad3Sub_3
@@ -260,7 +260,7 @@
 
   dup "load3Sub_3" swap task.name!
 
-  generalTaskSet3 taskSet.append
+  3 >genTaskSet taskSet.append
 ;
 
 : spawnLoad3Sub_4
@@ -269,7 +269,7 @@
 
   dup "load3Sub_4" swap task.name!
 
-  generalTaskSet4 taskSet.append
+  4 >genTaskSet taskSet.append
 ;
 
 : spawnLoad3Sub_5
@@ -278,7 +278,7 @@
 
   dup "load3Sub_5" swap task.name!
 
-  generalTaskSet5 taskSet.append
+  5 >genTaskSet taskSet.append
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -341,10 +341,10 @@
 
   grabThreadMutex
 
-  1 r0 loader3.subs!
+  2 r0 loader3.subs!
 
   r0 loader3.newSub spawnLoad3Sub_0
-//r0 loader3.newSub spawnLoad3Sub_1
+  r0 loader3.newSub spawnLoad3Sub_1
 //r0 loader3.newSub spawnLoad3Sub_2
 //r0 loader3.newSub spawnLoad3Sub_3
 //r0 loader3.newSub spawnLoad3Sub_4

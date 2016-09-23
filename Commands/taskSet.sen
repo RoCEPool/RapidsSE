@@ -18,6 +18,17 @@
     does>
 ;
 
+: :taskSet
+    >create
+    object!!
+    sizeof_taskset allot
+    word.this >body magic!!
+    word.this >body CN_TASKSET class!
+    word.this >body taskset.init
+    word.this
+    does>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

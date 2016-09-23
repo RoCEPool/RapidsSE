@@ -8,6 +8,8 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
+6 constant N_GENERAL_THREADS
+
 taskset: generalTaskSet0
 taskset: generalTaskSet1
 taskset: generalTaskSet2
@@ -25,7 +27,26 @@ thread:  generalThread5
 /*----------------------------------------------------------------------------*/
 /* start the general processing thread                                        */
 /*----------------------------------------------------------------------------*/
+
+: >genTaskSetNm ( i -- s ) "generalTaskSet" swap >str concat ;
+: >genThreadNm  ( i -- s ) "generalThread"  swap >str concat ;
+
+: :genTaskSet  ( i -- w ) >genTaskSetNm :taskSet ;
+: :genThread   ( i -- w ) >genThreadNm  :thread  ;
+
+: >genTaskSet ( i -- w ) >genTaskSetNm find execute ;
+: >genThread  ( i -- w ) >genThreadNm  find execute ;
+
 : generalThreadStart
+
+    N_GENERAL_THREADS 0 do
+      I .
+      I 10 + :genTaskSet word.dump
+      I 10 + :genThread  word.dump
+      I 10 + >genTaskSet  I 10 + >genThread thread.taskset!
+      I 10 + >genThreadNm I 10 + >genThread thread.name!
+      I 10 + >genThread thread.spawn
+    loop
 
     // set up general processing thread (0)
     generalTaskSet0  generalThread0  thread.taskset!

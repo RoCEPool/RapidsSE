@@ -18,6 +18,17 @@
     does>
 ;
 
+: :thread
+    >create
+    object!!
+    sizeof_thread allot
+    word.this >body magic!!
+    word.this >body CN_THREAD class!
+    word.this >body thread.init
+    word.this
+    does>
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
