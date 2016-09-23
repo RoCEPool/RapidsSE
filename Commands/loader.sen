@@ -205,11 +205,78 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* parallel loading of file into table                                        */
+/*----------------------------------------------------------------------------*/
+: load3 ( "<path>" ^table -- t|f )
+//traceon
+
+  // create a Loader
+  "__table_loader3" find dup if else
+    drop
+    "__table_loader3" :loader3
+  then
+  execute
+
+  // put Loader into register 0
+  >r
+  // r0 ^Loader3
+
+  // initialise r0:Loader
+  r0 loader3.table!
+  r0 loader3.path!
+
+  // open the file to be loaded
+  r0 loader3.openFile not if "file not opened" . rdrop false exit then
+
+  // begin a new transaction
+  beginTransaction r0 loader3.txref!
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // loader loop
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  r0 loader3.newSub >r
+  // r0 ^Loader3Sub
+  // r1 ^Loader3
+
+  r0 loader3Sub.begin
+
+  begin
+    r0 loader3Sub.fetchrecord
+    while
+      r0 loader3Sub.pushRecord toPartition
+      r0 loader3Sub.insertrow  drop
+  repeat
+
+  r0 loader3Sub.end
+
+  rdrop
+  // r0 ^Loader3
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // commit the transaction
+  commitTransaction
+
+  // close the file
+  r0 loader3.closeFile
+
+  // discard r0:Loader3
+  rdrop
+
+  // destroy Loader
+  "__table_loader3" find >forget
+
+//traceoff
+;
+
+/*----------------------------------------------------------------------------*/
 /* table loader (can probably be removed)                                     */
 /*----------------------------------------------------------------------------*/
 : tableLoader ( "<fileNm>" ^table )
 
   loadByChild
+//  load3
 ;
 
 /*============================================================================*/

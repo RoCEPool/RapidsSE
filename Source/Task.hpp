@@ -475,6 +475,7 @@ namespace Tasks
     static void vLoader3Delete(NNP_Task nnpTask);
     static void vLoader3Init(NNP_Task nnpTask);
     static void vLoader3New(NNP_Task nnpTask);
+    static void vLoader3NewSub(NNP_Task nnpTask);
     static void vLoader3OpenFile(NNP_Task nnpTask);
     static void vLoader3PathStore(NNP_Task nnpTask);
     static void vLoader3TableStore(NNP_Task nnpTask);

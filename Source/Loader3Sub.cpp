@@ -54,18 +54,18 @@ void Loader3Sub::operator delete(void* pLoaderAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Loader3Sub::Loader3Sub(void)
-: Object(CN_LOADER)
+: Object(CN_LOADERSUB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
   m_pLoader3    = nullptr;
   m_pRecord     = nullptr;
-  m_pLoadBuffer = nullptr;
+  m_pLoadBuffer = new LoadBuffer;
   m_iLength     = 0;
   
   _checkInitialised_(sizeof(Loader3Sub));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ Loader3Sub::Loader3Sub(void)
 /*----------------------------------------------------------------------------*/
 Loader3Sub::~Loader3Sub(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   if (m_pLoadBuffer)
     delete m_pLoadBuffer;
@@ -84,7 +84,10 @@ Loader3Sub::~Loader3Sub(void)
 /*----------------------------------------------------------------------------*/
 void Loader3Sub::vBegin(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  // read first chunk
+  bFetchChunk();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +96,7 @@ void Loader3Sub::vBegin(void)
 void Loader3Sub::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
   ASSERT(eClass == CN_LOADER);
-  ASSERT(pObject->eClass() == CN_LOADER);
+  ASSERT(pObject->eClass() == CN_LOADERSUB);
   
   Loader3Sub* pLoader = reinterpret_cast<Loader3Sub*>(pObject);
   
@@ -105,7 +108,7 @@ void Loader3Sub::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void Loader3Sub::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,10 +116,8 @@ void Loader3Sub::vEnd(void)
 /*----------------------------------------------------------------------------*/
 bool Loader3Sub::bFetchRecord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-#ifdef USE_LOADBUFFER
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+    
   // fetch next record from current chunk
 //  vTrace("NextRecord @ %lld end %lld\n",
 //         m_pLoadBuffer->iNextRecord(),m_pLoadBuffer->iEndChunk());
@@ -138,27 +139,6 @@ bool Loader3Sub::bFetchRecord(void)
     return true;
   
   return false;
-  
-#else
-
-  // fetch next record from current chunk
-  m_pRecord = m_pScanBuffer->pScan(m_iLength);
-  if ( m_pRecord )
-    return true;
-  
-  // read next chunk
-  bool bMore = bFetchChunk();
-  if (!bMore)
-    return false;
-  
-  // fetch first record from next chunk
-  m_pRecord = m_pScanBuffer->pScan(m_iLength);
-  if ( m_pRecord )
-    return true;
-  
-  return false;
-  
-#endif  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,9 +146,11 @@ bool Loader3Sub::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 bool Loader3Sub::bFetchChunk(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  return false;
+  bool bMore = m_pLoader3->bFetchChunk(m_pLoadBuffer);
+
+  return bMore;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -176,7 +158,7 @@ bool Loader3Sub::bFetchChunk(void)
 /*----------------------------------------------------------------------------*/
 bool Loader3Sub::bInsertRow(i8 iPartn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   ASSERT(iPartn < gxArguments.m_nPartitions);
   
@@ -201,7 +183,7 @@ bool Loader3Sub::bInsertRow(i8 iPartn)
 /*----------------------------------------------------------------------------*/
 void Loader3Sub::vGetRecord(StrVal* pStrVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
   pStrVal->sStr()[m_iLength] = '\0';
@@ -213,7 +195,7 @@ void Loader3Sub::vGetRecord(StrVal* pStrVal)
 /*----------------------------------------------------------------------------*/
 void Loader3Sub::vLoader3(Loader3* pLoader3)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
   m_pLoader3 = pLoader3;
 }
@@ -227,7 +209,7 @@ void Loader3Sub::vLoader3(Loader3* pLoader3)
 /*----------------------------------------------------------------------------*/
 Footer* Loader3Sub::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB);
   
   return &m_xFooter;
 }
