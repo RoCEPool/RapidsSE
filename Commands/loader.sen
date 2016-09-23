@@ -52,7 +52,7 @@
 : load ( "<path>" ^table -- t|f )
 //traceon
 
-//childTest_call
+childTest_call
 
     // create a Loader
     "__table_loader" find dup if else

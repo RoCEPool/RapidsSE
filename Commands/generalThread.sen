@@ -29,9 +29,14 @@ thread:  generalThread
 : childTest_call
 //traceOn
 
+  task.this task.thread thread.mutexLock
+
   // in the calling task
   0 "childTest_loop" task.this task.new dup "childTask" swap task.name!
   generalTaskSet taskSet.append
+
+  task.this task.thread thread.condWait
+  task.this task.thread thread.mutexUnlock
 
 //traceOff
 ;
@@ -39,13 +44,12 @@ thread:  generalThread
 : childTest_loop
 
   "childTest" .
+
   tasklist taskList.dump
 
-// task.parentTask task.notify
+  task.parent@ task.thread thread.condSignal
 
    TS_EXITED task.this task.state!
-
-//   1000 thread.sleep_s
 ;
 
 /*----------------------------------------------------------------------------*/
