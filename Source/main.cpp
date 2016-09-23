@@ -21,7 +21,7 @@ int main(int argc, const char* argv[])
 #else
   aRelDbg = "release";
 #endif
- 
+   
 //  s256 sTest;
 //  sTest =
 //    "abcdefghijklmnopqrstuvwxuz"

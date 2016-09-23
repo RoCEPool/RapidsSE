@@ -1,127 +1,36 @@
 /*============================================================================*/
-/* generalThread.sen -- general processing thread                             */
+/* generalThread.sen -- General Processing Threads                            */
 /*============================================================================*/
 
 "generalThread.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
+/* create and spawn the general processing threads                            */
 /*----------------------------------------------------------------------------*/
 
 6 constant N_GENERAL_THREADS
 
-taskset: generalTaskSet0
-taskset: generalTaskSet1
-taskset: generalTaskSet2
-taskset: generalTaskSet3
-taskset: generalTaskSet4
-taskset: generalTaskSet5
-
-thread:  generalThread0
-thread:  generalThread1
-thread:  generalThread2
-thread:  generalThread3
-thread:  generalThread4
-thread:  generalThread5
-
-/*----------------------------------------------------------------------------*/
-/* start the general processing thread                                        */
-/*----------------------------------------------------------------------------*/
-
 : >genTaskSetNm ( i -- s ) "generalTaskSet" swap >str concat ;
 : >genThreadNm  ( i -- s ) "generalThread"  swap >str concat ;
 
-: :genTaskSet  ( i -- w ) >genTaskSetNm :taskSet ;
-: :genThread   ( i -- w ) >genThreadNm  :thread  ;
+: :genTaskSet ( i -- w ) >genTaskSetNm :taskSet ;
+: :genThread  ( i -- w ) >genThreadNm  :thread  ;
 
 : >genTaskSet ( i -- w ) >genTaskSetNm find execute ;
 : >genThread  ( i -- w ) >genThreadNm  find execute ;
 
 : generalThreadStart
 
-    N_GENERAL_THREADS 0 do
-      I .
-      I 10 + :genTaskSet word.dump
-      I 10 + :genThread  word.dump
-      I 10 + >genTaskSet  I 10 + >genThread thread.taskset!
-      I 10 + >genThreadNm I 10 + >genThread thread.name!
-      I 10 + >genThread thread.spawn
-    loop
+  N_GENERAL_THREADS 0 do
 
-    // set up general processing thread (0)
-    generalTaskSet0  generalThread0  thread.taskset!
-    "generalThread0" generalThread0  thread.name!
-                     generalThread0  thread.spawn
+    I :genTaskSet  drop ( create a taskSet called generalTaskSetI )
+    I :genThread   drop ( create a thread called generalThreadI )
 
-    // set up general processing thread (1)
-    generalTaskSet1  generalThread1  thread.taskset!
-    "generalThread1" generalThread1  thread.name!
-                     generalThread1  thread.spawn
+    I >genTaskSet  I >genThread thread.taskSet! ( set the threads taskset )
+    I >genThreadNm I >genThread thread.name!    ( set the threads name )
+    I >genThread   thread.spawn                 ( spawn os thread )
 
-    // set up general processing thread (2)
-    generalTaskSet2  generalThread2  thread.taskset!
-    "generalThread2" generalThread2  thread.name!
-                     generalThread2  thread.spawn
-
-    // set up general processing thread (3)
-    generalTaskSet3  generalThread3  thread.taskset!
-    "generalThread3" generalThread3  thread.name!
-                     generalThread3  thread.spawn
-
-    // set up general processing thread (4)
-    generalTaskSet4  generalThread4  thread.taskset!
-    "generalThread4" generalThread4  thread.name!
-                     generalThread4  thread.spawn
-
-    // set up general processing thread (5)
-    generalTaskSet5  generalThread5  thread.taskset!
-    "generalThread5" generalThread5  thread.name!
-                     generalThread5  thread.spawn
-;
-
-/*----------------------------------------------------------------------------*/
-/* signal/mutex testing                                                       */
-/*----------------------------------------------------------------------------*/
-: mutexLock
-traceOn
-
-  "mutexLock" .
-
-  task.this task.thread thread.mutexLock
-
-traceOff
-;
-
-: mutexUnlock
-traceOn
-
-  "mutexUnlock" .
-
-  task.this task.thread thread.mutexUnlock
-
-traceOff
-;
-
-: condWait
-traceOn
-
-  "condWait" .
-
-  mutexLock
-  task.this task.thread thread.condWait
-  mutexUnlock
-
-traceOff
-;
-
-: condSignal
-traceOn
-
-  "condSignal" .
-
-  task.this task.thread thread.condSignal
-
-traceOff
+  loop
 ;
 
 /*============================================================================*/
