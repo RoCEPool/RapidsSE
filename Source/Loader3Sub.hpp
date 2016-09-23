@@ -14,6 +14,7 @@ namespace DBobjects
     Loader3* m_pLoader3; // the reference information
     char*    m_pRecord;  // record from file
     i8       m_iLength;  // length of record
+    bool     m_bMoreChunks;    // more chunks 
     LoadBuffer* m_pLoadBuffer; // loading buffer
     
     // must be last

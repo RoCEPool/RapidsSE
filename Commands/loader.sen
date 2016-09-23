@@ -254,6 +254,33 @@
   generalTaskSet2 taskSet.append
 ;
 
+: spawnLoad3Sub_3
+
+  1 "load3Sub" task.this task.new
+
+  dup "load3Sub_3" swap task.name!
+
+  generalTaskSet3 taskSet.append
+;
+
+: spawnLoad3Sub_4
+
+  1 "load3Sub" task.this task.new
+
+  dup "load3Sub_4" swap task.name!
+
+  generalTaskSet4 taskSet.append
+;
+
+: spawnLoad3Sub_5
+
+  1 "load3Sub" task.this task.new
+
+  dup "load3Sub_5" swap task.name!
+
+  generalTaskSet5 taskSet.append
+;
+
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
@@ -317,6 +344,11 @@
   1 r0 loader3.subs!
 
   r0 loader3.newSub spawnLoad3Sub_0
+//r0 loader3.newSub spawnLoad3Sub_1
+//r0 loader3.newSub spawnLoad3Sub_2
+//r0 loader3.newSub spawnLoad3Sub_3
+//r0 loader3.newSub spawnLoad3Sub_4
+//r0 loader3.newSub spawnLoad3Sub_5
 
   threadCondWait
   dropThreadMutex

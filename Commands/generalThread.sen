@@ -11,10 +11,16 @@
 taskset: generalTaskSet0
 taskset: generalTaskSet1
 taskset: generalTaskSet2
+taskset: generalTaskSet3
+taskset: generalTaskSet4
+taskset: generalTaskSet5
 
 thread:  generalThread0
 thread:  generalThread1
 thread:  generalThread2
+thread:  generalThread3
+thread:  generalThread4
+thread:  generalThread5
 
 /*----------------------------------------------------------------------------*/
 /* start the general processing thread                                        */
@@ -35,6 +41,21 @@ thread:  generalThread2
     generalTaskSet2  generalThread2  thread.taskset!
     "generalThread2" generalThread2  thread.name!
                      generalThread2  thread.spawn
+
+    // set up general processing thread (3)
+    generalTaskSet3  generalThread3  thread.taskset!
+    "generalThread3" generalThread3  thread.name!
+                     generalThread3  thread.spawn
+
+    // set up general processing thread (4)
+    generalTaskSet4  generalThread4  thread.taskset!
+    "generalThread4" generalThread4  thread.name!
+                     generalThread4  thread.spawn
+
+    // set up general processing thread (5)
+    generalTaskSet5  generalThread5  thread.taskset!
+    "generalThread5" generalThread5  thread.name!
+                     generalThread5  thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/

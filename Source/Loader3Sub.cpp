@@ -58,8 +58,9 @@ Loader3Sub::Loader3Sub(void)
 
   m_pLoader3    = nullptr;
   m_pRecord     = nullptr;
-  m_pLoadBuffer = new LoadBuffer;
   m_iLength     = 0;
+  m_bMoreChunks = false;
+  m_pLoadBuffer = new LoadBuffer;
   
   _checkInitialised_(sizeof(Loader3Sub));
   
@@ -102,7 +103,7 @@ void Loader3Sub::vBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // read first chunk
-  bFetchChunk();
+  m_bMoreChunks = bFetchChunk();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,11 +132,14 @@ void Loader3Sub::vEnd(void)
 bool Loader3Sub::bFetchRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-    
-  // fetch next record from current chunk
+  
+  if ( ! m_bMoreChunks )
+    return false;
+  
 //  vTrace("NextRecord @ %lld end %lld\n",
 //         m_pLoadBuffer->iNextRecord(),m_pLoadBuffer->iEndChunk());
   
+  // fetch next record from current chunk
   m_pRecord = m_pLoadBuffer->pNextRecord(m_iLength);
   if ( m_pRecord ) {
 //    vDumpAscii(m_pRecord,m_iLength);
@@ -143,8 +147,8 @@ bool Loader3Sub::bFetchRecord(void)
   }
   
   // read next chunk
-  bool bMore = bFetchChunk();
-  if (!bMore)
+  m_bMoreChunks = bFetchChunk();
+  if (! m_bMoreChunks )
     return false;
   
   // fetch first record from next chunk
