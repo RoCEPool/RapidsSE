@@ -158,13 +158,17 @@ bool Loader3::bFetchChunk(LoadBuffer* pLoadBuffer)
   i8 iBytesWorkarea = pLoadBuffer->iBytesWorkarea();
   char* pWorkaread  = pLoadBuffer->pWorkarea();
   
+  m_xLock.vGrabWrite();
+  
   m_xFile.vSeek(m_iSeek);
   
   i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
   //  vTrace("Read %lld\n",iBytesRead);
   
-  if ( ! iBytesRead )
+  if ( ! iBytesRead ) {
+    m_xLock.vDropWrite();
     return false;
+  }
   
   i8 iCompleteBytes = pLoadBuffer->iCompleteBytes(iBytesRead);
   //  vTrace("Complete %lld; NextRecord @ %lld end %lld\n",
@@ -173,6 +177,8 @@ bool Loader3::bFetchChunk(LoadBuffer* pLoadBuffer)
   //         m_pLoadBuffer->iEndChunk());
   
   m_iSeek += iCompleteBytes;
+  
+  m_xLock.vDropWrite();
   
   return true;
 }

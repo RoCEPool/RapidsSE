@@ -19,7 +19,7 @@ create
 //    does>
 ;
 
-"errorCodes.sen" >>:
+//"errorCodes.sen" >>:
 
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
