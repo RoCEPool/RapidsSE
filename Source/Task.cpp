@@ -8316,7 +8316,7 @@ ENTRY("vTaskNew");
   i8 nTaskArgs;
   if ( ! nnpTask->m_xParamStack.bPop(nTaskArgs) )
     THROW_INVALID_PARAM("task.name!");
-  ASSERT(! nTaskArgs);
+  //ASSERT(! nTaskArgs);
 
   if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
     THROW_INVALID_PARAM("task.new");
