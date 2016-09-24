@@ -46,7 +46,7 @@ namespace Magic
     
     /* 23 */ CN_INDEX,
     
-    /* 24 */ CN_LARGEHEAP,
+    /* 24 */ CN_JUMBOHEAP,
     
     /* 25 */ CN_LOADER,
     /* 26 */ CN_LOADERSUB,
@@ -148,7 +148,8 @@ namespace Magic
     
     /* 23 */ "INDEX",
     
-    /* 24 */ "LARGEHEAP",
+    /* 24 */ "JUMBOHEAP",
+    
     /* 25 */ "LOADER",
     /* 26 */ "LOADERSUB",
     /* 27 */ "LOCK",

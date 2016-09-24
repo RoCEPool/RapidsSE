@@ -4,15 +4,17 @@
 
 #include "StorageEngine.h"
 
-extern BufferPool*           gpBufferPool;
+extern BufferPool*  gpBufferPool;
 
-extern Heap*                 gpMediumHeap;
-extern Dictionary*           gpMainDic;
+extern Heap*        gpJumboHeap;
+extern Heap*        gpMediumHeap;
+extern Heap*        gpSmallHeap;
+extern Dictionary*  gpMainDic;
 
-extern Grid*                 gpGrid;
-extern TaskList*             gpTaskList;
-extern SEitfList*            gpSEitfList;
-extern Arguments             gxArguments;
+extern Grid*        gpGrid;
+extern TaskList*    gpTaskList;
+extern SEitfList*   gpSEitfList;
+extern Arguments    gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -20,6 +22,7 @@ extern Arguments             gxArguments;
 void* AttachMap::operator new(size_t iSize)
 {
   ASSERT(iSize);
+  
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pBuffer);
@@ -66,13 +69,14 @@ void AttachMap::vGetGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  gpMediumHeap       = m_pMediumHeap;
-  gpSmallHeap        = m_pSmallHeap;
-  gpMainDic          = &m_xMainDic;
+  gpJumboHeap   = m_pJumboHeap;
+  gpMediumHeap  = m_pMediumHeap;
+  gpSmallHeap   = m_pSmallHeap;
+  gpMainDic     = &m_xMainDic;
   
-  gpGrid             = m_pGrid;
-  gpTaskList         = m_pTaskList;
-  gpSEitfList        = m_pSEitfList;
+  gpGrid        = m_pGrid;
+  gpTaskList    = m_pTaskList;
+  gpSEitfList   = m_pSEitfList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,26 +86,27 @@ void AttachMap::vRecordGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
-  m_iPid              = Process::iGetPid();
+  m_iPid = Process::iGetPid();
   
   m_xSince.vSet();
   m_xTime.vSet(&m_xSince);
   m_xTime.vUTC(m_sUTC);
   
-  m_iRegionSize       = gpBufferPool->iRegionSize();
-  m_iPartitions       = gxArguments.m_nPartitions;
+  m_iRegionSize = gpBufferPool->iRegionSize();
+  m_iPartitions = gxArguments.m_nPartitions;
   
-  m_pBufferPool       = gpBufferPool;
+  m_pBufferPool = gpBufferPool;
   
-  m_pMediumHeap       = gpMediumHeap;
-  m_pSmallHeap        = gpSmallHeap;
+  m_pJumboHeap  = gpJumboHeap;
+  m_pMediumHeap = gpMediumHeap;
+  m_pSmallHeap  = gpSmallHeap;
   
-  m_pGrid             = gpGrid;
-  m_pTaskList         = gpTaskList;
-  m_pSEitfList        = gpSEitfList;
+  m_pGrid       = gpGrid;
+  m_pTaskList   = gpTaskList;
+  m_pSEitfList  = gpSEitfList;
   
-  m_iStop             = 0;
-  m_iQuit             = 0;
+  m_iStop       = 0;
+  m_iQuit       = 0;
 }
 
 /*----------------------------------------------------------------------------*/

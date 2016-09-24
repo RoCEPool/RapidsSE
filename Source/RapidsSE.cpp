@@ -8,6 +8,7 @@ Arguments gxArguments;
 
 BufferPool*         gpBufferPool       = nullptr;
 AttachMap *         gpAttachMap        = nullptr;
+Heap*               gpJumboHeap        = nullptr;
 Heap*               gpMediumHeap       = nullptr;
 Heap*               gpSmallHeap        = nullptr;
 Dictionary*         gpMainDic          = nullptr;
@@ -75,7 +76,8 @@ pDUMPFUN *gpDump[]
   
   /* 23 */ &Index::vDump,              // CN_INDEX
   
-  /* 24 */ &RapidsSE::vDumpInvalid,    // CN_LARGEHEAP
+  /* 24 */ &RapidsSE::vDumpInvalid,    // CN_JUMBOHEAP
+  
   /* 25 */ &Loader::vDump,             // CN_LOADER
   /* 26 */ &LoaderSub::vDump,          // CN_LOADERSUB
   /* 27 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
@@ -421,8 +423,9 @@ void RapidsSE::vCreateObjects(void)
 {
   // create global objects
   gpAttachMap  = new AttachMap;
-  gpMediumHeap = new Heap(CN_MEDIUMHEAP,C_SIZE_MEDIUM_OBJECT);
-  gpSmallHeap  = new Heap(CN_SMALLHEAP,C_SIZE_SMALL_OBJECT);
+  gpJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_LARGE_OBJECT);
+  gpMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
+  gpSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
   gpMainDic = &gpAttachMap->m_xMainDic;
 }
 

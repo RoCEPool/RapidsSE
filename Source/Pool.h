@@ -7,8 +7,12 @@
 #include "Values.h"
 
 static const u8 C_SIZE_LARGE_BUFFER  = C_1MB;
-static const u8 C_SIZE_MEDIUM_OBJECT = C_1KB * 16;
+
+static const u8 C_SIZE_JUMBO_OBJECT  = C_SIZE_LARGE_BUFFER * 16;
+static const u8 C_SIZE_LARGE_OBJECT  = C_SIZE_LARGE_BUFFER;
+
 static const u8 C_SIZE_SMALL_OBJECT  = C_1KB;
+static const u8 C_SIZE_MEDIUM_OBJECT = C_SIZE_SMALL_OBJECT * 16;
 
 #include "bn.hpp"
 #include "Buffer.hpp"
