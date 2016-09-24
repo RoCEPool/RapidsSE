@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Heap.hpp - heap allocator                                                  */
+/* Heap.hpp -- Heap Allocator                                                 */
 /*============================================================================*/
 
 #pragma once
@@ -19,6 +19,7 @@ namespace Pool
     HeapBuffer* m_pLastBuffer;   // last buffer in the heap
     i8          m_iFreeCount;    // number of free chunks
     FreeChunk*  m_pFreeHead;     // head of free chunk chain
+    bool        m_bFixedHeap;    // fixed size heap or able to extend?
     
     // must be last
     Footer m_xFooter;
@@ -32,16 +33,18 @@ namespace Pool
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void    vAddFree(FreeChunk* pFreeChunk);
+    i8      iAllocCount(void);
     Object* pAllocObject(eCN eClass);
     void    vAnalyse(i8 xCounts[]);
-    i8      iAllocCount(void);
     i8      iBufferCount(void);
     void    vDropLock(void);
     HeapBuffer* pFirstBuffer(void);
-    HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
+    void    vFixedHeap(bool bFixed);
     i8      iFreeCount(void);
     void    vFreeObject(Object* pObject);
     void    vGrabLock(void);
+    HeapBuffer* pNextBuffer(HeapBuffer* pBuffer);
     i8      iObjectSize(void);
         
   private:

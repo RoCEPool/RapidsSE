@@ -45,6 +45,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_pLastBuffer  = nullptr;
   m_iFreeCount   = 0;
   m_pFreeHead    = nullptr;
+  m_bFixedHeap   = false;
   
   _checkInitialised_(sizeof(Heap));
 
@@ -57,6 +58,66 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
 Heap::~Heap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this heap                                                             */
+/*----------------------------------------------------------------------------*/
+void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
+  ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);
+  
+  Heap* pHeap = reinterpret_cast<Heap*>(pObject);
+  
+  vTrace("%s%s %p:\n", pTab, eClass == CN_SMALLHEAP ? "SmallHeap" : "MediumHeap", pHeap);
+  vTrace("%s  BufferCount %lld\n", pTab, pHeap->m_iBufferCount);
+  vTrace("%s  FreeCount %lld\n\n",  pTab, pHeap->m_iFreeCount);
+  
+  i8 iCountObjects[CN_ENUMS];
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    iCountObjects[index] = 0;
+  }
+  
+  pHeap->vAnalyse(iCountObjects);
+  
+  vTrace("%s  Objects:\n", pTab);
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("%s    %s %lld \n", pTab, pCN[eClass], iCountObjects[eClass]);
+  }
+  vTrace("\n");
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add free chunk onto free chain                                             */
+/*----------------------------------------------------------------------------*/
+void Heap::vAddFree(FreeChunk* pFreeChunk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ASSERT(m_bFixedHeap);
+  
+  vPushFree(pFreeChunk);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of allocated objects                                            */
+/*----------------------------------------------------------------------------*/
+i8 Heap::iAllocCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  return m_iAllocCount;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,16 +164,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of allocated objects                                            */
-/*----------------------------------------------------------------------------*/
-i8 Heap::iAllocCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  return m_iAllocCount;
-}
-
-/*----------------------------------------------------------------------------*/
 /* analyse the objects in the heap                                            */
 /*----------------------------------------------------------------------------*/
 void Heap::vAnalyse(i8 xCounts[])
@@ -141,15 +192,14 @@ i8 Heap::iBufferCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab the lock                                                              */
+/* drop the lock                                                              */
 /*----------------------------------------------------------------------------*/
-void Heap::vGrabLock()
+void Heap::vDropLock(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(!m_zLock.bIsLocked());
-  m_zLock.vGrabWrite();
-  
+  ASSERT(m_zLock.bIsLocked());
+  m_zLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,60 +215,13 @@ HeapBuffer* Heap::pFirstBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop the lock                                                              */
+/* set whether the heap is fixed                                              */
 /*----------------------------------------------------------------------------*/
-void Heap::vDropLock(void)
+void Heap::vFixedHeap(bool bFixedHeap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  ASSERT(m_zLock.bIsLocked());
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump this heap                                                             */
-/*----------------------------------------------------------------------------*/
-void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
-{
-  ASSERT(eClass == CN_SMALLHEAP || eClass == CN_MEDIUMHEAP);
-  ASSERT(pObject->eClass() == CN_SMALLHEAP || pObject->eClass() == CN_MEDIUMHEAP);
-  
-  Heap* pHeap = reinterpret_cast<Heap*>(pObject);
-  
-  vTrace("%s%s %p:\n", pTab, eClass == CN_SMALLHEAP ? "SmallHeap" : "MediumHeap", pHeap);
-  vTrace("%s  BufferCount %lld\n", pTab, pHeap->m_iBufferCount);
-  vTrace("%s  FreeCount %lld\n\n",  pTab, pHeap->m_iFreeCount);
-  
-  i8 iCountObjects[CN_ENUMS];
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    iCountObjects[index] = 0;
-  }
-  
-  pHeap->vAnalyse(iCountObjects);
-  
-  vTrace("%s  Objects:\n", pTab);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("%s    %s %lld \n", pTab, pCN[eClass], iCountObjects[eClass]);
-  }
-  vTrace("\n");
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the next buffer                                                       */
-/*----------------------------------------------------------------------------*/
-HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  ASSERT(m_zLock.bIsLocked());
-  
-  return pBuffer->pNextBuffer();
+  m_bFixedHeap = bFixedHeap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,6 +253,30 @@ void Heap::vFreeObject(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grab the lock                                                              */
+/*----------------------------------------------------------------------------*/
+void Heap::vGrabLock()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  ASSERT(!m_zLock.bIsLocked());
+  m_zLock.vGrabWrite();
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the next buffer                                                       */
+/*----------------------------------------------------------------------------*/
+HeapBuffer* Heap::pNextBuffer(HeapBuffer* pBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  ASSERT(m_zLock.bIsLocked());
+  
+  return pBuffer->pNextBuffer();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get size of objects                                                        */
 /*----------------------------------------------------------------------------*/
 i8 Heap::iObjectSize(void)
@@ -260,7 +287,7 @@ i8 Heap::iObjectSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -270,31 +297,33 @@ bool Heap::bExtendHeap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  // - firstly, get a new heap buffer (from buffer pool)
+  // check that we are free to extend this heap
+  if ( m_bFixedHeap )
+    return false;
   
+  // get a free buffer from buffer pool
   HeapBuffer* pHeapBuffer = new HeapBuffer;
   if ( ! pHeapBuffer )
     return false;
   
-  // - secondly, add the heap buffer into the buffer list
-  
+  // add that freee buffer into this buffer list
   if ( ! m_pFirstBuffer ) {
-    // first buffer in list
+    // set as first buffer in list
     ASSERT( ! m_pLastBuffer ); // should also be null
     m_pFirstBuffer = pHeapBuffer;
     m_pLastBuffer  = pHeapBuffer;
   }
   else {
-    // add segment to end of list
+    // add to end of list
     pHeapBuffer->vPrevBuffer(m_pLastBuffer);
     m_pLastBuffer->vNextBuffer(pHeapBuffer);
     m_pLastBuffer= pHeapBuffer;
   }
 
+  // we have one more buffer
   m_iBufferCount++;
   
-  // - thirdly, add all new free chunks into free chain
-  
+  // now add all new free chunks into free chain
   FreeChunk* pFreeChunk;
   for (pFreeChunk = pHeapBuffer->pFirstChunk();
        pFreeChunk;
