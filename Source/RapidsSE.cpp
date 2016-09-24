@@ -343,7 +343,7 @@ SEitf* RapidsSE::pSEitfNew(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vAttachObjects(void)
 {
-  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
+  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_POOL_BUFFER));
   
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();
@@ -381,7 +381,7 @@ void RapidsSE::vAttachRegion(void)
   }
   
   // overlay attach map onto 2nd buffer (buffer #1)
-  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_LARGE_BUFFER));
+  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_POOL_BUFFER));
   
   // get the actual size
   i8 iRegionSize = gpAttachMap->m_iRegionSize;
@@ -423,10 +423,12 @@ void RapidsSE::vCreateObjects(void)
 {
   // create global objects
   gpAttachMap  = new AttachMap;
-  gpJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_LARGE_OBJECT);
+  gpJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
   gpMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
   gpSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
   gpMainDic = &gpAttachMap->m_xMainDic;
+  
+  vInitJumboHeap();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -510,6 +512,29 @@ void RapidsSE::vHandler(Error* pError)
          pError->pErrorMsg(),
          pError->iLineNumber(),
          wFileName);
+}
+
+/*----------------------------------------------------------------------------*/
+/* init jumbo heap                                                            */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vInitJumboHeap(void)
+{
+  gpJumboHeap->vFixedHeap(true);
+  
+  Buffer* pJumbo = nullptr;
+  while ( (pJumbo = gpBufferPool->pNextJumbo(pJumbo)) ) {
+
+    pJumbo->vSetMagic();
+    pJumbo->vClass(CN_FREECHUNK);
+
+    gpJumboHeap->vAddFree((FreeChunk*)pJumbo);
+  }
+  
+  // test
+//  Object* pObject = gpJumboHeap->pAllocObject(CN_NONE);
+//  pObject->vSetMagic();
+//  gpJumboHeap->vFreeObject(pObject);
+  
 }
 
 /*----------------------------------------------------------------------------*/

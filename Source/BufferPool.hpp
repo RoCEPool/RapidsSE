@@ -26,9 +26,10 @@ namespace Pool
     i8   m_nBuffersTaken; // number of pool buffers taken by jumbo buffers
     
     s256 m_sShmName;      // shared memory region name
-    int  m_iShmDescriptor; // shared memory file descriptor
+    int  m_iShmFD; // shared memory file descriptor
 
-    Buffer* m_pBase;     // starting address of pool
+    Buffer* m_pBase;     // starting address of pool (large section)
+    Buffer* m_pJumbo;    // starting address of jumbo section
     Buffer* m_pLimit;    // address after pool
     
     // free chain
@@ -48,8 +49,8 @@ namespace Pool
     BufferPool(s& sRegionName);
     ~BufferPool(void);
     
-    static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor);
-    static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor, i8 iRegionSize);
+    static Buffer* pAttachRegion(s& sRegionName, int& iShmFD);
+    static Buffer* pAttachRegion(s& sRegionName, int& iShmFD, i8 iRegionSize);
 
     Buffer* pAllocBuffer(void);
     bn   nBufferFirst(void);
@@ -65,6 +66,7 @@ namespace Pool
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);
     void vInitialise(void);
+    Buffer* pNextJumbo(Buffer* pPrev);
     i8   iRegionSize(void);
     Buffer* pToBuffer(bn nBuffer);
     BufferFree* pToBufferFree(bn nBuffer);

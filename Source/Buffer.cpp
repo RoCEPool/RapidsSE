@@ -7,6 +7,16 @@
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Buffer* Pool::_pBuffer(void* pAddr)
+{
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(pAddr);
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Buffer::operator new(size_t iSize)
@@ -86,7 +96,7 @@ char* Buffer::pLastUsableByte(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   // last byte in buffer
-  char* pLastByte = reinterpret_cast<char*>(this) + C_SIZE_LARGE_BUFFER - 1;
+  char* pLastByte = reinterpret_cast<char*>(this) + C_SIZE_POOL_BUFFER - 1;
   
   // last byte before footer
   char* pLastUsableByte = pLastByte - sizeof(FOOTER);
@@ -126,7 +136,7 @@ Footer* Buffer::pFooter(void)
   // Note: cannot check _FOOTER_ here
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_LARGE_BUFFER-sizeof(Footer)));
+  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_POOL_BUFFER-sizeof(Footer)));
   
   return pFooter;
 }

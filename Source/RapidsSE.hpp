@@ -42,6 +42,7 @@ namespace StorageEngine
     static void vDicCompile(NP_Task npBootTask);
     static void vDropRegion(void);
     static void vHandler(Error* pError);
+    static void vInitJumboHeap(void);
     static void vRunCommand(void);
     static void vRunDocol(void);
     static void vStartActors(void);

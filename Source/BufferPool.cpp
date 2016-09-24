@@ -40,18 +40,19 @@ BufferPool::BufferPool(void)
  
   gpBufferPool    = this;
   m_iRegionSize   = gxArguments.m_iRegionSize;
-  m_iBufferSize   = C_SIZE_LARGE_BUFFER;
-  m_iBufferCount  = DIV(m_iRegionSize,C_SIZE_LARGE_BUFFER) - m_nBuffersTaken;
+  m_iBufferSize   = C_SIZE_POOL_BUFFER;
+  m_iBufferCount  = DIV(m_iRegionSize,C_SIZE_POOL_BUFFER) - m_nBuffersTaken;
   
   m_sShmName      = gxArguments.m_sRegionName;
-  m_iShmDescriptor = 0;
+  m_iShmFD        = 0;
   m_zFreeLock     = 0;
   m_iAllocCount   = 0;
   m_iFreeCount    = 0;
   
   m_nFreeHead     = bn::nNil();
-  m_pBase         = reinterpret_cast<Buffer*>(this);
-  m_pLimit        = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
+  m_pBase         = _pBuffer(this);
+  m_pLimit        = _pBuffer(pvAdd(m_pBase,m_iRegionSize));
+  m_pJumbo        = _pBuffer(pvAdd(m_pLimit,-(m_nBuffersTaken * C_SIZE_POOL_BUFFER)));
   
   vInitialise();
   
@@ -76,19 +77,20 @@ BufferPool::BufferPool(s& sRegionName)
   m_iAllocCount  = 0;
   m_iFreeCount   = 0;
   
-  m_pBase = pAttachRegion(sRegionName,m_iShmDescriptor);
+  m_pBase = pAttachRegion(sRegionName,m_iShmFD);
   
-  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(m_pBase,C_SIZE_LARGE_BUFFER));
+  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(m_pBase,C_SIZE_POOL_BUFFER));
   
   m_iRegionSize = gpAttachMap->m_iRegionSize;
-  m_iBufferSize = C_SIZE_LARGE_BUFFER;
+  m_iBufferSize = C_SIZE_POOL_BUFFER;
   
   bool bResult = bDetachPool();
   ASSERT(bResult);
   
-  m_pBase  = pAttachRegion(sRegionName,m_iShmDescriptor,m_iRegionSize);
+  m_pBase  = pAttachRegion(sRegionName,m_iShmFD,m_iRegionSize);
   m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
   m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
+  m_pJumbo = _pBuffer(pvAdd(m_pLimit,-(m_nBuffersTaken * C_SIZE_POOL_BUFFER)));
   
   // do not initialise existing pool
   
@@ -106,9 +108,9 @@ BufferPool::~BufferPool(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attach to an existing region (of unknown size)                             */
+/* attach to an existing shm region (of unknown size)                         */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
+Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iShmFD)
 {
   SysCall xSysCall;
   
@@ -116,7 +118,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
     vTrace("Attaching region %s\n",sRegionName.a());
   
   // open a shared memory region
-  bool bResult = Shm::bAttach(sRegionName.a(),iDescriptor,xSysCall);
+  bool bResult = Shm::bAttach(sRegionName.a(),iShmFD,xSysCall);
   if ( ! bResult ) {
     vTrace("BufferPool::pAttachRegion Shared Memory Region failed to open region: %s\n",
            sRegionName.a());
@@ -124,10 +126,10 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
   }
   
   // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,10_MB,true,xSysCall);
+  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,10_MB,true,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
-    Shm::bClose(iDescriptor,xSysCall);
+    Shm::bClose(iShmFD,xSysCall);
     ASSERT(0);
   }
   
@@ -140,7 +142,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
 /*----------------------------------------------------------------------------*/
 /* attach to an existing region (of known size)                               */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor, i8 iRegionSize)
+Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iShmFD, i8 iRegionSize)
 {
   SysCall xSysCall;
   
@@ -148,7 +150,7 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor, i8 iRegionSi
     vTrace("Attaching region %s\n",sRegionName.a());
   
   // open a shared memory region
-  bool bResult = Shm::bAttach(sRegionName.a(),iDescriptor,xSysCall);
+  bool bResult = Shm::bAttach(sRegionName.a(),iShmFD,xSysCall);
   if ( ! bResult ) {
     vTrace("BufferPool::pAttachRegion Shared Memory Region failed to open region: %s\n",
            sRegionName.a());
@@ -156,10 +158,10 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor, i8 iRegionSi
   }
   
   // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iRegionSize,true,xSysCall);
+  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,iRegionSize,true,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
-    Shm::bClose(iDescriptor,xSysCall);
+    Shm::bClose(iShmFD,xSysCall);
     ASSERT(0);
   }
   
@@ -275,7 +277,7 @@ bool BufferPool::bDetachPool(void)
   
   SysCall xSysCall;
   
-  bool bResult = Shm::bClose(m_iShmDescriptor,xSysCall);
+  bool bResult = Shm::bClose(m_iShmFD,xSysCall);
   
   bResult = Shm::bUnmap(m_pBase,m_iRegionSize,xSysCall);
   
@@ -425,6 +427,28 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vNextFree(bn::nNil());
   
   //vDump();
+}
+
+/*----------------------------------------------------------------------------*/
+/* next jumbo pointer                                                         */
+/*----------------------------------------------------------------------------*/
+Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  Buffer* pJumbo;
+  
+  if ( ! pPrev ) {
+    pJumbo = m_pJumbo;
+  }
+  else {
+    pJumbo = _pBuffer(pvAdd(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO));
+    if (pJumbo >= m_pLimit)
+      pJumbo = nullptr;
+  }
+  
+  //vTrace("Jumbo %p %lld\n",pJumbo,iSub(pJumbo,pPrev));
+  return pJumbo;
 }
 
 /*----------------------------------------------------------------------------*/

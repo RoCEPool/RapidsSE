@@ -298,7 +298,7 @@ void Task::vAddConstants(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddConstant("largebuffersize",  C_SIZE_LARGE_BUFFER);
+  vAddConstant("largebuffersize",  C_SIZE_POOL_BUFFER);
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic",            MAGIC);
@@ -8195,7 +8195,7 @@ ENTRY("vTableSpace");
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iBuffers = pTable->iRowBuffers();
-  i8 iSpace   = iBuffers * C_SIZE_LARGE_BUFFER;
+  i8 iSpace   = iBuffers * C_SIZE_POOL_BUFFER;
   s256 sMag;
   
   nnpTask->m_xParamStack.vPush(iSpace);
