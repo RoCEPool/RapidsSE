@@ -10,10 +10,10 @@ namespace Values
 {
   class ValWsp : public Value
   {
-    static const i8 C_VALWSP_ARRAY = C_1KB*15;
+    static const i8 C_VALWSP_WORKSPACE = C_1KB * 15;
     
   private:
-    char m_mArray[C_VALWSP_ARRAY];
+    char m_wWorkspace[C_VALWSP_WORKSPACE];
     
   public:
     void* operator new(size_t);

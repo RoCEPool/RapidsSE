@@ -23,7 +23,7 @@ ValSet::ValSet(void)
 {
   ASSERT(sizeof(ValSet) <= sizeof(ValWsp));
   
-  Memory::vZero(m_mSpace,C_VALSET_ARRAY);
+  Memory::vZero(m_wWorkspace,C_VALSET_WORKSPACE);
   
   m_iBytes = 0;
   
@@ -37,7 +37,7 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
 {
   i8 iSize = xVal.iSize();
   
-  ASSERT(m_iBytes + iSize < C_VALSET_ARRAY);
+  ASSERT(m_iBytes + iSize < C_VALSET_WORKSPACE);
   
   if ( ! pCursor )
     pCursor = pFirstByte();
@@ -102,19 +102,19 @@ void ValSet::vToString(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to first byte of space                                             */
+/* get ptr to first byte of workspace                                         */
 /*----------------------------------------------------------------------------*/
 char* ValSet::pFirstByte(void)
 {
-  return &m_mSpace[0];
+  return &m_wWorkspace[0];
 }
 
 /*----------------------------------------------------------------------------*/
-/* get ptr to last bytes of space                                             */
+/* get ptr to last bytes of worksspace                                        */
 /*----------------------------------------------------------------------------*/
 char* ValSet::pLastByte(void)
 {
-  return &m_mSpace[C_VALSET_ARRAY-1];
+  return &m_wWorkspace[C_VALSET_WORKSPACE-1];
 }
 
 /*----------------------------------------------------------------------------*/

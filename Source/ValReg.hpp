@@ -10,10 +10,10 @@ namespace Values
 {
   class ValReg : public Value
   {
-    static const i8 C_VALREG_ARRAY = 512;
+    static const i8 C_VALREG_WORKSPACE = sizeof(s256) + 64;
     
   private:
-    char m_mArray[C_VALREG_ARRAY];
+    char m_wWorkspace[C_VALREG_WORKSPACE];
     
   public:
     void* operator new(size_t);
