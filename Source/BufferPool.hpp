@@ -19,11 +19,13 @@ namespace Pool
   private:
     
     // buffer pool characteristics
-    i8   m_iRegionSize;    // size of the pool (e.g. 1_TB)
-    i8   m_iBufferSize;  // size of each buffer (e.g. 1_MB)
-    i8   m_iBufferCount; // number of buffers in pool
+    i8   m_iRegionSize;   // size of the pool (e.g. 1_TB)
+    i8   m_iBufferSize;   // size of each buffer (e.g. 1_MB)
+    i8   m_iBufferCount;  // number of buffers in pool
+    i8   m_nJumboBuffers; // number of jumbo buffers
+    i8   m_nBuffersTaken; // number of pool buffers taken by jumbo buffers
     
-    s256 m_sShmName;     // shared memory region name
+    s256 m_sShmName;      // shared memory region name
     int  m_iShmDescriptor; // shared memory file descriptor
 
     Buffer* m_pBase;     // starting address of pool
@@ -38,24 +40,17 @@ namespace Pool
     // must be last
     Footer m_xFooter;
     
-  public:    
-    static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor);
-    static Buffer* pAttachRegion(s& sRegionName,
-                                 i8 iRegionSize, int& iDescriptor);
-    static Buffer* pCreateRegion(s& sRegionName,
-                                 i8 iRegionSize, int& iDescriptor);
-
-    BufferPool(s& sRegionName);
-    BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize);
-    
-    void* operator new(size_t);
-    //----
-    
+  public:        
     void* operator new(size_t, void* pRegion);
     void  operator delete(void* pRegion);
+    
     BufferPool(void);
+    BufferPool(s& sRegionName);
     ~BufferPool(void);
     
+    static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor);
+    static Buffer* pAttachRegion(s& sRegionName, int& iDescriptor, i8 iRegionSize);
+
     Buffer* pAllocBuffer(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);

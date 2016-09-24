@@ -12,7 +12,101 @@ extern Arguments  gxArguments;
 extern void* C_ADDR_POOL;
 
 /*----------------------------------------------------------------------------*/
-/* attach to an existing shared buffer pool                                   */
+/* new operator                                                               */
+/*----------------------------------------------------------------------------*/
+void* BufferPool::operator new(size_t iSize, void* pRegion)
+{
+  ASSERT(iSize);
+  return pRegion;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete operator                                                            */
+/*----------------------------------------------------------------------------*/
+void BufferPool::operator delete(void* pRegion)
+{
+  ASSERT(pRegion);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor (new region)                                                   */
+/*----------------------------------------------------------------------------*/
+BufferPool::BufferPool(void)
+: Header(CN_BUFFERPOOL)
+{
+  // calc the number of pool buffers taken by jumbo buffers
+  m_nJumboBuffers = C_JUMBO_COEFFICIENT * System::iCoreCount();
+  m_nBuffersTaken = C_JUMBO_RATIO * m_nJumboBuffers;
+ 
+  gpBufferPool    = this;
+  m_iRegionSize   = gxArguments.m_iRegionSize;
+  m_iBufferSize   = C_SIZE_LARGE_BUFFER;
+  m_iBufferCount  = DIV(m_iRegionSize,C_SIZE_LARGE_BUFFER) - m_nBuffersTaken;
+  
+  m_sShmName      = gxArguments.m_sRegionName;
+  m_iShmDescriptor = 0;
+  m_zFreeLock     = 0;
+  m_iAllocCount   = 0;
+  m_iFreeCount    = 0;
+  
+  m_nFreeHead     = bn::nNil();
+  m_pBase         = reinterpret_cast<Buffer*>(this);
+  m_pLimit        = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
+  
+  vInitialise();
+  
+  _checkInitialised_(sizeof(BufferPool));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor (existing region)                                              */
+/*----------------------------------------------------------------------------*/
+BufferPool::BufferPool(s& sRegionName)
+: Header(CN_BUFFERPOOL)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  m_iRegionSize  = 10_MB;
+  m_iBufferSize  = 1_MB;
+  m_sShmName     = sRegionName;
+  
+  m_zFreeLock    = 0;
+  m_iAllocCount  = 0;
+  m_iFreeCount   = 0;
+  
+  m_pBase = pAttachRegion(sRegionName,m_iShmDescriptor);
+  
+  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(m_pBase,C_SIZE_LARGE_BUFFER));
+  
+  m_iRegionSize = gpAttachMap->m_iRegionSize;
+  m_iBufferSize = C_SIZE_LARGE_BUFFER;
+  
+  bool bResult = bDetachPool();
+  ASSERT(bResult);
+  
+  m_pBase  = pAttachRegion(sRegionName,m_iShmDescriptor,m_iRegionSize);
+  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
+  m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
+  
+  // do not initialise existing pool
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+BufferPool::~BufferPool(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  bDetachPool();
+}
+
+/*----------------------------------------------------------------------------*/
+/* attach to an existing region (of unknown size)                             */
 /*----------------------------------------------------------------------------*/
 Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
 {
@@ -44,10 +138,9 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor)
 }
 
 /*----------------------------------------------------------------------------*/
-/* attach to an existing shared buffer pool                                   */
+/* attach to an existing region (of known size)                               */
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAttachRegion(s& sRegionName,
-                                  i8 iRegionSize, int& iDescriptor)
+Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iDescriptor, i8 iRegionSize)
 {
   SysCall xSysCall;
   
@@ -77,172 +170,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName,
 }
 
 /*----------------------------------------------------------------------------*/
-/* create a new shared buffer pool                                            */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pCreateRegion(s& sRegionName,
-                                  i8 iRegionSize, int& iDescriptor)
-{
-  SysCall xSysCall;
-  
-  if (gxArguments.m_bWelcome)
-    vTrace("Creating region %s\n",sRegionName.a());
-  
-  // open a shared memory region
-  bool bResult = Shm::bCreate(sRegionName.a(),iRegionSize,iDescriptor,xSysCall);
-  if ( ! bResult ) {
-    vTrace("BufferPool::pCreateRegion Shared Memory Region failed to open region %s\n",
-           sRegionName.a());
-    ASSERT(0);
-  }
-  // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iDescriptor,C_ADDR_POOL,iRegionSize,true,xSysCall);
-  if ( ! pRegion )  {
-    vTrace("BufferPool::pCreateRegion failed to map!\n");
-    Shm::bClose(iDescriptor,xSysCall);
-    ASSERT(0);
-  }
-  
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm mapped at %p\n",pRegion);
-  
-  return reinterpret_cast<Buffer*>(pRegion);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* attach to an existing buffer pool                                          */
-/*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(s& sRegionName)
-: Header(CN_BUFFERPOOL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  m_iRegionSize    = 10_MB;
-  m_iBufferSize  = 1_MB;
-  m_sShmName     = sRegionName;
-  
-  m_zFreeLock    = 0;
-  m_iAllocCount  = 0;
-  m_iFreeCount   = 0;
-  
-  m_pBase = pAttachRegion(sRegionName,m_iShmDescriptor);
-  
-  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(m_pBase,C_SIZE_LARGE_BUFFER));
-  
-  m_iRegionSize   = gpAttachMap->m_iRegionSize;
-  m_iBufferSize = C_SIZE_LARGE_BUFFER;
-  
-  bool bResult = bDetachPool();
-  ASSERT(bResult);
-
-  m_pBase  = pAttachRegion(sRegionName,m_iRegionSize,m_iShmDescriptor);
-  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
-  m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
-  
-  // do not initialise existing pool
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* create a new buffer pool                                                   */
-/*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(s& sRegionName, i8 iRegionSize, i8 iBufferSize)
-: Header(CN_BUFFERPOOL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  gpBufferPool   = this;
-  m_iRegionSize    = iRegionSize;
-  m_iBufferSize  = iBufferSize;
-  m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
-  m_sShmName     = sRegionName;
-  
-  m_zFreeLock    = 0;
-  m_iAllocCount  = 0;
-  m_iFreeCount   = 0;
-  
-  m_nFreeHead    = bn::nNil();
-  m_pBase        = pCreateRegion(m_sShmName,m_iBufferSize,m_iShmDescriptor);
-  m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
-  
-  // initialise new pool
-  vInitialise();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* BufferPool::operator new(size_t iSize)
-{
-  ASSERT(iSize);
-  void* pBufferPool = malloc(sizeof(BufferPool));
-  
-  return pBufferPool;
-}
-
-/*----------------------------------------------------------------------------*/
-/* new operator                                                               */
-/*----------------------------------------------------------------------------*/
-void* BufferPool::operator new(size_t iSize, void* pRegion)
-{
-  ASSERT(iSize);
-  return pRegion;
-}
-
-/*----------------------------------------------------------------------------*/
-/* delete operator                                                            */
-/*----------------------------------------------------------------------------*/
-void BufferPool::operator delete(void* pRegion)
-{
-  ASSERT(pRegion);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(void)
-: Header(CN_BUFFERPOOL)
-{
-  gpBufferPool   = this;
-  m_iRegionSize    = gxArguments.m_iRegionSize;
-  m_iBufferSize  = C_SIZE_LARGE_BUFFER;
-  m_iBufferCount = DIV(m_iRegionSize,C_SIZE_LARGE_BUFFER);
-  m_sShmName     = gxArguments.m_sRegionName;
-  
-  m_zFreeLock    = 0;
-  m_iAllocCount  = 0;
-  m_iFreeCount   = 0;
-  
-  m_nFreeHead    = bn::nNil();
-  m_pBase        = reinterpret_cast<Buffer*>(this);
-  m_pLimit       = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
-  
-  vInitialise();
-  
-  _checkInitialised_(sizeof(BufferPool));
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-BufferPool::~BufferPool(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  bDetachPool();
-}
 
 /*----------------------------------------------------------------------------*/
 /* allocate a buffer from free chain in pool                                  */
