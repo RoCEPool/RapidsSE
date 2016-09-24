@@ -22,6 +22,7 @@ namespace Values
   class IntVal;
   class PtrVal;
   class StrVal;
+  class ValAcc;
   class ValSet;
   class ValWsp;
   

@@ -6,9 +6,9 @@
 
 #include "Common.h"
 
-
 #include "Value.hpp"
 #include "ValWsp.hpp"
+#include "ValReg.hpp"
 
 #include "IntVal.hpp"
 #include "ObjVal.hpp"
