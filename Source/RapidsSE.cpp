@@ -75,69 +75,70 @@ pDUMPFUN *gpDump[]
   
   /* 23 */ &Index::vDump,              // CN_INDEX
   
-  /* 24 */ &Loader::vDump,             // CN_LOADER
-  /* 25 */ &LoaderSub::vDump,          // CN_LOADERSUB
-  /* 26 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
+  /* 24 */ &RapidsSE::vDumpInvalid,    // CN_LARGEHEAP
+  /* 25 */ &Loader::vDump,             // CN_LOADER
+  /* 26 */ &LoaderSub::vDump,          // CN_LOADERSUB
+  /* 27 */ &RapidsSE::vDumpInvalid,    // CN_LOCK
   
-  /* 27 */ &Heap::vDump,               // CN_MEDIUMHEAP
+  /* 28 */ &Heap::vDump,               // CN_MEDIUMHEAP
   
-  /* 28 */ &Node::vDump,               // CN_NODE
-  /* 29 */ &NodeCursor::vDump,         // CN_NODECURSOR
+  /* 29 */ &Node::vDump,               // CN_NODE
+  /* 30 */ &NodeCursor::vDump,         // CN_NODECURSOR
   
-  /* 30 */ &RapidsSE::vDumpDummy,      // CN_PARSER
-  /* 31 */ &Partition::vDump,          // CN_PARTITION
-  /* 32 */ &RapidsSE::vDumpUndefined,  // CN_PARTITIONS
-  /* 33 */ &RapidsSE::vDumpUndefined,  // CN_PROXY
-  /* 34 */ &RapidsSE::vDumpUndefined,  // CN_PROXYSET
+  /* 31 */ &RapidsSE::vDumpDummy,      // CN_PARSER
+  /* 32 */ &Partition::vDump,          // CN_PARTITION
+  /* 33 */ &RapidsSE::vDumpUndefined,  // CN_PARTITIONS
+  /* 34 */ &RapidsSE::vDumpUndefined,  // CN_PROXY
+  /* 35 */ &RapidsSE::vDumpUndefined,  // CN_PROXYSET
   
-  /* 35 */ &Queue::vDump,              // CN_QUEUE
-  /* 36 */ &QueueBuffer::vDump,        // CN_QUEUEBUFFER
+  /* 36 */ &Queue::vDump,              // CN_QUEUE
+  /* 37 */ &QueueBuffer::vDump,        // CN_QUEUEBUFFER
   
-  /* 37 */ &RapidsSE::vDumpUndefined,  // CN_RING
-  /* 38 */ &RapidsSE::vDumpUndefined,  // CN_ROW
-  /* 39 */ &RowBuffer::vDump,          // CN_ROWBUFFER
-  /* 40 */ &RapidsSE::vDumpUndefined,  // CN_ROWCURSOR
-  /* 41 */ &RowStrand::vDump,          // CN_ROWSTRAND
-  /* 42 */ &RapidsSE::vDumpUndefined,  // CN_ROWWSP
+  /* 38 */ &RapidsSE::vDumpUndefined,  // CN_RING
+  /* 39 */ &RapidsSE::vDumpUndefined,  // CN_ROW
+  /* 40 */ &RowBuffer::vDump,          // CN_ROWBUFFER
+  /* 41 */ &RapidsSE::vDumpUndefined,  // CN_ROWCURSOR
+  /* 42 */ &RowStrand::vDump,          // CN_ROWSTRAND
+  /* 43 */ &RapidsSE::vDumpUndefined,  // CN_ROWWSP
   
-  /* 43 */ &RapidsSE::vDumpUndefined,  // CN_SCANBUFFER
-  /* 44 */ &RapidsSE::vDumpUndefined,  // CN_SEHISTORY
-  /* 45 */ &SEitf::vDump,              // CN_SEITF
-  /* 46 */ &RapidsSE::vDumpUndefined,  // CN_SEITFCURSOR
-  /* 47 */ &RapidsSE::vDumpUndefined,  // CN_SEITFLIST
-  /* 48 */ &RapidsSE::vDumpDummy,      // CN_SEPROMPT
-  /* 49 */ &RapidsSE::vDumpUndefined,  // CN_SINCE
-  /* 50 */ &RapidsSE::vDumpUndefined,  // CN_SKIPCURSOR
-  /* 51 */ &RapidsSE::vDumpUndefined,  // CN_SKIPLIST
-  /* 52 */ &RapidsSE::vDumpUndefined,  // CN_SKIPNODE
-  /* 53 */ &Heap::vDump,               // CN_SMALLHEAP
-  /* 54 */ &RapidsSE::vDumpUndefined,  // CN_SOCKET
-  /* 55 */ &RapidsSE::vDumpUndefined,  // CN_STACK
-  /* 56 */ &RapidsSE::vDumpInvalid,    // CN_STEPACCUM
-  /* 57 */ &StepArray::vDump,          // CN_STEPARRAY
-  /* 58 */ &RapidsSE::vDumpInvalid,    // CN_SYSCALL
+  /* 44 */ &RapidsSE::vDumpUndefined,  // CN_SCANBUFFER
+  /* 45 */ &RapidsSE::vDumpUndefined,  // CN_SEHISTORY
+  /* 46 */ &SEitf::vDump,              // CN_SEITF
+  /* 47 */ &RapidsSE::vDumpUndefined,  // CN_SEITFCURSOR
+  /* 48 */ &RapidsSE::vDumpUndefined,  // CN_SEITFLIST
+  /* 49 */ &RapidsSE::vDumpDummy,      // CN_SEPROMPT
+  /* 50 */ &RapidsSE::vDumpUndefined,  // CN_SINCE
+  /* 51 */ &RapidsSE::vDumpUndefined,  // CN_SKIPCURSOR
+  /* 52 */ &RapidsSE::vDumpUndefined,  // CN_SKIPLIST
+  /* 53 */ &RapidsSE::vDumpUndefined,  // CN_SKIPNODE
+  /* 54 */ &Heap::vDump,               // CN_SMALLHEAP
+  /* 55 */ &RapidsSE::vDumpUndefined,  // CN_SOCKET
+  /* 56 */ &RapidsSE::vDumpUndefined,  // CN_STACK
+  /* 57 */ &RapidsSE::vDumpInvalid,    // CN_STEPACCUM
+  /* 58 */ &StepArray::vDump,          // CN_STEPARRAY
+  /* 59 */ &RapidsSE::vDumpInvalid,    // CN_SYSCALL
   
-  /* 59 */ &Table::vDump,              // CN_TABLE
-  /* 60 */ &Task::vDump,               // CN_TASK
-  /* 61 */ &RapidsSE::vDumpUndefined,  // CN_TASKCURSOR
-  /* 62 */ &TaskList::vDump,           // CN_TASKLIST
-  /* 63 */ &RapidsSE::vDumpUndefined,  // CN_TASKSET
-  /* 64 */ &RapidsSE::vDumpUndefined,  // CN_THREAD
-  /* 65 */ &RapidsSE::vDumpUndefined,  // CN_THREADCURSOR
-  /* 66 */ &RapidsSE::vDumpUndefined,  // CN_THREADLIST
-  /* 67 */ &RapidsSE::vDumpUndefined,  // CN_TIME
-  /* 68 */ &RapidsSE::vDumpInvalid,    // CN_TIMER
-  /* 69 */ &Tokeniser::vDump,          // CN_TOKENISER
-  /* 70 */ &Tx::vDump,                 // CN_TX
-  /* 71 */ &TxArray::vDump,            // CN_TXARRAY
-  /* 72 */ &RapidsSE::vDumpUndefined,  // CN_TXCOLLECTION
-  /* 73 */ &RapidsSE::vDumpUndefined,  // CN_TXCURSOR
-  /* 74 */ &RapidsSE::vDumpUndefined,  // CN_TXMAP
-  /* 75 */ &RapidsSE::vDumpUndefined,  // CN_TXREF
+  /* 60 */ &Table::vDump,              // CN_TABLE
+  /* 61 */ &Task::vDump,               // CN_TASK
+  /* 62 */ &RapidsSE::vDumpUndefined,  // CN_TASKCURSOR
+  /* 63 */ &TaskList::vDump,           // CN_TASKLIST
+  /* 64 */ &RapidsSE::vDumpUndefined,  // CN_TASKSET
+  /* 65 */ &RapidsSE::vDumpUndefined,  // CN_THREAD
+  /* 66 */ &RapidsSE::vDumpUndefined,  // CN_THREADCURSOR
+  /* 67 */ &RapidsSE::vDumpUndefined,  // CN_THREADLIST
+  /* 68 */ &RapidsSE::vDumpUndefined,  // CN_TIME
+  /* 69 */ &RapidsSE::vDumpInvalid,    // CN_TIMER
+  /* 70 */ &Tokeniser::vDump,          // CN_TOKENISER
+  /* 71 */ &Tx::vDump,                 // CN_TX
+  /* 72 */ &TxArray::vDump,            // CN_TXARRAY
+  /* 73 */ &RapidsSE::vDumpUndefined,  // CN_TXCOLLECTION
+  /* 74 */ &RapidsSE::vDumpUndefined,  // CN_TXCURSOR
+  /* 75 */ &RapidsSE::vDumpUndefined,  // CN_TXMAP
+  /* 76 */ &RapidsSE::vDumpUndefined,  // CN_TXREF
 
-  /* 76 */ &RapidsSE::vDumpDummy,      // CN_WORD
+  /* 77 */ &RapidsSE::vDumpDummy,      // CN_WORD
 
-  /* 77 */ &RapidsSE::vDumpEnums       // CN_ENUMS
+  /* 78 */ &RapidsSE::vDumpEnums       // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/
