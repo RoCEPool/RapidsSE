@@ -21,10 +21,11 @@ void* ValReg::operator new(size_t iSize)
 ValReg::ValReg(void)
 : Value(CN_VALREG)
 {
-//  Memory::vZero(m_mArray,C_ValReg_ARRAY);
-//
-// _checkInitialised_(sizeof(ValReg));
-
+  Memory::vZero(m_wWorkspace,C_VALREG_WORKSPACE);
+  
+  *(this) = (i8)0;
+  
+ _checkInitialised_(sizeof(ValReg));
 }
 
 /*----------------------------------------------------------------------------*/

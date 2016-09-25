@@ -502,6 +502,21 @@ bool Stack::bPop(s8K& sArg1, s8K& sArg2)
 /*----------------------------------------------------------------------------*/
 /* pop value from param stack                                                 */
 /*----------------------------------------------------------------------------*/
+bool Stack::bPop(Value* pArg1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(1) )
+    return false;
+  
+  vPopVal(pArg1);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop value from param stack                                                 */
+/*----------------------------------------------------------------------------*/
 bool Stack::bPop(Value& xArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);

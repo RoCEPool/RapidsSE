@@ -865,6 +865,43 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rowCursor.table@", &vRowCursorTableFetch, false);
   vAddPrimitive("rowCursor.table!", &vRowCursorTableStore, false);
   
+  vAddPrimitive("reg.pop",          &vRegPop,          false);
+  vAddPrimitive("reg.push",         &vRegPush,         false);
+  vAddPrimitive("reg0",             &vRegReg0,         false);
+  vAddPrimitive("reg1",             &vRegReg1,         false);
+  vAddPrimitive("reg2",             &vRegReg2,         false);
+  vAddPrimitive("reg3",             &vRegReg3,         false);
+  vAddPrimitive("reg4",             &vRegReg4,         false);
+  vAddPrimitive("reg5",             &vRegReg5,         false);
+  vAddPrimitive("reg6",             &vRegReg6,         false);
+  vAddPrimitive("reg7",             &vRegReg7,         false);
+  vAddPrimitive("reg8",             &vRegReg8,         false);
+  vAddPrimitive("reg9",             &vRegReg9,         false);
+  vAddPrimitive("regA",             &vRegRegA,         false);
+  vAddPrimitive("regB",             &vRegRegB,         false);
+  vAddPrimitive("regC",             &vRegRegC,         false);
+  vAddPrimitive("regD",             &vRegRegD,         false);
+  vAddPrimitive("regE",             &vRegRegE,         false);
+  vAddPrimitive("regF",             &vRegRegF,         false);
+  vAddPrimitive("regN",             &vRegRegNth,       false);
+  vAddPrimitive(">reg0",            &vRegToReg0,       false);
+  vAddPrimitive(">reg1",            &vRegToReg1,       false);
+  vAddPrimitive(">reg2",            &vRegToReg2,       false);
+  vAddPrimitive(">reg3",            &vRegToReg3,       false);
+  vAddPrimitive(">reg4",            &vRegToReg4,       false);
+  vAddPrimitive(">reg5",            &vRegToReg5,       false);
+  vAddPrimitive(">reg6",            &vRegToReg6,       false);
+  vAddPrimitive(">reg7",            &vRegToReg7,       false);
+  vAddPrimitive(">reg8",            &vRegToReg8,       false);
+  vAddPrimitive(">reg9",            &vRegToReg9,       false);
+  vAddPrimitive(">regA",            &vRegToRegA,       false);
+  vAddPrimitive(">regB",            &vRegToRegB,       false);
+  vAddPrimitive(">regC",            &vRegToRegC,       false);
+  vAddPrimitive(">regD",            &vRegToRegD,       false);
+  vAddPrimitive(">regE",            &vRegToRegE,       false);
+  vAddPrimitive(">regF",            &vRegToRegF,       false);
+  vAddPrimitive(">regN",            &vRegToRegNth,     false);
+  
   vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
@@ -7116,6 +7153,629 @@ ENTRY("vQueuePop");
   else
     nnpTask->m_xParamStack.vPush((i8)0);
   
+  
+  EXIT();
+}
+
+// registers: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* reg.pop -- pop register set                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vRegPop(NNP_Task nnpTask)
+{
+  ENTRY("vRegPop");
+  
+  RegFrame* pRegFrame = nnpTask->m_pRegFrame;
+  
+  if ( ! pRegFrame )
+    THROW_INVALID_PARAM("reg.pop");
+  
+  nnpTask->m_pRegFrame = nnpTask->m_pRegFrame->pNext();
+  
+  delete pRegFrame;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg.push -- begin using row cursor                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vRegPush(NNP_Task nnpTask)
+{
+ENTRY("vRegPush");
+  
+  RegFrame* pRegFrame = new RegFrame;
+  
+  pRegFrame->vNext(nnpTask->m_pRegFrame);
+  
+  nnpTask->m_pRegFrame = pRegFrame;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg0 -- push reg0 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg0(NNP_Task nnpTask)
+{
+ENTRY("vRegReg0");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg0");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(0);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg1 -- push reg1 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg1(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg1");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg1");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(1);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg2 -- push reg2 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg2(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg2");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg2");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(2);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg3 -- push reg3 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg3(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg3");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg3");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(3);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg4 -- push reg4 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg4(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg4");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg4");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(4);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg5 -- push reg5 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg5(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg5");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg5");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(5);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg6 -- push reg6 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg6(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg6");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg6");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(6);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg7 -- push reg7 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg7(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg7");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg7");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(7);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg8 -- push reg8 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg8(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg8");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg8");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(8);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reg9 -- push reg9 onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegReg9(NNP_Task nnpTask)
+{
+  ENTRY("vRegReg9");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("reg9");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(9);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regA -- push regA onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegA(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegA");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regA");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(10);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regB -- push regB onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegB(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegB");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regB");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(11);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regC -- push regC onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegC(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegC");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regC");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(12);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regD -- push regD onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegD(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegD");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regD");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(13);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regE -- push regE onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegE(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegE");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regE");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(14);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regF -- push regF onto pstack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegF(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegF");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regF");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(15);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* regN -- push reg[n] onto pstack                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vRegRegNth(NNP_Task nnpTask)
+{
+  ENTRY("vRegRegNth");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM("regN");
+  
+  i8 iReg;
+  if ( ! nnpTask->m_xParamStack.bPop(iReg) )
+    THROW_INVALID_PARAM("regN");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(iReg);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg0 -- pop pstack into reg0                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg0(NNP_Task nnpTask)
+{
+ENTRY("vRegToReg0");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg0");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(0);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg1 -- pop pstack into reg1                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg1(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg1");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg1");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(1);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg2 -- pop pstack into reg2                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg2(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg2");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg2");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(2);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg3 -- pop pstack into reg3                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg3(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg3");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg3");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(3);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg4 -- pop pstack into reg4                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg4(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg4");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg4");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(4);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg5 -- pop pstack into reg5                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg5(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg5");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg5");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(5);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg6 -- pop pstack into reg6                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg6(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg6");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg6");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(6);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg7 -- pop pstack into reg7                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg7(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg7");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg7");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(7);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg8 -- pop pstack into reg8                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg8(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg8");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg8");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(8);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >reg9 -- pop pstack into reg9                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToReg9(NNP_Task nnpTask)
+{
+  ENTRY("vRegToReg9");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">reg9");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(9);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regA -- pop pstack into regA                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegA(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegA");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regA");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(10);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regB -- pop pstack into regB                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegB(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegB");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regB");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(11);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regC -- pop pstack into regC                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegC(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegC");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regC");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(12);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regD -- pop pstack into regD                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegD(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegD");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regD");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(13);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regE -- pop pstack into regE                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegE(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegE");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regE");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(14);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regF -- pop pstack into regF                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegF(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegF");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regF");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(15);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >regN -- pop pstack into regN                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vRegToRegNth(NNP_Task nnpTask)
+{
+  ENTRY("vRegToRegNth");
+  
+  if ( ! nnpTask->m_pRegFrame )
+    THROW_INVALID_PARAM(">regN");
+  
+  i8 iReg;
+  if ( ! nnpTask->m_xParamStack.bPop(iReg) )
+    THROW_INVALID_PARAM(">regNth");
+  
+  ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(iReg);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
   
   EXIT();
 }

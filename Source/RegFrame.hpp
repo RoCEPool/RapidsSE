@@ -14,7 +14,7 @@ namespace Tasks
   {
   public:
     RegFrame* m_pNext;
-    ValReg         m_xValReg[C_VALREGS];
+    ValReg    m_xValReg[C_VALREGS];
     
     // must be last
     Footer m_xFooter;
@@ -30,6 +30,8 @@ namespace Tasks
     
     RegFrame* pNext(void);
     void      vNext(RegFrame* pRegFrame);
+    
+    ValReg* pValReg(i8 iReg);
     
     Footer* pFooter(void);
   };

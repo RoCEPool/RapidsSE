@@ -526,6 +526,45 @@ namespace Tasks
     static void vQueueInit(NNP_Task nnpTask);     
     static void vQueuePop(NNP_Task nnpTask);      
 
+    // registers
+    static void vRegPop(NNP_Task nnpTask);
+    static void vRegPush(NNP_Task nnpTask);
+    static void vRegReg0(NNP_Task nnpTask);
+    static void vRegReg1(NNP_Task nnpTask);
+    static void vRegReg2(NNP_Task nnpTask);
+    static void vRegReg3(NNP_Task nnpTask);
+    static void vRegReg4(NNP_Task nnpTask);
+    static void vRegReg5(NNP_Task nnpTask);
+    static void vRegReg6(NNP_Task nnpTask);
+    static void vRegReg7(NNP_Task nnpTask);
+    static void vRegReg8(NNP_Task nnpTask);
+    static void vRegReg9(NNP_Task nnpTask);
+    static void vRegRegA(NNP_Task nnpTask);
+    static void vRegRegB(NNP_Task nnpTask);
+    static void vRegRegC(NNP_Task nnpTask);
+    static void vRegRegD(NNP_Task nnpTask);
+    static void vRegRegE(NNP_Task nnpTask);
+    static void vRegRegF(NNP_Task nnpTask);
+    static void vRegRegNth(NNP_Task nnpTask);
+    static void vRegToReg0(NNP_Task nnpTask);
+    static void vRegToReg1(NNP_Task nnpTask);
+    static void vRegToReg2(NNP_Task nnpTask);
+    static void vRegToReg3(NNP_Task nnpTask);
+    static void vRegToReg4(NNP_Task nnpTask);
+    static void vRegToReg5(NNP_Task nnpTask);
+    static void vRegToReg6(NNP_Task nnpTask);
+    static void vRegToReg7(NNP_Task nnpTask);
+    static void vRegToReg8(NNP_Task nnpTask);
+    static void vRegToReg9(NNP_Task nnpTask);
+    static void vRegToRegA(NNP_Task nnpTask);
+    static void vRegToRegB(NNP_Task nnpTask);
+    static void vRegToRegC(NNP_Task nnpTask);
+    static void vRegToRegD(NNP_Task nnpTask);
+    static void vRegToRegE(NNP_Task nnpTask);
+    static void vRegToRegF(NNP_Task nnpTask);
+    static void vRegToRegNth(NNP_Task nnpTask);
+    
+    
     // rowCursor
     static void vRowCursorBegin(NNP_Task nnpTask);
     static void vRowCursorDelete(NNP_Task nnpTask);
