@@ -121,6 +121,7 @@ namespace Tasks
     
     Stack  m_xParamStack;   // parameter stack
     Stack  m_xReturnStack;  // return stack
+    RegFrame* m_pRegFrame; // register frame chain
 
     s256      m_sLambda;    // lambda input
     Tokeniser m_xTokeniser; // input stream tokenizer

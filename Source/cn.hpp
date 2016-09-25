@@ -67,6 +67,7 @@ namespace Magic
     /* 37 */ CN_QUEUE,
     /* 38 */ CN_QUEUEBUFFER,
     
+    /*    */ CN_REGFRAME,
     /* 39 */ CN_RING,
     /* 40 */ CN_ROW,
     /* 41 */ CN_ROWBUFFER,
@@ -170,6 +171,7 @@ namespace Magic
     /* 37 */ "QUEUE",
     /* 38 */ "QUEUEBUFFER",
   
+    /*    */ "REGFRAME",
     /* 39 */ "RING",
     /* 40 */ "ROW",
     /* 41 */ "ROWBUFFER",

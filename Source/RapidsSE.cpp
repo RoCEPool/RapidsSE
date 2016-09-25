@@ -97,6 +97,7 @@ pDUMPFUN *gpDump[]
   /* 37 */ &Queue::vDump,              // CN_QUEUE
   /* 38 */ &QueueBuffer::vDump,        // CN_QUEUEBUFFER
   
+  /*    */ &RegFrame::vDump,           // CN_REGFRAME
   /* 39 */ &RapidsSE::vDumpUndefined,  // CN_RING
   /* 40 */ &RapidsSE::vDumpUndefined,  // CN_ROW
   /* 41 */ &RowBuffer::vDump,          // CN_ROWBUFFER

@@ -1,0 +1,119 @@
+/*============================================================================*/
+/* RegFrame.cpp -- Register Frame                                             */
+/*============================================================================*/
+
+#include "Tasks.h"
+
+extern Heap* gpMediumHeap;
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+RegFrame* Tasks::_pRegFrame(void* pAddr)
+{
+  RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(pAddr);
+  
+  return pRegFrame;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* RegFrame::operator new(size_t iSize)
+{
+  ASSERT(iSize);
+  
+  RegFrame* pRegFrame =
+    reinterpret_cast<RegFrame*>(gpMediumHeap->pAllocObject(CN_REGFRAME));
+  
+  return pRegFrame;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void RegFrame::operator delete(void* pRegFrameAddress)
+{
+  RegFrame* pRegFrame = _pRegFrame(pRegFrameAddress);
+  
+  gpMediumHeap->vFreeObject(pRegFrame);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RegFrame::RegFrame(void)
+: Object(CN_REGFRAME)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+
+  m_pNext = nullptr;
+  //m_xValReg
+  
+  _checkInitialised_(sizeof(RegFrame));
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+RegFrame::~RegFrame(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump register frame                                                        */
+/*----------------------------------------------------------------------------*/
+void RegFrame::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_REGFRAME);
+  ASSERT(pObject->eClass() == CN_REGFRAME);
+  
+  RegFrame* pRegFrame = _pRegFrame(pObject);
+  
+  vTrace("%sRegFrame %p:\n\n", pTab, pRegFrame);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get next register frame                                                    */
+/*----------------------------------------------------------------------------*/
+RegFrame* RegFrame::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next register frame                                                    */
+/*----------------------------------------------------------------------------*/
+void RegFrame::vNext(RegFrame* pNext)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  m_pNext = pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Footer ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get location of footer                                                     */
+/*----------------------------------------------------------------------------*/
+Footer* RegFrame::pFooter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME);
+  
+  return &m_xFooter;
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -9,6 +9,8 @@
 #include "StepAccum.hpp"
 #include "StepArray.hpp"
 
+#include "RegFrame.hpp"
+
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskSet.hpp"

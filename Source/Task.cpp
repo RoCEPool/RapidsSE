@@ -192,6 +192,10 @@ void Task::vInit(const char* aLambda)
   
   m_pQueue = nullptr;
   
+  //m_xParamStack
+  //m_xReturnStack
+  m_pRegFrame = nullptr;
+  
   IP.m_pCell      = nullptr;
   m_pResetIP   = nullptr;
   m_pBeginIP   = nullptr;

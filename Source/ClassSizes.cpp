@@ -49,6 +49,7 @@ i8 giClassSize[]
   /* 33 */ sizeof(ProxySet),
   /* 34 */ sizeof(Queue),
   /* 35 */ sizeof(QueueBuffer),
+  /*    */ sizeof(RegFrame),
   /* 36 */ sizeof(Ring),
   /* 37 */ sizeof(Row),
   /* 38 */ sizeof(RowBuffer),
