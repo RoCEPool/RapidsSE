@@ -280,11 +280,6 @@ bool SePrompt::bProcessCommand(void)
       return true;
     }
   }
-  
-  if (String::bEqualTo("create2",m_pToken[0],C_NO_CASE)) {
-    vCollectStatement();
-    return true;
-  }
  
   if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
     if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
@@ -899,53 +894,6 @@ void SePrompt::vCreateTable(void)
   }
   
   vTrace("Table created: %s\n", m_pToken2[2]);
-}
-
-/*----------------------------------------------------------------------------*/
-/* testing new approach for these types of commands                           */
-/*----------------------------------------------------------------------------*/
-void SePrompt::vCreateTable2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // for the moment >>create2<< should be the only token
-  ASSERT(String::bEqualTo(m_pToken[0],"create2"));
-//  ASSERT(String::bEqualTo(m_pToken[1],""));
-  
-  i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
-  
-  if (-1 == iToken) {
-
-    iToken = m_xTokeniser.iCountTokens(m_pToken,C_TOKENS);
-  
-    // switch to terminal mode
-    m_xTokeniser.vLineMode(false);
-  
-    // get tokens delimited by ';'
-    for ( ; iToken < C_TOKENS; iToken++) {
-      
-      eTK eToken = m_xTokeniser.eNextToken(m_pToken[iToken]);
-      ASSERT(TK_NONE != eToken);
-      
-  //    vTrace("CreateTable2: %12s %s\n",
-  //           m_pToken[iToken],pTK[eToken]);
-      
-      // look for terminal
-      if (String::bEqualTo(m_pToken[iToken],";"))
-        break;
-    }
-
-    // switch back to line mode
-    m_xTokeniser.vLineMode(true);
-  }
-  
-  vTrace("CreateTable2 : ");
-  for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
-    if (! *m_pToken[iToken])
-      break;
-    vTrace("%s ", m_pToken[iToken]);
-  }
-  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

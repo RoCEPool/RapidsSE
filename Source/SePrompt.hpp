@@ -63,7 +63,6 @@ private:
   void vCreateCatalog(void);
   void vCreateSchema(void);
   void vCreateTable(void);
-  void vCreateTable2(void);
   bool bCreateTenant(void);
   
   void vCollectStatement(void);
