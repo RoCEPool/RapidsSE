@@ -27,7 +27,7 @@ Arguments::Arguments(void)
   m_bStatus     = false;
   m_bStop       = false;
 
-  m_bBgTasks    = false;
+  m_bBgTasks    = true;
   m_bVerbose    = false;
   m_bWelcome    = true;
   

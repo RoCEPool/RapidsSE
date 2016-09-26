@@ -2,18 +2,16 @@
 /* _tpch -- tpc h creation and load etc                                       */
 /*============================================================================*/
 
-ping
-
 cf tenants
-mkten boray
+create tenant boray;
 
 cf boray
 cf catalogs
-mkcat borayCatalog
+create catalog borayCatalog;
 
 cf borayCatalog
 cf schemas
-mksch boraySchema
+create schema boraySchema;
 
 cf boraySchema
 cf tables
@@ -103,48 +101,8 @@ create table supplier (
 	 S_COMMENT       VARCHAR(101) NOT NULL
 );
 
-print "loading customer.tbl..."
-ld customer "/tpch/customer.tbl"
-
-print "loading lineitem.tbl..."
-ld lineitem "/tpch/lineitem.tbl"
-
-print "loading nation.tbl..."
-ld nation   "/tpch/nation.tbl"
-
-print "loading orders.tbl..."
-ld orders   "/tpch/orders.tbl"
-
-print "loading part.tbl..."
-ld part     "/tpch/part.tbl"
-
-print "loading partsupp.tbl..."
-ld partsupp "/tpch/partsupp.tbl"
-
-print "loading region.tbl..."
-ld region   "/tpch/region.tbl"
-
-print "loading supplier.tbl..."
-ld supplier "/tpch/supplier.tbl"
-
-//ex customer "/tmp/customer.txt"
-//ex lineitem "/tmp/lineitem.txt"
-//ex nation   "/tmp/nation.txt"
-//ex orders   "/tmp/orders.txt"
-//ex part     "/tmp/part.txt"
-//ex partsupp "/tmp/partsupp.txt"
-//ex region   "/tmp/region.txt"
-//ex supplier "/tmp/supplier.txt"
-
-//cp nation nation_copy
-//ex nation_copy "/tmp/nation_copy.txt"
-
 pwf
 lf
-
-//tr t
-//sz t
-//rmtbl t
 
 /*============================================================================*/
 /* end                                                                        */
