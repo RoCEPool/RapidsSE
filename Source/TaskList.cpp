@@ -91,7 +91,7 @@ void TaskList::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   TaskList* pTaskList = reinterpret_cast<TaskList*>(pObject);
   
-  pTaskList->List_t<Task>::vDump("TaskList::");
+  pTaskList->List_t<Task>::vDump("TaskList::", pTab);
 }
 
 /*----------------------------------------------------------------------------*/

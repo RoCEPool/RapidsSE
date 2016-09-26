@@ -1401,11 +1401,12 @@ void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDump(void)
+void Task::vDump()
 {
   _poolAddress_(this);
   
-  vTrace("Task %02lld %p: %16s state %8s txId %lld\n",
+  vTrace("%sTask %02lld %p: %16s state %8s txId %lld\n",
+         pDoubleTab(),
          m_iTaskNo,
          this,
          m_sName.a(),
@@ -8349,7 +8350,7 @@ ENTRY("vSEitfListDump");
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  pSEitfList->vDump("SEitfList:");
+  pSEitfList->vDump("SEitfList:", pSingleTab());
   
   EXIT();
 }
@@ -10124,7 +10125,7 @@ ENTRY("vThreadListDump");
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
 
-  pThreadList->vDump("ThreadList:");
+  pThreadList->vDump("ThreadList:", pSingleTab());
   
   EXIT();
 }

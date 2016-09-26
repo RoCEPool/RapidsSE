@@ -27,7 +27,7 @@ namespace Structures
     
     void    vAppend(OBJECT* pNode);
     i8      iCount(void);
-    void    vDump(const char* aTitle);
+    void    vDump(const char* aTitle, const char* pTab);
     void    vInsert(OBJECT* pNode);
     OBJECT* pPop(void);
     void    vRemove(OBJECT* pNode);
@@ -106,7 +106,7 @@ i8 List_t<OBJECT>::iCount(void)
 /* dump each object in list                                                   */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void List_t<OBJECT>::vDump(const char* aTitle)
+void List_t<OBJECT>::vDump(const char* aTitle, const char* pTab)
 {
   //vReadLock();
   
@@ -115,7 +115,8 @@ void List_t<OBJECT>::vDump(const char* aTitle)
   
   xCursor.vBegin();
   
-  vTrace("%s %p: %lld tasks; head %p tail %p\n",
+  vTrace("%s%s %p: %lld tasks; head %p tail %p\n",
+         pTab,
          aTitle,
          this,
          iCount(),
@@ -127,6 +128,7 @@ void List_t<OBJECT>::vDump(const char* aTitle)
     pObject->vDump();
   }
   xCursor.vEnd();
+  vTrace("\n");
   
   //vReadUnlock();
   
