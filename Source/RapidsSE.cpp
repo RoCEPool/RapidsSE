@@ -309,6 +309,17 @@ void RapidsSE::vPoolOpen(void)
     return;
 
   }
+  else if (gxArguments.m_bPrompt) {
+    if (! bTestRegion()) {
+      vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
+      exit(EXIT_FAILURE);
+      return;
+    }
+    vAttachRegion();
+    vAttachObjects();
+    return;
+    
+  }
   else {
     vAttachRegion();
     vAttachObjects();
@@ -659,6 +670,7 @@ void RapidsSE::vSystemStop(void)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE::bTestRegion(void)
 {
+  /*
   int iFD;
   SysCall xSysCall;
   
@@ -670,6 +682,9 @@ bool RapidsSE::bTestRegion(void)
   bResult = Shm::bClose(iFD,xSysCall);
 
   return true;
+   */
+  
+  return BufferPool::bTestShm(gxArguments.m_sRegionName);
 }
 
 /*----------------------------------------------------------------------------*/
