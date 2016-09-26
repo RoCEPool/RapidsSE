@@ -227,6 +227,7 @@ void RapidsSE::vExecute(void)
       vSystemInit();
       vStartActors();
       vTrace("RapidsSE instance %s started\n",gxArguments.m_sRegionName.a());
+      //vSkipListTest();
       if (gxArguments.m_bDocol) {
         vRunDocol();
         vWaitFlag();

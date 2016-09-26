@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  SkipList.hpp - a list                                                         */
+/* SkipList.hpp -- Skip List                                                  */
 /*============================================================================*/
 #pragma once
 
@@ -28,6 +28,10 @@ namespace Structures
     
   public:
 
+    void* operator new(size_t);
+    void* operator new(size_t, SkipList* pSkipList);
+    void  operator delete(void*);
+    
     SkipList(bool bIsUniqueKey, compare fCompare);
    ~SkipList();
     
@@ -58,8 +62,12 @@ namespace Structures
     SkipNode* pPosition(void* Ent, bool* bEqualTo, SkipNode** pRevise);
     
     Footer* pFooter(void);
+    
   };
   
+  SkipList* _pSkipList(void* pAddr);
+  
+  void vSkipListTest(void);
 }
 
 /*============================================================================*/

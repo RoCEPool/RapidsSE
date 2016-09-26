@@ -21,15 +21,8 @@ int main(int argc, const char* argv[])
 #else
   aRelDbg = "release";
 #endif
-   
-//  s256 sTest;
-//  sTest =
-//    "abcdefghijklmnopqrstuvwxuz"
-//    "abcdefghijklmnopqrstuvwxuz"
-//    "abcdefghijklmnopqrstuvwxuz"
-//  ;
-//  s32 sTest2;
-//  sTest2 = sTest;
+  
+  vTest1();
   
   RapidsSE::vCheckAssumptions();
   

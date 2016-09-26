@@ -1,12 +1,54 @@
-/*===========================================================================*/
-/* SkipList.cpp -- a skip list                                                   */
-/*===========================================================================*/
+/*============================================================================*/
+/* SkipList.cpp -- Skip List                                                  */
+/*============================================================================*/
 
 #include "Structures.h"
 
-//---------------------------------------------------------------------------//
-// SkipList: constructor                                                         //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+SkipList* Structures::_pSkipList(void* pAddr)
+{
+  SkipList* pSkipList = reinterpret_cast<SkipList*>(pAddr);
+  
+  return pSkipList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* SkipList::operator new(size_t iSize)
+{
+  ASSERT(iSize);
+  
+  SkipList* pSkipList = (SkipList*)gpSmallHeap->pAllocObject(CN_SKIPLIST);
+  
+  return pSkipList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* SkipList::operator new(size_t iSize, SkipList* pSkipList)
+{
+  ASSERT(iSize);
+  
+  return pSkipList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operator delete                                                            */
+/*----------------------------------------------------------------------------*/
+void SkipList::operator delete(void* pSkipListAddress)
+{
+  SkipList* pSkipList = reinterpret_cast<SkipList*>(pSkipListAddress);
+  
+  gpSmallHeap->vFreeObject(pSkipList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
 : Object(CN_SKIPLIST)
 {
@@ -17,7 +59,7 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
   m_bIsUniqueKey = bIsUniqueKey;
   m_fCompare = fCompare;
   m_pHead    = new(MAX_LEVELS) SkipNode(nullptr);
-  m_pTail    = new(0) SkipNode(nullptr);
+  m_pTail    = new((i4)0) SkipNode(nullptr);
   
   for (i4 l = 0; l < MAX_LEVELS; l++)
     m_pHead->m_pForward[l] = m_pTail;
@@ -29,9 +71,9 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 }
 
-//---------------------------------------------------------------------------//
-// ~SkipList: destructor                                                         //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
 SkipList::~SkipList()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -45,9 +87,9 @@ SkipList::~SkipList()
 //  tDelete(&m_pTail);
 }
 
-//---------------------------------------------------------------------------//
-// bExists: test if given object is in list                                  //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* test if object is in list                                                  */
+/*----------------------------------------------------------------------------*/
 bool SkipList::bExists(void* pObject)
 {  
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -63,9 +105,9 @@ bool SkipList::bExists(void* pObject)
     return false;
 }
 
-//---------------------------------------------------------------------------//
-// bInsert: insert given object                                              //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* insert object into list                                                    */
+/*----------------------------------------------------------------------------*/
 bool SkipList::bInsert(void* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -97,9 +139,9 @@ bool SkipList::bInsert(void* pObject)
   return true;
 }
 
-//---------------------------------------------------------------------------//
-// iObjects: get numbr of objects in list                                    //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* get numbr of objects in list                                               */
+/*----------------------------------------------------------------------------*/
 i8 SkipList::iObjects()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -107,9 +149,9 @@ i8 SkipList::iObjects()
   return m_iObjects;
 }
 
-//---------------------------------------------------------------------------//
-// pPop: pop top/first object from list                                      //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* pop top/first object from list                                             */
+/*----------------------------------------------------------------------------*/
 void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -130,9 +172,9 @@ void* SkipList::pPop(bool* bWasRemoved, i8 iFrom)
   return pObject;
 }
 
-//---------------------------------------------------------------------------//
-// bRemove: remove given object (do not run finalize function on object)     //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* remove object from list                                                    */
+/*----------------------------------------------------------------------------*/
 bool SkipList::bRemove(void* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -172,9 +214,9 @@ bool SkipList::bRemove(void* pObject)
   return true;
 }
 
-//---------------------------------------------------------------------------//
-// find first object matching search                                         //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* find first matching object                                                 */
+/*----------------------------------------------------------------------------*/
 void* SkipList::pFindFirst(void* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -192,33 +234,9 @@ void* SkipList::pFindFirst(void* pObject)
     return nullptr;
 }
 
-//---------------------------------------------------------------------------//
-// pFirst: get first object matching search                                  //
-//---------------------------------------------------------------------------//
-//void* SkipList::pFirst(void* pObject)
-//{
-//  bool bEqualTo;
-//  
-//  Node* pNode = pPosition(pObject,&bEqualTo);
-//  ASSERT(pNode); // logic check
-//  
-//  if (pNode->m_pForward[0] == m_pTail)
-//    return nullptr;
-//  else
-//    return pNode->m_pForward[0]->m_pObject;
-//}
-//
-//---------------------------------------------------------------------------//
-// pNext: get next object matching search                                    //
-//---------------------------------------------------------------------------//
-//void* SkipList::pNext(void* pObject)
-//{
-//  return nullptr;
-//}
-
-//---------------------------------------------------------------------------//
-// vDump: dump the list                                                      //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* dump the list                                                              */
+/*----------------------------------------------------------------------------*/
 void SkipList::vDump(void (*fvDump)(void* pObject))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -230,9 +248,9 @@ void SkipList::vDump(void (*fvDump)(void* pObject))
   }
 }
 
-//---------------------------------------------------------------------------//
-// vCheck: check integrity of the list                                       //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* check integrity of the list                                                */
+/*----------------------------------------------------------------------------*/
 void SkipList::vCheck()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -250,9 +268,9 @@ void SkipList::vCheck()
   }
 }
 
-//---------------------------------------------------------------------------//
-// pEach: get each object                                                    //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* get each object                                                            */
+/*----------------------------------------------------------------------------*/
 void* SkipList::pEach(SkipCursor* pCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -268,9 +286,9 @@ void* SkipList::pEach(SkipCursor* pCursor)
     return nullptr;
 }
 
-//---------------------------------------------------------------------------//
-// pFirst: get first node                                                    //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* get first node                                                             */
+/*----------------------------------------------------------------------------*/
 SkipNode* SkipList::pFirst()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -281,9 +299,9 @@ SkipNode* SkipList::pFirst()
   return nullptr;
 }
 
-//---------------------------------------------------------------------------//
-// pNext: get next node                                                      //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* get next node                                                              */
+/*----------------------------------------------------------------------------*/
 SkipNode* SkipList::pNext(SkipNode* pPrev)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -294,9 +312,9 @@ SkipNode* SkipList::pNext(SkipNode* pPrev)
   return nullptr;
 }
 
-//---------------------------------------------------------------------------//
-// pHead: get head bookend                                                   //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* get head bookend                                                           */
+/*----------------------------------------------------------------------------*/
 SkipNode* SkipList::pHead()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -304,9 +322,9 @@ SkipNode* SkipList::pHead()
   return m_pHead;
 }
 
-//---------------------------------------------------------------------------//
-// pTail: get tail bookend                                                   //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* get tail bookend                                                           */
+/*----------------------------------------------------------------------------*/
 SkipNode* SkipList::pTail()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -314,9 +332,9 @@ SkipNode* SkipList::pTail()
   return m_pTail;
 }
 
-//---------------------------------------------------------------------------//
-// bDeleteAll: delete all objects                                            //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* delete all objects                                                         */
+/*----------------------------------------------------------------------------*/
 bool SkipList::bDeleteAll(void)
 {
 //  bool bWasRemoved;
@@ -342,12 +360,13 @@ bool SkipList::bDeleteAll(void)
   return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-//---------------------------------------------------------------------------//
-// iLevel: choose a random level for new node                                //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* choose a random level for new node                                         */
+/*----------------------------------------------------------------------------*/
 i4 SkipList::iLevel()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -372,9 +391,9 @@ i4 SkipList::iLevel()
   return (level > MAX_LEVELS - 1) ? MAX_LEVELS - 1: level;
 }
 
-//---------------------------------------------------------------------------//
-// pPosition: position search on node just prior to lower bound              //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* position search on node just prior to lower bound                          */
+/*----------------------------------------------------------------------------*/
 SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -398,9 +417,9 @@ SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo)
   return pScan;
 }
 
-//---------------------------------------------------------------------------//
-// pPosition: position search on node just prior to lower bound              //
-//---------------------------------------------------------------------------//
+/*----------------------------------------------------------------------------*/
+/* position search on node just prior to lower bound                          */
+/*----------------------------------------------------------------------------*/
 SkipNode* SkipList::pPosition(void* pObject, bool* bEqualTo, SkipNode** pRevise)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
@@ -441,6 +460,41 @@ Footer* SkipList::pFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST);
   
   return &m_xFooter;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Test --------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+bool bI8Compare(void* pSearchEntry, void* pListEntry, bool* bMatch)
+{
+  i8 iSearchEntry = (i8)pSearchEntry;
+  i8 iListEntry   = (i8)pListEntry;
+  
+  if (iSearchEntry == iListEntry)
+    *bMatch = true;
+  
+  if (iSearchEntry > iListEntry)
+    return true;
+  else
+    return false;
+}
+
+void Structures::vSkipListTest(void)
+{
+  SkipList* pSkipList = new SkipList(true,bI8Compare);
+  
+  pSkipList->bInsert((void*)3);
+  pSkipList->bInsert((void*)1);
+  pSkipList->bInsert((void*)2);
+  
+  SkipNode* pNode = pSkipList->pFirst();
+  while (pNode) {
+    i8 i = (i8)pNode->m_pObject;
+    vTrace("Node %p : %lld\n",pNode,(i8)pNode->m_pObject);
+    pNode = pSkipList->pNext(pNode);
+  }
+  
 }
 
 /*============================================================================*/
