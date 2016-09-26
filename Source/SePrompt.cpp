@@ -501,7 +501,7 @@ void SePrompt::vHelp(void)
   vTrace("ex     -- export table t\n");
   vTrace("ld     -- load table t\n");
   vTrace("lf     -- list folder contents\n");
-  vTrace("ls             -- list directory contents\n");
+  vTrace("ls     -- list directory contents\n");powf(<#float#>, <#float#>)
   vTrace("lscat  -- list catalogs contents\n");
   vTrace("lscol  -- list columns\n");
   vTrace("lssch  -- list schemas contents\n");
