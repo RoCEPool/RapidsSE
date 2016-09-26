@@ -194,8 +194,8 @@ bool Arguments::bParse(int argc, const char* argv[])
         vTrace("Incorrect argument: --prompt with %s\n",argv[iArg]);
         return false;
       }
-      m_bStop = true;
 #endif
+      m_bStop = true;
       continue;
     }
 

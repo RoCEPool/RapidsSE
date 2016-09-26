@@ -617,11 +617,11 @@ void SePrompt::vHelp(void)
   vTrace("dis    -- disconnect\n");
   vTrace("do     -- do shorthand\n");
   vTrace("drop   -- dropTable\n");
-  vTrace("dump   -- dump table\n");R
+  vTrace("dump   -- dump table\n");
   vTrace("ex     -- export table t\n");
   vTrace("ld     -- load table t\n");
   vTrace("lf     -- list folder contents\n");
-  vTrace("ls     -- list directory contents\n");powf(<#float#>, <#float#>)
+  vTrace("ls     -- list directory contents\n");
   vTrace("lscat  -- list catalogs contents\n");
   vTrace("lscol  -- list columns\n");
   vTrace("lssch  -- list schemas contents\n");
