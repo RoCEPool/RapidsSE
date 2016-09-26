@@ -939,7 +939,7 @@ void SePrompt::vCollectStatement(void)
   i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
   
   if (iToken >= 0) {
-    m_xTokeniser.vDumpTokens("\nCommand : ",m_pToken,C_TOKENS);
+    //m_xTokeniser.vDumpTokens("\nCommand : ",m_pToken,C_TOKENS);
     return;
   }
   
