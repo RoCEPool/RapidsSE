@@ -670,7 +670,6 @@ void RapidsSE::vSystemStop(void)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE::bTestRegion(void)
 {
-  /*
   int iFD;
   SysCall xSysCall;
   
@@ -682,9 +681,6 @@ bool RapidsSE::bTestRegion(void)
   bResult = Shm::bClose(iFD,xSysCall);
 
   return true;
-   */
-  
-  return BufferPool::bTestShm(gxArguments.m_sRegionName);
 }
 
 /*----------------------------------------------------------------------------*/
