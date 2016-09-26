@@ -472,6 +472,26 @@ eTK Tokeniser::eParseNormalOther(char* wToken)
   char *z = wToken;
   
   ASSERT(bStartNormalOther());
+ 
+  // gather .. as a string
+  if (bIsDot()) {
+    
+    vGetNextStripped();
+    
+    if (bIsDot()) {
+      *z++ = '.';
+      *z++ = '.';
+      
+      // terminate the string token
+      *z = '\0';
+      
+      return TK_STRING;
+    }
+    else {
+      // push back the unconsumed char
+      vUngetStrippedChar();
+    }
+  }
   
   // collect a single character
   *z++ = m_cStrippedChar;
@@ -841,6 +861,19 @@ bool Tokeniser::bIsDigit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   if (String::bIsDigit(m_cStrippedChar))
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for a dot                                                             */
+/*----------------------------------------------------------------------------*/
+bool Tokeniser::bIsDot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  if ('.' == m_cStrippedChar)
     return true;
   
   return false;

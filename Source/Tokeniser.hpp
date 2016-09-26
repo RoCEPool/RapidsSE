@@ -102,6 +102,7 @@ namespace Common
     bool bEndSpecialString(void);
    
     bool bIsDigit(void);
+    bool bIsDot(void);
     bool bIsHex(void);
     bool bIsX(void);
     bool bIsWhite(void);

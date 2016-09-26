@@ -68,7 +68,7 @@ namespace Magic
     /* 10 */ "no such schema",
     /* 11 */ "no such table",
     /* 12 */ "no such tenant",
-    /* 13 */ "noo such word",
+    /* 13 */ "no such word",
     
     /* 14 */ "not a catalog",
     /* 15 */ "not a folder",
