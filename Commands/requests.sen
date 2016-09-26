@@ -531,7 +531,7 @@ freespace .
 : pwf
 
     "/"
-    dic.count 0 do
+    dic.count 2 do
       dic.count 1 - I -
       dic.pick dic.name concat
       "/" concat
