@@ -464,10 +464,31 @@ void SePrompt::vHelp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+#ifdef _RELEASE_VERSION
+  vTrace("se commands:\n");
+  vTrace("bye            -- quit se prompt\n");
+  vTrace("cd             -- change directory\n");
+  vTrace("cf             -- change folder\n");
+  vTrace("create catalog -- create a catalog\n");
+  vTrace("create schema  -- create a scheam\n");
+  vTrace("create table   -- create a table\n");
+  vTrace("create tenant  -- create a tenant\n");
+  vTrace("drop catalog   -- drop a catalog\n");
+  vTrace("drop schema    -- drop a schema\n");
+  vTrace("drop table     -- drop a table\n");
+  vTrace("drop tenant    -- drop a tenant\n");
+  vTrace("lf             -- list folder contents\n");
+  vTrace("ls             -- list directory contents\n");
+  vTrace("lscol          -- list columns of a table\n");
+  vTrace("pwf            -- print working folder\n");
+  vTrace("pwd            -- print working directory\n");
+  vTrace("?              -- print this help\n");
+  vTrace("help           -- print this help\n");
+#else
   vTrace("se temporary commands:\n");
   vTrace("add    -- add column to table\n");
   vTrace("adr    -- get address of table\n");
-  vTrace("bye    -- quit seitf\n");
+  vTrace("bye    -- quit se prompt\n");
   vTrace("cd     -- change directory\n");
   vTrace("cf     -- change folder\n");
   vTrace("con    -- connect\n");
@@ -476,10 +497,11 @@ void SePrompt::vHelp(void)
   vTrace("dis    -- disconnect\n");
   vTrace("do     -- do shorthand\n");
   vTrace("drop   -- dropTable\n");
-  vTrace("dump   -- dump table\n");
+  vTrace("dump   -- dump table\n");R
   vTrace("ex     -- export table t\n");
   vTrace("ld     -- load table t\n");
   vTrace("lf     -- list folder contents\n");
+  vTrace("ls             -- list directory contents\n");
   vTrace("lscat  -- list catalogs contents\n");
   vTrace("lscol  -- list columns\n");
   vTrace("lssch  -- list schemas contents\n");
@@ -503,6 +525,7 @@ void SePrompt::vHelp(void)
   vTrace("tr     -- truncate table\n");
   vTrace("?      -- print this help\n");
   vTrace("help   -- print this help\n");
+#endif
 }
 
 
