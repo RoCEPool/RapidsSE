@@ -220,6 +220,129 @@ void SePrompt::vGetCommandInput(void)
 /*----------------------------------------------------------------------------*/
 /* process command                                                            */
 /*----------------------------------------------------------------------------*/
+#ifdef _RELEASE_VERSION
+bool SePrompt::bProcessCommand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // - test for builtin comands
+  
+  if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
+      String::bEqualTo("help",m_pToken[0],C_NO_CASE)) {
+    vHelp();
+    return true;
+  }
+  
+  if (String::bEqualTo("bye",m_pToken[0],C_NO_CASE)) {
+    m_bContinue = false;
+    return true;
+  }
+  
+  if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
+    vChangeWorkingDir();
+    return true;
+  }
+  
+  if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
+    
+    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
+      return bCreateTenant();
+    }
+    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
+      vCreateCatalog();
+      return true;
+    }
+    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+      vCreateSchema();
+      return true;
+    }
+    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
+      vCreateTable();
+      return true;
+    }
+  }
+  
+  if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
+      vDropTenant();
+      return true;
+    }
+    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
+      vDropCatalog();
+      return true;
+    }
+    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+      vDropSchema();
+      return true;
+    }
+    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
+      vDropTable();
+      return true;
+    }
+  }
+  
+  if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
+    vPrintWorkingDir();
+    return true;
+  }
+  
+  if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
+    vListDir();
+    return true;
+  }
+  
+  if (String::bEqualTo("cf",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("lf",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("lscol",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("pwf",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  m_xHistory.vAppend(m_pToken);
+  
+  if (bTestFile(m_pToken[0])) {
+    vPushFile(m_pToken[0]);
+    m_xTokeniser.vLineMode(true);
+    return true;
+  }
+  
+  vTrace("Invalid command\n");
+  return true;
+}
+#else
 bool SePrompt::bProcessCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -280,7 +403,7 @@ bool SePrompt::bProcessCommand(void)
       return true;
     }
   }
- 
+  
   if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
     if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
       vDropTenant();
@@ -353,6 +476,8 @@ bool SePrompt::bProcessCommand(void)
   
   return true;
 }
+
+#endif
 
 /*----------------------------------------------------------------------------*/
 /* execute an se request                                                      */
