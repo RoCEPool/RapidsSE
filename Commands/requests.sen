@@ -516,7 +516,7 @@ freespace .
           execute dic.push
         else
           find
-          checkIsWord not if <ERROR> exit then
+          checkIsDic not if <ERROR> exit then
           execute dic.push
         then
       then
