@@ -164,6 +164,20 @@ Object* Heap::pAllocObject(eCN eAllocClass)
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate an object from the heap                                           */
+/*----------------------------------------------------------------------------*/
+Object* Heap::pAllocObject(eCN eAllocClass, i8 iMaxSize)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  ASSERT(iMaxSize < m_iObjectSize);
+  
+  Object* pObject = pAllocObject(eAllocClass);
+  
+  return pObject;
+}
+  
+/*----------------------------------------------------------------------------*/
 /* analyse the objects in the heap                                            */
 /*----------------------------------------------------------------------------*/
 void Heap::vAnalyse(i8 xCounts[])

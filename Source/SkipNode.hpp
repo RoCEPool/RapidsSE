@@ -22,7 +22,11 @@ namespace Structures
     SkipNode(void* pObject);
     SkipNode();
     
+  private:
+    
     Footer* pFooter(void);
+    
+    static i8 iMaxSize(void);
   };
   
   SkipNode* _pSkipNode(void* pAddr);

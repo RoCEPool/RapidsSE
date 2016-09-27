@@ -24,7 +24,10 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel)
 //  int nBytes = sizeof(SkipNode) + ((int)iLevel * sizeof(SkipNode*));
 //  void* pNode = static_cast<void*>(malloc(nBytes));
 
-  SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE);
+  i8 nMaxBytes = iMaxSize();
+  vTrace("SkipNode iMaxSize %lld\n",nMaxBytes);
+  
+  SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
   
   pSkipNode->m_nForward = iLevel;
   
@@ -72,6 +75,20 @@ SkipNode::SkipNode()
   _checkInitialised_(sizeof(SkipNode));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* calculate maximum size of a skip node                                      */
+/*----------------------------------------------------------------------------*/
+i8 SkipNode::iMaxSize(void)
+{
+  i8 nMaxBytes = sizeof(SkipNode) + (sizeof(SkipNode*) * (16 - 1)) + sizeof(Footer);
+  
+  return nMaxBytes;
 }
 
 /*----------------------------------------------------------------------------*/
