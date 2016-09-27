@@ -53,6 +53,7 @@
     r0 loaderSub.fetchrecord
     while
       r0 loaderSub.pushRecord toPartition
+      r0 loaderSub.hashRecord
       r0 loaderSub.insertrow  drop
   repeat
 

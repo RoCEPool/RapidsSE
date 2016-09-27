@@ -56,9 +56,10 @@ LoaderSub::LoaderSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  m_pLoader    = nullptr;
+  m_pLoader     = nullptr;
   m_pRecord     = nullptr;
   m_iLength     = 0;
+  m_iHash       = 0;
   m_bMoreChunks = false;
   m_pLoadBuffer = new LoadBuffer;
   
@@ -181,6 +182,21 @@ void LoaderSub::vGetRecord(StrVal* pStrVal)
   Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
   pStrVal->sStr()[m_iLength] = '\0';
   pStrVal->vSize();
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash the first field of record                                             */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vHashRecord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+
+  i8 iLength = 0;
+  char* pChar = m_pRecord;
+  while ('|' != *pChar++)
+    iLength++;
+  
+  m_iHash = XXH32(m_pRecord,iLength,0);
 }
 
 /*----------------------------------------------------------------------------*/

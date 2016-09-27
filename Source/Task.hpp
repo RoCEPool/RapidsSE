@@ -484,6 +484,7 @@ namespace Tasks
     static void vLoaderSubDelete(NNP_Task nnpTask);
     static void vLoaderSubEnd(NNP_Task nnpTask);
     static void vLoaderSubFetchRecord(NNP_Task nnpTask);
+    static void vLoaderSubHashRecord(NNP_Task nnpTask);
     static void vLoaderSubInit(NNP_Task nnpTask);
     static void vLoaderSubInsertRow(NNP_Task nnpTask);
     static void vLoaderSubLoaderStore(NNP_Task nnpTask);
