@@ -87,7 +87,9 @@ namespace Tasks
     { \
       THROW("Invalid return stack for: %s",primitive); \
     }
+  
     
+#ifdef ENTRY_EXIT
     #define ENTRY(p1) \
       static StepAccum* pStepAccum = nullptr; \
       if (! pStepAccum) \
@@ -101,7 +103,12 @@ namespace Tasks
       i8 _iTscDiff = _iTscExit - _iTscEntry; \
       pStepAccum->m_nInvoked++; \
       pStepAccum->m_nCycles += _iTscDiff;
-  
+#else
+     #define ENTRY(p1)
+     #define EXIT()
+#endif
+
+    
   private:
     Lock    m_xLock;
     i8      m_iTaskNo;     // task

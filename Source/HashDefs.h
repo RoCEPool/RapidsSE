@@ -17,6 +17,7 @@
   #define MAGIC_CHECK
   #define FOOTER_CHECK
   #define ASSERT_CHECKS
+  #define ENTRY_EXIT
 #endif
 
 #define VERBOSE_TRACE
