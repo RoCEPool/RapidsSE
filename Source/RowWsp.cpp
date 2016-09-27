@@ -35,7 +35,7 @@ RowWsp::RowWsp(i8 iDataBytes)
   m_iTxId      = -1;
   m_iDataBytes = iDataBytes;
 
-  pFooter()->vSetFooter();
+  _setFooter_();
   
   _checkInitialised_(sizeof(RowWsp));
   

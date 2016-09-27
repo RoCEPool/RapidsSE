@@ -45,7 +45,7 @@ Buffer::Buffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
-  pFooter()->vSetFooter();
+  _setFooter_();
   
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());

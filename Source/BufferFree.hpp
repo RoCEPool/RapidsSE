@@ -22,6 +22,8 @@ namespace Pool
     
     bn   nNextFree(void);
     void vNextFree(bn nBuffer);
+    
+    void vSetFooter(void);
   };
 }
 

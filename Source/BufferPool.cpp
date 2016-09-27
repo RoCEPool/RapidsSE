@@ -413,7 +413,8 @@ void BufferPool::vInitialise(void)
     
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_BUFFER);
-    pFreeBuffer->pFooter()->vSetFooter();
+    //pFreeBuffer->pFooter()->vSetFooter();
+    pFreeBuffer->vSetFooter();
     pFreeBuffer->vBufferNo(nBuffer);
     nBuffer = nBufferNext(nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
@@ -422,7 +423,8 @@ void BufferPool::vInitialise(void)
   BufferFree* pLastBuffer = pToBufferFree(nBufferLast());
   pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_BUFFER);
-  pLastBuffer->pFooter()->vSetFooter();
+  //pLastBuffer->pFooter()->vSetFooter();
+  pLastBuffer->vSetFooter();
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
   

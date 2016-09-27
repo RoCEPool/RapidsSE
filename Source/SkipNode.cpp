@@ -57,7 +57,7 @@ SkipNode::SkipNode(void* pObject)
   for (i8 iForward = 0; iForward < m_nForward; iForward++)
     m_pForward[iForward] = nullptr;
   
-  pFooter()->vSetFooter();
+  _setFooter_();
   
   _checkInitialised_(sizeof(SkipNode));
 
