@@ -14,8 +14,9 @@ namespace DBobjects
     Loader*  m_pLoader;  // the reference information
     char*    m_pRecord;  // record from file
     i8       m_iLength;  // length of record
-    i8       m_iHash;    // hash of record
-    bool     m_bMoreChunks;    // more chunks 
+    i8       m_iHash;          // hash of record
+    i8       m_iPartition;     // which partition
+    bool     m_bMoreChunks;    // more chunks
     LoadBuffer* m_pLoadBuffer; // loading buffer
     
     // must be last
@@ -38,7 +39,7 @@ namespace DBobjects
     bool bFetchChunk(void);
     void vGetRecord(StrVal* pStrVal);
     void vHashRecord(void);
-    bool bInsertRow(i8 iPartn);
+    bool bInsertRow(void);
     void vLoader(Loader* pLoader);
     
     Footer* pFooter(void);

@@ -6540,12 +6540,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  i8 iPartn;
-  if ( ! nnpTask->m_xParamStack.bPop(iPartn) )
-    THROW_INVALID_PARAM("loaderSub.insertRow");
-  
-  ASSERT(iPartn < gxArguments.m_nPartitions);
-  bool bInserted = pLoaderSub->bInsertRow(iPartn);
+  bool bInserted = pLoaderSub->bInsertRow();
   
   nnpTask->m_xParamStack.vPush(bInserted);
   

@@ -60,6 +60,7 @@ LoaderSub::LoaderSub(void)
   m_pRecord     = nullptr;
   m_iLength     = 0;
   m_iHash       = 0;
+  m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadBuffer = new LoadBuffer;
   
@@ -197,17 +198,17 @@ void LoaderSub::vHashRecord(void)
     iLength++;
   
   m_iHash = XXH32(m_pRecord,iLength,0);
+  
+  m_iPartition = m_iHash % gxArguments.m_nPartitions;
 }
 
 /*----------------------------------------------------------------------------*/
 /* insert row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool LoaderSub::bInsertRow(i8 iPartn)
+bool LoaderSub::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  ASSERT(iPartn < gxArguments.m_nPartitions);
-  
+ 
   ValWsp xRow;
   xRow.vClass(CN_STRVAL);
   
@@ -219,7 +220,7 @@ bool LoaderSub::bInsertRow(i8 iPartn)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  bool bResult = m_pLoader->bInsertRow(iPartn,pStrVal);
+  bool bResult = m_pLoader->bInsertRow(m_iPartition,pStrVal);
   
   return true;
 }
