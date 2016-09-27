@@ -33,6 +33,8 @@
 #include "Tokeniser.hpp"
 #include "Atomic.hpp"
 
+#include "RelationalOps.h"
+
 
 //-----------------------------------------------------------------------------
 namespace Common
