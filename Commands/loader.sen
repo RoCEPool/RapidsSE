@@ -41,26 +41,22 @@
 
   reg.push
 
-  >r
-  // r0 ^LoaderSub
+  >reg0
 
-  r0 loaderSub.begin
+  loaderSub.begin
 
   begin
-    r0 loaderSub.fetchrecord
+    loaderSub.fetchrecord
     while
-      r0 loaderSub.hashRecord
-      r0 loaderSub.insertrow  drop
+      loaderSub.hashRecord
+      loaderSub.insertrow  drop
   repeat
 
-  r0 loaderSub.end
+  loaderSub.end
 
-  r0 loaderSub.completed if signalParentThread then
-
-  rdrop
+  loaderSub.completed if signalParentThread then
 
   reg.pop
-
 
 //traceOff
 ;

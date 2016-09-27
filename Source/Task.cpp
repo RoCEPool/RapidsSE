@@ -6396,11 +6396,7 @@ void Task::vLoaderSubBegin(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubBegin");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.begin");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vBegin();
@@ -6415,11 +6411,7 @@ void Task::vLoaderSubCompleted(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubCompleted");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.completed");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   bool bIsDecider = pLoaderSub->bCompleted();
@@ -6436,11 +6428,7 @@ void Task::vLoaderSubDelete(NNP_Task nnpTask)
 {
   ENTRY("vLoade3SubDelete");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.delete");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   delete pLoaderSub;
@@ -6455,11 +6443,7 @@ void Task::vLoaderSubEnd(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubEnd");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.end");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vEnd();
@@ -6474,11 +6458,7 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubFetchRecord");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.fetchRecord");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   bool bFetched = pLoaderSub->bFetchRecord();
@@ -6495,11 +6475,7 @@ void Task::vLoaderSubHashRecord(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubHashRecord");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.HashRecord");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vHashRecord();
@@ -6533,11 +6509,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubInsertRow");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.insertRecord");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   bool bInserted = pLoaderSub->bInsertRow();
@@ -6593,11 +6565,7 @@ void Task::vLoaderSubPushRecord(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubPushRecord");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.pushRecord");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   ValWsp xRecord;
