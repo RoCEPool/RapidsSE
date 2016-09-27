@@ -55,6 +55,9 @@ Partitions::~Partitions(void)
 Partition* Partitions::pPartition(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
+  
+  //vTrace("Partition %lld\n",iPartition);
+  
   return &m_xPartition[iPartition];
 }
 

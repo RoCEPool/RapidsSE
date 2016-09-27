@@ -79,7 +79,7 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
-  m_zLock.vGrabWrite();
+  //m_zLock.vGrabWrite();
   
   if (! m_pLastBuffer) {
     if (! bExtendStrand()) {
@@ -91,19 +91,19 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
   bool bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRecord,iLength);
   
   if (bInserted) {
-    m_zLock.vDropWrite();
+    //m_zLock.vDropWrite();
     return true;
   }
   
   if (! bExtendStrand()) {
-    m_zLock.vDropWrite();
+    //m_zLock.vDropWrite();
     return false;
   }
   
   bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRecord,iLength);
   ASSERT(bInserted);
   
-  m_zLock.vDropWrite();
+  //m_zLock.vDropWrite();
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   

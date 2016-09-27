@@ -200,6 +200,8 @@ void LoaderSub::vHashRecord(void)
   m_iHash = XXH32(m_pRecord,iLength,0);
   
   m_iPartition = m_iHash % gxArguments.m_nPartitions;
+  
+//  vTrace("Partn %lld\n",m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,15 +210,6 @@ void LoaderSub::vHashRecord(void)
 bool LoaderSub::bInsertRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
- 
-  ValWsp xRow;
-  xRow.vClass(CN_STRVAL);
-  
-  StrVal* pStrVal = xRow.pAsStrVal();
-  
-  Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
-  pStrVal->sStr()[m_iLength] = '\0';
-  pStrVal->vSize();
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   

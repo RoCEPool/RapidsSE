@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  static const i8 C_TABLE_PARTITIONS = 8;
+  static const i8 C_TABLE_PARTITIONS = 16;
   
   class Partitions : public Object
   {
