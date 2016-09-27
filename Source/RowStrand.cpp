@@ -75,7 +75,7 @@ void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
+bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
@@ -88,7 +88,7 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
     }
   }
 
-  bool bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRowStr);
+  bool bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRecord,iLength);
   
   if (bInserted) {
     m_zLock.vDropWrite();
@@ -100,7 +100,7 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
     return false;
   }
   
-  bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRowStr);
+  bInserted = m_pLastBuffer->bInsertRow(pTxRef,pRecord,iLength);
   ASSERT(bInserted);
   
   m_zLock.vDropWrite();

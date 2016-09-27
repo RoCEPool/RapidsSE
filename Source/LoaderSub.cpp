@@ -220,7 +220,7 @@ bool LoaderSub::bInsertRow(void)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  bool bResult = m_pLoader->bInsertRow(m_iPartition,pStrVal);
+  bool bResult = m_pLoader->bInsertRow(m_iPartition,m_pRecord,m_iLength);
   
   return true;
 }

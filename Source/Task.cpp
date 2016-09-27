@@ -8835,7 +8835,10 @@ ENTRY("vTableInsert");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
-  pTable->vInsertRow(iPartition,pTxRef,xRow.pAsStrVal());       // MISSING PARTN NUMBER??
+  pTable->vInsertRow(iPartition,
+                     pTxRef,
+                     xRow.pAsStrVal()->sStr(),
+                     xRow.pAsStrVal()->iChars());
   
   EXIT();
 }

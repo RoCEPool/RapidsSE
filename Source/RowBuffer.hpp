@@ -41,7 +41,7 @@ namespace DBobjects
     void       vCopyBuffer(RowBuffer* pFromBuffer);
     bool       bHasSpace(void);
     
-    bool       bInsertRow(TxRef* pTxRef, StrVal* pRowStr);
+    bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
   private:
     Object* pDataArea(void);

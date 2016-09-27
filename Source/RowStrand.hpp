@@ -33,7 +33,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    bool bInsertRow(TxRef* pTxRef, StrVal* pRow);
+    bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     i8   iRowBuffers(void);
     
     RowBuffer* pFirstBuffer(void);

@@ -43,7 +43,7 @@ namespace DBobjects
     void   vTxRef(TxRef* pTxRef);
     
     bool   bFetchChunk(LoadBuffer* pLoadBuffer);
-    bool   bInsertRow(i8 iPartn, StrVal* pRecord);
+    bool   bInsertRow(i8 iPartn, char* pRecord, i8 iLength);
 
     Footer* pFooter(void);
   };

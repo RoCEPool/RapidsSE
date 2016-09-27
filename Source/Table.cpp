@@ -144,13 +144,13 @@ void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* insert a row in the table                                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, StrVal* pRowStr)
+void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
   Partition* pPartn = pPartition(iPartition);
   
-  bool bInserted = pPartn->bInsertRow(pTxRef,pRowStr);
+  bool bInserted = pPartn->bInsertRow(pTxRef,pRecord,iLength);
   
   ASSERT(bInserted);
 }
