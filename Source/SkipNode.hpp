@@ -7,6 +7,8 @@
 
 namespace Structures
 {
+  static const i4 C_SKIPLIST_LEVELS = 16;
+  
   class SkipNode : public Object
   {
   public:

@@ -86,7 +86,9 @@ SkipNode::SkipNode()
 /*----------------------------------------------------------------------------*/
 i8 SkipNode::iMaxSize(void)
 {
-  i8 nMaxBytes = sizeof(SkipNode) + (sizeof(SkipNode*) * (16 - 1)) + sizeof(Footer);
+  i8 nMaxBytes = sizeof(SkipNode)
+                   + (sizeof(SkipNode*) * (C_SKIPLIST_LEVELS - 1))
+                   + sizeof(Footer);
   
   return nMaxBytes;
 }

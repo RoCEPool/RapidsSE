@@ -12,7 +12,6 @@ namespace Structures
   class SkipList : public Object
   {
   protected:
-    static const i4 MAX_LEVELS = 16;
     
     SkipNode* m_pHead;     // head of the list
     SkipNode* m_pTail;     // tail of the list

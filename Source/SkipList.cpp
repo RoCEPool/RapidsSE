@@ -58,10 +58,10 @@ SkipList::SkipList(bool bIsUniqueKey, compare fCompare)
   m_iHeight  = 0;
   m_bIsUniqueKey = bIsUniqueKey;
   m_fCompare = fCompare;
-  m_pHead    = new(MAX_LEVELS) SkipNode(nullptr);
+  m_pHead    = new(C_SKIPLIST_LEVELS) SkipNode(nullptr);
   m_pTail    = new((i4)0) SkipNode(nullptr);
   
-  for (i4 l = 0; l < MAX_LEVELS; l++)
+  for (i4 l = 0; l < C_SKIPLIST_LEVELS; l++)
     m_pHead->m_pForward[l] = m_pTail;
   
   m_pTail->m_pForward[0] = nullptr;
@@ -113,7 +113,7 @@ bool SkipList::bInsert(void* pObject)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
   bool bEqualTo;
-  SkipNode* pRevise[MAX_LEVELS];
+  SkipNode* pRevise[C_SKIPLIST_LEVELS];
   
   SkipNode* pNode = pPosition(pObject,&bEqualTo,pRevise);
   ASSERT(pNode); // logic check
@@ -181,7 +181,7 @@ bool SkipList::bRemove(void* pObject)
 
   i4 l;
   bool bEqualTo;
-  SkipNode* pRevision[MAX_LEVELS];
+  SkipNode* pRevision[C_SKIPLIST_LEVELS];
   SkipNode* pRevise;
   
   SkipNode* pNode = pPosition(pObject,&bEqualTo,pRevision);
@@ -388,7 +388,7 @@ i4 SkipList::iLevel()
     }
   } while (!b);
   
-  return (level > MAX_LEVELS - 1) ? MAX_LEVELS - 1: level;
+  return (level > C_SKIPLIST_LEVELS - 1) ? C_SKIPLIST_LEVELS - 1: level;
 }
 
 /*----------------------------------------------------------------------------*/
