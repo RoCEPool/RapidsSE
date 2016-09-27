@@ -62,7 +62,7 @@ Word::Word(const char* sName)
   m_bImmediate  = false;
   m_iDataBytes  = 0;
   
-  pFooter()->vSetFooter();
+  _setFooter_();
   
   m_pDoesStep = &Tasks::Task::vEnterRoutine;
   m_pDoesArg  = pFirstCell();
@@ -93,7 +93,7 @@ char* Word::pAllot(i8 iBytes)
   
   m_iDataBytes += iBytes;
 
-  pFooter()->vSetFooter();
+  _setFooter_();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

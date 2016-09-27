@@ -53,8 +53,7 @@ KeyCpp::KeyCpp(void)
     m_xRelnVal[iElement] = (i8)0;
   }
   
-  pFooter()->vSetFooter();
-  
+  _setFooter_();
   _checkInitialised_(sizeof(SkipNode));
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_KEYCPP,_FOOTER_);

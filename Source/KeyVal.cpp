@@ -53,7 +53,7 @@ KeyVal::KeyVal(void)
     m_xRelnVal[iElement] = (i8)0;
   }
   
-  pFooter()->vSetFooter();
+  _setFooter_();
   
   _checkInitialised_(sizeof(SkipNode));
 
