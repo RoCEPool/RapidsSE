@@ -16,6 +16,7 @@ create schema boraySchema;
 cf boraySchema
 cf tables
 
+// create tables
 create table customer (
 	C_CUSTKEY       INTEGER NOT NULL,
 	C_NAME          VARCHAR(25) NOT NULL,
