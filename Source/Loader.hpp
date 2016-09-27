@@ -33,6 +33,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void   vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     void   vCloseFile(void);
     bool   bOpenFile(void);
     void   vPath(s& sPath);
@@ -40,6 +41,7 @@ namespace DBobjects
     bool   bSubCompleted(void);
     Table* pTable(void);
     void   vTable(Table* pTable);
+    TxRef* pTxRef(void);
     void   vTxRef(TxRef* pTxRef);
     
     bool   bFetchChunk(LoadBuffer* pLoadBuffer);

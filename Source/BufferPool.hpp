@@ -33,7 +33,7 @@ namespace Pool
     Buffer* m_pLimit;    // address after pool
     
     // free chain
-    i8   m_zFreeLock;    // lock over free chain
+    Lock m_zFreeLock;    // lock over free chain
     i8   m_iAllocCount;  // number of buffers currently in use
     i8   m_iFreeCount;   // number of buffers in free chain
     bn   m_nFreeHead;    // head of free chain

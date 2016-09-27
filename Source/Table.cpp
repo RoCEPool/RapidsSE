@@ -4,8 +4,10 @@
 
 #include "DBobjects.h"
 #include "Word.hpp"
+#include "Arguments.hpp"
 
 extern BufferPool*  gpBufferPool;
+extern Arguments    gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -89,6 +91,25 @@ Table::~Table(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append row buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  ASSERT(iPartition < gxArguments.m_nPartitions);
+  
+  Partition* pPartition = this->pPartition(iPartition);
+ 
+  pPartition->vAppendBuffer(pRowBuffer);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of row buffers in this table                                    */
 /*----------------------------------------------------------------------------*/
 i8 Table::iRowBuffers(void)
@@ -97,10 +118,12 @@ i8 Table::iRowBuffers(void)
   
   i8 iBuffers = 0;
 
-  RowStrand *pStrand = pPartition(0)->pHeadStrand();
-  while (pStrand) {
-    iBuffers += pStrand->iRowBuffers();
-    pStrand = pStrand->pNextStrand();
+  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+    RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
+    while (pStrand) {
+      iBuffers += pStrand->iRowBuffers();
+      pStrand = pStrand->pNextStrand();
+    }
   }
   
   return iBuffers;

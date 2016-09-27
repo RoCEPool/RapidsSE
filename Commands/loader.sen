@@ -63,8 +63,13 @@
 /*----------------------------------------------------------------------------*/
 /* parallel loading of file into table                                        */
 /*----------------------------------------------------------------------------*/
+
+timer: loadTimer
+
 : tableLoader ( "<path>" ^table -- t|f )
 //traceon
+
+  loadTimer timer.start
 
   // create a Loader
   "__table_loader" find dup if else
@@ -118,6 +123,11 @@
 
   // destroy Loader
   "__table_loader" find >forget
+
+  loadTimer timer.update
+
+  "Load time " .put
+  loadTimer timer.millisecs .put "ms" .put .\n
 
 //traceoff
 ;

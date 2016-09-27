@@ -73,6 +73,22 @@ void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append buffer into this strand                                             */
+/*----------------------------------------------------------------------------*/
+bool RowStrand::bAppendBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
+  
+  bool bAppended = bExtendStrand(pRowBuffer);
+
+  return bAppended;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
 bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
@@ -222,12 +238,26 @@ bool RowStrand::bExtendStrand(void)
 
   RowBuffer* pNewBuffer = new RowBuffer;
   
+  bool bExtended = bExtendStrand(pNewBuffer);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* extend this strand                                                         */
+/*----------------------------------------------------------------------------*/
+bool RowStrand::bExtendStrand(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
+  
+  if (m_iRowBuffers >= C_STRAND_LENGTH)
+    return false;
+  
   if (! m_pFirstBuffer) {
     ASSERT(! m_iRowBuffers);
     ASSERT(! m_pLastBuffer);
     
-    m_pFirstBuffer = pNewBuffer;
-    m_pLastBuffer  = pNewBuffer;
+    m_pFirstBuffer = pRowBuffer;
+    m_pLastBuffer  = pRowBuffer;
     
     m_iRowBuffers = 1;
   }
@@ -235,15 +265,13 @@ bool RowStrand::bExtendStrand(void)
     ASSERT(m_iRowBuffers);
     ASSERT(m_pLastBuffer);
     
-    m_pLastBuffer->vNextBuffer(pNewBuffer);
-    pNewBuffer->vPrevBuffer(m_pLastBuffer);
+    m_pLastBuffer->vNextBuffer(pRowBuffer);
+    pRowBuffer->vPrevBuffer(m_pLastBuffer);
     
-    m_pLastBuffer = pNewBuffer;
+    m_pLastBuffer = pRowBuffer;
     
     m_iRowBuffers++;
   }
-  
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   return true;
 }

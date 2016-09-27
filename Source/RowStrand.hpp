@@ -33,6 +33,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    bool bAppendBuffer(RowBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     i8   iRowBuffers(void);
     
@@ -49,6 +50,7 @@ namespace DBobjects
     
   private:
     bool    bExtendStrand(void);
+    bool    bExtendStrand(RowBuffer* pRowBuffer);
     Footer* pFooter(void);
   };
 }

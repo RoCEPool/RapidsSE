@@ -95,6 +95,19 @@ void Loader::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append row buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void Loader::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  ASSERT(iPartition < gxArguments.m_nPartitions);
+  
+  m_pTable->vAppendBuffer(iPartition,pRowBuffer);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* close file                                                                 */
 /*----------------------------------------------------------------------------*/
 void Loader::vCloseFile(void)
@@ -175,6 +188,16 @@ void Loader::vTable(Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
   m_pTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set txref                                                                  */
+/*----------------------------------------------------------------------------*/
+TxRef* Loader::pTxRef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return m_pTxRef;
 }
 
 /*----------------------------------------------------------------------------*/

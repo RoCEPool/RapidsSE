@@ -70,6 +70,42 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* append row buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void Partition::vAppendBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  
+  m_zLock.vGrabWrite();
+  
+  if (! m_pTailStrand) {
+    if (! bExtendPartition()) {
+      m_zLock.vDropWrite();
+      return;
+    }
+  }
+  
+  bool bAppended = m_pTailStrand->bAppendBuffer(pRowBuffer);
+  if (bAppended) {
+    m_zLock.vDropWrite();
+    return;
+  }
+  
+  if (! bExtendPartition()) {
+    m_zLock.vDropWrite();
+    return;
+  }
+  
+  bAppended = m_pTailStrand->bAppendBuffer(pRowBuffer);
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a row into this strand                                              */
 /*----------------------------------------------------------------------------*/
 bool Partition::bInsertRow(Transactions::TxRef* pTxRef, char* pRecord, i8 iLength)

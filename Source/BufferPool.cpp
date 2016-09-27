@@ -45,7 +45,7 @@ BufferPool::BufferPool(void)
   
   m_sShmName      = gxArguments.m_sRegionName;
   m_iShmFD        = 0;
-  m_zFreeLock     = 0;
+  //m_zFreeLock
   m_iAllocCount   = 0;
   m_iFreeCount    = 0;
   
@@ -73,7 +73,7 @@ BufferPool::BufferPool(s& sRegionName)
   m_iBufferSize  = 1_MB;
   m_sShmName     = sRegionName;
   
-  m_zFreeLock    = 0;
+  //m_zFreeLock
   m_iAllocCount  = 0;
   m_iFreeCount   = 0;
   
@@ -182,9 +182,12 @@ Buffer* BufferPool::pAllocBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
+  m_zFreeLock.vGrabWrite();
+  
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
     ASSERT( ! m_iFreeCount );
+    m_zFreeLock.vDropWrite();
     return nullptr;
   }
   
@@ -195,6 +198,8 @@ Buffer* BufferPool::pAllocBuffer(void)
   // adjust counts
   m_iFreeCount--;
   m_iAllocCount++;
+  
+  m_zFreeLock.vDropWrite();
   
   return pPoolCheck<BufferFree*>(pAllocatedBuffer);
 }
@@ -331,6 +336,8 @@ void BufferPool::vFree(Buffer* pBuffer)
   
   BufferFree* pFreeBuffer = pToBufferFree(pBuffer);
   
+  m_zFreeLock.vGrabWrite();
+  
   // test for existing free list
   if (bn::nNil() != m_nFreeHead) {
     ASSERT( m_iFreeCount > 0 );
@@ -347,6 +354,8 @@ void BufferPool::vFree(Buffer* pBuffer)
   // adjust counts
   m_iFreeCount++;
   m_iAllocCount--;
+  
+  m_zFreeLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

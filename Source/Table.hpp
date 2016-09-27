@@ -44,6 +44,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void   vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     Dictionary* pDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength);
     i8   iRowBuffers(void);

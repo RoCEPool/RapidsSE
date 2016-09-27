@@ -28,6 +28,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
+    void vAppendBuffer(RowBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
     RowStrand* pHeadStrand(void);

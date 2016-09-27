@@ -64,6 +64,9 @@ LoaderSub::LoaderSub(void)
   m_bMoreChunks = false;
   m_pLoadBuffer = new LoadBuffer;
   
+  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
+    m_pRowBuffer[iPartition] = nullptr;
+  
   _checkInitialised_(sizeof(LoaderSub));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -126,6 +129,16 @@ bool LoaderSub::bCompleted(void)
 void LoaderSub::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  TxRef* pTxRef = m_pLoader->pTxRef();
+  
+  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++) {
+    if (m_pRowBuffer[iPartition]) {
+      RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+      m_pRowBuffer[iPartition] = nullptr;
+      m_pLoader->vAppendBuffer(m_iPartition,pRowBuffer);
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,9 +226,28 @@ bool LoaderSub::bInsertRow(void)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  bool bResult = m_pLoader->bInsertRow(m_iPartition,m_pRecord,m_iLength);
+  //bool bResult = m_pLoader->bInsertRow(m_iPartition,m_pRecord,m_iLength);
   
-  return true;
+  if (! m_pRowBuffer[m_iPartition]) {
+    m_pRowBuffer[m_iPartition] = new RowBuffer;
+  }
+  
+  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  TxRef* pTxRef = m_pLoader->pTxRef();
+
+  bool bInserted = pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength);
+  
+  if (bInserted)
+    return true;
+  
+  // buffer full
+  m_pLoader->vAppendBuffer(m_iPartition,pRowBuffer);
+  
+  m_pRowBuffer[m_iPartition] = new RowBuffer;
+  pRowBuffer = m_pRowBuffer[m_iPartition];
+  bInserted = pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength);
+  
+  return bInserted;
 }
 
 /*----------------------------------------------------------------------------*/
