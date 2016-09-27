@@ -35,6 +35,8 @@ i8 giClassSize[]
   /* 19 */ sizeof(Grid),
   /* 20 */ sizeof(HeapBuffer),
   /* 21 */ sizeof(Index),
+  /*    */ sizeof(KeyCpp),
+  /*    */ sizeof(KeyVal),
   /* 22 */ sizeof(Loader),
   /* 23 */ sizeof(LoaderSub),
   /* 24 */ sizeof(Lock),

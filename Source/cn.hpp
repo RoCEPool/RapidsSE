@@ -49,6 +49,9 @@ namespace Magic
     
     /* 25 */ CN_JUMBOHEAP,
     
+    /*    */ CN_KEYCPP,
+    /*    */ CN_KEYVAL,
+    
     /* 26 */ CN_LOADER,
     /* 27 */ CN_LOADERSUB,
     /* 28 */ CN_LOCK,
@@ -152,6 +155,9 @@ namespace Magic
     /* 24 */ "INDEX",
     
     /* 25 */ "JUMBOHEAP",
+    
+    /*    */ "KEYCPP",
+    /*    */ "KEYVAL",
     
     /* 26 */ "LOADER",
     /* 27 */ "LOADERSUB",
