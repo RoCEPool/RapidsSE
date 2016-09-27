@@ -11,7 +11,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTaskSet;
 }
 
@@ -20,10 +20,10 @@ void* TaskSet::operator new(size_t iSize, TaskSet* pTaskSet)
 /*----------------------------------------------------------------------------*/
 void TaskSet::operator delete(void* pAddress)
 {
-  ASSERT(pAddress);
+  RASSERT(pAddress);
   vFatal("fatal: TaskSet class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

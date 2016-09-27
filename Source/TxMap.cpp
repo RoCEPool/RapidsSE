@@ -22,7 +22,7 @@ TxMap* Transactions::_pTxMap(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* TxMap::operator new(size_t iSize, TxMap* pTxMap)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTxMap;
 }
 
@@ -31,10 +31,10 @@ void* TxMap::operator new(size_t iSize, TxMap* pTxMap)
 /*----------------------------------------------------------------------------*/
 void TxMap::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: TxMap class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

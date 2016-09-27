@@ -53,7 +53,7 @@ Task* Tasks::_pTask(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   ASSERT(gpTaskList);
   
   Task* pTask = (Task*)gpMediumHeap->pAllocObject(CN_TASK);
@@ -66,7 +66,7 @@ void* Task::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Task::operator new(size_t iSize, Task* pTask)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   ASSERT(gpTaskList);
   
   return pTask;

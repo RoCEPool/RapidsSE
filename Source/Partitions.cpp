@@ -13,10 +13,10 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 void* Partitions::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: Partitions class cannot be new'd");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -24,10 +24,10 @@ void* Partitions::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Partitions::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: Partitions class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

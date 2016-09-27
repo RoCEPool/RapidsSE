@@ -23,7 +23,7 @@ Timer* Common::_pTimer(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Timer::operator new(size_t iSize, Timer* pTimer)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTimer;
 }
 

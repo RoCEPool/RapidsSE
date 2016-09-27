@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void* ValWsp::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: ValWsp class cannot be new'd\n");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

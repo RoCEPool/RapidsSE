@@ -19,10 +19,10 @@ IntVal* Values::_pIntVal(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* IntVal::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: IntVal class cannot be new'd\n");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

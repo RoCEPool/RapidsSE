@@ -11,7 +11,7 @@ Atomic gzSocketOpenCount;
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Socket* pSocket = nullptr;
   
   return pSocket;
@@ -22,7 +22,7 @@ void* Socket::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Socket::operator new(size_t iSize, Socket* pSocket)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pSocket;
 }
 
@@ -31,7 +31,7 @@ void* Socket::operator new(size_t iSize, Socket* pSocket)
 /*----------------------------------------------------------------------------*/
 void Socket::operator delete(void* pSocketAddress)
 {
-  ASSERT(pSocketAddress);
+  RASSERT(pSocketAddress);
 }
 
 /*----------------------------------------------------------------------------*/

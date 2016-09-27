@@ -23,7 +23,7 @@ NodeCursor* GridModel::_pNodeCursor(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* NodeCursor::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_NODECURSOR);
   
   return pObject;
@@ -34,7 +34,7 @@ void* NodeCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* NodeCursor::operator new(size_t iSize, NodeCursor* pNodeCursor)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pNodeCursor;
 }
 

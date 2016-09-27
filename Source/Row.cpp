@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void* Row::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: Row class cannot be new'd\n");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -20,7 +20,7 @@ void* Row::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Row::operator new(size_t iSize, Row* pRow)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pRow;
 }
 

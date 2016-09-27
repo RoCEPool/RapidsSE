@@ -19,7 +19,7 @@ SkipList* Structures::_pSkipList(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* SkipList::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
   SkipList* pSkipList = (SkipList*)gpSmallHeap->pAllocObject(CN_SKIPLIST);
   
@@ -31,7 +31,7 @@ void* SkipList::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* SkipList::operator new(size_t iSize, SkipList* pSkipList)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
   return pSkipList;
 }

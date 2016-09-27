@@ -11,7 +11,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Index::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Index* pIndex = nullptr;
   
   return pIndex;
@@ -22,7 +22,7 @@ void* Index::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void Index::operator delete(void* pIndexAddress)
 {
-  ASSERT(pIndexAddress);
+  RASSERT(pIndexAddress);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,10 +13,10 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Time::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: Time class cannot be new'd");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

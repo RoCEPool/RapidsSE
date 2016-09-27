@@ -21,7 +21,7 @@ extern Arguments    gxArguments;
 /*----------------------------------------------------------------------------*/
 void* AttachMap::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   

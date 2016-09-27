@@ -22,7 +22,7 @@ Table* DBobjects::_pTable(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Table* pTable = nullptr;
   
   return pTable;
@@ -33,7 +33,7 @@ void* Table::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Table::operator new(size_t iSize, Table* pTable)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTable;
 }
 
@@ -42,7 +42,7 @@ void* Table::operator new(size_t iSize, Table* pTable)
 /*----------------------------------------------------------------------------*/
 void Table::operator delete(void* pTableAddress)
 {
-  ASSERT(pTableAddress);
+  RASSERT(pTableAddress);
 }
 
 /*----------------------------------------------------------------------------*/

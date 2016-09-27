@@ -31,7 +31,7 @@ Thread* Threads::_pThread(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Thread::operator new(size_t iSize, Thread* pThread)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pThread;
 }
 
@@ -40,10 +40,10 @@ void* Thread::operator new(size_t iSize, Thread* pThread)
 /*----------------------------------------------------------------------------*/
 void Thread::operator delete(void* pTxAddress)
 {
-  ASSERT(pTxAddress);
+  RASSERT(pTxAddress);
   vFatal("fatal: Thread class cannot be deleted");
 
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

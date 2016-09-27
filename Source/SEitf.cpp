@@ -35,7 +35,7 @@ SEitf* Interface::_pSEitf(i8 iAddr)
 /*----------------------------------------------------------------------------*/
 void* SEitf::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Object* pObject = gpMediumHeap->pAllocObject(CN_SEITF);
   
   return pObject;

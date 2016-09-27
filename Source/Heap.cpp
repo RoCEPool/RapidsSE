@@ -13,7 +13,7 @@ extern i8 giClassSize[];
 /*----------------------------------------------------------------------------*/
 void* Heap::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pBuffer);

@@ -13,7 +13,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* Atomic::operator new(size_t iSize, Atomic* pAtomic)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pAtomic;
 }
 
@@ -22,7 +22,7 @@ void* Atomic::operator new(size_t iSize, Atomic* pAtomic)
 /*----------------------------------------------------------------------------*/
 void Atomic::operator delete(void* pAtomicAddress)
 {
-  ASSERT(pAtomicAddress);
+  RASSERT(pAtomicAddress);
   // do nothing
   // must be explicitly free'd by caller
 }

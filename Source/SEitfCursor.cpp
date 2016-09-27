@@ -22,7 +22,7 @@ SEitfCursor* Interface::_pSEitfCursor(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* SEitfCursor::operator new(size_t iSize, SEitfCursor* pSEitfCursor)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pSEitfCursor;
 }
 
@@ -31,7 +31,7 @@ void* SEitfCursor::operator new(size_t iSize, SEitfCursor* pSEitfCursor)
 /*----------------------------------------------------------------------------*/
 void SEitfCursor::operator delete(void* pSEitfCursorAddress)
 {
-  ASSERT(pSEitfCursorAddress);
+  RASSERT(pSEitfCursorAddress);
 }
 
 /*----------------------------------------------------------------------------*/

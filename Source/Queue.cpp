@@ -21,7 +21,7 @@ Queue* Structures::_pQueue(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   void* pObject = gpSmallHeap->pAllocObject(CN_QUEUE);
   
   return pObject;
@@ -32,7 +32,7 @@ void* Queue::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Queue::operator new(size_t iSize, Queue* pQueue)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pQueue;
 }
 

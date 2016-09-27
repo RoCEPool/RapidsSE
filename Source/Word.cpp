@@ -26,7 +26,7 @@ Word* Dictionaries::_pWord(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Word::operator new(size_t iSize, Dictionary* pDictionary)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
 
   Word* pWord = pDictionary->pAllocWord(CN_WORD);
   

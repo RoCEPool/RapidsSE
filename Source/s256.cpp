@@ -13,7 +13,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* s256::operator new(size_t iSize, s256* pS256)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
   return pS256;
 }

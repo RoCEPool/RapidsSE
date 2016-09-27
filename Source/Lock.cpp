@@ -20,7 +20,7 @@ Lock* Common::_pLock(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Lock::operator new(size_t iSize, Lock* pLock)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pLock;
 }
 

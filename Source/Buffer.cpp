@@ -21,7 +21,7 @@ Buffer* Pool::_pBuffer(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Buffer::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pBuffer;

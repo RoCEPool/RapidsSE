@@ -11,7 +11,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* TxArray::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pBuffer;
@@ -22,10 +22,10 @@ void* TxArray::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void TxArray::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: TxArray class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,6 +34,7 @@ namespace Common
   #define _poolAddress_(pArg)
   #endif
   
+  #ifdef ASSERT_CHECKS
   #define ASSERT(condition) \
   { \
     if ( !(condition) ) { \
@@ -41,7 +42,18 @@ namespace Common
       THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
     } \
   }
+  #else
+  #define ASSERT(condition)
+  #endif
   
+  #define RASSERT(condition) \
+  { \
+    if ( !(condition) ) { \
+      Common::vAssertTrap(); \
+      THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
+    } \
+  }
+
   // precondition for any method is a valid this pointer, valid magic and a valid footer
   
   #define _ADDRESS_ 1

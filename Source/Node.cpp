@@ -19,7 +19,7 @@ Node* GridModel::_pNode(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_NODE);
   
   return pObject;
@@ -30,7 +30,7 @@ void* Node::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Node::operator new(size_t iSize, Node* pNode)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pNode;
 }
 

@@ -19,7 +19,7 @@ SkipNode* Structures::_pSkipNode(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* SkipNode::operator new(size_t iSize, i4 iLevel)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
 //  int nBytes = sizeof(SkipNode) + ((int)iLevel * sizeof(SkipNode*));
 //  void* pNode = static_cast<void*>(malloc(nBytes));

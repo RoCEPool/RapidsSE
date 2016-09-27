@@ -21,7 +21,7 @@ Tx* Transactions::_pTx(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   ASSERT(gpTxCollection);
   
   Tx* pTx = gpTxCollection->pAllocTx();
@@ -34,7 +34,7 @@ void* Tx::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Tx::operator new(size_t iSize, Tx* pTx)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTx;
 }
 

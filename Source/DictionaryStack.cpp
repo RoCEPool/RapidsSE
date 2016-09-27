@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void* DictionaryStack::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: DictionaryStack class cannot be new'd");
   
-   ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -20,10 +20,10 @@ void* DictionaryStack::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void DictionaryStack::operator delete(void* pAddress)
 {
-  ASSERT(pAddress);
+  RASSERT(pAddress);
   vFatal("fatal: DictionaryStack class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

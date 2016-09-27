@@ -21,7 +21,7 @@ TxCursor* Transactions::_pTxCursor(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* TxCursor::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_TXCURSOR);
   
   return pObject;
@@ -32,7 +32,7 @@ void* TxCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* TxCursor::operator new(size_t iSize, TxCursor* pTxCursor)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTxCursor;
 }
 

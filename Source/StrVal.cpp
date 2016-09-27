@@ -19,10 +19,10 @@ StrVal* Values::_pStrVal(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* StrVal::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: StrVal class cannot be new'd\n");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +30,7 @@ void* StrVal::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* StrVal::operator new(size_t iSize, StrVal* pStrVal)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
 
   return pStrVal;
 }

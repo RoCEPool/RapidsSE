@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 void* User::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   vFatal("fatal: User class cannot be new'd");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -20,7 +20,7 @@ void* User::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* User::operator new(size_t iSize, User* pUser)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pUser;
 }
 
@@ -29,10 +29,10 @@ void* User::operator new(size_t iSize, User* pUser)
 /*----------------------------------------------------------------------------*/
 void User::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: User class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*============================================================================*/

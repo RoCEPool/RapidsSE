@@ -11,7 +11,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* LoadBuffer::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
   
   return pPoolCheck<void*>(pBuffer);

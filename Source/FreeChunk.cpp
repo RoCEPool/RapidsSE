@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void* FreeChunk::operator new(size_t iSize, FreeChunk* pFreeChunk)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pFreeChunk;
 }
 
@@ -18,11 +18,11 @@ void* FreeChunk::operator new(size_t iSize, FreeChunk* pFreeChunk)
 /*----------------------------------------------------------------------------*/
 void FreeChunk::operator delete(void* pFreeChunkAddress)
 {
-  ASSERT(pFreeChunkAddress);
+  RASSERT(pFreeChunkAddress);
   
   vFatal("fatal: FreeChunk class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

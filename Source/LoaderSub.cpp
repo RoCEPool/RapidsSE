@@ -23,7 +23,7 @@ LoaderSub* DBobjects::_pLoaderSub(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* LoaderSub::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   void* pObject = gpSmallHeap->pAllocObject(CN_LOADER);
   
   return pObject;
@@ -34,7 +34,7 @@ void* LoaderSub::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* LoaderSub::operator new(size_t iSize, LoaderSub* pLoaderSub)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pLoaderSub;
 }
 

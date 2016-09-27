@@ -53,7 +53,7 @@ File* Common::_pFile(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   void* pObject = gpSmallHeap->pAllocObject(CN_FILE);
   
   return pObject;
@@ -64,7 +64,7 @@ void* File::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* File::operator new(size_t iSize, File* pFile)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pFile;
 }
 

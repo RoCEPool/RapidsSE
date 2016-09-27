@@ -16,7 +16,7 @@ extern void* C_ADDR_POOL;
 /*----------------------------------------------------------------------------*/
 void* BufferPool::operator new(size_t iSize, void* pRegion)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pRegion;
 }
 
@@ -25,7 +25,7 @@ void* BufferPool::operator new(size_t iSize, void* pRegion)
 /*----------------------------------------------------------------------------*/
 void BufferPool::operator delete(void* pRegion)
 {
-  ASSERT(pRegion);
+  RASSERT(pRegion);
 }
 
 /*----------------------------------------------------------------------------*/

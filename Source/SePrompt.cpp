@@ -13,7 +13,7 @@ extern Arguments    gxArguments;
 /*----------------------------------------------------------------------------*/
 void* SePrompt::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   SePrompt* pSePrompt = (SePrompt*)gpBufferPool->pAllocBuffer();
   
   return pSePrompt;
@@ -225,6 +225,7 @@ bool SePrompt::bProcessCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+
   // - test for builtin comands
   
   if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
@@ -343,6 +344,7 @@ bool SePrompt::bProcessCommand(void)
   return true;
 }
 #else
+
 bool SePrompt::bProcessCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);

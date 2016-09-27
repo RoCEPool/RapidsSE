@@ -23,7 +23,7 @@ TxCollection* Transactions::_pTxCollection(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTxCollection;
 }
 
@@ -32,10 +32,10 @@ void* TxCollection::operator new(size_t iSize, TxCollection* pTxCollection)
 /*----------------------------------------------------------------------------*/
 void TxCollection::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: gpTxCollection class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

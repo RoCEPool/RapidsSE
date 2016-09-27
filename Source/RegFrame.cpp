@@ -21,7 +21,7 @@ RegFrame* Tasks::_pRegFrame(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* RegFrame::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
   RegFrame* pRegFrame =
     reinterpret_cast<RegFrame*>(gpMediumHeap->pAllocObject(CN_REGFRAME));

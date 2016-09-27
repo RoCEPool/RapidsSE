@@ -21,7 +21,7 @@ RowCursor* DBobjects::_pRowCursor(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* RowCursor::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Object* pObject = gpSmallHeap->pAllocObject(CN_ROWCURSOR);
   
   return pObject;
@@ -32,7 +32,7 @@ void* RowCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* RowCursor::operator new(size_t iSize, RowCursor* pRowCursor)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pRowCursor;
 }
 

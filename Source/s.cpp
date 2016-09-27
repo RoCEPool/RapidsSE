@@ -13,11 +13,11 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 void* s::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   
   vFatal("fatal: s class cannot be new'd");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

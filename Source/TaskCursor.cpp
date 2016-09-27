@@ -22,7 +22,7 @@ TaskCursor* Tasks::_pTaskCursor(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* TaskCursor::operator new(size_t iSize, TaskCursor* pTaskCursor)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTaskCursor;
 }
 
@@ -31,7 +31,7 @@ void* TaskCursor::operator new(size_t iSize, TaskCursor* pTaskCursor)
 /*----------------------------------------------------------------------------*/
 void TaskCursor::operator delete(void* pTaskCursorAddress)
 {
-  ASSERT(pTaskCursorAddress);
+  RASSERT(pTaskCursorAddress);
 }
 
 /*----------------------------------------------------------------------------*/

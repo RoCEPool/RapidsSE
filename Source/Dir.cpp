@@ -23,7 +23,7 @@ Dir* Common::_pDir(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* Dir::operator new(size_t iSize)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Dir* pDir = reinterpret_cast<Dir*>(gpSmallHeap->pAllocObject(CN_DIR));
   
   return pDir;
@@ -34,7 +34,7 @@ void* Dir::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 void* Dir::operator new(size_t iSize, Dir* pDir)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pDir;
 }
 

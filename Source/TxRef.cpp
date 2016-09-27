@@ -22,7 +22,7 @@ TxRef* Transactions::_pTxRef(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* TxRef::operator new(size_t iSize, TxRef* pTxRef)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pTxRef;
 }
 
@@ -31,10 +31,10 @@ void* TxRef::operator new(size_t iSize, TxRef* pTxRef)
 /*----------------------------------------------------------------------------*/
 void TxRef::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: TxMap class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

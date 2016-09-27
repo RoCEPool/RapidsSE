@@ -12,7 +12,7 @@ extern Heap* gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 void* Parser::operator new(size_t iSize, bool bMalloc)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   Parser* pParser;
   
   if (bMalloc)

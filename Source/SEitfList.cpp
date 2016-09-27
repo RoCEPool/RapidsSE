@@ -22,7 +22,7 @@ SEitfList* Interface::_pSEitfList(void* pAddr)
 /*----------------------------------------------------------------------------*/
 void* SEitfList::operator new(size_t iSize, SEitfList* pSEitfList)
 {
-  ASSERT(iSize);
+  RASSERT(iSize);
   return pSEitfList;
 }
 
@@ -31,10 +31,10 @@ void* SEitfList::operator new(size_t iSize, SEitfList* pSEitfList)
 /*----------------------------------------------------------------------------*/
 void SEitfList::operator delete(void* pBufferAddress)
 {
-  ASSERT(pBufferAddress);
+  RASSERT(pBufferAddress);
   vFatal("fatal: SEitfList class cannot be deleted");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
