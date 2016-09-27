@@ -56,9 +56,11 @@ LoaderSub::LoaderSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  m_pLoader    = nullptr;
+  m_pLoader     = nullptr;
   m_pRecord     = nullptr;
   m_iLength     = 0;
+  m_iHash       = 0;
+  m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadBuffer = new LoadBuffer;
   
@@ -184,14 +186,29 @@ void LoaderSub::vGetRecord(StrVal* pStrVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row                                                                 */
+/* hash the first field of record                                             */
 /*----------------------------------------------------------------------------*/
-bool LoaderSub::bInsertRow(i8 iPartn)
+void LoaderSub::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+
+  i8 iLength = 0;
+  char* pChar = m_pRecord;
+  while ('|' != *pChar++)
+    iLength++;
   
-  ASSERT(iPartn < gxArguments.m_nPartitions);
+  m_iHash = XXH32(m_pRecord,iLength,0);
   
+  m_iPartition = m_iHash % gxArguments.m_nPartitions;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row                                                                 */
+/*----------------------------------------------------------------------------*/
+bool LoaderSub::bInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+ 
   ValWsp xRow;
   xRow.vClass(CN_STRVAL);
   
@@ -203,7 +220,7 @@ bool LoaderSub::bInsertRow(i8 iPartn)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  bool bResult = m_pLoader->bInsertRow(iPartn,pStrVal);
+  bool bResult = m_pLoader->bInsertRow(m_iPartition,m_pRecord,m_iLength);
   
   return true;
 }

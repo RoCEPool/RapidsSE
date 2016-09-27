@@ -31,11 +31,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* calculate partition number of row                                          */
-/*----------------------------------------------------------------------------*/
-: toPartition ( ^row -- i ) csv.firstvalue hash partitions % ;
-
-/*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
 
@@ -52,7 +47,7 @@
   begin
     r0 loaderSub.fetchrecord
     while
-      r0 loaderSub.pushRecord toPartition
+      r0 loaderSub.hashRecord
       r0 loaderSub.insertrow  drop
   repeat
 

@@ -815,6 +815,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
   vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
   vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
+  vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
   vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
   vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
@@ -6180,7 +6181,7 @@ ENTRY("vInputType");
 // loader: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* loader.closefile -- close file being loaded                               */
+/* loader.closefile -- close file being loaded                                */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderCloseFile(NNP_Task nnpTask)
 {
@@ -6199,7 +6200,7 @@ void Task::vLoaderCloseFile(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.delete -- delete a table loader                                    */
+/* loader.delete -- delete a table loader                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
 {
@@ -6218,7 +6219,7 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.init -- init a table loader                                        */
+/* loader.init -- init a table loader                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderInit(NNP_Task nnpTask)
 {
@@ -6237,7 +6238,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.new -- new a table loader                                          */
+/* loader.new -- new a table loader                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNew(NNP_Task nnpTask)
 {
@@ -6252,7 +6253,7 @@ void Task::vLoaderNew(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.newSub -- new a loader sub                                         */
+/* loader.newSub -- new a loader sub                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderNewSub(NNP_Task nnpTask)
 {
@@ -6276,7 +6277,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.openfile -- open file to be loaded                                 */
+/* loader.openfile -- open file to be loaded                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderOpenFile(NNP_Task nnpTask)
 {
@@ -6297,7 +6298,7 @@ void Task::vLoaderOpenFile(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.path! -- store file path into loader                               */
+/* loader.path! -- store file path into loader                                */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderPathStore(NNP_Task nnpTask)
 {
@@ -6320,7 +6321,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.subs! -- store number of subordinates into loader                  */
+/* loader.subs! -- store number of subordinates into loader                   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubsStore(NNP_Task nnpTask)
 {
@@ -6340,7 +6341,7 @@ void Task::vLoaderSubsStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.table! -- store table into loader                                  */
+/* loader.table! -- store table into loader                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTableStore(NNP_Task nnpTask)
 {
@@ -6364,7 +6365,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.txref! -- store txref into loader                                  */
+/* loader.txref! -- store txref into loader                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 {
@@ -6386,11 +6387,10 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
   EXIT();
 }
 
-
-
+// loaderSub: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.begin -- begin loading                                          */
+/* loaderSub.begin -- begin loading                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubBegin(NNP_Task nnpTask)
 {
@@ -6409,7 +6409,7 @@ void Task::vLoaderSubBegin(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.completed -- this sub-loader has completed                      */
+/* loaderSub.completed -- this sub-loader has completed                       */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubCompleted(NNP_Task nnpTask)
 {
@@ -6430,7 +6430,7 @@ void Task::vLoaderSubCompleted(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.delete -- delete a table loader                                 */
+/* loaderSub.delete -- delete a table loader                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubDelete(NNP_Task nnpTask)
 {
@@ -6449,7 +6449,7 @@ void Task::vLoaderSubDelete(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.end -- end loading                                              */
+/* loaderSub.end -- end loading                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubEnd(NNP_Task nnpTask)
 {
@@ -6468,7 +6468,7 @@ void Task::vLoaderSubEnd(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.fetchRecord -- fetch next record from file being loaded         */
+/* loaderSub.fetchRecord -- fetch next record from file being loaded          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 {
@@ -6489,7 +6489,26 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.init -- init a table loader                                     */
+/* loaderSub.hashRecord -- hash record being loaded                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubHashRecord(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubHashRecord");
+  
+  Object* pPtrLoaderSub;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
+    THROW_INVALID_PARAM("loaderSub.HashRecord");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  pLoaderSub->vHashRecord();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.init -- init a table loader                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInit(NNP_Task nnpTask)
 {
@@ -6508,7 +6527,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow -- insert row into table being loaded                 */
+/* loaderSub.insertRow -- insert row into table being loaded                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 {
@@ -6521,12 +6540,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  i8 iPartn;
-  if ( ! nnpTask->m_xParamStack.bPop(iPartn) )
-    THROW_INVALID_PARAM("loaderSub.insertRow");
-  
-  ASSERT(iPartn < gxArguments.m_nPartitions);
-  bool bInserted = pLoaderSub->bInsertRow(iPartn);
+  bool bInserted = pLoaderSub->bInsertRow();
   
   nnpTask->m_xParamStack.vPush(bInserted);
   
@@ -6534,7 +6548,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.loader! -- store loader                                         */
+/* loaderSub.loader! -- store loader                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 {
@@ -6558,7 +6572,7 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.new -- new a table loader                                       */
+/* loaderSub.new -- new a table loader                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubNew(NNP_Task nnpTask)
 {
@@ -6573,7 +6587,7 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.pushRecord -- fetch record onto stack                           */
+/* loaderSub.pushRecord -- fetch record onto stack                            */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubPushRecord(NNP_Task nnpTask)
 {
@@ -8821,7 +8835,10 @@ ENTRY("vTableInsert");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
-  pTable->vInsertRow(iPartition,pTxRef,xRow.pAsStrVal());       // MISSING PARTN NUMBER??
+  pTable->vInsertRow(iPartition,
+                     pTxRef,
+                     xRow.pAsStrVal()->sStr(),
+                     xRow.pAsStrVal()->iChars());
   
   EXIT();
 }

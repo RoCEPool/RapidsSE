@@ -232,13 +232,13 @@ bool Loader::bFetchChunk(LoadBuffer* pLoadBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert row                                                                 */
 /*----------------------------------------------------------------------------*/
-bool Loader::bInsertRow(i8 iPartn, StrVal* pRow)
+bool Loader::bInsertRow(i8 iPartn, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   ASSERT(iPartn < gxArguments.m_nPartitions);
   
-  m_pTable->vInsertRow(iPartn,m_pTxRef,pRow);
+  m_pTable->vInsertRow(iPartn,m_pTxRef,pRecord,iLength);
   
   return true;
 }

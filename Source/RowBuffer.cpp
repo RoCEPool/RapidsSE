@@ -217,29 +217,53 @@ bool RowBuffer::bHasSpace(void)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
+//bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+//  
+//  i8 iDataBytes  = pRowStr->iSize();
+//  
+//  Row* pRow = pAllocRow(iDataBytes);
+//  if (!pRow)
+//    return false;
+//  
+//  i8 iTxId = pTxRef->iTxId();
+//  
+////  vTrace("TxId %lld\n",iTxId);
+//  
+//  pRow->vTxId(iTxId);
+//  
+//  Memory::vCopy(pRow->pData(),pRowStr,iDataBytes);
+//  
+//  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+//
+//  return true;
+//}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 iDataBytes  = pRowStr->iSize();
+  i8 nBytesRequired = StrVal::nBytesRequired(iLength);
   
-  Row* pRow = pAllocRow(iDataBytes);
+  Row* pRow = pAllocRow(nBytesRequired);
   if (!pRow)
     return false;
   
   i8 iTxId = pTxRef->iTxId();
   
-//  vTrace("TxId %lld\n",iTxId);
-  
   pRow->vTxId(iTxId);
   
-  Memory::vCopy(pRow->pData(),pRowStr,iDataBytes);
+  char* pData = pRow->pData();
+  
+  StrVal* pStr = new((StrVal*)pData) StrVal;
+  
+  Memory::vCopy(pStr->sStr(),pRecord,iLength);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
-
+  
   return true;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

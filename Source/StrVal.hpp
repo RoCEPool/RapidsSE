@@ -35,6 +35,8 @@ namespace Values
     void vToString(char* aWorkspace);
     
     void  vCopyString(char* aStr, i8 iLength);
+    
+    static i8 nBytesRequired(i8 iLength);
   };
   
   StrVal* _pStrVal(void* pAddr);
