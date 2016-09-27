@@ -39,6 +39,8 @@
 : loadSub ( ^LoaderSub )
 //traceOn
 
+  reg.push
+
   >r
   // r0 ^LoaderSub
 
@@ -56,6 +58,9 @@
   r0 loaderSub.completed if signalParentThread then
 
   rdrop
+
+  reg.pop
+
 
 //traceOff
 ;

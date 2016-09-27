@@ -215,7 +215,7 @@ void Thread::vLoop(void)
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
         //m_xPosixThread.vSecSleep(1);
-        PosixThread::vSleepNano(10_KB);
+        PosixThread::vSleepMilli(1);
         continue;
       }
       
