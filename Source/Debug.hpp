@@ -24,6 +24,7 @@ namespace Common
 
   #ifdef FOOTER_CHECK
   #define _footer_() pFooter()->vAssertFooter();
+  #define _hazard_footer_() m_xHazard.vAssertFooter();
   
   #define _setFooter_() \
     pFooter()->vSetFooter();
@@ -31,6 +32,7 @@ namespace Common
   #else
   
   #define _footer_()
+  #define _hazard_footer_() 
   #define _setFooter_()
   
   #endif
