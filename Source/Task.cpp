@@ -6070,8 +6070,9 @@ void Task::vInputNext(NNP_Task nnpTask)
 {
 ENTRY("vInputNext");
   
-  if (nnpTask->m_bTracing)
+  if (nnpTask->m_bTracing) {
     ASSERT(nnpTask->m_bTracing);
+  }
   
   char* aToken = nnpTask->m_sToken.a();
   
