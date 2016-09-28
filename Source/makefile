@@ -1,6 +1,6 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -Wall -Wextra
+CPPFLAGS = -std=c++11 -Wall -Wextra -O3
 
 DIR_GUARD=@mkdir -p $(@D)
 
