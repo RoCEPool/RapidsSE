@@ -74,22 +74,22 @@ i8 giClassSize[]
   /* 47 */ sizeof(RowWsp),             // CN_ROWWSP
   
   /* 48 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
-  /* 49 */ sizeof(SeHistory),          // CN_SEHISTORY
-  /* 50 */ sizeof(SEitf),              // CN_SEITF
-  /* 51 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
-  /* 52 */ sizeof(SEitfList),          // CN_SEITFLIST
-  /* 53 */ sizeof(SePrompt),           // CN_SEPROMPT
-  /* 54 */ sizeof(Since),              // CN_SINCE
-  /* 55 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
-  /* 56 */ sizeof(SkipList),           // CN_SKIPLIST
-  /* 57 */ sizeof(SkipMap),            // CN_SKIPMAP
-  /* 58 */ sizeof(SkipNode),           // CN_SKIPNODE
-  /* 59 */ sizeof(Heap), // correct    // CN_SMALLHEAP
-  /* 60 */ sizeof(Socket),             // CN_SOCKET
-  /* 61 */ sizeof(Stack),              // CN_STACK
-  /* 62 */ sizeof(StepAccum),          // CN_STEPACCUM
-  /* 63 */ sizeof(StepArray),          // CN_STEPARRAY
-  /* 64 */ sizeof(SysCall),            // CN_SYSCALL
+  /* 49 */ sizeof(SeekMap),            // CN_SEEKMAP
+  /* 50 */ sizeof(SeHistory),          // CN_SEHISTORY
+  /* 51 */ sizeof(SEitf),              // CN_SEITF
+  /* 52 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
+  /* 53 */ sizeof(SEitfList),          // CN_SEITFLIST
+  /* 54 */ sizeof(SePrompt),           // CN_SEPROMPT
+  /* 55 */ sizeof(Since),              // CN_SINCE
+  /* 57 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
+  /* 58 */ sizeof(SkipList),           // CN_SKIPLIST
+  /* 59 */ sizeof(SkipNode),           // CN_SKIPNODE
+  /* 60 */ sizeof(Heap), // correct    // CN_SMALLHEAP
+  /* 61 */ sizeof(Socket),             // CN_SOCKET
+  /* 62 */ sizeof(Stack),              // CN_STACK
+  /* 63 */ sizeof(StepAccum),          // CN_STEPACCUM
+  /* 64 */ sizeof(StepArray),          // CN_STEPARRAY
+  /* 65 */ sizeof(SysCall),            // CN_SYSCALL
   
   /* 65 */ sizeof(Table),              // CN_TABLE
   /* 66 */ sizeof(Task),               // CN_TASK
