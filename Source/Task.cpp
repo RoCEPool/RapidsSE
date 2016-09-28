@@ -773,7 +773,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.seek",        &vDirSeek,          false);
   vAddPrimitive("dir.tell",        &vDirTell,          false);
  
-  vAddPrimitive("error.msg",      &vErrorMsg,          false);
+  vAddPrimitive("error.msg",       &vErrorMsg,         false);
   
   vAddPrimitive("file.close",      &vFileClose,        false);
   vAddPrimitive("file.delete",     &vFileDelete,       false);
@@ -801,6 +801,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("loader.closeFile",   &vLoaderCloseFile,   false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
@@ -6218,6 +6219,27 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   
   delete pLoader;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.findChunk -- find next chunk                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderFindChunk(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderFindChunk");
+  
+  Object* pPtrLoader;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+    THROW_INVALID_PARAM("loader.findChunk");
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  bool bFoundChunk = pLoader->bFindChunk();
+  
+  nnpTask->m_xParamStack.vPush(bFoundChunk);
+ 
   EXIT();
 }
 
