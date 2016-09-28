@@ -67,6 +67,10 @@ LoaderSub::LoaderSub(void)
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
   
+  //--
+  
+  //m_xFile
+  
   _checkInitialised_(sizeof(LoaderSub));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -107,6 +111,11 @@ void LoaderSub::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
+  // open the file
+  m_xFile.vPath(m_pLoader->pFile()->sPath());
+  bool b = m_xFile.bOpen(C_OPEN_READ);
+  RASSERT(b);
+  
   // read first chunk
   m_bMoreChunks = bFetchChunk();
 }
@@ -139,6 +148,8 @@ void LoaderSub::vEnd(void)
       m_pLoader->vAppendBuffer(m_iPartition,pRowBuffer);
     }
   }
+  
+  m_xFile.vClose();  
 }
 
 /*----------------------------------------------------------------------------*/

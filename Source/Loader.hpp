@@ -46,6 +46,7 @@ namespace DBobjects
     
     void   vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     void   vCloseFile(void);
+    File*  pFile(void);
     bool   bOpenFile(void);
     void   vPath(s& sPath);
     void   vSubs(i8 nSubs);
