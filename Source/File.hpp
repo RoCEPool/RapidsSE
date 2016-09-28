@@ -72,6 +72,7 @@ namespace Common
     void vSet(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     void vSet(FILE* pFilePtr, const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     SysCall& rSysCall(void);
+    i8   iTell(void);
     i8   iTraceLevel(void);
     void vTraceLevel(i8 iTraceLevel);
     void vUngetChar(char cChar);

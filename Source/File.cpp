@@ -669,6 +669,28 @@ SysCall& File::rSysCall(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* where are we?                                                              */
+/*----------------------------------------------------------------------------*/
+i8 File::iTell(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  
+  i8 rCode = ftell(m_pFilePtr);
+  
+  if (-1 == rCode) {
+    m_xSysCall.vError(errno);
+    vWarn("File::iTell: ftell() error; errno=%d",errno);
+    return -1;
+  }
+  
+  m_xSysCall.vSuccess();
+  
+  return rCode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get trace level                                                            */
 /*----------------------------------------------------------------------------*/
 i8 File::iTraceLevel(void)

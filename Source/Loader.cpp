@@ -66,8 +66,9 @@ Loader::Loader(void)
   
   m_pChunkMap = new SeekMap;
   //m_xChunkFile
-  m_iChunkSeek = 0;
-  Memory::vZero(m_xChunkEnd,C_CHUNKEND);
+  m_iChunkNext = 0;
+  Memory::vZero(m_xChunkTest,C_CHUNKTEST);
+  m_iChunkTell = 0;
   
   _checkInitialised_(sizeof(Loader));
   
@@ -233,36 +234,76 @@ bool Loader::bFindChunk(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
   if (! m_xChunkFile.bIsOpen()) {
-    bool b = m_xFile.bOpen(C_OPEN_READ);
+    m_xChunkFile.vPath(m_xFile.sPath());
+    bool b = m_xChunkFile.bOpen(C_OPEN_READ);
     if (! b)
       return false;
+    
+    m_xChunkFile.vSeekEnd();
+    m_iChunkTell = m_xChunkFile.iTell();
   }
   
-  i8 iTestSeek = m_iChunkSeek + C_1M - C_CHUNKEND;
-  m_xChunkFile.vSeek(iTestSeek);
-  
-  i8 iBytesRead = m_xFile.iReadChunk(m_xChunkEnd,C_CHUNKEND);
-  
-  if (! iBytesRead) {
-    m_xFile.vClose();
+  if (m_iChunkNext >= m_iChunkTell) {
     m_pChunkMap->vDone(true);
+    //vChunkTest();
+    m_xChunkFile.vClose();
     return false;
   }
   
-  const char *z = &m_xChunkEnd[iBytesRead - 1];
+  i8 iTestSeek = m_iChunkNext + C_CHUNKSIZE - C_CHUNKTEST;
   
-  bool bFoundEol = String::bBackward(&z,m_xChunkEnd,'\n');
+  if (iTestSeek > m_iChunkTell) {
+    iTestSeek = m_iChunkTell - 1;
+  }
+  
+  m_xChunkFile.vSeek(iTestSeek);
+  
+  i8 iBytesRead = m_xChunkFile.iReadChunk(m_xChunkTest,C_CHUNKTEST);
+  
+  const char *z = &m_xChunkTest[iBytesRead - 1];
+  
+  bool bFoundEol = String::bBackward(&z,m_xChunkTest,'\n');
   RASSERT(bFoundEol);
   
-  i8 nBytes = Magic::iSub((void*)z,m_xChunkEnd);
+  i8 nBytes = Magic::iSub((void*)z,m_xChunkTest) + 1;
   
-  m_iChunkSeek = m_iChunkSeek + C_1M - C_CHUNKEND + nBytes;
+  i8 iEolOffset = iTestSeek + nBytes - 1;
+  //vTrace("EolOffset %lld\n",iEolOffset);
+  m_pChunkMap->vEolOffset(iEolOffset);
   
-  vTrace("ChunkSeek %lld\n",m_iChunkSeek);
-  
-  m_pChunkMap->vAdd(m_iChunkSeek);
+  m_iChunkNext = iEolOffset + 1;
   
   return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* test if we chunked correctly                                               */
+/*----------------------------------------------------------------------------*/
+void Loader::vChunkTest(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  i8 iSeek;
+  i8 nBytes;
+  
+  while (m_pChunkMap->bNext(iSeek,nBytes)) {
+    
+    //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);
+    
+    if (iSeek) {
+      m_xChunkFile.vSeek(iSeek - 1);
+      i8 iBytesRead = m_xChunkFile.iReadChunk(m_xChunkTest,1);
+      ASSERT(1 == iBytesRead);
+      ASSERT('\n' == m_xChunkTest[0]);
+    }
+    
+    m_xChunkFile.vSeek(iSeek + nBytes - 1);
+    i8 iBytesRead = m_xChunkFile.iReadChunk(m_xChunkTest,1);
+    ASSERT(1 == iBytesRead);
+    ASSERT('\n' == m_xChunkTest[0]);
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/

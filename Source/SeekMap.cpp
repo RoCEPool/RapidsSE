@@ -49,7 +49,7 @@ SeekMap::SeekMap(void)
   //m_zLock
   m_iNext    = 0;
   for (i8 iEntry = 0; iEntry < C_SEEKMAP_ENTRIES; iEntry++)
-    m_iEnd[iEntry] = -1;
+    m_iEolOffset[iEntry] = -1;
 
   _checkInitialised_(sizeof(CN_SEEKMAP));
   
@@ -82,13 +82,15 @@ void SeekMap::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* parent adds the offset of the '\n' which ends a read-chunk                 */
+/* parent adds the offset of the end of a read-chunk                          */
 /*----------------------------------------------------------------------------*/
-void SeekMap::vAdd(i8 iEndOffset)
+void SeekMap::vEolOffset(i8 iEolOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
 
-  m_iEnd[m_iEntries++] = iEndOffset;
+  m_iEolOffset[m_iEntries++] = iEolOffset;
+  
+  RASSERT(m_iEntries < C_SEEKMAP_ENTRIES);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,6 +111,8 @@ void SeekMap::vDone(bool bDone)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
   
   m_bDone = bDone;
+  
+  vTrace("SeekMap closed with %lld entries\n",m_iEntries);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -134,10 +138,10 @@ bool SeekMap::bNext(i8& iSeek, i8& nBytes)
   if (0 == m_iNext)
     iSeek = 0;
   else
-    iSeek = m_iEnd[m_iNext - 1] + 1;
+    iSeek = m_iEolOffset[m_iNext - 1] + 1;
   
   // calculate the number of bytes in the read-chunk
-  i8 iEnd = m_iEnd[m_iNext];
+  i8 iEnd = m_iEolOffset[m_iNext];
   nBytes  = iEnd - iSeek + 1;
   
   // a subsequent subordinate calling this func will get the next entry
