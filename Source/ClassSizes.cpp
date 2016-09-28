@@ -70,6 +70,7 @@ i8 giClassSize[]
   /* 51 */ sizeof(SkipNode),
   /* 52 */ sizeof(Heap),
   /* 53 */ sizeof(Socket),
+  /*    */ sizeof(SkipMap),
   /* 54 */ sizeof(Stack),
   /* 55 */ sizeof(StepAccum),
   /* 56 */ sizeof(StepArray),
