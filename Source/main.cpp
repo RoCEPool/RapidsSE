@@ -22,7 +22,7 @@ int main(int argc, const char* argv[])
   aRelDbg = "release";
 #endif
   
-  vTest1();
+  //vTest1();
   
   RapidsSE::vCheckAssumptions();
   
@@ -87,6 +87,26 @@ int main(int argc, const char* argv[])
 /*----------------------------------------------------------------------------*/
 void vTest1(void)
 {
+  File xFile;
+  i8 iChunk = C_32KB;
+  char buffer[iChunk];
+  Timer xTimer;
+  
+  vTrace("Reading lineitem.tbl in chunks of %lld\n", iChunk);
+  xFile.vPath("/Volumes/Data/Users/alkayamarti/tpch_SF10/lineitem.tbl");
+  bool b = xFile.bOpen(C_OPEN_READ);
+  ASSERT(b);
+  
+  xTimer.vStart();
+  i8 iBytesRead = xFile.iReadChunk(buffer,iChunk);
+  
+  while (iBytesRead) {
+    iBytesRead = xFile.iReadChunk(buffer,iChunk);
+  }
+  xTimer.vUpdate();
+  vTrace("duration %lldms\n",xTimer.iMilliseconds());
+  
+  xFile.vClose();
 }
 
 /*============================================================================*/
