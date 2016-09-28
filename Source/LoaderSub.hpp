@@ -17,7 +17,7 @@ namespace DBobjects
     i8       m_iHash;          // hash of record
     i8       m_iPartition;     // which partition
     bool     m_bMoreChunks;    // more chunks
-    LoadBuffer* m_pLoadBuffer; // loading buffer
+    LoadChunk* m_pLoadBuffer; // loading buffer
     
     RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers
     

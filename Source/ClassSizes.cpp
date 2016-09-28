@@ -47,6 +47,7 @@ i8 giClassSize[]
   /* 26 */ sizeof(KeyCpp),             // CN_KEYCPP
   /* 27 */ sizeof(KeyVal),             // CN_KEYVAL
   
+  /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 28 */ sizeof(Loader),             // CN_LOADER
   /* 29 */ sizeof(LoaderSub),          // CN_LOADERSUB
   /* 30 */ sizeof(Lock),               // CN_LOCK

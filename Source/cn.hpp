@@ -53,6 +53,7 @@ namespace Magic
     /* 26 */ CN_KEYCPP,
     /* 27 */ CN_KEYVAL,
     
+    /*    */ CN_LOADCHUNK,
     /* 28 */ CN_LOADER,
     /* 29 */ CN_LOADERSUB,
     /* 30 */ CN_LOCK,
@@ -161,6 +162,7 @@ namespace Magic
     /* 26 */ "KEYCPP",
     /* 27 */ "KEYVAL",
     
+    /*    */ "LOADCHUNK",
     /* 28 */ "LOADER",
     /* 29 */ "LOADERSUB",
     /* 30 */ "LOCK",

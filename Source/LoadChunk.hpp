@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LoadBuffer.hpp -- File Load Buffer                                         */
+/* LoadChunk.hpp -- File Load Buffer                                         */
 /*============================================================================*/
 
 #pragma once
@@ -8,24 +8,26 @@
 
 namespace Structures
 {
-  static const i8 C_LOADBUFFER_SIZE = C_1M; // its 1M not 1MB (i.e. < 1MB)
+  static const i8 C_LOADCHUNK_SIZE = C_1M; // its 1M not 1MB (i.e. < 1MB)
   
-  class LoadBuffer : public Buffer
+  class LoadChunk : public Buffer
   {
   private:
     
     char* m_pEndChunk;   // last byte of where chunk ends
     char* m_pNextRecord; // first byte of next record
     
-    char  m_wWorkarea[C_LOADBUFFER_SIZE];
+    char  m_wWorkarea[C_LOADCHUNK_SIZE];
     
   public:
     void* operator new(size_t);
     void  operator delete(void*);
     
-    LoadBuffer(void);
-    ~LoadBuffer(void);
+    LoadChunk(void);
+    ~LoadChunk(void);
 
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     i8    iBytesWorkarea(void);
     i8    iCompleteBytes(i8 iBytesRead);
     i8    iNextRecord(void);

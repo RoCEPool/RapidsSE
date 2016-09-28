@@ -82,6 +82,7 @@ pDUMPFUN *gpDump[]
   /* 26 */ &KeyCpp::vDump,             // CN_KEYCPP
   /* 27 */ &KeyVal::vDump,             // CN_KEYVAL
   
+  /*    */ &LoadChunk::vDump,          // CN_LOADCHUNK
   /* 28 */ &Loader::vDump,             // CN_LOADER
   /* 29 */ &LoaderSub::vDump,          // CN_LOADERSUB
   /* 30 */ &RapidsSE::vDumpInvalid,    // CN_LOCK

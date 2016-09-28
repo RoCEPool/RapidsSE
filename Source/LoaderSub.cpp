@@ -62,7 +62,7 @@ LoaderSub::LoaderSub(void)
   m_iHash       = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
-  m_pLoadBuffer = new LoadBuffer;
+  m_pLoadBuffer = new LoadChunk;
   
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;

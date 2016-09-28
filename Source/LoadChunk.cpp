@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* LoadBuffer.cpp -- File Load Buffer                                         */
+/* LoadChunk.cpp -- File Load Buffer                                         */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -9,7 +9,7 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* LoadBuffer::operator new(size_t iSize)
+void* LoadChunk::operator new(size_t iSize)
 {
   RASSERT(iSize);
   Buffer* pBuffer = gpBufferPool->pAllocBuffer();
@@ -20,7 +20,7 @@ void* LoadBuffer::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void LoadBuffer::operator delete(void* pBufferAddress)
+void LoadChunk::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
@@ -30,29 +30,42 @@ void LoadBuffer::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-LoadBuffer::LoadBuffer(void)
-: Buffer(CN_SCANBUFFER)
+LoadChunk::LoadChunk(void)
+: Buffer(CN_LOADCHUNK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 
-  Memory::vSet(m_wWorkarea,0xEF,C_LOADBUFFER_SIZE);
+  Memory::vSet(m_wWorkarea,0xEF,C_LOADCHUNK_SIZE);
   
   vReset();
   
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
  
-  _checkInitialised_(sizeof(LoadBuffer));
+  _checkInitialised_(sizeof(LoadChunk));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-LoadBuffer::~LoadBuffer(void)
+LoadChunk::~LoadChunk(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump LoaderSub                                                             */
+/*----------------------------------------------------------------------------*/
+void LoadChunk::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_LOADCHUNK);
+  ASSERT(pObject->eClass() == CN_LOADCHUNK);
+  
+  LoadChunk* pLoadChunk = reinterpret_cast<LoadChunk*>(pObject);
+  
+  vTrace("%LoadChunk %p:\n", pTab, pLoadChunk);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,22 +75,22 @@ LoadBuffer::~LoadBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get the number of bytes in workarea of this load buffer                    */
 /*----------------------------------------------------------------------------*/
-i8 LoadBuffer::iBytesWorkarea(void)
+i8 LoadChunk::iBytesWorkarea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
   
-  return C_LOADBUFFER_SIZE;
+  return C_LOADCHUNK_SIZE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the number of bytes for set of complete records just read in           */
 /*----------------------------------------------------------------------------*/
-i8 LoadBuffer::iCompleteBytes(i8 iBytesRead)
+i8 LoadChunk::iCompleteBytes(i8 iBytesRead)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
@@ -120,9 +133,9 @@ i8 LoadBuffer::iCompleteBytes(i8 iBytesRead)
 /*----------------------------------------------------------------------------*/
 /* get offset of next record                                                  */
 /*----------------------------------------------------------------------------*/
-i8 LoadBuffer::iNextRecord(void)
+i8 LoadChunk::iNextRecord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   ASSERT(m_pEndChunk);
   ASSERT(m_pNextRecord);
@@ -135,9 +148,9 @@ i8 LoadBuffer::iNextRecord(void)
 /*----------------------------------------------------------------------------*/
 /* get offset of end chunk                                                    */
 /*----------------------------------------------------------------------------*/
-i8 LoadBuffer::iEndChunk(void)
+i8 LoadChunk::iEndChunk(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   ASSERT(m_pEndChunk);
   ASSERT(m_pNextRecord);
@@ -150,9 +163,9 @@ i8 LoadBuffer::iEndChunk(void)
 /*----------------------------------------------------------------------------*/
 /* get address of next record and its byte length                             */
 /*----------------------------------------------------------------------------*/
-char* LoadBuffer::pNextRecord(i8& iRecordBytes)
+char* LoadChunk::pNextRecord(i8& iRecordBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   ASSERT(m_pEndChunk);
   ASSERT(m_pNextRecord);
@@ -188,9 +201,9 @@ char* LoadBuffer::pNextRecord(i8& iRecordBytes)
 /*----------------------------------------------------------------------------*/
 /* get address of the workarea                                                */
 /*----------------------------------------------------------------------------*/
-char* LoadBuffer::pWorkarea(void)
+char* LoadChunk::pWorkarea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
@@ -205,9 +218,9 @@ char* LoadBuffer::pWorkarea(void)
 /*----------------------------------------------------------------------------*/
 /* reset to initial position (no data)                                        */
 /*----------------------------------------------------------------------------*/
-void LoadBuffer::vReset(void)
+void LoadChunk::vReset(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
   m_pEndChunk   = nullptr;
   m_pNextRecord = nullptr;

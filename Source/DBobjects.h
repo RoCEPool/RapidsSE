@@ -23,7 +23,7 @@
 
 #include "SeekMap.hpp"
 
-#include "LoadBuffer.hpp"
+#include "LoadChunk.hpp"
 #include "Loader.hpp"
 #include "LoaderSub.hpp"
 

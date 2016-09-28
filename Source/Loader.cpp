@@ -260,7 +260,7 @@ bool Loader::bFindChunk(void)
     return false;
   }
   
-  i8 iTestSeek = m_iChunkNext + C_LOADBUFFER_SIZE - C_BLOCKTEST;
+  i8 iTestSeek = m_iChunkNext + C_LOADCHUNK_SIZE - C_BLOCKTEST;
   
   if (iTestSeek > m_iChunkTell) {
     iTestSeek = m_iChunkTell - 1;
@@ -323,7 +323,7 @@ void Loader::vChunkTest(void)
 /*----------------------------------------------------------------------------*/
 /* fetch next chunk from file                                                 */
 /*----------------------------------------------------------------------------*/
-bool Loader::bFetchChunk(LoadBuffer* pLoadBuffer)
+bool Loader::bFetchChunk(LoadChunk* pLoadBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
