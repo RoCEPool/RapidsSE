@@ -6514,7 +6514,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   
   bool bInserted = pLoaderSub->bInsertRow();
   
-  nnpTask->m_xParamStack.vPush(bInserted);
+  //nnpTask->m_xParamStack.vPush(bInserted);
   
   EXIT();
 }

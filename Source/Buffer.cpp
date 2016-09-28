@@ -45,6 +45,8 @@ Buffer::Buffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  m_pLastByte = pLastUsableByte();
+  
   _setFooter_();
   
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());

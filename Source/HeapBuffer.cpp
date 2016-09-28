@@ -153,7 +153,7 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
   FreeChunk* pNextChunk = static_cast<FreeChunk*>(pvAdd(pChunk,nBytes));
 
   // check next buffer ends within this segment
-  if (pChunkEnd(pNextChunk,nBytes) > pLastUsableByte())
+  if (pChunkEnd(pNextChunk,nBytes) > m_pLastByte)
     return nullptr;
   
   return pNextChunk;

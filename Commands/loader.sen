@@ -49,7 +49,7 @@
     loaderSub.fetchrecord
     while
       loaderSub.hashRecord
-      loaderSub.insertrow  drop
+      loaderSub.insertrow
   repeat
 
   loaderSub.end

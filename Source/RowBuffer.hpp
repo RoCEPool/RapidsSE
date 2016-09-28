@@ -11,7 +11,6 @@ namespace DBobjects
   class RowBuffer : public Buffer
   {
   private:
-    bool       m_bHasSpace;   // this buffer has more space?
     Object*    m_pFreeSpace;  // ptr to free space within this buffer
     RowBuffer* m_pPrevBuffer; // prev buffer
     RowBuffer* m_pNextBuffer; // next buffer
@@ -39,15 +38,12 @@ namespace DBobjects
     
     i8         iBytesUsed(void);
     void       vCopyBuffer(RowBuffer* pFromBuffer);
-    bool       bHasSpace(void);
     
     bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
   private:
     Object* pDataArea(void);
     i8      iFreeSpace(void);
-    bool    bIsExhausted(void);
-    void    vSetExhausted(void);
   };
 }
 

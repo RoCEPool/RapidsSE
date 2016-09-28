@@ -10,9 +10,10 @@ namespace Pool
 {
   class Buffer : public Object
   {
-  private:
-    bn m_nBufferNo;        // this buffer number
-    bn m_nOverflowBuffer;  // logical overflow
+  protected:
+    bn     m_nBufferNo;        // this buffer number
+    bn     m_nOverflowBuffer;  // logical overflow
+    char*  m_pLastByte;
     // ..data..
     
   public:

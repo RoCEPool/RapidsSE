@@ -35,7 +35,6 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
-  m_bHasSpace   = true;
   m_pFreeSpace  = pDataArea();
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
@@ -62,13 +61,8 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
   
   i8 iBytes = Row::iBytesRequired(iDataBytes);
 
-  // was exhausted on last call?
-  if (bIsExhausted())
-    return nullptr;
-  
   // test  sufficient freespace
   if (iFreeSpace() < iBytes) {
-    vSetExhausted();
     return nullptr;
   }
   
@@ -94,7 +88,6 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
   
   vTrace("%sRowBuffer %p:\n", pTab, pRowBuffer);
-  vTrace("%s  hasSpace %s \n", pTab, pRowBuffer->m_bHasSpace ? "true" : "false");
   vTrace("%s  freeSpace %p\n", pTab, pRowBuffer->m_pFreeSpace);
   vTrace("%s  prevBuffer %p\n", pTab, pRowBuffer->m_pPrevBuffer);
   vTrace("%s  nextBuffer %p\n\n", pTab, pRowBuffer->m_pNextBuffer);
@@ -191,8 +184,6 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  m_bHasSpace = pFromBuffer->bHasSpace();
-  
   i8 iBytes = pFromBuffer->iBytesUsed();
   
   Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),iBytes);
@@ -202,16 +193,6 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
   m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* has space?                                                                 */
-/*----------------------------------------------------------------------------*/
-bool RowBuffer::bHasSpace(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_bHasSpace;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -288,31 +269,11 @@ i8 RowBuffer::iFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = iSub(pLastUsableByte(),m_pFreeSpace);
+  i8 nBytes = iSub(m_pLastByte,m_pFreeSpace);
 
   nBytes -= sizeof(Footer);
   
   return nBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* has this buffer exhausted its space?                                       */
-/*----------------------------------------------------------------------------*/
-bool RowBuffer::bIsExhausted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  return m_bHasSpace ? false : true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* this buffer has exhausted its space                                        */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vSetExhausted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-  
-  m_bHasSpace = false;
 }
 
 /*============================================================================*/
