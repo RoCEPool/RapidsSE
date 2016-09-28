@@ -43,7 +43,7 @@ void* ListNode_t<OBJECT>::operator new(size_t iSize)
 {
   vFatal("fatal: ListNode_t class cannot be new'd");
   
-  ASSERT(0);
+  RASSERT(0);
 }
 
 /*---------------------------------------------------------------------------*/
