@@ -14,16 +14,16 @@ namespace DBobjects
     Loader*  m_pLoader;  // the reference information
     char*    m_pRecord;  // record from file
     i8       m_iLength;  // length of record
-    i8       m_iHash;          // hash of record
-    i8       m_iPartition;     // which partition
-    bool     m_bMoreChunks;    // more chunks
-    LoadChunk* m_pLoadBuffer; // loading buffer
+    i8       m_iHash;        // hash of record
+    i8       m_iPartition;   // which partition
+    bool     m_bMoreChunks;  // more chunks
+    LoadChunk* m_pLoadChunk; // loading buffer
     
     RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers
     
     //--
     
-    File     m_xFile;    // file being loaded
+    File       m_xFile;      // file being loaded
     
     // must be last
     Footer m_xFooter;

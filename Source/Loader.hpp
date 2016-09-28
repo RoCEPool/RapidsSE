@@ -59,12 +59,10 @@ namespace DBobjects
     bool   bInsertRow(i8 iPartn, char* pRecord, i8 iLength);
     bool   bNextChunk(i8& iSeek, i8& nBytes);
     
-    
     bool   bFindChunk(void);
     
     void   vChunkTest(void);
     
-
     Footer* pFooter(void);
   };
   

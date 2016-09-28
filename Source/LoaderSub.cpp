@@ -62,7 +62,7 @@ LoaderSub::LoaderSub(void)
   m_iHash       = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
-  m_pLoadBuffer = new LoadChunk;
+  m_pLoadChunk = new LoadChunk;
   
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
@@ -70,7 +70,7 @@ LoaderSub::LoaderSub(void)
   //--
   
   //m_xFile
-  
+
   _checkInitialised_(sizeof(LoaderSub));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -83,8 +83,8 @@ LoaderSub::~LoaderSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  if (m_pLoadBuffer)
-    delete m_pLoadBuffer;
+  if (m_pLoadChunk)
+    delete m_pLoadChunk;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -163,10 +163,10 @@ bool LoaderSub::bFetchRecord(void)
     return false;
   
 //  vTrace("NextRecord @ %lld end %lld\n",
-//         m_pLoadBuffer->iNextRecord(),m_pLoadBuffer->iEndChunk());
+//         m_pLoadChunk->iNextRecord(),m_pLoadChunk->iEndChunk());
   
   // fetch next record from current chunk
-  m_pRecord = m_pLoadBuffer->pNextRecord(m_iLength);
+  m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
   if ( m_pRecord ) {
 //    vDumpAscii(m_pRecord,m_iLength);
     return true;
@@ -178,7 +178,7 @@ bool LoaderSub::bFetchRecord(void)
     return false;
   
   // fetch first record from next chunk
-  m_pRecord = m_pLoadBuffer->pNextRecord(m_iLength);
+  m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
   if ( m_pRecord )
     return true;
   
@@ -192,7 +192,7 @@ bool LoaderSub::bFetchChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  bool bMore = m_pLoader->bFetchChunk(m_pLoadBuffer);
+  bool bMore = m_pLoader->bFetchChunk(m_pLoadChunk);
 
   return bMore;
 }
