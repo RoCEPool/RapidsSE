@@ -11,6 +11,8 @@ namespace DBobjects
   class Loader : public Object
   {
   private:
+    static const i8 C_CHUNKEND = 4096;
+    
     Table* m_pTable;   // table being load
     File   m_xFile;    // from which file
     i8     m_iSeek;    // seek before next read
@@ -19,6 +21,13 @@ namespace DBobjects
     Lock   m_xLock;    // lock
     
     i8     m_nSubs;    // number of subordinates remaining
+
+    //--
+
+    SeekMap* m_pChunkMap;  // chunk map
+    File     m_xChunkFile; // from which file
+    i8       m_iChunkSeek; // seek before next read
+    char     m_xChunkEnd[C_CHUNKEND];
     
     // must be last
     Footer m_xFooter;
@@ -46,6 +55,10 @@ namespace DBobjects
     
     bool   bFetchChunk(LoadBuffer* pLoadBuffer);
     bool   bInsertRow(i8 iPartn, char* pRecord, i8 iLength);
+    
+    
+    bool   bFindChunk(void);
+    
 
     Footer* pFooter(void);
   };

@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern Arguments gxArguments;
+extern Heap*     gpMediumHeap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -24,7 +25,7 @@ Loader* DBobjects::_pLoader(void* pAddr)
 void* Loader::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = gpSmallHeap->pAllocObject(CN_LOADER);
+  void* pObject = gpMediumHeap->pAllocObject(CN_LOADER);
   
   return pObject;
 }
@@ -45,7 +46,7 @@ void Loader::operator delete(void* pLoaderAddress)
 {
   Loader* pLoader = reinterpret_cast<Loader*>(pLoaderAddress);
   
-  gpSmallHeap->vFreeObject(pLoader);
+  gpMediumHeap->vFreeObject(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,6 +64,11 @@ Loader::Loader(void)
   //m_xLock
   m_nSubs    = 0;
   
+  m_pChunkMap = new SeekMap;
+  //m_xChunkFile
+  m_iChunkSeek = 0;
+  Memory::vZero(m_xChunkEnd,C_CHUNKEND);
+  
   _checkInitialised_(sizeof(Loader));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
@@ -74,6 +80,8 @@ Loader::Loader(void)
 Loader::~Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  delete m_pChunkMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +222,51 @@ void Loader::vTxRef(TxRef* pTxRef)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Called by LoaderSub ----------------------------------------------------*/
+/*-- Chunking ----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* fetch next chunk from file                                                 */
+/*----------------------------------------------------------------------------*/
+bool Loader::bFindChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  if (! m_xChunkFile.bIsOpen()) {
+    bool b = m_xFile.bOpen(C_OPEN_READ);
+    if (! b)
+      return false;
+  }
+  
+  i8 iTestSeek = m_iChunkSeek + C_1M - C_CHUNKEND;
+  m_xChunkFile.vSeek(iTestSeek);
+  
+  i8 iBytesRead = m_xFile.iReadChunk(m_xChunkEnd,C_CHUNKEND);
+  
+  if (! iBytesRead) {
+    m_xFile.vClose();
+    m_pChunkMap->vDone(true);
+    return false;
+  }
+  
+  const char *z = &m_xChunkEnd[iBytesRead - 1];
+  
+  bool bFoundEol = String::bBackward(&z,m_xChunkEnd,'\n');
+  RASSERT(bFoundEol);
+  
+  i8 nBytes = Magic::iSub((void*)z,m_xChunkEnd);
+  
+  m_iChunkSeek = m_iChunkSeek + C_1M - C_CHUNKEND + nBytes;
+  
+  vTrace("ChunkSeek %lld\n",m_iChunkSeek);
+  
+  m_pChunkMap->vAdd(m_iChunkSeek);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Called by LoaderSub -----------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
