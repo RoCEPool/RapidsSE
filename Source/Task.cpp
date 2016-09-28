@@ -3139,12 +3139,14 @@ void Task::vJumpFalse(NNP_Task nnpTask)
 {
 ENTRY("vJumpFalse");
   
-  i8 iVal;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpFalse");
+//  i8 iVal;
+//  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
+//    THROW_INVALID_PARAM("jumpFalse");
+
+  i8 iFlag = nnpTask->m_xParamStack.iPop();
   
   // cell points to the jump arg
-  if (iVal)
+  if (iFlag)
     nnpTask->IP.m_pCell++;
   else
     nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;

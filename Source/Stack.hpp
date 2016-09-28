@@ -73,6 +73,7 @@ namespace Structures
     void vPush(Value& xValue);
     void vPush(void* pVoid);
     
+    i8   iPop(void);
    
     //-------------------------------------------------------------------------
     
