@@ -35,7 +35,7 @@ LoadBuffer::LoadBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 
-  Memory::vSet(m_wWorkarea,0xEF,C_WORKAREA);
+  Memory::vSet(m_wWorkarea,0xEF,C_LOADBUFFER_SIZE);
   
   vReset();
   
@@ -56,6 +56,10 @@ LoadBuffer::~LoadBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* get the number of bytes in workarea of this load buffer                    */
 /*----------------------------------------------------------------------------*/
 i8 LoadBuffer::iBytesWorkarea(void)
@@ -65,7 +69,7 @@ i8 LoadBuffer::iBytesWorkarea(void)
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
   
-  return C_WORKAREA;
+  return C_LOADBUFFER_SIZE;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,8 +11,7 @@ namespace DBobjects
   class Loader : public Object
   {
   private:
-    static const i8 C_CHUNKSIZE = C_1M;
-    static const i8 C_CHUNKTEST = 4096;
+    static const i8 C_BLOCKTEST = 4096;
     
     Table* m_pTable;   // table being load
     File   m_xFile;    // from which file
@@ -28,7 +27,7 @@ namespace DBobjects
     SeekMap* m_pChunkMap;  // chunk map
     File     m_xChunkFile; // from which file
     i8       m_iChunkNext; // seek before next read
-    char     m_xChunkTest[C_CHUNKTEST];
+    char     m_xBlockTest[C_BLOCKTEST];
     i8       m_iChunkTell; //
     
     // must be last
@@ -58,6 +57,7 @@ namespace DBobjects
     
     bool   bFetchChunk(LoadBuffer* pLoadBuffer);
     bool   bInsertRow(i8 iPartn, char* pRecord, i8 iLength);
+    bool   bNextChunk(i8& iSeek, i8& nBytes);
     
     
     bool   bFindChunk(void);

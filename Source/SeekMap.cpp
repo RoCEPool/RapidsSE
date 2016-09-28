@@ -118,7 +118,7 @@ void SeekMap::vDone(bool bDone)
 /*----------------------------------------------------------------------------*/
 /* subordinate takes next read-chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool SeekMap::bNext(i8& iSeek, i8& nBytes)
+bool SeekMap::bNextChunk(i8& iSeek, i8& nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
 

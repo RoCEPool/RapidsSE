@@ -34,7 +34,7 @@ namespace DBobjects
     void vEolOffset(i8 iEolOffset);
     bool bDone(void);
     void vDone(bool bDone);
-    bool bNext(i8& iSeek, i8& nBytes);
+    bool bNextChunk(i8& iSeek, i8& nBytes);
     
     Footer* pFooter(void);
   };

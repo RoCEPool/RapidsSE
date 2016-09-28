@@ -67,7 +67,7 @@ Loader::Loader(void)
   m_pChunkMap = new SeekMap;
   //m_xChunkFile
   m_iChunkNext = 0;
-  Memory::vZero(m_xChunkTest,C_CHUNKTEST);
+  Memory::vZero(m_xBlockTest,C_BLOCKTEST);
   m_iChunkTell = 0;
   
   _checkInitialised_(sizeof(Loader));
@@ -260,7 +260,7 @@ bool Loader::bFindChunk(void)
     return false;
   }
   
-  i8 iTestSeek = m_iChunkNext + C_CHUNKSIZE - C_CHUNKTEST;
+  i8 iTestSeek = m_iChunkNext + C_LOADBUFFER_SIZE - C_BLOCKTEST;
   
   if (iTestSeek > m_iChunkTell) {
     iTestSeek = m_iChunkTell - 1;
@@ -268,14 +268,14 @@ bool Loader::bFindChunk(void)
   
   m_xChunkFile.vSeek(iTestSeek);
   
-  i8 iBytesRead = m_xChunkFile.iReadChunk(m_xChunkTest,C_CHUNKTEST);
+  i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,C_BLOCKTEST);
   
-  const char *z = &m_xChunkTest[iBytesRead - 1];
+  const char *z = &m_xBlockTest[iBytesRead - 1];
   
-  bool bFoundEol = String::bBackward(&z,m_xChunkTest,'\n');
+  bool bFoundEol = String::bBackward(&z,m_xBlockTest,'\n');
   RASSERT(bFoundEol);
   
-  i8 nBytes = Magic::iSub((void*)z,m_xChunkTest) + 1;
+  i8 nBytes = Magic::iSub((void*)z,m_xBlockTest) + 1;
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
   //vTrace("EolOffset %lld\n",iEolOffset);
@@ -297,21 +297,21 @@ void Loader::vChunkTest(void)
   i8 iSeek;
   i8 nBytes;
   
-  while (m_pChunkMap->bNext(iSeek,nBytes)) {
+  while (m_pChunkMap->bNextChunk(iSeek,nBytes)) {
     
     //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);
     
     if (iSeek) {
       m_xChunkFile.vSeek(iSeek - 1);
-      i8 iBytesRead = m_xChunkFile.iReadChunk(m_xChunkTest,1);
+      i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,1);
       ASSERT(1 == iBytesRead);
-      ASSERT('\n' == m_xChunkTest[0]);
+      ASSERT('\n' == m_xBlockTest[0]);
     }
     
     m_xChunkFile.vSeek(iSeek + nBytes - 1);
-    i8 iBytesRead = m_xChunkFile.iReadChunk(m_xChunkTest,1);
+    i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,1);
     ASSERT(1 == iBytesRead);
-    ASSERT('\n' == m_xChunkTest[0]);
+    ASSERT('\n' == m_xBlockTest[0]);
     
   }
 }
@@ -367,6 +367,18 @@ bool Loader::bInsertRow(i8 iPartn, char* pRecord, i8 iLength)
   m_pTable->vInsertRow(iPartn,m_pTxRef,pRecord,iLength);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* subordinate takes next read-chunk                                          */
+/*----------------------------------------------------------------------------*/
+bool Loader::bNextChunk(i8& iSeek, i8& nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  
+  bool b = m_pChunkMap->bNextChunk(iSeek,nBytes);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
