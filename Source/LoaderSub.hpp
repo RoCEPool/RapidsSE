@@ -21,10 +21,6 @@ namespace DBobjects
     
     RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers
     
-    //--
-    
-    File       m_xFile;      // file being loaded
-    
     // must be last
     Footer m_xFooter;
     

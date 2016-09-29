@@ -13,7 +13,7 @@ namespace Structures
   class LoadChunk : public Buffer
   {
   private:
-    
+    File  m_xFile;       // file being loaded
     char* m_pEndChunk;   // last byte of where chunk ends
     char* m_pNextRecord; // first byte of next record
     
@@ -28,12 +28,11 @@ namespace Structures
 
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    i8    iBytesWorkarea(void);
-    i8    iCompleteBytes(i8 iBytesRead);
+    void  vCloseFile(void);
     i8    iNextRecord(void);
-    i8    iEndChunk(void);
     char* pNextRecord(i8& iRecordBytes);
-    char* pWorkarea(void);
+    void  vOpenFile(s256& sPath);
+    void  vReadChunk(i8 iSeek, i8 nBytes);
     
   private:
     void  vReset(void);

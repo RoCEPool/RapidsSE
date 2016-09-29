@@ -73,91 +73,13 @@ void LoadChunk::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get the number of bytes in workarea of this load buffer                    */
+/* close file                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 LoadChunk::iBytesWorkarea(void)
+void LoadChunk::vCloseFile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  ASSERT(! m_pEndChunk);
-  ASSERT(! m_pNextRecord);
-  
-  return C_LOADCHUNK_SIZE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the number of bytes for set of complete records just read in           */
-/*----------------------------------------------------------------------------*/
-i8 LoadChunk::iCompleteBytes(i8 iBytesRead)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
-  
-  ASSERT(! m_pEndChunk);
-  ASSERT(! m_pNextRecord);
-  
-  //
-  // At this point, the caller has just read upto C_WORKAREA bytes
-  // of data into the workarea.  It may contain a dangling record.
-  // We scan backards to find the end of the last complete record.
-  // The caller will use the number of complete bytes to adjust/seek
-  // the next read.
-  //
-  
-  // start scanning backward from last byte read
-  char* pScanBackward = &m_wWorkarea[iBytesRead - 1];
-  
-  // find the last end-of-line
-  while (pScanBackward >= m_wWorkarea)
-    if ('\n' == *pScanBackward)
-      break;
-    else
-      pScanBackward--;
-  
-  // if we didnt find an end-of-line there are no more records
-  if (pScanBackward < m_wWorkarea)
-    return 0;
-  
-  // double check we found the end-of-line
-  ASSERT('\n' == *pScanBackward);
-  
-  // compute the bytes in the chunk of complete records
-  i8 iCompleteBytes = pScanBackward - m_wWorkarea + 1;
-  
-  // set up for scanning of first record
-  m_pEndChunk   = &m_wWorkarea[iCompleteBytes - 1];
-  m_pNextRecord = m_wWorkarea;
-  
-  return iCompleteBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get offset of next record                                                  */
-/*----------------------------------------------------------------------------*/
-i8 LoadChunk::iNextRecord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
-  
-  ASSERT(m_pEndChunk);
-  ASSERT(m_pNextRecord);
-  
-  i8 iNextRecord = m_pNextRecord - m_wWorkarea;
-  
-  return iNextRecord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get offset of end chunk                                                    */
-/*----------------------------------------------------------------------------*/
-i8 LoadChunk::iEndChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
-  
-  ASSERT(m_pEndChunk);
-  ASSERT(m_pNextRecord);
-  
-  i8 iEndChunk = m_pEndChunk - m_wWorkarea;
-  
-  return iEndChunk;
+  m_xFile.vClose();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,16 +121,31 @@ char* LoadChunk::pNextRecord(i8& iRecordBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of the workarea                                                */
+/* open file                                                                  */
 /*----------------------------------------------------------------------------*/
-char* LoadChunk::pWorkarea(void)
+void LoadChunk::vOpenFile(s256& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  ASSERT(! m_pEndChunk);
-  ASSERT(! m_pNextRecord);
+  // open the file
+  m_xFile.vPath(sPath);
+  bool b = m_xFile.bOpen(C_OPEN_READ);
+  RASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* read given chunk                                                           */
+/*----------------------------------------------------------------------------*/
+void LoadChunk::vReadChunk(i8 iSeek, i8 nBytes)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
   
-  return m_wWorkarea;
+  m_xFile.vSeek(iSeek);
+  
+  i8 iBytesRead = m_xFile.iReadChunk(m_wWorkarea,nBytes);
+
+  m_pEndChunk   = &m_wWorkarea[iBytesRead - 1];
+  m_pNextRecord = m_wWorkarea;
 }
 
 /*----------------------------------------------------------------------------*/

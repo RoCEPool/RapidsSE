@@ -55,7 +55,6 @@ namespace DBobjects
     TxRef* pTxRef(void);
     void   vTxRef(TxRef* pTxRef);
     
-    bool   bFetchChunk(LoadChunk* pLoadBuffer);
     bool   bInsertRow(i8 iPartn, char* pRecord, i8 iLength);
     bool   bNextChunk(i8& iSeek, i8& nBytes);
     

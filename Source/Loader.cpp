@@ -321,41 +321,6 @@ void Loader::vChunkTest(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* fetch next chunk from file                                                 */
-/*----------------------------------------------------------------------------*/
-bool Loader::bFetchChunk(LoadChunk* pLoadBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  i8 iBytesWorkarea = pLoadBuffer->iBytesWorkarea();
-  char* pWorkaread  = pLoadBuffer->pWorkarea();
-  
-  m_xLock.vGrabWrite();
-  
-  m_xFile.vSeek(m_iSeek);
-  
-  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
-  //  vTrace("Read %lld\n",iBytesRead);
-  
-  if ( ! iBytesRead ) {
-    m_xLock.vDropWrite();
-    return false;
-  }
-  
-  i8 iCompleteBytes = pLoadBuffer->iCompleteBytes(iBytesRead);
-  //  vTrace("Complete %lld; NextRecord @ %lld end %lld\n",
-  //         iCompleteBytes,
-  //         m_pLoadBuffer->iNextRecord(),
-  //         m_pLoadBuffer->iEndChunk());
-  
-  m_iSeek += iCompleteBytes;
-  
-  m_xLock.vDropWrite();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* insert row                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Loader::bInsertRow(i8 iPartn, char* pRecord, i8 iLength)

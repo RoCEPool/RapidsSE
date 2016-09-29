@@ -62,7 +62,7 @@ LoaderSub::LoaderSub(void)
   m_iHash       = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
-  m_pLoadChunk = new LoadChunk;
+  m_pLoadChunk  = new LoadChunk;
   
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
@@ -112,9 +112,7 @@ void LoaderSub::vBegin(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // open the file
-  m_xFile.vPath(m_pLoader->pFile()->sPath());
-  bool b = m_xFile.bOpen(C_OPEN_READ);
-  RASSERT(b);
+  m_pLoadChunk->vOpenFile(m_pLoader->pFile()->sPath());
   
   // read first chunk
   m_bMoreChunks = bFetchChunk();
@@ -149,7 +147,7 @@ void LoaderSub::vEnd(void)
     }
   }
   
-  m_xFile.vClose();  
+  m_pLoadChunk->vCloseFile();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -188,14 +186,6 @@ bool LoaderSub::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 /* fetch next chunk from file                                                 */
 /*----------------------------------------------------------------------------*/
-//bool LoaderSub::bFetchChunk(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-//
-//  bool bMore = m_pLoader->bFetchChunk(m_pLoadChunk);
-//
-//  return bMore;
-//}
 bool LoaderSub::bFetchChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -207,13 +197,15 @@ bool LoaderSub::bFetchChunk(void)
   if (! bMore)
     return false;
   
-  m_xFile.vSeek(iSeek);
+//  m_xFile.vSeek(iSeek);
+//  
+//  i8 iBytesWorkarea = m_pLoadChunk->iBytesWorkarea();
+//  char* pWorkaread  = m_pLoadChunk->pWorkarea();
+//  
+//  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
+//  i8 iCompleteBytes = m_pLoadChunk->iCompleteBytes(iBytesRead);
   
-  i8 iBytesWorkarea = m_pLoadChunk->iBytesWorkarea();
-  char* pWorkaread  = m_pLoadChunk->pWorkarea();
-  
-  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
-  i8 iCompleteBytes = m_pLoadChunk->iCompleteBytes(iBytesRead);
+  m_pLoadChunk->vReadChunk(iSeek,nBytes);
   
   return true;
 }
