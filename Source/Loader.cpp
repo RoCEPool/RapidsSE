@@ -65,10 +65,6 @@ Loader::Loader(void)
   m_nSubs    = 0;
   
   m_pLoadMap = new LoadMap;
-  //m_xChunkFile
-  m_iChunkNext = 0;
-  Memory::vZero(m_xBlockTest,C_BLOCKTEST);
-  m_iChunkTell = 0;
   
   _checkInitialised_(sizeof(Loader));
   
@@ -158,6 +154,8 @@ void Loader::vPath(s& sPath)
   const char* pPath = sPath.a();
   
   m_xFile.vPath(pPath);
+  
+  m_pLoadMap->vFilePath(sPath);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -243,78 +241,11 @@ bool Loader::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  if (! m_xChunkFile.bIsOpen()) {
-    m_xChunkFile.vPath(m_xFile.sPath());
-    bool b = m_xChunkFile.bOpen(C_OPEN_READ);
-    if (! b)
-      return false;
-    
-    m_xChunkFile.vSeekEnd();
-    m_iChunkTell = m_xChunkFile.iTell();
-  }
+  bool b = m_pLoadMap->bFindChunk();
   
-  if (m_iChunkNext >= m_iChunkTell) {
-    m_pLoadMap->vDone(true);
-    //vChunkTest();
-    m_xChunkFile.vClose();
-    return false;
-  }
-  
-  i8 iTestSeek = m_iChunkNext + C_LOADCHUNK_SIZE - C_BLOCKTEST;
-  
-  if (iTestSeek > m_iChunkTell) {
-    iTestSeek = m_iChunkTell - 1;
-  }
-  
-  m_xChunkFile.vSeek(iTestSeek);
-  
-  i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,C_BLOCKTEST);
-  
-  const char *z = &m_xBlockTest[iBytesRead - 1];
-  
-  bool bFoundEol = String::bBackward(&z,m_xBlockTest,'\n');
-  RASSERT(bFoundEol);
-  
-  i8 nBytes = Magic::iSub((void*)z,m_xBlockTest) + 1;
-  
-  i8 iEolOffset = iTestSeek + nBytes - 1;
-  //vTrace("EolOffset %lld\n",iEolOffset);
-  m_pLoadMap->vEolOffset(iEolOffset);
-  
-  m_iChunkNext = iEolOffset + 1;
-  
-  return true;
+  return b;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* test if we chunked correctly                                               */
-/*----------------------------------------------------------------------------*/
-void Loader::vChunkTest(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  i8 iSeek;
-  i8 nBytes;
-  
-  while (m_pLoadMap->bNextChunk(iSeek,nBytes)) {
-    
-    //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);
-    
-    if (iSeek) {
-      m_xChunkFile.vSeek(iSeek - 1);
-      i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,1);
-      ASSERT(1 == iBytesRead);
-      ASSERT('\n' == m_xBlockTest[0]);
-    }
-    
-    m_xChunkFile.vSeek(iSeek + nBytes - 1);
-    i8 iBytesRead = m_xChunkFile.iReadChunk(m_xBlockTest,1);
-    ASSERT(1 == iBytesRead);
-    ASSERT('\n' == m_xBlockTest[0]);
-    
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Called by LoaderSub -----------------------------------------------------*/

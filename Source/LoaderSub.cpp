@@ -67,10 +67,6 @@ LoaderSub::LoaderSub(void)
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
   
-  //--
-  
-  //m_xFile
-
   _checkInitialised_(sizeof(LoaderSub));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
@@ -196,14 +192,6 @@ bool LoaderSub::bFetchChunk(void)
   bool bMore = m_pLoader->bNextChunk(iSeek,nBytes);
   if (! bMore)
     return false;
-  
-//  m_xFile.vSeek(iSeek);
-//  
-//  i8 iBytesWorkarea = m_pLoadChunk->iBytesWorkarea();
-//  char* pWorkaread  = m_pLoadChunk->pWorkarea();
-//  
-//  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
-//  i8 iCompleteBytes = m_pLoadChunk->iCompleteBytes(iBytesRead);
   
   m_pLoadChunk->vReadChunk(iSeek,nBytes);
   

@@ -25,10 +25,6 @@ namespace DBobjects
     //--
 
     LoadMap* m_pLoadMap;   // load map
-    File     m_xChunkFile; // from which file
-    i8       m_iChunkNext; // seek before next read
-    char     m_xBlockTest[C_BLOCKTEST];
-    i8       m_iChunkTell; //
     
     // must be last
     Footer m_xFooter;
@@ -59,9 +55,7 @@ namespace DBobjects
     bool   bNextChunk(i8& iSeek, i8& nBytes);
     
     bool   bFindChunk(void);
-    
-    void   vChunkTest(void);
-    
+        
     Footer* pFooter(void);
   };
   
