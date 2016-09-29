@@ -47,7 +47,6 @@ namespace DBobjects
     bool bNextChunk(i8& iSeek, i8& nBytes);
     void vChunkTest(void);
     
-   
     Footer* pFooter(void);
   };
   

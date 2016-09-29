@@ -24,6 +24,7 @@ LoaderSub* DBobjects::_pLoaderSub(void* pAddr)
 void* LoaderSub::operator new(size_t iSize)
 {
   RASSERT(iSize);
+  
   void* pObject = gpSmallHeap->pAllocObject(CN_LOADERSUB);
   
   return pObject;
@@ -57,10 +58,14 @@ LoaderSub::LoaderSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  m_pLoader = nullptr;
-  m_pRecord = nullptr;
-  m_iLength = 0;
-  m_iHash   = 0;
+  m_pLoader  = nullptr;
+  m_pTable   = nullptr;
+  m_pTxRef   = nullptr;
+  m_pLoadMap = nullptr;
+  
+  m_pRecord  = nullptr;
+  m_iLength  = 0;
+  m_iHash    = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
@@ -110,6 +115,11 @@ void LoaderSub::vBegin(void)
   
   s256 sPath;
   
+  // get table, tx and load map
+  m_pTable   = m_pLoader->pTable();
+  m_pTxRef   = m_pLoader->pTxRef();
+  m_pLoadMap = m_pLoader->pLoadMap();
+  
   sPath = m_pLoader->sPath();
   
   // open the chunked file
@@ -138,14 +148,12 @@ void LoaderSub::vEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  TxRef* pTxRef = m_pLoader->pTxRef();
-  
-  // insert any dangling buffers
+  // append any dangling buffers
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++) {
     if (m_pRowBuffer[iPartition]) {
       RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
       m_pRowBuffer[iPartition] = nullptr;
-      m_pLoader->vAppendBuffer(m_iPartition,pRowBuffer);
+      m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
     }
   }
   
@@ -154,18 +162,18 @@ void LoaderSub::vEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch next record from buffer, read more if necessary                      */
+/* fetch next record from buffer, read next chunk if necessary                */
 /*----------------------------------------------------------------------------*/
 bool LoaderSub::bFetchRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  if ( ! m_bMoreChunks )
+  if (! m_bMoreChunks)
     return false;
   
   // fetch next record from current chunk
   m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
-  if ( m_pRecord ) {
+  if (m_pRecord) {
     //vDumpAscii(m_pRecord,m_iLength);
     return true;
   }
@@ -202,7 +210,7 @@ void LoaderSub::vHashRecord(void)
   // modulo to get partition number
   m_iPartition = m_iHash % gxArguments.m_nPartitions;
   
-  //vTrace("Partn %lld\n",m_iPartition);
+  //vTrace("Partition: %lld\n",m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,21 +229,19 @@ bool LoaderSub::bInsertRow(void)
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
-  TxRef* pTxRef = m_pLoader->pTxRef();
-
   // insert row into working buffer
-  if (pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength))
+  if (pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength))
     return true;
   
   // buffer full, append working buffer into table
-  m_pLoader->vAppendBuffer(m_iPartition,pRowBuffer);
+  m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
   // get a new working buffer
   m_pRowBuffer[m_iPartition] = new RowBuffer;
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
-  bool bInserted = pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength);
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength);
   
   return bInserted;
 }
@@ -260,9 +266,21 @@ bool LoaderSub::bReadChunk(void)
   i8 iSeek;
   i8 nBytes;
 
-  // get next chunk info
-  if (! m_pLoader->bNextChunk(iSeek,nBytes))
-    return false;
+  // get information about next chunk
+  for (;;) {
+    
+    bool bDone = m_pLoadMap->bDone();
+    
+    bool bNext = m_pLoadMap->bNextChunk(iSeek,nBytes);
+    
+    if (bDone && ! bNext)
+      return false;
+    
+    if (bNext)
+      break;
+    
+    //vTrace("Waiting for map\n");
+  }
   
   // read the chunk
   m_pLoadChunk->vReadChunk(iSeek,nBytes);

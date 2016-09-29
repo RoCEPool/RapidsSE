@@ -11,11 +11,16 @@ namespace DBobjects
   class LoaderSub : public Object
   {
   private:
-    Loader*  m_pLoader;  // the reference information
-    char*    m_pRecord;  // record from file
-    i8       m_iLength;  // length of record
+    Loader*  m_pLoader;  // loader parent
+    Table*   m_pTable;   // table being load
+    TxRef*   m_pTxRef;   // tx
+    LoadMap* m_pLoadMap; // load map
+    
+    char*    m_pRecord;      // record from file
+    i8       m_iLength;      // length of record
     i8       m_iHash;        // hash of record
-    i8       m_iPartition;   // which partition
+    i8       m_iPartition;   // partition of record
+    
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
     RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers

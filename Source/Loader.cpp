@@ -97,16 +97,25 @@ void Loader::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append row buffer                                                          */
+/* find next chunk in file being loaded                                       */
 /*----------------------------------------------------------------------------*/
-void Loader::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
+bool Loader::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  ASSERT(iPartition < gxArguments.m_nPartitions);
+  bool b = m_pLoadMap->bFindChunk();
   
-  m_pTable->vAppendBuffer(iPartition,pRowBuffer);
+  return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get loap map                                                               */
+/*----------------------------------------------------------------------------*/
+LoadMap* Loader::pLoadMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+  return m_pLoadMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +188,7 @@ void Loader::vTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set txref                                                                  */
+/* get txref                                                                  */
 /*----------------------------------------------------------------------------*/
 TxRef* Loader::pTxRef(void)
 {
@@ -197,67 +206,7 @@ void Loader::vTxRef(TxRef* pTxRef)
 
   m_pTxRef = pTxRef;
   
-  vTrace("TxId %lld\n",pTxRef->iTxId());
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Chunking ----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* fetch next chunk from file                                                 */
-/*----------------------------------------------------------------------------*/
-bool Loader::bFindChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  bool b = m_pLoadMap->bFindChunk();
-  
-  return b;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Called by LoaderSub -----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* insert row                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Loader::bInsertRow(i8 iPartn, char* pRecord, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  ASSERT(iPartn < gxArguments.m_nPartitions);
-  
-  m_pTable->vInsertRow(iPartn,m_pTxRef,pRecord,iLength);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* subordinate takes next read-chunk                                          */
-/*----------------------------------------------------------------------------*/
-bool Loader::bNextChunk(i8& iSeek, i8& nBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
-  
-  for (;;) {
-    bool bDone = m_pLoadMap->bDone();
-  
-    bool bNext = m_pLoadMap->bNextChunk(iSeek,nBytes);
-  
-    if (bDone && ! bNext)
-      return false;
-    
-    if (bNext)
-      break;
-    
-    //vTrace("Waiting for map\n");
-  }
-  
-  return true;
+  //vTrace("TxId %lld\n",pTxRef->iTxId());
 }
 
 /*----------------------------------------------------------------------------*/
