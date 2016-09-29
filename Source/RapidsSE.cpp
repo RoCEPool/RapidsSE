@@ -638,12 +638,10 @@ void RapidsSE::vStartActors(void)
   // root thread will pop the root task and run it
   gnpRootThread->vAppend(*gnpRootTask);
   
-  // the system is now running
+  while (TS_EXITED != gnpRootTask->eState())
+    PosixThread::vSleepMilli(1);
   
-  while (! gpMainDic->pFind("requestQueue"))
-    ;
-
-  PosixThread::vSleepNano(250_MB);
+  // the system is now running
 }
 
 /*----------------------------------------------------------------------------*/
