@@ -11,20 +11,12 @@ namespace DBobjects
   class Loader : public Object
   {
   private:
-    static const i8 C_BLOCKTEST = 4096;
-    
-    Table* m_pTable;   // table being load
-    File   m_xFile;    // from which file
-    i8     m_iSeek;    // seek before next read
-    TxRef* m_pTxRef;   // tx
-    
-    Lock   m_xLock;    // lock
-    
-    i8     m_nSubs;    // number of subordinates remaining
-
-    //--
-
-    LoadMap* m_pLoadMap;   // load map
+    Table* m_pTable; // table being load
+    File   m_xFile;  // from which file
+    i8     m_iSeek;  // seek before next read
+    TxRef* m_pTxRef; // tx
+    Atomic m_zSubs;  // number of subordinates remaining
+    LoadMap* m_pLoadMap; // load map
     
     // must be last
     Footer m_xFooter;

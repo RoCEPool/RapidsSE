@@ -62,7 +62,7 @@ Loader::Loader(void)
   m_iSeek    = 0;
   m_pTxRef   = nullptr;
   //m_xLock
-  m_nSubs    = 0;
+  m_zSubs    = 0;
   
   m_pLoadMap = new LoadMap;
   
@@ -165,7 +165,7 @@ void Loader::vSubs(i8 nSubs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  m_nSubs = nSubs;
+  m_zSubs = nSubs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,14 +175,12 @@ bool Loader::bSubCompleted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  bool bIsDecider = false;
+  bool bIsDecider;
   
-  m_xLock.vGrabWrite();
-  
-  if (0 == --m_nSubs)
+  if (0 == --m_zSubs)
     bIsDecider = true;
-
-  m_xLock.vDropWrite();
+  else
+    bIsDecider = false;
   
   return bIsDecider;
 }
