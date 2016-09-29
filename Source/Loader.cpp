@@ -374,7 +374,7 @@ bool Loader::bInsertRow(i8 iPartn, char* pRecord, i8 iLength)
 /*----------------------------------------------------------------------------*/
 bool Loader::bNextChunk(i8& iSeek, i8& nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
   
   bool b = m_pChunkMap->bNextChunk(iSeek,nBytes);
   

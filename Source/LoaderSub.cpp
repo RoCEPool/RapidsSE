@@ -188,13 +188,34 @@ bool LoaderSub::bFetchRecord(void)
 /*----------------------------------------------------------------------------*/
 /* fetch next chunk from file                                                 */
 /*----------------------------------------------------------------------------*/
+//bool LoaderSub::bFetchChunk(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+//
+//  bool bMore = m_pLoader->bFetchChunk(m_pLoadChunk);
+//
+//  return bMore;
+//}
 bool LoaderSub::bFetchChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-
-  bool bMore = m_pLoader->bFetchChunk(m_pLoadChunk);
-
-  return bMore;
+  
+  i8 iSeek;
+  i8 nBytes;
+  
+  bool bMore = m_pLoader->bNextChunk(iSeek,nBytes);
+  if (! bMore)
+    return false;
+  
+  m_xFile.vSeek(iSeek);
+  
+  i8 iBytesWorkarea = m_pLoadChunk->iBytesWorkarea();
+  char* pWorkaread  = m_pLoadChunk->pWorkarea();
+  
+  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
+  i8 iCompleteBytes = m_pLoadChunk->iCompleteBytes(iBytesRead);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
