@@ -118,7 +118,7 @@ pDUMPFUN *gpDump[]
   /* 54 */ &RapidsSE::vDumpUndefined,  // CN_SINCE
   /* 55 */ &RapidsSE::vDumpUndefined,  // CN_SKIPCURSOR
   /* 56 */ &RapidsSE::vDumpUndefined,  // CN_SKIPLIST
-  /* 57 */ &SeekMap::vDump,            // CN_SEEKMAP
+  /* 57 */ &LoadMap::vDump,            // CN_LOADMAP
   /* 58 */ &RapidsSE::vDumpUndefined,  // CN_SKIPNODE
   /* 59 */ &Heap::vDump,               // CN_SMALLHEAP
   /* 60 */ &RapidsSE::vDumpUndefined,  // CN_SOCKET

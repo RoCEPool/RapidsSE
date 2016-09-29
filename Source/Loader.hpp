@@ -24,7 +24,7 @@ namespace DBobjects
 
     //--
 
-    SeekMap* m_pChunkMap;  // chunk map
+    LoadMap* m_pLoadMap;   // load map
     File     m_xChunkFile; // from which file
     i8       m_iChunkNext; // seek before next read
     char     m_xBlockTest[C_BLOCKTEST];

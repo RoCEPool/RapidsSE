@@ -75,7 +75,7 @@ i8 giClassSize[]
   /* 47 */ sizeof(RowWsp),             // CN_ROWWSP
   
   /* 48 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
-  /* 49 */ sizeof(SeekMap),            // CN_SEEKMAP
+  /* 49 */ sizeof(LoadMap),            // CN_LOADMAP
   /* 50 */ sizeof(SeHistory),          // CN_SEHISTORY
   /* 51 */ sizeof(SEitf),              // CN_SEITF
   /* 52 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR

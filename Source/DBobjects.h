@@ -21,7 +21,7 @@
 
 #include "RowCursor.hpp"
 
-#include "SeekMap.hpp"
+#include "LoadMap.hpp"
 
 #include "LoadChunk.hpp"
 #include "Loader.hpp"

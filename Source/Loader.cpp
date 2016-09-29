@@ -64,7 +64,7 @@ Loader::Loader(void)
   //m_xLock
   m_nSubs    = 0;
   
-  m_pChunkMap = new SeekMap;
+  m_pLoadMap = new LoadMap;
   //m_xChunkFile
   m_iChunkNext = 0;
   Memory::vZero(m_xBlockTest,C_BLOCKTEST);
@@ -82,7 +82,7 @@ Loader::~Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  delete m_pChunkMap;
+  delete m_pLoadMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -254,7 +254,7 @@ bool Loader::bFindChunk(void)
   }
   
   if (m_iChunkNext >= m_iChunkTell) {
-    m_pChunkMap->vDone(true);
+    m_pLoadMap->vDone(true);
     //vChunkTest();
     m_xChunkFile.vClose();
     return false;
@@ -279,7 +279,7 @@ bool Loader::bFindChunk(void)
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
   //vTrace("EolOffset %lld\n",iEolOffset);
-  m_pChunkMap->vEolOffset(iEolOffset);
+  m_pLoadMap->vEolOffset(iEolOffset);
   
   m_iChunkNext = iEolOffset + 1;
   
@@ -297,7 +297,7 @@ void Loader::vChunkTest(void)
   i8 iSeek;
   i8 nBytes;
   
-  while (m_pChunkMap->bNextChunk(iSeek,nBytes)) {
+  while (m_pLoadMap->bNextChunk(iSeek,nBytes)) {
     
     //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);
     
@@ -341,7 +341,7 @@ bool Loader::bNextChunk(i8& iSeek, i8& nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
   
-  bool b = m_pChunkMap->bNextChunk(iSeek,nBytes);
+  bool b = m_pLoadMap->bNextChunk(iSeek,nBytes);
   
   return b;
 }

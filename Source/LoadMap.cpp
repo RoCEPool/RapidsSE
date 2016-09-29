@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* SeekMap.hpp -- Seek Map                                                    */
+/* LoadMap.hpp -- Load Map                                                    */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-SeekMap* DBobjects::_pSeekMap(void* pAddr)
+LoadMap* DBobjects::_pSeekMap(void* pAddr)
 {
-  SeekMap* pSeekMap = reinterpret_cast<SeekMap*>(pAddr);
+  LoadMap* pSeekMap = reinterpret_cast<LoadMap*>(pAddr);
   
   return pSeekMap;
 }
@@ -17,7 +17,7 @@ SeekMap* DBobjects::_pSeekMap(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* SeekMap::operator new(size_t iSize)
+void* LoadMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
@@ -29,7 +29,7 @@ void* SeekMap::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* return a segment to the buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void SeekMap::operator delete(void* pSkipMapAddress)
+void LoadMap::operator delete(void* pSkipMapAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pSkipMapAddress);
   
@@ -39,40 +39,40 @@ void SeekMap::operator delete(void* pSkipMapAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SeekMap::SeekMap(void)
-: Buffer(CN_SEEKMAP)
+LoadMap::LoadMap(void)
+: Buffer(CN_LOADMAP)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   m_iEntries = 0;
   m_bDone    = false;
   //m_zLock
   m_iNext    = 0;
-  for (i8 iEntry = 0; iEntry < C_SEEKMAP_ENTRIES; iEntry++)
+  for (i8 iEntry = 0; iEntry < C_LOADMAP_ENTRIES; iEntry++)
     m_iEolOffset[iEntry] = -1;
 
-  _checkInitialised_(sizeof(CN_SEEKMAP));
+  _checkInitialised_(sizeof(CN_LOADMAP));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-SeekMap::~SeekMap(void)
+LoadMap::~LoadMap(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump seekmap                                                               */
 /*----------------------------------------------------------------------------*/
-void SeekMap::vDump(eCN eClass, Object* pObject, const char* pTab)
+void LoadMap::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  ASSERT(eClass == CN_SEEKMAP);
-  ASSERT(pObject->eClass() == CN_SEEKMAP);
+  ASSERT(eClass == CN_LOADMAP);
+  ASSERT(pObject->eClass() == CN_LOADMAP);
   
-  SeekMap* pSeekMap = reinterpret_cast<SeekMap*>(pObject);
+  LoadMap* pSeekMap = reinterpret_cast<LoadMap*>(pObject);
   
   vTrace("%sSeekMap %p:\n", pTab, pSeekMap);
 }
@@ -84,21 +84,21 @@ void SeekMap::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* parent adds the offset of the end of a read-chunk                          */
 /*----------------------------------------------------------------------------*/
-void SeekMap::vEolOffset(i8 iEolOffset)
+void LoadMap::vEolOffset(i8 iEolOffset)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
   m_iEolOffset[m_iEntries++] = iEolOffset;
   
-  RASSERT(m_iEntries < C_SEEKMAP_ENTRIES);
+  RASSERT(m_iEntries < C_LOADMAP_ENTRIES);
 }
 
 /*----------------------------------------------------------------------------*/
 /* has the parent completed this map yet?                                     */
 /*----------------------------------------------------------------------------*/
-bool SeekMap::bDone(void)
+bool LoadMap::bDone(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   return m_bDone;
 }
@@ -106,21 +106,21 @@ bool SeekMap::bDone(void)
 /*----------------------------------------------------------------------------*/
 /* the parent has completed this map                                          */
 /*----------------------------------------------------------------------------*/
-void SeekMap::vDone(bool bDone)
+void LoadMap::vDone(bool bDone)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   m_bDone = bDone;
   
-  vTrace("SeekMap closed with %lld entries\n",m_iEntries);
+  vTrace("LoadMap closed with %lld entries\n",m_iEntries);
 }
 
 /*----------------------------------------------------------------------------*/
 /* subordinate takes next read-chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool SeekMap::bNextChunk(i8& iSeek, i8& nBytes)
+bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
   // subordinates compete for next entries
   m_zLock.vGrabWrite();
@@ -159,9 +159,9 @@ bool SeekMap::bNextChunk(i8& iSeek, i8& nBytes)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* SeekMap::pFooter(void)
+Footer* LoadMap::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEEKMAP);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
   Footer* pFooter = &m_xFooter;
   

@@ -81,7 +81,7 @@ namespace Magic
     /* 47 */ CN_ROWWSP,
     
     /* 48 */ CN_SCANBUFFER,
-    /* 49 */ CN_SEEKMAP,
+    /* 49 */ CN_LOADMAP,
     /* 50 */ CN_SEHISTORY,
     /* 51 */ CN_SEITF,
     /* 52 */ CN_SEITFCURSOR,
