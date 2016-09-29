@@ -187,7 +187,11 @@ void LoadMap::vEolOffset(i8 iEolOffset)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
+  m_zLock.vGrabWrite();
+  
   m_iEolOffset[m_iEntries++] = iEolOffset;
+
+  m_zLock.vDropWrite();
   
   RASSERT(m_iEntries < C_LOADMAP_ENTRIES);
 }

@@ -111,8 +111,8 @@ timer: loadTimer
   loop
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   begin r0 loader.findChunk while repeat
+
 
   threadCondWait
   dropThreadMutex
