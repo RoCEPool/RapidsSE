@@ -88,9 +88,6 @@ timer: loadTimer
   r0 loader.path!
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  begin r0 loader.findChunk while repeat
-
-  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // open the file to be loaded
   r0 loader.openFile not if "file not opened" . rdrop exit then
@@ -112,6 +109,10 @@ timer: loadTimer
 
     I >genTaskSet taskSet.append
   loop
+
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  begin r0 loader.findChunk while repeat
 
   threadCondWait
   dropThreadMutex

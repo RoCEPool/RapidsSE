@@ -272,9 +272,21 @@ bool Loader::bNextChunk(i8& iSeek, i8& nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER);
   
-  bool b = m_pLoadMap->bNextChunk(iSeek,nBytes);
+  for (;;) {
+    bool bDone = m_pLoadMap->bDone();
   
-  return b;
+    bool bNext = m_pLoadMap->bNextChunk(iSeek,nBytes);
+  
+    if (bDone && ! bNext)
+      return false;
+    
+    if (bNext)
+      break;
+    
+    //vTrace("Waiting for map\n");
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
