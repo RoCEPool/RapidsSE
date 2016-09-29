@@ -57,13 +57,10 @@ Loader::Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+  m_sPath    = "<none>";
   m_pTable   = nullptr;
-  //m_xFile
-  m_iSeek    = 0;
   m_pTxRef   = nullptr;
-  //m_xLock
   m_zSubs    = 0;
-  
   m_pLoadMap = new LoadMap;
   
   _checkInitialised_(sizeof(Loader));
@@ -113,35 +110,13 @@ void Loader::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* close file                                                                 */
+/* get path                                                                   */
 /*----------------------------------------------------------------------------*/
-void Loader::vCloseFile(void)
+s& Loader::sPath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_xFile.vClose();
-}
 
-/*----------------------------------------------------------------------------*/
-/* get file                                                                   */
-/*----------------------------------------------------------------------------*/
-File* Loader::pFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  return &m_xFile;
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-bool Loader::bOpenFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  bool b = m_xFile.bOpen(C_OPEN_READ);
-  
-  return b;
+  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -151,10 +126,8 @@ void Loader::vPath(s& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  const char* pPath = sPath.a();
-  
-  m_xFile.vPath(pPath);
-  
+  m_sPath = sPath;
+    
   m_pLoadMap->vFilePath(sPath);
 }
 

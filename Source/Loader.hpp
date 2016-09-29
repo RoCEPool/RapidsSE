@@ -12,8 +12,7 @@ namespace DBobjects
   {
   private:
     Table* m_pTable; // table being load
-    File   m_xFile;  // from which file
-    i8     m_iSeek;  // seek before next read
+    s256   m_sPath;  // file being loaded
     TxRef* m_pTxRef; // tx
     Atomic m_zSubs;  // number of subordinates remaining
     LoadMap* m_pLoadMap; // load map
@@ -32,9 +31,7 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     void   vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
-    void   vCloseFile(void);
-    File*  pFile(void);
-    bool   bOpenFile(void);
+    s&     sPath(void);
     void   vPath(s& sPath);
     void   vSubs(i8 nSubs);
     bool   bSubCompleted(void);

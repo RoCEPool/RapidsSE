@@ -799,13 +799,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("input.token",     &vInputToken,       false);
   vAddPrimitive("input.type",      &vInputType,        false);
   
-  vAddPrimitive("loader.closeFile",   &vLoaderCloseFile,   false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
   vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
-  vAddPrimitive("loader.openFile",    &vLoaderOpenFile,    false);
   vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
   vAddPrimitive("loader.subs!",       &vLoaderSubsStore,   false);
   vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
@@ -821,7 +819,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
   vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
-  vAddPrimitive("loaderSub.pushRecord",  &vLoaderSubPushRecord,  false);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -6185,25 +6182,6 @@ ENTRY("vInputType");
 // loader: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* loader.closefile -- close file being loaded                                */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderCloseFile(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderCloseFile");
-  
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.closefile");
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  pLoader->vCloseFile();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* loader.delete -- delete a table loader                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
@@ -6297,27 +6275,6 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   pLoaderSub->vLoader(pLoader);
   
   nnpTask->m_xParamStack.vPush(pLoaderSub);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.openfile -- open file to be loaded                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderOpenFile(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderOpenFile");
-  
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.openfile");
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  bool bOpened = pLoader->bOpenFile();
-  
-  nnpTask->m_xParamStack.vPush(bOpened);
   
   EXIT();
 }
@@ -6569,7 +6526,7 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.new -- new a table loader                                        */
+/* loaderSub.new -- new a table loader subordinate                            */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubNew(NNP_Task nnpTask)
 {
@@ -6582,29 +6539,6 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.pushRecord -- fetch record onto stack                            */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubPushRecord(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderSubPushRecord");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
-  
-  ValWsp xRecord;
-  xRecord.vClass(CN_STRVAL);
-  StrVal* sRecord = xRecord.pAsStrVal();
-  
-  pLoaderSub->vGetRecord(sRecord);
-  
-  nnpTask->m_xParamStack.vPush(xRecord);
-  
-  EXIT();
-}
-
-
 
 // lock: ///////////////////////////////////////////////////////////////////////
 

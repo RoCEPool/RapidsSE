@@ -35,6 +35,7 @@ void* LoaderSub::operator new(size_t iSize)
 void* LoaderSub::operator new(size_t iSize, LoaderSub* pLoaderSub)
 {
   RASSERT(iSize);
+  
   return pLoaderSub;
 }
 
@@ -56,10 +57,10 @@ LoaderSub::LoaderSub(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
-  m_pLoader     = nullptr;
-  m_pRecord     = nullptr;
-  m_iLength     = 0;
-  m_iHash       = 0;
+  m_pLoader = nullptr;
+  m_pRecord = nullptr;
+  m_iLength = 0;
+  m_iHash   = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
@@ -107,11 +108,15 @@ void LoaderSub::vBegin(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  // open the file
-  m_pLoadChunk->vOpenFile(m_pLoader->pFile()->sPath());
+  s256 sPath;
+  
+  sPath = m_pLoader->sPath();
+  
+  // open the chunked file
+  m_pLoadChunk->vOpenFile(sPath);
   
   // read first chunk
-  m_bMoreChunks = bFetchChunk();
+  m_bMoreChunks = bReadChunk();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +140,7 @@ void LoaderSub::vEnd(void)
   
   TxRef* pTxRef = m_pLoader->pTxRef();
   
+  // insert any dangling buffers
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++) {
     if (m_pRowBuffer[iPartition]) {
       RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
@@ -143,6 +149,7 @@ void LoaderSub::vEnd(void)
     }
   }
   
+  // close the file being loaded
   m_pLoadChunk->vCloseFile();
 }
 
@@ -156,58 +163,24 @@ bool LoaderSub::bFetchRecord(void)
   if ( ! m_bMoreChunks )
     return false;
   
-//  vTrace("NextRecord @ %lld end %lld\n",
-//         m_pLoadChunk->iNextRecord(),m_pLoadChunk->iEndChunk());
-  
   // fetch next record from current chunk
   m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
   if ( m_pRecord ) {
-//    vDumpAscii(m_pRecord,m_iLength);
+    //vDumpAscii(m_pRecord,m_iLength);
     return true;
   }
   
   // read next chunk
-  m_bMoreChunks = bFetchChunk();
-  if (! m_bMoreChunks )
+  m_bMoreChunks = bReadChunk();
+  if (! m_bMoreChunks)
     return false;
   
-  // fetch first record from next chunk
+  // fetch first record from chunk just read
   m_pRecord = m_pLoadChunk->pNextRecord(m_iLength);
-  if ( m_pRecord )
+  if (m_pRecord)
     return true;
   
   return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* fetch next chunk from file                                                 */
-/*----------------------------------------------------------------------------*/
-bool LoaderSub::bFetchChunk(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  i8 iSeek;
-  i8 nBytes;
-  
-  bool bMore = m_pLoader->bNextChunk(iSeek,nBytes);
-  if (! bMore)
-    return false;
-  
-  m_pLoadChunk->vReadChunk(iSeek,nBytes);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get record                                                                 */
-/*----------------------------------------------------------------------------*/
-void LoaderSub::vGetRecord(StrVal* pStrVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  Memory::vCopy(pStrVal->sStr(),m_pRecord,m_iLength);
-  pStrVal->sStr()[m_iLength] = '\0';
-  pStrVal->vSize();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,20 +190,23 @@ void LoaderSub::vHashRecord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
+  // calculate length of first field
   i8 iLength = 0;
   char* pChar = m_pRecord;
   while ('|' != *pChar++)
     iLength++;
   
+  // hash the field using xxhash
   m_iHash = XXH32(m_pRecord,iLength,0);
   
+  // modulo to get partition number
   m_iPartition = m_iHash % gxArguments.m_nPartitions;
   
-//  vTrace("Partn %lld\n",m_iPartition);
+  //vTrace("Partn %lld\n",m_iPartition);
 }
 
 /*----------------------------------------------------------------------------*/
-/* insert row                                                                 */
+/* insert row into working buffer                                             */
 /*----------------------------------------------------------------------------*/
 bool LoaderSub::bInsertRow(void)
 {
@@ -238,26 +214,28 @@ bool LoaderSub::bInsertRow(void)
   
   //vTrace("Row: %s\n",pStrVal->sStr());
   
-  //bool bResult = m_pLoader->bInsertRow(m_iPartition,m_pRecord,m_iLength);
-  
-  if (! m_pRowBuffer[m_iPartition]) {
+  // check for working buffer
+  if (! m_pRowBuffer[m_iPartition])
     m_pRowBuffer[m_iPartition] = new RowBuffer;
-  }
   
+  // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+
   TxRef* pTxRef = m_pLoader->pTxRef();
 
-  bool bInserted = pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength);
-  
-  if (bInserted)
+  // insert row into working buffer
+  if (pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength))
     return true;
   
-  // buffer full
+  // buffer full, append working buffer into table
   m_pLoader->vAppendBuffer(m_iPartition,pRowBuffer);
   
+  // get a new working buffer
   m_pRowBuffer[m_iPartition] = new RowBuffer;
   pRowBuffer = m_pRowBuffer[m_iPartition];
-  bInserted = pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength);
+  
+  // insert row into new working buffer
+  bool bInserted = pRowBuffer->bInsertRow(pTxRef,m_pRecord,m_iLength);
   
   return bInserted;
 }
@@ -270,6 +248,26 @@ void LoaderSub::vLoader(Loader* pLoader)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 
   m_pLoader = pLoader;
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next chunk from file                                                  */
+/*----------------------------------------------------------------------------*/
+bool LoaderSub::bReadChunk(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  i8 iSeek;
+  i8 nBytes;
+
+  // get next chunk info
+  if (! m_pLoader->bNextChunk(iSeek,nBytes))
+    return false;
+  
+  // read the chunk
+  m_pLoadChunk->vReadChunk(iSeek,nBytes);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
