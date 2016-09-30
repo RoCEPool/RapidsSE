@@ -9,12 +9,12 @@ Atomic gzShmOpenCount;
 /*----------------------------------------------------------------------------*/
 /* attach/open to an existing shared memory region                            */
 /*----------------------------------------------------------------------------*/
-bool Shm::bAttach(const char* aName, int& iFD, SysCall& xSysCall)
+bool Shm::bAttach(s& sRegionName, int& iFD, SysCall& xSysCall)
 {
   xSysCall.vClear();
     
   // open shared memory region and get a fd
-  iFD = shm_open(aName, O_RDWR, S_IRUSR | S_IWUSR);
+  iFD = shm_open(sRegionName.a(), O_RDWR, S_IRUSR | S_IWUSR);
   
   if (iFD == -1) {
     xSysCall.vError(errno);
@@ -52,7 +52,7 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* create/open a new shared memory region                                     */
 /*----------------------------------------------------------------------------*/
-bool Shm::bCreate(const char* aName, i8 iSize, int& iFD,
+bool Shm::bCreate(s& sRegionName, i8 iSize, int& iFD,
                     bool bRecreate, SysCall& xSysCall)
 {
   int rCode;
@@ -61,12 +61,12 @@ bool Shm::bCreate(const char* aName, i8 iSize, int& iFD,
   
   // unlink the shm region (in case created earlier; this needs work)
   if (bRecreate)
-    rCode = shm_unlink(aName);
+    rCode = shm_unlink(sRegionName.a());
   
   // we ignore the error
   
   // open shared memory region and get a fd
-  iFD = shm_open(aName, O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
+  iFD = shm_open(sRegionName.a(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
   
   if (iFD == -1) {
     xSysCall.vError(errno);
@@ -83,7 +83,7 @@ bool Shm::bCreate(const char* aName, i8 iSize, int& iFD,
     xSysCall.vError(errno);
     vTrace("ftruncate() error; errno=%d %s\n",errno, strerror(errno));
     
-    int rCode = shm_unlink(aName);
+    int rCode = shm_unlink(sRegionName.a());
     
     if (0 != rCode) {
       xSysCall.vError(errno);
@@ -161,11 +161,11 @@ bool Shm::bUnmap(void *pAddress, i8 iBytes, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* unlink an existing memory region                                           */
 /*----------------------------------------------------------------------------*/
-bool Shm::bUnlink(const char* aName, SysCall& xSysCall)
+bool Shm::bUnlink(s& sRegionName, SysCall& xSysCall)
 {
   xSysCall.vClear();
   
-  int rCode = shm_unlink(aName);
+  int rCode = shm_unlink(sRegionName.a());
 
   if (0 != rCode) {
     xSysCall.vError(errno);

@@ -21,8 +21,10 @@ void* StepBoard::operator new(size_t iSize)
   void* pRegion;
   bool bResult;
   
+  s256 sRegionName("/RapidsSE_StepBoard");
+  
   // open a shared memory region
-  bResult = Shm::bAttach("/RapidsSE_StepBoard",iShmFD,xSysCall);
+  bResult = Shm::bAttach(sRegionName,iShmFD,xSysCall);
   if (bResult) {
     // map the opened shared memory region to memory
     pRegion = Shm::pMap(iShmFD,C_ADDR_STEPBOARD,sizeof(StepBoard),C_SHARED_REGION,(! C_HUGE_PAGES),xSysCall);
@@ -41,7 +43,7 @@ void* StepBoard::operator new(size_t iSize)
   }
   
   // open a new shm region
-  bResult = Shm::bCreate("/RapidsSE_StepBoard",
+  bResult = Shm::bCreate(sRegionName,
                          sizeof(StepBoard),
                          iShmFD,
                          true,

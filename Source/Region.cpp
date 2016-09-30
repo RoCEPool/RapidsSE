@@ -23,7 +23,7 @@ void Region::vAttach(void)
     vTrace("Attaching to SE instance %s\n",gxArguments.m_sRegionName.a());
   
   // open existing shm region
-  bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
+  bResult = Shm::bAttach(gxArguments.m_sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n",
            gxArguments.m_sRegionName.a());
@@ -53,7 +53,7 @@ void Region::vAttach(void)
   //--------------------------------------------------------------------------
   
   // reopen the existing shm region
-  bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
+  bResult = Shm::bAttach(gxArguments.m_sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n",
            gxArguments.m_sRegionName.a());
@@ -87,7 +87,7 @@ void Region::vCreate(void)
   vTrace("Creating RapidsSE instance %s ...\n",gxArguments.m_sRegionName.a());
   
   // open a new shm region
-  bool bResult = Shm::bCreate(gxArguments.m_sRegionName.a(),
+  bool bResult = Shm::bCreate(gxArguments.m_sRegionName,
                               gxArguments.m_iRegionSize,
                               iFD,
                               gxArguments.m_bRestart,
@@ -126,7 +126,7 @@ bool Region::bTest(void)
   SysCall xSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
+  bool bResult = Shm::bAttach(gxArguments.m_sRegionName,iFD,xSysCall);
   if ( ! bResult )
     return false;
   
@@ -142,7 +142,7 @@ void Region::vUnlink(void)
 {
   SysCall xSysCall;
   
-  if (Shm::bUnlink(gxArguments.m_sRegionName.a(),xSysCall))
+  if (Shm::bUnlink(gxArguments.m_sRegionName,xSysCall))
     vTrace("Region %s succesfully unlinked\n",gxArguments.m_sRegionName.a());
   else
     vTrace("Region %s not unlinked\n",gxArguments.m_sRegionName.a());
