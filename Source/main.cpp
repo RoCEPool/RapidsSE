@@ -30,11 +30,12 @@ int main(int argc, const char* argv[])
     exit(EXIT_FAILURE);
   
   if (gxArguments.m_bWelcome)
-    printf("RapidsSE v%s (%s %s -- %s)\n",
+    printf("RapidsSE v%s (%s %s -- %s) pid %lld\n",
            RAPIDSSE_VERSION_STRING,
            __DATE__,
            __TIME__,
-           aRelDbg
+           aRelDbg,
+           Process::iGetPid()
            );
   
 //  vTrace("Task::vWord %p\n",Task::vWord);
