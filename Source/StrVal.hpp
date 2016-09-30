@@ -27,6 +27,7 @@ namespace Values
     void vReset(void);
     i8   iSize(void) const;
     void vSize(void);
+    void vSize(i8 iSize);
     char* sStr(void);
     
     char* pData(void);
