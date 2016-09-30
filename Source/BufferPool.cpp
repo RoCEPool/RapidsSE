@@ -434,6 +434,7 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_BUFFER);
   //pLastBuffer->pFooter()->vSetFooter();
+  pLastBuffer->vZeroData();
   pLastBuffer->vSetFooter();
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
