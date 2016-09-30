@@ -302,7 +302,7 @@ void RapidsSE::vPoolOpen(void)
     
     gpStepBoard = new StepBoard(16);
     
-    if (! gxArguments.m_bRestart && bTestRegion()) {
+    if (! gxArguments.m_bRestart && Region::bTest()) {
       vTrace("Error: RapidsSE instance %s already started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
@@ -318,7 +318,7 @@ void RapidsSE::vPoolOpen(void)
   }
   
   if (gxArguments.m_bStop) {
-    if (! bTestRegion()) {
+    if (! Region::bTest()) {
       vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
@@ -329,7 +329,7 @@ void RapidsSE::vPoolOpen(void)
   }
   
   if (gxArguments.m_bPrompt) {
-    if (! bTestRegion()) {
+    if (! Region::bTest()) {
       vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
@@ -544,7 +544,7 @@ void RapidsSE::vStartActors(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStatus(void)
 {
-  if (bTestRegion())
+  if (Region::bTest())
     vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
   else
     vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
@@ -562,24 +562,6 @@ void RapidsSE::vSystemStop(void)
   vTrace("RapidsSE instance %s stopped\n",gxArguments.m_sRegionName.a());
   
   // the system is now stopped
-}
-
-/*----------------------------------------------------------------------------*/
-/* test for region                                                            */
-/*----------------------------------------------------------------------------*/
-bool RapidsSE::bTestRegion(void)
-{
-  int iFD;
-  SysCall xSysCall;
-  
-  // open existing shm region
-  bool bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
-  if ( ! bResult )
-    return false;
-  
-  bResult = Shm::bClose(iFD,xSysCall);
-
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

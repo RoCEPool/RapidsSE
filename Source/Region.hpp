@@ -13,6 +13,7 @@ namespace StorageEngine
   public:
     static void vAttach(void);
     static void vCreate(void);
+    static bool bTest(void);
     static void vUnlink(void);
   };
 }

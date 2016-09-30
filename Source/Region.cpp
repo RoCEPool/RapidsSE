@@ -118,6 +118,24 @@ void Region::vCreate(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for region                                                            */
+/*----------------------------------------------------------------------------*/
+bool Region::bTest(void)
+{
+  int iFD;
+  SysCall xSysCall;
+  
+  // open existing shm region
+  bool bResult = Shm::bAttach(gxArguments.m_sRegionName.a(),iFD,xSysCall);
+  if ( ! bResult )
+    return false;
+  
+  bResult = Shm::bClose(iFD,xSysCall);
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* unlink region                                                              */
 /*----------------------------------------------------------------------------*/
 void Region::vUnlink(void)

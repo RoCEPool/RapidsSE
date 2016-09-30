@@ -46,7 +46,6 @@ namespace StorageEngine
     static void vSystemInit(void);
     static void vSystemStatus(void);
     static void vSystemStop(void);
-    static bool bTestRegion(void);
     static void vWaitFlag(void);
 
     Footer* pFooter(void);
