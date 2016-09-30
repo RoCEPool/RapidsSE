@@ -416,8 +416,15 @@ void BufferPool::vInitialise(void)
 //    pFreeBuffer->vNextFree(nBuffer);
 //  }
 
+  i8 iBufferMod;
+  
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
+    
+    iBufferMod = *nBuffer % 1000;
+    if (! iBufferMod)
+      printf("%lld      \r",*nBuffer);
+    
     BufferFree* pFreeBuffer = pToBufferFree(nBuffer);
     
     pFreeBuffer->vSetMagic();
@@ -438,6 +445,9 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vSetFooter();
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
+  
+  printf("\n");
+  
   
   //vDump();
 }
