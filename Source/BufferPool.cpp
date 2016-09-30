@@ -126,7 +126,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iShmFD)
   }
   
   // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,10_MB,true,gxArguments.m_bHugePages,xSysCall);
+  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,10_MB,C_SHARED_REGION,
+                            gxArguments.m_bHugePages,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
     Shm::bClose(iShmFD,xSysCall);
@@ -158,7 +159,8 @@ Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iShmFD, i8 iRegionSize)
   }
   
   // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,iRegionSize,true,gxArguments.m_bHugePages,xSysCall);
+  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,iRegionSize,C_SHARED_REGION,
+                            gxArguments.m_bHugePages,xSysCall);
   if ( ! pRegion )  {
     vTrace("BufferPool::pAttachRegion failed to map!\n");
     Shm::bClose(iShmFD,xSysCall);

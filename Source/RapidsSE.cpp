@@ -405,7 +405,8 @@ void RapidsSE::vAttachRegion(void)
   }
   
   // allocate a temporary extent of memory
-  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,10_MB,true,gxArguments.m_bHugePages,xSysCall);
+  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,10_MB,C_SHARED_REGION,
+                       gxArguments.m_bHugePages,xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttachRegion failed to map\n");
     Shm::bClose(iFD,xSysCall);
@@ -434,7 +435,8 @@ void RapidsSE::vAttachRegion(void)
   }
   
   // allocate the full extent of memory required
-  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,iRegionSize,true,gxArguments.m_bHugePages,xSysCall);
+  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,iRegionSize,C_SHARED_REGION,
+                       gxArguments.m_bHugePages,xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttachRegion failed to map\n");
     Shm::bClose(iFD,xSysCall);
@@ -477,8 +479,8 @@ void RapidsSE::vCreateRegion(void)
   bool bResult = Shm::bCreate(gxArguments.m_sRegionName.a(),
                               gxArguments.m_iRegionSize,
                               iFD,
-                              xSysCall,
-                              gxArguments.m_bRestart);
+                              gxArguments.m_bRestart,
+                              xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreateRegion: failed to create region %s\n",
            gxArguments.m_sRegionName.a());

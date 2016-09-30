@@ -52,7 +52,8 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
 /*----------------------------------------------------------------------------*/
 /* create/open a new shared memory region                                     */
 /*----------------------------------------------------------------------------*/
-bool Shm::bCreate(const char* aName, i8 iSize, int& iFD, SysCall& xSysCall, bool bRecreate)
+bool Shm::bCreate(const char* aName, i8 iSize, int& iFD,
+                    bool bRecreate, SysCall& xSysCall)
 {
   int rCode;
   

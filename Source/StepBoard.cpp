@@ -25,7 +25,7 @@ void* StepBoard::operator new(size_t iSize)
   bResult = Shm::bAttach("/RapidsSE_StepBoard",iShmFD,xSysCall);
   if (bResult) {
     // map the opened shared memory region to memory
-    pRegion = Shm::pMap(iShmFD,C_ADDR_STEPBOARD,sizeof(StepBoard),true,false,xSysCall);
+    pRegion = Shm::pMap(iShmFD,C_ADDR_STEPBOARD,sizeof(StepBoard),C_SHARED_REGION,(! C_HUGE_PAGES),xSysCall);
     if ( ! pRegion )  {
       vTrace("StepBoard::new: failed to map!\n");
       Shm::bClose(iShmFD,xSysCall);
@@ -44,15 +44,15 @@ void* StepBoard::operator new(size_t iSize)
   bResult = Shm::bCreate("/RapidsSE_StepBoard",
                          sizeof(StepBoard),
                          iShmFD,
-                         xSysCall,
-                         true);
+                         true,
+                         xSysCall);
   if ( ! bResult ) {
     vTrace("StepBoard::new: failed to create region\n");
     exit(EXIT_FAILURE);
   }
   
   // allocate memory for the shm region
-  pRegion = Shm::pMap(iShmFD,C_ADDR_STEPBOARD,sizeof(StepBoard),true,false,xSysCall);
+  pRegion = Shm::pMap(iShmFD,C_ADDR_STEPBOARD,sizeof(StepBoard),C_SHARED_REGION,(! C_HUGE_PAGES),xSysCall);
   if ( ! pRegion )  {
     vTrace("StepBoard::new failed to map!\n");
     Shm::bClose(iShmFD,xSysCall);
