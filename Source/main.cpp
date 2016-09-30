@@ -24,7 +24,7 @@ int main(int argc, const char* argv[])
   
   vTest1();
   
-  RapidsSE::vCheckAssumptions();
+  StorageEngine::vCheckAllAssumptions();
   
   if ( ! gxArguments.bParse(argc,argv) )
     exit(EXIT_FAILURE);

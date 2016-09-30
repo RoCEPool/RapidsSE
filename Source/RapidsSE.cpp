@@ -36,27 +36,6 @@ void*               mpRegion           = nullptr;
 void* C_ADDR_POOL = (void*)0x204800000;
 
 /*----------------------------------------------------------------------------*/
-/* check assumptions                                                          */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vCheckAssumptions(void)
-{
-  // this is in reverse order of the spaces in the project
-  Platform::vCheckAssumptions();
-  Magic::vCheckAssumptions();
-  Common::vCheckAssumptions();
-  Pool::vCheckAssumptions();
-  Values::vCheckAssumptions();
-  Structures::vCheckAssumptions();
-  Dictionaries::vCheckAssumptions();
-  DBobjects::vCheckAssumptions();
-  Tasks::vCheckAssumptions();
-  Threads::vCheckAssumptions();
-  Interface::vCheckAssumptions();
-  GridModel::vCheckAssumptions();
-  StorageEngine::vCheckAssumptions();
-}
-
-/*----------------------------------------------------------------------------*/
 /* execute arguments                                                          */
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vExecute(void)

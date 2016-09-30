@@ -20,6 +20,7 @@ extern i8 giClassSize[];
 //-----------------------------------------------------------------------------
 namespace StorageEngine
 {
+  void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);
 }
 

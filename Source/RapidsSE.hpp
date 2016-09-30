@@ -20,7 +20,6 @@ namespace StorageEngine
     Footer m_xFooter;
 
   public:
-    static void   vCheckAssumptions(void);
     
     static void   vExecute(void);
     static void   vPoolClose(void);

@@ -5,6 +5,27 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/* check assumptions                                                          */
+/*----------------------------------------------------------------------------*/
+void StorageEngine::vCheckAllAssumptions(void)
+{
+  // this is in reverse order of the spaces in the project
+  Platform::vCheckAssumptions();
+  Magic::vCheckAssumptions();
+  Common::vCheckAssumptions();
+  Pool::vCheckAssumptions();
+  Values::vCheckAssumptions();
+  Structures::vCheckAssumptions();
+  Dictionaries::vCheckAssumptions();
+  DBobjects::vCheckAssumptions();
+  Tasks::vCheckAssumptions();
+  Threads::vCheckAssumptions();
+  Interface::vCheckAssumptions();
+  GridModel::vCheckAssumptions();
+  StorageEngine::vCheckAssumptions();
+}
+
+/*----------------------------------------------------------------------------*/
 /* things to check at boot time                                               */
 /*----------------------------------------------------------------------------*/
 void StorageEngine::vCheckAssumptions(void)
