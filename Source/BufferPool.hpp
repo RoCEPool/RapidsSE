@@ -46,12 +46,8 @@ namespace Pool
     void  operator delete(void* pRegion);
     
     BufferPool(void);
-    BufferPool(s& sRegionName);
     ~BufferPool(void);
     
-    static Buffer* pAttachRegion(s& sRegionName, int& iShmFD);
-    static Buffer* pAttachRegion(s& sRegionName, int& iShmFD, i8 iRegionSize);
-
     Buffer* pAllocBuffer(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);

@@ -7,8 +7,10 @@
 #include "GridModel.h"
 
 #include "Arguments.hpp"
-#include "RapidsSE.hpp"
 #include "AttachMap.hpp"
+#include "Region.hpp"
+
+#include "RapidsSE.hpp"
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, const char*);
 extern pDUMPFUN *gpDump[];

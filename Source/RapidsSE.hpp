@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RapidsSE.hpp - rapids storage engine                                       */
+/* RapidsSE.hpp -- Rapids Storage Engine                                      */
 /*============================================================================*/
 
 #pragma once
@@ -36,11 +36,8 @@ namespace StorageEngine
     //-------------------------------------------------------------------------
     
     static void vAttachObjects(void);
-    static void vAttachRegion(void);
     static void vCreateObjects(void);
-    static void vCreateRegion(void);
     static void vDicCompile(NP_Task npBootTask);
-    static void vDropRegion(void);
     static void vHandler(Error* pError);
     static void vInitJumboHeap(void);
     static void vRunCommand(void);
@@ -50,7 +47,6 @@ namespace StorageEngine
     static void vSystemStatus(void);
     static void vSystemStop(void);
     static bool bTestRegion(void);
-    static void vUnlinkRegion(void);
     static void vWaitFlag(void);
 
     Footer* pFooter(void);
