@@ -37,7 +37,7 @@ void StorageEngine::vCheckAssumptions(void)
   bFoundEnum = false;
   // find number of entries in gpDump
   for (i8 i = 0; i <= CN_ENUMS; i++) {
-    if (gpDump[i] == &RapidsSE::vDumpEnums) {
+    if (gpDump[i] == &Dump::vEnums) {
       bFoundEnum = true;
       break;
     }
