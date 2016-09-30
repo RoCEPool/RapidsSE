@@ -28,6 +28,7 @@ namespace StorageEngine
     bool m_bStatus;     // get status
     bool m_bStop;       // force stop system (kill tasks & threads, shm unmap & unlink)
     bool m_bUnitTests;  // run unit tests
+    bool m_bHugePages;  // to use huge pages
     
     // options
     bool m_bBgTasks;    // start background tasks

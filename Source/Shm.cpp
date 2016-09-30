@@ -99,14 +99,20 @@ bool Shm::bCreate(const char* aName, i8 iSize, int& iFD, SysCall& xSysCall, bool
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
-void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, SysCall& SysCall)
+void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb, SysCall& SysCall)
 {
   SysCall.vClear();
   
   int iProt = PROT_READ | PROT_WRITE;
   
+#ifdef __APPLE__
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
                | (pAddress ? MAP_FIXED  : 0);
+#else
+  int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
+               | (pAddress ? MAP_FIXED  : 0)
+               | (bHugeTlb ? MAP_HUGETLB : 0);
+#endif
   
   size_t x;
   

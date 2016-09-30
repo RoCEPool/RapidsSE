@@ -26,6 +26,8 @@ Arguments::Arguments(void)
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
+  m_bUnitTests  = false;
+  m_bHugePages  = false;
 
   m_bBgTasks    = true;
   m_bVerbose    = false;
@@ -204,8 +206,13 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_bUnitTests = true;
       continue;
     }
-
+    
     // options -----------------------------------------------------------------
+    
+    if (String::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
+      m_bHugePages = true;
+      continue;
+    }
     
     if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
       m_bBgTasks = true;
