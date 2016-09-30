@@ -35,6 +35,7 @@ Thread*             gnpRootThread      = nullptr;
 StepBoard*          gpStepBoard        = nullptr;
 
 void*               mpRegion           = nullptr;
+
 void* C_ADDR_POOL = (void*)0x204800000;
 
 
@@ -267,6 +268,9 @@ void RapidsSE::vExecute(void)
       ASSERT(gpBufferPool);
       vSystemStop();
     }
+    else if (gxArguments.m_bUnlink) {
+      vUnlinkRegion();
+    }
     else {
       vTrace("Unknown command line argument\n");
       printf("RapidsSE exits\n");
@@ -292,6 +296,11 @@ void RapidsSE::vPoolClose(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPoolOpen(void)
 {
+  if (gxArguments.m_bUnlink) {
+    //vUnlinkRegion();
+    return;
+  }
+  
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
     
     gpStepBoard = new StepBoard(16);
@@ -306,9 +315,12 @@ void RapidsSE::vPoolOpen(void)
     vCreateObjects();
     return;
   }
-  else if (gxArguments.m_bStatus) {
+  
+  if (gxArguments.m_bStatus) {
+    return;
   }
-  else if (gxArguments.m_bStop) {
+  
+  if (gxArguments.m_bStop) {
     if (! bTestRegion()) {
       vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
@@ -317,9 +329,9 @@ void RapidsSE::vPoolOpen(void)
     vAttachRegion();
     vAttachObjects();
     return;
-
   }
-  else if (gxArguments.m_bPrompt) {
+  
+  if (gxArguments.m_bPrompt) {
     if (! bTestRegion()) {
       vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
@@ -328,15 +340,12 @@ void RapidsSE::vPoolOpen(void)
     vAttachRegion();
     vAttachObjects();
     return;
-    
   }
-  else {
-    vAttachRegion();
-    vAttachObjects();
-    //vTrace("Error: RapidsSE missing arguments\n");
-    //exit(EXIT_FAILURE);
-    return;
-  }
+  
+  vAttachRegion();
+  vAttachObjects();
+  //vTrace("Error: RapidsSE missing arguments\n");
+  //exit(EXIT_FAILURE);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -703,6 +712,19 @@ void RapidsSE::vTlsInit(void)
   //ASSERT(!b);
   b = PosixThread::bTlsCreate(&giTLS_TaskKey);
   ASSERT(b);
+}
+
+/*----------------------------------------------------------------------------*/
+/* unlink region                                                              */
+/*----------------------------------------------------------------------------*/
+void RapidsSE::vUnlinkRegion(void)
+{
+  SysCall xSysCall;
+  
+  if (Shm::bUnlink(gxArguments.m_sRegionName.a(),xSysCall))
+    vTrace("Region %s succesfully unlinked\n",gxArguments.m_sRegionName.a());
+  else
+    vTrace("Region %s not unlinked\n",gxArguments.m_sRegionName.a());
 }
 
 /*----------------------------------------------------------------------------*/

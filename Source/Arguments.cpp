@@ -21,18 +21,21 @@ Arguments::Arguments(void)
   m_bCommand    = false;
   m_bDocol      = false;
   m_bHelp       = false;
-  m_bList       = false;
   m_bPrompt     = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
-  m_bUnitTests  = false;
-  m_bHugePages  = false;
+  m_bUnlink     = false;
 
   m_bBgTasks    = true;
+  m_sFolder     = "";
+  m_bHugePages  = false;
+  m_bProgress   = false;
+  m_bRestart    = false;
+  m_bTracing    = false;
+  m_bUnitTests  = false;
   m_bVerbose    = false;
   m_bWelcome    = true;
-  m_bTracing    = false;
   
   m_iPartition  = 0;
   
@@ -104,11 +107,6 @@ bool Arguments::bParse(int argc, const char* argv[])
         )  {
       vPrintHelp();
       exit(EXIT_SUCCESS);
-    }
-    
-    if (String::bEqualTo("--list",argv[iArg],C_NO_CASE)) {
-      m_bList = false;
-      continue;
     }
     
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
@@ -202,23 +200,43 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
 
-    if (String::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
-      m_bUnitTests = true;
+    if (String::bEqualTo("--unlink",argv[iArg],C_NO_CASE)) {
+      m_bUnlink = true;
       continue;
     }
     
     // options -----------------------------------------------------------------
+    
+    if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
+      m_bBgTasks = true;
+      continue;
+    }
     
     if (String::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
       m_bHugePages = true;
       continue;
     }
     
-    if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
-      m_bBgTasks = true;
+    if (String::bEqualTo("--progress",argv[iArg],C_NO_CASE)) {
+      m_bProgress = true;
       continue;
     }
-
+    
+    if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
+      m_bRestart = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
+      m_bTracing = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
+      m_bUnitTests = true;
+      continue;
+    }
+    
     if (String::bEqualTo("--verbose",argv[iArg],C_NO_CASE)) {
       m_bVerbose = true;
       continue;
@@ -231,16 +249,6 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
       m_bWelcome = false;
-      continue;
-    }
-    
-    if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
-      m_bRestart = true;
-      continue;
-    }
-
-    if (String::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
-      m_bTracing = true;
       continue;
     }
     
@@ -280,7 +288,6 @@ void Arguments::vPrint(void)
   if (m_bCommand)  vTrace("  --command\n");
   if (m_bDocol)    vTrace("  --docol\n");
   if (m_bHelp)     vTrace("  --help\n");
-  if (m_bList)     vTrace("  --list\n");
   if (m_bPrompt)   vTrace("  --seprompt\n");
   if (m_bStart)    vTrace("  --start\n");
   if (m_bStatus)   vTrace("  --status\n");

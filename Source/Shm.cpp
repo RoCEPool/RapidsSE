@@ -168,7 +168,7 @@ bool Shm::bUnlink(const char* aName, SysCall& xSysCall)
 
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("shm_unlink() error; errno=%d",errno);
+    vWarn("shm_unlink() error; errno=%d\n",errno);
     return false;
   }
   

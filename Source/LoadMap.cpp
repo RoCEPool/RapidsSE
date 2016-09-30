@@ -3,8 +3,10 @@
 /*============================================================================*/
 
 #include "DBobjects.h"
+#include "Arguments.hpp"
 
 extern Heap* gpJumboHeap;
+extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -160,9 +162,11 @@ void LoadMap::vChunkTest(void)
   
   while (bNextChunk(iSeek,nBytes,iChunk,nChunks)) {
     
-    if (0 == iChunk % 1000) {
-      printf("chunk %lld of %lld        \r",iChunk,nChunks);
-      fflush(stdout);
+    if (gxArguments.m_bProgress) {
+      if (0 == iChunk % 1000) {
+        printf("chunk %lld of %lld        \r",iChunk,nChunks);
+        fflush(stdout);
+      }
     }
     
     //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);

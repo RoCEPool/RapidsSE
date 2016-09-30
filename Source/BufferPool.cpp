@@ -421,10 +421,12 @@ void BufferPool::vInitialise(void)
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
     
-    iBufferMod = *nBuffer % 1000;
-    if (! iBufferMod) {
-      printf("%lld of %lld             \r",*nBuffer,*nBufferLast());
-      fflush(stdout);
+    if (gxArguments.m_bProgress) {
+      iBufferMod = *nBuffer % 1000;
+      if (! iBufferMod) {
+        printf("buffer %lld of %lld             \r",*nBuffer,*nBufferLast());
+        fflush(stdout);
+      }
     }
     
     BufferFree* pFreeBuffer = pToBufferFree(nBuffer);
@@ -448,8 +450,8 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
   
-  printf("\n");
-  
+  if (gxArguments.m_bProgress)
+    printf("\n");
   
   //vDump();
 }
