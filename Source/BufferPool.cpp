@@ -422,8 +422,10 @@ void BufferPool::vInitialise(void)
   while (bn::nNil() != nBuffer) {
     
     iBufferMod = *nBuffer % 1000;
-    if (! iBufferMod)
-      printf("%lld      \r",*nBuffer);
+    if (! iBufferMod) {
+      printf("%lld of %lld             \r",*nBuffer,*nBufferLast());
+      fflush(stdout);
+    }
     
     BufferFree* pFreeBuffer = pToBufferFree(nBuffer);
     
