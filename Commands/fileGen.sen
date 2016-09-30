@@ -1,0 +1,64 @@
+/*============================================================================*/
+/* fileGen.sen -- Data File Generator                                         */
+/*============================================================================*/
+
+"fileGen.sen" .putVerbose
+
+timer: fileGenTimer
+
+: fileGen ( "<path>" fileSize field1Size field0Size field1Size )
+//traceon
+
+  reg.push
+
+  // create a file
+  "__file_gen" find dup if else
+    drop
+    "__file_gen" :file
+  then
+  execute
+
+  >reg0 // file
+  >reg4 // field 1 size
+  >reg3 // field 0 size
+  >reg2 // file size
+  >reg1 // path
+
+  0 >reg5 // running size
+
+  reg1 reg0 file.path!
+  open_write reg0 file.open
+
+  fileGenTimer timer.start
+
+  begin
+    reg3 rndStr "|" concat reg4 rndStr concat "|\n" concat
+    dup strlen reg5 + >reg5
+    reg0 file.write
+
+    reg5 reg2 < while
+  repeat
+
+  fileGenTimer timer.update
+
+  "file gen time " .put
+  fileGenTimer timer.millisecs .put "ms" .put .\n
+
+  reg0 file.close
+
+  // destroy file
+  "__file_gen" find >forget
+
+  reg.pop
+
+//traceoff
+;
+
+: gli
+
+  "/tmp/lineitem.tbl" C_1MB 100 * 8 120 fileGen
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

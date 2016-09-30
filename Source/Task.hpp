@@ -646,6 +646,7 @@ namespace Tasks
     static void vSubStr(NNP_Task nnpTask);
     static void vConcat(NNP_Task nnpTask);
     static void vClip(NNP_Task nnpTask);
+    static void vRndStr(NNP_Task nnpTask);
     
     static void vS256Init(NNP_Task nnpTask);
     

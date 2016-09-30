@@ -948,6 +948,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("concat", &vConcat,    false);
   vAddPrimitive("clip",   &vClip,      false);
   vAddPrimitive("toDigitName",&vToDigitName, false);
+  vAddPrimitive("rndStr", &vRndStr,    false);
   
   vAddPrimitive("s256.init", &vS256Init, false);
  
@@ -8629,6 +8630,26 @@ ENTRY("vToDigitName");
   }
 
   nnpTask->m_xParamStack.vPush(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rndStr -- generate random string of given length                           */
+/*----------------------------------------------------------------------------*/
+void Task::vRndStr(NNP_Task nnpTask)
+{
+  ENTRY("vRndStr");
+  
+  i8 iLength;
+  if ( ! nnpTask->m_xParamStack.bPop(iLength) )
+    THROW_INVALID_PARAM("rndStr");
+  
+  s8K sRnd;
+  
+  sRnd = Random::sRandomString(iLength).a();
+  
+  nnpTask->m_xParamStack.vPush(sRnd);
   
   EXIT();
 }
