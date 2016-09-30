@@ -108,6 +108,8 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, SysCall& SysCa
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
                | (pAddress ? MAP_FIXED  : 0);
   
+  size_t x;
+  
   void* pRegion = mmap(pAddress, // starting address
                        iBytes,   // length of the region
                        iProt,    // region protection

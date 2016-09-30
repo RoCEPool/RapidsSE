@@ -21,7 +21,6 @@ void* StepBoard::operator new(size_t iSize)
   void* pRegion;
   bool bResult;
   
-/*
   // open a shared memory region
   bResult = Shm::bAttach("/RapidsSE_StepBoard",iShmFD,xSysCall);
   if (bResult) {
@@ -40,7 +39,6 @@ void* StepBoard::operator new(size_t iSize)
     
     return pStepBoard;
   }
-*/  
   
   // open a new shm region
   bResult = Shm::bCreate("/RapidsSE_StepBoard",
