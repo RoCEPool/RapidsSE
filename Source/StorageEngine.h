@@ -9,7 +9,7 @@
 #include "Arguments.hpp"
 #include "AttachMap.hpp"
 #include "Region.hpp"
-#include "Dump.hpp"
+#include "SizesDumps.hpp"
 
 #include "RapidsSE.hpp"
 
