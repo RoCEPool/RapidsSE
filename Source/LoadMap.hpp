@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class LoadMap : public Buffer
+  class LoadMap : public Object
   {
     static const i8 C_LOADMAP_BLOCK   = 2048;
     static const i8 C_LOADMAP_ENTRIES = (C_1MB * 15) / sizeof(i8);
@@ -46,6 +46,8 @@ namespace DBobjects
     void vDone(bool bDone);
     bool bNextChunk(i8& iSeek, i8& nBytes);
     void vChunkTest(void);
+    
+    void vStats(void);
     
     Footer* pFooter(void);
   };

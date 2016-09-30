@@ -42,7 +42,7 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 LoadMap::LoadMap(void)
-: Buffer(CN_LOADMAP)
+: Object(CN_LOADMAP)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
   
@@ -255,6 +255,18 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes)
   m_zLock.vDropWrite();
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* stats                                                                      */
+/*----------------------------------------------------------------------------*/
+void LoadMap::vStats(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
+  
+  vTrace("LoadMap: lock writes %lld write collisions %lld\n",
+         m_zLock.iWriteGrabs(),
+         m_zLock.iWriteCollisions());
 }
 
 /*----------------------------------------------------------------------------*/

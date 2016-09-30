@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Lock.cpp -- Lock                                                           */
+/* Lock.cpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
 #include "Common.h"
@@ -72,7 +72,7 @@ Lock::~Lock(void)
 /*----------------------------------------------------------------------------*/
 /* check lock initialization                                                  */
 /*----------------------------------------------------------------------------*/
-void Lock::vCheckInit()
+void Lock::vCheckInit(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -96,7 +96,7 @@ bool Lock::bIsLocked(void)
 /*----------------------------------------------------------------------------*/
 /* try and grab read lock                                                     */
 /*----------------------------------------------------------------------------*/
-bool Lock::bGrabRead()
+bool Lock::bGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -116,7 +116,7 @@ bool Lock::bGrabRead()
 /*----------------------------------------------------------------------------*/
 /* vGrabRead: grab read lock                                                  */
 /*----------------------------------------------------------------------------*/
-void Lock::vGrabRead()
+void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -140,7 +140,7 @@ void Lock::vGrabRead()
 /*----------------------------------------------------------------------------*/
 /* check for read lock                                                        */
 /*----------------------------------------------------------------------------*/
-void Lock::vCheckRead()
+void Lock::vCheckRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -150,7 +150,7 @@ void Lock::vCheckRead()
 /*----------------------------------------------------------------------------*/
 /* drop read lock                                                             */
 /*----------------------------------------------------------------------------*/
-void Lock::vDropRead()
+void Lock::vDropRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -163,12 +163,32 @@ void Lock::vDropRead()
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of read grabs                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Lock::iReadGrabs(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return *m_zReadGrabs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of read collisions                                              */
+/*----------------------------------------------------------------------------*/
+i8 Lock::iReadCollisions(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return *m_zReadCollisions;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /* try and grab write lock                                                    */
 /*----------------------------------------------------------------------------*/
-bool Lock::bGrabWrite()
+bool Lock::bGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -188,7 +208,7 @@ bool Lock::bGrabWrite()
 /*----------------------------------------------------------------------------*/
 /* grab write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void Lock::vGrabWrite()
+void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -211,7 +231,7 @@ void Lock::vGrabWrite()
 /*----------------------------------------------------------------------------*/
 /* check for write lock                                                       */
 /*----------------------------------------------------------------------------*/
-void Lock::vCheckWrite()
+void Lock::vCheckWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -221,7 +241,7 @@ void Lock::vCheckWrite()
 /*----------------------------------------------------------------------------*/
 /* drop write lock                                                            */
 /*----------------------------------------------------------------------------*/
-void Lock::vDropWrite()
+void Lock::vDropWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
@@ -233,6 +253,26 @@ void Lock::vDropWrite()
   //m_uLockWord = 0;
   
   // m_iValue could be any value
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of write grabs                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Lock::iWriteGrabs(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return *m_zWriteGrabs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of write collisions                                             */
+/*----------------------------------------------------------------------------*/
+i8 Lock::iWriteCollisions(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  return *m_zWriteCollisions;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Lock.cpp -- Lock                                                           */
+/* Lock.hpp -- Shared Read / Exclusive Write Lock                             */
 /*============================================================================*/
 
 #pragma once
@@ -32,19 +32,21 @@ namespace Common
     ~Lock(void);
     
     void vCheckInit(void);
+    bool bIsLocked(void);
     
     bool bGrabRead(void);
     void vGrabRead(void);
     void vCheckRead(void);
     void vDropRead(void);
+    i8   iReadGrabs(void);
+    i8   iReadCollisions(void);
     
     bool bGrabWrite(void);
     void vGrabWrite(void);
     void vCheckWrite(void);
     void vDropWrite(void);
-    
-    bool bIsLocked(void);
-    
+    i8   iWriteGrabs(void);
+    i8   iWriteCollisions(void);
     
     Footer* pFooter(void);
   };

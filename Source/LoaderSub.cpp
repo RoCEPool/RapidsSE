@@ -138,6 +138,9 @@ bool LoaderSub::bCompleted(void)
   
   bool bIsDecider = m_pLoader->bSubCompleted();
   
+  if (bIsDecider)
+    m_pLoadMap->vStats();
+  
   return bIsDecider;
 }
 
@@ -223,8 +226,13 @@ bool LoaderSub::bInsertRow(void)
   //vTrace("Row: %s\n",pStrVal->sStr());
   
   // check for working buffer
-  if (! m_pRowBuffer[m_iPartition])
+  if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = new RowBuffer;
+    if (! m_pRowBuffer[m_iPartition]) {
+      vTrace("RowBuffer allocation failed\n");
+      return false;
+    }
+  }
   
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
@@ -238,6 +246,11 @@ bool LoaderSub::bInsertRow(void)
   
   // get a new working buffer
   m_pRowBuffer[m_iPartition] = new RowBuffer;
+  if (! m_pRowBuffer[m_iPartition]) {
+    vTrace("RowBuffer allocation failed\n");
+    return false;
+  }
+  
   pRowBuffer = m_pRowBuffer[m_iPartition];
   
   // insert row into new working buffer
