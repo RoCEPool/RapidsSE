@@ -57,6 +57,17 @@ void BufferFree::vSetFooter(void)
   _setFooter_();
 }
 
+/*----------------------------------------------------------------------------*/
+/* zero data                                                                  */
+/*----------------------------------------------------------------------------*/
+void BufferFree::vZeroData(void)
+{
+  char* pData  = pcAdd(this,sizeof(BufferFree));
+  i8    nBytes = C_SIZE_POOL_BUFFER - sizeof(BufferFree) - sizeof(Footer);
+  
+  Memory::vZero(pData,nBytes);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

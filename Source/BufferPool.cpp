@@ -423,6 +423,7 @@ void BufferPool::vInitialise(void)
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_BUFFER);
     //pFreeBuffer->pFooter()->vSetFooter();
+    pFreeBuffer->vZeroData();
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vBufferNo(nBuffer);
     nBuffer = nBufferNext(nBuffer);
