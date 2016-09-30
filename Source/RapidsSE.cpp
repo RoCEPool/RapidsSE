@@ -24,9 +24,6 @@ SEitfList*          gpSEitfList        = nullptr;
 
 File*               gpTraceFile        = nullptr;
 
-pthread_key_t       giTLS_ThreadKey    = 0;
-pthread_key_t       giTLS_TaskKey      = 0;
-
 BufferPoolAnalyzer* gpBPA              = nullptr;
 
 NP_Task             gnpRootTask        = nullptr;
@@ -610,7 +607,7 @@ void RapidsSE::vSystemInit(void)
   ASSERT( ! gpMainDic->bHasWords() );
   
   // init the tls keys
-  vTlsInit();
+  TlsKeys::vInit();
   
   new StepArray;
   
@@ -701,19 +698,6 @@ bool RapidsSE::bTestRegion(void)
   bResult = Shm::bClose(iFD,xSysCall);
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* initialise tls                                                             */
-/*----------------------------------------------------------------------------*/
-void RapidsSE::vTlsInit(void)
-{
-  bool b = PosixThread::bTlsCreate(&giTLS_ThreadKey);
-  ASSERT(b);
-  
-  //ASSERT(!b);
-  b = PosixThread::bTlsCreate(&giTLS_TaskKey);
-  ASSERT(b);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -50,7 +50,6 @@ namespace StorageEngine
     static void vSystemStatus(void);
     static void vSystemStop(void);
     static bool bTestRegion(void);
-    static void vTlsInit(void);
     static void vUnlinkRegion(void);
     static void vWaitFlag(void);
 
