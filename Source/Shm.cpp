@@ -18,7 +18,7 @@ bool Shm::bAttach(s& sRegionName, int& iFD, SysCall& xSysCall)
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    //vTrace("shm_open() error; errno=%d %s\n",errno, strerror(errno));
+    vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n",errno, strerror(errno));
     return false;
   }
   
@@ -38,7 +38,7 @@ bool Shm::bClose(int iFD, SysCall& xSysCall)
   
   if (0 != rCode) {
     xSysCall.vError(errno);
-    //vReportWarning("munmap() error; errno=%d",errno);
+    vWarn("Shm::bClose: munmap() error; errno=%d %s\n",errno,strerror(errno));
     return false;
   }
   
@@ -70,7 +70,7 @@ bool Shm::bCreate(s& sRegionName, i8 iSize, int& iFD,
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    vTrace("shm_open() error; errno=%d %s\n",errno, strerror(errno));
+    vWarn("Shm::bCreate: shm_open() error; errno=%d %s\n",errno,strerror(errno));
     return false;
   }
   
@@ -81,13 +81,13 @@ bool Shm::bCreate(s& sRegionName, i8 iSize, int& iFD,
   
   if (rCode == -1) {
     xSysCall.vError(errno);
-    vTrace("ftruncate() error; errno=%d %s\n",errno, strerror(errno));
+    vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n",errno,strerror(errno));
     
     int rCode = shm_unlink(sRegionName.a());
     
     if (0 != rCode) {
       xSysCall.vError(errno);
-      //vReportWarning("munmap() error; errno=%d",errno);
+      vWarn("Shm::bCreate: shm_unlink() error; errno=%d %s\n",errno,strerror(errno));
       return false;
     }
     
@@ -127,7 +127,7 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
   if (MAP_FAILED == pRegion) {
     SysCall.vError(errno);
-    //vReportWarning("mmap() error; errno=%d",errno);
+    vWarn("Shm::pMap: mmap() error; errno=%d %s\n",errno,strerror(errno));
     return nullptr;
   }
   
@@ -149,7 +149,7 @@ bool Shm::bUnmap(void *pAddress, i8 iBytes, SysCall& xSysCall)
   
   if (0 != rCode) {
     xSysCall.vError(errno);
-    //vReportWarning("munmap() error; errno=%d",errno);
+    vWarn("Shm::bUnmap: munmap() error; errno=%d %s\n",errno,strerror(errno));
     return false;
   }
   
@@ -169,7 +169,7 @@ bool Shm::bUnlink(s& sRegionName, SysCall& xSysCall)
 
   if (0 != rCode) {
     xSysCall.vError(errno);
-    vWarn("shm_unlink() error; errno=%d\n",errno);
+    vWarn("Shm::bUnlink: shm_unlink() error; errno=%d %s\n",errno,strerror(errno));
     return false;
   }
   
