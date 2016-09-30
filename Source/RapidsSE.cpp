@@ -32,6 +32,8 @@ BufferPoolAnalyzer* gpBPA              = nullptr;
 NP_Task             gnpRootTask        = nullptr;
 Thread*             gnpRootThread      = nullptr;
 
+StepBoard*          gpStepBoard        = nullptr;
+
 void*               mpRegion           = nullptr;
 void* C_ADDR_POOL = (void*)0x204800000;
 
@@ -291,6 +293,8 @@ void RapidsSE::vPoolClose(void)
 void RapidsSE::vPoolOpen(void)
 {
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
+    
+    gpStepBoard = new StepBoard(16);
     
     if (! gxArguments.m_bRestart && bTestRegion()) {
       vTrace("Error: RapidsSE instance %s already started\n",gxArguments.m_sRegionName.a());

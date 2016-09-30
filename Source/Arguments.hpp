@@ -35,6 +35,7 @@ namespace StorageEngine
     bool m_bWelcome;    // print banner
     s256 m_sFolder;     // working folder
     bool m_bRestart;    // restart if system already started
+    bool m_bTracing;    // tracing
     
     // seitf options
     i8   m_iPartition;  // which partition

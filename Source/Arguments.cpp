@@ -30,6 +30,7 @@ Arguments::Arguments(void)
   m_bBgTasks    = true;
   m_bVerbose    = false;
   m_bWelcome    = true;
+  m_bTracing    = false;
   
   m_iPartition  = 0;
   
@@ -228,6 +229,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
       m_bRestart = true;
+      continue;
+    }
+
+    if (String::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
+      m_bTracing = true;
       continue;
     }
     

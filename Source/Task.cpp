@@ -27,6 +27,7 @@ extern TaskList*             gpTaskList;
 extern TxCollection*         gpTxCollection;
 
 extern NP_Task               gnpRootTask;
+extern StepBoard*            gpStepBoard;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */

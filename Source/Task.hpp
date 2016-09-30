@@ -91,6 +91,7 @@ namespace Tasks
     
 #ifdef ENTRY_EXIT
     #define ENTRY(p1) \
+      gpStepBoard->vName(nnpTask->m_pThread ? nnpTask->m_pThread->iThreadNo() : 0,p1); \
       static StepAccum* pStepAccum = nullptr; \
       if (! pStepAccum) \
         pStepAccum = gpStepArray->pAllocAccum(p1); \
@@ -104,7 +105,8 @@ namespace Tasks
       pStepAccum->m_nInvoked++; \
       pStepAccum->m_nCycles += _iTscDiff;
 #else
-     #define ENTRY(p1)
+     #define ENTRY(p1) \
+      gpStepBoard->vName(nnpTask->m_pThread ? nnpTask->m_pThread->iThreadNo() : 0,p1);
      #define EXIT()
 #endif
 
