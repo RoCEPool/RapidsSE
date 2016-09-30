@@ -335,7 +335,8 @@ void BufferPool::vInitialise(void)
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_BUFFER);
     //pFreeBuffer->pFooter()->vSetFooter();
-    pFreeBuffer->vZeroData();
+    if (gxArguments.m_bTouch)
+      pFreeBuffer->vZeroData();
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vBufferNo(nBuffer);
     nBuffer = nBufferNext(nBuffer);
@@ -346,7 +347,8 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_BUFFER);
   //pLastBuffer->pFooter()->vSetFooter();
-  pLastBuffer->vZeroData();
+  if (gxArguments.m_bTouch)
+    pLastBuffer->vZeroData();
   pLastBuffer->vSetFooter();
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());

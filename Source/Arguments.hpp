@@ -34,6 +34,7 @@ namespace StorageEngine
     bool m_bHugePages;  // to use huge pages
     bool m_bProgress;   // print initialisation progress
     bool m_bRestart;    // restart if system already started
+    bool m_bTouch;      // touch all shm pages during region create 
     bool m_bTracing;    // tracing
     bool m_bUnitTests;  // run unit tests
     bool m_bVerbose;    // print extra stuff

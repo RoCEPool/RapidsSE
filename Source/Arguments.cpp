@@ -30,8 +30,9 @@ Arguments::Arguments(void)
   m_bBgTasks    = true;
   m_sFolder     = "";
   m_bHugePages  = false;
-  m_bProgress   = false;
+  m_bProgress   = true;
   m_bRestart    = false;
+  m_bTouch      = true;
   m_bTracing    = false;
   m_bUnitTests  = false;
   m_bVerbose    = false;
@@ -221,9 +222,22 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_bProgress = true;
       continue;
     }
+    if (String::bEqualTo("--noprogress",argv[iArg],C_NO_CASE)) {
+      m_bProgress = false;
+      continue;
+    }
     
     if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
       m_bRestart = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--touch",argv[iArg],C_NO_CASE)) {
+      m_bTouch = true;
+      continue;
+    }
+    if (String::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
+      m_bTouch = false;
       continue;
     }
     
