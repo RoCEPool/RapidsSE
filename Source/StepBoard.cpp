@@ -19,9 +19,11 @@ void* StepBoard::operator new(size_t iSize)
   int iShmFD;
   SysCall xSysCall;
   void* pRegion;
+  bool bResult;
   
+/*
   // open a shared memory region
-  bool bResult = Shm::bAttach("/RapidsSE_StepBoard",iShmFD,xSysCall);
+  bResult = Shm::bAttach("/RapidsSE_StepBoard",iShmFD,xSysCall);
   if (bResult) {
     // map the opened shared memory region to memory
     pRegion = Shm::pMap(iShmFD,C_ADDR_STEPBOARD,sizeof(StepBoard),true,xSysCall);
@@ -38,7 +40,7 @@ void* StepBoard::operator new(size_t iSize)
     
     return pStepBoard;
   }
-  
+*/  
   
   // open a new shm region
   bResult = Shm::bCreate("/RapidsSE_StepBoard",
@@ -117,7 +119,12 @@ void StepBoard::vDump(void)
 /*----------------------------------------------------------------------------*/
 void StepBoard::vName(i8 iThread, const char* aName)
 {
-  String::vCopyLen(m_aStepName[iThread],aName,C_STEPBOARD_NAME);
+  if (iThread < 0 || iThread >= C_STEPBOARD_THREADS) {
+    printf("iThread error: %lld\n",iThread);
+    exit(EXIT_FAILURE);
+  }
+
+  String::vCopyLen(m_aStepName[iThread],aName,C_STEPBOARD_NAME-1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,6 +132,11 @@ void StepBoard::vName(i8 iThread, const char* aName)
 /*----------------------------------------------------------------------------*/
 void StepBoard::vPoint(i8 iThread, i8 iPoint)
 {
+  if (iThread < 0 || iThread >= C_STEPBOARD_THREADS) {
+    printf("iThread error: %lld\n",iThread);
+    exit(EXIT_FAILURE);
+  }
+  
   m_iStepPoint[iThread] = iPoint;
 }
 
@@ -136,7 +148,7 @@ void StepBoard::vReset(void)
   m_iThreads = 0;
   
   for (i8 iThread = 0; iThread < C_STEPBOARD_THREADS; iThread++) {
-    String::vCopyLen(m_aStepName[iThread],"<none>",C_STEPBOARD_NAME);
+    String::vCopyLen(m_aStepName[iThread],"<none>",C_STEPBOARD_NAME-1);
     m_iStepPoint[iThread] = -1;
   }
 }
