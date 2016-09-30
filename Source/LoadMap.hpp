@@ -44,7 +44,7 @@ namespace DBobjects
     void vEolOffset(i8 iEolOffset);
     bool bDone(void);
     void vDone(bool bDone);
-    bool bNextChunk(i8& iSeek, i8& nBytes);
+    bool bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks);
     void vChunkTest(void);
     
     void vStats(void);

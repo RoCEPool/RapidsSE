@@ -278,13 +278,15 @@ bool LoaderSub::bReadChunk(void)
   
   i8 iSeek;
   i8 nBytes;
+  i8 iChunk;
+  i8 nChunks;
 
   // get information about next chunk
   for (;;) {
     
     bool bDone = m_pLoadMap->bDone();
     
-    bool bNext = m_pLoadMap->bNextChunk(iSeek,nBytes);
+    bool bNext = m_pLoadMap->bNextChunk(iSeek,nBytes,iChunk,nChunks);
     
     if (bDone && ! bNext)
       return false;
@@ -293,6 +295,11 @@ bool LoaderSub::bReadChunk(void)
       break;
     
     //vTrace("Waiting for map\n");
+  }
+  
+  if (0 == iChunk % 1000) {
+    printf("chunk %lld of %lld        \r",iChunk,nChunks);
+    fflush(stdout);
   }
   
   // read the chunk

@@ -155,8 +155,15 @@ void LoadMap::vChunkTest(void)
   
   i8 iSeek;
   i8 nBytes;
+  i8 iChunk;
+  i8 nChunks;
   
-  while (bNextChunk(iSeek,nBytes)) {
+  while (bNextChunk(iSeek,nBytes,iChunk,nChunks)) {
+    
+    if (0 == iChunk % 1000) {
+      printf("chunk %lld of %lld        \r",iChunk,nChunks);
+      fflush(stdout);
+    }
     
     //vTrace("Test Seek %lld Bytes %lld\n",iSeek,nBytes);
     
@@ -223,7 +230,7 @@ void LoadMap::vDone(bool bDone)
 /*----------------------------------------------------------------------------*/
 /* subordinate takes next read-chunk                                          */
 /*----------------------------------------------------------------------------*/
-bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes)
+bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes, i8& iChunk, i8& nChunks)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP);
 
@@ -238,6 +245,9 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes)
   ASSERT(m_iNext < m_iEntries);
   
   // - a seekmap holds ending offsets only
+
+  iChunk  = m_iNext;
+  nChunks = m_iEntries;
   
   // calculate starting seek offset of next read-chunk
   if (0 == m_iNext)
@@ -251,6 +261,7 @@ bool LoadMap::bNextChunk(i8& iSeek, i8& nBytes)
   
   // a subsequent subordinate calling this func will get the next entry
   m_iNext++;
+  
   
   m_zLock.vDropWrite();
   
