@@ -4,6 +4,8 @@
 
 #include "DBobjects.h"
 
+extern Heap* gpJumboHeap;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -21,19 +23,19 @@ void* LoadMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Object* pObject = gpJumboHeap->pAllocObject(CN_LOADMAP);
   
-  return pBuffer;
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return a segment to the buffer pool                                        */
 /*----------------------------------------------------------------------------*/
-void LoadMap::operator delete(void* pSkipMapAddress)
+void LoadMap::operator delete(void* pLoadMapAddress)
 {
-  Buffer* pBuffer = static_cast<Buffer*>(pSkipMapAddress);
+  Object* pObject = static_cast<Object*>(pLoadMapAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  gpJumboHeap->vFreeObject(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -11,7 +11,7 @@ namespace DBobjects
   class LoadMap : public Buffer
   {
     static const i8 C_LOADMAP_BLOCK   = 2048;
-    static const i8 C_LOADMAP_ENTRIES = C_1M / sizeof(i8);
+    static const i8 C_LOADMAP_ENTRIES = (C_1MB * 15) / sizeof(i8);
  
   private:
     i8   m_iEntries;   // logical limit of m_iEnd
