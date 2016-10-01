@@ -120,7 +120,9 @@ void RapidsSE::vPoolOpen(void)
   
   if (gxArguments.m_bStart || gxArguments.m_bDocol) {
     
+#ifdef STEP_BOARD
     gpStepBoard = new StepBoard(16);
+#endif
     
     if (! gxArguments.m_bRestart && Region::bTest()) {
       vTrace("Error: RapidsSE instance %s already started\n",gxArguments.m_sRegionName.a());

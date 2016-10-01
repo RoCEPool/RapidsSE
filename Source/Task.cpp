@@ -310,6 +310,7 @@ void Task::vAddConstants(void)
   vAddConstant("regionsize",       gxArguments.m_iRegionSize);
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
   vAddConstant("partitions",       gxArguments.m_nPartitions);
+  vAddConstant("args.config",      gxArguments.m_bConfig);
   
   vAddConstant("true",    1);
   vAddConstant("false",   (i8)0);

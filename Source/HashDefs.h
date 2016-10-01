@@ -22,6 +22,8 @@
 
 #define VERBOSE_TRACE
 
+//#define STEP_BOARD
+
 // Flag to enable current release related items
 //#define _RELEASE_VERSION
 

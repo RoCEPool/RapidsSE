@@ -84,7 +84,9 @@ void Region::vCreate(void)
   int iFD;
   SysCall xSysCall;
   
-  vTrace("Creating RapidsSE instance %s ...\n",gxArguments.m_sRegionName.a());
+  vTrace("Creating RapidsSE instance %s; size %lldB...\n",
+         gxArguments.m_sRegionName.a(),
+         gxArguments.m_iRegionSize);
   
   // open a new shm region
   bool bResult = Shm::bCreate(gxArguments.m_sRegionName,

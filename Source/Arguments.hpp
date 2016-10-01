@@ -30,6 +30,7 @@ namespace StorageEngine
     
     // options
     bool m_bBgTasks;    // start background tasks
+    bool m_bConfig;     // print configuration information
     s256 m_sFolder;     // working folder
     bool m_bHugePages;  // to use huge pages
     bool m_bProgress;   // print initialisation progress

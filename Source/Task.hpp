@@ -87,9 +87,10 @@ namespace Tasks
     { \
       THROW("Invalid return stack for: %s",primitive); \
     }
-  
     
 #ifdef ENTRY_EXIT
+    
+  #ifdef STEP_BOARD
     #define ENTRY(p1) \
       gpStepBoard->vName(nnpTask->m_pThread ? nnpTask->m_pThread->iThreadNo() : 0,p1); \
       static StepAccum* pStepAccum = nullptr; \
@@ -97,17 +98,33 @@ namespace Tasks
         pStepAccum = gpStepArray->pAllocAccum(p1); \
       i8 _iTscEntry = iRdtscp(); \
       nnpTask->vPrimitive(p1);
-
+  #else
+    #define ENTRY(p1) \
+      static StepAccum* pStepAccum = nullptr; \
+      if (! pStepAccum) \
+      pStepAccum = gpStepArray->pAllocAccum(p1); \
+      i8 _iTscEntry = iRdtscp(); \
+      nnpTask->vPrimitive(p1);
+  #endif
+    
     #define EXIT() \
       ASSERT(pStepAccum); \
       i8 _iTscExit = iRdtscp(); \
       i8 _iTscDiff = _iTscExit - _iTscEntry; \
       pStepAccum->m_nInvoked++; \
       pStepAccum->m_nCycles += _iTscDiff;
+
 #else
-     #define ENTRY(p1) \
+
+  #ifdef STEP_BOARD
+    #define ENTRY(p1) \
       gpStepBoard->vName(nnpTask->m_pThread ? nnpTask->m_pThread->iThreadNo() : 0,p1);
-     #define EXIT()
+  #else
+    #define ENTRY(p1)
+  #endif
+
+    #define EXIT()
+    
 #endif
 
     

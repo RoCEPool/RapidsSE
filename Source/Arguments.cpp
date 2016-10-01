@@ -28,11 +28,12 @@ Arguments::Arguments(void)
   m_bUnlink     = false;
 
   m_bBgTasks    = true;
+  m_bConfig     = true;
   m_sFolder     = "";
   m_bHugePages  = false;
   m_bProgress   = true;
   m_bRestart    = false;
-  m_bTouch      = true;
+  m_bTouch      = false;
   m_bTracing    = false;
   m_bUnitTests  = false;
   m_bVerbose    = false;
@@ -213,6 +214,11 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    if (String::bEqualTo("--config",argv[iArg],C_NO_CASE)) {
+      m_bConfig = true;
+      continue;
+    }
+    
     if (String::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
       m_bHugePages = true;
       continue;
@@ -271,6 +277,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_iPartition = String::iToI8(argv[++iArg]);
       continue;
     }
+    
   /*
     if (String::iLength(m_sCommand.a()))
       String::vConcat(m_sCommand.a(),' ');
