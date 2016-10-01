@@ -117,8 +117,13 @@ namespace Magic
     /* 81 */ CN_TXREF,
     
     /* 82 */ CN_WORD,
+    
+    /* 84 */ CN_ZSMALL_,
+    /* 85 */ CN_ZMEDIUM_,
+    /* 86 */ CN_ZLARGE_,
+    /* 87 */ CN_ZJUMBO_,
   
-    /* 83 */ CN_ENUMS
+    /* 88 */ CN_ENUMS
   };
   
   static const char* const pCN[]
@@ -226,8 +231,13 @@ namespace Magic
     /* 82 */ "TXREF",
     
     /* 83 */ "WORD",
+    
+    /* 84 */ "ZSMALL_",
+    /* 85 */ "ZMEDIUM_",
+    /* 86 */ "ZLARGE_",
+    /* 87 */ "ZJUMBO_",
   
-    /* 79 */ "ENUMS"
+    /* 88 */ "ENUMS"
   };
   
   class cn

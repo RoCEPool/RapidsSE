@@ -31,10 +31,10 @@ pDUMPFUN *gpDump[]
   
   /* 14 */ &Dump::vDummy,      // CN_BUFFER
   /* 15 */ &Dump::vInvalid,    // CN_BUFFERPOOL
-  /* 16 */ &Dump::vInvalid,    // CN_BUFFERPOOLANALYZER
+  /* 16 */ &Dump::vInvalid,         // CN_BUFFERPOOLANALYZER
 
-  /* 17 */ &Dictionary::vDump,         // CN_DICTIONARY
-  /* 18 */ &DictionaryStack::vDump,    // CN_DICTIONARYSTACK
+  /* 17 */ &Dictionary::vDump,      // CN_DICTIONARY
+  /* 18 */ &DictionaryStack::vDump, // CN_DICTIONARYSTACK
   /* 19 */ &Dump::vInvalid,    // CN_DIR
   
   /* 20 */ &Dump::vInvalid,    // CN_FILE
@@ -116,7 +116,12 @@ pDUMPFUN *gpDump[]
   
   /* 82 */ &Dump::vDummy,      // CN_WORD
 
-  /* 83 */ &Dump::vEnums       // CN_ENUMS
+  /* 84 */ &Dump::vUndefined,  // CN_ZSMALL_
+  /* 85 */ &Dump::vUndefined,  // CN_ZMEDIUM_
+  /* 86 */ &Dump::vUndefined,  // CN_ZLARGE_
+  /* 87 */ &Dump::vUndefined,  // CN_ZJUMBO_
+
+  /* 88 */ &Dump::vEnums       // CN_ENUMS
 };
 
 i8 giClassSize[]
@@ -225,6 +230,11 @@ i8 giClassSize[]
   /* 81 */ sizeof(TxRef),              // CN_TXREF
   
   /* 82 */ sizeof(Word),               // CN_WORD
+
+  /* 84 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
+  /* 85 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
+  /* 86 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
+  /* 87 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
   
   /* 83 */ -1
 };
