@@ -110,7 +110,8 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
                | (pAddress ? MAP_FIXED  : 0);
 #else
-  int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE | MAP_ANONYMOUS)
+  int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE)
+               | MAP_ANONYMOUS
                | (pAddress ? MAP_FIXED  : 0)
                | (bHugeTlb ? MAP_HUGETLB : 0);
 #endif
@@ -127,7 +128,7 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
   
   if (MAP_FAILED == pRegion) {
     SysCall.vError(errno);
-    vWarn("Shm::pMap: mmap() error; errno=%d %s\n",errno,strerror(errno));
+    vWarn("Shm::pMap: mmap() error; errno=%d %s line=%d\n",errno,strerror(errno), __LINE__);
     return nullptr;
   }
   
