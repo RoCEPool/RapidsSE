@@ -27,6 +27,10 @@
 #include "KeyCpp.hpp"
 #include "KeyVal.hpp"
 
+#include "GraphNode.hpp"
+#include "Graph.hpp"
+
+
 //-----------------------------------------------------------------------------
 namespace Structures
 {

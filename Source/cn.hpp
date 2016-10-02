@@ -42,6 +42,8 @@ namespace Magic
     /* 20 */ CN_FILE,
     /* 21 */ CN_FREECHUNK,
     
+    /*    */ CN_GRAPH,
+    /*    */ CN_GRAPHNODE,
     /* 22 */ CN_GRID,
   
     /* 23 */ CN_HEAPBUFFER,
@@ -156,6 +158,8 @@ namespace Magic
     /* 20 */ "FILE",
     /* 21 */ "FREECHUNK",
     
+    /*    */ "GRAPH",
+    /*    */ "GRAPHNODE",
     /* 22 */ "GRID",
     
     /* 23 */ "HEAPBUFFER",

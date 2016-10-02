@@ -40,6 +40,8 @@ pDUMPFUN *gpDump[]
   /* 20 */ &Dump::vInvalid,    // CN_FILE
   /* 21 */ &Dump::vDummy,      // CN_FREECHUNK
   
+  /*    */ &Graph::vDump,              // CN_GRAPH
+  /*    */ &GraphNode::vDump,          // CN_GRAPHNODE
   /* 22 */ &Grid::vDump,               // CN_GRID
 
   /* 23 */ &HeapBuffer::vDump,         // CN_HEAPBUFFER
@@ -155,6 +157,8 @@ i8 giClassSize[]
   /* 20 */ sizeof(File),               // CN_FILE
   /* 21 */ sizeof(FreeChunk),          // CN_FREECHUNK
   
+  /*    */ sizeof(Graph),              // CN_GRAPH
+  /*    */ sizeof(GraphNode),          // CN_GRAPHNODE
   /* 22 */ sizeof(Grid),               // CN_GRID
   
   /* 23 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
