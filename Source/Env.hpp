@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Env.h -- environment variable utility                                      */
+/* Env.h -- Environment Variable Utility                                      */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@ namespace Common {
   class Env : public Static
   {
   public:
-    static bool bGetEnv(const char* aEnvName, char* aEnvValue);
+    static bool bGet(s256& sName, s256& sValue);
   };
 
 }

@@ -2633,9 +2633,9 @@ ENTRY("vEnvGet");
   if ( ! nnpTask->m_xParamStack.bPop(sEnvName) )
     THROW_INVALID_PARAM("env@");
   
-  s8K sEnvVal;
+  s256 sEnvVal;
   
-  if (! Env::bGetEnv(sEnvName.a(),sEnvVal.a()))
+  if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = "";
   
   nnpTask->m_xParamStack.vPush(sEnvVal);

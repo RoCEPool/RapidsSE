@@ -1,21 +1,21 @@
 /*============================================================================*/
-/* Env.cpp -- environment variable utility                                    */
+/* Env.cpp -- Environment Variable Utility                                    */
 /*============================================================================*/
 
 #include "Env.hpp"
 
-/*---------------------------------------------------------------------------*/
-/* translate environment variable                                            */
-/*---------------------------------------------------------------------------*/
-bool Env::bGetEnv(const char* aEnvName, char* aEnvValue)
+/*----------------------------------------------------------------------------*/
+/* translate environment variable                                             */
+/*----------------------------------------------------------------------------*/
+bool Env::bGet(s256& sName, s256& sValue)
 {
   char* aValue;
   
-  aValue = getenv(aEnvName);
+  aValue = getenv(sName.a());
   if ( ! aValue )
     return false;
-
-  String::vCopy(aEnvValue,aValue);
+  
+  String::vCopyLen(sValue.a(),aValue,256);
   
   return true;
 }

@@ -59,21 +59,26 @@ Arguments::~Arguments(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vEnvironmentVariables(void)
 {
+  s256 sVarName;
   s256 sRegionName;
   s256 sRegionSize;
   s256 sPartitions;
   s256 sFolder;
   
-  if (Env::bGetEnv("SE_INSTANCE_NAME",sRegionName.a()))
+  sVarName = "SE_INSTANCE_NAME";
+  if (Env::bGet(sVarName,sRegionName))
     m_sRegionName = sRegionName;
 
-  if (Env::bGetEnv("SE_INSTANCE_SIZE",sRegionSize.a()))
+  sVarName = "SE_INSTANCE_SIZE";
+  if (Env::bGet(sVarName,sRegionSize))
     m_iRegionSize = String::iToI8(sRegionSize.a());
 
-  if (Env::bGetEnv("SE_PARTITIONS",sPartitions.a()))
+  sVarName = "SE_PARTITIONS";
+  if (Env::bGet(sVarName,sPartitions))
     m_nPartitions = String::iToI8(sPartitions.a());
   
-  if (Env::bGetEnv("SE_WORKING_FOLDER",sFolder.a()))
+  sVarName = "SE_WORKING_FOLDER";
+  if (Env::bGet(sVarName,sFolder))
     m_sFolder = sFolder;
 }
 
