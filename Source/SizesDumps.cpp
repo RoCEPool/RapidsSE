@@ -12,118 +12,119 @@
 
 pDUMPFUN *gpDump[]
 {
-  /*  0 */ &Dump::vInvalid,    // CN_NONE
+  /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /*  1 */ &Dump::vInvalid,    // CN_S32
-  /*  2 */ &Dump::vInvalid,    // CN_S256
-  /*  3 */ &Dump::vInvalid,    // CN_S8K
-  /*  4 */ &Dump::vInvalid,    // CN_INTVAL
-  /*  5 */ &Dump::vInvalid,    // CN_OBJVAL
-  /*  6 */ &Dump::vInvalid,    // CN_PTRVAL
-  /*  7 */ &Dump::vInvalid,    // CN_STRVAL
-  /*  8 */ &Dump::vInvalid,    // CN_VALREG
-  /*  9 */ &Dump::vInvalid,    // CN_VALSET
-  /* 10 */ &Dump::vInvalid,    // CN_VALWSP
+  /*  1 */ &Dump::vInvalid,         // CN_S32
+  /*  2 */ &Dump::vInvalid,         // CN_S256
+  /*  3 */ &Dump::vInvalid,         // CN_S8K
+  /*  4 */ &Dump::vInvalid,         // CN_INTVAL
+  /*  5 */ &Dump::vInvalid,         // CN_OBJVAL
+  /*  6 */ &Dump::vInvalid,         // CN_PTRVAL
+  /*  7 */ &Dump::vInvalid,         // CN_STRVAL
+  /*  8 */ &Dump::vInvalid,         // CN_VALREG
+  /*  9 */ &Dump::vInvalid,         // CN_VALSET
+  /* 10 */ &Dump::vInvalid,         // CN_VALWSP
   
-  /* 11 */ &Dump::vInvalid,    // CN_ARGUMENTS
-  /* 12 */ &Dump::vInvalid,    // CN_ATOMIC
-  /* 13 */ &AttachMap::vDump,          // CN_ATTACHMAP
-  
-  /* 14 */ &Dump::vDummy,      // CN_BUFFER
-  /* 15 */ &Dump::vInvalid,    // CN_BUFFERPOOL
+  /* 11 */ &Dump::vInvalid,         // CN_ARGUMENTS
+  /* 12 */ &Dump::vInvalid,         // CN_ATOMIC
+  /* 13 */ &AttachMap::vDump,       // CN_ATTACHMAP
+
+  /* 14 */ &Dump::vDummy,           // CN_BUFFER
+  /* 15 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /* 16 */ &Dump::vInvalid,         // CN_BUFFERPOOLANALYZER
 
   /* 17 */ &Dictionary::vDump,      // CN_DICTIONARY
   /* 18 */ &DictionaryStack::vDump, // CN_DICTIONARYSTACK
-  /* 19 */ &Dump::vInvalid,    // CN_DIR
+  /* 19 */ &Dump::vInvalid,         // CN_DIR
   
-  /* 20 */ &Dump::vInvalid,    // CN_FILE
-  /* 21 */ &Dump::vDummy,      // CN_FREECHUNK
+  /* 20 */ &Dump::vInvalid,         // CN_FILE
+  /* 21 */ &Dump::vDummy,           // CN_FREECHUNK
   
-  /*    */ &Graph::vDump,              // CN_GRAPH
-  /*    */ &GraphNode::vDump,          // CN_GRAPHNODE
-  /* 22 */ &Grid::vDump,               // CN_GRID
+  /* 22 */ &Graph::vDump,           // CN_GRAPH
+  /* 23 */ &GraphCursor::vDump,     // CN_GRAPH
+  /* 24 */ &GraphNode::vDump,       // CN_GRAPHNODE
+  /* 25 */ &Grid::vDump,            // CN_GRID
 
-  /* 23 */ &HeapBuffer::vDump,         // CN_HEAPBUFFER
+  /* 26 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
-  /* 24 */ &Index::vDump,              // CN_INDEX
+  /* 27 */ &Index::vDump,           // CN_INDEX
   
-  /* 25 */ &Dump::vInvalid,    // CN_JUMBOHEAP
+  /* 28 */ &Dump::vInvalid,         // CN_JUMBOHEAP
 
-  /* 26 */ &KeyCpp::vDump,             // CN_KEYCPP
-  /* 27 */ &KeyVal::vDump,             // CN_KEYVAL
+  /* 29 */ &KeyCpp::vDump,          // CN_KEYCPP
+  /* 30 */ &KeyVal::vDump,          // CN_KEYVAL
   
-  /*    */ &LoadChunk::vDump,          // CN_LOADCHUNK
-  /* 28 */ &Loader::vDump,             // CN_LOADER
-  /* 29 */ &LoaderSub::vDump,          // CN_LOADERSUB
-  /* 30 */ &Dump::vInvalid,    // CN_LOCK
+  /* 31 */ &LoadChunk::vDump,       // CN_LOADCHUNK
+  /* 32 */ &Loader::vDump,          // CN_LOADER
+  /* 33 */ &LoaderSub::vDump,       // CN_LOADERSUB
+  /* 34 */ &Dump::vInvalid,         // CN_LOCK
   
-  /* 31 */ &Heap::vDump,               // CN_MEDIUMHEAP
+  /* 35 */ &Heap::vDump,            // CN_MEDIUMHEAP
   
-  /* 32 */ &Node::vDump,               // CN_NODE
-  /* 33 */ &NodeCursor::vDump,         // CN_NODECURSOR
+  /* 36 */ &Node::vDump,            // CN_NODE
+  /* 37 */ &NodeCursor::vDump,      // CN_NODECURSOR
   
-  /* 34 */ &Dump::vDummy,      // CN_PARSER
-  /* 35 */ &Partition::vDump,          // CN_PARTITION
-  /* 36 */ &Dump::vUndefined,  // CN_PARTITIONS
-  /* 37 */ &Dump::vUndefined,  // CN_PROXY
-  /* 38 */ &Dump::vUndefined,  // CN_PROXYSET
+  /* 38 */ &Dump::vDummy,           // CN_PARSER
+  /* 39 */ &Partition::vDump,       // CN_PARTITION
+  /* 40 */ &Dump::vUndefined,       // CN_PARTITIONS
+  /* 41 */ &Dump::vUndefined,       // CN_PROXY
+  /* 42 */ &Dump::vUndefined,       // CN_PROXYSET
 
-  /* 39 */ &Queue::vDump,              // CN_QUEUE
-  /* 40 */ &QueueBuffer::vDump,        // CN_QUEUEBUFFER
-  
-  /* 41 */ &RegFrame::vDump,           // CN_REGFRAME
-  /* 42 */ &Dump::vUndefined,  // CN_RING
-  /* 43 */ &Dump::vUndefined,  // CN_ROW
-  /* 44 */ &RowBuffer::vDump,          // CN_ROWBUFFER
-  /* 45 */ &Dump::vUndefined,  // CN_ROWCURSOR
-  /* 46 */ &RowStrand::vDump,          // CN_ROWSTRAND
-  /* 47 */ &Dump::vUndefined,  // CN_ROWWSP
-  
-  /* 48 */ &Dump::vUndefined,  // CN_SCANBUFFER
-  /* 49 */ &Dump::vUndefined,  // CN_SEHISTORY
-  /* 50 */ &SEitf::vDump,              // CN_SEITF
-  /* 51 */ &Dump::vUndefined,  // CN_SEITFCURSOR
-  /* 52 */ &Dump::vUndefined,  // CN_SEITFLIST
-  /* 53 */ &Dump::vDummy,      // CN_SEPROMPT
-  /* 54 */ &Dump::vUndefined,  // CN_SINCE
-  /* 55 */ &Dump::vUndefined,  // CN_SKIPCURSOR
-  /* 56 */ &Dump::vUndefined,  // CN_SKIPLIST
-  /* 57 */ &LoadMap::vDump,            // CN_LOADMAP
-  /* 58 */ &Dump::vUndefined,  // CN_SKIPNODE
-  /* 59 */ &Heap::vDump,               // CN_SMALLHEAP
-  /* 60 */ &Dump::vUndefined,  // CN_SOCKET
-  /* 61 */ &Dump::vUndefined,  // CN_STACK
-  /* 62 */ &Dump::vInvalid,    // CN_STEPACCUM
-  /* 63 */ &StepArray::vDump,          // CN_STEPARRAY
-  /* 64 */ &Dump::vInvalid,    // CN_SYSCALL
-  
-  /* 65 */ &Table::vDump,              // CN_TABLE
-  /* 66 */ &Task::vDump,               // CN_TASK
-  /* 67 */ &Dump::vUndefined,  // CN_TASKCURSOR
-  /* 68 */ &TaskList::vDump,           // CN_TASKLIST
-  /* 69 */ &Dump::vUndefined,  // CN_TASKSET
-  /* 70 */ &Dump::vUndefined,  // CN_THREAD
-  /* 71 */ &Dump::vUndefined,  // CN_THREADCURSOR
-  /* 72 */ &Dump::vUndefined,  // CN_THREADLIST
-  /* 73 */ &Dump::vUndefined,  // CN_TIME
-  /* 74 */ &Dump::vInvalid,    // CN_TIMER
-  /* 75 */ &Tokeniser::vDump,          // CN_TOKENISER
-  /* 76 */ &Tx::vDump,                 // CN_TX
-  /* 77 */ &TxArray::vDump,            // CN_TXARRAY
-  /* 78 */ &Dump::vUndefined,  // CN_TXCOLLECTION
-  /* 79 */ &Dump::vUndefined,  // CN_TXCURSOR
-  /* 80 */ &Dump::vUndefined,  // CN_TXMAP
-  /* 81 */ &Dump::vUndefined,  // CN_TXREF
-  
-  /* 82 */ &Dump::vDummy,      // CN_WORD
+  /* 43 */ &Queue::vDump,           // CN_QUEUE
+  /* 44 */ &QueueBuffer::vDump,     // CN_QUEUEBUFFER
 
-  /* 84 */ &Dump::vUndefined,  // CN_ZSMALL_
-  /* 85 */ &Dump::vUndefined,  // CN_ZMEDIUM_
-  /* 86 */ &Dump::vUndefined,  // CN_ZLARGE_
-  /* 87 */ &Dump::vUndefined,  // CN_ZJUMBO_
+  /* 45 */ &RegFrame::vDump,        // CN_REGFRAME
+  /* 46 */ &Dump::vUndefined,       // CN_RING
+  /* 47 */ &Dump::vUndefined,       // CN_ROW
+  /* 48 */ &RowBuffer::vDump,       // CN_ROWBUFFER
+  /* 49 */ &Dump::vUndefined,       // CN_ROWCURSOR
+  /* 50 */ &RowStrand::vDump,       // CN_ROWSTRAND
+  /* 51 */ &Dump::vUndefined,       // CN_ROWWSP
+  
+  /* 52 */ &Dump::vUndefined,       // CN_SCANBUFFER
+  /* 53 */ &Dump::vUndefined,       // CN_SEHISTORY
+  /* 54 */ &SEitf::vDump,           // CN_SEITF
+  /* 55 */ &Dump::vUndefined,       // CN_SEITFCURSOR
+  /* 56 */ &Dump::vUndefined,       // CN_SEITFLIST
+  /* 57 */ &Dump::vDummy,           // CN_SEPROMPT
+  /* 58 */ &Dump::vUndefined,       // CN_SINCE
+  /* 59 */ &Dump::vUndefined,       // CN_SKIPCURSOR
+  /* 60 */ &Dump::vUndefined,       // CN_SKIPLIST
+  /* 61 */ &LoadMap::vDump,         // CN_LOADMAP
+  /* 62 */ &Dump::vUndefined,       // CN_SKIPNODE
+  /* 63 */ &Heap::vDump,            // CN_SMALLHEAP
+  /* 64 */ &Dump::vUndefined,       // CN_SOCKET
+  /* 65 */ &Dump::vUndefined,       // CN_STACK
+  /* 66 */ &Dump::vInvalid,         // CN_STEPACCUM
+  /* 67 */ &StepArray::vDump,       // CN_STEPARRAY
+  /* 68 */ &Dump::vInvalid,         // CN_SYSCALL
 
-  /* 88 */ &Dump::vEnums       // CN_ENUMS
+  /* 69 */ &Table::vDump,           // CN_TABLE
+  /* 70 */ &Task::vDump,            // CN_TASK
+  /* 71 */ &Dump::vUndefined,       // CN_TASKCURSOR
+  /* 72 */ &TaskList::vDump,        // CN_TASKLIST
+  /* 73 */ &Dump::vUndefined,       // CN_TASKSET
+  /* 74 */ &Dump::vUndefined,       // CN_THREAD
+  /* 75 */ &Dump::vUndefined,       // CN_THREADCURSOR
+  /* 76 */ &Dump::vUndefined,       // CN_THREADLIST
+  /* 77 */ &Dump::vUndefined,       // CN_TIME
+  /* 78 */ &Dump::vInvalid,         // CN_TIMER
+  /* 79 */ &Tokeniser::vDump,       // CN_TOKENISER
+  /* 80 */ &Tx::vDump,              // CN_TX
+  /* 81 */ &TxArray::vDump,         // CN_TXARRAY
+  /* 82 */ &Dump::vUndefined,       // CN_TXCOLLECTION
+  /* 83 */ &Dump::vUndefined,       // CN_TXCURSOR
+  /* 84 */ &Dump::vUndefined,       // CN_TXMAP
+  /* 85 */ &Dump::vUndefined,       // CN_TXREF
+
+  /* 86 */ &Dump::vDummy,           // CN_WORD
+  
+  /* 87 */ &Dump::vUndefined,       // CN_ZSMALL_
+  /* 88 */ &Dump::vUndefined,       // CN_ZMEDIUM_
+  /* 89 */ &Dump::vUndefined,       // CN_ZLARGE_
+  /* 90 */ &Dump::vUndefined,       // CN_ZJUMBO_
+
+  /* 91 */ &Dump::vEnums            // CN_ENUMS
 };
 
 i8 giClassSize[]
@@ -157,90 +158,91 @@ i8 giClassSize[]
   /* 20 */ sizeof(File),               // CN_FILE
   /* 21 */ sizeof(FreeChunk),          // CN_FREECHUNK
   
-  /*    */ sizeof(Graph),              // CN_GRAPH
-  /*    */ sizeof(GraphNode),          // CN_GRAPHNODE
-  /* 22 */ sizeof(Grid),               // CN_GRID
+  /* 22 */ sizeof(Graph),              // CN_GRAPH
+  /* 23 */ sizeof(GraphCursor),        // CN_GRAPHCURSOR
+  /* 24 */ sizeof(GraphNode),          // CN_GRAPHNODE
+  /* 25 */ sizeof(Grid),               // CN_GRID
   
-  /* 23 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
+  /* 26 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
-  /* 24 */ sizeof(Index),              // CN_INDEX
+  /* 27 */ sizeof(Index),              // CN_INDEX
   
-  /* 25 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
+  /* 28 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
   
-  /* 26 */ sizeof(KeyCpp),             // CN_KEYCPP
-  /* 27 */ sizeof(KeyVal),             // CN_KEYVAL
+  /* 29 */ sizeof(KeyCpp),             // CN_KEYCPP
+  /* 30 */ sizeof(KeyVal),             // CN_KEYVAL
   
-  /*    */ sizeof(LoadChunk),          // CN_LOADCHUNK
-  /* 28 */ sizeof(Loader),             // CN_LOADER
-  /* 29 */ sizeof(LoaderSub),          // CN_LOADERSUB
-  /* 30 */ sizeof(Lock),               // CN_LOCK
+  /* 31 */ sizeof(LoadChunk),          // CN_LOADCHUNK
+  /* 32 */ sizeof(Loader),             // CN_LOADER
+  /* 33 */ sizeof(LoaderSub),          // CN_LOADERSUB
+  /* 34 */ sizeof(Lock),               // CN_LOCK
   
-  /* 31 */ sizeof(Heap), // correct    // CN_MEDIUMHEAP
+  /* 35 */ sizeof(Heap), // correct    // CN_MEDIUMHEAP
   
-  /* 32 */ sizeof(Node),               // CN_NODE
-  /* 33 */ sizeof(NodeCursor),         // CN_NODECURSOR
+  /* 36 */ sizeof(Node),               // CN_NODE
+  /* 37 */ sizeof(NodeCursor),         // CN_NODECURSOR
   
-  /* 34 */ sizeof(Parser),             // CN_PARSER
-  /* 35 */ sizeof(Partition),          // CN_PARTITION
-  /* 36 */ sizeof(Partitions),         // CN_PARTITIONS
-  /* 37 */ sizeof(Proxy),              // CN_PROXY
-  /* 38 */ sizeof(ProxySet),           // CN_PROXYSET
+  /* 38 */ sizeof(Parser),             // CN_PARSER
+  /* 39 */ sizeof(Partition),          // CN_PARTITION
+  /* 40 */ sizeof(Partitions),         // CN_PARTITIONS
+  /* 41 */ sizeof(Proxy),              // CN_PROXY
+  /* 42 */ sizeof(ProxySet),           // CN_PROXYSET
   
-  /* 39 */ sizeof(Queue),              // CN_QUEUE
-  /* 40 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
+  /* 43 */ sizeof(Queue),              // CN_QUEUE
+  /* 44 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   
-  /* 41 */ sizeof(RegFrame),           // CN_REGFRAME
-  /* 42 */ sizeof(Ring),               // CN_RING
-  /* 43 */ sizeof(Row),                // CN_ROW
-  /* 44 */ sizeof(RowBuffer),          // CN_ROWBUFFER
-  /* 45 */ sizeof(RowCursor),          // CN_ROWCURSOR
-  /* 46 */ sizeof(RowStrand),          // CN_ROWSTRAND
-  /* 47 */ sizeof(RowWsp),             // CN_ROWWSP
-  
-  /* 48 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
-  /* 49 */ sizeof(LoadMap),            // CN_LOADMAP
-  /* 50 */ sizeof(SeHistory),          // CN_SEHISTORY
-  /* 51 */ sizeof(SEitf),              // CN_SEITF
-  /* 52 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
-  /* 53 */ sizeof(SEitfList),          // CN_SEITFLIST
-  /* 54 */ sizeof(SePrompt),           // CN_SEPROMPT
-  /* 55 */ sizeof(Since),              // CN_SINCE
-  /* 57 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
-  /* 58 */ sizeof(SkipList),           // CN_SKIPLIST
-  /* 59 */ sizeof(SkipNode),           // CN_SKIPNODE
-  /* 60 */ sizeof(Heap), // correct    // CN_SMALLHEAP
-  /* 61 */ sizeof(Socket),             // CN_SOCKET
-  /* 62 */ sizeof(Stack),              // CN_STACK
-  /* 63 */ sizeof(StepAccum),          // CN_STEPACCUM
-  /* 64 */ sizeof(StepArray),          // CN_STEPARRAY
-  /* 65 */ sizeof(SysCall),            // CN_SYSCALL
-  
-  /* 65 */ sizeof(Table),              // CN_TABLE
-  /* 66 */ sizeof(Task),               // CN_TASK
-  /* 67 */ sizeof(TaskCursor),         // CN_TASKCURSOR
-  /* 68 */ sizeof(TaskList),           // CN_TASKLIST
-  /* 69 */ sizeof(TaskSet),            // CN_TASKSET
-  /* 70 */ sizeof(Thread),             // CN_THREAD
-  /* 71 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
-  /* 72 */ sizeof(ThreadList),         // CN_THREADLIST
-  /* 73 */ sizeof(Time),               // CN_TIME
-  /* 74 */ sizeof(Timer),              // CN_TIMER
-  /* 75 */ sizeof(Tokeniser),          // CN_TOKENISER
-  /* 76 */ sizeof(Tx),                 // CN_TX
-  /* 77 */ sizeof(TxArray),            // CN_TXARRAY
-  /* 78 */ sizeof(TxCollection),       // CN_TXCOLLECTION
-  /* 79 */ sizeof(TxCursor),           // CN_TXCURSOR
-  /* 80 */ sizeof(TxMap),              // CN_TXMAP
-  /* 81 */ sizeof(TxRef),              // CN_TXREF
-  
-  /* 82 */ sizeof(Word),               // CN_WORD
+  /* 45 */ sizeof(RegFrame),           // CN_REGFRAME
+  /* 46 */ sizeof(Ring),               // CN_RING
+  /* 47 */ sizeof(Row),                // CN_ROW
+  /* 48 */ sizeof(RowBuffer),          // CN_ROWBUFFER
+  /* 49 */ sizeof(RowCursor),          // CN_ROWCURSOR
+  /* 50 */ sizeof(RowStrand),          // CN_ROWSTRAND
+  /* 51 */ sizeof(RowWsp),             // CN_ROWWSP
 
-  /* 84 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
-  /* 85 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
-  /* 86 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
-  /* 87 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
+  /* 52 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
+  /* 53 */ sizeof(LoadMap),            // CN_LOADMAP
+  /* 54 */ sizeof(SeHistory),          // CN_SEHISTORY
+  /* 55 */ sizeof(SEitf),              // CN_SEITF
+  /* 56 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
+  /* 57 */ sizeof(SEitfList),          // CN_SEITFLIST
+  /* 58 */ sizeof(SePrompt),           // CN_SEPROMPT
+  /* 59 */ sizeof(Since),              // CN_SINCE
+  /* 60 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
+  /* 61 */ sizeof(SkipList),           // CN_SKIPLIST
+  /* 62 */ sizeof(SkipNode),           // CN_SKIPNODE
+  /* 63 */ sizeof(Heap), // correct    // CN_SMALLHEAP
+  /* 64 */ sizeof(Socket),             // CN_SOCKET
+  /* 65 */ sizeof(Stack),              // CN_STACK
+  /* 66 */ sizeof(StepAccum),          // CN_STEPACCUM
+  /* 67 */ sizeof(StepArray),          // CN_STEPARRAY
+  /* 68 */ sizeof(SysCall),            // CN_SYSCALL
   
-  /* 83 */ -1
+  /* 69 */ sizeof(Table),              // CN_TABLE
+  /* 70 */ sizeof(Task),               // CN_TASK
+  /* 71 */ sizeof(TaskCursor),         // CN_TASKCURSOR
+  /* 72 */ sizeof(TaskList),           // CN_TASKLIST
+  /* 73 */ sizeof(TaskSet),            // CN_TASKSET
+  /* 74 */ sizeof(Thread),             // CN_THREAD
+  /* 75 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
+  /* 76 */ sizeof(ThreadList),         // CN_THREADLIST
+  /* 77 */ sizeof(Time),               // CN_TIME
+  /* 78 */ sizeof(Timer),              // CN_TIMER
+  /* 79 */ sizeof(Tokeniser),          // CN_TOKENISER
+  /* 80 */ sizeof(Tx),                 // CN_TX
+  /* 81 */ sizeof(TxArray),            // CN_TXARRAY
+  /* 82 */ sizeof(TxCollection),       // CN_TXCOLLECTION
+  /* 83 */ sizeof(TxCursor),           // CN_TXCURSOR
+  /* 84 */ sizeof(TxMap),              // CN_TXMAP
+  /* 85 */ sizeof(TxRef),              // CN_TXREF
+
+  /* 86 */ sizeof(Word),               // CN_WORD
+  
+  /* 87 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
+  /* 88 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
+  /* 89 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
+  /* 90 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
+  
+  /* 91 */ -1
 };
 
 

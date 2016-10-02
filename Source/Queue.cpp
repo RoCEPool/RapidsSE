@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Queue.cpp - queue of values                                                */
+/* Queue.cpp -- Queue of Values                                               */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Structures.h"
 
 extern BufferPool*  gpBufferPool;
 

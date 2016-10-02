@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CollectionNode_t.hpp - template for collection node mixin                  */
+/* CollectionNode_t.hpp -- Template for Collection Node                       */
 /*============================================================================*/
 
 #pragma once

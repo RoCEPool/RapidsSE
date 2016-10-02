@@ -2,7 +2,7 @@
 /* Graph.cpp -- Graph of Nodes                                                */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -54,7 +54,7 @@ Graph::Graph(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
   
-  _checkInitialised_(sizeof(Queue));
+  _checkInitialised_(sizeof(Graph));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
 }
@@ -76,7 +76,7 @@ void Graph::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -87,6 +87,46 @@ i8 Graph::iCount(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
   
   return m_iCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write                                                                 */
+/*----------------------------------------------------------------------------*/
+void Graph::vGrabWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+
+  m_zLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write                                                                 */
+/*----------------------------------------------------------------------------*/
+void Graph::vDropWrite(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  
+  m_zLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get root node of this graph                                                */
+/*----------------------------------------------------------------------------*/
+GraphNode* Graph::pRootNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  return m_pRootNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set root node of this graph                                                */
+/*----------------------------------------------------------------------------*/
+void Graph::vRootNode(GraphNode* pRootNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  m_pRootNode = pRootNode;
 }
 
 /*----------------------------------------------------------------------------*/

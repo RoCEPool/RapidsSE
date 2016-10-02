@@ -11,6 +11,10 @@ namespace Structures
   class GraphNode : public Object
   {
   private:
+    GraphNode* m_pParent;  // parent of this node
+    GraphNode* m_pNext;    // next sibling
+    GraphNode* m_pPrev;    // prev sibling
+    GraphNode* m_pChild;   // child of this node
     
     // must be last
     Footer m_xFooter;
@@ -24,6 +28,18 @@ namespace Structures
     ~GraphNode(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
+    GraphNode* pChild(void);
+    void       vChild(GraphNode* pChild);
+
+    GraphNode* pNext(void);
+    void       vNext(GraphNode* pNext);
+    
+    GraphNode* pParent(void);
+    void       vParent(GraphNode* pParent);
+    
+    GraphNode* pPrev(void);
+    void       vPrev(GraphNode* pPrev);
     
   private:
     

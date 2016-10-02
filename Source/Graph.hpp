@@ -11,9 +11,9 @@ namespace Structures
   class Graph : public Object
   {
   private:
-    Lock       m_zLock;
-    GraphNode* m_pRootNode;
-    i8         m_iCount;
+    Lock       m_zLock;      // lock over all nodes
+    GraphNode* m_pRootNode;  // root node
+    i8         m_iCount;     // number of nodes
     
     // must be last
     Footer m_xFooter;
@@ -28,7 +28,13 @@ namespace Structures
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    i8 iCount(void);
+    i8         iCount(void);
+    
+    void       vGrabWrite(void);
+    void       vDropWrite(void);
+    
+    GraphNode* pRootNode(void);
+    void       vRootNode(GraphNode* pRootNode);
     
   private:
     

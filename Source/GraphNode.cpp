@@ -2,7 +2,7 @@
 /* GraphNode.cpp -- Node in Graph of Nodes                                    */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Structures.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -54,7 +54,12 @@ GraphNode::GraphNode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
   
-  _checkInitialised_(sizeof(Queue));
+  m_pParent = nullptr;
+  m_pNext   = nullptr;
+  m_pPrev   = nullptr;
+  m_pChild  = nullptr;
+  
+  _checkInitialised_(sizeof(GraphNode));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
 }
@@ -76,8 +81,88 @@ void GraphNode::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 /*----------------------------------------------------------------------------*/
+/* get child of this node                                                     */
+/*----------------------------------------------------------------------------*/
+GraphNode* GraphNode::pChild(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  return m_pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set child of this node                                                     */
+/*----------------------------------------------------------------------------*/
+void GraphNode::vChild(GraphNode* pChild)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  m_pChild = pChild;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next sibling of this node                                              */
+/*----------------------------------------------------------------------------*/
+GraphNode* GraphNode::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next of this node                                                      */
+/*----------------------------------------------------------------------------*/
+void GraphNode::vNext(GraphNode* pNext)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  m_pNext = pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get parent of this node                                                    */
+/*----------------------------------------------------------------------------*/
+GraphNode* GraphNode::pParent(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  return m_pParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parent of this node                                                    */
+/*----------------------------------------------------------------------------*/
+void GraphNode::vParent(GraphNode* pParent)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  m_pParent = pParent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get prev sibling of this node                                              */
+/*----------------------------------------------------------------------------*/
+GraphNode* GraphNode::pPrev(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next of this node                                                      */
+/*----------------------------------------------------------------------------*/
+void GraphNode::vPrev(GraphNode* pPrev)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  
+  m_pPrev = pPrev;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
