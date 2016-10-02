@@ -21,7 +21,7 @@ void* Graph::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_ZSMALL_);
+  void* pObject = gpSmallHeap->pAllocObject(CN_GRAPH);
   
   return pObject;
 }
@@ -50,13 +50,13 @@ void Graph::operator delete(void* pGraphAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Graph::Graph(void)
-: Object(CN_ZSMALL_)
+: Object(CN_GRAPH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
   
   _checkInitialised_(sizeof(Graph));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ Graph::Graph(void)
 /*----------------------------------------------------------------------------*/
 Graph::~Graph(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -84,7 +84,7 @@ void Graph::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 i8 Graph::iCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
   
   return m_iCount;
 }
@@ -94,7 +94,7 @@ i8 Graph::iCount(void)
 /*----------------------------------------------------------------------------*/
 void Graph::vGrabWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
 
   m_zLock.vGrabWrite();
 }
@@ -104,7 +104,7 @@ void Graph::vGrabWrite(void)
 /*----------------------------------------------------------------------------*/
 void Graph::vDropWrite(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
   
   m_zLock.vDropWrite();
 }
@@ -114,7 +114,7 @@ void Graph::vDropWrite(void)
 /*----------------------------------------------------------------------------*/
 GraphNode* Graph::pRootNode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH);
   
   return m_pRootNode;
 }
@@ -124,7 +124,7 @@ GraphNode* Graph::pRootNode(void)
 /*----------------------------------------------------------------------------*/
 void Graph::vRootNode(GraphNode* pRootNode)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH);
   
   m_pRootNode = pRootNode;
 }
@@ -138,7 +138,7 @@ void Graph::vRootNode(GraphNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 Footer* Graph::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH);
   
   return &m_xFooter;
 }

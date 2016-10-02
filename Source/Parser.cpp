@@ -2,7 +2,7 @@
 /* Parser.cpp -- input processor, stripping out line and block comments      */
 /*============================================================================*/
 
-#include "Common.h"
+#include "Structures.h"
 #include "StorageEngine.h"
 
 extern Heap* gpMediumHeap;

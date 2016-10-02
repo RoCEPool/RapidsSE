@@ -21,7 +21,7 @@ void* GraphNode::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_ZSMALL_);
+  void* pObject = gpSmallHeap->pAllocObject(CN_GRAPHNODE);
   
   return pObject;
 }
@@ -50,9 +50,9 @@ void GraphNode::operator delete(void* pGraphNodeAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GraphNode::GraphNode(void)
-: Object(CN_ZSMALL_)
+: Object(CN_GRAPHNODE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE,_FOOTER_);
   
   m_pParent = nullptr;
   m_pNext   = nullptr;
@@ -61,7 +61,7 @@ GraphNode::GraphNode(void)
   
   _checkInitialised_(sizeof(GraphNode));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,7 +69,7 @@ GraphNode::GraphNode(void)
 /*----------------------------------------------------------------------------*/
 GraphNode::~GraphNode(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ void GraphNode::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 GraphNode* GraphNode::pChild(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   return m_pChild;
 }
@@ -99,7 +99,7 @@ GraphNode* GraphNode::pChild(void)
 /*----------------------------------------------------------------------------*/
 void GraphNode::vChild(GraphNode* pChild)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   m_pChild = pChild;
 }
@@ -109,7 +109,7 @@ void GraphNode::vChild(GraphNode* pChild)
 /*----------------------------------------------------------------------------*/
 GraphNode* GraphNode::pNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   return m_pNext;
 }
@@ -119,7 +119,7 @@ GraphNode* GraphNode::pNext(void)
 /*----------------------------------------------------------------------------*/
 void GraphNode::vNext(GraphNode* pNext)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   m_pNext = pNext;
 }
@@ -129,7 +129,7 @@ void GraphNode::vNext(GraphNode* pNext)
 /*----------------------------------------------------------------------------*/
 GraphNode* GraphNode::pParent(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   return m_pParent;
 }
@@ -139,7 +139,7 @@ GraphNode* GraphNode::pParent(void)
 /*----------------------------------------------------------------------------*/
 void GraphNode::vParent(GraphNode* pParent)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   m_pParent = pParent;
 }
@@ -149,7 +149,7 @@ void GraphNode::vParent(GraphNode* pParent)
 /*----------------------------------------------------------------------------*/
 GraphNode* GraphNode::pPrev(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   return m_pNext;
 }
@@ -159,7 +159,7 @@ GraphNode* GraphNode::pPrev(void)
 /*----------------------------------------------------------------------------*/
 void GraphNode::vPrev(GraphNode* pPrev)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   m_pPrev = pPrev;
 }
@@ -173,7 +173,7 @@ void GraphNode::vPrev(GraphNode* pPrev)
 /*----------------------------------------------------------------------------*/
 Footer* GraphNode::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE);
   
   return &m_xFooter;
 }

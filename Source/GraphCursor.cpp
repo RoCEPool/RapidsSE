@@ -21,7 +21,7 @@ void* GraphCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_ZSMALL_);
+  void* pObject = gpSmallHeap->pAllocObject(CN_GRAPHCURSOR);
   
   return pObject;
 }
@@ -50,13 +50,13 @@ void GraphCursor::operator delete(void* pGraphAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 GraphCursor::GraphCursor(void)
-: Object(CN_ZSMALL_)
+: Object(CN_GRAPHCURSOR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR,_FOOTER_);
   
   _checkInitialised_(sizeof(Queue));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -64,7 +64,7 @@ GraphCursor::GraphCursor(void)
 /*----------------------------------------------------------------------------*/
 GraphCursor::~GraphCursor(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ void GraphCursor::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 Footer* GraphCursor::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ZSMALL_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR);
   
   return &m_xFooter;
 }
