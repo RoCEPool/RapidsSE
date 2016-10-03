@@ -123,7 +123,11 @@ void File::vBuffer(i8 nBytes)
   
   m_xSysCall.vClear();
 
-  setvbuf(m_pFilePtr,NULL,_IOFBF,(int)nBytes);
+  int iResult = setvbuf(m_pFilePtr,NULL,_IOFBF,(int)nBytes);
+  
+  if (iResult)
+    vWarn("File::vBuffer: setvbuf failed: %s",m_sFilePath.a());
+  
 }
 
 /*----------------------------------------------------------------------------*/

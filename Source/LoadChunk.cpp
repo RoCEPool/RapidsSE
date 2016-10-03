@@ -133,7 +133,7 @@ void LoadChunk::vOpenFile(s256& sPath)
   RASSERT(b);
   
   // set buffer
-  m_xFile.vBuffer(C_1MB);
+  //m_xFile.vBuffer(C_1MB);
   
 }
 
