@@ -45,6 +45,7 @@ namespace Common
     File(void);
    ~File();
     
+    void vBuffer(i8 nBytes);
     void vClear(void);
     void vClose(void);
     bool bExists(const char *aFilePath);
