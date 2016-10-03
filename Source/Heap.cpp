@@ -131,7 +131,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   
   //static eCN eLastClass = CN_ENUMS;
   
-  vVerify();
+  //vVerify();
   
   m_zLock.vGrabWrite();
 
@@ -143,9 +143,6 @@ Object* Heap::pAllocObject(eCN eAllocClass)
       m_zLock.vDropWrite();
       return nullptr;
     }
-    m_zLock.vDropWrite();
-    vVerify();
-    m_zLock.vGrabWrite();
   }
 
   Object* pObject = static_cast<Object*>(pPopFree());
@@ -263,7 +260,7 @@ void Heap::vFreeObject(Object* pObject)
 
   m_zLock.vDropWrite();
   
-  vVerify();
+  //vVerify();
 }
 
 /*----------------------------------------------------------------------------*/
