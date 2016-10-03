@@ -123,7 +123,7 @@ void File::vBuffer(i8 nBytes)
   
   m_xSysCall.vClear();
 
-  setbuffer(m_pFilePtr,nullptr,(int)nBytes);
+  setvbuf(m_pFilePtr,NULL,_IOFBF,(int)nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
