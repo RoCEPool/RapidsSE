@@ -122,8 +122,12 @@ void File::vBuffer(i8 nBytes)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   m_xSysCall.vClear();
-
-  int iResult = setvbuf(m_pFilePtr,NULL,_IOFBF,(int)nBytes);
+  int iResult;
+  
+  if (nBytes == 0)
+    iResult = setvbuf(m_pFilePtr,NULL,_IONBF,(int)0);
+  else
+    iResult = setvbuf(m_pFilePtr,NULL,_IOFBF,(int)nBytes);
   
   if (iResult)
     vWarn("File::vBuffer: setvbuf failed: %s",m_sFilePath.a());

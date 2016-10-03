@@ -135,6 +135,8 @@ void LoadChunk::vOpenFile(s256& sPath)
   // set buffer
   //m_xFile.vBuffer(C_1MB);
   
+  // set no buffering
+  m_xFile.vBuffer(0);
 }
 
 /*----------------------------------------------------------------------------*/
