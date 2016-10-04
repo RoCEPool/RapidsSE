@@ -5,15 +5,15 @@
 ping
 
 cf tenants
-mkten boray
+create tenant boray;
 
 cf boray
 cf catalogs
-mkcat borayCatalog
+create catalog borayCatalog;
 
 cf borayCatalog
 cf schemas
-mksch boraySchema
+create schema boraySchema;
 
 cf boraySchema
 cf tables

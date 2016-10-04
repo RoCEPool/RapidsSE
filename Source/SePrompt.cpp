@@ -282,6 +282,11 @@ bool SePrompt::bProcessCommand(void)
     }
   }
   
+  if (String::bEqualTo("print",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
     vPrintWorkingDir();
     return true;
@@ -302,6 +307,16 @@ bool SePrompt::bProcessCommand(void)
     return true;
   }
   
+  if (String::bEqualTo("ld",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("ex",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+
   if (String::bEqualTo("lf",m_pToken[0],C_NO_CASE)) {
     bExecuteRequest();
     return true;
@@ -604,6 +619,7 @@ void SePrompt::vHelp(void)
   vTrace("lf             -- list folder contents\n");
   vTrace("ls             -- list directory contents\n");
   vTrace("lscol          -- list columns of a table\n");
+  vTrace("print          -- print string\n");
   vTrace("pwf            -- print working folder\n");
   vTrace("pwd            -- print working directory\n");
   vTrace("?              -- print this help\n");
@@ -635,6 +651,7 @@ void SePrompt::vHelp(void)
   vTrace("mksch  -- create schema\n");
   vTrace("mktbl  -- create table\n");
   vTrace("mkten  -- create tenant\n");
+  vTrace("print  -- print string\n");
   vTrace("pwf    -- print working folder\n");
   vTrace("pwd    -- print working directory\n");
   vTrace("rmcat  -- drop catalog\n");
