@@ -83,9 +83,13 @@ void Region::vCreate(void)
 {
   int iFD;
   SysCall xSysCall;
+  s256 sSize;
   
-  vTrace("Creating RapidsSE instance %s; size %lldB...\n",
+  Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize.a());
+  
+  vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n",
          gxArguments.m_sRegionName.a(),
+         sSize.a(),
          gxArguments.m_iRegionSize);
   
   // open a new shm region
