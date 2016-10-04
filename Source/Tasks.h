@@ -8,6 +8,7 @@
 
 #include "StepAccum.hpp"
 #include "StepArray.hpp"
+#include "StepBoard.hpp"
 
 #include "RegFrame.hpp"
 

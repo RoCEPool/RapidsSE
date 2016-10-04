@@ -7,8 +7,11 @@
 #include "GridModel.h"
 
 #include "Arguments.hpp"
-#include "RapidsSE.hpp"
 #include "AttachMap.hpp"
+#include "Region.hpp"
+#include "SizesDumps.hpp"
+
+#include "RapidsSE.hpp"
 
 typedef void (pDUMPFUN)(eCN eClass, Object* pObject, const char*);
 extern pDUMPFUN *gpDump[];
@@ -17,6 +20,7 @@ extern i8 giClassSize[];
 //-----------------------------------------------------------------------------
 namespace StorageEngine
 {
+  void vCheckAllAssumptions(void);
   void vCheckAssumptions(void);
 }
 

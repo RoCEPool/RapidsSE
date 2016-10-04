@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Structures.h"
+#include "Parsing.h"
 
 #include "Tx.hpp"
 #include "TxCollection.hpp"

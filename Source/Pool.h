@@ -14,7 +14,7 @@ static const u8 C_JUMBO_RATIO        = 16;
 static const u8 C_SIZE_JUMBO_OBJECT  = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
 static const u8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER;
 
-static const u8 C_SIZE_SMALL_OBJECT  = C_1KB;
+static const u8 C_SIZE_SMALL_OBJECT  = C_4KB;
 static const u8 C_SIZE_MEDIUM_OBJECT = C_SIZE_SMALL_OBJECT * 16;
 
 

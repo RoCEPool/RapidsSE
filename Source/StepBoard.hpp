@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* StepBoard.hpp -- Step Board                                                */
+/*============================================================================*/
+
+#pragma once
+
+#include "Tasks.h"
+
+namespace Tasks
+{
+  static const i8 C_STEPBOARD_THREADS = 64;
+  static const i8 C_STEPBOARD_NAME    = 64;
+  
+  class StepBoard
+  {
+  public:
+    i8   m_iThreads; // how many threads
+    char m_aStepName[C_STEPBOARD_THREADS][C_STEPBOARD_NAME]; // last step name
+    i8   m_iStepPoint[C_STEPBOARD_THREADS]; // last step point
+    
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
+    
+    StepBoard(i8 iThreads);
+    ~StepBoard(void);
+    
+    void vDump(void);
+    void vName(i8 iThread, const char* aName);
+    void vPoint(i8 iThread, i8 iPoint);
+    void vReset(void);
+  };
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

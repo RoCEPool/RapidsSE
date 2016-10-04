@@ -27,6 +27,7 @@ extern TaskList*             gpTaskList;
 extern TxCollection*         gpTxCollection;
 
 extern NP_Task               gnpRootTask;
+extern StepBoard*            gpStepBoard;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -309,6 +310,7 @@ void Task::vAddConstants(void)
   vAddConstant("regionsize",       gxArguments.m_iRegionSize);
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
   vAddConstant("partitions",       gxArguments.m_nPartitions);
+  vAddConstant("args.config",      gxArguments.m_bConfig);
   
   vAddConstant("true",    1);
   vAddConstant("false",   (i8)0);
@@ -773,7 +775,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.seek",        &vDirSeek,          false);
   vAddPrimitive("dir.tell",        &vDirTell,          false);
  
-  vAddPrimitive("error.msg",      &vErrorMsg,          false);
+  vAddPrimitive("error.msg",       &vErrorMsg,         false);
   
   vAddPrimitive("file.close",      &vFileClose,        false);
   vAddPrimitive("file.delete",     &vFileDelete,       false);
@@ -799,12 +801,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("input.token",     &vInputToken,       false);
   vAddPrimitive("input.type",      &vInputType,        false);
   
-  vAddPrimitive("loader.closeFile",   &vLoaderCloseFile,   false);
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
-  vAddPrimitive("loader.openFile",    &vLoaderOpenFile,    false);
   vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
   vAddPrimitive("loader.subs!",       &vLoaderSubsStore,   false);
   vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
@@ -820,7 +821,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
   vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
-  vAddPrimitive("loaderSub.pushRecord",  &vLoaderSubPushRecord,  false);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -950,6 +950,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("concat", &vConcat,    false);
   vAddPrimitive("clip",   &vClip,      false);
   vAddPrimitive("toDigitName",&vToDigitName, false);
+  vAddPrimitive("rndStr", &vRndStr,    false);
   
   vAddPrimitive("s256.init", &vS256Init, false);
  
@@ -2632,9 +2633,9 @@ ENTRY("vEnvGet");
   if ( ! nnpTask->m_xParamStack.bPop(sEnvName) )
     THROW_INVALID_PARAM("env@");
   
-  s8K sEnvVal;
+  s256 sEnvVal;
   
-  if (! Env::bGetEnv(sEnvName.a(),sEnvVal.a()))
+  if (! Env::bGet(sEnvName,sEnvVal))
     sEnvVal = "";
   
   nnpTask->m_xParamStack.vPush(sEnvVal);
@@ -6184,25 +6185,6 @@ ENTRY("vInputType");
 // loader: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* loader.closefile -- close file being loaded                                */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderCloseFile(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderCloseFile");
-  
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.closefile");
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  pLoader->vCloseFile();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* loader.delete -- delete a table loader                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
@@ -6218,6 +6200,27 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   
   delete pLoader;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.findChunk -- find next chunk                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderFindChunk(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderFindChunk");
+  
+  Object* pPtrLoader;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+    THROW_INVALID_PARAM("loader.findChunk");
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  bool bFoundChunk = pLoader->bFindChunk();
+  
+  nnpTask->m_xParamStack.vPush(bFoundChunk);
+ 
   EXIT();
 }
 
@@ -6275,27 +6278,6 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   pLoaderSub->vLoader(pLoader);
   
   nnpTask->m_xParamStack.vPush(pLoaderSub);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loader.openfile -- open file to be loaded                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderOpenFile(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderOpenFile");
-  
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.openfile");
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  bool bOpened = pLoader->bOpenFile();
-  
-  nnpTask->m_xParamStack.vPush(bOpened);
   
   EXIT();
 }
@@ -6547,7 +6529,7 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.new -- new a table loader                                        */
+/* loaderSub.new -- new a table loader subordinate                            */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubNew(NNP_Task nnpTask)
 {
@@ -6560,29 +6542,6 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.pushRecord -- fetch record onto stack                            */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubPushRecord(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderSubPushRecord");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
-  
-  ValWsp xRecord;
-  xRecord.vClass(CN_STRVAL);
-  StrVal* sRecord = xRecord.pAsStrVal();
-  
-  pLoaderSub->vGetRecord(sRecord);
-  
-  nnpTask->m_xParamStack.vPush(xRecord);
-  
-  EXIT();
-}
-
-
 
 // lock: ///////////////////////////////////////////////////////////////////////
 
@@ -8673,6 +8632,26 @@ ENTRY("vToDigitName");
   }
 
   nnpTask->m_xParamStack.vPush(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rndStr -- generate random string of given length                           */
+/*----------------------------------------------------------------------------*/
+void Task::vRndStr(NNP_Task nnpTask)
+{
+  ENTRY("vRndStr");
+  
+  i8 iLength;
+  if ( ! nnpTask->m_xParamStack.bPop(iLength) )
+    THROW_INVALID_PARAM("rndStr");
+  
+  s8K sRnd;
+  
+  sRnd = Random::sRandomString(iLength).a();
+  
+  nnpTask->m_xParamStack.vPush(sRnd);
   
   EXIT();
 }

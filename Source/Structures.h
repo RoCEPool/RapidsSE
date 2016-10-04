@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Structures.h - includes for Structures namespace                           */
+/* Structures.h -- Includes for the Structures namespace                      */
 /*============================================================================*/
 #pragma once
 
@@ -26,6 +26,11 @@
 #include "Key.hpp"
 #include "KeyCpp.hpp"
 #include "KeyVal.hpp"
+
+#include "GraphNode.hpp"
+#include "Graph.hpp"
+#include "GraphCursor.hpp"
+
 
 //-----------------------------------------------------------------------------
 namespace Structures

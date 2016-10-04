@@ -43,7 +43,7 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(IE_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se 0.1.1> ";
+  m_sPrompt = "se 0.1.2> ";
   
   m_sResponse  = "";
   //m_xHistory
@@ -282,6 +282,11 @@ bool SePrompt::bProcessCommand(void)
     }
   }
   
+  if (String::bEqualTo("print",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
     vPrintWorkingDir();
     return true;
@@ -302,6 +307,16 @@ bool SePrompt::bProcessCommand(void)
     return true;
   }
   
+  if (String::bEqualTo("ld",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+  
+  if (String::bEqualTo("ex",m_pToken[0],C_NO_CASE)) {
+    bExecuteRequest();
+    return true;
+  }
+
   if (String::bEqualTo("lf",m_pToken[0],C_NO_CASE)) {
     bExecuteRequest();
     return true;
@@ -599,9 +614,12 @@ void SePrompt::vHelp(void)
   vTrace("drop schema    -- drop a schema\n");
   vTrace("drop table     -- drop a table\n");
   vTrace("drop tenant    -- drop a tenant\n");
+  vTrace("ex             -- export table t\n");
+  vTrace("ld             -- load table t\n");
   vTrace("lf             -- list folder contents\n");
   vTrace("ls             -- list directory contents\n");
   vTrace("lscol          -- list columns of a table\n");
+  vTrace("print          -- print string\n");
   vTrace("pwf            -- print working folder\n");
   vTrace("pwd            -- print working directory\n");
   vTrace("?              -- print this help\n");
@@ -633,6 +651,7 @@ void SePrompt::vHelp(void)
   vTrace("mksch  -- create schema\n");
   vTrace("mktbl  -- create table\n");
   vTrace("mkten  -- create tenant\n");
+  vTrace("print  -- print string\n");
   vTrace("pwf    -- print working folder\n");
   vTrace("pwd    -- print working directory\n");
   vTrace("rmcat  -- drop catalog\n");

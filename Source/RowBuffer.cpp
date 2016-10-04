@@ -240,6 +240,8 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
   StrVal* pStr = new((StrVal*)pData) StrVal;
   
   Memory::vCopy(pStr->sStr(),pRecord,iLength);
+  pStr->pData()[iLength] = '\0';
+  pStr->vSize(iLength);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   

@@ -21,13 +21,21 @@ Arguments::Arguments(void)
   m_bCommand    = false;
   m_bDocol      = false;
   m_bHelp       = false;
-  m_bList       = false;
   m_bPrompt     = false;
   m_bStart      = false;
   m_bStatus     = false;
   m_bStop       = false;
+  m_bUnlink     = false;
 
   m_bBgTasks    = true;
+  m_bConfig     = true;
+  m_sFolder     = "";
+  m_bHugePages  = false;
+  m_bProgress   = true;
+  m_bRestart    = false;
+  m_bTouch      = false;
+  m_bTracing    = false;
+  m_bUnitTests  = false;
   m_bVerbose    = false;
   m_bWelcome    = true;
   
@@ -51,21 +59,26 @@ Arguments::~Arguments(void)
 /*----------------------------------------------------------------------------*/
 void Arguments::vEnvironmentVariables(void)
 {
+  s256 sVarName;
   s256 sRegionName;
   s256 sRegionSize;
   s256 sPartitions;
   s256 sFolder;
   
-  if (Env::bGetEnv("SE_INSTANCE_NAME",sRegionName.a()))
+  sVarName = "SE_INSTANCE_NAME";
+  if (Env::bGet(sVarName,sRegionName))
     m_sRegionName = sRegionName;
 
-  if (Env::bGetEnv("SE_INSTANCE_SIZE",sRegionSize.a()))
+  sVarName = "SE_INSTANCE_SIZE";
+  if (Env::bGet(sVarName,sRegionSize))
     m_iRegionSize = String::iToI8(sRegionSize.a());
 
-  if (Env::bGetEnv("SE_PARTITIONS",sPartitions.a()))
+  sVarName = "SE_PARTITIONS";
+  if (Env::bGet(sVarName,sPartitions))
     m_nPartitions = String::iToI8(sPartitions.a());
   
-  if (Env::bGetEnv("SE_WORKING_FOLDER",sFolder.a()))
+  sVarName = "SE_WORKING_FOLDER";
+  if (Env::bGet(sVarName,sFolder))
     m_sFolder = sFolder;
 }
 
@@ -103,11 +116,6 @@ bool Arguments::bParse(int argc, const char* argv[])
       exit(EXIT_SUCCESS);
     }
     
-    if (String::bEqualTo("--list",argv[iArg],C_NO_CASE)) {
-      m_bList = false;
-      continue;
-    }
-    
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       ASSERT(m_nPartitions <= C_TABLE_PARTITIONS);
@@ -138,7 +146,8 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     if (String::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
-      m_iRegionSize = String::iToI8(argv[++iArg]);
+      //m_iRegionSize = String::iToI8(argv[++iArg]);
+      m_iRegionSize = Magnitudes::iBytes(argv[++iArg]);
       continue;
     }
     
@@ -199,18 +208,61 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
 
-    if (String::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
-      m_bUnitTests = true;
+    if (String::bEqualTo("--unlink",argv[iArg],C_NO_CASE)) {
+      m_bUnlink = true;
       continue;
     }
-
+    
     // options -----------------------------------------------------------------
     
     if (String::bEqualTo("--bgtasks",argv[iArg],C_NO_CASE)) {
       m_bBgTasks = true;
       continue;
     }
-
+    
+    if (String::bEqualTo("--config",argv[iArg],C_NO_CASE)) {
+      m_bConfig = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--hugepages",argv[iArg],C_NO_CASE)) {
+      m_bHugePages = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--progress",argv[iArg],C_NO_CASE)) {
+      m_bProgress = true;
+      continue;
+    }
+    if (String::bEqualTo("--noprogress",argv[iArg],C_NO_CASE)) {
+      m_bProgress = false;
+      continue;
+    }
+    
+    if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
+      m_bRestart = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--touch",argv[iArg],C_NO_CASE)) {
+      m_bTouch = true;
+      continue;
+    }
+    if (String::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
+      m_bTouch = false;
+      continue;
+    }
+    
+    if (String::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
+      m_bTracing = true;
+      continue;
+    }
+    
+    if (String::bEqualTo("--unittests",argv[iArg],C_NO_CASE)) {
+      m_bUnitTests = true;
+      continue;
+    }
+    
     if (String::bEqualTo("--verbose",argv[iArg],C_NO_CASE)) {
       m_bVerbose = true;
       continue;
@@ -226,16 +278,12 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
-    if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
-      m_bRestart = true;
-      continue;
-    }
-    
     // seitf options -----------------------------------------------------------
     if (String::bEqualTo("--partition",argv[iArg],C_NO_CASE)) {
       m_iPartition = String::iToI8(argv[++iArg]);
       continue;
     }
+    
   /*
     if (String::iLength(m_sCommand.a()))
       String::vConcat(m_sCommand.a(),' ');
@@ -267,7 +315,6 @@ void Arguments::vPrint(void)
   if (m_bCommand)  vTrace("  --command\n");
   if (m_bDocol)    vTrace("  --docol\n");
   if (m_bHelp)     vTrace("  --help\n");
-  if (m_bList)     vTrace("  --list\n");
   if (m_bPrompt)   vTrace("  --seprompt\n");
   if (m_bStart)    vTrace("  --start\n");
   if (m_bStatus)   vTrace("  --status\n");

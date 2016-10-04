@@ -11,14 +11,18 @@ namespace DBobjects
   class LoaderSub : public Object
   {
   private:
-    Loader*  m_pLoader;  // the reference information
-    char*    m_pRecord;  // record from file
-    i8       m_iLength;  // length of record
-    i8       m_iHash;          // hash of record
-    i8       m_iPartition;     // which partition
-    bool     m_bMoreChunks;    // more chunks
-    LoadBuffer* m_pLoadBuffer; // loading buffer
+    Loader*  m_pLoader;  // loader parent
+    Table*   m_pTable;   // table being load
+    TxRef*   m_pTxRef;   // tx
+    LoadMap* m_pLoadMap; // load map
     
+    char*    m_pRecord;      // record from file
+    i8       m_iLength;      // length of record
+    i8       m_iHash;        // hash of record
+    i8       m_iPartition;   // partition of record
+    
+    bool     m_bMoreChunks;  // continue while there are more chunks
+    LoadChunk* m_pLoadChunk; // chunk loading buffer
     RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers
     
     // must be last
@@ -38,11 +42,10 @@ namespace DBobjects
     bool bCompleted(void);
     void vEnd(void);
     bool bFetchRecord(void);
-    bool bFetchChunk(void);
-    void vGetRecord(StrVal* pStrVal);
     void vHashRecord(void);
     bool bInsertRow(void);
     void vLoader(Loader* pLoader);
+    bool bReadChunk(void);
     
     Footer* pFooter(void);
   };

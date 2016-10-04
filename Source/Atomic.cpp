@@ -33,7 +33,7 @@ void Atomic::operator delete(void* pAtomicAddress)
 Atomic::Atomic(void)
 : Header(CN_ATOMIC)
 {
-  vInit();
+  m_iInt = 0;
   
   _checkInitialised_(sizeof(Atomic));
   
@@ -49,23 +49,17 @@ Atomic::~Atomic(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void Atomic::vInit(void)
-{  
-  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
-
-  m_iValue = 0;
-}
 
 /*----------------------------------------------------------------------------*/
 /* check lock initialization                                                  */
 /*----------------------------------------------------------------------------*/
-void Atomic::vCheckInit()
+void Atomic::vCheckInit(void)
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
   
-  ASSERT(0 == m_iValue); // logic check
+  ASSERT(0 == m_iInt); // logic check
 }
 
 /*----------------------------------------------------------------------------*/
@@ -75,7 +69,7 @@ i8 Atomic::iInc()
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 
-  i8 i = iAtomicInc(&m_iValue);
+  i8 i = iAtomicInc(&m_iInt);
   
   return i;
 }
@@ -87,9 +81,19 @@ i8 Atomic::iDec()
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 
-  i8 i = iAtomicDec(&m_iValue);
+  i8 i = iAtomicDec(&m_iInt);
   
   return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment                                                                 */
+/*----------------------------------------------------------------------------*/
+void Atomic::operator =(i8 iInt)
+{
+  _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
+  
+  m_iInt = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +103,7 @@ i8 Atomic::operator *(void)
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
   
-  return m_iValue;
+  return m_iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -109,7 +113,7 @@ i8 Atomic::operator ++(void)
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
   
-  i8 i = iAtomicInc(&m_iValue);
+  i8 i = iAtomicInc(&m_iInt);
   
   return i;
 }
@@ -121,11 +125,10 @@ i8 Atomic::operator --(void)
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
   
-  i8 i = iAtomicDec(&m_iValue);
+  i8 i = iAtomicDec(&m_iInt);
 
   return i;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

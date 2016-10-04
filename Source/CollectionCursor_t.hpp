@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* CollectionCursor_t.hpp - template for collection cursor                    */
+/* CollectionCursor_t.hpp -- Template for Collection Cursor                   */
 /*============================================================================*/
 
 #pragma once

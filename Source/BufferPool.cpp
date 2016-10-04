@@ -17,6 +17,7 @@ extern void* C_ADDR_POOL;
 void* BufferPool::operator new(size_t iSize, void* pRegion)
 {
   RASSERT(iSize);
+  
   return pRegion;
 }
 
@@ -62,42 +63,6 @@ BufferPool::BufferPool(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor (existing region)                                              */
-/*----------------------------------------------------------------------------*/
-BufferPool::BufferPool(s& sRegionName)
-: Header(CN_BUFFERPOOL)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  m_iRegionSize  = 10_MB;
-  m_iBufferSize  = 1_MB;
-  m_sShmName     = sRegionName;
-  
-  //m_zFreeLock
-  m_iAllocCount  = 0;
-  m_iFreeCount   = 0;
-  
-  m_pBase = pAttachRegion(sRegionName,m_iShmFD);
-  
-  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(m_pBase,C_SIZE_POOL_BUFFER));
-  
-  m_iRegionSize = gpAttachMap->m_iRegionSize;
-  m_iBufferSize = C_SIZE_POOL_BUFFER;
-  
-  bool bResult = bDetachPool();
-  ASSERT(bResult);
-  
-  m_pBase  = pAttachRegion(sRegionName,m_iShmFD,m_iRegionSize);
-  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
-  m_iBufferCount = DIV(m_iRegionSize,m_iBufferSize);
-  m_pJumbo = _pBuffer(pvAdd(m_pLimit,-(m_nBuffersTaken * C_SIZE_POOL_BUFFER)));
-  
-  // do not initialise existing pool
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 BufferPool::~BufferPool(void)
@@ -105,70 +70,6 @@ BufferPool::~BufferPool(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   bDetachPool();
-}
-
-/*----------------------------------------------------------------------------*/
-/* attach to an existing shm region (of unknown size)                         */
-/*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iShmFD)
-{
-  SysCall xSysCall;
-  
-  if (gxArguments.m_bWelcome)
-    vTrace("Attaching region %s\n",sRegionName.a());
-  
-  // open a shared memory region
-  bool bResult = Shm::bAttach(sRegionName.a(),iShmFD,xSysCall);
-  if ( ! bResult ) {
-    vTrace("BufferPool::pAttachRegion Shared Memory Region failed to open region: %s\n",
-           sRegionName.a());
-    ASSERT(0);
-  }
-  
-  // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,10_MB,true,xSysCall);
-  if ( ! pRegion )  {
-    vTrace("BufferPool::pAttachRegion failed to map!\n");
-    Shm::bClose(iShmFD,xSysCall);
-    ASSERT(0);
-  }
-  
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm mapped at %p\n",pRegion);
-  
-  return reinterpret_cast<Buffer*>(pRegion);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attach to an existing region (of known size)                               */
-/*----------------------------------------------------------------------------*/
-Buffer* BufferPool::pAttachRegion(s& sRegionName, int& iShmFD, i8 iRegionSize)
-{
-  SysCall xSysCall;
-  
-  if (gxArguments.m_bWelcome)
-    vTrace("Attaching region %s\n",sRegionName.a());
-  
-  // open a shared memory region
-  bool bResult = Shm::bAttach(sRegionName.a(),iShmFD,xSysCall);
-  if ( ! bResult ) {
-    vTrace("BufferPool::pAttachRegion Shared Memory Region failed to open region: %s\n",
-           sRegionName.a());
-    ASSERT(0);
-  }
-  
-  // map the opened shared memory region to memory
-  void* pRegion = Shm::pMap(iShmFD,C_ADDR_POOL,iRegionSize,true,xSysCall);
-  if ( ! pRegion )  {
-    vTrace("BufferPool::pAttachRegion failed to map!\n");
-    Shm::bClose(iShmFD,xSysCall);
-    ASSERT(0);
-  }
-  
-  if (gxArguments.m_bVerbose)
-    vTrace("Shm mapped at %p\n",pRegion);
-  
-  return reinterpret_cast<Buffer*>(pRegion);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,13 +317,26 @@ void BufferPool::vInitialise(void)
 //    pFreeBuffer->vNextFree(nBuffer);
 //  }
 
+  i8 iBufferMod;
+  
   bn nBuffer = nBufferFirst();
   while (bn::nNil() != nBuffer) {
+    
+    if (gxArguments.m_bProgress) {
+      iBufferMod = *nBuffer % 1000;
+      if (! iBufferMod) {
+        printf("buffer %lld of %lld             \r",*nBuffer,*nBufferLast());
+        fflush(stdout);
+      }
+    }
+    
     BufferFree* pFreeBuffer = pToBufferFree(nBuffer);
     
     pFreeBuffer->vSetMagic();
     pFreeBuffer->vClass(CN_BUFFER);
     //pFreeBuffer->pFooter()->vSetFooter();
+    if (gxArguments.m_bTouch)
+      pFreeBuffer->vZeroData();
     pFreeBuffer->vSetFooter();
     pFreeBuffer->vBufferNo(nBuffer);
     nBuffer = nBufferNext(nBuffer);
@@ -433,9 +347,14 @@ void BufferPool::vInitialise(void)
   pLastBuffer->vSetMagic();
   pLastBuffer->vClass(CN_BUFFER);
   //pLastBuffer->pFooter()->vSetFooter();
+  if (gxArguments.m_bTouch)
+    pLastBuffer->vZeroData();
   pLastBuffer->vSetFooter();
   pLastBuffer->vBufferNo(nBufferLast());
   pLastBuffer->vNextFree(bn::nNil());
+  
+  if (gxArguments.m_bProgress)
+    printf("\n");
   
   //vDump();
 }

@@ -1,12 +1,12 @@
 /*============================================================================*/
-/* RapidsSE.hpp - rapids storage engine                                       */
+/* RapidsSE.hpp -- Rapids Storage Engine                                      */
 /*============================================================================*/
 
 #pragma once
 
 #include "StorageEngine.h"
 
-#define RAPIDSSE_VERSION_STRING "0.1.1"
+#define RAPIDSSE_VERSION_STRING "0.1.2"
 
 namespace StorageEngine
 {
@@ -20,13 +20,7 @@ namespace StorageEngine
     Footer m_xFooter;
 
   public:
-    static void   vCheckAssumptions(void);
     
-    static void   vDumpDummy(eCN eClass, Object* pObject, const char* pTab);
-    static void   vDumpEnums(eCN eClass, Object* pObject, const char* pTab);
-    static void   vDumpInvalid(eCN eClass, Object* pObject, const char* pTab);
-    static void   vDumpUndefined(eCN eClass, Object* pObject, const char* pTab);
-
     static void   vExecute(void);
     static void   vPoolClose(void);
     static void   vPoolOpen(void);
@@ -36,11 +30,8 @@ namespace StorageEngine
     //-------------------------------------------------------------------------
     
     static void vAttachObjects(void);
-    static void vAttachRegion(void);
     static void vCreateObjects(void);
-    static void vCreateRegion(void);
     static void vDicCompile(NP_Task npBootTask);
-    static void vDropRegion(void);
     static void vHandler(Error* pError);
     static void vInitJumboHeap(void);
     static void vRunCommand(void);
@@ -49,8 +40,6 @@ namespace StorageEngine
     static void vSystemInit(void);
     static void vSystemStatus(void);
     static void vSystemStop(void);
-    static bool bTestRegion(void);
-    static void vTlsInit(void);
     static void vWaitFlag(void);
 
     Footer* pFooter(void);

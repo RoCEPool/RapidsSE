@@ -6,6 +6,7 @@
 
 "copier.sen" >>:
 "exporter.sen" >>:
+"fileGen.sen" >>:
 "loader.sen" >>:
 
 "requests.sen" >>:

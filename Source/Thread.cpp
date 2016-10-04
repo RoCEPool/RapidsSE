@@ -56,9 +56,12 @@ Thread::Thread(void)
 
   ASSERT( gpThreadList );
   
-  m_sName    = "<no thread name>";
-  m_pTaskSet = nullptr;
-  m_npTask   = nullptr;
+  static Atomic zThreadNo;
+  
+  m_iThreadNo = ++zThreadNo;
+  m_sName     = "<no thread name>";
+  m_pTaskSet  = nullptr;
+  m_npTask    = nullptr;
 
   Thread* pThread = this;
   gpThreadList->vAppend(pThread);
@@ -115,6 +118,16 @@ void* Thread::vEntry(void* pArg)
   delete pThread;
   
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get this thread                                                            */
+/*----------------------------------------------------------------------------*/
+Thread* Thread::pThread(void)
+{
+  Thread *pThread = static_cast<Thread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
+  
+  return pThread;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -282,13 +295,13 @@ void Thread::vSpawn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get this thread                                                            */
+/* get our thread number                                                      */
 /*----------------------------------------------------------------------------*/
-Thread* Thread::pThread(void)
+i8 Thread::iThreadNo(void)
 {
-  Thread *pThread = static_cast<Thread*>(PosixThread::pTlsGet(giTLS_ThreadKey));
-  
-  return pThread;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+ 
+  return m_iThreadNo;
 }
 
 /*----------------------------------------------------------------------------*/

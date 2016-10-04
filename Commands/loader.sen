@@ -87,8 +87,10 @@ timer: loadTimer
   r0 loader.table!
   r0 loader.path!
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // open the file to be loaded
-  r0 loader.openFile not if "file not opened" . rdrop exit then
+//r0 loader.openFile not if "file not opened" . rdrop exit then
 
   // begin a new transaction
   beginTransaction r0 loader.txref!
@@ -108,6 +110,10 @@ timer: loadTimer
     I >genTaskSet taskSet.append
   loop
 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin r0 loader.findChunk while repeat
+
+
   threadCondWait
   dropThreadMutex
 
@@ -115,9 +121,6 @@ timer: loadTimer
 
   // commit the transaction
   commitTransaction
-
-  // close the file
-  r0 loader.closeFile
 
   // discard r0:Loader
   rdrop

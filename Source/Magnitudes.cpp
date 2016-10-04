@@ -38,40 +38,44 @@ void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, char* psBuf)
 /*----------------------------------------------------------------------------*/
 /* iBytes -- convert magnitude to equivalent bytes                            */
 /*----------------------------------------------------------------------------*/
-i8 Magnitudes::iBytes(char* psBuf)
+i8 Magnitudes::iBytes(const char* psBuf)
 {
   s256 sNumber;
+  s256 sString;
   i8 iMagnitude = 1;
   
-  if (String::bContains(psBuf, "KB") ) {
-    String::vCopyTill(sNumber.a(), psBuf, 'K');
+  sString = psBuf;
+  
+  String::vToLower(sString.a());
+  
+  if (String::bContains(sString.a(), "kb")) {
+    String::vCopyTill(sNumber.a(), sString.a(), 'k');
     iMagnitude = C_1KB;
     
-  } else if (String::bContains(psBuf, "MB") ) {
-    String::vCopyTill(sNumber.a(), psBuf, 'M');
+  } else if (String::bContains(sString.a(), "mb")) {
+    String::vCopyTill(sNumber.a(), sString.a(), 'm');
     iMagnitude = C_1MB;
     
-  } else if (String::bContains(psBuf, "GB") ) {
-    String::vCopyTill(sNumber.a(), psBuf, 'G');
+  } else if (String::bContains(sString.a(), "gb")) {
+    String::vCopyTill(sNumber.a(), sString.a(), 'g');
     iMagnitude = C_1GB;
     
-  } else if (String::bContains(psBuf, "TB") ) {
-    String::vCopyTill(sNumber.a(), psBuf, 'T');
+  } else if (String::bContains(sString.a(), "tb")) {
+    String::vCopyTill(sNumber.a(), sString.a(), 't');
     iMagnitude = C_1TB;
     
-  } else if (String::bContains(psBuf, "PB") ) {
-    String::vCopyTill(sNumber.a(), psBuf, 'P');
+  } else if (String::bContains(sString.a(), "pb")) {
+    String::vCopyTill(sNumber.a(), sString.a(), 'p');
     iMagnitude = C_1PB;
     
-  } else if (String::bContains(psBuf, "B") ) {
-    if (!String::bEqualTo(String::sLast(psBuf), "B")) {
+  } else if (String::bContains(sString.a(), "b")) {
+    if (!String::bEqualTo(String::sLast(sString.a()), "b")) {
       THROW_ERROR(EC_INVALID_PARAMETER);
-
     }
-    String::vCopyTill(sNumber.a(), psBuf, 'B');
+    String::vCopyTill(sNumber.a(), sString.a(), 'b');
     iMagnitude = 1;
   } else {
-    sNumber = psBuf;
+    sNumber = sString.a();
   }
   
   char* ps = sNumber.a();
@@ -87,54 +91,6 @@ i8 Magnitudes::iBytes(char* psBuf)
   else {
     THROW_ERROR(EC_INVALID_PARAMETER);
   }
-  
-  /*
-  while (iLen--) {
-    if (*s && isdigit(*s)) {
-      if (bDigit)
-        String::vCopy(sNumber.a(), *s);
-      else {
-        bDigit = true;
-        String::vConcat(sNumber.a(), *s);
-      }
-    }
-    else {
-      if (*s == 'B') {
-        bTrailingB = true;
-      }
-      else {
-        if (*s == 'K') {
-          iMagnitude = C_1KB;
-        }
-        else if (*s == 'M') {
-          iMagnitude = C_1MB;
-        }
-        else if (*s == 'G') {
-          iMagnitude = C_1GB;
-        }
-        else if (*s == 'T') {
-          iMagnitude = C_1TB;
-        }
-        else if (*s == 'T') {
-          iMagnitude = C_1PB;
-        }
-        else {
-          if (bTrailingB) {
-            THROW_ERROR(EC_INVALID_ARGUMENT);
-          }
-        }
-      }
-    }
-  }
-  
-  if (bExtractInw(&sNumeric.a(), &iValue)) {
-    return iValue*iMagnitude;
-  }
-  else {
-    THROW_ERROR(EC_INVALID_ARGUMENT);
-  }
-   
-  */
 }
 
 /*============================================================================*/

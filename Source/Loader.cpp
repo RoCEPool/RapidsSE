@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern Arguments gxArguments;
+extern Heap*     gpMediumHeap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -24,7 +25,7 @@ Loader* DBobjects::_pLoader(void* pAddr)
 void* Loader::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = gpSmallHeap->pAllocObject(CN_LOADER);
+  void* pObject = gpMediumHeap->pAllocObject(CN_LOADER);
   
   return pObject;
 }
@@ -45,7 +46,7 @@ void Loader::operator delete(void* pLoaderAddress)
 {
   Loader* pLoader = reinterpret_cast<Loader*>(pLoaderAddress);
   
-  gpSmallHeap->vFreeObject(pLoader);
+  gpMediumHeap->vFreeObject(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,12 +57,11 @@ Loader::Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
+  m_sPath    = "<none>";
   m_pTable   = nullptr;
-  //m_xFile
-  m_iSeek    = 0;
   m_pTxRef   = nullptr;
-  //m_xLock
-  m_nSubs    = 0;
+  m_zSubs    = 0;
+  m_pLoadMap = new LoadMap;
   
   _checkInitialised_(sizeof(Loader));
   
@@ -74,6 +74,8 @@ Loader::Loader(void)
 Loader::~Loader(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  delete m_pLoadMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,38 +97,35 @@ void Loader::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append row buffer                                                          */
+/* find next chunk in file being loaded                                       */
 /*----------------------------------------------------------------------------*/
-void Loader::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
+bool Loader::bFindChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  ASSERT(iPartition < gxArguments.m_nPartitions);
-  
-  m_pTable->vAppendBuffer(iPartition,pRowBuffer);
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/* close file                                                                 */
-/*----------------------------------------------------------------------------*/
-void Loader::vCloseFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_xFile.vClose();
-}
-
-/*----------------------------------------------------------------------------*/
-/* open file                                                                  */
-/*----------------------------------------------------------------------------*/
-bool Loader::bOpenFile(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  bool b = m_xFile.bOpen(C_OPEN_READ);
+  bool b = m_pLoadMap->bFindChunk();
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get loap map                                                               */
+/*----------------------------------------------------------------------------*/
+LoadMap* Loader::pLoadMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+  
+  return m_pLoadMap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get path                                                                   */
+/*----------------------------------------------------------------------------*/
+s& Loader::sPath(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
+
+  return m_sPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,9 +135,9 @@ void Loader::vPath(s& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  const char* pPath = sPath.a();
-  
-  m_xFile.vPath(pPath);
+  m_sPath = sPath;
+    
+  m_pLoadMap->vFilePath(sPath);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -148,7 +147,7 @@ void Loader::vSubs(i8 nSubs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  m_nSubs = nSubs;
+  m_zSubs = nSubs;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,14 +157,12 @@ bool Loader::bSubCompleted(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   
-  bool bIsDecider = false;
+  bool bIsDecider;
   
-  m_xLock.vGrabWrite();
-  
-  if (0 == --m_nSubs)
+  if (0 == --m_zSubs)
     bIsDecider = true;
-
-  m_xLock.vDropWrite();
+  else
+    bIsDecider = false;
   
   return bIsDecider;
 }
@@ -191,7 +188,7 @@ void Loader::vTable(Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set txref                                                                  */
+/* get txref                                                                  */
 /*----------------------------------------------------------------------------*/
 TxRef* Loader::pTxRef(void)
 {
@@ -209,61 +206,7 @@ void Loader::vTxRef(TxRef* pTxRef)
 
   m_pTxRef = pTxRef;
   
-  vTrace("TxId %lld\n",pTxRef->iTxId());
-  
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Called by LoaderSub ----------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* fetch next chunk from file                                                 */
-/*----------------------------------------------------------------------------*/
-bool Loader::bFetchChunk(LoadBuffer* pLoadBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  i8 iBytesWorkarea = pLoadBuffer->iBytesWorkarea();
-  char* pWorkaread  = pLoadBuffer->pWorkarea();
-  
-  m_xLock.vGrabWrite();
-  
-  m_xFile.vSeek(m_iSeek);
-  
-  i8 iBytesRead = m_xFile.iReadChunk(pWorkaread,iBytesWorkarea);
-  //  vTrace("Read %lld\n",iBytesRead);
-  
-  if ( ! iBytesRead ) {
-    m_xLock.vDropWrite();
-    return false;
-  }
-  
-  i8 iCompleteBytes = pLoadBuffer->iCompleteBytes(iBytesRead);
-  //  vTrace("Complete %lld; NextRecord @ %lld end %lld\n",
-  //         iCompleteBytes,
-  //         m_pLoadBuffer->iNextRecord(),
-  //         m_pLoadBuffer->iEndChunk());
-  
-  m_iSeek += iCompleteBytes;
-  
-  m_xLock.vDropWrite();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row                                                                 */
-/*----------------------------------------------------------------------------*/
-bool Loader::bInsertRow(i8 iPartn, char* pRecord, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  ASSERT(iPartn < gxArguments.m_nPartitions);
-  
-  m_pTable->vInsertRow(iPartn,m_pTxRef,pRecord,iLength);
-  
-  return true;
+  //vTrace("TxId %lld\n",pTxRef->iTxId());
 }
 
 /*----------------------------------------------------------------------------*/

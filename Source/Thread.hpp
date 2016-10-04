@@ -14,6 +14,7 @@ namespace Threads
   private:
 
   public:
+    i8          m_iThreadNo;    // our thread no
     s32         m_sName;        // thread name
     PosixThread m_xPosixThread; // its posix structure
     TaskSet*    m_pTaskSet;     // task set this thread serves
@@ -40,6 +41,7 @@ namespace Threads
     s&   sName(void);
     void vName(s& sName);
     void vSpawn(void);
+    i8   iThreadNo(void);
     
     Footer* pFooter(void);
   };
