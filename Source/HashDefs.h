@@ -25,7 +25,7 @@
 //#define STEP_BOARD
 
 // Flag to enable current release related items
-#define _RELEASE_VERSION
+//#define _RELEASE_VERSION
 
 #define DIV(a,b) (b ? (a / b) : 0)    // checked divide
 #define MAX(a,b) (((a)>(b))?(a):(b))  // which is smaller
