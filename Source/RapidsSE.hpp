@@ -6,7 +6,7 @@
 
 #include "StorageEngine.h"
 
-#define RAPIDSSE_VERSION_STRING "0.1.1"
+#define RAPIDSSE_VERSION_STRING "0.1.2"
 
 namespace StorageEngine
 {
