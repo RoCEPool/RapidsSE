@@ -599,6 +599,8 @@ void SePrompt::vHelp(void)
   vTrace("drop schema    -- drop a schema\n");
   vTrace("drop table     -- drop a table\n");
   vTrace("drop tenant    -- drop a tenant\n");
+  vTrace("ex             -- export table t\n");
+  vTrace("ld             -- load table t\n");
   vTrace("lf             -- list folder contents\n");
   vTrace("ls             -- list directory contents\n");
   vTrace("lscol          -- list columns of a table\n");
