@@ -34,7 +34,7 @@ pDUMPFUN *gpDump[]
   /* 16 */ &Dump::vInvalid,         // CN_BPA
 
   /* 17 */ &Dic::vDump,             // CN_DIC
-  /* 18 */ &DictionaryStack::vDump, // CN_DICTIONARYSTACK
+  /* 18 */ &DicStack::vDump,        // CN_DICSTACK
   /* 19 */ &Dump::vInvalid,         // CN_DIR
   
   /* 20 */ &Dump::vInvalid,         // CN_FILE
@@ -152,7 +152,7 @@ i8 giClassSize[]
   /* 16 */ sizeof(BPA),                // CN_BPA
   
   /* 17 */ sizeof(Dic),                // CN_DIC
-  /* 18 */ sizeof(DictionaryStack),    // CN_DICTIONARYSTACK
+  /* 18 */ sizeof(DicStack),           // CN_DICSTACK
   /* 19 */ sizeof(Dir),                // CN_DIR
   
   /* 20 */ sizeof(File),               // CN_FILE

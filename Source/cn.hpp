@@ -36,7 +36,7 @@ namespace Magic
     /* 16 */ CN_BPA,
     
     /* 17 */ CN_DIC,
-    /* 18 */ CN_DICTIONARYSTACK,
+    /* 18 */ CN_DICSTACK,
     /* 19 */ CN_DIR,
     
     /* 20 */ CN_FILE,
@@ -150,10 +150,10 @@ namespace Magic
     
     /* 14 */ "BUFFER",
     /* 15 */ "BUFFERPOOL",
-    /* 16 */ "BUFFERPOOLANALYZER",
+    /* 16 */ "BPA",
     
-    /* 17 */ "DICTIONARY",
-    /* 18 */ "DICTIONARYSTACK",
+    /* 17 */ "DIC",
+    /* 18 */ "DICSTACK",
     /* 19 */ "DIR",
     
     /* 20 */ "FILE",

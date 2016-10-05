@@ -95,7 +95,7 @@ SEitf::~SEitf(void)
 /*----------------------------------------------------------------------------*/
 /* pop dictionary from dictionary stack                                       */
 /*----------------------------------------------------------------------------*/
-DictionaryStack* SEitf::pDicStack(void)
+DicStack* SEitf::pDicStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 

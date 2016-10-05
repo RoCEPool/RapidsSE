@@ -189,7 +189,7 @@ void Task::vInit(const char* aLambda)
   m_pParentTask = nullptr;
   m_pThread     = nullptr;
   
-  m_xDictionaryStack.vPush(gpMainDic);
+  m_xDicStack.vPush(gpMainDic);
   
   m_pQueue = nullptr;
   
@@ -241,7 +241,7 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Dic* pDic = m_xDictionaryStack.pTop();
+  Dic* pDic = m_xDicStack.pTop();
   
   pDic->vAddConstant(aName,iVal);
 }
@@ -253,7 +253,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic = m_xDictionaryStack.pTop();
+  Dic* pDic = m_xDicStack.pTop();
   
   pDic->vAddConstant(aName,aValue);
 }
@@ -265,7 +265,7 @@ void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic = m_xDictionaryStack.pTop();
+  Dic* pDic = m_xDicStack.pTop();
   
   Word* pWord = new(pDic) Word(pName);
   
@@ -453,7 +453,7 @@ void Task::vAddConstants(void)
   /* 11 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
   /* 12 */ vAddConstant("SIZEOF_BPA",               sizeof(BPA));
   /* 13 */ vAddConstant("SIZEOF_DIC",               sizeof(Dic));
-  /* 14 */ vAddConstant("SIZEOF_DICTIONARYSTACK",   sizeof(DictionaryStack));
+  /* 14 */ vAddConstant("SIZEOF_DICSTACK",          sizeof(DicStack));
   /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
   /* 16 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
   /* 17 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
@@ -1297,7 +1297,7 @@ Word* Task::pCompileColon(s& sDefinition)
   vTokenNext();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
-  pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sToken.a());
+  pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
   
   vTokenNext();
   
@@ -1367,7 +1367,7 @@ Word* Task::pCurrentWord(void)
   if (m_pSEitf)
     pDic = m_pSEitf->pDicStack()->pTop();
   else
-    pDic = m_xDictionaryStack.pTop();
+    pDic = m_xDicStack.pTop();
 
   Word* pWord = pDic->pCurrentWord();
   
@@ -1444,7 +1444,7 @@ Word* Task::pFindWord(s& sName)
   }
   
   // attempt to find word in this tasks dic stack
-  pWord = m_xDictionaryStack.pFind(sName.a());
+  pWord = m_xDicStack.pFind(sName.a());
   
   return pWord;
 }
@@ -1468,7 +1468,7 @@ Word* Task::pFindWordInCurrent(s& sName)
   }
   
   // attempt to find word in this tasks current dic
-  pWord = m_xDictionaryStack.pFindInCurrent(sName.a());
+  pWord = m_xDicStack.pFindInCurrent(sName.a());
   
   return pWord;
 }
@@ -1480,7 +1480,7 @@ Word* Task::pFindWord(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pWord = m_xDictionaryStack.pFind(aName);
+  Word* pWord = m_xDicStack.pFind(aName);
   
   return pWord;
 }
@@ -1496,7 +1496,7 @@ bool Task::bForgetWord(s& sName)
   if (m_pSEitf)
     bResult = m_pSEitf->pDicStack()->bForget(sName);
   else
-    bResult = m_xDictionaryStack.bForget(sName);
+    bResult = m_xDicStack.bForget(sName);
   
   return bResult;
 }
@@ -1527,7 +1527,7 @@ Word* Task::pLocateWord(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pWord = m_xDictionaryStack.pLocate(pCell);
+  Word* pWord = m_xDicStack.pLocate(pCell);
   
   return pWord;
 }
@@ -2197,7 +2197,7 @@ ENTRY("vColon");
 
   nnpTask->vTokenNext();
   
-  new(nnpTask->m_xDictionaryStack.pTop())  Word(nnpTask->m_sToken.a());
+  new(nnpTask->m_xDicStack.pTop())  Word(nnpTask->m_sToken.a());
   
   EXIT();
 }
@@ -4127,7 +4127,7 @@ ENTRY("vSee");
 //  while ((char*)pCell < pcAdd(pWord->pDataArea(),pWord->iDataBytes())) {
   while (pCell <= pWord->pLastCell()) {
  
-    Word* pDoesWord = nnpTask->m_xDictionaryStack.pFindStep(*pCell->m_ppDoesStep);
+    Word* pDoesWord = nnpTask->m_xDicStack.pFindStep(*pCell->m_ppDoesStep);
 
     vTrace("%p: %s",pCell,pDoesWord->sName().a());
   
@@ -5087,7 +5087,7 @@ ENTRY("vDicCount");
     iCount = nnpTask->m_pSEitf->pDicStack()->iCount();
   }
   else {
-    iCount = nnpTask->m_xDictionaryStack.iCount();
+    iCount = nnpTask->m_xDicStack.iCount();
   }
   
   nnpTask->m_xParamStack.vPush(iCount);
@@ -5106,7 +5106,7 @@ ENTRY("vDicDrop");
     nnpTask->m_pSEitf->vPopDic();
   }
   else {
-    nnpTask->m_xDictionaryStack.vDiscard();
+    nnpTask->m_xDicStack.vDiscard();
   }
   
   EXIT();
@@ -5164,7 +5164,7 @@ ENTRY("vDicDump");
     nnpTask->m_pSEitf->pDicStack()->vDump();
   }
   else {
-    nnpTask->m_xDictionaryStack.vDump();
+    nnpTask->m_xDicStack.vDump();
   }
   
   EXIT();
@@ -5307,7 +5307,7 @@ ENTRY("vDicPick");
     pPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
   }
   else {
-    pPtrDic = nnpTask->m_xDictionaryStack.pPick(iDic);
+    pPtrDic = nnpTask->m_xDicStack.pPick(iDic);
   }
   
   nnpTask->m_xParamStack.vPush(pPtrDic);
@@ -5333,7 +5333,7 @@ ENTRY("vDicPush");
     nnpTask->m_pSEitf->vPushDic(pDic);
   }
   else {
-    nnpTask->m_xDictionaryStack.vPush(pDic);
+    nnpTask->m_xDicStack.vPush(pDic);
   }
   
   EXIT();
@@ -10705,7 +10705,7 @@ ENTRY("vCreate");
   if (nnpTask->m_pSEitf)
     pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
   else
-    pDic = nnpTask->m_xDictionaryStack.pTop();
+    pDic = nnpTask->m_xDicStack.pTop();
   
   new(pDic) Word(nnpTask->m_sToken.a());
   
@@ -10727,7 +10727,7 @@ ENTRY("vCreateFrom");
   if (nnpTask->m_pSEitf)
     pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
   else
-    pDic = nnpTask->m_xDictionaryStack.pTop();
+    pDic = nnpTask->m_xDicStack.pTop();
   
   new(pDic) Word(sName.a());
   
