@@ -9,7 +9,8 @@
 /*----------------------------------------------------------------------------*/
 Tests::Tests(void) {
   
-  m_iTotalTests  = 0;
+  m_pSePrompt    = new SePrompt(0);
+  m_iTestsTotal  = 0;
   m_iTestsPassed = 0;
   m_iTestsFailed = 0;
 }
@@ -33,24 +34,25 @@ void Tests::vAssertFailed(void) {
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRunTests(void) {
+void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected)
+{
+  eEC eErrorReturned;
   
-  i8 iFailed = 0;
+  m_iTestsTotal++;
   
-  m_iTotalTests += TenantTests::iRun(iFailed);
-  m_iTestsFailed += iFailed;
-  
-  m_iTotalTests += CatalogTests::iRun(iFailed);
-  m_iTestsFailed += iFailed;
-
-  m_iTestsPassed = m_iTotalTests - m_iTestsFailed;
-  
-  vTrace("\n--------------------------------------\n");
-  vTrace("Tests Executed : %lld\n", m_iTotalTests);
-  vTrace("Tests Passed:    %lld\n", m_iTestsPassed);
-  vTrace("Tests Failed:    %lld\n", m_iTestsFailed);
-  vTrace("---------------------------------------\n");
-  
+  if (m_pSePrompt->bExecuteString(sCommand, eErrorReturned) != bResult) {
+    m_iTestsFailed++;
+    vAssertFailed();
+  }
+  else {
+    if (eErrorReturned != eErrorExpected) {
+      m_iTestsFailed++;
+     Tests::vAssertFailed();
+    }
+    else {
+      m_iTestsPassed++;
+    }
+  }
 }
 
 /*============================================================================*/

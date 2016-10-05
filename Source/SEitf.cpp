@@ -285,6 +285,7 @@ bool SEitf::bDecode(char* pWords[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   if (0 == String::iLength(pWords[0])) {
+    vSetLastError(EC_UNKNOWN_COMMAND);
     return false;
   }
   
@@ -466,7 +467,8 @@ bool SEitf::bDecode(char* pWords[])
     return false;
   }
   
-  vTrace("Unknown command: %s\n",pWords[0]);
+  //vTrace("Unknown command: %s\n",pWords[0]);
+  vSetLastError(EC_UNKNOWN_COMMAND);
   return false;
 }
 

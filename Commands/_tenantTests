@@ -1,9 +1,0 @@
-cf ~
-create tenant;
-create tenant ten;
-create tenant ten;
-drop tenant;
-drop tenant ten;
-drop tenant ten;
-create tenant x;
-drop tenant x;

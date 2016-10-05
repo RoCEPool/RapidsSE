@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Tenant.h - tenant tests                                                    */
+/* TenantTests.hpp - tenant tests                                             */
 /*============================================================================*/
 
 #pragma once
@@ -8,14 +8,10 @@
 
 namespace UnitTests
 {
-  class TenantTests
+  class TenantTests : public Tests
   {
-  private:
-    i8 m_iTestsPassed;
-    i8 m_iTestsFailed;
-    
   public:
-    static i8 iRun(i8& iFailed);
+    void vRun(RunTests* pRunTests);
   };
 };
 

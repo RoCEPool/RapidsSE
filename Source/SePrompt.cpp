@@ -72,6 +72,9 @@ SePrompt::SePrompt(i8 iPartition)
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vNormal(true);
   
+  // open the command history file
+  m_xHistory.vOpen();
+
   _checkInitialised_(sizeof(SePrompt));
 }
 
@@ -81,6 +84,9 @@ SePrompt::SePrompt(i8 iPartition)
 SePrompt::~SePrompt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // close history file
+  m_xHistory.vClose();
   
   RapidsSE_SEitfDelete(m_pSEitf);
 }
@@ -111,7 +117,7 @@ void SePrompt::vLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
   // open the command history file
-  m_xHistory.vOpen();
+  //m_xHistory.vOpen();
   
   // get and process commands
   while (m_bContinue) {
@@ -122,7 +128,7 @@ void SePrompt::vLoop(void)
   }
   
   // close history file
-  m_xHistory.vClose();
+  //m_xHistory.vClose();
   
   // SHOULD REMOVE HISTORY FILE?
 }
@@ -229,7 +235,6 @@ bool SePrompt::bProcessCommand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-
   // - test for builtin comands
   
   if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
@@ -258,12 +263,10 @@ bool SePrompt::bProcessCommand(void)
       return true;
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      vCreateSchema();
-      return true;
+      return breateSchema();
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
-      vCreateTable();
-      return true;
+      return bCreateTable();
     }
   }
   
@@ -275,12 +278,10 @@ bool SePrompt::bProcessCommand(void)
       return bDropCatalog();
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      vDropSchema();
-      return true;
+      return bDropSchema();
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
-      vDropTable();
-      return true;
+      return bDropTable();
     }
   }
   
@@ -356,8 +357,8 @@ bool SePrompt::bProcessCommand(void)
     return true;
   }
   
-  vTrace("Invalid command\n");
-  return true;
+  //vTrace("Invalid command\n");
+  return false;
 }
 #else
 
@@ -414,12 +415,10 @@ bool SePrompt::bProcessCommand(void)
       return bCreateCatalog();
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      vCreateSchema();
-      return true;
+      return bCreateSchema();
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
-      vCreateTable();
-      return true;
+      return bCreateTable();
     }
   }
   
@@ -431,12 +430,10 @@ bool SePrompt::bProcessCommand(void)
       return bDropCatalog();
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      vDropSchema();
-      return true;
+      return bDropSchema();
     }
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
-      vDropTable();
-      return true;
+      return bDropTable();
     }
   }
   
@@ -466,7 +463,7 @@ bool SePrompt::bProcessCommand(void)
   // - execute seitf request
   
   if (! bExecuteRequest())
-    return true;
+    return false;
   
   // - post process requests
   
@@ -491,7 +488,7 @@ bool SePrompt::bProcessCommand(void)
     }
   }
   
-  return true;
+  return false;
 }
 
 #endif
@@ -755,14 +752,14 @@ bool SePrompt::bCreateCatalog(void)
   if (!bExecuteRequest())
     return false;
   
-  vTrace("Catalog created: %s\n", m_pToken2[2]);
+  //vTrace("Catalog created: %s\n", m_pToken2[2]);
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* create schema                                                              */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateSchema(void)
+bool SePrompt::bCreateSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
 
@@ -785,14 +782,14 @@ void SePrompt::vCreateSchema(void)
   
   // there should be 4 tokens
   if (iNumTokens != 4) {
-    vTrace("Error: Invalid statement.\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[3] , ";")) {
-    vTrace("Error: Invalid statement.\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // create a schema
@@ -800,9 +797,10 @@ void SePrompt::vCreateSchema(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
-    return;
+    return false;
   
-  vTrace("Schema created: %s\n", m_pToken2[2]);
+  //vTrace("Schema created: %s\n", m_pToken2[2]);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -848,14 +846,14 @@ bool SePrompt::bCreateTenant(void)
   if (!bExecuteRequest())
     return false;
   
-  vTrace("Tenant created: %s\n", m_pToken2[2]);
+  //vTrace("Tenant created: %s\n", m_pToken2[2]);
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* create table                                                               */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateTable(void)
+bool SePrompt::bCreateTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -881,25 +879,25 @@ void SePrompt::vCreateTable(void)
   /// there should be a minumum of 8 tokens
   if (iNumTokens < 8) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return;
+    return false;
   }
   
   // token[3] should be '('
   if (!String::bEqualTo(m_pToken2[3] , "(")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return;
+    return false;
   }
   
   // last-1 token should be ')'
   if (!String::bEqualTo(m_pToken2[iNumTokens-2] , ")")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return;
+    return false;
   }
     
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[iNumTokens-1] , ";")) {
     m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return;
+    return false;
   }
       
   // create the table
@@ -907,16 +905,16 @@ void SePrompt::vCreateTable(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
-    return;
+    return false;
   
   // now collect the column names and their types
   i8 iCurrentToken = 4;
   while(iCurrentToken < iNumTokens - 2) {
     
     if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
-      vDropTable(m_pToken2[2]);
+      bDropTable(m_pToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return;
+      return false;
     }
     
     // add columns to the table
@@ -941,15 +939,15 @@ void SePrompt::vCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          vDropTable(m_pToken2[2]);
+          bDropTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return;
+          return false;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          vDropTable(m_pToken2[2]);
+          bDropTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return;
+          return false;
         }
         
         // concat ')'
@@ -972,15 +970,15 @@ void SePrompt::vCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          vDropTable(m_pToken2[2]);
+          bDropTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return;
+          return false;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],",")) {
-          vDropTable(m_pToken2[2]);
+          bDropTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return;
+          return false;
         }
         
         // concat ','
@@ -991,15 +989,15 @@ void SePrompt::vCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          vDropTable(m_pToken2[2]);
+          bDropTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return;
+          return false;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          vDropTable(m_pToken2[2]);
+          bDropTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-          return;
+          return false;
         }
         
         // concat ')'
@@ -1013,9 +1011,9 @@ void SePrompt::vCreateTable(void)
     }
     else {
       // drop the table that was created
-      vDropTable(m_pToken2[2]);
+      bDropTable(m_pToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-      return;
+      return false;
     }
     
     // check for NOT NULL
@@ -1025,9 +1023,9 @@ void SePrompt::vCreateTable(void)
       String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       
       if (!String::bEqualTo(m_pToken2[iCurrentToken],"null", C_NO_CASE)) {
-        vDropTable(m_pToken2[2]);
+        bDropTable(m_pToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
-        return;
+        return false;
       }
       String::vConcat(m_pToken[j], " ");
       String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
@@ -1039,10 +1037,11 @@ void SePrompt::vCreateTable(void)
     
     // add the column
     if (!bExecuteRequest())
-      return;
+      return false;
   }
   
-  vTrace("Table created: %s\n", m_pToken2[2]);
+  //vTrace("Table created: %s\n", m_pToken2[2]);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1130,14 +1129,14 @@ bool SePrompt::bDropCatalog(void)
   if (!bExecuteRequest())
     return false;
   
-  vTrace("Catalog dropped: %s\n", m_pToken2[2]);
+  //vTrace("Catalog dropped: %s\n", m_pToken2[2]);
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* drop schema                                                                */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDropSchema(void)
+bool SePrompt::bDropSchema(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1158,29 +1157,30 @@ void SePrompt::vDropSchema(void)
   iNumTokens = iToken;
   // there should be 4 tokens
   if (iNumTokens != 4) {
-    vTrace("Error: Invalid statement.\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[3] , ";")) {
-    vTrace("Error: Invalid statement.\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // drop a schema
   String::vCopy(m_pToken[0], "rmsch");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
-    return;
+    return false;
   
-  vTrace("Schema dropped: %s\n", m_pToken2[2]);
+  //vTrace("Schema dropped: %s\n", m_pToken2[2]);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDropTable(void)
+bool SePrompt::bDropTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1202,29 +1202,30 @@ void SePrompt::vDropTable(void)
   
   // there should be 4 tokens
   if (iNumTokens != 4) {
-    vTrace("Error: Invalid statement.\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[3] , ";")) {
-    vTrace("Error: Invalid statement.\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // drop a table
   String::vCopy(m_pToken[0], "rmtbl");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
-    return;
+    return false;
   
-  vTrace("Table dropped: %s\n", m_pToken2[2]);
+  //vTrace("Table dropped: %s\n", m_pToken2[2]);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vDropTable(char* pTableName)
+bool SePrompt::bDropTable(char* pTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1232,8 +1233,10 @@ void SePrompt::vDropTable(char* pTableName)
   String::vCopy(m_pToken[1], pTableName);
   
   if (!bExecuteRequest()) {
-    vTrace("Error: (%s) Drop Table %s\n", m_sResponse.a(), pTableName);
+    //vTrace("Error: (%s) Drop Table %s\n", m_sResponse.a(), pTableName);
+    return false;
   }
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1278,7 +1281,7 @@ bool SePrompt::bDropTenant(void)
     return false;
   }
   
-  vTrace("Tenant dropped: %s\n", m_pToken2[2]);
+  //vTrace("Tenant dropped: %s\n", m_pToken2[2]);
   
   return true;
 }

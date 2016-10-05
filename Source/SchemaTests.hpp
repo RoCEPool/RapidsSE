@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Catalog.hpp - tenant tests                                                 */
+/* SchemaTests.hpp - schema tests                                             */
 /*============================================================================*/
 
 #pragma once
@@ -8,10 +8,10 @@
 
 namespace UnitTests
 {
-  class CatalogTests
+  class SchemaTests : public Tests
   {
   public:
-    static i8 iRun(i8& iFailed);
+    void vRun(RunTests* pRunTests);
   };
 };
 

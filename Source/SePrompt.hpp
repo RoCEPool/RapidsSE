@@ -64,8 +64,8 @@ private:
   bool bChangeWorkingDir(void);
   
   bool bCreateCatalog(void);
-  void vCreateSchema(void);
-  void vCreateTable(void);
+  bool bCreateSchema(void);
+  bool bCreateTable(void);
   bool bCreateTenant(void);
   
   void vCollectStatement(void);
@@ -73,9 +73,9 @@ private:
   void vListDir(void);
   
   bool bDropCatalog(void);
-  void vDropSchema(void);
-  void vDropTable(void);
-  void vDropTable(char* pTableName);
+  bool bDropSchema(void);
+  bool bDropTable(void);
+  bool bDropTable(char* pTableName);
   bool bDropTenant(void);
   
   void vPoolSpace(void);

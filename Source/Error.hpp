@@ -47,6 +47,7 @@ namespace Magic
 
     /* 26 */ EC_TABLE_EXISTS,
     /* 27 */ EC_TENANT_EXISTS,
+    /*    */ EC_UNKNOWN_COMMAND,
     
     /* 28 */ EC_ENUMS
   };

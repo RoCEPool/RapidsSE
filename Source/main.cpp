@@ -6,7 +6,7 @@
 #include "SePrompt.hpp"
 #include "UnitTests.h"
 
-extern Arguments  gxArguments;
+extern Arguments gxArguments;
 
 void vTest1(void);
 
@@ -49,8 +49,6 @@ int main(int argc, const char* argv[])
 //  xTimer.vUpdate();
 //  
 //  vTrace("duration %lldns\n",xTimer.iNanoseconds());
-
-  
   
   if (gxArguments.m_bVerbose)
     gxArguments.vPrint();
@@ -64,8 +62,8 @@ int main(int argc, const char* argv[])
   
   // unit tests ?
   if (gxArguments.m_bUnitTests) {
-    Tests* pTests = new Tests();
-    pTests->vRunTests();
+    RunTests* pRunTests = new RunTests();
+    pRunTests->vRunTests();
   }
   
   // optionally execute se> prompt
