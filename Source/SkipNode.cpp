@@ -59,7 +59,7 @@ SkipNode::SkipNode(void* pObject)
   
   _setFooter_();
   
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_SKIPNODE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }
@@ -72,7 +72,7 @@ SkipNode::SkipNode()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
  
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_SKIPNODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }

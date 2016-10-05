@@ -35,7 +35,7 @@ Time::Time(void)
   m_iSecond = 0;
   m_iMicro  = 0;
   
-  _checkInitialised_(sizeof(Time));
+  _checkInitialised_(CN_TIME);
   
   _postcondition_(_MAGIC_,CN_TIME,_FOOTER_);
 }

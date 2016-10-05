@@ -54,7 +54,7 @@ KeyCpp::KeyCpp(void)
   }
   
   _setFooter_();
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_KEYCPP);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_KEYCPP,_FOOTER_);
 }

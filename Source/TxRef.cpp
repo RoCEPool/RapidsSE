@@ -47,7 +47,7 @@ TxRef::TxRef(void)
   
   m_pTx = nullptr;
   
-  _checkInitialised_(sizeof(TxRef));
+  _checkInitialised_(CN_TXREF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXREF,_FOOTER_);
 }

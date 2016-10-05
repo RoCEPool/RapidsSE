@@ -42,7 +42,7 @@ LoadChunk::LoadChunk(void)
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
  
-  _checkInitialised_(sizeof(LoadChunk));
+  _checkInitialised_(CN_LOADCHUNK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }

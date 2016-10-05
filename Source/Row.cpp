@@ -37,7 +37,7 @@ Row::Row(i8 iDataBytes)
 
   _setFooter_();
   
-  _checkInitialised_(sizeof(Row));
+  _checkInitialised_(CN_ROW);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }

@@ -22,7 +22,7 @@ void* Value::operator new(size_t iSize)
 Value::Value(eCN eClass)
 : Header(eClass)
 {
-  _checkInitialised_(sizeof(Value));
+  _checkInitialisedSize_(sizeof(Value));
 }
 
 /*----------------------------------------------------------------------------*/

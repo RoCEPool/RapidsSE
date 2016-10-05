@@ -57,7 +57,7 @@ NodeCursor::NodeCursor(List_t<Node>* pList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR,_FOOTER_);
   
-  _checkInitialised_(sizeof(NodeCursor));
+  _checkInitialised_(CN_NODECURSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_NODECURSOR,_FOOTER_);
 }

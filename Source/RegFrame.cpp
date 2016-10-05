@@ -50,7 +50,7 @@ RegFrame::RegFrame(void)
   m_pNext = nullptr;
   //m_xValReg
   
-  _checkInitialised_(sizeof(RegFrame));
+  _checkInitialised_(CN_REGFRAME);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
 }

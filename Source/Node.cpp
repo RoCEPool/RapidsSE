@@ -54,7 +54,7 @@ Node::Node(void)
   
   m_iNodeNo = 0;
   
-  _checkInitialised_(sizeof(Node));
+  _checkInitialised_(CN_NODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 }

@@ -47,7 +47,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_pFreeHead    = nullptr;
   m_bFixedHeap   = false;
   
-  _checkInitialised_(sizeof(Heap));
+  _checkInitialisedSize_(sizeof(Heap));
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }

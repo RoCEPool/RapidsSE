@@ -37,7 +37,7 @@ RowWsp::RowWsp(i8 iDataBytes)
 
   _setFooter_();
   
-  _checkInitialised_(sizeof(RowWsp));
+  _checkInitialisedSize_(sizeof(RowWsp));
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 }

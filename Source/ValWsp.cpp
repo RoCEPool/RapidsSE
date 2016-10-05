@@ -23,7 +23,7 @@ ValWsp::ValWsp(void)
 {
 //  Memory::vZero(m_mArray,C_VALWSP_ARRAY);
 //
-// _checkInitialised_(sizeof(ValWsp));
+// _checkInitialised_(CN_VALWSP);
 
 }
 

@@ -41,7 +41,7 @@ Arguments::Arguments(void)
   
   m_iPartition  = 0;
   
-  _checkInitialised_(sizeof(Arguments));
+  _checkInitialised_(CN_ARGUMENTS);
   
   vEnvironmentVariables();
 }

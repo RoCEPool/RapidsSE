@@ -56,7 +56,7 @@ TaskList::TaskList(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
   
-  _checkInitialised_(sizeof(TaskList));
+  _checkInitialised_(CN_TASKLIST);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKLIST,_FOOTER_);
 }

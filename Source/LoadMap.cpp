@@ -60,7 +60,7 @@ LoadMap::LoadMap(void)
   Memory::vZero(m_xBlockTest,C_LOADMAP_BLOCK);
   m_iChunkTell = 0;
   
-  _checkInitialised_(sizeof(CN_LOADMAP));
+  _checkInitialised_(CN_LOADMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADMAP,_FOOTER_);
 }

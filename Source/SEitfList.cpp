@@ -49,7 +49,7 @@ SEitfList::SEitfList(void)
   
   gpSEitfList = this;
   
-  _checkInitialised_(sizeof(SEitfList));
+  _checkInitialised_(CN_SEITFLIST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
 }

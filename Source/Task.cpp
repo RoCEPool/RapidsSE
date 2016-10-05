@@ -102,7 +102,7 @@ Task::Task(void)
   
   vInit("");
     
-  _checkInitialised_(sizeof(Task));
+  _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
@@ -124,7 +124,7 @@ Task::Task(NNP_Task nnpTask)
   
   vInit("");
   
-  _checkInitialised_(sizeof(Task));
+  _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
@@ -147,7 +147,7 @@ Task::Task(const char* aLambdaInput)
   
   vInit(aLambdaInput);
   
-  _checkInitialised_(sizeof(Task));
+  _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);

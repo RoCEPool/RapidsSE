@@ -39,7 +39,7 @@ ScanBuffer::ScanBuffer(void)
   
   ASSERT(m_pEndData);
   
-  _checkInitialised_(sizeof(ScanBuffer));
+  _checkInitialised_(CN_SCANBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }

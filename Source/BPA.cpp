@@ -26,7 +26,7 @@ BPA::BPA(void)
 {
   _magic_();
   
-  _checkInitialised_(sizeof(BPA));
+  _checkInitialised_(CN_BPA);
 }
 
 /*----------------------------------------------------------------------------*/

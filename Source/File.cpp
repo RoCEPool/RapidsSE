@@ -88,7 +88,7 @@ File::File(void)
   
   vInit();
  
-  _checkInitialised_(sizeof(File));
+  _checkInitialised_(CN_FILE);
   
   _postcondition_(_MAGIC_,CN_FILE,_FOOTER_);
 }

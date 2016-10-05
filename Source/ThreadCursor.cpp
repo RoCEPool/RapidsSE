@@ -57,7 +57,7 @@ ThreadCursor::ThreadCursor(List_t<Thread>* pList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
   
-  _checkInitialised_(sizeof(ThreadCursor));
+  _checkInitialised_(CN_THREADCURSOR);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADCURSOR,_FOOTER_);
 }

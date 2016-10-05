@@ -15,7 +15,7 @@ Error::Error(eEC eErrorCode, const char* sFile, i8 iLine)
   m_iLineNumber = iLine;
   String::vCopy(m_sErrorMsg.a(), pEC[m_eErrorCode]);
   
-  _checkInitialised_(sizeof(Error));
+  _checkInitialisedSize_(sizeof(Error));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ Error::Error(eEC eErrorCode, const char* pErrorMsg, const char* sFile, i8 iLine)
   String::vConcat(m_sErrorMsg.a(), pErrorMsg);
   String::vConcat(m_sErrorMsg.a(), ") ");
 
-  _checkInitialised_(sizeof(Error));
+  _checkInitialisedSize_(sizeof(Error));
 }
 
 /*----------------------------------------------------------------------------*/

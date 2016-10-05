@@ -55,7 +55,7 @@ KeyVal::KeyVal(void)
   
   _setFooter_();
   
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_KEYVAL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_KEYVAL,_FOOTER_);
 }

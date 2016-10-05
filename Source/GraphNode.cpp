@@ -59,7 +59,7 @@ GraphNode::GraphNode(void)
   m_pPrev   = nullptr;
   m_pChild  = nullptr;
   
-  _checkInitialised_(sizeof(GraphNode));
+  _checkInitialised_(CN_GRAPHNODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE,_FOOTER_);
 }

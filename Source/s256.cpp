@@ -28,7 +28,7 @@ s256::s256(void)
   
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
-  _checkInitialised_(sizeof(s256));
+  _checkInitialised_(CN_S256);
   
   _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
@@ -45,7 +45,7 @@ s256::s256(s256& rArg)
   
   s::vCopy(rArg.a());
   
-  _checkInitialised_(sizeof(s256));
+  _checkInitialised_(CN_S256);
   
   _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }
@@ -62,7 +62,7 @@ s256::s256(const char* aArg)
   
   s::vCopy(aArg);
   
-  _checkInitialised_(sizeof(s256));
+  _checkInitialised_(CN_S256);
   
   _postcondition_(_MAGIC_,CN_S256,_FOOTER_);
 }

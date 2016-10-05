@@ -72,7 +72,7 @@ SePrompt::SePrompt(i8 iPartition)
   m_xTokeniser.vLineMode(true);
   m_xTokeniser.vNormal(true);
   
-  _checkInitialised_(sizeof(SePrompt));
+  _checkInitialised_(CN_SEPROMPT);
 }
 
 /*----------------------------------------------------------------------------*/

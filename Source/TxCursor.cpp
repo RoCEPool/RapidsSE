@@ -55,7 +55,7 @@ TxCursor::TxCursor(Collection_t<Tx>* gpTxCollection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
   
-  _checkInitialised_(sizeof(TxCursor));
+  _checkInitialised_(CN_TXCURSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
 }

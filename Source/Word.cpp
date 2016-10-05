@@ -67,7 +67,7 @@ Word::Word(const char* sName)
   m_pDoesStep = &Tasks::Task::vEnterRoutine;
   m_pDoesArg  = pFirstCell();
   
-  _checkInitialised_(sizeof(Word));
+  _checkInitialised_(CN_WORD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 }

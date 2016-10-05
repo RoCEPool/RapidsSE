@@ -66,7 +66,7 @@ Dic::Dic(void)
   // this is because of GlobalDictionary (ugh)
   //vInit();
   
-  _checkInitialised_(sizeof(Dic));
+  _checkInitialised_(CN_DIC);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 }

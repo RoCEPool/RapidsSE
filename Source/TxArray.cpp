@@ -39,7 +39,7 @@ TxArray::TxArray(void)
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
     m_pTx[iTx] = nullptr;
 
-  _checkInitialised_(sizeof(TxArray));
+  _checkInitialised_(CN_TXARRAY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY,_FOOTER_);
 }

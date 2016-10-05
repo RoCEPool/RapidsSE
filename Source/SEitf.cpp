@@ -75,7 +75,7 @@ SEitf::SEitf(i8 iPartition)
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   
-  _checkInitialised_(sizeof(SEitf));
+  _checkInitialised_(CN_SEITF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 }

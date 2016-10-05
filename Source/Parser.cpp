@@ -53,7 +53,7 @@ Parser::Parser(void)
   
   vResetParser();
   
-  _checkInitialised_(sizeof(Parser));
+  _checkInitialised_(CN_PARSER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
 };

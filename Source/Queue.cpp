@@ -56,7 +56,7 @@ Queue::Queue(void)
   
   vInitialize();
   
-  _checkInitialised_(sizeof(Queue));
+  _checkInitialised_(CN_QUEUE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
 }

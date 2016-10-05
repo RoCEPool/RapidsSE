@@ -17,6 +17,7 @@ namespace Common
     
   public:
     static void* pAddBytes(void* pAddress, i8 iBytes);
+    static void  vCheckInitialised(void* pAddress, eCN eClass);
     static void  vCheckInitialised(void* pAddress, i8 nBytes);
     static void  vCopy(void* pDst, const void* pSrc, i8 iBytes);
     static void  vHexDump(void *pAddress, i8 iSize);

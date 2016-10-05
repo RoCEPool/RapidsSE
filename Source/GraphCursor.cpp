@@ -54,7 +54,7 @@ GraphCursor::GraphCursor(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR,_FOOTER_);
   
-  _checkInitialised_(sizeof(Queue));
+  _checkInitialised_(CN_GRAPHCURSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHCURSOR,_FOOTER_);
 }

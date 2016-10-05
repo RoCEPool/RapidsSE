@@ -66,7 +66,7 @@ Dir::Dir(void)
   
   ASSERT(bIsClosed());
   
-  _checkInitialised_(sizeof(Dir));
+  _checkInitialised_(CN_DIR);
   
   _postcondition_(_MAGIC_,CN_DIR,_FOOTER_);
 };

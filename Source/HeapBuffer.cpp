@@ -38,7 +38,7 @@ HeapBuffer::HeapBuffer(void)
   m_pNextBuffer = nullptr;
   m_pPrevBuffer = nullptr;
   
-  _checkInitialised_(sizeof(HeapBuffer));
+  _checkInitialised_(CN_HEAPBUFFER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
 }

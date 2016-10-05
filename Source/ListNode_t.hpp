@@ -55,7 +55,7 @@ ListNode_t<OBJECT>::ListNode_t(void)
   m_pNextNode = nullptr;
   m_pPrevNode = nullptr;
   
-  _checkInitialised_(sizeof(ListNode_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(ListNode_t<OBJECT>));
 }
 
 /*---------------------------------------------------------------------------*/

@@ -45,7 +45,7 @@ Socket::Socket(void)
   m_iSocketId = -1;
   m_bBlocking = true;
   
-  _checkInitialised_(sizeof(Socket));
+  _checkInitialised_(CN_SOCKET);
   
   _postcondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
 }

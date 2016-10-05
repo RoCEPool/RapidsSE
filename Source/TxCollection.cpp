@@ -64,7 +64,7 @@ TxCollection::TxCollection(void)
   
   gpTxCollection = this;
   
-  _checkInitialised_(sizeof(TxCollection));
+  _checkInitialised_(CN_TXCOLLECTION);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
 }

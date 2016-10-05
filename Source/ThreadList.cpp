@@ -49,7 +49,7 @@ ThreadList::ThreadList(void)
   
   gpThreadList = this;
   
-  _checkInitialised_(sizeof(ThreadList));
+  _checkInitialised_(CN_THREADLIST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
 }

@@ -25,7 +25,7 @@ ValReg::ValReg(void)
   
   *(this) = (i8)0;
   
- _checkInitialised_(sizeof(ValReg));
+ _checkInitialised_(CN_VALREG);
 }
 
 /*----------------------------------------------------------------------------*/

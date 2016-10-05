@@ -63,7 +63,7 @@ Loader::Loader(void)
   m_zSubs    = 0;
   m_pLoadMap = new LoadMap;
   
-  _checkInitialised_(sizeof(Loader));
+  _checkInitialised_(CN_LOADER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 }

@@ -27,7 +27,7 @@ ValSet::ValSet(void)
   
   m_iBytes = 0;
   
-  _checkInitialised_(sizeof(ValSet));
+  _checkInitialised_(CN_VALSET);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -54,7 +54,7 @@ Graph::Graph(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
   
-  _checkInitialised_(sizeof(Graph));
+  _checkInitialised_(CN_GRAPH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPH,_FOOTER_);
 }

@@ -39,7 +39,7 @@ DicStack::DicStack(void)
   for (i8 i = 0; i < C_DICTIONARY_STACK; i++)
     m_pDic[i] = nullptr;
   
-  _checkInitialised_(sizeof(DicStack));
+  _checkInitialised_(CN_DICSTACK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 }

@@ -44,7 +44,7 @@ Stack::Stack(void)
   
   Memory::vZero(m_mSpace,C_STACK_AREA);
   
-  _checkInitialised_(sizeof(Stack));
+  _checkInitialised_(CN_STACK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

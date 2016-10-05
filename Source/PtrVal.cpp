@@ -35,7 +35,7 @@ PtrVal::PtrVal(void)
 {
   m_pPtr = nullptr;
   
-  _checkInitialised_(sizeof(PtrVal));
+  _checkInitialised_(CN_PTRVAL);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -68,7 +68,7 @@ List_t<OBJECT>::List_t(void)
   m_pHead  = nullptr;
   m_pTail  = nullptr;
   
-  _checkInitialised_(sizeof(List_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(List_t<OBJECT>));
 }
 
 /*----------------------------------------------------------------------------*/

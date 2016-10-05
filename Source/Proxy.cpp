@@ -34,7 +34,7 @@ Proxy::Proxy(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PROXY,_FOOTER_);
   
-  _checkInitialised_(sizeof(Proxy));
+  _checkInitialised_(CN_PROXY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PROXY,_FOOTER_);
 }
