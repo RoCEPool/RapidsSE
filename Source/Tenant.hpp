@@ -10,8 +10,12 @@ namespace UnitTests
 {
   class TenantTests
   {
+  private:
+    i8 m_iTestsPassed;
+    i8 m_iTestsFailed;
+    
   public:
-    static void vRun(void);
+    static i8 iRun(i8& iFailed);
   };
 };
 

@@ -67,10 +67,9 @@ SEitf::SEitf(i8 iPartition)
   //m_xDicStack;
   m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
-  m_eInterfaceError = IE_NONE;
-  //m_sInterfaceError
-  m_iErrorCode      = 0;
-  //m_sResponse
+  m_eErrorCode      = EC_NONE;
+  m_sErrorMsg       = pEC[m_eErrorCode];
+  m_sResponse       = "";
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
@@ -1217,20 +1216,20 @@ void SEitf::vAppendRequest(s& sRequest)
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue (response is from pointer in seitf(shm))   */
 /*----------------------------------------------------------------------------*/
-i8 SEitf::iGetResponse(void)
+eEC SEitf::eGetResponse(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  while (! bPopResponse(m_iErrorCode, m_sResponse))
+  while (! bPopResponse(m_eErrorCode, m_sResponse))
     ;
   
-  return m_iErrorCode;
+  return m_eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/
 /* pop response from reponse queue                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPopResponse(i8& iResult, s& sResponse)
+bool SEitf::bPopResponse(eEC& eResult, s& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1245,7 +1244,7 @@ bool SEitf::bPopResponse(i8& iResult, s& sResponse)
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  iResult = pValWsp->iInt();
+  eResult = (eEC)pValWsp->iInt();
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
@@ -1271,7 +1270,7 @@ const char* SEitf::pGetLastError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  return m_sInterfaceError.a();
+  return m_sErrorMsg.a();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1281,22 +1280,22 @@ void SEitf::vClearLastError(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  m_eInterfaceError = IE_NONE;
-  String::vCopy(m_sInterfaceError.a(), "");
+  m_eErrorCode = EC_NONE;
+  String::vCopy(m_sErrorMsg.a(), "");
 }
 
 /*----------------------------------------------------------------------------*/
 /* set last error                                                             */
 /*----------------------------------------------------------------------------*/
-void SEitf::vSetLastError(eIE eInterfaceError)
+void SEitf::vSetLastError(eEC eError)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  ASSERT(eInterfaceError >= IE_NONE);
-  ASSERT(eInterfaceError <  IE_ENUMS);
+  ASSERT(eError >= EC_NONE);
+  ASSERT(eError <  EC_ENUMS);
   
-  m_eInterfaceError = eInterfaceError;
-  String::vCopy(m_sInterfaceError.a(), pIE[m_eInterfaceError]);
+  m_eErrorCode = eError;
+  String::vCopy(m_sErrorMsg.a(), pEC[m_eErrorCode]);
   
 //  if (String::iLength(m_sResponse.a()) != 0) {
 //    String::vConcat(m_sInterfaceError.a(), " (");

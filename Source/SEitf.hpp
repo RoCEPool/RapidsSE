@@ -8,23 +8,6 @@
 
 namespace Interface
 {
-  enum eIE// Interface Error
-  {
-    /* 0 */ IE_NONE=0,
-    /* 1 */ IE_COMMAND_FAILED,
-    /* 2 */ IE_INVALID_COMMAND,
-    /* 3 */ IE_INVALID_PARAMETER,
-    /* 4 */ IE_ENUMS
-  };
-  
-  static const char* const pIE[]
-  {
-    /* 0 */ "NONE",
-    /* 1 */ "COMMAND FAILED",
-    /* 2 */ "INVALID COMMAND",
-    /* 3 */ "INVALID PARAMETER",
-    /* 4 */ "ENUMS",
-  };
   
   class SEitf : public Object,
                        public ListNode_t<SEitf>
@@ -42,10 +25,8 @@ namespace Interface
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // reponse queue
     
-    eIE    m_eInterfaceError;  // error code
-    s256   m_sInterfaceError;  // error string
-    
-    i8     m_iErrorCode;       //
+    eEC    m_eErrorCode;       //
+    s256   m_sErrorMsg;
     
     s8K    m_sResponse;        // response
     
@@ -132,13 +113,13 @@ namespace Interface
     //--------------------------------------------------------------------------
     void vAppendRequest(s& sRequest);
     
-    i8   iGetResponse(void);
-    bool bPopResponse(i8& iResult, s& sResponse);
+    eEC  eGetResponse(void);
+    bool bPopResponse(eEC& eResult, s& sResponse);
     
     //--------------------------------------------------------------------------
     void         vClearLastError(void);
     const char*  pGetLastError(void);
-    void         vSetLastError(eIE eInterfaceError);
+    void         vSetLastError(eEC eInterfaceError);
     
     Footer* pFooter(void);
   };

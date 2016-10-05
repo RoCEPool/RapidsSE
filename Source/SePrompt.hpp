@@ -6,6 +6,9 @@
 
 #include "Api.hpp"
 #include "SeHistory.hpp"
+#include "Error.hpp"
+
+using namespace Magic;
 
 class SePrompt : public Object
 {
@@ -43,7 +46,7 @@ public:
   static void vDump(eCN eClass, Object* pObject, const char* pTab);
   
   void vLoop(void);
-  bool bExecuteCommand(s& sCommand);
+  bool bExecuteString(s& sCommand, eEC& eErrorCode);
 
 private:
   void vGetCommand(void);
@@ -60,7 +63,7 @@ private:
   
   void vChangeWorkingDir(void);
   
-  void vCreateCatalog(void);
+  bool bCreateCatalog(void);
   void vCreateSchema(void);
   void vCreateTable(void);
   bool bCreateTenant(void);

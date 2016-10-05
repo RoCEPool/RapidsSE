@@ -4,6 +4,7 @@
 #pragma once
 
 #include "StorageEngine.h"
+#include "Catalog.hpp"
 #include "Tenant.hpp"
 #include "SePrompt.hpp"
 #include "Tests.hpp"

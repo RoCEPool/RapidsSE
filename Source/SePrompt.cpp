@@ -39,8 +39,8 @@ SePrompt::SePrompt(i8 iPartition)
   
   m_iPartition = iPartition;
 
-  eIE eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition);
-  ASSERT(IE_NONE == eResult);
+  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition);
+  ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
   m_sPrompt = "se 0.1.2> ";
@@ -131,13 +131,13 @@ void SePrompt::vLoop(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute command from given string                                          */
+/* execute request from given string                                          */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteCommand(s& sCommand)
+bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_xTokeniser.vUseString(sCommand);
+  m_xTokeniser.vUseString(sRequest);
   i8 iToken = 0;
   while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
     
@@ -147,6 +147,8 @@ bool SePrompt::bExecuteCommand(s& sCommand)
     ASSERT(iToken < C_TOKENS);
   }
   bool bResult = bProcessCommand();
+  eErrorCode = m_pSEitf->m_eErrorCode;
+  
   return bResult;
 }
 
@@ -408,8 +410,7 @@ bool SePrompt::bProcessCommand(void)
       return bCreateTenant();
     }
     if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
-      vCreateCatalog();
-      return true;
+      return bCreateCatalog();
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
       vCreateSchema();
@@ -513,17 +514,17 @@ bool SePrompt::bExecuteRequest(void)
   
   xTimer.vStart();
   
-  eIE eResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,&aResponse);
+  eEC eResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,&aResponse);
   
   if (aResponse)
     m_sResponse = aResponse;
   
-  if (IE_INVALID_COMMAND == eResult)
+  if (EC_INVALID_COMMAND == eResult)
     return false;
   
   xTimer.vUpdate();
   
-  if (IE_NONE == eResult) {
+  if (EC_NONE == eResult) {
     if ( ! String::bEqualTo(aResponse, "<ok>") ) {
       vTrace("%s\n",aResponse);
       return true;
@@ -714,7 +715,7 @@ void SePrompt::vDocol(void)
 /*----------------------------------------------------------------------------*/
 /* create catalog                                                             */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vCreateCatalog(void)
+bool SePrompt::bCreateCatalog(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -736,14 +737,16 @@ void SePrompt::vCreateCatalog(void)
   i8 iNumTokens = iToken;
   // there should be 4 tokens
   if (iNumTokens != 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
-    return;
+    return false;
   }
   
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
-    return;
+    return false;
   }
   
   // create a catalog
@@ -751,9 +754,10 @@ void SePrompt::vCreateCatalog(void)
   String::vCopy(m_pToken[1], m_pToken2[2]);
   
   if (!bExecuteRequest())
-    return;
+    return false;
   
   vTrace("Catalog created: %s\n", m_pToken2[2]);
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -828,12 +832,14 @@ bool SePrompt::bCreateTenant(void)
   
   // there should be 4 tokens
   if (iNumTokens != 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
     return false;
   }
   
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
     return false;
   }
@@ -877,24 +883,28 @@ void SePrompt::vCreateTable(void)
   // some validations
   /// there should be a minumum of 8 tokens
   if (iNumTokens < 8) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
     return;
   }
   
   // token[3] should be '('
   if (!String::bEqualTo(m_pToken2[3] , "(")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
     return;
   }
   
   // last-1 token should be ')'
   if (!String::bEqualTo(m_pToken2[iNumTokens-2] , ")")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
     return;
   }
     
   // last token should be ';'
   if (!String::bEqualTo(m_pToken2[iNumTokens-1] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
     vTrace("Error: Invalid statement.\n");
     return;
   }
@@ -912,6 +922,7 @@ void SePrompt::vCreateTable(void)
     
     if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
       vDropTable(m_pToken2[2]);
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       vTrace("Error: Invalid statement.\n");
       return;
     }
@@ -939,12 +950,14 @@ void SePrompt::vCreateTable(void)
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
           vDropTable(m_pToken2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           vTrace("Error: Invalid statement.\n");
           return;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
           vDropTable(m_pToken2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           vTrace("Error: Invalid statement.\n");
           return;
         }
@@ -970,12 +983,14 @@ void SePrompt::vCreateTable(void)
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
           vDropTable(m_pToken2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           vTrace("Error: Invalid statement.\n");
           return;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],",")) {
           vDropTable(m_pToken2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           vTrace("Error: Invalid statement.\n");
           return;
         }
@@ -989,12 +1004,14 @@ void SePrompt::vCreateTable(void)
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
           vDropTable(m_pToken2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           vTrace("Error: Invalid statement.\n");
           return;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
           vDropTable(m_pToken2[2]);
+          m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           vTrace("Error: Invalid statement.\n");
           return;
         }
@@ -1011,6 +1028,7 @@ void SePrompt::vCreateTable(void)
     else {
       // drop the table that was created
       vDropTable(m_pToken2[2]);
+      m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       vTrace("Error: Invalid type %s for column '%s' \n", m_pToken[j], m_pToken[j - 1]);
       return;
     }
@@ -1023,6 +1041,7 @@ void SePrompt::vCreateTable(void)
       
       if (!String::bEqualTo(m_pToken2[iCurrentToken],"null", C_NO_CASE)) {
         vDropTable(m_pToken2[2]);
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         vTrace("Error: Invalid statement.\n");
         return;
       }
