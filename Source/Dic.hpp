@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dictionary.hpp - symbol table of words                                     */
+/* Dic.hpp - symbol table of words                                            */
 /*============================================================================*/
 
 #pragma once
@@ -10,7 +10,7 @@ namespace Dictionaries
 {
   class Word;
   
-  class Dictionary : public Object  
+  class Dic : public Object
   {
   private:
     s32   m_sName;        // name of this dictionary
@@ -23,11 +23,11 @@ namespace Dictionaries
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, Dictionary* pDic);
+    void* operator new(size_t, Dic* pDic);
     void  operator delete(void*);
     
-    Dictionary(void);
-    ~Dictionary(void);
+    Dic(void);
+    ~Dic(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
@@ -53,7 +53,7 @@ namespace Dictionaries
     Footer* pFooter(void);
   };
   
-  Dictionary* _pDic(void* pAddr);
+  Dic* _pDic(void* pAddr);
 }
 
 /*============================================================================*/

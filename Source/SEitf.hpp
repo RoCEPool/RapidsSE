@@ -36,7 +36,7 @@ namespace Interface
     i8     m_iPartitions;      // number of partitions in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
-    Dictionary m_xDictionary;    // private dictionary
+    Dic    m_xDic;             // private dictionary
     DictionaryStack m_xDicStack; // dictionary stack
     
     Queue* m_pRequestQueue;    // request queue
@@ -62,7 +62,7 @@ namespace Interface
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     DictionaryStack* pDicStack(void);
-    void   vPushDic(Dictionary* pDictionary);
+    void   vPushDic(Dic* pDic);
     void   vPopDic(void);
     Word*  pFindWord(s& sName);
     Word*  pFindWordInCurrent(s& sName);

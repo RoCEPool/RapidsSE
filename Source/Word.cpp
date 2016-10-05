@@ -4,9 +4,9 @@
 
 #include "Tasks.h" // needed for Task::vEnter
 
-extern BufferPool*  gpBufferPool;
-extern Dictionary*  gpMainDic;
-extern Word*        gpWord;
+extern BufferPool* gpBufferPool;
+extern Dic*        gpMainDic;
+extern Word*       gpWord;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -24,13 +24,13 @@ Word* Dictionaries::_pWord(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Word::operator new(size_t iSize, Dictionary* pDictionary)
+void* Word::operator new(size_t iSize, Dic* pDic)
 {
   RASSERT(iSize);
 
-  Word* pWord = pDictionary->pAllocWord(CN_WORD);
+  Word* pWord = pDic->pAllocWord(CN_WORD);
   
-  pWord->m_pDictionary = pDictionary;
+  pWord->m_pDic = pDic;
   
   return pWord;
 }
@@ -42,9 +42,9 @@ void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
   
-  Dictionary* pDictionary = pWord->m_pDictionary;
+  Dic* pDic = pWord->m_pDic;
   
-  pDictionary->vFreeWord(pWord);
+  pDic->vFreeWord(pWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,7 +57,7 @@ Word::Word(const char* sName)
   
   m_sName       = sName;
   m_eWordType   = WT_ROUTINE;
-  //m_pDictionary = pDictionary;
+  //m_pDic      = pDic;
   m_pKind       = gpWord ? gpWord : this;
   m_bImmediate  = false;
   m_iDataBytes  = 0;
@@ -205,11 +205,11 @@ void* Word::pAppend(TaskStep* ppCalledWord)
 /*----------------------------------------------------------------------------*/
 /* get which dictionary                                                       */
 /*----------------------------------------------------------------------------*/
-Dictionary* Word::pDictionary(void)
+Dic* Word::pDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pDictionary;
+  return m_pDic;
 }
 
 /*----------------------------------------------------------------------------*/

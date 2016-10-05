@@ -17,7 +17,7 @@ namespace Dictionaries
 }
 
 #include "Cell.hpp"
-#include "Dictionary.hpp"
+#include "Dic.hpp"
 #include "DictionaryStack.hpp"
 #include "Word.hpp"
 

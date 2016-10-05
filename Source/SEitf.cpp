@@ -5,10 +5,10 @@
 #include "Interface.h"
 #include "StorageEngine.h"
 
-extern Heap*        gpMediumHeap;
-extern Dictionary*  gpMainDic;
-extern SEitfList*   gpSEitfList;
-extern AttachMap*   gpAttachMap;
+extern Heap*      gpMediumHeap;
+extern Dic*       gpMainDic;
+extern SEitfList* gpSEitfList;
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -63,7 +63,7 @@ SEitf::SEitf(i8 iPartition)
   m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;
   
-  m_xDictionary.vName("seitf");
+  m_xDic.vName("seitf");
   //m_xDicStack;
   m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
@@ -105,11 +105,11 @@ DictionaryStack* SEitf::pDicStack(void)
 /*----------------------------------------------------------------------------*/
 /* push dictionary onto dictionary stack                                      */
 /*----------------------------------------------------------------------------*/
-void SEitf::vPushDic(Dictionary* pDictionary)
+void SEitf::vPushDic(Dic* pDic)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
-  m_xDicStack.vPush(pDictionary);
+  m_xDicStack.vPush(pDic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,11 +191,11 @@ void SEitf::vInit(void)
   
   // pid
   m_iPid = Process::iGetPid();
-  m_xDictionary.vAddConstant("pid",m_iPid);
+  m_xDic.vAddConstant("pid",m_iPid);
   
   // response queue
   Word* pQueueWord = gpMainDic->pFind("queue");
-  Word* pRspQueWord = new(&m_xDictionary) Word("rspque");
+  Word* pRspQueWord = new(&m_xDic) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
   pRspQueWord->vDoesStep(nullptr);
@@ -214,14 +214,14 @@ void SEitf::vInit(void)
   
   // dictionary stack
   m_xDicStack.vPush(gpMainDic);
-  m_xDicStack.vPush(&m_xDictionary);
+  m_xDicStack.vPush(&m_xDic);
   
   // find tenants
   Word* pTenants = gpMainDic->pFind("tenants");
   ASSERT(pTenants);
   
   Cell* pCell = pTenants->pFirstCell();
-  m_xDicStack.vPush(reinterpret_cast<Dictionary*>(pCell));
+  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
 }
 
 /*----------------------------------------------------------------------------*/

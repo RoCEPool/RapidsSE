@@ -28,22 +28,22 @@ namespace Dictionaries
   
   class Word : public Object
   {
-    friend class Dictionary;
+    friend class Dic;
     
   private:
-    s32         m_sName;       // the name of this word
-    eWT         m_eWordType;   // type of word
-    Dictionary* m_pDictionary; // which dictionary this word in
-    Word*       m_pKind;       // kind of word
-    bool        m_bImmediate;  // immediate execution during compile?
-    Word*       m_pPrevWord;   // previous word in dictionary
-    i8          m_iDataBytes;  // number of data bytes
-    TaskStep    m_pDoesStep;   // "entry step" for this word
-    Cell*       m_pDoesArg;    // "entry step" argument
+    s32      m_sName;       // the name of this word
+    eWT      m_eWordType;   // type of word
+    Dic*     m_pDic; // which dictionary this word in
+    Word*    m_pKind;       // kind of word
+    bool     m_bImmediate;  // immediate execution during compile?
+    Word*    m_pPrevWord;   // previous word in dictionary
+    i8       m_iDataBytes;  // number of data bytes
+    TaskStep m_pDoesStep;   // "entry step" for this word
+    Cell*    m_pDoesArg;    // "entry step" argument
     // ..data.. (being an array of cells)
     
    public:
-    void* operator new(size_t, Dictionary* pDictionary);
+    void* operator new(size_t, Dic* pDic);
     void  operator delete(void* pWordAddress);
     
     Word(const char* sName);
@@ -61,7 +61,7 @@ namespace Dictionaries
     char* pDataArea(void);
     i8    iDataBytes(void);
     char* pDataEnd(void);
-    Dictionary* pDictionary(void);
+    Dic*  pDic(void);
     void  vDoesArg(Cell* pCell);
     Cell* pDoesArg(void);
     void  vDoesStep(TaskStep pStep);

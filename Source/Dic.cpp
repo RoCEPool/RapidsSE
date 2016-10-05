@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Dictionary.cpp - dictionary of words                                       */
+/* Dic.cpp - dictionary of words                                              */
 /*============================================================================*/
 
 #include "Dictionaries.h"
@@ -11,18 +11,18 @@ extern BufferPool* gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-Dictionary* Dictionaries::_pDic(void* pAddr)
+Dic* Dictionaries::_pDic(void* pAddr)
 {
-  Dictionary* pDic = reinterpret_cast<Dictionary*>(pAddr);
+  Dic* pDic = reinterpret_cast<Dic*>(pAddr);
   ASSERT(pDic);
-  ASSERT(CN_DICTIONARY == pDic->eClass());
+  ASSERT(CN_DIC == pDic->eClass());
   return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Dictionary::operator new(size_t iSize)
+void* Dic::operator new(size_t iSize)
 {
   RASSERT(iSize);
   vFatal("fatal: Dictionary class cannot be new'd");
@@ -33,16 +33,16 @@ void* Dictionary::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Dictionary::operator new(size_t iSize, Dictionary* pDictionary)
+void* Dic::operator new(size_t iSize, Dic* pDic)
 {
   RASSERT(iSize);
-  return pDictionary;
+  return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Dictionary::operator delete(void* pBufferAddress)
+void Dic::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
   vFatal("fatal: Dictionary class cannot be deleted");
@@ -53,10 +53,10 @@ void Dictionary::operator delete(void* pBufferAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dictionary::Dictionary(void)
-: Object(CN_DICTIONARY)
+Dic::Dic(void)
+: Object(CN_DIC)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sName    = "<main>";
   m_pDicKind = nullptr;
@@ -66,25 +66,25 @@ Dictionary::Dictionary(void)
   // this is because of GlobalDictionary (ugh)
   //vInit();
   
-  _checkInitialised_(sizeof(Dictionary));
+  _checkInitialised_(sizeof(Dic));
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Dictionary::~Dictionary(void)
+Dic::~Dic(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* add constant                                                               */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vAddConstant(const char* aName, i8 iVal)
+void Dic::vAddConstant(const char* aName, i8 iVal)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   Word* pNewWord = new(this) Word(aName);
   
@@ -98,9 +98,9 @@ void Dictionary::vAddConstant(const char* aName, i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* add constant                                                               */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vAddConstant(const char* aName, const char* aValue)
+void Dic::vAddConstant(const char* aName, const char* aValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   Word* pNewWord = new(this) Word(aName);
   
@@ -114,9 +114,9 @@ void Dictionary::vAddConstant(const char* aName, const char* aValue)
 /*----------------------------------------------------------------------------*/
 /* allocate a word                                                            */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pAllocWord(eCN eClassNo)
+Word* Dic::pAllocWord(eCN eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   ASSERT(!m_bFrozen);
   
@@ -134,9 +134,9 @@ Word* Dictionary::pAllocWord(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 /* get current word                                                           */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pCurrentWord(void)
+Word* Dic::pCurrentWord(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_pCurrentWord;
 }
@@ -144,9 +144,9 @@ Word* Dictionary::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 /* get dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pDicKind(void)
+Word* Dic::pDicKind(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_pDicKind;
 }
@@ -154,9 +154,9 @@ Word* Dictionary::pDicKind(void)
 /*----------------------------------------------------------------------------*/
 /* set dictionary kind                                                        */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vDicKind(Word* pDicKind)
+void Dic::vDicKind(Word* pDicKind)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pDicKind = pDicKind;
 }
@@ -164,16 +164,16 @@ void Dictionary::vDicKind(Word* pDicKind)
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vDump(eCN eClass, Object* pObject, const char* pTab)
+void Dic::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  ASSERT(eClass == CN_DICTIONARY);
-  ASSERT(pObject->eClass() == CN_DICTIONARY);
+  ASSERT(eClass == CN_DIC);
+  ASSERT(pObject->eClass() == CN_DIC);
   
-  Dictionary* pDictionary = reinterpret_cast<Dictionary*>(pObject);
+  Dic* pDic = reinterpret_cast<Dic*>(pObject);
   
-  vTrace("%sDictionary %p:\n", pTab, pDictionary);
-  vTrace("%s  name %s \n", pTab, pDictionary->m_sName.a());
-  vTrace("%s  lastWord %p\n\n", pTab, pDictionary->m_pCurrentWord);
+  vTrace("%sDictionary %p:\n", pTab, pDic);
+  vTrace("%s  name %s \n", pTab, pDic->m_sName.a());
+  vTrace("%s  lastWord %p\n\n", pTab, pDic->m_pCurrentWord);
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
@@ -182,9 +182,9 @@ void Dictionary::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pFind(const char* aName)
+Word* Dic::pFind(const char* aName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
     if (String::bEqualTo(aName,pWord->sName().a(),C_NO_CASE))
@@ -196,9 +196,9 @@ Word* Dictionary::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given function                                                 */
 /*----------------------------------------------------------------------------*/
-Word* Dictionary::pFindStep(TaskStep pStep)
+Word* Dic::pFindStep(TaskStep pStep)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
     if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pDoesStep())
@@ -210,9 +210,9 @@ Word* Dictionary::pFindStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* forget a word given name                                                   */
 /*----------------------------------------------------------------------------*/
-bool Dictionary::bForget(s& sName)
+bool Dic::bForget(s& sName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
   Word* pWordDelete = nullptr;
   
@@ -248,9 +248,9 @@ bool Dictionary::bForget(s& sName)
 /*----------------------------------------------------------------------------*/
 /* free a word                                                                */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vFreeWord(Word* pWord)
+void Dic::vFreeWord(Word* pWord)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   gpSmallHeap->vFreeObject(pWord);
 }
@@ -258,9 +258,9 @@ void Dictionary::vFreeWord(Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* is dictionary frozen?                                                      */
 /*----------------------------------------------------------------------------*/
-bool Dictionary::bFrozen(void)
+bool Dic::bFrozen(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_bFrozen;
 }
@@ -268,9 +268,9 @@ bool Dictionary::bFrozen(void)
 /*----------------------------------------------------------------------------*/
 /* set dictionary frozen?                                                     */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vFrozen(bool bFrozen)
+void Dic::vFrozen(bool bFrozen)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_bFrozen = bFrozen;
 }
@@ -278,9 +278,9 @@ void Dictionary::vFrozen(bool bFrozen)
 /*----------------------------------------------------------------------------*/
 /* are there words in the dictionary?                                         */
 /*----------------------------------------------------------------------------*/
-bool Dictionary::bHasWords(void)
+bool Dic::bHasWords(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
   if (m_pCurrentWord)
     return true;
@@ -291,9 +291,9 @@ bool Dictionary::bHasWords(void)
 /*----------------------------------------------------------------------------*/
 /* initialize this dictionary                                                 */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vInit(void)
+void Dic::vInit(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_pCurrentWord = nullptr;
   
@@ -306,9 +306,9 @@ void Dictionary::vInit(void)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Dictionary::bIsName(s& sName)
+bool Dic::bIsName(s& sName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
@@ -318,9 +318,9 @@ bool Dictionary::bIsName(s& sName)
 /*----------------------------------------------------------------------------*/
 /* get name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-s& Dictionary::sName(void)
+s& Dic::sName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   return m_sName;
 }
@@ -328,9 +328,9 @@ s& Dictionary::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this dictionary                                                */
 /*----------------------------------------------------------------------------*/
-void Dictionary::vName(const char* aName)
+void Dic::vName(const char* aName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sName = aName;
 }
@@ -342,9 +342,9 @@ void Dictionary::vName(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Dictionary::pFooter(void)
+Footer* Dic::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARY);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC);
   
   return &m_xFooter;
 }

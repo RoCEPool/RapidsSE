@@ -11,7 +11,7 @@ AttachMap *         gpAttachMap        = nullptr;
 Heap*               gpJumboHeap        = nullptr;
 Heap*               gpMediumHeap       = nullptr;
 Heap*               gpSmallHeap        = nullptr;
-Dictionary*         gpMainDic          = nullptr;
+Dic*                gpMainDic          = nullptr;
 Word*               gpWord             = nullptr;
 
 Grid*               gpGrid             = nullptr;

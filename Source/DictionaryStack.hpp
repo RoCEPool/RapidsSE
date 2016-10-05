@@ -14,8 +14,8 @@ namespace Dictionaries
     static const i8 C_DICTIONARY_STACK = 32;
     
   private:
-    i8           m_iTop;
-    Dictionary*  m_pDictionary[C_DICTIONARY_STACK];
+    i8    m_iTop;
+    Dic*  m_pDic[C_DICTIONARY_STACK];
     
     // must be last
     Footer m_xFooter;
@@ -39,9 +39,9 @@ namespace Dictionaries
     Word* pFindStep(TaskStep pStep);
     bool  bForget(s& sName);
     Word* pLocate(Cell* pCell);
-    Dictionary* pPick(i8 iDic);
-    void vPush(Dictionary* pDictionary);
-    Dictionary* pTop(void);
+    Dic* pPick(i8 iDic);
+    void vPush(Dic* pDic);
+    Dic* pTop(void);
     
     Footer* pFooter(void);
   };

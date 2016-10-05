@@ -9,7 +9,7 @@ extern BufferPool*  gpBufferPool;
 extern Heap*        gpJumboHeap;
 extern Heap*        gpMediumHeap;
 extern Heap*        gpSmallHeap;
-extern Dictionary*  gpMainDic;
+extern Dic*         gpMainDic;
 
 extern Grid*        gpGrid;
 extern TaskList*    gpTaskList;

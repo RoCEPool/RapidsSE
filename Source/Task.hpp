@@ -176,7 +176,7 @@ namespace Tasks
     Interface::SEitf* m_pSEitf;
     
     // test
-    Dictionary m_xTaskDictionary;
+    Dic m_xTaskDic;
     
     // always last
     Footer m_xFooter;

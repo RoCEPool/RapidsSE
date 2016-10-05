@@ -23,7 +23,7 @@ namespace StorageEngine
     Heap*        m_pJumboHeap;
     Heap*        m_pMediumHeap;
     Heap*        m_pSmallHeap;
-    Dictionary   m_xMainDic;
+    Dic          m_xMainDic;
 
     Grid*        m_pGrid;
     TaskList*    m_pTaskList;
