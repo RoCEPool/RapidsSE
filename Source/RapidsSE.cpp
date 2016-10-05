@@ -24,7 +24,7 @@ SEitfList*          gpSEitfList        = nullptr;
 
 File*               gpTraceFile        = nullptr;
 
-BufferPoolAnalyzer* gpBPA              = nullptr;
+BPA*                gpBPA              = nullptr;
 
 NP_Task             gnpRootTask        = nullptr;
 Thread*             gnpRootThread      = nullptr;

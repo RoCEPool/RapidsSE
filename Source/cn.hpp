@@ -33,7 +33,7 @@ namespace Magic
     
     /* 14 */ CN_BUFFER,
     /* 15 */ CN_BUFFERPOOL,
-    /* 16 */ CN_BUFFERPOOLANALYZER,
+    /* 16 */ CN_BPA,
     
     /* 17 */ CN_DICTIONARY,
     /* 18 */ CN_DICTIONARYSTACK,

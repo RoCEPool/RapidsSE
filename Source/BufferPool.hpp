@@ -14,7 +14,7 @@ namespace Pool
   class BufferPool : public Header
   {
     
-    friend class BufferPoolAnalyzer;
+    friend class BPA;
     
   private:
     

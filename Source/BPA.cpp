@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  BufferPoolAnalyzer.cpp - buffer pool analyzer                             */
+/*  BPA.cpp - buffer pool analyzer                                            */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -21,18 +21,18 @@ extern Atomic gzThreadOpenCount;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BufferPoolAnalyzer::BufferPoolAnalyzer(void)
-: Header(CN_BUFFERPOOLANALYZER)
+BPA::BPA(void)
+: Header(CN_BPA)
 {
   _magic_();
   
-  _checkInitialised_(sizeof(BufferPoolAnalyzer));
+  _checkInitialised_(sizeof(BPA));
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-BufferPoolAnalyzer::~BufferPoolAnalyzer(void)
+BPA::~BPA(void)
 {
   _magic_();
   
@@ -41,9 +41,9 @@ BufferPoolAnalyzer::~BufferPoolAnalyzer(void)
 /*----------------------------------------------------------------------------*/
 /* analyze the buffer pool                                                    */
 /*----------------------------------------------------------------------------*/
-void BufferPoolAnalyzer::vAnalyze(void)
+void BPA::vAnalyze(void)
 {
-  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -140,15 +140,15 @@ void BufferPoolAnalyzer::vAnalyze(void)
          );
   vTrace("**************************************************************\n");
   
-  _postcondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump the buffer pool objects                                               */
 /*----------------------------------------------------------------------------*/
-void BufferPoolAnalyzer::vDump(void)
+void BPA::vDump(void)
 {
-  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -202,15 +202,15 @@ void BufferPoolAnalyzer::vDump(void)
   }
   vTrace("**************************************************************\n");
   
-  _postcondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump the buffer                                                            */
 /*----------------------------------------------------------------------------*/
-void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
+void BPA::vDump(Buffer* pBuffer)
 {
-  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   pDUMPFUN* pDumpFun =gpDump[pBuffer->eClass()];
   (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
@@ -224,9 +224,9 @@ void BufferPoolAnalyzer::vDump(Buffer* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
+void BPA::vDumpHeap(Heap* pBuffer)
 {
-  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER,_FOOTER_);
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   HeapBuffer* pHeapBuffer;
   
@@ -258,9 +258,9 @@ void BufferPoolAnalyzer::vDumpHeap(Heap* pBuffer)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* BufferPoolAnalyzer::pFooter(void)
+Footer* BPA::pFooter(void)
 {
-  _precondition_(_MAGIC_,CN_BUFFERPOOLANALYZER);
+  _precondition_(_MAGIC_,CN_BPA);
   return &m_xFooter;
 }
 

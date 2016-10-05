@@ -22,7 +22,7 @@ static const u8 C_SIZE_MEDIUM_OBJECT = C_SIZE_SMALL_OBJECT * 16;
 #include "Buffer.hpp"
 #include "BufferFree.hpp"
 #include "BufferPool.hpp"
-#include "BufferPoolAnalyzer.hpp"
+#include "BPA.hpp"
 
 #include "FreeChunk.hpp"
 #include "HeapBuffer.hpp"

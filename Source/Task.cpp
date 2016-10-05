@@ -16,7 +16,7 @@ extern Arguments             gxArguments;
 extern AttachMap*            gpAttachMap;
 extern BufferPool*           gpBufferPool;
 extern Heap*                 gpMediumHeap;
-extern BufferPoolAnalyzer*   gpBPA;
+extern BPA*                  gpBPA;
 extern Dictionary*           gpMainDic;
 extern Word*                 gpWord;
 
@@ -344,7 +344,7 @@ void Task::vAddConstants(void)
   /*  8 */ vAddConstant("CN_ATTACHMAP",             CN_ATTACHMAP);
   /*  9 */ vAddConstant("CN_BUFFER",                CN_BUFFER);
   /* 10 */ vAddConstant("CN_BUFFERPOOL",            CN_BUFFERPOOL);
-  /* 11 */ vAddConstant("CN_BUFFERPOOLANALYZER",    CN_BUFFERPOOLANALYZER);
+  /* 11 */ vAddConstant("CN_BPA",                   CN_BPA);
   /* 13 */ vAddConstant("CN_PARSER",                CN_PARSER);
   /* 14 */ vAddConstant("CN_DICTIONARY",            CN_DICTIONARY);
   /* 15 */ vAddConstant("CN_DIR",                   CN_DIR);
@@ -451,7 +451,7 @@ void Task::vAddConstants(void)
   /*  9 */ vAddConstant("SIZEOF_ATTACHMAP",         sizeof(AttachMap));
   /* 10 */ vAddConstant("SIZEOF_BUFFER",            sizeof(Buffer));
   /* 11 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPoolAnalyzer));
+  /* 12 */ vAddConstant("SIZEOF_BPA",               sizeof(BPA));
   /* 13 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
   /* 14 */ vAddConstant("SIZEOF_DICTIONARYSTACK",   sizeof(DictionaryStack));
   /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
@@ -2102,7 +2102,7 @@ void Task::vBpa(NNP_Task nnpTask)
 {
 ENTRY("vBpa");
   
-  BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
+  BPA* pBPA = new BPA;
   
   pBPA->vAnalyze();
   
@@ -2118,7 +2118,7 @@ void Task::vBpdump(NNP_Task nnpTask)
 {
 ENTRY("vBpdump");
   
-  BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
+  BPA* pBPA = new BPA;
   
   pBPA->vDump();
   
