@@ -7,10 +7,21 @@
 
 namespace UnitTests
 {
-
-#define REQUIRE(a) \
-  if (!(a)) \
-    iFailed++;
+  
+  #define REQUIRE(cmd, result, error) \
+  { \
+    iTests++; \
+    if(pSePrompt->bExecuteString(sCommand, eErrorCode) != result) { \
+      iFailed++; \
+      Tests::vAssertFailed(); \
+    } \
+    else { \
+      if (eErrorCode != error) { \
+        iFailed++;  \
+        Tests::vAssertFailed(); \
+      } \
+    } \
+  }
   
   class Tests
   {
@@ -22,6 +33,9 @@ namespace UnitTests
   public:
     Tests(void);
     ~Tests(void);
+    
+    static void vAssertFailed(void);
+    
     void vRunTests(void);
   };
 };

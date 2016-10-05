@@ -22,6 +22,15 @@ Tests::~Tests(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* assert failed                                                              */
+/*----------------------------------------------------------------------------*/
+void Tests::vAssertFailed(void) {
+  
+  // put a breakpoint here to trap failures
+  sleep(0);
+}
+
+/*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
 void Tests::vRunTests(void) {
@@ -36,9 +45,11 @@ void Tests::vRunTests(void) {
 
   m_iTestsPassed = m_iTotalTests - m_iTestsFailed;
   
+  vTrace("\n--------------------------------------\n");
   vTrace("Tests Executed : %lld\n", m_iTotalTests);
   vTrace("Tests Passed:    %lld\n", m_iTestsPassed);
   vTrace("Tests Failed:    %lld\n", m_iTestsFailed);
+  vTrace("---------------------------------------\n");
   
 }
 

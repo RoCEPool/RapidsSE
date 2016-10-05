@@ -16,17 +16,33 @@ i8 CatalogTests::iRun(i8& iFailed)
   eEC eErrorCode;
   i8 iTests = 0;
   
-  //REQUIRE(pSePrompt->bExecuteCommand(sCommand) == true);
-  
-  sCommand = "create catalog;";
-  iTests++;
-  REQUIRE(pSePrompt->bExecuteString(sCommand, eErrorCode) == false);
-  REQUIRE(eErrorCode == EC_INVALID_COMMAND);
+  // start with /tenants folder
+  sCommand = "cf ~";
+  REQUIRE(sCommand, true, EC_NONE);
   
   sCommand = "create catalog cat;";
-  iTests++;
-  REQUIRE(pSePrompt->bExecuteString(sCommand, eErrorCode) == false);
-  REQUIRE(eErrorCode == EC_NOT_IN_CATALOGS);
+  REQUIRE(sCommand, false, EC_NOT_IN_CATALOGS);
+
+  sCommand = "drop catalog cat;";
+  REQUIRE(sCommand, false, EC_NOT_IN_CATALOGS);
+
+  sCommand = "create tenant ten;";
+  REQUIRE(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ten";
+  REQUIRE(sCommand, true, EC_NONE);
+  
+  sCommand = "create catalog cat;";
+  REQUIRE(sCommand, false, EC_NOT_IN_CATALOGS);
+  
+  sCommand = "drop catalog cat;";
+  REQUIRE(sCommand, false, EC_NOT_IN_CATALOGS);
+  
+  sCommand = "cf catalogs";
+  REQUIRE(sCommand, true, EC_NONE);
+  
+  sCommand = "create catalog;";
+  REQUIRE(sCommand, false, EC_INVALID_COMMAND);
 
   return iTests;
 }

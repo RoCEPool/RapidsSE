@@ -22,6 +22,7 @@ namespace Magic
     /*  7 */ EC_NO_COLUMNS_DIC,
     
     /*  8 */ EC_NO_SUCH_CATALOG,
+    /*    */ EC_NO_SUCH_DIRECTORY,
     /*  9 */ EC_NO_SUCH_FOLDER,
     /* 10 */ EC_NO_SUCH_SCHEMA,
     /* 11 */ EC_NO_SUCH_TABLE,
@@ -64,6 +65,7 @@ namespace Magic
     /*  7 */ "no columns dictionary",
     
     /*  8 */ "no such catalog",
+    /*    */ "no such directory",
     /*  9 */ "no such folder",
     /* 10 */ "no such schema",
     /* 11 */ "no such table",

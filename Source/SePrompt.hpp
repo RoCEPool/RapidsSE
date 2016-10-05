@@ -61,7 +61,7 @@ private:
   bool bTestFile(char* pPath);
   void vPushFile(char* pWord);
   
-  void vChangeWorkingDir(void);
+  bool bChangeWorkingDir(void);
   
   bool bCreateCatalog(void);
   void vCreateSchema(void);
@@ -69,14 +69,14 @@ private:
   bool bCreateTenant(void);
   
   void vCollectStatement(void);
-  void vDocol(void);
+  bool bDocol(void);
   void vListDir(void);
   
-  void vDropCatalog(void);
+  bool bDropCatalog(void);
   void vDropSchema(void);
   void vDropTable(void);
   void vDropTable(char* pTableName);
-  void vDropTenant(void);
+  bool bDropTenant(void);
   
   void vPoolSpace(void);
   void vPrintWorkingDir(void);
