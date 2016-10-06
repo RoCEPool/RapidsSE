@@ -9,33 +9,30 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
 {
-//  vTrace("RapidsSE_ExecuteRequest: ");
-//  for (i8 i = 0; i < 8 && *pWords[i]; i++)
-//    vTrace("%s ",pWords[i]);
-//  vTrace("\n");
-  
-  eEC eResult = EC_NONE;
+  bool bResult;
   
   // clear the last error
   pSEitf->vClearLastError();
   
   // send request to se
-  eResult = eExecuteRequest(pSEitf, pWords);
-  if (EC_NONE != eResult) {
+  bResult = bExecuteRequest(pSEitf, pWords);
+  if (!bResult) {
     *ppResponse = nullptr;
-    return eResult;
+    return bResult;
   }
   
   // get response from se
-  eResult = eGetResponse(pSEitf);
+  eEC eResult = eGetResponse(pSEitf);
   
   // put response into caller
   *ppResponse = pSEitf->m_sResponse.a();
   
-  // return result code
-  return eResult;
+  if (eResult == EC_NONE)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,21 +685,22 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-eEC eExecuteRequest(SEitf* pSEitf, char* pWords[])
+bool bExecuteRequest(SEitf* pSEitf, char* pWords[])
 {
   bool bResult;
   
   // execute command
   bResult = pSEitf->bDecode(pWords);
   
-  if (!bResult) {
+  //if (!bResult) {
     // set last error
-    pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return EC_INVALID_COMMAND;
-  }
+    //pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    //return EC_INVALID_COMMAND;
+  //}
   
-  return EC_NONE;
+  return bResult;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* get response                                                               */
@@ -711,12 +709,7 @@ eEC eGetResponse(SEitf* pSEitf)
 {
   // get response
   eEC eError = pSEitf->eGetResponse();
-//  vTrace("rsp : %lld\n", iResponse);
-  
-  //if (eError != EC_NONE) {
-  //  pSEitf->vSetLastError(EC_COMMAND_FAILED);
-  //  return EC_COMMAND_FAILED;
-  //}
+  //  vTrace("rsp : %lld\n", iResponse);
   
   pSEitf->vSetLastError(eError);
   return eError;

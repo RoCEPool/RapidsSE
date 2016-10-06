@@ -47,9 +47,8 @@ namespace Magic
 
     /* 27 */ EC_TABLE_EXISTS,
     /* 28 */ EC_TENANT_EXISTS,
-    /* 29 */ EC_UNKNOWN_COMMAND,
     
-    /* 30 */ EC_ENUMS
+    /* 29 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -90,7 +89,6 @@ namespace Magic
     /* 25 */ "schema exists",
     /* 26 */ "table exists",
     /* 27 */ "tenant exists",
-    /*    */ "unknown command",
 
     /* 28 */ "enums"
 

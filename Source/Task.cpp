@@ -432,7 +432,6 @@ void Task::vAddConstants(void)
   
   /* 26 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
   /* 27 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
-  /*    */ vAddConstant("EC_UNKNOWN_COMMAND",       EC_UNKNOWN_COMMAND);
   /* 28 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
 
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);

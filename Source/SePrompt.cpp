@@ -529,19 +529,14 @@ bool SePrompt::bExecuteRequest(void)
   
   xTimer.vStart();
   
-  eEC eResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,&aResponse);
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,&aResponse);
   
-  if (aResponse)
+  if (bResult)
     m_sResponse = aResponse;
   
   xTimer.vUpdate();
   
-  if (EC_NONE == eResult) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
