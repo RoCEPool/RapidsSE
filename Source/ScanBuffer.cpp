@@ -12,7 +12,8 @@ extern BufferPool* gpBufferPool;
 void* ScanBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_SCANBUFFER);
   
   return pPoolCheck<void*>(pBuffer);
 }
@@ -24,7 +25,7 @@ void ScanBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

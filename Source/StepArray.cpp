@@ -16,7 +16,7 @@ void* StepArray::operator new(size_t iSize)
   RASSERT(iSize);
   RASSERT(! gpStepArray);
   
-  gpStepArray = (StepArray*)gpBufferPool->pAllocBuffer();
+  gpStepArray = (StepArray*)Heap::pAllocate(CN_STEPARRAY);
   
   return gpStepArray;
 }

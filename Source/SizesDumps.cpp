@@ -263,7 +263,7 @@ eHT geWhichHeap[]
   
   /* 11 */ HT_INVALID, // CN_ARGUMENTS
   /* 12 */ HT_INVALID, // CN_ATOMIC
-  /* 13 */ HT_INVALID, // CN_ATTACHMAP
+  /* 13 */ HT_LARGE,   // CN_ATTACHMAP
   
   /* 14 */ HT_INVALID, // CN_BUFFER
   /* 15 */ HT_INVALID, // CN_BUFFERPOOL
@@ -281,7 +281,7 @@ eHT geWhichHeap[]
   /* 24 */ HT_SMALL,   // CN_GRAPHNODE
   /* 25 */ HT_INVALID, // CN_GRID
   
-  /* 26 */ HT_INVALID, // CN_HEAPBUFFER
+  /* 26 */ HT_LARGE,   // CN_HEAPBUFFER
   
   /* 27 */ HT_INVALID, // CN_INDEX
   
@@ -290,7 +290,7 @@ eHT geWhichHeap[]
   /* 29 */ HT_MEDIUM,  // CN_KEYCPP
   /* 30 */ HT_MEDIUM,  // CN_KEYVAL
   
-  /* 31 */ HT_INVALID, // CN_LOADCHUNK
+  /* 31 */ HT_LARGE,   // CN_LOADCHUNK
   /* 32 */ HT_MEDIUM,  // CN_LOADER
   /* 33 */ HT_SMALL,   // CN_LOADERSUB
   /* 34 */ HT_INVALID, // CN_LOCK
@@ -307,23 +307,23 @@ eHT geWhichHeap[]
   /* 42 */ HT_INVALID, // CN_PROXYSET
   
   /* 43 */ HT_SMALL,   // CN_QUEUE
-  /* 44 */ HT_INVALID, // CN_QUEUEBUFFER
+  /* 44 */ HT_LARGE,   // CN_QUEUEBUFFER
   
   /* 45 */ HT_MEDIUM,  // CN_REGFRAME
   /* 46 */ HT_INVALID, // CN_RING
   /* 47 */ HT_INVALID, // CN_ROW
-  /* 48 */ HT_INVALID, // CN_ROWBUFFER
+  /* 48 */ HT_LARGE,   // CN_ROWBUFFER
   /* 49 */ HT_SMALL,   // CN_ROWCURSOR
   /* 50 */ HT_SMALL,   // CN_ROWSTRAND
   /* 51 */ HT_INVALID, // CN_ROWWSP
   
-  /* 52 */ HT_INVALID, // CN_SCANBUFFER
+  /* 52 */ HT_LARGE,   // CN_SCANBUFFER
   /* 53 */ HT_INVALID, // CN_LOADMAP
   /* 54 */ HT_INVALID, // CN_SEHISTORY
   /* 55 */ HT_MEDIUM,  // CN_SEITF
   /* 56 */ HT_SMALL,   // CN_SEITFCURSOR
   /* 57 */ HT_INVALID, // CN_SEITFLIST
-  /* 58 */ HT_INVALID, // CN_SEPROMPT
+  /* 58 */ HT_LARGE,   // CN_SEPROMPT
   /* 59 */ HT_INVALID, // CN_SINCE
   /* 60 */ HT_INVALID, // CN_SKIPCURSOR
   /* 61 */ HT_SMALL,   // CN_SKIPLIST
@@ -332,7 +332,7 @@ eHT geWhichHeap[]
   /* 64 */ HT_INVALID, // CN_SOCKET
   /* 65 */ HT_INVALID, // CN_STACK
   /* 66 */ HT_INVALID, // CN_STEPACCUM
-  /* 67 */ HT_INVALID, // CN_STEPARRAY
+  /* 67 */ HT_LARGE,   // CN_STEPARRAY
   /* 68 */ HT_INVALID, // CN_SYSCALL
   
   /* 69 */ HT_INVALID, // CN_TABLE
@@ -347,7 +347,7 @@ eHT geWhichHeap[]
   /* 78 */ HT_SMALL,   // CN_TIMER
   /* 79 */ HT_INVALID, // CN_TOKENISER
   /* 80 */ HT_SMALL,   // CN_TX
-  /* 81 */ HT_INVALID, // CN_TXARRAY
+  /* 81 */ HT_LARGE,   // CN_TXARRAY
   /* 82 */ HT_INVALID, // CN_TXCOLLECTION
   /* 83 */ HT_SMALL,   // CN_TXCURSOR
   /* 84 */ HT_INVALID, // CN_TXMAP

@@ -12,7 +12,8 @@ extern BufferPool*  gpBufferPool;
 void* TxArray::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_TXARRAY);
   
   return pBuffer;
 }
