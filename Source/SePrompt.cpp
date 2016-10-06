@@ -291,13 +291,11 @@ bool SePrompt::bProcessCommand(void)
   }
   
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
-    vPrintWorkingDir();
-    return true;
+    return bPrintWorkingDir();
   }
   
   if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
-    vListDir();
-    return true;
+    bool bListDir();
   }
   
   if (String::bEqualTo("cf",m_pToken[0],C_NO_CASE)) {
@@ -438,18 +436,15 @@ bool SePrompt::bProcessCommand(void)
   }
   
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
-    vPrintWorkingDir();
-    return true;
+    return bPrintWorkingDir();
   }
   
   if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
-    vListDir();
-    return true;
+    bool bListDir();
   }
   
   if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
-    vPoolSpace();
-    return true;
+    return bPoolSpace();
   }
   
   m_xHistory.vAppend(m_pToken);
@@ -1290,7 +1285,7 @@ bool SePrompt::bDropTenant(void)
 /*----------------------------------------------------------------------------*/
 /* list directory                                                             */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vListDir(void)
+bool SePrompt::bListDir(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1303,14 +1298,14 @@ void SePrompt::vListDir(void)
   
   // get the current directory
   if (!xDir.bGetCurrent(sDir)) {
-    vTrace("Invalid current dir\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // open the current directory
   if (!xDir.bOpen()) {
-    vTrace("Unable to open current dir\n");
-    return;
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
   }
   
   // read the current directory
@@ -1322,12 +1317,14 @@ void SePrompt::vListDir(void)
   
   // close the current directory
   xDir.vClose();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print pool space                                                           */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPoolSpace(void)
+bool SePrompt::bPoolSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1343,30 +1340,32 @@ void SePrompt::vPoolSpace(void)
 
   String::vCopy(m_pToken[0], "getTotalSpace");
   if (!bExecuteRequest())
-    return;
+    return false;
   iTotal = String::iToI8(m_sResponse.a());
   Magnitudes::vMagnitude(iTotal, 2, sTotal.a());
              
   String::vCopy(m_pToken[0], "getInUseSpace");
   if (!bExecuteRequest())
-    return;
+    return false;
   iInUse = String::iToI8(m_sResponse.a());
   Magnitudes::vMagnitude(iInUse, 2, sInUse.a());
              
   String::vCopy(m_pToken[0], "getFreeSpace");
   if (!bExecuteRequest())
-    return;
+    return false;
   iFree = String::iToI8(m_sResponse.a());
   Magnitudes::vMagnitude(iFree, 2, sFree.a());
              
   vTrace("Pool: Size(%s) InUse(%s) Free(%s)\n",
          sTotal.a(), sInUse.a(), sFree.a());
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print working directory                                                    */
 /*----------------------------------------------------------------------------*/
-void SePrompt::vPrintWorkingDir(void)
+bool SePrompt::bPrintWorkingDir(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -1378,6 +1377,8 @@ void SePrompt::vPrintWorkingDir(void)
   if (xDir.bGetCurrent(sDir)) {
     vTrace("%s\n", sDir.a());
   }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -34,11 +34,6 @@ eEC RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
   // put response into caller
   *ppResponse = pSEitf->m_sResponse.a();
   
-  // test for error
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
-  
   // return result code
   return eResult;
 }

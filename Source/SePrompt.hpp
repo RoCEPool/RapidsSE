@@ -70,7 +70,7 @@ private:
   
   void vCollectStatement(void);
   bool bDocol(void);
-  void vListDir(void);
+  bool bListDir(void);
   
   bool bDropCatalog(void);
   bool bDropSchema(void);
@@ -78,8 +78,8 @@ private:
   bool bDropTable(char* pTableName);
   bool bDropTenant(void);
   
-  void vPoolSpace(void);
-  void vPrintWorkingDir(void);
+  bool bPoolSpace(void);
+  bool bPrintWorkingDir(void);
 
   Footer* pFooter(void);
 };
