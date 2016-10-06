@@ -24,7 +24,8 @@ Dir* Common::_pDir(void* pAddr)
 void* Dir::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Dir* pDir = reinterpret_cast<Dir*>(gpSmallHeap->pAllocObject(CN_DIR));
+  //Dir* pDir = reinterpret_cast<Dir*>(gpSmallHeap->pAllocObject(CN_DIR));
+  Dir* pDir = reinterpret_cast<Dir*>(Heap::pAllocate(CN_DIR));
   
   return pDir;
 }
@@ -45,7 +46,8 @@ void Dir::operator delete(void* pDirAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pDirAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  //gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

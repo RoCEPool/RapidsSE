@@ -273,7 +273,7 @@ eHT geWhichHeap[]
   /* 18 */ HT_INVALID, // CN_DICSTACK
   /* 19 */ HT_INVALID, // CN_DIR
   
-  /* 20 */ HT_INVALID, // CN_FILE
+  /* 20 */ HT_SMALL,   // CN_FILE
   /* 21 */ HT_INVALID, // CN_FREECHUNK
   
   /* 22 */ HT_INVALID, // CN_GRAPH

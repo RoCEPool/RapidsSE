@@ -52,6 +52,9 @@ namespace Pool
     ~Heap(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static Object* pAllocate(eCN eClass);
+    static void vFree(Object* pObject);
+
     
     void    vAddFree(FreeChunk* pFreeChunk);
     i8      iAllocCount(void);

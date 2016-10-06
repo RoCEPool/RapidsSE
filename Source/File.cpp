@@ -54,7 +54,8 @@ File* Common::_pFile(void* pAddr)
 void* File::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = gpSmallHeap->pAllocObject(CN_FILE);
+  //void* pObject = gpSmallHeap->pAllocObject(CN_FILE);
+  void* pObject = Heap::pAllocate(CN_FILE);
   
   return pObject;
 }
@@ -75,7 +76,8 @@ void File::operator delete(void* pFileAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pFileAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  //gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
