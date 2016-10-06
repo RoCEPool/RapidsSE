@@ -265,12 +265,6 @@ void RapidsSE::vInitJumboHeap(void)
 
     gpJumboHeap->vAddFree((FreeChunk*)pJumbo);
   }
-  
-  // test
-//  Object* pObject = gpJumboHeap->pAllocObject(CN_NONE);
-//  pObject->vSetMagic();
-//  gpJumboHeap->vFreeObject(pObject);
-  
 }
 
 /*----------------------------------------------------------------------------*/

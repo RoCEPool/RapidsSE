@@ -25,7 +25,7 @@ void* LoadMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  Object* pObject = gpJumboHeap->pAllocObject(CN_LOADMAP);
+  Object* pObject = Heap::pAllocate(CN_LOADMAP);
   
   return pObject;
 }
@@ -37,7 +37,7 @@ void LoadMap::operator delete(void* pLoadMapAddress)
 {
   Object* pObject = static_cast<Object*>(pLoadMapAddress);
   
-  gpJumboHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

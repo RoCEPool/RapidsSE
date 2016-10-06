@@ -318,7 +318,7 @@ eHT geWhichHeap[]
   /* 51 */ HT_INVALID, // CN_ROWWSP
   
   /* 52 */ HT_LARGE,   // CN_SCANBUFFER
-  /* 53 */ HT_INVALID, // CN_LOADMAP
+  /* 53 */ HT_JUMBO,   // CN_LOADMAP
   /* 54 */ HT_INVALID, // CN_SEHISTORY
   /* 55 */ HT_MEDIUM,  // CN_SEITF
   /* 56 */ HT_SMALL,   // CN_SEITFCURSOR
