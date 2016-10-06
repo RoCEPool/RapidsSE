@@ -27,7 +27,8 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel)
   i8 nMaxBytes = iMaxSize();
   vTrace("SkipNode iMaxSize %lld\n",nMaxBytes);
   
-  SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
+  //SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
+  SkipNode* pSkipNode = (SkipNode*)Heap::pAllocate(CN_SKIPNODE);
   
   pSkipNode->m_nForward = iLevel;
   
@@ -41,7 +42,7 @@ void SkipNode::operator delete(void* pSkipNodeAddress)
 {
   SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(pSkipNodeAddress);
   
-  gpSmallHeap->vFreeObject(pSkipNode);
+  Heap::vFree(pSkipNode);
 }
 
 /*----------------------------------------------------------------------------*/

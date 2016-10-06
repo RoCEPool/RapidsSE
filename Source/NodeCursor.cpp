@@ -24,7 +24,8 @@ NodeCursor* GridModel::_pNodeCursor(void* pAddr)
 void* NodeCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_NODECURSOR);
+
+  void* pObject = Heap::pAllocate(CN_NODECURSOR);
   
   return pObject;
 }
@@ -45,7 +46,7 @@ void NodeCursor::operator delete(void* pNodeAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pNodeAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

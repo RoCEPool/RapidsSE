@@ -7767,7 +7767,7 @@ ENTRY("vRowCursorDelete");
   Object* pObject = reinterpret_cast<Object*>(pRowCursor);
   delete pRowCursor;
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
   
   EXIT();
 }
@@ -8137,7 +8137,7 @@ ENTRY("vSEitfCursorDelete");
   Object* pObject = reinterpret_cast<Object*>(pSEitfCursor);
   delete pSEitfCursor;
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
   
   EXIT();
 }
@@ -8245,7 +8245,8 @@ ENTRY("vSEitfCursorNew");
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject(CN_SEITFCURSOR));
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(Heap::pAllocate(CN_SEITFCURSOR));
+
   new(pSEitfCursor) SEitfCursor(pSEitfList);
   
   Object* pPtrSEitfCursor = pSEitfCursor;
@@ -9232,7 +9233,7 @@ ENTRY("vTaskCursorDelete");
   Object* pObject = reinterpret_cast<Object*>(pTaskCursor);
   delete pTaskCursor;
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
   
   EXIT();
 }
@@ -10137,7 +10138,7 @@ ENTRY("vTimeDelete");
   
   delete pTimer;
   
-  gpSmallHeap->vFreeObject(pTimerObject);
+  Heap::vFree(pTimerObject);
   
   EXIT();
 }
@@ -10231,7 +10232,9 @@ void Task::vTimerNew(NNP_Task nnpTask)
 {
 ENTRY("vTimerNew");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(gpSmallHeap->pAllocObject(CN_TIMER));
+  void* pObject = Heap::pAllocate(CN_ROWSTRAND);
+
+  Timer* pTimer = _pTimer(Heap::pAllocate(CN_TIMER));
 
   new(pTimer) Timer;
  

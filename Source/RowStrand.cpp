@@ -10,7 +10,8 @@
 void* RowStrand::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_ROWSTRAND);
+
+  void* pObject = Heap::pAllocate(CN_ROWSTRAND);
   
   return pObject;
 }
@@ -22,7 +23,7 @@ void RowStrand::operator delete(void* pRowStrandAddress)
 {
   RowStrand* pRowStrand = static_cast<RowStrand*>(pRowStrandAddress);
   
-  gpSmallHeap->vFreeObject(pRowStrand);
+  Heap::vFree(pRowStrand);
 }
 
 /*----------------------------------------------------------------------------*/

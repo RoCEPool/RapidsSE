@@ -22,7 +22,8 @@ RowCursor* DBobjects::_pRowCursor(void* pAddr)
 void* RowCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_ROWCURSOR);
+
+  void* pObject = Heap::pAllocate(CN_ROWCURSOR);
   
   return pObject;
 }
@@ -43,7 +44,7 @@ void RowCursor::operator delete(void* pRowCursorAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pRowCursorAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

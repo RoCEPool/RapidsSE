@@ -24,7 +24,8 @@ ThreadCursor* Threads::_pThreadCursor(void* pAddr)
 void* ThreadCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_THREADCURSOR);
+
+  void* pObject = Heap::pAllocate(CN_THREADCURSOR);
   
   return pObject;
 }
@@ -45,7 +46,7 @@ void ThreadCursor::operator delete(void* pThreadAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pThreadAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

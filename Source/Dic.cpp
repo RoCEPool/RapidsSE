@@ -252,7 +252,7 @@ void Dic::vFreeWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  gpSmallHeap->vFreeObject(pWord);
+  gpMediumHeap->vFreeObject(pWord);
 }
 
 /*----------------------------------------------------------------------------*/

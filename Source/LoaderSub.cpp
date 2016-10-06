@@ -25,8 +25,8 @@ void* LoaderSub::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_LOADERSUB);
-  
+  void* pObject = Heap::pAllocate(CN_LOADERSUB);
+ 
   return pObject;
 }
 
@@ -47,7 +47,7 @@ void LoaderSub::operator delete(void* pLoaderAddress)
 {
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pLoaderAddress);
   
-  gpSmallHeap->vFreeObject(pLoader);
+  Heap::vFree(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/

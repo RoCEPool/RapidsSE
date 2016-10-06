@@ -21,9 +21,9 @@ void* SkipList::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  SkipList* pSkipList = (SkipList*)gpSmallHeap->pAllocObject(CN_SKIPLIST);
-  
-  return pSkipList;
+  void* pObject = Heap::pAllocate(CN_SKIPLIST);
+ 
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ void SkipList::operator delete(void* pSkipListAddress)
 {
   SkipList* pSkipList = reinterpret_cast<SkipList*>(pSkipListAddress);
   
-  gpSmallHeap->vFreeObject(pSkipList);
+  Heap::vFree(pSkipList);
 }
 
 /*----------------------------------------------------------------------------*/

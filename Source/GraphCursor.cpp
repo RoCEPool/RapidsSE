@@ -21,7 +21,7 @@ void* GraphCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_GRAPHCURSOR);
+  void* pObject = Heap::pAllocate(CN_GRAPHCURSOR);
   
   return pObject;
 }
@@ -43,7 +43,7 @@ void GraphCursor::operator delete(void* pGraphAddress)
 {
   Graph* pGraph = reinterpret_cast<Graph*>(pGraphAddress);
   
-  gpSmallHeap->vFreeObject(pGraph);
+  Heap::vFree(pGraph);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -150,7 +150,7 @@ void Heap::vFree(Object* pObject)
   
   switch(eHeap) {
     case HT_INVALID:
-      vFatal("Heap::vFree: Invalid heap allocation: class %lld %lls\n",
+      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n",
              eAllocClass,pCN[eAllocClass]);
       
     case HT_SMALL:
@@ -170,7 +170,7 @@ void Heap::vFree(Object* pObject)
       return;
       
     default:
-      vFatal("Heap::vFree: Invalid heap allocation: eHeap %lld\n",
+      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n",
              eHeap);
       
   }

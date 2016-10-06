@@ -24,7 +24,8 @@ TaskList* Tasks::_pTaskList(void* pAddr)
 void* TaskList::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_TASKLIST);
+
+  void* pObject = Heap::pAllocate(CN_TASKLIST);
   
   return pObject;
 }
@@ -45,7 +46,7 @@ void TaskList::operator delete(void* pTaskListAddress)
 {
   TaskList* pTaskList = reinterpret_cast<TaskList*>(pTaskListAddress);
   
-  gpSmallHeap->vFreeObject(pTaskList);
+  Heap::vFree(pTaskList);
 }
 
 /*----------------------------------------------------------------------------*/

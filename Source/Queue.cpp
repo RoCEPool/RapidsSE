@@ -22,7 +22,8 @@ Queue* Structures::_pQueue(void* pAddr)
 void* Queue::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = gpSmallHeap->pAllocObject(CN_QUEUE);
+
+  void* pObject = Heap::pAllocate(CN_QUEUE);
   
   return pObject;
 }
@@ -43,7 +44,7 @@ void Queue::operator delete(void* pQueueAddress)
 {
   Queue* pQueue = reinterpret_cast<Queue*>(pQueueAddress);
   
-  gpSmallHeap->vFreeObject(pQueue);
+  Heap::vFree(pQueue);
 }
 
 /*----------------------------------------------------------------------------*/
