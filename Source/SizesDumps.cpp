@@ -269,7 +269,7 @@ eHT geWhichHeap[]
   /* 15 */ HT_INVALID, // CN_BUFFERPOOL
   /* 16 */ HT_INVALID, // CN_BPA
   
-  /* 17 */ HT_INVALID, // CN_DIC
+  /* 17 */ HT_MEDIUM,  // CN_DIC
   /* 18 */ HT_INVALID, // CN_DICSTACK
   /* 19 */ HT_SMALL,   // CN_DIR
   
@@ -287,11 +287,11 @@ eHT geWhichHeap[]
   
   /* 28 */ HT_INVALID, // CN_JUMBOHEAP
   
-  /* 29 */ HT_INVALID, // CN_KEYCPP
-  /* 30 */ HT_INVALID, // CN_KEYVAL
+  /* 29 */ HT_MEDIUM,  // CN_KEYCPP
+  /* 30 */ HT_MEDIUM,  // CN_KEYVAL
   
   /* 31 */ HT_INVALID, // CN_LOADCHUNK
-  /* 32 */ HT_INVALID, // CN_LOADER
+  /* 32 */ HT_MEDIUM,  // CN_LOADER
   /* 33 */ HT_SMALL,   // CN_LOADERSUB
   /* 34 */ HT_INVALID, // CN_LOCK
   
@@ -300,7 +300,7 @@ eHT geWhichHeap[]
   /* 36 */ HT_SMALL,   // CN_NODE
   /* 37 */ HT_SMALL,   // CN_NODECURSOR
   
-  /* 38 */ HT_INVALID, // CN_PARSER
+  /* 38 */ HT_MEDIUM,  // CN_PARSER
   /* 39 */ HT_INVALID, // CN_PARTITION
   /* 40 */ HT_INVALID, // CN_PARTITIONS
   /* 41 */ HT_INVALID, // CN_PROXY
@@ -309,7 +309,7 @@ eHT geWhichHeap[]
   /* 43 */ HT_SMALL,   // CN_QUEUE
   /* 44 */ HT_INVALID, // CN_QUEUEBUFFER
   
-  /* 45 */ HT_INVALID, // CN_REGFRAME
+  /* 45 */ HT_MEDIUM,  // CN_REGFRAME
   /* 46 */ HT_INVALID, // CN_RING
   /* 47 */ HT_INVALID, // CN_ROW
   /* 48 */ HT_INVALID, // CN_ROWBUFFER
@@ -320,7 +320,7 @@ eHT geWhichHeap[]
   /* 52 */ HT_INVALID, // CN_SCANBUFFER
   /* 53 */ HT_INVALID, // CN_LOADMAP
   /* 54 */ HT_INVALID, // CN_SEHISTORY
-  /* 55 */ HT_SMALL,   // CN_SEITF
+  /* 55 */ HT_MEDIUM,  // CN_SEITF
   /* 56 */ HT_SMALL,   // CN_SEITFCURSOR
   /* 57 */ HT_INVALID, // CN_SEITFLIST
   /* 58 */ HT_INVALID, // CN_SEPROMPT
@@ -336,7 +336,7 @@ eHT geWhichHeap[]
   /* 68 */ HT_INVALID, // CN_SYSCALL
   
   /* 69 */ HT_INVALID, // CN_TABLE
-  /* 70 */ HT_INVALID, // CN_TASK
+  /* 70 */ HT_MEDIUM,  // CN_TASK
   /* 71 */ HT_INVALID, // CN_TASKCURSOR
   /* 72 */ HT_SMALL,   // CN_TASKLIST
   /* 73 */ HT_INVALID, // CN_TASKSET
@@ -353,7 +353,7 @@ eHT geWhichHeap[]
   /* 84 */ HT_INVALID, // CN_TXMAP
   /* 85 */ HT_INVALID, // CN_TXREF
   
-  /* 86 */ HT_INVALID, // CN_WORD
+  /* 86 */ HT_MEDIUM,  // CN_WORD
   
   /* 87 */ HT_INVALID, // CN_ZSMALL_
   /* 88 */ HT_INVALID, // CN_ZMEDIUM_

@@ -25,7 +25,8 @@ Loader* DBobjects::_pLoader(void* pAddr)
 void* Loader::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  void* pObject = gpMediumHeap->pAllocObject(CN_LOADER);
+  
+  void* pObject = Heap::pAllocate(CN_LOADER);
   
   return pObject;
 }
@@ -46,7 +47,7 @@ void Loader::operator delete(void* pLoaderAddress)
 {
   Loader* pLoader = reinterpret_cast<Loader*>(pLoaderAddress);
   
-  gpMediumHeap->vFreeObject(pLoader);
+  Heap::vFree(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/

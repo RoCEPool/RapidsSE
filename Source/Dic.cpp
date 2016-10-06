@@ -122,7 +122,7 @@ Word* Dic::pAllocWord(eCN eClassNo)
   
   ASSERT(eClassNo == CN_WORD);
   
-  Word* pWord = reinterpret_cast<Word*>(gpMediumHeap->pAllocObject(CN_WORD));
+  Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
   
   pWord->m_pPrevWord = m_pCurrentWord;
   
@@ -252,7 +252,7 @@ void Dic::vFreeWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  gpMediumHeap->vFreeObject(pWord);
+  Heap::vFree(pWord);
 }
 
 /*----------------------------------------------------------------------------*/

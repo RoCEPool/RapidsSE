@@ -57,7 +57,7 @@ void* Task::operator new(size_t iSize)
   RASSERT(iSize);
   ASSERT(gpTaskList);
   
-  Task* pTask = (Task*)gpMediumHeap->pAllocObject(CN_TASK);
+  Task* pTask = _pTask(Heap::pAllocate(CN_TASK));
   
   return pTask;
 }
@@ -80,7 +80,7 @@ void Task::operator delete(void* pTaskAddress)
 {
   Task* pTask = reinterpret_cast<Task*>(pTaskAddress);
   
-  gpMediumHeap->vFreeObject(pTask);
+  Heap::vFree(pTask);
 }
 
 /*----------------------------------------------------------------------------*/

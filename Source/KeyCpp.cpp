@@ -23,7 +23,7 @@ void* KeyCpp::operator new(size_t iSize, i4 iLevel)
 {
   ASSERT(iSize);
   
-  KeyCpp* pKeyCpp = (KeyCpp*)gpMediumHeap->pAllocObject(CN_KEYCPP);
+  KeyCpp* pKeyCpp = _pKeyCpp(Heap::pAllocate(CN_KEYCPP));
   
   return pKeyCpp;
 }
@@ -35,7 +35,7 @@ void KeyCpp::operator delete(void* pKeyCppAddress)
 {
   KeyCpp* pKeyCpp = reinterpret_cast<KeyCpp*>(pKeyCppAddress);
   
-  gpMediumHeap->vFreeObject(pKeyCpp);
+  Heap::vFree(pKeyCpp);
 }
 
 /*----------------------------------------------------------------------------*/
