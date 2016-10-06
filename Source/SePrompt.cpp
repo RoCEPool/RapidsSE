@@ -123,7 +123,12 @@ void SePrompt::vLoop(void)
   while (m_bContinue) {
     vGetCommand();
     if (!bProcessCommand()) {
-      vTrace("Error: %s\n",m_pSEitf->pGetLastError());
+      vTrace("Cmd: %s; Error: %s\n",m_pToken[0],m_pSEitf->pGetLastError());
+    }
+    else {
+      if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
+        vTrace("%s\n",m_sResponse.a());
+      }
     }
   }
   
@@ -155,6 +160,7 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
     ASSERT(iToken < C_TOKENS);
   }
   bool bResult = bProcessCommand();
+  
   eErrorCode = m_pSEitf->m_eErrorCode;
   
   return bResult;
@@ -177,6 +183,7 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, s& sResponse)
     ASSERT(iToken < C_TOKENS);
   }
   bool bResult = bProcessCommand();
+  
   eErrorCode = m_pSEitf->m_eErrorCode;
   sResponse = m_pSEitf->m_sResponse;
   
@@ -527,25 +534,14 @@ bool SePrompt::bExecuteRequest(void)
   if (aResponse)
     m_sResponse = aResponse;
   
-  if (EC_INVALID_COMMAND == eResult)
-    return false;
-  
   xTimer.vUpdate();
   
   if (EC_NONE == eResult) {
-    if ( ! String::bEqualTo(aResponse, "<ok>") ) {
-      vTrace("%s\n",aResponse);
-      return true;
-    }
+    return true;
   }
   else {
-    i8 iError = 0;
-    RapidsSE_GetErrorCode(m_pSEitf,&iError);
-    //vTrace("Error %lld : %s\n",iError,aResponse);
     return false;
   }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
