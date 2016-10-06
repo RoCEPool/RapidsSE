@@ -118,6 +118,7 @@ namespace Interface
     
     //--------------------------------------------------------------------------
     void         vClearLastError(void);
+    eEC          eGetLastError(void);
     const char*  pGetLastError(void);
     void         vSetLastError(eEC eInterfaceError);
     

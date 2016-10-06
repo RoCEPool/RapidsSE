@@ -285,7 +285,7 @@ bool SEitf::bDecode(char* pWords[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   if (0 == String::iLength(pWords[0])) {
-    vSetLastError(EC_INVALID_COMMAND);
+    //vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -1284,6 +1284,16 @@ void SEitf::vClearLastError(void)
   
   m_eErrorCode = EC_NONE;
   String::vCopy(m_sErrorMsg.a(), "");
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last error                                                             */
+/*----------------------------------------------------------------------------*/
+eEC SEitf::eGetLastError(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+ 
+  return m_eErrorCode;
 }
 
 /*----------------------------------------------------------------------------*/

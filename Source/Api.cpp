@@ -647,13 +647,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   vTrace("%s %s\n", pCommand, pParameter);
   bResult = pSEitf->bDecode(pWords);
   
-  if (!bResult) {
-    // set last error
-    pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return EC_INVALID_COMMAND;
-  }
-  
-  return EC_NONE;
+  return pSEitf->eGetLastError();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -673,13 +667,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
   vTrace("cf %s\n", pCommand);
   bResult = pSEitf->bDecode(pWords);
   
-  if (!bResult) {
-    // set last error
-    pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    return EC_INVALID_COMMAND;
-  }
-  
-  return EC_NONE;
+  return pSEitf->eGetLastError();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -691,12 +679,6 @@ bool bExecuteRequest(SEitf* pSEitf, char* pWords[])
   
   // execute command
   bResult = pSEitf->bDecode(pWords);
-  
-  //if (!bResult) {
-    // set last error
-    //pSEitf->vSetLastError(EC_INVALID_COMMAND);
-    //return EC_INVALID_COMMAND;
-  //}
   
   return bResult;
 }
@@ -711,7 +693,6 @@ eEC eGetResponse(SEitf* pSEitf)
   eEC eError = pSEitf->eGetResponse();
   //  vTrace("rsp : %lld\n", iResponse);
   
-  pSEitf->vSetLastError(eError);
   return eError;
 }
 
