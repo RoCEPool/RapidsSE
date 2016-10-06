@@ -285,7 +285,6 @@ bool SEitf::bDecode(char* pWords[])
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   if (0 == String::iLength(pWords[0])) {
-    //vSetLastError(EC_INVALID_COMMAND);
     return false;
   }
   
@@ -1225,6 +1224,7 @@ eEC SEitf::eGetResponse(void)
   while (! bPopResponse(m_eErrorCode, m_sResponse))
     ;
   
+  vSetLastError(m_eErrorCode);
   return m_eErrorCode;
 }
 

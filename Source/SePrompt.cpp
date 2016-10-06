@@ -124,7 +124,7 @@ void SePrompt::vLoop(void)
     vGetCommand();
     if (!bProcessCommand()) {
       if (m_pSEitf->eGetLastError() != EC_NONE)
-        vTrace("Cmd: %s; Error: %s\n",m_pToken[0],m_pSEitf->pGetLastError());
+        vTrace("Error: %s\n",m_pSEitf->pGetLastError());
     }
     else {
       if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
