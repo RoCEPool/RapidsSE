@@ -55,6 +55,36 @@ void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* run unit tests                                                             */
+/*----------------------------------------------------------------------------*/
+void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected, s& sResponseExpected)
+{
+  eEC eErrorReturned;
+  s256 sResponseReturned;
+  
+  m_iTestsTotal++;
+  
+  if (m_pSePrompt->bExecuteString(sCommand, eErrorReturned, sResponseReturned) != bResult) {
+    m_iTestsFailed++;
+    vAssertFailed();
+  }
+  else {
+    if (eErrorReturned != eErrorExpected) {
+      m_iTestsFailed++;
+      Tests::vAssertFailed();
+    }
+    if (!String::bEqualTo(sResponseReturned.a(), sResponseExpected.a())) {
+      m_iTestsFailed++;
+      Tests::vAssertFailed();
+    }
+    else {
+      
+      m_iTestsPassed++;
+    }
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

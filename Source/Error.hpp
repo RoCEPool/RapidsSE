@@ -22,34 +22,34 @@ namespace Magic
     /*  7 */ EC_NO_COLUMNS_DIC,
     
     /*  8 */ EC_NO_SUCH_CATALOG,
-    /*    */ EC_NO_SUCH_DIRECTORY,
-    /*  9 */ EC_NO_SUCH_FOLDER,
-    /* 10 */ EC_NO_SUCH_SCHEMA,
-    /* 11 */ EC_NO_SUCH_TABLE,
-    /* 12 */ EC_NO_SUCH_TENANT,
-    /* 13 */ EC_NO_SUCH_WORD,
+    /*  9 */ EC_NO_SUCH_DIRECTORY,
+    /* 10 */ EC_NO_SUCH_FOLDER,
+    /* 11 */ EC_NO_SUCH_SCHEMA,
+    /* 12 */ EC_NO_SUCH_TABLE,
+    /* 13 */ EC_NO_SUCH_TENANT,
+    /* 14 */ EC_NO_SUCH_WORD,
     
-    /* 14 */ EC_NOT_A_CATALOG,
-    /* 15 */ EC_NOT_A_FOLDER,
-    /* 16 */ EC_NOT_A_SCHEMA,
-    /* 17 */ EC_NOT_A_TABLE,
-    /* 18 */ EC_NOT_A_TENANT,
+    /* 15 */ EC_NOT_A_CATALOG,
+    /* 16 */ EC_NOT_A_FOLDER,
+    /* 17 */ EC_NOT_A_SCHEMA,
+    /* 18 */ EC_NOT_A_TABLE,
+    /* 19 */ EC_NOT_A_TENANT,
     
-    /* 19 */ EC_NOT_IN_CATALOGS,
-    /* 20 */ EC_NOT_IN_COLUMNS,
-    /* 21 */ EC_NOT_IN_SCHEMAS,
-    /* 22 */ EC_NOT_IN_TABLES,
-    /* 23 */ EC_NOT_IN_TENANTS,
+    /* 20 */ EC_NOT_IN_CATALOGS,
+    /* 21 */ EC_NOT_IN_COLUMNS,
+    /* 22 */ EC_NOT_IN_SCHEMAS,
+    /* 23 */ EC_NOT_IN_TABLES,
+    /* 24 */ EC_NOT_IN_TENANTS,
 
-    /* 24 */ EC_NULLPTR,
+    /* 25 */ EC_NULLPTR,
     
-    /* 25 */ EC_SCHEMA_EXISTS,
+    /* 26 */ EC_SCHEMA_EXISTS,
 
-    /* 26 */ EC_TABLE_EXISTS,
-    /* 27 */ EC_TENANT_EXISTS,
-    /*    */ EC_UNKNOWN_COMMAND,
+    /* 27 */ EC_TABLE_EXISTS,
+    /* 28 */ EC_TENANT_EXISTS,
+    /* 29 */ EC_UNKNOWN_COMMAND,
     
-    /* 28 */ EC_ENUMS
+    /* 30 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -90,7 +90,8 @@ namespace Magic
     /* 25 */ "schema exists",
     /* 26 */ "table exists",
     /* 27 */ "tenant exists",
-    
+    /*    */ "unknown command",
+
     /* 28 */ "enums"
 
   };

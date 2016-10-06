@@ -10,6 +10,7 @@
 void TenantTests::vRun(RunTests* pRunTests)
 {
   s256 sCommand;
+  s256 sResponse;
   
   // start with /tenants folder
   sCommand = "cf ~";
@@ -38,6 +39,10 @@ void TenantTests::vRun(RunTests* pRunTests)
   
   sCommand = "create tenant x;";
   vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "lsten";
+  sResponse = "x ";
+  vRequire(sCommand, true, EC_NONE, sResponse);
   
   sCommand = "drop tenant x;";
   vRequire(sCommand, true, EC_NONE);

@@ -161,6 +161,29 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute request from given string                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, s& sResponse)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_xTokeniser.vUseString(sRequest);
+  i8 iToken = 0;
+  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+    
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    
+    iToken++;
+    ASSERT(iToken < C_TOKENS);
+  }
+  bool bResult = bProcessCommand();
+  eErrorCode = m_pSEitf->m_eErrorCode;
+  sResponse = m_pSEitf->m_sResponse;
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get command                                                                */
 /*----------------------------------------------------------------------------*/
 void SePrompt::vGetCommand(void)
@@ -440,13 +463,13 @@ bool SePrompt::bProcessCommand(void)
   }
   
   if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
-    bool bListDir();
+    return bListDir();
   }
   
   if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
     return bPoolSpace();
   }
-  
+
   m_xHistory.vAppend(m_pToken);
   
   if (bTestFile(m_pToken[0])) {
@@ -456,7 +479,6 @@ bool SePrompt::bProcessCommand(void)
   }
   
   // - execute seitf request
-  
   if (! bExecuteRequest())
     return false;
   
@@ -483,7 +505,7 @@ bool SePrompt::bProcessCommand(void)
     }
   }
   
-  return false;
+  return true;
 }
 
 #endif
@@ -497,11 +519,6 @@ bool SePrompt::bExecuteRequest(void)
   
   Timer xTimer;
   char* aResponse = nullptr;
-  
-  // ALKA ECHO
-  //  for (i8 i = 0; i < 16 && *m_pToken[i]; i++)
-  //    vTrace("%s ",m_pToken[i]);
-  //  vTrace("\n");
   
   xTimer.vStart();
   

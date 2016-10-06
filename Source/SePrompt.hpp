@@ -47,6 +47,7 @@ public:
   
   void vLoop(void);
   bool bExecuteString(s& sCommand, eEC& eErrorCode);
+  bool bExecuteString(s& sCommand, eEC& eErrorCode, s& sResponse);
 
 private:
   void vGetCommand(void);

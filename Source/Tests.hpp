@@ -23,6 +23,8 @@ namespace UnitTests
     static void vAssertFailed(void);
     
     void vRequire(s& sCommand, bool bResult, eEC eErrorExpected);
+    void vRequire(s& sCommand, bool bResult, eEC eErrorExpected, s& sResponse);
+
   };
 };
 
