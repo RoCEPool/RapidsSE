@@ -49,7 +49,7 @@ SEitfList::SEitfList(void)
   
   gpSEitfList = this;
   
-  _checkInitialised_(sizeof(SEitfList));
+  _checkInitialised_(CN_SEITFLIST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
 }
@@ -69,7 +69,7 @@ SEitf* SEitfList::pAllocSEitf(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITFLIST,_FOOTER_);
 
-  SEitf* pSEitf = reinterpret_cast<SEitf*>(gpSmallHeap->pAllocObject(CN_SEITFLIST));
+  SEitf* pSEitf = _pSEitf(Heap::pAllocate(CN_SEITF));
   
   vAppend(pSEitf);
   
@@ -85,7 +85,7 @@ void SEitfList::vFreeSEitf(SEitf* pSEitf)
   
   vRemove(pSEitf);
   
-  gpSmallHeap->vFreeObject(pSEitf);
+  Heap::vFree(pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/

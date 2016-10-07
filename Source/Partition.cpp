@@ -39,7 +39,7 @@ Partition::Partition(void)
   m_pHeadStrand = nullptr;
   m_pTailStrand = nullptr;
   
-  _checkInitialised_(sizeof(Partition));
+  _checkInitialised_(CN_PARTITION);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
 }

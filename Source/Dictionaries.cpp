@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void Dictionaries::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Dictionary) < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(Dic) < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

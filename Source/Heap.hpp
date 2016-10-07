@@ -8,6 +8,26 @@
 
 namespace Pool
 {
+  enum eHT // Heap type
+  {
+    /*  0 */ HT_INVALID=0,
+    /*  1 */ HT_SMALL,
+    /*  2 */ HT_MEDIUM,
+    /*  3 */ HT_LARGE,
+    /*  4 */ HT_JUMBO,
+    /*  5 */ HT_ENUMS
+  };
+  
+  static const char* const pHT[]
+  {
+    /*  0 */ "INVALID",
+    /*  1 */ "SMALL",
+    /*  2 */ "MEDIUM",
+    /*  3 */ "LARGE",
+    /*  4 */ "JUMBO",
+    /*  5 */ "ENUMS"
+  };
+  
   class Heap : public Buffer
   {
   private:
@@ -32,6 +52,9 @@ namespace Pool
     ~Heap(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    static Object* pAllocate(eCN eClass);
+    static void vFree(Object* pObject);
+
     
     void    vAddFree(FreeChunk* pFreeChunk);
     i8      iAllocCount(void);

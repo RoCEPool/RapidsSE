@@ -31,10 +31,10 @@ pDUMPFUN *gpDump[]
 
   /* 14 */ &Dump::vDummy,           // CN_BUFFER
   /* 15 */ &Dump::vInvalid,         // CN_BUFFERPOOL
-  /* 16 */ &Dump::vInvalid,         // CN_BUFFERPOOLANALYZER
+  /* 16 */ &Dump::vInvalid,         // CN_BPA
 
-  /* 17 */ &Dictionary::vDump,      // CN_DICTIONARY
-  /* 18 */ &DictionaryStack::vDump, // CN_DICTIONARYSTACK
+  /* 17 */ &Dic::vDump,             // CN_DIC
+  /* 18 */ &DicStack::vDump,        // CN_DICSTACK
   /* 19 */ &Dump::vInvalid,         // CN_DIR
   
   /* 20 */ &Dump::vInvalid,         // CN_FILE
@@ -149,10 +149,10 @@ i8 giClassSize[]
   
   /* 14 */ sizeof(Buffer),             // CN_BUFFER
   /* 15 */ sizeof(BufferPool),         // CN_BUFFERPOOL
-  /* 16 */ sizeof(BufferPoolAnalyzer), // CN_BUFFERPOOLANALYZER
+  /* 16 */ sizeof(BPA),                // CN_BPA
   
-  /* 17 */ sizeof(Dictionary),         // CN_DICTIONARY
-  /* 18 */ sizeof(DictionaryStack),    // CN_DICTIONARYSTACK
+  /* 17 */ sizeof(Dic),                // CN_DIC
+  /* 18 */ sizeof(DicStack),           // CN_DICSTACK
   /* 19 */ sizeof(Dir),                // CN_DIR
   
   /* 20 */ sizeof(File),               // CN_FILE
@@ -245,6 +245,123 @@ i8 giClassSize[]
   /* 91 */ -1
 };
 
+eHT geWhichHeap[]
+{
+  /*  0 */ HT_INVALID,
+  
+  /*  1 */ HT_INVALID, // CN_S32
+  /*  2 */ HT_INVALID, // CN_S256
+  /*  3 */ HT_INVALID, // CN_S8K
+  
+  /*  4 */ HT_INVALID, // CN_INTVAL
+  /*  5 */ HT_INVALID, // CN_OBJVAL
+  /*  6 */ HT_INVALID, // CN_PTRVAL
+  /*  7 */ HT_INVALID, // CN_STRVAL
+  /*  8 */ HT_INVALID, // CN_VALREG
+  /*  9 */ HT_INVALID, // CN_VALSET
+  /* 10 */ HT_INVALID, // CN_VALWSP
+  
+  /* 11 */ HT_INVALID, // CN_ARGUMENTS
+  /* 12 */ HT_INVALID, // CN_ATOMIC
+  /* 13 */ HT_LARGE,   // CN_ATTACHMAP
+  
+  /* 14 */ HT_INVALID, // CN_BUFFER
+  /* 15 */ HT_INVALID, // CN_BUFFERPOOL
+  /* 16 */ HT_INVALID, // CN_BPA
+  
+  /* 17 */ HT_MEDIUM,  // CN_DIC
+  /* 18 */ HT_INVALID, // CN_DICSTACK
+  /* 19 */ HT_SMALL,   // CN_DIR
+  
+  /* 20 */ HT_SMALL,   // CN_FILE
+  /* 21 */ HT_INVALID, // CN_FREECHUNK
+  
+  /* 22 */ HT_SMALL,   // CN_GRAPH
+  /* 23 */ HT_SMALL,   // CN_GRAPHCURSOR
+  /* 24 */ HT_SMALL,   // CN_GRAPHNODE
+  /* 25 */ HT_INVALID, // CN_GRID
+  
+  /* 26 */ HT_LARGE,   // CN_HEAPBUFFER
+  
+  /* 27 */ HT_INVALID, // CN_INDEX
+  
+  /* 28 */ HT_INVALID, // CN_JUMBOHEAP
+  
+  /* 29 */ HT_MEDIUM,  // CN_KEYCPP
+  /* 30 */ HT_MEDIUM,  // CN_KEYVAL
+  
+  /* 31 */ HT_LARGE,   // CN_LOADCHUNK
+  /* 32 */ HT_MEDIUM,  // CN_LOADER
+  /* 33 */ HT_SMALL,   // CN_LOADERSUB
+  /* 34 */ HT_INVALID, // CN_LOCK
+  
+  /* 35 */ HT_INVALID, // CN_MEDIUMHEAP
+  
+  /* 36 */ HT_SMALL,   // CN_NODE
+  /* 37 */ HT_SMALL,   // CN_NODECURSOR
+  
+  /* 38 */ HT_MEDIUM,  // CN_PARSER
+  /* 39 */ HT_INVALID, // CN_PARTITION
+  /* 40 */ HT_INVALID, // CN_PARTITIONS
+  /* 41 */ HT_INVALID, // CN_PROXY
+  /* 42 */ HT_INVALID, // CN_PROXYSET
+  
+  /* 43 */ HT_SMALL,   // CN_QUEUE
+  /* 44 */ HT_LARGE,   // CN_QUEUEBUFFER
+  
+  /* 45 */ HT_MEDIUM,  // CN_REGFRAME
+  /* 46 */ HT_INVALID, // CN_RING
+  /* 47 */ HT_INVALID, // CN_ROW
+  /* 48 */ HT_LARGE,   // CN_ROWBUFFER
+  /* 49 */ HT_SMALL,   // CN_ROWCURSOR
+  /* 50 */ HT_SMALL,   // CN_ROWSTRAND
+  /* 51 */ HT_INVALID, // CN_ROWWSP
+  
+  /* 52 */ HT_LARGE,   // CN_SCANBUFFER
+  /* 53 */ HT_JUMBO,   // CN_LOADMAP
+  /* 54 */ HT_INVALID, // CN_SEHISTORY
+  /* 55 */ HT_MEDIUM,  // CN_SEITF
+  /* 56 */ HT_SMALL,   // CN_SEITFCURSOR
+  /* 57 */ HT_INVALID, // CN_SEITFLIST
+  /* 58 */ HT_LARGE,   // CN_SEPROMPT
+  /* 59 */ HT_INVALID, // CN_SINCE
+  /* 60 */ HT_INVALID, // CN_SKIPCURSOR
+  /* 61 */ HT_SMALL,   // CN_SKIPLIST
+  /* 62 */ HT_SMALL,   // CN_SKIPNODE
+  /* 63 */ HT_INVALID, // CN_SMALLHEAP
+  /* 64 */ HT_INVALID, // CN_SOCKET
+  /* 65 */ HT_INVALID, // CN_STACK
+  /* 66 */ HT_INVALID, // CN_STEPACCUM
+  /* 67 */ HT_LARGE,   // CN_STEPARRAY
+  /* 68 */ HT_INVALID, // CN_SYSCALL
+  
+  /* 69 */ HT_INVALID, // CN_TABLE
+  /* 70 */ HT_MEDIUM,  // CN_TASK
+  /* 71 */ HT_INVALID, // CN_TASKCURSOR
+  /* 72 */ HT_SMALL,   // CN_TASKLIST
+  /* 73 */ HT_INVALID, // CN_TASKSET
+  /* 74 */ HT_INVALID, // CN_THREAD
+  /* 75 */ HT_SMALL,   // CN_THREADCURSOR
+  /* 76 */ HT_INVALID, // CN_THREADLIST
+  /* 77 */ HT_INVALID, // CN_TIME
+  /* 78 */ HT_SMALL,   // CN_TIMER
+  /* 79 */ HT_INVALID, // CN_TOKENISER
+  /* 80 */ HT_SMALL,   // CN_TX
+  /* 81 */ HT_LARGE,   // CN_TXARRAY
+  /* 82 */ HT_INVALID, // CN_TXCOLLECTION
+  /* 83 */ HT_SMALL,   // CN_TXCURSOR
+  /* 84 */ HT_INVALID, // CN_TXMAP
+  /* 85 */ HT_INVALID, // CN_TXREF
+  
+  /* 86 */ HT_MEDIUM,  // CN_WORD
+  
+  /* 87 */ HT_INVALID, // CN_ZSMALL_
+  /* 88 */ HT_INVALID, // CN_ZMEDIUM_
+  /* 89 */ HT_INVALID, // CN_ZLARGE_
+  /* 90 */ HT_INVALID, // CN_ZJUMBO_
+
+  /* 91 */ HT_INVALID, // CN_ENUMS
+};
 
 /*----------------------------------------------------------------------------*/
 /* dummy dump                                                                 */

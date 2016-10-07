@@ -11,7 +11,7 @@ AttachMap *         gpAttachMap        = nullptr;
 Heap*               gpJumboHeap        = nullptr;
 Heap*               gpMediumHeap       = nullptr;
 Heap*               gpSmallHeap        = nullptr;
-Dictionary*         gpMainDic          = nullptr;
+Dic*                gpMainDic          = nullptr;
 Word*               gpWord             = nullptr;
 
 Grid*               gpGrid             = nullptr;
@@ -24,7 +24,7 @@ SEitfList*          gpSEitfList        = nullptr;
 
 File*               gpTraceFile        = nullptr;
 
-BufferPoolAnalyzer* gpBPA              = nullptr;
+BPA*                gpBPA              = nullptr;
 
 NP_Task             gnpRootTask        = nullptr;
 Thread*             gnpRootThread      = nullptr;
@@ -265,12 +265,6 @@ void RapidsSE::vInitJumboHeap(void)
 
     gpJumboHeap->vAddFree((FreeChunk*)pJumbo);
   }
-  
-  // test
-//  Object* pObject = gpJumboHeap->pAllocObject(CN_NONE);
-//  pObject->vSetMagic();
-//  gpJumboHeap->vFreeObject(pObject);
-  
 }
 
 /*----------------------------------------------------------------------------*/

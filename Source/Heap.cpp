@@ -6,7 +6,13 @@
 
 extern BufferPool* gpBufferPool;
 
-extern i8 giClassSize[];
+extern i8  giClassSize[];
+extern eHT geWhichHeap[];
+
+extern BufferPool* gpBufferPool;
+extern Heap*       gpSmallHeap;
+extern Heap*       gpMediumHeap;
+extern Heap*       gpJumboHeap;
 
 /*----------------------------------------------------------------------------*/
 /* new                                                                        */
@@ -47,7 +53,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   m_pFreeHead    = nullptr;
   m_bFixedHeap   = false;
   
-  _checkInitialised_(sizeof(Heap));
+  _checkInitialisedSize_(sizeof(Heap));
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }
@@ -92,6 +98,82 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
   }
   vTrace("\n");
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate an object from a heap                                             */
+/*----------------------------------------------------------------------------*/
+Object* Heap::pAllocate(eCN eAllocClass)
+{
+  eHT eHeap = geWhichHeap[eAllocClass];
+  
+  Object* pObject;
+  
+  switch(eHeap) {
+    case HT_INVALID:
+      vFatal("Heap::pAllocate: Invalid heap allocation: class %lld %lls\n",
+             eAllocClass,pCN[eAllocClass]);
+    
+    case HT_SMALL:
+      pObject = gpSmallHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
+    case HT_MEDIUM:
+      pObject = gpMediumHeap->pAllocObject(eAllocClass);
+      return pObject;
+
+    case HT_LARGE:
+      pObject = gpBufferPool->pAllocBuffer();
+      return pObject;
+      
+    case HT_JUMBO:
+      pObject = gpJumboHeap->pAllocObject(eAllocClass);
+      return pObject;
+      
+    default:
+      vFatal("Heap::pAllocate: Invalid heap allocation: eHeap %lld\n",
+             eHeap);
+      
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* free an object back to heap                                                */
+/*----------------------------------------------------------------------------*/
+void Heap::vFree(Object* pObject)
+{
+  eCN eAllocClass = pObject->eClass();
+  
+  eHT eHeap = geWhichHeap[eAllocClass];
+  
+  switch(eHeap) {
+    case HT_INVALID:
+      vFatal("Heap::vFree: Invalid heap free: class %lld %lls\n",
+             eAllocClass,pCN[eAllocClass]);
+      
+    case HT_SMALL:
+      gpSmallHeap->vFreeObject(pObject);
+      return;
+      
+    case HT_MEDIUM:
+      gpMediumHeap->vFreeObject(pObject);
+      return;
+      
+    case HT_LARGE:
+      gpBufferPool->vFree((Buffer*)pObject);
+      return;
+      
+    case HT_JUMBO:
+      gpJumboHeap->vFreeObject(pObject);
+      return;
+      
+    default:
+      vFatal("Heap::vFree: Invalid heap free: eHeap %lld\n",
+             eHeap);
+      
+  }
 }
 
 /*----------------------------------------------------------------------------*/

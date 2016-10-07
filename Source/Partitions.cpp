@@ -38,7 +38,7 @@ Partitions::Partitions(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITIONS,_FOOTER_);
   
-  _checkInitialised_(sizeof(Partitions));
+  _checkInitialised_(CN_PARTITIONS);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DictionaryStack.hpp - dictionary stack                                     */
+/* DicStack.hpp - dictionary stack                                            */
 /*============================================================================*/
 
 #pragma once
@@ -8,14 +8,14 @@
 
 namespace Dictionaries
 {
-  class DictionaryStack : public Object
+  class DicStack : public Object
   {
   private:
     static const i8 C_DICTIONARY_STACK = 32;
     
   private:
-    i8           m_iTop;
-    Dictionary*  m_pDictionary[C_DICTIONARY_STACK];
+    i8    m_iTop;
+    Dic*  m_pDic[C_DICTIONARY_STACK];
     
     // must be last
     Footer m_xFooter;
@@ -24,8 +24,8 @@ namespace Dictionaries
     void* operator new(size_t);
     void  operator delete(void*);
     
-    DictionaryStack(void);
-    ~DictionaryStack(void);
+    DicStack(void);
+    ~DicStack(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
@@ -39,9 +39,9 @@ namespace Dictionaries
     Word* pFindStep(TaskStep pStep);
     bool  bForget(s& sName);
     Word* pLocate(Cell* pCell);
-    Dictionary* pPick(i8 iDic);
-    void vPush(Dictionary* pDictionary);
-    Dictionary* pTop(void);
+    Dic* pPick(i8 iDic);
+    void vPush(Dic* pDic);
+    Dic* pTop(void);
     
     Footer* pFooter(void);
   };

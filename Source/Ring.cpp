@@ -37,7 +37,7 @@ Ring::Ring(void)
   for (auto i = 0; i < C_ASSIGNMENT; i++)
     m_iAssignment[i] = 0;
   
-  _checkInitialised_(sizeof(Ring));
+  _checkInitialised_(CN_RING);
 }
 
 /*----------------------------------------------------------------------------*/

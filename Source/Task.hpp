@@ -141,7 +141,7 @@ namespace Tasks
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
     
-    DictionaryStack m_xDictionaryStack;
+    DicStack m_xDicStack;
     
     Queue* m_pQueue;        // processing queue
     
@@ -176,7 +176,7 @@ namespace Tasks
     Interface::SEitf* m_pSEitf;
     
     // test
-    Dictionary m_xTaskDictionary;
+    Dic m_xTaskDic;
     
     // always last
     Footer m_xFooter;

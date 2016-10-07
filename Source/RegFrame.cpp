@@ -23,8 +23,7 @@ void* RegFrame::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  RegFrame* pRegFrame =
-    reinterpret_cast<RegFrame*>(gpMediumHeap->pAllocObject(CN_REGFRAME));
+  RegFrame* pRegFrame = _pRegFrame(Heap::pAllocate(CN_REGFRAME));
   
   return pRegFrame;
 }
@@ -36,7 +35,7 @@ void RegFrame::operator delete(void* pRegFrameAddress)
 {
   RegFrame* pRegFrame = _pRegFrame(pRegFrameAddress);
   
-  gpMediumHeap->vFreeObject(pRegFrame);
+  Heap::vFree(pRegFrame);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -50,7 +49,7 @@ RegFrame::RegFrame(void)
   m_pNext = nullptr;
   //m_xValReg
   
-  _checkInitialised_(sizeof(RegFrame));
+  _checkInitialised_(CN_REGFRAME);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
 }

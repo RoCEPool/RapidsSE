@@ -27,7 +27,8 @@ void* SkipNode::operator new(size_t iSize, i4 iLevel)
   i8 nMaxBytes = iMaxSize();
   vTrace("SkipNode iMaxSize %lld\n",nMaxBytes);
   
-  SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
+  //SkipNode* pSkipNode = (SkipNode*)gpSmallHeap->pAllocObject(CN_SKIPNODE,nMaxBytes);
+  SkipNode* pSkipNode = (SkipNode*)Heap::pAllocate(CN_SKIPNODE);
   
   pSkipNode->m_nForward = iLevel;
   
@@ -41,7 +42,7 @@ void SkipNode::operator delete(void* pSkipNodeAddress)
 {
   SkipNode* pSkipNode = reinterpret_cast<SkipNode*>(pSkipNodeAddress);
   
-  gpSmallHeap->vFreeObject(pSkipNode);
+  Heap::vFree(pSkipNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +60,7 @@ SkipNode::SkipNode(void* pObject)
   
   _setFooter_();
   
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_SKIPNODE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }
@@ -72,7 +73,7 @@ SkipNode::SkipNode()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
  
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_SKIPNODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SKIPNODE,_FOOTER_);
 }

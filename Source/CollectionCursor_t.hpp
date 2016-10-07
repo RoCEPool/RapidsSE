@@ -48,7 +48,7 @@ CollectionCursor_t<OBJECT>::CollectionCursor_t(Collection_t<OBJECT>* pCollection
   m_pObject = nullptr;
   m_bHasLock = false;
   
-  _checkInitialised_(sizeof(CollectionCursor_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(CollectionCursor_t<OBJECT>));
 }
 
 /*----------------------------------------------------------------------------*/

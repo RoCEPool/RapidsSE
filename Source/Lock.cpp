@@ -52,7 +52,7 @@ Lock::Lock(void)
   m_zWriteGrabs.vCheckInit();
   m_zWriteCollisions.vCheckInit();
   
-  _checkInitialised_(sizeof(Lock));
+  _checkInitialised_(CN_LOCK);
   
   _postcondition_(_MAGIC_,CN_LOCK,_FOOTER_);
 }

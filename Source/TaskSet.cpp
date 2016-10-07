@@ -40,7 +40,7 @@ TaskSet::TaskSet(void)
   m_npHead = nullptr;
   m_npTail = nullptr;
   
-  _checkInitialised_(sizeof(TaskSet));
+  _checkInitialised_(CN_TASKSET);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKSET,_FOOTER_);
 }

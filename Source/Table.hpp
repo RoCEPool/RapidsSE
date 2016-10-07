@@ -26,7 +26,7 @@ namespace DBobjects
     s32 m_sTableName;
     eTT m_eTableType;
     
-    Dictionary m_xDictionary;
+    Dic        m_xDic;
     //Ring       m_xRing;
     Partitions m_xPartitions;
         
@@ -44,8 +44,8 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void   vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
-    Dictionary* pDic(void);
+    void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
+    Dic* pDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength);
     i8   iRowBuffers(void);
     void vTruncate(void);

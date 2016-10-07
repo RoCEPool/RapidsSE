@@ -20,7 +20,8 @@ Node* GridModel::_pNode(void* pAddr)
 void* Node::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_NODE);
+
+  void* pObject = Heap::pAllocate(CN_NODE);
   
   return pObject;
 }
@@ -41,7 +42,7 @@ void Node::operator delete(void* pNodeAddress)
 {
   Object* pObject = reinterpret_cast<Node*>(pNodeAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,7 +55,7 @@ Node::Node(void)
   
   m_iNodeNo = 0;
   
-  _checkInitialised_(sizeof(Node));
+  _checkInitialised_(CN_NODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
 }

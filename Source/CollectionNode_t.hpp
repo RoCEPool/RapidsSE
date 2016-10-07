@@ -55,7 +55,7 @@ CollectionNode_t<OBJECT>::CollectionNode_t(void)
   m_pNextNode = nullptr;
   m_pPrevNode = nullptr;
   
-  _checkInitialised_(sizeof(CollectionNode_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(CollectionNode_t<OBJECT>));
 }
 
 /*---------------------------------------------------------------------------*/

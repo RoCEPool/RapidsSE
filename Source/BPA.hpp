@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  BufferPoolAnalyzer.hpp - buffer pool analyzer                             */
+/*  BPA.hpp - buffer pool analyzer                                            */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@ namespace Pool
 {
   class Heap;
   
-  class BufferPoolAnalyzer : public Header
+  class BPA : public Header
   {
   private:
     
@@ -20,8 +20,8 @@ namespace Pool
 
   public:
     
-    BufferPoolAnalyzer(void);
-    ~BufferPoolAnalyzer(void);
+    BPA(void);
+    ~BPA(void);
     void vDump(void);
     void vDump(Buffer* pBuffer);
     void vDumpHeap(Heap* pBuffer);

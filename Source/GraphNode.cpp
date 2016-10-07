@@ -21,7 +21,7 @@ void* GraphNode::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_GRAPHNODE);
+  void* pObject = Heap::pAllocate(CN_GRAPHNODE);
   
   return pObject;
 }
@@ -43,7 +43,7 @@ void GraphNode::operator delete(void* pGraphNodeAddress)
 {
   GraphNode* pGraphNode = reinterpret_cast<GraphNode*>(pGraphNodeAddress);
   
-  gpSmallHeap->vFreeObject(pGraphNode);
+  Heap::vFree(pGraphNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ GraphNode::GraphNode(void)
   m_pPrev   = nullptr;
   m_pChild  = nullptr;
   
-  _checkInitialised_(sizeof(GraphNode));
+  _checkInitialised_(CN_GRAPHNODE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_GRAPHNODE,_FOOTER_);
 }

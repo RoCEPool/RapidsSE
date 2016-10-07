@@ -23,7 +23,7 @@ void* KeyVal::operator new(size_t iSize, i4 iLevel)
 {
   ASSERT(iSize);
   
-  KeyVal* pKeyVal = (KeyVal*)gpMediumHeap->pAllocObject(CN_KEYVAL);
+  KeyVal* pKeyVal = _pKeyVal(Heap::pAllocate(CN_KEYVAL));
   
   return pKeyVal;
 }
@@ -35,7 +35,7 @@ void KeyVal::operator delete(void* pKeyValAddress)
 {
   KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(pKeyValAddress);
   
-  gpMediumHeap->vFreeObject(pKeyVal);
+  Heap::vFree(pKeyVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ KeyVal::KeyVal(void)
   
   _setFooter_();
   
-  _checkInitialised_(sizeof(SkipNode));
+  _checkInitialised_(CN_KEYVAL);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_KEYVAL,_FOOTER_);
 }

@@ -64,7 +64,7 @@ Table::Table(void)
   //m_xRing
   //m_xPartitions
   
-  _checkInitialised_(sizeof(Table));
+  _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 }
@@ -132,11 +132,11 @@ i8 Table::iRowBuffers(void)
 /*----------------------------------------------------------------------------*/
 /* get dictionary                                                             */
 /*----------------------------------------------------------------------------*/
-Dictionary* Table::pDic(void)
+Dic* Table::pDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return &m_xDictionary;
+  return &m_xDic;
 }
 
 /*----------------------------------------------------------------------------*/

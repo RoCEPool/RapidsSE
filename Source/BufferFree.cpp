@@ -14,7 +14,7 @@ BufferFree::BufferFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
   
-  _checkInitialised_(sizeof(BufferFree));
+  _checkInitialised_(CN_BUFFER);
   
   ASSERT("Should never be reached");
 }

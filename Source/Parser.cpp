@@ -18,7 +18,7 @@ void* Parser::operator new(size_t iSize, bool bMalloc)
   if (bMalloc)
     pParser = reinterpret_cast<Parser*>(malloc(sizeof(Parser)));
   else
-    pParser = reinterpret_cast<Parser*>(gpMediumHeap->pAllocObject(CN_PARSER));
+    pParser = reinterpret_cast<Parser*>(Heap::pAllocate(CN_PARSER));
   
   pParser->m_bMalloc = bMalloc;
   
@@ -35,7 +35,7 @@ void Parser::operator delete(void* pParserAddress)
   if (pParser->m_bMalloc)
     free(pParser);
   else
-    gpMediumHeap->vFreeObject((Object*)pParser);
+    Heap::vFree((Object*)pParser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +53,7 @@ Parser::Parser(void)
   
   vResetParser();
   
-  _checkInitialised_(sizeof(Parser));
+  _checkInitialised_(CN_PARSER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
 };

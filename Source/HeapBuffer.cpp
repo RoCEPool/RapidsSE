@@ -12,7 +12,8 @@ extern BufferPool*  gpBufferPool;
 void* HeapBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_HEAPBUFFER);
   
   return pPoolCheck<void*>(pBuffer);
 }
@@ -24,7 +25,7 @@ void HeapBuffer::operator delete(void* pHeapBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pHeapBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,7 +39,7 @@ HeapBuffer::HeapBuffer(void)
   m_pNextBuffer = nullptr;
   m_pPrevBuffer = nullptr;
   
-  _checkInitialised_(sizeof(HeapBuffer));
+  _checkInitialised_(CN_HEAPBUFFER);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
 }

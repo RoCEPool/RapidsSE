@@ -25,8 +25,8 @@ void* LoaderSub::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  void* pObject = gpSmallHeap->pAllocObject(CN_LOADERSUB);
-  
+  void* pObject = Heap::pAllocate(CN_LOADERSUB);
+ 
   return pObject;
 }
 
@@ -47,7 +47,7 @@ void LoaderSub::operator delete(void* pLoaderAddress)
 {
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pLoaderAddress);
   
-  gpSmallHeap->vFreeObject(pLoader);
+  Heap::vFree(pLoader);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ LoaderSub::LoaderSub(void)
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
   
-  _checkInitialised_(sizeof(LoaderSub));
+  _checkInitialised_(CN_LOADERSUB);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
 }
@@ -94,7 +94,7 @@ LoaderSub::~LoaderSub(void)
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  ASSERT(eClass == CN_LOADER);
+  ASSERT(eClass == CN_LOADERSUB);
   ASSERT(pObject->eClass() == CN_LOADERSUB);
   
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pObject);

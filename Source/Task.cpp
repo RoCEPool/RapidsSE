@@ -16,8 +16,8 @@ extern Arguments             gxArguments;
 extern AttachMap*            gpAttachMap;
 extern BufferPool*           gpBufferPool;
 extern Heap*                 gpMediumHeap;
-extern BufferPoolAnalyzer*   gpBPA;
-extern Dictionary*           gpMainDic;
+extern BPA*                  gpBPA;
+extern Dic*                  gpMainDic;
 extern Word*                 gpWord;
 
 extern Grid*                 gpGrid;
@@ -57,7 +57,7 @@ void* Task::operator new(size_t iSize)
   RASSERT(iSize);
   ASSERT(gpTaskList);
   
-  Task* pTask = (Task*)gpMediumHeap->pAllocObject(CN_TASK);
+  Task* pTask = _pTask(Heap::pAllocate(CN_TASK));
   
   return pTask;
 }
@@ -80,7 +80,7 @@ void Task::operator delete(void* pTaskAddress)
 {
   Task* pTask = reinterpret_cast<Task*>(pTaskAddress);
   
-  gpMediumHeap->vFreeObject(pTask);
+  Heap::vFree(pTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ Task::Task(void)
   
   vInit("");
     
-  _checkInitialised_(sizeof(Task));
+  _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
@@ -124,7 +124,7 @@ Task::Task(NNP_Task nnpTask)
   
   vInit("");
   
-  _checkInitialised_(sizeof(Task));
+  _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
@@ -147,7 +147,7 @@ Task::Task(const char* aLambdaInput)
   
   vInit(aLambdaInput);
   
-  _checkInitialised_(sizeof(Task));
+  _checkInitialised_(CN_TASK);
   
   Task* pTask = this;
   gpTaskList->vAppend(pTask);
@@ -189,7 +189,7 @@ void Task::vInit(const char* aLambda)
   m_pParentTask = nullptr;
   m_pThread     = nullptr;
   
-  m_xDictionaryStack.vPush(gpMainDic);
+  m_xDicStack.vPush(gpMainDic);
   
   m_pQueue = nullptr;
   
@@ -241,7 +241,7 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Dictionary* pDic = m_xDictionaryStack.pTop();
+  Dic* pDic = m_xDicStack.pTop();
   
   pDic->vAddConstant(aName,iVal);
 }
@@ -253,7 +253,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dictionary* pDic = m_xDictionaryStack.pTop();
+  Dic* pDic = m_xDicStack.pTop();
   
   pDic->vAddConstant(aName,aValue);
 }
@@ -265,7 +265,7 @@ void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dictionary* pDic = m_xDictionaryStack.pTop();
+  Dic* pDic = m_xDicStack.pTop();
   
   Word* pWord = new(pDic) Word(pName);
   
@@ -344,9 +344,9 @@ void Task::vAddConstants(void)
   /*  8 */ vAddConstant("CN_ATTACHMAP",             CN_ATTACHMAP);
   /*  9 */ vAddConstant("CN_BUFFER",                CN_BUFFER);
   /* 10 */ vAddConstant("CN_BUFFERPOOL",            CN_BUFFERPOOL);
-  /* 11 */ vAddConstant("CN_BUFFERPOOLANALYZER",    CN_BUFFERPOOLANALYZER);
+  /* 11 */ vAddConstant("CN_BPA",                   CN_BPA);
   /* 13 */ vAddConstant("CN_PARSER",                CN_PARSER);
-  /* 14 */ vAddConstant("CN_DICTIONARY",            CN_DICTIONARY);
+  /* 14 */ vAddConstant("CN_DIC",                   CN_DIC);
   /* 15 */ vAddConstant("CN_DIR",                   CN_DIR);
   /* 16 */ vAddConstant("CN_FILE",                  CN_FILE);
   /* 17 */ vAddConstant("CN_FREECHUNK",             CN_FREECHUNK);
@@ -452,9 +452,9 @@ void Task::vAddConstants(void)
   /*  9 */ vAddConstant("SIZEOF_ATTACHMAP",         sizeof(AttachMap));
   /* 10 */ vAddConstant("SIZEOF_BUFFER",            sizeof(Buffer));
   /* 11 */ vAddConstant("SIZEOF_BUFFERPOOL",        sizeof(BufferPool));
-  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOLANALYZER",sizeof(BufferPoolAnalyzer));
-  /* 13 */ vAddConstant("SIZEOF_DICTIONARY",        sizeof(Dictionary));
-  /* 14 */ vAddConstant("SIZEOF_DICTIONARYSTACK",   sizeof(DictionaryStack));
+  /* 12 */ vAddConstant("SIZEOF_BPA",               sizeof(BPA));
+  /* 13 */ vAddConstant("SIZEOF_DIC",               sizeof(Dic));
+  /* 14 */ vAddConstant("SIZEOF_DICSTACK",          sizeof(DicStack));
   /* 15 */ vAddConstant("SIZEOF_DIR",               sizeof(Dir));
   /* 16 */ vAddConstant("SIZEOF_FILE",              sizeof(File));
   /* 17 */ vAddConstant("SIZEOF_FREECHUNK",         sizeof(FreeChunk));
@@ -1298,7 +1298,7 @@ Word* Task::pCompileColon(s& sDefinition)
   vTokenNext();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
-  pNewWord = new(m_xDictionaryStack.pTop()) Word(m_sToken.a());
+  pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
   
   vTokenNext();
   
@@ -1363,14 +1363,14 @@ Word* Task::pCurrentWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dictionary* pDictionary;
+  Dic* pDic;
   
   if (m_pSEitf)
-    pDictionary = m_pSEitf->pDicStack()->pTop();
+    pDic = m_pSEitf->pDicStack()->pTop();
   else
-    pDictionary = m_xDictionaryStack.pTop();
+    pDic = m_xDicStack.pTop();
 
-  Word* pWord = pDictionary->pCurrentWord();
+  Word* pWord = pDic->pCurrentWord();
   
   return pWord;
 }
@@ -1445,7 +1445,7 @@ Word* Task::pFindWord(s& sName)
   }
   
   // attempt to find word in this tasks dic stack
-  pWord = m_xDictionaryStack.pFind(sName.a());
+  pWord = m_xDicStack.pFind(sName.a());
   
   return pWord;
 }
@@ -1469,7 +1469,7 @@ Word* Task::pFindWordInCurrent(s& sName)
   }
   
   // attempt to find word in this tasks current dic
-  pWord = m_xDictionaryStack.pFindInCurrent(sName.a());
+  pWord = m_xDicStack.pFindInCurrent(sName.a());
   
   return pWord;
 }
@@ -1481,7 +1481,7 @@ Word* Task::pFindWord(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pWord = m_xDictionaryStack.pFind(aName);
+  Word* pWord = m_xDicStack.pFind(aName);
   
   return pWord;
 }
@@ -1497,7 +1497,7 @@ bool Task::bForgetWord(s& sName)
   if (m_pSEitf)
     bResult = m_pSEitf->pDicStack()->bForget(sName);
   else
-    bResult = m_xDictionaryStack.bForget(sName);
+    bResult = m_xDicStack.bForget(sName);
   
   return bResult;
 }
@@ -1528,7 +1528,7 @@ Word* Task::pLocateWord(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pWord = m_xDictionaryStack.pLocate(pCell);
+  Word* pWord = m_xDicStack.pLocate(pCell);
   
   return pWord;
 }
@@ -2103,7 +2103,7 @@ void Task::vBpa(NNP_Task nnpTask)
 {
 ENTRY("vBpa");
   
-  BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
+  BPA* pBPA = new BPA;
   
   pBPA->vAnalyze();
   
@@ -2119,7 +2119,7 @@ void Task::vBpdump(NNP_Task nnpTask)
 {
 ENTRY("vBpdump");
   
-  BufferPoolAnalyzer* pBPA = new BufferPoolAnalyzer;
+  BPA* pBPA = new BPA;
   
   pBPA->vDump();
   
@@ -2198,7 +2198,7 @@ ENTRY("vColon");
 
   nnpTask->vTokenNext();
   
-  new(nnpTask->m_xDictionaryStack.pTop())  Word(nnpTask->m_sToken.a());
+  new(nnpTask->m_xDicStack.pTop())  Word(nnpTask->m_sToken.a());
   
   EXIT();
 }
@@ -4128,7 +4128,7 @@ ENTRY("vSee");
 //  while ((char*)pCell < pcAdd(pWord->pDataArea(),pWord->iDataBytes())) {
   while (pCell <= pWord->pLastCell()) {
  
-    Word* pDoesWord = nnpTask->m_xDictionaryStack.pFindStep(*pCell->m_ppDoesStep);
+    Word* pDoesWord = nnpTask->m_xDicStack.pFindStep(*pCell->m_ppDoesStep);
 
     vTrace("%p: %s",pCell,pDoesWord->sName().a());
   
@@ -5088,7 +5088,7 @@ ENTRY("vDicCount");
     iCount = nnpTask->m_pSEitf->pDicStack()->iCount();
   }
   else {
-    iCount = nnpTask->m_xDictionaryStack.iCount();
+    iCount = nnpTask->m_xDicStack.iCount();
   }
   
   nnpTask->m_xParamStack.vPush(iCount);
@@ -5107,7 +5107,7 @@ ENTRY("vDicDrop");
     nnpTask->m_pSEitf->vPopDic();
   }
   else {
-    nnpTask->m_xDictionaryStack.vDiscard();
+    nnpTask->m_xDicStack.vDiscard();
   }
   
   EXIT();
@@ -5125,7 +5125,7 @@ ENTRY("vDicFrozenGet");
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
     THROW_INVALID_PARAM("dic.frozen@");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
   
   bool bFrozen = pDic->bFrozen();
   
@@ -5147,7 +5147,7 @@ ENTRY("vDicFrozenSet");
   if ( ! nnpTask->m_xParamStack.bPop(iFrozen,pPtrDic) )
     THROW_INVALID_PARAM("dic.frozen@");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
   
   pDic->vFrozen(iFrozen);
   
@@ -5165,7 +5165,7 @@ ENTRY("vDicDump");
     nnpTask->m_pSEitf->pDicStack()->vDump();
   }
   else {
-    nnpTask->m_xDictionaryStack.vDump();
+    nnpTask->m_xDicStack.vDump();
   }
   
   EXIT();
@@ -5183,9 +5183,9 @@ ENTRY("vDicInit");
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
     THROW_INVALID_PARAM("dic.init");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
 
-  new (pDic) Dictionary;
+  new (pDic) Dic;
   
   // this is because of GlobalDictionary (ugh)
   pDic->vInit();
@@ -5205,7 +5205,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
     THROW_INVALID_PARAM("dic.kind@");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
   
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
@@ -5228,7 +5228,7 @@ void Task::vDicKindSet(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic,pPtrKind) )
     THROW_INVALID_PARAM("dic.kind@");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
   
   Word* pKind = _pWord(pPtrKind);
   
@@ -5249,7 +5249,7 @@ ENTRY("vDicLast");
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
     THROW_INVALID_PARAM("dic.last");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pCurrentWord();
   
@@ -5281,7 +5281,7 @@ ENTRY("vDicName");
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
     THROW_INVALID_PARAM("dic.name");
   
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
 
   ValWsp sName;
   sName = pDic->sName().a();
@@ -5308,7 +5308,7 @@ ENTRY("vDicPick");
     pPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
   }
   else {
-    pPtrDic = nnpTask->m_xDictionaryStack.pPick(iDic);
+    pPtrDic = nnpTask->m_xDicStack.pPick(iDic);
   }
   
   nnpTask->m_xParamStack.vPush(pPtrDic);
@@ -5328,13 +5328,13 @@ ENTRY("vDicPush");
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
     THROW_INVALID_PARAM("dic.push");
 
-  Dictionary* pDic = _pDic(pPtrDic);
+  Dic* pDic = _pDic(pPtrDic);
   
   if (nnpTask->m_pSEitf) {
     nnpTask->m_pSEitf->vPushDic(pDic);
   }
   else {
-    nnpTask->m_xDictionaryStack.vPush(pDic);
+    nnpTask->m_xDicStack.vPush(pDic);
   }
   
   EXIT();
@@ -7768,7 +7768,7 @@ ENTRY("vRowCursorDelete");
   Object* pObject = reinterpret_cast<Object*>(pRowCursor);
   delete pRowCursor;
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
   
   EXIT();
 }
@@ -8138,7 +8138,7 @@ ENTRY("vSEitfCursorDelete");
   Object* pObject = reinterpret_cast<Object*>(pSEitfCursor);
   delete pSEitfCursor;
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
   
   EXIT();
 }
@@ -8246,7 +8246,8 @@ ENTRY("vSEitfCursorNew");
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
-  SEitfCursor* pSEitfCursor = static_cast<SEitfCursor*>(gpSmallHeap->pAllocObject(CN_SEITFCURSOR));
+  SEitfCursor* pSEitfCursor = _pSEitfCursor(Heap::pAllocate(CN_SEITFCURSOR));
+
   new(pSEitfCursor) SEitfCursor(pSEitfList);
   
   Object* pPtrSEitfCursor = pSEitfCursor;
@@ -8694,9 +8695,9 @@ ENTRY("vTableDic");
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  Dictionary* pDictionary = pTable->pDic();
+  Dic* pDic = pTable->pDic();
   
-  nnpTask->m_xParamStack.vPush(pDictionary);
+  nnpTask->m_xParamStack.vPush(pDic);
   
   EXIT();
 }
@@ -8845,7 +8846,7 @@ void Task::vTaskDic(NNP_Task nnpTask)
 {
 ENTRY("vTaskDic");
   
-  Object* pPtrDic = &nnpTask->m_xTaskDictionary;
+  Object* pPtrDic = &nnpTask->m_xTaskDic;
   
   nnpTask->m_xParamStack.vPush(pPtrDic);
   
@@ -9233,7 +9234,7 @@ ENTRY("vTaskCursorDelete");
   Object* pObject = reinterpret_cast<Object*>(pTaskCursor);
   delete pTaskCursor;
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
   
   EXIT();
 }
@@ -10138,7 +10139,7 @@ ENTRY("vTimeDelete");
   
   delete pTimer;
   
-  gpSmallHeap->vFreeObject(pTimerObject);
+  Heap::vFree(pTimerObject);
   
   EXIT();
 }
@@ -10232,7 +10233,9 @@ void Task::vTimerNew(NNP_Task nnpTask)
 {
 ENTRY("vTimerNew");
   
-  Timer* pTimer = reinterpret_cast<Timer*>(gpSmallHeap->pAllocObject(CN_TIMER));
+  void* pObject = Heap::pAllocate(CN_ROWSTRAND);
+
+  Timer* pTimer = _pTimer(Heap::pAllocate(CN_TIMER));
 
   new(pTimer) Timer;
  
@@ -10702,13 +10705,13 @@ ENTRY("vCreate");
   
   nnpTask->vTokenNext();
   
-  Dictionary* pDictionary;
+  Dic* pDic;
   if (nnpTask->m_pSEitf)
-    pDictionary = nnpTask->m_pSEitf->pDicStack()->pTop();
+    pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
   else
-    pDictionary = nnpTask->m_xDictionaryStack.pTop();
+    pDic = nnpTask->m_xDicStack.pTop();
   
-  new(pDictionary) Word(nnpTask->m_sToken.a());
+  new(pDic) Word(nnpTask->m_sToken.a());
   
   EXIT();
 }
@@ -10724,13 +10727,13 @@ ENTRY("vCreateFrom");
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
     THROW_INVALID_PARAM(">create");
   
-  Dictionary* pDictionary;
+  Dic* pDic;
   if (nnpTask->m_pSEitf)
-    pDictionary = nnpTask->m_pSEitf->pDicStack()->pTop();
+    pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
   else
-    pDictionary = nnpTask->m_xDictionaryStack.pTop();
+    pDic = nnpTask->m_xDicStack.pTop();
   
-  new(pDictionary) Word(sName.a());
+  new(pDic) Word(sName.a());
   
   EXIT();
 }
@@ -10861,9 +10864,9 @@ ENTRY("vWordDic");
     THROW_INVALID_PARAM("vWordDic");
   Word* pWord = _pWord(pWordObject);
   
-  Dictionary* pDictionary = pWord->pDictionary();
+  Dic* pDic = pWord->pDic();
   
-  nnpTask->m_xParamStack.vPush(pDictionary->sName().a());
+  nnpTask->m_xParamStack.vPush(pDic->sName().a());
   
   EXIT();
 }

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DictionaryStack.cpp - dictionary stack                                     */
+/* DicStack.cpp - dictionary stack                                            */
 /*============================================================================*/
 
 #include "Tasks.h"
@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* DictionaryStack::operator new(size_t iSize)
+void* DicStack::operator new(size_t iSize)
 {
   RASSERT(iSize);
   vFatal("fatal: DictionaryStack class cannot be new'd");
@@ -18,7 +18,7 @@ void* DictionaryStack::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void DictionaryStack::operator delete(void* pAddress)
+void DicStack::operator delete(void* pAddress)
 {
   RASSERT(pAddress);
   vFatal("fatal: DictionaryStack class cannot be deleted");
@@ -29,35 +29,35 @@ void DictionaryStack::operator delete(void* pAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DictionaryStack::DictionaryStack(void)
-: Object(CN_DICTIONARYSTACK)
+DicStack::DicStack(void)
+: Object(CN_DICSTACK)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
   m_iTop = -1;
 
   for (i8 i = 0; i < C_DICTIONARY_STACK; i++)
-    m_pDictionary[i] = nullptr;
+    m_pDic[i] = nullptr;
   
-  _checkInitialised_(sizeof(DictionaryStack));
+  _checkInitialised_(CN_DICSTACK);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-DictionaryStack::~DictionaryStack(void)
+DicStack::~DicStack(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get number of dictionaries in the stack                                    */
 /*----------------------------------------------------------------------------*/
-i8 DictionaryStack::iCount(void)
+i8 DicStack::iCount(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   return m_iTop + 1;
 }
@@ -65,14 +65,14 @@ i8 DictionaryStack::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* discard top dictionary                                                     */
 /*----------------------------------------------------------------------------*/
-void DictionaryStack::vDiscard(void)
+void DicStack::vDiscard(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
   ASSERT(m_iTop <  C_DICTIONARY_STACK);
   
-  m_pDictionary[m_iTop] = nullptr;
+  m_pDic[m_iTop] = nullptr;
   
   m_iTop--;
 }
@@ -80,29 +80,29 @@ void DictionaryStack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* dump stack of dictionaries                                                 */
 /*----------------------------------------------------------------------------*/
-void DictionaryStack::vDump(void)
+void DicStack::vDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   for (i8 i = m_iTop; i >= 0; i--)
-    vTrace("Dic %p %lld %s\n",m_pDictionary[i],i,m_pDictionary[i]->sName().a());
+    vTrace("Dic %p %lld %s\n",m_pDic[i],i,m_pDic[i]->sName().a());
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
-void DictionaryStack::vDump(eCN eClass, Object* pObject, const char* pTab)
+void DicStack::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  ASSERT(eClass == CN_DICTIONARYSTACK);
-  ASSERT(pObject->eClass() == CN_DICTIONARYSTACK);
+  ASSERT(eClass == CN_DICSTACK);
+  ASSERT(pObject->eClass() == CN_DICSTACK);
   
-  DictionaryStack* pDictionaryStack = reinterpret_cast<DictionaryStack*>(pObject);
+  DicStack* pDicStack = reinterpret_cast<DicStack*>(pObject);
   
-  vTrace("%sDictionary Stack %p:\n", pTab, pDictionaryStack);
-  vTrace("%s  Top %p:\n", pTab, pDictionaryStack->m_iTop);
-  for (i8 i = pDictionaryStack->m_iTop; i >= 0; i--)
-    vTrace("%s  Dic %p %lld %s\n",pTab, pDictionaryStack->m_pDictionary[i],i,
-           pDictionaryStack->m_pDictionary[i]->sName().a());
+  vTrace("%sDictionary Stack %p:\n", pTab, pDicStack);
+  vTrace("%s  Top %p:\n", pTab, pDicStack->m_iTop);
+  for (i8 i = pDicStack->m_iTop; i >= 0; i--)
+    vTrace("%s  Dic %p %lld %s\n",pTab, pDicStack->m_pDic[i],i,
+           pDicStack->m_pDic[i]->sName().a());
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
@@ -111,9 +111,9 @@ void DictionaryStack::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pFind(s& sName)
+Word* DicStack::pFind(s& sName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
 
@@ -125,16 +125,16 @@ Word* DictionaryStack::pFind(s& sName)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pFind(const char* aName)
+Word* DicStack::pFind(const char* aName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
   
   Word* pWord;
   
   for (i8 i = m_iTop; i >= 0; i--) {
-    if ( (pWord = m_pDictionary[i]->pFind(aName)) )
+    if ( (pWord = m_pDic[i]->pFind(aName)) )
       return pWord;
   }
   
@@ -144,15 +144,15 @@ Word* DictionaryStack::pFind(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find word in current dictionary                                            */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pFindInCurrent(const char* aName)
+Word* DicStack::pFindInCurrent(const char* aName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
   
   Word* pWord;
   
-  if ( (pWord = m_pDictionary[m_iTop]->pFind(aName)) ) {
+  if ( (pWord = m_pDic[m_iTop]->pFind(aName)) ) {
     return pWord;
   }
   
@@ -162,12 +162,12 @@ Word* DictionaryStack::pFindInCurrent(const char* aName)
 /*----------------------------------------------------------------------------*/
 /* find a word given step                                                     */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pFindStep(TaskStep pStep)
+Word* DicStack::pFindStep(TaskStep pStep)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   for (i8 i = m_iTop; i >= 0; i--) {
-    for (Word* pWord = m_pDictionary[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
+    for (Word* pWord = m_pDic[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
       if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pDoesStep())
         return pWord;
   }
@@ -178,14 +178,14 @@ Word* DictionaryStack::pFindStep(TaskStep pStep)
 /*----------------------------------------------------------------------------*/
 /* forget word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-bool DictionaryStack::bForget(s& sName)
+bool DicStack::bForget(s& sName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
     
   for (i8 i = m_iTop; i >= 0; i--) {
-    if ( m_pDictionary[i]->bForget(sName) )
+    if ( m_pDic[i]->bForget(sName) )
       return true;
   }
   
@@ -195,12 +195,12 @@ bool DictionaryStack::bForget(s& sName)
 /*----------------------------------------------------------------------------*/
 /* locate word in stack of dictionaries                                       */
 /*----------------------------------------------------------------------------*/
-Word* DictionaryStack::pLocate(Cell* pCell)
+Word* DicStack::pLocate(Cell* pCell)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
   for (i8 i = m_iTop; i >= 0; i--) {
-    for (Word* pWord = m_pDictionary[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
+    for (Word* pWord = m_pDic[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
       if (pWord->bHasCell(pCell))
         return pWord;
   }
@@ -212,11 +212,11 @@ Word* DictionaryStack::pLocate(Cell* pCell)
 /*----------------------------------------------------------------------------*/
 /* get a particular dictionary on the stack                                   */
 /*----------------------------------------------------------------------------*/
-Dictionary* DictionaryStack::pPick(i8 iPick)
+Dic* DicStack::pPick(i8 iPick)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
-  Dictionary* pDic = m_pDictionary[m_iTop - iPick];
+  Dic* pDic = m_pDic[m_iTop - iPick];
   
   return pDic;
 }
@@ -224,28 +224,28 @@ Dictionary* DictionaryStack::pPick(i8 iPick)
 /*----------------------------------------------------------------------------*/
 /* push dictionary onto stack                                                 */
 /*----------------------------------------------------------------------------*/
-void DictionaryStack::vPush(Dictionary* pDictionary)
+void DicStack::vPush(Dic* pDic)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   ASSERT(m_iTop >= -1);
   ASSERT(m_iTop <  C_DICTIONARY_STACK - 1);
   
-  ASSERT(CN_DICTIONARY == pDictionary->eClass());
+  ASSERT(CN_DIC == pDic->eClass());
   
   m_iTop++;
   
-  m_pDictionary[m_iTop] = pDictionary;
+  m_pDic[m_iTop] = pDic;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get topmost dictionary                                                     */
 /*----------------------------------------------------------------------------*/
-Dictionary* DictionaryStack::pTop(void)
+Dic* DicStack::pTop(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
-  Dictionary* pTop = m_pDictionary[m_iTop];
+  Dic* pTop = m_pDic[m_iTop];
   
   return pTop;
 }
@@ -257,9 +257,9 @@ Dictionary* DictionaryStack::pTop(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* DictionaryStack::pFooter(void)
+Footer* DicStack::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICTIONARYSTACK);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK);
   
   return &m_xFooter;
 }

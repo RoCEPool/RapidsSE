@@ -12,7 +12,7 @@
 void* RowBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ROWBUFFER);
   
   return pBuffer;
 }
@@ -24,7 +24,7 @@ void RowBuffer::operator delete(void* pRowBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pRowBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ RowBuffer::RowBuffer(void)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
-  _checkInitialised_(sizeof(RowBuffer));
+  _checkInitialised_(CN_ROWBUFFER);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -33,7 +33,7 @@ IntVal::IntVal(void)
 {
   m_iInt = 0;
   
-  _checkInitialised_(sizeof(IntVal));
+  _checkInitialised_(CN_INTVAL);
 }
 
 /*----------------------------------------------------------------------------*/

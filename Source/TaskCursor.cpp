@@ -43,7 +43,7 @@ TaskCursor::TaskCursor(List_t<Task>* pList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR,_FOOTER_);
   
-  _checkInitialised_(sizeof(TaskCursor));
+  _checkInitialised_(CN_TASKCURSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TASKCURSOR,_FOOTER_);
 }

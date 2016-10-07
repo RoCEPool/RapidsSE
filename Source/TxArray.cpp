@@ -12,7 +12,8 @@ extern BufferPool*  gpBufferPool;
 void* TxArray::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_TXARRAY);
   
   return pBuffer;
 }
@@ -39,7 +40,7 @@ TxArray::TxArray(void)
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
     m_pTx[iTx] = nullptr;
 
-  _checkInitialised_(sizeof(TxArray));
+  _checkInitialised_(CN_TXARRAY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXARRAY,_FOOTER_);
 }

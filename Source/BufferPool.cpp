@@ -57,7 +57,7 @@ BufferPool::BufferPool(void)
   
   vInitialise();
   
-  _checkInitialised_(sizeof(BufferPool));
+  _checkInitialised_(CN_BUFFERPOOL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
 }

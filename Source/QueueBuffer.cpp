@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 void* QueueBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_QUEUEBUFFER);
   
   return pPoolCheck<void*>(pBuffer);
 }
@@ -24,7 +24,7 @@ void QueueBuffer::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ QueueBuffer::QueueBuffer(void)
   m_pNextFree = m_pTopValue;
   m_pNext     = nullptr;
   
-  _checkInitialised_(sizeof(QueueBuffer));
+  _checkInitialised_(CN_QUEUEBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
 }

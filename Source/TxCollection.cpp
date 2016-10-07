@@ -52,7 +52,7 @@ TxCollection::TxCollection(void)
   for (i8 iTxSlot = 0; iTxSlot < C_TX_ARRAY; iTxSlot++) {
     
     // allocate tx
-    Tx* pTx = reinterpret_cast<Tx*>(gpSmallHeap->pAllocObject(CN_TX));
+    Tx* pTx = _pTx(Heap::pAllocate(CN_TX));
     
     // initialize it
     new(pTx) Tx;
@@ -64,7 +64,7 @@ TxCollection::TxCollection(void)
   
   gpTxCollection = this;
   
-  _checkInitialised_(sizeof(TxCollection));
+  _checkInitialised_(CN_TXCOLLECTION);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCOLLECTION,_FOOTER_);
 }

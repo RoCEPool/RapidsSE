@@ -47,7 +47,7 @@ Timer::Timer(void)
   
   vInit();
   
-  _checkInitialised_(sizeof(Timer));
+  _checkInitialised_(CN_TIMER);
 
   _postcondition_(_MAGIC_,CN_TIMER,_FOOTER_);
 }

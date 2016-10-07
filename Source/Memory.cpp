@@ -4,6 +4,8 @@
 
 #include "Common.h"
 
+extern i8 giClassSize[];
+
 /*----------------------------------------------------------------------------*/
 /* map a new an anonymous region of memory (private or shared)                */
 /*----------------------------------------------------------------------------*/
@@ -19,11 +21,32 @@ void* Memory::pAddBytes(void* pAddress, i8 iBytes)
 /*----------------------------------------------------------------------------*/
 /* check memory has been intialised                                           */
 /*----------------------------------------------------------------------------*/
+void Memory::vCheckInitialised(void* pAddress, eCN eClass)
+{
+  u8* pMchWord = reinterpret_cast<u8*>(pAddress);
+  i8  nBytes = giClassSize[eClass];
+  i8  nWords = nBytes / 8;
+
+  for (i8 iWord = 0; iWord < nWords; iWord++) {
+    
+    if (C_SCRIBBLE_PATTERN == *pMchWord) {
+      Memory::vWordDump(pAddress,nBytes,iWord);
+      vDebugTrap();
+    }
+    
+    ASSERT(C_SCRIBBLE_PATTERN != *pMchWord);
+    pMchWord++;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* check memory has been intialised                                           */
+/*----------------------------------------------------------------------------*/
 void Memory::vCheckInitialised(void* pAddress, i8 nBytes)
 {
   u8* pMchWord = reinterpret_cast<u8*>(pAddress);
   i8  nWords = nBytes / 8;
-
+  
   for (i8 iWord = 0; iWord < nWords; iWord++) {
     
     if (C_SCRIBBLE_PATTERN == *pMchWord) {

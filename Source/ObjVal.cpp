@@ -23,7 +23,7 @@ ObjVal::ObjVal(i8 iSize)
 {
   m_iSize = iSize;
   
-  _checkInitialised_(sizeof(ObjVal));
+  _checkInitialised_(CN_OBJVAL);
 }
 
 /*----------------------------------------------------------------------------*/

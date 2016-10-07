@@ -13,7 +13,7 @@ SysCall::SysCall(void)
   m_eStatus  = eSysCall_NOTSET;
   m_iErrNo   = 0;
   
-  _checkInitialised_(sizeof(SysCall));
+  _checkInitialised_(CN_SYSCALL);
 }
 
 /*----------------------------------------------------------------------------*/

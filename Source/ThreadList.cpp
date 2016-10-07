@@ -49,7 +49,7 @@ ThreadList::ThreadList(void)
   
   gpThreadList = this;
   
-  _checkInitialised_(sizeof(ThreadList));
+  _checkInitialised_(CN_THREADLIST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
 }
@@ -68,7 +68,7 @@ Thread* ThreadList::pAllocThread(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADLIST,_FOOTER_);
   
-  Thread* pThread = reinterpret_cast<Thread*>(gpSmallHeap->pAllocObject(CN_THREADLIST));
+  Thread* pThread = _pThread(Heap::pAllocate(CN_THREAD));
   
   vAppend(pThread);
   
@@ -84,7 +84,7 @@ void ThreadList::vFreeThread(Thread* pThread)
   
   vRemove(pThread);
   
-  gpSmallHeap->vFreeObject(pThread);
+  Heap::vFree(pThread);
 }
 
 /*----------------------------------------------------------------------------*/

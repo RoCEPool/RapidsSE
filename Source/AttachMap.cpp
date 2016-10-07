@@ -9,7 +9,7 @@ extern BufferPool*  gpBufferPool;
 extern Heap*        gpJumboHeap;
 extern Heap*        gpMediumHeap;
 extern Heap*        gpSmallHeap;
-extern Dictionary*  gpMainDic;
+extern Dic*         gpMainDic;
 
 extern Grid*        gpGrid;
 extern TaskList*    gpTaskList;
@@ -23,7 +23,7 @@ void* AttachMap::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ATTACHMAP);
   
   return pPoolCheck<void*>(pBuffer);
 }
@@ -35,7 +35,7 @@ void AttachMap::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  _checkInitialised_(sizeof(AttachMap));
+  _checkInitialised_(CN_ATTACHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 }

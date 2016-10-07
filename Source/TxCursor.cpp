@@ -22,7 +22,8 @@ TxCursor* Transactions::_pTxCursor(void* pAddr)
 void* TxCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Object* pObject = gpSmallHeap->pAllocObject(CN_TXCURSOR);
+
+  void* pObject = Heap::pAllocate(CN_TXCURSOR);
   
   return pObject;
 }
@@ -43,7 +44,7 @@ void TxCursor::operator delete(void* pThreadAddress)
 {
   Object* pObject = reinterpret_cast<Object*>(pThreadAddress);
   
-  gpSmallHeap->vFreeObject(pObject);
+  Heap::vFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,7 +56,7 @@ TxCursor::TxCursor(Collection_t<Tx>* gpTxCollection)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
   
-  _checkInitialised_(sizeof(TxCursor));
+  _checkInitialised_(CN_TXCURSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TXCURSOR,_FOOTER_);
 }

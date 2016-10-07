@@ -12,7 +12,7 @@ extern BufferPool* gpBufferPool;
 void* LoadChunk::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Buffer* pBuffer = gpBufferPool->pAllocBuffer();
+  Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_LOADCHUNK);
   
   return pPoolCheck<void*>(pBuffer);
 }
@@ -24,7 +24,7 @@ void LoadChunk::operator delete(void* pBufferAddress)
 {
   Buffer* pBuffer = static_cast<Buffer*>(pBufferAddress);
   
-  gpBufferPool->vFree(pBuffer);
+  Heap::vFree(pBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +42,7 @@ LoadChunk::LoadChunk(void)
   ASSERT(! m_pEndChunk);
   ASSERT(! m_pNextRecord);
  
-  _checkInitialised_(sizeof(LoadChunk));
+  _checkInitialised_(CN_LOADCHUNK);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_LOADCHUNK,_FOOTER_);
 }

@@ -74,7 +74,7 @@ Collection_t<OBJECT>::Collection_t(void)
   m_pTail  = nullptr;
   m_pFree  = nullptr;
   
-  _checkInitialised_(sizeof(Collection_t<OBJECT>));
+  _checkInitialisedSize_(sizeof(Collection_t<OBJECT>));
 }
 
 /*----------------------------------------------------------------------------*/

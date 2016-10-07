@@ -35,7 +35,7 @@ Atomic::Atomic(void)
 {
   m_iInt = 0;
   
-  _checkInitialised_(sizeof(Atomic));
+  _checkInitialised_(CN_ATOMIC);
   
   _postcondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 }
