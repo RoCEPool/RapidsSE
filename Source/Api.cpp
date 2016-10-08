@@ -47,6 +47,18 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   // clear the last error
   pSEitf->vClearLastError();
   
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // change directory to boray
   eResult = eExecuteRequest(pSEitf, "cf", "boray");
   if (EC_NONE != eResult) {
@@ -108,6 +120,18 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   if (!pSchema)
     return EC_INVALID_PARAMETER;
   
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // change directory to boray
   eResult = eExecuteRequest(pSEitf, "cf", "boray");
   if (EC_NONE != eResult) {
@@ -281,6 +305,18 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   if (!pCatalog)
     return EC_INVALID_PARAMETER;
   
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // change directory to boray
   eResult = eExecuteRequest(pSEitf, "cf", "boray");
   if (EC_NONE != eResult) {
@@ -365,6 +401,18 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   if (!pSchema)
     return EC_INVALID_PARAMETER;
   
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // change directory to boray
   eResult = eExecuteRequest(pSEitf, "cf", "boray");
   if (EC_NONE != eResult) {
@@ -492,6 +540,18 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   if (!pTable)
     return EC_INVALID_PARAMETER;
   
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   // change directory to boray
   eResult = eExecuteRequest(pSEitf, "cf", "boray");
   if (EC_NONE != eResult) {
@@ -691,7 +751,7 @@ eEC eGetResponse(SEitf* pSEitf)
 {
   // get response
   eEC eError = pSEitf->eGetResponse();
-  //  vTrace("rsp : %lld\n", iResponse);
+  vTrace("rsp : %s %lld\n", pSEitf->m_sResponse.a(), eError);
   
   return eError;
 }

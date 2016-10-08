@@ -75,7 +75,7 @@ SePrompt::SePrompt(i8 iPartition)
   // open the command history file
   m_xHistory.vOpen();
 
-  _checkInitialised_(sizeof(SePrompt));
+  _checkInitialised_(CN_SEPROMPT);
 }
 
 /*----------------------------------------------------------------------------*/
