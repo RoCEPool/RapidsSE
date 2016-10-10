@@ -41,7 +41,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
 {
-  vTrace("RapidsSE_GetCatalogs\n");
+  //vTrace("RapidsSE_GetCatalogs\n");
   
   eEC eResult;
   
@@ -121,7 +121,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
 eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
                         char* pTable, void** ppColumns)
 {
-  vTrace("RapidsSE_GetColumns: %s %s %s\n", pCatalog, pSchema, pTable);
+  //vTrace("RapidsSE_GetColumns: %s %s %s\n", pCatalog, pSchema, pTable);
   
   eEC eResult;
   
@@ -319,7 +319,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
 {
-  vTrace("RapidsSE_GetParitions: 0x%x\n", pSEitf);
+  //vTrace("RapidsSE_GetParitions: 0x%x\n", pSEitf);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -350,7 +350,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
 {
-  vTrace("RapidsSE_GetSchemas: %s\n", pCatalog);
+  //vTrace("RapidsSE_GetSchemas: %s\n", pCatalog);
   
   eEC eResult;
   
@@ -459,7 +459,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables)
 {
-  vTrace("RapidsSE_GetTables: %s %s\n", pCatalog, pSchema);
+  //vTrace("RapidsSE_GetTables: %s %s\n", pCatalog, pSchema);
   
   eEC eResult;
   
@@ -595,7 +595,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_PoolOpen(void)
 {
-  vTrace("vRapidsSE_PoolOpen\n");
+  //vTrace("vRapidsSE_PoolOpen\n");
   
   // open the pool
   RapidsSE::vPoolOpen();
@@ -608,7 +608,7 @@ eEC RapidsSE_PoolOpen(void)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
-  vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
+  //vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
   
   eEC eResult;
   
@@ -735,7 +735,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
 
-  vTrace("pRowCursor: 0x%x\n", pRowCursor);
+  //vTrace("pRowCursor: 0x%x\n", pRowCursor);
   pRowCursor->vBegin(pSEitf->iPartition());
   pRowCursor->vFirst();
   
@@ -747,7 +747,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SEitfDelete(SEitf* pSEitf)
 {
-  vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+  //vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
   
   // clear the last error
   pSEitf->vClearLastError();
@@ -798,7 +798,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   String::vCopy(pWords[0], pCommand);
   String::vCopy(pWords[1], pParameter);
   
-  vTrace("%s %s\n", pCommand, pParameter);
+  //vTrace("%s %s\n", pCommand, pParameter);
   bResult = pSEitf->bDecode(pWords);
   
   return pSEitf->eGetLastError();
@@ -818,7 +818,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
   // execute command pCommand
   String::vCopy(pWords[0], pCommand);
   
-  vTrace("cf %s\n", pCommand);
+  //vTrace("cf %s\n", pCommand);
   bResult = pSEitf->bDecode(pWords);
   
   return pSEitf->eGetLastError();
