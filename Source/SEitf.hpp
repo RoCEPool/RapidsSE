@@ -108,10 +108,10 @@ namespace Interface
     bool bPing(char* pWords[]);
     
     bool bX(char* pWords[]);
-    bool bPrint(char* pWords[]);
+    void vPrint(char* pWords[]);
     
     //--------------------------------------------------------------------------
-    void vAppendRequest(s& sRequest);
+    bool bAppendRequest(s& sRequest);
     
     eEC  eGetResponse(void);
     bool bPopResponse(eEC& eResult, s& sResponse);

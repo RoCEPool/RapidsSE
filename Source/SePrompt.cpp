@@ -56,7 +56,6 @@ SePrompt::SePrompt(i8 iPartition)
   
   //m_wWorkarea
   
-  
   //----
   m_xTokeniser.vMalloc(false);
   m_xTokeniser.vPush();
@@ -87,6 +86,8 @@ SePrompt::~SePrompt(void)
   
   // close history file
   m_xHistory.vClose();
+  
+  // SHOULD REMOVE HISTORY FILE?
   
   RapidsSE_SEitfDelete(m_pSEitf);
 }
@@ -280,8 +281,7 @@ bool SePrompt::bProcessCommand(void)
   }
   
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
-    vChangeWorkingDir();
-    return true;
+    return bChangeWorkingDir();
   }
   
   if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
@@ -290,8 +290,7 @@ bool SePrompt::bProcessCommand(void)
       return bCreateTenant();
     }
     if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
-      vCreateCatalog();
-      return true;
+      return breateCatalog();
     }
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
       return breateSchema();
@@ -334,48 +333,39 @@ bool SePrompt::bProcessCommand(void)
   }
   
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("ld",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("ex",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
 
   if (String::bEqualTo("lf",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("lscol",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("pwf",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   if (String::bEqualTo("",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
+    return bExecuteRequest();
   }
   
   m_xHistory.vAppend(m_pToken);
@@ -669,7 +659,6 @@ void SePrompt::vHelp(void)
   vTrace("help   -- print this help\n");
 #endif
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

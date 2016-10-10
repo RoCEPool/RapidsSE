@@ -290,168 +290,135 @@ bool SEitf::bDecode(char* pWords[])
   }
   
   if (String::bEqualTo("add",pWords[0],C_NO_CASE)) {
-    bAddColumn(pWords);
-    return true;
+    return bAddColumn(pWords);
   }
   
   if (String::bEqualTo("adr",pWords[0],C_NO_CASE)) {
-    bAddressTable(pWords);
-    return true;
+    return bAddressTable(pWords);
   }
   
   if (String::bEqualTo("cf",pWords[0],C_NO_CASE)) {
-    bPushDic(pWords);
-    return true;
+    return bPushDic(pWords);
   }
   
   if (String::bEqualTo("con",pWords[0],C_NO_CASE)) {
-    bConnect(pWords);
-    return true;
+    return bConnect(pWords);
   }
   
   if (String::bEqualTo("cp",pWords[0],C_NO_CASE)) {
-    bCopyTable(pWords);
-    return true;
+    return bCopyTable(pWords);
   }
   
   if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
-    bDisconnect(pWords);
-    return true;
+    return bDisconnect(pWords);
   }
   
   if (String::bEqualTo("docol",pWords[0],C_NO_CASE)) {
-    bDocol(pWords);
-    return true;
+    return bDocol(pWords);
   }
   
   if (String::bEqualTo("dump",pWords[0],C_NO_CASE)) {
-    bDumpTable(pWords);
-    return true;
+    return bDumpTable(pWords);
   }
   
   if (String::bEqualTo("ex",pWords[0],C_NO_CASE)) {
-    bExportTable(pWords);
-    return true;
+    return bExportTable(pWords);
   }
   
   if (String::bEqualTo("getFreeSpace",pWords[0],C_NO_CASE)) {
-    bGetFreeSpace(pWords);
-    return true;
+    return bGetFreeSpace(pWords);
   }
   
   if (String::bEqualTo("getInUseSpace",pWords[0],C_NO_CASE)) {
-    bGetInUseSpace(pWords);
-    return true;
+    return bGetInUseSpace(pWords);
   }
   
   if (String::bEqualTo("getTotalSpace",pWords[0],C_NO_CASE)) {
-    bGetTotalSpace(pWords);
-    return true;
+    return bGetTotalSpace(pWords);
   }
   
   if (String::bEqualTo("ld",pWords[0],C_NO_CASE)) {
-    bLoadTable(pWords);
-    return true;
+    return bLoadTable(pWords);
   }
   
   if (String::bEqualTo("lf",pWords[0],C_NO_CASE)) {
-    bGetDicContents(pWords);
-    return true;
+    return bGetDicContents(pWords);
   }
   
   if (String::bEqualTo("lscat",pWords[0],C_NO_CASE)) {
-    bListCatalogs(pWords);
-    return true;
+    return bListCatalogs(pWords);
   }
   
   if (String::bEqualTo("lscol",pWords[0],C_NO_CASE)) {
-    bListColumns(pWords);
-    return true;
+    return bListColumns(pWords);
   }
   
   if (String::bEqualTo("lssch",pWords[0],C_NO_CASE)) {
-    bListSchemas(pWords);
-    return true;
+    return bListSchemas(pWords);
   }
   
   if (String::bEqualTo("lstbl",pWords[0],C_NO_CASE)) {
-    bListTables(pWords);
-    return true;
+    return bListTables(pWords);
   }
   
   if (String::bEqualTo("lsten",pWords[0],C_NO_CASE)) {
-    bListTenants(pWords);
-    return true;
+    return bListTenants(pWords);
   }
   
   if (String::bEqualTo("mkcat",pWords[0],C_NO_CASE)) {
-    bCreateCatalog(pWords);
-    return true;
+    return bCreateCatalog(pWords);
   }
   
   if (String::bEqualTo("mksch",pWords[0],C_NO_CASE)) {
-    bCreateSchema(pWords);
-    return true;
+    return bCreateSchema(pWords);
   }
   
   if (String::bEqualTo("mktbl",pWords[0],C_NO_CASE)) {
-    bCreateTable(pWords);
-    return true;
+    return bCreateTable(pWords);
   }
   
   if (String::bEqualTo("mkten",pWords[0],C_NO_CASE)) {
-    bCreateTenant(pWords);
-    return true;
+    return bCreateTenant(pWords);
   }
   
   if (String::bEqualTo("pwf",pWords[0],C_NO_CASE)) {
-    bGetDicPath(pWords);
-    return true;
+    return bGetDicPath(pWords);
   }
   
   if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
-    bDropCatalog(pWords);
-    return true;
+    return bDropCatalog(pWords);
   }
   
   if (String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
-    bDropDictionary(pWords);
-    return true;
+    return bDropDictionary(pWords);
   }
   
   if (String::bEqualTo("rmsch",pWords[0],C_NO_CASE)) {
-    bDropSchema(pWords);
-    return true;
+    return bDropSchema(pWords);
   }
   
   if (String::bEqualTo("rmtbl",pWords[0],C_NO_CASE)) {
-    bDropTable(pWords);
-    return true;
+    return bDropTable(pWords);
   }
   
   if (String::bEqualTo("rmten",pWords[0],C_NO_CASE)) {
-    bDropTenant(pWords);
-    return true;
+    return bDropTenant(pWords);
   }
   
   if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
-    bSelectTable(pWords);
-    return true;
+    return bSelectTable(pWords);
   }
   
   if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
-    bSizeTable(pWords);
-    return true;
+    return bSizeTable(pWords);
   }
   
   if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
-    bTruncateTable(pWords);
-    return true;
+    return bTruncateTable(pWords);
   }
   
   if (String::bEqualTo("__x",pWords[0],C_NO_CASE)) {
-    bX(pWords);
-    return true;
+    return bX(pWords);
   }
   
   if (String::bEqualTo("ping",pWords[0],C_NO_CASE)) {
@@ -463,7 +430,7 @@ bool SEitf::bDecode(char* pWords[])
   }
   
   if (String::bEqualTo("print",pWords[0],C_NO_CASE)) {
-    bPrint(pWords);
+    vPrint(pWords);
     return false;
   }
   
@@ -483,9 +450,7 @@ bool SEitf::bConnect(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"con"));
   sRequest = "connect";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -499,9 +464,7 @@ bool SEitf::bDisconnect(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"dic"));
   sRequest = "disconnect";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -521,8 +484,7 @@ bool SEitf::bDropDictionary(char* pWords[])
   
   String::vConcat(a," drop_dictionary");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -542,8 +504,7 @@ bool SEitf::bCreateTenant(char* pWords[])
   
   String::vConcat(a," create_tenant");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -557,9 +518,7 @@ bool SEitf::bListTenants(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"lsten"));
   sRequest = "list_tenants";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -579,8 +538,7 @@ bool SEitf::bDropTenant(char* pWords[])
   
   String::vConcat(a," drop_tenant");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -600,8 +558,7 @@ bool SEitf::bCreateCatalog(char* pWords[])
   
   String::vConcat(a," create_catalog");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -615,9 +572,7 @@ bool SEitf::bListCatalogs(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"lscat"));
   sRequest = "list_catalogs";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -637,8 +592,7 @@ bool SEitf::bDropCatalog(char* pWords[])
   
   String::vConcat(a," drop_catalog");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -658,8 +612,7 @@ bool SEitf::bCreateSchema(char* pWords[])
   
   String::vConcat(a," create_schema");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -673,9 +626,7 @@ bool SEitf::bListSchemas(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"lssch"));
   sRequest = "list_schemas";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -695,8 +646,7 @@ bool SEitf::bDropSchema(char* pWords[])
   
   String::vConcat(a," drop_schema");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -716,8 +666,7 @@ bool SEitf::bCreateTable(char* pWords[])
   
   String::vConcat(a," create_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -731,9 +680,7 @@ bool SEitf::bListTables(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"lstbl"));
   sRequest = "list_tables";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -753,8 +700,7 @@ bool SEitf::bDumpTable(char* pWords[])
   
   String::vConcat(a," dump_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -775,8 +721,7 @@ bool SEitf::bDocol(char* pWords[])
   //
   String::vConcat(a," docol_command");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -796,8 +741,7 @@ bool SEitf::bDropTable(char* pWords[])
   
   String::vConcat(a," drop_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -825,8 +769,7 @@ bool SEitf::bAddColumn(char* pWords[16])
   
   String::vConcat(a," add_column");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -846,8 +789,7 @@ bool SEitf::bListColumns(char* pWords[])
   
   String::vConcat(a," list_columns");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -871,8 +813,7 @@ bool SEitf::bCopyTable(char* pWords[])
   
   String::vConcat(a," copy_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -896,8 +837,7 @@ bool SEitf::bExportTable(char* pWords[])
   
   String::vConcat(a," export_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -921,8 +861,7 @@ bool SEitf::bLoadTable(char* pWords[])
   
   String::vConcat(a," load_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -942,8 +881,7 @@ bool SEitf::bSelectTable(char* pWords[])
   
   String::vConcat(a," select_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -963,8 +901,7 @@ bool SEitf::bAddressTable(char* pWords[])
   
   String::vConcat(a," address_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -984,8 +921,7 @@ bool SEitf::bSizeTable(char* pWords[])
   
   String::vConcat(a," size_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1005,8 +941,7 @@ bool SEitf::bTruncateTable(char* pWords[])
   
   String::vConcat(a," truncate_table");
   
-  vAppendRequest(sRequest);
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1026,21 +961,17 @@ bool SEitf::bPushDic(char* pWords[])
   
   String::vConcat(a," cf");
   
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPrint(char* pWords[])
+void SEitf::vPrint(char* pWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   printf("%s\n",pWords[1]);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1054,9 +985,7 @@ bool SEitf::bGetDicPath(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"pwf"));
   sRequest = "pwf";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1070,9 +999,7 @@ bool SEitf::bGetDicContents(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"lf"));
   sRequest = "lf";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1086,9 +1013,7 @@ bool SEitf::bGetMonitor(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"mon"));
   sRequest = "get_monitor";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1102,9 +1027,7 @@ bool SEitf::bGetFreeSpace(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"getFreeSpace"));
   sRequest = "getFreeSpace";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1118,9 +1041,7 @@ bool SEitf::bGetInUseSpace(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"getInUseSpace"));
   sRequest = "getInUseSpace";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1134,11 +1055,8 @@ bool SEitf::bGetTotalSpace(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"getTotalSpace"));
   sRequest = "getTotalSpace";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* ping test                                                                  */
@@ -1151,9 +1069,7 @@ bool SEitf::bPing(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
-  vAppendRequest(sRequest);
-  
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1167,7 +1083,6 @@ bool SEitf::bX(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
-  vAppendRequest(sRequest);
   
   //  static bool bFirst = true;
   //  if (bFirst) {
@@ -1179,7 +1094,7 @@ bool SEitf::bX(char* pWords[])
   //    vAppendRequest(sRequest);
   //  }
   
-  return true;
+  return bAppendRequest(sRequest);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1189,7 +1104,7 @@ bool SEitf::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* append request to request queue                                            */
 /*----------------------------------------------------------------------------*/
-void SEitf::vAppendRequest(s& sRequest)
+bool SEitf::bAppendRequest(s& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1212,7 +1127,7 @@ void SEitf::vAppendRequest(s& sRequest)
   xValSet.vAppend(pCursor,xVal);
   
   bool b = m_pRequestQueue->bAppend(&xValSet);
-  ASSERT(b);
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
