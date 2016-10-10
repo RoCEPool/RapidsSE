@@ -5,6 +5,7 @@
 #include "Api.hpp"
 
 extern Arguments gxArguments;
+extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
@@ -44,9 +45,22 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   
   eEC eResult;
   
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
+  if (ppCatalogs == nullptr) {
+    pSEitf->vSetLastError(EC_NULLPTR);
+    return EC_NULLPTR;
+  }
+
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
   if (EC_NONE != eResult) {
@@ -95,9 +109,9 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
     return eResult;
   }
   
+  // return list of catalogs
   *ppCatalogs = pSEitf->m_sResponse.a();
   
-  // return list of catalogs
   return eResult;
 }
 
@@ -111,15 +125,37 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   
   eEC eResult;
   
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
+  // ppColumns pointer should not be null
+  if (ppColumns == nullptr) {
+    pSEitf->vSetLastError(EC_NULLPTR);
+    return EC_NULLPTR;
+  }
+
+  // do we have a catalog ?
   if (!pCatalog)
     return EC_INVALID_PARAMETER;
   
+  // do we have a schema ?
   if (!pSchema)
     return EC_INVALID_PARAMETER;
   
+  // do we have a table ?
+  if (!pTable)
+    return EC_INVALID_PARAMETER;
+
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
   if (EC_NONE != eResult) {
@@ -223,19 +259,6 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get error code                                                             */
-/*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetErrorCode(SEitf* pSEitf, i8* pError)
-{
-  //vTrace("RapidsSE_GetErrorCode\n");
-  
-  *pError = (i8)pSEitf->m_eErrorCode;
-  
-  //vTrace("Error : %lld\n", *pError);
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get last error                                                             */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
@@ -255,9 +278,25 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 {
   //vTrace("pRapidsSE_GetNextRow: 0x%x\n", pSEitf);
   
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
+  // ppRow pointer should not be null
+  if (ppRow == nullptr) {
+    pSEitf->vSetLastError(EC_NULLPTR);
+    return EC_NULLPTR;
+  }
+
   i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
   
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
@@ -282,9 +321,25 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
 {
   vTrace("RapidsSE_GetParitions: 0x%x\n", pSEitf);
   
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
+  // ppPartitions pointer should not be null
+  if (ppPartitions == nullptr) {
+    pSEitf->vSetLastError(EC_NULLPTR);
+    return EC_NULLPTR;
+  }
+
   *(i8**)(ppPartitions) = &pSEitf->m_iPartitions;
   
   return EC_NONE;
@@ -299,8 +354,24 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   
   eEC eResult;
   
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
+  
+  // ppSchemas pointer should not be null
+  if (ppSchemas == nullptr) {
+    pSEitf->vSetLastError(EC_NULLPTR);
+    return EC_NULLPTR;
+  }
   
   if (!pCatalog)
     return EC_INVALID_PARAMETER;
@@ -392,8 +463,24 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   
   eEC eResult;
   
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
+  
+  // ppTables pointer should not be null
+  if (ppTables == nullptr) {
+    pSEitf->vSetLastError(EC_NULLPTR);
+    return EC_NULLPTR;
+  }
   
   if (!pCatalog)
     return EC_INVALID_PARAMETER;
@@ -524,9 +611,16 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
   
   eEC eResult;
-
-  // clear the last error
-  pSEitf->vClearLastError();
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_NULL_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
   
   // clear the last error
   pSEitf->vClearLastError();

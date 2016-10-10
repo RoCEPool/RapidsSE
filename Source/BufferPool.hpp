@@ -67,6 +67,7 @@ namespace Pool
     Buffer* pToBuffer(bn nBuffer);
     BufferFree* pToBufferFree(bn nBuffer);
     BufferFree* pToBufferFree(Buffer* pBuffer);
+    bool bValidAddress(const void* pAddress);
     
     Footer* pFooter(void);
    };

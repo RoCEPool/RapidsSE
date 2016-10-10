@@ -16,6 +16,7 @@ namespace Magic
 
     /*  3 */ EC_INVALID_CLASS,
     /*  4 */ EC_INVALID_COMMAND,
+    /*    */ EC_INVALID_INTERFACE,
     /*  5 */ EC_INVALID_PARAMETER,
     /*  6 */ EC_INVALID_SYNTAX,
     
@@ -41,6 +42,7 @@ namespace Magic
     /* 23 */ EC_NOT_IN_TABLES,
     /* 24 */ EC_NOT_IN_TENANTS,
 
+    /*    */ EC_NULL_INTERFACE,
     /* 25 */ EC_NULLPTR,
     
     /* 26 */ EC_SCHEMA_EXISTS,
@@ -59,6 +61,7 @@ namespace Magic
     
     /*  3 */ "invalid class",
     /*  4 */ "invalid command",
+    /*    */ "invalid interface",
     /*  5 */ "invalid parameter",
     /*  6 */ "invalid syntax",
     
@@ -84,6 +87,7 @@ namespace Magic
     /* 22 */ "not in tables",
     /* 23 */ "not in tenants",
     
+    /*    */ "null interface",
     /* 24 */ "nullptr",
     
     /* 25 */ "schema exists",

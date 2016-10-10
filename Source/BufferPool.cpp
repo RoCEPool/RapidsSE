@@ -115,6 +115,17 @@ void BufferPool::vCheckAddress(const void* pAddress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check address is in pool                                                   */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bValidAddress(const void* pAddress)
+{
+  if ((pAddress >= m_pBase) && (pAddress <  m_pLimit))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get buffer number of first usable buffer in pool                           */
 /*----------------------------------------------------------------------------*/
 bn BufferPool::nBufferFirst(void)

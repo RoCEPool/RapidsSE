@@ -9,7 +9,6 @@
 // external SE API calls
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog,  char* pSchema, char* pTable, void** ppColumns);
-extern "C" eEC RapidsSE_GetErrorCode(SEitf* pSEitf, i8* pError);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError);
 extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions);
