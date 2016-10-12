@@ -113,6 +113,8 @@ void RapidsSE::vPoolClose(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vPoolOpen(void)
 {
+  bool bResult;
+  
   if (gxArguments.m_bUnlink) {
     //vUnlink();
     return;
@@ -145,7 +147,8 @@ void RapidsSE::vPoolOpen(void)
       exit(EXIT_FAILURE);
       return;
     }
-    Region::vAttach();
+    bResult = Region::bAttach(gxArguments.m_sRegionName);
+    ASSERT(bResult);
     vAttachObjects();
     return;
   }
@@ -156,15 +159,30 @@ void RapidsSE::vPoolOpen(void)
       exit(EXIT_FAILURE);
       return;
     }
-    Region::vAttach();
+    bResult = Region::bAttach(gxArguments.m_sRegionName);
+    ASSERT(bResult);
     vAttachObjects();
     return;
   }
   
-  Region::vAttach();
+  bResult = Region::bAttach(gxArguments.m_sRegionName);
+  ASSERT(bResult);
   vAttachObjects();
   //vTrace("Error: RapidsSE missing arguments\n");
   //exit(EXIT_FAILURE);
+}
+
+/*----------------------------------------------------------------------------*/
+/* attach or create the shm region                                            */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE::bPoolOpen(s& sPoolName)
+{
+  bool bResult = Region::bAttach(sPoolName);
+  if (!bResult)
+    return bResult;
+  
+  vAttachObjects();
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

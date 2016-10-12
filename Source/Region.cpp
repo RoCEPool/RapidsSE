@@ -13,21 +13,21 @@ extern void* C_ADDR_POOL;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-void Region::vAttach(void)
+bool Region::bAttach(s& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
   bool bResult;
   
   if (gxArguments.m_bWelcome)
-    vTrace("Attaching to SE instance %s\n",gxArguments.m_sRegionName.a());
+    vTrace("Attaching to SE instance %s\n",sRegionName.a());
   
   // open existing shm region
-  bResult = Shm::bAttach(gxArguments.m_sRegionName,iFD,xSysCall);
+  bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n",
-           gxArguments.m_sRegionName.a());
-    ASSERT(0);
+           sRegionName.a());
+    return false;
   }
   
   // allocate a temporary extent of memory
@@ -36,7 +36,7 @@ void Region::vAttach(void)
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n");
     Shm::bClose(iFD,xSysCall);
-    ASSERT(0);
+    return false;
   }
   
   // overlay attach map onto 2nd buffer (buffer #1)
@@ -53,11 +53,11 @@ void Region::vAttach(void)
   //--------------------------------------------------------------------------
   
   // reopen the existing shm region
-  bResult = Shm::bAttach(gxArguments.m_sRegionName,iFD,xSysCall);
+  bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n",
-           gxArguments.m_sRegionName.a());
-    ASSERT(0);
+           sRegionName.a());
+    return false;
   }
   
   // allocate the full extent of memory required
@@ -66,7 +66,7 @@ void Region::vAttach(void)
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n");
     Shm::bClose(iFD,xSysCall);
-    ASSERT(0);
+    return false;
   }
   
   // overlay buffer pool onto 1st buffer (buffer #0)
@@ -74,6 +74,8 @@ void Region::vAttach(void)
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n",mpRegion);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

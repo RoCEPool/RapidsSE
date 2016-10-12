@@ -14,10 +14,12 @@ extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions);
 extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchema);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables);
-extern "C" eEC RapidsSE_PoolOpen(void);
+extern "C" eEC RapidsSE_PoolOpen(char* pInstanceName);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf);
 extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition);
+
+extern "C" bool RapidsSE_SEitfInvalid(int eError);
 
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse);
 

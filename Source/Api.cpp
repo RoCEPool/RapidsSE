@@ -46,7 +46,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   eEC eResult;
   
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   if (!gpBufferPool->bValidAddress(pSEitf)) {
@@ -127,7 +127,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
@@ -280,7 +280,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
@@ -323,7 +323,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
@@ -356,7 +356,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
@@ -465,7 +465,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
@@ -593,13 +593,19 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(void)
+eEC RapidsSE_PoolOpen(char* pInstanceName)
 {
   //vTrace("vRapidsSE_PoolOpen\n");
   
   // open the pool
-  RapidsSE::vPoolOpen();
+  s256 sPoolName;
   
+  sPoolName = pInstanceName;
+  bool bResult = RapidsSE::bPoolOpen(sPoolName);
+  
+  if (!bResult) {
+    return EC_INVALID_INSTANCE;
+  }
   return EC_NONE;
 }
 
@@ -614,7 +620,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
-    return EC_NULL_INTERFACE;
+    return EC_INVALID_INTERFACE;
   }
   
   // pSEitf should be a pool address
@@ -755,6 +761,19 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf)
   RapidsSE::vSEitfDelete(pSEitf);
   
   return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is the error an EC_INVALID_INTERFACE ?                                     */
+/*----------------------------------------------------------------------------*/
+bool RapidsSE_SEitfInvalid(int iError)
+{
+  //vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+  
+  if (iError == EC_INVALID_INTERFACE)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

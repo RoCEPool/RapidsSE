@@ -18,6 +18,7 @@ namespace Magic
     /*  4 */ EC_INVALID_COMMAND,
     /*    */ EC_INVALID_INTERFACE,
     /*  5 */ EC_INVALID_PARAMETER,
+    /*    */ EC_INVALID_INSTANCE,
     /*  6 */ EC_INVALID_SYNTAX,
     
     /*  7 */ EC_NO_COLUMNS_DIC,
@@ -63,6 +64,7 @@ namespace Magic
     /*  4 */ "invalid command",
     /*    */ "invalid interface",
     /*  5 */ "invalid parameter",
+    /*    */ "invalid instance",
     /*  6 */ "invalid syntax",
     
     /*  7 */ "no columns dictionary",

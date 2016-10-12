@@ -11,7 +11,7 @@ namespace StorageEngine
   class Region
   {
   public:
-    static void vAttach(void);
+    static bool bAttach(s& sRegionName);
     static void vCreate(void);
     static bool bTest(void);
     static void vUnlink(void);
