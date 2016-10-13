@@ -43,7 +43,7 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se 0.1.2> ";
+  m_sPrompt = "se 0.1.3> ";
   
   m_sResponse  = "";
   //m_xHistory
