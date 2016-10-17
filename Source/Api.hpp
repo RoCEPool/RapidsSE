@@ -7,6 +7,8 @@
 #include "StorageEngine.h"
 
 // external SE API calls
+extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
+extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog,  char* pSchema, char* pTable, void** ppColumns);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError);
@@ -14,6 +16,7 @@ extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions);
 extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchema);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables);
+extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow);
 extern "C" eEC RapidsSE_PoolOpen(char* pInstanceName);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
 extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf);

@@ -955,6 +955,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("s256.init", &vS256Init, false);
  
+  vAddPrimitive("table.append",      &vTableAppend,      false);
   vAddPrimitive("table.dic",         &vTableDic,         false);
   vAddPrimitive("table.drop",        &vTableDrop,        false);
   vAddPrimitive("table.init",        &vTableInit,        false);
@@ -8680,6 +8681,36 @@ void Task::vS256Init(NNP_Task nnpTask)
 }
 
 // table: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* table.append -- append buffer into table                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTableAppend(NNP_Task nnpTask)
+{
+  ENTRY("vIterate_RT_B");
+  i8 iPartition;
+  s8K sString;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sString) )
+    THROW_INVALID_PARAM("table.append");
+  
+  Table* pTable = reinterpret_cast<Table*>(String::iToI8(sString.a()));
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sString) )
+    THROW_INVALID_PARAM("insert.buffer");
+  
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(String::iToI8(sString.a()));
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sString) )
+    THROW_INVALID_PARAM("insert.buffer");
+  
+  iPartition = String::iToI8(sString.a());
+  pTable->vAppendBuffer(iPartition,pRowBuffer);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* table.dic -- get table dictionary                                          */

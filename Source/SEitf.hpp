@@ -28,7 +28,12 @@ namespace Interface
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;
     
+    Table* m_pCurrentTable;
     s8K    m_sResponse;        // response
+    
+    TxRef* m_pTxRef;
+    
+    RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers
     
     // must be last
     Footer m_xFooter;
@@ -48,6 +53,9 @@ namespace Interface
     Word*  pFindWord(s& sName);
     Word*  pFindWordInCurrent(s& sName);
     
+    void   vCurrentTable(Table* pTable);
+    Table* pCurrentTable(void);
+    
     void   vDump(void);
     
     void   vInit(void);
@@ -59,6 +67,9 @@ namespace Interface
     Queue* pResponseQueue(void);
 
     //--------------------------------------------------------------------------
+    
+    void vBeginTx(void);
+    void vCommitTx(void);
     
     bool bDecode(char* pWords[]);
     
@@ -90,11 +101,16 @@ namespace Interface
     
     bool bCopyTable(char* pWords[]);
     bool bExportTable(char* pWords[]);
+    bool bGetTable(char* pWords[]);
     bool bLoadTable(char* pWords[]);
     bool bSelectTable(char* pWords[]);
     bool bAddressTable(char* pWords[]);
     bool bSizeTable(char* pWords[]);
     bool bTruncateTable(char* pWords[]);
+    
+    bool bInsertRow(char* pRow);
+    bool bInsertBuffer(void);
+    bool bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition);
     
     bool bPushDic(char* pWords[]);
     bool bGetDicPath(char* pWords[]);

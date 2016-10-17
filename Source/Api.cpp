@@ -8,6 +8,181 @@ extern Arguments gxArguments;
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* begin insert                                                               */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+{
+  eEC eResult;
+  
+  vTrace("RapidsSE_BeginInsert\n");
+
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pCatalog)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pSchema)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pTable)
+    return EC_INVALID_PARAMETER;
+  
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to boray
+  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to catalogs
+  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pCatalog
+  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to schemas
+  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pSchema
+  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to tables
+  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get pTable
+  eResult = eExecuteRequest(pSEitf, "gttbl", pTable);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
+  vTrace("Table pptr = %x\n", iAddress);
+  
+  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
+  ASSERT(CN_TABLE == pTablePtr->eClass());
+  //vTrace("Table: %s\n", pTablePtr->pTableName());
+  
+  pSEitf->vCurrentTable(pTablePtr);
+  
+  pSEitf->vBeginTx();
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end insert                                                                 */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndInsert(SEitf* pSEitf)
+{
+  vTrace("RapidsSE_EndInsert\n");
+  
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  bool bResult = pSEitf->bInsertBuffer();
+  
+  // get response from se
+  eEC eResult = eGetResponse(pSEitf);
+  
+  if (eResult != EC_NONE) {
+    return eResult;
+  }
+  
+  pSEitf->vCurrentTable(nullptr);
+  
+  pSEitf->vCommitTx();
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
@@ -298,6 +473,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   }
 
   i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
+  //vTrace("pRapidsSE_GetNextRow rowCursor: 0x%x\n", iAddress);
   
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -591,6 +767,37 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert the given row into a table                                          */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
+{
+  vTrace("RapidsSE_InsertRow\n");
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pRow)
+    return EC_INVALID_PARAMETER;
+
+  if (!pSEitf->pCurrentTable())
+    return EC_NO_SUCH_TABLE;
+  
+  bool bResult = pSEitf->bInsertRow(pRow);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_PoolOpen(char* pInstanceName)
@@ -743,8 +950,9 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 
   //vTrace("pRowCursor: 0x%x\n", pRowCursor);
   pRowCursor->vBegin(pSEitf->iPartition());
-  pRowCursor->vFirst();
   
+  pRowCursor->vFirst();
+
   return EC_NONE;
 }
 
@@ -817,7 +1025,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   String::vCopy(pWords[0], pCommand);
   String::vCopy(pWords[1], pParameter);
   
-  //vTrace("%s %s\n", pCommand, pParameter);
+  vTrace("%s %s\n", pCommand, pParameter);
   bResult = pSEitf->bDecode(pWords);
   
   return pSEitf->eGetLastError();

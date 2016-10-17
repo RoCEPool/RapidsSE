@@ -670,6 +670,7 @@ namespace Tasks
     static void vS256Init(NNP_Task nnpTask);
     
     // table
+    static void vTableAppend(NNP_Task nnpTask);
     static void vTableDic(NNP_Task nnpTask);
     static void vTableDrop(NNP_Task nnpTask);
     static void vTableDump(NNP_Task nnpTask);

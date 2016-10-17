@@ -71,10 +71,15 @@ SEitf::SEitf(i8 iPartition)
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = pEC[m_eErrorCode];
   m_sResponse       = "";
+  m_pCurrentTable   = nullptr;
+  m_pTxRef          = nullptr;
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   
+  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
+    m_pRowBuffer[iPartition] = nullptr;
+
   _checkInitialised_(CN_SEITF);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
@@ -144,6 +149,22 @@ Word* SEitf::pFindWordInCurrent(s& sName)
   Word* pWord = m_xDicStack.pFindInCurrent(sName.a());
   
   return pWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the current table                                                      */
+/*----------------------------------------------------------------------------*/
+void SEitf::vCurrentTable(Table* pTable)
+{
+  m_pCurrentTable = pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the current table                                                      */
+/*----------------------------------------------------------------------------*/
+Table* SEitf::pCurrentTable(void)
+{
+  return m_pCurrentTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -279,6 +300,30 @@ void SEitf::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* begin a tx                                                                 */
+/*----------------------------------------------------------------------------*/
+void SEitf::vBeginTx()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //m_pTxRef = _pTxRef(Heap::pAllocate(CN_TXREF));
+  //bool bResult = m_pTxRef->bBeginTx();
+  //ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* commit a tx                                                                */
+/*----------------------------------------------------------------------------*/
+void SEitf::vCommitTx()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //bool bResult = m_pTxRef->bCommitTx();
+  //ASSERT(bResult);
+  m_pTxRef = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bDecode(char* pWords[])
@@ -309,6 +354,10 @@ bool SEitf::bDecode(char* pWords[])
     return bCopyTable(pWords);
   }
   
+  if (String::bEqualTo("getTable",pWords[0],C_NO_CASE)) {
+    return bGetTable(pWords);
+  }
+  
   if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
     return bDisconnect(pWords);
   }
@@ -331,6 +380,10 @@ bool SEitf::bDecode(char* pWords[])
   
   if (String::bEqualTo("getInUseSpace",pWords[0],C_NO_CASE)) {
     return bGetInUseSpace(pWords);
+  }
+  
+  if (String::bEqualTo("gttbl",pWords[0],C_NO_CASE)) {
+    return bGetTable(pWords);
   }
   
   if (String::bEqualTo("getTotalSpace",pWords[0],C_NO_CASE)) {
@@ -841,6 +894,26 @@ bool SEitf::bExportTable(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* select rows from a table                                                   */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetTable(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," get_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bLoadTable(char* pWords[])
@@ -940,6 +1013,114 @@ bool SEitf::bTruncateTable(char* pWords[])
   String::vConcat(a,"\"");
   
   String::vConcat(a," truncate_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into row buffer                                                 */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bInsertRow(char* pRow)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  // check for working buffer
+  if (! m_pRowBuffer[m_iPartition]) {
+    m_pRowBuffer[m_iPartition] = new RowBuffer;
+    if (! m_pRowBuffer[m_iPartition]) {
+      vTrace("RowBuffer allocation failed\n");
+      return false;
+    }
+  }
+  
+  // get working buffer
+  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  
+  vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
+  
+  // insert row into working buffer
+  if (pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow)))
+     return true;
+    
+  // buffer full, append working buffer into table
+  //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
+  
+  vTrace("Buffer full... Inserting buffer\n");
+  bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
+  
+  if (!bResult)
+    return bResult;
+  
+  // get a new working buffer
+  m_pRowBuffer[m_iPartition] = new RowBuffer;
+  if (! m_pRowBuffer[m_iPartition]) {
+    vTrace("RowBuffer allocation failed\n");
+    return false;
+  }
+  
+  pRowBuffer = m_pRowBuffer[m_iPartition];
+  
+  // insert row into new working buffer
+  bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow));
+  
+  return bInserted;
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert rowbuffer into current table                                        */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bInsertBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //vTrace("inserting ...\n");
+  
+  if (! m_pRowBuffer[m_iPartition]) {
+    return true;
+  }
+  
+  return bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert rowbuffer into current table                                        */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  //vTrace("inserting %x %d\n", pRowBuffer, m_iPartition);
+  
+  char xArray[C_1KB * 2];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1]
+  };
+
+  s256 sRequest;
+  s256 sBuffer;
+
+  char* a = sRequest.a();
+  
+  String::wToString(iPartition, sBuffer.a());
+  String::vCopy(a,"\"");
+  String::vConcat(a,sBuffer.a());
+  String::vConcat(a,"\"");
+  
+  String::wToString((i8)pRowBuffer, sBuffer.a());
+  String::vConcat(a," \"");
+  String::vConcat(a,sBuffer.a());
+  String::vConcat(a,"\"");
+  
+  String::wToString((i8)m_pCurrentTable, sBuffer.a());
+  String::vConcat(a," \"");
+  String::vConcat(a,sBuffer.a());
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," table_append");
+  
+  vTrace("%s\n",a);
   
   return bAppendRequest(sRequest);
 }
