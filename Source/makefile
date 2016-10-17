@@ -1,15 +1,15 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -Wall -Wextra -O3
-AR = ar
-ARFLAGS = rs
-
+CPPFLAGS = -std=c++11 -Wall -Wextra
+LIBFLAGS = -shared
+PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
 
 #Target Files
-TARGETPATH=../Linux/bin
+CURRENT=${PWD}
+TARGETPATH = $(CURRENT)/../Linux/bin
 TARGET_EXE = $(TARGETPATH)/se 
-TARGET_LIBRARY = $(TARGETPATH)/libRapidsSE.a
+TARGET_LIBRARY = $(TARGETPATH)/libRapidsSE.so
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
@@ -20,9 +20,8 @@ S_SOURCES = $(wildcard *.s)
 MAN_PAGES=../Documents/se.man
 
 #Object Files for library
-ALLOBJECTS = $(SOURCES:.cpp=.o)
 OBJECTS = $(SOURCES:.cpp=.o)
-S_OBJECTS = $(S_SOURCES:.s=.o)
+OBJECTS += $(S_SOURCES:.s=.o)
 
 #Dependency Files for library
 DEPFILES = $(SOURCES:.cpp=.d)
@@ -37,22 +36,23 @@ LIBS = -lrt -lpthread
 all : $(TARGET_EXE) $(TARGET_LIBRARY)
 
 #Library target
-$(TARGET_LIBRARY): $(OBJECTS) $(S_OBJECTS) $(DEPFILES)
+$(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 	$(DIR_GUARD)
-	$(AR) $(ARFLAGS) $(TARGET_LIBRARY) $(OBJECTS) $(S_OBJECTS)
+	$(CPP) $(LIBFLAGS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
 
 #Main target
-$(TARGET_EXE): main.o $(TARGET_LIBRARY)
+$(TARGET_EXE): $(TARGET_LIBRARY)
 	$(DIR_GUARD)
+	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGETPATH)
 	$(CPP) main.o -L../ThirdParty/bzip2 -L../ThirdParty/lz4 $(LIBS) $(TARGET_LIBRARY) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
-	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  $< -o $@
+	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
-%.o: %.s
-	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  $< -o $@
+%.o: %.s %.d
+	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 #To generate dependency files
 %.d: %.cpp
@@ -62,7 +62,7 @@ $(TARGET_EXE): main.o $(TARGET_LIBRARY)
 
 #To remove generated files
 clean:
-	rm -f $(TARGET_EXE) $(TARGET_LIBRARY) $(ALLOBJECTS) *.d
+	rm -f $(TARGET_EXE) $(TARGET_LIBRARY) $(OBJECTS) *.d
 
 #To print 
 print-% : ; @echo $* = $($*)
