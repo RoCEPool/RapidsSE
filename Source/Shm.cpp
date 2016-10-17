@@ -111,9 +111,8 @@ void* Shm::pMap(int iFd, void* pAddress, i8 iBytes, bool bShared, bool bHugeTlb,
                | (pAddress ? MAP_FIXED  : 0);
 #else
   int iFlags =   (bShared  ? MAP_SHARED : MAP_PRIVATE)
-               | MAP_ANONYMOUS
                | (pAddress ? MAP_FIXED  : 0)
-               | (bHugeTlb ? MAP_HUGETLB : 0);
+               | (bHugeTlb ? MAP_HUGETLB | MAP_ANONYMOUS : 0);
 #endif
   
   size_t x;
