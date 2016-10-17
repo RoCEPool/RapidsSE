@@ -141,19 +141,16 @@ _iDropRead:
 iDropRead:
 
 #endif
+
+_DropRead:
   mov rsi, [rdi]  # get value at rdi
   mov rdx, rsi
   dec rdx         # remove one read lock
-
-  call _iTestSet  # attempt to drop read lock
+  call _TestSet   # attempt to drop read lock
 
   cmp rax,0
 
-  #ifdef __APPLE__
-  je _iDropRead
-  #else
-  je iDropRead
-  #endif
+  je _DropRead
 
   mov rax, 1
 
@@ -175,7 +172,6 @@ _iDropWrite:
 .intel_syntax noprefix
 
 iDropWrite:
-
 
 #endif
   mov rax, 0
@@ -203,6 +199,7 @@ _iGrabRead:
 iGrabRead:
 
 #endif
+
   mov r9, 1       # construct mask
   shl r9, 63
 
@@ -219,7 +216,7 @@ _iGrabReadRetry:
   mov rdx, r8     # construcr <then> value
   inc rdx
 
-  call _iTestSet  # attempt to grab
+  call _TestSet   # attempt to grab
 
   cmp rax,0
   je _iGrabReadRetry
@@ -264,7 +261,7 @@ iGrabWrite:
   mov rdx, r8     # construct <then> value
   or  rdx, r9
 
-  call _iTestSet  # attempt to grab
+  call _TestSet   # attempt to grab
 
   cmp rax,0
   je _GrabWriteFailed
@@ -301,6 +298,7 @@ _iIsLocked:
 iIsLocked:
 
 #endif
+
   mov rax, [rdi]  # get value at rdi
 
   mov r9, 0
@@ -369,6 +367,7 @@ iTestSet:
 
 #endif
 
+_TestSet:
   mov rax, rsi
 
   lock cmpxchg [rdi], rdx
