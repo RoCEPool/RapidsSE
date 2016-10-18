@@ -351,7 +351,7 @@ eHT geWhichHeap[]
   /* 82 */ HT_INVALID, // CN_TXCOLLECTION
   /* 83 */ HT_SMALL,   // CN_TXCURSOR
   /* 84 */ HT_INVALID, // CN_TXMAP
-  /* 85 */ HT_INVALID, // CN_TXREF
+  /* 85 */ HT_SMALL,   // CN_TXREF
   
   /* 86 */ HT_MEDIUM,  // CN_WORD
   

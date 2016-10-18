@@ -27,6 +27,17 @@ void* TxRef::operator new(size_t iSize, TxRef* pTxRef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* operator new                                                               */
+/*----------------------------------------------------------------------------*/
+void* TxRef::operator new(size_t iSize)
+{
+  RASSERT(iSize);
+  Object* pObject = Heap::pAllocate(CN_TXREF);
+  
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
 void TxRef::operator delete(void* pBufferAddress)

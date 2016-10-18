@@ -11,7 +11,10 @@ extern Heap*        gpMediumHeap;
 extern Heap*        gpSmallHeap;
 extern Dic*         gpMainDic;
 
-extern Grid*        gpGrid;
+extern TxCollection* gpTxCollection;
+extern TxMap*        gpTxMap;
+extern Grid*         gpGrid;
+
 extern TaskList*    gpTaskList;
 extern SEitfList*   gpSEitfList;
 extern Arguments    gxArguments;
@@ -73,10 +76,11 @@ void AttachMap::vGetGlobals(void)
   gpMediumHeap  = m_pMediumHeap;
   gpSmallHeap   = m_pSmallHeap;
   gpMainDic     = &m_xMainDic;
-  
-  gpGrid        = m_pGrid;
-  gpTaskList    = m_pTaskList;
-  gpSEitfList   = m_pSEitfList;
+  gpTxCollection = m_pTxCollection;
+  gpTxMap        = m_pTxMap;
+  gpGrid         = m_pGrid;
+  gpTaskList     = m_pTaskList;
+  gpSEitfList    = m_pSEitfList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -101,9 +105,11 @@ void AttachMap::vRecordGlobals(void)
   m_pMediumHeap = gpMediumHeap;
   m_pSmallHeap  = gpSmallHeap;
   
-  m_pGrid       = gpGrid;
-  m_pTaskList   = gpTaskList;
-  m_pSEitfList  = gpSEitfList;
+  m_pTxCollection = gpTxCollection;
+  m_pTxMap        = gpTxMap;
+  m_pGrid         = gpGrid;
+  m_pTaskList     = gpTaskList;
+  m_pSEitfList    = gpSEitfList;
   
   m_iStop       = 0;
   m_iQuit       = 0;

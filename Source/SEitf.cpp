@@ -306,9 +306,10 @@ void SEitf::vBeginTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  //m_pTxRef = _pTxRef(Heap::pAllocate(CN_TXREF));
-  //bool bResult = m_pTxRef->bBeginTx();
-  //ASSERT(bResult);
+  m_pTxRef = new TxRef();
+  vTrace("txref: %x\n", m_pTxRef);
+  bool bResult = m_pTxRef->bBeginTx();
+  ASSERT(bResult);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -318,8 +319,8 @@ void SEitf::vCommitTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  //bool bResult = m_pTxRef->bCommitTx();
-  //ASSERT(bResult);
+  bool bResult = m_pTxRef->bCommitTx();
+  ASSERT(bResult);
   m_pTxRef = nullptr;
 }
 
