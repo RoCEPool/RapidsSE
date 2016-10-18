@@ -998,7 +998,6 @@ bool SePrompt::bCreateTable(void)
       }
     }
     else if (String::bEqualTo(m_pToken2[iCurrentToken], "integer", C_NO_CASE) ||
-             String::bEqualTo(m_pToken2[iCurrentToken], "int", C_NO_CASE) ||
              String::bEqualTo(m_pToken2[iCurrentToken], "date", C_NO_CASE)) {
       String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
     }
