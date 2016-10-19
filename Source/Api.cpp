@@ -14,7 +14,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 {
   eEC eResult;
   
-  vTrace("RapidsSE_BeginInsert\n");
+  //vTrace("RapidsSE_BeginInsert\n");
 
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -135,7 +135,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
-  vTrace("Table pptr = %x\n", iAddress);
+  //vTrace("Table pptr = %x\n", iAddress);
   
   Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
   ASSERT(CN_TABLE == pTablePtr->eClass());
@@ -153,7 +153,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndInsert(SEitf* pSEitf)
 {
-  vTrace("RapidsSE_EndInsert\n");
+  //vTrace("RapidsSE_EndInsert\n");
   
   if (pSEitf == nullptr) {
     return EC_INVALID_INTERFACE;
@@ -771,7 +771,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
 {
-  vTrace("RapidsSE_InsertRow\n");
+  //vTrace("RapidsSE_InsertRow\n");
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -1025,7 +1025,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   String::vCopy(pWords[0], pCommand);
   String::vCopy(pWords[1], pParameter);
   
-  vTrace("%s %s\n", pCommand, pParameter);
+  //vTrace("%s %s\n", pCommand, pParameter);
   bResult = pSEitf->bDecode(pWords);
   
   return pSEitf->eGetLastError();
