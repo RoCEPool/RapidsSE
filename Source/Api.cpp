@@ -200,6 +200,22 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
 }
 
 /*----------------------------------------------------------------------------*/
+/* check the library version against version passed                           */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_CheckLibraryVersion(char* pVersion)
+{
+  vTrace("Library version %s; versionString %s\n", RAPIDSSE_VERSION_STRING, pVersion);
+  
+  if (!String::bEqualTo(pVersion, RAPIDSSE_VERSION_STRING)) {
+    vTrace("RapidsDB at version %s does not match RapidsSE library version %s",
+           pVersion, RAPIDSSE_VERSION_STRING);
+    return EC_VERSION_MISMATCH;
+  }
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* create table                                                               */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
@@ -960,6 +976,44 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   *ppSchemas = pSEitf->m_sResponse.a();
   
   return eResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return rapidsSE engine's version                                           */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
+{
+  eEC eResult;
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "version");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // return SE version
+  *ppVersion = pSEitf->m_sResponse.a();
+  
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

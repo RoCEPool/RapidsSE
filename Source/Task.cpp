@@ -4688,7 +4688,7 @@ ENTRY("vUntil");
 /*----------------------------------------------------------------------------*/
 void Task::vVersion(NNP_Task nnpTask)
 {
-ENTRY("vSersion");
+ENTRY("vVersion");
   
   s256 sVersion;
   sVersion = RAPIDSSE_VERSION_STRING;

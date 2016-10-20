@@ -43,7 +43,9 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se 0.1.3> ";
+  m_sPrompt = "se ";
+  String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
+  String::vConcat(m_sPrompt.a(), "> ");
   
   m_sResponse  = "";
   //m_xHistory

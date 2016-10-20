@@ -51,6 +51,7 @@ namespace Magic
     /* 27 */ EC_TABLE_EXISTS,
     /* 28 */ EC_TENANT_EXISTS,
     
+    /*    */ EC_VERSION_MISMATCH,
     /* 29 */ EC_ENUMS
   };
   

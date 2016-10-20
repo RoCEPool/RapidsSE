@@ -488,6 +488,10 @@ bool SEitf::bDecode(char* pWords[])
     return false;
   }
   
+  if (String::bEqualTo("version",pWords[0],C_NO_CASE)) {
+    return bGetVersion(pWords);
+  }
+  
   //vTrace("Unknown command: %s\n",pWords[0]);
   vSetLastError(EC_INVALID_COMMAND);
   return false;
@@ -1237,6 +1241,20 @@ bool SEitf::bGetTotalSpace(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"getTotalSpace"));
   sRequest = "getTotalSpace";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get version                                                                */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetVersion(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(String::bEqualTo(pWords[0],"get_version"));
+  sRequest = "get_version";
   return bAppendRequest(sRequest);
 }
 

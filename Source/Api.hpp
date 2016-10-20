@@ -9,6 +9,7 @@
 // external SE API calls
 extern "C" eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType);
 extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
+extern "C" eEC RapidsSE_CheckLibraryVersion(char* pVersion);
 extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, char* catalog, char* pSchema, char* table);
 extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf);
@@ -18,6 +19,7 @@ extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError);
 extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow);
 extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions);
 extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchema);
+extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow);
 extern "C" eEC RapidsSE_PoolOpen(char* pInstanceName);
