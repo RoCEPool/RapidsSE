@@ -7,7 +7,10 @@
 #include "StorageEngine.h"
 
 // external SE API calls
+extern "C" eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType);
 extern "C" eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
+extern "C" eEC RapidsSE_CreateTable(SEitf* seitf, char* catalog, char* pSchema, char* table);
+extern "C" eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
 extern "C" eEC RapidsSE_EndInsert(SEitf* pSEitf);
 extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog,  char* pSchema, char* pTable, void** ppColumns);
@@ -28,6 +31,9 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse);
 
 // private calls
 eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter);
+eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand,
+    const char* pParameter1, const char* pParameter2, const char* pParameter3);
+
 eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand);
 bool bExecuteRequest(SEitf* pSEitf, char* pWords[]);
 eEC eGetResponse(SEitf* pSEitf);

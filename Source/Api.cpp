@@ -7,6 +7,57 @@
 extern Arguments gxArguments;
 extern BufferPool* gpBufferPool;
 
+
+/*----------------------------------------------------------------------------*/
+/* add a column to a table                                                    */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
+{
+  //vTrace("RapidsSE_AddColumn: 0x%x %s %s\n", pSEitf, pColumnName, pColumnType);
+  
+  eEC eResult;
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pColumnName)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pColumnType)
+    return EC_INVALID_PARAMETER;
+  
+  Table* pTable = pSEitf->pCurrentTable();
+  
+  if (!pTable)
+    return EC_NO_SUCH_TABLE;
+  
+  //vTrace("Table: %s\n", pTable->pTableName());
+
+  // add a column
+  eResult = eExecuteRequest(pSEitf, "add", pTable->pTableName(), pColumnName, pColumnType);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  return EC_NONE;
+}
+
 /*----------------------------------------------------------------------------*/
 /* begin insert                                                               */
 /*----------------------------------------------------------------------------*/
@@ -144,6 +195,287 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   pSEitf->vCurrentTable(pTablePtr);
   
   pSEitf->vBeginTx();
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create table                                                               */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+{
+  //vTrace("RapidsSE_CreateTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
+  
+  eEC eResult;
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pCatalog)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pSchema)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pTable)
+    return EC_INVALID_PARAMETER;
+  
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+         
+  // change directory to boray
+  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
+  // change directory to catalogs
+  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
+  // change directory to pCatalog
+  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to schemas
+  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pSchema
+  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to tables
+  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // select * from pTable
+  eResult = eExecuteRequest(pSEitf, "mktbl", pTable);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get pTable
+  eResult = eExecuteRequest(pSEitf, "gttbl", pTable);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
+  //vTrace("Table pptr = %x\n", iAddress);
+  
+  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
+  ASSERT(CN_TABLE == pTablePtr->eClass());
+  //vTrace("Table: %s\n", pTablePtr->pTableName());
+  
+  pSEitf->vCurrentTable(pTablePtr);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop table                                                                 */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
+{
+  //vTrace("RapidsSE_DropTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
+  
+  eEC eResult;
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pCatalog)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pSchema)
+    return EC_INVALID_PARAMETER;
+  
+  if (!pTable)
+    return EC_INVALID_PARAMETER;
+  
+  // change directory to ~
+  eResult = eExecuteRequest(pSEitf, "cf", "~");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to boray
+  eResult = eExecuteRequest(pSEitf, "cf", "boray");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to catalogs
+  eResult = eExecuteRequest(pSEitf, "cf", "catalogs");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pCatalog
+  eResult = eExecuteRequest(pSEitf, "cf", pCatalog);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to schemas
+  eResult = eExecuteRequest(pSEitf, "cf", "schemas");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to pSchema
+  eResult = eExecuteRequest(pSEitf, "cf", pSchema);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // change directory to tables
+  eResult = eExecuteRequest(pSEitf, "cf", "tables");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // drop table
+  eResult = eExecuteRequest(pSEitf, "rmtbl", pTable);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
   
   return EC_NONE;
 }
@@ -817,7 +1149,7 @@ eEC RapidsSE_PoolOpen(char* pInstanceName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* delete an seitf instance                                                   */
+/* scan table                                                                 */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
@@ -976,7 +1308,7 @@ eEC RapidsSE_SEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 bool RapidsSE_SEitfInvalid(int iError)
 {
-  //vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
+  //vTrace("RapidsSE_SEitfInvalid: 0x%x\n", pSEitf);
   
   if (iError == EC_INVALID_INTERFACE)
     return true;
@@ -989,8 +1321,8 @@ bool RapidsSE_SEitfInvalid(int iError)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition)
 {
-  if (gxArguments.m_bVerbose)
-    vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
+  //if (gxArguments.m_bVerbose)
+  //  vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
   
   //SEitf* pSEitf = pSEitf = RapidsSE::pSEitfNew();
   SEitf* pSEitf = new SEitf(iPartition);
@@ -1005,6 +1337,35 @@ eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute command                                                          */
+/*----------------------------------------------------------------------------*/
+eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter1,
+                    const char* pParameter2, const char* pParameter3)
+{
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  bool bResult;
+  char xArray[C_1KB * 4];
+  char* pWords[16] = {
+    &xArray[C_1KB * 0],
+    &xArray[C_1KB * 1],
+    &xArray[C_1KB * 2],
+    &xArray[C_1KB * 3]
+  };
+  
+  // execute command
+  String::vCopy(pWords[0], pCommand);
+  String::vCopy(pWords[1], pParameter1);
+  String::vCopy(pWords[2], pParameter2);
+  String::vCopy(pWords[3], pParameter3);
+  
+  bResult = pSEitf->bDecode(pWords);
+  
+  return pSEitf->eGetLastError();
+}
 
 /*----------------------------------------------------------------------------*/
 /* execute command                                                          */
@@ -1025,7 +1386,6 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   String::vCopy(pWords[0], pCommand);
   String::vCopy(pWords[1], pParameter);
   
-  //vTrace("%s %s\n", pCommand, pParameter);
   bResult = pSEitf->bDecode(pWords);
   
   return pSEitf->eGetLastError();
@@ -1045,7 +1405,6 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
   // execute command pCommand
   String::vCopy(pWords[0], pCommand);
   
-  //vTrace("cf %s\n", pCommand);
   bResult = pSEitf->bDecode(pWords);
   
   return pSEitf->eGetLastError();
