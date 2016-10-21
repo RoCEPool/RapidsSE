@@ -307,7 +307,7 @@ void SEitf::vBeginTx()
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pTxRef = new TxRef();
-  vTrace("txref: %x\n", m_pTxRef);
+  //vTrace("txref: %x\n", m_pTxRef);
   bool bResult = m_pTxRef->bBeginTx();
   ASSERT(bResult);
 }
@@ -1125,7 +1125,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   
   String::vConcat(a," table_append");
   
-  vTrace("%s\n",a);
+  //vTrace("%s\n",a);
   
   return bAppendRequest(sRequest);
 }
