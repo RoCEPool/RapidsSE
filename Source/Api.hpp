@@ -22,10 +22,10 @@ extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchem
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow);
-extern "C" eEC RapidsSE_PoolOpen(char* pInstanceName);
+extern "C" eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
-extern "C" eEC RapidsSE_SEitfDelete(SEitf* pSEitf);
-extern "C" eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition);
+extern "C" eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf);
+extern "C" eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition);
 
 extern "C" bool RapidsSE_SEitfInvalid(int eError);
 

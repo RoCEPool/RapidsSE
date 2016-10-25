@@ -6,7 +6,7 @@
 
 extern Arguments gxArguments;
 extern BufferPool* gpBufferPool;
-
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* add a column to a table                                                    */
@@ -1186,9 +1186,9 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
 /*----------------------------------------------------------------------------*/
 /* open the shared memory buffer pool                                         */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_PoolOpen(char* pInstanceName)
+eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
 {
-  //vTrace("vRapidsSE_PoolOpen\n");
+  vTrace("vRapidsSE_PoolOpen\n");
   
   // open the pool
   s256 sPoolName;
@@ -1199,6 +1199,10 @@ eEC RapidsSE_PoolOpen(char* pInstanceName)
   if (!bResult) {
     return EC_INVALID_INSTANCE;
   }
+  
+  vTrace("vRapidsSE_PoolOpen %x %x\n", *ppInstance, gpAttachMap);
+  *ppInstance = gpAttachMap;
+  
   return EC_NONE;
 }
 
@@ -1345,7 +1349,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 /*----------------------------------------------------------------------------*/
 /* delete an seitf instance                                                   */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfDelete(SEitf* pSEitf)
+eEC RapidsSE_SEitfDelete(void* pAttachMap, SEitf* pSEitf)
 {
   //vTrace("RapidsSE_SEitfDelete: 0x%x\n", pSEitf);
   
@@ -1373,7 +1377,7 @@ bool RapidsSE_SEitfInvalid(int iError)
 /*----------------------------------------------------------------------------*/
 /* create a new seitf instance                                                */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_SEitfNew(void** ppSEitf, i8 iPartition)
+eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
 {
   //if (gxArguments.m_bVerbose)
   //  vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);

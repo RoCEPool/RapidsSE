@@ -7,6 +7,7 @@
 extern BufferPool*  gpBufferPool;
 extern Heap*        gpMediumHeap;
 extern Arguments    gxArguments;
+extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -39,7 +40,7 @@ SePrompt::SePrompt(i8 iPartition)
   
   m_iPartition = iPartition;
 
-  eEC eResult = RapidsSE_SEitfNew((void**)&m_pSEitf,m_iPartition);
+  eEC eResult = RapidsSE_SEitfNew(gpAttachMap, (void**)&m_pSEitf,m_iPartition);
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
@@ -91,7 +92,7 @@ SePrompt::~SePrompt(void)
   
   // SHOULD REMOVE HISTORY FILE?
   
-  RapidsSE_SEitfDelete(m_pSEitf);
+  RapidsSE_SEitfDelete(gpAttachMap, m_pSEitf);
 }
 
 /*----------------------------------------------------------------------------*/
