@@ -204,7 +204,7 @@ bool Dir::bSetCurrent(s256& rPath)
   
   if (iCode) {
     m_xSysCall.vError(errno);
-    vWarn("chdir() error; errno=%d\n",errno);
+    //vWarn("chdir() error; errno=%d\n",errno);
     return false;
   }
 
