@@ -540,12 +540,15 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
   
   bool bResult = pSEitf->bInsertBuffer();
   
-  // get response from se
-  eEC eResult = eGetResponse(pSEitf);
-  
-  if (eResult != EC_NONE) {
-    pSEitf->vSetLastError(eResult);
-    return eResult;
+  // if rowBuffer request was apended to requestQ, then wait for resonse
+  if (bResult) {
+    // get response from se
+    eEC eResult = eGetResponse(pSEitf);
+    
+    if (eResult != EC_NONE) {
+      pSEitf->vSetLastError(eResult);
+      return eResult;
+    }
   }
   
   pSEitf->vCurrentTable(nullptr);
