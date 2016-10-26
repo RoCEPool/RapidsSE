@@ -50,6 +50,7 @@
     while
       loaderSub.hashRecord
       loaderSub.insertrow
+      drop
   repeat
 
   loaderSub.end

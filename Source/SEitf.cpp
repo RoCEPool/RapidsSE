@@ -1031,7 +1031,7 @@ bool SEitf::bInsertRow(char* pRow)
   
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
-    m_pRowBuffer[m_iPartition] = new RowBuffer;
+    m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
     if (! m_pRowBuffer[m_iPartition]) {
       vTrace("RowBuffer allocation failed\n");
       return false;
@@ -1057,7 +1057,7 @@ bool SEitf::bInsertRow(char* pRow)
     return bResult;
   
   // get a new working buffer
-  m_pRowBuffer[m_iPartition] = new RowBuffer;
+  m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
   if (! m_pRowBuffer[m_iPartition]) {
     vTrace("RowBuffer allocation failed\n");
     return false;
