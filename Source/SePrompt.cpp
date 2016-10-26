@@ -1387,7 +1387,7 @@ bool SePrompt::bPoolSpace(void)
              
   vTrace("Pool: Size(%s) InUse(%s) Free(%s)\n",
          sTotal.a(), sInUse.a(), sFree.a());
-  
+  m_sResponse = "<ok>";
   return true;
 }
 

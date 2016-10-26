@@ -30,16 +30,22 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
   // clear the last error
   pSEitf->vClearLastError();
   
-  if (!pColumnName)
+  if (!pColumnName) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pColumnType)
+  if (!pColumnType) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
-  
+  }
+
   Table* pTable = pSEitf->pCurrentTable();
   
-  if (!pTable)
+  if (!pTable) {
+    pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
     return EC_NO_SUCH_TABLE;
+  }
   
   //vTrace("Table: %s\n", pTable->pTableName());
 
@@ -80,14 +86,20 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   // clear the last error
   pSEitf->vClearLastError();
   
-  if (!pCatalog)
+  if (!pCatalog) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pSchema)
+  if (!pSchema) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pTable)
+  if (!pTable) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
@@ -237,14 +249,20 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   // clear the last error
   pSEitf->vClearLastError();
   
-  if (!pCatalog)
+  if (!pCatalog) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pSchema)
+  if (!pSchema) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pTable)
+  if (!pTable) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
@@ -388,14 +406,20 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   // clear the last error
   pSEitf->vClearLastError();
   
-  if (!pCatalog)
+  if (!pCatalog) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pSchema)
+  if (!pSchema) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pTable)
+  if (!pTable) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
@@ -520,6 +544,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
   eEC eResult = eGetResponse(pSEitf);
   
   if (eResult != EC_NONE) {
+    pSEitf->vSetLastError(eResult);
     return eResult;
   }
   
@@ -668,16 +693,22 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
 
   // do we have a catalog ?
-  if (!pCatalog)
+  if (!pCatalog) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // do we have a schema ?
-  if (!pSchema)
+  if (!pSchema) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // do we have a table ?
-  if (!pTable)
+  if (!pTable) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
 
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
@@ -897,8 +928,10 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
     return EC_NULLPTR;
   }
   
-  if (!pCatalog)
+  if (!pCatalog) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");
@@ -984,6 +1017,8 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
 eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
 {
   eEC eResult;
+  
+  //vTrace("RapidsSE_GetEngineVersion: %x %x\n", pSEitf, ppVersion);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -1172,13 +1207,22 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
   // clear the last error
   pSEitf->vClearLastError();
   
-  if (!pRow)
+  if (!pRow) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
 
-  if (!pSEitf->pCurrentTable())
+  if (!pSEitf->pCurrentTable()) {
+    pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
     return EC_NO_SUCH_TABLE;
+  }
   
   bool bResult = pSEitf->bInsertRow(pRow);
+  
+  if (!bResult) {
+    pSEitf->vSetLastError(pSEitf->m_eErrorCode);
+    return pSEitf->m_eErrorCode;
+  }
   
   return EC_NONE;
 }
@@ -1188,7 +1232,7 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
 {
-  vTrace("vRapidsSE_PoolOpen\n");
+  vTrace("vRapidsSE_PoolOpen %s %x %x\n", pInstanceName, ppInstance, *ppInstance);
   
   // open the pool
   s256 sPoolName;
@@ -1228,14 +1272,20 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   // clear the last error
   pSEitf->vClearLastError();
   
-  if (!pCatalog)
+  if (!pCatalog) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pSchema)
+  if (!pSchema) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
-  if (!pTable)
+  if (!pTable) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
     return EC_INVALID_PARAMETER;
+  }
   
   // change directory to ~
   eResult = eExecuteRequest(pSEitf, "cf", "~");

@@ -1034,6 +1034,7 @@ bool SEitf::bInsertRow(char* pRow)
     m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
     if (! m_pRowBuffer[m_iPartition]) {
       vTrace("RowBuffer allocation failed\n");
+      m_eErrorCode = EC_LOW_BUFFERS;
       return false;
     }
   }
@@ -1060,6 +1061,7 @@ bool SEitf::bInsertRow(char* pRow)
   m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
   if (! m_pRowBuffer[m_iPartition]) {
     vTrace("RowBuffer allocation failed\n");
+    m_eErrorCode = EC_LOW_BUFFERS;
     return false;
   }
   
@@ -1253,7 +1255,7 @@ bool SEitf::bGetVersion(char* pWords[])
   
   s256 sRequest;
   
-  ASSERT(String::bEqualTo(pWords[0],"get_version"));
+  ASSERT(String::bEqualTo(pWords[0],"version"));
   sRequest = "get_version";
   return bAppendRequest(sRequest);
 }
