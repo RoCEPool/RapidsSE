@@ -106,9 +106,9 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_tenant ( "<tenantNm>" -- <R> )
 
-    checkInTenants not if swap drop <ERROR> exit then
-
-    checkIsNotTenant not if swap drop <ERROR> exit then
+    checkEnoughBuffers not if swap drop <ERROR> exit then
+    checkInTenants     not if swap drop <ERROR> exit then
+    checkIsNotTenant   not if swap drop <ERROR> exit then
 
     :tenant execute makeCatalogs
 
@@ -154,9 +154,9 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_catalog ( "<catalogNm>" -- <R> )
 
-    checkInCatalogs not if swap drop <ERROR> exit then
-
-    checkIsNotCatalog not if swap drop <ERROR> exit then
+    checkEnoughBuffers not if swap drop <ERROR> exit then
+    checkInCatalogs    not if swap drop <ERROR> exit then
+    checkIsNotCatalog  not if swap drop <ERROR> exit then
 
     :catalog execute makeSchemas
 
@@ -202,9 +202,9 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_schema ( "<schemaNm>" -- <R> )
 
-    checkInSchemas not if swap drop <ERROR> exit then
-
-    checkIsNotSchema not if swap drop <ERROR> exit then
+    checkEnoughBuffers not if swap drop <ERROR> exit then
+    checkInSchemas     not if swap drop <ERROR> exit then
+    checkIsNotSchema   not if swap drop <ERROR> exit then
 
     :schema execute makeTables
 
@@ -250,9 +250,9 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
 
-    checkInTables not if swap drop <ERROR> exit then
-
-    checkIsNotTable not if swap drop <ERROR> exit then
+    checkEnoughBuffers not if swap drop <ERROR> exit then
+    checkInTables      not if swap drop <ERROR> exit then
+    checkIsNotTable    not if swap drop <ERROR> exit then
 
     :table execute makeColumns
 
@@ -318,7 +318,8 @@ Misc Requests:
 
 freespace .
 
-    checkInTables not if rot drop drop <ERROR> exit then
+    checkEnoughBuffers not if swap drop <ERROR> exit then
+    checkInTables      not if rot drop drop <ERROR> exit then
 
     find
 
