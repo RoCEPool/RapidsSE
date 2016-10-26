@@ -8,6 +8,8 @@
 
 namespace DBobjects
 {
+  static const i8 C_BUFFER_THRESHOLD = 100;
+  
   class RowBuffer : public Buffer
   {
   private:
@@ -18,10 +20,13 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
+    void* operator new(size_t, void* pAddress);
     void  operator delete(void*);
     
     RowBuffer(void);
     ~RowBuffer(void);
+    
+    static RowBuffer* pNewRowBuffer(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
@@ -45,6 +50,8 @@ namespace DBobjects
     Object* pDataArea(void);
     i8      iFreeSpace(void);
   };
+  
+  RowBuffer* _pRowBuffer(void* pAddr);
 }
 
 /*============================================================================*/

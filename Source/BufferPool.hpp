@@ -58,6 +58,7 @@ namespace Pool
     bool bDetachPool(void);
     void vDump(void);
     void vFree(Buffer* pBuffer);
+    i8   iFreeCount(void);
     i8   iFreePercent(void);
     i8   iFreeSpace(void);
     bool bHasDataSpace(void);

@@ -271,6 +271,16 @@ void BufferPool::vFree(Buffer* pBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return number of free buffers                                              */
+/*----------------------------------------------------------------------------*/
+i8 BufferPool::iFreeCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_iFreeCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return free space percentage                                               */
 /*----------------------------------------------------------------------------*/
 i8 BufferPool::iFreePercent(void)
@@ -316,7 +326,8 @@ void BufferPool::vInitialise(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   m_iAllocCount = 0;
-  m_iFreeCount  = m_iBufferCount;
+  //m_iFreeCount  = m_iBufferCount;
+  m_iFreeCount  = 0;
   m_nFreeHead   = nBufferFirst();
   
   //vTrace("FirstBuffer %lld LastBuffer %lld\n",*nBufferFirst(),*nBufferLast());
@@ -352,6 +363,8 @@ void BufferPool::vInitialise(void)
     pFreeBuffer->vBufferNo(nBuffer);
     nBuffer = nBufferNext(nBuffer);
     pFreeBuffer->vNextFree(nBuffer);
+    
+    m_iFreeCount++;
 }
   
   BufferFree* pLastBuffer = pToBufferFree(nBufferLast());

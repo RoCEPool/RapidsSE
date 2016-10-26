@@ -7,6 +7,16 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+RowBuffer* DBobjects::_pRowBuffer(void* pAddr)
+{
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pAddr);
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* fetch a new buffer from buffer pool                                        */
 /*----------------------------------------------------------------------------*/
 void* RowBuffer::operator new(size_t iSize)
@@ -15,6 +25,16 @@ void* RowBuffer::operator new(size_t iSize)
   Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_ROWBUFFER);
   
   return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* fetch a new buffer from buffer pool                                        */
+/*----------------------------------------------------------------------------*/
+void* RowBuffer::operator new(size_t iSize, void* pAddr)
+{
+  RASSERT(iSize);
+  
+  return pAddr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,6 +73,43 @@ RowBuffer::~RowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* row buffer factory                                                         */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pNewRowBuffer(void)
+{
+  if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
+    return nullptr;
+  
+  RowBuffer* pRowBuffer = _pRowBuffer(Heap::pAllocate(CN_ROWBUFFER));
+  if (! pRowBuffer)
+    return nullptr;
+  
+  new(pRowBuffer) RowBuffer;
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump rowbuffer                                                             */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_ROWBUFFER);
+  ASSERT(pObject->eClass() == CN_ROWBUFFER);
+  
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
+  
+  vTrace("%sRowBuffer %p:\n", pTab, pRowBuffer);
+  vTrace("%s  freeSpace %p\n", pTab, pRowBuffer->m_pFreeSpace);
+  vTrace("%s  prevBuffer %p\n", pTab, pRowBuffer->m_pPrevBuffer);
+  vTrace("%s  nextBuffer %p\n\n", pTab, pRowBuffer->m_pNextBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* allocate a row in this segmented space                                     */
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pAllocRow(i8 iDataBytes)
@@ -75,22 +132,6 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
   return pRow;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump rowbuffer                                                             */
-/*----------------------------------------------------------------------------*/
-void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
-{
-  ASSERT(eClass == CN_ROWBUFFER);
-  ASSERT(pObject->eClass() == CN_ROWBUFFER);
-  
-  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pObject);
-  
-  vTrace("%sRowBuffer %p:\n", pTab, pRowBuffer);
-  vTrace("%s  freeSpace %p\n", pTab, pRowBuffer->m_pFreeSpace);
-  vTrace("%s  prevBuffer %p\n", pTab, pRowBuffer->m_pPrevBuffer);
-  vTrace("%s  nextBuffer %p\n\n", pTab, pRowBuffer->m_pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

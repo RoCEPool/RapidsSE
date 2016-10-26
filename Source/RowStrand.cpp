@@ -238,6 +238,10 @@ bool RowStrand::bExtendStrand(void)
     return false;
 
   RowBuffer* pNewBuffer = new RowBuffer;
+  if (! pNewBuffer) {
+    vTrace("RowBuffer allocation failed\n");
+    return false;
+  }
   
   bool bExtended = bExtendStrand(pNewBuffer);
   return true;
