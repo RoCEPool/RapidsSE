@@ -46,11 +46,13 @@
   loaderSub.begin
 
   begin
-    loaderSub.fetchrecord
-    while
+    loaderSub.fetchrecord if
       loaderSub.hashRecord
       loaderSub.insertrow
-      drop
+    else
+      false
+    then
+    while
   repeat
 
   loaderSub.end

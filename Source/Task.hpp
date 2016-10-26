@@ -291,6 +291,7 @@ namespace Tasks
     static void vExecute(NNP_Task nnpTask);
     static void vExit(NNP_Task nnpTask);           
     static void vFetch(NNP_Task nnpTask);
+    static void vFreeBuffers(NNP_Task nnpTask);
     static void vFreePercent(NNP_Task nnpTask);
     static void vFreeSpace(NNP_Task nnpTask);
     static void vGreater(NNP_Task nnpTask);

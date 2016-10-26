@@ -623,6 +623,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
+  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
   vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
   vAddPrimitive(">",               &vGreater,          false);
@@ -2785,6 +2786,20 @@ void Task::vFetch(NNP_Task nnpTask)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* freeBuffers -- push number of free buffers in buffer pool onto stack       */
+/*----------------------------------------------------------------------------*/
+void Task::vFreeBuffers(NNP_Task nnpTask)
+{
+  ENTRY("vFreePercent");
+  
+  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  
+  nnpTask->m_xParamStack.vPush(iFreeBuffers);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* freePercent -- push free percent of buffer pool onto stack                 */
