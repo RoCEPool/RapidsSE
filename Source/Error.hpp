@@ -20,6 +20,8 @@ namespace Magic
     /*  5 */ EC_INVALID_PARAMETER,
     /*    */ EC_INVALID_INSTANCE,
     /*  6 */ EC_INVALID_SYNTAX,
+
+    /*  6 */ EC_LOW_BUFFERS,
     
     /*  7 */ EC_NO_COLUMNS_DIC,
     
@@ -67,6 +69,8 @@ namespace Magic
     /*  5 */ "invalid parameter",
     /*    */ "invalid instance",
     /*  6 */ "invalid syntax",
+    
+    /*    */ "low buffers",
     
     /*  7 */ "no columns dictionary",
     

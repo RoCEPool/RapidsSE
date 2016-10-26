@@ -404,35 +404,37 @@ void Task::vAddConstants(void)
   /*  5 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
   /*  6 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
   
-  /*  7 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
+  /*  7 */ vAddConstant("EC_LOW_BUFFERS",           EC_LOW_BUFFERS);
   
-  /*  8 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
-  /*    */ vAddConstant("EC_NO_SUCH_DIRECTORY",     EC_NO_SUCH_DIRECTORY);
-  /*  9 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
-  /* 10 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
-  /* 11 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
-  /* 12 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
-  /* 13 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
+  /*  8 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
   
-  /* 14 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
-  /* 15 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
-  /* 16 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
-  /* 17 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
-  /* 18 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
+  /*  9 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
+  /* 10 */ vAddConstant("EC_NO_SUCH_DIRECTORY",     EC_NO_SUCH_DIRECTORY);
+  /* 11 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
+  /* 12 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
+  /* 13 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
+  /* 14 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
+  /* 15 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
   
-  /* 19 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
-  /* 20 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
-  /* 21 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
-  /* 22 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
-  /* 23 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
+  /* 16 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
+  /* 17 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
+  /* 18 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
+  /* 19 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
+  /* 20 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
   
-  /* 24 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
+  /* 21 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
+  /* 22 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
+  /* 23 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
+  /* 24 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
+  /* 25 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
   
-  /* 25 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
+  /* 26 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
   
-  /* 26 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
-  /* 27 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
-  /* 28 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
+  /* 27 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
+  
+  /* 28 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /* 29 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
+  /* 30 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
 
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
   /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
