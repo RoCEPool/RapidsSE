@@ -1046,7 +1046,7 @@ bool SEitf::bInsertRow(char* pRow)
   
   // insert row into working buffer
   if (pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow)))
-     return true;
+    return true;
     
   // buffer full, append working buffer into table
   //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
@@ -1056,6 +1056,13 @@ bool SEitf::bInsertRow(char* pRow)
   
   if (!bResult)
     return bResult;
+  
+  // get response
+  eEC eError = eGetResponse();
+  if (EC_NONE != eError) {
+    vSetLastError(eError);
+    return false;
+  }
   
   // get a new working buffer
   m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
@@ -1084,7 +1091,7 @@ bool SEitf::bInsertBuffer(void)
   //vTrace("inserting ...\n");
   
   if (! m_pRowBuffer[m_iPartition]) {
-    return true;
+    return false;
   }
   
   return bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
