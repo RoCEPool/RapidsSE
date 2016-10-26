@@ -616,6 +616,7 @@ void SePrompt::vHelp(void)
   vTrace("print          -- print string\n");
   vTrace("pwf            -- print working folder\n");
   vTrace("pwd            -- print working directory\n");
+  vTrace("space          -- pool space\n");
   vTrace("?              -- print this help\n");
   vTrace("help           -- print this help\n");
 #else
@@ -919,8 +920,11 @@ bool SePrompt::bCreateTable(void)
     String::vCopy(m_pToken[j++], m_pToken2[2]);
     String::vCopy(m_pToken[j++], m_pToken2[iCurrentToken++]);
     
-    if (String::bEqualTo(m_pToken2[iCurrentToken], "varchar", C_NO_CASE) ||
-        String::bEqualTo(m_pToken2[iCurrentToken], "char", C_NO_CASE)) {
+    if (String::bEqualTo(m_pToken2[iCurrentToken], "integer", C_NO_CASE) ||
+        String::bEqualTo(m_pToken2[iCurrentToken], "varchar", C_NO_CASE) ||
+        String::bEqualTo(m_pToken2[iCurrentToken], "varbinary", C_NO_CASE) ||
+        String::bEqualTo(m_pToken2[iCurrentToken], "char", C_NO_CASE) ||
+        String::bEqualTo(m_pToken2[iCurrentToken], "float", C_NO_CASE)) {
       
       // copy varchar/char
       String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
@@ -1000,8 +1004,10 @@ bool SePrompt::bCreateTable(void)
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       }
     }
-    else if (String::bEqualTo(m_pToken2[iCurrentToken], "integer", C_NO_CASE) ||
-             String::bEqualTo(m_pToken2[iCurrentToken], "date", C_NO_CASE)) {
+    else if (String::bEqualTo(m_pToken2[iCurrentToken], "date", C_NO_CASE) ||
+             String::bEqualTo(m_pToken2[iCurrentToken], "timestamp", C_NO_CASE) ||
+             String::bEqualTo(m_pToken2[iCurrentToken], "interval", C_NO_CASE) ||
+             String::bEqualTo(m_pToken2[iCurrentToken], "boolean", C_NO_CASE)) {
       String::vCopy(m_pToken[j], m_pToken2[iCurrentToken++]);
     }
     else {
@@ -1025,6 +1031,29 @@ bool SePrompt::bCreateTable(void)
       String::vConcat(m_pToken[j], " ");
       String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
     }
+    
+    // check for PRIMARY KEY
+    if (String::bEqualTo(m_pToken2[iCurrentToken],"primary", C_NO_CASE)) {
+      
+      String::vConcat(m_pToken[j], " ");
+      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+      
+      if (!String::bEqualTo(m_pToken2[iCurrentToken],"key", C_NO_CASE)) {
+        bDropTable(m_pToken2[2]);
+        m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+        return false;
+      }
+      String::vConcat(m_pToken[j], " ");
+      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+    }
+
+    // check for UNIQUE
+    if (String::bEqualTo(m_pToken2[iCurrentToken],"unique", C_NO_CASE)) {
+      
+      String::vConcat(m_pToken[j], " ");
+      String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
+    }
+
     
     // now we should see a column type
     // validate it
