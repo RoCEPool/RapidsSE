@@ -9,7 +9,7 @@ DIR_GUARD=@mkdir -p $(@D)
 CURRENT=${PWD}
 TARGETPATH = $(CURRENT)/../Linux/bin
 TARGET_EXE = $(TARGETPATH)/se 
-TARGET_LIBRARY = $(TARGETPATH)/libRapidsSE.so
+TARGET_LIBRARY = $(TARGETPATH)/libRapidsSEv0.1.4.so
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
