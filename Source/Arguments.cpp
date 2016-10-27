@@ -147,7 +147,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
       //m_iRegionSize = String::iToI8(argv[++iArg]);
-      m_iRegionSize = Magnitudes::iBytes(argv[++iArg]);
+      bool bResult = Magnitudes::bBytes(argv[++iArg], m_iRegionSize);
+      if (!bResult) {
+        vTrace("Invalid size argument: --size %s\n",argv[iArg]);
+        return false;
+      }
       continue;
     }
     

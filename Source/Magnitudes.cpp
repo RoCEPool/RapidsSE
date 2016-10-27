@@ -38,7 +38,7 @@ void Magnitudes::vMagnitude(i8 iValue, i8 iDecimals, char* psBuf)
 /*----------------------------------------------------------------------------*/
 /* iBytes -- convert magnitude to equivalent bytes                            */
 /*----------------------------------------------------------------------------*/
-i8 Magnitudes::iBytes(const char* psBuf)
+bool Magnitudes::bBytes(const char* psBuf, i8& iBytes)
 {
   s256 sNumber;
   s256 sString;
@@ -70,7 +70,7 @@ i8 Magnitudes::iBytes(const char* psBuf)
     
   } else if (String::bContains(sString.a(), "b")) {
     if (!String::bEqualTo(String::sLast(sString.a()), "b")) {
-      THROW_ERROR(EC_INVALID_PARAMETER);
+      return false;
     }
     String::vCopyTill(sNumber.a(), sString.a(), 'b');
     iMagnitude = 1;
@@ -82,15 +82,17 @@ i8 Magnitudes::iBytes(const char* psBuf)
   i8 iVal;
   
   if (!String::bIsNumeric(ps)){
-     THROW_ERROR(EC_INVALID_PARAMETER);
+    return false;
   }
   
   if (String::bExtractI8(&ps, &iVal)) {
-    return iVal*iMagnitude;
+    iBytes = iVal*iMagnitude;
   }
   else {
-    THROW_ERROR(EC_INVALID_PARAMETER);
+    return false;
   }
+  
+  return true;
 }
 
 /*============================================================================*/
