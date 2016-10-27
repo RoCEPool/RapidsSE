@@ -40,6 +40,9 @@ void RunTests::vRunTests(void) {
   TableTests* pTableTests = new TableTests();
   pTableTests->vRun(this);
 
+  LoadTests* pLoadTests = new LoadTests();
+  pLoadTests->vRun(this);
+  
   vTrace("\n--------------------------------------\n");
   vTrace("Total Tests Executed : %lld\n", m_iTestsTotal);
   vTrace("Total Tests Passed   : %lld\n", m_iTestsPassed);

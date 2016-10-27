@@ -48,15 +48,18 @@ public:
   void vLoop(void);
   bool bExecuteString(s& sCommand, eEC& eErrorCode);
   bool bExecuteString(s& sCommand, eEC& eErrorCode, s& sResponse);
+  bool bExecuteString(s& sCommand, eEC& eErrorCode, char** ppRowPtr);
 
 private:
   void vGetCommand(void);
   void vGetCommandArgument(void);
   void vGetCommandInput(void);
   
-  bool bProcessCommand(void);
+  bool bProcessCommand(bool bPostProcess = true);
   
   bool bExecuteRequest(void);
+  bool bGetFirstRow(void);
+  bool bGetNextRow(void);
   void vIterateRows(void);
   void vHelp(void);
   bool bTestFile(char* pPath);

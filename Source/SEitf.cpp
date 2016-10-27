@@ -71,6 +71,7 @@ SEitf::SEitf(i8 iPartition)
   m_eErrorCode      = EC_NONE;
   m_sErrorMsg       = pEC[m_eErrorCode];
   m_sResponse       = "";
+  m_pRowPtr         = nullptr;
   m_pCurrentTable   = nullptr;
   m_pTxRef          = nullptr;
   

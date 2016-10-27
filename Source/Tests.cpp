@@ -85,6 +85,46 @@ void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected, s& sResponse
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* run unit tests                                                             */
+/*----------------------------------------------------------------------------*/
+void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows)
+{
+  eEC eErrorReturned;
+  s256 sResponseReturned;
+  char* pRowPtr;
+  bool bReturn;
+  i8 iRecvdRows = 0;
+  
+  m_iTestsTotal++;
+  
+  if (m_pSePrompt->bExecuteString(sCommand, eErrorReturned) != bResult) {
+    m_iTestsFailed++;
+    vAssertFailed();
+  }
+  else {
+    if (eErrorReturned != eErrorExpected) {
+      m_iTestsFailed++;
+      Tests::vAssertFailed();
+    }
+    sCommand = "first";
+    bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);
+    
+    sCommand = "next";
+    while(bReturn) {
+      iRecvdRows++;
+      bReturn = m_pSePrompt->bExecuteString(sCommand, eErrorReturned, &pRowPtr);
+    }
+    if (iExpectedRows != iRecvdRows) {
+      m_iTestsFailed++;
+      Tests::vAssertFailed();
+    }
+    else {
+      m_iTestsPassed++;
+    }
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -164,7 +164,7 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
     iToken++;
     ASSERT(iToken < C_TOKENS);
   }
-  bool bResult = bProcessCommand();
+  bool bResult = bProcessCommand(false);
   
   eErrorCode = m_pSEitf->m_eErrorCode;
   
@@ -187,10 +187,34 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, s& sResponse)
     iToken++;
     ASSERT(iToken < C_TOKENS);
   }
-  bool bResult = bProcessCommand();
+  bool bResult = bProcessCommand(false);
   
   eErrorCode = m_pSEitf->m_eErrorCode;
   sResponse = m_pSEitf->m_sResponse;
+  
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* execute request from given string                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, char** ppRowPtr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  m_xTokeniser.vUseString(sRequest);
+  i8 iToken = 0;
+  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+    
+    //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
+    
+    iToken++;
+    ASSERT(iToken < C_TOKENS);
+  }
+  bool bResult = bProcessCommand(false);
+  
+  eErrorCode = m_pSEitf->m_eErrorCode;
+  *ppRowPtr = m_pSEitf->m_pRowPtr;
   
   return bResult;
 }
@@ -266,7 +290,7 @@ void SePrompt::vGetCommandInput(void)
 /* process command                                                            */
 /*----------------------------------------------------------------------------*/
 #ifdef _RELEASE_VERSION
-bool SePrompt::bProcessCommand(void)
+bool SePrompt::bProcessCommand(bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -384,7 +408,7 @@ bool SePrompt::bProcessCommand(void)
 }
 #else
 
-bool SePrompt::bProcessCommand(void)
+bool SePrompt::bProcessCommand(bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -467,6 +491,14 @@ bool SePrompt::bProcessCommand(void)
     return bListDir();
   }
   
+  if (String::bEqualTo("first",m_pToken[0],C_NO_CASE)) {
+    return bGetFirstRow();
+  }
+  
+  if (String::bEqualTo("next",m_pToken[0],C_NO_CASE)) {
+    return bGetNextRow();
+  }
+
   if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
     return bPoolSpace();
   }
@@ -483,8 +515,10 @@ bool SePrompt::bProcessCommand(void)
   if (! bExecuteRequest())
     return false;
   
-  // - post process requests
+  if (!bPostProcess)
+    return true;
   
+  // - post process requests
   if (String::bEqualTo("sel",m_pToken[0],C_NO_CASE)) {
     vIterateRows();
     return true;
@@ -556,6 +590,61 @@ void SePrompt::vIterateRows(void)
   
   pRowCursor->vEnd();
   delete pRowCursor;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the first row                                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bGetFirstRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iAddress = String::iToI8(m_sResponse.a());
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vBegin(m_iPartition);
+  pRowCursor->vFirst();
+  char* pStr = pRowCursor->pRowAsStr();
+  
+  if (pStr == nullptr) {
+    pRowCursor->vEnd();
+    delete pRowCursor;
+    m_pSEitf->m_pRowPtr = nullptr;
+    return false;
+  }
+  else {
+    m_pSEitf->m_pRowPtr = pStr;
+    return true;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the next row                                                           */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bGetNextRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iAddress = String::iToI8(m_sResponse.a());
+  
+  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  pRowCursor->vNext();
+  char* pStr = pRowCursor->pRowAsStr();
+  
+  if (pStr == nullptr) {
+    pRowCursor->vEnd();
+    delete pRowCursor;
+    m_pSEitf->m_pRowPtr = nullptr;
+    return false;
+  }
+  else {
+    m_pSEitf->m_pRowPtr = pStr;
+    return true;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
