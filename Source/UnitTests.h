@@ -12,6 +12,7 @@
 #include "SchemaTests.hpp"
 #include "TableTests.hpp"
 #include "LoadTests.hpp"
+#include "InsertTests.hpp"
 
 //-----------------------------------------------------------------------------
 namespace UnitTests

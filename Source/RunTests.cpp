@@ -40,6 +40,9 @@ void RunTests::vRunTests(void) {
   TableTests* pTableTests = new TableTests();
   pTableTests->vRun(this);
 
+  InsertTests* pInsertTests = new InsertTests();
+  pInsertTests->vRun(this);
+  
   LoadTests* pLoadTests = new LoadTests();
   pLoadTests->vRun(this);
   

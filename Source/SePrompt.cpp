@@ -452,6 +452,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
       return true;
   }
   
+  if (String::bEqualTo("begin",m_pToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("insert",m_pToken[1],C_NO_CASE)) {
+      return bBeginInsert();
+    }
+  }
+  
   if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
     
     if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
@@ -483,6 +489,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
+  if (String::bEqualTo("end",m_pToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("insert",m_pToken[1],C_NO_CASE)) {
+      return bEndInsert();
+    }
+  }
+  
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
     return bPrintWorkingDir();
   }
@@ -493,6 +505,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   if (String::bEqualTo("first",m_pToken[0],C_NO_CASE)) {
     return bGetFirstRow();
+  }
+  
+  if (String::bEqualTo("insert",m_pToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("row",m_pToken[1],C_NO_CASE)) {
+      return bInsertRow();
+    }
   }
   
   if (String::bEqualTo("next",m_pToken[0],C_NO_CASE)) {
@@ -756,6 +774,59 @@ void SePrompt::vHelp(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* begin insert                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bBeginInsert(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iNumTokens;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"begin"));
+  ASSERT(String::bEqualTo(m_pToken[1],"insert"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  
+  iNumTokens = iToken;
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // get table pointer
+  String::vCopy(m_pToken[0], "gttbl");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  if (!bExecuteRequest())
+    return false;
+  
+  i8 iAddress = String::iToI8(m_sResponse.a());
+  
+  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
+  ASSERT(CN_TABLE == pTablePtr->eClass());
+  vTrace("Beginning insert in Table: %s\n", pTablePtr->pTableName());
+  
+  m_pSEitf->vCurrentTable(pTablePtr);
+  
+  m_pSEitf->vBeginTx();
+
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* change working directory                                                   */
@@ -1399,6 +1470,120 @@ bool SePrompt::bDropTenant(void)
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* end insert                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bEndInsert(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iNumTokens;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"end"));
+  ASSERT(String::bEqualTo(m_pToken[1],"insert"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  
+  iNumTokens = iToken;
+  // there should be 3 tokens
+  if (iNumTokens != 3) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // clear the last error
+  m_pSEitf->vClearLastError();
+  
+  bool bResult = m_pSEitf->bInsertBuffer();
+  
+  // if rowBuffer request was appended to requestQ, then wait for resonse
+  if (bResult) {
+    // get response from se
+    eEC eResult = eGetResponse(m_pSEitf);
+    
+    if (eResult != EC_NONE) {
+      m_pSEitf->vSetLastError(eResult);
+      return eResult;
+    }
+  }
+  
+  m_pSEitf->vCurrentTable(nullptr);
+  
+  m_pSEitf->vCommitTx();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert a row                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bInsertRow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iNumTokens;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"insert"));
+  ASSERT(String::bEqualTo(m_pToken[1],"row"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+  }
+  
+  iNumTokens = iToken;
+  // there should be 3 tokens
+  if (iNumTokens != 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // clear the last error
+  m_pSEitf->vClearLastError();
+  
+  //if (!pRow) {
+  //  m_pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+  //  return EC_INVALID_PARAMETER;
+  //}
+  
+  if (!m_pSEitf->pCurrentTable()) {
+    m_pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
+    return EC_NO_SUCH_TABLE;
+  }
+  
+  char* pRow = m_pToken2[2];
+  bool bResult = m_pSEitf->bInsertRow(pRow);
+  
+  if (!bResult) {
+    m_pSEitf->vSetLastError(m_pSEitf->m_eErrorCode);
+    return bResult;
+  }
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* list directory                                                             */

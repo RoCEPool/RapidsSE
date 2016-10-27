@@ -65,6 +65,7 @@ private:
   bool bTestFile(char* pPath);
   void vPushFile(char* pWord);
   
+  bool bBeginInsert(void);
   bool bChangeWorkingDir(void);
   
   bool bCreateCatalog(void);
@@ -74,7 +75,6 @@ private:
   
   void vCollectStatement(void);
   bool bDocol(void);
-  bool bListDir(void);
   
   bool bDropCatalog(void);
   bool bDropSchema(void);
@@ -82,8 +82,12 @@ private:
   bool bDropTable(char* pTableName);
   bool bDropTenant(void);
   
+  bool bEndInsert(void);
+  bool bInsertRow(void);
   bool bPoolSpace(void);
   bool bPrintWorkingDir(void);
+  
+  bool bListDir(void);
 
   Footer* pFooter(void);
 };

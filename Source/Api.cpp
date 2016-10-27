@@ -540,7 +540,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
   
   bool bResult = pSEitf->bInsertBuffer();
   
-  // if rowBuffer request was apended to requestQ, then wait for resonse
+  // if rowBuffer request was appended to requestQ, then wait for resonse
   if (bResult) {
     // get response from se
     eEC eResult = eGetResponse(pSEitf);
