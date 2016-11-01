@@ -1097,7 +1097,12 @@ bool SEitf::bInsertBuffer(void)
     return false;
   }
   
-  return bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
+  bool bResult =  bInsertBuffer(m_pRowBuffer[m_iPartition],m_iPartition);
+  
+  // null the rowBuffer
+  m_pRowBuffer[m_iPartition] = nullptr;
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/

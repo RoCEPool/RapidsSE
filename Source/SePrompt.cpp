@@ -819,7 +819,7 @@ bool SePrompt::bBeginInsert(void)
   
   Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
   ASSERT(CN_TABLE == pTablePtr->eClass());
-  vTrace("Beginning insert in Table: %s\n", pTablePtr->pTableName());
+  //vTrace("Beginning insert in Table: %s\n", pTablePtr->pTableName());
   
   m_pSEitf->vCurrentTable(pTablePtr);
   

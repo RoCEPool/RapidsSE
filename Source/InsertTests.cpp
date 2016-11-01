@@ -73,6 +73,20 @@ void InsertTests::vRun(RunTests* pRunTests)
   sCommand = "sel tbl";
   vRequire(sCommand, true, EC_NONE, 1000);
   
+  sCommand = "begin insert tbl;";
+  vRequire(sCommand, true, EC_NONE);
+  
+  for (i8 iIdx = 1000; iIdx < 2000; iIdx++) {
+    sprintf(sCommand.a(), "insert row \"%lld|%s\";", iIdx, "abcdef");
+    vRequire(sCommand, true, EC_NONE);
+  }
+  
+  sCommand = "end insert;";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "sel tbl";
+  vRequire(sCommand, true, EC_NONE, 2000);
+  
   sCommand = "drop table tbl;";
   vRequire(sCommand, true, EC_NONE);
   
