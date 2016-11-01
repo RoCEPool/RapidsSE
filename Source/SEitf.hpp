@@ -33,6 +33,8 @@ namespace Interface
     char*  m_pRowPtr;
     
     TxRef* m_pTxRef;
+    i8     m_iCurrentRequestId;
+    i8     m_iNextRequestId;
     
     RowBuffer* m_pRowBuffer[C_TABLE_PARTITIONS]; // working row buffers
     

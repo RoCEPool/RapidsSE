@@ -74,6 +74,8 @@ SEitf::SEitf(i8 iPartition)
   m_pRowPtr         = nullptr;
   m_pCurrentTable   = nullptr;
   m_pTxRef          = nullptr;
+  m_iCurrentRequestId = 0;
+  m_iNextRequestId    = -1;
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
@@ -275,6 +277,7 @@ void SEitf::vRequestQueue(Queue* pRequestQueue)
   
   m_pRequestQueue = pRequestQueue;
 }
+
 /*----------------------------------------------------------------------------*/
 /* get response queue                                                         */
 /*----------------------------------------------------------------------------*/
@@ -294,7 +297,6 @@ void SEitf::vResponseQueue(Queue* pResponseQueue)
   
   m_pResponseQueue = pResponseQueue;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1336,7 +1338,19 @@ bool SEitf::bAppendRequest(s& sRequest)
   //vTrace("%s\n",xVal.sStr());
   xValSet.vAppend(pCursor,xVal);
   
+  // if the current request id matches the next request id, it means
+  // we have not read a response of the previous request
+  if (m_iCurrentRequestId == m_iNextRequestId) {
+    vTrace("Response for previous request not retrieved. Out-Of-Sync request-response.\n");
+    vSetLastError(EC_RESPONSE_PENDING);
+    return false;
+  }
+  
+  // set the new current request id to the next one sent by previous response
+  m_iCurrentRequestId = m_iNextRequestId;
+  
   bool b = m_pRequestQueue->bAppend(&xValSet);
+  
   return b;
 }
 
@@ -1351,6 +1365,11 @@ eEC SEitf::eGetResponse(void)
     ;
   
   vSetLastError(m_eErrorCode);
+  
+  // generate a random number and send it back
+  m_iNextRequestId = Random::iRandom();
+  //vTrace("NextRequest %lld\n", m_iNextRequestId);
+  
   return m_eErrorCode;
 }
 

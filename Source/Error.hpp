@@ -48,6 +48,7 @@ namespace Magic
     /*    */ EC_NULL_INTERFACE,
     /* 25 */ EC_NULLPTR,
     
+    /*    */ EC_RESPONSE_PENDING,
     /* 26 */ EC_SCHEMA_EXISTS,
 
     /* 27 */ EC_TABLE_EXISTS,
@@ -97,6 +98,8 @@ namespace Magic
     /*    */ "null interface",
     /* 24 */ "nullptr",
     
+    /*    */ "response pending",
+  
     /* 25 */ "schema exists",
     /* 26 */ "table exists",
     /* 27 */ "tenant exists",
