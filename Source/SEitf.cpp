@@ -415,19 +415,19 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("mkcat",pWords[0],C_NO_CASE)) {
-    return bCreateCatalog(pWords);
+    return bCreateCatalog(pWords, iWords);
   }
   
   if (String::bEqualTo("mksch",pWords[0],C_NO_CASE)) {
-    return bCreateSchema(pWords);
+    return bCreateSchema(pWords, iWords);
   }
   
   if (String::bEqualTo("mktbl",pWords[0],C_NO_CASE)) {
-    return bCreateTable(pWords);
+    return bCreateTable(pWords, iWords);
   }
   
   if (String::bEqualTo("mkten",pWords[0],C_NO_CASE)) {
-    return bCreateTenant(pWords);
+    return bCreateTenant(pWords, iWords);
   }
   
   if (String::bEqualTo("pwf",pWords[0],C_NO_CASE)) {
@@ -543,7 +543,7 @@ bool SEitf::bDropDictionary(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTenant(char* pWords[])
+bool SEitf::bCreateTenant(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -551,6 +551,11 @@ bool SEitf::bCreateTenant(char* pWords[])
   
   char* a = sRequest.a();
   
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
@@ -604,13 +609,18 @@ bool SEitf::bDropTenant(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a catalog                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateCatalog(char* pWords[])
+bool SEitf::bCreateCatalog(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
@@ -665,13 +675,18 @@ bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a schema                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateSchema(char* pWords[])
+bool SEitf::bCreateSchema(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
@@ -726,13 +741,18 @@ bool SEitf::bDropSchema(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bCreateTable(char* pWords[])
+bool SEitf::bCreateTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);

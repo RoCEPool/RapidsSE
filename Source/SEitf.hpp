@@ -81,19 +81,19 @@ namespace Interface
     
     bool bDropDictionary(char* pWords[], i8 iWords);
 
-    bool bCreateTenant(char* pWords[]);
+    bool bCreateTenant(char* pWords[], i8 iWords);
     bool bListTenants(char* pWords[]);
     bool bDropTenant(char* pWords[], i8 iWords);
 
-    bool bCreateCatalog(char* pWords[]);
+    bool bCreateCatalog(char* pWords[], i8 iWords);
     bool bListCatalogs(char* pWords[]);
     bool bDropCatalog(char* pWords[], i8 iWords);
     
-    bool bCreateSchema(char* pWords[]);
+    bool bCreateSchema(char* pWords[], i8 iWords);
     bool bListSchemas(char* pWords[]);
     bool bDropSchema(char* pWords[], i8 iWords);
     
-    bool bCreateTable(char* pWords[]);
+    bool bCreateTable(char* pWords[], i8 iWords);
     
     bool bListTables(char* pWords[]);
     bool bDocol(char* pWords[]);
