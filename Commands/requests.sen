@@ -183,7 +183,7 @@ Misc Requests:
     checkInCatalogs not if swap drop <ERROR> exit then
 
     find
-    checkIsWord not if <ERROR> exit then
+    checkIsWord not if drop EC_NO_SUCH_CATALOG <ERROR> exit then
 
     checkIsCatalog not if swap drop <ERROR> exit then
 
@@ -231,7 +231,7 @@ Misc Requests:
     checkInSchemas not if swap drop <ERROR> exit then
 
     find
-    checkIsWord not if <ERROR> exit then
+    checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
 
     checkIsSchema not if swap drop <ERROR> exit then
 
