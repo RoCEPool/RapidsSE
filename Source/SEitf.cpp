@@ -343,7 +343,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("adr",pWords[0],C_NO_CASE)) {
-    return bAddressTable(pWords);
+    return bAddressTable(pWords, iWords);
   }
   
   if (String::bEqualTo("cf",pWords[0],C_NO_CASE)) {
@@ -358,10 +358,6 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bCopyTable(pWords);
   }
   
-  if (String::bEqualTo("getTable",pWords[0],C_NO_CASE)) {
-    return bGetTable(pWords);
-  }
-  
   if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
     return bDisconnect(pWords);
   }
@@ -371,7 +367,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("dump",pWords[0],C_NO_CASE)) {
-    return bDumpTable(pWords);
+    return bDumpTable(pWords, iWords);
   }
   
   if (String::bEqualTo("ex",pWords[0],C_NO_CASE)) {
@@ -384,10 +380,6 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   
   if (String::bEqualTo("getInUseSpace",pWords[0],C_NO_CASE)) {
     return bGetInUseSpace(pWords);
-  }
-  
-  if (String::bEqualTo("gttbl",pWords[0],C_NO_CASE)) {
-    return bGetTable(pWords);
   }
   
   if (String::bEqualTo("getTotalSpace",pWords[0],C_NO_CASE)) {
@@ -747,13 +739,18 @@ bool SEitf::bListTables(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* dump a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDumpTable(char* pWords[])
+bool SEitf::bDumpTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
@@ -907,26 +904,6 @@ bool SEitf::bExportTable(char* pWords[], i8 iWords)
 }
 
 /*----------------------------------------------------------------------------*/
-/* select rows from a table                                                   */
-/*----------------------------------------------------------------------------*/
-bool SEitf::bGetTable(char* pWords[])
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  s256 sRequest;
-  
-  char* a = sRequest.a();
-  
-  String::vCopy(a,"\"");
-  String::vConcat(a,pWords[1]);
-  String::vConcat(a,"\"");
-  
-  String::vConcat(a," get_table");
-  
-  return bAppendRequest(sRequest);
-}
-
-/*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bLoadTable(char* pWords[], i8 iWords)
@@ -978,13 +955,18 @@ bool SEitf::bSelectTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* get address a table                                                        */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddressTable(char* pWords[])
+bool SEitf::bAddressTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);

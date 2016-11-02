@@ -98,17 +98,16 @@ namespace Interface
     bool bListTables(char* pWords[]);
     bool bDocol(char* pWords[]);
     bool bDropTable(char* pWords[]);
-    bool bDumpTable(char* pWords[]);
+    bool bDumpTable(char* pWords[], i8 iWords);
    
     bool bAddColumn(char* pWords[]);
     bool bListColumns(char* pWords[]);
     
     bool bCopyTable(char* pWords[]);
     bool bExportTable(char* pWords[], i8 iWords);
-    bool bGetTable(char* pWords[]);
     bool bLoadTable(char* pWords[], i8 iWords);
     bool bSelectTable(char* pWords[]);
-    bool bAddressTable(char* pWords[]);
+    bool bAddressTable(char* pWords[], i8 iWords);
     bool bSizeTable(char* pWords[]);
     bool bTruncateTable(char* pWords[]);
     
