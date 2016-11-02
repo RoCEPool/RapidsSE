@@ -274,9 +274,9 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-: load_table ( "<tableNm>" -- <R> )
+: load_table ( "<fileNm>" "<tableNm>" -- <R> )
 
-    checkInTables not if swap drop <ERROR> exit then
+    checkInTables not if rot drop drop <ERROR> exit then
 
     //freespace .
 

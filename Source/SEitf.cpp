@@ -395,7 +395,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("ld",pWords[0],C_NO_CASE)) {
-    return bLoadTable(pWords);
+    return bLoadTable(pWords, iWords);
   }
   
   if (String::bEqualTo("lf",pWords[0],C_NO_CASE)) {
@@ -892,6 +892,7 @@ bool SEitf::bExportTable(char* pWords[], i8 iWords)
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
+  
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[2]);
   String::vConcat(a,"\"");
@@ -928,13 +929,18 @@ bool SEitf::bGetTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* load a table from file                                                     */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bLoadTable(char* pWords[])
+bool SEitf::bLoadTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[2]);
