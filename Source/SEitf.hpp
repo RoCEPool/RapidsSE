@@ -109,7 +109,7 @@ namespace Interface
     bool bSelectTable(char* pWords[]);
     bool bAddressTable(char* pWords[], i8 iWords);
     bool bSizeTable(char* pWords[], i8 iWords);
-    bool bTruncateTable(char* pWords[]);
+    bool bTruncateTable(char* pWords[], i8 iWords);
     
     bool bInsertRow(char* pRow);
     bool bInsertBuffer(void);

@@ -463,7 +463,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
-    return bTruncateTable(pWords);
+    return bTruncateTable(pWords, iWords);
   }
   
   if (String::bEqualTo("__x",pWords[0],C_NO_CASE)) {
@@ -1033,7 +1033,7 @@ bool SEitf::bSizeTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* truncate a table                                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bTruncateTable(char* pWords[])
+bool SEitf::bTruncateTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1041,6 +1041,11 @@ bool SEitf::bTruncateTable(char* pWords[])
   
   char* a = sRequest.a();
   
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
