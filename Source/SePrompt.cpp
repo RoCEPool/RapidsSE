@@ -572,10 +572,16 @@ bool SePrompt::bExecuteRequest(void)
   
   Timer xTimer;
   char* aResponse = nullptr;
+  i8 iTokens;
   
   xTimer.vStart();
   
-  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,&aResponse);
+  // get count of words in pWords
+  for (iTokens = 0; iTokens < C_TOKENS; iTokens++)
+    if (String::bEqualTo("",m_pToken[iTokens]))
+      break;
+  
+  bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,iTokens,&aResponse);
   
   if (bResult)
     m_sResponse = aResponse;

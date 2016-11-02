@@ -561,7 +561,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 /* Execute a request                                                          */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
+bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** ppResponse)
 {
   bool bResult;
   
@@ -569,7 +569,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], char** ppResponse)
   pSEitf->vClearLastError();
   
   // send request to se
-  bResult = bExecuteRequest(pSEitf, pWords);
+  bResult = bExecuteRequest(pSEitf, pWords, iWords);
   if (!bResult) {
     *ppResponse = nullptr;
     return bResult;
@@ -1473,7 +1473,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter1
   String::vCopy(pWords[2], pParameter2);
   String::vCopy(pWords[3], pParameter3);
   
-  bResult = pSEitf->bDecode(pWords);
+  bResult = pSEitf->bDecode(pWords, 4);
   
   return pSEitf->eGetLastError();
 }
@@ -1497,7 +1497,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand, const char* pParameter)
   String::vCopy(pWords[0], pCommand);
   String::vCopy(pWords[1], pParameter);
   
-  bResult = pSEitf->bDecode(pWords);
+  bResult = pSEitf->bDecode(pWords, 2);
   
   return pSEitf->eGetLastError();
 }
@@ -1516,7 +1516,7 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
   // execute command pCommand
   String::vCopy(pWords[0], pCommand);
   
-  bResult = pSEitf->bDecode(pWords);
+  bResult = pSEitf->bDecode(pWords, 1);
   
   return pSEitf->eGetLastError();
 }
@@ -1524,12 +1524,12 @@ eEC eExecuteRequest(SEitf* pSEitf, const char* pCommand)
 /*----------------------------------------------------------------------------*/
 /* execute command                                                            */
 /*----------------------------------------------------------------------------*/
-bool bExecuteRequest(SEitf* pSEitf, char* pWords[])
+bool bExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords)
 {
   bool bResult;
   
   // execute command
-  bResult = pSEitf->bDecode(pWords);
+  bResult = pSEitf->bDecode(pWords, iWords);
   
   return bResult;
 }

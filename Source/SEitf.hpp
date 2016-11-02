@@ -74,7 +74,7 @@ namespace Interface
     void vBeginTx(void);
     void vCommitTx(void);
     
-    bool bDecode(char* pWords[]);
+    bool bDecode(char* pWords[], i8 iWords);
     
     bool bConnect(char* pWords[]);
     bool bDisconnect(char* pWords[]);
@@ -94,6 +94,7 @@ namespace Interface
     bool bDropSchema(char* pWords[]);
     
     bool bCreateTable(char* pWords[]);
+    
     bool bListTables(char* pWords[]);
     bool bDocol(char* pWords[]);
     bool bDropTable(char* pWords[]);
@@ -103,7 +104,7 @@ namespace Interface
     bool bListColumns(char* pWords[]);
     
     bool bCopyTable(char* pWords[]);
-    bool bExportTable(char* pWords[]);
+    bool bExportTable(char* pWords[], i8 iWords);
     bool bGetTable(char* pWords[]);
     bool bLoadTable(char* pWords[]);
     bool bSelectTable(char* pWords[]);

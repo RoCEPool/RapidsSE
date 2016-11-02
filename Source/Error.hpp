@@ -48,14 +48,16 @@ namespace Magic
     /* 28 */ EC_NULL_INTERFACE,
     /* 29 */ EC_NULLPTR,
     
-    /* 30 */ EC_RESPONSE_PENDING,
-    /* 31 */ EC_SCHEMA_EXISTS,
-
-    /* 32 */ EC_TABLE_EXISTS,
-    /* 33 */ EC_TENANT_EXISTS,
+    /* 30 */ EC_PARAMETER_COUNT_MISMATCH,
     
-    /* 34 */ EC_VERSION_MISMATCH,
-    /* 35 */ EC_ENUMS
+    /* 31 */ EC_RESPONSE_PENDING,
+    /* 32 */ EC_SCHEMA_EXISTS,
+
+    /* 33 */ EC_TABLE_EXISTS,
+    /* 34 */ EC_TENANT_EXISTS,
+    
+    /* 35 */ EC_VERSION_MISMATCH,
+    /* 36 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -66,45 +68,46 @@ namespace Magic
     
     /*  3 */ "invalid class",
     /*  4 */ "invalid command",
-    /*    */ "invalid interface",
-    /*  5 */ "invalid parameter",
-    /*    */ "invalid instance",
-    /*  6 */ "invalid syntax",
+    /*  5 */ "invalid interface",
+    /*  6 */ "invalid parameter",
+    /*  7 */ "invalid instance",
+    /*  8 */ "invalid syntax",
     
-    /*    */ "low buffers",
+    /*  9 */ "low buffers",
     
-    /*  7 */ "no columns dictionary",
+    /* 10 */ "no columns dictionary",
     
-    /*  8 */ "no such catalog",
-    /*    */ "no such directory",
-    /*  9 */ "no such folder",
-    /* 10 */ "no such schema",
-    /* 11 */ "no such table",
-    /* 12 */ "no such tenant",
-    /* 13 */ "no such word",
+    /* 11 */ "no such catalog",
+    /* 12 */ "no such directory",
+    /* 13 */ "no such folder",
+    /* 14 */ "no such schema",
+    /* 15 */ "no such table",
+    /* 16 */ "no such tenant",
+    /* 17 */ "no such word",
     
-    /* 14 */ "not a catalog",
-    /* 15 */ "not a folder",
-    /* 16 */ "not a schema",
-    /* 17 */ "not a table",
-    /* 18 */ "not a tenant",
+    /* 18 */ "not a catalog",
+    /* 19 */ "not a folder",
+    /* 20 */ "not a schema",
+    /* 21 */ "not a table",
+    /* 22 */ "not a tenant",
     
-    /* 19 */ "not in catalogs",
-    /* 20 */ "not in columns",
-    /* 21 */ "not in schemas",
-    /* 22 */ "not in tables",
-    /* 23 */ "not in tenants",
+    /* 23 */ "not in catalogs",
+    /* 24 */ "not in columns",
+    /* 25 */ "not in schemas",
+    /* 26 */ "not in tables",
+    /* 27 */ "not in tenants",
     
-    /*    */ "null interface",
-    /* 24 */ "nullptr",
+    /* 28  */ "null interface",
+    /* 29 */ "nullptr",
+    /* 30 */ "parameter count mismatch",
     
-    /*    */ "response pending",
+    /* 31 */ "response pending",
   
-    /* 25 */ "schema exists",
-    /* 26 */ "table exists",
-    /* 27 */ "tenant exists",
+    /* 32 */ "schema exists",
+    /* 33 */ "table exists",
+    /* 34 */ "tenant exists",
 
-    /* 28 */ "enums"
+    /* 35 */ "enums"
 
   };
 

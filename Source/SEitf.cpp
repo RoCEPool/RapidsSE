@@ -330,7 +330,7 @@ void SEitf::vCommitTx()
 /*----------------------------------------------------------------------------*/
 /* decode request                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDecode(char* pWords[])
+bool SEitf::bDecode(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -375,7 +375,7 @@ bool SEitf::bDecode(char* pWords[])
   }
   
   if (String::bEqualTo("ex",pWords[0],C_NO_CASE)) {
-    return bExportTable(pWords);
+    return bExportTable(pWords, iWords);
   }
   
   if (String::bEqualTo("getFreeSpace",pWords[0],C_NO_CASE)) {
@@ -880,14 +880,18 @@ bool SEitf::bCopyTable(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bExportTable(char* pWords[])
+bool SEitf::bExportTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
+
+  char*  a = sRequest.a();
   
-  char* a = sRequest.a();
-  
+  if (iWords != 3) {
+    vSetLastError(EC_PARAMETER_COUNT_MISMATCH);
+    return false;
+  }
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[2]);
   String::vConcat(a,"\"");
