@@ -96,7 +96,6 @@ Misc Requests:
     <SUCCESS>
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -108,6 +107,7 @@ Misc Requests:
 
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInTenants     not if swap drop <ERROR> exit then
+
     checkIsNotTenant   not if swap drop <ERROR> exit then
 
     :tenant execute makeCatalogs

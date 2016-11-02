@@ -215,6 +215,8 @@ void Task::vInit(const char* aLambda)
   m_xTokeniser.vUseString(m_sLambda);
   
   m_pSEitf   = nullptr;
+  
+  m_iDdlLocked = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -750,6 +752,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("ddlLock.dropWrite",&vDdlLockDropWrite, false);
   vAddPrimitive("ddlLock.grabRead", &vDdlLockGrabRead,  false);
   vAddPrimitive("ddlLock.grabWrite",&vDdlLockGrabWrite, false);
+  vAddPrimitive("ddlLock.testDrop", &vDdlLockTestDrop,  false);
   
   vAddPrimitive("debug.trap",      &vDebugTrap,        false);
   
@@ -5098,7 +5101,11 @@ void Task::vDdlLockDropRead(NNP_Task nnpTask)
 {
   ENTRY("vDdlLockDropRead");
   
+  ASSERT(C_HAVE_READ_LOCK == nnpTask->m_iDdlLocked);
+  
   gxDdlLock.vDropRead();
+  
+  nnpTask->m_iDdlLocked = 0;
   
   EXIT();
 }
@@ -5110,7 +5117,11 @@ void Task::vDdlLockDropWrite(NNP_Task nnpTask)
 {
   ENTRY("vDdlLockDropWrite");
   
+  ASSERT(C_HAVE_WRITE_LOCK == nnpTask->m_iDdlLocked);
+  
   gxDdlLock.vDropWrite();
+  
+  nnpTask->m_iDdlLocked = 0;
   
   EXIT();
 }
@@ -5122,7 +5133,11 @@ void Task::vDdlLockGrabRead(NNP_Task nnpTask)
 {
   ENTRY("vDdlLockGrabRead");
   
+  ASSERT(! nnpTask->m_iDdlLocked);
+  
   gxDdlLock.vGrabRead();
+  
+  nnpTask->m_iDdlLocked = C_HAVE_READ_LOCK;
   
   EXIT();
 }
@@ -5134,7 +5149,31 @@ void Task::vDdlLockGrabWrite(NNP_Task nnpTask)
 {
   ENTRY("vDdlLockGrabWrite");
   
+  ASSERT(! nnpTask->m_iDdlLocked);
+
   gxDdlLock.vGrabWrite();
+  
+  nnpTask->m_iDdlLocked = C_HAVE_WRITE_LOCK;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ddlLock.testDrop -- test for ddl lock and drop if locked by task           */
+/*----------------------------------------------------------------------------*/
+void Task::vDdlLockTestDrop(NNP_Task nnpTask)
+{
+  ENTRY("vDdlLockTestDrop");
+  
+  if (C_HAVE_READ_LOCK == nnpTask->m_iDdlLocked) {
+    gxDdlLock.vDropRead();
+    nnpTask->m_iDdlLocked = 0;
+  }
+  else
+  if (C_HAVE_WRITE_LOCK == nnpTask->m_iDdlLocked) {
+    gxDdlLock.vDropWrite();
+    nnpTask->m_iDdlLocked = 0;
+  }
   
   EXIT();
 }

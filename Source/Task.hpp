@@ -178,6 +178,8 @@ namespace Tasks
     // test
     Dic m_xTaskDic;
     
+    i8  m_iDdlLocked;
+    
     // always last
     Footer m_xFooter;
 
@@ -422,6 +424,7 @@ namespace Tasks
     static void vDdlLockDropWrite(NNP_Task nnpTask);
     static void vDdlLockGrabRead(NNP_Task nnpTask);
     static void vDdlLockGrabWrite(NNP_Task nnpTask);
+    static void vDdlLockTestDrop(NNP_Task nnpTask);
     
     // dic
     static void vDicCount(NNP_Task nnpTask);
