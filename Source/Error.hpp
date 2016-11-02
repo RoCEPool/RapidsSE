@@ -16,8 +16,10 @@ namespace Magic
 
     /*  3 */ EC_INVALID_CLASS,
     /*  4 */ EC_INVALID_COMMAND,
+    /*    */ EC_INVALID_FILE,
     /*  5 */ EC_INVALID_INTERFACE,
     /*  6 */ EC_INVALID_PARAMETER,
+    /*    */ EC_INVALID_PARAMETERS,
     /*  7 */ EC_INVALID_INSTANCE,
     /*  8 */ EC_INVALID_SYNTAX,
 
@@ -48,16 +50,14 @@ namespace Magic
     /* 28 */ EC_NULL_INTERFACE,
     /* 29 */ EC_NULLPTR,
     
-    /* 30 */ EC_PARAMETER_COUNT_MISMATCH,
-    
-    /* 31 */ EC_RESPONSE_PENDING,
-    /* 32 */ EC_SCHEMA_EXISTS,
+    /* 30 */ EC_RESPONSE_PENDING,
+    /* 31 */ EC_SCHEMA_EXISTS,
 
-    /* 33 */ EC_TABLE_EXISTS,
-    /* 34 */ EC_TENANT_EXISTS,
+    /* 32 */ EC_TABLE_EXISTS,
+    /* 33 */ EC_TENANT_EXISTS,
     
-    /* 35 */ EC_VERSION_MISMATCH,
-    /* 36 */ EC_ENUMS
+    /* 34 */ EC_VERSION_MISMATCH,
+    /* 35 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -68,8 +68,10 @@ namespace Magic
     
     /*  3 */ "invalid class",
     /*  4 */ "invalid command",
+    /*    */ "invalid file",
     /*  5 */ "invalid interface",
     /*  6 */ "invalid parameter",
+    /*    */ "invalid parameters",
     /*  7 */ "invalid instance",
     /*  8 */ "invalid syntax",
     
@@ -99,15 +101,14 @@ namespace Magic
     
     /* 28  */ "null interface",
     /* 29 */ "nullptr",
-    /* 30 */ "parameter count mismatch",
     
-    /* 31 */ "response pending",
+    /* 30 */ "response pending",
   
-    /* 32 */ "schema exists",
-    /* 33 */ "table exists",
-    /* 34 */ "tenant exists",
+    /* 31 */ "schema exists",
+    /* 32 */ "table exists",
+    /* 33 */ "tenant exists",
 
-    /* 35 */ "enums"
+    /* 34 */ "enums"
 
   };
 

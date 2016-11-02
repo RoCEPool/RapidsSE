@@ -12,7 +12,7 @@
   // r0 ^file
 
   r0 file.path! OPEN_WRITE r0 file.open
-  if "file open!" . else "file not opened!" . rdrop false exit then
+  if "file open!" . else "file not opened!" . rdrop drop EC_INVALID_FILE false exit then
 
   "__row_cursor" find dup if else
     drop "__row_cursor" :rowCursor
@@ -66,7 +66,7 @@ traceoff
 
 : tableExporter ( "<fileNm>" ^table )
 
-    export if "exported!" . else . then
+    export if "exported!" . true else false then
 ;
 
 

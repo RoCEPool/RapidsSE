@@ -306,7 +306,7 @@ Misc Requests:
 
     execute ( "filename" table )
 
-    tableExporter
+    tableExporter not if <ERROR> exit then
 
     <OK>
 ;

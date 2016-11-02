@@ -889,7 +889,7 @@ bool SEitf::bExportTable(char* pWords[], i8 iWords)
   char*  a = sRequest.a();
   
   if (iWords != 3) {
-    vSetLastError(EC_PARAMETER_COUNT_MISMATCH);
+    vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
   String::vCopy(a,"\"");

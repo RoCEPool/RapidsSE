@@ -401,8 +401,10 @@ void Task::vAddConstants(void)
   
   /*  3 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
   /*  4 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
+  /*    */ vAddConstant("EC_INVALID_FILE",          EC_INVALID_FILE);
   /*  5 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
   /*  6 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
+  /*    */ vAddConstant("EC_INVALID_PARAMETERS",    EC_INVALID_PARAMETERS);
   /*  7 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
   /*  8 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
   
@@ -432,14 +434,13 @@ void Task::vAddConstants(void)
   
   /* 28 */ vAddConstant("EC_NULL_INTERFACE",        EC_NULL_INTERFACE);
   /* 29 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
-  /* 30 */ vAddConstant("EC_PARAMETER_COUNT_MISMATCH",EC_PARAMETER_COUNT_MISMATCH);
-  /* 31 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
-  /* 32 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
+  /* 30 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
+  /* 31 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
   
-  /* 33 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
-  /* 34 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
-  /* 35 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
-  /* 36 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
+  /* 32 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /* 33 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
+  /* 34 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
+  /* 35 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
 
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
   /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
