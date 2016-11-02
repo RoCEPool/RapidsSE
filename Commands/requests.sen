@@ -65,11 +65,11 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-: <ERROR> dup error.msg swap 2 ;
+: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
 
-: <SUCCESS> 0 2 ;
+: <SUCCESS> 0 2 ddlLock.testDrop ;
 
-: <OK> "<ok>" 0 2 ;
+: <OK> "<ok>" 0 2 ddlLock.testDrop ;
 
 : checkEnoughBuffers
    freeBuffers 100 > if true exit then
@@ -105,6 +105,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_tenant ( "<tenantNm>" -- <R> )
 
+ddlLock.grabWrite
+
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInTenants     not if swap drop <ERROR> exit then
 
@@ -120,6 +122,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : list_tenants ( -- <R> )
 
+ddlLock.grabRead
+
     checkInTenants not if <ERROR> exit then
 
     contents_string
@@ -131,6 +135,8 @@ Misc Requests:
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
 : drop_tenant ( "<tenantNm>" -- <R> )
+
+ddlLock.grabWrite
 
     checkInTenants not if swap drop <ERROR> exit then
 
@@ -154,6 +160,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_catalog ( "<catalogNm>" -- <R> )
 
+ddlLock.grabWrite
+
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInCatalogs    not if swap drop <ERROR> exit then
     checkIsNotCatalog  not if swap drop <ERROR> exit then
@@ -168,6 +176,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : list_catalogs ( -- <R> )
 
+ddlLock.grabRead
+
     checkInCatalogs not if <ERROR> exit then
 
     contents_string
@@ -179,6 +189,8 @@ Misc Requests:
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
 : drop_catalog ( "<catalogNm>" -- <R> )
+
+ddlLock.grabWrite
 
     checkInCatalogs not if swap drop <ERROR> exit then
 
@@ -202,6 +214,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_schema ( "<schemaNm>" -- <R> )
 
+ddlLock.grabWrite
+
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInSchemas     not if swap drop <ERROR> exit then
     checkIsNotSchema   not if swap drop <ERROR> exit then
@@ -216,6 +230,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : list_schemas ( -- <R> )
 
+ddlLock.grabRead
+
     checkInSchemas not if <ERROR> exit then
 
     contents_string
@@ -227,6 +243,8 @@ Misc Requests:
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
 : drop_schema ( "<schemaNm>" -- <R> )
+
+ddlLock.grabWrite
 
     checkInSchemas not if swap drop <ERROR> exit then
 
@@ -250,6 +268,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
 
+ddlLock.grabWrite
+
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInTables      not if swap drop <ERROR> exit then
     checkIsNotTable    not if swap drop <ERROR> exit then
@@ -264,6 +284,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : list_tables ( -- <R> )
 
+ddlLock.grabRead
+
     checkInTables not if <ERROR> exit then
 
     contents_string
@@ -275,6 +297,8 @@ Misc Requests:
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
 : load_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock.grabRead
 
     checkInTables not if rot drop drop <ERROR> exit then
 
@@ -298,6 +322,8 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : export_table ( "<fileNm>" "<tableNm>" -- <R> )
 
+ddlLock.grabRead
+
     checkInTables not if rot drop drop <ERROR> exit then
 
     find
@@ -316,7 +342,9 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
 
-freespace .
+ddlLock.grabRead
+
+    freespace .
 
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInTables      not if rot drop drop <ERROR> exit then
@@ -345,6 +373,8 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : dump_table ( "<tableNm>" -- <R> )
 
+ddlLock.grabRead
+
   checkInTables not if swap drop <ERROR> exit then
 
   find
@@ -363,6 +393,8 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : table_append ( "table", "buffer", "partition" -- <R> )
 
+ddlLock.grabRead
+
   table.append
 
   <OK>
@@ -372,6 +404,8 @@ freespace .
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
 : size_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabWrite
 
     checkInTables not if swap drop  <ERROR> exit then
 
@@ -390,6 +424,8 @@ freespace .
 /* get row cursor for table                                                   */
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabRead
 
     checkInTables not if swap drop  <ERROR> exit then
 
@@ -413,6 +449,8 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : address_table ( "<tableNm>" -- <R> )
 
+ddlLock.grabRead
+
     checkInTables not if swap drop  <ERROR> exit then
 
     find
@@ -431,6 +469,8 @@ freespace .
 /*----------------------------------------------------------------------------*/
 : truncate_table ( "<tableNm>" -- <R> )
 
+ddlLock.grabRead
+
     checkInTables not if swap drop  <ERROR> exit then
 
     find
@@ -448,6 +488,8 @@ freespace .
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : drop_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabWrite
 
     checkInTables not if swap drop  <ERROR> exit then
 
