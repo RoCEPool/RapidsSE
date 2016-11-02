@@ -339,7 +339,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("add",pWords[0],C_NO_CASE)) {
-    return bAddColumn(pWords);
+    return bAddColumn(pWords, iWords);
   }
   
   if (String::bEqualTo("adr",pWords[0],C_NO_CASE)) {
@@ -873,13 +873,18 @@ bool SEitf::bDropTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* add a column                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddColumn(char* pWords[16])
+bool SEitf::bAddColumn(char* pWords[16], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[3]);

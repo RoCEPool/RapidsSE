@@ -100,7 +100,7 @@ namespace Interface
     bool bDropTable(char* pWords[], i8 iWords);
     bool bDumpTable(char* pWords[], i8 iWords);
    
-    bool bAddColumn(char* pWords[]);
+    bool bAddColumn(char* pWords[], i8 iWords);
     bool bListColumns(char* pWords[], i8 iWords);
     
     bool bCopyTable(char* pWords[], i8 iWords);
