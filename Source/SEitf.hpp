@@ -82,26 +82,26 @@ namespace Interface
     bool bDropDictionary(char* pWords[], i8 iWords);
 
     bool bCreateTenant(char* pWords[], i8 iWords);
-    bool bListTenants(char* pWords[]);
+    bool bListTenants(char* pWords[], i8 iWords);
     bool bDropTenant(char* pWords[], i8 iWords);
 
     bool bCreateCatalog(char* pWords[], i8 iWords);
-    bool bListCatalogs(char* pWords[]);
+    bool bListCatalogs(char* pWords[], i8 iWords);
     bool bDropCatalog(char* pWords[], i8 iWords);
     
     bool bCreateSchema(char* pWords[], i8 iWords);
-    bool bListSchemas(char* pWords[]);
+    bool bListSchemas(char* pWords[], i8 iWords);
     bool bDropSchema(char* pWords[], i8 iWords);
     
     bool bCreateTable(char* pWords[], i8 iWords);
     
-    bool bListTables(char* pWords[]);
+    bool bListTables(char* pWords[], i8 iWords);
     bool bDocol(char* pWords[]);
     bool bDropTable(char* pWords[], i8 iWords);
     bool bDumpTable(char* pWords[], i8 iWords);
    
     bool bAddColumn(char* pWords[]);
-    bool bListColumns(char* pWords[]);
+    bool bListColumns(char* pWords[], i8 iWords);
     
     bool bCopyTable(char* pWords[], i8 iWords);
     bool bExportTable(char* pWords[], i8 iWords);

@@ -72,9 +72,9 @@
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
-    find checkIsWord
+    find
 
-    not if EC_NO_SUCH_TABLE false exit then
+    checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
     execute table.dic dic.push
 

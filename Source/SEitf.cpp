@@ -395,23 +395,23 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("lscat",pWords[0],C_NO_CASE)) {
-    return bListCatalogs(pWords);
+    return bListCatalogs(pWords, iWords);
   }
   
   if (String::bEqualTo("lscol",pWords[0],C_NO_CASE)) {
-    return bListColumns(pWords);
+    return bListColumns(pWords, iWords);
   }
   
   if (String::bEqualTo("lssch",pWords[0],C_NO_CASE)) {
-    return bListSchemas(pWords);
+    return bListSchemas(pWords, iWords);
   }
   
   if (String::bEqualTo("lstbl",pWords[0],C_NO_CASE)) {
-    return bListTables(pWords);
+    return bListTables(pWords, iWords);
   }
   
   if (String::bEqualTo("lsten",pWords[0],C_NO_CASE)) {
-    return bListTenants(pWords);
+    return bListTenants(pWords, iWords);
   }
   
   if (String::bEqualTo("mkcat",pWords[0],C_NO_CASE)) {
@@ -568,12 +568,17 @@ bool SEitf::bCreateTenant(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tenants                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTenants(char* pWords[])
+bool SEitf::bListTenants(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+
   ASSERT(String::bEqualTo(pWords[0],"lsten"));
   sRequest = "list_tenants";
   return bAppendRequest(sRequest);
@@ -634,11 +639,16 @@ bool SEitf::bCreateCatalog(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list catalogs                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListCatalogs(char* pWords[])
+bool SEitf::bListCatalogs(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   ASSERT(String::bEqualTo(pWords[0],"lscat"));
   sRequest = "list_catalogs";
@@ -700,11 +710,16 @@ bool SEitf::bCreateSchema(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list schemas                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListSchemas(char* pWords[])
+bool SEitf::bListSchemas(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   ASSERT(String::bEqualTo(pWords[0],"lssch"));
   sRequest = "list_schemas";
@@ -766,11 +781,16 @@ bool SEitf::bCreateTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* list tables                                                                */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListTables(char* pWords[])
+bool SEitf::bListTables(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   ASSERT(String::bEqualTo(pWords[0],"lstbl"));
   sRequest = "list_tables";
@@ -881,13 +901,18 @@ bool SEitf::bAddColumn(char* pWords[16])
 /*----------------------------------------------------------------------------*/
 /* list columns                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bListColumns(char* pWords[])
+bool SEitf::bListColumns(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
