@@ -302,7 +302,7 @@ Misc Requests:
 
     find
 
-    checkIsTable not if rot drop drop <ERROR> exit then
+    checkIsTable not if swap drop <ERROR> exit then
 
     execute ( "filename" table )
 
@@ -349,7 +349,7 @@ freespace .
 
   find
 
-  checkIsTable not if swap drop <ERROR> exit then
+  checkIsTable not if <ERROR> exit then
 
   execute ( table )
 

@@ -16,46 +16,46 @@ namespace Magic
 
     /*  3 */ EC_INVALID_CLASS,
     /*  4 */ EC_INVALID_COMMAND,
-    /*    */ EC_INVALID_INTERFACE,
-    /*  5 */ EC_INVALID_PARAMETER,
-    /*    */ EC_INVALID_INSTANCE,
-    /*  6 */ EC_INVALID_SYNTAX,
+    /*  5 */ EC_INVALID_INTERFACE,
+    /*  6 */ EC_INVALID_PARAMETER,
+    /*  7 */ EC_INVALID_INSTANCE,
+    /*  8 */ EC_INVALID_SYNTAX,
 
-    /*  6 */ EC_LOW_BUFFERS,
+    /*  9 */ EC_LOW_BUFFERS,
     
-    /*  7 */ EC_NO_COLUMNS_DIC,
+    /* 10 */ EC_NO_COLUMNS_DIC,
     
-    /*  8 */ EC_NO_SUCH_CATALOG,
-    /*  9 */ EC_NO_SUCH_DIRECTORY,
-    /* 10 */ EC_NO_SUCH_FOLDER,
-    /* 11 */ EC_NO_SUCH_SCHEMA,
-    /* 12 */ EC_NO_SUCH_TABLE,
-    /* 13 */ EC_NO_SUCH_TENANT,
-    /* 14 */ EC_NO_SUCH_WORD,
+    /* 11 */ EC_NO_SUCH_CATALOG,
+    /* 12 */ EC_NO_SUCH_DIRECTORY,
+    /* 13 */ EC_NO_SUCH_FOLDER,
+    /* 14 */ EC_NO_SUCH_SCHEMA,
+    /* 15 */ EC_NO_SUCH_TABLE,
+    /* 16 */ EC_NO_SUCH_TENANT,
+    /* 17 */ EC_NO_SUCH_WORD,
     
-    /* 15 */ EC_NOT_A_CATALOG,
-    /* 16 */ EC_NOT_A_FOLDER,
-    /* 17 */ EC_NOT_A_SCHEMA,
-    /* 18 */ EC_NOT_A_TABLE,
-    /* 19 */ EC_NOT_A_TENANT,
+    /* 18 */ EC_NOT_A_CATALOG,
+    /* 19 */ EC_NOT_A_FOLDER,
+    /* 20 */ EC_NOT_A_SCHEMA,
+    /* 21 */ EC_NOT_A_TABLE,
+    /* 22 */ EC_NOT_A_TENANT,
     
-    /* 20 */ EC_NOT_IN_CATALOGS,
-    /* 21 */ EC_NOT_IN_COLUMNS,
-    /* 22 */ EC_NOT_IN_SCHEMAS,
-    /* 23 */ EC_NOT_IN_TABLES,
-    /* 24 */ EC_NOT_IN_TENANTS,
+    /* 23 */ EC_NOT_IN_CATALOGS,
+    /* 24 */ EC_NOT_IN_COLUMNS,
+    /* 25 */ EC_NOT_IN_SCHEMAS,
+    /* 26 */ EC_NOT_IN_TABLES,
+    /* 27 */ EC_NOT_IN_TENANTS,
 
-    /*    */ EC_NULL_INTERFACE,
-    /* 25 */ EC_NULLPTR,
+    /* 28 */ EC_NULL_INTERFACE,
+    /* 29 */ EC_NULLPTR,
     
-    /*    */ EC_RESPONSE_PENDING,
-    /* 26 */ EC_SCHEMA_EXISTS,
+    /* 30 */ EC_RESPONSE_PENDING,
+    /* 31 */ EC_SCHEMA_EXISTS,
 
-    /* 27 */ EC_TABLE_EXISTS,
-    /* 28 */ EC_TENANT_EXISTS,
+    /* 32 */ EC_TABLE_EXISTS,
+    /* 33 */ EC_TENANT_EXISTS,
     
-    /*    */ EC_VERSION_MISMATCH,
-    /* 29 */ EC_ENUMS
+    /* 34 */ EC_VERSION_MISMATCH,
+    /* 35 */ EC_ENUMS
   };
   
   static const char* const pEC[]
