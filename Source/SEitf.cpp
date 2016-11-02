@@ -435,23 +435,23 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
-    return bDropCatalog(pWords);
+    return bDropCatalog(pWords, iWords);
   }
   
   if (String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
-    return bDropDictionary(pWords);
+    return bDropDictionary(pWords, iWords);
   }
   
   if (String::bEqualTo("rmsch",pWords[0],C_NO_CASE)) {
-    return bDropSchema(pWords);
+    return bDropSchema(pWords, iWords);
   }
   
   if (String::bEqualTo("rmtbl",pWords[0],C_NO_CASE)) {
-    return bDropTable(pWords);
+    return bDropTable(pWords, iWords);
   }
   
   if (String::bEqualTo("rmten",pWords[0],C_NO_CASE)) {
-    return bDropTenant(pWords);
+    return bDropTenant(pWords, iWords);
   }
   
   if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
@@ -459,7 +459,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
-    return bSizeTable(pWords);
+    return bSizeTable(pWords, iWords);
   }
   
   if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
@@ -523,7 +523,7 @@ bool SEitf::bDisconnect(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a dictionary                                                          */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropDictionary(char* pWords[])
+bool SEitf::bDropDictionary(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -577,13 +577,20 @@ bool SEitf::bListTenants(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTenant(char* pWords[])
+bool SEitf::bDropTenant(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  // Note here that the drop command is ; terminated
+  // drop tenant tenantName ;
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
@@ -631,7 +638,7 @@ bool SEitf::bListCatalogs(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a catalog                                                             */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropCatalog(char* pWords[])
+bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -639,6 +646,13 @@ bool SEitf::bDropCatalog(char* pWords[])
   
   char* a = sRequest.a();
   
+  // Note here that the drop command is ; terminated
+  // drop catalog catalogName ;
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
@@ -685,7 +699,7 @@ bool SEitf::bListSchemas(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a schema                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropSchema(char* pWords[])
+bool SEitf::bDropSchema(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -693,6 +707,13 @@ bool SEitf::bDropSchema(char* pWords[])
   
   char* a = sRequest.a();
   
+  // Note here that the drop command is ; terminated
+  // drop schema schemaName ;
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
@@ -785,13 +806,20 @@ bool SEitf::bDocol(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropTable(char* pWords[])
+bool SEitf::bDropTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  // Note here that the drop command is ; terminated
+  // drop table tablename ;
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
@@ -980,13 +1008,18 @@ bool SEitf::bAddressTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSizeTable(char* pWords[])
+bool SEitf::bSizeTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);

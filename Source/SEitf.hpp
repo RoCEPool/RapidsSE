@@ -79,25 +79,25 @@ namespace Interface
     bool bConnect(char* pWords[]);
     bool bDisconnect(char* pWords[]);
     
-    bool bDropDictionary(char* pWords[]);
+    bool bDropDictionary(char* pWords[], i8 iWords);
 
     bool bCreateTenant(char* pWords[]);
     bool bListTenants(char* pWords[]);
-    bool bDropTenant(char* pWords[]);
+    bool bDropTenant(char* pWords[], i8 iWords);
 
     bool bCreateCatalog(char* pWords[]);
     bool bListCatalogs(char* pWords[]);
-    bool bDropCatalog(char* pWords[]);
+    bool bDropCatalog(char* pWords[], i8 iWords);
     
     bool bCreateSchema(char* pWords[]);
     bool bListSchemas(char* pWords[]);
-    bool bDropSchema(char* pWords[]);
+    bool bDropSchema(char* pWords[], i8 iWords);
     
     bool bCreateTable(char* pWords[]);
     
     bool bListTables(char* pWords[]);
     bool bDocol(char* pWords[]);
-    bool bDropTable(char* pWords[]);
+    bool bDropTable(char* pWords[], i8 iWords);
     bool bDumpTable(char* pWords[], i8 iWords);
    
     bool bAddColumn(char* pWords[]);
@@ -108,7 +108,7 @@ namespace Interface
     bool bLoadTable(char* pWords[], i8 iWords);
     bool bSelectTable(char* pWords[]);
     bool bAddressTable(char* pWords[], i8 iWords);
-    bool bSizeTable(char* pWords[]);
+    bool bSizeTable(char* pWords[], i8 iWords);
     bool bTruncateTable(char* pWords[]);
     
     bool bInsertRow(char* pRow);

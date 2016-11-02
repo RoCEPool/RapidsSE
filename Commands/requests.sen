@@ -135,7 +135,7 @@ Misc Requests:
     checkInTenants not if swap drop <ERROR> exit then
 
     find
-    checkIsWord not if <ERROR> exit then
+    checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
 
     checkIsTenant not if <ERROR> exit then
 
@@ -377,7 +377,7 @@ freespace .
 
     find
 
-    checkIsTable not if swap drop  <ERROR> exit then
+    checkIsTable not if <ERROR> exit then
 
     execute ( table )
 
