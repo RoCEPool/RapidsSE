@@ -395,7 +395,7 @@ freespace .
 
     find
 
-    checkIsTable not if swap drop  <ERROR> exit then
+    checkIsTable not if <ERROR> exit then
 
     queryCount ++
 

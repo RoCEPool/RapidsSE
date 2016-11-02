@@ -455,7 +455,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   }
   
   if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
-    return bSelectTable(pWords);
+    return bSelectTable(pWords, iWords);
   }
   
   if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
@@ -968,13 +968,18 @@ bool SEitf::bLoadTable(char* pWords[], i8 iWords)
 /*----------------------------------------------------------------------------*/
 /* select rows from a table                                                   */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bSelectTable(char* pWords[])
+bool SEitf::bSelectTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   s256 sRequest;
   
   char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
   
   String::vCopy(a,"\"");
   String::vConcat(a,pWords[1]);
