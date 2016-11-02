@@ -28,6 +28,7 @@ extern TxCollection*         gpTxCollection;
 
 extern NP_Task               gnpRootTask;
 extern StepBoard*            gpStepBoard;
+extern Lock                  gxDdlLock;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -744,6 +745,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("args.print",      &vArgsPrint,     false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+  
+  vAddPrimitive("ddlLock.dropRead", &vDdlLockDropRead,  false);
+  vAddPrimitive("ddlLock.dropWrite",&vDdlLockDropWrite, false);
+  vAddPrimitive("ddlLock.grabRead", &vDdlLockGrabRead,  false);
+  vAddPrimitive("ddlLock.grabWrite",&vDdlLockGrabWrite, false);
   
   vAddPrimitive("debug.trap",      &vDebugTrap,        false);
   
@@ -5079,6 +5085,56 @@ ENTRY("vCsvFirstValue");
     sFirstValue = "";
   
   nnpTask->m_xParamStack.vPush(sFirstValue);
+  
+  EXIT();
+}
+
+// ddllock: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* ddlLock.dropRead -- drop ddl lock for read                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDdlLockDropRead(NNP_Task nnpTask)
+{
+  ENTRY("vDdlLockDropRead");
+  
+  gxDdlLock.vDropRead();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ddlLock.dropWrite -- drop ddl lock for write                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDdlLockDropWrite(NNP_Task nnpTask)
+{
+  ENTRY("vDdlLockDropWrite");
+  
+  gxDdlLock.vDropWrite();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ddlLock.grabRead -- grab ddl lock for read                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDdlLockGrabRead(NNP_Task nnpTask)
+{
+  ENTRY("vDdlLockGrabRead");
+  
+  gxDdlLock.vGrabRead();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ddlLock.grabWrite -- grab ddl lock for write                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDdlLockGrabWrite(NNP_Task nnpTask)
+{
+  ENTRY("vDdlLockGrabWrite");
+  
+  gxDdlLock.vGrabWrite();
   
   EXIT();
 }
