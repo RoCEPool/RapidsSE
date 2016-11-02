@@ -323,7 +323,7 @@ freespace .
 
     find
 
-    checkIsTable not if rot drop drop <ERROR> exit then
+    checkIsTable not if swap drop <ERROR> exit then
 
     execute        ( "<to-tableNm>" ^fromTable )
 
