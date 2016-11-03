@@ -71,7 +71,12 @@
 timer: loadTimer
 
 : tableLoader ( "<path>" ^table -- t|f )
-//traceon
+
+  // check if path file exists
+  swap file.new >r
+  dup r0 file.path!
+  OPEN_READ r0 file.open
+  if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
   loadTimer timer.start
 
@@ -135,6 +140,8 @@ timer: loadTimer
 
   "Load time " .put
   loadTimer timer.millisecs .put "ms" .put .\n
+
+  true
 
 //traceoff
 ;

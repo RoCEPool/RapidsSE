@@ -595,9 +595,7 @@ bool SEitf::bDropTenant(char* pWords[], i8 iWords)
   
   char* a = sRequest.a();
   
-  // Note here that the drop command is ; terminated
-  // drop tenant tenantName ;
-  if (iWords != 4) {
+  if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -666,9 +664,7 @@ bool SEitf::bDropCatalog(char* pWords[], i8 iWords)
   
   char* a = sRequest.a();
   
-  // Note here that the drop command is ; terminated
-  // drop catalog catalogName ;
-  if (iWords != 4) {
+  if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -737,9 +733,7 @@ bool SEitf::bDropSchema(char* pWords[], i8 iWords)
   
   char* a = sRequest.a();
   
-  // Note here that the drop command is ; terminated
-  // drop schema schemaName ;
-  if (iWords != 4) {
+  if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }
@@ -854,9 +848,7 @@ bool SEitf::bDropTable(char* pWords[], i8 iWords)
   
   char* a = sRequest.a();
   
-  // Note here that the drop command is ; terminated
-  // drop table tablename ;
-  if (iWords != 4) {
+  if (iWords != 2) {
     vSetLastError(EC_INVALID_PARAMETERS);
     return false;
   }

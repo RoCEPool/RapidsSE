@@ -310,7 +310,7 @@ ddlLock.grabRead
 
     execute ( "filename" table )
 
-    tableLoader
+    tableLoader not if <ERROR> exit then
 
     //freespace .
 

@@ -186,7 +186,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // get pTable
-  eResult = eExecuteRequest(pSEitf, "gttbl", pTable);
+  eResult = eExecuteRequest(pSEitf, "adr", pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -361,7 +361,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // get pTable
-  eResult = eExecuteRequest(pSEitf, "gttbl", pTable);
+  eResult = eExecuteRequest(pSEitf, "adr", pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }

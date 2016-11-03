@@ -58,7 +58,7 @@ void CatalogTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop catalog cat;";
-  vRequire(sCommand, false, EC_NO_SUCH_WORD);                         //??CHECK
+  vRequire(sCommand, false, EC_NO_SUCH_CATALOG);                         //??CHECK
 
   sCommand = "create catalog x;";
   vRequire(sCommand, true, EC_NONE);

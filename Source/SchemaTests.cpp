@@ -73,7 +73,7 @@ void SchemaTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop schema sch;";
-  vRequire(sCommand, false, EC_NO_SUCH_WORD);                         //??CHECK
+  vRequire(sCommand, false, EC_NO_SUCH_SCHEMA);                         //??CHECK
   
   sCommand = "create schema x;";
   vRequire(sCommand, true, EC_NONE);

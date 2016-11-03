@@ -800,6 +800,7 @@ bool SePrompt::bBeginInsert(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -816,7 +817,7 @@ bool SePrompt::bBeginInsert(void)
   }
   
   // get table pointer
-  String::vCopy(m_pToken[0], "gttbl");
+  String::vCopy(m_pToken[0], "adr");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return false;
@@ -1297,6 +1298,7 @@ bool SePrompt::bDropCatalog(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1342,6 +1344,7 @@ bool SePrompt::bDropSchema(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1386,6 +1389,7 @@ bool SePrompt::bDropTable(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1421,6 +1425,7 @@ bool SePrompt::bDropTable(char* pTableName)
   
   String::vCopy(m_pToken[0], "rmtbl");
   String::vCopy(m_pToken[1], pTableName);
+  String::vCopy(m_pToken[2], "");
   
   if (!bExecuteRequest()) {
     //vTrace("Error: (%s) Drop Table %s\n", m_sResponse.a(), pTableName);
@@ -1448,6 +1453,7 @@ bool SePrompt::bDropTenant(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1495,6 +1501,7 @@ bool SePrompt::bEndInsert(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
@@ -1552,6 +1559,7 @@ bool SePrompt::bInsertRow(void)
     if (! *m_pToken[iToken])
       break;
     String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
   }
   
   iNumTokens = iToken;
