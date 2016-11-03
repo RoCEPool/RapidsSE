@@ -29,7 +29,9 @@ namespace DBobjects
     Dic        m_xDic;
     //Ring       m_xRing;
     Partitions m_xPartitions;
-        
+    
+    Atomic m_zRefCount;    // reference count
+    
     // must be last
     Footer m_xFooter;
     
@@ -53,6 +55,11 @@ namespace DBobjects
     char* pTableName(void);
     void  vTableName(s& sName);
     void  vDump(void);
+    
+    void  vRefDec(void);
+    void  vRefInc(void);
+    bool  bRefOut(void);
+    
     
     //--------------------------------------------------------------------------
     

@@ -64,6 +64,8 @@ Table::Table(void)
   //m_xRing
   //m_xPartitions
   
+  m_zRefCount.vCheckInit();
+  
   _checkInitialised_(CN_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -208,6 +210,38 @@ Partition* Table::pPartition(i8 iPartition)
   Partition* pPart = m_xPartitions.pPartition(iPartition);
   
   return pPart;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement references to this dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Table::vRefDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  --m_zRefCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment references to this dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Table::vRefInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  ++m_zRefCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for outstanding references to this dictionary                         */
+/*----------------------------------------------------------------------------*/
+bool Table::bRefOut(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  u8 iRef = *m_zRefCount;
+  
+  return iRef ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
