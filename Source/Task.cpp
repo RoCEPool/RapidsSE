@@ -770,6 +770,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dic.pick",        &vDicPick,          false);
   vAddPrimitive("dic.push",        &vDicPush,          false);
   vAddPrimitive("{{",              &vDicPush,          false);
+  vAddPrimitive("dic.ref",         &vDicRef,           false);
   vAddPrimitive("dic.stack",       &vDicStack,         false);
   
   vAddPrimitive("dir.exists",      &vDirExists,        false);
@@ -5455,6 +5456,27 @@ ENTRY("vDicPush");
   else {
     nnpTask->m_xDicStack.vPush(pDic);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.ref -- has dictionary got references                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vDicRef(NNP_Task nnpTask)
+{
+  ENTRY("vDicRef");
+  
+  Object* pPtrDic;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
+    THROW_INVALID_PARAM("dic.kind@");
+  
+  Dic* pDic = _pDic(pPtrDic);
+
+  bool bRef = pDic->bRefOut();
+  
+  nnpTask->m_xParamStack.vPush(bRef);
   
   EXIT();
 }
