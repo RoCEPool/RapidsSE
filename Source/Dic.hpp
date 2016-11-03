@@ -13,10 +13,11 @@ namespace Dictionaries
   class Dic : public Object
   {
   private:
-    s32   m_sName;        // name of this dictionary
-    Word* m_pDicKind;     // kind of dictionary
-    bool  m_bFrozen;      // no more words can be added?
-    Word* m_pCurrentWord; // last word
+    s32    m_sName;        // name of this dictionary
+    Word*  m_pDicKind;     // kind of dictionary
+    bool   m_bFrozen;      // no more words can be added?
+    Word*  m_pCurrentWord; // last word
+    Atomic m_zRefCount;    // reference count
     
     // must be last
     Footer m_xFooter;
@@ -49,6 +50,11 @@ namespace Dictionaries
     Word* pLocate(Cell* pCell);
     s&    sName(void);
     void  vName(const char* aName);
+    
+    void  vRefDec(void);
+    void  vRefInc(void);
+    bool  bRefOut(void);
+    
     
     Footer* pFooter(void);
   };

@@ -62,6 +62,7 @@ Dic::Dic(void)
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_pCurrentWord = nullptr;
+  m_zRefCount.vCheckInit();
   
   // this is because of GlobalDictionary (ugh)
   //vInit();
@@ -333,6 +334,38 @@ void Dic::vName(const char* aName)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   m_sName = aName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* decrement references to this dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Dic::vRefDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  --m_zRefCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* increment references to this dictionary                                    */
+/*----------------------------------------------------------------------------*/
+void Dic::vRefInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  ++m_zRefCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test for outstanding references to this dictionary                         */
+/*----------------------------------------------------------------------------*/
+bool Dic::bRefOut(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  u8 iRef = *m_zRefCount;
+  
+  return iRef ? true : false;
 }
 
 /*----------------------------------------------------------------------------*/
