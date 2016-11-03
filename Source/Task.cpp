@@ -5470,7 +5470,7 @@ void Task::vDicRef(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.kind@");
+    THROW_INVALID_PARAM("dic.ref");
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -8962,6 +8962,27 @@ ENTRY("vTableInsert");
                      pTxRef,
                      xRow.pAsStrVal()->sStr(),
                      xRow.pAsStrVal()->iChars());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.ref -- has table got references?                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTableRef(NNP_Task nnpTask)
+{
+  ENTRY("vTableRef");
+  
+  Object* pPtrTable;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
+    THROW_INVALID_PARAM("table.ref");
+  
+  Table* pTable = _pTable(pPtrTable);
+  
+  bool bRef = pTable->bRefOut();
+  
+  nnpTask->m_xParamStack.vPush(bRef);
   
   EXIT();
 }

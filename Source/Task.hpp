@@ -689,6 +689,7 @@ namespace Tasks
     static void vTableInit(NNP_Task nnpTask);
     static void vTableInsert(NNP_Task nnpTask);
     static void vTableList(NNP_Task nnpTask);
+    static void vTableRef(NNP_Task nnpTask);
     static void vTableSpace(NNP_Task nnpTask);
     static void vTableTruncate(NNP_Task nnpTask);
     
