@@ -50,6 +50,9 @@ DicStack::DicStack(void)
 DicStack::~DicStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  while (m_iTop >= 0)
+    vDiscard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -72,6 +75,11 @@ void DicStack::vDiscard(void)
   ASSERT(m_iTop >= 0);
   ASSERT(m_iTop <  C_DICTIONARY_STACK);
   
+  Dic* pDic = m_pDic[m_iTop] = nullptr;
+  
+  if (pDic)
+    pDic->vRefDec();
+
   m_pDic[m_iTop] = nullptr;
   
   m_iTop--;
@@ -232,6 +240,8 @@ void DicStack::vPush(Dic* pDic)
   ASSERT(m_iTop <  C_DICTIONARY_STACK - 1);
   
   ASSERT(CN_DIC == pDic->eClass());
+  
+  pDic->vRefInc();
   
   m_iTop++;
   
