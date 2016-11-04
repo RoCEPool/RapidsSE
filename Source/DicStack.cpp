@@ -75,8 +75,8 @@ void DicStack::vDiscard(void)
   ASSERT(m_iTop >= 0);
   ASSERT(m_iTop <  C_DICTIONARY_STACK);
   
-  Dic* pDic = m_pDic[m_iTop] = nullptr;
-  
+  Dic* pDic = m_pDic[m_iTop];
+
   if (pDic)
     pDic->vRefDec();
 

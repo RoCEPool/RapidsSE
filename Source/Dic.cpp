@@ -343,7 +343,9 @@ void Dic::vRefDec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  --m_zRefCount;
+  u8 iRef = --m_zRefCount;
+  
+  vTrace("DIC: %s --ref : %lld\n",m_sName.a(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -353,7 +355,9 @@ void Dic::vRefInc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  ++m_zRefCount;
+  u8 iRef = ++m_zRefCount;
+  
+  vTrace("DIC: %s ++ref : %lld\n",m_sName.a(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/

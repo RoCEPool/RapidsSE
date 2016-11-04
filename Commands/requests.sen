@@ -145,6 +145,8 @@ ddlLock.grabWrite
 
     checkIsTenant not if <ERROR> exit then
 
+    dicHasRef " dic ref " .put .put .\n
+
     >forget
 
     <OK>
