@@ -79,7 +79,7 @@ int main(int argc, const char* argv[])
 #ifdef __APPLE__
       sCommandDir = "../../../../Commands";
 #else
-      sCommandDir = "../../Commands";"
+      sCommandDir = "../../Commands";
 #endif
       
       // change working directory to Commands

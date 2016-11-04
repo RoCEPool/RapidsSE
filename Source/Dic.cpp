@@ -345,7 +345,7 @@ void Dic::vRefDec(void)
   
   u8 iRef = --m_zRefCount;
   
-  vTrace("DIC: %s --ref : %lld\n",m_sName.a(),iRef);
+  //vTrace("DIC: %s --ref : %lld\n",m_sName.a(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -357,7 +357,7 @@ void Dic::vRefInc(void)
   
   u8 iRef = ++m_zRefCount;
   
-  vTrace("DIC: %s ++ref : %lld\n",m_sName.a(),iRef);
+  //vTrace("DIC: %s ++ref : %lld\n",m_sName.a(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
