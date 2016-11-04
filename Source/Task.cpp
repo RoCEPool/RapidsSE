@@ -400,7 +400,10 @@ void Task::vAddConstants(void)
   
   /*  0 */ vAddConstant("EC_NONE",                  EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT",                EC_ASSERT);
+
   /*  2 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
+
+  /*    */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
   
   /*  3 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
   /*  4 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
@@ -441,6 +444,7 @@ void Task::vAddConstants(void)
   /* 31 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
   
   /* 32 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /*    */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
   /* 33 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
   /* 34 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
   /* 35 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);

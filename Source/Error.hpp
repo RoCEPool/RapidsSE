@@ -14,6 +14,8 @@ namespace Magic
     /*  1 */ EC_ASSERT,
     /*  2 */ EC_CATALOG_EXISTS,
 
+    /*    */ EC_FOLDER_IN_USE,
+
     /*  3 */ EC_INVALID_CLASS,
     /*  4 */ EC_INVALID_COMMAND,
     /*    */ EC_INVALID_FILE,
@@ -54,6 +56,7 @@ namespace Magic
     /* 31 */ EC_SCHEMA_EXISTS,
 
     /* 32 */ EC_TABLE_EXISTS,
+    /*    */ EC_TABLE_IN_USE,
     /* 33 */ EC_TENANT_EXISTS,
     
     /* 34 */ EC_VERSION_MISMATCH,
@@ -65,6 +68,7 @@ namespace Magic
     /*  0 */ "none",
     /*  1 */ "assert",
     /*  2 */ "catalog exists",
+    /*    */ "folder in use",
     
     /*  3 */ "invalid class",
     /*  4 */ "invalid command",
@@ -99,13 +103,14 @@ namespace Magic
     /* 26 */ "not in tables",
     /* 27 */ "not in tenants",
     
-    /* 28  */ "null interface",
+    /* 28 */ "null interface",
     /* 29 */ "nullptr",
     
     /* 30 */ "response pending",
   
     /* 31 */ "schema exists",
     /* 32 */ "table exists",
+    /*    */ "table in use",
     /* 33 */ "tenant exists",
 
     /* 34 */ "enums"
