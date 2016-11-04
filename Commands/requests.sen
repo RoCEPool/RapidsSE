@@ -147,6 +147,8 @@ ddlLock.grabWrite
 
     dicHasRef " dic ref " .put .put .\n
 
+    dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
+
     >forget
 
     <OK>
@@ -201,6 +203,8 @@ ddlLock.grabWrite
 
     checkIsCatalog not if swap drop <ERROR> exit then
 
+    dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
+
     >forget
 
     <OK>
@@ -254,6 +258,8 @@ ddlLock.grabWrite
     checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
 
     checkIsSchema not if swap drop <ERROR> exit then
+
+    dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
 
     >forget
 
@@ -728,7 +734,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
-: x
+: x                                                     //! GET RID OF THIS WORD
     words
 
     "x"
