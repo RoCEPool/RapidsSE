@@ -18,7 +18,7 @@ bool Shm::bAttach(s& sRegionName, int& iFD, SysCall& xSysCall)
   
   if (iFD == -1) {
     xSysCall.vError(errno);
-    vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n",errno, strerror(errno));
+    //vWarn("Shm::bAttach: shm_open() error; errno=%d %s\n",errno, strerror(errno));
     return false;
   }
   

@@ -1414,6 +1414,16 @@ bool SEitf::bAppendRequest(s& sRequest)
   ValWsp xVal;
   ValSet xValSet;
   
+  // Before appending request for se, ensure that se is running
+  // get the se pid from the attachmap
+  i8 iPid = gpAttachMap->m_iPid;
+  if (!Process::bTestPid(iPid)) {
+    // SE is not running anymore!
+    vTrace("Cannot find pid %lld\n", gpAttachMap->m_iPid);
+    vSetLastError(EC_SE_NOT_RUNNING);
+    return false;
+  }
+  
   String::wToString((i8)this,wItfAddr);
   String::vCopy(wWorkspace,wItfAddr);
   String::vConcat(wWorkspace," >seitf task.this task.seitf! ");
