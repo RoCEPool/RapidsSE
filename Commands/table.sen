@@ -52,6 +52,7 @@
 
 : checkInTables
     withinTables if true exit then
+
     EC_NOT_IN_TABLES false
 ;
 
@@ -84,6 +85,41 @@
 : popTable
     dic.drop
 ;
+
+/*----------------------------------------------------------------------------*/
+: get_tableRef ( "<tableNm>" -- <R> )
+
+    checkInTables not if false exit then
+
+    find
+
+    checkIsTable not if EC_NO_SUCH_TABLE false exit then
+
+    execute ( table )
+
+    task.this task.seitf@ seitf.tableRef
+
+    true
+;
+
+/*----------------------------------------------------------------------------*/
+: return_tableRef ( )
+
+    task.this task.seitf@ seitf.tableDeref
+
+    true
+;
+
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: tableInUse ( ^ table -- <R> )
+
+    table.ref if true exit then
+
+    false
+;
+
 
 /*============================================================================*/
 /* end                                                                        */

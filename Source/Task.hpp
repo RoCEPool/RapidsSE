@@ -637,6 +637,9 @@ namespace Tasks
     static void vSEitfReqStore(NNP_Task nnpTask);
     static void vSEitfRspFetch(NNP_Task nnpTask);
     static void vSEitfRspStore(NNP_Task nnpTask);
+    static void vSEitfTableFetch(NNP_Task nnpTask);
+    static void vSEitfTableRef(NNP_Task nnpTask);
+    static void vSEitfTableDeref(NNP_Task nnpTask);
 
     // seitfCursor
     static void vSEitfCursorBegin(NNP_Task nnpTask);

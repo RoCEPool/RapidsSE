@@ -539,7 +539,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   // - post process requests
   if (String::bEqualTo("sel",m_pToken[0],C_NO_CASE)) {
     vIterateRows();
-    return true;
+    return bReturnTable();
   }
   
   // - the following never return
@@ -617,6 +617,23 @@ void SePrompt::vIterateRows(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bReturnTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  String::vCopy(m_pToken[0], "rettbl");
+  String::vCopy(m_pToken[1], "");
+  
+  if (!bExecuteRequest()) {
+    //vTrace("Error: (%s) Return Table %s\n", m_sResponse.a(), pTableName);
+    return false;
+  }
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the first row                                                          */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bGetFirstRow(void)
@@ -663,6 +680,10 @@ bool SePrompt::bGetNextRow(void)
     pRowCursor->vEnd();
     delete pRowCursor;
     m_pSEitf->m_pRowPtr = nullptr;
+    
+    // now return the table
+    bool bResult = bReturnTable();
+    ASSERT(bResult);
     return false;
   }
   else {
@@ -735,7 +756,7 @@ void SePrompt::vHelp(void)
 #else
   vTrace("se temporary commands:\n");
   vTrace("add    -- add column to table\n");
-  vTrace("adr    -- get address of table\n");
+  vTrace("gettbl -- get address of table\n");
   vTrace("bye    -- quit se prompt\n");
   vTrace("cd     -- change directory\n");
   vTrace("cf     -- change folder\n");
@@ -762,6 +783,7 @@ void SePrompt::vHelp(void)
   vTrace("print  -- print string\n");
   vTrace("pwf    -- print working folder\n");
   vTrace("pwd    -- print working directory\n");
+  vTrace("rettbl -- return usage of table\n");
   vTrace("rmcat  -- drop catalog\n");
   vTrace("rmdic  -- drop dictionary\n");
   vTrace("rmsch  -- drop schema\n");
@@ -817,18 +839,10 @@ bool SePrompt::bBeginInsert(void)
   }
   
   // get table pointer
-  String::vCopy(m_pToken[0], "adr");
+  String::vCopy(m_pToken[0], "gettbl");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   if (!bExecuteRequest())
     return false;
-  
-  i8 iAddress = String::iToI8(m_sResponse.a());
-  
-  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
-  ASSERT(CN_TABLE == pTablePtr->eClass());
-  //vTrace("Beginning insert in Table: %s\n", pTablePtr->pTableName());
-  
-  m_pSEitf->vCurrentTable(pTablePtr);
   
   m_pSEitf->vBeginTx();
 
@@ -1070,6 +1084,14 @@ bool SePrompt::bCreateTable(void)
   
   if (!bExecuteRequest())
     return false;
+  /*
+  // get the tblptr and set it in the seitf
+  i8 iAddress = String::iToI8(m_pSEitf->m_sResponse.a());
+  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
+  ASSERT(CN_WORD == pTablePtr->eClass());
+  
+  m_pSEitf->vCurrentTable(pTablePtr);
+  */
   
   // now collect the column names and their types
   i8 iCurrentToken = 4;
@@ -1533,6 +1555,17 @@ bool SePrompt::bEndInsert(void)
     }
   }
   
+  eEC eResult = eExecuteRequest(m_pSEitf, "rettbl");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(m_pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+
   m_pSEitf->vCurrentTable(nullptr);
   
   m_pSEitf->vCommitTx();

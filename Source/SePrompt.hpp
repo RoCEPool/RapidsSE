@@ -84,10 +84,10 @@ private:
   
   bool bEndInsert(void);
   bool bInsertRow(void);
+  bool bListDir(void);
   bool bPoolSpace(void);
   bool bPrintWorkingDir(void);
-  
-  bool bListDir(void);
+  bool bReturnTable(void);
 
   Footer* pFooter(void);
 };

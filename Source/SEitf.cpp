@@ -342,10 +342,6 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bAddColumn(pWords, iWords);
   }
   
-  if (String::bEqualTo("adr",pWords[0],C_NO_CASE)) {
-    return bAddressTable(pWords, iWords);
-  }
-  
   if (String::bEqualTo("cf",pWords[0],C_NO_CASE)) {
     return bPushDic(pWords);
   }
@@ -382,8 +378,16 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bGetInUseSpace(pWords);
   }
   
+  if (String::bEqualTo("gettbl",pWords[0],C_NO_CASE)) {
+    return bGetTable(pWords, iWords);
+  }
+
   if (String::bEqualTo("getTotalSpace",pWords[0],C_NO_CASE)) {
     return bGetTotalSpace(pWords);
+  }
+  
+  if (String::bEqualTo("TblInUse",pWords[0],C_NO_CASE)) {
+    return bInUseTable(pWords, iWords);
   }
   
   if (String::bEqualTo("ld",pWords[0],C_NO_CASE)) {
@@ -434,6 +438,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bGetDicPath(pWords);
   }
   
+  if (String::bEqualTo("rettbl",pWords[0],C_NO_CASE)) {
+    return bRetTable(pWords, iWords);
+  }
+
   if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
     return bDropCatalog(pWords, iWords);
   }
@@ -1033,9 +1041,9 @@ bool SEitf::bSelectTable(char* pWords[], i8 iWords)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address a table                                                        */
+/* get address/reference of a table                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAddressTable(char* pWords[], i8 iWords)
+bool SEitf::bGetTable(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1052,7 +1060,53 @@ bool SEitf::bAddressTable(char* pWords[], i8 iWords)
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
   
-  String::vConcat(a," address_table");
+  String::vConcat(a," get_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return whether table is in use or not                                      */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bInUseTable(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+
+  String::vConcat(a," table_inuse");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return address/refernce of a table                                         */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bRetTable(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vConcat(a," return_table");
   
   return bAppendRequest(sRequest);
 }

@@ -31,18 +31,20 @@ Schema Requests:
 
 Table Requests:
 
-  adr     address_table
+  gettbl  get_table
   mktbl   create_table
   lstbl   list_tables
   add     add_column
   lscol   list_columns
   ld      load_table
+  tblInUse  table_inuse
   sel     select_table
   dump    dump_table
   cp      copy_table
   ex      export_table
   sz      size_table
   tr      truncate_table
+  rettbl  return_table
   rmtbl   drop_table
 
 Dictionary Requests:
@@ -433,6 +435,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
 
+/*
 ddlLock.grabRead
 
     checkInTables not if swap drop  <ERROR> exit then
@@ -450,26 +453,22 @@ ddlLock.grabRead
     >str
 
     <SUCCESS>
-;
-
-/*----------------------------------------------------------------------------*/
-/* get address of table                                                       */
-/*----------------------------------------------------------------------------*/
-: address_table ( "<tableNm>" -- <R> )
+*/
 
 ddlLock.grabRead
 
-    checkInTables not if swap drop  <ERROR> exit then
+    get_tableRef not if swap drop <ERROR> exit then
 
-    find
+    queryCount ++
 
-    checkIsTable not if <ERROR> exit then
+    task.this task.seitf@ seitf.table@
 
-    execute ( table )
+    rowcursor.new dup rot rowcursor.table!
 
     >str
 
     <SUCCESS>
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -505,13 +504,54 @@ ddlLock.grabWrite
 
     checkIsTable not if <ERROR> exit then
 
-    dup execute table.truncate
+    dup execute dup
+
+    tableInUse if drop drop EC_TABLE_IN_USE <ERROR> exit then
+
+    table.truncate
 
     >forget
 
     <OK>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: table_inuse ( "<tableNm>" -- <R> )
+
+    checkInTables not if swap drop  <ERROR> exit then
+
+    find
+
+    checkIsTable not if <ERROR> exit then
+
+    execute ( table )
+
+    tableInUse not if "Table not in use" . <OK> exit then
+
+    "Table in Use" .
+
+   <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get a table                                                                */
+/*----------------------------------------------------------------------------*/
+: get_table ( "<tableNm>" -- <R> )
+
+    get_tableRef not if <ERROR> exit then
+
+    <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+: return_table ( )
+
+    return_tableRef not if <ERROR> exit then
+
+    <OK>
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

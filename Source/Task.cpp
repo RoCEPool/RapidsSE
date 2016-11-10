@@ -951,6 +951,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
   vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
   vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
+  vAddPrimitive("seitf.table@",    &vSEitfTableFetch,  false);
+  vAddPrimitive("seitf.tableRef",  &vSEitfTableRef,    false);
+  vAddPrimitive("seitf.tableDeref",&vSEitfTableDeref,  false);
   
   vAddPrimitive("seitfCursor.begin",  &vSEitfCursorBegin,  false);
   vAddPrimitive("seitfCursor.delete", &vSEitfCursorDelete, false);
@@ -985,6 +988,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.drop",        &vTableDrop,        false);
   vAddPrimitive("table.init",        &vTableInit,        false);
   vAddPrimitive("table.insert",      &vTableInsert,      false);
+  vAddPrimitive("table.ref",         &vTableRef,         false);
   vAddPrimitive("table.space",       &vTableSpace,       false);
   vAddPrimitive("table.truncate",    &vTableTruncate,    false);
   
@@ -8238,6 +8242,78 @@ ENTRY("vSEitfRspStore");
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vResponseQueue(pQueue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.table@ -- fetch table from SEitf                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfTableFetch(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfTableFetch");
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
+    THROW_INVALID_PARAM("seitf.rsp!");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_xParamStack.vPush(pSEitf->pCurrentTable());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.tableDeref -- store table in SEitf and inc reference                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfTableDeref(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfRspStore");
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
+    THROW_INVALID_PARAM("seitf.tableDeref");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Table* pTable = pSEitf->pCurrentTable();
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vRefDec();
+
+  pSEitf->vCurrentTable(nullptr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.tableRef -- store table in SEitf and inc reference                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfTableRef(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfTableRef");
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
+    THROW_INVALID_PARAM("seitf.tableRef");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  Object* pPtrTable;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
+    THROW_INVALID_PARAM("seitf.tableRef");
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vRefInc();
+  
+  pSEitf->vCurrentTable(pTable);
   
   EXIT();
 }

@@ -186,7 +186,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // get pTable
-  eResult = eExecuteRequest(pSEitf, "adr", pTable);
+  eResult = eExecuteRequest(pSEitf, "gettbl", pTable);
   if (EC_NONE != eResult) {
     return eResult;
   }
@@ -196,15 +196,6 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   if (EC_NONE != eResult) {
     return eResult;
   }
-  
-  i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
-  //vTrace("Table pptr = %x\n", iAddress);
-  
-  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
-  ASSERT(CN_TABLE == pTablePtr->eClass());
-  //vTrace("Table: %s\n", pTablePtr->pTableName());
-  
-  pSEitf->vCurrentTable(pTablePtr);
   
   pSEitf->vBeginTx();
   
@@ -348,7 +339,7 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
     return eResult;
   }
   
-  // select * from pTable
+  // create a table
   eResult = eExecuteRequest(pSEitf, "mktbl", pTable);
   if (EC_NONE != eResult) {
     return eResult;
@@ -361,8 +352,22 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   }
   
   // get pTable
-  eResult = eExecuteRequest(pSEitf, "adr", pTable);
+  eResult = eExecuteRequest(pSEitf, "gettbl", pTable);
   if (EC_NONE != eResult) {
+    vTrace("RapidsSE_CreateTable:gettable\n");
+    
+    // create a table
+    eResult = eExecuteRequest(pSEitf, "rmtbl", pTable);
+    if (EC_NONE != eResult) {
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      return eResult;
+    }
+    
     return eResult;
   }
   
@@ -371,15 +376,6 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   if (EC_NONE != eResult) {
     return eResult;
   }
-  
-  i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
-  //vTrace("Table pptr = %x\n", iAddress);
-  
-  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
-  ASSERT(CN_TABLE == pTablePtr->eClass());
-  //vTrace("Table: %s\n", pTablePtr->pTableName());
-  
-  pSEitf->vCurrentTable(pTablePtr);
   
   return EC_NONE;
 }
@@ -521,6 +517,40 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 }
 
 /*----------------------------------------------------------------------------*/
+/* end create                                                                 */
+/*----------------------------------------------------------------------------*/
+eEC RapidsSE_EndCreate(SEitf* pSEitf)
+{
+  //vTrace("RapidsSE_EndCreate\n");
+  
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  ASSERT(pSEitf->pCurrentTable() == nullptr);
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* end insert                                                                 */
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_EndInsert(SEitf* pSEitf)
@@ -551,7 +581,18 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
     }
   }
   
-  pSEitf->vCurrentTable(nullptr);
+  eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  // get response
+  eResult = eGetResponse(pSEitf);
+  if (EC_NONE != eResult) {
+    return eResult;
+  }
+  
+  ASSERT(pSEitf->pCurrentTable() == nullptr);
   
   pSEitf->vCommitTx();
   
@@ -863,6 +904,21 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   *ppRow = pRowCursor->pRowAsStr();
   if (!*ppRow) {
     delete pRowCursor;
+    
+    // return the table
+    eEC eResult = eExecuteRequest(pSEitf, "rettbl");
+    if (EC_NONE != eResult) {
+      return eResult;
+    }
+    
+    // get response
+    eResult = eGetResponse(pSEitf);
+    if (EC_NONE != eResult) {
+      return eResult;
+    }
+    
+    ASSERT(pSEitf->pCurrentTable() == nullptr);
+
     return EC_NONE;
   }
   
@@ -1386,6 +1442,8 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
     return eResult;
   }
 
+  ASSERT(pSEitf->pCurrentTable() != nullptr);
+  
   i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
   
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
