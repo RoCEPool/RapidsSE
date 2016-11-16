@@ -79,7 +79,7 @@ private:
   bool bDropCatalog(void);
   bool bDropSchema(void);
   bool bDropTable(void);
-  bool bDropTable(char* pTableName);
+  bool bDropReturnTable(char* pTableName);
   bool bDropTenant(void);
   
   bool bEndInsert(void);

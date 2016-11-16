@@ -188,6 +188,7 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   // get pTable
   eResult = eExecuteRequest(pSEitf, "gettbl", pTable);
   if (EC_NONE != eResult) {
+    vTrace("RapidsSE_BeginInsert : gettbl FAILED!!!\n");
     return eResult;
   }
   
@@ -354,9 +355,9 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   // get pTable
   eResult = eExecuteRequest(pSEitf, "gettbl", pTable);
   if (EC_NONE != eResult) {
-    vTrace("RapidsSE_CreateTable:gettable\n");
+    vTrace("RapidsSE_CreateTable: gettbl FAILED!!!\n");
     
-    // create a table
+    // remove the table
     eResult = eExecuteRequest(pSEitf, "rmtbl", pTable);
     if (EC_NONE != eResult) {
       return eResult;
@@ -536,6 +537,7 @@ eEC RapidsSE_EndCreate(SEitf* pSEitf)
   
   eEC eResult = eExecuteRequest(pSEitf, "rettbl");
   if (EC_NONE != eResult) {
+    vTrace("RapidsSE_EndCreate: rettbl FAILED!!!\n");
     return eResult;
   }
   
@@ -583,6 +585,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
   
   eEC eResult = eExecuteRequest(pSEitf, "rettbl");
   if (EC_NONE != eResult) {
+    vTrace("RapidsSE_EndInsert : rettbl FAILED!!!\n");
     return eResult;
   }
   
@@ -908,6 +911,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     // return the table
     eEC eResult = eExecuteRequest(pSEitf, "rettbl");
     if (EC_NONE != eResult) {
+      vTrace("RapidsSE_GetNextRow : rettbl FAILED!!!\n");
       return eResult;
     }
     

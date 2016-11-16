@@ -627,7 +627,7 @@ bool SePrompt::bReturnTable(void)
   String::vCopy(m_pToken[1], "");
   
   if (!bExecuteRequest()) {
-    //vTrace("Error: (%s) Return Table %s\n", m_sResponse.a(), pTableName);
+    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n", m_sResponse.a());
     return false;
   }
   return true;
@@ -841,8 +841,10 @@ bool SePrompt::bBeginInsert(void)
   // get table pointer
   String::vCopy(m_pToken[0], "gettbl");
   String::vCopy(m_pToken[1], m_pToken2[2]);
-  if (!bExecuteRequest())
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bBeginInsert : gettbl FAILED!!!\n");
     return false;
+  }
   
   m_pSEitf->vBeginTx();
 
@@ -1084,21 +1086,31 @@ bool SePrompt::bCreateTable(void)
   
   if (!bExecuteRequest())
     return false;
-  /*
-  // get the tblptr and set it in the seitf
-  i8 iAddress = String::iToI8(m_pSEitf->m_sResponse.a());
-  Table* pTablePtr = reinterpret_cast<Table*>(iAddress);
-  ASSERT(CN_WORD == pTablePtr->eClass());
   
-  m_pSEitf->vCurrentTable(pTablePtr);
-  */
+  // get reference to pTable
+  String::vCopy(m_pToken[0], "gettbl");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  
+  if (!bExecuteRequest()) {
+    vTrace("SePrompt::bCreateTable : gettbl FAILED!!!\n");
+    
+    // create the table
+    String::vCopy(m_pToken[0], "rmtbl");
+    String::vCopy(m_pToken[1], m_pToken2[2]);
+    
+    if (!bExecuteRequest()) {      
+      return false;
+    }
+    
+    return false;
+  }
   
   // now collect the column names and their types
   i8 iCurrentToken = 4;
   while(iCurrentToken < iNumTokens - 2) {
     
     if (iCurrentToken != 4 && !String::bEqualTo(m_pToken2[iCurrentToken++],",")) {
-      bDropTable(m_pToken2[2]);
+      bDropReturnTable(m_pToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -1128,13 +1140,15 @@ bool SePrompt::bCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          bDropTable(m_pToken2[2]);
+          // drop the table
+          bDropReturnTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          bDropTable(m_pToken2[2]);
+          // drop the table
+          bDropReturnTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -1159,13 +1173,13 @@ bool SePrompt::bCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          bDropTable(m_pToken2[2]);
+          bDropReturnTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],",")) {
-          bDropTable(m_pToken2[2]);
+          bDropReturnTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -1178,13 +1192,13 @@ bool SePrompt::bCreateTable(void)
         
         // check if it was numeric
         if (!String::bExtractI8(&m_pToken2[iCurrentToken++], &iValue)) {
-          bDropTable(m_pToken2[2]);
+          bDropReturnTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
         
         if (!String::bEqualTo(m_pToken2[iCurrentToken],")")) {
-          bDropTable(m_pToken2[2]);
+          bDropReturnTable(m_pToken2[2]);
           m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
           return false;
         }
@@ -1201,7 +1215,7 @@ bool SePrompt::bCreateTable(void)
     }
     else {
       // drop the table that was created
-      bDropTable(m_pToken2[2]);
+      bDropReturnTable(m_pToken2[2]);
       m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
       return false;
     }
@@ -1213,7 +1227,7 @@ bool SePrompt::bCreateTable(void)
       String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       
       if (!String::bEqualTo(m_pToken2[iCurrentToken],"null", C_NO_CASE)) {
-        bDropTable(m_pToken2[2]);
+        bDropReturnTable(m_pToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
@@ -1228,7 +1242,7 @@ bool SePrompt::bCreateTable(void)
       String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       
       if (!String::bEqualTo(m_pToken2[iCurrentToken],"key", C_NO_CASE)) {
-        bDropTable(m_pToken2[2]);
+        bDropReturnTable(m_pToken2[2]);
         m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
         return false;
       }
@@ -1253,6 +1267,10 @@ bool SePrompt::bCreateTable(void)
       return false;
   }
   
+  // derefernce and return the table first
+  bool bResult = bReturnTable();
+  ASSERT(bResult);
+
   //vTrace("Table created: %s\n", m_pToken2[2]);
   return true;
 }
@@ -1441,9 +1459,13 @@ bool SePrompt::bDropTable(void)
 /*----------------------------------------------------------------------------*/
 /* drop table                                                                 */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bDropTable(char* pTableName)
+bool SePrompt::bDropReturnTable(char* pTableName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  // derefernce and return the table first
+  bool bResult = bReturnTable();
+  ASSERT(bResult);
   
   String::vCopy(m_pToken[0], "rmtbl");
   String::vCopy(m_pToken[1], pTableName);
@@ -1555,18 +1577,24 @@ bool SePrompt::bEndInsert(void)
     }
   }
   
-  eEC eResult = eExecuteRequest(m_pSEitf, "rettbl");
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
+  // now return the table
+  bResult = bReturnTable();
+  if (!bResult)
+    return false;
+  
+  //eEC eResult = eExecuteRequest(m_pSEitf, "rettbl");
+  //if (EC_NONE != eResult) {
+  //  vTrace("SePrompt::bEndInsert : rettbl FAILED!!!\n");
+  //  return eResult;
+  //}
   
   // get response
-  eResult = eGetResponse(m_pSEitf);
-  if (EC_NONE != eResult) {
-    return eResult;
-  }
+  //eResult = eGetResponse(m_pSEitf);
+  //if (EC_NONE != eResult) {
+  //  return eResult;
+  //}
 
-  m_pSEitf->vCurrentTable(nullptr);
+  //m_pSEitf->vCurrentTable(nullptr);
   
   m_pSEitf->vCommitTx();
 
