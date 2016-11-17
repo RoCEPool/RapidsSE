@@ -50,7 +50,7 @@ int main(int argc, const char* argv[])
 //  
 //  vTrace("duration %lldns\n",xTimer.iNanoseconds());
   
-  if (gxArguments.m_bVerbose)
+//  if (gxArguments.m_bVerbose)
     gxArguments.vPrint();
   
   // either create new shm region

@@ -91,6 +91,7 @@ bool Arguments::bParse(int argc, const char* argv[])
   
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--command",argv[iArg],C_NO_CASE)) {
       m_sCommand = argv[++iArg];
       m_bCommand = true;
@@ -99,11 +100,13 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--docol",argv[iArg],C_NO_CASE)) {
       m_bDocol = true;
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (
         String::bEqualTo("--help",argv[iArg],C_NO_CASE)
         || String::bEqualTo("-help",argv[iArg],C_NO_CASE)
@@ -116,16 +119,26 @@ bool Arguments::bParse(int argc, const char* argv[])
       exit(EXIT_SUCCESS);
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       ASSERT(m_nPartitions <= C_TABLE_PARTITIONS);
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
+      m_sRegionName = argv[++iArg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--seprompt",argv[iArg],C_NO_CASE)) {
       m_bPrompt = true;
       continue;
     }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
 #ifdef _RELEASE_VERSION
       if (m_bStop) {
@@ -145,6 +158,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--size",argv[iArg],C_NO_CASE)) {
       //m_iRegionSize = String::iToI8(argv[++iArg]);
       bool bResult = Magnitudes::bBytes(argv[++iArg], m_iRegionSize);
@@ -155,6 +169,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
 #ifdef _RELEASE_VERSION
       if (m_bStop) {
@@ -174,6 +189,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
 
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
 #ifdef _RELEASE_VERSION
       if (m_bStop) {
@@ -193,6 +209,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
 #ifdef _RELEASE_VERSION
       if (m_bStart) {
@@ -212,6 +229,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
 
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--unlink",argv[iArg],C_NO_CASE)) {
       m_bUnlink = true;
       continue;
@@ -324,8 +342,8 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
-  vTrace("  --regionName %s\n",m_sRegionName.a());
-  vTrace("  --regionSize %lld\n",m_iRegionSize);
+  vTrace("  --region %s\n",m_sRegionName.a());
+  vTrace("  --size %lld\n",m_iRegionSize);
   vTrace("  --partition %lld\n",m_iPartition);
   vTrace("  --partitions %lld\n",m_nPartitions);
 }
