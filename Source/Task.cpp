@@ -967,6 +967,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitfList.dump",  &vSEitfListDump,    false);
   vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
 
+  vAddPrimitive("shell.execute",  &vShellExecute,  false);
+  
   vAddPrimitive("stack.class",  &vStackClass,  false);
 
   vAddPrimitive("steps.list",  &vStepsList,  false);
@@ -8539,6 +8541,29 @@ ENTRY("vSEitfListInit");
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
   
   new(pSEitfList) SEitfList;
+  
+  EXIT();
+}
+
+// shell: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* shell.execute -- execute given shell command                               */
+/*----------------------------------------------------------------------------*/
+void Task::vShellExecute(NNP_Task nnpTask)
+{
+  ENTRY("vShellExecute");
+  
+  ValWsp xCommand;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xCommand) )
+    THROW_INVALID_PARAM("shell.execute");
+  
+  SysCall xSysCall;
+  
+  i8 iExitStatus = Shell::iExecute(xCommand.sStr(),xSysCall);
+  
+  nnpTask->m_xParamStack.vPush(iExitStatus);
   
   EXIT();
 }

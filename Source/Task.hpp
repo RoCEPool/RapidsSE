@@ -655,6 +655,9 @@ namespace Tasks
     static void vSEitfListDump(NNP_Task nnpTask);
     static void vSEitfListInit(NNP_Task nnpTask);
     
+    // shell
+    static void vShellExecute(NNP_Task nnpTask);
+    
     // stack
     static void vStackClass(NNP_Task nnpTask);
     static void vStackClass0(NNP_Task nnpTask);
