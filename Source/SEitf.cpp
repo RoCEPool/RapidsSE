@@ -246,6 +246,35 @@ void SEitf::vInit(void)
   
   Cell* pCell = pTenants->pFirstCell();
   m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  // find tenant boray
+  Word* pTenant = m_xDicStack.pFindInCurrent("boray");
+  ASSERT(pTenant);
+  
+  pCell = pTenant->pFirstCell();
+  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  // find catalogs
+  Word* pCatalogs = m_xDicStack.pFindInCurrent("catalogs");
+  ASSERT(pCatalogs);
+  
+  pCell = pCatalogs->pFirstCell();
+  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+ 
+  // find catalog rapidsse
+  Word* pCatalog = m_xDicStack.pFindInCurrent("rapidsse");
+  ASSERT(pCatalog);
+  
+  pCell = pCatalog->pFirstCell();
+  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
+  // find schemas
+  Word* pSchema = m_xDicStack.pFindInCurrent("schemas");
+  ASSERT(pSchema);
+  
+  pCell = pSchema->pFirstCell();
+  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  
 }
 
 /*----------------------------------------------------------------------------*/
