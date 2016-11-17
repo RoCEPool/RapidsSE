@@ -4,7 +4,24 @@
 
 "gridPrimitives.sen" .putVerbose
 
-: SE_COMMAND "../OS\ X/Build/Products/Debug/SE" ;
+: SE_PATH "../OS\ X/Build/Products/Debug/SE" ;
+
+: se_command
+
+//  "nohup "
+    ""
+    SE_PATH concat
+    " --start --restart --size 1gb --region /SE_" concat
+    swap >str concat
+//    " &" concat
+;
+
+: g
+
+  1 se_command
+  dup .
+  shell.execute .
+;
 
 /*============================================================================*/
 /* end                                                                        */

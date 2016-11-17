@@ -37,6 +37,12 @@ int main(int argc, const char* argv[])
            aRelDbg,
            Process::iGetPid()
            );
+
+  Dir xDir;
+  s256 sCurrent;
+  if (xDir.bGetCurrent(sCurrent))
+    printf("dir: %s\n",sCurrent.a());
+  
   
 //  vTrace("Task::vWord %p\n",Task::vWord);
   
