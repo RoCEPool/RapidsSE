@@ -59,6 +59,12 @@ int main(int argc, const char* argv[])
 //  if (gxArguments.m_bVerbose)
     gxArguments.vPrint();
   
+  // change working directory to commands dir
+  bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
+  // ignore error
+  if (xDir.bGetCurrent(sCurrent))
+    printf("dir: %s\n",sCurrent.a());
+  
   // either create new shm region
   // or attach to an existing one
   RapidsSE::vPoolOpen();
@@ -77,11 +83,13 @@ int main(int argc, const char* argv[])
     
     // if only prompt then cwd to Commands
     // (with --start sen changes cwd)
-    if (!gxArguments.m_bStart) {
-      // change working directory to commands dir
-      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
-      // ignore error
-    }
+//    if (!gxArguments.m_bStart) {
+//      // change working directory to commands dir
+//      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
+//      // ignore error
+//      if (xDir.bGetCurrent(sCurrent))
+//        printf("dir: %s\n",sCurrent.a());
+//    }
     SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);
     pSePrompt->vLoop();
   }
