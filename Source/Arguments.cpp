@@ -16,6 +16,13 @@ Arguments::Arguments(void)
   m_iRegionSize = 1_GB * 4 ;
   m_nPartitions = 1;
   
+#ifdef __APPLE__
+  m_sCommands   = "../../../../Commands";
+#else
+  m_sCommands   = "../../Commands";
+#endif
+  
+  
   m_sCommand    = "";
   
   m_bCommand    = false;
@@ -97,6 +104,12 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_bCommand = true;
       m_bPrompt  = true;
       m_bWelcome = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--commands",argv[iArg],C_NO_CASE)) {
+      m_sCommands = argv[++iArg];
       continue;
     }
     
@@ -346,6 +359,7 @@ void Arguments::vPrint(void)
   vTrace("  --size %lld\n",m_iRegionSize);
   vTrace("  --partition %lld\n",m_iPartition);
   vTrace("  --partitions %lld\n",m_nPartitions);
+  vTrace("  --commands %s\n",m_sCommands.a());
 }
 
 /*----------------------------------------------------------------------------*/

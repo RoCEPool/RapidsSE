@@ -78,18 +78,8 @@ int main(int argc, const char* argv[])
     // if only prompt then cwd to Commands
     // (with --start sen changes cwd)
     if (!gxArguments.m_bStart) {
-      
-      Dir xDir;
-      s256 sCommandDir;
-      
-#ifdef __APPLE__
-      sCommandDir = "../../../../Commands";
-#else
-      sCommandDir = "../../Commands";
-#endif
-      
-      // change working directory to Commands
-      bool bResult = xDir.bSetCurrent(sCommandDir);
+      // change working directory to commands dir
+      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
       // ignore error
     }
     SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);
