@@ -13,7 +13,7 @@
 //  "nohup "
     ""
     SE_PATH concat
-    " --start --restart --verbose --size 1gb " concat
+    " --start --restart --size 1gb " concat
     " --commands /Users/ray/Desktop/rapidsse/Commands" concat
     " --region /SE_" concat
     swap >str concat
@@ -28,9 +28,23 @@
 
 : g
 
-  1 se_command
-  dup .
-  shell.execute .
+  1 se_command dup . shell.execute .
+  2 se_command dup . shell.execute .
+  3 se_command dup . shell.execute .
+  4 se_command dup . shell.execute .
+  5 se_command dup . shell.execute .
+  6 se_command dup . shell.execute .
+  7 se_command dup . shell.execute .
+;
+
+: gn
+
+  8 1 do
+    I se_command
+    dup .
+    shell.execute .
+  loop
+  
 ;
 
 /*============================================================================*/

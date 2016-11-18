@@ -88,7 +88,7 @@ void RapidsSE::vExecute(void)
       vSystemStop();
     }
     else if (gxArguments.m_bUnlink) {
-      Region::vUnlink();
+      Region::vUnlink(gxArguments.m_sRegionName);
     }
     else {
       vTrace("Unknown command line argument\n");
@@ -128,7 +128,7 @@ void RapidsSE::vPoolOpen(void)
     gpStepBoard = new StepBoard(16);
 #endif
     
-    if (! gxArguments.m_bRestart && Region::bTest()) {
+    if (! gxArguments.m_bRestart && Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: RapidsSE instance %s already started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
@@ -144,7 +144,7 @@ void RapidsSE::vPoolOpen(void)
   }
   
   if (gxArguments.m_bStop) {
-    if (! Region::bTest()) {
+    if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
@@ -156,7 +156,7 @@ void RapidsSE::vPoolOpen(void)
   }
   
   if (gxArguments.m_bPrompt) {
-    if (! Region::bTest()) {
+    if (! Region::bTest(gxArguments.m_sRegionName)) {
       vTrace("Error: RapidsSE instance was not started\n",gxArguments.m_sRegionName.a());
       exit(EXIT_FAILURE);
       return;
@@ -380,7 +380,7 @@ void RapidsSE::vStartActors(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStatus(void)
 {
-  if (Region::bTest())
+  if (Region::bTest(gxArguments.m_sRegionName))
     vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
   else
     vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
@@ -391,7 +391,7 @@ void RapidsSE::vSystemStatus(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStop(void)
 {
-  Region::vUnlink();
+  Region::vUnlink(gxArguments.m_sRegionName);
   
   gpAttachMap->m_iStop = 1;
   

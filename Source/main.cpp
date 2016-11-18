@@ -10,6 +10,8 @@ extern Arguments gxArguments;
 
 void vTest1(void);
 
+void vKillPrev(void);
+
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
 /*----------------------------------------------------------------------------*/
@@ -65,6 +67,10 @@ int main(int argc, const char* argv[])
   if (xDir.bGetCurrent(sCurrent))
     printf("dir: %s\n",sCurrent.a());
   
+  
+  // kill previous
+  vKillPrev();
+  
   // either create new shm region
   // or attach to an existing one
   RapidsSE::vPoolOpen();
@@ -101,6 +107,50 @@ int main(int argc, const char* argv[])
     printf("RapidsSE exits\n");
     
   return EXIT_SUCCESS;
+}
+
+/*----------------------------------------------------------------------------*/
+/* kill previous node instances                                               */
+/*----------------------------------------------------------------------------*/
+void vKillPrev(void)
+{
+  // only node0 does this
+  if (0 != gxArguments.m_iNode)
+    return;
+  
+  // an assumption is that regions will be /SE_<node>
+  
+  void* pRegion;
+  s256 sRegionName;
+  int iFD;
+  bool b;
+  
+  for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
+  
+    String::vSprint(sRegionName.a(),"/SE_%lld",iNode);
+    
+    if ( ! Region::bTest(sRegionName) )
+      continue;
+    
+    if ( ! (pRegion = Region::pOpen(sRegionName,iFD)) )
+      continue;
+    
+    AttachMap* pAttachMap =
+      reinterpret_cast<AttachMap*>(pcAdd(pRegion,C_SIZE_POOL_BUFFER));
+
+    if (Process::bTestPid(pAttachMap->m_iPid)) {
+      
+      b = Process::bKillPid(pAttachMap->m_iPid);
+      if ( b )
+        vTrace("vKillPrev: process %lld killed\n",pAttachMap->m_iPid);
+      else
+        vTrace("vKillPrev: process %lld not killed\n",pAttachMap->m_iPid);
+    }
+    
+    Region::vClose(pRegion,iFD);
+    
+    Region::vUnlink(sRegionName);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

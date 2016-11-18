@@ -128,13 +128,13 @@ void Region::vCreate(void)
 /*----------------------------------------------------------------------------*/
 /* test for region                                                            */
 /*----------------------------------------------------------------------------*/
-bool Region::bTest(void)
+bool Region::bTest(s& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
   
   // open existing shm region
-  bool bResult = Shm::bAttach(gxArguments.m_sRegionName,iFD,xSysCall);
+  bool bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult )
     return false;
   
@@ -146,16 +146,60 @@ bool Region::bTest(void)
 /*----------------------------------------------------------------------------*/
 /* unlink region                                                              */
 /*----------------------------------------------------------------------------*/
-void Region::vUnlink(void)
+void Region::vUnlink(s& sRegionName)
 {
   SysCall xSysCall;
   
-  if (Shm::bUnlink(gxArguments.m_sRegionName,xSysCall))
-    vTrace("Region %s succesfully unlinked\n",gxArguments.m_sRegionName.a());
+  if (Shm::bUnlink(sRegionName,xSysCall))
+    vTrace("Region %s succesfully unlinked\n",sRegionName.a());
   else
-    vTrace("Region %s not unlinked\n",gxArguments.m_sRegionName.a());
+    vTrace("Region %s not unlinked\n",sRegionName.a());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* attempt to open a pool                                                     */
+/*----------------------------------------------------------------------------*/
+void* Region::pOpen(s& sRegionName, int& iFD)
+{
+  SysCall xSysCall;
+  bool bResult;
+  
+  vTrace("Region::pOpen %s\n",sRegionName.a());
+  
+  // open shm region
+  bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
+  if ( ! bResult ) {
+    vTrace("Region::pOpen: failed to open region: %s\n",
+           sRegionName.a());
+    return nullptr;
+  }
+  
+  // allocate a temporary extent of memory
+  void* pRegion = Shm::pMap(iFD,C_ADDR_POOL,10_MB,C_SHARED_REGION,
+                            gxArguments.m_bHugePages,xSysCall);
+  if ( ! pRegion )  {
+    vTrace("Region::pOpen failed to map\n");
+    Shm::bClose(iFD,xSysCall);
+    return nullptr;
+  }
+  
+  return pRegion;
+}
+
+/*----------------------------------------------------------------------------*/
+/* close region                                                               */
+/*----------------------------------------------------------------------------*/
+void Region::vClose(void* pRegion, int iFD)
+{
+  bool bResult;
+  SysCall xSysCall;
+  
+  // close the temporary mapping
+  bResult = Shm::bClose(iFD,xSysCall);
+  bResult = Shm::bUnmap(pRegion,10_MB,xSysCall);
+}
 
 /*============================================================================*/
 /* end                                                                        */

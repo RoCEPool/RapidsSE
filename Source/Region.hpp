@@ -13,8 +13,13 @@ namespace StorageEngine
   public:
     static bool bAttach(s& sRegionName);
     static void vCreate(void);
-    static bool bTest(void);
-    static void vUnlink(void);
+    static bool bTest(s& sRegionName);
+    static void vUnlink(s& sRegionName);
+    
+    ////////////////////////////////////////////////////////////////////////////
+
+    static void* pOpen(s& sRegionName, int& iFD);
+    static void  vClose(void* pRegion, int iFD);
   };
 }
 
