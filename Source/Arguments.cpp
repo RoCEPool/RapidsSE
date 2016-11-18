@@ -17,6 +17,7 @@ Arguments::Arguments(void)
   m_nPartitions = 1;
   m_iNode       = 0;
   m_nNodes      = 1;
+  m_iPort       = 8421;
   
 #ifdef __APPLE__
   m_sCommands   = "../../../../Commands";
@@ -150,6 +151,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       ASSERT(m_nPartitions <= C_TABLE_PARTITIONS);
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--port",argv[iArg],C_NO_CASE)) {
+      m_iPort = String::iToI8(argv[++iArg]);
       continue;
     }
     
@@ -375,6 +382,7 @@ void Arguments::vPrint(void)
   vTrace("  --size %lld\n",m_iRegionSize);
   vTrace("  --partition %lld\n",m_iPartition);
   vTrace("  --partitions %lld\n",m_nPartitions);
+  vTrace("  --port %lld\n",m_iPort);
   vTrace("  --commands %s\n",m_sCommands.a());
 }
 
