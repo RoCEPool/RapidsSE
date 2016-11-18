@@ -29,6 +29,7 @@ extern TxCollection*         gpTxCollection;
 extern NP_Task               gnpRootTask;
 extern StepBoard*            gpStepBoard;
 extern Lock                  gxDdlLock;
+extern SEitfList*            gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -944,6 +945,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("r8",              &vRstack8,          false);
   vAddPrimitive("r9",              &vRstack9,          false);
   
+  vAddPrimitive("seitf.count",     &vSEitfCount,       false);
   vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
   vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
   vAddPrimitive("seitf.new",       &vSEitfNew,         false);
@@ -8089,6 +8091,20 @@ ENTRY("vRowCursorTableStore");
 }
 
 // seitf: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* seitf.count -- get count of SE interface's                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfCount(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfCount");
+  
+  Object* pPtrSEitf;
+  
+  nnpTask->m_xParamStack.vPush(gpSEitfList->iCount());
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* seitf.delete -- delete SE interface                                        */

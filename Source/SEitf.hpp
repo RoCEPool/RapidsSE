@@ -124,6 +124,7 @@ namespace Interface
     bool bGetInUseSpace(char* pWords[]);
     bool bGetTotalSpace(char* pWords[]);
     bool bGetVersion(char* pWords[]);
+    bool bSeitfCount(char* pWords[]);
     
     bool bPing(char* pWords[]);
     

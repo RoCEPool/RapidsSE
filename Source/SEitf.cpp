@@ -512,6 +512,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return false;
   }
   
+  if (String::bEqualTo("seitf",pWords[0],C_NO_CASE)) {
+    return bSeitfCount(pWords);
+  }
+  
   if (String::bEqualTo("version",pWords[0],C_NO_CASE)) {
     return bGetVersion(pWords);
   }
@@ -1397,6 +1401,20 @@ bool SEitf::bPing(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get seitf count                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bSeitfCount(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(String::bEqualTo(pWords[0],"seitf"));
+  sRequest = "seitf_count";
   return bAppendRequest(sRequest);
 }
 
