@@ -8,6 +8,8 @@
 
 : se_command
 
+    dup
+
 //  "nohup "
     ""
     SE_PATH concat
@@ -15,6 +17,12 @@
     " --commands /Users/ray/Desktop/rapidsse/Commands" concat
     " --region /SE_" concat
     swap >str concat
+
+    " --node " concat
+    swap >str concat
+
+    " --nodes 8" concat
+
     " &" concat
 ;
 

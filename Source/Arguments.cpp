@@ -15,6 +15,8 @@ Arguments::Arguments(void)
   m_sRegionName = "/RapidsSE_Instance1";
   m_iRegionSize = 1_GB * 4 ;
   m_nPartitions = 1;
+  m_iNode       = 0;
+  m_nNodes      = 1;
   
 #ifdef __APPLE__
   m_sCommands   = "../../../../Commands";
@@ -130,6 +132,18 @@ bool Arguments::bParse(int argc, const char* argv[])
         )  {
       vPrintHelp();
       exit(EXIT_SUCCESS);
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
+      m_iNode = String::iToI8(argv[++iArg]);
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--nodes",argv[iArg],C_NO_CASE)) {
+      m_nNodes = String::iToI8(argv[++iArg]);
+      continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -355,6 +369,8 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
+  vTrace("  --node %lld\n",m_iNode);
+  vTrace("  --nodes %lld\n",m_nNodes);
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --size %lld\n",m_iRegionSize);
   vTrace("  --partition %lld\n",m_iPartition);

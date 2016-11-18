@@ -15,6 +15,8 @@ namespace StorageEngine
     s256 m_sRegionName; // name of shared memory region
     i8   m_iRegionSize; // size of region in bytes
     i8   m_nPartitions; // partitions per node
+    i8   m_iNode;       // this node number
+    i8   m_nNodes;      // out of this number of nodes
     s256 m_sCommands;   // commands dir
     
     // commands
