@@ -314,6 +314,8 @@ void Task::vAddConstants(void)
   vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
   vAddConstant("partitions",       gxArguments.m_nPartitions);
   vAddConstant("args.config",      gxArguments.m_bConfig);
+  vAddConstant("args.node",        gxArguments.m_iNode);
+  vAddConstant("args.nodes",       gxArguments.m_nNodes);
   
   vAddConstant("true",    1);
   vAddConstant("false",   (i8)0);

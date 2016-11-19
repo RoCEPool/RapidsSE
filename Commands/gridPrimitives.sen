@@ -39,7 +39,7 @@
 
 : gn
 
-  8 1 do
+  args.nodes 1 do
     I se_command
     dup .
     shell.execute .
