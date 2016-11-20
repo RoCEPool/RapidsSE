@@ -12,7 +12,7 @@ namespace StorageEngine
   {
   public:
     static bool bAttach(s& sRegionName);
-    static void vCreate(void);
+    static void vCreate(s& sRegionName);
     static bool bTest(s& sRegionName);
     static void vUnlink(s& sRegionName);
     

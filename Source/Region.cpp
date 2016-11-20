@@ -81,7 +81,7 @@ bool Region::bAttach(s& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(void)
+void Region::vCreate(s& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -90,19 +90,19 @@ void Region::vCreate(void)
   Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize.a());
   
   vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n",
-         gxArguments.m_sRegionName.a(),
+         sRegionName.a(),
          sSize.a(),
          gxArguments.m_iRegionSize);
   
   // open a new shm region
-  bool bResult = Shm::bCreate(gxArguments.m_sRegionName,
+  bool bResult = Shm::bCreate(sRegionName,
                               gxArguments.m_iRegionSize,
                               iFD,
                               gxArguments.m_bRestart,
                               xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreate: failed to create region %s\n",
-           gxArguments.m_sRegionName.a());
+           sRegionName.a());
     ASSERT(0);
   }
   
