@@ -26,6 +26,7 @@
     " &" concat
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : g
 
   1 se_command dup . shell.execute .
@@ -37,6 +38,7 @@
   7 se_command dup . shell.execute .
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : gn
 
   args.nodes 1 do
@@ -45,6 +47,36 @@
     shell.execute .
   loop
   
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: ipcChild
+
+//traceon
+
+  "ipcChild" task.this task.name!
+
+  "ipcChild" .
+
+  task.parent@ task.signal
+//traceoff
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: ipc
+
+//traceon
+
+  3 task.this task.acks!
+
+  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
+  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
+  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
+
+  //TS_WAITING task.this task.state!
+
+  task.suspend
+//traceoff
 ;
 
 /*============================================================================*/

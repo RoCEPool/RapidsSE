@@ -24,7 +24,7 @@ namespace Tasks
   {
   /* 0 */ TS_NONE=0,
   /* 1 */ TS_RUNNING,
-  /* 2 */ TS_SWITCH,
+  /* 2 */ TS_YIELD,
   /* 3 */ TS_WAITING,
   /* 4 */ TS_SLEEPING,
   /* 5 */ TS_BLOCKED,
@@ -36,7 +36,7 @@ namespace Tasks
   {
     /* 0 */ "NONE",
     /* 1 */ "RUNNING",
-    /* 2 */ "SWITCH",
+    /* 2 */ "YIELD",
     /* 3 */ "WAITING",
     /* 4 */ "SLEEPING",
     /* 5 */ "BLOCKED",
@@ -136,6 +136,7 @@ namespace Tasks
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
     Task*   m_pParentTask; // parent of this task
+    Atomic  m_zAcks;       // number of acks still waaiting for
     Threads::Thread* m_pThread; // current thread
     
     NP_Task m_npNextInSet; // next task in set
@@ -354,13 +355,11 @@ namespace Tasks
     static void vRot(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
     static void vSemicolon(NNP_Task nnpTask);      
-    static void vSignal(NNP_Task nnpTask);         
-    static void vSnooze(NNP_Task nnpTask);         
+    static void vSnooze(NNP_Task nnpTask);
     static void vSleep(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
     static void vSubtract(NNP_Task nnpTask);
     static void vSwap(NNP_Task nnpTask);           
-    static void vSwitch(NNP_Task nnpTask);
     static void vTest(NNP_Task nnpTask);
     static void vThen(NNP_Task nnpTask);           
     static void vThrow(NNP_Task nnpTask);          
@@ -382,8 +381,7 @@ namespace Tasks
     static void vUnloop(NNP_Task nnpTask);         
     static void vUntil(NNP_Task nnpTask);          
     static void vVersion(NNP_Task nnpTask);        
-    static void vWait(NNP_Task nnpTask);           
-    static void vWake(NNP_Task nnpTask);           
+    static void vWake(NNP_Task nnpTask);
     static void vWhile(NNP_Task nnpTask);          
     static void vZeroLess(NNP_Task nnpTask);       
     static void vZeroLessEqual(NNP_Task nnpTask);  
@@ -700,6 +698,9 @@ namespace Tasks
     static void vTableTruncate(NNP_Task nnpTask);
     
     // task
+    static void vTaskAcksDec(NNP_Task nnpTask);
+    static void vTaskAcksFetch(NNP_Task nnpTask);
+    static void vTaskAcksStore(NNP_Task nnpTask);
     static void vTaskDic(NNP_Task nnpTask);
     static void vTaskDump(NNP_Task nnpTask);
     static void vTaskInit(NNP_Task nnpTask);
@@ -714,9 +715,13 @@ namespace Tasks
     static void vTaskSeed(NNP_Task nnpTask);
     static void vTaskSeitfFetch(NNP_Task nnpTask);
     static void vTaskSeitfStore(NNP_Task nnpTask);
+    static void vTaskSignal(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
+    static void vTaskSuspend(NNP_Task nnpTask);
     static void vTaskThread(NNP_Task nnpTask);
+    static void vTaskWait(NNP_Task nnpTask);
+    static void vTaskYield(NNP_Task nnpTask);
     
     // taskCursor
     static void vTaskCursorBegin(NNP_Task nnpTask);

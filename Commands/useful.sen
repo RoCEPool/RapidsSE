@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : snoozeLoop
     begin
-      "snoozing..." . snooze switch
+      "snoozing..." . snooze task.yield
     0 until
 ;
 

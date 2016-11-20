@@ -188,6 +188,7 @@ void Task::vInit(const char* aLambda)
   m_npPrevInSet = nullptr;
   m_iWakeAt     = 0;
   m_pParentTask = nullptr;
+  m_zAcks.vCheckInit();
   m_pThread     = nullptr;
   
   m_xDicStack.vPush(gpMainDic);
@@ -540,7 +541,7 @@ void Task::vAddConstants(void)
 
   /*  0 */ vAddConstant("TS_NONE",                  TS_NONE);
   /*  1 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
-  /*  2 */ vAddConstant("TS_SWITCH",                TS_SWITCH);
+  /*  2 */ vAddConstant("TS_YIELD",                 TS_YIELD);
   /*  3 */ vAddConstant("TS_WAITING",               TS_WAITING);
   /*  5 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
   /*  6 */ vAddConstant("TS_BLOCKED",               TS_BLOCKED);
@@ -701,13 +702,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rot",             &vRot,              false);
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
-  vAddPrimitive("signal",          &vSignal,           false);
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("-",               &vSubtract,         false);
   vAddPrimitive("swap",            &vSwap,             false);
-  vAddPrimitive("switch",          &vSwitch,           false);
   vAddPrimitive("test",            &vTest,             false);
   vAddPrimitive("then",            &vThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
@@ -729,7 +728,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("unloop",          &vUnloop,           false);
   vAddPrimitive("until",           &vUntil,            true );
   vAddPrimitive("version",         &vVersion,          false);
-  vAddPrimitive("wait",            &vWait,             false);
   vAddPrimitive("wake",            &vWake,             false);
   vAddPrimitive("while",           &vWhile,            true );
   vAddPrimitive("0<",              &vZeroLess,         false);
@@ -996,6 +994,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.space",       &vTableSpace,       false);
   vAddPrimitive("table.truncate",    &vTableTruncate,    false);
   
+  vAddPrimitive("task.dec",        &vTaskAcksDec,      false);
+  vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
+  vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
   vAddPrimitive("task.dic",        &vTaskDic,          false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
   vAddPrimitive("task.init",       &vTaskInit,         false);
@@ -1009,10 +1010,14 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.seed",       &vTaskSeed,         false);
   vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
   vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
+  vAddPrimitive("task.signal",     &vTaskSignal,       false);
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
+  vAddPrimitive("task.suspend",    &vTaskSuspend,      false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
-  vAddPrimitive("task.thread",     &vTaskThread,        false);
+  vAddPrimitive("task.thread",     &vTaskThread,       false);
+  vAddPrimitive("task.wait",       &vTaskWait,         false);
+  vAddPrimitive("task.yield",      &vTaskYield,        false);
   
   vAddPrimitive("taskCursor.begin",  &vTaskCursorBegin,  false);
   vAddPrimitive("taskCursor.delete", &vTaskCursorDelete, false);
@@ -1641,7 +1646,7 @@ void Task::vSeedWord(const char* aLambda)
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
-  m_eState = TS_SWITCH;
+  m_eState = TS_YIELD;
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -1664,7 +1669,7 @@ void Task::vSeedDocol(void)
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
-  m_eState = TS_SWITCH;
+  m_eState = TS_YIELD;
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -3654,18 +3659,6 @@ ENTRY("vOr");
 }
 
 /*----------------------------------------------------------------------------*/
-/* switch -- task switch                                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vSwitch(NNP_Task nnpTask)
-{
-ENTRY("vSwitch");
-  
-  nnpTask->vState(TS_SWITCH);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* pick -- place copy of nth value in stack onto stack                        */
 /*----------------------------------------------------------------------------*/
 void Task::vPick(NNP_Task nnpTask)
@@ -4233,18 +4226,6 @@ ENTRY("vSemicolon");
 }
 
 /*----------------------------------------------------------------------------*/
-/* signal -- signal tx on stack                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSignal(NNP_Task nnpTask)
-{
-ENTRY("vSignal");
-  
-  // ..tbd..
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* sleep -- sleep for n seconds                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vSleep(NNP_Task nnpTask)
@@ -4741,18 +4722,6 @@ ENTRY("vVersion");
   sVersion = RAPIDSSE_VERSION_STRING;
   
   nnpTask->m_xParamStack.vPush(sVersion);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* wait -- this task waits for signal                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vWait(NNP_Task nnpTask)
-{
-ENTRY("vWait");
-  
-  // ..tbd..
   
   EXIT();
 }
@@ -9141,6 +9110,63 @@ ENTRY("vTableSpace");
 // task: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* --task.acks -- decrement given tasks m_zAcks and push result               */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskAcksDec(NNP_Task nnpTask)
+{
+  ENTRY("vTaskAcksFetch");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("--task.acks");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  i8 iResult = --pGivenTask->m_zAcks;
+  
+  nnpTask->m_xParamStack.vPush(iResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.acks@ -- push current value of given tasks m_zAcks                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskAcksFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskAcksFetch");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("task.acks@");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  nnpTask->m_xParamStack.vPush(*pGivenTask->m_zAcks);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.acks! -- store value into given tasks m_zAcks                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskAcksStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskAcksStore");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("task.acks!");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  i8 iInt;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iInt) )
+    THROW_INVALID_PARAM("and");
+  
+  pGivenTask->m_zAcks = iInt;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.dic -- push task dictionary onto param stack                          */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDic(NNP_Task nnpTask)
@@ -9425,6 +9451,34 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* signal -- signal task on stack                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSignal(NNP_Task nnpTask)
+{
+  ENTRY("vTaskSignal");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.signal");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  i8 iMore = --pThatTask->m_zAcks;
+  
+  if ( ! iMore ) {
+    vTrace("Task::vTaskSignal: would resume task %p\n",pThatTask);
+    
+    while (TS_WAITING != pThatTask->m_eState)
+      PosixThread::vSleepMicro(10);
+    
+    Thread* pThread = Thread::pThread();
+    
+    pThread->m_pTaskSet->vAppend(pThatTask);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateFetch(NNP_Task nnpTask)
@@ -9466,6 +9520,18 @@ ENTRY("vTaskStateStore");
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.suspend -- this task suspends                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSuspend(NNP_Task nnpTask)
+{
+  ENTRY("vTaskSuspend");
+  
+  nnpTask->vState(TS_WAITING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.this -- push this task                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskThis(NNP_Task nnpTask)
@@ -9493,6 +9559,30 @@ void Task::vTaskThread(NNP_Task nnpTask)
 
   Thread* pThread = pThatTask->m_pThread;
   nnpTask->m_xParamStack.vPush(pThread);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.wait -- this task waits for signal                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskWait(NNP_Task nnpTask)
+{
+  ENTRY("vTaskWait");
+  
+  // ..tbd..
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.yield -- this task yields                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskYield(NNP_Task nnpTask)
+{
+  ENTRY("vTaskYield");
+  
+  nnpTask->vState(TS_YIELD);
   
   EXIT();
 }

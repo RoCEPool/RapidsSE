@@ -181,9 +181,7 @@ void Thread::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-//  vTrace("Thread %p: loop\n",
-//         this
-//         );
+  vTrace("Thread %p: %s loop\n",this,m_sName.a());
   
   m_xPosixThread.vSetOSThreadId();
   
@@ -248,7 +246,7 @@ void Thread::vLoop(void)
       m_npTask->vThread(nullptr);
       // clear rdtscp
       
-      if (TS_SWITCH == m_npTask->eState()) {
+      if (TS_YIELD == m_npTask->eState()) {
         NNP_Task nnpTask = *m_npTask;
         vAppend(nnpTask);
         m_npTask = nullptr;

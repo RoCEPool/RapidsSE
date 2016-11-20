@@ -369,6 +369,7 @@ void RapidsSE::vStartActors(void)
   // root thread will pop the root task and run it
   gnpRootThread->vAppend(*gnpRootTask);
   
+  // the primary thread waits here till root task exits
   while (TS_EXITED != gnpRootTask->eState())
     PosixThread::vSleepMilli(1);
   
