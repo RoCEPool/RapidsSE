@@ -969,7 +969,8 @@ void Task::vAddPrimitives(void)
 
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
   
-  vAddPrimitive("stack.class",  &vStackClass,  false);
+  vAddPrimitive("stack.class", &vStackClass,    false);
+  vAddPrimitive(">stack",      &vStackTransfer, false);
 
   vAddPrimitive("steps.list",  &vStepsList,  false);
   vAddPrimitive("steps.reset", &vStepsReset, false);
@@ -8563,6 +8564,27 @@ ENTRY("vStackClass");
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* stack.transfer -- pop stack of this task and push onto stack of that task  */
+/*----------------------------------------------------------------------------*/
+void Task::vStackTransfer(NNP_Task nnpTask)
+{
+  ENTRY("vStackTransfer");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM(">stack");
+  Task* pThatTask = _pTask(pPtrTask);
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM(">stack");
+  
+  pThatTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
 // steps: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -9465,7 +9487,7 @@ void Task::vTaskSignal(NNP_Task nnpTask)
   i8 iMore = --pThatTask->m_zAcks;
   
   if ( ! iMore ) {
-    vTrace("Task::vTaskSignal: would resume task %p\n",pThatTask);
+    vTrace("Task::vTaskSignal: resuming task %p\n",pThatTask);
     
     while (TS_WAITING != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);

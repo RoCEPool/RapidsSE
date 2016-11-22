@@ -668,6 +668,7 @@ namespace Tasks
     static void vStackClass7(NNP_Task nnpTask);
     static void vStackClass8(NNP_Task nnpTask);
     static void vStackClass9(NNP_Task nnpTask);
+    static void vStackTransfer(NNP_Task nnpTask);
     
     // steps
     static void vStepsList(NNP_Task nnpTask);

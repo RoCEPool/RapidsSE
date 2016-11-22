@@ -13,7 +13,7 @@
 //  "nohup "
     ""
     SE_PATH concat
-    " --start --restart --size 1gb " concat
+    " --start --restart --size 4gb " concat
     " --commands /Users/ray/Desktop/rapidsse/Commands" concat
     " --region /SE_" concat
     swap >str concat
@@ -52,6 +52,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : ipcChild
 
+  3 sleep
+
 //traceon
 
   "ipcChild" task.this task.name!
@@ -76,8 +78,249 @@
   //TS_WAITING task.this task.state!
 
   task.suspend
+
+  "Parent" .
 //traceoff
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// Coordinator
+queue:   c.queue    // create a named queue
+taskset: c.taskset  // create a named taskset
+thread:  c.thread   // create a named thread
+
+/*----------------------------------------------------------------------------*/
+/* pop indirect valset from queue                                             */
+/*----------------------------------------------------------------------------*/
+: queue> ( -- valset )
+
+  begin
+    task.this task.queue@ queue.pop
+    dup not if task.yield /*100 thread.sleep_us*/ then
+  until
+;
+
+/*----------------------------------------------------------------------------*/
+/* convert valset to indirect call                                            */
+/*----------------------------------------------------------------------------*/
+: >indirect ( valset -- ... wordName ; reg0 == caller )
+
+  valset>  // expand valset into stack values ( ... wordName caller #args )
+  drop     // discard the args                ( ... wordName caller )
+  >reg0    // put caller into reg0            ( ... wordName )
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute indirect call on the stack                                         */
+/*----------------------------------------------------------------------------*/
+: !indirect ( ... wordName -- ... )
+
+  find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* convert values on stack into a result valset                               */
+/*----------------------------------------------------------------------------*/
+: >result ( ... -- valset )
+
+  depth >valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* push valset onto invoking tasks stack and signal caller                    */
+/*----------------------------------------------------------------------------*/
+: >caller ( valset -- ; caller -- valset )
+
+  reg0 >stack
+
+  reg0 task.signal
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinator processing loop                                                */
+/*----------------------------------------------------------------------------*/
+: c.loop
+
+  "renaming to c.task" .putVerbose
+
+  "c.task" task.this task.name!
+
+  c.queue task.this task.queue!
+
+  reg.push
+
+  begin
+    depth 0 != if "stack of c.task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+
+    >indirect  // convert valset to indirect call
+    !indirect  // execute indirect call
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+: dispatch
+
+  depth r> swap >r >r
+;
+
+: nArgs
+
+  r>     // ( -- ret(nArgs) )
+  r>     // ( -- ret(nArgs) wasDepth )
+  swap   // ( -- wasDepth ret(nArgs) )
+  >r     // ( -- wasDepth )
+  depth  // ( -- wasDepth depth )
+  swap   // ( -- depth wasDepth )
+  -      // ( -- nArgs )
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* put request onto queue for processing, suspend for notification            */
+/*----------------------------------------------------------------------------*/
+: >queue> ( ... wordName #args queue -- result )
+
+  >r                       // save target queue onto rstack
+
+  1 task.this task.acks!   // will wait for 1 ack
+
+  task.this                // this task is the caller
+
+  swap                     // bring #args to top
+
+  1 +                      // valset will be ( args, wordname, caller )
+
+  >valset                  // convert stack values to valset
+
+  r>                       // restore target queue onto stack
+
+  queue.append             // pop valset and append to target queue
+
+  task.suspend             // this task suspends
+
+  valset>                  // convert valset to stack values
+
+  drop                     // discard number of values
+;
+
+/*----------------------------------------------------------------------------*/
+/* start the coordinator                                                      */
+/*----------------------------------------------------------------------------*/
+: c.start
+
+  // set up coordinator task
+  0 "c.loop" nullPtr task.new c.taskset taskSet.append
+
+  // set up the coordinator taskset
+  c.taskset c.thread thread.taskset!
+
+  // name the coordinator thread
+  "c.thread" c.thread thread.name!
+
+  // spawn the os thread
+  c.thread thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* a simple pong test                                                         */
+/*----------------------------------------------------------------------------*/
+: c.pong
+
+  "-PONG" concat
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* distributed pattern test                                                   */
+/*----------------------------------------------------------------------------*/
+: d
+
+  c.start
+
+  "xyz" "c.pong" 2 c.queue >queue> .
+
+  "abc" "lmn" "concat" 3 c.queue >queue> .
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Participant
+queue:   p.queue    // create a named queue
+taskset: p.taskset  // create a named taskset
+thread:  p.thread   // create a named thread
+
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* participant processing loop                                                */
+/*----------------------------------------------------------------------------*/
+: p.loop
+
+  "renaming to p.task" .putVerbose
+
+  "p.task" task.this task.name!
+
+  p.queue task.this task.queue!
+
+  reg.push
+
+  begin
+    depth 0 != if "stack of p.task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call
+    !indirect  // execute indirect call
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinator processing loop v2                                             */
+/*----------------------------------------------------------------------------*/
+: c.loop_v2
+
+  "renaming to c.task" .putVerbose
+
+  "c.task" task.this task.name!
+
+  c.queue task.this task.queue!
+
+  reg.push
+
+  begin
+    depth 0 != if "stack of c.task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call
+    !indirect  // execute indirect call
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
 
 /*============================================================================*/
 /* end                                                                        */
