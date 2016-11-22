@@ -1,3 +1,4 @@
+
 /*============================================================================*/
 /* Task.cpp - task                                                            */
 /*============================================================================*/
@@ -583,6 +584,8 @@ void Task::vAddConstants(void)
   vAddConstant("monitorTaskPrint",(i8)0);
   vAddConstant("reclaimTaskPrint",(i8)0);
   vAddConstant("requestTaskPrint",(i8)0);
+  vAddConstant("answerTaskPrint",(i8)1);
+  vAddConstant("connectorTaskPrint",(i8)1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1113,13 +1116,13 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.this",       &vWordThis,         false);
   
   //----------------------------------------------------------
-  vAddPrimitive("socketAccept",    &vSocketAccept,     false);
-  vAddPrimitive("socketClose",     &vSocketClose,      false);
-  vAddPrimitive("socketConnect",   &vSocketConnect,    false);
-  vAddPrimitive("socketListen",    &vSocketListen,     false);
-  vAddPrimitive("socketOpen",      &vSocketOpen,       false);
-  vAddPrimitive("socketRecv",      &vSocketRecv,       false);
-  vAddPrimitive("socketSend",      &vSocketSend,       false);
+  vAddPrimitive("socket.accept",   &vSocketAccept,     false);
+  vAddPrimitive("socket.close",    &vSocketClose,      false);
+  vAddPrimitive("socket.connect",  &vSocketConnect,    false);
+  vAddPrimitive("socket.listen",   &vSocketListen,     false);
+  vAddPrimitive("socket.open",     &vSocketOpen,       false);
+  vAddPrimitive("socket.recv",     &vSocketRecv,       false);
+  vAddPrimitive("socket.send",     &vSocketSend,       false);
   
   vAddPrimitive("client",          &vClient,           false);
   vAddPrimitive("server",          &vServer,           false);
@@ -11338,7 +11341,7 @@ ENTRY("vWordThis");
 // sockets: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* accept a socket connection                                                 */
+/* socket.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketAccept(NNP_Task nnpTask)
 {
@@ -11350,7 +11353,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
 ENTRY("vSocketAccept");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketaccept");
+    THROW_INVALID_PARAM("socket.accept");
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
@@ -11387,31 +11390,49 @@ ENTRY("vSocketClose");
 }
 
 /*----------------------------------------------------------------------------*/
-/* connect to a server                                                        */
+/* socket.connect: connect to a server                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketConnect(NNP_Task nnpTask)
 {
   SysCall xSysCall;
   Socket* pSocket;
   Object* pObject;
+  ValWsp xNode;
+  
   i8 iPort;
   
 ENTRY("vSocketConnect");
   
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketconnect");
-
   if ( ! nnpTask->m_xParamStack.bPop(iPort) )
-    THROW_INVALID_PARAM("socketconnect");
-    
-  //const char* sAddr = reinterpret_cast<char*>(pObject);
-  //pSocket = new Socket;
-  const char* sAddr = "127.0.0.1";
-  pSocket = reinterpret_cast<Socket*>(pObject);
-  bool bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
+    THROW_INVALID_PARAM("socket.connect");
   
-  if ( ! bResult )
-    THROW("Unable to connect: Errno %d!", xSysCall.iError());
+  if ( ! nnpTask->m_xParamStack.bPop(xNode) )
+    THROW_INVALID_PARAM("socket.connect");
+
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("socket.connect");
+
+  const char* sAddr = reinterpret_cast<char*>(xNode.sStr());
+  pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  bool bResult = false;
+  
+  while (!bResult) {
+    bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
+    if ( ! bResult ) {
+      i8 iError = xSysCall.iError();
+      
+      if (iError == ETIMEDOUT)
+        vTrace("Connect timedout... retrying...\n");
+      else
+        THROW("Unable to connect: Errno %d!", iError);
+    }
+  }
+  
+  //bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
+  
+  //if ( ! bResult )
+  //  THROW("Unable to connect: Errno %d!", xSysCall.iError());
   
   Header* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
@@ -11420,7 +11441,7 @@ ENTRY("vSocketConnect");
 }
 
 /*----------------------------------------------------------------------------*/
-/* listen in for socket connections                                           */
+/* socket.listen: listen in for socket connections                            */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketListen(NNP_Task nnpTask)
 {
@@ -11446,7 +11467,7 @@ ENTRY("vSocketListen");
 }
 
 /*----------------------------------------------------------------------------*/
-/* open a socket                                                              */
+/* socket.open: open a socket                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketOpen(NNP_Task nnpTask)
 {
@@ -11468,7 +11489,7 @@ ENTRY("vSocketOpen");
 }
 
 /*----------------------------------------------------------------------------*/
-/* send to a socket                                                           */
+/* socket.send: send to a socket                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(NNP_Task nnpTask)
 {
@@ -11502,7 +11523,7 @@ ENTRY("vSocketSend");
 }
 
 /*----------------------------------------------------------------------------*/
-/* recv from a socket                                                         */
+/* socket.recv: recv from a socket                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketRecv(NNP_Task nnpTask)
 {

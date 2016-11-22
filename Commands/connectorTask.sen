@@ -1,0 +1,63 @@
+/*============================================================================*/
+/* connectorTask.sen -- connector task                                        */
+/*============================================================================*/
+
+"connectorTask.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+queue:   connectorQueue
+
+taskset: connectorTaskSet
+
+thread:  connectorThread
+
+/*----------------------------------------------------------------------------*/
+/* start the connector task                                                   */
+/*----------------------------------------------------------------------------*/
+: connectorStart
+
+    // set up connector task
+    0 "connectorLoop" nullPtr task.new connectorTaskSet taskSet.append
+
+    // set up the connector thread
+    connectorTaskSet  connectorThread thread.taskset!
+    "connectorThread" connectorThread thread.name!
+                    connectorThread thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* connector loop                                                             */
+/*----------------------------------------------------------------------------*/
+: connectorLoop
+
+    "renaming to Connector Task" .putVerbose
+
+    "connectorTask" task.this task.name!
+
+    connectorQueue  task.this task.queue!
+
+    connectorTaskPrint if "Connector running..." . then
+
+    20 thread.sleep_s
+
+    args.nodes 0 do
+
+      I args.node != if
+        socket.open
+        "127.0.0.1"
+        5000 I + socket.connect
+        "Node" args.node >str concat " connected to node" concat
+        I >str concat
+        .
+      then
+
+    loop
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

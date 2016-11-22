@@ -12,7 +12,7 @@ Atomic gzSocketOpenCount;
 void* Socket::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Socket* pSocket = nullptr;
+  void* pSocket = Heap::pAllocate(CN_SOCKET);
   
   return pSocket;
 }
@@ -44,6 +44,7 @@ Socket::Socket(void)
   
   m_iSocketId = -1;
   m_bBlocking = true;
+  vAddrInit(&m_xServAddr,nullptr,0);
   
   _checkInitialised_(CN_SOCKET);
   
@@ -98,7 +99,7 @@ void Socket::vAddrInit(sockaddr_in* pAddr, const char* sAddr, int iPort)
   Memory::vZero(pAddr,sizeof(sockaddr_in));
   
   pAddr->sin_family      = AF_INET;
-  pAddr->sin_addr.s_addr = inet_addr(sAddr);
+  pAddr->sin_addr.s_addr = sAddr == nullptr ? -1 : inet_addr(sAddr);
   pAddr->sin_port        = htons((int)iPort);
 }
 
