@@ -87,10 +87,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-// Coordinator
-queue:   c.queue    // create a named queue
-taskset: c.taskset  // create a named taskset
-thread:  c.thread   // create a named thread
 
 /*----------------------------------------------------------------------------*/
 /* pop indirect valset from queue                                             */
@@ -140,54 +136,6 @@ thread:  c.thread   // create a named thread
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinator processing loop                                                */
-/*----------------------------------------------------------------------------*/
-: c.loop
-
-  "renaming to c.task" .putVerbose
-
-  "c.task" task.this task.name!
-
-  c.queue task.this task.queue!
-
-  reg.push
-
-  begin
-    depth 0 != if "stack of c.task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-
-    >indirect  // convert valset to indirect call
-    !indirect  // execute indirect call
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  reg.pop
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-: dispatch
-
-  depth r> swap >r >r
-;
-
-: nArgs
-
-  r>     // ( -- ret(nArgs) )
-  r>     // ( -- ret(nArgs) wasDepth )
-  swap   // ( -- wasDepth ret(nArgs) )
-  >r     // ( -- wasDepth )
-  depth  // ( -- wasDepth depth )
-  swap   // ( -- depth wasDepth )
-  -      // ( -- nArgs )
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* put request onto queue for processing, suspend for notification            */
 /*----------------------------------------------------------------------------*/
 : >queue> ( ... wordName #args queue -- result )
@@ -215,57 +163,12 @@ thread:  c.thread   // create a named thread
   drop                     // discard number of values
 ;
 
-/*----------------------------------------------------------------------------*/
-/* start the coordinator                                                      */
-/*----------------------------------------------------------------------------*/
-: c.start
-
-  // set up coordinator task
-  0 "c.loop" nullPtr task.new c.taskset taskSet.append
-
-  // set up the coordinator taskset
-  c.taskset c.thread thread.taskset!
-
-  // name the coordinator thread
-  "c.thread" c.thread thread.name!
-
-  // spawn the os thread
-  c.thread thread.spawn
-;
-
-/*----------------------------------------------------------------------------*/
-/* a simple pong test                                                         */
-/*----------------------------------------------------------------------------*/
-: c.pong
-
-  "-PONG" concat
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-/*----------------------------------------------------------------------------*/
-/* distributed pattern test                                                   */
-/*----------------------------------------------------------------------------*/
-: d
-
-  c.start
-
-  "xyz" "c.pong" 2 c.queue >queue> .
-
-  "abc" "lmn" "concat" 3 c.queue >queue> .
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 // Participant
 queue:   p.queue    // create a named queue
 taskset: p.taskset  // create a named taskset
 thread:  p.thread   // create a named thread
-
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* participant processing loop                                                */
@@ -284,6 +187,175 @@ thread:  p.thread   // create a named thread
     depth 0 != if "stack of p.task has grown" . debug.trap then
 
     queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call
+
+    stk
+    !indirect  // execute indirect call
+    stk
+
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* start the participant                                                      */
+/*----------------------------------------------------------------------------*/
+: p.start
+
+  // set up participant task
+  0 "p.loop" nullPtr task.new p.taskset taskSet.append
+
+  // set up the participant taskset
+  p.taskset p.thread thread.taskset!
+
+  // name the participant thread
+  "p.thread" p.thread thread.name!
+
+  // spawn the os thread
+  p.thread thread.spawn
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Coordinator Proxy
+queue:   cp.queue    // create a named queue
+taskset: cp.taskset  // create a named taskset
+thread:  cp.thread   // create a named thread
+
+/*----------------------------------------------------------------------------*/
+/* coordinator proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: cp.loop
+
+  "renaming to cp.task" .putVerbose
+
+  "cp.task" task.this task.name!
+
+  cp.queue task.this task.queue!
+
+  reg.push
+
+  begin
+    depth 0 != if "stack of cp.task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call
+
+stk
+    depth p.queue >queue>
+stk
+
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* start the coordinator proxy                                                */
+/*----------------------------------------------------------------------------*/
+: cp.start
+
+  // set up coordinator proxy task
+  0 "cp.loop" nullPtr task.new cp.taskset taskSet.append
+
+  // set up the coordinator proxy taskset
+  cp.taskset cp.thread thread.taskset!
+
+  // name the coordinator proxy thread
+  "cp.thread" cp.thread thread.name!
+
+  // spawn the os thread
+  cp.thread thread.spawn
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Participant Proxy
+queue:   pp.queue    // create a named queue
+taskset: pp.taskset  // create a named taskset
+thread:  pp.thread   // create a named thread
+
+/*----------------------------------------------------------------------------*/
+/* participant proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: pp.loop
+
+  "renaming to pp.task" .putVerbose
+
+  "pp.task" task.this task.name!
+
+  pp.queue task.this task.queue!
+
+  reg.push
+
+  begin
+    depth 0 != if "stack of pp.task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call
+
+    stk
+    depth cp.queue >queue>
+    stk
+
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* start the participant proxy                                                */
+/*----------------------------------------------------------------------------*/
+: pp.start
+
+  // set up participant proxy task
+  0 "pp.loop" nullPtr task.new pp.taskset taskSet.append
+
+  // set up the participant proxy taskset
+  pp.taskset pp.thread thread.taskset!
+
+  // name the participant proxy thread
+  "pp.thread" pp.thread thread.name!
+
+  // spawn the os thread
+  pp.thread thread.spawn
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Coordinator
+queue:   c.queue    // create a named queue
+taskset: c.taskset  // create a named taskset
+thread:  c.thread   // create a named thread
+
+/*----------------------------------------------------------------------------*/
+/* coordinator processing loop                                                */
+/*----------------------------------------------------------------------------*/
+: c.loop_v1
+
+  "renaming to c.task" .putVerbose
+
+  "c.task" task.this task.name!
+
+  c.queue task.this task.queue!
+
+  reg.push
+
+  begin
+    depth 0 != if "stack of c.task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+
     >indirect  // convert valset to indirect call
     !indirect  // execute indirect call
     >result    // convert stack contents into indirect result
@@ -312,13 +384,70 @@ thread:  p.thread   // create a named thread
 
     queue>     // pop valset off queue and push onto this stack
     >indirect  // convert valset to indirect call
-    !indirect  // execute indirect call
+
+    stk
+    depth pp.queue >queue>
+    stk
+
     >result    // convert stack contents into indirect result
     >caller    // put indirect result onto stack of caller and signal
 
   0 until
 
   reg.pop
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* start the coordinator                                                      */
+/*----------------------------------------------------------------------------*/
+: c.start
+
+  // set up coordinator task
+  0 "c.loop_v2" nullPtr task.new c.taskset taskSet.append
+
+  // set up the coordinator taskset
+  c.taskset c.thread thread.taskset!
+
+  // name the coordinator thread
+  "c.thread" c.thread thread.name!
+
+  // spawn the os thread
+  c.thread thread.spawn
+;
+
+/*----------------------------------------------------------------------------*/
+/* a simple pong test                                                         */
+/*----------------------------------------------------------------------------*/
+: pong
+
+  "-PONG" concat
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* distributed pattern test                                                   */
+/*----------------------------------------------------------------------------*/
+: d
+
+  p.start
+  cp.start
+  pp.start
+  c.start
+
+  "xyz" "pong" 2
+stk
+  c.queue >queue> .
+stk
+
+//  "abc" "lmn" "concat" 3
+//stk
+//  c.queue >queue> .
+//stk
 ;
 
 
