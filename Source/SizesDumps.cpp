@@ -329,7 +329,7 @@ eHT geWhichHeap[]
   /* 61 */ HT_SMALL,   // CN_SKIPLIST
   /* 62 */ HT_SMALL,   // CN_SKIPNODE
   /* 63 */ HT_INVALID, // CN_SMALLHEAP
-  /* 64 */ HT_INVALID, // CN_SOCKET
+  /* 64 */ HT_SMALL,   // CN_SOCKET
   /* 65 */ HT_INVALID, // CN_STACK
   /* 66 */ HT_INVALID, // CN_STEPACCUM
   /* 67 */ HT_LARGE,   // CN_STEPARRAY
