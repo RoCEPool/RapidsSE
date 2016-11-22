@@ -89,6 +89,32 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* start an actor                                                             */
+/*----------------------------------------------------------------------------*/
+: actor.start ( "threadName" thread taskset queue ... #args "seedWord" parent )
+
+  reg.push
+
+  task.new  // create a new task ( .etc. -- "threadName" thread taskset queue )
+
+  >reg0     // reg0: task
+  >reg1     // reg1: queue
+  >reg2     // reg2: taskset
+  >reg3     // reg3: thread
+  >reg4     // reg4: "threadName"
+
+  reg1 reg0 task.queue!     // set the tasks queue
+  reg0 reg2 taskSet.append  // append task to taskset
+
+  reg2 reg3 thread.taskset! // set the threads taskset
+  reg4 reg3 thread.name!    // name the thread
+
+  reg3 thread.spawn         // spawn the os thread
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
 /* pop indirect valset from queue                                             */
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )
@@ -206,6 +232,7 @@ thread:  p.thread   // create a named thread
 /*----------------------------------------------------------------------------*/
 : p.start
 
+/*
   // set up participant task
   0 "p.loop" nullPtr task.new p.taskset taskSet.append
 
@@ -217,6 +244,9 @@ thread:  p.thread   // create a named thread
 
   // spawn the os thread
   p.thread thread.spawn
+*/
+
+  "p.thread" p.thread p.taskset p.queue 0 "p.loop" nullPtr actor.start
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -262,6 +292,7 @@ stk
 /*----------------------------------------------------------------------------*/
 : cp.start
 
+/*
   // set up coordinator proxy task
   0 "cp.loop" nullPtr task.new cp.taskset taskSet.append
 
@@ -273,6 +304,9 @@ stk
 
   // spawn the os thread
   cp.thread thread.spawn
+*/
+
+  "cp.thread" cp.thread cp.taskset cp.queue 0 "cp.loop" nullPtr actor.start
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -318,6 +352,7 @@ thread:  pp.thread   // create a named thread
 /*----------------------------------------------------------------------------*/
 : pp.start
 
+/*
   // set up participant proxy task
   0 "pp.loop" nullPtr task.new pp.taskset taskSet.append
 
@@ -329,6 +364,9 @@ thread:  pp.thread   // create a named thread
 
   // spawn the os thread
   pp.thread thread.spawn
+*/
+
+  "pp.thread" pp.thread pp.taskset pp.queue 0 "pp.loop" nullPtr actor.start
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -399,12 +437,12 @@ thread:  c.thread   // create a named thread
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
 /*----------------------------------------------------------------------------*/
 /* start the coordinator                                                      */
 /*----------------------------------------------------------------------------*/
 : c.start
 
+/*
   // set up coordinator task
   0 "c.loop_v2" nullPtr task.new c.taskset taskSet.append
 
@@ -416,6 +454,9 @@ thread:  c.thread   // create a named thread
 
   // spawn the os thread
   c.thread thread.spawn
+*/
+
+  "c.thread" c.thread c.taskset c.queue 0 "c.loop_v2" nullPtr actor.start
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -449,7 +490,6 @@ stk
 //  c.queue >queue> .
 //stk
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
