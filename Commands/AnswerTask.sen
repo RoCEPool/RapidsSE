@@ -43,14 +43,13 @@ thread:  answerThread
 
     "waiting for connections on port "  5000 args.node + >str concat .
 
+    5000 args.node + >str "Listening on port " swap concat .
+    5000 args.node + socket.listen
+    >r
     begin
-
-      5000 args.node + >str "Listening on port " swap concat .
-      5000 args.node + socket.listen
-
-      socket.accept
+      r0 socket.accept
       //"accepted connection on port "  5000 args.node + >str concat .
-    until
+    0 until
 ;
 
 /*============================================================================*/
