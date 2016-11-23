@@ -330,7 +330,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table from a stream                                                 */
 /*----------------------------------------------------------------------------*/
-: stream_load_table ( "<fileNm>" "<tableNm>" -- <R> )
+: load_table_stream ( "<fileNm>" "<tableNm>" -- <R> )
 
   ddlLock.grabRead
 
@@ -344,7 +344,7 @@ ddlLock.grabRead
 
   execute ( "filename" table )
 
-  tableLoader not if <ERROR> exit then
+  tableLoaderStream not if <ERROR> exit then
 
   //freespace .
 
