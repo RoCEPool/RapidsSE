@@ -14,6 +14,8 @@ extern const char* C_OPEN_READ_APPEND;
 
 namespace Common
 {
+  class Scratch;
+  
   static const i8 C_PATH_MAX = 256;
   
 //  static const char* C_OPEN_READ;
@@ -37,7 +39,8 @@ namespace Common
     
     char*   m_pLimit;
     char*   m_pNext;
-    char*   m_pWorkarea;
+    bool    m_bEOFseen;
+    Scratch* m_pScratch;
     
     // must be last
     Footer m_xFooter;

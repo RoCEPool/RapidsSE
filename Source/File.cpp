@@ -282,7 +282,8 @@ void File::vInit(void)
   
   m_pLimit    = nullptr;
   m_pNext     = nullptr;
-  m_pWorkarea = nullptr;
+  m_bEOFseen  = false;
+  m_pScratch  = nullptr;
   
   m_xSysCall.vClear();
 }
@@ -560,42 +561,88 @@ bool File::bReadLine(char* aBuffer)
 /*----------------------------------------------------------------------------*/
 /* read next line                                                             */
 /*----------------------------------------------------------------------------*/
+//bool File::bReadLine(s& s)
+//{
+//  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+//
+//  m_xSysCall.vClear();
+//  
+//  // nb: man fscanf does not indicate that errno gets set???
+//
+//  //i8 nItems;
+//  
+////  if (stdin == m_pFilePtr)
+////    nItems = fscanf(m_pFilePtr,"%[^\n]%*c",s.a());
+////  else
+////    nItems = fscanf(m_pFilePtr,"%[^\n]\n",s.a());
+//
+////  *s.a() = '\0';
+////  for (;;) {
+////     char c = getc(m_pFilePtr);
+////     if ('\n' == c || EOF ==c)
+////       break;
+////     else
+////       String::vConcat(s.a(),c);
+////  }
+//
+//  char* z = s.a();
+//  
+//  *z = '\0';
+//  for (;;) {
+//    char c = getc(m_pFilePtr);
+//    if ('\n' == c || EOF ==c)
+//      break;
+//    else
+//      String::vAppendChar(&z,c);
+//  }
+//  
+//  String::vAppendChar(&z,'\0');
+//  
+//  if (*s.a()) {
+//    m_xSysCall.vSuccess();
+//    return true;
+//  }
+//  else {
+//    return false;
+//  }
+//}
+//------------------------------------------------------------------------------
 bool File::bReadLine(s& s)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
-
+  
   m_xSysCall.vClear();
   
-  // nb: man fscanf does not indicate that errno gets set???
-
-  //i8 nItems;
-  
-//  if (stdin == m_pFilePtr)
-//    nItems = fscanf(m_pFilePtr,"%[^\n]%*c",s.a());
-//  else
-//    nItems = fscanf(m_pFilePtr,"%[^\n]\n",s.a());
-
-//  *s.a() = '\0';
-//  for (;;) {
-//     char c = getc(m_pFilePtr);
-//     if ('\n' == c || EOF ==c)
-//       break;
-//     else
-//       String::vConcat(s.a(),c);
-//  }
-
-  char* z = s.a();
-  
-  *z = '\0';
-  for (;;) {
-    char c = getc(m_pFilePtr);
-    if ('\n' == c || EOF ==c)
-      break;
-    else
-      String::vAppendChar(&z,c);
+  if ( ! m_pScratch ) {
+    m_pScratch = new Scratch;
+    m_pNext  = m_pScratch->pWorkArea();
+    m_pLimit = m_pScratch->pWorkArea();
   }
   
-  String::vAppendChar(&z,'\0');
+  char* z = s.a();
+  *z = '\0';
+  
+  for (;;) {
+    
+    if (m_pNext == m_pLimit) {
+      m_pNext = m_pScratch->pWorkArea();
+      i8 iBytesRead = fread(m_pNext,1,C_WORKAREA,m_pFilePtr);
+      
+      if ( ! iBytesRead )
+        break;
+      
+      m_pLimit = m_pNext + iBytesRead;
+    }
+    
+    char c = *m_pNext++;
+    
+    if ('\n' == c || EOF == c)
+      break;
+    
+    *z++ = c;
+  }
+  
+  *z = '\0';
   
   if (*s.a()) {
     m_xSysCall.vSuccess();
