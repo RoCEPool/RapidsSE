@@ -9238,6 +9238,13 @@ ENTRY("vTaskInit");
   
   new(pThatTask) Task;
   
+  Word* pWordThread = Word::pToWord(pThatTask);
+  
+  s32 sName;
+  sName = pWordThread->sName();
+  
+  pThatTask->vName(sName);
+  
   EXIT();
 }
 
@@ -9291,18 +9298,18 @@ ENTRY("vTaskNew");
   
   Object* pParent;
   if ( ! nnpTask->m_xParamStack.bPop(pParent) )
-    THROW_INVALID_PARAM("task.name!");
+    THROW_INVALID_PARAM("task.new");
   Task* pParentTask = _pTask(pParent);
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   s32 sSeed;
   if ( ! nnpTask->m_xParamStack.bPop(sSeed) )
-    THROW_INVALID_PARAM("task.name!");
+    THROW_INVALID_PARAM("task.new");
   char* aSeedWord = sSeed.a();
   
   i8 nTaskArgs;
   if ( ! nnpTask->m_xParamStack.bPop(nTaskArgs) )
-    THROW_INVALID_PARAM("task.name!");
+    THROW_INVALID_PARAM("task.new");
   //ASSERT(! nTaskArgs);
 
   if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
@@ -9411,20 +9418,46 @@ ENTRY("vTaskQstore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.seed -- set the seed word of task                                     */
+/* task.seed -- set seed word and args of task                                */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeed(NNP_Task nnpTask)
 {
 ENTRY("vTaskSeed");
   
-  ValWsp xStrWsp;
+//  //                                   sSeed     nTaskArgs
+//  if ( ! nnpTask->m_xParamStack.bGuard(CN_STRVAL,CN_INTVAL) )
+//    THROW_INVALID_PARAM("task.seed");
   
-  if ( ! nnpTask->m_xParamStack.bPop(xStrWsp) )
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.seed");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  s32 sSeed;
+  if ( ! nnpTask->m_xParamStack.bPop(sSeed) )
+    THROW_INVALID_PARAM("task.seed");
+  pThatTask->vSeedWord(sSeed.a());
+
+  i8 nTaskArgs;
+  if ( ! nnpTask->m_xParamStack.bPop(nTaskArgs) )
+    THROW_INVALID_PARAM("task.seed");
+  //ASSERT(! nTaskArgs);
+  
+  if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
     THROW_INVALID_PARAM("task.seed");
   
-  char* pSeed = xStrWsp.pAsStrVal()->sStr();
+  // copy task arguments to new task (preserving stack order)
+  ValWsp xValWsp;
+  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
+    nnpTask->m_xParamStack.vPeek(iTaskArg,&xValWsp);
+    pThatTask->m_xParamStack.vPush(xValWsp);
+  }
   
-  nnpTask->vSeedWord(pSeed);
+  // discard original task arguments
+  for (i8 iTaskArg = nTaskArgs - 1; iTaskArg >= 0; iTaskArg--) {
+    bool bPopped = nnpTask->m_xParamStack.bPop(xValWsp);
+    ASSERT(bPopped);
+  }
   
   EXIT();
 }
@@ -10088,6 +10121,13 @@ ENTRY("vThreadInit");
   Thread* pThread = static_cast<Thread*>(pObject);
   
   new(pThread) Thread;
+  
+  Word* pWordThread = Word::pToWord(pThread);
+  
+  s32 sName;
+  sName = pWordThread->sName();
+  
+  pThread->vName(sName);
   
   EXIT();
 }
