@@ -391,6 +391,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bExecuteRequest();
   }
   
+  if (String::bEqualTo("use",m_pToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+      return bUseSchema();
+    }
+  }
+  
   if (String::bEqualTo("",m_pToken[0],C_NO_CASE)) {
     return bExecuteRequest();
   }
@@ -521,6 +527,12 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bPoolSpace();
   }
 
+  if (String::bEqualTo("use",m_pToken[0],C_NO_CASE)) {
+    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
+      return bUseSchema();
+    }
+  }
+  
   m_xHistory.vAppend(m_pToken);
   
   if (bTestFile(m_pToken[0])) {
@@ -772,6 +784,7 @@ void SePrompt::vHelp(void)
   vTrace("sz     -- size of table\n");
   vTrace("tpch   -- tpch shorthand\n");
   vTrace("tr     -- truncate table\n");
+  vTrace("usesch -- use schema\n");
   vTrace("?      -- print this help\n");
   vTrace("help   -- print this help\n");
 #endif
@@ -1695,6 +1708,51 @@ bool SePrompt::bPrintWorkingDir(void)
     vTrace("%s\n", sDir.a());
   }
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use schema                                                                 */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bUseSchema(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  i8 iToken;
+  i8 iNumTokens;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"use"));
+  ASSERT(String::bEqualTo(m_pToken[1],"schema"));
+  
+  vCollectStatement();
+  
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
+  }
+  
+  iNumTokens = iToken;
+  // there should be 4 tokens
+  if (iNumTokens != 4) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[3] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // drop a schema
+  String::vCopy(m_pToken[0], "usesch");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  if (!bExecuteRequest())
+    return false;
+  
+  //vTrace("Schema changed: %s\n", m_pToken2[2]);
   return true;
 }
 

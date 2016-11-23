@@ -89,6 +89,8 @@ private:
   
   bool bListDir(void);
 
+  bool bUseSchema(void);
+  
   Footer* pFooter(void);
 };
 
