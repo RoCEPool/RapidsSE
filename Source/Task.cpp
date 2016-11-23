@@ -884,6 +884,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("queue.init",      &vQueueInit,        false);
   vAddPrimitive("queue.pop",       &vQueuePop,         false);
   
+  vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
+  vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
+  
   vAddPrimitive("rowCursor.begin",  &vRowCursorBegin,  false);
   vAddPrimitive("rowCursor.delete", &vRowCursorDelete, false);
   vAddPrimitive("rowCursor.end",    &vRowCursorEnd,    false);
@@ -989,14 +992,15 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("s256.init", &vS256Init, false);
  
-  vAddPrimitive("table.append",      &vTableAppend,      false);
-  vAddPrimitive("table.dic",         &vTableDic,         false);
-  vAddPrimitive("table.drop",        &vTableDrop,        false);
-  vAddPrimitive("table.init",        &vTableInit,        false);
-  vAddPrimitive("table.insert",      &vTableInsert,      false);
-  vAddPrimitive("table.ref",         &vTableRef,         false);
-  vAddPrimitive("table.space",       &vTableSpace,       false);
-  vAddPrimitive("table.truncate",    &vTableTruncate,    false);
+  vAddPrimitive("table.append",       &vTableAppend,       false);
+  vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
+  vAddPrimitive("table.dic",          &vTableDic,          false);
+  vAddPrimitive("table.drop",         &vTableDrop,         false);
+  vAddPrimitive("table.init",         &vTableInit,         false);
+  vAddPrimitive("table.insert",       &vTableInsert,       false);
+  vAddPrimitive("table.ref",          &vTableRef,          false);
+  vAddPrimitive("table.space",        &vTableSpace,        false);
+  vAddPrimitive("table.truncate",     &vTableTruncate,     false);
   
   vAddPrimitive("task.dec",        &vTaskAcksDec,      false);
   vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
@@ -7873,6 +7877,61 @@ void Task::vRegToRegNth(NNP_Task nnpTask)
   EXIT();
 }
 
+// rowbuffer: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* rowbuffer.new -- new a row buffer                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vRowBufferNew(NNP_Task nnpTask)
+{
+ENTRY("vRowBufferNew");
+  
+  RowBuffer* pRowBuffer = new RowBuffer;
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  nnpTask->m_xParamStack.vPush(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowbuffer.append -- attempt to append row onto row buffer                  */
+/*----------------------------------------------------------------------------*/
+void Task::vRowBufferAppend(NNP_Task nnpTask)
+{
+ENTRY("vRowBufferAppend");
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("table.appendBuffer");
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+
+  Object* pPtrTxRef;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
+    THROW_INVALID_PARAM("table.appendBuffer");
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  s8K sRecord;
+  if ( ! nnpTask->m_xParamStack.bPop(sRecord) )
+    THROW_INVALID_PARAM("table.appendBuffer");
+
+  i8 iLength = sRecord.iLength();
+  
+  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord.a(),iLength);
+  
+  if (b) {
+    nnpTask->m_xParamStack.vPush(true);
+  }
+  else {
+    nnpTask->m_xParamStack.vPush(sRecord);
+    nnpTask->m_xParamStack.vPush(false);
+  }
+    
+  EXIT();
+}
+
 // rowcursor: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -8945,11 +9004,11 @@ void Task::vS256Init(NNP_Task nnpTask)
 // table: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* table.append -- append buffer into table                                    */
+/* table.append -- append buffer into table (from seitf)                      */
 /*----------------------------------------------------------------------------*/
 void Task::vTableAppend(NNP_Task nnpTask)
 {
-  ENTRY("vIterate_RT_B");
+  ENTRY("vTableAppend");
   i8 iPartition;
   s8K sString;
   
@@ -8960,15 +9019,45 @@ void Task::vTableAppend(NNP_Task nnpTask)
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("insert.buffer");
+    THROW_INVALID_PARAM("table.append");
   
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(String::iToI8(sString.a()));
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("insert.buffer");
+    THROW_INVALID_PARAM("table.append");
   
   iPartition = String::iToI8(sString.a());
+  pTable->vAppendBuffer(iPartition,pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.appendBuffer -- append row buffer into table                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTableAppendBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vTableAppendBuffer");
+
+  Object* pPtrTable;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
+    THROW_INVALID_PARAM("table.appendBuffer");
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("table.appendBuffer");
+  
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  
+  i8 iPartition = 0;
+  
   pTable->vAppendBuffer(iPartition,pRowBuffer);
   
   EXIT();

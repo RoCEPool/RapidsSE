@@ -598,6 +598,9 @@ namespace Tasks
     static void vRegToRegF(NNP_Task nnpTask);
     static void vRegToRegNth(NNP_Task nnpTask);
     
+    // rowBuffer
+    static void vRowBufferAppend(NNP_Task nnpTask);
+    static void vRowBufferNew(NNP_Task nnpTask);
     
     // rowCursor
     static void vRowCursorBegin(NNP_Task nnpTask);
@@ -687,6 +690,7 @@ namespace Tasks
     
     // table
     static void vTableAppend(NNP_Task nnpTask);
+    static void vTableAppendBuffer(NNP_Task nnpTask);
     static void vTableDic(NNP_Task nnpTask);
     static void vTableDrop(NNP_Task nnpTask);
     static void vTableDump(NNP_Task nnpTask);
