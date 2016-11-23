@@ -106,6 +106,7 @@ namespace Interface
     bool bCopyTable(char* pWords[], i8 iWords);
     bool bExportTable(char* pWords[], i8 iWords);
     bool bLoadTable(char* pWords[], i8 iWords);
+    bool bStreamLoadTable(char* pWords[], i8 iWords);
     bool bSelectTable(char* pWords[], i8 iWords);
     bool bGetTable(char* pWords[], i8 iWords);
     bool bInUseTable(char* pWords[], i8 iWords);

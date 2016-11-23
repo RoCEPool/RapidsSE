@@ -328,6 +328,30 @@ ddlLock.grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
+/* load a table from a stream                                                 */
+/*----------------------------------------------------------------------------*/
+: stream_load_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock.grabRead
+
+  checkInTables not if rot drop drop <ERROR> exit then
+
+  //freespace .
+
+  find
+
+  checkIsTable not if swap drop <ERROR> exit then
+
+  execute ( "filename" table )
+
+  tableLoader not if <ERROR> exit then
+
+  //freespace .
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
 : export_table ( "<fileNm>" "<tableNm>" -- <R> )

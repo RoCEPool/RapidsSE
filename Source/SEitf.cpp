@@ -422,6 +422,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bEqualTo("ld",pWords[0],C_NO_CASE)) {
     return bLoadTable(pWords, iWords);
   }
+
+  if (String::bEqualTo("sld",pWords[0],C_NO_CASE)) {
+    return bLoadTable(pWords, iWords);
+  }
   
   if (String::bEqualTo("lf",pWords[0],C_NO_CASE)) {
     return bGetDicContents(pWords);
@@ -1040,6 +1044,35 @@ bool SEitf::bLoadTable(char* pWords[], i8 iWords)
   String::vConcat(a,"\"");
   
   String::vConcat(a," load_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* load a table from stream                                                   */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bStreamLoadTable(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[2]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," \"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," stream_load_table");
   
   return bAppendRequest(sRequest);
 }

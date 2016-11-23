@@ -367,6 +367,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bExecuteRequest();
   }
   
+  if (String::bEqualTo("sld",m_pToken[0],C_NO_CASE)) {
+    return bExecuteRequest();
+  }
+  
   if (String::bEqualTo("ex",m_pToken[0],C_NO_CASE)) {
     return bExecuteRequest();
   }
