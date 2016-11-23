@@ -25,15 +25,19 @@ namespace Common
 
   class File : public Header
   {
-  public:
-  
   private:
+    static const i8 C_WORKAREA = C_256KB;
+    
     s256    m_sFilePath;   // the path of the file (relative or absolute)
     s32     m_sOpenMode;   // open mode
     i8      m_iTraceLevel;
     FILE*   m_pFilePtr;
   
     SysCall m_xSysCall;
+    
+    char*   m_pLimit;
+    char*   m_pNext;
+    char*   m_pWorkarea;
     
     // must be last
     Footer m_xFooter;

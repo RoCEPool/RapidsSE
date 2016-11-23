@@ -22,6 +22,7 @@
 #include "Memory.hpp"
 #include "Process.hpp"
 #include "Random.hpp"
+#include "Scratch.hpp"
 #include "Shell.hpp"
 #include "Shm.hpp"
 #include "String.hpp"

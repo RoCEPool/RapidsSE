@@ -82,49 +82,50 @@ pDUMPFUN *gpDump[]
   /* 51 */ &Dump::vUndefined,       // CN_ROWWSP
   
   /* 52 */ &Dump::vUndefined,       // CN_SCANBUFFER
-  /* 53 */ &Dump::vUndefined,       // CN_SEHISTORY
-  /* 54 */ &SEitf::vDump,           // CN_SEITF
-  /* 55 */ &Dump::vUndefined,       // CN_SEITFCURSOR
-  /* 56 */ &Dump::vUndefined,       // CN_SEITFLIST
-  /* 57 */ &Dump::vDummy,           // CN_SEPROMPT
-  /* 58 */ &Dump::vUndefined,       // CN_SINCE
-  /* 59 */ &Dump::vUndefined,       // CN_SKIPCURSOR
-  /* 60 */ &Dump::vUndefined,       // CN_SKIPLIST
-  /* 61 */ &LoadMap::vDump,         // CN_LOADMAP
-  /* 62 */ &Dump::vUndefined,       // CN_SKIPNODE
-  /* 63 */ &Heap::vDump,            // CN_SMALLHEAP
-  /* 64 */ &Dump::vUndefined,       // CN_SOCKET
-  /* 65 */ &Dump::vUndefined,       // CN_STACK
-  /* 66 */ &Dump::vInvalid,         // CN_STEPACCUM
-  /* 67 */ &StepArray::vDump,       // CN_STEPARRAY
-  /* 68 */ &Dump::vInvalid,         // CN_SYSCALL
+  /* 53 */ &Dump::vUndefined,       // CN_SCRATCH
+  /* 54 */ &LoadMap::vDump,         // CN_LOADMAP
+  /* 55 */ &Dump::vUndefined,       // CN_SEHISTORY
+  /* 56 */ &SEitf::vDump,           // CN_SEITF
+  /* 57 */ &Dump::vUndefined,       // CN_SEITFCURSOR
+  /* 58 */ &Dump::vUndefined,       // CN_SEITFLIST
+  /* 59 */ &Dump::vDummy,           // CN_SEPROMPT
+  /* 60 */ &Dump::vUndefined,       // CN_SINCE
+  /* 61 */ &Dump::vUndefined,       // CN_SKIPCURSOR
+  /* 62 */ &Dump::vUndefined,       // CN_SKIPLIST
+  /* 63 */ &Dump::vUndefined,       // CN_SKIPNODE
+  /* 64 */ &Heap::vDump,            // CN_SMALLHEAP
+  /* 65 */ &Dump::vUndefined,       // CN_SOCKET
+  /* 66 */ &Dump::vUndefined,       // CN_STACK
+  /* 67 */ &Dump::vInvalid,         // CN_STEPACCUM
+  /* 68 */ &StepArray::vDump,       // CN_STEPARRAY
+  /* 69 */ &Dump::vInvalid,         // CN_SYSCALL
 
-  /* 69 */ &Table::vDump,           // CN_TABLE
-  /* 70 */ &Task::vDump,            // CN_TASK
-  /* 71 */ &Dump::vUndefined,       // CN_TASKCURSOR
-  /* 72 */ &TaskList::vDump,        // CN_TASKLIST
-  /* 73 */ &Dump::vUndefined,       // CN_TASKSET
-  /* 74 */ &Dump::vUndefined,       // CN_THREAD
-  /* 75 */ &Dump::vUndefined,       // CN_THREADCURSOR
-  /* 76 */ &Dump::vUndefined,       // CN_THREADLIST
-  /* 77 */ &Dump::vUndefined,       // CN_TIME
-  /* 78 */ &Dump::vInvalid,         // CN_TIMER
-  /* 79 */ &Tokeniser::vDump,       // CN_TOKENISER
-  /* 80 */ &Tx::vDump,              // CN_TX
-  /* 81 */ &TxArray::vDump,         // CN_TXARRAY
-  /* 82 */ &Dump::vUndefined,       // CN_TXCOLLECTION
-  /* 83 */ &Dump::vUndefined,       // CN_TXCURSOR
-  /* 84 */ &Dump::vUndefined,       // CN_TXMAP
-  /* 85 */ &Dump::vUndefined,       // CN_TXREF
+  /* 70 */ &Table::vDump,           // CN_TABLE
+  /* 71 */ &Task::vDump,            // CN_TASK
+  /* 72 */ &Dump::vUndefined,       // CN_TASKCURSOR
+  /* 73 */ &TaskList::vDump,        // CN_TASKLIST
+  /* 74 */ &Dump::vUndefined,       // CN_TASKSET
+  /* 75 */ &Dump::vUndefined,       // CN_THREAD
+  /* 76 */ &Dump::vUndefined,       // CN_THREADCURSOR
+  /* 77 */ &Dump::vUndefined,       // CN_THREADLIST
+  /* 78 */ &Dump::vUndefined,       // CN_TIME
+  /* 79 */ &Dump::vInvalid,         // CN_TIMER
+  /* 80 */ &Tokeniser::vDump,       // CN_TOKENISER
+  /* 81 */ &Tx::vDump,              // CN_TX
+  /* 82 */ &TxArray::vDump,         // CN_TXARRAY
+  /* 83 */ &Dump::vUndefined,       // CN_TXCOLLECTION
+  /* 84 */ &Dump::vUndefined,       // CN_TXCURSOR
+  /* 85 */ &Dump::vUndefined,       // CN_TXMAP
+  /* 86 */ &Dump::vUndefined,       // CN_TXREF
 
-  /* 86 */ &Dump::vDummy,           // CN_WORD
+  /* 87 */ &Dump::vDummy,           // CN_WORD
   
-  /* 87 */ &Dump::vUndefined,       // CN_ZSMALL_
-  /* 88 */ &Dump::vUndefined,       // CN_ZMEDIUM_
-  /* 89 */ &Dump::vUndefined,       // CN_ZLARGE_
-  /* 90 */ &Dump::vUndefined,       // CN_ZJUMBO_
+  /* 88 */ &Dump::vUndefined,       // CN_ZSMALL_
+  /* 89 */ &Dump::vUndefined,       // CN_ZMEDIUM_
+  /* 90 */ &Dump::vUndefined,       // CN_ZLARGE_
+  /* 91 */ &Dump::vUndefined,       // CN_ZJUMBO_
 
-  /* 91 */ &Dump::vEnums            // CN_ENUMS
+  /* 92 */ &Dump::vEnums            // CN_ENUMS
 };
 
 i8 giClassSize[]
@@ -200,49 +201,50 @@ i8 giClassSize[]
   /* 51 */ sizeof(RowWsp),             // CN_ROWWSP
 
   /* 52 */ sizeof(ScanBuffer),         // CN_SCANBUFFER
-  /* 53 */ sizeof(LoadMap),            // CN_LOADMAP
-  /* 54 */ sizeof(SeHistory),          // CN_SEHISTORY
-  /* 55 */ sizeof(SEitf),              // CN_SEITF
-  /* 56 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
-  /* 57 */ sizeof(SEitfList),          // CN_SEITFLIST
-  /* 58 */ sizeof(SePrompt),           // CN_SEPROMPT
-  /* 59 */ sizeof(Since),              // CN_SINCE
-  /* 60 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
-  /* 61 */ sizeof(SkipList),           // CN_SKIPLIST
-  /* 62 */ sizeof(SkipNode),           // CN_SKIPNODE
-  /* 63 */ sizeof(Heap), // correct    // CN_SMALLHEAP
-  /* 64 */ sizeof(Socket),             // CN_SOCKET
-  /* 65 */ sizeof(Stack),              // CN_STACK
-  /* 66 */ sizeof(StepAccum),          // CN_STEPACCUM
-  /* 67 */ sizeof(StepArray),          // CN_STEPARRAY
-  /* 68 */ sizeof(SysCall),            // CN_SYSCALL
+  /* 53 */ sizeof(Scratch),            // CN_SCRATCH
+  /* 54 */ sizeof(LoadMap),            // CN_LOADMAP
+  /* 55 */ sizeof(SeHistory),          // CN_SEHISTORY
+  /* 56 */ sizeof(SEitf),              // CN_SEITF
+  /* 57 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
+  /* 58 */ sizeof(SEitfList),          // CN_SEITFLIST
+  /* 59 */ sizeof(SePrompt),           // CN_SEPROMPT
+  /* 60 */ sizeof(Since),              // CN_SINCE
+  /* 61 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
+  /* 62 */ sizeof(SkipList),           // CN_SKIPLIST
+  /* 63 */ sizeof(SkipNode),           // CN_SKIPNODE
+  /* 64 */ sizeof(Heap), // correct    // CN_SMALLHEAP
+  /* 65 */ sizeof(Socket),             // CN_SOCKET
+  /* 66 */ sizeof(Stack),              // CN_STACK
+  /* 67 */ sizeof(StepAccum),          // CN_STEPACCUM
+  /* 68 */ sizeof(StepArray),          // CN_STEPARRAY
+  /* 69 */ sizeof(SysCall),            // CN_SYSCALL
   
-  /* 69 */ sizeof(Table),              // CN_TABLE
-  /* 70 */ sizeof(Task),               // CN_TASK
-  /* 71 */ sizeof(TaskCursor),         // CN_TASKCURSOR
-  /* 72 */ sizeof(TaskList),           // CN_TASKLIST
-  /* 73 */ sizeof(TaskSet),            // CN_TASKSET
-  /* 74 */ sizeof(Thread),             // CN_THREAD
-  /* 75 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
-  /* 76 */ sizeof(ThreadList),         // CN_THREADLIST
-  /* 77 */ sizeof(Time),               // CN_TIME
-  /* 78 */ sizeof(Timer),              // CN_TIMER
-  /* 79 */ sizeof(Tokeniser),          // CN_TOKENISER
-  /* 80 */ sizeof(Tx),                 // CN_TX
-  /* 81 */ sizeof(TxArray),            // CN_TXARRAY
-  /* 82 */ sizeof(TxCollection),       // CN_TXCOLLECTION
-  /* 83 */ sizeof(TxCursor),           // CN_TXCURSOR
-  /* 84 */ sizeof(TxMap),              // CN_TXMAP
-  /* 85 */ sizeof(TxRef),              // CN_TXREF
+  /* 70 */ sizeof(Table),              // CN_TABLE
+  /* 71 */ sizeof(Task),               // CN_TASK
+  /* 72 */ sizeof(TaskCursor),         // CN_TASKCURSOR
+  /* 73 */ sizeof(TaskList),           // CN_TASKLIST
+  /* 74 */ sizeof(TaskSet),            // CN_TASKSET
+  /* 75 */ sizeof(Thread),             // CN_THREAD
+  /* 76 */ sizeof(ThreadCursor),       // CN_THREADCURSOR
+  /* 77 */ sizeof(ThreadList),         // CN_THREADLIST
+  /* 78 */ sizeof(Time),               // CN_TIME
+  /* 79 */ sizeof(Timer),              // CN_TIMER
+  /* 80 */ sizeof(Tokeniser),          // CN_TOKENISER
+  /* 81 */ sizeof(Tx),                 // CN_TX
+  /* 82 */ sizeof(TxArray),            // CN_TXARRAY
+  /* 83 */ sizeof(TxCollection),       // CN_TXCOLLECTION
+  /* 84 */ sizeof(TxCursor),           // CN_TXCURSOR
+  /* 85 */ sizeof(TxMap),              // CN_TXMAP
+  /* 86 */ sizeof(TxRef),              // CN_TXREF
 
-  /* 86 */ sizeof(Word),               // CN_WORD
+  /* 87 */ sizeof(Word),               // CN_WORD
   
-  /* 87 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
-  /* 88 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
-  /* 89 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
-  /* 90 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
+  /* 88 */ C_SIZE_SMALL_OBJECT  - 256, // CN_ZSMALL_
+  /* 89 */ C_SIZE_MEDIUM_OBJECT - 256, // CN_ZMEDIUM_
+  /* 90 */ C_SIZE_POOL_BUFFER   - 256, // CN_ZLARGE_
+  /* 91 */ C_SIZE_JUMBO_OBJECT  - 256, // CN_ZJUMBO_
   
-  /* 91 */ -1
+  /* 92 */ -1
 };
 
 eHT geWhichHeap[]
@@ -318,49 +320,50 @@ eHT geWhichHeap[]
   /* 51 */ HT_INVALID, // CN_ROWWSP
   
   /* 52 */ HT_LARGE,   // CN_SCANBUFFER
-  /* 53 */ HT_JUMBO,   // CN_LOADMAP
-  /* 54 */ HT_INVALID, // CN_SEHISTORY
-  /* 55 */ HT_MEDIUM,  // CN_SEITF
-  /* 56 */ HT_SMALL,   // CN_SEITFCURSOR
-  /* 57 */ HT_INVALID, // CN_SEITFLIST
-  /* 58 */ HT_LARGE,   // CN_SEPROMPT
-  /* 59 */ HT_INVALID, // CN_SINCE
-  /* 60 */ HT_INVALID, // CN_SKIPCURSOR
-  /* 61 */ HT_SMALL,   // CN_SKIPLIST
-  /* 62 */ HT_SMALL,   // CN_SKIPNODE
-  /* 63 */ HT_INVALID, // CN_SMALLHEAP
-  /* 64 */ HT_SMALL,   // CN_SOCKET
-  /* 65 */ HT_INVALID, // CN_STACK
-  /* 66 */ HT_INVALID, // CN_STEPACCUM
-  /* 67 */ HT_LARGE,   // CN_STEPARRAY
-  /* 68 */ HT_INVALID, // CN_SYSCALL
+  /* 53 */ HT_LARGE,   // CN_SCRATCH
+  /* 54 */ HT_JUMBO,   // CN_LOADMAP
+  /* 55 */ HT_INVALID, // CN_SEHISTORY
+  /* 56 */ HT_MEDIUM,  // CN_SEITF
+  /* 57 */ HT_SMALL,   // CN_SEITFCURSOR
+  /* 58 */ HT_INVALID, // CN_SEITFLIST
+  /* 59 */ HT_LARGE,   // CN_SEPROMPT
+  /* 60 */ HT_INVALID, // CN_SINCE
+  /* 61 */ HT_INVALID, // CN_SKIPCURSOR
+  /* 62 */ HT_SMALL,   // CN_SKIPLIST
+  /* 63 */ HT_SMALL,   // CN_SKIPNODE
+  /* 64 */ HT_INVALID, // CN_SMALLHEAP
+  /* 65 */ HT_SMALL,   // CN_SOCKET
+  /* 66 */ HT_INVALID, // CN_STACK
+  /* 67 */ HT_INVALID, // CN_STEPACCUM
+  /* 68 */ HT_LARGE,   // CN_STEPARRAY
+  /* 69 */ HT_INVALID, // CN_SYSCALL
   
-  /* 69 */ HT_INVALID, // CN_TABLE
-  /* 70 */ HT_MEDIUM,  // CN_TASK
-  /* 71 */ HT_INVALID, // CN_TASKCURSOR
-  /* 72 */ HT_SMALL,   // CN_TASKLIST
-  /* 73 */ HT_INVALID, // CN_TASKSET
-  /* 74 */ HT_INVALID, // CN_THREAD
-  /* 75 */ HT_SMALL,   // CN_THREADCURSOR
-  /* 76 */ HT_INVALID, // CN_THREADLIST
-  /* 77 */ HT_INVALID, // CN_TIME
-  /* 78 */ HT_SMALL,   // CN_TIMER
-  /* 79 */ HT_INVALID, // CN_TOKENISER
-  /* 80 */ HT_SMALL,   // CN_TX
-  /* 81 */ HT_LARGE,   // CN_TXARRAY
-  /* 82 */ HT_INVALID, // CN_TXCOLLECTION
-  /* 83 */ HT_SMALL,   // CN_TXCURSOR
-  /* 84 */ HT_INVALID, // CN_TXMAP
-  /* 85 */ HT_SMALL,   // CN_TXREF
-  
-  /* 86 */ HT_MEDIUM,  // CN_WORD
-  
-  /* 87 */ HT_INVALID, // CN_ZSMALL_
-  /* 88 */ HT_INVALID, // CN_ZMEDIUM_
-  /* 89 */ HT_INVALID, // CN_ZLARGE_
-  /* 90 */ HT_INVALID, // CN_ZJUMBO_
+  /* 70 */ HT_INVALID, // CN_TABLE
+  /* 71 */ HT_MEDIUM,  // CN_TASK
+  /* 72 */ HT_INVALID, // CN_TASKCURSOR
+  /* 73 */ HT_SMALL,   // CN_TASKLIST
+  /* 74 */ HT_INVALID, // CN_TASKSET
+  /* 75 */ HT_INVALID, // CN_THREAD
+  /* 76 */ HT_SMALL,   // CN_THREADCURSOR
+  /* 77 */ HT_INVALID, // CN_THREADLIST
+  /* 78 */ HT_INVALID, // CN_TIME
+  /* 79 */ HT_SMALL,   // CN_TIMER
+  /* 80 */ HT_INVALID, // CN_TOKENISER
+  /* 81 */ HT_SMALL,   // CN_TX
+  /* 82 */ HT_LARGE,   // CN_TXARRAY
+  /* 83 */ HT_INVALID, // CN_TXCOLLECTION
+  /* 84 */ HT_SMALL,   // CN_TXCURSOR
+  /* 85 */ HT_INVALID, // CN_TXMAP
+  /* 86 */ HT_SMALL,   // CN_TXREF
 
-  /* 91 */ HT_INVALID, // CN_ENUMS
+  /* 87 */ HT_MEDIUM,  // CN_WORD
+  
+  /* 88 */ HT_INVALID, // CN_ZSMALL_
+  /* 89 */ HT_INVALID, // CN_ZMEDIUM_
+  /* 90 */ HT_INVALID, // CN_ZLARGE_
+  /* 91 */ HT_INVALID, // CN_ZJUMBO_
+
+  /* 92 */ HT_INVALID, // CN_ENUMS
 };
 
 /*----------------------------------------------------------------------------*/

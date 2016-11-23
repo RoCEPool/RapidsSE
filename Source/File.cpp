@@ -280,6 +280,10 @@ void File::vInit(void)
   m_pFilePtr    = nullptr;
   m_iTraceLevel = 0;
   
+  m_pLimit    = nullptr;
+  m_pNext     = nullptr;
+  m_pWorkarea = nullptr;
+  
   m_xSysCall.vClear();
 }
 
@@ -571,14 +575,27 @@ bool File::bReadLine(s& s)
 //  else
 //    nItems = fscanf(m_pFilePtr,"%[^\n]\n",s.a());
 
-  *s.a() = '\0';
+//  *s.a() = '\0';
+//  for (;;) {
+//     char c = getc(m_pFilePtr);
+//     if ('\n' == c || EOF ==c)
+//       break;
+//     else
+//       String::vConcat(s.a(),c);
+//  }
+
+  char* z = s.a();
+  
+  *z = '\0';
   for (;;) {
-     char c = getc(m_pFilePtr);
-     if ('\n' == c || EOF ==c)
-       break;
-     else
-       String::vConcat(s.a(),c);
+    char c = getc(m_pFilePtr);
+    if ('\n' == c || EOF ==c)
+      break;
+    else
+      String::vAppendChar(&z,c);
   }
+  
+  String::vAppendChar(&z,'\0');
   
   if (*s.a()) {
     m_xSysCall.vSuccess();
