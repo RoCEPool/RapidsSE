@@ -5,6 +5,18 @@
 "var.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
+/* create ptr variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
+: ptr:
+  create
+  object!!
+  sizeof_ptrval allot
+  word.this >body magic!!
+  word.this >body CN_PTRVAL class!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
 /* create int variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/
 : int:
