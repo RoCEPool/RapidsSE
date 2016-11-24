@@ -28,6 +28,13 @@ int main(int argc, const char* argv[])
   printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
   
   
+  Timer xTimer;
+  xTimer.vStart();
+  PosixThread::vSleepSec(1);
+  xTimer.vUpdate();
+  
+  printf("Timert %lld\n",xTimer.iMilliseconds());
+  
   const char *aRelDbg;
 #ifdef _DEBUG
   aRelDbg = "debug";

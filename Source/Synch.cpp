@@ -51,7 +51,16 @@ bool Synch::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 /*----------------------------------------------------------------------------*/
 i8 Synch::iTicks(void)
 {
+#ifdef __APPLE__
+  struct timespec tp;
+  int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
+
+  i8 iTicks = tp.tv_sec * C_1Bn;
+  iTicks += tp.tv_nsec;
+  
+#else
   i8 iTicks = iRdtscp();
+#endif
   
   return iTicks;
 }
@@ -61,7 +70,11 @@ i8 Synch::iTicks(void)
 /*----------------------------------------------------------------------------*/
 i8 Synch::iTickFrequency(void)
 {
+#ifdef __APPLE__
+  i8 iFrequency = C_1Bn;
+#else
   i8 iFrequency = System::iClockFrequency();
+#endif
   
   return iFrequency;
 }
