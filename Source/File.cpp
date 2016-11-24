@@ -284,6 +284,7 @@ void File::vInit(void)
   m_pNext     = nullptr;
   m_pScratch  = nullptr;
   m_pRecord   = nullptr;
+  m_iRecordLength = 0;
   
   m_xSysCall.vClear();
 }
