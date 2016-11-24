@@ -39,8 +39,10 @@ namespace Common
     
     char*   m_pLimit;
     char*   m_pNext;
-    bool    m_bEOFseen;
+    
     Scratch* m_pScratch;
+    Scratch* m_pRecord;
+    i8       m_iRecordLength;
     
     // must be last
     Footer m_xFooter;
@@ -74,6 +76,9 @@ namespace Common
     i8   iReadChunk(void* pChunk, i8 nBytes);
     bool bReadLine(s& s);
     bool bReadLine(char* y);
+    bool bReadRecord(void);
+    Scratch* pRecord(void);
+    i8 iRecordLength(void);
     void vReset(void);
     void vSeek(i8 iOffset);
     void vSeekEnd(void);

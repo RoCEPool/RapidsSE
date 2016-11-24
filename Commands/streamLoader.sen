@@ -27,9 +27,9 @@
   begin
     reg0 file.read
     while
-    drop
-    reg7 inc dup >reg7
-    100000 % not if reg7 . then
+      drop
+      reg7 inc dup >reg7
+      100000 % not if reg7 . then
   repeat
 
   loadTimer timer.update

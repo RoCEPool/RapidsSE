@@ -814,6 +814,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("file.path@",      &vFilePathGet,      false);
   vAddPrimitive("file.path!",      &vFilePathSet,      false);
   vAddPrimitive("file.read",       &vFileRead,         false);
+  vAddPrimitive("file.readRecord", &vFileReadRecord,   false);
   vAddPrimitive("file.write",      &vFileWrite,        false);
   
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
@@ -885,6 +886,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("queue.pop",       &vQueuePop,         false);
   
   vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
+  vAddPrimitive("rowBuffer.appendRecord", &vRowBufferAppendRecord, false);
   vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
   
   vAddPrimitive("rowCursor.begin",  &vRowCursorBegin,  false);
@@ -6096,24 +6098,30 @@ ENTRY("vFileRead");
     nnpTask->m_xParamStack.vPush((i8)0);
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* file.readRecord -- read record from file                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vFileReadRecord(NNP_Task nnpTask)
+{
+  ENTRY("vFileRead");
   
-//  sLine =
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  "0123456789"
-//  ;
-//  
-//  nnpTask->m_xParamStack.vPush(sLine);
-//  nnpTask->m_xParamStack.vPush((i8)1);
+  Object* pPtrFile;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
+    THROW_INVALID_PARAM("file.readRecord");
+  
+  File* pFile = _pFile(pPtrFile);
+  ASSERT(pFile);
+  
+  if (pFile->bReadRecord()) {
+    nnpTask->m_xParamStack.vPush((i8)1);
+  }
+  else {
+    nnpTask->m_xParamStack.vPush((i8)0);
+  }
   
   EXIT();
 }
@@ -7880,21 +7888,6 @@ void Task::vRegToRegNth(NNP_Task nnpTask)
 // rowbuffer: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* rowbuffer.new -- new a row buffer                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vRowBufferNew(NNP_Task nnpTask)
-{
-ENTRY("vRowBufferNew");
-  
-  RowBuffer* pRowBuffer = new RowBuffer;
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
-  
-  nnpTask->m_xParamStack.vPush(pRowBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* rowbuffer.append -- attempt to append row onto row buffer                  */
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferAppend(NNP_Task nnpTask)
@@ -7929,6 +7922,63 @@ ENTRY("vRowBufferAppend");
     nnpTask->m_xParamStack.vPush(false);
   }
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowbuffer.appendRecord -- attempt to append record onto row buffer         */
+/*----------------------------------------------------------------------------*/
+void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
+{
+  ENTRY("vRowBufferAppendRecord");
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("rowBuffer.appendRecord");
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  Object* pPtrTxRef;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
+    THROW_INVALID_PARAM("rowBuffer.appendRecord");
+  TxRef* pTxRef = _pTxRef(pPtrTxRef);
+  ASSERT(CN_TXREF == pTxRef->eClass());
+  
+  Object* pPtrFile;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
+    THROW_INVALID_PARAM("rowBuffer.appendRecord");
+  
+  File* pFile = _pFile(pPtrFile);
+  
+  char* aRecord = pFile->pRecord()->pWorkArea();
+  
+//  i8 iLength = String::iLength(aRecord);
+  i8 iLength = pFile->iRecordLength();
+  
+  bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength);
+  
+  if (b) {
+    nnpTask->m_xParamStack.vPush(true);
+  }
+  else {
+    nnpTask->m_xParamStack.vPush(false);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowbuffer.new -- new a row buffer                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vRowBufferNew(NNP_Task nnpTask)
+{
+  ENTRY("vRowBufferNew");
+  
+  RowBuffer* pRowBuffer = new RowBuffer;
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  nnpTask->m_xParamStack.vPush(pRowBuffer);
+  
   EXIT();
 }
 
