@@ -3,17 +3,11 @@
 /*============================================================================*/
 
 cf tenants
-//create tenant boray;
-
 cf boray
 cf catalogs
-create catalog borayCatalog;
-
-cf borayCatalog
+cf rapidsse
 cf schemas
-create schema boraySchema;
-
-cf boraySchema
+create schema tables;
 cf tables
 
 // create tables

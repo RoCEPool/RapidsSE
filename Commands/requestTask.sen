@@ -21,7 +21,10 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : requestStart
 
-    // set up request processing task
+    // set up first request processing task
+    0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
+
+    // set up second request processing task
     0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
 
     // set up the request thread

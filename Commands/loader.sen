@@ -244,8 +244,8 @@ stk
         drop
       then
 
-      //regF inc dup >regF
-      //100000 % not if regF . then
+      regF inc dup >regF
+      100000 % not if task.yield then
   repeat
 
   reg3 reg1 table.appendBuffer

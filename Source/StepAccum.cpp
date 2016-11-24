@@ -37,7 +37,7 @@ void StepAccum::vPrint(void)
   if (0 == m_nInvoked)
     return;
   
-  i8 iTicksPerSecond = System::iClockFrequency();
+  i8 iTicksPerSecond = Synch::iTickFrequency();
   i8 iTicksPerNanos = DIV(iTicksPerSecond,1000000000);
   
   i8 iTicksPerInvoke = DIV(m_nCycles,m_nInvoked);

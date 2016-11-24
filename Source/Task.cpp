@@ -568,7 +568,7 @@ void Task::vAddConstants(void)
   /*  4 */ vAddConstant("OPEN_READ_WRITE_CREATE",   C_OPEN_READ_WRITE_CREATE);
   /*  5 */ vAddConstant("OPEN_READ_APPEND",         C_OPEN_READ_APPEND);
   
-  /*  0 */ vAddConstant("CLOCK_FREQUENCY",          System::iClockFrequency());
+  /*  0 */ vAddConstant("CLOCK_FREQUENCY",          Synch::iTickFrequency());
   /*  0 */ vAddConstant("CORE_COUNT",               System::iCoreCount());
   /*  0 */ vAddConstant("CPU_COUNT",                System::iCpuCount());
   /*  0 */ vAddConstant("PHYSICAL_MEMORY",          System::iPhysicalMemory());
@@ -3831,7 +3831,7 @@ void Task::vRdtscp(NNP_Task nnpTask)
 {
 ENTRY("vRdtscp");
   
-  i8 iTscp = iRdtscp();
+  i8 iTscp = Synch::iTicks();
 
   nnpTask->m_xParamStack.vPush(iTscp);
   
