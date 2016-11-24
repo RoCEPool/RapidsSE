@@ -28,6 +28,7 @@ Schema Requests:
   mksch   create_schema
   lssch   list_schemas
   rmsch   drop_schema
+  usesch  use_schema
 
 Table Requests:
 
@@ -57,6 +58,7 @@ Dictionary Requests:
 
 Misc Requests:
 
+  seitf   seitf_count
   mon     get_monitor
   ping    ping
   x       x
@@ -268,6 +270,40 @@ ddlLock.grabWrite
     <OK>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* use a schema                                                               */
+/*----------------------------------------------------------------------------*/
+: use_schema ( "<schemaNm>" -- <R> )
+
+    begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
+
+    // find the boray folder
+    "boray" findInCurrent
+    execute dic.push
+
+    // find the catalogs folder
+    "catalogs" findInCurrent
+    execute dic.push
+
+    // find the rapidssecatalogs folder
+    "rapidsse" findInCurrent
+    execute dic.push
+
+    // find the schemas folder
+    "schemas" findInCurrent
+    execute dic.push
+
+    find
+    checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
+    checkIsSchema not if swap drop <ERROR> exit then
+    execute dic.push
+
+    // find the tables folder
+    "tables" findInCurrent
+    execute dic.push
+
+    <OK>
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -655,6 +691,7 @@ ddlLock.grabWrite
     <OK>
 ;
 
+
 /*----------------------------------------------------------------------------*/
 /* print working folder                                                       */
 /*----------------------------------------------------------------------------*/
@@ -744,6 +781,17 @@ ddlLock.grabWrite
   <SUCCESS>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* get seif count                                                             */
+/*----------------------------------------------------------------------------*/
+: seitf_count
+
+  seitf.count
+
+  >str
+
+  <SUCCESS>
+;
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -42,7 +42,7 @@ Arguments::Arguments(void)
   m_sFolder     = "";
   m_bHugePages  = false;
   m_bProgress   = true;
-  m_bRestart    = false;
+  m_bRestart    = true;
   m_bTouch      = false;
   m_bTracing    = false;
   m_bUnitTests  = false;
@@ -295,10 +295,10 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
-    if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
-      m_bRestart = true;
-      continue;
-    }
+    //if (String::bEqualTo("--restart",argv[iArg],C_NO_CASE)) {
+    //  m_bRestart = true;
+    //  continue;
+    //}
     
     if (String::bEqualTo("--touch",argv[iArg],C_NO_CASE)) {
       m_bTouch = true;

@@ -631,6 +631,7 @@ namespace Tasks
     static void vRstack9(NNP_Task nnpTask);
     
     // seitf
+    static void vSEitfCount(NNP_Task nnpTask);
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
     static void vSEitfNew(NNP_Task nnpTask);

@@ -92,6 +92,7 @@ namespace Interface
     bool bCreateSchema(char* pWords[], i8 iWords);
     bool bListSchemas(char* pWords[], i8 iWords);
     bool bDropSchema(char* pWords[], i8 iWords);
+    bool bUseSchema(char* pWords[], i8 iWords);
     
     bool bCreateTable(char* pWords[], i8 iWords);
     
@@ -127,6 +128,7 @@ namespace Interface
     bool bGetInUseSpace(char* pWords[]);
     bool bGetTotalSpace(char* pWords[]);
     bool bGetVersion(char* pWords[]);
+    bool bSeitfCount(char* pWords[]);
     
     bool bPing(char* pWords[]);
     

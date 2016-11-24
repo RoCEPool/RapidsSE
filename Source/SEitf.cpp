@@ -507,6 +507,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bTruncateTable(pWords, iWords);
   }
   
+  if (String::bEqualTo("usesch",pWords[0],C_NO_CASE)) {
+    return bUseSchema(pWords, iWords);
+  }
+  
   if (String::bEqualTo("__x",pWords[0],C_NO_CASE)) {
     return bX(pWords);
   }
@@ -522,6 +526,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bEqualTo("print",pWords[0],C_NO_CASE)) {
     vPrint(pWords);
     return false;
+  }
+  
+  if (String::bEqualTo("seitf",pWords[0],C_NO_CASE)) {
+    return bSeitfCount(pWords);
   }
   
   if (String::bEqualTo("version",pWords[0],C_NO_CASE)) {
@@ -784,6 +792,31 @@ bool SEitf::bDropSchema(char* pWords[], i8 iWords)
   String::vConcat(a,"\"");
   
   String::vConcat(a," drop_schema");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* use a schema                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bUseSchema(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," use_schema");
   
   return bAppendRequest(sRequest);
 }
@@ -1484,6 +1517,20 @@ bool SEitf::bPing(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get seitf count                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bSeitfCount(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(String::bEqualTo(pWords[0],"seitf"));
+  sRequest = "seitf_count";
   return bAppendRequest(sRequest);
 }
 

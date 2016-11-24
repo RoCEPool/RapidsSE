@@ -89,6 +89,8 @@ private:
   bool bPrintWorkingDir(void);
   bool bReturnTable(void);
 
+  bool bUseSchema(void);
+  
   Footer* pFooter(void);
 };
 
