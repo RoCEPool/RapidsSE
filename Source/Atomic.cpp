@@ -69,7 +69,7 @@ i8 Atomic::iInc()
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 
-  i8 i = iAtomicInc(&m_iInt);
+  i8 i = Synch::uAtomicInc(&m_iInt);
   
   return i;
 }
@@ -81,7 +81,7 @@ i8 Atomic::iDec()
 {
   _precondition_(_MAGIC_,CN_ATOMIC,_FOOTER_);
 
-  i8 i = iAtomicDec(&m_iInt);
+  i8 i = Synch::uAtomicDec(&m_iInt);
   
   return i;
 }
