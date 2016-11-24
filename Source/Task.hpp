@@ -262,6 +262,8 @@ namespace Tasks
     static void vBoot(NNP_Task nnpTask);           
     static void vBpa(NNP_Task nnpTask);
     static void vBpdump(NNP_Task nnpTask);
+    static void vCastInt(NNP_Task nnpTask);
+    static void vCastPtr(NNP_Task nnpTask);
     static void vCells(NNP_Task nnpTask);
     static void vClassFetch(NNP_Task nnpTask);
     static void vClassStore(NNP_Task nnpTask);     

@@ -610,6 +610,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("boot",            &vBoot,             false);
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
+  vAddPrimitive("(int)",           &vCastInt,          false);
+  vAddPrimitive("(ptr)",           &vCastPtr,          false);
   vAddPrimitive("cells",           &vCells,            false);
   vAddPrimitive("class@",          &vClassFetch,       false);
   vAddPrimitive("class!",          &vClassStore,       false);
@@ -2181,6 +2183,38 @@ ENTRY("vBpdump");
 }
 
 /*----------------------------------------------------------------------------*/
+/* (int) -- cast ptr to int                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vCastInt(NNP_Task nnpTask)
+{
+  ENTRY("vCastInt");
+  
+  Object* pPtr;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtr) )
+    THROW_INVALID_PARAM("(int)");
+  
+  nnpTask->m_xParamStack.vPush((i8)pPtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* (ptr) -- cast int to ptr                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vCastPtr(NNP_Task nnpTask)
+{
+  ENTRY("vCastPtr");
+  
+  i8 iInt;
+  if ( ! nnpTask->m_xParamStack.bPop(iInt) )
+    THROW_INVALID_PARAM("(ptr)");
+  
+  nnpTask->m_xParamStack.vPush((Object*)iInt);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* cells -- convert cells into n bytes                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vCells(NNP_Task nnpTask)
@@ -2480,9 +2514,16 @@ ENTRY("vDump");
   eCN eClass = xValWsp.eClass();
   
   if (CN_PTRVAL == eClass) {
-    eCN ePtdClass = xValWsp.pAsPtrVal()->pObject()->eClass();
-    vTrace("[%s] %s (%s %s)\n",
-          nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
+    PtrVal* pPtrVal = xValWsp.pAsPtrVal();
+    Object* pObject = pPtrVal->pObject();
+    if (pObject) {
+      eCN ePtdClass   = pObject->eClass();
+      vTrace("[%s] %s (%s %s)\n",
+            nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
+    }
+    else {
+      vTrace("[%s] nullptr\n",nnpTask->m_sName.a());
+    }
   }
   else {
     vTrace("[%s] %s (%s)\n",

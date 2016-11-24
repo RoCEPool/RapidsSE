@@ -5,9 +5,23 @@
 "var.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
+/* create int variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
+: int:
+
+  create
+  object!!
+  sizeof_intval allot
+  word.this >body magic!!
+  word.this >body CN_INTVAL class!
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
 /* create ptr variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/
 : ptr:
+
   create
   object!!
   sizeof_ptrval allot
@@ -17,28 +31,38 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* create int variable in current dictionary using name from input stream     */
+/* create ptr array in current dictionary using name from input stream        */
 /*----------------------------------------------------------------------------*/
-: int:
-    create 
-    object!!
-    sizeof_intval allot
-    word.this >body magic!!
-    word.this >body CN_INTVAL class!
-    does>
+: ptrArray:
+
+  create
+  object!!
+  dup >r // r0 - number of cells
+  sizeof_ptrval * allot
+  word.this >body magic!!
+
+  r> 0 do
+    I sizeof_ptrval * word.this >body (int) + (ptr)
+    dup
+    magic!!
+    CN_PTRVAL class!
+  loop
+
+  does> stk (int) swap sizeof_ptrval * + (ptr) stk
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create str variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/
 : str:
-    create
-    object!!
-    sizeof_strval sizeof_s256 + allot
-    word.this >body magic!!
-    word.this >body CN_STRVAL class!
-    word.this >body s256.init
-    does>
+
+  create
+  object!!
+  sizeof_strval sizeof_s256 + allot
+  word.this >body magic!!
+  word.this >body CN_STRVAL class!
+  word.this >body s256.init
+  does>
 ;
 
 /*============================================================================*/
