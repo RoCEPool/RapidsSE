@@ -18,6 +18,12 @@ namespace Platform
     
     static i8   iTicks(void);
     static i8   iTickFrequency(void);
+    
+    static u8   iLockDropRead(u8*);
+    static u8   iLockGrabRead(u8*);
+    static u8   iLockDropWrite(u8*);
+    static u8   iLockGrabWrite(u8*);
+    static u8   iLockIsLocked(u8*);
   };
 }
 
