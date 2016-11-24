@@ -17,6 +17,13 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
+  i8 i = 0;
+  Synch::uAtomicInc(&i);
+  printf("AtomicInc i = %lld\n",i);
+  Synch::uAtomicDec(&i);
+  printf("AtomicDec i = %lld\n",i);
+  
+  
   const char *aRelDbg;
 #ifdef _DEBUG
   aRelDbg = "debug";

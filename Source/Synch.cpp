@@ -9,7 +9,11 @@
 /*----------------------------------------------------------------------------*/
 u8 Synch::uAtomicDec(i8* pWord)
 {
+#ifdef __APPLE__
+  u8 uResult = OSAtomicDecrement64(pWord);
+#else
   u8 uResult = iAtomicDec(pWord);
+#endif
   
   return uResult;
 }
@@ -19,7 +23,11 @@ u8 Synch::uAtomicDec(i8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::uAtomicInc(i8* pWord)
 {
+#ifdef __APPLE__
+  u8 uResult = OSAtomicIncrement64(pWord);
+#else
   u8 uResult = iAtomicInc(pWord);
+#endif
   
   return uResult;
 }

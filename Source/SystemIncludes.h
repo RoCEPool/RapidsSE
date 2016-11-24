@@ -37,6 +37,7 @@
 
 #ifdef __APPLE__
   #include "mach/thread_act.h"
+  #include <libkern/OSAtomic.h>
 #endif
 
 #include <netinet/in.h>
