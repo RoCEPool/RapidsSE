@@ -23,6 +23,10 @@ int main(int argc, const char* argv[])
   Synch::uAtomicDec(&i);
   printf("AtomicDec i = %lld\n",i);
   
+  u8 u = 2;
+  bool b = Synch::bTestAndSet(&u,1,3);
+  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
+  
   
   const char *aRelDbg;
 #ifdef _DEBUG

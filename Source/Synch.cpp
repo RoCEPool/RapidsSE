@@ -37,7 +37,11 @@ u8 Synch::uAtomicInc(i8* pWord)
 /*----------------------------------------------------------------------------*/
 bool Synch::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 {
+#ifdef __APPLE__
+  u8 uResult = OSAtomicCompareAndSwap64((i8)uIf,(i8)uThen,(i8*)pWord);
+#else
   u8 uResult = iTestSet(pWord, uIf, uThen);
+#endif
   
   return uResult;
 }
@@ -107,7 +111,11 @@ u8 Synch::iLockGrabWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockIsLocked(u8* pWord)
 {
+#ifdef __APPLE__
+  u8 uResult = *pWord ? 1 : 0;
+#else
   u8 uResult = iIsLocked(pWord);
+#endif
   
   return uResult;
 }
