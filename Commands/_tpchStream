@@ -100,7 +100,7 @@ pwf
 lf
 
 //lds lineitem "/tpch/lineitem.tbl"
-lds lineitem "/tpch/lineitem.pipe"
+lds lineitem "/tpchSF10/lineitem.pipe"
 //lds nation "/tpch/nation.tbl"
 
 /*============================================================================*/

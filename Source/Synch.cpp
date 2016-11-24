@@ -4,6 +4,8 @@
 
 #include "Common.h"
 
+//const u8 C_WRITELOCK = 0x8000000000000000;
+
 /*----------------------------------------------------------------------------*/
 /* atomically decrement word                                                  */
 /*----------------------------------------------------------------------------*/
@@ -84,7 +86,28 @@ i8 Synch::iTickFrequency(void)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockDropRead(u8* pWord)
 {
+#ifdef __APPLE__
+  //u8 uResult = iDropRead(pWord);
+
+  bool b;
+  
+  do {
+    u8 uCurrent = *pWord;
+    
+    // must have a read lock
+    assert(uCurrent && uCurrent != C_WRITELOCK);
+    
+    u8 uRemoveReadLock = uCurrent - 1;
+  
+    b = bTestAndSet(pWord,uCurrent,uRemoveReadLock);
+  
+  } while ( ! b );
+    
+  u8 uResult = 1;
+  
+#else
   u8 uResult = iDropRead(pWord);
+#endif
   
   return uResult;
 }
@@ -94,7 +117,23 @@ u8 Synch::iLockDropRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockGrabRead(u8* pWord)
 {
+#ifdef __APPLE__
+  
+  //u8 uResult = iGrabRead(pWord);
+  
+  u8 uCurrent = *pWord;
+  if (uCurrent >= C_WRITELOCK)
+    return 0;
+  
+  u8 uAddReadLock = uCurrent + 1;
+  
+  bool b = bTestAndSet(pWord,uCurrent,uAddReadLock);
+  
+  u8 uResult = b ? 1 : 0;
+  
+#else
   u8 uResult = iGrabRead(pWord);
+#endif
   
   return uResult;
 }
@@ -104,7 +143,19 @@ u8 Synch::iLockGrabRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockDropWrite(u8* pWord)
 {
+#ifdef __APPLE__
+  //u8 uResult = iDropWrite(pWord);
+  
+  u8 uCurrent = *pWord;
+
+  assert (uCurrent == C_WRITELOCK);
+
+  bool b = bTestAndSet(pWord,uCurrent,0);
+  
+  u8 uResult = 1;
+#else
   u8 uResult = iDropWrite(pWord);
+#endif
   
   return uResult;
 }
@@ -114,7 +165,28 @@ u8 Synch::iLockDropWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockGrabWrite(u8* pWord)
 {
+#ifdef __APPLE__
+  //u8 uResult = iGrabWrite(pWord);
+
+  u8 uCurrent = *pWord;
+  
+  if (uCurrent >= C_WRITELOCK)
+    return 0;
+  
+  u8 uAddWriteLock = uCurrent + C_WRITELOCK;
+  
+  bool b = bTestAndSet(pWord,uCurrent,uAddWriteLock);
+  if ( ! b )
+    return 0;
+  
+  while (C_WRITELOCK != *pWord)
+    ;
+  
+  u8 uResult = 1;
+  
+#else
   u8 uResult = iGrabWrite(pWord);
+#endif
   
   return uResult;
 }
