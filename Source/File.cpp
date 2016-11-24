@@ -282,8 +282,8 @@ void File::vInit(void)
   
   m_pLimit    = nullptr;
   m_pNext     = nullptr;
-  m_bEOFseen  = false;
   m_pScratch  = nullptr;
+  m_pRecord   = nullptr;
   
   m_xSysCall.vClear();
 }
@@ -662,6 +662,81 @@ void File::vReset(void)
 
   m_pFilePtr = nullptr;
   vSet("","");
+}
+
+/*----------------------------------------------------------------------------*/
+/* read next record                                                           */
+/*----------------------------------------------------------------------------*/
+bool File::bReadRecord(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  m_xSysCall.vClear();
+  
+  if ( ! m_pScratch ) {
+    m_pScratch = new Scratch;
+    m_pRecord  = new Scratch;
+    m_pNext  = m_pScratch->pWorkArea();
+    m_pLimit = m_pScratch->pWorkArea();
+    
+    vBuffer(C_256KB);
+  }
+  
+  char* z = m_pRecord->pWorkArea();
+  *z = '\0';
+  m_iRecordLength = 0;
+  
+  for (;;) {
+    
+    if (m_pNext == m_pLimit) {
+      m_pNext = m_pScratch->pWorkArea();
+      i8 iBytesRead = fread(m_pNext,1,C_WORKAREA,m_pFilePtr);
+      
+      if ( ! iBytesRead )
+        break;
+      
+      m_pLimit = m_pNext + iBytesRead;
+    }
+    
+    char c = *m_pNext++;
+    
+    if ('\n' == c || EOF == c)
+      break;
+    
+    *z++ = c;
+    m_iRecordLength++;
+  }
+  
+  *z = '\0';
+  m_iRecordLength++;
+  
+  if (*m_pRecord->pWorkArea()) {
+    m_xSysCall.vSuccess();
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get scratch record                                                         */
+/*----------------------------------------------------------------------------*/
+Scratch* File::pRecord(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  return m_pRecord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get scratch record length                                                  */
+/*----------------------------------------------------------------------------*/
+i8 File::iRecordLength(void)
+{
+  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
+  
+  return m_iRecordLength;
 }
 
 /*----------------------------------------------------------------------------*/

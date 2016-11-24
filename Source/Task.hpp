@@ -477,6 +477,7 @@ namespace Tasks
     static void vFilePathGet(NNP_Task nnpTask);
     static void vFilePathSet(NNP_Task nnpTask);   
     static void vFileRead(NNP_Task nnpTask);
+    static void vFileReadRecord(NNP_Task nnpTask);
     static void vFileWrite(NNP_Task nnpTask);
     
     // grid
@@ -600,6 +601,7 @@ namespace Tasks
     
     // rowBuffer
     static void vRowBufferAppend(NNP_Task nnpTask);
+    static void vRowBufferAppendRecord(NNP_Task nnpTask);
     static void vRowBufferNew(NNP_Task nnpTask);
     
     // rowCursor
