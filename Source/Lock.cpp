@@ -86,7 +86,7 @@ bool Lock::bIsLocked(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  return iIsLocked(&m_uLockWord);
+  return Synch::iLockIsLocked(&m_uLockWord);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,7 +102,7 @@ bool Lock::bGrabRead(void)
   
   ++m_zReadGrabs;
   
-  i8 rCode = iGrabRead(&m_uLockWord);
+  i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
     vCheckRead();
     return true;
@@ -122,7 +122,7 @@ void Lock::vGrabRead(void)
   
   ++m_zReadGrabs;
   
-  i8 rCode = iGrabRead(&m_uLockWord);
+  i8 rCode = Synch::iLockGrabRead(&m_uLockWord);
   if (rCode) {
     vCheckRead();
     return;
@@ -131,7 +131,7 @@ void Lock::vGrabRead(void)
   ++m_zReadCollisions;
   
   do {
-    rCode = iGrabRead(&m_uLockWord);
+    rCode = Synch::iLockGrabRead(&m_uLockWord);
   } while ( ! rCode );
   
   vCheckRead();
@@ -156,7 +156,7 @@ void Lock::vDropRead(void)
   
   vCheckRead();
   
-  i8 rCode = iDropRead(&m_uLockWord);
+  i8 rCode = Synch::iLockDropRead(&m_uLockWord);
   ASSERT(rCode); // logic check
   
   // m_iValue could be any value
@@ -194,7 +194,7 @@ bool Lock::bGrabWrite(void)
   
   ++m_zWriteGrabs;
   
-  i8 rCode = iGrabWrite(&m_uLockWord);
+  i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
     vCheckWrite();
     return true;
@@ -213,7 +213,7 @@ void Lock::vGrabWrite(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ++m_zWriteGrabs;
-  i8 rCode = iGrabWrite(&m_uLockWord);
+  i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
     vCheckWrite();
     return;
@@ -222,7 +222,7 @@ void Lock::vGrabWrite(void)
   ++m_zWriteCollisions;
   
   do {
-    rCode = iGrabWrite(&m_uLockWord);
+    rCode = Synch::iLockGrabWrite(&m_uLockWord);
   } while ( ! rCode );
   
   vCheckWrite();
@@ -247,7 +247,7 @@ void Lock::vDropWrite(void)
   
   vCheckWrite();
   
-  i8 rCode = iDropWrite(&m_uLockWord);
+  i8 rCode = Synch::iLockDropWrite(&m_uLockWord);
   ASSERT(rCode); // logic check
   
   //m_uLockWord = 0;
