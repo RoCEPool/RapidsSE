@@ -610,6 +610,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("boot",            &vBoot,             false);
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
+  vAddPrimitive("cells",           &vCells,            false);
   vAddPrimitive("class@",          &vClassFetch,       false);
   vAddPrimitive("class!",          &vClassStore,       false);
   vAddPrimitive("code=",           &vCodeAssign,       false);
@@ -2175,6 +2176,24 @@ ENTRY("vBpdump");
   pBPA->vDump();
   
   delete pBPA;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cells -- convert cells into n bytes                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vCells(NNP_Task nnpTask)
+{
+  ENTRY("vCells");
+  
+  i8 nCells;
+  if ( !  nnpTask->m_xParamStack.bPop(nCells) )
+    THROW_INVALID_PARAM("cells");
+  
+  i8 nBytes = nCells * sizeof(void*);
+  
+  nnpTask->m_xParamStack.vPush(nBytes);
   
   EXIT();
 }

@@ -30,10 +30,10 @@ int main(int argc, const char* argv[])
   
   Timer xTimer;
   xTimer.vStart();
-  PosixThread::vSleepSec(1);
+  PosixThread::vSleepMicro(500);
   xTimer.vUpdate();
   
-  printf("Timert %lld\n",xTimer.iMilliseconds());
+  printf("Timert %lld\n",xTimer.iMicroseconds());
   
   const char *aRelDbg;
 #ifdef _DEBUG
