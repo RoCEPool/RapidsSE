@@ -91,27 +91,6 @@
 /*----------------------------------------------------------------------------*/
 /* start an actor                                                             */
 /*----------------------------------------------------------------------------*/
-: actor.start ( thread taskset queue ... #args "seedWord" parent )
-
-  reg.push
-
-  task.new  // create a new task ( .etc. -- thread taskset queue )
-
-  >reg0     // reg0: task
-  >reg1     // reg1: queue
-  >reg2     // reg2: taskset
-  >reg3     // reg3: thread
-
-  reg1 reg0 task.queue!     // set the tasks queue
-  reg0 reg2 taskSet.append  // append task to taskset
-
-  reg2 reg3 thread.taskset! // set the threads taskset
-
-  reg3 thread.spawn         // spawn the os thread
-
-  reg.pop
-;
-
 : actor.start ( thread taskset queue ... #args "seedWord" )
 
   reg.push
@@ -208,34 +187,44 @@
   drop                     // discard number of values
 ;
 
-////////////////////////////////////////////////////////////////////////////////
+/*----------------------------------------------------------------------------*/
+/* pass on loop                                                               */
+/*----------------------------------------------------------------------------*/
+: passOn.loop ( queue -- )
 
-// Participant Actor
+  reg.push
 
-// create named task and seed it
-task: p.task
-0 "p.loop" p.task task.seed
+  >r // r0 has queue
+  begin
 
-// create named queue and attach to task
-queue: p.queue
-p.queue p.task task.queue!
+    depth 0 != if "stack of task has grown" . debug.trap then
 
-// create a named taskset and put task in it
-taskset: p.taskset
-p.task p.taskset taskSet.append
+    queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call
 
-// create a named thread and attach taskset
-thread:  p.thread
-p.taskset p.thread thread.taskset!
+    stk
+    depth r0 >queue>
+    stk
+
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  rdrop
+
+  reg.pop
+;
 
 /*----------------------------------------------------------------------------*/
-/* participant processing loop                                                */
+/* execute processing loop                                                    */
 /*----------------------------------------------------------------------------*/
-: p.loop
+: execute.loop
 
   reg.push
 
   begin
+
     depth 0 != if "stack of task has grown" . debug.trap then
 
     queue>     // pop valset off queue and push onto this stack
@@ -251,267 +240,6 @@ p.taskset p.thread thread.taskset!
   0 until
 
   reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* start the participant                                                      */
-/*----------------------------------------------------------------------------*/
-: p.start
-
-  // spawn the os thread
-  p.thread thread.spawn
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-// Coordinator Proxy
-queue:   cp.queue    // create a named queue
-taskset: cp.taskset  // create a named taskset
-thread:  cp.thread   // create a named thread
-
-/*----------------------------------------------------------------------------*/
-/* coordinator proxy processing loop                                          */
-/*----------------------------------------------------------------------------*/
-: cp.loop
-
-  "renaming to cp.task" .putVerbose
-
-  "cp.task" task.this task.name!
-
-  cp.queue task.this task.queue!
-
-  reg.push
-
-  begin
-    depth 0 != if "stack of cp.task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-    >indirect  // convert valset to indirect call
-
-stk
-    depth p.queue >queue>
-stk
-
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* start the coordinator proxy                                                */
-/*----------------------------------------------------------------------------*/
-: cp.start
-
-/*
-  // set up coordinator proxy task
-  0 "cp.loop" nullPtr task.new cp.taskset taskSet.append
-
-  // set up the coordinator proxy taskset
-  cp.taskset cp.thread thread.taskset!
-
-  // name the coordinator proxy thread
-  "cp.thread" cp.thread thread.name!
-
-  // spawn the os thread
-  cp.thread thread.spawn
-*/
-
-  cp.thread cp.taskset cp.queue 0 "cp.loop" nullPtr actor.start
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-// Participant Proxy
-queue:   pp.queue    // create a named queue
-taskset: pp.taskset  // create a named taskset
-thread:  pp.thread   // create a named thread
-
-/*----------------------------------------------------------------------------*/
-/* participant proxy processing loop                                          */
-/*----------------------------------------------------------------------------*/
-: pp.loop
-
-  "renaming to pp.task" .putVerbose
-
-  "pp.task" task.this task.name!
-
-  pp.queue task.this task.queue!
-
-  reg.push
-
-  begin
-    depth 0 != if "stack of pp.task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-    >indirect  // convert valset to indirect call
-
-    stk
-    depth cp.queue >queue>
-    stk
-
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* start the participant proxy                                                */
-/*----------------------------------------------------------------------------*/
-: pp.start
-
-/*
-  // set up participant proxy task
-  0 "pp.loop" nullPtr task.new pp.taskset taskSet.append
-
-  // set up the participant proxy taskset
-  pp.taskset pp.thread thread.taskset!
-
-  // name the participant proxy thread
-  "pp.thread" pp.thread thread.name!
-
-  // spawn the os thread
-  pp.thread thread.spawn
-*/
-
-  pp.thread pp.taskset pp.queue 0 "pp.loop" nullPtr actor.start
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-// Coordinator
-queue:   c.queue    // create a named queue
-taskset: c.taskset  // create a named taskset
-thread:  c.thread   // create a named thread
-
-/*----------------------------------------------------------------------------*/
-/* coordinator processing loop                                                */
-/*----------------------------------------------------------------------------*/
-: c.loop_v1
-
-  "renaming to c.task" .putVerbose
-
-  "c.task" task.this task.name!
-
-  c.queue task.this task.queue!
-
-  reg.push
-
-  begin
-    depth 0 != if "stack of c.task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-
-    >indirect  // convert valset to indirect call
-    !indirect  // execute indirect call
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* coordinator processing loop v2                                             */
-/*----------------------------------------------------------------------------*/
-: c.loop_v2
-
-  "renaming to c.task" .putVerbose
-
-  "c.task" task.this task.name!
-
-  c.queue task.this task.queue!
-
-  reg.push
-
-  begin
-    depth 0 != if "stack of c.task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-    >indirect  // convert valset to indirect call
-
-    stk
-    depth pp.queue >queue>
-    stk
-
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  reg.pop
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* start the coordinator                                                      */
-/*----------------------------------------------------------------------------*/
-: c.start
-
-/*
-  // set up coordinator task
-  0 "c.loop_v2" nullPtr task.new c.taskset taskSet.append
-
-  // set up the coordinator taskset
-  c.taskset c.thread thread.taskset!
-
-  // name the coordinator thread
-  "c.thread" c.thread thread.name!
-
-  // spawn the os thread
-  c.thread thread.spawn
-*/
-
-  c.thread c.taskset c.queue 0 "c.loop_v2" nullPtr actor.start
-;
-
-/*----------------------------------------------------------------------------*/
-/* a simple pong test                                                         */
-/*----------------------------------------------------------------------------*/
-: pong
-
-  "-PONG" concat
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
-
-/*----------------------------------------------------------------------------*/
-/* distributed pattern test                                                   */
-/*----------------------------------------------------------------------------*/
-: d
-
-  p.start
-  cp.start
-  pp.start
-  c.start
-
-  1 sleep
-
-  "xyz" "pong" 2
-stk
-  c.queue >queue> .
-stk
-
-//  "abc" "lmn" "concat" 3
-//stk
-//  c.queue >queue> .
-//stk
-;
-
-/*----------------------------------------------------------------------------*/
-/* dummy loop                                                                 */
-/*----------------------------------------------------------------------------*/
-: actor.loop
-
-  1000 sleep
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -556,6 +284,130 @@ stk
   reg.pop
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
+// Participant Actor
+
+// create named task and seed it
+task: p.task
+0 "execute.loop" p.task task.seed
+
+// create named queue and attach to task
+queue: p.queue
+p.queue p.task task.queue!
+
+// create a named taskset and put task in it
+taskset: p.taskset
+p.task p.taskset taskSet.append
+
+// create a named thread and attach taskset
+thread:  p.thread
+p.taskset p.thread thread.taskset!
+
+
+/*----------------------------------------------------------------------------*/
+/* start the participant                                                      */
+/*----------------------------------------------------------------------------*/
+: p.start
+
+  // spawn the os thread
+  p.thread thread.spawn
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Coordinator Proxy
+queue:   cp.queue    // create a named queue
+taskset: cp.taskset  // create a named taskset
+thread:  cp.thread   // create a named thread
+
+/*----------------------------------------------------------------------------*/
+/* start the coordinator proxy                                                */
+/*----------------------------------------------------------------------------*/
+: cp.start
+
+  cp.thread cp.taskset cp.queue p.queue 1 "passOn.loop" nullPtr actor.start
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Participant Proxy
+queue:   pp.queue    // create a named queue
+taskset: pp.taskset  // create a named taskset
+thread:  pp.thread   // create a named thread
+
+/*----------------------------------------------------------------------------*/
+/* start the participant proxy                                                */
+/*----------------------------------------------------------------------------*/
+: pp.start
+
+  pp.thread pp.taskset pp.queue cp.queue 1 "passOn.loop" nullPtr actor.start
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+// Coordinator
+queue:   c.queue    // create a named queue
+taskset: c.taskset  // create a named taskset
+thread:  c.thread   // create a named thread
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* start the coordinator                                                      */
+/*----------------------------------------------------------------------------*/
+: c.start
+
+  c.thread c.taskset c.queue pp.queue 1 "passOn.loop" nullPtr actor.start
+;
+
+/*----------------------------------------------------------------------------*/
+/* a simple pong test                                                         */
+/*----------------------------------------------------------------------------*/
+: pong
+
+  "-PONG" concat
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+
+/*----------------------------------------------------------------------------*/
+/* distributed pattern test                                                   */
+/*----------------------------------------------------------------------------*/
+: d
+
+  p.start
+  cp.start
+  pp.start
+  c.start
+
+  1 sleep
+
+  "xyz" "pong" 2
+stk
+  c.queue >queue> .
+stk
+
+//  "abc" "lmn" "concat" 3
+//stk
+//  c.queue >queue> .
+//stk
+;
+
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* a simple pong test                                                         */
+/*----------------------------------------------------------------------------*/
+: pong
+
+  "-PONG" concat
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
 8 ptrArray: actorQueues
 
 : aft
@@ -571,7 +423,6 @@ stk
   8 0 do
     I actorQueues @ .
   loop
-
 ;
 
 /*============================================================================*/
