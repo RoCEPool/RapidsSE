@@ -202,35 +202,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass on loop                                                               */
-/*----------------------------------------------------------------------------*/
-: passOn.loop ( queue -- )
-
-  reg.push
-
-  >r // r0 has queue
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-    >indirect  // convert valset to indirect call
-
-    stk
-    depth r0 >queue>
-    stk
-
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  rdrop
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute processing loop                                                    */
 /*----------------------------------------------------------------------------*/
 : execute.loop
@@ -256,6 +227,77 @@
   reg.pop
 ;
 
+/*----------------------------------------------------------------------------*/
+/* pass on loop                                                               */
+/*----------------------------------------------------------------------------*/
+: passOn.loop ( queue -- )
+
+  reg.push
+
+  >r // r0 has queue
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+    >indirect  // convert valset to indirect call; reg0 has caller
+
+    stk
+    depth r0 >queue>
+    stk
+
+    >result    // convert stack contents into indirect result
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  rdrop
+
+  reg.pop
+;
+
+// for this experiment we will have an array of pp's
+args.nodes ptrArray: ppQueues
+
+/*----------------------------------------------------------------------------*/
+/* coordinator loop (sends the indrect call to all participant proxies)       */
+/*----------------------------------------------------------------------------*/
+: c.loop ( -- )
+
+  reg.push
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    queue>     // pop valset off queue and push onto this stack
+
+    args.nodes 0 do
+
+      dup
+
+      >indirect
+      depth
+      I ppQueues @
+
+      >queue>
+      .
+
+    loop
+
+    drop
+
+    "done" 1
+
+    >valset
+
+    >caller    // put indirect result onto stack of caller and signal
+
+  0 until
+
+  reg.pop
+;
+
 ////////////////////////////////////////////////////////////////////////////////
 
 // Participant
@@ -264,11 +306,24 @@
 // Coordinator Proxy
 p.queue  1 "passOn.loop" "cp" actorForm drop
 
-// Participant Proxy
-cp.queue 1 "passOn.loop" "pp" actorForm drop
+
+: createPPs
+
+  args.nodes 0 do
+    cp.queue 1 "passOn.loop" "pp" I >str concat actorForm
+    I ppQueues !
+  loop
+
+  args.nodes 0 do
+    I ppQueues @ .
+  loop
+;
+
+createPPs
 
 // Coordinator
-pp.queue 1 "passOn.loop" "c"  actorForm drop
+0 "c.loop" "c"  actorForm drop
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
