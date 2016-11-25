@@ -87,31 +87,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-
-/*----------------------------------------------------------------------------*/
-/* start an actor                                                             */
-/*----------------------------------------------------------------------------*/
-: actor.start ( thread taskset queue ... #args "seedWord" )
-
-  reg.push
-
-  task.new  // create a new task ( .etc. -- thread taskset queue )
-
-  >reg0     // reg0: task
-  >reg1     // reg1: queue
-  >reg2     // reg2: taskset
-  >reg3     // reg3: thread
-
-  reg1 reg0 task.queue!     // set the tasks queue
-  reg0 reg2 taskSet.append  // append task to taskset
-
-  reg2 reg3 thread.taskset! // set the threads taskset
-
-  reg3 thread.spawn         // spawn the os thread
-
-  reg.pop
-;
-
 /*----------------------------------------------------------------------------*/
 /* pop indirect valset from queue                                             */
 /*----------------------------------------------------------------------------*/
@@ -188,6 +163,45 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* actor formation                                                            */
+/*----------------------------------------------------------------------------*/
+: actorForm ( ... #args "<loop>" "<actorName>" -- queue )
+
+  reg.push
+
+  >r
+
+  // r0 has <actorName>
+
+  r0 ".task"    concat dup . :task    execute >reg0  // reg0 has task
+  r0 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
+  r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
+  r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
+
+  // seed the task
+  reg0 task.seed
+
+  // attach queue to task
+  reg1 reg0 task.queue!
+
+  // put task in taskset
+  reg0 reg2 taskset.append
+
+  // attach taskset to thread
+  reg2 reg3 thread.taskset!
+
+  // spawn the os thread
+  reg3 thread.spawn
+
+  rdrop
+
+  // leave queue on stack
+  reg1
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
 /* pass on loop                                                               */
 /*----------------------------------------------------------------------------*/
 : passOn.loop ( queue -- )
@@ -242,180 +256,51 @@
   reg.pop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* actor formation                                                            */
-/*----------------------------------------------------------------------------*/
-: actorForm ( "<loop>" "<actorName>" -- queue )
-
-  reg.push
-
-  >r
-  >r
-
-  // r1 has <actorName>
-  // r0 has <loop>
-
-  r1 ".task"    concat dup . :task    execute >reg0  // reg0 has task
-  r1 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
-  r1 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
-  r1 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
-
-  // seed the task
-  r0 dup . 0 swap reg0 task.seed
-
-  // attach queue to task
-  reg1 reg0 task.queue!
-
-  // put task in taskset
-  reg0 reg2 taskset.append
-
-  // attach taskset to thread
-  reg2 reg3 thread.taskset!
-
-  // spawn the os thread
-  reg3 thread.spawn
-
-  rdrop
-  rdrop
-
-  // leave queue on stack
-  reg1
-
-  reg.pop
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 
-// Participant Actor
-
-// create named task and seed it
-task: p.task
-0 "execute.loop" p.task task.seed
-
-// create named queue and attach to task
-queue: p.queue
-p.queue p.task task.queue!
-
-// create a named taskset and put task in it
-taskset: p.taskset
-p.task p.taskset taskSet.append
-
-// create a named thread and attach taskset
-thread:  p.thread
-p.taskset p.thread thread.taskset!
-
-
-/*----------------------------------------------------------------------------*/
-/* start the participant                                                      */
-/*----------------------------------------------------------------------------*/
-: p.start
-
-  // spawn the os thread
-  p.thread thread.spawn
-;
-
-////////////////////////////////////////////////////////////////////////////////
+// Participant
+0 "execute.loop" "p" actorForm drop
 
 // Coordinator Proxy
-queue:   cp.queue    // create a named queue
-taskset: cp.taskset  // create a named taskset
-thread:  cp.thread   // create a named thread
-
-/*----------------------------------------------------------------------------*/
-/* start the coordinator proxy                                                */
-/*----------------------------------------------------------------------------*/
-: cp.start
-
-  cp.thread cp.taskset cp.queue p.queue 1 "passOn.loop" nullPtr actor.start
-;
-
-////////////////////////////////////////////////////////////////////////////////
+p.queue  1 "passOn.loop" "cp" actorForm drop
 
 // Participant Proxy
-queue:   pp.queue    // create a named queue
-taskset: pp.taskset  // create a named taskset
-thread:  pp.thread   // create a named thread
-
-/*----------------------------------------------------------------------------*/
-/* start the participant proxy                                                */
-/*----------------------------------------------------------------------------*/
-: pp.start
-
-  pp.thread pp.taskset pp.queue cp.queue 1 "passOn.loop" nullPtr actor.start
-;
-
-////////////////////////////////////////////////////////////////////////////////
+cp.queue 1 "passOn.loop" "pp" actorForm drop
 
 // Coordinator
-queue:   c.queue    // create a named queue
-taskset: c.taskset  // create a named taskset
-thread:  c.thread   // create a named thread
+pp.queue 1 "passOn.loop" "c"  actorForm drop
 
 ////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* start the coordinator                                                      */
-/*----------------------------------------------------------------------------*/
-: c.start
-
-  c.thread c.taskset c.queue pp.queue 1 "passOn.loop" nullPtr actor.start
-;
-
-/*----------------------------------------------------------------------------*/
-/* a simple pong test                                                         */
-/*----------------------------------------------------------------------------*/
-: pong
-
-  "-PONG" concat
-;
-
-////////////////////////////////////////////////////////////////////////////////
-
 
 /*----------------------------------------------------------------------------*/
 /* distributed pattern test                                                   */
 /*----------------------------------------------------------------------------*/
 : d
 
-  p.start
-  cp.start
-  pp.start
-  c.start
-
   1 sleep
 
-  "xyz" "pong" 2
+  "xyz" "-PONG" "concat" 3
 stk
   c.queue >queue> .
 stk
 
-//  "abc" "lmn" "concat" 3
-//stk
-//  c.queue >queue> .
-//stk
-;
-
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* a simple pong test                                                         */
-/*----------------------------------------------------------------------------*/
-: pong
-
-  "-PONG" concat
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 8 ptrArray: actorQueues
 
+: actor.loop
+
+  1000 sleep
+;
+
 : aft
 
   //"actor.loop" "actor" actorForm .
 
   8 0 do
-    "actor.loop"
+    0 "actor.loop"
     "actor" I >str concat actorForm
     I actorQueues !
   loop
