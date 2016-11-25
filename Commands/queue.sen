@@ -25,6 +25,7 @@
     word.this >body CN_QUEUE class!
     ' queue word.this word.kind!
     word.this >body queue.init
+    word.this
     does>
 ;
 

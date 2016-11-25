@@ -506,6 +506,74 @@ stk
 //stk
 ;
 
+/*----------------------------------------------------------------------------*/
+/* dummy loop                                                                 */
+/*----------------------------------------------------------------------------*/
+: actor.loop
+
+  1000 sleep
+;
+
+/*----------------------------------------------------------------------------*/
+/* actor formation                                                            */
+/*----------------------------------------------------------------------------*/
+: actorForm ( "<loop>" "<actorName>" -- queue )
+
+  reg.push
+
+  >r
+  >r
+
+  // r1 has <actorName>
+  // r0 has <loop>
+
+  r1 ".task"    concat dup . :task    execute >reg0  // reg0 has task
+  r1 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
+  r1 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
+  r1 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
+
+  // seed the task
+  r0 dup . 0 swap reg0 task.seed
+
+  // attach queue to task
+  reg1 reg0 task.queue!
+
+  // put task in taskset
+  reg0 reg2 taskset.append
+
+  // attach taskset to thread
+  reg2 reg3 thread.taskset!
+
+  // spawn the os thread
+  reg3 thread.spawn
+
+  rdrop
+  rdrop
+
+  // leave queue on stack
+  reg1
+
+  reg.pop
+;
+
+8 ptrArray: actorQueues
+
+: aft
+
+  //"actor.loop" "actor" actorForm .
+
+  8 0 do
+    "actor.loop"
+    "actor" I >str concat actorForm
+    I actorQueues !
+  loop
+
+  8 0 do
+    I actorQueues @ .
+  loop
+
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
