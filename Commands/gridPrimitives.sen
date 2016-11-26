@@ -260,8 +260,13 @@
   reg.pop
 ;
 
-// for this experiment we will have an array of pp's
+/*----------------------------------------------------------------------------*/
+/* pointer arrays                                                             */
+/*----------------------------------------------------------------------------*/
+
 args.nodes ptrArray: ppQueues
+args.nodes ptrArray: cpQueues
+args.nodes ptrArray: pQueues
 
 /*----------------------------------------------------------------------------*/
 /* coordinator loop (sends the indrect call to all participant proxies)       */
@@ -304,29 +309,29 @@ args.nodes ptrArray: ppQueues
 
 ////////////////////////////////////////////////////////////////////////////////
 
-// Participant
-0 "execute.loop" "p" actorForm drop
-
-// Coordinator Proxy
-0 p.queue 2 "passOn.loop" "cp" actorForm drop
-
-: createPPs
+: createActors
 
   args.nodes 0 do
-    I cp.queue 2 "passOn.loop" "pp" I >str concat actorForm
+
+    // create the participant for this I
+    0 "execute.loop" "p" I >str concat actorForm
+    I pQueues !
+
+    // create the coordinator proxy for this I
+    I I pQueues @ 2 "passOn.loop" "cp" I >str concat actorForm
+    I cpQueues !
+
+    // create the partitipant proxy for this I
+    I I cpQueues @ 2 "passOn.loop" "pp" I >str concat actorForm
     I ppQueues !
+
   loop
 
-  args.nodes 0 do
-    I ppQueues @ .
-  loop
+  // coordinator
+  0 "c.loop" "c" actorForm drop
 ;
 
-createPPs
-
-// Coordinator
-0 "c.loop" "c"  actorForm drop
-
+createActors
 
 ////////////////////////////////////////////////////////////////////////////////
 
