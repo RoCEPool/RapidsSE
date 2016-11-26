@@ -230,11 +230,14 @@
 /*----------------------------------------------------------------------------*/
 /* pass on loop                                                               */
 /*----------------------------------------------------------------------------*/
-: passOn.loop ( queue -- )
+: passOn.loop ( actorNo queue -- )
 
   reg.push
 
-  >r // r0 has queue
+  >r
+  >r
+  // r0 has actorNo
+  // r1 has queue
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
@@ -243,7 +246,7 @@
     >indirect  // convert valset to indirect call; reg0 has caller
 
     stk
-    depth r0 >queue>
+    depth r1 >queue>
     stk
 
     >result    // convert stack contents into indirect result
@@ -251,6 +254,7 @@
 
   0 until
 
+  rdrop
   rdrop
 
   reg.pop
@@ -304,13 +308,12 @@ args.nodes ptrArray: ppQueues
 0 "execute.loop" "p" actorForm drop
 
 // Coordinator Proxy
-p.queue  1 "passOn.loop" "cp" actorForm drop
-
+0 p.queue 2 "passOn.loop" "cp" actorForm drop
 
 : createPPs
 
   args.nodes 0 do
-    cp.queue 1 "passOn.loop" "pp" I >str concat actorForm
+    I cp.queue 2 "passOn.loop" "pp" I >str concat actorForm
     I ppQueues !
   loop
 
