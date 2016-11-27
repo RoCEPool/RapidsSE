@@ -8787,7 +8787,9 @@ void Task::vStackTransfer(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
     THROW_INVALID_PARAM(">stack");
   
+  pThatTask->m_xLock.vGrabWrite();
   pThatTask->m_xParamStack.vPush(xValWsp);
+  pThatTask->m_xLock.vDropWrite();
   
   EXIT();
 }
