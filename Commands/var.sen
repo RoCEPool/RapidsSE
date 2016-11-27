@@ -18,6 +18,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* create int array in current dictionary using name from input stream        */
+/*----------------------------------------------------------------------------*/
+: intArray:
+
+  create
+  object!!
+  dup >r // r0 - number of cells
+  sizeof_intval * allot
+  word.this >body magic!!
+
+  r> 0 do
+    I sizeof_intval * word.this >body (int) + (ptr)
+    dup
+    magic!!
+    CN_INTVAL class!
+  loop
+
+  does> (int) swap sizeof_intval * + (ptr)
+;
+
+/*----------------------------------------------------------------------------*/
 /* create ptr variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/
 : ptr:

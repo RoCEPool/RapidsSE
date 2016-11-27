@@ -287,6 +287,7 @@ stk
 /* pointer arrays                                                             */
 /*----------------------------------------------------------------------------*/
 
+args.nodes intArray: ddlInts
 args.nodes ptrArray: ppQueues
 args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
@@ -374,6 +375,15 @@ createActors
 /* distributed pattern test                                                   */
 /*----------------------------------------------------------------------------*/
 : d
+
+  args.nodes 0 do
+    I 10 + I ddlInts !
+  loop
+
+  args.nodes 0 do
+    I ddlInts @ .
+  loop
+
 
   1 sleep
 
