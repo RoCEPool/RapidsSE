@@ -293,6 +293,32 @@ args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
 
 /*----------------------------------------------------------------------------*/
+/* grab ddl lock n                                                            */
+/*----------------------------------------------------------------------------*/
+: grabDDL_n ( n -- true|false )
+
+  dup
+
+  ddlInts @ if
+   drop
+   false
+  else
+   1 swap ddlInts !
+   true
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop ddl lock n                                                            */
+/*----------------------------------------------------------------------------*/
+: dropDDL_n ( n -- true )
+
+  0 swap ddlInts !
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* coordinator loop (sends the indrect call to all participant proxies)       */
 /*----------------------------------------------------------------------------*/
 : c.loop ( -- )
@@ -377,13 +403,11 @@ createActors
 : d
 
   args.nodes 0 do
-    I 10 + I ddlInts !
+    0 I ddlInts !
   loop
 
-  args.nodes 0 do
-    I ddlInts @ .
-  loop
-
+  0 grabDDL_n . 0 ddlInts @ .
+  0 dropDDL_n . 0 ddlInts @ .
 
   1 sleep
 
