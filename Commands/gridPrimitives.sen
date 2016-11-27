@@ -352,8 +352,13 @@ args.nodes ptrArray: pQueues
     I cpQueues !
 
     // create the partitipant proxy for this I
-    I I cpQueues @ 2 "passOn.loop" "pp" I >str concat actorForm
-    I ppQueues !
+    I args.node == if
+      I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    else
+      I I cpQueues @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    then
 
   loop
 
