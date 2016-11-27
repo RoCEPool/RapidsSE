@@ -48,7 +48,7 @@
     CN_PTRVAL class!
   loop
 
-  does> stk (int) swap sizeof_ptrval * + (ptr) stk
+  does> (int) swap sizeof_ptrval * + (ptr)
 ;
 
 /*----------------------------------------------------------------------------*/

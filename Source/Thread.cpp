@@ -190,7 +190,7 @@ void Thread::vLoop(void)
 //         m_xPosixThread.iThreadPriority()
 //         );
   
-  m_xPosixThread.vThreadBoost(C_THREAD_BOOST);
+  //m_xPosixThread.vThreadBoost(C_THREAD_BOOST);                //! RANDOM ERROR
   
 //  vTrace("Thread %p: priority %lld\n",
 //         this,

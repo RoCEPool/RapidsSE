@@ -129,6 +129,8 @@
 /*----------------------------------------------------------------------------*/
 : >caller ( valset -- ; caller -- valset )
 
+  begin reg0 task.state@ TS_WAITING == until
+
   reg0 >stack
 
   reg0 task.signal
@@ -160,6 +162,27 @@
   valset>                  // convert valset to stack values
 
   drop                     // discard number of values
+;
+
+//------------------------------------------------------------------------------
+
+: >queue2> ( ... wordName #args queue -- result )
+
+  >r                       // save target queue onto rstack
+
+  task.this                // this task is the caller
+
+  swap                     // bring #args to top
+
+  1 +                      // valset will be ( args, wordname, caller )
+
+stk
+  >valset                  // convert stack values to valset
+stk
+
+  r>                       // restore target queue onto stack
+
+  queue.append             // pop valset and append to target queue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -215,9 +238,9 @@
     queue>     // pop valset off queue and push onto this stack
     >indirect  // convert valset to indirect call
 
-    stk
+    //stk
     !indirect  // execute indirect call
-    stk
+    //stk
 
     >result    // convert stack contents into indirect result
     >caller    // put indirect result onto stack of caller and signal
@@ -245,9 +268,9 @@
     queue>     // pop valset off queue and push onto this stack
     >indirect  // convert valset to indirect call; reg0 has caller
 
-    stk
+    //stk
     depth r1 >queue>
-    stk
+    //stk
 
     >result    // convert stack contents into indirect result
     >caller    // put indirect result onto stack of caller and signal
@@ -281,20 +304,27 @@ args.nodes ptrArray: pQueues
 
     queue>     // pop valset off queue and push onto this stack
 
+    args.nodes task.this task.acks!   // will wait for 1 ack
+
     args.nodes 0 do
 
       dup
 
       >indirect
-      depth
+      depth 1 -
       I ppQueues @
 
-      >queue>
-      .
+      >queue2>
 
     loop
 
-    drop
+    task.suspend             // this task suspends
+
+    args.nodes 0 do
+      drop  // the returned valset
+    loop
+
+    drop // the original valset
 
     "done" 1
 
