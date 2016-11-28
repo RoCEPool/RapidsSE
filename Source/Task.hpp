@@ -355,6 +355,7 @@ namespace Tasks
     static void vRdtscp(NNP_Task nnpTask);
     static void vRepeat(NNP_Task nnpTask);         
     static void vRetryPoint(NNP_Task nnpTask);
+    static void vRoll(NNP_Task nnpTask);
     static void vRot(NNP_Task nnpTask);
     static void vRotInv(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
