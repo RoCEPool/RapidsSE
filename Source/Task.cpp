@@ -707,6 +707,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("repeat",          &vRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
   vAddPrimitive("rot",             &vRot,              false);
+  vAddPrimitive("-rot",            &vRotInv,           false);
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("sleep",           &vSleep,            false);
@@ -3960,6 +3961,27 @@ ENTRY("vRot");
   nnpTask->m_xParamStack.vPush(&xValA);
   nnpTask->m_xParamStack.vPush(&xValC);
   nnpTask->m_xParamStack.vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* -rot -- inverse rotate top 3 values ( C B A -- B A C )                     */
+/*----------------------------------------------------------------------------*/
+void Task::vRotInv(NNP_Task nnpTask)
+{
+  ENTRY("vRotInv");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  ValWsp xValC;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
+    THROW_INVALID_PARAM("rot");
+  
+  nnpTask->m_xParamStack.vPush(&xValB);
+  nnpTask->m_xParamStack.vPush(&xValA);
+  nnpTask->m_xParamStack.vPush(&xValC);
   
   EXIT();
 }

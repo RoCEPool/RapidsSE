@@ -17,15 +17,15 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-  i8 i = 0;
-  Synch::uAtomicInc(&i);
-  printf("AtomicInc i = %lld\n",i);
-  Synch::uAtomicDec(&i);
-  printf("AtomicDec i = %lld\n",i);
-  
-  u8 u = 2;
-  bool b = Synch::bTestAndSet(&u,1,3);
-  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
+//  i8 i = 0;
+//  Synch::uAtomicInc(&i);
+//  printf("AtomicInc i = %lld\n",i);
+//  Synch::uAtomicDec(&i);
+//  printf("AtomicDec i = %lld\n",i);
+//  
+//  u8 u = 2;
+//  bool b = Synch::bTestAndSet(&u,1,3);
+//  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
   
   
   Timer xTimer;
