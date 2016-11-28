@@ -164,7 +164,7 @@ bool Queue::bPop(ValWsp* pValWsp)
   if ( ! m_pTopBuffer ) {
     ASSERT( ! m_iCount );
     m_zLock.vDropWrite();
-    return nullptr;
+    return false;
   }
   
   bool bDiscardable;
@@ -197,7 +197,7 @@ bool Queue::bPop(ValSet* pValSet)
   if ( ! m_pTopBuffer ) {
     ASSERT( ! m_iCount );
     m_zLock.vDropWrite();
-    return nullptr;
+    return false;
   }
   
   bool bDiscardable;
