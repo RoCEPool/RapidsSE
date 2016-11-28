@@ -734,6 +734,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">valset",         &vToValSet,         false);
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("tuck",            &vTuck,             false);
   vAddPrimitive("unloop",          &vUnloop,           false);
   vAddPrimitive("until",           &vUntil,            true );
   vAddPrimitive("version",         &vVersion,          false);
@@ -4787,6 +4788,26 @@ void Task::vTraceOn(NNP_Task nnpTask)
 ENTRY("vTraceOn");
   
   nnpTask->m_bTracing = true;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tuck -- copy the first stack value below second ( B A -- A B A )           */
+/*----------------------------------------------------------------------------*/
+void Task::vTuck(NNP_Task nnpTask)
+{
+  ENTRY("vTuck");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+    THROW_INVALID_PARAM("tuck");
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
+  nnpTask->m_xParamStack.vPush(&xValB);
+  nnpTask->m_xParamStack.vPush(&xValA);
   
   EXIT();
 }
