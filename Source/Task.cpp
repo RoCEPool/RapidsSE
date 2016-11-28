@@ -3345,15 +3345,24 @@ void Task::vLocate(NNP_Task nnpTask)
 {
 ENTRY("vLocate");
   
-  void* pCellVoid;
-  if ( ! nnpTask->m_xParamStack.bPop(pCellVoid) )
+  i8 iAsInt;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iAsInt) )
     THROW_INVALID_PARAM("locate");
+  
+  void* pCellVoid = (void*)iAsInt;
   Cell* pCell = _pCell(pCellVoid);
   
   Word* pLocatedWord = nnpTask->pLocateWord(pCell);
-  ASSERT(pLocatedWord);
   
-  nnpTask->m_xParamStack.vPush(pLocatedWord->sName().a());
+  if (pLocatedWord) {
+    s32 sName;
+    sName = pLocatedWord->sName();
+    nnpTask->m_xParamStack.vPush(sName);
+  }
+  else {
+    i8 iZero = 0;
+    nnpTask->m_xParamStack.vPush(iZero);
+  }
   
   EXIT();
 }

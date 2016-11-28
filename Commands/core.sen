@@ -81,9 +81,17 @@ create
 /* dump the return stack                                                      */
 /*----------------------------------------------------------------------------*/
 : rstk
-    "return stack" .
-    rdepth dup not if drop exit then
-    0 do I 2 + rpick dup .put " ".put locate .put .\n loop
+
+  "return stack" .
+  rdepth dup not if drop exit then
+  0 do
+    I 2 + rpick
+    dup .put
+    " ".put
+    locate
+    dup if .put else drop then
+    .\n
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
