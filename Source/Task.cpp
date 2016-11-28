@@ -1731,9 +1731,19 @@ void Task::vPrimitive(const char* aPrimitive)
   if (!m_bTracing)
     return;
   
+  char aRoutine[128];
+  
+  Cell* pCell = IP.m_pCell;
+  Word* pLocatedWord = pLocateWord(pCell);
+  if (pLocatedWord)
+    String::vCopy(aRoutine,pLocatedWord->sName().a());
+  else
+    String::vCopy(aRoutine,"<unknown>");
+  
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("%15s%15s : r %lld ; p%2d=[","",aPrimitive,iReturnValues,iParamValues);
+  vTrace("%-15s %15s : r %lld ; p%2d=[",
+         aRoutine,aPrimitive,iReturnValues,iParamValues);
   
   for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
     
