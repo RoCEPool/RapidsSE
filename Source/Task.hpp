@@ -346,7 +346,6 @@ namespace Tasks
     static void vPick(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);       
     static void vPrint(NNP_Task nnpTask);          
-    static void vPstackDepth(NNP_Task nnpTask);
     static void vPush(NNP_Task nnpTask);
     static void vPushEmbedded(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
@@ -556,9 +555,6 @@ namespace Tasks
     static void vProcessGetPid(NNP_Task nnpTask);
     static void vProcessQuit(NNP_Task nnpTask);
     static void vProcessTestPid(NNP_Task nnpTask);
-    
-    // pstack
-    static void vPstackClass(NNP_Task nnpTask);
     
     // queue
     static void vQueueAppend(NNP_Task nnpTask);

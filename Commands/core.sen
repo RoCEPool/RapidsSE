@@ -73,7 +73,7 @@ create
 /*----------------------------------------------------------------------------*/
 : stk
     "parameter stack" .
-    p.depth dup not if drop exit then 0 do I pick dump loop
+    depth dup not if drop exit then 0 do I pick dump loop
 ;
 
 /*----------------------------------------------------------------------------*/

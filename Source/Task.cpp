@@ -883,9 +883,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
   
-  vAddPrimitive("pstack.class",    &vPstackClass,      false);
-  vAddPrimitive("p.depth",         &vPstackDepth,      false);
-  
   vAddPrimitive("queue.append",    &vQueueAppend,      false);
   vAddPrimitive("queue.dump",      &vQueueDump,        false);
   vAddPrimitive("queue.init",      &vQueueInit,        false);
@@ -983,7 +980,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
 
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
-  
+ 
   vAddPrimitive("stack.class", &vStackClass,    false);
   vAddPrimitive(">stack",      &vStackTransfer, false);
 
@@ -7230,41 +7227,6 @@ ENTRY("vProcessTestPid");
   i8 iExists = Process::bTestPid(iPid);
   
   nnpTask->m_xParamStack.vPush(iExists);
-  
-  EXIT();
-}
-
-// pstack: /////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* p.depth -- put number of values in param stack onto param stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vPstackDepth(NNP_Task nnpTask)
-{
-ENTRY("vPstackDepth");
-  
-  i8 iDepth = nnpTask->m_xParamStack.iValues();
-  
-  nnpTask->m_xParamStack.vPush(iDepth);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pstack.class -- push class of top value on param stack                     */
-/*----------------------------------------------------------------------------*/
-void Task::vPstackClass(NNP_Task nnpTask)
-{
-ENTRY("vPstackClass");
-  
-  if ( ! nnpTask->m_xParamStack.bGuard(1) )
-    THROW("pstack.class");
-
-  ValWsp* pValWsp = static_cast<ValWsp*>(nnpTask->m_xParamStack.pPeek(0));
-  
-  eCN eClass = pValWsp->eClass();
-  
-  nnpTask->m_xParamStack.vPush(eClass);
   
   EXIT();
 }
