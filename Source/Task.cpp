@@ -940,7 +940,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">regF",            &vRegToRegF,       false);
   vAddPrimitive(">regN",            &vRegToRegNth,     false);
   
-  vAddPrimitive("rstack.depth",    &vRstackDepth,      false);
+  vAddPrimitive("rdepth",          &vRstackDepth,      false);
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
   vAddPrimitive("rpick",           &vRstackPick,       false);
@@ -3985,7 +3985,7 @@ void Task::vRotInv(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rstack.depth -- put number of values in return stack onto param stack      */
+/* rdepth -- put number of values in return stack onto param stack            */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDepth(NNP_Task nnpTask)
 {

@@ -81,10 +81,9 @@ create
 /*----------------------------------------------------------------------------*/
 : rstk
     "return stack" .
-    rstack.depth dup not if drop exit then
+    rdepth dup not if drop exit then
     0 do I 2 + r@ dup .put " ".put locate .put .\n loop
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* increment integer on stack                                                 */
