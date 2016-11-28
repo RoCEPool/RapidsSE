@@ -1,6 +1,6 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -Wall -Wextra -O3
+CPPFLAGS = -std=c++11 -D__LINUX__ -Wall -Wextra -O3
 LIBFLAGS = -shared
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
@@ -14,14 +14,14 @@ TARGET_LIBRARY = $(TARGETPATH)/libRapidsSEv0.1.4.so
 #Source Files
 SOURCES = $(wildcard *.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
-S_SOURCES = $(wildcard *.s)
+#S_SOURCES = $(wildcard *.s)
 
 #Man pages
 MAN_PAGES=../Documents/se.man
 
 #Object Files for library
 OBJECTS = $(SOURCES:.cpp=.o)
-OBJECTS += $(S_SOURCES:.s=.o)
+#OBJECTS += $(S_SOURCES:.s=.o)
 
 #Dependency Files for library
 DEPFILES = $(SOURCES:.cpp=.d)

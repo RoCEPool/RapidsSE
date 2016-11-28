@@ -13,8 +13,14 @@ u8 Synch::uAtomicDec(i8* pWord)
 {
 #ifdef __APPLE__
   u8 uResult = OSAtomicDecrement64(pWord);
+  
+#elif __LINUX__
+  printf("uAtomicDec linux\n");
+  u8 uResult = __sync_sub_and_fetch((u8*)pWord, 1);
+  
 #else
   u8 uResult = iAtomicDec(pWord);
+  
 #endif
   
   return uResult;
@@ -27,8 +33,14 @@ u8 Synch::uAtomicInc(i8* pWord)
 {
 #ifdef __APPLE__
   u8 uResult = OSAtomicIncrement64(pWord);
+  
+#elif __LINUX__
+  printf("uAtomicInc linux\n");
+  u8 uResult = __sync_add_and_fetch((u8*)pWord, 1);
+  
 #else
   u8 uResult = iAtomicInc(pWord);
+  
 #endif
   
   return uResult;
@@ -39,10 +51,17 @@ u8 Synch::uAtomicInc(i8* pWord)
 /*----------------------------------------------------------------------------*/
 bool Synch::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
 {
+  
 #ifdef __APPLE__
   u8 uResult = OSAtomicCompareAndSwap64((i8)uIf,(i8)uThen,(i8*)pWord);
+  
+#elif __LINUX__
+  printf("bTestAndSet linux\n");
+  bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
+  
 #else
   u8 uResult = iTestSet(pWord, uIf, uThen);
+  
 #endif
   
   return uResult;
@@ -60,8 +79,17 @@ i8 Synch::iTicks(void)
   i8 iTicks = tp.tv_sec * C_1Bn;
   iTicks += tp.tv_nsec;
   
-#else
-  i8 iTicks = iRdtscp();
+#elif __LINUX__
+  printf("iTicks linux\n");
+  struct timeval iTimeval;
+  
+  if (gettimeofday(&iTimeval, NULL) < 0) {
+    return 0;
+  }
+  i8 iTicks = iTimeval.tv_sec;
+  iTicks *= C_1M;  // convert to micros
+  iTicks += iTimeval.tv_usec;
+  iTicks *= C_1K;  // convert to nanos
 #endif
   
   return iTicks;
@@ -72,7 +100,7 @@ i8 Synch::iTicks(void)
 /*----------------------------------------------------------------------------*/
 i8 Synch::iTickFrequency(void)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__LINUX__)
   i8 iFrequency = C_1Bn;
 #else
   i8 iFrequency = System::iClockFrequency();
@@ -86,7 +114,7 @@ i8 Synch::iTickFrequency(void)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockDropRead(u8* pWord)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__LINUX__)
   //u8 uResult = iDropRead(pWord);
 
   bool b;
@@ -117,7 +145,7 @@ u8 Synch::iLockDropRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockGrabRead(u8* pWord)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__LINUX__)
   
   //u8 uResult = iGrabRead(pWord);
   
@@ -143,7 +171,7 @@ u8 Synch::iLockGrabRead(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockDropWrite(u8* pWord)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__LINUX__)
   //u8 uResult = iDropWrite(pWord);
   
   u8 uCurrent = *pWord;
@@ -165,7 +193,7 @@ u8 Synch::iLockDropWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockGrabWrite(u8* pWord)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__LINUX__)
   //u8 uResult = iGrabWrite(pWord);
 
   u8 uCurrent = *pWord;
@@ -196,7 +224,7 @@ u8 Synch::iLockGrabWrite(u8* pWord)
 /*----------------------------------------------------------------------------*/
 u8 Synch::iLockIsLocked(u8* pWord)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__LINUX__)
   u8 uResult = *pWord ? 1 : 0;
 #else
   u8 uResult = iIsLocked(pWord);

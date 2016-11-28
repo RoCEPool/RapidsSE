@@ -7977,11 +7977,11 @@ ENTRY("vRowBufferAppend");
   bool b = pRowBuffer->bInsertRow(pTxRef,sRecord.a(),iLength);
   
   if (b) {
-    nnpTask->m_xParamStack.vPush(true);
+    nnpTask->m_xParamStack.vPush((i8)1);
   }
   else {
     nnpTask->m_xParamStack.vPush(sRecord);
-    nnpTask->m_xParamStack.vPush(false);
+    nnpTask->m_xParamStack.vPush((i8)0);
   }
     
   EXIT();
@@ -8020,10 +8020,10 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   bool b = pRowBuffer->bInsertRow(pTxRef,aRecord,iLength);
   
   if (b) {
-    nnpTask->m_xParamStack.vPush(true);
+    nnpTask->m_xParamStack.vPush((i8)1);
   }
   else {
-    nnpTask->m_xParamStack.vPush(false);
+    nnpTask->m_xParamStack.vPush((i8)0);
   }
   
   EXIT();
