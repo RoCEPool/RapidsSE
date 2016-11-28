@@ -56,7 +56,7 @@ $(TARGET_EXE): $(TARGET_LIBRARY)
 
 #To generate dependency files
 %.d: %.cpp
-	$(CPP) $(INCLUDES) -MM $< > $@
+	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@
 
 -include $(DEPFILES)
 

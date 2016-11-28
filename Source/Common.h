@@ -13,7 +13,7 @@
 #include "Report.hpp"
 #include "SysCall.hpp"
 
-#if !( (defined(__APPLE__) || defined(__LINUX)) )
+#if !( (defined(__APPLE__) || defined(__LINUX__)) )
   #include "Asm.h"
 #endif
 

@@ -15,7 +15,6 @@ u8 Synch::uAtomicDec(i8* pWord)
   u8 uResult = OSAtomicDecrement64(pWord);
   
 #elif __LINUX__
-  printf("uAtomicDec linux\n");
   u8 uResult = __sync_sub_and_fetch((u8*)pWord, 1);
   
 #else
@@ -35,7 +34,6 @@ u8 Synch::uAtomicInc(i8* pWord)
   u8 uResult = OSAtomicIncrement64(pWord);
   
 #elif __LINUX__
-  printf("uAtomicInc linux\n");
   u8 uResult = __sync_add_and_fetch((u8*)pWord, 1);
   
 #else
@@ -56,7 +54,6 @@ bool Synch::bTestAndSet(u8* pWord, u8 uIf, u8 uThen)
   u8 uResult = OSAtomicCompareAndSwap64((i8)uIf,(i8)uThen,(i8*)pWord);
   
 #elif __LINUX__
-  printf("bTestAndSet linux\n");
   bool uResult = __sync_bool_compare_and_swap(pWord, uIf, uThen);
   
 #else
@@ -80,7 +77,6 @@ i8 Synch::iTicks(void)
   iTicks += tp.tv_nsec;
   
 #elif __LINUX__
-  printf("iTicks linux\n");
   struct timeval iTimeval;
   
   if (gettimeofday(&iTimeval, NULL) < 0) {
