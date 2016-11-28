@@ -335,6 +335,7 @@ namespace Tasks
     static void vNameWord(NNP_Task nnpTask);       
     static void vNeg(NNP_Task nnpTask);
     static void vNext(NNP_Task nnpTask);
+    static void vNip(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
     static void vNotEqual(NNP_Task nnpTask);       

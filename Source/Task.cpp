@@ -688,6 +688,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("neg",             &vNeg,              false);
   vAddPrimitive("next",            &vNext,             true );
+  vAddPrimitive("nip",             &vNip,              false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
   vAddPrimitive("!=",              &vNotEqual,         false);
@@ -3597,6 +3598,24 @@ ENTRY("vNext");
   pCurrentWord->vEncode("jump",pIterateLoc);
   
   pJumpFalseArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nip -- drop the 2nd value from the stack ( B A -- A )                      */
+/*----------------------------------------------------------------------------*/
+void Task::vNip(NNP_Task nnpTask)
+{
+  ENTRY("vRot");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+    THROW_INVALID_PARAM("nip");
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
   
   EXIT();
 }
