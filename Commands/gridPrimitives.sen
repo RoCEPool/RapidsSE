@@ -236,6 +236,7 @@ stk
     depth 0 != if "stack of task has grown" . debug.trap then
 
     queue>     // pop valset off queue and push onto this stack
+
     >indirect  // convert valset to indirect call
 
     //stk
@@ -369,6 +370,10 @@ args.nodes ptrArray: pQueues
 : createActors
 
   args.nodes 0 do
+    0 I ddlInts !
+  loop
+
+  args.nodes 0 do
 
     // create the participant for this I
     0 "execute.loop" "p" I >str concat actorForm
@@ -390,16 +395,16 @@ args.nodes ptrArray: pQueues
   loop
 
   // coordinator
-  0 "c.loop" "c" actorForm drop
+  0 "execute.loop" "c" actorForm drop
 ;
 
-createActors
 
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* distributed pattern test                                                   */
 /*----------------------------------------------------------------------------*/
+/*
 : d
 
   args.nodes 0 do
@@ -417,29 +422,109 @@ stk
 stk
 
 ;
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 
-8 ptrArray: actorQueues
+createActors
 
-: actor.loop
+/*----------------------------------------------------------------------------*/
+/* dispatch indirect call to given participant                                */
+/*----------------------------------------------------------------------------*/
+: dispatch ( ... #args actorNo -- ..result.. )
 
-  1000 sleep
+  dup args.node == if
+    pQueues @    ( ... #args queue )
+  else
+    ppQueues @   ( ... #args queue )
+  then
+
+  >queue>        ( ..result.. )
+
+  >result        ( valset )
 ;
 
-: aft
+/*----------------------------------------------------------------------------*/
+/* grab distributed ddl lock                                                  */
+/*----------------------------------------------------------------------------*/
+: grabDistDDL ( -- true )
 
-  //"actor.loop" "actor" actorForm .
+  // dispatch grab to node 0
 
-  8 0 do
-    0 "actor.loop"
-    "actor" I >str concat actorForm
-    I actorQueues !
+  begin
+    0 "grabDDL_n" 2 0
+    dispatch
+  until
+
+  // dispatch grab to all other nodes
+
+  args.nodes 1 do
+    I "grabDDL_n" 2 I
+    dispatch
+    .
   loop
 
-  8 0 do
-    I actorQueues @ .
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop distributed ddl lock                                                  */
+/*----------------------------------------------------------------------------*/
+: dropDistDDL ( -- true )
+
+  // dispatch drop to all other nodes
+
+  args.nodes 1 do
+    I "dropDDL_n" 2 I
+    dispatch
+    .
   loop
+
+  // dispatch drop to node 0
+
+  0 "dropDDL_n" 2 0
+  dispatch
+  .
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinate a distributed dispatch                                          */
+/*----------------------------------------------------------------------------*/
+: coordinate ( ... wordName #args -- ..result.. )
+
+  c.queue >queue>
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed lock test                                                      */
+/*----------------------------------------------------------------------------*/
+: ddlDump
+
+  "{ " .put
+  args.nodes 0 do
+    I ddlInts @ .put " " .put
+  loop
+
+  "}" .put .\n
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed lock test                                                      */
+/*----------------------------------------------------------------------------*/
+: dl
+
+  "grabDistDDL" 1 coordinate .
+
+  ddlDump
+
+  "dropDistDDL" 1 coordinate .
+
+  ddlDump
+
+stk
 ;
 
 /*============================================================================*/
