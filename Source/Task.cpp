@@ -746,6 +746,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("0>",              &vZeroGreater,      false);
   
   //----------------------------------------------------------
+  vAddPrimitive("assert",          &vAssert,            false);
   vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
   vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
   vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
@@ -4968,6 +4969,23 @@ ENTRY("vZeroGreater");
 /*----------------------------------------------------------------------------*/
 
 // assert: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* assert -- assert top value on stack                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAssert(NNP_Task nnpTask)
+{
+  ENTRY("vAssert");
+  
+  i8 iTrue;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iTrue) )
+    THROW_INVALID_PARAM("assert");
+  
+  if ( ! iTrue )
+    THROW("assert");
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* assert.stack_0 -- asssert 0 values on stack                                */

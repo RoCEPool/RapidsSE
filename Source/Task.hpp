@@ -407,6 +407,7 @@ namespace Tasks
     static void vArgsPrint(NNP_Task nnpTask);
 
     // assert
+    static void vAssert(NNP_Task nnpTask);
     static void vAssertStack_0(NNP_Task nnpTask);
     static void vAssertStack_0more(NNP_Task nnpTask);
     static void vAssertStack_1(NNP_Task nnpTask);
