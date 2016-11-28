@@ -13,7 +13,10 @@
 #include "Report.hpp"
 #include "SysCall.hpp"
 
-#include "Asm.h"
+#if !( (defined(__APPLE__) || defined(__LINUX)) )
+  #include "Asm.h"
+#endif
+
 #include "Atomic.hpp"
 #include "Dir.hpp"
 #include "Env.hpp"

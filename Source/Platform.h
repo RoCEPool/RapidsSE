@@ -11,7 +11,9 @@
 #include "System.hpp"
 #include "PosixThread.hpp"
 
-#include "Asm.h"
+#if !( (defined(__APPLE__) || defined(__LINUX)) )
+  #include "Asm.h"
+#endif
 
 #include "Synch.hpp"
 
