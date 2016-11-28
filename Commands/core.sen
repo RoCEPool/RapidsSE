@@ -73,7 +73,8 @@ create
 /*----------------------------------------------------------------------------*/
 : stk
     "parameter stack" .
-    depth dup not if drop exit then 0 do I pick dump loop
+    depth dup not if drop exit then
+    0 do I pick dump loop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -82,7 +83,7 @@ create
 : rstk
     "return stack" .
     rdepth dup not if drop exit then
-    0 do I 2 + r@ dup .put " ".put locate .put .\n loop
+    0 do I 2 + rpick dup .put " ".put locate .put .\n loop
 ;
 
 /*----------------------------------------------------------------------------*/

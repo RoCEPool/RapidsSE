@@ -4015,21 +4015,17 @@ ENTRY("vRstackDrop");
 }
 
 /*----------------------------------------------------------------------------*/
-/* r@ -- place copy of nth value in return stack onto param stack             */
+/* r@ -- place copy of top value in return stack onto param stack             */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetch(NNP_Task nnpTask)
 {
 ENTRY("vRstackFetch");
   
-  i8 iPick;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("r@");
-  
   // could do this directly on stack
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
+  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
   
   nnpTask->m_xParamStack.vPush(xValWsp);
   
