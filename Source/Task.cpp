@@ -708,6 +708,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("repeat",          &vRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
   vAddPrimitive("roll",            &vRoll,             false);
+  vAddPrimitive("-roll",           &vRollInv,          false);
   vAddPrimitive("rot",             &vRot,              false);
   vAddPrimitive("-rot",            &vRotInv,           false);
   vAddPrimitive("see",             &vSee,              false);
@@ -4004,6 +4005,43 @@ void Task::vRoll(NNP_Task nnpTask)
     
     nnpTask->m_xParamStack.vPush(&xValX);
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* -roll -- inverse roll top stack values at n ( Z ... B A n -- ... B A Z )   */
+/*----------------------------------------------------------------------------*/
+void Task::vRollInv(NNP_Task nnpTask)
+{
+  ENTRY("vRollInv");
+  
+  ValWsp xValZ;
+  ValWsp xValX;
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("-roll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
+      THROW_INVALID_PARAM("-roll");
+    
+    nnpTask->m_xReturnStack.vPush(&xValX);
+  }
+
+  if ( ! nnpTask->m_xParamStack.bPop(xValZ) )
+    THROW_INVALID_PARAM("-roll");
+  
+ 
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+      THROW_INVALID_PARAM("-roll");
+    
+    nnpTask->m_xParamStack.vPush(&xValX);
+  }
+
+  nnpTask->m_xParamStack.vPush(&xValZ);
   
   EXIT();
 }
