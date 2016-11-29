@@ -38,7 +38,7 @@ void Socket::operator delete(void* pSocketAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(void)
-: Header(CN_SOCKET)
+: Object(CN_SOCKET)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -55,7 +55,7 @@ Socket::Socket(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Socket::Socket(int iSocketId)
-: Header(CN_SOCKET)
+: Object(CN_SOCKET)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
