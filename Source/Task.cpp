@@ -195,7 +195,8 @@ void Task::vInit(const char* aLambda)
   
   m_xDicStack.vPush(gpMainDic);
   
-  m_pQueue = nullptr;
+  m_pQueue  = nullptr;
+  m_pSocket = nullptr;
   
   //m_xParamStack
   //m_xReturnStack
@@ -587,6 +588,8 @@ void Task::vAddConstants(void)
   vAddConstant("requestTaskPrint",(i8)0);
   vAddConstant("answerTaskPrint",(i8)1);
   vAddConstant("connectorTaskPrint",(i8)1);
+  vAddConstant("senderTaskPrint", (i8)1);
+  vAddConstant("receiverTaskPrint", (i8)1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1029,6 +1032,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
   vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
   vAddPrimitive("task.signal",     &vTaskSignal,       false);
+  vAddPrimitive("task.socket@",    &vTaskSocketFetch,  false);
+  vAddPrimitive("task.socket!",    &vTaskSocketStore,  false);
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
   vAddPrimitive("task.suspend",    &vTaskSuspend,      false);
@@ -9908,6 +9913,51 @@ void Task::vTaskSignal(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.socket@ -- fetch socket of task on param stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSocketFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQfetch");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.socket@");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Socket* pSocket = pThatTask->m_pSocket;
+  
+  Object* pSocketEmb = static_cast<Object*>(pSocket);
+  
+  nnpTask->m_xParamStack.vPush(pSocketEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.socket! -- store socket on param stack into task                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskSocketStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskQstore");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.socket!");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* ptrSocket;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(ptrSocket) )
+    THROW_INVALID_PARAM("task.socket!");
+  
+  Socket* pSocket = static_cast<Socket*>(ptrSocket);
+  
+  pThatTask->m_pSocket = pSocket;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.state@ -- fetch state of task                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskStateFetch(NNP_Task nnpTask)
@@ -10269,7 +10319,7 @@ ENTRY("vTaskSetAppend");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PARAM("taskset.append");
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
@@ -11867,7 +11917,7 @@ ENTRY("vSocketConnect");
   //if ( ! bResult )
   //  THROW("Unable to connect: Errno %d!", xSysCall.iError());
   
-  Header* pPtrSocket = pSocket;
+  Object* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
   
   EXIT();
@@ -11893,7 +11943,7 @@ ENTRY("vSocketListen");
   if ( ! bResult )
     THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
   
-  Header* pPtrSocket = pSocket;
+  Object* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
   
   EXIT();
@@ -11915,7 +11965,7 @@ ENTRY("vSocketOpen");
   if ( ! bResult )
     THROW("Unable to create socker: Errno %d!", xSysCall.iError());
   
-  Header* pPtrSocket = pSocket;
+  Object* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
   
   EXIT();
@@ -11930,24 +11980,25 @@ ENTRY("vSocketSend");
 
   SysCall xSysCall;
   Socket* pSocket;
-  char* pData;
+  //char* pData;
   Object* pObject;
   s8K  sWorkspace;
-  ValWsp xValWsp;
+  ValSet xValSet;
   
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
     THROW_INVALID_PARAM("socketsend");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socketsend");
   
-  xValWsp.vToString(sWorkspace.a());
+  //xValWsp.vToString(sWorkspace.a());
 
   pSocket = reinterpret_cast<Socket*>(pObject);
-  pData   = reinterpret_cast<char*>(sWorkspace.a());
+  //pData   = reinterpret_cast<char*>(sWorkspace.a());
   
-  bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
+  //bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
+  
+  bool bResult = pSocket->bSendTo((int)xValSet.iSize(), &xValSet, xSysCall);
   
   if ( ! bResult )
     THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());

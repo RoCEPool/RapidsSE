@@ -144,7 +144,8 @@ namespace Tasks
     
     DicStack m_xDicStack;
     
-    Queue* m_pQueue;        // processing queue
+    Queue* m_pQueue;         // processing queue
+    Socket* m_pSocket;       // socket
     
     Stack  m_xParamStack;   // parameter stack
     Stack  m_xReturnStack;  // return stack
@@ -729,6 +730,8 @@ namespace Tasks
     static void vTaskSeitfFetch(NNP_Task nnpTask);
     static void vTaskSeitfStore(NNP_Task nnpTask);
     static void vTaskSignal(NNP_Task nnpTask);
+    static void vTaskSocketFetch(NNP_Task nnpTask);
+    static void vTaskSocketStore(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
     static void vTaskSuspend(NNP_Task nnpTask);
@@ -754,7 +757,7 @@ namespace Tasks
     
     // taskSet
     static void vTaskSetAppend(NNP_Task nnpTask); 
-    static void vTaskSetDump(NNP_Task nnpTask);   
+    static void vTaskSetDump(NNP_Task nnpTask);
     static void vTaskSetInit(NNP_Task nnpTask);   
     
     // thread
