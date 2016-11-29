@@ -298,14 +298,23 @@ args.nodes ptrArray: pQueues
 /*----------------------------------------------------------------------------*/
 : grabDDL_n ( n -- true|false )
 
-  dup
+  dup                ( n n )
 
-  ddlInts @ if
-   drop
-   false
-  else
-   1 swap ddlInts !
-   true
+  ddlInts @          ( n v )
+
+  if                 ( n )
+
+   drop              ( )
+   false             ( false )
+
+  else               ( n )
+
+   // put 1 into ddlInts[n]
+
+   1                 ( n 1 )
+   swap              ( 1 n )
+   ddlInts !         ( )
+   true              ( true )
   then
 ;
 
@@ -314,55 +323,13 @@ args.nodes ptrArray: pQueues
 /*----------------------------------------------------------------------------*/
 : dropDDL_n ( n -- true )
 
-  0 swap ddlInts !
+  // put 0 into ddlInts[n]
 
-  true
-;
+  0          ( n 0 )
+  swap       ( 0 n )
+  ddlInts !  ( )
 
-/*----------------------------------------------------------------------------*/
-/* coordinator loop (sends the indrect call to all participant proxies)       */
-/*----------------------------------------------------------------------------*/
-: c.loop ( -- )
-
-  reg.push
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    queue>     // pop valset off queue and push onto this stack
-
-    args.nodes task.this task.acks!   // will wait for 1 ack
-
-    args.nodes 0 do
-
-      dup
-
-      >indirect
-      depth 1 -
-      I ppQueues @
-
-      >queue2>
-
-    loop
-
-    task.suspend             // this task suspends
-
-    args.nodes 0 do
-      drop  // the returned valset
-    loop
-
-    drop // the original valset
-
-    "done" 1
-
-    >valset
-
-    >caller    // put indirect result onto stack of caller and signal
-
-  0 until
-
-  reg.pop
+  true       ( true )
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
