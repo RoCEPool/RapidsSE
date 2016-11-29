@@ -12,13 +12,13 @@
 
 #include "RegFrame.hpp"
 
+#include "Socket.hpp"
+
 #include "Task.hpp"
 #include "TaskList.hpp"
 #include "TaskSet.hpp"
 
 #include "TaskCursor.hpp"
-
-#include "Socket.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Tasks
