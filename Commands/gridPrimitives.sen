@@ -433,15 +433,21 @@ createActors
 /*----------------------------------------------------------------------------*/
 : dispatch ( ... #args actorNo -- ..result.. )
 
+  // determine which queue to forward to
   dup args.node == if
+
+    // queue will be the participant for this node
     pQueues @    ( ... #args queue )
+
   else
+
+    // queue will be participant proxy for other node
     ppQueues @   ( ... #args queue )
+
   then
 
+  // transfer to another actors queue and wait for result
   >queue>        ( ..result.. )
-
-  >result        ( valset )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -449,22 +455,36 @@ createActors
 /*----------------------------------------------------------------------------*/
 : grabDistDDL ( -- true )
 
-  // dispatch grab to node 0
+  // dispatch grab of lock 0 to node 0
 
   begin
-    0 "grabDDL_n" 2 0
-    dispatch
+    0            // participant is to grab lock 0
+    "grabDDL_n"  // the word to execute
+    2            // there are 2 args now on stack
+    0            // dispatch to node 0
+                 ( 0 "grabDDL_n" 2 0 )
+
+    dispatch     // send indirect call to node 0
+
+                 ( true | false )
   until
 
-  // dispatch grab to all other nodes
+  // dispatch grab of lock I to all other nodes
 
   args.nodes 1 do
-    I "grabDDL_n" 2 I
-    dispatch
-    .
+    I            // participant is to grab lock I
+    "grabDDL_n"  // the word to execute
+    2            // there are 2 args now on stack
+    I            // dispatch to node I
+                 ( I "grabDDL_n" 2 I )
+
+    dispatch     // send indirect call to node I
+
+    .            // just print the indirect result for the moment
+
   loop
 
-  true
+  true           ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -475,26 +495,39 @@ createActors
   // dispatch drop to all other nodes
 
   args.nodes 1 do
-    I "dropDDL_n" 2 I
-    dispatch
-    .
+    I            // participant is to drop lock 0
+    "dropDDL_n"  // the word to execute
+    2            // there are 2 args now on stack
+    I            // dispatch to node I
+                 ( I "dropDDL_n" 2 I )
+
+    dispatch     // send indirect call to node I
+
+    .            // just print the indirect result
   loop
 
   // dispatch drop to node 0
 
-  0 "dropDDL_n" 2 0
-  dispatch
-  .
+  0              // participant is to drop lock 0
+  "dropDDL_n"    // the word to execute
+  2              // there are 2 args now on stack
+  0              // dispatch to node 0
+                 ( 0 "dropDDL_n" 2 0 )
 
-  true
+  dispatch       // send indirect call to node 0
+
+  .              // just print the indirect result for the moment
+
+  true           ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinate a distributed dispatch                                          */
+/* coordinate a dispatch of indirect all to the coordinator                   */
 /*----------------------------------------------------------------------------*/
 : coordinate ( ... wordName #args -- ..result.. )
 
-  c.queue >queue>
+  c.queue ( -- ... wordName #args c.queue )
+  >queue> ( -- ..result.. )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -508,7 +541,6 @@ createActors
   loop
 
   "}" .put .\n
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -516,11 +548,17 @@ createActors
 /*----------------------------------------------------------------------------*/
 : dl
 
-  "grabDistDDL" 1 coordinate .
+  // coordinate grab of dist ddl lock
+  "grabDistDDL" 1  ( "grabDistDdl" 1 )
+  coordinate       ( true|false )
+  .
 
   ddlDump
 
-  "dropDistDDL" 1 coordinate .
+  // coordinate drop of dist ddl lock
+  "dropDistDDL" 1 ( "dropDistDdl" 1 )
+  coordinate      ( true|false )
+  .
 
   ddlDump
 
