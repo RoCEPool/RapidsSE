@@ -1763,6 +1763,9 @@ void Task::vPrimitive(const char* aPrimitive)
     else if (CN_STRVAL == eClass) {
       vTrace("\"%lls\"",pValWsp->sStr());
     }
+    else if (CN_VALSET == eClass) {
+      vTrace("%p (%s)",pValWsp,pValWsp->aClass());
+    }
     else {
       vTrace("unknown value on stack: class=%lld",pValWsp->eClass());
     }
