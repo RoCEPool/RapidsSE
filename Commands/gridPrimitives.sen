@@ -88,24 +88,36 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* pop indirect valset from queue                                             */
+/* pop indirect valset from this tasks queue (this is a blocking call)        */
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )
 
   begin
-    task.this task.queue@ queue.pop
-    dup not if task.yield /*100 thread.sleep_us*/ then
+
+    // attempt to pop value off the tasks queue
+    task.this task.queue@ queue.pop ( value | false )
+
+    // test for value
+    dup not if
+      task.yield /*100 thread.sleep_us*/
+    then
+                                    ( value | false )
   until
 ;
 
 /*----------------------------------------------------------------------------*/
-/* convert valset to indirect call                                            */
+/* expand valset into an indirect call                                        */
 /*----------------------------------------------------------------------------*/
 : >indirect ( valset -- ... wordName ; reg0 == caller )
 
-  valset>  // expand valset into stack values ( ... wordName caller #args )
-  drop     // discard the args                ( ... wordName caller )
-  >reg0    // put caller into reg0            ( ... wordName )
+  // expand valset into stack values
+  valset>  ( ... wordName caller #values )
+
+  // discard the number of values
+  drop     ( ... wordName caller )
+
+  // put caller into reg0
+  >reg0    ( ... wordName )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +125,11 @@
 /*----------------------------------------------------------------------------*/
 : !indirect ( ... wordName -- ... )
 
-  find execute
+  // find the word in dic stack
+  find      ( word )
+                                                          //! WHAT IF NOT FOUND?
+  // execute it
+  execute   ( ... )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -121,68 +137,110 @@
 /*----------------------------------------------------------------------------*/
 : >result ( ... -- valset )
 
-  depth >valset
+  // put number of values onto stack
+  depth   ( ... #values )
+
+  // convert to valset
+  >valset ( valset )
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push valset onto invoking tasks stack and signal caller                    */
+/* push valset onto callers stack and signal caller                           */
 /*----------------------------------------------------------------------------*/
-: >caller ( valset -- ; caller -- valset )
+: >caller ( valset -- )
 
-  begin reg0 task.state@ TS_WAITING == until
+  // loop until caller is in the waiting state
+  // otherwise transfering to that stack will corrupt the
+  // tasks execution
 
-  reg0 >stack
+  begin
 
-  reg0 task.signal
+    // get the callers state
+    reg0            ( valset task )
+    task.state@     ( valset state )
+
+    // test if its waiting
+    TS_WAITING ==   ( valset true|false )
+  until
+
+  // transfer to callers stack
+  reg0              ( valset task )
+  >stack            ( )
+
+  // signal caller
+  reg0              ( task )
+  task.signal       ( )
 ;
 
 /*----------------------------------------------------------------------------*/
-/* put request onto queue for processing, suspend for notification            */
+/* append indirect call onto given queue                                      */
 /*----------------------------------------------------------------------------*/
-: >queue> ( ... wordName #args queue -- result )
+: >queue ( ... wordName #values queue -- )
 
-  >r                       // save target queue onto rstack
+  // save target queue on rstack
+  >r  ( ... wordName #values )
 
-  1 task.this task.acks!   // will wait for 1 ack
+  // this task is the caller
+  task.this ( ... wordName #values caller )
 
-  task.this                // this task is the caller
+  // bring #values to top
+  swap ( ... wordName caller #values )
 
-  swap                     // bring #args to top
+  // inc #values to now include caller
+  inc  ( ... wordName caller #values )
 
-  1 +                      // valset will be ( args, wordname, caller )
+  // convert values to valset
+  >valset ( valset )
 
-  >valset                  // convert stack values to valset
+  // restore target queue onto stack
+  r> ( valset queue )
 
-  r>                       // restore target queue onto stack
-
-  queue.append             // pop valset and append to target queue
-
-  task.suspend             // this task suspends
-
-  valset>                  // convert valset to stack values
-
-  drop                     // discard number of values
+  // pop valset and append to target queue
+  queue.append ( )
 ;
 
-//------------------------------------------------------------------------------
+/*----------------------------------------------------------------------------*/
+/* append indirect call onto given queue, suspend for notification            */
+/*----------------------------------------------------------------------------*/
+: >queue> ( ... wordName #values queue -- ..result.. )
 
-: >queue2> ( ... wordName #args queue -- result )
+  // set this task to wait for 1 ack
+  1 task.this task.acks!  ( ... wordName #values queue )
 
-  >r                       // save target queue onto rstack
+/*
+  // save target queue on rstack
+  >r  ( ... wordName #values )
 
-  task.this                // this task is the caller
+  // this task is the caller
+  task.this  ( ... wordName #values caller )
 
-  swap                     // bring #args to top
+  // bring #values to top
+  swap ( ... wordName caller #values )
 
-  1 +                      // valset will be ( args, wordname, caller )
+  // inc #values to now include caller
+  inc  ( ... wordName caller #values )
 
-stk
-  >valset                  // convert stack values to valset
-stk
+  // convert values to valset
+  >valset ( valset )
 
-  r>                       // restore target queue onto stack
+  // restore target queue onto stack
+  r> ( valset queue )
 
-  queue.append             // pop valset and append to target queue
+  // pop valset and append to target queue
+  queue.append  ( )
+*/
+
+  // append request onto queue
+  >queue ( )
+
+  // this task suspends till notified
+  task.suspend ( valset )
+
+  // convert valset to values
+  valset> ( ... #values )
+
+  // discard number of values
+  drop ( ... )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -229,25 +287,31 @@ stk
 /*----------------------------------------------------------------------------*/
 : execute.loop
 
+  // push a register frame
   reg.push
 
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
-    queue>     // pop valset off queue and push onto this stack
+    // pop valset off queue and push onto this stack
+    queue>     ( valset )
 
-    >indirect  // convert valset to indirect call
+    // convert valset to indirect call
+    >indirect  ( ..call.. )
 
-    //stk
-    !indirect  // execute indirect call
-    //stk
+    // execute indirect call
+    !indirect  ( ..result.. )
 
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
+    // convert indirect result into valset
+    >result    ( valset )
+
+    // put indirect result onto stack of caller and signal
+    >caller    ( )
 
   0 until
 
+  // pop a register frame
   reg.pop
 ;
 
@@ -256,6 +320,7 @@ stk
 /*----------------------------------------------------------------------------*/
 : passOn.loop ( actorNo queue -- )
 
+  // push a register frame
   reg.push
 
   >r
@@ -266,21 +331,26 @@ stk
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
-    queue>     // pop valset off queue and push onto this stack
-    >indirect  // convert valset to indirect call; reg0 has caller
+    // pop valset off queue and push onto this stack
+    queue>     ( valset )
 
-    //stk
+    // convert valset to indirect call
+    >indirect  ( ..call.. )
+
     depth r1 >queue>
-    //stk
 
-    >result    // convert stack contents into indirect result
-    >caller    // put indirect result onto stack of caller and signal
+    // convert indirect result into valset
+    >result    ( valset )
+
+    // put indirect result onto stack of caller and signal
+    >caller    ( )
 
   0 until
 
   rdrop
   rdrop
 
+  // pop a register frame
   reg.pop
 ;
 
