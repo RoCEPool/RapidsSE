@@ -66,6 +66,64 @@ Misc Requests:
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*----------------------------------------------------------------------------*/
+/* get seitif folder path                                                     */
+/*----------------------------------------------------------------------------*/
+: seitf.path@ ( -- ... #dics )
+
+  // this word puts the dictionary path onto the stack as a series of names
+  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
+
+  dic.count 0 do
+    // calculate dic subscript
+    //dic.count I - dec ( d )
+
+    I 
+    // get dictionary[d]
+    dic.pick  ( dic )
+
+    // push dictionary name
+    dic.name ( ... dicNm )
+  loop
+
+  // push number of dictionary names
+  dic.count ( ... #dics )
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* set task dictionary stack                                                  */
+/*----------------------------------------------------------------------------*/
+: dicStack! ( ... #dics -- )
+
+  // this word puts the folder path on the stack into task dictionary stack
+  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
+
+  0 do
+
+    dup "<main>" streql if
+      drop
+      dic.main
+      dicStack.push
+    else
+
+      dup "seitf" streql if
+        drop
+        dic.main
+        dicStack.push
+      else
+
+        find
+        execute
+        dicStack.push
+    then
+
+   then
+
+  loop
+
+;
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -349,6 +407,10 @@ ddlLock.grabWrite
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
+
+seitf.path@
+
+dicStack!
 
 ddlLock.grabWrite
 

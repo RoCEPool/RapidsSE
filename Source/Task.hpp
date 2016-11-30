@@ -449,6 +449,8 @@ namespace Tasks
     static void vDicRef(NNP_Task nnpTask);
     static void vDicStack(NNP_Task nnpTask);
     
+    static void vDicStackPush(NNP_Task nnpTask);
+    
     // dir
     static void vDirExists(NNP_Task nnpTask);
     static void vDirMake(NNP_Task nnpTask);

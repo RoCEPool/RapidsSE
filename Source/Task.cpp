@@ -795,6 +795,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("{{",              &vDicPush,          false);
   vAddPrimitive("dic.ref",         &vDicRef,           false);
   vAddPrimitive("dic.stack",       &vDicStack,         false);
+
+  vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
   
   vAddPrimitive("dir.exists",      &vDirExists,        false);
   vAddPrimitive("dir.make",        &vDirMake,          false);
@@ -5708,6 +5710,24 @@ void Task::vDicRef(NNP_Task nnpTask)
   bool bRef = pDic->bRefOut();
   
   nnpTask->m_xParamStack.vPush(bRef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.push -- push a dictionary from stack onto task dictionary stack   */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackPush(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackPush");
+  
+  Object* pPtrDic;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
+    THROW_INVALID_PARAM("dicStack.push");
+  
+  Dic* pDic = _pDic(pPtrDic);
+  
+  nnpTask->m_xDicStack.vPush(pDic);
   
   EXIT();
 }
