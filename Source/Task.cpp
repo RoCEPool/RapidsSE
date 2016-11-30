@@ -1750,36 +1750,39 @@ void Task::vPrimitive(const char* aPrimitive)
   
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("%-15s %15s : r %lld ; p%2d=[",
+  vTrace("%-15s %15s : r %lld ; p%2d=",
          aRoutine,aPrimitive,iReturnValues,iParamValues);
   
-  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
-    
-    if (iValue != iParamValues-1)
-      vTrace(",");
-    
-    ValWsp* pValWsp = static_cast<ValWsp*>(m_xParamStack.pPeek(iValue));
-    
-    eCN eClass = pValWsp->eClass();
-    
-    if (CN_INTVAL == eClass) {
-      vTrace("%lld",pValWsp->iInt());
-    }
-    else if (CN_PTRVAL == eClass) {
-      vTrace("%p (%s)",pValWsp->pPtr(),pValWsp->aClass());
-    }
-    else if (CN_STRVAL == eClass) {
-      vTrace("\"%lls\"",pValWsp->sStr());
-    }
-    else if (CN_VALSET == eClass) {
-      vTrace("%p (%s)",pValWsp,pValWsp->aClass());
-    }
-    else {
-      vTrace("unknown value on stack: class=%lld",pValWsp->eClass());
-    }
-  }
+//  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
+//    
+//    if (iValue != iParamValues-1)
+//      vTrace(",");
+//    
+//    ValWsp* pValWsp = static_cast<ValWsp*>(m_xParamStack.pPeek(iValue));
+//    
+//    eCN eClass = pValWsp->eClass();
+//    
+//    if (CN_INTVAL == eClass) {
+//      vTrace("%lld",pValWsp->iInt());
+//    }
+//    else if (CN_PTRVAL == eClass) {
+//      vTrace("%p (%s)",pValWsp->pPtr(),pValWsp->aClass());
+//    }
+//    else if (CN_STRVAL == eClass) {
+//      vTrace("\"%lls\"",pValWsp->sStr());
+//    }
+//    else if (CN_VALSET == eClass) {
+//      vTrace("%p (%s)",pValWsp,pValWsp->aClass());
+//    }
+//    else {
+//      vTrace("unknown value on stack: class=%lld",pValWsp->eClass());
+//    }
+//  }
+
+  s8K sStackContents;
+  vStackContents(sStackContents);
   
-  vTrace("]\n");
+  vTrace("%s\n",sStackContents.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1848,6 +1851,52 @@ void Task::vRoutineCall(Word* pWord)
   m_xReturnStack.vPush((void*)IP.m_pCell);
     
   IP.m_pCell = pWord->pDoesArg();
+}
+
+/*----------------------------------------------------------------------------*/
+/* stack contents as string                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vStackContents(s& sStackContents)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  char* a = sStackContents.a();
+  *a = '\0';
+  
+  i8 iParamValues = m_xParamStack.iValues();
+  
+  String::vSprintCat(a,"(");
+  for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
+    
+    String::vSprintCat(a," ");
+    
+    ValWsp* pValWsp = static_cast<ValWsp*>(m_xParamStack.pPeek(iValue));
+    
+    eCN eClass = pValWsp->eClass();
+    
+    if (CN_INTVAL == eClass) {
+      String::vSprintCat(a,"%lld",pValWsp->iInt());
+    }
+    else if (CN_PTRVAL == eClass) {
+      if (pValWsp->pPtr())
+        String::vSprintCat(a,"^%s=%p",
+                           pCN[((Object*)pValWsp->pPtr())->eClass()],
+                           pValWsp->pPtr());
+      else
+        String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),pValWsp->pPtr());
+    }
+    else if (CN_STRVAL == eClass) {
+      String::vSprintCat(a,"\"%lls\"",pValWsp->sStr());
+    }
+    else if (CN_VALSET == eClass) {
+      String::vSprintCat(a,"<%s>=%p",pValWsp->aClass(),pValWsp);
+    }
+    else {
+      String::vSprintCat(a,"<unknown:class=%lld>",pValWsp->eClass());
+    }
+  }
+  
+  String::vSprintCat(a," )");
 }
 
 /*----------------------------------------------------------------------------*/

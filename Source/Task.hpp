@@ -107,12 +107,12 @@ namespace Tasks
       nnpTask->vPrimitive(p1);
   #endif
     
-    #define EXIT() \
-      ASSERT(pStepAccum); \
-      i8 _iTscExit = Synch::iTicks(); \
-      i8 _iTscDiff = _iTscExit - _iTscEntry; \
-      pStepAccum->m_nInvoked++; \
-      pStepAccum->m_nCycles += _iTscDiff;
+  #define EXIT() \
+    ASSERT(pStepAccum); \
+    i8 _iTscExit = Synch::iTicks(); \
+    i8 _iTscDiff = _iTscExit - _iTscEntry; \
+    pStepAccum->m_nInvoked++; \
+    pStepAccum->m_nCycles += _iTscDiff;
 
 #else
 
@@ -123,13 +123,14 @@ namespace Tasks
     #define ENTRY(p1)
   #endif
 
-    #define EXIT()
+  #define EXIT()
     
 #endif
     
   private:
     
-    static const i8 C_TRACE_STEPS = 0x1;
+    static const i8 C_TRACE_STEPS    = 0x1;
+    static const i8 C_TRACE_ROUTINES = 0x2;
 
     Lock    m_xLock;
     i8      m_iTaskNo;     // task
@@ -236,6 +237,7 @@ namespace Tasks
     void vRetry(void);
     Threads::Thread* pRootThread(void);
     void vRoutineCall(Word* pWord);
+    void vStackContents(s& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
     Threads::Thread* pThread(void);
