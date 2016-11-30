@@ -1,0 +1,413 @@
+/*============================================================================*/
+/* gridTesting.sen -- grid testing                                            */
+/*============================================================================*/
+
+"gridTesting.sen" .putVerbose
+
+: SE_PATH "../OS\ X/Build/Products/Debug/SE" ;
+
+: se_command
+
+    dup
+
+//  "nohup "
+    ""
+    SE_PATH concat
+    " --start --restart --size 4gb " concat
+    " --commands /Users/ray/Desktop/rapidsse/Commands" concat
+    " --region /SE_" concat
+    swap >str concat
+
+    " --node " concat
+    swap >str concat
+
+    " --nodes 8" concat
+
+    " &" concat
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: g
+
+  1 se_command dup . shell.execute .
+  2 se_command dup . shell.execute .
+  3 se_command dup . shell.execute .
+  4 se_command dup . shell.execute .
+  5 se_command dup . shell.execute .
+  6 se_command dup . shell.execute .
+  7 se_command dup . shell.execute .
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: gn
+
+  args.nodes 1 do
+    I se_command
+    dup .
+    shell.execute .
+  loop
+  
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: ipcChild
+
+  3 sleep
+
+//traceon
+
+  "ipcChild" task.this task.name!
+
+  "ipcChild" .
+
+  task.parent@ task.signal
+//traceoff
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: ipc
+
+//traceon
+
+  3 task.this task.acks!
+
+  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
+  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
+  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
+
+  //TS_WAITING task.this task.state!
+
+  task.suspend
+
+  "Parent" .
+//traceoff
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* execute processing loop                                                    */
+/*----------------------------------------------------------------------------*/
+: execute.loop
+
+  // push a register frame
+  reg.push
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
+
+    // convert valset to indirect call
+    >indirect ( ... wordName )
+
+    // execute indirect call
+    !indirect ( ... )
+
+    // convert indirect result into valset
+    >result ( valset )
+
+    // put indirect result onto stack of caller and signal
+    >caller ( )
+
+  0 until
+
+  // pop a register frame
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* pass on processing loop                                                    */
+/*----------------------------------------------------------------------------*/
+: passOn.loop ( actorNo forwardQueue -- )
+
+  // push a register frame
+  reg.push
+
+  >r ( actorNo )
+  >r ( )
+  // r0 has actorNo
+  // r1 has forwardQueue
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
+
+    // convert valset to indirect call
+    >indirect ( ... wordName )
+
+    // pass onto forward queue for processing
+    // and suspend till signalled with indirect result
+    depth ( ... wordName #values )
+    r1 ( ... wordName #values queue )
+    >queue> ( ... )
+
+    // convert indirect result into valset
+    >result ( valset )
+
+    // put indirect result onto stack of caller and signal
+    >caller ( )
+
+  0 until
+
+  rdrop
+  rdrop
+
+  // pop a register frame
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* lock and queue arrays                                                      */
+/*----------------------------------------------------------------------------*/
+
+args.nodes intArray: ddlInts
+args.nodes ptrArray: ppQueues
+args.nodes ptrArray: cpQueues
+args.nodes ptrArray: pQueues
+
+/*----------------------------------------------------------------------------*/
+/* attempt to grab ddl lock n                                                 */
+/*----------------------------------------------------------------------------*/
+: grabDDL_n ( n -- true|false )
+
+  // test state of ddlInt[n]
+
+  dup ( n n )
+  ddlInts @ ( n v )
+  if ( n )
+
+   // ddlInt is currently locked
+
+   // drop the subscript
+   drop ( )
+
+   // return false
+   false ( false )
+   exit
+
+  then
+
+  // ddlInt is not  locked
+
+  // put 1 into ddlInts[n]
+  1 ( n 1 )
+  swap ( 1 n )
+  ddlInts ! ( )
+
+  // return true
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop ddl lock n                                                            */
+/*----------------------------------------------------------------------------*/
+: dropDDL_n ( n -- true )
+
+  // put 0 into ddlInts[n]
+  0 ( n 0 )
+  swap ( 0 n )
+  ddlInts ! ( )
+
+  // return true
+  true ( true )
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* create the actors for the dl test                                          */
+/*----------------------------------------------------------------------------*/
+: createActors
+
+  // put 0 into all ddlInts
+  args.nodes 0 do
+    0 I ddlInts !
+  loop
+
+  args.nodes 0 do
+
+    // participant for this I
+    0 "execute.loop" "p" I >str concat actorForm
+    I pQueues !
+
+    // coordinator proxy for this I
+    I I pQueues @ 2 "passOn.loop" "cp" I >str concat actorForm
+    I cpQueues !
+
+    // partitipant proxy for this I
+    I args.node == if
+      I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    else
+      I I cpQueues @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    then
+
+  loop
+
+  // coordinator
+  0 "execute.loop" "c" actorForm drop
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+createActors
+
+/*----------------------------------------------------------------------------*/
+/* dispatch indirect call to given participant                                */
+/*----------------------------------------------------------------------------*/
+: dispatch ( ... #values actorNo -- ..result.. )
+
+  // determine which queue to forward to
+  dup ( ... #values actorNo actorNo )
+  args.node ( ... #values actorNo actorNo args.node )
+  == ( ... #values actorNo true|false )
+  if ( ... #values actorNo )
+
+    // queue will be the participant for this node
+    pQueues @ ( ... #values pQueue )
+
+  else
+
+    // queue will be participant proxy for other node
+    ppQueues @ ( ... #values ppQueue )
+
+  then
+
+  // transfer to another actors queue and wait for result
+  >queue> ( ..result.. )
+;
+
+/*----------------------------------------------------------------------------*/
+/* grab distributed ddl lock                                                  */
+/*----------------------------------------------------------------------------*/
+: grabDistDDL ( -- true )
+
+  // dispatch grab of lock 0 to node 0
+
+  begin
+    0            // participant is to grab lock 0
+    "grabDDL_n"  // the word to execute
+    2            // there are 2 indirect values
+    0            // will dispatch to node 0
+    ( 0 "grabDDL_n" 2 0 )
+
+    // send indirect call to node 0
+    dispatch ( true | false )
+  until
+
+  // dispatch grab of lock I to all other nodes
+
+  args.nodes 1 do
+    I            // participant is to grab lock I
+    "grabDDL_n"  // the word to execute
+    2            // there are 2 indirect values
+    I            // will dispatch to node I
+    ( I "grabDDL_n" 2 I )
+
+    // send indirect call to node I
+    dispatch ( true|false )
+
+    // just print the indirect result for the moment
+    . ( )
+  loop
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop distributed ddl lock                                                  */
+/*----------------------------------------------------------------------------*/
+: dropDistDDL ( -- true )
+
+  // dispatch drop to all other nodes
+
+  args.nodes 1 do
+    I            // participant is to drop lock 0
+    "dropDDL_n"  // the word to execute
+    2            // there are 2 args now on stack
+    I            // dispatch to node I
+    ( I "dropDDL_n" 2 I )
+
+    // send indirect call to node I
+    dispatch ( true|false )
+
+    // just print the indirect result
+    .
+  loop
+
+  // dispatch drop to node 0
+
+  0              // participant is to drop lock 0
+  "dropDDL_n"    // the word to execute
+  2              // there are 2 args now on stack
+  0              // dispatch to node 0
+  ( 0 "dropDDL_n" 2 0 )
+
+  // send indirect call to node 0
+  dispatch
+
+  // just print the indirect result for the moment
+  .
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinate a dispatch of indirect all to the coordinator                   */
+/*----------------------------------------------------------------------------*/
+: coordinate ( ... wordName #values -- ..result.. )
+
+  // the queue is c.queue
+  c.queue ( ... wordName #values c.queue )
+
+  // put onto c.queue and suspend till notified
+  >queue> ( ... )
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the ddlInts array                                                     */
+/*----------------------------------------------------------------------------*/
+: ddlDump
+
+  "{ " .put
+  args.nodes 0 do
+    I ddlInts @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed lock test                                                      */
+/*----------------------------------------------------------------------------*/
+: dl
+
+  // coordinate grab of dist ddl lock
+  "grabDistDDL" 1  ( "grabDistDdl" 1 )
+  coordinate       ( true|false )
+  .
+
+  ddlDump
+
+  // coordinate drop of dist ddl lock
+  "dropDistDDL" 1 ( "dropDistDdl" 1 )
+  coordinate      ( true|false )
+  .
+
+  ddlDump
+
+stk
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
