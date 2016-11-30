@@ -41,7 +41,7 @@ thread:  connectorThread
 
     connectorTaskPrint if "Connector running..." . then
 
-    20 thread.sleep_s
+    10 thread.sleep_s
 
     args.nodes 0 do
 
@@ -52,6 +52,13 @@ thread:  connectorThread
         "Node" args.node >str concat " connected to node" concat
         I >str concat
         .
+
+        // start sender
+        stk
+        "starting sender" .
+        sender.thread sender.taskset sender.queue 0 "sender.loop" nullPtr sender.start
+        sender.queue I senderQueue !
+
       then
 
     loop

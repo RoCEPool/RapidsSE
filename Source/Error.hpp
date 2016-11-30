@@ -54,14 +54,15 @@ namespace Magic
     
     /* 33 */ EC_RESPONSE_PENDING,
     /* 34 */ EC_SCHEMA_EXISTS,
-    /* 35 */ EC_SE_NOT_RUNNING,
+    /* 35 */ EC_SEND_FAILURE,
+    /* 36 */ EC_SE_NOT_RUNNING,
 
-    /* 36 */ EC_TABLE_EXISTS,
-    /* 37 */ EC_TABLE_IN_USE,
-    /* 38 */ EC_TENANT_EXISTS,
+    /* 37 */ EC_TABLE_EXISTS,
+    /* 38 */ EC_TABLE_IN_USE,
+    /* 39 */ EC_TENANT_EXISTS,
     
-    /* 39 */ EC_VERSION_MISMATCH,
-    /* 40 */ EC_ENUMS
+    /* 40 */ EC_VERSION_MISMATCH,
+    /* 41 */ EC_ENUMS
   };
   
   static const char* const pEC[]
@@ -111,13 +112,14 @@ namespace Magic
   
     /* 34 */ "schema exists",
     /* 35 */ "SE is not running",
-    /* 36 */ "table exists",
-    /* 37 */ "table in use",
-    /* 38 */ "tenant exists",
+    /* 36 */ "send failure",
+    /* 37 */ "table exists",
+    /* 38 */ "table in use",
+    /* 39 */ "tenant exists",
 
-    /* 39 */ "version mismatch",
+    /* 40 */ "version mismatch",
 
-    /* 40 */ "enums"
+    /* 41 */ "enums"
 
   };
 

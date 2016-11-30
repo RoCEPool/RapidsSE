@@ -10,6 +10,8 @@ int: queryCount
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
 "requestTask.sen" >>:
+"senderTask.sen"  >>:
+"receiverTask.sen" >>:
 "answerTask.sen" >>:
 "connectorTask.sen" >>:
 

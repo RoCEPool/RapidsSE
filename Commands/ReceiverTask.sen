@@ -1,0 +1,85 @@
+/*============================================================================*/
+/* ReceiverTask.sen -- receiver task                                          */
+/*============================================================================*/
+
+"ReceiverTask.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+queue:   receiver.queue
+queue:   receiver1.queue
+
+taskset: receiver.taskSet
+taskset: receiver1.taskSet
+
+thread:  receiver.thread
+thread:  receiver1.thread
+
+/*----------------------------------------------------------------------------*/
+/* start the receiver task                                                    */
+/*----------------------------------------------------------------------------*/
+: receiver.start ( socket )
+
+    reg.push
+
+    task.new  // create a new task ( .etc. -- thread taskset queue )
+
+    >reg0     // reg0: task
+    >reg1     // reg1: queue
+    >reg2     // reg2: taskset
+    >reg3     // reg3: thread
+    >reg4     // reg4: socket
+
+    reg1 reg0 task.queue!     // set the tasks queue
+    reg0 reg2 taskSet.append  // append task to taskset
+
+    reg2 reg3 thread.taskset! // set the threads taskset
+
+    reg3 thread.spawn         // spawn the os thread
+
+    reg4 reg0 task.socket!    // put socket in task
+
+    reg.pop
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv valset from the socket                                                */
+/*----------------------------------------------------------------------------*/
+: !recv
+
+  task.this task.socket@
+  socket.recv
+  "RECEIVED" .
+  .
+
+  args.node if 0 "PONG" send then
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* receiver loop                                                              */
+/*----------------------------------------------------------------------------*/
+: receiver.loop
+
+    "renaming to Receiver Task" .putVerbose
+
+    "receiver.task" task.this task.name!
+
+    //receiver.queue  task.this task.queue!
+
+    receiverTaskPrint if "Receiver running on node" args.node >str concat . then
+
+    10 sleep
+
+    begin
+      !recv
+    0 until
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

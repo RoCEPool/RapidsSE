@@ -449,13 +449,14 @@ void Task::vAddConstants(void)
   /* 33 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
   /* 34 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
   
-  /* 35 */ vAddConstant("EC_SE_NOT_RUNNING",        EC_SE_NOT_RUNNING);
+  /* 35 */ vAddConstant("EC_SEND_FAILURE",          EC_SEND_FAILURE);
+  /* 36 */ vAddConstant("EC_SE_NOT_RUNNING",        EC_SE_NOT_RUNNING);
   
-  /* 36 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
-  /* 37 */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
-  /* 38 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
-  /* 39 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
-  /* 40 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
+  /* 37 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /* 38 */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
+  /* 39 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
+  /* 40 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
+  /* 41 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
 
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
   /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
@@ -9917,7 +9918,7 @@ void Task::vTaskSignal(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketFetch(NNP_Task nnpTask)
 {
-  ENTRY("vTaskQfetch");
+  ENTRY("vTaskSocketFetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
@@ -9938,7 +9939,7 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketStore(NNP_Task nnpTask)
 {
-  ENTRY("vTaskQstore");
+  ENTRY("vTaskSocketStore");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
@@ -11844,7 +11845,7 @@ ENTRY("vSocketAccept");
   if ( ! bResult )
     THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
   
-  nnpTask->m_xParamStack.vPush(iSocketId);
+  nnpTask->m_xParamStack.vPush(new Socket(iSocketId));
   
   EXIT();
 }
@@ -11980,28 +11981,36 @@ ENTRY("vSocketSend");
 
   SysCall xSysCall;
   Socket* pSocket;
-  //char* pData;
+  char* pData;
   Object* pObject;
   s8K  sWorkspace;
   ValSet xValSet;
+  ValWsp xValWsp;
   
-  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-    THROW_INVALID_PARAM("socketsend");
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM("socket.send");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketsend");
+    THROW_INVALID_PARAM("socket.send");
   
-  //xValWsp.vToString(sWorkspace.a());
+  xValWsp.vToString(sWorkspace.a());
 
   pSocket = reinterpret_cast<Socket*>(pObject);
-  //pData   = reinterpret_cast<char*>(sWorkspace.a());
+  pData   = reinterpret_cast<char*>(sWorkspace.a());
   
-  //bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
+  vTrace("%s sending on %lld %s\n", nnpTask->m_sName.a(), pSocket->m_iSocketId,pData);
   
-  bool bResult = pSocket->bSendTo((int)xValSet.iSize(), &xValSet, xSysCall);
+  bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
   
-  if ( ! bResult )
-    THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+  //bool bResult = pSocket->bSendTo((int)xValSet.iSize(), &xValSet, xSysCall);
+  
+  
+  if ( ! bResult ) {
+    //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+    nnpTask->m_xParamStack.vPush((i8)0);
+  }
+  
+  nnpTask->m_xParamStack.vPush((i8)1);
   
   EXIT();
 }
@@ -12015,23 +12024,28 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   SysCall xSysCall;
   Socket* pSocket;
-  ValWsp xValWsp;
+  ValSet xValSet;
   s8K   sWorkspace;
-  i8 iSocketId;
+  Object* pObject;
   
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iSocketId) )
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socketrecv");
   
+  
+  pSocket = reinterpret_cast<Socket*>(pObject);
+
+  vTrace("%s receiving on %lld\n", nnpTask->m_sName.a(), pSocket->m_iSocketId);
+  
   char* pData = reinterpret_cast<char*>(sWorkspace.a());
-  pSocket = new Socket((int)iSocketId);
+  //pSocket = new Socket((int)iSocketId);
   bool bResult = pSocket->bReadVch(reinterpret_cast<char**>(&pData), xSysCall);
+  
+  vTrace("%s received on %lld %s\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, pData);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
   
-  xValWsp = pData;
-  nnpTask->m_xParamStack.vPush(xValWsp);
+  nnpTask->m_xParamStack.vPush(sWorkspace);
   
   EXIT();
 }

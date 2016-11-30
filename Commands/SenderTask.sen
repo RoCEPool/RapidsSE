@@ -1,0 +1,132 @@
+/*============================================================================*/
+/* SenderTask.sen -- sender task                                              */
+/*============================================================================*/
+
+"SenderTask.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
+
+queue:   sender.queue
+queue:   sender1.queue
+
+taskset: sender.taskset
+taskset: sender1.taskset
+
+thread:  sender.thread
+thread:  sender1.thread
+
+args.nodes ptrArray: senderQueue
+
+/*----------------------------------------------------------------------------*/
+/* start the sender task                                                      */
+/*----------------------------------------------------------------------------*/
+: sender.start ( socket )
+
+    reg.push
+
+    task.new  // create a new task ( .etc. -- thread taskset queue )
+
+    >reg0     // reg0: task
+    >reg1     // reg1: queue
+    >reg2     // reg2: taskset
+    >reg3     // reg3: thread
+    >reg4     // reg4: socket
+
+    reg1 reg0 task.queue!     // set the tasks queue
+    reg0 reg2 taskSet.append  // append task to taskset
+
+    reg2 reg3 thread.taskset! // set the threads taskset
+
+    reg3 thread.spawn         // spawn the os thread
+
+    reg4 reg0 task.socket!    // put socket in task
+
+    reg.pop
+
+;
+/*----------------------------------------------------------------------------*/
+/* send request                                                               */
+/*----------------------------------------------------------------------------*/
+: send ( node )
+
+  //"ping" 1
+  //>valset
+  //"ping"
+  swap
+  stk
+  senderQueue @
+  stk
+  queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* receive request                                                            */
+/*----------------------------------------------------------------------------*/
+: req>
+
+    begin
+      task.this task.queue@
+      queue.pop
+      dup not if task.yield /*100 thread.sleep_us*/ then
+    until
+;
+
+/*----------------------------------------------------------------------------*/
+/* send valset across the socket                                              */
+/*----------------------------------------------------------------------------*/
+: !send
+
+  task.this task.socket@
+  swap
+  socket.send
+  stk
+  not if "send failure" .
+  then "sent" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* send response                                                              */
+/*----------------------------------------------------------------------------*/
+: >rsp ( send response    )
+
+    // check stack
+    depth 3 != if "incorrect reponse stack depth" . process.quit then
+
+    0 stack.class CN_INTVAL != if "incorrect reponse value 0" . process.quit then
+    1 stack.class CN_INTVAL != if "incorrect reponse value 1" . process.quit then
+    2 stack.class CN_STRVAL != if "incorrect reponse value 2" . process.quit then
+
+    >valset
+
+    "rspque" find execute queue.append
+    0 task.this task.seitf!
+;
+
+/*----------------------------------------------------------------------------*/
+/* sender task processing                                                     */
+/*----------------------------------------------------------------------------*/
+: sender.loop
+
+    "renaming to sender.task" .putVerbose
+
+    "sender.task" task.this task.name!
+
+    //"sender.queue"  task.this task.queue!
+
+    senderTaskPrint if "Sender running on node" args.node >str concat . then
+
+  begin
+    stk
+    depth 0 != if "sender task has grown" . debug.trap then
+    req>          // pop valset off queue and push onto this stack
+    "got request to send" .
+    stk
+    !send         // send the valset across the connection
+  0 until
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
