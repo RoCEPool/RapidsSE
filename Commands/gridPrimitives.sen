@@ -101,7 +101,8 @@
     dup not if
       task.yield /*100 thread.sleep_us*/
     then
-                                    ( value | false )
+
+    ( value | false )
   until
 ;
 
@@ -111,13 +112,13 @@
 : >indirect ( valset -- ... wordName ; reg0 == caller )
 
   // expand valset into stack values
-  valset>  ( ... wordName caller #values )
+  valset> ( ... wordName caller #values )
 
   // discard the number of values
-  drop     ( ... wordName caller )
+  drop ( ... wordName caller )
 
   // put caller into reg0
-  >reg0    ( ... wordName )
+  >reg0 ( ... wordName )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,10 +127,10 @@
 : !indirect ( ... wordName -- ... )
 
   // find the word in dic stack
-  find      ( word )
+  find ( word )
                                                           //! WHAT IF NOT FOUND?
   // execute it
-  execute   ( ... )
+  execute ( ... )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +139,7 @@
 : >result ( ... -- valset )
 
   // put number of values onto stack
-  depth   ( ... #values )
+  depth ( ... #values )
 
   // convert to valset
   >valset ( valset )
@@ -156,20 +157,20 @@
   begin
 
     // get the callers state
-    reg0            ( valset task )
-    task.state@     ( valset state )
+    reg0 ( valset caller )
+    task.state@ ( valset state )
 
     // test if its waiting
-    TS_WAITING ==   ( valset true|false )
+    TS_WAITING == ( valset true|false )
   until
 
   // transfer to callers stack
-  reg0              ( valset task )
-  >stack            ( )
+  reg0 ( valset caller )
+  >stack ( )
 
   // signal caller
-  reg0              ( task )
-  task.signal       ( )
+  reg0 ( caller )
+  task.signal ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -178,7 +179,7 @@
 : >queue ( ... wordName #values queue -- )
 
   // save target queue on rstack
-  >r  ( ... wordName #values )
+  >r ( ... wordName #values )
 
   // this task is the caller
   task.this ( ... wordName #values caller )
@@ -187,7 +188,7 @@
   swap ( ... wordName caller #values )
 
   // inc #values to now include caller
-  inc  ( ... wordName caller #values )
+  inc ( ... wordName caller #values )
 
   // convert values to valset
   >valset ( valset )
@@ -205,32 +206,9 @@
 : >queue> ( ... wordName #values queue -- ..result.. )
 
   // set this task to wait for 1 ack
-  1 task.this task.acks!  ( ... wordName #values queue )
+  1 task.this task.acks! ( ... wordName #values queue )
 
-/*
-  // save target queue on rstack
-  >r  ( ... wordName #values )
-
-  // this task is the caller
-  task.this  ( ... wordName #values caller )
-
-  // bring #values to top
-  swap ( ... wordName caller #values )
-
-  // inc #values to now include caller
-  inc  ( ... wordName caller #values )
-
-  // convert values to valset
-  >valset ( valset )
-
-  // restore target queue onto stack
-  r> ( valset queue )
-
-  // pop valset and append to target queue
-  queue.append  ( )
-*/
-
-  // append request onto queue
+  // append indirect call onto queue
   >queue ( )
 
   // this task suspends till notified
@@ -239,8 +217,8 @@
   // convert valset to values
   valset> ( ... #values )
 
-  // discard number of values
-  drop ( ... )
+  // discard number of values leaving the indirect result
+  drop ( ..result.. )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -250,36 +228,44 @@
 
   reg.push
 
-  >r
+  >r ( ... #args "<loop>" ) // r0 has <actorName>
 
-  // r0 has <actorName>
-
+  // create the objects
   r0 ".task"    concat dup . :task    execute >reg0  // reg0 has task
   r0 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
   r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
   r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
 
+  ( ... #args "<loop>" )
+
   // seed the task
-  reg0 task.seed
+  reg0 task.seed ( )
 
   // attach queue to task
-  reg1 reg0 task.queue!
+  reg1 ( queue )
+  reg0 ( queue task )
+  task.queue! ( )
 
   // put task in taskset
-  reg0 reg2 taskset.append
+  reg0 ( task )
+  reg2 ( task taskset )
+  taskset.append ( )
 
   // attach taskset to thread
-  reg2 reg3 thread.taskset!
+  reg2 ( taskset )
+  reg3 ( taskset thread )
+  thread.taskset! ( )
 
   // spawn the os thread
-  reg3 thread.spawn
+  reg3 ( thread )
+  thread.spawn ( )
 
-  rdrop
+  rdrop ( )
 
   // leave queue on stack
-  reg1
+  reg1 ( queue )
 
-  reg.pop
+  reg.pop ( queue )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -295,19 +281,19 @@
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop valset off queue and push onto this stack
-    queue>     ( valset )
+    queue> ( valset )
 
     // convert valset to indirect call
-    >indirect  ( ..call.. )
+    >indirect ( ... wordName )
 
     // execute indirect call
-    !indirect  ( ..result.. )
+    !indirect ( ... )
 
     // convert indirect result into valset
-    >result    ( valset )
+    >result ( valset )
 
     // put indirect result onto stack of caller and signal
-    >caller    ( )
+    >caller ( )
 
   0 until
 
@@ -316,34 +302,39 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass on loop                                                               */
+/* pass on processing loop                                                    */
 /*----------------------------------------------------------------------------*/
-: passOn.loop ( actorNo queue -- )
+: passOn.loop ( actorNo forwardQueue -- )
 
   // push a register frame
   reg.push
 
-  >r
-  >r
+  >r ( actorNo )
+  >r ( )
   // r0 has actorNo
-  // r1 has queue
+  // r1 has forwardQueue
+
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop valset off queue and push onto this stack
-    queue>     ( valset )
+    queue> ( valset )
 
     // convert valset to indirect call
-    >indirect  ( ..call.. )
+    >indirect ( ... wordName )
 
-    depth r1 >queue>
+    // pass onto forward queue for processing
+    // and suspend till signalled with indirect result
+    depth ( ... wordName #values )
+    r1 ( ... wordName #values queue )
+    >queue> ( ... )
 
     // convert indirect result into valset
-    >result    ( valset )
+    >result ( valset )
 
     // put indirect result onto stack of caller and signal
-    >caller    ( )
+    >caller ( )
 
   0 until
 
@@ -355,7 +346,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pointer arrays                                                             */
+/* lock and queue arrays                                                      */
 /*----------------------------------------------------------------------------*/
 
 args.nodes intArray: ddlInts
@@ -364,28 +355,36 @@ args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
 
 /*----------------------------------------------------------------------------*/
-/* grab ddl lock n                                                            */
+/* attempt to grab ddl lock n                                                 */
 /*----------------------------------------------------------------------------*/
 : grabDDL_n ( n -- true|false )
 
-  dup                ( n n )
+  // test state of ddlInt[n]
 
-  ddlInts @          ( n v )
+  dup ( n n )
+  ddlInts @ ( n v )
+  if ( n )
 
-  if                 ( n )
+   // ddlInt is currently locked
 
-   drop              ( )
-   false             ( false )
+   // drop the subscript
+   drop ( )
 
-  else               ( n )
+   // return false
+   false ( false )
+   exit
 
-   // put 1 into ddlInts[n]
-
-   1                 ( n 1 )
-   swap              ( 1 n )
-   ddlInts !         ( )
-   true              ( true )
   then
+
+  // ddlInt is not  locked
+
+  // put 1 into ddlInts[n]
+  1 ( n 1 )
+  swap ( 1 n )
+  ddlInts ! ( )
+
+  // return true
+  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -394,33 +393,37 @@ args.nodes ptrArray: pQueues
 : dropDDL_n ( n -- true )
 
   // put 0 into ddlInts[n]
+  0 ( n 0 )
+  swap ( 0 n )
+  ddlInts ! ( )
 
-  0          ( n 0 )
-  swap       ( 0 n )
-  ddlInts !  ( )
-
-  true       ( true )
+  // return true
+  true ( true )
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 
+/*----------------------------------------------------------------------------*/
+/* create the actors for the dl test                                          */
+/*----------------------------------------------------------------------------*/
 : createActors
 
+  // put 0 into all ddlInts
   args.nodes 0 do
     0 I ddlInts !
   loop
 
   args.nodes 0 do
 
-    // create the participant for this I
+    // participant for this I
     0 "execute.loop" "p" I >str concat actorForm
     I pQueues !
 
-    // create the coordinator proxy for this I
+    // coordinator proxy for this I
     I I pQueues @ 2 "passOn.loop" "cp" I >str concat actorForm
     I cpQueues !
 
-    // create the partitipant proxy for this I
+    // partitipant proxy for this I
     I args.node == if
       I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
       I ppQueues !
@@ -435,32 +438,6 @@ args.nodes ptrArray: pQueues
   0 "execute.loop" "c" actorForm drop
 ;
 
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* distributed pattern test                                                   */
-/*----------------------------------------------------------------------------*/
-/*
-: d
-
-  args.nodes 0 do
-    0 I ddlInts !
-  loop
-
-  0 grabDDL_n . 0 ddlInts @ .
-  0 dropDDL_n . 0 ddlInts @ .
-
-  1 sleep
-
-  "xyz" "-PONG" "concat" 3
-stk
-  c.queue >queue> .
-stk
-
-;
-*/
-
 ////////////////////////////////////////////////////////////////////////////////
 
 createActors
@@ -468,23 +445,26 @@ createActors
 /*----------------------------------------------------------------------------*/
 /* dispatch indirect call to given participant                                */
 /*----------------------------------------------------------------------------*/
-: dispatch ( ... #args actorNo -- ..result.. )
+: dispatch ( ... #values actorNo -- ..result.. )
 
   // determine which queue to forward to
-  dup args.node == if
+  dup ( ... #values actorNo actorNo )
+  args.node ( ... #values actorNo actorNo args.node )
+  == ( ... #values actorNo true|false )
+  if ( ... #values actorNo )
 
     // queue will be the participant for this node
-    pQueues @    ( ... #args queue )
+    pQueues @ ( ... #values pQueue )
 
   else
 
     // queue will be participant proxy for other node
-    ppQueues @   ( ... #args queue )
+    ppQueues @ ( ... #values ppQueue )
 
   then
 
   // transfer to another actors queue and wait for result
-  >queue>        ( ..result.. )
+  >queue> ( ..result.. )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -497,13 +477,12 @@ createActors
   begin
     0            // participant is to grab lock 0
     "grabDDL_n"  // the word to execute
-    2            // there are 2 args now on stack
-    0            // dispatch to node 0
-                 ( 0 "grabDDL_n" 2 0 )
+    2            // there are 2 indirect values
+    0            // will dispatch to node 0
+    ( 0 "grabDDL_n" 2 0 )
 
-    dispatch     // send indirect call to node 0
-
-                 ( true | false )
+    // send indirect call to node 0
+    dispatch ( true | false )
   until
 
   // dispatch grab of lock I to all other nodes
@@ -511,17 +490,18 @@ createActors
   args.nodes 1 do
     I            // participant is to grab lock I
     "grabDDL_n"  // the word to execute
-    2            // there are 2 args now on stack
-    I            // dispatch to node I
-                 ( I "grabDDL_n" 2 I )
+    2            // there are 2 indirect values
+    I            // will dispatch to node I
+    ( I "grabDDL_n" 2 I )
 
-    dispatch     // send indirect call to node I
+    // send indirect call to node I
+    dispatch ( true|false )
 
-    .            // just print the indirect result for the moment
-
+    // just print the indirect result for the moment
+    . ( )
   loop
 
-  true           ( true )
+  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -536,11 +516,13 @@ createActors
     "dropDDL_n"  // the word to execute
     2            // there are 2 args now on stack
     I            // dispatch to node I
-                 ( I "dropDDL_n" 2 I )
+    ( I "dropDDL_n" 2 I )
 
-    dispatch     // send indirect call to node I
+    // send indirect call to node I
+    dispatch ( true|false )
 
-    .            // just print the indirect result
+    // just print the indirect result
+    .
   loop
 
   // dispatch drop to node 0
@@ -549,26 +531,31 @@ createActors
   "dropDDL_n"    // the word to execute
   2              // there are 2 args now on stack
   0              // dispatch to node 0
-                 ( 0 "dropDDL_n" 2 0 )
+  ( 0 "dropDDL_n" 2 0 )
 
-  dispatch       // send indirect call to node 0
+  // send indirect call to node 0
+  dispatch
 
-  .              // just print the indirect result for the moment
+  // just print the indirect result for the moment
+  .
 
-  true           ( true )
+  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
 /* coordinate a dispatch of indirect all to the coordinator                   */
 /*----------------------------------------------------------------------------*/
-: coordinate ( ... wordName #args -- ..result.. )
+: coordinate ( ... wordName #values -- ..result.. )
 
-  c.queue ( -- ... wordName #args c.queue )
-  >queue> ( -- ..result.. )
+  // the queue is c.queue
+  c.queue ( ... wordName #values c.queue )
+
+  // put onto c.queue and suspend till notified
+  >queue> ( ... )
 ;
 
 /*----------------------------------------------------------------------------*/
-/* distributed lock test                                                      */
+/* dump the ddlInts array                                                     */
 /*----------------------------------------------------------------------------*/
 : ddlDump
 
