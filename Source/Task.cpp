@@ -1284,7 +1284,7 @@ void Task::vAddRoutines(void)
   ": ::dicCompile"
   "  \"::dicCompile\" .putVerbose"
   "  gwd .putVerbose"
-  "  \"../../Commands\" cwd"
+  "  \"Commands\" cwd"
   "  gwd .putVerbose"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" .putVerbose"

@@ -19,7 +19,7 @@ Arguments::Arguments(void)
 #ifdef __APPLE__
   m_sCommands = "../../../../Commands";
 #else
-  m_sCommands = "../../Commands";
+  m_sCommands = "Commands";
 #endif
   
   m_sCommand    = "";
