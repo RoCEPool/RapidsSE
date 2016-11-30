@@ -54,9 +54,20 @@
   task.this task.socket@
   socket.recv
   "RECEIVED" .
-  .
 
-  args.node if 0 "PONG" send then
+  // expand valset into stack values
+  valset>  ( ... wordName senderNode #values )
+
+  drop // #values
+
+  swap
+  "PONG" concat
+
+  stk
+
+  "sending response".
+
+  send
 
 ;
 

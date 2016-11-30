@@ -41,7 +41,7 @@ namespace Common
     bool bCreateServer(int iPort, SysCall& SysCall);
     bool bReadVch(char** ppChar, SysCall& SysCall);
     bool bRecvBuffer(int nBytes, SysCall& SysCall);
-    bool bRecvBytes(int nBytes, void* pBuffer, SysCall& SysCall);
+    bool bRecvBytes(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bSendBytes(int nBytes, void* pBuffer, SysCall& SysCall);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bTestForData(SysCall& SysCall);

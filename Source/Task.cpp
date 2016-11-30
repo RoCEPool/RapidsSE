@@ -11987,23 +11987,31 @@ ENTRY("vSocketSend");
   ValSet xValSet;
   ValWsp xValWsp;
   
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
     THROW_INVALID_PARAM("socket.send");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.send");
   
-  xValWsp.vToString(sWorkspace.a());
+  //xValWsp.vToString(sWorkspace.a());
 
   pSocket = reinterpret_cast<Socket*>(pObject);
-  pData   = reinterpret_cast<char*>(sWorkspace.a());
+  //pData   = reinterpret_cast<char*>(sWorkspace.a());
   
-  vTrace("%s sending on %lld %s\n", nnpTask->m_sName.a(), pSocket->m_iSocketId,pData);
+  //vTrace("%s sending on %lld %s\n", nnpTask->m_sName.a(), pSocket->m_iSocketId,pData);
   
-  bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
+  //bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
   
-  //bool bResult = pSocket->bSendTo((int)xValSet.iSize(), &xValSet, xSysCall);
+  // send number of bytes
+  i8 iBytes = xValSet.iSize();
+  bool bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
+  if ( ! bResult ) {
+    //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+    nnpTask->m_xParamStack.vPush((i8)0);
+  }
+  
+  bResult = pSocket->bSendTo((int)xValSet.iSize(), &xValSet, xSysCall);
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
@@ -12025,27 +12033,36 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   ValSet xValSet;
-  s8K   sWorkspace;
+  //s8K   sWorkspace;
   Object* pObject;
+  i8 iBytes;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socketrecv");
-  
   
   pSocket = reinterpret_cast<Socket*>(pObject);
 
   vTrace("%s receiving on %lld\n", nnpTask->m_sName.a(), pSocket->m_iSocketId);
   
-  char* pData = reinterpret_cast<char*>(sWorkspace.a());
-  //pSocket = new Socket((int)iSocketId);
-  bool bResult = pSocket->bReadVch(reinterpret_cast<char**>(&pData), xSysCall);
+  //char* pData = reinterpret_cast<char*>(sWorkspace.a());
+  //bool bResult = pSocket->bReadVch(reinterpret_cast<char**>(&pData), xSysCall);
   
-  vTrace("%s received on %lld %s\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, pData);
+  // recv number of bytes
+  bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+  vTrace("%s received on %lld %lld bytes to follow\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, iBytes);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
   
-  nnpTask->m_xParamStack.vPush(sWorkspace);
+  // recv valset
+  bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
+  
+  vTrace("%s received on %lld %p\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, &xValSet);
+  
+  if ( ! bResult )
+    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+  nnpTask->m_xParamStack.vPush(xValSet);
   
   EXIT();
 }

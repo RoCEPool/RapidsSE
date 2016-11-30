@@ -315,12 +315,12 @@ bool Socket::bReadVch(char** ppChar, SysCall& SysCall)
 /*----------------------------------------------------------------------------*/
 /* recv n bytes from this socket into given buffer                            */
 /*----------------------------------------------------------------------------*/
-bool Socket::bRecvBytes(int nBytes, void* pWS, SysCall& SysCall)
+bool Socket::bRecvBytes(i8 nBytes, void* pWS, SysCall& SysCall)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   int nSoFar = 0;
-  int nMore = nBytes;
+  i8 nMore = nBytes;
   char* pSoFar = (char*)pWS;
   
   SysCall.vClear();

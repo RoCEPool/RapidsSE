@@ -58,11 +58,12 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 /* send request                                                               */
 /*----------------------------------------------------------------------------*/
-: send ( node )
+: send ( word node )
 
-  //"ping" 1
-  //>valset
-  //"ping"
+  args.node
+  2
+  stk
+  >valset
   swap
   stk
   senderQueue @
