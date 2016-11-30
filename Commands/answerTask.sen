@@ -46,14 +46,15 @@ thread:  answerThread
     5000 args.node + >str "Listening on port " swap concat .
     5000 args.node + socket.listen
     >r
+
     begin
+
       r0 socket.accept
       //"accepted connection on port "  5000 args.node + >str concat .
 
-      stk
       // start receiver
       "starting receiver" .
-      receiver1.thread receiver1.taskset receiver1.queue 0 "receiver.loop" nullPtr receiver.start
+      0 "receiver.loop" "receiver" receiverForm
 
     0 until
 ;

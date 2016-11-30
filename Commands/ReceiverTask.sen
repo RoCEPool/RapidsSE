@@ -5,44 +5,45 @@
 "ReceiverTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
+/* receiver formation                                                         */
 /*----------------------------------------------------------------------------*/
-
-queue:   receiver.queue
-queue:   receiver1.queue
-
-taskset: receiver.taskSet
-taskset: receiver1.taskSet
-
-thread:  receiver.thread
-thread:  receiver1.thread
-
-/*----------------------------------------------------------------------------*/
-/* start the receiver task                                                    */
-/*----------------------------------------------------------------------------*/
-: receiver.start ( socket )
+: receiverForm ( ... socket #args "<loop>" "<actorName>" -- queue )
 
     reg.push
 
-    task.new  // create a new task ( .etc. -- thread taskset queue )
+    >r
 
-    >reg0     // reg0: task
-    >reg1     // reg1: queue
-    >reg2     // reg2: taskset
-    >reg3     // reg3: thread
-    >reg4     // reg4: socket
+    // r0 has <actorName>
 
-    reg1 reg0 task.queue!     // set the tasks queue
-    reg0 reg2 taskSet.append  // append task to taskset
+    r0 ".task"    concat dup . :task    execute >reg0  // reg0 has task
+    r0 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
+    r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
+    r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
 
-    reg2 reg3 thread.taskset! // set the threads taskset
+    stk
 
-    reg3 thread.spawn         // spawn the os thread
+    // seed the task
+    reg0 task.seed
 
-    reg4 reg0 task.socket!    // put socket in task
+    stk
+    // setup the socket in the task
+    reg0 task.socket!
+
+    // attach queue to task
+    reg1 reg0 task.queue!
+
+    // put task in taskset
+    reg0 reg2 taskset.append
+
+    // attach taskset to thread
+    reg2 reg3 thread.taskset!
+
+    // spawn the os thread
+    reg3 thread.spawn
+
+    rdrop
 
     reg.pop
-
 ;
 
 /*----------------------------------------------------------------------------*/

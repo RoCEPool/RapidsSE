@@ -54,10 +54,9 @@ thread:  connectorThread
         .
 
         // start sender
-        stk
         "starting sender" .
-        sender.thread sender.taskset sender.queue 0 "sender.loop" nullPtr sender.start
-        sender.queue I senderQueue !
+        0 "sender.loop" "sender" I >str concat senderForm
+        I senderQueue !
 
       then
 
