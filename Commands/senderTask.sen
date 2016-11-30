@@ -60,8 +60,9 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : send ( word node )
 
+  depth
   args.node
-  2
+  swap
   stk
   >valset
   swap

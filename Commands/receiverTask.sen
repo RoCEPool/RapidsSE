@@ -46,6 +46,10 @@
     reg.pop
 ;
 
+: executeIt ( NodeName )
+  "Node executing executeIt with parameter " swap concat .
+;
+
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
@@ -58,17 +62,9 @@
   // expand valset into stack values
   valset>  ( ... wordName senderNode #values )
 
-  drop // #values
-
-  swap
-  "PONG" concat
-
-  stk
-
-  "sending response".
-
-  send
-
+  drop // drop #values
+  drop // drop the sender node#
+  find execute
 ;
 
 /*----------------------------------------------------------------------------*/
