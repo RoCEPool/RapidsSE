@@ -243,6 +243,7 @@ namespace Tasks
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTokenNext(void);
+    void vTracePoint(char cMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
     void vUndirect(void);
@@ -388,7 +389,8 @@ namespace Tasks
     static void vToValSet(NNP_Task nnpTask);
     static void vToValues(NNP_Task nnpTask);
     static void vTraceOff(NNP_Task nnpTask);
-    static void vTraceOn(NNP_Task nnpTask);        
+    static void vTraceOn(NNP_Task nnpTask);
+    static void vTraceSet(NNP_Task nnpTask);
     static void vTuck(NNP_Task nnpTask);
     static void vUnloop(NNP_Task nnpTask);
     static void vUntil(NNP_Task nnpTask);          

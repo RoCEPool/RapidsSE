@@ -740,6 +740,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">valset",         &vToValSet,         false);
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("trace!",          &vTraceSet,         false);
   vAddPrimitive("tuck",            &vTuck,             false);
   vAddPrimitive("unloop",          &vUnloop,           false);
   vAddPrimitive("until",           &vUntil,            true );
@@ -1952,6 +1953,32 @@ void Task::vTokenNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*trace current point                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTracePoint(char cMark)
+{
+  char aRoutine[128];
+  
+  Cell* pCell = IP.m_pCell;
+  
+  Word* pLocatedWord = pLocateWord(pCell);
+  if (pLocatedWord)
+    String::vCopy(aRoutine,pLocatedWord->sName().a());
+  else
+    String::vCopy(aRoutine,"<unknown>");
+  
+  i8 iParamValues  = m_xParamStack.iValues();
+  i8 iReturnValues = m_xReturnStack.iValues();
+  vTrace("%c %-15s : r %lld ; p%2d=",
+         cMark,aRoutine,iReturnValues,iParamValues);
+  
+  s8K sStackContents;
+  vStackContents(sStackContents);
+  
+  vTrace("%s\n",sStackContents.a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get transaction id                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Task::iTxId(void)
@@ -2779,6 +2806,9 @@ ENTRY("vEnterRoutine");
   
   nnpTask->IP.m_pCell = *pDoesArg;
   
+  if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
+    nnpTask->vTracePoint('>');
+  
   EXIT();
 }
 
@@ -2919,6 +2949,9 @@ void Task::vExit(NNP_Task nnpTask)
 ENTRY("vExit");
   
   //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
+  
+  if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
+    nnpTask->vTracePoint('<');
   
   void* pCellVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
@@ -4933,6 +4966,23 @@ void Task::vTraceOn(NNP_Task nnpTask)
 ENTRY("vTraceOn");
   
   nnpTask->m_iTracing = C_TRACE_STEPS;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tracing                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceSet(NNP_Task nnpTask)
+{
+  ENTRY("vTraceSet");
+  
+  i8 iTrace;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iTrace) )
+    THROW_INVALID_PARAM("trace!");
+  
+  nnpTask->m_iTracing = iTrace;
   
   EXIT();
 }
