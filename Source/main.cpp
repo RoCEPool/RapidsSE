@@ -76,14 +76,8 @@ int main(int argc, const char* argv[])
       Dir xDir;
       s256 sCommandDir;
       
-#ifdef __APPLE__
-      sCommandDir = "../../../../Commands";
-#else
-      sCommandDir = "../../Commands";
-#endif
-      
       // change working directory to Commands
-      bool bResult = xDir.bSetCurrent(sCommandDir);
+      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
       // ignore error
     }
     SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);

@@ -1648,6 +1648,9 @@ bool SePrompt::bListDir(void)
   // close the current directory
   xDir.vClose();
   
+  // clear the response
+  m_sResponse = "";
+  
   return true;
 }
 
@@ -1705,8 +1708,11 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(String::bEqualTo(m_pToken[0],"pwd"));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s\n", sDir.a());
+    vTrace("%s", sDir.a());
   }
+  
+  // clear the respnse
+  m_sResponse = "";
   
   return true;
 }
