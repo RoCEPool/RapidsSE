@@ -207,7 +207,7 @@ void Task::vInit(const char* aLambda)
   m_pBeginIP   = nullptr;
   m_pWord      = nullptr;
   m_bCompiling = false;
-  m_bTracing   = false;
+  m_iTracing   = 0;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
@@ -1736,7 +1736,7 @@ void Task::vPrimitive(const char* aPrimitive)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  if (!m_bTracing)
+  if ( ! (m_iTracing & C_TRACE_STEPS) )
     return;
   
   char aRoutine[128];
@@ -4871,7 +4871,7 @@ void Task::vTraceOff(NNP_Task nnpTask)
 {
 ENTRY("vTraceOff");
   
-  nnpTask->m_bTracing = false;
+  nnpTask->m_iTracing = 0;
   
   EXIT();
 }
@@ -4883,7 +4883,7 @@ void Task::vTraceOn(NNP_Task nnpTask)
 {
 ENTRY("vTraceOn");
   
-  nnpTask->m_bTracing = true;
+  nnpTask->m_iTracing = C_TRACE_STEPS;
   
   EXIT();
 }
@@ -6489,8 +6489,8 @@ void Task::vInputNext(NNP_Task nnpTask)
 {
 ENTRY("vInputNext");
   
-  if (nnpTask->m_bTracing) {
-    ASSERT(nnpTask->m_bTracing);
+  if (nnpTask->m_iTracing) {
+    ASSERT(nnpTask->m_iTracing);
   }
   
   char* aToken = nnpTask->m_sToken.a();
@@ -11662,7 +11662,7 @@ ENTRY("vFind");
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
     THROW_INVALID_PARAM("find");
  
-  if (nnpTask->m_bTracing) {
+  if (nnpTask->m_iTracing) {
     i8 i = 0; i++;
   }
   
@@ -11684,7 +11684,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
     THROW_INVALID_PARAM("findInCurrent");
   
-  if (nnpTask->m_bTracing) {
+  if (nnpTask->m_iTracing) {
     i8 i = 0; i++;
   }
   

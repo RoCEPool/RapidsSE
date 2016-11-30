@@ -126,9 +126,11 @@ namespace Tasks
     #define EXIT()
     
 #endif
-
     
   private:
+    
+    static const i8 C_TRACE_STEPS = 0x1;
+
     Lock    m_xLock;
     i8      m_iTaskNo;     // task
     s32     m_sName;       // task name
@@ -169,7 +171,7 @@ namespace Tasks
     Cell* m_pBeginIP;
     Word* m_pWord;
     bool  m_bCompiling;
-    bool  m_bTracing;
+    i8    m_iTracing;
     
     // exception
     s256  m_sFile;
