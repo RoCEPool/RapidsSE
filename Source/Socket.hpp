@@ -52,7 +52,7 @@ namespace Common
     bool bBind(int iPort, SysCall& SysCall);
     bool bBind(const char* pAddr, int iPort, SysCall& SysCall);
     bool bServer(const char* sAddr, int iPort, SysCall& SysCall);
-    bool bSendTo(int nBytes, void* pBuffer, SysCall& SysCall);
+    bool bSendTo(i8 nBytes, void* pBuffer, SysCall& SysCall);
     bool bRecvFrom(int nBytes, void* pBuffer, i8* pRecv, SysCall& SysCall);
 
     Footer* pFooter(void);

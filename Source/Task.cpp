@@ -1148,9 +1148,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("socket.recv",     &vSocketRecv,       false);
   vAddPrimitive("socket.send",     &vSocketSend,       false);
   
-  vAddPrimitive("client",          &vClient,           false);
-  vAddPrimitive("server",          &vServer,           false);
-  
   //----------------------------------------------------------
   vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
 }
@@ -11958,12 +11955,16 @@ ENTRY("vSocketAccept");
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.accept");
   
+  // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  // accept a connection
   bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
   
   if ( ! bResult )
     THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
   
+  // return the new socket
   nnpTask->m_xParamStack.vPush(new Socket(iSocketId));
   
   EXIT();
@@ -11983,7 +11984,10 @@ ENTRY("vSocketClose");
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socketclose");
   
+  // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  // close the socket
   bool bResult = pSocket->bClose(xSysCall);
   
   if ( ! bResult )
@@ -12015,11 +12019,16 @@ ENTRY("vSocketConnect");
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.connect");
 
+  // get address of node
   const char* sAddr = reinterpret_cast<char*>(xNode.sStr());
+  
+  // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
   
   bool bResult = false;
   
+  // try connecting in a loop if timeout occurs
+  // possibly other node not back to accepting connections
   while (!bResult) {
     bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
     if ( ! bResult ) {
@@ -12032,11 +12041,7 @@ ENTRY("vSocketConnect");
     }
   }
   
-  //bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
-  
-  //if ( ! bResult )
-  //  THROW("Unable to connect: Errno %d!", xSysCall.iError());
-  
+  // return the socket object
   Object* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
   
@@ -12063,6 +12068,7 @@ ENTRY("vSocketListen");
   if ( ! bResult )
     THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
   
+  // return new socket
   Object* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
   
@@ -12085,6 +12091,7 @@ ENTRY("vSocketOpen");
   if ( ! bResult )
     THROW("Unable to create socker: Errno %d!", xSysCall.iError());
   
+  // return pSocket
   Object* pPtrSocket = pSocket;
   nnpTask->m_xParamStack.vPush(pPtrSocket);
   
@@ -12100,11 +12107,8 @@ ENTRY("vSocketSend");
 
   SysCall xSysCall;
   Socket* pSocket;
-  char* pData;
   Object* pObject;
-  s8K  sWorkspace;
   ValSet xValSet;
-  ValWsp xValWsp;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
     THROW_INVALID_PARAM("socket.send");
@@ -12112,16 +12116,9 @@ ENTRY("vSocketSend");
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.send");
   
-  //xValWsp.vToString(sWorkspace.a());
-
   pSocket = reinterpret_cast<Socket*>(pObject);
-  //pData   = reinterpret_cast<char*>(sWorkspace.a());
   
-  //vTrace("%s sending on %lld %s\n", nnpTask->m_sName.a(), pSocket->m_iSocketId,pData);
-  
-  //bool bResult = pSocket->bSendTo((int)String::iLength(pData), pData, xSysCall);
-  
-  // send number of bytes
+  // first send the number of bytes that will follow
   i8 iBytes = xValSet.iSize();
   bool bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
@@ -12130,7 +12127,8 @@ ENTRY("vSocketSend");
     nnpTask->m_xParamStack.vPush((i8)0);
   }
   
-  bResult = pSocket->bSendTo((int)xValSet.iSize(), &xValSet, xSysCall);
+  // now send the actual value set
+  bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
@@ -12163,17 +12161,13 @@ void Task::vSocketRecv(NNP_Task nnpTask)
 
   vTrace("%s receiving on %lld\n", nnpTask->m_sName.a(), pSocket->m_iSocketId);
   
-  //char* pData = reinterpret_cast<char*>(sWorkspace.a());
-  //bool bResult = pSocket->bReadVch(reinterpret_cast<char**>(&pData), xSysCall);
-  
-  // recv number of bytes
+  // recv number of bytes that follow
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-  vTrace("%s received on %lld %lld bytes to follow\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, iBytes);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
   
-  // recv valset
+  // recv value set
   bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
   
   vTrace("%s received on %lld %p\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, &xValSet);
@@ -12182,61 +12176,6 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
   
   nnpTask->m_xParamStack.vPush(xValSet);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* start a socket client                                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vClient(NNP_Task nnpTask)
-{
-ENTRY("vClient");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  char* pAddress = pCurrentWord->pAllot(sizeof(Thread));
-
-  Thread* pThread = reinterpret_cast<Thread*>(pAddress);
-  pThread->vSetMagic();
-  pThread->vClass(CN_THREAD);
-  
-  ASSERT(CN_THREAD == pThread->eClass());
-  
-  new(pThread) Thread;
-  pThread->vSpawn();
-  
-  NNP_Task nnpTaskNew = new Task(nnpTask);
-  nnpTaskNew->vSeedWord("client_code:");
-  pThread->vAppend(nnpTaskNew);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* start a socket server                                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vServer(NNP_Task nnpTask)
-{
-ENTRY("vServer");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  char* pAddress = pCurrentWord->pAllot(sizeof(Thread));
-  
-  Thread* pThread = reinterpret_cast<Thread*>(pAddress);
-  pThread->vSetMagic();
-  pThread->vClass(CN_THREAD);
-
-  ASSERT(CN_THREAD == pThread->eClass());
-  
-  new(pThread) Thread;
-  pThread->vSpawn();
-  
-  // FIX!!!
-  //NNP_Task nnpTaskNew = new Task();
-  //nnpTaskNew->vSeedWord("server_code:");
-  //pThread->vAppend(nnpTaskNew);
   
   EXIT();
 }

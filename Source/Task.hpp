@@ -870,10 +870,7 @@ namespace Tasks
     static void vSocketListen(NNP_Task nnpTask);   
     static void vSocketOpen(NNP_Task nnpTask);     
     static void vSocketRecv(NNP_Task nnpTask);     
-    static void vSocketSend(NNP_Task nnpTask);     
-    
-    static void vClient(NNP_Task nnpTask);         
-    static void vServer(NNP_Task nnpTask);
+    static void vSocketSend(NNP_Task nnpTask);
     
     // utilities
     static void vBytesMagnitude(NNP_Task nnpTask);

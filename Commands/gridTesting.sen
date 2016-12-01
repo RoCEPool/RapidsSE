@@ -13,7 +13,7 @@
 //  "nohup "
     ""
     SE_PATH concat
-    " --start --restart --size 4gb " concat
+    " --start --size 4gb " concat
     " --commands /Users/ray/Desktop/rapidsse/Commands" concat
     " --region /SE_" concat
     swap >str concat
