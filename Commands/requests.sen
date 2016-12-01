@@ -128,6 +128,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 
 : <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
+: <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock.testDrop ;
 
 : <SUCCESS> 0 2 ddlLock.testDrop ;
 
@@ -236,15 +237,9 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-  checkInTenants not if swap drop <ERROR> exit then
+  checkInTenants not if <NIP+ERROR> exit then
 
-  checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
-
-  checkIsTenant not if <ERROR> exit then
-
-  dicHasRef " dic ref " .put .put .\n
-
-  dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
+  checkForTenant not if <NIP+ERROR> exit then
 
   removeTenant
 
