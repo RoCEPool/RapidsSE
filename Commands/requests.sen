@@ -191,7 +191,7 @@ ddlLock.grabWrite
   checkIsNotTenant   not if swap drop <ERROR> exit then
 
   dup          ( "<tenantNm>" "<tenantNm>" )
-  makeTenant   ( "<tenantNm>" )
+  ~makeTenant  ( "<tenantNm>" )
   makeCatalogs ( )
 
   <OK>
@@ -214,6 +214,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
+/*
 : drop_tenant ( "<tenantNm>" -- <R> )
 
 ddlLock.grabWrite
@@ -232,6 +233,7 @@ ddlLock.grabWrite
 
   <OK>
 ;
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : drop_tenant ( "<tenantNm>" -- <R> )
 
@@ -241,7 +243,7 @@ ddlLock.grabWrite
 
   checkForTenant not if <NIP+ERROR> exit then
 
-  removeTenant
+  ~removeTenant
 
   <OK>
 ;

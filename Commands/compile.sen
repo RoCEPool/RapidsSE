@@ -16,8 +16,8 @@
 "threads.sen" >>:
 "transactions.sen" >>:
 "interface.sen" >>:
-"dbobjects.sen" >>:
 "gridModel.sen" >>:
+"dbobjects.sen" >>:
 "systemObjects.sen" >>:
 "actors.sen" >>:
 "request.sen" >>:
