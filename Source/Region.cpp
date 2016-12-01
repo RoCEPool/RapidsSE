@@ -88,11 +88,13 @@ void Region::vCreate(s& sRegionName)
   s256 sSize;
   
   Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize.a());
-  
+
   vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n",
          sRegionName.a(),
          sSize.a(),
          gxArguments.m_iRegionSize);
+  
+  vTrace("Region::vCreate A\n");
   
   // open a new shm region
   bool bResult = Shm::bCreate(sRegionName,
@@ -100,6 +102,9 @@ void Region::vCreate(s& sRegionName)
                               iFD,
                               gxArguments.m_bRestart,
                               xSysCall);
+
+  vTrace("Region::vCreate B\n");
+  
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreate: failed to create region %s\n",
            sRegionName.a());
@@ -113,13 +118,20 @@ void Region::vCreate(s& sRegionName)
                        true,
                        gxArguments.m_bHugePages,
                        xSysCall);
+  
+  vTrace("Region::vCreate C\n");
+  
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vCreate failed to map!\n");
     Shm::bClose(iFD,xSysCall);
     ASSERT(0);
   }
   
+  vTrace("Region::vCreate D\n");
+  
   gpBufferPool = new(mpRegion) BufferPool;
+
+  vTrace("Region::vCreate E\n");
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm mapped at %p\n",mpRegion);
