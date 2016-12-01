@@ -116,10 +116,34 @@ create
 /*----------------------------------------------------------------------------*/
 : >: input.push input.text docol input.pop ;
 
-
-: checkIsWord ( word )
+/*----------------------------------------------------------------------------*/
+/* check for known word                                                       */
+/*----------------------------------------------------------------------------*/
+: checkIsWord ( <"wordNm"> )
+    find
     dup not if drop EC_NO_SUCH_WORD false exit then
     true
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop all values on stack except topmost                                    */
+/*----------------------------------------------------------------------------*/
+: nipAll ( ... top -- top )
+
+  // handle expty stack case
+  depth not if exit then
+
+  // save topmost
+  >r
+
+  // drop everything else
+  begin
+    depth while
+      drop
+  repeat
+
+  // restore topmost
+  r>
 ;
 
 "dic.sen" >>:

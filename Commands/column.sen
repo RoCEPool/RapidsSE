@@ -21,7 +21,7 @@
 
 : pushColumns ( -- )
 
-    "columns" find checkIsWord
+    "columns" checkIsWord
 
     not if EC_NO_COLUMNS_DIC false exit then
 

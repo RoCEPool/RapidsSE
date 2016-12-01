@@ -219,7 +219,6 @@ ddlLock.grabWrite
 
   checkInTenants not if swap drop <ERROR> exit then
 
-  find
   checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
 
   checkIsTenant not if <ERROR> exit then
@@ -239,7 +238,6 @@ ddlLock.grabWrite
 
   checkInTenants not if swap drop <ERROR> exit then
 
-  find
   checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
 
   checkIsTenant not if <ERROR> exit then
@@ -296,7 +294,6 @@ ddlLock.grabWrite
 
     checkInCatalogs not if swap drop <ERROR> exit then
 
-    find
     checkIsWord not if drop EC_NO_SUCH_CATALOG <ERROR> exit then
 
     checkIsCatalog not if swap drop <ERROR> exit then
@@ -351,7 +348,6 @@ ddlLock.grabWrite
 
     checkInSchemas not if swap drop <ERROR> exit then
 
-    find
     checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
 
     checkIsSchema not if swap drop <ERROR> exit then
@@ -386,7 +382,6 @@ ddlLock.grabWrite
     "schemas" findInCurrent
     execute dic.push
 
-    find
     checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
     checkIsSchema not if swap drop <ERROR> exit then
     execute dic.push
@@ -774,7 +769,6 @@ ddlLock.grabWrite
       else
         dup "tenants" streql if
           begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
-          find
           checkIsWord not if <ERROR> exit then
           execute dic.push
         else
@@ -919,7 +913,6 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : docol_command ( "command" -- <R> )
 
-    find
     checkIsWord not if <ERROR> exit then
     execute
 
