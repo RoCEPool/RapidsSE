@@ -239,9 +239,7 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-  checkInTenants not if <NIP+ERROR> exit then
-
-  checkForTenant not if <NIP+ERROR> exit then
+  checkRemoveTenant not if <NIP+ERROR> exit then
 
   ~removeTenant
 

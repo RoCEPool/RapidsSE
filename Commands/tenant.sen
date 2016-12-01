@@ -43,13 +43,14 @@
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable tenant folder                                 */
 /*----------------------------------------------------------------------------*/
-: checkForTenant ( "<tenantNm>" -- "<tenantNm>" true | "<tenantNm>" errorCode false )
+: checkRemoveTenant ( "<tenantNm>" -- "<tenantNm>" true | "<tenantNm>" errorCode false )
 
   dup ( "<tenantNm>" "<tenantNm>" )
 
-  checkIsWord   not if false exit then ( "<tenantNm>" word )
-  checkIsTenant not if false exit then ( "<tenantNm>" word )
-  checkNotUsed  not if false exit then ( "<tenantNm>" word )
+  checkInTenants  not if false exit then ( "<tenantNm>" word )
+  checkIsWord     not if false exit then ( "<tenantNm>" word )
+  checkIsTenant   not if false exit then ( "<tenantNm>" word )
+  checkNotUsed    not if false exit then ( "<tenantNm>" word )
 
   drop ( "<tenantNm>" )
 
