@@ -6,8 +6,6 @@
 
 : catalog ;
 
-: makeCatalogs {{ "catalogs" :dic ' folder swap execute dic.kind! }} ;
-
 : :catalog
     :dic
          //dup ' catalog swap word.kind!
@@ -33,6 +31,17 @@
 : checkIsNotCatalog ( word )
     dup findInCurrent not if true exit then
     EC_CATALOG_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a catalogs folder under given named tenant                            */
+/*----------------------------------------------------------------------------*/
+: makeCatalogs ( "<tenantNm>" -- )
+
+  find execute ( dic )
+  "catalogs"   ( dic "catalogs" )
+  swap         ( "catalogs" dic )
+  :folder      ( )
 ;
 
 /*============================================================================*/

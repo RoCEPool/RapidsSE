@@ -187,12 +187,11 @@ ddlLock.grabWrite
 
   checkEnoughBuffers not if swap drop <ERROR> exit then
   checkInTenants     not if swap drop <ERROR> exit then
-
   checkIsNotTenant   not if swap drop <ERROR> exit then
 
-  makeTenant ( tenant )
-
-  makeCatalogs
+  dup          ( "<tenantNm>" "<tenantNm>" )
+  makeTenant   ( "<tenantNm>" )
+  makeCatalogs ( )
 
   <OK>
 ;
@@ -204,11 +203,11 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-    checkInTenants not if <ERROR> exit then
+  checkInTenants not if <ERROR> exit then
 
-    contentsString
+  contentsString
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -218,20 +217,20 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-    checkInTenants not if swap drop <ERROR> exit then
+  checkInTenants not if swap drop <ERROR> exit then
 
-    find
-    checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
+  find
+  checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
 
-    checkIsTenant not if <ERROR> exit then
+  checkIsTenant not if <ERROR> exit then
 
-    dicHasRef " dic ref " .put .put .\n
+  dicHasRef " dic ref " .put .put .\n
 
-    dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
+  dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
 
-    >forget
+  >forget
 
-    <OK>
+  <OK>
 ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : drop_tenant ( "<tenantNm>" -- <R> )
