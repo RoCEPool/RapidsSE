@@ -9,8 +9,6 @@
 extern AttachMap* gpAttachMap;
 extern Arguments  gxArguments;
 
-extern void* C_ADDR_POOL;
-
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/

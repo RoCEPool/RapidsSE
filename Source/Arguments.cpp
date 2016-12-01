@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+void* C_ADDR_POOL = (void*)0x204800000;
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
@@ -12,6 +14,7 @@ Arguments::Arguments(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
+  m_pRegionAddr = C_ADDR_POOL;
   m_sRegionName = "/RapidsSE_Instance1";
   m_iRegionSize = 1_GB * 4 ;
   m_nPartitions = 1;
@@ -163,6 +166,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
       m_sRegionName = argv[++iArg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--address",argv[iArg],C_NO_CASE)) {
+      m_pRegionAddr = (void*)String::iToI8(argv[++iArg]);
       continue;
     }
     
@@ -379,6 +388,7 @@ void Arguments::vPrint(void)
   vTrace("  --node %lld\n",m_iNode);
   vTrace("  --nodes %lld\n",m_nNodes);
   vTrace("  --region %s\n",m_sRegionName.a());
+  vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
   vTrace("  --partition %lld\n",m_iPartition);
   vTrace("  --partitions %lld\n",m_nPartitions);

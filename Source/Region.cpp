@@ -31,8 +31,12 @@ bool Region::bAttach(s& sRegionName)
   }
   
   // allocate a temporary extent of memory
-  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,10_MB,C_SHARED_REGION,
-                       gxArguments.m_bHugePages,xSysCall);
+  mpRegion = Shm::pMap(iFD,
+                       gxArguments.m_pRegionAddr,
+                       10_MB,
+                       C_SHARED_REGION,
+                       gxArguments.m_bHugePages,
+                       xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n");
     Shm::bClose(iFD,xSysCall);
@@ -61,8 +65,12 @@ bool Region::bAttach(s& sRegionName)
   }
   
   // allocate the full extent of memory required
-  mpRegion = Shm::pMap(iFD,C_ADDR_POOL,iRegionSize,C_SHARED_REGION,
-                       gxArguments.m_bHugePages,xSysCall);
+  mpRegion = Shm::pMap(iFD,
+                      gxArguments.m_pRegionAddr,
+                       iRegionSize,
+                       C_SHARED_REGION,
+                       gxArguments.m_bHugePages,
+                       xSysCall);
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vAttach failed to map\n");
     Shm::bClose(iFD,xSysCall);
@@ -113,7 +121,7 @@ void Region::vCreate(s& sRegionName)
   
   // allocate memory for the shm region
   mpRegion = Shm::pMap(iFD,
-                       C_ADDR_POOL,
+                       gxArguments.m_pRegionAddr,
                        gxArguments.m_iRegionSize,
                        true,
                        gxArguments.m_bHugePages,
@@ -189,8 +197,12 @@ void* Region::pOpen(s& sRegionName, int& iFD)
   }
   
   // allocate a temporary extent of memory
-  void* pRegion = Shm::pMap(iFD,C_ADDR_POOL,10_MB,C_SHARED_REGION,
-                            gxArguments.m_bHugePages,xSysCall);
+  void* pRegion = Shm::pMap(iFD,
+                            gxArguments.m_pRegionAddr,
+                            10_MB,
+                            C_SHARED_REGION,
+                            gxArguments.m_bHugePages,
+                            xSysCall);
   if ( ! pRegion )  {
     vTrace("Region::pOpen failed to map\n");
     Shm::bClose(iFD,xSysCall);

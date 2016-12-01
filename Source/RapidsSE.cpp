@@ -35,7 +35,6 @@ void*               mpRegion           = nullptr;
 
 Lock                gxDdlLock;
 
-void* C_ADDR_POOL = (void*)0x204800000;
 
 /*----------------------------------------------------------------------------*/
 /* execute arguments                                                          */
