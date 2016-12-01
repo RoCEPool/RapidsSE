@@ -54,7 +54,7 @@ create
 /*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string                 */
 /*----------------------------------------------------------------------------*/
-: contents_string
+: contentsString
 
     ""                             // initial contents string
 // "(" concat                     //

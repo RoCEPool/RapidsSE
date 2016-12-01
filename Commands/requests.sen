@@ -206,7 +206,7 @@ ddlLock.grabRead
 
     checkInTenants not if <ERROR> exit then
 
-    contents_string
+    contentsString
 
     <SUCCESS>
 ;
@@ -283,7 +283,7 @@ ddlLock.grabRead
 
     checkInCatalogs not if <ERROR> exit then
 
-    contents_string
+    contentsString
 
     <SUCCESS>
 ;
@@ -338,7 +338,7 @@ ddlLock.grabRead
 
     checkInSchemas not if <ERROR> exit then
 
-    contents_string
+    contentsString
 
     <SUCCESS>
 ;
@@ -432,7 +432,7 @@ ddlLock.grabRead
 
     checkInTables not if <ERROR> exit then
 
-    contents_string
+    contentsString
 
     <SUCCESS>
 ;
