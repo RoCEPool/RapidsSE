@@ -24,14 +24,6 @@ create
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
-: words_old
-   word.this
-   begin
-     dup while dup nameWord .put " " .put prevWord
-   repeat
-   drop .\n
-;
-
 : words
     word.this dup iterate          // iterate word cursor
       object@ word.name .          // print the name of the word
@@ -123,6 +115,18 @@ create
     find
     dup not if drop EC_NO_SUCH_WORD false exit then
     true
+;
+
+/*----------------------------------------------------------------------------*/
+/* forget named word                                                          */
+/*----------------------------------------------------------------------------*/
+: :forget ( <"wordNm"> )
+
+  find ( word )
+
+  dup not if drop exit then ( )
+
+  >forget ( )
 ;
 
 /*----------------------------------------------------------------------------*/
