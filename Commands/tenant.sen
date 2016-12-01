@@ -40,19 +40,20 @@
   EC_NOT_A_TENANT false
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable tenant folder                                 */
 /*----------------------------------------------------------------------------*/
-: checkForTenant ( "<tenantNm>" )
+: checkForTenant ( "<tenantNm>" -- "<tenantNm>" true | "<tenantNm>" errorCode false )
 
-  //dup
+  dup ( "<tenantNm>" "<tenantNm>" )
 
-  checkIsWord   not if false exit then
-  checkIsTenant not if false exit then
-  checkNotUsed  not if false exit then
+  checkIsWord   not if false exit then ( "<tenantNm>" word )
+  checkIsTenant not if false exit then ( "<tenantNm>" word )
+  checkNotUsed  not if false exit then ( "<tenantNm>" word )
 
-  true
+  drop ( "<tenantNm>" )
+
+  true ( "<tenantNm>" true )
 ;
 
 
@@ -82,9 +83,9 @@
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeTenant ( tenant -- )
+: removeTenant ( "<tenantNm>" -- )
 
-  >forget
+  find >forget
 ;
 
 /*============================================================================*/
