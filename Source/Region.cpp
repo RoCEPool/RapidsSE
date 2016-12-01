@@ -127,7 +127,7 @@ void Region::vCreate(s& sRegionName)
                        gxArguments.m_bHugePages,
                        xSysCall);
   
-  vTrace("Region::vCreate C\n");
+  vTrace("Region::vCreate C; mpRegion=%p\n",mpRegion);
   
   if ( ! mpRegion )  {
     vTrace("RapidsSE::vCreate failed to map!\n");
