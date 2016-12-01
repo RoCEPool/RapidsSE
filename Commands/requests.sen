@@ -186,9 +186,8 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-  checkEnoughBuffers not if swap drop <ERROR> exit then
-  checkInTenants     not if swap drop <ERROR> exit then
-  checkIsNotTenant   not if swap drop <ERROR> exit then
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeTenant    not if <NIP+ERROR> exit then
 
   dup          ( "<tenantNm>" "<tenantNm>" )
   ~makeTenant  ( "<tenantNm>" )
