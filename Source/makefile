@@ -46,7 +46,7 @@ $(TARGET_EXE): $(TARGET_LIBRARY)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
 	cp $(MAN_PAGES) $(TARGET_PATH)
-	$(CPP) main.o -L../ThirdParty/bzip2 -L../ThirdParty/lz4 i-L$(TARGET_PATH) $(LIBS) $(RAPIDS_LIBS) -o $(TARGET_EXE)
+	$(CPP) main.o -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(LIBS) $(RAPIDS_LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d
