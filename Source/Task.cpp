@@ -623,6 +623,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
+  vAddPrimitive("compile,",        &vCompileComma,     false);
   vAddPrimitive("compiling",       &vCompiling,        false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
@@ -720,6 +721,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
+  vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("-",               &vSubtract,         false);
   vAddPrimitive("swap",            &vSwap,             false);
   vAddPrimitive("test",            &vTest,             false);
@@ -740,6 +742,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">valset",         &vToValSet,         false);
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("tracePoint",      &vTracePoint,       false);
   vAddPrimitive("trace!",          &vTraceSet,         false);
   vAddPrimitive("tuck",            &vTuck,             false);
   vAddPrimitive("unloop",          &vUnloop,           false);
@@ -1952,7 +1955,7 @@ void Task::vTokenNext(void)
 /*----------------------------------------------------------------------------*/
 /*trace current point                                                         */
 /*----------------------------------------------------------------------------*/
-void Task::vTracePoint(char cMark)
+void Task::vTracePoint(const char* aMark)
 {
   char aRoutine[128];
   
@@ -1966,8 +1969,8 @@ void Task::vTracePoint(char cMark)
   
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("%c %-15s : r %lld ; p%2d=",
-         cMark,aRoutine,iReturnValues,iParamValues);
+  vTrace("%s %-15s : r %lld ; p%2d=",
+         aMark,aRoutine,iReturnValues,iParamValues);
   
   s8K sStackContents;
   vStackContents(sStackContents);
@@ -2440,6 +2443,27 @@ ENTRY("vComment");
 }
 
 /*----------------------------------------------------------------------------*/
+/* compile, -- encode call                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vCompileComma(NNP_Task nnpTask)
+{
+  ENTRY("vCompileComma");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("compile,");
+  Word* pCalledWord = _pWord(pWordObject);
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  TaskStep* pCode = pCalledWord->ppDoesStep();
+  
+  pCurrentWord->vEncode(pCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* compiling -- enter compiling mode                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vCompiling(NNP_Task nnpTask)
@@ -2804,7 +2828,7 @@ ENTRY("vEnterRoutine");
   nnpTask->IP.m_pCell = *pDoesArg;
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint('>');
+    nnpTask->vTracePoint(">");
   
   EXIT();
 }
@@ -2948,7 +2972,7 @@ ENTRY("vExit");
   //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint('<');
+    nnpTask->vTracePoint("<");
   
   void* pCellVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
@@ -4590,6 +4614,20 @@ void Task::vStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* str: -- string colon                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vStringColon(NNP_Task nnpTask)
+{
+ENTRY("vStringColon");
+  
+  nnpTask->vTokenNext();
+  
+  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* - -- subtract second integer from top integer on stack                     */
 /*----------------------------------------------------------------------------*/
 void Task::vSubtract(NNP_Task nnpTask)
@@ -4963,6 +5001,23 @@ void Task::vTraceOn(NNP_Task nnpTask)
 ENTRY("vTraceOn");
   
   nnpTask->m_iTracing = C_TRACE_STEPS;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace point                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTracePoint(NNP_Task nnpTask)
+{
+  ENTRY("vTracePoint");
+  
+  s256 sPointName;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
+    THROW_INVALID_PARAM("tracePoint");
+  
+  nnpTask->vTracePoint(sPointName.a());
   
   EXIT();
 }

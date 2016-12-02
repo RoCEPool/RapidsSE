@@ -243,7 +243,7 @@ namespace Tasks
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
     void vTokenNext(void);
-    void vTracePoint(char cMark);
+    void vTracePoint(const char* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
     void vUndirect(void);
@@ -277,6 +277,7 @@ namespace Tasks
     static void vColon(NNP_Task nnpTask);          
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
+    static void vCompileComma(NNP_Task nnpTask);
     static void vCompiling(NNP_Task nnpTask);
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
@@ -370,6 +371,7 @@ namespace Tasks
     static void vSnooze(NNP_Task nnpTask);
     static void vSleep(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
+    static void vStringColon(NNP_Task nnpTask);
     static void vSubtract(NNP_Task nnpTask);
     static void vSwap(NNP_Task nnpTask);           
     static void vTest(NNP_Task nnpTask);
@@ -390,6 +392,7 @@ namespace Tasks
     static void vToValues(NNP_Task nnpTask);
     static void vTraceOff(NNP_Task nnpTask);
     static void vTraceOn(NNP_Task nnpTask);
+    static void vTracePoint(NNP_Task nnpTask);
     static void vTraceSet(NNP_Task nnpTask);
     static void vTuck(NNP_Task nnpTask);
     static void vUnloop(NNP_Task nnpTask);

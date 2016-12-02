@@ -150,6 +150,21 @@ create
   r>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* named trace point                                                          */
+/*----------------------------------------------------------------------------*/
+: tp: immediate
+
+  str:
+
+  encodeVal
+
+  ' tracepoint compile,
+;
+
+//traceon
+: tp:test 567 tp: tp-abc . ;
+
 "dic.sen" >>:
 "var.sen" >>:
 "useful.sen" >>:
