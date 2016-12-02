@@ -173,7 +173,7 @@ void File::vClose(void)
   
   i8 rCode = fclose(m_pFilePtr);
   
-  if (EOF == rCode) {
+  if ((char)EOF == rCode) {
     m_xSysCall.vError(errno);
     vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s",
           m_pFilePtr,errno,m_sFilePath.a(),m_sOpenMode.a());
@@ -240,7 +240,7 @@ void File::vFlush(void)
   
   i8 rCode = fflush(m_pFilePtr);
 
-  if (EOF == rCode) {
+  if ((char)EOF == rCode) {
     m_xSysCall.vError(errno);
     vWarn("File::vFlush: fflush() error; errno=%d",errno);
     return;
@@ -260,7 +260,7 @@ char File::cGetChar(void)
     return 0;
 
   char cChar = getc(m_pFilePtr);
-  if (EOF == cChar)
+  if ((char)EOF == cChar)
     cChar = 0;
   
   return cChar;
@@ -542,7 +542,7 @@ bool File::bReadLine(char* aBuffer)
   *y = '\0';
   for (;;) {
     char c = getc(m_pFilePtr);
-    if ('\n' == c || EOF ==c) {
+    if ('\n' == c || (char)EOF ==c) {
       break;
     }
     *y++ = c;
@@ -580,7 +580,7 @@ bool File::bReadLine(char* aBuffer)
 ////  *s.a() = '\0';
 ////  for (;;) {
 ////     char c = getc(m_pFilePtr);
-////     if ('\n' == c || EOF ==c)
+////     if ('\n' == c || (char)EOF ==c)
 ////       break;
 ////     else
 ////       String::vConcat(s.a(),c);
@@ -591,7 +591,7 @@ bool File::bReadLine(char* aBuffer)
 //  *z = '\0';
 //  for (;;) {
 //    char c = getc(m_pFilePtr);
-//    if ('\n' == c || EOF ==c)
+//    if ('\n' == c || (char)EOF ==c)
 //      break;
 //    else
 //      String::vAppendChar(&z,c);
@@ -637,7 +637,7 @@ bool File::bReadLine(s& s)
     
     char c = *m_pNext++;
     
-    if ('\n' == c || EOF == c)
+    if ('\n' == c || (char)EOF == c)
       break;
     
     *z++ = c;
@@ -701,7 +701,7 @@ bool File::bReadRecord(void)
     
     char c = *m_pNext++;
     
-    if ('\n' == c || EOF == c)
+    if ('\n' == c || (char)EOF == c)
       break;
     
     *z++ = c;
@@ -883,7 +883,7 @@ void File::vUngetChar(char cChar)
   
   i8 iResult = ungetc(cChar,m_pFilePtr);
   
-  if (EOF == iResult)
+  if ((char)EOF == iResult)
     vWarn("File::vUngetChar: unget failed: '%c' %s\n",cChar,m_sFilePath.a());
 }
 
