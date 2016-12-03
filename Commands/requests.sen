@@ -938,6 +938,39 @@ ddlLock.grabWrite
     <SUCCESS>
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* create /tenants/boray/catalogs/rapidsse                                    */
+/*----------------------------------------------------------------------------*/
+: createDefaultFolders ( )
+
+  // find the tenants folder
+  "tenants" findInCurrent
+  execute dic.push
+
+  // create tenant boray
+  "boray" create_tenant
+  drop drop drop
+
+  // find the boray folder
+  "boray" findInCurrent
+  execute dic.push
+
+  // find the catalogs folder
+  "catalogs" findInCurrent
+  execute dic.push
+
+  // create catalog rapidsse
+  "rapidsse" create_catalog
+  drop drop drop
+
+  // go back to main dictionary
+  dic.drop dic.drop dic.drop
+
+  assert.stack_0
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

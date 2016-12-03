@@ -3177,7 +3177,9 @@ void Task::vImmediate(NNP_Task nnpTask)
 ENTRY("vImmediate");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
-
+  
+  vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  
   pCurrentWord->vImmediate(true);
   
   EXIT();
