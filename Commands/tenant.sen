@@ -81,7 +81,10 @@
 /*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
-: makeTenant ( "<tenantNm>" -- true )
+: makeTenant ( "<tenantNm>" ... #folders -- true )
+
+tp: maketenant
+  dropN
 
   :tenant drop
 
@@ -94,11 +97,12 @@
 : ~makeTenant ( "<tenantNm>" -- )
 
   // push folder path
-  //seitf.path@ ( ... #folders )
+  seitf.path@ ( "<tenantNm>" ... #folders )
 
-  "makeTenant" !indirect ( true )
+  // set indirect call to be makeTenant
+  "makeTenant" ( ... #folders "<tenantNm>" "makeTenant" )
 
-  nipAll
+  !indirect ( true )
 
   drop ( )
 ;

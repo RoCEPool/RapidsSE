@@ -894,6 +894,7 @@ ddlLock.grabWrite
   // create tenant boray (and catalogs sub-folder)
   "boray"
   // create_tenant drop drop drop
+  seitf.path@ ( "boray" ... #folders )
   makeTenant assert
   "boray" makeCatalogs
 
