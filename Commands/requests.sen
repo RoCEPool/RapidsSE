@@ -949,9 +949,11 @@ ddlLock.grabWrite
   "tenants" findInCurrent
   execute dic.push
 
-  // create tenant boray
-  "boray" create_tenant
-  drop drop drop
+  // create tenant boray (and catalogs sub-folder)
+  "boray"
+  // create_tenant drop drop drop
+  makeTenant assert
+  "boray" makeCatalogs
 
   // find the boray folder
   "boray" findInCurrent

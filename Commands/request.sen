@@ -11,7 +11,7 @@
 
 "requests.sen" >>:
 
-// create /tenants/boray/catalogs/rapidsse 
+// create /tenants/boray/catalogs/rapidsse
 createDefaultFolders
 
 /*============================================================================*/
