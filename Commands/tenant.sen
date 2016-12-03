@@ -94,9 +94,11 @@
 : ~makeTenant ( "<tenantNm>" -- )
 
   // push folder path
-  // seitf.path@ ( ... #folders )
+  //seitf.path@ ( ... #folders )
 
   "makeTenant" !indirect ( true )
+
+  nipAll
 
   drop ( )
 ;
