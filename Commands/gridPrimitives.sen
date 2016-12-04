@@ -207,6 +207,8 @@ args.nodes ptrArray: pQueues
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
+//traceon
+
     // convert valset to indirect call
     >indirect ( ... wordName )
 
@@ -218,6 +220,9 @@ args.nodes ptrArray: pQueues
 
     // put indirect result onto stack of caller and signal
     >caller ( )
+
+//traceoff
+
 
   0 until
 
@@ -390,17 +395,34 @@ traceoff
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
-: >>participants>
+: >>participants> ( ... "<wordNm>" #values -- bool )
 
-  dup
+  swap ( ... #values "<wordNm>" )
+  >r   ( ... #values )
+  >r   ( ... )
+  // r1 has "<wordNm>"
+  // r0 has #values
 
-  2 +
+  seitf.path@ ( ... "<wordNm>" path... #folders )
 
-  ">participants>"
+  dup ( ... "<wordNm>" path... #folders #folders )
+  r> + inc ( ... "<wordNm>" path... #folders #values+#folders+1 )
+  //r0 has "<wordNm>"
 
-  swap
+  r> swap ( ... "<wordNm>" path... #folders "<wordNm>" #values+#folders+1 )
 
-  >coordinator>
+  dup ( ... "<wordNm>" path... #folders "<wordNm>" #values+#folders+1 #values+#folders+1 )
+
+  ">participants>" ( ... "<wordNm>" path... #folders "<wordNm>"
+                     #values+#folders+1 #values+#folders+1 ">participants>" )
+
+  swap ( ... "<wordNm>" path... #folders "<wordNm>"
+         #values+#folders+1 ">participants>" #values+#folders+1 )
+
+  2 + ( ... "<wordNm>" path... #folders "<wordNm>"
+            #values+#folders+1 ">participants>" #totalValues )
+
+  >coordinator> ( bool )
 ;
 
 /*============================================================================*/

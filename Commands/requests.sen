@@ -895,7 +895,7 @@ ddlLock.grabWrite
   "boray"
   // create_tenant drop drop drop
   //seitf.path@ ( "boray" ... #folders )
-  makeTenant assert
+  makeTenant$ assert
   "boray" makeCatalogs
 
   // find the boray folder

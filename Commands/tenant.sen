@@ -81,10 +81,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
-: makeTenant ( "<tenantNm>" ... #folders -- true )
-
-tp: maketenant
-//  dropN
+: makeTenant$ ( "<tenantNm>" -- true )
 
   :tenant drop
 
@@ -94,29 +91,31 @@ tp: maketenant
 /*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
+: makeTenant ( "<tenantNm>" ... #folders -- true )
+
+tp: maketenant
+  dicStack!
+
+dic.stack
+
+  makeTenant$
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named tenant folder                                                 */
+/*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
-traceon
-
-/*
-  "true" "TEST_A" "." 3 >>participants>
-  assert
-
-  "true" "TEST_B" "." 3 >>participants>
-  assert
-
-  // push folder path
-  seitf.path@ ( "<tenantNm>" ... #folders )
-*/
+//traceon
 
   // set indirect call to be makeTenant
-  "makeTenant" ( ... #folders "<tenantNm>" "makeTenant" )
+  "makeTenant" 2 ( "makeTenant" 2 )
 
-  !indirect ( true )
+  >>participants>
 
   drop ( )
 
-traceoff
+//traceoff
 
 ;
 
