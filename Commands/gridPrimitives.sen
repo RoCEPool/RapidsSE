@@ -5,6 +5,13 @@
 "gridPrimitives.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
+/* lock and queue arrays                                                      */
+/*----------------------------------------------------------------------------*/
+args.nodes ptrArray: ppQueues
+args.nodes ptrArray: cpQueues
+args.nodes ptrArray: pQueues
+
+/*----------------------------------------------------------------------------*/
 /* pop indirect valset from this tasks queue (this is a blocking call)        */
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )

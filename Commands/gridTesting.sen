@@ -165,13 +165,9 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* lock and queue arrays                                                      */
+/* lock array                                                                 */
 /*----------------------------------------------------------------------------*/
-
 args.nodes intArray: ddlInts
-args.nodes ptrArray: ppQueues
-args.nodes ptrArray: cpQueues
-args.nodes ptrArray: pQueues
 
 /*----------------------------------------------------------------------------*/
 /* attempt to grab ddl lock n                                                 */
