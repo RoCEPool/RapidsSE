@@ -92,9 +92,60 @@ tp: maketenant
 ;
 
 /*----------------------------------------------------------------------------*/
+/* send to each participant to execute                                        */
+/*----------------------------------------------------------------------------*/
+: participate
+
+  args.nodes task.this task.acks!
+
+  >valset
+
+  >r
+
+  args.nodes 0 do
+
+    2 rpick
+
+    valset>
+
+    I ppQueues @
+
+    >queue
+
+  loop
+
+  rdrop
+
+  task.suspend
+
+  // note that each participant will always return a valset
+  // that valset may be empty if the indirect word executed
+  // doesnt return a value
+
+/*
+  true >r
+
+  begin
+    depth while
+      valset> drop
+      not if
+        rdrop false >r
+      then
+  repeat
+
+  r>
+*/
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
+
+  "TEST_TEST" "." 2 "participate" 4 coordinate
+
+tp: afterCoordinate2
+  args.nodes dropN
 
   // push folder path
   seitf.path@ ( "<tenantNm>" ... #folders )
