@@ -92,61 +92,14 @@ tp: maketenant
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinator sends indirect call to each participant to execute             */
-/*----------------------------------------------------------------------------*/
-: >participants>
-
-  args.nodes task.this task.acks!
-
-  >valset
-
-  >r
-
-  args.nodes 0 do
-
-    2 rpick
-
-    valset>
-
-    I ppQueues @
-
-    >queue
-
-  loop
-
-  rdrop
-
-  task.suspend
-
-  // note that each participant will always return a valset
-  // that valset may be empty if the indirect word executed
-  // doesnt return a value
-
-traceon
-  true >r
-
-  begin
-    depth while
-      valset> drop
-      not if
-        rdrop false >r
-      then
-  repeat
-
-  r>
-traceoff
-;
-
-/*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
-assert.stack_1+
-  "true" "TEST_TEST" "." 3 ">participants>" 5 >coordinator>
+  "true" "TEST_A" "." 3 >>participants>
+  assert
 
-tp: afterCoordinate2
-assert.stack_2+
+  "true" "TEST_B" "." 3 >>participants>
   assert
 
   // push folder path

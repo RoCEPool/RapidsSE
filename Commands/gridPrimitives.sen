@@ -330,6 +330,52 @@ createActors
 ;
 
 /*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to each participant to execute             */
+/*----------------------------------------------------------------------------*/
+: >participants>
+
+  args.nodes task.this task.acks!
+
+  >valset
+
+  >r
+
+  args.nodes 0 do
+
+    2 rpick
+
+    valset>
+
+    I ppQueues @
+
+    >queue
+
+  loop
+
+  rdrop
+
+  task.suspend
+
+  // note that each participant will always return a valset
+  // that valset may be empty if the indirect word executed
+  // doesnt return a value
+
+traceon
+  true >r
+
+  begin
+    depth while
+    valset> drop
+    not if
+      rdrop false >r
+    then
+  repeat
+
+  r>
+traceoff
+;
+
+/*----------------------------------------------------------------------------*/
 /* queue an indirect call to the coordinator and wait for result              */
 /*----------------------------------------------------------------------------*/
 : >coordinator> ( ... wordName #values -- ..result.. )
@@ -339,6 +385,22 @@ createActors
 
   // put onto c.queue and suspend till notified
   >queue> ( ... )
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to each participant to execute             */
+/*----------------------------------------------------------------------------*/
+: >>participants>
+
+  dup
+
+  2 +
+
+  ">participants>"
+
+  swap
+
+  >coordinator>
 ;
 
 /*============================================================================*/
