@@ -92,7 +92,7 @@ tp: maketenant
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send to each participant to execute                                        */
+/* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
 : participate
 
@@ -122,7 +122,7 @@ tp: maketenant
   // that valset may be empty if the indirect word executed
   // doesnt return a value
 
-/*
+traceon
   true >r
 
   begin
@@ -134,7 +134,7 @@ tp: maketenant
   repeat
 
   r>
-*/
+traceoff
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,10 +142,12 @@ tp: maketenant
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
-  "TEST_TEST" "." 2 "participate" 4 coordinate
+assert.stack_1+
+  "true" "TEST_TEST" "." 3 "participate" 5 coordinate
 
 tp: afterCoordinate2
-  args.nodes dropN
+assert.stack_2+
+  . //args.nodes dropN
 
   // push folder path
   seitf.path@ ( "<tenantNm>" ... #folders )
