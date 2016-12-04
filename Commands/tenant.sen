@@ -83,7 +83,6 @@
 /*----------------------------------------------------------------------------*/
 : makeTenant ( "<tenantNm>" ... #folders -- true )
 
-tp: maketenant
   dropN
 
   :tenant drop
@@ -92,9 +91,44 @@ tp: maketenant
 ;
 
 /*----------------------------------------------------------------------------*/
+/* run indirect in all participants                                           */
+/*----------------------------------------------------------------------------*/
+: participate
+
+traceon
+
+  >valset
+
+  args.nodes task.this task.acks!  // will wait for all to ack
+
+  args.nodes 0 do
+
+    I ppQueues @
+
+    r@ valset>
+
+    >queue
+
+  loop
+
+  task.suspend
+
+  args.nodes 0 do
+    drop // returned valset
+  loop
+
+  rdrop // the original valset
+
+  "done" 1
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
+
+  //"TEST_TEST" "." 2 "participate" 4 coordinate
 
   // push folder path
   seitf.path@ ( "<tenantNm>" ... #folders )
