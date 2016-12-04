@@ -94,7 +94,7 @@ tp: maketenant
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
-: participate
+: >participants>
 
   args.nodes task.this task.acks!
 
@@ -143,11 +143,11 @@ traceoff
 : ~makeTenant ( "<tenantNm>" -- )
 
 assert.stack_1+
-  "true" "TEST_TEST" "." 3 "participate" 5 >coordinator>
+  "true" "TEST_TEST" "." 3 ">participants>" 5 >coordinator>
 
 tp: afterCoordinate2
 assert.stack_2+
-  . //args.nodes dropN
+  assert
 
   // push folder path
   seitf.path@ ( "<tenantNm>" ... #folders )
