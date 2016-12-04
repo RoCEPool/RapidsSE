@@ -242,14 +242,14 @@ args.nodes intArray: ddlInts
 
   // coordinate grab of dist ddl lock
   "grabDistDDL" 1  ( "grabDistDdl" 1 )
-  coordinate       ( true|false )
+  >coordinator>     ( true|false )
   .
 
   ddlDump
 
   // coordinate drop of dist ddl lock
   "dropDistDDL" 1 ( "dropDistDdl" 1 )
-  coordinate      ( true|false )
+  >coordinator>      ( true|false )
   .
 
   ddlDump

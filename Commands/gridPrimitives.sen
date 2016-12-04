@@ -330,9 +330,9 @@ createActors
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinate a dispatch of indirect all to the coordinator                   */
+/* queue an indirect call to the coordinator and wait for result              */
 /*----------------------------------------------------------------------------*/
-: coordinate ( ... wordName #values -- ..result.. )
+: >coordinator> ( ... wordName #values -- ..result.. )
 
   // the queue is c.queue
   c.queue ( ... wordName #values c.queue )

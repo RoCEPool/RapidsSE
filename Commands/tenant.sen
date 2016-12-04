@@ -143,7 +143,7 @@ traceoff
 : ~makeTenant ( "<tenantNm>" -- )
 
 assert.stack_1+
-  "true" "TEST_TEST" "." 3 "participate" 5 coordinate
+  "true" "TEST_TEST" "." 3 "participate" 5 >coordinator>
 
 tp: afterCoordinate2
 assert.stack_2+
