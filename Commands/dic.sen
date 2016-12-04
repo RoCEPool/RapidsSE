@@ -103,26 +103,30 @@
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
+  dic.count 0 do
+    dic.drop
+  loop
+
   0 do
 
-  dup "<main>" streql if
-    drop
-    dic.main
-    dicStack.push
-  else
-
-    dup "seitf" streql if
+    dup "<main>" streql if
       drop
       dic.main
       dicStack.push
     else
 
-      find
-      execute
-      dicStack.push
-    then
+      dup "seitf" streql if
+        drop
+        dic.main
+        dicStack.push
+      else
 
-  then
+        find
+        execute
+        dicStack.push
+      then
+
+    then
 
   loop
 ;

@@ -84,7 +84,7 @@
 : makeTenant ( "<tenantNm>" ... #folders -- true )
 
 tp: maketenant
-  dropN
+//  dropN
 
   :tenant drop
 
@@ -96,6 +96,9 @@ tp: maketenant
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
+traceon
+
+/*
   "true" "TEST_A" "." 3 >>participants>
   assert
 
@@ -104,6 +107,7 @@ tp: maketenant
 
   // push folder path
   seitf.path@ ( "<tenantNm>" ... #folders )
+*/
 
   // set indirect call to be makeTenant
   "makeTenant" ( ... #folders "<tenantNm>" "makeTenant" )
@@ -111,6 +115,9 @@ tp: maketenant
   !indirect ( true )
 
   drop ( )
+
+traceoff
+
 ;
 
 /*----------------------------------------------------------------------------*/
