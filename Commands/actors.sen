@@ -31,7 +31,7 @@ int: queryCount
     snooze listerStart
     snooze monitorStart
     snooze reclaimStart
-    snooze answerStart
+    //snooze answerStart
 
   then
 
