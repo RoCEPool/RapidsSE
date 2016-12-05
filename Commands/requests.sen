@@ -200,7 +200,7 @@ ddlLock.grabWrite
 
     dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
 
-    >forget
+    removeCatalog drop
 
     <OK>
 ;
