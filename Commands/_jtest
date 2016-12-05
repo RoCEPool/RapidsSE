@@ -5,7 +5,7 @@
 ping
 
 cf tenants
-mkten boray
+//mkten boray
 
 cf boray
 cf catalogs

@@ -338,10 +338,6 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
 
-seitf.path@
-
-dicStack!
-
 ddlLock.grabWrite
 
     checkEnoughBuffers not if swap drop <ERROR> exit then

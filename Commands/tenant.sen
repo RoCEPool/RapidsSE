@@ -85,9 +85,11 @@
 
 tp: maketenant$
 
-  :tenant drop
+  :tenant ( ^tenant )
 
-  true
+  drop ( )
+
+  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,9 +117,9 @@ tp: maketenant$
 : ~makeTenant ( "<tenantNm>" -- )
 
   // set indirect call to be makeTenant
-  "makeTenant" 2 ( "makeTenant" 2 )
+  "makeTenant" 2 ( "<tenantNm>" "makeTenant" 2 )
 
-  >>participants>
+  >>participants> ( bool )
 
   drop ( )
 
