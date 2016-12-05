@@ -297,13 +297,18 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-    checkEnoughBuffers not if swap drop <ERROR> exit then
-    checkInTables      not if swap drop <ERROR> exit then
-    checkIsNotTable    not if swap drop <ERROR> exit then
+//    checkEnoughBuffers not if swap drop <ERROR> exit then
+//    checkInTables      not if swap drop <ERROR> exit then
+//    checkIsNotTable    not if swap drop <ERROR> exit then
 
-    :table execute makeColumns
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeTable     not if <NIP+ERROR> exit then
 
-    <OK>
+  dup
+  makeTable assert
+  makeColumns
+
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/

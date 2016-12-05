@@ -6,8 +6,12 @@
 
 : column: ;
 
-: makeColumns ( table --  )
-   table.dic {{ "columns" :dic drop }}
+//: makeColumns ( table --  ) table.dic {{ "columns" :dic drop }} ;
+
+: makeColumns ( "<tableNm>" -- )
+
+  find execute ( dic )
+  table.dic {{ "columns" :dic drop }}
 ;
 
 : withinColumns

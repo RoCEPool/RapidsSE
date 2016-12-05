@@ -131,6 +131,30 @@
     false
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable table                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
+
+  checkInTables   not if false exit then
+  checkIsNotTable not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a table                                                               */
+/*----------------------------------------------------------------------------*/
+: makeTable ( "<tableNm>" -- true )
+
+tp: makeTable
+
+  :table ( ^table )
+
+  drop ( )
+
+  true ( true )
+;
 
 /*============================================================================*/
 /* end                                                                        */
