@@ -98,7 +98,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-: get_tableRef ( "<tableNm>" -- <R> )
+: getTableRef ( "<tableNm>" -- <R> )
 
     checkInTables not if false exit then
 
@@ -114,7 +114,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-: return_tableRef ( )
+: returnTableRef ( )
 
     task.this task.seitf@ seitf.tableDeref
 

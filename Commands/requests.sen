@@ -503,7 +503,7 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-    get_tableRef not if swap drop <ERROR> exit then
+    getTableRef not if swap drop <ERROR> exit then
 
     queryCount ++
 
@@ -586,7 +586,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : get_table ( "<tableNm>" -- <R> )
 
-    get_tableRef not if <ERROR> exit then
+    getTableRef not if <ERROR> exit then
 
     <OK>
 ;
@@ -594,7 +594,7 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : return_table ( )
 
-    return_tableRef not if <ERROR> exit then
+    returnTableRef not if <ERROR> exit then
 
     <OK>
 ;
