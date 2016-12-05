@@ -130,11 +130,30 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeTenant ( "<tenantNm>" -- true )
+: removeTenant$ ( "<tenantNm>" -- true )
+
+  tp: removetenant$
 
   :forget ( )
 
-  true
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeTenant ( "<tenantNm>" -- true )
+
+  dicStack!
+
+  task.this task.name@ "p0.task" streql not if
+  "_" concat task.this task.name@ concat
+  then
+
+  dup "removing tenant " swap concat .
+
+  removeTenant$
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +161,10 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 : ~removeTenant ( "<tenantNm>" -- )
 
-  "removeTenant" !indirect ( true )
+  // set indirect call to be dropTenant
+  "removeTenant" 2 ( "<tenantNm>" "dropTenant" 2 )
+
+  >>participants> ( bool )
 
   drop ( )
 ;
