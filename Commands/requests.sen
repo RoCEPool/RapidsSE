@@ -338,7 +338,7 @@ ddlLock.grabRead
 
     checkIsTable not if swap drop <ERROR> exit then
 
-    execute ( "filename" table )
+    find execute ( "filename" table )
 
     tableLoader not if <ERROR> exit then
 
@@ -360,7 +360,7 @@ ddlLock.grabRead
 
   checkIsTable not if swap drop <ERROR> exit then
 
-  execute ( "filename" table )
+  find execute ( "filename" table )
 
   tableLoaderStream2 not if <ERROR> exit then
 
@@ -380,7 +380,7 @@ ddlLock.grabRead
 
     checkIsTable not if swap drop <ERROR> exit then
 
-    execute ( "filename" table )
+    find execute ( "filename" table )
 
     tableExporter not if <ERROR> exit then
 
@@ -401,7 +401,7 @@ ddlLock.grabRead
 
     checkIsTable not if swap drop <ERROR> exit then
 
-    execute        ( "<to-tableNm>" ^fromTable )
+    find execute        ( "<to-tableNm>" ^fromTable )
 
     swap           ( ^fromTable "<to-tableNm>" )
 
@@ -427,7 +427,7 @@ ddlLock.grabRead
 
   checkIsTable not if <ERROR> exit then
 
-  execute ( table )
+  find execute ( table )
 
   rowDump
 
@@ -457,7 +457,7 @@ ddlLock.grabWrite
 
     checkIsTable not if <ERROR> exit then
 
-    execute ( table )
+    find execute ( table )
 
     table.space >str
 
@@ -478,7 +478,7 @@ ddlLock.grabRead
 
     queryCount ++
 
-    execute ( table )
+    find execute ( table )
 
     rowcursor.new dup rot rowcursor.table!
 
@@ -514,7 +514,7 @@ ddlLock.grabRead
 
     checkIsTable not if <ERROR> exit then
 
-    execute ( table )
+    find execute ( table )
 
     table.truncate
 
@@ -546,7 +546,7 @@ tp ( "<tableNm>" )
 
     checkIsTable not if <ERROR> exit then
 
-    execute ( table )
+    find execute ( table )
 
     tableInUse not if "Table not in use" . <OK> exit then
 

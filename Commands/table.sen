@@ -70,7 +70,8 @@
 /*----------------------------------------------------------------------------*/
 /* check word is a table                                                      */
 /*----------------------------------------------------------------------------*/
-: checkIsTable ( "<tableNm>" -- ^w:table true | errorCode false )
+/*
+: checkIsTableOld ( "<tableNm>" -- ^w:table true | errorCode false )
 
   find ( ^w:table )
 
@@ -92,8 +93,9 @@
   drop ( )
   EC_NOT_A_TABLE false ( errorCode false )
 ;
+*/
 //------------------------------------------------------------------------------
-: checkIsTable2 ( "<tableNm>" -- "<tableNm>" true | errorCode false )
+: checkIsTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
 
   dup ( "<tableNm>" "<tableNm>" )
 
@@ -134,7 +136,7 @@
 
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    execute table.dic dic.push
+    find execute table.dic dic.push
 
     true
 ;
@@ -150,7 +152,7 @@
 
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    execute ( table )
+    find execute ( table )
 
     task.this task.seitf@ seitf.tableRef
 
@@ -208,7 +210,7 @@ tp: makeTable
 : checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
 
   checkInTables not if false exit then ( "<tableNm>" )
-  checkIsTable2 not if false exit then ( "<tableNm>" )
+  checkIsTable not if false exit then ( "<tableNm>" )
   tableInUse if EC_TABLE_IN_USE false exit then ( "<tableNm>" )
 
   true ( "<tableNm>" true )
