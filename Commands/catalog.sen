@@ -45,6 +45,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a removable catalog folder                                */
+/*----------------------------------------------------------------------------*/
+: checkRemoveCatalog ( "<catalogNm>" -- "<catalogNm>" true | "<catalogNm>" errorCode false )
+
+  dup ( "<catalogNm>" "<catalogNm>" )
+
+  checkInCatalogs not if false exit then ( "<catalogNm>" word )
+  checkIsWord     not if false exit then ( "<catalogNm>" word )
+  checkIsCatalog  not if false exit then ( "<catalogNm>" word )
+  checkNotUsed    not if false exit then ( "<catalogNm>" word )
+
+  drop ( "<catalogNm>" )
+
+  true ( "<catalogNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a catalogs folder under given named tenant                            */
 /*----------------------------------------------------------------------------*/
 : makeCatalogs ( "<tenantNm>" -- )
@@ -76,7 +93,7 @@ tp: makeCatalog
 
 tp: removeCatalog
 
-  >forget ( )
+:forget ( )
 
   true ( true )
 ;

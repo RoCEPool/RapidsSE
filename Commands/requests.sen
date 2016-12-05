@@ -192,17 +192,11 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-    checkInCatalogs not if swap drop <ERROR> exit then
+  checkRemovecatalog not if <NIP+ERROR> exit then
 
-    checkIsWord not if drop EC_NO_SUCH_CATALOG <ERROR> exit then
+  removeCatalog drop
 
-    checkIsCatalog not if swap drop <ERROR> exit then
-
-    dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
-
-    removeCatalog drop
-
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
