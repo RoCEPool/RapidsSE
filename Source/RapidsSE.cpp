@@ -34,6 +34,7 @@ StepBoard*          gpStepBoard        = nullptr;
 void*               mpRegion           = nullptr;
 
 Lock                gxDdlLock;
+Lock                gxDicLock;
 
 
 /*----------------------------------------------------------------------------*/

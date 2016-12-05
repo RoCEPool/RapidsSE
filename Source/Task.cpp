@@ -30,6 +30,7 @@ extern TxCollection*         gpTxCollection;
 extern NP_Task               gnpRootTask;
 extern StepBoard*            gpStepBoard;
 extern Lock                  gxDdlLock;
+extern Lock                  gxDicLock;
 extern SEitfList*            gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
@@ -774,6 +775,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("args.print",      &vArgsPrint,     false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+  
+  vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
+  vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
   
   vAddPrimitive("ddlLock.dropRead", &vDdlLockDropRead,  false);
   vAddPrimitive("ddlLock.dropWrite",&vDdlLockDropWrite, false);
@@ -5476,6 +5480,33 @@ ENTRY("vCsvFirstValue");
   
   nnpTask->m_xParamStack.vPush(sFirstValue);
   
+  EXIT();
+}
+
+// diclock: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* diclLock.dropWrite -- drop dic lock for write                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDicLockDropWrite(NNP_Task nnpTask)
+{
+  ENTRY("vDicLockDropWrite");
+  
+  gxDicLock.vDropWrite();
+  
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicLock.grabWrite -- grab dic lock for write                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDicLockGrabWrite(NNP_Task nnpTask)
+{
+  ENTRY("vDicLockGrabWrite");
+  
+  gxDicLock.vGrabWrite();
+    
   EXIT();
 }
 

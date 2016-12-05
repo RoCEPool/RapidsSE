@@ -15,6 +15,7 @@
 /* create a dictionary using name from input stream (doesnt leave dic on stk) */
 /*----------------------------------------------------------------------------*/
 : dic:
+diclock.grabwrite
     create
     object!!
     sizeof_dic allot
@@ -22,6 +23,7 @@
     word.this >body CN_DIC class!
     ' folder word.this word.kind!
     word.this >body dic.init
+diclock.dropwrite
     does>
 ;
 
@@ -29,6 +31,7 @@
 /* create a dictionary using name on the stack (leaves dic on stack)          */
 /*----------------------------------------------------------------------------*/
 : :dic
+diclock.grabwrite
     >create
     object!!
     sizeof_dic allot
@@ -37,6 +40,7 @@
     ' folder word.this word.kind!
     word.this >body dic.init
     word.this
+diclock.dropwrite
     does>
 ;
 

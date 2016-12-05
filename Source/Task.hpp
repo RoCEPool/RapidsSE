@@ -435,6 +435,10 @@ namespace Tasks
     // csv
     static void vCsvFirstValue(NNP_Task nnpTask);
     
+    // diclock
+    static void vDicLockDropWrite(NNP_Task nnpTask);
+    static void vDicLockGrabWrite(NNP_Task nnpTask);
+    
     // ddllock
     static void vDdlLockDropRead(NNP_Task nnpTask);
     static void vDdlLockDropWrite(NNP_Task nnpTask);
