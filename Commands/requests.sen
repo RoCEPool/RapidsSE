@@ -532,18 +532,6 @@ ddlLock.grabWrite
 
 tp ( "<tableNm>" )
 
-    dup find dup execute dup
-
-tp ( "<tableNm>" ^w:table ^table ^table )
-
-    tableInUse if drop drop EC_TABLE_IN_USE <ERROR> exit then
-
-tp ( "<tableNm>" ^w:table ^table )
-
-    drop drop ( "<tableNm>" )
-
-tp ( "<tableNm>" )
-
     removeTable assert
 
     <OK>

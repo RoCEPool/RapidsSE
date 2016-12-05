@@ -168,11 +168,13 @@
 /*----------------------------------------------------------------------------*/
 /* any outstanding table references                                           */
 /*----------------------------------------------------------------------------*/
-: tableInUse ( ^ table -- <R> )
+: tableInUse ( "<tableNm>" -- <R> )
 
-    table.ref if true exit then
+  dup find execute
 
-    false
+  table.ref if true exit then
+
+  false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -207,6 +209,7 @@ tp: makeTable
 
   checkInTables not if false exit then ( "<tableNm>" )
   checkIsTable2 not if false exit then ( "<tableNm>" )
+  tableInUse if EC_TABLE_IN_USE false exit then ( "<tableNm>" )
 
   true ( "<tableNm>" true )
 ;
