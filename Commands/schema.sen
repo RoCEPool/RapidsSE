@@ -8,17 +8,6 @@
 
 //: makeSchemas {{ "schemas" :dic ' folder swap execute dic.kind! }} ;
 
-/*----------------------------------------------------------------------------*/
-/* make a schemas folder under given named catalog                            */
-/*----------------------------------------------------------------------------*/
-: makeSchemas ( "<catalogNm>" -- )
-
-  find execute ( dic )
-  "schemas"    ( dic "schemas" )
-  swap         ( "schemas" dic )
-  :folder      ( )
-;
-
 
 : :schema
     :dic
@@ -45,6 +34,71 @@
 : checkIsNotSchema ( word )
   dup findInCurrent not if true exit then
   EC_SCHEMA_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable schema folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
+
+  checkInSchemas   not if false exit then
+  checkIsNotSchema not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a schemas folder under given named catalog                            */
+/*----------------------------------------------------------------------------*/
+: makeSchemas ( "<catalogNm>" -- )
+
+  find execute ( dic )
+  "schemas"    ( dic "schemas" )
+  swap         ( "schemas" dic )
+  :folder      ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named schema folder                                                 */
+/*----------------------------------------------------------------------------*/
+: makeSchema ( "<schemaNm>" -- true )
+
+  tp: makeSchema
+
+  :schema ( ^schema )
+
+  drop ( )
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable schema folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkRemoveSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
+
+  dup ( "<schemaNm>" "<schemaNm>" )
+
+  checkInSchemas not if false exit then ( "<schemaNm>" word )
+  checkIsWord    not if false exit then ( "<schemaNm>" word )
+  checkIsSchema  not if false exit then ( "<schemaNm>" word )
+  checkNotUsed   not if false exit then ( "<schemaNm>" word )
+
+  drop ( "<schemaNm>" )
+
+  true ( "<schemaNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchema ( "<schemaNm>" -- true )
+
+  tp: removeSchema
+
+  :forget ( )
+
+  true ( true )
 ;
 
 /*============================================================================*/
