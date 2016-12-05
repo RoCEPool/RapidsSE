@@ -55,7 +55,7 @@
 
 : exportTest
 
-traceon
+//traceon
 
     "/tmp/nation.txt" "nation" find execute
 

@@ -83,6 +83,8 @@
 /*----------------------------------------------------------------------------*/
 : makeTenant$ ( "<tenantNm>" -- true )
 
+tp: maketenant$
+
   :tenant drop
 
   true
@@ -93,20 +95,24 @@
 /*----------------------------------------------------------------------------*/
 : makeTenant ( "<tenantNm>" ... #folders -- true )
 
-tp: maketenant
   dicStack!
 
-dic.stack
+//dic.stack
+
+  task.this task.name@ "p0.task" streql not if
+    "_" concat task.this task.name@ concat
+  then
+
+  dup "making tenant " swap concat .
 
   makeTenant$
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* make a named tenant folder                                                 */
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
-
-//traceon
 
   // set indirect call to be makeTenant
   "makeTenant" 2 ( "makeTenant" 2 )

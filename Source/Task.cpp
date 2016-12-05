@@ -10073,7 +10073,9 @@ void Task::vTaskSignal(NNP_Task nnpTask)
   i8 iMore = --pThatTask->m_zAcks;
   
   if ( ! iMore ) {
-    vTrace("Task::vTaskSignal: resuming task %p\n",pThatTask);
+    vTrace("Task::vTaskSignal: task %p %s is resuming task %p %s\n",
+           *nnpTask,nnpTask->m_sName.a(),
+           pThatTask,pThatTask->m_sName.a());
     
     while (TS_WAITING != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
