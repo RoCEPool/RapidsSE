@@ -67,15 +67,30 @@
     EC_NOT_IN_TABLES false
 ;
 
-: checkIsTable ( "<tableNm>" -- true | errorCode false )
+/*----------------------------------------------------------------------------*/
+/* check word is a table                                                      */
+/*----------------------------------------------------------------------------*/
+: checkIsTable ( "<tableNm>" -- ^w:table true | errorCode false )
 
-  find
+  find ( ^w:table )
 
-  dup not if drop EC_NO_SUCH_TABLE false exit then
+  dup not ( ^w:table bool )
+  if
+    drop EC_NO_SUCH_TABLE false ( errorCode false )
+    exit
+  then
 
-  dup word.kind@ ' table eql if true exit then
-  drop
-  EC_NOT_A_TABLE false
+  dup ( ^w:table ^w:table )
+  word.kind@ ( ^w:table ^word )
+  ' table ( ^w:table ^word ^word )
+  eql ( ^w:table bool )
+  if
+    true ( ^w:table true )
+    exit
+  then
+
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
 ;
 
 : checkIsNotTable ( word )
