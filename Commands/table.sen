@@ -206,6 +206,7 @@ tp: makeTable
 : checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
 
   checkInTables not if false exit then ( "<tableNm>" )
+  checkIsTable2 not if false exit then ( "<tableNm>" )
 
   true ( "<tableNm>" true )
 ;
