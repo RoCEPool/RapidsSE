@@ -108,22 +108,6 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /* create a tenant                                                            */
 /*----------------------------------------------------------------------------*/
-/*
-: create_tenant ( "<tenantNm>" -- <R> )
-
-ddlLock.grabWrite
-
-  checkEnoughBuffers not if swap drop <ERROR> exit then
-  checkInTenants     not if swap drop <ERROR> exit then
-
-  checkIsNotTenant   not if swap drop <ERROR> exit then
-
-  :tenant execute makeCatalogs
-
-  <OK>
-;
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : create_tenant ( "<tenantNm>" -- <R> )
 
 ddlLock.grabWrite
@@ -155,27 +139,6 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* drop a tenant                                                              */
 /*----------------------------------------------------------------------------*/
-/*
-: drop_tenant ( "<tenantNm>" -- <R> )
-
-ddlLock.grabWrite
-
-  checkInTenants not if swap drop <ERROR> exit then
-
-  checkIsWord not if drop EC_NO_SUCH_TENANT <ERROR> exit then
-
-  checkIsTenant not if <ERROR> exit then
-
-  dicHasRef " dic ref " .put .put .\n
-
-  dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
-
-  >forget
-
-  <OK>
-;
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : drop_tenant ( "<tenantNm>" -- <R> )
 
 ddlLock.grabWrite
@@ -198,13 +161,13 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-    checkEnoughBuffers not if swap drop <ERROR> exit then
-    checkInCatalogs    not if swap drop <ERROR> exit then
-    checkIsNotCatalog  not if swap drop <ERROR> exit then
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeCatalog   not if <NIP+ERROR> exit then
 
-    :catalog execute makeSchemas
+  :catalog execute
+  makeSchemas
 
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
