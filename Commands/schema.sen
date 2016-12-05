@@ -6,7 +6,19 @@
 
 : schema ;
 
-: makeSchemas {{ "schemas" :dic ' folder swap execute dic.kind! }} ;
+//: makeSchemas {{ "schemas" :dic ' folder swap execute dic.kind! }} ;
+
+/*----------------------------------------------------------------------------*/
+/* make a schemas folder under given named catalog                            */
+/*----------------------------------------------------------------------------*/
+: makeSchemas ( "<catalogNm>" -- )
+
+  find execute ( dic )
+  "schemas"    ( dic "schemas" )
+  swap         ( "schemas" dic )
+  :folder      ( )
+;
+
 
 : :schema
     :dic

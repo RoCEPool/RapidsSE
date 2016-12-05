@@ -164,7 +164,8 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  :catalog execute
+  dup
+  :catalog execute drop
   makeSchemas
 
   <OK>
@@ -866,8 +867,8 @@ ddlLock.grabWrite
   execute dic.push
 
   // create catalog rapidsse
-  "rapidsse" create_catalog
-  drop drop drop
+  "rapidsse"
+  create_catalog drop drop drop
 
   // go back to main dictionary
   dic.drop dic.drop dic.drop
