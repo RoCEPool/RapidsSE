@@ -26,12 +26,9 @@ args.nodes ptrArray: senderQueue
     r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
     r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
 
-    stk
-
     // seed the task
     reg0 task.seed
 
-    stk
     // setup the socket in the task
     reg0 task.socket!
 
@@ -65,7 +62,26 @@ args.nodes ptrArray: senderQueue
   swap        ( toNode param word fromNode 3 )
   >valset     ( toNode valset )
   swap        ( valset toNode )
-  senderQueue @
+  dup         ( valset toNode toNode )
+
+  // cannot send to self
+  args.node == if
+    "No connection with self " .
+    2 dropN
+    exit
+  then
+
+  dup         ( valset toNode toNode )
+
+  // cannot send to outside grid nodes
+  args.nodes >= if
+    "No connection with node " swap >str concat .
+    1 dropN
+    exit
+  then
+
+  // put in teh senderQueue of sender
+  senderQueue @   ( valset toNode toNode Q )
   queue.append
 ;
 
@@ -86,11 +102,11 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : !send
 
-  task.this task.socket@  ( valset )
-  swap                    ( socket valset )
-  socket.send             ( valset socket )
-  not if "send failure" . ( 0/1 )
-  then "send passed" .
+    task.this task.socket@  ( valset )
+    swap                    ( socket valset )
+    socket.send             ( valset socket )
+    not if "send failure" . ( 0/1 )
+    then "Node " args.node >str concat " sent word to another node " concat .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -116,12 +132,12 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : senderQDump
 
-  "{ " .put
-  args.nodes 0 do
-  I senderQueue @ .put " " .put
-  loop
+    "{ " .put
+    args.nodes 0 do
+    I senderQueue @ .put " " .put
+    loop
 
-  "}" .put .\n
+    "}" .put .\n
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -140,7 +156,6 @@ args.nodes ptrArray: senderQueue
   begin
     depth 0 != if "sender task has grown" . debug.trap then
     req>          // pop valset off queue and push onto this stack
-    "got request to send" .
     !send         // send the valset across the connection
   0 until
 ;

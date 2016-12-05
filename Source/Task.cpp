@@ -12260,7 +12260,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   // recv value set
   bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
   
-  vTrace("%s received on %lld %p\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, &xValSet);
+  //vTrace("%s received on %lld %p\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, &xValSet);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());

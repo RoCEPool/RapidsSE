@@ -20,12 +20,9 @@
     r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
     r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
 
-    stk
-
     // seed the task
     reg0 task.seed
 
-    stk
     // setup the socket in the task
     reg0 task.socket!
 
@@ -61,14 +58,13 @@
 /*----------------------------------------------------------------------------*/
 : !recv
 
-  "blocking on recv" .
   task.this task.socket@           // get socket from task
   socket.recv                      // recv on socket
 
   valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
 
   drop                            // drop #values
-  "RECEIVED word from Node " swap >str concat .
+  "Node " args.node >str concat " received word from Node " concat swap >str concat .
   find execute                    // execute the word
 ;
 
@@ -89,7 +85,6 @@
 
     begin
       !recv
-      "Done" .
     0 until
 
 ;
