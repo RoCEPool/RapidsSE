@@ -528,17 +528,21 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-dup ( "<tableNm>" "<tableNm>" )
-
     checkRemoveTable not if <NIP+ERROR> exit then
 
+
+dup ( "<tableNm>" "<tableNm>" )
 
 
     // checkInTables not if swap drop  <ERROR> exit then
 
     checkIsTable not if <ERROR> exit then
 
+tp ( "<tableNm>" ^w:table )
+
     dup execute dup
+
+tp ( "<tableNm>" ^w:table ^table ^table )
 
     tableInUse if drop drop EC_TABLE_IN_USE <ERROR> exit then
 

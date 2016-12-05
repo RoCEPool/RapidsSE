@@ -67,7 +67,7 @@
     EC_NOT_IN_TABLES false
 ;
 
-: checkIsTable ( word )
+: checkIsTable ( "<tableNm>" -- true | errorCode false )
 
   find
 
@@ -159,11 +159,7 @@ tp: makeTable
 /*----------------------------------------------------------------------------*/
 : checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
 
-  dup ( "<tableNm>" "<tableNm>" )
-
-  checkInTables not if false exit then ( "<tableNm>" word )
-
-  drop ( "<tableNm>" )
+  checkInTables not if false exit then ( "<tableNm>" )
 
   true ( "<tableNm>" true )
 ;
