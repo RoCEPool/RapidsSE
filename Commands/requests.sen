@@ -165,7 +165,7 @@ ddlLock.grabWrite
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
   dup
-  :catalog execute drop
+  makeCatalog assert
   makeSchemas
 
   <OK>
@@ -852,10 +852,7 @@ ddlLock.grabWrite
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
-  "boray"
-  // create_tenant drop drop drop
-  //seitf.path@ ( "boray" ... #folders )
-  makeTenant$ assert
+  "boray" makeTenant$ assert
   "boray" makeCatalogs
 
   // find the boray folder
@@ -867,8 +864,8 @@ ddlLock.grabWrite
   execute dic.push
 
   // create catalog rapidsse
-  "rapidsse"
-  create_catalog drop drop drop
+  "rapidsse" makeCatalog assert
+  "rapidsse" makeSchemas
 
   // go back to main dictionary
   dic.drop dic.drop dic.drop
