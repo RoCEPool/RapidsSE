@@ -9,7 +9,18 @@
 /*----------------------------------------------------------------------------*/
 : table ;
 
-: makeTables {{ "tables" :dic ' folder swap execute dic.kind! }} ;
+//: makeTables {{ "tables" :dic ' folder swap execute dic.kind! }} ;
+
+/*----------------------------------------------------------------------------*/
+/* make a tables folder under given named schema                              */
+/*----------------------------------------------------------------------------*/
+: makeTables ( "<schemaNm>" -- )
+
+  find execute ( dic )
+  "tables"     ( dic "tables" )
+  swap         ( "tables" dic )
+  :folder      ( )
+;
 
 : isTable word.kind@ ' table eql ;
 

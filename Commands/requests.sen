@@ -192,7 +192,7 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-  checkRemovecatalog not if <NIP+ERROR> exit then
+  checkRemoveCatalog not if <NIP+ERROR> exit then
 
   removeCatalog drop
 
@@ -210,13 +210,18 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-    checkEnoughBuffers not if swap drop <ERROR> exit then
-    checkInSchemas     not if swap drop <ERROR> exit then
-    checkIsNotSchema   not if swap drop <ERROR> exit then
+//    checkEnoughBuffers not if swap drop <ERROR> exit then
+//    checkInSchemas     not if swap drop <ERROR> exit then
+//    checkIsNotSchema   not if swap drop <ERROR> exit then
 
-    :schema execute makeTables
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeSchema    not if <NIP+ERROR> exit then
 
-    <OK>
+  dup
+  makeSchema assert
+  makeTables
+
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -240,17 +245,11 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-    checkInSchemas not if swap drop <ERROR> exit then
+  checkRemoveSchema not if <NIP+ERROR> exit then
 
-    checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
+  removeSchema drop
 
-    checkIsSchema not if swap drop <ERROR> exit then
-
-    dicHasRef if drop EC_FOLDER_IN_USE <ERROR> exit then
-
-    >forget
-
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
