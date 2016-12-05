@@ -43,11 +43,26 @@
     :constant
 ;
 
+: checkAddColumn ( -- true | eEC false )
+
+  checkInTables not if false exit then
+
+  true
+;
+
 : addColumn ( "<columnType>" "<columnName" -- <result> )
 
-    :column
+  pushTable   not if false exit then
 
-    true
+  pushColumns not if false exit then
+
+  :column
+
+  popColumns
+
+  popTable
+
+  true
 ;
 
 : listColumns ( -- )

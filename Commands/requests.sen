@@ -582,19 +582,10 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
 
-    checkInTables not if swap drop rot drop drop <ERROR> exit then
+  checkAddColumn not if <NIP+ERROR> exit then
+  addColumn      not if <NIP+ERROR> exit then
 
-    pushTable not if swap drop rot drop drop <ERROR> exit then
-
-    pushColumns not if swap drop rot drop drop <ERROR> exit then
-
-    addColumn not if swap drop rot drop drop <ERROR> exit then
-
-    popColumns
-
-    popTable
-
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -818,6 +809,8 @@ tp ( "<tableNm>" )
 /* create /tenants/boray/catalogs/rapidsse                                    */
 /*----------------------------------------------------------------------------*/
 : createDefaultFolders ( )
+
+  assert.stack_0
 
   // find the tenants folder
   "tenants" findInCurrent
