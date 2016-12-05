@@ -58,17 +58,14 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 /* send request                                                               */
 /*----------------------------------------------------------------------------*/
-: send ( word node )
+: send ( toNode param word )
 
-  depth
-  args.node
-  swap
-  stk
-  >valset
-  swap
-  stk
+  depth       ( toNode param word 3 )
+  args.node   ( toNode param word 3 fromNode )
+  swap        ( toNode param word fromNode 3 )
+  >valset     ( toNode valset )
+  swap        ( valset toNode )
   senderQueue @
-  stk
   queue.append
 ;
 
@@ -89,12 +86,11 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : !send
 
-  task.this task.socket@
-  swap
-  socket.send
-  stk
-  not if "send failure" .
-  then "sent" .
+  task.this task.socket@  ( valset )
+  swap                    ( socket valset )
+  socket.send             ( valset socket )
+  not if "send failure" . ( 0/1 )
+  then "send passed" .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -116,6 +112,19 @@ args.nodes ptrArray: senderQueue
 ;
 
 /*----------------------------------------------------------------------------*/
+/* dump the senderQueue array                                                 */
+/*----------------------------------------------------------------------------*/
+: senderQDump
+
+  "{ " .put
+  args.nodes 0 do
+  I senderQueue @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
 /* sender task processing                                                     */
 /*----------------------------------------------------------------------------*/
 : sender.loop
@@ -129,11 +138,9 @@ args.nodes ptrArray: senderQueue
     senderTaskPrint if "Sender running on node" args.node >str concat . then
 
   begin
-    stk
     depth 0 != if "sender task has grown" . debug.trap then
     req>          // pop valset off queue and push onto this stack
     "got request to send" .
-    stk
     !send         // send the valset across the connection
   0 until
 ;

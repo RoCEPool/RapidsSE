@@ -46,8 +46,14 @@
     reg.pop
 ;
 
-: executeIt ( NodeName )
-  "Node executing executeIt with parameter " swap concat .
+/*----------------------------------------------------------------------------*/
+/* dummy executeIt command to test send-recv                                  */
+/*----------------------------------------------------------------------------*/
+: executeIt ( parameter )
+   "Node " args.node >str concat
+   " executing executeIt with parameter " concat
+   swap
+   concat .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -55,15 +61,15 @@
 /*----------------------------------------------------------------------------*/
 : !recv
 
+  "blocking on recv" .
   task.this task.socket@           // get socket from task
   socket.recv                      // recv on socket
-  "RECEIVED" .
 
   valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
 
   drop                            // drop #values
-  drop                            // drop the sender node#
-  find execute
+  "RECEIVED word from Node " swap >str concat .
+  find execute                    // execute the word
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +89,7 @@
 
     begin
       !recv
+      "Done" .
     0 until
 
 ;

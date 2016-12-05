@@ -45,7 +45,11 @@ thread:  connectorThread
 
     args.nodes 0 do
 
-      I args.node != if
+      I args.node == if
+        nullptr I senderQueue !
+
+      else
+
         socket.open
         "127.0.0.1"
         5000 I + socket.connect
