@@ -41,7 +41,7 @@ thread:  connectorThread
 
     connectorTaskPrint if "Connector running..." . then
 
-    10 thread.sleep_s
+    //10 thread.sleep_s
 
     args.nodes 0 do
 
@@ -58,7 +58,7 @@ thread:  connectorThread
         .
 
         // start sender
-        "starting sender" .
+        //"starting sender" .
         0 "sender.loop" "sender" I >str concat senderForm
         I senderQueue !
 

@@ -10,10 +10,10 @@ int: queryCount
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
 "requestTask.sen" >>:
-"senderTask.sen"  >>:
 "receiverTask.sen" >>:
-"answerTask.sen" >>:
+"senderTask.sen"  >>:
 "connectorTask.sen" >>:
+"answerTask.sen" >>:
 
 "generalThread.sen" >>:
 
@@ -31,8 +31,8 @@ int: queryCount
     snooze listerStart
     snooze monitorStart
     snooze reclaimStart
-    //snooze answerStart
-    //snooze connectorStart
+    snooze answerStart
+
   then
 
   //dic.main true dic.frozen!

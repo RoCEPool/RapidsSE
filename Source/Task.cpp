@@ -588,10 +588,10 @@ void Task::vAddConstants(void)
   vAddConstant("monitorTaskPrint",(i8)0);
   vAddConstant("reclaimTaskPrint",(i8)0);
   vAddConstant("requestTaskPrint",(i8)0);
-  vAddConstant("answerTaskPrint",(i8)1);
-  vAddConstant("connectorTaskPrint",(i8)1);
-  vAddConstant("senderTaskPrint", (i8)1);
-  vAddConstant("receiverTaskPrint", (i8)1);
+  vAddConstant("answerTaskPrint",(i8)0);
+  vAddConstant("connectorTaskPrint",(i8)0);
+  vAddConstant("senderTaskPrint", (i8)0);
+  vAddConstant("receiverTaskPrint", (i8)0);
 }
 
 /*----------------------------------------------------------------------------*/
