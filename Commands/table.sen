@@ -92,6 +92,37 @@
   drop ( )
   EC_NOT_A_TABLE false ( errorCode false )
 ;
+//------------------------------------------------------------------------------
+: checkIsTable2 ( "<tableNm>" -- "<tableNm>" true | errorCode false )
+
+  dup ( "<tableNm>" "<tableNm>" )
+
+  find ( "<tableNm>" ^w:table )
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+  not ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    drop ( )
+    EC_NO_SUCH_TABLE false ( errorCode false )
+  exit
+  then
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+
+  word.kind@ ( "<tableNm>" ^w:table ^word )
+  ' table ( "<tableNm>" ^w:table ^word ^word )
+  eql ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    true ( "<tableNm>" true )
+    exit
+  then
+
+  drop ( "<tableNm>" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
+;
 
 : checkIsNotTable ( word )
   dup findInCurrent not if true exit then
