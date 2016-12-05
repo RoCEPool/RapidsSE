@@ -336,8 +336,6 @@ ddlLock.grabRead
 
     //freespace .
 
-    find
-
     checkIsTable not if swap drop <ERROR> exit then
 
     execute ( "filename" table )
@@ -360,8 +358,6 @@ ddlLock.grabRead
 
   //freespace .
 
-  find
-
   checkIsTable not if swap drop <ERROR> exit then
 
   execute ( "filename" table )
@@ -381,8 +377,6 @@ ddlLock.grabRead
 ddlLock.grabRead
 
     checkInTables not if rot drop drop <ERROR> exit then
-
-    find
 
     checkIsTable not if swap drop <ERROR> exit then
 
@@ -404,8 +398,6 @@ ddlLock.grabRead
 
     checkEnoughBuffers not if swap drop <ERROR> exit then
     checkInTables      not if rot drop drop <ERROR> exit then
-
-    find
 
     checkIsTable not if swap drop <ERROR> exit then
 
@@ -432,8 +424,6 @@ freespace .
 ddlLock.grabRead
 
   checkInTables not if swap drop <ERROR> exit then
-
-  find
 
   checkIsTable not if <ERROR> exit then
 
@@ -465,8 +455,6 @@ ddlLock.grabWrite
 
     checkInTables not if swap drop  <ERROR> exit then
 
-    find
-
     checkIsTable not if <ERROR> exit then
 
     execute ( table )
@@ -485,8 +473,6 @@ ddlLock.grabWrite
 ddlLock.grabRead
 
     checkInTables not if swap drop  <ERROR> exit then
-
-    find
 
     checkIsTable not if <ERROR> exit then
 
@@ -526,8 +512,6 @@ ddlLock.grabRead
 
     checkInTables not if swap drop  <ERROR> exit then
 
-    find
-
     checkIsTable not if <ERROR> exit then
 
     execute ( table )
@@ -551,8 +535,6 @@ dup ( "<tableNm>" "<tableNm>" )
 
 
     // checkInTables not if swap drop  <ERROR> exit then
-
-    find
 
     checkIsTable not if <ERROR> exit then
 
@@ -578,8 +560,6 @@ dup ( "<tableNm>" "<tableNm>" )
 : table_inuse ( "<tableNm>" -- <R> )
 
     checkInTables not if swap drop  <ERROR> exit then
-
-    find
 
     checkIsTable not if <ERROR> exit then
 
