@@ -544,7 +544,13 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-    checkInTables not if swap drop  <ERROR> exit then
+dup ( "<tableNm>" "<tableNm>" )
+
+    checkRemoveTable not if <NIP+ERROR> exit then
+
+
+
+    // checkInTables not if swap drop  <ERROR> exit then
 
     find
 
@@ -554,9 +560,14 @@ ddlLock.grabWrite
 
     tableInUse if drop drop EC_TABLE_IN_USE <ERROR> exit then
 
-    table.truncate
+    ( "<tableNm>" ^w:table ^table ) tp
 
-    >forget
+    drop drop ( "<tableNm>" ) tp
+
+
+
+
+    removeTable assert
 
     <OK>
 ;

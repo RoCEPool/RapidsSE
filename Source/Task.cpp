@@ -1883,10 +1883,17 @@ void Task::vStackContents(s& sStackContents)
       String::vSprintCat(a,"%lld",pValWsp->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (pValWsp->pPtr())
-        String::vSprintCat(a,"^%s=%p",
-                           pCN[((Object*)pValWsp->pPtr())->eClass()],
-                           pValWsp->pPtr());
+      if (pValWsp->pPtr()) {
+        if (CN_WORD == ((Object*)pValWsp->pPtr())->eClass())
+          String::vSprintCat(a,"^%s=%p:%s",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr(),
+                             ((Word*)pValWsp->pPtr())->sName().a());
+        else
+          String::vSprintCat(a,"^%s=%p",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr());
+      }
       else
         String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),pValWsp->pPtr());
     }

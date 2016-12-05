@@ -33,7 +33,7 @@ namespace Dictionaries
   private:
     s32      m_sName;       // the name of this word
     eWT      m_eWordType;   // type of word
-    Dic*     m_pDic; // which dictionary this word in
+    Dic*     m_pDic;        // which dictionary this word in
     Word*    m_pKind;       // kind of word
     bool     m_bImmediate;  // immediate execution during compile?
     Word*    m_pPrevWord;   // previous word in dictionary

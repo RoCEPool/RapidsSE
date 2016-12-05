@@ -156,6 +156,37 @@ tp: makeTable
   true ( true )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable table folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
+
+  dup ( "<tableNm>" "<tableNm>" )
+
+  checkInTables not if false exit then ( "<tableNm>" word )
+
+  drop ( "<tableNm>" )
+
+  true ( "<tableNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable ( "<tableNm>" -- true )
+
+tp: removeTable
+
+  dup
+
+  find execute
+  table.truncate
+
+  :forget
+
+  true ( true )
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
