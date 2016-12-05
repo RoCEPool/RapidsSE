@@ -636,6 +636,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("do_rt",           &vDo_RT,            false);
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("drop",            &vDrop,             false);
+  vAddPrimitive("2drop",           &vDropTwo,          false);
   vAddPrimitive("dup",             &vDup,              false);
   vAddPrimitive("dump",            &vDump,             false);
   vAddPrimitive("else",            &vElse,             true );
@@ -2604,6 +2605,23 @@ ENTRY("vDrop");
   ValWsp xValA;
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
     THROW_INVALID_PARAM("drop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 2drop -- discard top two values off stack                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vDropTwo(NNP_Task nnpTask)
+{
+  ENTRY("vDrop");
+  
+  // should just discard on stack
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+  THROW_INVALID_PARAM("2drop");
   
   EXIT();
 }

@@ -286,7 +286,8 @@ namespace Tasks
     static void vDo(NNP_Task nnpTask);             
     static void vDo_RT(NNP_Task nnpTask);          
     static void vDrop(NNP_Task nnpTask);           
-    static void vDup(NNP_Task nnpTask);            
+    static void vDropTwo(NNP_Task nnpTask);
+    static void vDup(NNP_Task nnpTask);
     static void vDump(NNP_Task nnpTask);           
     static void vElse(NNP_Task nnpTask);           
     static void vEncodeCall(NNP_Task nnpTask);     
