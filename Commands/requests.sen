@@ -70,15 +70,24 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 
 //: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
+
 : <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock.testDrop ;
 
 : <SUCCESS> 0 2 ddlLock.testDrop ;
 
 : <OK> "<ok>" 0 2 ddlLock.testDrop ;
 
+/*----------------------------------------------------------------------------*/
+/* check system has enough buffers                                            */
+/*----------------------------------------------------------------------------*/
 : checkEnoughBuffers
-   freeBuffers 100 > if true exit then
-   EC_LOW_BUFFERS false
+
+  freeBuffers 100 >
+  if
+    true exit
+  else
+    EC_LOW_BUFFERS false
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -321,9 +330,7 @@ ddlLock.grabRead
 
   //freespace .
 
-  find execute ( "filename" table )
-
-  tableLoader not if <NIP+ERROR> exit then
+  tableLoader   not if <NIP+ERROR> exit then
 
   //freespace .
 
@@ -341,8 +348,6 @@ ddlLock.grabRead
   checkIsTable  not if <NIP+ERROR> exit then
 
   //freespace .
-
-  find execute ( "filename" table )
 
   tableLoaderStream2 not if <NIP+ERROR> exit then
 
@@ -374,7 +379,6 @@ ddlLock.grabRead
 : copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
 
 ddlLock.grabRead
-
 
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkInTables      not if <NIP+ERROR> exit then

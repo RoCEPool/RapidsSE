@@ -70,7 +70,9 @@
 
 timer: loadTimer
 
-: tableLoader ( "<path>" ^table -- t|f )
+: tableLoader ( "<path>" "<tableNm>" -- t|f )
+
+  find execute ( "filename" table )
 
   // check if path file exists
   swap file.new >r
@@ -210,6 +212,8 @@ stk
 /* loading of stream into table                                               */
 /*----------------------------------------------------------------------------*/
 : tableLoaderStream2 ( "<path>" ^table -- t|f )
+
+  find execute ( "filename" table )
 
   // check if path file exists
   swap file.new >r
