@@ -305,7 +305,7 @@ ddlLock.grabWrite
   checkMakeTable     not if <NIP+ERROR> exit then
 
   dup
-  makeTable assert
+  ~makeTable
   makeColumns
 
   <OK>

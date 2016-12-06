@@ -191,20 +191,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a table                                                               */
-/*----------------------------------------------------------------------------*/
-: makeTable ( "<tableNm>" -- true )
-
-tp: makeTable
-
-  :table ( ^table )
-
-  drop ( )
-
-  true ( true )
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a removable table folder                                  */
 /*----------------------------------------------------------------------------*/
 : checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
@@ -214,6 +200,57 @@ tp: makeTable
   tableInUse if EC_TABLE_IN_USE false exit then ( "<tableNm>" )
 
   true ( "<tableNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a table                                                               */
+/*----------------------------------------------------------------------------*/
+: makeTable$ ( "<tableNm>" -- true )
+
+  tp: makeTable
+
+  :table ( ^table )
+
+  drop ( )
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a table folder                                                        */
+/*----------------------------------------------------------------------------*/
+: makeTable ( "<tableNm>" ... #folders -- true )
+
+/*
+  dicStack!
+
+  task.this task.name@ "p0.task" streql not if
+    "_" concat task.this task.name@ concat
+  then
+*/
+
+  dup "making table " swap concat .
+
+  makeTable$
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a table folder                                                        */
+/*----------------------------------------------------------------------------*/
+: ~makeTable ( "<tableNm>" -- )
+
+/*
+  // set indirect call to be makeTable
+  "makeTable" 2 ( "<tableNm>" "makeTable" 2 )
+
+  >>participants> ( bool )
+
+  drop ( )
+*/
+
+  makeTable
+
+  assert
 ;
 
 /*----------------------------------------------------------------------------*/
