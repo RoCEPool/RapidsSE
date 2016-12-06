@@ -4,8 +4,6 @@
 
 "actors.sen" .putVerbose
 
-int: queryCount
-
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:

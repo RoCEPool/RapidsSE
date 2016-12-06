@@ -4,6 +4,8 @@
 
 "table.sen" .putVerbose
 
+int: queryCount
+
 /*----------------------------------------------------------------------------*/
 /* table is use as a kind of word to identify tables                          */
 /*----------------------------------------------------------------------------*/
@@ -172,11 +174,10 @@
 /*----------------------------------------------------------------------------*/
 : tableInUse ( "<tableNm>" -- <R> )
 
-  dup find execute
+  find execute
 
-  table.ref if true exit then
-
-  false
+  table.ref
+  if true else false then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -355,6 +356,30 @@ tp: removeTable
   rdrop
 
   "__row_cursor" find >forget
+;
+
+/*----------------------------------------------------------------------------*/
+/* get row cursor for table                                                   */
+/*----------------------------------------------------------------------------*/
+: selecttable ( "<tableNm>" -- <rowCursor> )
+
+  queryCount ++
+
+  task.this task.seitf@ seitf.table@
+
+  rowcursor.new dup rot rowcursor.table!
+
+  >str
+;
+
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncateTable ( "<tableNm>" -- )
+
+  find execute ( table )
+
+  table.truncate
 ;
 
 /*============================================================================*/

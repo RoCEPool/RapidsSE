@@ -442,13 +442,7 @@ ddlLock.grabRead
 
   getTableRef not if <NIP+ERROR> exit then
 
-  queryCount ++
-
-  task.this task.seitf@ seitf.table@
-
-  rowcursor.new dup rot rowcursor.table!
-
-  >str
+  selectTable
 
   <SUCCESS>
 ;
@@ -463,9 +457,7 @@ ddlLock.grabRead
   checkInTables not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
-  find execute ( table )
-
-  table.truncate
+  truncateTable
 
   <OK>
 ;
@@ -494,17 +486,18 @@ tp ( "<tableNm>" )
   checkInTables not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
-  find execute ( table )
-
-  tableInUse not if "Table not in use" . <OK> exit then
-
-  "Table in Use" .
+  tableInUse
+  if
+    "table in use" .
+  else
+    "table not in use" .
+  then
 
    <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get a table                                                                */
+/* get a table ref                                                            */
 /*----------------------------------------------------------------------------*/
 : get_table ( "<tableNm>" -- <R> )
 
@@ -513,6 +506,8 @@ tp ( "<tableNm>" )
   <OK>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* return a table ref                                                         */
 /*----------------------------------------------------------------------------*/
 : return_table ( )
 
