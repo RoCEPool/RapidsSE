@@ -129,13 +129,47 @@
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema ( "<schemaNm>" -- true )
+: removeSchema$ ( "<schemaNm>" -- true )
 
   tp: removeSchema
 
   :forget ( )
 
   true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchema ( "<schemaNm>" -- true )
+/*
+  dicStack!
+
+  task.this task.name@ "p0.task" streql not if
+  "_" concat task.this task.name@ concat
+  then
+
+  dup "removing schema " swap concat .
+*/
+
+  removeSchema$
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: ~removeSchema ( "<schemaNm>" -- )
+
+/*
+  // set indirect call to be dropCatalog
+  "removeSchema" 2 ( "<schemaNm>" "dropSchema" 2 )
+
+  >>participants> ( bool )
+
+  drop ( )
+*/
+
+  removeSchema assert
 ;
 
 /*============================================================================*/

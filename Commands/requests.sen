@@ -247,7 +247,7 @@ ddlLock.grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
-  removeSchema drop
+  ~removeSchema
 
   <OK>
 ;
