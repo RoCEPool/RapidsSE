@@ -115,8 +115,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTenant    not if <NIP+ERROR> exit then
 
-  dup          ( "<tenantNm>" "<tenantNm>" )
-  ~makeTenant  ( "<tenantNm>" )
+  ~makeTenant  ( ) assert.stack_0
 
   <OK>
 ;
@@ -163,9 +162,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  dup
-  ~makeCatalog
-  makeSchemas
+  ~makeCatalog  ( ) assert.stack_0
 
   <OK>
 ;
@@ -812,27 +809,28 @@ tp ( "<tableNm>" )
 
   assert.stack_0
 
-  // find the tenants folder
+  // push tenants folder
   "tenants" findInCurrent
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
   "boray" makeTenant$ assert
 
-  // find the boray folder
+  // push boray folder
   "boray" findInCurrent
   execute dic.push
 
-  // find the catalogs folder
+  // push catalogs folder
   "catalogs" findInCurrent
   execute dic.push
 
-  // create catalog rapidsse
+  // create catalog rapidsse (and schemas sub-folder)
   "rapidsse" makeCatalog assert
-  "rapidsse" makeSchemas
 
   // go back to main dictionary
-  dic.drop dic.drop dic.drop
+  dic.drop
+  dic.drop
+  dic.drop
 
   assert.stack_0
 ;

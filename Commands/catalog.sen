@@ -79,9 +79,13 @@
 
 tp: makeCatalog
 
-  :catalog ( ^catalog )
+  dup ( "<catalogNm>" "<catalogNm>" )
 
-  drop ( )
+  :catalog ( "<catalogNm>" ^catalog )
+
+  drop ( "<catalogNm>" )
+
+  makeSchemas ( )
 
   true ( true )
 ;

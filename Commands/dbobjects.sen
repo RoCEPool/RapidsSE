@@ -4,10 +4,10 @@
 
 "dbObjects.sen" .putVerbose
 
+"schema.sen" >>:
 "catalog.sen" >>:
 "tenant.sen" >>:
 "user.sen" >>:
-"schema.sen" >>:
 "table.sen" >>:
 "column.sen" >>:
 "row.sen" >>:
