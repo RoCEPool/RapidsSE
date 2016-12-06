@@ -110,6 +110,9 @@
 /*----------------------------------------------------------------------------*/
 : listColumns ( -- )
 
+  pushTable     assert
+  pushColumns   assert
+
   ""                             // initial ls string
   0 dic.pick dic.last            // get last word of current dic
   dup                            // setup iteration of words
@@ -132,6 +135,9 @@
   next                           //
 
   //"\n" concat
+
+  popColumns
+  popTable
 ;
 
 /*============================================================================*/

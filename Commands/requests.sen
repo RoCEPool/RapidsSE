@@ -539,13 +539,7 @@ tp ( "<tableNm>" )
 
   checkInTables not if <NIP+ERROR> exit then
 
-  pushTable     not if <NIP+ERROR> exit then
-  pushColumns   not if <NIP+ERROR> exit then
-
   listColumns
-
-  popColumns
-  popTable
 
   <SUCCESS>
 ;
