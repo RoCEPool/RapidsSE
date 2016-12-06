@@ -583,7 +583,8 @@ tp ( "<tableNm>" )
 : add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
 
   checkAddColumn not if <NIP+ERROR> exit then
-  addColumn      not if <NIP+ERROR> exit then
+
+  ~addColumn  //not if <NIP+ERROR> exit then
 
   <OK>
 ;

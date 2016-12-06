@@ -50,11 +50,14 @@
   true
 ;
 
-: addColumn ( "<columnType>" "<columnName" -- <result> )
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+: addColumn$ ( "<columnType>" "<columnNm>" -- <result> )
 
-  pushTable   not if false exit then
+  pushTable   assert // not if false exit then
 
-  pushColumns not if false exit then
+  pushColumns assert // not if false exit then
 
   :column
 
@@ -65,34 +68,71 @@
   true
 ;
 
-: listColumns ( -- )
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+: addColumn ( "<columnType>" "<columnNm>" ... #folders -- true )
 
-    ""                             // initial ls string
-    0 dic.pick dic.last            // get last word of current dic
-    dup                            // setup iteration of words
-    iterate                        //
+/*
+  dicStack!
 
-      object@ word.name            // column name
+  task.this task.name@ "p0.task" streql not if
+    "_" concat task.this task.name@ concat
+  then
+*/
 
-      " " concat
-      object@ execute concat       // column type
+  dup "adding column " swap concat .
 
-      swap
-
-      dup strlen
-      if " , " swap concat then    //
-
-      concat                       // prepend column to ls
-
-      object@ prevWord object!     // step backwards thru words
-
-    next                           //
-
-    //"\n" concat
-
+  addColumn$
 ;
 
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+: ~addColumn ( "<columnType>" "<columnNm>" -- )
 
+/*
+  // set indirect call to be makeSchema
+  "addColumn" 3 ( "<columnType>" "<columnNm>" "addColumn" 3 )
+
+  >>participants> ( bool )
+
+  drop ( )
+*/
+
+  addColumn
+
+  assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* list columns of a table                                                    */
+/*----------------------------------------------------------------------------*/
+: listColumns ( -- )
+
+  ""                             // initial ls string
+  0 dic.pick dic.last            // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
+
+    object@ word.name            // column name
+
+    " " concat
+    object@ execute concat       // column type
+
+    swap
+
+    dup strlen
+    if " , " swap concat then    //
+
+    concat                       // prepend column to ls
+
+    object@ prevWord object!     // step backwards thru words
+
+  next                           //
+
+  //"\n" concat
+;
 
 /*============================================================================*/
 /* end                                                                        */
