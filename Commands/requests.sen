@@ -112,7 +112,7 @@ Misc Requests:
 
 ddlLock.grabWrite
 
-  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
 
   ~makeTenant ( ) assert.stack_0

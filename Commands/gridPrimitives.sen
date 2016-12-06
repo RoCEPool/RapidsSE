@@ -193,7 +193,7 @@ args.nodes ptrArray: pQueues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute processing loop                                                    */
+/* execute processing loop                   run by Coordinator & Participant */
 /*----------------------------------------------------------------------------*/
 : execute.loop
 
@@ -231,24 +231,25 @@ args.nodes ptrArray: pQueues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass on processing loop                                                    */
+/* pass on processing loop     run by Participant Proxy and Coordinator Proxy */
 /*----------------------------------------------------------------------------*/
-: passOn.loop ( actorNo forwardQueue -- )
+: passOn.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
 
   // push a register frame
   reg.push
 
   >r ( actorNo )
   >r ( )
-  // r0 has actorNo
+  // r0 has actorNo (nodeNo)
   // r1 has forwardQueue
+  //! r2 has the originating node
 
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop valset off queue and push onto this stack
-    queue> ( valset )
+    queue> ( valset ) //! CP recv   socket>
 
     // convert valset to indirect call
     >indirect ( ... wordName )
@@ -257,13 +258,13 @@ args.nodes ptrArray: pQueues
     // and suspend till signalled with indirect result
     depth ( ... wordName #values )
     r1 ( ... wordName #values queue )
-    >queue> ( ... )
+    >queue> ( ... )   //! PP send & recv     >socket>
 
     // convert indirect result into valset
     >result ( valset )
 
     // put indirect result onto stack of caller and signal
-    >caller ( )
+    >caller ( ) //! CP send     >socket
 
   0 until
 
