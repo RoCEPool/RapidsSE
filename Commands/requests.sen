@@ -69,7 +69,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
+//: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
 : <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock.testDrop ;
 
 : <SUCCESS> 0 2 ddlLock.testDrop ;
@@ -90,7 +90,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : connect
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +98,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : disconnect
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -127,7 +127,7 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-  checkInTenants not if <ERROR> exit then
+  checkInTenants not if <NIP+ERROR> exit then
 
   contentsString
 
@@ -174,11 +174,11 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-    checkInCatalogs not if <ERROR> exit then
+  checkInCatalogs not if <NIP+ERROR> exit then
 
-    contentsString
+  contentsString
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -206,10 +206,6 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-//    checkEnoughBuffers not if swap drop <ERROR> exit then
-//    checkInSchemas     not if swap drop <ERROR> exit then
-//    checkIsNotSchema   not if swap drop <ERROR> exit then
-
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
 
@@ -225,11 +221,11 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-    checkInSchemas not if <ERROR> exit then
+  checkInSchemas not if <NIP+ERROR> exit then
 
-    contentsString
+  contentsString
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -269,8 +265,8 @@ ddlLock.grabWrite
   "schemas" findInCurrent
   execute dic.push
 
-  checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
-  checkIsSchema not if swap drop <ERROR> exit then
+  checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
+  checkIsSchema not if <NIP+ERROR> exit then
   execute dic.push
 
   // find the tables folder
@@ -291,10 +287,6 @@ ddlLock.grabWrite
 
 ddlLock.grabWrite
 
-//    checkEnoughBuffers not if swap drop <ERROR> exit then
-//    checkInTables      not if swap drop <ERROR> exit then
-//    checkIsNotTable    not if swap drop <ERROR> exit then
-
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTable     not if <NIP+ERROR> exit then
 
@@ -310,11 +302,11 @@ ddlLock.grabWrite
 
 ddlLock.grabRead
 
-    checkInTables not if <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
 
-    contentsString
+  contentsString
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -324,19 +316,18 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-    checkInTables not if rot drop drop <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-    //freespace .
+  //freespace .
 
-    checkIsTable not if swap drop <ERROR> exit then
+  find execute ( "filename" table )
 
-    find execute ( "filename" table )
+  tableLoader not if <NIP+ERROR> exit then
 
-    tableLoader not if <ERROR> exit then
+  //freespace .
 
-    //freespace .
-
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -346,15 +337,14 @@ ddlLock.grabRead
 
   ddlLock.grabRead
 
-  checkInTables not if rot drop drop <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
   //freespace .
 
-  checkIsTable not if swap drop <ERROR> exit then
-
   find execute ( "filename" table )
 
-  tableLoaderStream2 not if <ERROR> exit then
+  tableLoaderStream2 not if <NIP+ERROR> exit then
 
   //freespace .
 
@@ -368,15 +358,14 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-    checkInTables not if rot drop drop <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-    checkIsTable not if swap drop <ERROR> exit then
+  find execute ( "filename" table )
 
-    find execute ( "filename" table )
+  tableExporter not if <NIP+ERROR> exit then
 
-    tableExporter not if <ERROR> exit then
-
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -386,26 +375,26 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-    freespace .
 
-    checkEnoughBuffers not if swap drop <ERROR> exit then
-    checkInTables      not if rot drop drop <ERROR> exit then
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkInTables      not if <NIP+ERROR> exit then
+  checkIsTable       not if <NIP+ERROR> exit then
 
-    checkIsTable not if swap drop <ERROR> exit then
+  freespace .
 
-    find execute        ( "<to-tableNm>" ^fromTable )
+  find execute   ( "<to-tableNm>" ^fromTable )
 
-    swap           ( ^fromTable "<to-tableNm>" )
+  swap           ( ^fromTable "<to-tableNm>" )
 
-    :table execute ( ^fromTable ^toTable )
+  :table execute ( ^fromTable ^toTable )
 
-//    swap           ( ^toTable ^fromTable )
+  // swap        ( ^toTable ^fromTable )
 
-    tableCopier
+  tableCopier
 
-freespace .
+  freespace .
 
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -415,9 +404,8 @@ freespace .
 
 ddlLock.grabRead
 
-  checkInTables not if swap drop <ERROR> exit then
-
-  checkIsTable not if <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
   find execute ( table )
 
@@ -429,7 +417,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* append row buffer into table                                               */
 /*----------------------------------------------------------------------------*/
-: table_append ( "table", "buffer", "partition" -- <R> )
+: table_append ( "table", "buffer", "partition" -- <R> )        //! append_table
 
 ddlLock.grabRead
 
@@ -445,15 +433,14 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-    checkInTables not if swap drop  <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-    checkIsTable not if <ERROR> exit then
+  find execute ( table )
 
-    find execute ( table )
+  table.space >str
 
-    table.space >str
-
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -461,38 +448,19 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : select_table ( "<tableNm>" -- <R> )
 
-/*
 ddlLock.grabRead
 
-    checkInTables not if swap drop  <ERROR> exit then
+  getTableRef not if <NIP+ERROR> exit then
 
-    checkIsTable not if <ERROR> exit then
+  queryCount ++
 
-    queryCount ++
+  task.this task.seitf@ seitf.table@
 
-    find execute ( table )
+  rowcursor.new dup rot rowcursor.table!
 
-    rowcursor.new dup rot rowcursor.table!
+  >str
 
-    >str
-
-    <SUCCESS>
-*/
-
-ddlLock.grabRead
-
-    getTableRef not if swap drop <ERROR> exit then
-
-    queryCount ++
-
-    task.this task.seitf@ seitf.table@
-
-    rowcursor.new dup rot rowcursor.table!
-
-    >str
-
-    <SUCCESS>
-
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -502,15 +470,14 @@ ddlLock.grabRead
 
 ddlLock.grabRead
 
-    checkInTables not if swap drop  <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-    checkIsTable not if <ERROR> exit then
+  find execute ( table )
 
-    find execute ( table )
+  table.truncate
 
-    table.truncate
-
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -520,13 +487,13 @@ ddlLock.grabRead
 
 ddlLock.grabWrite
 
-    checkRemoveTable not if <NIP+ERROR> exit then
+  checkRemoveTable not if <NIP+ERROR> exit then
 
 tp ( "<tableNm>" )
 
-    ~removeTable ( ) assert.stack_0
+  ~removeTable ( ) assert.stack_0
 
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -534,15 +501,14 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : table_inuse ( "<tableNm>" -- <R> )
 
-    checkInTables not if swap drop  <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-    checkIsTable not if <ERROR> exit then
+  find execute ( table )
 
-    find execute ( table )
+  tableInUse not if "Table not in use" . <OK> exit then
 
-    tableInUse not if "Table not in use" . <OK> exit then
-
-    "Table in Use" .
+  "Table in Use" .
 
    <OK>
 ;
@@ -552,17 +518,17 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : get_table ( "<tableNm>" -- <R> )
 
-    getTableRef not if <ERROR> exit then
+  getTableRef not if <NIP+ERROR> exit then
 
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
 : return_table ( )
 
-    returnTableRef not if <ERROR> exit then
+  returnTableRef not if <NIP+ERROR> exit then
 
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -586,19 +552,17 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : list_columns ( "<tableNm>" -- <R> )
 
-    checkInTables not if swap drop <ERROR> exit then
+  checkInTables not if <NIP+ERROR> exit then
 
-    pushTable not if swap drop <ERROR> exit then
+  pushTable     not if <NIP+ERROR> exit then
+  pushColumns   not if <NIP+ERROR> exit then
 
-    pushColumns not if swap drop <ERROR> exit then
+  listColumns
 
-    listColumns
+  popColumns
+  popTable
 
-    popColumns
-
-    popTable
-
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 
@@ -611,27 +575,27 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : cf
 
-    dup ".." streql if
+  dup ".." streql if
+    drop
+    0 dic.pick dic.name "tenants" streql not if dic.drop then
+  else
+    dup "~" streql if
       drop
-      0 dic.pick dic.name "tenants" streql not if dic.drop then
+      begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
     else
-      dup "~" streql if
-        drop
-        begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
+      dup "tenants" streql if
+        begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
+        checkIsWord not if <NIP+ERROR> exit then
+        execute dic.push
       else
-        dup "tenants" streql if
-          begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
-          checkIsWord not if <ERROR> exit then
-          execute dic.push
-        else
-          find
-          checkIsDic not if <ERROR> exit then
-          execute dic.push
-        then
+        find
+        checkIsDic not if <NIP+ERROR> exit then
+        execute dic.push
       then
     then
+  then
 
-    <OK>
+  <OK>
 ;
 
 
@@ -640,14 +604,14 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : pwf
 
-    "/"
-    dic.count 2 do
-      dic.count 1 - I -
-      dic.pick dic.name concat
-      "/" concat
-    loop
+  "/"
+  dic.count 2 do
+    dic.count 1 - I -
+    dic.pick dic.name concat
+    "/" concat
+  loop
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -655,33 +619,33 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : lf
 
-    ""
-    word.this dup iterate
+  ""
+  word.this dup iterate
 
-      dup strlen if "\n" concat then
+    dup strlen if "\n" concat then
 
-      object@ word.name 12 strpad concat
+    object@ word.name 12 strpad concat
 
-      "(" concat
+    "(" concat
 
-      object@ isTable if
-        "table " concat
-        object@ execute table.space bytes.magnitude concat
-      then
+    object@ isTable if
+      "table " concat
+      object@ execute table.space bytes.magnitude concat
+    then
 
-      object@ isFolder if
-        object@ execute dic.kind@ word.name concat
-      then
+    object@ isFolder if
+      object@ execute dic.kind@ word.name concat
+    then
 
-      ")" concat
+    ")" concat
 
-      object@ prevWord object!
+    object@ prevWord object!
 
-    next
+  next
 
-//    128 clip
+  // 128 clip
 
-    <SUCCESS>
+   <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -745,9 +709,9 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : get_monitor ( -- <R> )
 
-    monitorString@
+  monitorString@
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -755,9 +719,9 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : ping ( -- <R> )
 
-    "pong"
+  "pong"
 
-    <SUCCESS>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -765,14 +729,14 @@ tp ( "<tableNm>" )
 /*----------------------------------------------------------------------------*/
 : docol_command ( "command" -- <R> )
 
-    checkIsWord not if <ERROR> exit then
-    execute
+  checkIsWord not if <NIP+ERROR> exit then
+  execute
 
-    begin
-     depth while drop
-    repeat
+  begin
+   depth while drop
+  repeat
 
-   <OK>
+ <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -789,11 +753,12 @@ tp ( "<tableNm>" )
 /* x test                                                                     */
 /*----------------------------------------------------------------------------*/
 : x                                                     //! GET RID OF THIS WORD
-    words
 
-    "x"
+  words
 
-    <SUCCESS>
+  "x"
+
+  <SUCCESS>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
