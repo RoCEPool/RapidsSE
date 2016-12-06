@@ -67,6 +67,14 @@
 
 : tableCopier
 
+  find execute   ( "<to-tableNm>" ^fromTable )
+
+  swap           ( ^fromTable "<to-tableNm>" )
+
+  :table execute ( ^fromTable ^toTable )
+
+  // swap        ( ^toTable ^fromTable )
+
     copy if "copied!" . else . then
 ;
 

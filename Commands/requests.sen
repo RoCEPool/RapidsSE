@@ -366,8 +366,6 @@ ddlLock.grabRead
   checkInTables not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
-  find execute ( "filename" table )
-
   tableExporter not if <NIP+ERROR> exit then
 
   <OK>
@@ -384,19 +382,11 @@ ddlLock.grabRead
   checkInTables      not if <NIP+ERROR> exit then
   checkIsTable       not if <NIP+ERROR> exit then
 
-  freespace .
-
-  find execute   ( "<to-tableNm>" ^fromTable )
-
-  swap           ( ^fromTable "<to-tableNm>" )
-
-  :table execute ( ^fromTable ^toTable )
-
-  // swap        ( ^toTable ^fromTable )
+  //freespace .
 
   tableCopier
 
-  freespace .
+  //freespace .
 
   <OK>
 ;

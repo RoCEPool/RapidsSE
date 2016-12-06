@@ -64,9 +64,16 @@
 traceoff
 ;
 
-: tableExporter ( "<fileNm>" ^table )
+: tableExporter ( "<fileNm>" "<tableNm>" )
 
-    export if "exported!" . true else false then
+  find execute ( "<fileNm>" table )
+
+  export
+  if
+    "exported!" . true
+  else
+    false
+  then
 ;
 
 
