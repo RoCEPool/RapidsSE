@@ -4,12 +4,13 @@
 
 "dbObjects.sen" .putVerbose
 
+"table.sen" >>:
+"column.sen" >>:
 "schema.sen" >>:
 "catalog.sen" >>:
 "tenant.sen" >>:
 "user.sen" >>:
-"table.sen" >>:
-"column.sen" >>:
+
 "row.sen" >>:
 "rowBuffer.sen" >>:
 "rowCursor.sen" >>:

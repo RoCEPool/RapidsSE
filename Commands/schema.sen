@@ -65,9 +65,13 @@
 
   tp: makeSchema
 
-  :schema ( ^schema )
+  dup ( "<schemaNm>" "<schemaNm>" )
 
-  drop ( )
+  :schema ( "<schemaNm>" ^schema )
+
+  drop ( "<schemaNm>" )
+
+  makeTables ( )
 
   true ( true )
 ;
