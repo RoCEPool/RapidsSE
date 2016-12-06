@@ -532,7 +532,7 @@ ddlLock.grabWrite
 
 tp ( "<tableNm>" )
 
-    removeTable assert
+    ~removeTable
 
     <OK>
 ;
