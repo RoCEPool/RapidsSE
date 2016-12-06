@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named catalog folder                                                */
 /*----------------------------------------------------------------------------*/
-: makeCatalog ( "<catalogNm>" -- true )
+: makeCatalog$ ( "<catalogNm>" -- true )
 
 tp: makeCatalog
 
@@ -84,6 +84,43 @@ tp: makeCatalog
   drop ( )
 
   true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named catalog folder                                                */
+/*----------------------------------------------------------------------------*/
+: makeCatalog ( "<catalogNm>" ... #folders -- true )
+
+/*
+  dicStack!
+
+  task.this task.name@ "p0.task" streql not if
+    "_" concat task.this task.name@ concat
+  then
+*/
+
+  dup "making tenant " swap concat .
+
+  makeCatalog$
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named catalog folder                                                */
+/*----------------------------------------------------------------------------*/
+: ~makeCatalog ( "<catalogNm>" -- )
+
+/*
+  // set indirect call to be makeCatalog
+  "makeCatalog" 2 ( "<CatalogNm>" "makeCatalog" 2 )
+
+  >>participants> ( bool )
+
+  drop ( )
+*/
+
+  makeCatalog
+
+  assert
 ;
 
 /*----------------------------------------------------------------------------*/

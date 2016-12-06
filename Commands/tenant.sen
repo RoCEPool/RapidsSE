@@ -97,8 +97,6 @@ tp: maketenant$
 
   dicStack!
 
-//dic.stack
-
   task.this task.name@ "p0.task" streql not if
     "_" concat task.this task.name@ concat
   then
@@ -106,7 +104,6 @@ tp: maketenant$
   dup "making tenant " swap concat .
 
   makeTenant$
-
 ;
 
 /*----------------------------------------------------------------------------*/

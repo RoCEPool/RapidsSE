@@ -165,7 +165,7 @@ ddlLock.grabWrite
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
   dup
-  makeCatalog assert
+  ~makeCatalog
   makeSchemas
 
   <OK>
