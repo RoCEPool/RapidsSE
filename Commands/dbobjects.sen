@@ -4,6 +4,7 @@
 
 "dbObjects.sen" .putVerbose
 
+"rowCursor.sen" >>:
 "table.sen" >>:
 "column.sen" >>:
 "schema.sen" >>:
@@ -13,7 +14,6 @@
 
 "row.sen" >>:
 "rowBuffer.sen" >>:
-"rowCursor.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */

@@ -309,6 +309,44 @@ tp: removeTable
   removeTable assert
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
+: dumpTable ( "<tableNm>" )
+
+  find execute ( table )
+
+  "__row_cursor" find dup
+  if
+  else
+    drop
+    "__row_cursor" :rowCursor
+  then
+  execute
+
+  >r
+  // r0 ^rowCursor
+
+  r0 rowcursor.table!
+  partitions 0
+  do
+    // r2 ^rowCursor
+    I r2 rowcursor.begin
+    r2 rowcursor.first
+    begin
+      while
+      r2 rowcursor.get
+      .
+      r2 rowcursor.next
+      repeat
+
+      r2 rowCursor.end
+  loop
+
+  rdrop
+
+  "__row_cursor" find >forget
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
