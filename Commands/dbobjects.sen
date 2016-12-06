@@ -4,9 +4,9 @@
 
 "dbObjects.sen" .putVerbose
 
+"catalog.sen" >>:
 "tenant.sen" >>:
 "user.sen" >>:
-"catalog.sen" >>:
 "schema.sen" >>:
 "table.sen" >>:
 "column.sen" >>:

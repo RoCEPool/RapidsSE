@@ -117,7 +117,6 @@ ddlLock.grabWrite
 
   dup          ( "<tenantNm>" "<tenantNm>" )
   ~makeTenant  ( "<tenantNm>" )
-  makeCatalogs ( )
 
   <OK>
 ;
@@ -819,7 +818,6 @@ tp ( "<tableNm>" )
 
   // create tenant boray (and catalogs sub-folder)
   "boray" makeTenant$ assert
-  "boray" makeCatalogs
 
   // find the boray folder
   "boray" findInCurrent
