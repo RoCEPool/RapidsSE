@@ -218,7 +218,7 @@ ddlLock.grabWrite
   checkMakeSchema    not if <NIP+ERROR> exit then
 
   dup
-  makeSchema assert
+  ~makeSchema
   makeTables
 
   <OK>

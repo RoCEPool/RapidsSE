@@ -61,7 +61,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named schema folder                                                 */
 /*----------------------------------------------------------------------------*/
-: makeSchema ( "<schemaNm>" -- true )
+: makeSchema$ ( "<schemaNm>" -- true )
 
   tp: makeSchema
 
@@ -70,6 +70,43 @@
   drop ( )
 
   true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named schema folder                                                 */
+/*----------------------------------------------------------------------------*/
+: makeSchema ( "<schemaNm>" ... #folders -- true )
+
+/*
+  dicStack!
+
+  task.this task.name@ "p0.task" streql not if
+    "_" concat task.this task.name@ concat
+  then
+*/
+
+  dup "making schema " swap concat .
+
+  makeSchema$
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named schema folder                                                 */
+/*----------------------------------------------------------------------------*/
+: ~makeSchema ( "<schemaNm>" -- )
+
+/*
+  // set indirect call to be makeSchema
+  "makeSchema" 2 ( "<schemaNm>" "makeSchema" 2 )
+
+  >>participants> ( bool )
+
+  drop ( )
+*/
+
+  makeSchema
+
+  assert
 ;
 
 /*----------------------------------------------------------------------------*/
