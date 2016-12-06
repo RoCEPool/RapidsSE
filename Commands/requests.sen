@@ -115,7 +115,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTenant    not if <NIP+ERROR> exit then
 
-  ~makeTenant  ( ) assert.stack_0
+  ~makeTenant ( ) assert.stack_0
 
   <OK>
 ;
@@ -143,7 +143,7 @@ ddlLock.grabWrite
 
   checkRemoveTenant not if <NIP+ERROR> exit then
 
-  ~removeTenant
+  ~removeTenant ( ) assert.stack_0
 
   <OK>
 ;
@@ -162,7 +162,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  ~makeCatalog  ( ) assert.stack_0
+  ~makeCatalog ( ) assert.stack_0
 
   <OK>
 ;
@@ -190,7 +190,7 @@ ddlLock.grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
-  ~removeCatalog
+  ~removeCatalog ( ) assert.stack_0
 
   <OK>
 ;
@@ -241,7 +241,7 @@ ddlLock.grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
-  ~removeSchema
+  ~removeSchema ( ) assert.stack_0
 
   <OK>
 ;
@@ -251,33 +251,33 @@ ddlLock.grabWrite
 /*----------------------------------------------------------------------------*/
 : use_schema ( "<schemaNm>" -- <R> )
 
-    begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
+  begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
 
-    // find the boray folder
-    "boray" findInCurrent
-    execute dic.push
+  // find the boray folder
+  "boray" findInCurrent
+  execute dic.push
 
-    // find the catalogs folder
-    "catalogs" findInCurrent
-    execute dic.push
+  // find the catalogs folder
+  "catalogs" findInCurrent
+  execute dic.push
 
-    // find the rapidssecatalogs folder
-    "rapidsse" findInCurrent
-    execute dic.push
+  // find the rapidssecatalogs folder
+  "rapidsse" findInCurrent
+  execute dic.push
 
-    // find the schemas folder
-    "schemas" findInCurrent
-    execute dic.push
+  // find the schemas folder
+  "schemas" findInCurrent
+  execute dic.push
 
-    checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
-    checkIsSchema not if swap drop <ERROR> exit then
-    execute dic.push
+  checkIsWord not if drop EC_NO_SUCH_SCHEMA <ERROR> exit then
+  checkIsSchema not if swap drop <ERROR> exit then
+  execute dic.push
 
-    // find the tables folder
-    "tables" findInCurrent
-    execute dic.push
+  // find the tables folder
+  "tables" findInCurrent
+  execute dic.push
 
-    <OK>
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -524,7 +524,7 @@ ddlLock.grabWrite
 
 tp ( "<tableNm>" )
 
-    ~removeTable
+    ~removeTable ( ) assert.stack_0
 
     <OK>
 ;
@@ -576,7 +576,7 @@ tp ( "<tableNm>" )
 
   checkAddColumn not if <NIP+ERROR> exit then
 
-  ~addColumn  //not if <NIP+ERROR> exit then
+  ~addColumn ( ) assert.stack_0
 
   <OK>
 ;
