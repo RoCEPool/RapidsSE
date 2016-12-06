@@ -138,7 +138,7 @@ ddlLock.grabRead
 
   checkInTenants not if <NIP+ERROR> exit then
 
-  contentsString
+  listContents
 
   <SUCCESS>
 ;
@@ -185,7 +185,7 @@ ddlLock.grabRead
 
   checkInCatalogs not if <NIP+ERROR> exit then
 
-  contentsString
+  listContents
 
   <SUCCESS>
 ;
@@ -232,7 +232,7 @@ ddlLock.grabRead
 
   checkInSchemas not if <NIP+ERROR> exit then
 
-  contentsString
+  listContents
 
   <SUCCESS>
 ;
@@ -313,7 +313,7 @@ ddlLock.grabRead
 
   checkInTables not if <NIP+ERROR> exit then
 
-  contentsString
+  listContents
 
   <SUCCESS>
 ;
