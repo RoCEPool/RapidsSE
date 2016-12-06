@@ -209,9 +209,14 @@
 
   tp: makeTable
 
-  :table ( ^table )
+  dup ( "<tableNm>" "<tableNm>" )
 
-  drop ( )
+  :table ( "<tableNm>" ^table )
+
+  drop ( "<tableNm>" )
+
+  // forward reference :-(
+  "makeColumns" find execute
 
   true ( true )
 ;
