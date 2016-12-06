@@ -194,7 +194,7 @@ ddlLock.grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
-  removeCatalog drop
+  ~removeCatalog
 
   <OK>
 ;

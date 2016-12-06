@@ -126,7 +126,7 @@ tp: makeCatalog
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
-: removeCatalog ( "<catalogNm>" -- true )
+: removeCatalog$ ( "<catalogNm>" -- true )
 
 tp: removeCatalog
 
@@ -135,6 +135,39 @@ tp: removeCatalog
   true ( true )
 ;
 
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                    */
+/*----------------------------------------------------------------------------*/
+: removeCatalog ( "<catalogNm>" -- true )
+/*
+  dicStack!
+
+  task.this task.name@ "p0.task" streql not if
+    "_" concat task.this task.name@ concat
+  then
+
+  dup "removing catalog " swap concat .
+*/
+
+  removeCatalog$
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                     */
+/*----------------------------------------------------------------------------*/
+: ~removeCatalog ( "<catalogNm>" -- )
+
+/*
+  // set indirect call to be dropCatalog
+  "removeCatalog" 2 ( "<catalogNm>" "dropCatalog" 2 )
+
+  >>participants> ( bool )
+
+  drop ( )
+*/
+
+  removeCatalog assert
+;
 
 /*============================================================================*/
 /* end                                                                        */
