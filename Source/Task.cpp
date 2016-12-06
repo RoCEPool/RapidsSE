@@ -775,6 +775,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("args.partition",  &vArgsPartition, false);
   vAddPrimitive("args.print",      &vArgsPrint,     false);
   
+  vAddPrimitive("class.name",      &vClassName,    false);
+  
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
   vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
@@ -5098,8 +5100,9 @@ void Task::vUnloop(NNP_Task nnpTask)
 ENTRY("vUnloop");
   
   // we should just modify the pointers rather than actually pop
-  ValWsp xValOpaque;
-  if ( ! nnpTask->m_xReturnStack.bPop(xValOpaque) )
+  ValWsp xValA;
+  ValWsp xValB;
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
     THROW_INVALID_RETURN("unloop");
   
   EXIT();
@@ -5479,6 +5482,28 @@ void Task::vArgsPrint(NNP_Task nnpTask)
 ENTRY("vArgsPrint");
   
   gxArguments.vPrint();
+  
+  EXIT();
+}
+
+// class: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* class.name -- translate class no to name                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vClassName(NNP_Task nnpTask)
+{
+  ENTRY("vClassName");
+  
+  i8 iClassNo;
+  if ( ! nnpTask->m_xParamStack.bPop(iClassNo) )
+    THROW_INVALID_PARAM("class.name");
+  
+  s32 sClassName;
+  
+  sClassName = pCN[iClassNo];
+  
+  nnpTask->m_xParamStack.vPush(sClassName);
   
   EXIT();
 }

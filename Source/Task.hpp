@@ -433,6 +433,9 @@ namespace Tasks
     static void vAssertStack_4(NNP_Task nnpTask);
     static void vAssertStack_4more(NNP_Task nnpTask);
     
+    // class
+    static void vClassName(NNP_Task nnpTask);
+
     // csv
     static void vCsvFirstValue(NNP_Task nnpTask);
     

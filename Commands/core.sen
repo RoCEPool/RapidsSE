@@ -188,6 +188,91 @@ create
   ' tracepoint compile,
 ;
 
+/*----------------------------------------------------------------------------*/
+/* an end marker                                                              */
+/*----------------------------------------------------------------------------*/
+: $$ 1234 ;
+
+: $$test
+
+  $$ $$ eql
+  if
+    "equal" .
+  else
+    "not equal" .
+  then
+
+  "a" $$ eql
+  if
+    "equal" .
+  else
+    "not equal" .
+  then
+
+  1 $$ eql
+  if
+    "equal" .
+  else
+    "not equal" .
+  then
+;
+
+: $$depth
+
+  depth 0 == if 0 exit then
+
+  depth 0 do
+
+    I stack.class CN_VALSET ==
+    if
+      I inc
+      unloop
+      exit
+    then
+
+    I pick $$ eql
+    if
+      I
+      unloop
+      exit
+    then
+
+  loop
+
+  depth
+;
+
+: $$>valset
+
+  $$depth
+  >valset
+  depth 1 > if
+    1 pick $$ eql
+    if
+      nip
+    then
+  then
+;
+
+: $$vs
+
+  $$ 1 2 3
+tp: a
+  $$>valset
+tp: b
+  "a" "b"
+tp: c
+  $$>valset
+tp: d
+  valset>
+tp: e
+  1 - dropN
+  valset>
+tp: f
+  drop
+tp: g
+;
+
 //traceon
 : tp:test 567 tp: tp-abc . ;
 
