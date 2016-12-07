@@ -22,6 +22,11 @@ private:
   bool      m_bContinue;  // continue processing commands?
   s32       m_sPrompt;    // prompt
   bool      m_bUseString; // use string
+
+  bool      m_bEcho;      // echo response?
+  
+  bool      m_bExpect;    // is there an expected response?
+  s8K       m_sExpect;    // the expected response;
   
   s8K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
@@ -56,6 +61,12 @@ private:
   void vGetCommandInput(void);
   
   bool bProcessCommand(bool bPostProcess = true);
+  
+  void vSetEcho(void);
+  void vClearEcho(void);
+  void vSetExpect(void);
+  void vClearExpect(void);
+  void vClipTokens(i8 nTokens);
   
   bool bExecuteRequest(void);
   bool bGetFirstRow(void);

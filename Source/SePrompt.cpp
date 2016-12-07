@@ -48,6 +48,11 @@ SePrompt::SePrompt(i8 iPartition)
   String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
   String::vConcat(m_sPrompt.a(), "> ");
   
+  m_bEcho   = false;
+  
+  m_bExpect = false;
+  m_sExpect = "";
+  
   m_sResponse  = "";
   //m_xHistory
   
@@ -125,15 +130,37 @@ void SePrompt::vLoop(void)
   
   // get and process commands
   while (m_bContinue) {
+    
     vGetCommand();
-    if (!bProcessCommand()) {
-      if (m_pSEitf->eGetLastError() != EC_NONE)
-        vTrace("Error: %s\n",m_pSEitf->pGetLastError());
+    
+    bool b = bProcessCommand();
+    
+    if (m_bExpect) {
+      if ( ! String::bEqualTo(m_sExpect.a(),m_sResponse.a(),C_NO_CASE)) {
+        vTrace("Expected %s : Got %s\n",m_sExpect.a(),m_sResponse.a());
+        PosixThread::vSleepSec(10000);
+      }
     }
-    else {
+    
+    if (m_bEcho) {
+      vTrace("cmd: ");
+      for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
+        if (String::bEqualTo("",m_pToken[iToken]))
+          break;
+        vTrace("%s ",m_pToken[iToken]);
+      }
+      vTrace(": got: %s\n",m_sResponse.a());
+      continue;
+    }
+    
+    if (b) {
       if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
         vTrace("%s\n",m_sResponse.a());
       }
+    }
+    else {
+      if (m_pSEitf->eGetLastError() != EC_NONE)
+        vTrace("Error: %s\n",m_pSEitf->pGetLastError());
     }
   }
   
@@ -422,6 +449,19 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  // - test for echo prefix
+  if (String::bEqualTo("echo",m_pToken[0],C_NO_CASE))
+    vSetEcho();
+  else
+    vClearEcho();
+  
+  // - test for expect prefix
+  if (String::bEqualTo("expect",m_pToken[0],C_NO_CASE))
+    vSetExpect();
+  else
+    vClearExpect();
+ 
+  
   // - test for builtin comands
   
   if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
@@ -542,6 +582,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
     m_xTokeniser.vLineMode(true);
+    m_sResponse = "<ok>";
     return true;
   }
   
@@ -578,6 +619,63 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 }
 
 #endif
+
+/*----------------------------------------------------------------------------*/
+/* set echo result                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSetEcho(void)
+{
+  m_bEcho = true;
+  
+  vClipTokens(1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear echo result                                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vClearEcho(void)
+{
+  m_bEcho = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect and set expected result                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSetExpect(void)
+{
+  m_sExpect = m_pToken[1];
+  
+  m_bExpect = true;
+  
+  vClipTokens(2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear expected result                                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vClearExpect(void)
+{
+  m_sExpect = "";
+  
+  m_bExpect = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clip tokens                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vClipTokens(i8 nTokens)
+{
+  i8 iToToken = 0;
+  
+  for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
+    
+    String::vCopy(m_pToken[iToToken++],m_pToken[iFromToken]);
+    
+    if (String::bEqualTo("",m_pToken[iFromToken]))
+      break;
+  }
+  
+}
 
 /*----------------------------------------------------------------------------*/
 /* execute an se request                                                      */

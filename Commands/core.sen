@@ -197,6 +197,9 @@ create
   [ word.this encodeVal ]
 ;
 
+/*----------------------------------------------------------------------------*/
+/* test of end marker                                                         */
+/*----------------------------------------------------------------------------*/
 : $$test
 
   $$ $$ eql
@@ -221,12 +224,17 @@ create
   then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* get depth of marked stack                                                  */
+/*----------------------------------------------------------------------------*/
 : $$depth
 
+  // if the stack is empty then there are 0 marked values
   depth 0 == if 0 exit then
 
   depth 0 do
 
+    // marked values end at a valset
     I stack.class CN_VALSET ==
     if
       I inc
@@ -234,6 +242,7 @@ create
       exit
     then
 
+    // marked values end at $$
     I pick $$ eql
     if
       I
@@ -243,9 +252,13 @@ create
 
   loop
 
+  // marked values end at bottom of stack
   depth
 ;
 
+/*----------------------------------------------------------------------------*/
+/* convert contents of marked stack into a valset                             */
+/*----------------------------------------------------------------------------*/
 : $$>valset
 
   $$depth
@@ -258,9 +271,13 @@ create
   then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* test marked valset                                                         */
+/*----------------------------------------------------------------------------*/
 : $$vs
 
-  $$ 1 2 3
+  $$
+  1 2 3
 tp: a
   $$>valset
 tp: b

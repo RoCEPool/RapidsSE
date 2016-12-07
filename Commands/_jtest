@@ -2,9 +2,10 @@
 /* _jtest -- jtest creation and load etc                                      */
 /*============================================================================*/
 
-ping
+echo ping
 
-cf tenants
+expect "<ok>" cf tenants
+echo expect "/tenants/" pwf
 //mkten boray
 
 cf boray
