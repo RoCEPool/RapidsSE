@@ -23,7 +23,7 @@ namespace Interface
     DicStack m_xDicStack;      // dictionary stack
     
     Queue* m_pRequestQueue;    // request queue
-    Queue* m_pResponseQueue;   // reponse queue
+    Queue* m_pResponseQueue;   // response queue
     
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;

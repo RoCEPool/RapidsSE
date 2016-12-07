@@ -1615,7 +1615,7 @@ bool SEitf::bAppendRequest(s& sRequest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop response from reponse queue (response is from pointer in seitf(shm))   */
+/* pop response from response queue (response is from pointer in seitf(shm))  */
 /*----------------------------------------------------------------------------*/
 eEC SEitf::eGetResponse(void)
 {
@@ -1634,7 +1634,7 @@ eEC SEitf::eGetResponse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop response from reponse queue                                            */
+/* pop response from response queue                                           */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPopResponse(eEC& eResult, s& sResponse)
 {

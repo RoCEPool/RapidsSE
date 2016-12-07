@@ -115,11 +115,11 @@ args.nodes ptrArray: senderQueue
 : >rsp ( send response    )
 
     // check stack
-    depth 3 != if "incorrect reponse stack depth" . process.quit then
+    depth 3 != if "incorrect response stack depth" . process.quit then
 
-    0 stack.class CN_INTVAL != if "incorrect reponse value 0" . process.quit then
-    1 stack.class CN_INTVAL != if "incorrect reponse value 1" . process.quit then
-    2 stack.class CN_STRVAL != if "incorrect reponse value 2" . process.quit then
+    0 stack.class CN_INTVAL != if "incorrect response value 0" . process.quit then
+    1 stack.class CN_INTVAL != if "incorrect response value 1" . process.quit then
+    2 stack.class CN_STRVAL != if "incorrect response value 2" . process.quit then
 
     >valset
 

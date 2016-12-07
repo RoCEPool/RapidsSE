@@ -104,13 +104,13 @@ expect "<ok>" cf tables
 
 expect "" lf
 
-//expect "<ok>" create table test ( j10_key   INTEGER NOT NULL ) ;
+expect "<ok>" create table test ( j10_key   INTEGER NOT NULL ) ;
 
-//expect "test        (table 0B)" lf
+expect "test        (table 0B)" lf
 
-//expect "<ok>" drop table test ;
+expect "<ok>" drop table test ;
 
-//expect "" lf
+expect "" lf
 
 expect "<ok>" create table j1000 (
   j1000_key   INTEGER NOT NULL,
