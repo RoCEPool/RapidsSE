@@ -133,11 +133,14 @@ void SePrompt::vLoop(void)
     
     vGetCommand();
     
+    if (0 == String::iLength(m_pToken[0]))
+      continue;
+    
     bool b = bProcessCommand();
     
     if (m_bExpect) {
       if ( ! String::bEqualTo(m_sExpect.a(),m_sResponse.a(),C_NO_CASE)) {
-        vTrace("Expected %s : Got %s\n",m_sExpect.a(),m_sResponse.a());
+        vTrace("Expected \"%s\" : Got \"%s\"\n",m_sExpect.a(),m_sResponse.a());
         PosixThread::vSleepSec(10000);
       }
     }
@@ -154,13 +157,15 @@ void SePrompt::vLoop(void)
     }
     
     if (b) {
-      if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
-        vTrace("%s\n",m_sResponse.a());
+      if ( ! m_bExpect )
+        if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
+          vTrace("%s\n",m_sResponse.a());
       }
     }
     else {
       if (m_pSEitf->eGetLastError() != EC_NONE)
-        vTrace("Error: %s\n",m_pSEitf->pGetLastError());
+        if ( ! m_bExpect )
+         vTrace("Error: %s\n",m_pSEitf->pGetLastError());
     }
   }
   
@@ -698,7 +703,9 @@ bool SePrompt::bExecuteRequest(void)
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,iTokens,&aResponse);
   
   if (bResult)
-    m_sResponse = aResponse;
+    m_sResponse = aResponse ? aResponse : "";
+  else
+    m_sResponse = aResponse ? aResponse : "";
   
   xTimer.vUpdate();
   

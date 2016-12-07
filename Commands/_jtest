@@ -2,10 +2,13 @@
 /* _jtest -- jtest creation and load etc                                      */
 /*============================================================================*/
 
-echo ping
+ping
+
+expect "/tenants/boray/catalogs/rapidsse/schemas/" pwf
 
 expect "<ok>" cf tenants
-echo expect "/tenants/" pwf
+
+expect "/tenants/" pwf
 //mkten boray
 
 cf boray
