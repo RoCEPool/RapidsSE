@@ -317,7 +317,7 @@ void Word::vDump(void)
          pStepWord ? pStepWord->sName().a() : "<not-found>",
          pFirstCell()
          );
-  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
@@ -326,17 +326,34 @@ void Word::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("%sWord %p: %s %s %s DataBytes %lld "
+  vTrace("%sWord %p: %s (%s) %s %s DataBytes %lld "
          "Step %p ..Data.. %p\n",
          pTab,
          this,
          m_sName.a(),
+         m_pDic->sName().a(),
          pWT[m_eWordType],
          m_bImmediate ? "Immediate" : "Not Immediate",
          m_iDataBytes,
          m_pDoesStep,
          pFirstCell()
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_WORD);
+  ASSERT(pObject->eClass() == CN_WORD);
+  
+  Word* pWord = reinterpret_cast<Word*>(pObject);
+  
+  pWord->vDump(pTab);
+  
+  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/

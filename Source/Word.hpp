@@ -49,6 +49,8 @@ namespace Dictionaries
     Word(const char* sName);
     ~Word(void);
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    
     char* pAllot(i8 iBytes);
     void* pAppend(Cell* pCell);
     void  vAppend(Cell* pCell);

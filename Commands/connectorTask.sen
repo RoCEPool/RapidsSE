@@ -17,7 +17,7 @@ thread:  connectorThread
 /*----------------------------------------------------------------------------*/
 /* start the connector task                                                   */
 /*----------------------------------------------------------------------------*/
-: connectorStart
+: cs
 
     // set up connector task
     0 "connectorLoop" nullPtr task.new connectorTaskSet taskSet.append
@@ -60,6 +60,7 @@ thread:  connectorThread
         // start sender
         //"starting sender" .
         0 "sender.loop" "sender" I >str concat senderForm
+
         I senderQueue !
 
       then

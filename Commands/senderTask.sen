@@ -80,9 +80,54 @@ args.nodes ptrArray: senderQueue
     exit
   then
 
-  // put in teh senderQueue of sender
-  senderQueue @   ( valset toNode toNode Q )
+  // put in the senderQueue of sender
+  senderQueue @   ( valset Q )
+
   queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the senderQueue array                                                 */
+/*----------------------------------------------------------------------------*/
+: senderQDump
+
+    "{ " .put
+    args.nodes 0 do
+    I senderQueue tp: @ .put " " .put
+    loop
+
+    "}" .put .\n
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* send on a socket                                                           */
+/*----------------------------------------------------------------------------*/
+: >socket1 ( valSet )
+
+  1
+
+  // put in the senderQueue of sender
+  senderQueue @   ( valset Q )
+  dup
+  .
+  queue.append
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* send on a socket                                                           */
+/*----------------------------------------------------------------------------*/
+: >socket0 ( valSet )
+
+  0
+
+  // put in the senderQueue of sender
+  senderQueue @   ( valset Q )
+  dup
+  .
+  queue.append
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -125,19 +170,6 @@ args.nodes ptrArray: senderQueue
 
     "rspque" find execute queue.append
     0 task.this task.seitf!
-;
-
-/*----------------------------------------------------------------------------*/
-/* dump the senderQueue array                                                 */
-/*----------------------------------------------------------------------------*/
-: senderQDump
-
-    "{ " .put
-    args.nodes 0 do
-    I senderQueue @ .put " " .put
-    loop
-
-    "}" .put .\n
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -8,8 +8,6 @@
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
 "requestTask.sen" >>:
-"receiverTask.sen" >>:
-"senderTask.sen"  >>:
 "connectorTask.sen" >>:
 "answerTask.sen" >>:
 
@@ -29,7 +27,7 @@
     snooze listerStart
     snooze monitorStart
     snooze reclaimStart
-    //snooze answerStart
+    snooze answerStart
 
   then
 

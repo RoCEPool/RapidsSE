@@ -68,7 +68,7 @@ int: connections
 
       1  == if               ( connection# )
         args.node 0 != if
-          connectorStart
+          cs
         then
       then
         

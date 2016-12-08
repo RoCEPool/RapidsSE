@@ -83,6 +83,8 @@
 
 tp: maketenant$
 
+  "MAKING TENANT on " args.node >str concat .
+
   dup ( "<tenantNm>" )
 
   :tenant ( "<tenantNm>" ^tenant )
@@ -101,9 +103,9 @@ tp: maketenant$
 
   dicStack!
 
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
-  then
+  //task.this task.name@ "p0.task" streql not if
+  //  "_" concat task.this task.name@ concat
+  //then
 
   dup "making tenant " swap concat .
 
@@ -121,8 +123,6 @@ tp: maketenant$
   >>participants> ( bool )
 
   drop ( )
-
-//traceoff
 ;
 
 /*----------------------------------------------------------------------------*/
