@@ -119,12 +119,16 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_tenant ( "<tenantNm>" -- <R> )
 
+tp: create_tenant
+
 ddlLock.grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
 
   ~makeTenant ( ) assert.stack_0
+
+tp: create_tenant
 
   <OK>
 ;

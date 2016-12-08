@@ -1892,6 +1892,13 @@ void Task::vStackContents(s& sStackContents)
                              pCN[((Object*)pValWsp->pPtr())->eClass()],
                              pValWsp->pPtr(),
                              ((Word*)pValWsp->pPtr())->sName().a());
+        else if (CN_QUEUE == ((Object*)pValWsp->pPtr())->eClass()) {
+          Word* pWordQueue = Word::pToWord(pValWsp->pPtr());
+          String::vSprintCat(a,"^%s=%p:%s",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr(),
+                             pWordQueue->sName().a());
+        }
         else
           String::vSprintCat(a,"^%s=%p",
                              pCN[((Object*)pValWsp->pPtr())->eClass()],
@@ -1983,7 +1990,10 @@ void Task::vTracePoint(const char* aMark)
   
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("%s %-15s : r %lld ; p%2d=",
+  vTrace("N%lld:%s\\%lld %s %-15s : r %lld ; p%2d=",
+         gxArguments.m_iNode,
+         m_sName.a(),
+         *m_zAcks,
          aMark,aRoutine,iReturnValues,iParamValues);
   
   s8K sStackContents;
@@ -10154,7 +10164,7 @@ void Task::vTaskSignal(NNP_Task nnpTask)
   i8 iMore = --pThatTask->m_zAcks;
   
   if ( ! iMore ) {
-    vTrace("Task::vTaskSignal: task %p %s is resuming task %p %s\n",
+    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
            *nnpTask,nnpTask->m_sName.a(),
            pThatTask,pThatTask->m_sName.a());
     
@@ -10164,6 +10174,12 @@ void Task::vTaskSignal(NNP_Task nnpTask)
     Thread* pThread = Thread::pThread();
     
     pThread->m_pTaskSet->vAppend(pThatTask);
+  }
+  else {
+    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
+           *nnpTask,nnpTask->m_sName.a(),
+           pThatTask,iMore,pThatTask->m_sName.a());
+    
   }
   
   EXIT();
@@ -10261,6 +10277,9 @@ ENTRY("vTaskStateStore");
 void Task::vTaskSuspend(NNP_Task nnpTask)
 {
   ENTRY("vTaskSuspend");
+  
+  vTrace("Task::vTaskSignal: task %p %s suspends\n",
+         *nnpTask,nnpTask->m_sName.a());
   
   nnpTask->vState(TS_WAITING);
   

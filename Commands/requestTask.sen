@@ -95,7 +95,7 @@ thread:  requestThread
 
     "renaming to Request Task" .putVerbose
 
-    "requestTask" task.this task.name!
+    "r.task" task.this task.name!
 
     requestQueue  task.this task.queue!
 

@@ -23,21 +23,21 @@ cf boraySchema
 cf tables
 
 create table j1000 (
-  j1000_key   INTEGER NOT NULL,
-  j1000_name  VARCHAR(32) NOT NULL,
-  j1000_j100  INTEGER NOT NULL,
-  j1000_j10   INTEGER NOT NULL
+j1000_key   INTEGER NOT NULL,
+j1000_name  VARCHAR(32) NOT NULL,
+j1000_j100  INTEGER NOT NULL,
+j1000_j10   INTEGER NOT NULL
 );
 
 create table j100 (
-  j100_key   INTEGER NOT NULL,
-  j100_name  VARCHAR(32) NOT NULL,
-  j100_j10   INTEGER NOT NULL
+j100_key   INTEGER NOT NULL,
+j100_name  VARCHAR(32) NOT NULL,
+j100_j10   INTEGER NOT NULL
 );
 
 create table j10 (
-  j10_key   INTEGER NOT NULL,
-  j10_name  VARCHAR(32) NOT NULL
+j10_key   INTEGER NOT NULL,
+j10_name  VARCHAR(32) NOT NULL
 );
 
 print "loading j1000.tbl..."

@@ -107,7 +107,8 @@ tp: maketenant$
   //  "_" concat task.this task.name@ concat
   //then
 
-  dup "making tenant " swap concat .
+tp: makeTenant
+  //dup "making tenant " swap concat .
 
   makeTenant$
 ;
@@ -117,10 +118,14 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
+tp: ~makeTenant
+
   // set indirect call to be makeTenant
   "makeTenant" 2 ( "<tenantNm>" "makeTenant" 2 )
 
   >>participants> ( bool )
+
+tp: ~makeTenant
 
   drop ( )
 ;

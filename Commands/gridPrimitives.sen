@@ -67,6 +67,8 @@ args.nodes ptrArray: pQueues
 
     ( value | false )
   until
+
+tp: queue>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -92,7 +94,7 @@ args.nodes ptrArray: pQueues
   // expand valset into stack values
   valset> ( ... wordName caller #values )
 
-  stk
+  //stk
 
   // discard the number of values
   drop ( ... wordName caller )
@@ -106,6 +108,7 @@ args.nodes ptrArray: pQueues
 /*----------------------------------------------------------------------------*/
 : !indirect ( ... wordName -- ... )
 
+tp: !indirect
   // find the word in dic stack
   find ( word )
                                                           //! WHAT IF NOT FOUND?
@@ -117,6 +120,8 @@ args.nodes ptrArray: pQueues
 /* convert values on stack into a result valset                               */
 /*----------------------------------------------------------------------------*/
 : >result ( ... -- valset )
+
+tp: >result
 
   // put number of values onto stack
   depth ( ... #values )
@@ -134,6 +139,7 @@ args.nodes ptrArray: pQueues
   // otherwise transfering to that stack will corrupt the
   // tasks execution
 
+tp: >caller
   begin
 
     // get the callers state
@@ -176,6 +182,8 @@ args.nodes ptrArray: pQueues
   // restore target queue onto stack
   r> ( valset queue )
 
+tp: >queue
+
   // pop valset and append to target queue
   queue.append ( )
 
@@ -189,6 +197,8 @@ args.nodes ptrArray: pQueues
   // set this task to wait for 1 ack
   1 task.this task.acks! ( ... wordName #values queue )
 
+tp: >queue>
+
   // append indirect call onto queue
   >queue ( )
 
@@ -201,6 +211,7 @@ args.nodes ptrArray: pQueues
   // discard number of values leaving the indirect result
   drop ( ..result.. )
 
+tp: >queue>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -363,7 +374,7 @@ tp: cp.loop
     // and suspend till signalled with indirect result
     depth ( ... wordName #values )
     r1 ( ... wordName #values queue )
-    stk
+    //stk
     >queue> ( ... )
 
     // convert indirect result into valset
@@ -409,7 +420,7 @@ tp: pp.loop
     "sent" .
 
     queue>
-    stk
+    //stk
 
     // convert indirect result into valset
     //>result ( valset )
@@ -524,7 +535,10 @@ createActors
 /*----------------------------------------------------------------------------*/
 : >participants>
 
+
   args.nodes task.this task.acks!
+
+tp: >participants>
 
   >valset
 
@@ -565,6 +579,8 @@ createActors
 
   r>
 //traceoff
+
+tp: >participants>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -614,6 +630,8 @@ tp: >>participants>
             #values+#folders+1 ">participants>" #totalValues )
 
   >coordinator> ( bool )
+
+tp: >>participants>
 ;
 
 /*============================================================================*/
