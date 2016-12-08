@@ -12,6 +12,45 @@ args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
 
 /*----------------------------------------------------------------------------*/
+/* dump the ppQueues array                                                    */
+/*----------------------------------------------------------------------------*/
+: ppQueuesDump
+
+  "{ " .put
+  args.nodes 0 do
+  I ppQueues @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the cpQueues array                                                    */
+/*----------------------------------------------------------------------------*/
+: cpQueuesDump
+
+  "{ " .put
+  args.nodes 0 do
+  I cpQueues @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the pQueues array                                                     */
+/*----------------------------------------------------------------------------*/
+: pQueuesDump
+
+  "{ " .put
+  args.nodes 0 do
+  I pQueues @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
 /* pop indirect valset from this tasks queue (this is a blocking call)        */
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )
@@ -43,6 +82,23 @@ args.nodes ptrArray: pQueues
 
   // put caller into reg0
   >reg0 ( ... wordName )
+;
+
+/*----------------------------------------------------------------------------*/
+/* expand valset into an indirect call                                        */
+/*----------------------------------------------------------------------------*/
+: >indirect2 ( valset -- ... wordName ; reg0 == caller )
+
+  // expand valset into stack values
+  valset> ( ... wordName caller #values )
+
+  stk
+
+  // discard the number of values
+  drop ( ... wordName caller )
+
+  // drop caller
+  drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -122,6 +178,7 @@ args.nodes ptrArray: pQueues
 
   // pop valset and append to target queue
   queue.append ( )
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -143,6 +200,7 @@ args.nodes ptrArray: pQueues
 
   // discard number of values leaving the indirect result
   drop ( ..result.. )
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -207,7 +265,7 @@ args.nodes ptrArray: pQueues
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-//traceon
+    //traceon
 
     // convert valset to indirect call
     >indirect ( ... wordName )
@@ -222,7 +280,6 @@ args.nodes ptrArray: pQueues
     >caller ( )
 
 //traceoff
-
 
   0 until
 
@@ -276,11 +333,110 @@ args.nodes ptrArray: pQueues
 ;
 
 /*----------------------------------------------------------------------------*/
+/* pass on processing loop     run by Coordinator Proxy                       */
+/*----------------------------------------------------------------------------*/
+: cp.loop ( actorNo forwardQueue -- )
+
+tp: cp.loop
+
+    // push a register frame
+    reg.push
+
+    >r ( actorNo )
+    >r ( )
+    // r0 has actorNo (nodeNo)
+    // r1 has forwardQueue
+    //! r2 has the originating node
+
+    "CP " r1 >str concat .
+    begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    queue> ( valset ) //! CP recv   socket>
+
+    // convert valset to indirect call
+    >indirect2 ( ... wordName )
+
+    // pass onto forward queue for processing
+    // and suspend till signalled with indirect result
+    depth ( ... wordName #values )
+    r1 ( ... wordName #values queue )
+    stk
+    >queue> ( ... )
+
+    // convert indirect result into valset
+    >result ( valset )
+
+    // put indirect result onto stack of caller and signal
+    //>caller ( ) //! CP send     >socket
+    >socket0
+
+    0 until
+
+    rdrop
+    rdrop
+
+    // pop a register frame
+    reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* pass on processing loop     run by Participant Proxy (for other node)      */
+/*----------------------------------------------------------------------------*/
+: pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
+
+tp: pp.loop
+
+  // push a register frame
+  reg.push
+
+  >r ( actorNo )
+  >r ( )
+  // r0 has actorNo (nodeNo)
+  // r1 has forwardQueue
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
+
+    "sending ..." .
+    >socket1
+    "sent" .
+
+    queue>
+    stk
+
+    // convert indirect result into valset
+    //>result ( valset )
+
+    // put indirect result onto stack of caller and signal
+    "c.task" find execute >reg0
+    >caller ( )
+  0 until
+
+  rdrop
+  rdrop
+
+  // pop a register frame
+  reg.pop
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* create the actors for the dl test                                          */
 /*----------------------------------------------------------------------------*/
 : createActors
+/*
+    c->PP->CP->p
+        |
+        +->P
 
-  args.nodes 0 do
+    args.nodes 0 do
 
     // participant for this I
     0 "execute.loop" "p" I >str concat actorForm
@@ -299,12 +455,40 @@ args.nodes ptrArray: pQueues
       I ppQueues !
     then
 
-  loop
+    loop
 
-  // coordinator
-  0 "execute.loop" "c" actorForm drop
-;
+    // coordinator
+    0 "execute.loop" "c" actorForm drop
+    ;
+*/
 
+    args.nodes 0 do
+
+    // participant for this I
+    0 "execute.loop" "p" I >str concat actorForm
+    I pQueues !
+
+    // coordinator proxy for this I
+    I I pQueues @ 2 "cp.loop" "cp" I >str concat actorForm
+    I cpQueues !
+
+    // partitipant proxy for this I
+    I args.node == if
+      I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    else
+      I I cpQueues @ 2 "pp.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    then
+
+    loop
+
+    // coordinator
+    0 "execute.loop" "c" actorForm drop
+
+    cpQueuesDump
+
+    ;
 
 createActors
 
@@ -388,6 +572,8 @@ createActors
 /*----------------------------------------------------------------------------*/
 : >coordinator> ( ... wordName #values -- ..result.. )
 
+tp: >coordinator>
+
   // the queue is c.queue
   c.queue ( ... wordName #values c.queue )
 
@@ -399,6 +585,8 @@ createActors
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
 : >>participants> ( ... "<wordNm>" #values -- bool )
+
+tp: >>participants>
 
   swap ( ... #values "<wordNm>" )
   >r   ( ... #values )

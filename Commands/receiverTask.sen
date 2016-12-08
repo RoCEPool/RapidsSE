@@ -61,11 +61,27 @@
   task.this task.socket@           // get socket from task
   socket.recv                      // recv on socket
 
-  valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
+  //valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
 
-  drop                            // drop #values
-  "Node " args.node >str concat " received word from Node " concat swap >str concat .
-  find execute                    // execute the word
+  stk
+  "Node " args.node >str concat " received word" concat .
+  //find execute                    // execute the word
+
+  args.node 1 == if
+    // put valset onto cp 1 queue
+    "putting value in cpQueue" .
+    stk
+    1 cpQueues @
+  else
+    // put valset onto pp 1 queue
+    "putting value in ppQueue" .
+    stk
+    1 ppQueues @
+  then
+    queue.append
+
+"put value in Queue" .
+
 ;
 
 /*----------------------------------------------------------------------------*/
