@@ -85,6 +85,9 @@ OBJECT* Collection_t<OBJECT>::pAllocObject(void)
 {
   OBJECT* pObject = pPopFree();
   
+  if (pObject == nullptr)
+    return nullptr;
+  
   vAppendList(pObject);
   
   return pObject;

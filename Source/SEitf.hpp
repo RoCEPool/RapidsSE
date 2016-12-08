@@ -71,8 +71,9 @@ namespace Interface
 
     //--------------------------------------------------------------------------
     
-    void vBeginTx(void);
+    bool bBeginTx(void);
     void vCommitTx(void);
+    void vEndTx(void);
     
     bool bDecode(char* pWords[], i8 iWords);
     

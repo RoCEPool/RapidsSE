@@ -843,9 +843,14 @@ bool SePrompt::bBeginInsert(void)
   
   m_pSEitf->vCurrentTable(pTablePtr);
   
-  m_pSEitf->vBeginTx();
+  bool bResult = m_pSEitf->bBeginTx();
+  
+  if (!bResult) {
+    m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+    return false;
+  }
 
-  return true;
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1549,6 +1554,7 @@ bool SePrompt::bEndInsert(void)
   m_pSEitf->vCurrentTable(nullptr);
   
   m_pSEitf->vCommitTx();
+  m_pSEitf->vEndTx();
 
   return true;
 }

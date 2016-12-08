@@ -206,7 +206,12 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   
   pSEitf->vCurrentTable(pTablePtr);
   
-  pSEitf->vBeginTx();
+  bool bResult = pSEitf->bBeginTx();
+  
+  if (!bResult) {
+    pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+    return EC_BEGIN_TX_FAILED;
+  }
   
   return EC_NONE;
 }
@@ -554,6 +559,7 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
   pSEitf->vCurrentTable(nullptr);
   
   pSEitf->vCommitTx();
+  pSEitf->vEndTx();
   
   return EC_NONE;
 }
