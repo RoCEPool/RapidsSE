@@ -56,31 +56,35 @@
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
-: !recv
+: recv>
 
   task.this task.socket@           // get socket from task
   socket.recv                      // recv on socket
 
+tp: recv>
+
   //valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
 
-  stk
-  "Node " args.node >str concat " received word" concat .
+  //stk
+  //"Node " args.node >str concat " received word" concat .
   //find execute                    // execute the word
 
   args.node 1 == if
     // put valset onto cp 1 queue
-    "putting value in cpQueue" .
-    stk
+    //"putting value in cpQueue" .
+    //stk
     1 cpQueues @
   else
     // put valset onto pp 1 queue
-    "putting value in ppQueue" .
-    stk
+    //"putting value in ppQueue" .
+    //stk
     1 ppQueues @
   then
-    queue.append
 
-"put value in Queue" .
+tp: recv>
+  queue.append
+
+//"put value in Queue" .
 
 ;
 
@@ -91,7 +95,7 @@
 
     "renaming to Receiver Task" .putVerbose
 
-    "receiver.task" task.this task.name!
+    "=r.task" task.this task.name!
 
     //receiver.queue  task.this task.queue!
 
@@ -100,7 +104,7 @@
     10 sleep
 
     begin
-      !recv
+      recv>
     0 until
 
 ;

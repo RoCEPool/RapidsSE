@@ -2,6 +2,12 @@
 /* _ct -- create tenant test (shorthand)                                      */
 /*============================================================================*/
 
+docol gn
+sleep 6
+
+docol cs
+sleep 12
+
 cf ~
 create tenant t;
 lf

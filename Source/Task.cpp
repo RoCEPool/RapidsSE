@@ -1978,6 +1978,9 @@ void Task::vTokenNext(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(const char* aMark)
 {
+  i8 iPause = Random::iRandom(1,9999);
+  PosixThread::vSleepMicro(iPause);
+  
   char aRoutine[128];
   
   Cell* pCell = IP.m_pCell;

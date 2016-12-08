@@ -339,6 +339,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   }
   
+  if (String::bEqualTo("sleep",m_pToken[0],C_NO_CASE)) {
+    return bSleep();
+  }
+
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
     return bChangeWorkingDir();
   }
@@ -478,6 +482,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (String::bEqualTo("bye",m_pToken[0],C_NO_CASE)) {
     m_bContinue = false;
     return true;
+  }
+  
+  if (String::bEqualTo("sleep",m_pToken[0],C_NO_CASE)) {
+    return bSleep();
   }
   
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
@@ -970,6 +978,22 @@ bool SePrompt::bBeginInsert(void)
   
   m_pSEitf->vBeginTx();
 
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sleep n seconds                                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bSleep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"sleep"));
+  
+  i8 nSeconds = String::iToI8(m_pToken[1]);
+
+  PosixThread::vSleepSec(nSeconds);
+  
   return true;
 }
 

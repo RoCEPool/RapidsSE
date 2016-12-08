@@ -415,9 +415,9 @@ tp: pp.loop
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-    "sending ..." .
+    //"sending ..." .
     >socket1
-    "sent" .
+    //"sent" .
 
     queue>
     //stk

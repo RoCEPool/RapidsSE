@@ -83,7 +83,7 @@
 
 tp: maketenant$
 
-  "MAKING TENANT on " args.node >str concat .
+  dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
 
   dup ( "<tenantNm>" )
 

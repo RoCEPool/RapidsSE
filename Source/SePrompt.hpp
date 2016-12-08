@@ -102,6 +102,8 @@ private:
 
   bool bUseSchema(void);
   
+  bool bSleep(void);
+  
   Footer* pFooter(void);
 };
 

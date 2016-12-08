@@ -57,6 +57,8 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : send ( toNode param word )
 
+tp: send
+
   depth       ( toNode param word 3 )
   args.node   ( toNode param word 3 fromNode )
   swap        ( toNode param word fromNode 3 )
@@ -109,8 +111,10 @@ args.nodes ptrArray: senderQueue
 
   // put in the senderQueue of sender
   senderQueue @   ( valset Q )
-  dup
-  .
+  //dup .
+
+tp: >socket1
+
   queue.append
 
 ;
@@ -124,10 +128,10 @@ args.nodes ptrArray: senderQueue
 
   // put in the senderQueue of sender
   senderQueue @   ( valset Q )
-  dup
-  .
-  queue.append
+  //dup .
+tp: >socket0
 
+  queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -147,11 +151,16 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : !send
 
+tp: !send
+
     task.this task.socket@  ( valset )
     swap                    ( socket valset )
     socket.send             ( valset socket )
-    not if "send failure" . ( 0/1 )
-    then "Node " args.node >str concat " sent word to another node " concat .
+    not if
+      "send failure" . ( 0/1 )
+    then
+
+    //"Node " args.node >str concat " sent word to another node " concat .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -179,7 +188,7 @@ args.nodes ptrArray: senderQueue
 
     "renaming to sender.task" .putVerbose
 
-    "sender.task" task.this task.name!
+    "s=.task" task.this task.name!
 
     //"sender.queue"  task.this task.queue!
 
