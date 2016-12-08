@@ -188,7 +188,7 @@ tp: !send
 
     "renaming to sender.task" .putVerbose
 
-    "s=.task" task.this task.name!
+    "snd.task" task.this task.name!
 
     //"sender.queue"  task.this task.queue!
 

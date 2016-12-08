@@ -95,7 +95,7 @@ tp: recv>
 
     "renaming to Receiver Task" .putVerbose
 
-    "=r.task" task.this task.name!
+    "rcv.task" task.this task.name!
 
     //receiver.queue  task.this task.queue!
 

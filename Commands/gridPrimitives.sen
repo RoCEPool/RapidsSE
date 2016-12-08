@@ -55,6 +55,8 @@ args.nodes ptrArray: pQueues
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )
 
+tp: queue>
+
   begin
 
     // attempt to pop value off the tasks queue

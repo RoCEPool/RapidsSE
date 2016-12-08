@@ -1978,7 +1978,7 @@ void Task::vTokenNext(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(const char* aMark)
 {
-  i8 iPause = Random::iRandom(1,9999);
+  i8 iPause = Random::iRandom(999,99999);
   PosixThread::vSleepMicro(iPause);
   
   char aRoutine[128];
@@ -1993,7 +1993,7 @@ void Task::vTracePoint(const char* aMark)
   
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("N%lld:%s\\%lld %s %-15s : r %lld ; p%2d=",
+  vTrace("[N%lld:%8s\\%lld] %-16s %-16s : r %2lld ; p%2lld=",
          gxArguments.m_iNode,
          m_sName.a(),
          *m_zAcks,
@@ -3985,7 +3985,11 @@ ENTRY("vPrint");
     THROW_INVALID_PARAM(".");
   
   xValWsp.vToString(sWorkspace.a());
-  vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
+  vTrace("[N%lld:%8s\\%lld] %s\n",
+         gxArguments.m_iNode,
+         nnpTask->m_sName.a(),
+         *nnpTask->m_zAcks,
+         sWorkspace.a());
   
   EXIT();
 }
@@ -10167,9 +10171,15 @@ void Task::vTaskSignal(NNP_Task nnpTask)
   i8 iMore = --pThatTask->m_zAcks;
   
   if ( ! iMore ) {
-    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
-           *nnpTask,nnpTask->m_sName.a(),
-           pThatTask,pThatTask->m_sName.a());
+//    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
+//           *nnpTask,nnpTask->m_sName.a(),
+//           pThatTask,pThatTask->m_sName.a());
+      vTrace("[N%lld:%8s\\%lld] resuming %s\\%lld\n",
+             gxArguments.m_iNode,
+             nnpTask->m_sName.a(),
+             *nnpTask->m_zAcks,
+             pThatTask->m_sName.a(),
+             *pThatTask->m_zAcks);
     
     while (TS_WAITING != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
@@ -10179,9 +10189,15 @@ void Task::vTaskSignal(NNP_Task nnpTask)
     pThread->m_pTaskSet->vAppend(pThatTask);
   }
   else {
-    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
-           *nnpTask,nnpTask->m_sName.a(),
-           pThatTask,iMore,pThatTask->m_sName.a());
+//    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
+//           *nnpTask,nnpTask->m_sName.a(),
+//           pThatTask,iMore,pThatTask->m_sName.a());
+    vTrace("[N%lld:%8s\\%lld] signalled %s\\%lld\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           pThatTask->m_sName.a(),
+           iMore);
     
   }
   
@@ -10281,8 +10297,13 @@ void Task::vTaskSuspend(NNP_Task nnpTask)
 {
   ENTRY("vTaskSuspend");
   
-  vTrace("Task::vTaskSignal: task %p %s suspends\n",
-         *nnpTask,nnpTask->m_sName.a());
+//  vTrace("Task::vTaskSuspend: task %p %s suspends\n",
+//         *nnpTask,nnpTask->m_sName.a());
+  
+  vTrace("[N%lld:%8s\\%lld] suspends\n",
+         gxArguments.m_iNode,
+         nnpTask->m_sName.a(),
+         *nnpTask->m_zAcks);
   
   nnpTask->vState(TS_WAITING);
   
@@ -12321,7 +12342,11 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   pSocket = reinterpret_cast<Socket*>(pObject);
 
-  vTrace("%s receiving on %lld\n", nnpTask->m_sName.a(), pSocket->m_iSocketId);
+  vTrace("[N%lld:%8s\\%lld] receiving on %lld\n",
+         gxArguments.m_iNode,
+         nnpTask->m_sName.a(),
+         *nnpTask->m_zAcks,
+         pSocket->m_iSocketId);
   
   // recv number of bytes that follow
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
