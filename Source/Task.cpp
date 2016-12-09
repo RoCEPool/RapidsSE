@@ -1997,7 +1997,10 @@ void Task::vTracePoint(const char* aMark)
          gxArguments.m_iNode,
          m_sName.a(),
          *m_zAcks,
-         aMark,aRoutine,iReturnValues,iParamValues);
+         aRoutine,
+         aMark,
+         iReturnValues,
+         iParamValues);
   
   s8K sStackContents;
   vStackContents(sStackContents);
