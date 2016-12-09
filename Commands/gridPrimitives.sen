@@ -364,27 +364,27 @@ tp: cp.loop
     "CP " r1 >str concat .
     begin
 
-    depth 0 != if "stack of task has grown" . debug.trap then
+      depth 0 != if "stack of task has grown" . debug.trap then
 
-    // pop valset off queue and push onto this stack
-    queue> ( valset ) //! CP recv   socket>
+      // pop valset off queue and push onto this stack
+      queue> ( valset ) //! CP recv   socket>
 
-    // convert valset to indirect call
-    >indirect2 ( ... wordName )
+      // convert valset to indirect call
+      >indirect2 ( ... wordName )
 
-    // pass onto forward queue for processing
-    // and suspend till signalled with indirect result
-    depth ( ... wordName #values )
-    r1 ( ... wordName #values queue )
-    //stk
-    >queue> ( ... )
+      // pass onto forward queue for processing
+      // and suspend till signalled with indirect result
+      depth ( ... wordName #values )
+      r1 ( ... wordName #values queue )
+      //stk
+      >queue> ( ... )
 
-    // convert indirect result into valset
-    >result ( valset )
+      // convert indirect result into valset
+      >result ( valset )
 
-    // put indirect result onto stack of caller and signal
-    //>caller ( ) //! CP send     >socket
-    >socket0
+      // put indirect result onto stack of caller and signal
+      //>caller ( ) //! CP send     >socket
+      >socket0
 
     0 until
 
@@ -419,6 +419,8 @@ tp: pp.loop
 
     //"sending ..." .
     >socket1
+    //r0 >socket
+
     //"sent" .
 
     queue>

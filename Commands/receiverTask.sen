@@ -73,11 +73,13 @@ tp: recv>
     // put valset onto cp 1 queue
     //"putting value in cpQueue" .
     //stk
-    1 cpQueues @
+    // passing request "mkten" received from node0 to CP
+    args.node cpQueues @
   else
     // put valset onto pp 1 queue
     //"putting value in ppQueue" .
     //stk
+    // passing response of "mkten" received from node1 to PP
     1 ppQueues @
   then
 
