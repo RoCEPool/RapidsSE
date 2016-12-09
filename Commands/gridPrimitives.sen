@@ -184,7 +184,7 @@ tp: ontoCallerStack
   // inc #values to now include caller
   inc ( ... wordName caller #values )
 
-tp: addedThisCaller
+tp: pushedThisCaller
 
   // convert values to valset
   >valset ( valset )
@@ -194,7 +194,7 @@ tp: asValset
   // restore target queue onto stack
   r> ( valset queue )
 
-tp: ontoWhichQueue
+tp: pushedWhichQueue
 
   // pop valset and append to target queue
   queue.append ( )
@@ -561,8 +561,6 @@ tp: acksExpected
 
   >valset
 
-tp: sendingToAllPart
-
   >r
 
   args.nodes 0 do
@@ -573,6 +571,7 @@ tp: sendingToAllPart
 
     I ppQueues @
 
+tp: sendingToPP
     >queue
 
     //1 sleep

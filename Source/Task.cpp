@@ -1892,12 +1892,19 @@ void Task::vStackContents(s& sStackContents)
                              pCN[((Object*)pValWsp->pPtr())->eClass()],
                              pValWsp->pPtr(),
                              ((Word*)pValWsp->pPtr())->sName().a());
-        else if (CN_QUEUE == ((Object*)pValWsp->pPtr())->eClass()) {
-          Word* pWordQueue = Word::pToWord(pValWsp->pPtr());
+        else if (CN_QUEUE == ((Object*)pValWsp->pPtr())->eClass() ) {
+          Word* pWord = Word::pToWord(pValWsp->pPtr());
           String::vSprintCat(a,"^%s=%p:%s",
                              pCN[((Object*)pValWsp->pPtr())->eClass()],
                              pValWsp->pPtr(),
-                             pWordQueue->sName().a());
+                             pWord->sName().a());
+        }
+        else if (CN_TASK == ((Object*)pValWsp->pPtr())->eClass() ) {
+          Task* pTask = _pTask(pValWsp->pPtr());
+          String::vSprintCat(a,"^%s=%p:%s",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr(),
+                             pTask->sName().a());
         }
         else
           String::vSprintCat(a,"^%s=%p",
