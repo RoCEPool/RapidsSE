@@ -119,7 +119,7 @@ Misc Requests:
 /*----------------------------------------------------------------------------*/
 : create_tenant ( "<tenantNm>" -- <R> )
 
-tp: create_tenant
+tp: createTenant
 
 ddlLock.grabWrite
 
@@ -128,7 +128,7 @@ ddlLock.grabWrite
 
   ~makeTenant ( ) assert.stack_0
 
-tp: create_tenant
+tp: createdTenant
 
   <OK>
 ;

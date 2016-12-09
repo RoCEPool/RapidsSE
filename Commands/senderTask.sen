@@ -113,7 +113,7 @@ tp: send
   senderQueue @   ( valset Q )
   //dup .
 
-tp: >socket1
+tp: appendedSndQue
 
   queue.append
 
@@ -129,8 +129,8 @@ tp: >socket1
   // put in the senderQueue of sender
   senderQueue @   ( valset Q )
   //dup .
-tp: >socket0
 
+tp: appendedSndQue
   queue.append
 ;
 
@@ -142,7 +142,8 @@ tp: >socket0
   // put in the senderQueue of sender
   senderQueue @   ( valset Q )
   //dup .
-  tp: >socket
+
+tp: >socket
 
   queue.append
 ;
@@ -164,7 +165,7 @@ tp: >socket0
 /*----------------------------------------------------------------------------*/
 : !send
 
-tp: !send
+tp: sendingValset
 
     task.this task.socket@  ( valset )
     swap                    ( socket valset )

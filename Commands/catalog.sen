@@ -66,6 +66,8 @@
 /*----------------------------------------------------------------------------*/
 : makeCatalogs ( "<tenantNm>" -- )
 
+  dup "MAKING CATALOGS FOR TENANT " swap concat " on NODE " concat args.node >str concat .
+
   find execute ( dic )
   "catalogs"   ( dic "catalogs" )
   swap         ( "catalogs" dic )

@@ -81,7 +81,7 @@
 /*----------------------------------------------------------------------------*/
 : makeTenant$ ( "<tenantNm>" -- true )
 
-tp: maketenant$
+tp: makingTenant
 
   dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
 
@@ -101,13 +101,13 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 : makeTenant ( "<tenantNm>" ... #folders -- true )
 
+tp: settingDicStack
   dicStack!
 
   //task.this task.name@ "p0.task" streql not if
   //  "_" concat task.this task.name@ concat
   //then
 
-tp: makeTenant
   //dup "making tenant " swap concat .
 
   makeTenant$
@@ -118,14 +118,14 @@ tp: makeTenant
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
-tp: ~makeTenant
+tp: mkTenOnAll
 
   // set indirect call to be makeTenant
   "makeTenant" 2 ( "<tenantNm>" "makeTenant" 2 )
 
   >>participants> ( bool )
 
-tp: ~makeTenant
+tp: mkTenOnAllDone
 
   drop ( )
 ;

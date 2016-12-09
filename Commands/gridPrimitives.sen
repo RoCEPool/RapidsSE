@@ -55,7 +55,7 @@ args.nodes ptrArray: pQueues
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )
 
-tp: queue>
+tp: waitNextValset
 
   begin
 
@@ -70,7 +70,7 @@ tp: queue>
     ( value | false )
   until
 
-tp: queue>
+tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -81,11 +81,14 @@ tp: queue>
   // expand valset into stack values
   valset> ( ... wordName caller #values )
 
+tp: expanded
+
   // discard the number of values
   drop ( ... wordName caller )
 
   // put caller into reg0
   >reg0 ( ... wordName )
+tp: reg0HasCaller
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -110,7 +113,7 @@ tp: queue>
 /*----------------------------------------------------------------------------*/
 : !indirect ( ... wordName -- ... )
 
-tp: !indirect
+tp: executing...
   // find the word in dic stack
   find ( word )
                                                           //! WHAT IF NOT FOUND?
@@ -123,13 +126,15 @@ tp: !indirect
 /*----------------------------------------------------------------------------*/
 : >result ( ... -- valset )
 
-tp: >result
+tp: resultIs
 
   // put number of values onto stack
   depth ( ... #values )
 
   // convert to valset
   >valset ( valset )
+
+tp: resultAsValset
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,7 +146,6 @@ tp: >result
   // otherwise transfering to that stack will corrupt the
   // tasks execution
 
-tp: >caller
   begin
 
     // get the callers state
@@ -154,6 +158,7 @@ tp: >caller
 
   // transfer to callers stack
   reg0 ( valset caller )
+tp: ontoCallerStack
   >stack ( )
 
   // signal caller
@@ -165,6 +170,7 @@ tp: >caller
 /* append indirect call onto given queue                                      */
 /*----------------------------------------------------------------------------*/
 : >queue ( ... wordName #values queue -- )
+
 
   // save target queue on rstack
   >r ( ... wordName #values )
@@ -178,17 +184,22 @@ tp: >caller
   // inc #values to now include caller
   inc ( ... wordName caller #values )
 
+tp: addedThisCaller
+
   // convert values to valset
   >valset ( valset )
+
+tp: asValset
 
   // restore target queue onto stack
   r> ( valset queue )
 
-tp: >queue
+tp: ontoWhichQueue
 
   // pop valset and append to target queue
   queue.append ( )
 
+tp: queued
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -196,10 +207,11 @@ tp: >queue
 /*----------------------------------------------------------------------------*/
 : >queue> ( ... wordName #values queue -- ..result.. )
 
+
   // set this task to wait for 1 ack
   1 task.this task.acks! ( ... wordName #values queue )
 
-tp: >queue>
+tp: require1Ack
 
   // append indirect call onto queue
   >queue ( )
@@ -207,13 +219,15 @@ tp: >queue>
   // this task suspends till notified
   task.suspend ( valset )
 
+tp: haveResultValset
+
   // convert valset to values
   valset> ( ... #values )
 
   // discard number of values leaving the indirect result
   drop ( ..result.. )
 
-tp: >queue>
+tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -305,6 +319,7 @@ tp: >queue>
 /*----------------------------------------------------------------------------*/
 : passOn.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
 
+tp: passingOn
   // push a register frame
   reg.push
 
@@ -350,7 +365,7 @@ tp: >queue>
 /*----------------------------------------------------------------------------*/
 : cp.loop ( actorNo forwardQueue -- )
 
-tp: cp.loop
+tp: coordinator
 
     // push a register frame
     reg.push
@@ -400,7 +415,7 @@ tp: cp.loop
 /*----------------------------------------------------------------------------*/
 : pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
 
-tp: pp.loop
+tp: participantProxy
 
   // push a register frame
   reg.push
@@ -542,9 +557,11 @@ createActors
 
   args.nodes task.this task.acks!
 
-tp: >participants>
+tp: acksExpected
 
   >valset
+
+tp: sendingToAllPart
 
   >r
 
@@ -584,7 +601,7 @@ tp: >participants>
   r>
 //traceoff
 
-tp: >participants>
+tp: allResponded
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -592,7 +609,7 @@ tp: >participants>
 /*----------------------------------------------------------------------------*/
 : >coordinator> ( ... wordName #values -- ..result.. )
 
-tp: >coordinator>
+tp: viaCoordinator
 
   // the queue is c.queue
   c.queue ( ... wordName #values c.queue )
@@ -606,7 +623,7 @@ tp: >coordinator>
 /*----------------------------------------------------------------------------*/
 : >>participants> ( ... "<wordNm>" #values -- bool )
 
-tp: >>participants>
+tp: fwdToEachPart
 
   swap ( ... #values "<wordNm>" )
   >r   ( ... #values )
@@ -635,7 +652,7 @@ tp: >>participants>
 
   >coordinator> ( bool )
 
-tp: >>participants>
+tp: done
 ;
 
 /*============================================================================*/

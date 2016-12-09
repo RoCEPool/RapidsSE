@@ -61,7 +61,7 @@
   task.this task.socket@           // get socket from task
   socket.recv                      // recv on socket
 
-tp: recv>
+tp: receivedValSet
 
   //valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
 
@@ -83,7 +83,7 @@ tp: recv>
     1 ppQueues @
   then
 
-tp: recv>
+tp: handingOn
   queue.append
 
 //"put value in Queue" .
