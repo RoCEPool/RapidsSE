@@ -506,6 +506,37 @@ tp: participantProxy
 ;
 
 /*----------------------------------------------------------------------------*/
+/* execute one indirect call processing loop                                  */
+/*----------------------------------------------------------------------------*/
+: exeOne.loop
+
+  // push a register frame
+  reg.push
+
+  begin
+
+  depth 0 != if "stack of task has grown" . debug.trap then
+
+  // pop valset off queue and push onto this stack
+  queue> ( valset )
+
+  exeOne
+
+  // convert indirect result into valset
+  >result ( valset )
+
+  // put indirect result onto stack of caller and signal
+  >caller ( )
+
+  //traceoff
+
+  0 until
+
+  // pop a register frame
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
 /* create the actors for the dl test                                          */
 /*----------------------------------------------------------------------------*/
 : createActors
