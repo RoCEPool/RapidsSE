@@ -552,7 +552,7 @@ createActors
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
-: >participants>
+: >participantsPARALLEL> // parallel form
 
 
   args.nodes task.this task.acks!
@@ -602,6 +602,44 @@ tp: sendingToPP
 
 tp: allResponded
 ;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: >participants> // serialForm
+
+  >valset
+
+  >r
+
+  tp: movedToRstack
+
+  args.nodes 0 do
+
+    1 task.this task.acks!
+
+    tp: acksExpected
+
+    2 rpick
+
+    valset>
+
+    I ppQueues @
+
+    tp: sendingToPP
+
+    >queue
+
+    task.suspend
+
+    valset> drop assert
+
+  loop
+
+  rdrop
+
+  true
+
+  tp: allResponded
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* queue an indirect call to the coordinator and wait for result              */
