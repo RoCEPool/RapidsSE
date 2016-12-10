@@ -761,6 +761,10 @@ tp: viaCoordinator
 /*----------------------------------------------------------------------------*/
 : >>participants> ( ... "<wordNm>" #values -- bool )
 
+tp: unpacking
+
+  valset>
+
 tp: fwdToEachPart
 
   swap ( ... #values "<wordNm>" )

@@ -123,7 +123,7 @@ tp: settingDicStack
 tp: mkTenOnAll
 
   // set indirect call to be makeTenant
-  "makeTenant" 2 ( "<tenantNm>" "makeTenant" 2 )
+  $$ swap "makeTenant" $$>valset ( valset )
 
   >>participants> ( bool )
 
