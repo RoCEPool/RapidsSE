@@ -539,20 +539,18 @@ tp: participantProxy
 
   begin
 
-  depth 0 != if "stack of task has grown" . debug.trap then
+    depth 0 != if "stack of task has grown" . debug.trap then
 
-  // pop valset off queue and push onto this stack
-  queue> ( valset )
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
 
-  exeOne
+    exeOne
 
-  // convert indirect result into valset
-  >result ( valset )
+    // convert indirect result into valset
+    >result ( valset )
 
-  // put indirect result onto stack of caller and signal
-  >caller ( )
-
-  //traceoff
+    // put indirect result onto stack of caller and signal
+    >caller ( )
 
   0 until
 
@@ -706,7 +704,7 @@ tp: sendingToPP
 tp: allResponded
 ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: >participants> // serialForm
+: >participants> // serial Form
 
   >valset
 
@@ -801,6 +799,24 @@ tp: ...toBeExecuted
   >coordinator> ( bool )
 
 tp: done
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: >>participants>NEW ( $$ ... "<wordNm>" -- bool )
+
+  // the basic indirect
+  $$>valset ( valset )
+
+  // add dicStack! indirect
+  seitf.path@ ( valset path... #folders )
+  "dicStack!" ( valset path... #folders "dicStack!" )
+  $$>valset ( valset )
+
+  // add >participants> indirect
+  ">participants>" ( valset ">participants>" )
+  $$>valset ( valset )
+
+  >coordinator> ( bool )
 ;
 
 /*============================================================================*/
