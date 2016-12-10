@@ -102,7 +102,9 @@ tp: makingTenant
 : makeTenant ( "<tenantNm>" ... #folders -- true )
 
 tp: settingDicStack
-  dicStack!
+
+  //drop dicStack!
+  !indirect
 
   //task.this task.name@ "p0.task" streql not if
   //  "_" concat task.this task.name@ concat

@@ -278,6 +278,54 @@ tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
+/* expand valset and execute indirect call                                    */
+/*----------------------------------------------------------------------------*/
+: exeOne
+
+  valset>
+
+  drop
+
+  !indirect
+
+  assert
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute all nested valsets                                                 */
+/*----------------------------------------------------------------------------*/
+: exeAll
+
+  begin
+    depth
+    if
+      0 stack.class CN_VALSET ==
+      if
+        exeone false
+      else
+        true
+      then
+    else
+      true
+    then
+  until
+;
+
+: exeOneTest
+
+  $$ true "boo" "." $$>valset
+
+  exeOne
+;
+
+: exeAllTest
+
+  $$ true "hoo" "." $$>valset true "boo" "." $$>valset
+
+  exeAll
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute processing loop                   run by Coordinator & Participant */
 /*----------------------------------------------------------------------------*/
 : execute.loop
@@ -671,23 +719,27 @@ tp: fwdToEachPart
   seitf.path@ ( ... "<wordNm>" path... #folders )
 
   dup ( ... "<wordNm>" path... #folders #folders )
-  r> + inc ( ... "<wordNm>" path... #folders #values+#folders+1 )
+
+  "dicStack!" swap ( ... "<wordNm>" path... #folders "dicStack!" #folders )
+
+  r> + 2 + ( ... "<wordNm>" path... #folders "dicStack!" #values+#folders+2 )
   //r0 has "<wordNm>"
 
-  r> swap ( ... "<wordNm>" path... #folders "<wordNm>" #values+#folders+1 )
+  r> swap ( ... "<wordNm>" path... #folders "dicStack!" "<wordNm>" #values+#folders+2 )
 
 tp: splicedDicPath
 
-  dup ( ... "<wordNm>" path... #folders "<wordNm>" #values+#folders+1 #values+#folders+1 )
+  dup ( ... "<wordNm>" path... #folders "dicStack!"  "<wordNm>"
+        #values+#folders+2 #values+#folders+2 )
 
-  ">participants>" ( ... "<wordNm>" path... #folders "<wordNm>"
-                     #values+#folders+1 #values+#folders+1 ">participants>" )
+  ">participants>" ( ... "<wordNm>" path... #folders "dicStack!" "<wordNm>"
+                     #values+#folders+2 #values+#folders+2 ">participants>" )
 
-  swap ( ... "<wordNm>" path... #folders "<wordNm>"
-         #values+#folders+1 ">participants>" #values+#folders+1 )
+  swap ( ... "<wordNm>" path... #folders "<wordNm>" "dicStack!"
+         #values+#folders+2 ">participants>" #values+#folders+2 )
 
-  2 + ( ... "<wordNm>" path... #folders "<wordNm>"
-            #values+#folders+1 ">participants>" #totalValues )
+  2 + ( ... "<wordNm>" path... #folders "<wordNm>" "dicStack!"
+            #values+#folders+2 ">participants>" #totalValues )
 
 tp: ...toBeExecuted
 
