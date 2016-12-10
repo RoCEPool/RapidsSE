@@ -638,6 +638,8 @@ tp: fwdToEachPart
 
   r> swap ( ... "<wordNm>" path... #folders "<wordNm>" #values+#folders+1 )
 
+tp: splicedDicPath
+
   dup ( ... "<wordNm>" path... #folders "<wordNm>" #values+#folders+1 #values+#folders+1 )
 
   ">participants>" ( ... "<wordNm>" path... #folders "<wordNm>"
@@ -648,6 +650,8 @@ tp: fwdToEachPart
 
   2 + ( ... "<wordNm>" path... #folders "<wordNm>"
             #values+#folders+1 ">participants>" #totalValues )
+
+tp: ...toBeExecuted
 
   >coordinator> ( bool )
 
