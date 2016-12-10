@@ -280,15 +280,15 @@ tp: indirectResultIs
 /*----------------------------------------------------------------------------*/
 /* expand valset and execute indirect call                                    */
 /*----------------------------------------------------------------------------*/
-: exeOne
+: exeOne ( valset -- bool )
 
-  valset>
+  valset> ( ... wordName #values )
 
-  drop
+  drop ( ... wordName )
 
-  !indirect
+  !indirect ( bool )
 
-  assert
+  assert.stack_1+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -296,33 +296,64 @@ tp: indirectResultIs
 /*----------------------------------------------------------------------------*/
 : exeAll
 
+  // we exect at least one indirect
+  depth assert
+  0 stack.class CN_VALSET not == if assert then
+
+  // execute first indirect
+  exeone
+
+  // must have a restult
+  assert.stack_1+
+
+  // save result
+  >r
+
+  // execute all others
   begin
-    depth
+
+    // more to execute?
+
+    // no more if stack empty
+    depth not
     if
-      0 stack.class CN_VALSET ==
-      if
-        exeone false
-      else
-        true
-      then
-    else
-      true
+      // restore last result and exit
+      r>
+      exit
     then
-  until
+
+    // no more if not indirect
+    0 stack.class CN_VALSET not ==
+    if
+      // restore last result and exit
+      r>
+      exit
+    then
+
+    // drop last result
+    rdrop
+
+    // execute the indirect
+    exeone
+
+    // save result
+    >r
+
+  0 until
 ;
 
 : exeOneTest
 
   $$ true "boo" "." $$>valset
 
-  exeOne
+  exeOne .
 ;
 
 : exeAllTest
 
-  $$ true "hoo" "." $$>valset true "boo" "." $$>valset
+  $$ true "hoo" "." $$>valset "never" "boo" "." $$>valset
 
-  exeAll
+  exeAll .
 ;
 
 /*----------------------------------------------------------------------------*/
