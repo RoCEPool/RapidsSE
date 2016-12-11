@@ -219,6 +219,44 @@ tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add set dic path                                                           */
+/*----------------------------------------------------------------------------*/
+: addDicPath
+
+  // add dicStack! indirect
+  seitf.path@ ( valset path... #folders )
+  "dicStack!" ( valset path... #folders "dicStack!" )
+
+tp: addedDicPath
+
+  $$>valset ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
+/* add send to participants                                                   */
+/*----------------------------------------------------------------------------*/
+: addParticipants
+
+  ">participants>" ( valset ">participants>" )
+
+tp: addedParts
+
+  $$>valset ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
+/* add set caller                                                             */
+/*----------------------------------------------------------------------------*/
+: addCaller
+
+  task.this "setCaller"
+
+tp: addedCaller
+
+  $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
 /* actor formation                                                            */
 /*----------------------------------------------------------------------------*/
 : actorForm ( ... #args "<loop>" "<actorName>" -- queue )
@@ -806,22 +844,11 @@ tp: done
 
 tp: >>participants
 
-  // add dicStack! indirect
-  seitf.path@ ( valset path... #folders )
-  "dicStack!" ( valset path... #folders "dicStack!" )
+  addDicPath
 
-tp: addedDicPath
-  $$>valset ( valset )
+  addParticipants
 
-  // add >participants>
-  ">participants>" ( valset ">participants>" )
-tp: addedParts
-  $$>valset ( valset )
-
-  // add setCaller
-  task.this "setCaller"
-tp: addedCaller
-  $$>valset
+  addCaller
 
   >coordinator> ( bool )
 ;

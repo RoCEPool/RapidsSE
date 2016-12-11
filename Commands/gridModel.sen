@@ -9,8 +9,8 @@
 "nodeCursor.sen" >>:
 
 "senderTask.sen" >>:
-"gridPrimitives.sen" >>:
-//"gridPrimitives_NEW.sen" >>:
+//"gridPrimitives.sen" >>:
+"gridPrimitives_NEW.sen" >>:
 "receiverTask.sen" >>:
 
 /*============================================================================*/
