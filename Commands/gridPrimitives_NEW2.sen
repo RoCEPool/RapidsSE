@@ -269,15 +269,15 @@ tp: require1Ack
   // this task suspends till notified
   task.suspend ( valset )
 
-tp: haveResultValset
+tp: haveResultSet
 
   // convert valset to values
-  valset> ( ... #values )
+  //valset> ( ... #values )
 
   // discard number of values leaving the indirect result
-  drop ( ..result.. )
+  //drop ( ..result.. )
 
-tp: indirectResultIs
+//tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -479,7 +479,7 @@ tp: passingOn
     >queue> ( ... )   //! PP send & recv     >socket>
 
     // convert indirect result into valset
-    >result ( valset )
+    //>result ( valset )
 
     // put indirect result onto stack of caller and signal
     >caller ( ) //! CP send     >socket
@@ -525,7 +525,7 @@ tp: coordinator
     >queue> ( ... )
 
     // convert indirect result into valset
-    >result ( valset )
+    //>result ( valset )
 
     0 >node
 
@@ -575,7 +575,7 @@ tp: participantProxy
       >queue> ( ... )   //! PP send & recv     >socket>
 
       // convert indirect result into valset
-      >result ( valset )
+      //>result ( valset )
 
     else
 
@@ -831,7 +831,7 @@ tp: expandedResult
 /*----------------------------------------------------------------------------*/
 /* queue an indirect call to the coordinator and wait for result              */
 /*----------------------------------------------------------------------------*/
-: >coordinator> ( valset -- ..result.. )
+: >coordinator> ( callSet -- ..results.. )
 
 tp: viaCoordinator
 
@@ -840,6 +840,8 @@ tp: viaCoordinator
 
   // put onto c.queue and suspend till notified
   >queue> ( ... )
+
+  >result
 ;
 
 /*----------------------------------------------------------------------------*/
