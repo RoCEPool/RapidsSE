@@ -178,47 +178,6 @@ tp: ontoCallerStack
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append indirect call onto given queue                                      */
-/*----------------------------------------------------------------------------*/
-: >queue ( valset queue -- )
-
-tp: appendingToQueue
-
-  // move to target queue
-  queue.append ( )
-
-tp: queued
-;
-
-/*----------------------------------------------------------------------------*/
-/* append indirect call onto given queue, suspend for notification            */
-/*----------------------------------------------------------------------------*/
-: >queue> ( valset queue -- ..result.. )
-
-
-  // set this task to wait for 1 ack
-  1 task.this task.acks! ( ... wordName #values queue )
-
-tp: require1Ack
-
-  // append indirect call onto queue
-  >queue ( )
-
-  // this task suspends till notified
-  task.suspend ( valset )
-
-tp: haveResultValset
-
-  // convert valset to values
-  valset> ( ... #values )
-
-  // discard number of values leaving the indirect result
-  drop ( ..result.. )
-
-tp: indirectResultIs
-;
-
-/*----------------------------------------------------------------------------*/
 /* add set dic path                                                           */
 /*----------------------------------------------------------------------------*/
 : addDicPath
@@ -254,6 +213,52 @@ tp: addedParts
 tp: addedCaller
 
   $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* append indirect call onto given queue                                      */
+/*----------------------------------------------------------------------------*/
+: >queue ( valset queue -- )
+
+tp: appendingToQueue
+
+  // move to target queue
+  queue.append ( )
+
+tp: queued
+;
+
+/*----------------------------------------------------------------------------*/
+/* append indirect call onto given queue, suspend for notification            */
+/*----------------------------------------------------------------------------*/
+: >queue> ( valset queue -- ..result.. )
+
+  >r
+
+  addCaller
+
+  r>
+
+  // set this task to wait for 1 ack
+  1 task.this task.acks! ( ... wordName #values queue )
+
+tp: require1Ack
+
+  // append indirect call onto queue
+  >queue ( )
+
+  // this task suspends till notified
+  task.suspend ( valset )
+
+tp: haveResultValset
+
+  // convert valset to values
+  valset> ( ... #values )
+
+  // discard number of values leaving the indirect result
+  drop ( ..result.. )
+
+tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -437,6 +442,9 @@ tp: passingOn
 
     // pop valset off queue and push onto this stack
     queue> ( valset ) //! CP recv   socket>
+
+    // set caller
+    exeOne drop
 
     // convert valset to indirect call
     //>indirect ( ... wordName )
@@ -744,6 +752,7 @@ tp: allResponded
 
 tp: >participants>
 
+  addCaller
   >r
 
   tp: movedToRstack
@@ -847,8 +856,6 @@ tp: >>participants
   addDicPath
 
   addParticipants
-
-  addCaller
 
   >coordinator> ( bool )
 ;
