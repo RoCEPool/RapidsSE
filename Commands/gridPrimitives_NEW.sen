@@ -107,6 +107,8 @@ tp: reg0HasCaller
 /*----------------------------------------------------------------------------*/
 : >indirect2 ( valset -- ... wordName ; reg0 == caller )
 
+tp: >indirect2
+
   // expand valset into stack values
   valset> ( ... wordName caller #values )
 
@@ -186,7 +188,7 @@ tp: ontoCallerStack
   seitf.path@ ( valset path... #folders )
   "dicStack!" ( valset path... #folders "dicStack!" )
 
-tp: addedDicPath
+tp: layeringDicPath
 
   $$>valset ( valset )
 ;
@@ -198,7 +200,7 @@ tp: addedDicPath
 
   ">participants>" ( valset ">participants>" )
 
-tp: addedParts
+tp: layeringParts
 
   $$>valset ( valset )
 ;
@@ -210,9 +212,26 @@ tp: addedParts
 
   task.this "setCaller"
 
-tp: addedCaller
+tp: layeringCaller
 
   $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove caller                                                              */
+/*----------------------------------------------------------------------------*/
+: removeCaller
+
+  valset>
+tp: removingCaller
+
+  3 == assert
+
+  "setCaller" streql assert
+
+  drop
+
+tp: removedCaller
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -315,7 +334,7 @@ tp: indirectResultIs
 
   valset> ( ... wordName #values )
 
-tp: exeOne
+tp: callSet
 
   drop ( ... wordName )
 
@@ -494,6 +513,7 @@ tp: coordinator
       // pop valset off queue and push onto this stack
       queue> ( valset ) //! CP recv   socket>
 
+/*
       // convert valset to indirect call
       >indirect2 ( ... wordName )
 
@@ -502,6 +522,12 @@ tp: coordinator
       depth ( ... wordName #values )
       r1 ( ... wordName #values queue )
       //stk
+*/
+
+      removeCaller
+
+
+      r1
       >queue> ( ... )
 
       // convert indirect result into valset
@@ -755,25 +781,29 @@ tp: >participants>
   addCaller
   >r
 
-  tp: movedToRstack
+tp: movedToRstack
 
   args.nodes 0 do
 
     1 task.this task.acks!
 
-    tp: acksExpected
+tp: expectingAcks
 
     2 rpick
 
     I ppQueues @
 
-    tp: sendingToPP
+tp: forwardingToPP
 
     >queue
 
     task.suspend
 
-    valset> drop assert
+tp: haveResultSet
+    valset>
+
+tp: expandedResult
+    drop assert
 
   loop
 
