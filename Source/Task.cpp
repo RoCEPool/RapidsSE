@@ -194,6 +194,8 @@ void Task::vInit(const char* aLambda)
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
   
+  m_sComment    = "";
+  
   m_xDicStack.vPush(gpMainDic);
   
   m_pQueue  = nullptr;
@@ -1032,6 +1034,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.dec",        &vTaskAcksDec,      false);
   vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
   vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
+  vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
+  vAddPrimitive("task.comment!",   &vTaskCommentStore, false);
   vAddPrimitive("task.dic",        &vTaskDic,          false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
   vAddPrimitive("task.init",       &vTaskInit,         false);
@@ -2000,14 +2004,19 @@ void Task::vTracePoint(const char* aMark)
   
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("[N%lld:%8s\\%lld] %-16s %-16s : r %2lld ; p%2lld=",
+  vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : r %2lld ; p%2lld=",
+         
          gxArguments.m_iNode,
          m_sName.a(),
          *m_zAcks,
+         m_sComment.a(),
+         
          aRoutine,
          aMark,
          iReturnValues,
-         iParamValues);
+         iParamValues
+         
+         );
   
   s8K sStackContents;
   vStackContents(sStackContents);
@@ -3995,11 +4004,15 @@ ENTRY("vPrint");
     THROW_INVALID_PARAM(".");
   
   xValWsp.vToString(sWorkspace.a());
-  vTrace("[N%lld:%8s\\%lld] %s\n",
+  vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
+         
          gxArguments.m_iNode,
          nnpTask->m_sName.a(),
          *nnpTask->m_zAcks,
-         sWorkspace.a());
+         nnpTask->m_sComment.a(),
+         
+         sWorkspace.a()
+         );
   
   EXIT();
 }
@@ -9842,9 +9855,47 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
   
   i8 iInt;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iInt) )
-    THROW_INVALID_PARAM("and");
+    THROW_INVALID_PARAM("task.acks!");
   
   pGivenTask->m_zAcks = iInt;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.comment@ -- push comment of given task                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCommentFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskCommentFetch");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("task.comment@");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  nnpTask->m_xParamStack.vPush(pGivenTask->m_sComment);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.comment! -- store comment into given task                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCommentStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskCommentStore");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("task.comment!");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  s32 sComment;
+  if ( ! nnpTask->m_xParamStack.bPop(sComment) )
+    THROW_INVALID_PARAM("task.comment!");
+  
+  pGivenTask->m_sComment = sComment;
   
   EXIT();
 }
@@ -10184,10 +10235,12 @@ void Task::vTaskSignal(NNP_Task nnpTask)
 //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
 //           *nnpTask,nnpTask->m_sName.a(),
 //           pThatTask,pThatTask->m_sName.a());
-      vTrace("[N%lld:%8s\\%lld] resuming %s\\%lld\n",
+      vTrace("[N%lld:%8s\\%lld %-11s] resuming %s\\%lld\n",
              gxArguments.m_iNode,
              nnpTask->m_sName.a(),
              *nnpTask->m_zAcks,
+             nnpTask->m_sComment.a(),
+             
              pThatTask->m_sName.a(),
              *pThatTask->m_zAcks);
     
@@ -10202,10 +10255,12 @@ void Task::vTaskSignal(NNP_Task nnpTask)
 //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
 //           *nnpTask,nnpTask->m_sName.a(),
 //           pThatTask,iMore,pThatTask->m_sName.a());
-    vTrace("[N%lld:%8s\\%lld] signalled %s\\%lld\n",
+    vTrace("[N%lld:%8s\\%lld %-11s] signalled %s\\%lld\n",
            gxArguments.m_iNode,
            nnpTask->m_sName.a(),
            *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a(),
+           
            pThatTask->m_sName.a(),
            iMore);
     
@@ -10310,10 +10365,12 @@ void Task::vTaskSuspend(NNP_Task nnpTask)
 //  vTrace("Task::vTaskSuspend: task %p %s suspends\n",
 //         *nnpTask,nnpTask->m_sName.a());
   
-  vTrace("[N%lld:%8s\\%lld] suspends\n",
+  vTrace("[N%lld:%8s\\%lld %-11s] suspends\n",
          gxArguments.m_iNode,
          nnpTask->m_sName.a(),
-         *nnpTask->m_zAcks);
+         *nnpTask->m_zAcks,
+         nnpTask->m_sComment.a()
+         );
   
   nnpTask->vState(TS_WAITING);
   
@@ -12352,10 +12409,12 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   pSocket = reinterpret_cast<Socket*>(pObject);
 
-  vTrace("[N%lld:%8s\\%lld] receiving on %lld\n",
+  vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
          gxArguments.m_iNode,
          nnpTask->m_sName.a(),
          *nnpTask->m_zAcks,
+         nnpTask->m_sComment.a(),
+         
          pSocket->m_iSocketId);
   
   // recv number of bytes that follow

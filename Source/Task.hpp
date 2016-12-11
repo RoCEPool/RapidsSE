@@ -142,6 +142,8 @@ namespace Tasks
     Atomic  m_zAcks;       // number of acks still waaiting for
     Threads::Thread* m_pThread; // current thread
     
+    s32     m_sComment;    // comment
+    
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
     
@@ -734,6 +736,8 @@ namespace Tasks
     static void vTaskAcksDec(NNP_Task nnpTask);
     static void vTaskAcksFetch(NNP_Task nnpTask);
     static void vTaskAcksStore(NNP_Task nnpTask);
+    static void vTaskCommentFetch(NNP_Task nnpTask);
+    static void vTaskCommentStore(NNP_Task nnpTask);
     static void vTaskDic(NNP_Task nnpTask);
     static void vTaskDump(NNP_Task nnpTask);
     static void vTaskInit(NNP_Task nnpTask);

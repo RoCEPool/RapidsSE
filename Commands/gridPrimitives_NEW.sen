@@ -408,6 +408,8 @@ tp: exeAll
 /*----------------------------------------------------------------------------*/
 : execute.loop
 
+  "execute.loop" task.this task.comment!
+
   // push a register frame
   reg.push
 
@@ -444,6 +446,8 @@ tp: exeAll
 /* pass on processing loop     run by Participant Proxy and Coordinator Proxy */
 /*----------------------------------------------------------------------------*/
 : passOn.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
+
+  "passOn.loop" task.this task.comment!
 
 tp: passingOn
   // push a register frame
@@ -493,6 +497,8 @@ tp: passingOn
 /* pass on processing loop     run by Coordinator Proxy                       */
 /*----------------------------------------------------------------------------*/
 : cp.loop ( actorNo forwardQueue -- )
+
+  "cp.loop" task.this task.comment!
 
 tp: coordinator
 
@@ -551,6 +557,8 @@ tp: coordinator
 /*----------------------------------------------------------------------------*/
 : pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
 
+  "pp.loop" task.this task.comment!
+
 tp: participantProxy
 
   // push a register frame
@@ -598,6 +606,9 @@ tp: participantProxy
 /*----------------------------------------------------------------------------*/
 : exeOne.loop
 
+  "exeOne.loop" task.this task.comment!
+
+
   // push a register frame
   reg.push
 
@@ -626,6 +637,9 @@ tp: participantProxy
 /* execute all indirect call processing loop                                  */
 /*----------------------------------------------------------------------------*/
 : exeAll.loop
+
+  "exeAll.loop" task.this task.comment!
+
 
   // push a register frame
   reg.push
