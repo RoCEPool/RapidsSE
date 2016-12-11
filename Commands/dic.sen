@@ -107,6 +107,7 @@ diclock.dropwrite
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
+tp: dicStack!
   dic.count 0 do
     dic.drop
   loop
