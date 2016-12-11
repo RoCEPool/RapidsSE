@@ -105,7 +105,7 @@ tp: send
 /*----------------------------------------------------------------------------*/
 /* send on a socket                                                           */
 /*----------------------------------------------------------------------------*/
-: >socket1 ( valSet )
+: >node1 ( valSet )
 
   1
 
@@ -122,7 +122,7 @@ tp: appendedSndQue
 /*----------------------------------------------------------------------------*/
 /* send on a socket                                                           */
 /*----------------------------------------------------------------------------*/
-: >socket0 ( valSet )
+: >node0 ( valSet )
 
   0
 
@@ -131,6 +131,18 @@ tp: appendedSndQue
   //dup .
 
 tp: appendedSndQue
+  queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* send on a socket                                                           */
+/*----------------------------------------------------------------------------*/
+: >node ( valSet i )
+
+  // put in the senderQueue of sender
+  senderQueue @   ( valset Q )
+
+tp: sendViaQueue
   queue.append
 ;
 
@@ -163,7 +175,7 @@ tp: >socket
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
-: !send
+: >send
 
 tp: sendingValset
 
@@ -210,8 +222,12 @@ tp: sendingValset
 
   begin
     depth 0 != if "sender task has grown" . debug.trap then
+
     req>          // pop valset off queue and push onto this stack
-    !send         // send the valset across the connection
+tp: poppedValset
+
+    >send         // send the valset across the connection
+
   0 until
 ;
 

@@ -494,7 +494,7 @@ tp: passingOn
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass on processing loop     run by Coordinator Proxy                       */
+/* coordinator proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
 : cp.loop ( actorNo forwardQueue -- )
 
@@ -502,58 +502,44 @@ tp: passingOn
 
 tp: coordinator
 
-    // push a register frame
-    reg.push
+  // push a register frame
+  reg.push
 
-    >r ( actorNo )
-    >r ( )
-    // r0 has actorNo (nodeNo)
-    // r1 has forwardQueue
-    //! r2 has the originating node
+  >r ( actorNo )
+  >r ( )
+  // r0 has actorNo (nodeNo)
+  // r1 has forwardQueue
+  //! r2 has the originating node
 
-    "CP " r1 >str concat .
-    begin
+  "CP " r1 >str concat .
+  begin
 
-      depth 0 != if "stack of task has grown" . debug.trap then
+    depth 0 != if "stack of task has grown" . debug.trap then
 
-      // pop valset off queue and push onto this stack
-      queue> ( valset ) //! CP recv   socket>
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
 
-/*
-      // convert valset to indirect call
-      >indirect2 ( ... wordName )
+    removeCaller
 
-      // pass onto forward queue for processing
-      // and suspend till signalled with indirect result
-      depth ( ... wordName #values )
-      r1 ( ... wordName #values queue )
-      //stk
-*/
+    r1
+    >queue> ( ... )
 
-      removeCaller
+    // convert indirect result into valset
+    >result ( valset )
 
+    0 >node
 
-      r1
-      >queue> ( ... )
+  0 until
 
-      // convert indirect result into valset
-      >result ( valset )
+  rdrop
+  rdrop
 
-      // put indirect result onto stack of caller and signal
-      //>caller ( ) //! CP send     >socket
-      >socket0
-
-    0 until
-
-    rdrop
-    rdrop
-
-    // pop a register frame
-    reg.pop
+  // pop a register frame
+  reg.pop
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass on processing loop     run by Participant Proxy (for other node)      */
+/* participant proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
 : pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
 
@@ -577,7 +563,7 @@ tp: participantProxy
     queue> ( valset )
 
     //"sending ..." .
-    >socket1
+    1 >node
     //r0 >socket
 
     //"sent" .
@@ -598,7 +584,6 @@ tp: participantProxy
 
   // pop a register frame
   reg.pop
-
 ;
 
 /*----------------------------------------------------------------------------*/
