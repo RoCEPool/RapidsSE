@@ -142,7 +142,7 @@ tp: appendedSndQue
   // put in the senderQueue of sender
   senderQueue @   ( valset Q )
 
-tp: sendViaQueue
+tp: sendingViaQueue
   queue.append
 ;
 
