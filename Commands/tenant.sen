@@ -85,7 +85,7 @@ tp: makingTenant
 
   dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
 
-  dup ( "<tenantNm>" )
+  dup ( "<tenantNm>" "<tenantNm>" )
 
   :tenant ( "<tenantNm>" ^tenant )
 
