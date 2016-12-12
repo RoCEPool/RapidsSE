@@ -19,6 +19,7 @@
     " --region /SE_" concat  swap >str concat
     " --node " concat swap >str concat
     " --nodes " concat args.nodes >str concat
+    " --port " concat args.port >str concat
 
     " &" concat
 ;

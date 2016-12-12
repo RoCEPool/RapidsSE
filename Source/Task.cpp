@@ -326,6 +326,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.nodes",       gxArguments.m_nNodes);
   vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose",     gxArguments.m_bVerbose);
+  vAddConstant("args.port",        gxArguments.m_iPort);
   
   vAddConstant("true",    1);
   vAddConstant("false",   (i8)0);

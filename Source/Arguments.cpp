@@ -20,7 +20,7 @@ Arguments::Arguments(void)
   m_nPartitions = 1;
   m_iNode       = 0;
   m_nNodes      = 1;
-  m_iPort       = 8421;
+  m_iPort       = 5000;
   m_bTracepoint = false;
   
 #ifdef __APPLE__

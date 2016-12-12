@@ -22,7 +22,7 @@
 
 : generalThreadStart
 
-  args.config if "N_GENERAL_THREADS " .put N_GENERAL_THREADS .put .\n then
+  args.verbose if "N_GENERAL_THREADS " .put N_GENERAL_THREADS .put .\n then
 
   N_GENERAL_THREADS 0 do
 

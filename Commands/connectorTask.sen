@@ -52,7 +52,7 @@ thread:  connectorThread
 
         socket.open
         "127.0.0.1"
-        5000 I + socket.connect
+        args.port I + socket.connect
 
         args.verbose if
           "Node" args.node >str concat
