@@ -193,6 +193,7 @@ void Task::vInit(const char* aLambda)
   m_pParentTask = nullptr;
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
+  m_pTaskSet    = nullptr;
   
   m_sComment    = "";
   
@@ -1055,6 +1056,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
   vAddPrimitive("task.suspend",    &vTaskSuspend,      false);
+  vAddPrimitive("task.taskset@",   &vTaskTaskSetFetch, false);
+  vAddPrimitive("task.taskset!",   &vTaskTaskSetStore, false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
   vAddPrimitive("task.thread",     &vTaskThread,       false);
   vAddPrimitive("task.wait",       &vTaskWait,         false);
@@ -10247,9 +10250,10 @@ void Task::vTaskSignal(NNP_Task nnpTask)
     while (TS_WAITING != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
     
-    Thread* pThread = Thread::pThread();
+    //Thread* pThread = Thread::pThread();
+    //pThread->m_pTaskSet->vAppend(pThatTask);
+    pThatTask->m_pTaskSet->vAppend(pThatTask);
     
-    pThread->m_pTaskSet->vAppend(pThatTask);
   }
   else {
 //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
@@ -10373,6 +10377,51 @@ void Task::vTaskSuspend(NNP_Task nnpTask)
          );
   
   nnpTask->vState(TS_WAITING);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.taskset@ -- fetch taskset of task on param stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskTaskSetFetch");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.taskset@");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  TaskSet* pTaskSet = pThatTask->m_pTaskSet;
+  
+  Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);
+  
+  nnpTask->m_xParamStack.vPush(pTaskSetEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.taskset! -- store taskset on param stack into task                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskTaskSetStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskTaskSetStore");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.taskset!");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* ptrTaskSet;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(ptrTaskSet) )
+    THROW_INVALID_PARAM("task.taskset!");
+  
+  TaskSet* pTaskSet = static_cast<TaskSet*>(ptrTaskSet);
+  
+  pThatTask->m_pTaskSet = pTaskSet;
   
   EXIT();
 }

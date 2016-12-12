@@ -542,7 +542,7 @@ tp: coordinator
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-    removeCaller
+    removeCaller // exeOne
 
     r1
     >queue> ( ... )
@@ -587,7 +587,7 @@ tp: participantProxy
 
     r0 args.node ==
     if
-      //"ERROR: nodes match in pp.loop" . debug.trap
+      // this is pp0 on node 0
 
       // set caller
       exeOne drop
@@ -598,8 +598,9 @@ tp: participantProxy
       >queue> ( ... )   //! PP send & recv     >socket>
 
     else
+      // this is pp1 on node 0
 
-      r0 >node
+      r0 >node // sending to node 1
 
       queue>
 

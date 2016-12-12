@@ -93,6 +93,8 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : req.loop
 
+    requestTaskSet task.this task.taskset!
+
     "renaming to Request Task" .putVerbose
 
     "req.task" task.this task.name!

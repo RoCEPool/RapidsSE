@@ -70,21 +70,29 @@ tp: receivedValSet
   //find execute                    // execute the word
 
   args.node 1 == if
+
     // put valset onto cp 1 queue
     //"putting value in cpQueue" .
     //stk
     // passing request "mkten" received from node0 to CP
     args.node cpQueues @
+tp: handingOn
+    queue.append
+
   else
+
     // put valset onto pp 1 queue
     //"putting value in ppQueue" .
     //stk
     // passing response of "mkten" received from node1 to PP
-    1 ppQueues @
+    //1 ppQueues @
+    reg.push
+    1 ppTasks @
+    >reg0
+    >caller
+    reg.pop
   then
 
-tp: handingOn
-  queue.append
 
 //"put value in Queue" .
 

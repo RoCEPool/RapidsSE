@@ -47,6 +47,8 @@ namespace Tasks
   typedef NP<Task,CN_TASK> NP_Task;
   typedef NNP<Task,CN_TASK> NNP_Task;
 
+  class TaskSet;
+  
   class Task : public Object,
                public ListNode_t<Task>
   {
@@ -141,7 +143,7 @@ namespace Tasks
     Task*   m_pParentTask; // parent of this task
     Atomic  m_zAcks;       // number of acks still waaiting for
     Threads::Thread* m_pThread; // current thread
-    
+    TaskSet* m_pTaskSet;
     s32     m_sComment;    // comment
     
     NP_Task m_npNextInSet; // next task in set
@@ -758,6 +760,8 @@ namespace Tasks
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
     static void vTaskSuspend(NNP_Task nnpTask);
+    static void vTaskTaskSetFetch(NNP_Task nnpTask);
+    static void vTaskTaskSetStore(NNP_Task nnpTask);
     static void vTaskThread(NNP_Task nnpTask);
     static void vTaskWait(NNP_Task nnpTask);
     static void vTaskYield(NNP_Task nnpTask);
