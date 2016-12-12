@@ -12328,18 +12328,28 @@ ENTRY("vSocketConnect");
   
   // try connecting in a loop if timeout occurs
   // possibly other node not back to accepting connections
+  
+  i8 iTimedOutCount = 0;
+  i8 iConnRefusedCount = 0;
+  
   while (!bResult) {
     bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
     if ( ! bResult ) {
       i8 iError = xSysCall.iError();
       
-      if (iError == ETIMEDOUT)
-        vTrace("Connect timedout... retrying...\n");
-      else
-      if (iError == ECONNREFUSED)
-        vTrace("Connect refused... retrying...\n");
-      else
-        THROW("Unable to connect: Errno %d!", iError);
+      if (iError == ETIMEDOUT) {
+        if (0 == iTimedOutCount++)
+          vTrace("Connect timedout... retrying...\n");
+        continue;
+      }
+      
+      if (iError == ECONNREFUSED) {
+        if (0 == iConnRefusedCount++)
+          vTrace("Connect refused... retrying...\n");
+        continue;
+      }
+      
+      THROW("Unable to connect: Errno %d!", iError);
     }
   }
   
