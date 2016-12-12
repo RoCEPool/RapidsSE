@@ -324,6 +324,8 @@ void Task::vAddConstants(void)
   vAddConstant("args.config",      gxArguments.m_bConfig);
   vAddConstant("args.node",        gxArguments.m_iNode);
   vAddConstant("args.nodes",       gxArguments.m_nNodes);
+  vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
+  vAddConstant("args.verbose",     gxArguments.m_bVerbose);
   
   vAddConstant("true",    1);
   vAddConstant("false",   (i8)0);
@@ -3244,7 +3246,7 @@ ENTRY("vImmediate");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
   pCurrentWord->vImmediate(true);
   
@@ -5093,7 +5095,8 @@ void Task::vTracePoint(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
     THROW_INVALID_PARAM("tracePoint");
   
-  nnpTask->vTracePoint(sPointName.a());
+  if (gxArguments.m_bTracepoint)
+    nnpTask->vTracePoint(sPointName.a());
   
   EXIT();
 }
@@ -10238,6 +10241,7 @@ void Task::vTaskSignal(NNP_Task nnpTask)
 //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
 //           *nnpTask,nnpTask->m_sName.a(),
 //           pThatTask,pThatTask->m_sName.a());
+    if (gxArguments.m_bTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] resuming %s\\%lld\n",
              gxArguments.m_iNode,
              nnpTask->m_sName.a(),
@@ -10369,12 +10373,13 @@ void Task::vTaskSuspend(NNP_Task nnpTask)
 //  vTrace("Task::vTaskSuspend: task %p %s suspends\n",
 //         *nnpTask,nnpTask->m_sName.a());
   
-  vTrace("[N%lld:%8s\\%lld %-11s] suspends\n",
-         gxArguments.m_iNode,
-         nnpTask->m_sName.a(),
-         *nnpTask->m_zAcks,
-         nnpTask->m_sComment.a()
-         );
+  if (gxArguments.m_bTracepoint)
+    vTrace("[N%lld:%8s\\%lld %-11s] suspends\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a()
+           );
   
   nnpTask->vState(TS_WAITING);
   
@@ -12471,13 +12476,14 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   pSocket = reinterpret_cast<Socket*>(pObject);
 
-  vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
-         gxArguments.m_iNode,
-         nnpTask->m_sName.a(),
-         *nnpTask->m_zAcks,
-         nnpTask->m_sComment.a(),
-         
-         pSocket->m_iSocketId);
+  if (gxArguments.m_bTracepoint)
+    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a(),
+           
+           pSocket->m_iSocketId);
   
   // recv number of bytes that follow
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);

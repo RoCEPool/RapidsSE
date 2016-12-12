@@ -55,7 +55,9 @@
 /*----------------------------------------------------------------------------*/
 : addColumn$ ( "<columnType>" "<columnNm>" -- <result> )
 
-  dup "ADDING COLUMN " swap concat " on NODE " concat args.node >str concat .
+  args.tracepoint if
+    dup "ADDING COLUMN " swap concat " on NODE " concat args.node >str concat .
+  then
 
 tp: addingColumn
   pushTable   assert // not if false exit then

@@ -43,9 +43,11 @@ int: connections
 
     answerTaskPrint if "Answer running..." . then
 
-    "waiting for connections on port "  5000 args.node + >str concat .
+    args.verbose if
+      "waiting for connections on port "  5000 args.node + >str concat .
+      5000 args.node + >str "Listening on port " swap concat .
+    then
 
-    5000 args.node + >str "Listening on port " swap concat .
     5000 args.node + socket.listen
     >r
 
@@ -54,6 +56,7 @@ int: connections
 
 
       r0 socket.accept
+
       "accepted connection on port "  5000 args.node + >str concat .
 
 ddlLock.grabWrite

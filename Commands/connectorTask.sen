@@ -53,9 +53,13 @@ thread:  connectorThread
         socket.open
         "127.0.0.1"
         5000 I + socket.connect
-        "Node" args.node >str concat " connected to node" concat
-        I >str concat
-        .
+
+        args.verbose if
+          "Node" args.node >str concat
+          " connected to node" concat
+          I >str concat
+          .
+        then
 
         // start sender
         //"starting sender" .

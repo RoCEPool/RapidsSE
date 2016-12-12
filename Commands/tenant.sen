@@ -83,7 +83,9 @@
 
 tp: makingTenant
 
-  dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
+  args.tracepoint if
+    dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
+  then
 
   dup ( "<tenantNm>" "<tenantNm>" )
 

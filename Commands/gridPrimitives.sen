@@ -364,10 +364,10 @@ tp: haveResultSet
   >r ( ... #args "<loop>" ) // r0 has <actorName>
 
   // create the objects
-  r0 ".task"    concat dup . :task    execute >reg0  // reg0 has task
-  r0 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
-  r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
-  r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
+  r0 ".task"    concat :task    execute >reg0  // reg0 has task
+  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
+  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
 
   ( ... #args "<loop>" )
 
@@ -590,7 +590,7 @@ tp: coordinator
   // r1 has forwardQueue
   //! r2 has the originating node
 
-  "CP " r1 >str concat .
+  //"CP " r1 >str concat .
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
@@ -788,7 +788,9 @@ tp: participantProxy
     // coordinator
     0 "exeAll.loop" "c" actorForm drop
 
-    cpQueuesDump
+    args.verbose if
+      cpQueuesDump
+    then
 
     ;
 

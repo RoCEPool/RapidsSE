@@ -21,6 +21,7 @@ Arguments::Arguments(void)
   m_iNode       = 0;
   m_nNodes      = 1;
   m_iPort       = 8421;
+  m_bTracepoint = false;
   
 #ifdef __APPLE__
   m_sCommands   = "../../../../Commands";
@@ -315,6 +316,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     if (String::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
       m_bTouch = false;
+      continue;
+    }
+    
+    if (String::bEqualTo("--tracepoint",argv[iArg],C_NO_CASE)) {
+      m_bTracepoint = true;
       continue;
     }
     

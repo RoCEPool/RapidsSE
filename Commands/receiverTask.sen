@@ -15,10 +15,10 @@
 
     // r0 has <actorName>
 
-    r0 ".task"    concat dup . :task    execute >reg0  // reg0 has task
-    r0 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
-    r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
-    r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
+    r0 ".task"    concat :task    execute >reg0  // reg0 has task
+    r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
+    r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+    r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
 
     // seed the task
     reg0 task.seed

@@ -181,7 +181,8 @@ void Thread::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
-  vTrace("Thread %p: %s loop\n",this,m_sName.a());
+  if (gxArguments.m_bVerbose)
+    vTrace("Thread %p: %s loop\n",this,m_sName.a());
   
   m_xPosixThread.vSetOSThreadId();
   

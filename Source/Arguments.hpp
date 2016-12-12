@@ -19,6 +19,7 @@ namespace StorageEngine
     i8    m_iNode;       // this node number
     i8    m_nNodes;      // out of this number of nodes
     i8    m_iPort;       // port number
+    bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
     
     // commands

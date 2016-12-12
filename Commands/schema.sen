@@ -52,6 +52,10 @@
 /*----------------------------------------------------------------------------*/
 : makeSchemas ( "<catalogNm>" -- )
 
+  args.tracepoint if
+    dup "MAKING SCHEMAS FOR CATALOG " swap concat " on NODE " concat args.node >str concat .
+  then
+
   find execute ( dic )
   "schemas"    ( dic "schemas" )
   swap         ( "schemas" dic )
@@ -65,7 +69,9 @@
 
 tp: makingSchema
 
-  dup "MAKING SCHEMA " swap concat " on NODE " concat args.node >str concat .
+  args.tracepoint if
+    dup "MAKING SCHEMA " swap concat " on NODE " concat args.node >str concat .
+  then
 
   dup ( "<schemaNm>" )
 
