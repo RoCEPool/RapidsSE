@@ -1,13 +1,12 @@
 /*============================================================================*/
-/* gridPrimitives_NEW2.sen -- (new 2) grid primitives                         */
+/* gridPrimitives.sen -- grid testing                                         */
 /*============================================================================*/
 
-"gridPrimitives_NEW2.sen" .putVerbose
+"gridPrimitives.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* lock and queue arrays                                                      */
 /*----------------------------------------------------------------------------*/
-args.nodes ptrArray: ppTasks
 args.nodes ptrArray: ppQueues
 args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
@@ -75,28 +74,6 @@ tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* set the calling task                                                       */
-/*----------------------------------------------------------------------------*/
-: setCaller ( caller -- ; reg0 == caller )
-
-  >reg0 ( )
-tp: reg0HasCaller
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* set sending node                                                           */
-/*----------------------------------------------------------------------------*/
-: setSender ( sender -- ; reg1 == sender )
-
-  >reg1 ( )
-tp: reg1HasSender
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
 /* expand valset into an indirect call                                        */
 /*----------------------------------------------------------------------------*/
 : >indirect ( valset -- ... wordName ; reg0 == caller )
@@ -118,8 +95,6 @@ tp: reg0HasCaller
 /* expand valset into an indirect call                                        */
 /*----------------------------------------------------------------------------*/
 : >indirect2 ( valset -- ... wordName ; reg0 == caller )
-
-tp: >indirect2
 
   // expand valset into stack values
   valset> ( ... wordName caller #values )
@@ -192,80 +167,36 @@ tp: ontoCallerStack
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add set dic path                                                           */
-/*----------------------------------------------------------------------------*/
-: addDicPath
-
-  // add dicStack! indirect
-  seitf.path@ ( valset path... #folders )
-  "dicStack!" ( valset path... #folders "dicStack!" )
-
-tp: layeringDicPath
-
-  $$>valset ( valset )
-;
-
-/*----------------------------------------------------------------------------*/
-/* add send to participants                                                   */
-/*----------------------------------------------------------------------------*/
-: addParticipants
-
-  ">participants>" ( valset ">participants>" )
-
-tp: layeringParts
-
-  $$>valset ( valset )
-;
-
-/*----------------------------------------------------------------------------*/
-/* add set caller                                                             */
-/*----------------------------------------------------------------------------*/
-: addCaller
-
-  task.this "setCaller"
-
-tp: layeringCaller
-
-  $$>valset
-;
-
-/*----------------------------------------------------------------------------*/
-/* add set sender                                                             */
-/*----------------------------------------------------------------------------*/
-: addSender
-
-  args.node "setSender"
-
-tp: layeringSender
-
-  $$>valset
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove caller                                                              */
-/*----------------------------------------------------------------------------*/
-: removeCaller
-
-  valset>
-tp: removingCaller
-
-  3 == assert
-
-  "setCaller" streql assert
-
-  drop
-
-tp: removedCaller
-;
-
-/*----------------------------------------------------------------------------*/
 /* append indirect call onto given queue                                      */
 /*----------------------------------------------------------------------------*/
-: >queue ( valset queue -- )
+: >queue ( ... wordName #values queue -- )
 
-tp: appendingToQueue
 
-  // move to target queue
+  // save target queue on rstack
+  >r ( ... wordName #values )
+
+  // this task is the caller
+  task.this ( ... wordName #values caller )
+
+  // bring #values to top
+  swap ( ... wordName caller #values )
+
+  // inc #values to now include caller
+  inc ( ... wordName caller #values )
+
+tp: pushedThisCaller
+
+  // convert values to valset
+  >valset ( valset )
+
+tp: asValset
+
+  // restore target queue onto stack
+  r> ( valset queue )
+
+tp: pushedWhichQueue
+
+  // pop valset and append to target queue
   queue.append ( )
 
 tp: queued
@@ -274,13 +205,8 @@ tp: queued
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto given queue, suspend for notification            */
 /*----------------------------------------------------------------------------*/
-: >queue> ( valset queue -- ..result.. )
+: >queue> ( ... wordName #values queue -- ..result.. )
 
-  >r
-
-  addCaller
-
-  r>
 
   // set this task to wait for 1 ack
   1 task.this task.acks! ( ... wordName #values queue )
@@ -293,15 +219,15 @@ tp: require1Ack
   // this task suspends till notified
   task.suspend ( valset )
 
-tp: haveResultSet
+tp: haveResultValset
 
   // convert valset to values
-  //valset> ( ... #values )
+  valset> ( ... #values )
 
   // discard number of values leaving the indirect result
-  //drop ( ..result.. )
+  drop ( ..result.. )
 
-//tp: indirectResultIs
+tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -339,11 +265,6 @@ tp: haveResultSet
   reg3 ( taskset thread )
   thread.taskset! ( )
 
-  // record taskset in task
-  reg2 ( taskset )
-  reg0 ( task )
-  task.taskset! ( )
-
   // spawn the os thread
   reg3 ( thread )
   thread.spawn ( )
@@ -363,8 +284,6 @@ tp: haveResultSet
 
   valset> ( ... wordName #values )
 
-tp: callSet
-
   drop ( ... wordName )
 
   !indirect ( bool )
@@ -376,8 +295,6 @@ tp: callSet
 /* execute all nested valsets                                                 */
 /*----------------------------------------------------------------------------*/
 : exeAll ( ... valset -- x )
-
-tp: exeAll
 
   // we exect at least one indirect
   CN_VALSET isType not if assert then
@@ -437,8 +354,6 @@ tp: exeAll
 /*----------------------------------------------------------------------------*/
 : execute.loop
 
-  "execute.loop" task.this task.comment!
-
   // push a register frame
   reg.push
 
@@ -476,8 +391,6 @@ tp: exeAll
 /*----------------------------------------------------------------------------*/
 : passOn.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
 
-  "passOn.loop" task.this task.comment!
-
 tp: passingOn
   // push a register frame
   reg.push
@@ -495,20 +408,17 @@ tp: passingOn
     // pop valset off queue and push onto this stack
     queue> ( valset ) //! CP recv   socket>
 
-    // set caller
-    exeOne drop
-
     // convert valset to indirect call
-    //>indirect ( ... wordName )
+    >indirect ( ... wordName )
 
     // pass onto forward queue for processing
     // and suspend till signalled with indirect result
-    //depth ( ... wordName #values )
+    depth ( ... wordName #values )
     r1 ( ... wordName #values queue )
     >queue> ( ... )   //! PP send & recv     >socket>
 
     // convert indirect result into valset
-    //>result ( valset )
+    >result ( valset )
 
     // put indirect result onto stack of caller and signal
     >caller ( ) //! CP send     >socket
@@ -523,56 +433,59 @@ tp: passingOn
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinator proxy processing loop                                          */
+/* pass on processing loop     run by Coordinator Proxy                       */
 /*----------------------------------------------------------------------------*/
 : cp.loop ( actorNo forwardQueue -- )
 
-  "cp.loop" task.this task.comment!
-
 tp: coordinator
 
-  // push a register frame
-  reg.push
+    // push a register frame
+    reg.push
 
-  >r ( actorNo )
-  >r ( )
-  // r0 has actorNo (nodeNo)
-  // r1 has forwardQueue
-  //! r2 has the originating node
+    >r ( actorNo )
+    >r ( )
+    // r0 has actorNo (nodeNo)
+    // r1 has forwardQueue
+    //! r2 has the originating node
 
-  "CP " r1 >str concat .
-  begin
+    "CP " r1 >str concat .
+    begin
 
-    depth 0 != if "stack of task has grown" . debug.trap then
+      depth 0 != if "stack of task has grown" . debug.trap then
 
-    // pop valset off queue and push onto this stack
-    queue> ( valset )
+      // pop valset off queue and push onto this stack
+      queue> ( valset ) //! CP recv   socket>
 
-    //removeCaller // exeOne
+      // convert valset to indirect call
+      >indirect2 ( ... wordName )
 
-    r1
-    >queue> ( ... )
+      // pass onto forward queue for processing
+      // and suspend till signalled with indirect result
+      depth ( ... wordName #values )
+      r1 ( ... wordName #values queue )
+      //stk
+      >queue> ( ... )
 
-    // convert indirect result into valset
-    //>result ( valset )
+      // convert indirect result into valset
+      >result ( valset )
 
-    0 >node
+      // put indirect result onto stack of caller and signal
+      //>caller ( ) //! CP send     >socket
+      >socket0
 
-  0 until
+    0 until
 
-  rdrop
-  rdrop
+    rdrop
+    rdrop
 
-  // pop a register frame
-  reg.pop
+    // pop a register frame
+    reg.pop
 ;
 
 /*----------------------------------------------------------------------------*/
-/* participant proxy processing loop                                          */
+/* pass on processing loop     run by Participant Proxy (for other node)      */
 /*----------------------------------------------------------------------------*/
 : pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
-
-  "pp.loop" task.this task.comment!
 
 tp: participantProxy
 
@@ -584,8 +497,6 @@ tp: participantProxy
   // r0 has actorNo (nodeNo)
   // r1 has forwardQueue
 
-  task.this r0 ppTasks !
-
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
@@ -593,36 +504,21 @@ tp: participantProxy
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-    // set caller into reg0
-    exeOne drop
+    //"sending ..." .
+    >socket1
+    //r0 >socket
 
-    // set this task to wait for 1 ack
-    1 task.this task.acks! ( ... wordName #values queue )
+    //"sent" .
 
-    r0 args.node ==
-    if
-      // this is pp0 on node 0
+    queue>
+    //stk
 
-      addCaller
+    // convert indirect result into valset
+    //>result ( valset )
 
-      // append indirect call onto p.queue
-      r1 ( valset queue )
-
-      >queue ( )
-
-    else
-      // this is pp1 on node 0
-
-      // send to node 1 by appending to snd1.queue
-      r0 >node
-
-    then
-
-    // this task suspends till notified
-    task.suspend ( valset )
-
+    // put indirect result onto stack of caller and signal
+    "c.task" find execute >reg0
     >caller ( )
-
   0 until
 
   rdrop
@@ -630,15 +526,13 @@ tp: participantProxy
 
   // pop a register frame
   reg.pop
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute one indirect call processing loop                                  */
 /*----------------------------------------------------------------------------*/
 : exeOne.loop
-
-  "exeOne.loop" task.this task.comment!
-
 
   // push a register frame
   reg.push
@@ -665,53 +559,44 @@ tp: participantProxy
 ;
 
 /*----------------------------------------------------------------------------*/
-/* execute all indirect call processing loop                                  */
-/*----------------------------------------------------------------------------*/
-: exeAll.loop
-
-  "exeAll.loop" task.this task.comment!
-
-
-  // push a register frame
-  reg.push
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    // pop valset off queue and push onto this stack
-    queue> ( valset )
-
-    exeAll
-
-    // convert indirect result into valset
-    >result ( valset )
-
-    // put indirect result onto stack of caller and signal
-    >caller ( )
-
-  0 until
-
-  // pop a register frame
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
 /* create the actors for the dl test                                          */
 /*----------------------------------------------------------------------------*/
 : createActors
-
 /*
+    c->PP->CP->p
+        |
+        +->P
 
-  r->c->PP->snd ... rcv->CP->p
-     |
-     +->P
-
-*/
     args.nodes 0 do
 
     // participant for this I
-    0 "exeAll.loop" "p" I >str concat actorForm
+    0 "execute.loop" "p" I >str concat actorForm
+    I pQueues !
+
+    // coordinator proxy for this I
+    I I pQueues @ 2 "passOn.loop" "cp" I >str concat actorForm
+    I cpQueues !
+
+    // partitipant proxy for this I
+    I args.node == if
+      I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    else
+      I I cpQueues @ 2 "passOn.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    then
+
+    loop
+
+    // coordinator
+    0 "execute.loop" "c" actorForm drop
+    ;
+*/
+
+    args.nodes 0 do
+
+    // participant for this I
+    0 "execute.loop" "p" I >str concat actorForm
     I pQueues !
 
     // coordinator proxy for this I
@@ -720,8 +605,7 @@ tp: participantProxy
 
     // partitipant proxy for this I
     I args.node == if
-      // I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
-      I I pQueues  @ 2 "pp.loop" "pp" I >str concat actorForm
+      I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
       I ppQueues !
     else
       I I cpQueues @ 2 "pp.loop" "pp" I >str concat actorForm
@@ -731,7 +615,7 @@ tp: participantProxy
     loop
 
     // coordinator
-    0 "exeAll.loop" "c" actorForm drop
+    0 "execute.loop" "c" actorForm drop
 
     cpQueuesDump
 
@@ -822,34 +706,31 @@ tp: allResponded
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : >participants> // serial Form
 
-tp: >participants>
+  >valset
 
-  addCaller
   >r
 
-tp: movedToRstack
+  tp: movedToRstack
 
   args.nodes 0 do
 
     1 task.this task.acks!
 
-tp: expectingAcks
+    tp: acksExpected
 
     2 rpick
 
+    valset>
+
     I ppQueues @
 
-tp: forwardingToPP
+    tp: sendingToPP
 
     >queue
 
     task.suspend
 
-tp: haveResultSet
-    valset>
-
-tp: expandedResult
-    drop assert
+    valset> drop assert
 
   loop
 
@@ -864,23 +745,21 @@ tp: expandedResult
 /*----------------------------------------------------------------------------*/
 /* queue an indirect call to the coordinator and wait for result              */
 /*----------------------------------------------------------------------------*/
-: >coordinator> ( callSet -- ..results.. )
+: >coordinator> ( ... wordName #values -- ..result.. )
 
 tp: viaCoordinator
 
   // the queue is c.queue
-  c.queue ( valset c.queue )
+  c.queue ( ... wordName #values c.queue )
 
   // put onto c.queue and suspend till notified
   >queue> ( ... )
-
-  >result
 ;
 
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
-: >>participants>OLD ( ... "<wordNm>" #values -- bool )
+: >>participants> ( ... "<wordNm>" #values -- bool )
 
 tp: unpacking
 
@@ -927,13 +806,19 @@ tp: done
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: >>participants> ( $$ ... "<wordNm>" -- bool )
+: >>participants>NEW ( $$ ... "<wordNm>" -- bool )
 
-tp: >>participants
+  // the basic indirect
+  $$>valset ( valset )
 
-  addDicPath
+  // add dicStack! indirect
+  seitf.path@ ( valset path... #folders )
+  "dicStack!" ( valset path... #folders "dicStack!" )
+  $$>valset ( valset )
 
-  addParticipants
+  // add >participants> indirect
+  ">participants>" ( valset ">participants>" )
+  $$>valset ( valset )
 
   >coordinator> ( bool )
 ;

@@ -10,7 +10,7 @@
 
 "senderTask.sen" >>:
 //"gridPrimitives.sen" >>:
-"gridPrimitives_NEW3.sen" >>:
+"gridPrimitives.sen" >>:
 "receiverTask.sen" >>:
 
 /*============================================================================*/
