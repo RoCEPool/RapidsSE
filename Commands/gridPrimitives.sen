@@ -242,6 +242,55 @@ tp: layeringSender
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add passOnToCp                                                             */
+/*----------------------------------------------------------------------------*/
+: addPassOnToCp
+
+  "passOnToCp"
+
+tp: passingOnToCp
+
+  $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* add notifyPp                                                               */
+/*----------------------------------------------------------------------------*/
+: addNotifyPp
+
+  args.node "notifyPp"
+
+  tp: notifyingPp
+
+  $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* passOnToCp                                                                 */
+/*----------------------------------------------------------------------------*/
+: passOnToCp
+
+  cpQueues @
+  queue.append
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* notifyPp                                                                   */
+/*----------------------------------------------------------------------------*/
+: notifyPp
+
+  reg.push
+  ppTasks @
+  >reg0
+  >caller
+  reg.pop
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* remove caller                                                              */
 /*----------------------------------------------------------------------------*/
 : removeCaller
@@ -556,7 +605,9 @@ tp: coordinator
     // convert indirect result into valset
     //>result ( valset )
 
-    0 >node
+    addNotifyPp
+
+    reg1 >node
 
   0 until
 
@@ -612,6 +663,9 @@ tp: participantProxy
 
     else
       // this is pp1 on node 0
+
+      addSender
+      r0 addPassOnToCp
 
       // send to node 1 by appending to snd1.queue
       r0 >node

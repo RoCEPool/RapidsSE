@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
-: recv>
+: recvOLD>
 
   task.this task.socket@           // get socket from task
   socket.recv                      // recv on socket
@@ -71,6 +71,8 @@ tp: receivedValSet
 
   args.node 1 == if
 
+    // Node 1 received a request to be executed
+
     // put valset onto cp 1 queue
     //"putting value in cpQueue" .
     //stk
@@ -79,22 +81,40 @@ tp: receivedValSet
 tp: handingOn
     queue.append
 
+
   else
+
+    // Node 0 received a response
 
     // put valset onto pp 1 queue
     //"putting value in ppQueue" .
     //stk
     // passing response of "mkten" received from node1 to PP
     //1 ppQueues @
+
     reg.push
     1 ppTasks @
     >reg0
     >caller
     reg.pop
+
   then
 
 
 //"put value in Queue" .
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* recv valset from the socket                                                */
+/*----------------------------------------------------------------------------*/
+: recv>
+
+  task.this task.socket@           // get socket from task
+  socket.recv                      // recv on socket
+
+tp: receivedValSet
+  exeOne
 
 ;
 
