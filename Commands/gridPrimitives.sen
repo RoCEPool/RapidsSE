@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* gridPrimitives_NEW2.sen -- (new 2) grid primitives                         */
+/* gridPrimitives.sen -- grid primitives                                      */
 /*============================================================================*/
 
-"gridPrimitives_NEW2.sen" .putVerbose
+"gridPrimitives.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* lock and queue arrays                                                      */
