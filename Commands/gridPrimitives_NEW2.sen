@@ -74,12 +74,23 @@ tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* expand valset into an indirect call                                        */
+/* set the calling task                                                       */
 /*----------------------------------------------------------------------------*/
 : setCaller ( caller -- ; reg0 == caller )
 
-  >reg0 ( ... wordName )
-  tp: reg0HasCaller
+  >reg0 ( )
+tp: reg0HasCaller
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* set sending node                                                           */
+/*----------------------------------------------------------------------------*/
+: setSender ( sender -- ; reg1 == sender )
+
+  >reg1 ( )
+tp: reg1HasSender
 
   true
 ;
@@ -213,6 +224,18 @@ tp: layeringParts
   task.this "setCaller"
 
 tp: layeringCaller
+
+  $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* add set sender                                                             */
+/*----------------------------------------------------------------------------*/
+: addSender
+
+  args.node "setSender"
+
+tp: layeringSender
 
   $$>valset
 ;
@@ -574,12 +597,9 @@ tp: participantProxy
       r1 ( valset queue )
       >queue> ( ... )   //! PP send & recv     >socket>
 
-      // convert indirect result into valset
-      //>result ( valset )
-
     else
 
-      1 >node
+      r0 >node
 
       queue>
 
