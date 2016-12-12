@@ -13,16 +13,12 @@
 //  "nohup "
     ""
     SE_PATH concat
-    " --start --size 4gb " concat
+    " --start " concat
+    " --size " concat regionSize >str concat
     " --commands /Users/ray/Desktop/rapidsse/Commands" concat
-    " --region /SE_" concat
-    swap >str concat
-
-    " --node " concat
-    swap >str concat
-
-    " --nodes " concat
-    args.nodes >str concat
+    " --region /SE_" concat  swap >str concat
+    " --node " concat swap >str concat
+    " --nodes " concat args.nodes >str concat
 
     " &" concat
 ;

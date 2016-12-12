@@ -133,7 +133,7 @@ tp: receivedValSet
 
     receiverTaskPrint if "Receiver running on node" args.node >str concat . then
 
-    10 sleep
+    //10 sleep
 
     begin
       recv>

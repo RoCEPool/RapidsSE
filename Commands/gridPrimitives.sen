@@ -65,7 +65,8 @@ tp: waitNextValset
 
     // test for value
     dup not if
-      task.yield /*100 thread.sleep_us*/
+      task.yield
+      1 thread.sleep_ms
     then
 
     ( value | false )

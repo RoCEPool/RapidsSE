@@ -18,6 +18,7 @@ namespace Dictionaries
     bool   m_bFrozen;      // no more words can be added?
     Word*  m_pCurrentWord; // last word
     Atomic m_zRefCount;    // reference count
+    Lock   m_xLock;        // lock
     
     // must be last
     Footer m_xFooter;

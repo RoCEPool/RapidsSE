@@ -59,9 +59,12 @@ thread:  connectorThread
 
         // start sender
         //"starting sender" .
+ddlLock.grabWrite
+
         0 "snd.loop" "sender" I >str concat senderForm
 
         I senderQueue !
+ddlLock.dropWrite
 
       then
 

@@ -52,14 +52,19 @@ int: connections
     0 connections !
     begin
 
+
       r0 socket.accept
-      //"accepted connection on port "  5000 args.node + >str concat .
+      "accepted connection on port "  5000 args.node + >str concat .
+
+ddlLock.grabWrite
 
       // start receiver
       //"starting receiver" .
       connections @          ( connection# )
       >str "receiver" swap concat ( connection# receiverName )
       0 swap "rcv.loop" swap receiverForm
+
+ddlLock.dropWrite
 
       connections @          ( connection# )
       1 +                    ( connections# 1 )

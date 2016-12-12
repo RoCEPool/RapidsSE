@@ -3,10 +3,10 @@
 /*============================================================================*/
 
 docol gn
-sleep 12
+//sleep 10
 
 docol cs
-sleep 24
+sleep 5
 
 cf ~
 create tenant t;

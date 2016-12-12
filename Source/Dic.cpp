@@ -63,6 +63,7 @@ Dic::Dic(void)
   m_bFrozen  = false;
   m_pCurrentWord = nullptr;
   m_zRefCount.vCheckInit();
+  m_xLock.vCheckInit();
   
   // this is because of GlobalDictionary (ugh)
   //vInit();
@@ -125,9 +126,13 @@ Word* Dic::pAllocWord(eCN eClassNo)
   
   Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
   
+  m_xLock.vGrabWrite();
+  
   pWord->m_pPrevWord = m_pCurrentWord;
   
   m_pCurrentWord = pWord;
+
+  m_xLock.vDropWrite();
   
   return pPoolCheck<Word*>(pWord);
 }

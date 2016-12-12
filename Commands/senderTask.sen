@@ -168,7 +168,11 @@ tp: >socket
     begin
       task.this task.queue@
       queue.pop
-      dup not if task.yield /*100 thread.sleep_us*/ then
+      dup not
+      if
+        task.yield
+        1 thread.sleep_ms
+      then
     until
 ;
 

@@ -12336,6 +12336,9 @@ ENTRY("vSocketConnect");
       if (iError == ETIMEDOUT)
         vTrace("Connect timedout... retrying...\n");
       else
+      if (iError == ECONNREFUSED)
+        vTrace("Connect refused... retrying...\n");
+      else
         THROW("Unable to connect: Errno %d!", iError);
     }
   }
