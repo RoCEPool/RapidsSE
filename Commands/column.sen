@@ -55,6 +55,9 @@
 /*----------------------------------------------------------------------------*/
 : addColumn$ ( "<columnType>" "<columnNm>" -- <result> )
 
+  dup "ADDING COLUMN " swap concat " on NODE " concat args.node >str concat .
+
+tp: addingColumn
   pushTable   assert // not if false exit then
 
   pushColumns assert // not if false exit then
@@ -73,15 +76,11 @@
 /*----------------------------------------------------------------------------*/
 : addColumn ( "<columnType>" "<columnNm>" ... #folders -- true )
 
-/*
-  dicStack!
-
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-*/
-
-  dup "adding column " swap concat .
 
   addColumn$
 ;
@@ -91,18 +90,20 @@
 /*----------------------------------------------------------------------------*/
 : ~addColumn ( "<columnType>" "<columnNm>" -- )
 
-/*
-  // set indirect call to be makeSchema
-  "addColumn" 3 ( "<columnType>" "<columnNm>" "addColumn" 3 )
+tp: addColOnAll
+
+  // set indirect call to be addColumn
+  >r >r >r $$ r> r> r> "addColumn"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
+  tp: addColOnAllDone
+
   drop ( )
-*/
-
-  addColumn
-
-  assert
 ;
 
 /*----------------------------------------------------------------------------*/
