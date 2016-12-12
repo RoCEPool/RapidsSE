@@ -105,7 +105,7 @@ tp: settingDicStack
     !indirect drop
   then
 
-  dup "making tenant " swap concat .
+  dup "making catalog " swap concat .
 
   makeCatalog$
 ;

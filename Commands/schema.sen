@@ -63,9 +63,11 @@
 /*----------------------------------------------------------------------------*/
 : makeSchema$ ( "<schemaNm>" -- true )
 
-  tp: makeSchema
+tp: makingSchema
 
-  dup ( "<schemaNm>" "<schemaNm>" )
+  dup "MAKING SCHEMA " swap concat " on NODE " concat args.node >str concat .
+
+  dup ( "<schemaNm>" )
 
   :schema ( "<schemaNm>" ^schema )
 
@@ -81,15 +83,11 @@
 /*----------------------------------------------------------------------------*/
 : makeSchema ( "<schemaNm>" ... #folders -- true )
 
-/*
-  dicStack!
-
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-*/
-
-  dup "making schema " swap concat .
 
   makeSchema$
 ;
@@ -99,18 +97,20 @@
 /*----------------------------------------------------------------------------*/
 : ~makeSchema ( "<schemaNm>" -- )
 
-/*
+tp: mkSchOnAll
+
   // set indirect call to be makeSchema
-  "makeSchema" 2 ( "<schemaNm>" "makeSchema" 2 )
+  $$ swap "makeSchema"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
+  tp: mkSchOnAllDone
+
   drop ( )
-*/
-
-  makeSchema
-
-  assert
 ;
 
 /*----------------------------------------------------------------------------*/
