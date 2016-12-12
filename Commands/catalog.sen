@@ -81,6 +81,8 @@
 
 tp: makeCatalog
 
+  dup "MAKING CATALOG " swap concat " on NODE " concat args.node >str concat .
+
   dup ( "<catalogNm>" "<catalogNm>" )
 
   :catalog ( "<catalogNm>" ^catalog )
@@ -97,13 +99,11 @@ tp: makeCatalog
 /*----------------------------------------------------------------------------*/
 : makeCatalog ( "<catalogNm>" ... #folders -- true )
 
-/*
-  dicStack!
-
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-*/
 
   dup "making tenant " swap concat .
 
@@ -115,18 +115,20 @@ tp: makeCatalog
 /*----------------------------------------------------------------------------*/
 : ~makeCatalog ( "<catalogNm>" -- )
 
-/*
-  // set indirect call to be makeCatalog
-  "makeCatalog" 2 ( "<CatalogNm>" "makeCatalog" 2 )
+tp: mkTenOnAll
+
+  // set indirect call to be makeTenant
+  $$ swap "makeCatalog"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
+tp: mkCatOnAllDone
+
   drop ( )
-*/
-
-  makeCatalog
-
-  assert
 ;
 
 /*----------------------------------------------------------------------------*/

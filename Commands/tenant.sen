@@ -101,18 +101,11 @@ tp: makingTenant
 /*----------------------------------------------------------------------------*/
 : makeTenant ( "<tenantNm>" ... #folders -- true )
 
-  //drop dicStack!
   dup "dicStack!" strEql
   if
 tp: settingDicStack
     !indirect drop
   then
-
-  //task.this task.name@ "p0.task" streql not if
-  //  "_" concat task.this task.name@ concat
-  //then
-
-  //dup "making tenant " swap concat .
 
   makeTenant$
 ;
