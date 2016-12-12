@@ -93,11 +93,13 @@ tp: handingOn
 /*----------------------------------------------------------------------------*/
 /* receiver loop                                                              */
 /*----------------------------------------------------------------------------*/
-: receiver.loop
+: rcv.loop
 
     "renaming to Receiver Task" .putVerbose
 
     "rcv.task" task.this task.name!
+
+    "rcv.loop" task.this task.comment!
 
     //receiver.queue  task.this task.queue!
 

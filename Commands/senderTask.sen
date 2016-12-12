@@ -210,11 +210,13 @@ tp: sendingValset
 /*----------------------------------------------------------------------------*/
 /* sender task processing                                                     */
 /*----------------------------------------------------------------------------*/
-: sender.loop
+: snd.loop
 
     "renaming to sender.task" .putVerbose
 
     "snd.task" task.this task.name!
+
+    "snd.loop" task.this task.comment!
 
     //"sender.queue"  task.this task.queue!
 

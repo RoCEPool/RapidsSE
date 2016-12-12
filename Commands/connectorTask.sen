@@ -59,7 +59,7 @@ thread:  connectorThread
 
         // start sender
         //"starting sender" .
-        0 "sender.loop" "sender" I >str concat senderForm
+        0 "snd.loop" "sender" I >str concat senderForm
 
         I senderQueue !
 

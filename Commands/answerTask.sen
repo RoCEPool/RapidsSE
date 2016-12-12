@@ -59,7 +59,7 @@ int: connections
       //"starting receiver" .
       connections @          ( connection# )
       >str "receiver" swap concat ( connection# receiverName )
-      0 swap "receiver.loop" swap receiverForm
+      0 swap "rcv.loop" swap receiverForm
 
       connections @          ( connection# )
       1 +                    ( connections# 1 )

@@ -22,10 +22,10 @@ thread:  requestThread
 : requestStart
 
     // set up first request processing task
-    0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
+    0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
 
     // set up second request processing task
-    0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
+    0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
 
     // set up the request thread
     requestTaskSet  requestThread thread.taskset!
@@ -91,11 +91,13 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 /* request processing loop                                                    */
 /*----------------------------------------------------------------------------*/
-: requestLoop
+: req.loop
 
     "renaming to Request Task" .putVerbose
 
     "req.task" task.this task.name!
+
+    "req.loop" task.this task.comment!
 
     requestQueue  task.this task.queue!
 
