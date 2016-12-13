@@ -303,7 +303,11 @@ tp: marker
 
 tp: valset
 
-  drop
+  valset>
+
+tp: values
+
+  drop drop assert.stack_0
 
   "__row_cursor" find >forget
 ;

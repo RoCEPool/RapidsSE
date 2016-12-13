@@ -41,9 +41,9 @@ create table j10 (
 lf
 lscol j10
 
-// ld j10 "../JTEST/j10.csv"
+ld j10 "../JTEST/j10.csv"
 
-// docol rbTest
+docol rbTest
 
 /*============================================================================*/
 /* end                                                                        */
