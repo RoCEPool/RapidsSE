@@ -170,7 +170,7 @@ tp: settingDicStack
 
 tp: rmTenOnAll
 
-  // set indirect call to be makeTenant
+  // set indirect call to be removeTenant
   $$ swap "removeTenant"
 
   tp: theIndirectCall

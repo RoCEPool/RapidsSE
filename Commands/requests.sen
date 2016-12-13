@@ -206,11 +206,15 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : drop_catalog ( "<catalogNm>" -- <R> )
 
+tp: dropCatalog
+
 ddlLock.grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
   ~removeCatalog ( ) assert.stack_0
+
+tp: removedCatalog
 
   <OK>
 ;
@@ -253,11 +257,15 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : drop_schema ( "<schemaNm>" -- <R> )
 
+tp: dropSchema
+
 ddlLock.grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
   ~removeSchema ( ) assert.stack_0
+
+tp: droppedSchema
 
   <OK>
 ;

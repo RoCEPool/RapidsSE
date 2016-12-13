@@ -138,9 +138,13 @@ tp: mkCatOnAllDone
 /*----------------------------------------------------------------------------*/
 : removeCatalog$ ( "<catalogNm>" -- true )
 
-tp: removeCatalog
+tp: removeCatalog$
 
-:forget ( )
+  args.tracepoint if
+    dup "REMOVING CATALOG " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  :forget ( )
 
   true ( true )
 ;
@@ -149,15 +153,12 @@ tp: removeCatalog
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
 : removeCatalog ( "<catalogNm>" -- true )
-/*
-  dicStack!
 
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-
-  dup "removing catalog " swap concat .
-*/
 
   removeCatalog$
 ;
@@ -167,16 +168,20 @@ tp: removeCatalog
 /*----------------------------------------------------------------------------*/
 : ~removeCatalog ( "<catalogNm>" -- )
 
-/*
-  // set indirect call to be dropCatalog
-  "removeCatalog" 2 ( "<catalogNm>" "dropCatalog" 2 )
+tp: rmCatOnAll
+
+  // set indirect call to be removeCatalog
+  $$ swap "removeCatalog"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
-  drop ( )
-*/
+tp: rmCatOnAllDone
 
-  removeCatalog assert
+  drop ( )
 ;
 
 /*============================================================================*/

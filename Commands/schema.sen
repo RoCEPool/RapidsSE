@@ -141,7 +141,7 @@ tp: theIndirectCall
 /*----------------------------------------------------------------------------*/
 : removeSchema$ ( "<schemaNm>" -- true )
 
-  tp: removeSchema
+tp: removeSchema
 
   :forget ( )
 
@@ -152,15 +152,12 @@ tp: theIndirectCall
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
 : removeSchema ( "<schemaNm>" -- true )
-/*
-  dicStack!
 
-  task.this task.name@ "p0.task" streql not if
-  "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-
-  dup "removing schema " swap concat .
-*/
 
   removeSchema$
 ;
@@ -170,16 +167,18 @@ tp: theIndirectCall
 /*----------------------------------------------------------------------------*/
 : ~removeSchema ( "<schemaNm>" -- )
 
-/*
-  // set indirect call to be dropCatalog
-  "removeSchema" 2 ( "<schemaNm>" "dropSchema" 2 )
+tp: rmSchOnAll
 
-  >>participants> ( bool )
+  // set indirect call to be dropCatalog
+  $$ swap "removeSchema"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+tp: rmSchOnAllDone
 
   drop ( )
-*/
-
-  removeSchema assert
 ;
 
 /*============================================================================*/
