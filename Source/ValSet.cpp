@@ -27,6 +27,9 @@ ValSet::ValSet(void)
   
   m_iBytes = 0;
   
+  m_pRowBuffer = nullptr;
+  m_iRowBufferBytes = 0;
+  
   _checkInitialised_(CN_VALSET);
 }
 
@@ -71,7 +74,7 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes                                                          */
+/* get size in bytes of the entire valset                                     */
 /*----------------------------------------------------------------------------*/
 i8 ValSet::iSize(void)
 {

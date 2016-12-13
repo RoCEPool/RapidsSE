@@ -6,13 +6,20 @@
 
 #include "Values.h"
 
+namespace DBobjects {
+  class RowBuffer;
+}
+
 namespace Values
 {
   class ValSet : public Value
   {
     static const i8 C_VALSET_WORKSPACE = C_1KB * 14;
+    
   private:
-    i8   m_iBytes; // bytes used out of space
+    i8  m_iBytes; // bytes used in work space
+    DBobjects::RowBuffer* m_pRowBuffer;
+    i8  m_iRowBufferBytes;
     char m_wWorkspace[C_VALSET_WORKSPACE];
     
   public:

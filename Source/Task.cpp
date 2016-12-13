@@ -12418,7 +12418,7 @@ ENTRY("vSocketOpen");
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.send: send to a socket                                              */
+/* socket.send: send to a socket ( valset socket -- 1 )                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(NNP_Task nnpTask)
 {
@@ -12444,6 +12444,8 @@ ENTRY("vSocketSend");
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
     nnpTask->m_xParamStack.vPush((i8)0);
+    
+    goto exit;
   }
   
   // now send the actual value set
@@ -12456,6 +12458,7 @@ ENTRY("vSocketSend");
   
   nnpTask->m_xParamStack.vPush((i8)1);
   
+exit:
   EXIT();
 }
 
