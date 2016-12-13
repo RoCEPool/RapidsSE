@@ -141,7 +141,11 @@ tp: theIndirectCall
 /*----------------------------------------------------------------------------*/
 : removeSchema$ ( "<schemaNm>" -- true )
 
-tp: removeSchema
+tp: removeSchema$
+
+  args.tracepoint if
+    dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
+  then
 
   :forget ( )
 
@@ -175,6 +179,8 @@ tp: rmSchOnAll
 tp: theIndirectCall
 
   $$>valset ( valset )
+
+  >>participants> ( bool )
 
 tp: rmSchOnAllDone
 
