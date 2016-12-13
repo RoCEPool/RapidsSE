@@ -166,10 +166,14 @@ tp: mkTenOnAllDone
 /*----------------------------------------------------------------------------*/
 : ~removeTenant ( "<tenantNm>" -- )
 
+tp: rmTenOnAll
+
   // set indirect call to be dropTenant
   "removeTenant" 2 ( "<tenantNm>" "dropTenant" 2 )
 
   >>participants> ( bool )
+
+tp: rmTenOnAllDone
 
   drop ( )
 ;

@@ -122,6 +122,7 @@ namespace Interface
     bool bPushDic(char* pWords[]);
     bool bGetDicPath(char* pWords[]);
     bool bGetDicContents(char* pWords[]);
+    bool bGetDicContentsG(char* pWords[]);
 
     bool bGetMonitor(char* pWords[]);
     bool bGetFreeSpace(char* pWords[]);

@@ -270,7 +270,7 @@ tp: mkTblOnAllDone
 /*----------------------------------------------------------------------------*/
 : removeTable$ ( "<tableNm>" -- true )
 
-tp: removeTable
+tp: removeTable$
 
   dup
 
@@ -287,15 +287,11 @@ tp: removeTable
 /*----------------------------------------------------------------------------*/
 : removeTable ( "<tableNm>" -- true )
 
-/*
-  dicStack!
-
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-
-  dup "removing table " swap concat .
-*/
 
   removeTable$
 ;
@@ -305,16 +301,23 @@ tp: removeTable
 /*----------------------------------------------------------------------------*/
 : ~removeTable ( "<tableNm>" -- )
 
-/*
+tp: rmTblOnAll
+
   // set indirect call to be dropTable
-  "removeTable" 2 ( "<tableNm>" "dropTable" 2 )
+  //"removeTable" 2 ( "<tableNm>" "dropTable" 2 )
+  $$ swap "removeTable"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
-  drop ( )
-*/
+tp: rmTblOnAllDone
 
-  removeTable assert
+  drop ( )
+
+  //removeTable assert
 ;
 
 /*----------------------------------------------------------------------------*/

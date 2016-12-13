@@ -63,6 +63,9 @@ Misc Requests:
   ping    ping
   x       x
 
+Grid Request:
+  lfG     lf on grid
+
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*----------------------------------------------------------------------------*/
@@ -152,11 +155,15 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : drop_tenant ( "<tenantNm>" -- <R> )
 
+tp: dropTenant
+
 ddlLock.grabWrite
 
   checkRemoveTenant not if <NIP+ERROR> exit then
 
   ~removeTenant ( ) assert.stack_0
+
+tp: removedTenant
 
   <OK>
 ;
@@ -471,6 +478,8 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : drop_table ( "<tableNm>" -- <R> )
 
+tp: dropTable
+
 ddlLock.grabWrite
 
   checkRemoveTable not if <NIP+ERROR> exit then
@@ -478,6 +487,8 @@ ddlLock.grabWrite
 tp ( "<tableNm>" )
 
   ~removeTable ( ) assert.stack_0
+
+tp: droppedTable
 
   <OK>
 ;
@@ -629,6 +640,95 @@ tp ( "<tableNm>" )
   // 128 clip
 
    <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: ~lf ( )
+
+tp: lfOnAll
+
+  // set indirect call to be lf_
+  $$ "lf_"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: lfOnAllDone
+
+  drop ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents across the grid                                       */
+/*----------------------------------------------------------------------------*/
+: lfG
+
+  ~lf
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf$ ( )
+
+tp: lf
+
+  "LISTING FOLDER on NODE " args.node >str concat .
+
+  ""
+  word.this dup iterate
+
+  dup strlen if "\n" concat then
+
+  object@ word.name 12 strpad concat
+
+  "(" concat
+
+  object@ isTable if
+  "table " concat
+  object@ execute table.space bytes.magnitude concat
+  then
+
+  object@ isFolder if
+  object@ execute dic.kind@ word.name concat
+  then
+
+  ")" concat
+
+  object@ prevWord object!
+
+  next
+
+  // 128 clip
+
+  .
+
+  //drop ( "<tenantNm>" )
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf_ (  #folders -- true )
+
+  depth 0 != if
+    "dicStack!" strEql
+    if
+  tp: settingDicStack
+    !indirect drop
+    then
+  then
+
+  lf$
 ;
 
 /*----------------------------------------------------------------------------*/

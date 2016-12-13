@@ -431,6 +431,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bGetDicContents(pWords);
   }
   
+  if (String::bEqualTo("lfG",pWords[0],C_NO_CASE)) {
+    return bGetDicContentsG(pWords);
+  }
+  
   if (String::bEqualTo("lscat",pWords[0],C_NO_CASE)) {
     return bListCatalogs(pWords, iWords);
   }
@@ -1433,6 +1437,20 @@ bool SEitf::bGetDicContents(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"lf"));
   sRequest = "lf";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get dictionary contents                                                    */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetDicContentsG(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(String::bEqualTo(pWords[0],"lfG"));
+  sRequest = "lfG";
   return bAppendRequest(sRequest);
 }
 
