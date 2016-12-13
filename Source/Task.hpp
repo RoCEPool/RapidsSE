@@ -642,6 +642,7 @@ namespace Tasks
     static void vRowCursorInit(NNP_Task nnpTask);
     static void vRowCursorNew(NNP_Task nnpTask);
     static void vRowCursorNext(NNP_Task nnpTask);
+    static void vRowCursorRowBuffer(NNP_Task nnpTask);
     static void vRowCursorTableFetch(NNP_Task nnpTask);
     static void vRowCursorTableStore(NNP_Task nnpTask);
     

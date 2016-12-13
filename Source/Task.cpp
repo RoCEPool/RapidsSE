@@ -928,6 +928,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rowCursor.init",   &vRowCursorInit,   false);
   vAddPrimitive("rowCursor.new",    &vRowCursorNew,    false);
   vAddPrimitive("rowCursor.next",   &vRowCursorNext,   false);
+  vAddPrimitive("rowCursor.rowBuffer", &vRowCursorRowBuffer,  false);
   vAddPrimitive("rowCursor.table@", &vRowCursorTableFetch, false);
   vAddPrimitive("rowCursor.table!", &vRowCursorTableStore, false);
   
@@ -1996,8 +1997,10 @@ void Task::vTokenNext(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(const char* aMark)
 {
-  i8 iPause = Random::iRandom(999,99999);
-  PosixThread::vSleepMicro(iPause);
+  if (gxArguments.m_nNodes > 1) {
+    i8 iPause = Random::iRandom(999,99999);
+    PosixThread::vSleepMicro(iPause);
+  }
   
   char aRoutine[128];
   
@@ -8651,6 +8654,28 @@ ENTRY("vRowCursorNext");
   i8 bRow = pRowCursor->pRowAsStr() ? 1 : 0;
   
   nnpTask->m_xParamStack.vPush(bRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowcursor.rowBuffer -- get current rowBuffer                               */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorRowBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vRowCursorRowBuffer");
+  
+  Object* pPtrRowCursor;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
+  THROW_INVALID_PARAM("rowcursor.rowBuffer");
+  
+  RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  RowBuffer* pRowBuffer;
+  pRowBuffer = pRowCursor->pRowBuffer();
+  
+  nnpTask->m_xParamStack.vPush(pRowBuffer);
   
   EXIT();
 }

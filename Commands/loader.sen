@@ -270,6 +270,44 @@ stk
   stk
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* a bit of rowbuffer testing                                                 */
+/*----------------------------------------------------------------------------*/
+: rbTest
+
+  checkInTables assert
+
+  "j10" ( "<tableNm" )
+
+  checkIsTable assert ( "<tableNm" )
+
+  find execute ( table )
+
+  "__row_cursor" :rowCursor execute ( table rowCursor )
+
+  tuck rowCursor.table! ( table )
+
+  dup rowCursor.first drop
+
+  rowCursor.rowBuffer
+
+tp: rowBuffer
+
+  $$ swap
+
+tp: marker
+
+  $$>valset
+
+tp: valset
+
+  drop
+
+  "__row_cursor" find >forget
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

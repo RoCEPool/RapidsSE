@@ -4,6 +4,8 @@
 
 #include "Values.h"
 
+#include "RowBuffer.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -49,6 +51,18 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
   
   m_iBytes += iSize;
   pCursor  += iSize;
+  
+  // test for a rowbuffer pointer
+  if (CN_PTRVAL == xVal.eClass()) {
+    
+    PtrVal* pPtrVal = (PtrVal*)&xVal;
+    
+    if (pPtrVal->pPtr() &&
+        CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
+      m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
+      m_iRowBufferBytes = m_pRowBuffer->iBytesUsed();
+    }
+  }
 }
 
 /*----------------------------------------------------------------------------*/
