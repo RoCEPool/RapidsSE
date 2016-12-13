@@ -138,7 +138,11 @@ tp: mkTenOnAllDone
 /*----------------------------------------------------------------------------*/
 : removeTenant$ ( "<tenantNm>" -- true )
 
-  tp: removetenant$
+tp: removetenant$
+
+  args.tracepoint if
+    dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
+  then
 
   :forget ( )
 
@@ -150,13 +154,11 @@ tp: mkTenOnAllDone
 /*----------------------------------------------------------------------------*/
 : removeTenant ( "<tenantNm>" -- true )
 
-  dicStack!
-
-  task.this task.name@ "p0.task" streql not if
-  "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
-
-  dup "removing tenant " swap concat .
 
   removeTenant$
 ;
@@ -168,8 +170,12 @@ tp: mkTenOnAllDone
 
 tp: rmTenOnAll
 
-  // set indirect call to be dropTenant
-  "removeTenant" 2 ( "<tenantNm>" "dropTenant" 2 )
+  // set indirect call to be makeTenant
+  $$ swap "removeTenant"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
