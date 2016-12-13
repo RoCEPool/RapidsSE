@@ -52,6 +52,7 @@ Arguments::Arguments(void)
   m_bUnitTests  = false;
   m_bVerbose    = false;
   m_bWelcome    = true;
+  m_iSleep      = 1;
   
   m_iPartition  = 0;
   
@@ -346,6 +347,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
       m_bWelcome = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--sleep",argv[iArg],C_NO_CASE)) {
+      m_iSleep = String::iToI8(argv[++iArg]);
       continue;
     }
     

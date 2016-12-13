@@ -5,7 +5,7 @@
 docol gn
 docol cs
 
-sleep 10
+sleep 5
 
 print "Grid started"
 

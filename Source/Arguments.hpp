@@ -46,6 +46,7 @@ namespace StorageEngine
     bool m_bUnitTests;  // run unit tests
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
+    i8   m_iSleep;      // sleep period for yield (temporary)
     
     // seitf options
     i8   m_iPartition;  // which partition
