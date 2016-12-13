@@ -84,7 +84,32 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
   
   pCursor += iSize;
   
+  // test for a rowbuffer pointer
+  if (CN_PTRVAL == pVal->eClass()) {
+    
+    if (pVal->pPtr() &&
+        CN_ROWBUFFER == ((Object*)pVal->pPtr())->eClass()) {
+      *pVal = m_pRowBuffer;
+    }
+  }
+    
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row buffer                                                             */
+/*----------------------------------------------------------------------------*/
+DBobjects::RowBuffer* ValSet::pRowBuffer(void)
+{
+  return m_pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row buffer                                                             */
+/*----------------------------------------------------------------------------*/
+void ValSet::vRowBuffer(DBobjects::RowBuffer* pRowBuffer)
+{
+  m_pRowBuffer = pRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
