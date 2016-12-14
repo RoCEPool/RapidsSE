@@ -875,6 +875,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
   vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
   
+  vAddPrimitive("loaderSub.appendBuffer",&vLoaderSubAppendBuffer,false);
   vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
   vAddPrimitive("loaderSub.completed",   &vLoaderSubCompleted,   false);
   vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
@@ -883,6 +884,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
   vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
   vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
+  vAddPrimitive("loaderSub.insertRow?",  &vLoaderSubInsertRow2,  false);
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
   vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
   
@@ -7077,6 +7079,21 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 // loaderSub: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* loaderSub.appendBuffer -- append buffer into table                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubAppendBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubAppendBuffer");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  pLoaderSub->vAppendBuffer();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loaderSub.begin -- begin loading                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubBegin(NNP_Task nnpTask)
@@ -7190,7 +7207,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow -- insert row into table being loaded                  */
+/* loaderSub.insertRow -- insert row into buffer (buffer into table when full)*/
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 {
@@ -7200,6 +7217,23 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   bool bInserted = pLoaderSub->bInsertRow();
+  
+  nnpTask->m_xParamStack.vPush(bInserted);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.insertRow2 -- insert row into buffer                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubInsertRow2(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubInsertRow?");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  bool bInserted = pLoaderSub->bInsertRow2();
   
   nnpTask->m_xParamStack.vPush(bInserted);
   

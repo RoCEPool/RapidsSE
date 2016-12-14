@@ -31,12 +31,18 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* form loaderSubNm                                                           */
+/*----------------------------------------------------------------------------*/
+: >loadSubNm ( i -- s )
+
+  "loadSub_" swap >str concat
+;
+
+/*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
-
-: >loadSubNm ( i -- s ) "loadSub_" swap >str concat ;
-
-: loadSub ( ^LoaderSub )
+/*
+: loadSub ( ^LoaderSub -- )
 //traceOn
 
   reg.push
@@ -58,6 +64,55 @@
   loaderSub.end
 
   loaderSub.completed if signalParentThread then
+
+  reg.pop
+
+//traceOff
+;
+*/
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: loadSub ( ^loaderSub -- )
+//traceOn
+
+  reg.push
+
+  >reg0
+
+  loaderSub.begin
+
+  begin
+
+    // fetch next record from file
+    loaderSub.fetchRecord
+
+    if
+      // hash the record to get partition
+      loaderSub.hashRecord
+
+      // attempt to insert row into working buffer
+      loaderSub.insertRow?
+
+      // was buffer full
+      not if
+        // append buffer to table
+        loaderSub.appendBuffer
+
+        // insert row into new working buffer
+        loaderSub.insertRow? assert
+      then
+      true
+    else
+      false
+    then
+
+  while repeat
+
+  loaderSub.end
+
+  loaderSub.completed
+  if
+    signalParentThread
+  then
 
   reg.pop
 

@@ -539,6 +539,7 @@ namespace Tasks
     static void vLoaderTableStore(NNP_Task nnpTask);
     static void vLoaderTxRefStore(NNP_Task nnpTask);
     
+    static void vLoaderSubAppendBuffer(NNP_Task nnpTask);
     static void vLoaderSubBegin(NNP_Task nnpTask);
     static void vLoaderSubCompleted(NNP_Task nnpTask);
     static void vLoaderSubDelete(NNP_Task nnpTask);
@@ -547,6 +548,7 @@ namespace Tasks
     static void vLoaderSubHashRecord(NNP_Task nnpTask);
     static void vLoaderSubInit(NNP_Task nnpTask);
     static void vLoaderSubInsertRow(NNP_Task nnpTask);
+    static void vLoaderSubInsertRow2(NNP_Task nnpTask);
     static void vLoaderSubLoaderStore(NNP_Task nnpTask);
     static void vLoaderSubNew(NNP_Task nnpTask);
     

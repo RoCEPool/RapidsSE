@@ -38,12 +38,14 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void vAppendBuffer(void);
     void vBegin(void);
     bool bCompleted(void);
     void vEnd(void);
     bool bFetchRecord(void);
     void vHashRecord(void);
     bool bInsertRow(void);
+    bool bInsertRow2(void);
     void vLoader(Loader* pLoader);
     bool bReadChunk(void);
     

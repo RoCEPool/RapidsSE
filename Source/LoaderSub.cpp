@@ -107,6 +107,21 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append working buffer into table                                           */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vAppendBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  // get working buffer
+  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  m_pRowBuffer[m_iPartition] = nullptr;
+  
+  // append working buffer into table
+  m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin loading                                                              */
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vBegin(void)
@@ -257,6 +272,33 @@ bool LoaderSub::bInsertRow(void)
   bool bInserted = pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength);
   
   return bInserted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert row into working buffer                                             */
+/*----------------------------------------------------------------------------*/
+bool LoaderSub::bInsertRow2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  //vTrace("Row: %s\n",pStrVal->sStr());
+  
+  // check for working buffer
+  if (! m_pRowBuffer[m_iPartition]) {
+    m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
+    if (! m_pRowBuffer[m_iPartition]) {
+      vTrace("RowBuffer allocation failed\n");
+      return false;
+    }
+  }
+  
+  // get working buffer
+  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
+  
+  // insert row into working buffer
+  bool b = pRowBuffer->bInsertRow(m_pTxRef,m_pRecord,m_iLength);
+  
+  return b;
 }
 
 /*----------------------------------------------------------------------------*/
