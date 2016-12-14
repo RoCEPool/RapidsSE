@@ -83,7 +83,10 @@ stk
 */
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : loadSub ( ^loaderSub -- )
-//traceOn
+
+  valset> drop dicStack! assert
+
+  valset> drop
 
   reg.push
 
@@ -110,7 +113,7 @@ stk
         loaderSub.partition loaderSub.rowBuffer
         loaderSub.partition
         loaderSub.table
-stk
+//stk
         //table.appendBuffer
 
         $$>valset
@@ -202,7 +205,12 @@ timer: loadTimer
 
   N_GENERAL_THREADS 0 do
 
-    r2 loader.newSub 1 "loadSub" task.this task.new
+//traceon
+    $$ r2 loader.newSub $$>valset
+
+    seitf.path@ $$>valset
+
+    1 "loadSub" task.this task.new
 
     dup I >loadSubNm swap task.name!
 
