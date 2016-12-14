@@ -110,8 +110,23 @@
 
   while repeat
 
+  // check for dangling buffers
+  args.partitions 0 do
+    I loaderSub.rowBuffer
+    dup if
+      I
+      loaderSub.table
+      table.appendBuffer
+    else
+      drop
+    then
+
+  loop
+
+  // tidyup
   loaderSub.end
 
+  // this sub has completed
   loaderSub.completed
   if
     signalParentThread

@@ -168,11 +168,14 @@ void LoaderSub::vEnd(void)
   
   // append any dangling buffers
   for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++) {
+    /*
     if (m_pRowBuffer[iPartition]) {
       RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
       m_pRowBuffer[iPartition] = nullptr;
       m_pTable->vAppendBuffer(m_iPartition,pRowBuffer);
     }
+    */
+    ASSERT(! m_pRowBuffer[iPartition]);
   }
   
   // close the file being loaded
