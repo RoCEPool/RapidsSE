@@ -43,6 +43,8 @@
 /*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer
 
+  valset> drop dicStack! assert dic.stack
+
   valset> drop ( rowBuffer partition# table )
 stk
 
@@ -117,6 +119,11 @@ stk
         //table.appendBuffer
 
         $$>valset
+
+        // dic path
+        seitf.path@
+        $$>valset
+
         ~loadAppendBuffer
 
         // insert row into new working buffer
@@ -132,10 +139,19 @@ stk
   // check for dangling buffers
   args.partitions 0 do
     I loaderSub.rowBuffer
-    dup if
+    dup
+    if
+      $$ swap
       I
       loaderSub.table
-      table.appendBuffer
+
+      $$>valset
+
+      // dic path
+      seitf.path@
+      $$>valset
+
+      ~loadAppendBuffer
     else
       drop
     then
