@@ -312,6 +312,16 @@ void LoaderSub::vLoader(Loader* pLoader)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get partition number                                                       */
+/*----------------------------------------------------------------------------*/
+i8 LoaderSub::iPartition(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next chunk from file                                                  */
 /*----------------------------------------------------------------------------*/
 bool LoaderSub::bReadChunk(void)
@@ -350,6 +360,28 @@ bool LoaderSub::bReadChunk(void)
   m_pLoadChunk->vReadChunk(iSeek,nBytes);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rowBuffer                                                              */
+/*----------------------------------------------------------------------------*/
+RowBuffer* LoaderSub::pRowBuffer(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+  
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table                                                                  */
+/*----------------------------------------------------------------------------*/
+Table* LoaderSub::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  return m_pTable;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -551,6 +551,9 @@ namespace Tasks
     static void vLoaderSubInsertRow2(NNP_Task nnpTask);
     static void vLoaderSubLoaderStore(NNP_Task nnpTask);
     static void vLoaderSubNew(NNP_Task nnpTask);
+    static void vLoaderSubPartition(NNP_Task nnpTask);
+    static void vLoaderSubRowBuffer(NNP_Task nnpTask);
+    static void vLoaderSubTable(NNP_Task nnpTask);
     
     // lock
     static void vLockDropRead(NNP_Task nnpTask);

@@ -47,7 +47,10 @@ namespace DBobjects
     bool bInsertRow(void);
     bool bInsertRow2(void);
     void vLoader(Loader* pLoader);
+    i8   iPartition(void);
     bool bReadChunk(void);
+    RowBuffer* pRowBuffer(i8 iPartition);
+    Table* pTable(void);
     
     Footer* pFooter(void);
   };

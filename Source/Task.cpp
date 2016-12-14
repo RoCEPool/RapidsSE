@@ -887,6 +887,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.insertRow?",  &vLoaderSubInsertRow2,  false);
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
   vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
+  vAddPrimitive("loaderSub.partition",   &vLoaderSubPartition,   false);
+  vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
+  vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -7279,6 +7282,73 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* loaderSub.partition -- get partition number derived from hash of record    */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubPartition(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubPartition");
+  
+  Object* pPtrLoaderSub;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
+    THROW_INVALID_PARAM("loaderSub.partition");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  i8 iPartition = pLoaderSub->iPartition();
+  
+  nnpTask->m_xParamStack.vPush(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.rowBuffer -- get row buffer of given partition                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubRowBuffer");
+  
+  Object* pPtrLoaderSub;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
+    THROW_INVALID_PARAM("loaderSub.rowBuffer");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  i8 iPartition;
+  if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
+    THROW_INVALID_PARAM("loaderSub.rowBuffer");
+  
+  RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer(iPartition);
+  
+  nnpTask->m_xParamStack.vPush(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.table -- get table being loaded                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubTable(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubTable");
+  
+  Object* pPtrLoaderSub;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
+    THROW_INVALID_PARAM("loaderSub.table");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  Table* pTable = pLoaderSub->pTable();
+  
+  nnpTask->m_xParamStack.vPush(pTable);
+  
+  EXIT();
+}
+
 // lock: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -8437,19 +8507,19 @@ ENTRY("vRowBufferAppend");
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PARAM("rowbuffer.append");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PARAM("rowbuffer.append");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   s8K sRecord;
   if ( ! nnpTask->m_xParamStack.bPop(sRecord) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PARAM("rowbuffer.append");
 
   i8 iLength = sRecord.iLength();
   
@@ -9672,21 +9742,19 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
     THROW_INVALID_PARAM("table.appendBuffer");
-  
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iPartition = 0;
+  if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
+    THROW_INVALID_PARAM("table.appendBuffer");
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
     THROW_INVALID_PARAM("table.appendBuffer");
-  
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
-  
-  
-  i8 iPartition = 0;
-  
+    
   pTable->vAppendBuffer(iPartition,pRowBuffer);
   
   EXIT();
