@@ -370,6 +370,8 @@ RowBuffer* LoaderSub::pRowBuffer(i8 iPartition)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+
+  m_pRowBuffer[iPartition] = nullptr;
   
   return pRowBuffer;
 }

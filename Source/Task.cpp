@@ -7289,11 +7289,7 @@ void Task::vLoaderSubPartition(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubPartition");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.partition");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   i8 iPartition = pLoaderSub->iPartition();
@@ -7310,11 +7306,7 @@ void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubRowBuffer");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.rowBuffer");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   i8 iPartition;
@@ -7335,11 +7327,7 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
 {
   ENTRY("vLoaderSubTable");
   
-  Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.table");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   Table* pTable = pLoaderSub->pTable();

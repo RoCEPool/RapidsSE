@@ -92,10 +92,13 @@
       // attempt to insert row into working buffer
       loaderSub.insertRow?
 
-      // was buffer full
+      // was buffer full?
       not if
         // append buffer to table
-        loaderSub.appendBuffer
+        loaderSub.partition loaderSub.rowBuffer
+        loaderSub.partition
+        loaderSub.table
+        table.appendBuffer
 
         // insert row into new working buffer
         loaderSub.insertRow? assert
