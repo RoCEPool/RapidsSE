@@ -47,11 +47,6 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
   if ( ! pCursor )
     pCursor = pFirstByte();
   
-  Memory::vCopy(pCursor,&xVal,iSize);
-  
-  m_iBytes += iSize;
-  pCursor  += iSize;
-  
   // test for a rowbuffer pointer
   if (CN_PTRVAL == xVal.eClass()) {
     
@@ -61,8 +56,16 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
         CN_ROWBUFFER == ((Object*)pPtrVal->pPtr())->eClass()) {
       m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->iBytesUsed();
+      
+      xVal = (void*)C_ROWBUFFER_MARKER;
     }
   }
+  
+  Memory::vCopy(pCursor,&xVal,iSize);
+  
+  m_iBytes += iSize;
+  pCursor  += iSize;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,8 +90,7 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
   // test for a rowbuffer pointer
   if (CN_PTRVAL == pVal->eClass()) {
     
-    if (pVal->pPtr() &&
-        CN_ROWBUFFER == ((Object*)pVal->pPtr())->eClass()) {
+    if ((i8)C_ROWBUFFER_MARKER == pVal->iAsInt()) {
       *pVal = m_pRowBuffer;
     }
   }

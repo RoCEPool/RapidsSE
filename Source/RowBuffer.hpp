@@ -9,6 +9,7 @@
 namespace DBobjects
 {
   static const i8 C_BUFFER_THRESHOLD = 100;
+  static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
   
   class RowBuffer : public Buffer
   {

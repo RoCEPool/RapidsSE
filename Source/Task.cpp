@@ -5026,7 +5026,6 @@ ENTRY("vToValSet");
     if ( ! nnpTask->m_xParamStack.bPop(xVal) )
       THROW_INVALID_PARAM(">valset");
     
-    
     xValSet.vAppend(pCursor,xVal);
   }
 
