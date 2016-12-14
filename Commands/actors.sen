@@ -20,7 +20,7 @@
 
   "startActors" .putVerbose
 
-  bgtasks if
+  args.bgtasks if
 
     snooze generalThreadStart
 

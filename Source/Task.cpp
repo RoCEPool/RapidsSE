@@ -318,16 +318,16 @@ void Task::vAddConstants(void)
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic",            MAGIC);
-  vAddConstant("regionsize",       gxArguments.m_iRegionSize);
-  vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
-  vAddConstant("partitions",       gxArguments.m_nPartitions);
+  vAddConstant("args.bgtasks",     gxArguments.m_bBgTasks);
   vAddConstant("args.config",      gxArguments.m_bConfig);
   vAddConstant("args.node",        gxArguments.m_iNode);
   vAddConstant("args.nodes",       gxArguments.m_nNodes);
+  vAddConstant("args.partitions",  gxArguments.m_nPartitions);
+  vAddConstant("args.port",        gxArguments.m_iPort);
+  vAddConstant("args.regionSize",  gxArguments.m_iRegionSize);
+  vAddConstant("args.sleep",       gxArguments.m_iSleep);
   vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose",     gxArguments.m_bVerbose);
-  vAddConstant("args.port",        gxArguments.m_iPort);
-  vAddConstant("args.sleep",       gxArguments.m_iSleep);
   
   vAddConstant("true",    1);
   vAddConstant("false",   (i8)0);

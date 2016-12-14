@@ -348,7 +348,7 @@ tp: rmTblOnAllDone
   // r0 ^rowCursor
 
   r0 rowcursor.table!
-  partitions 0
+  args.partitions 0
   do
     // r2 ^rowCursor
     I r2 rowcursor.begin

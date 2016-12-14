@@ -14,7 +14,7 @@
     ""
     SE_PATH concat
     " --start " concat
-    " --size " concat regionSize >str concat
+    " --size " concat args.regionSize >str concat
     " --commands /Users/ray/Desktop/rapidsse/Commands" concat
     " --region /SE_" concat  swap >str concat
     " --node  " concat swap >str concat

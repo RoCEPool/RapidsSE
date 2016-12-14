@@ -30,7 +30,7 @@
   // r2 ^toTable
   // r3 ^fromTable
 
-  partitions 0
+  args.partitions 0
   do
     // r0 partition
     // r1 partitions
