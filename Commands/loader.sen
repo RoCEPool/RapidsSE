@@ -45,8 +45,11 @@
 
   valset> drop dicStack! assert dic.stack
 
-  valset> drop ( rowBuffer partition# table )
+  valset> drop ( rowBuffer partition# tableNm )
+
 stk
+
+  find execute dup table.name .
 
   table.appendBuffer
 ;
@@ -114,7 +117,7 @@ stk
         $$
         loaderSub.partition loaderSub.rowBuffer
         loaderSub.partition
-        loaderSub.table
+        loaderSub.table table.name
 //stk
         //table.appendBuffer
 
@@ -143,7 +146,7 @@ stk
     if
       $$ swap
       I
-      loaderSub.table
+      loaderSub.table table.name
 
       $$>valset
 
