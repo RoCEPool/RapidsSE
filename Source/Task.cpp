@@ -1038,6 +1038,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.drop",         &vTableDrop,         false);
   vAddPrimitive("table.init",         &vTableInit,         false);
   vAddPrimitive("table.insert",       &vTableInsert,       false);
+  vAddPrimitive("table.name",         &vTableName,         false);
   vAddPrimitive("table.ref",          &vTableRef,          false);
   vAddPrimitive("table.space",        &vTableSpace,        false);
   vAddPrimitive("table.truncate",     &vTableTruncate,     false);
@@ -9859,6 +9860,29 @@ ENTRY("vTableInsert");
                      xRow.pAsStrVal()->sStr(),
                      xRow.pAsStrVal()->iChars());
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.name -- get table name                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTableName(NNP_Task nnpTask)
+{
+  ENTRY("vTableName");
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
+    THROW_INVALID_PARAM("table.init");
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  s32 sName;
+  
+  sName = pTable->pTableName();
+  
+  nnpTask->m_xParamStack.vPush(sName);
+
   EXIT();
 }
 

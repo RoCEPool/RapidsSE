@@ -39,6 +39,17 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* distributable form of table.appendBuffer                                   */
+/*----------------------------------------------------------------------------*/
+: ~loadAppendBuffer
+
+  valset> drop ( rowBuffer partition# table )
+stk
+
+  table.appendBuffer
+;
+
+/*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
 /*
@@ -95,10 +106,15 @@
       // was buffer full?
       not if
         // append buffer to table
+        $$
         loaderSub.partition loaderSub.rowBuffer
         loaderSub.partition
         loaderSub.table
-        table.appendBuffer
+stk
+        //table.appendBuffer
+
+        $$>valset
+        ~loadAppendBuffer
 
         // insert row into new working buffer
         loaderSub.insertRow? assert
