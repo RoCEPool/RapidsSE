@@ -41,6 +41,24 @@
 /*----------------------------------------------------------------------------*/
 /* distributable form of table.appendBuffer                                   */
 /*----------------------------------------------------------------------------*/
+: loadAppendBuffer$
+
+  find execute dup table.name .
+
+  table.appendBuffer
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributable form of table.appendBuffer                                   */
+/*----------------------------------------------------------------------------*/
+: loadAppendBuffer
+
+  loadAppendBuffer$
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributable form of table.appendBuffer                                   */
+/*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer
 
   valset> drop dicStack! assert dic.stack
