@@ -50,7 +50,7 @@ namespace DBobjects
     i8   iPartition(void);
     void vPartition(i8 iPartition);
     bool bReadChunk(void);
-    RowBuffer* pRowBuffer(i8 iPartition);
+    RowBuffer* pRowBuffer(void);
     void vRowBuffer(RowBuffer* pRowBuffer);
     Table* pTable(void);
     

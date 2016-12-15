@@ -378,13 +378,13 @@ bool LoaderSub::bReadChunk(void)
 /*----------------------------------------------------------------------------*/
 /* get rowBuffer                                                              */
 /*----------------------------------------------------------------------------*/
-RowBuffer* LoaderSub::pRowBuffer(i8 iPartition)
+RowBuffer* LoaderSub::pRowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
-  RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
+  RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
-  m_pRowBuffer[iPartition] = nullptr;
+  m_pRowBuffer[m_iPartition] = nullptr;
   
   return pRowBuffer;
 }

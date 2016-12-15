@@ -7362,11 +7362,7 @@ void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  i8 iPartition;
-  if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
-    THROW_INVALID_PARAM("loaderSub.rowBuffer");
-  
-  RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer(iPartition);
+  RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer();
   
   nnpTask->m_xParamStack.vPush(pRowBuffer);
   

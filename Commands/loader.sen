@@ -133,7 +133,7 @@ stk
       not if
         // append buffer to table
         $$
-        loaderSub.partition loaderSub.rowBuffer
+        loaderSub.rowBuffer
         loaderSub.partition
         loaderSub.table table.name
 //stk
@@ -159,11 +159,12 @@ stk
 
   // check for dangling buffers
   args.partitions 0 do
-    I loaderSub.rowBuffer
+    I loaderSub.partition!
+    loaderSub.rowBuffer
     dup
     if
       $$ swap
-      I
+      loaderSub.partition
       loaderSub.table table.name
 
       $$>valset
