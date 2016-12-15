@@ -195,6 +195,17 @@ void String::vConcat(char* psDst, const char* psArg1, const char* psArg2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vConcat: concatenate i8 arg onto dst string                                */
+/*----------------------------------------------------------------------------*/
+void String::vConcat(char* psDst, i8 iArg)
+{
+  char aInt[32];
+  
+  wToString(iArg,aInt);
+  vConcat(psDst,aInt);
+}
+
+/*----------------------------------------------------------------------------*/
 /* sConcat: concatenate two strings                                           */
 /*----------------------------------------------------------------------------*/
 char* String::wConcat(const char* s1, const char* s2)

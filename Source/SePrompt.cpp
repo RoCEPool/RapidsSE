@@ -44,9 +44,22 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se ";
-  String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
-  String::vConcat(m_sPrompt.a(), "> ");
+  
+  //m_sPrompt = "se ";
+  //String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
+  //String::vConcat(m_sPrompt.a(), "> ");
+  
+  String::vSprint(m_sPrompt.a(),
+                  "[N%lld %lld] se %s%c> ",
+                  gxArguments.m_iNode,
+                  Process::iGetPid(),
+                  RAPIDSSE_VERSION_STRING,
+#ifdef _DEBUG
+                  'd'
+#else
+                  'r'
+#endif
+                  );
   
   m_bEcho   = false;
   
