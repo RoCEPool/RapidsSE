@@ -984,7 +984,7 @@ tp: printRB$
   execute dic.push
 
   // create catalog rapidsse (and schemas sub-folder)
-  "rapidsse" makeCatalog assert
+  "rapidsse" makeCatalog$ assert
 
   // go back to main dictionary
   dic.drop

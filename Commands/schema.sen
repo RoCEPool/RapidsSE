@@ -63,7 +63,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a named schema folder                                                 */
+/* make a schema folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
 : makeSchema$ ( "<schemaNm>" -- true )
 
@@ -85,22 +85,14 @@ tp: makingSchema
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a named schema folder                                                 */
-/*----------------------------------------------------------------------------*/
-: makeSchema ( "<schemaNm>" ... #folders -- true )
-
-  makeSchema$
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a named schema folder                                                 */
+/* have participants run: makeSchema$                                         */
 /*----------------------------------------------------------------------------*/
 : ~makeSchema ( "<schemaNm>" -- )
 
 tp: mkSchOnAll
 
   // set indirect call to be makeSchema
-  $$ swap "makeSchema"
+  $$ swap "makeSchema$"
 
 tp: theIndirectCall
 

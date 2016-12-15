@@ -208,7 +208,7 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a table                                                               */
+/* make a tenant (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
 : makeTable$ ( "<tableNm>" -- true )
 
@@ -231,22 +231,14 @@ tp: makingTable
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a table folder                                                        */
-/*----------------------------------------------------------------------------*/
-: makeTable ( "<tableNm>" ... #folders -- true )
-
-  makeTable$
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a table folder                                                        */
+/* have participants run: makeTable$                                          */
 /*----------------------------------------------------------------------------*/
 : ~makeTable ( "<tableNm>" -- )
 
 tp: mkTblOnAll
 
   // set indirect call to be makeTable
-  $$ swap "makeTable"
+  $$ swap "makeTable$"
 
 tp: theIndirectCall
 

@@ -51,7 +51,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add a column                                                               */
+/* add a column (run by participant)                                          */
 /*----------------------------------------------------------------------------*/
 : addColumn$ ( "<columnType>" "<columnNm>" -- <result> )
 
@@ -74,22 +74,14 @@ tp: addingColumn
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add a column                                                               */
-/*----------------------------------------------------------------------------*/
-: addColumn ( "<columnType>" "<columnNm>" ... #folders -- true )
-
-  addColumn$
-;
-
-/*----------------------------------------------------------------------------*/
-/* add a column                                                               */
+/* have participants run: addColumn$                                          */
 /*----------------------------------------------------------------------------*/
 : ~addColumn ( "<columnType>" "<columnNm>" -- )
 
 tp: addColOnAll
 
   // set indirect call to be addColumn
-  >r >r >r $$ r> r> r> "addColumn"
+  >r >r >r $$ r> r> r> "addColumn$"
 
   tp: theIndirectCall
 
