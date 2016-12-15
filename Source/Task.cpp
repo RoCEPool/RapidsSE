@@ -314,6 +314,12 @@ void Task::vAddConstants(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+#ifdef _DEBUG
+  vAddConstant("_DEBUG",1);
+#else
+  vAddConstant("_DEBUG",(i8)0);
+#endif
+  
   vAddConstant("largebuffersize",  C_SIZE_POOL_BUFFER);
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
