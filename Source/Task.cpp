@@ -895,7 +895,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
   vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
   vAddPrimitive("loaderSub.partition",   &vLoaderSubPartition,   false);
+  vAddPrimitive("loaderSub.partition!",  &vLoaderSubPartitionStore, false);
   vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
+  vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
   vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
@@ -7332,6 +7334,25 @@ void Task::vLoaderSubPartition(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loaderSub.partition! -- store partition number                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubPartitionStore(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubPartitionStore");
+  
+  i8 iPartition;
+  if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
+    THROW_INVALID_PARAM("loaderSub.partition!");
+ 
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+
+  pLoaderSub->vPartition(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loaderSub.rowBuffer -- get row buffer of given partition                   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
@@ -7348,6 +7369,28 @@ void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
   RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer(iPartition);
   
   nnpTask->m_xParamStack.vPush(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.rowBuffer! -- store row buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubRowBufferStore");
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("loaderSub.rowBuffer!");
+  
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  pLoaderSub->vRowBuffer(pRowBuffer);
   
   EXIT();
 }

@@ -325,6 +325,16 @@ i8 LoaderSub::iPartition(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set partition number                                                       */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vPartition(i8 iPartition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  m_iPartition = iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
 /* read next chunk from file                                                  */
 /*----------------------------------------------------------------------------*/
 bool LoaderSub::bReadChunk(void)
@@ -377,6 +387,17 @@ RowBuffer* LoaderSub::pRowBuffer(i8 iPartition)
   m_pRowBuffer[iPartition] = nullptr;
   
   return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rowBuffer                                                              */
+/*----------------------------------------------------------------------------*/
+void LoaderSub::vRowBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
+  
+  m_pRowBuffer[m_iPartition] = pRowBuffer;
+  
 }
 
 /*----------------------------------------------------------------------------*/
