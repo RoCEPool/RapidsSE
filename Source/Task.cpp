@@ -7381,7 +7381,7 @@ void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
     THROW_INVALID_PARAM("loaderSub.rowBuffer!");
   
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
-  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+  ASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
   
   LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());

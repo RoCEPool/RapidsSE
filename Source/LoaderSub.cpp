@@ -384,7 +384,7 @@ RowBuffer* LoaderSub::pRowBuffer(void)
   
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
 
-  m_pRowBuffer[m_iPartition] = nullptr;
+  //m_pRowBuffer[m_iPartition] = nullptr;
   
   return pRowBuffer;
 }
