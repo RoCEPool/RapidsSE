@@ -637,6 +637,7 @@ namespace Tasks
     // rowBuffer
     static void vRowBufferAppend(NNP_Task nnpTask);
     static void vRowBufferAppendRecord(NNP_Task nnpTask);
+    static void vRowBufferDump(NNP_Task nnpTask);
     static void vRowBufferNew(NNP_Task nnpTask);
     
     // rowCursor

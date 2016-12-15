@@ -28,9 +28,14 @@ namespace Values
     
     void vAppend(char*& pCursor, ValWsp& xVal);
     bool bExtract(char*& pCursor, ValWsp*& pVal);
+    bool bExtract(char*& pCursor, eCN& eClassNo, ValWsp*& pVal);
     
     DBobjects::RowBuffer* pRowBuffer(void);
     void vRowBuffer(DBobjects::RowBuffer* pRowBuffer);
+    
+    DBobjects::RowBuffer* pGetRowBuffer();
+    bool bHasRowBuffer();
+    bool bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer);
     
     i8   iSize(void);
     

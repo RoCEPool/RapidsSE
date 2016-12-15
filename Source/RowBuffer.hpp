@@ -25,6 +25,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     RowBuffer(void);
+    RowBuffer(i8 iDataBytes);
     ~RowBuffer(void);
     
     static RowBuffer* pNewRowBuffer(void);
@@ -47,8 +48,10 @@ namespace DBobjects
     
     bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
-  private:
     Object* pDataArea(void);
+    
+  private:
+    
     i8      iFreeSpace(void);
   };
   

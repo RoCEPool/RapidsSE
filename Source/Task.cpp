@@ -924,6 +924,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
   vAddPrimitive("rowBuffer.appendRecord", &vRowBufferAppendRecord, false);
+  vAddPrimitive("rowBuffer.dump",   &vRowBufferDump,    false);
   vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
   
   vAddPrimitive("rowCursor.begin",  &vRowCursorBegin,  false);
@@ -8592,6 +8593,29 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rowbuffer.dump -- dump the row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vRowBufferDump(NNP_Task nnpTask)
+{
+  ENTRY("vRowBufferDump");
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("rowbuffer.dump");
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+
+  Row* pRow = pRowBuffer->pFirstRow();
+  
+  while (pRow) {
+    pRow->vDump();
+    pRow = pRowBuffer->pNextRow(pRow);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* rowbuffer.new -- new a row buffer                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferNew(NNP_Task nnpTask)
@@ -12589,7 +12613,8 @@ ENTRY("vSocketSend");
   SysCall xSysCall;
   Socket* pSocket;
   Object* pObject;
-  ValSet xValSet;
+  ValSet  xValSet;
+  bool    bResult;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
     THROW_INVALID_PARAM("socket.send");
@@ -12598,19 +12623,24 @@ ENTRY("vSocketSend");
     THROW_INVALID_PARAM("socket.send");
   
   pSocket = reinterpret_cast<Socket*>(pObject);
-  
-  // first send the number of bytes that will follow
+
+  //******************************************************************
+  // Send the size of valset
+  //******************************************************************
   i8 iBytes = xValSet.iSize();
-  bool bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+  bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
     nnpTask->m_xParamStack.vPush((i8)0);
     
-    goto exit;
+    //goto exit;
+    EXIT();
   }
   
+  //******************************************************************
   // now send the actual value set
+  //******************************************************************
   bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
   
   if ( ! bResult ) {
@@ -12618,6 +12648,42 @@ ENTRY("vSocketSend");
     nnpTask->m_xParamStack.vPush((i8)0);
   }
   
+  //******************************************************************
+  // get rowBuffer if any in valset
+  //******************************************************************
+  RowBuffer* pRowBuffer = xValSet.pGetRowBuffer();
+  
+  if (pRowBuffer) {
+    
+    //******************************************************************
+    // send rowBuffer size
+    //******************************************************************
+    i8 iBytes = pRowBuffer->iBytesUsed();
+    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+    
+    if ( ! bResult ) {
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      nnpTask->m_xParamStack.vPush((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+    //******************************************************************
+    // send rowBuffer itself
+    //******************************************************************
+    bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
+    
+    if ( ! bResult ) {
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      nnpTask->m_xParamStack.vPush((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+  }
+
   nnpTask->m_xParamStack.vPush((i8)1);
   
 exit:
@@ -12652,19 +12718,53 @@ void Task::vSocketRecv(NNP_Task nnpTask)
            
            pSocket->m_iSocketId);
   
-  // recv number of bytes that follow
+  //******************************************************************
+  // Receive the size of valset
+  //******************************************************************
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
   
-  // recv value set
+  //******************************************************************
+  // Receive the valset
+  //******************************************************************
   bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
-  
-  //vTrace("%s received on %lld %p\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, &xValSet);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+  //******************************************************************
+  // Check if valset has a row buffer
+  //******************************************************************
+  bool bHasRowBuffer = xValSet.bHasRowBuffer();
+  
+  if (bHasRowBuffer) {
+    
+    //******************************************************************
+    // receive rowBuffer size
+    //******************************************************************
+    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+    
+    //******************************************************************
+    // receive rowBuffer
+    //******************************************************************
+    RowBuffer* pRowBuffer = new RowBuffer(iBytes);
+    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->pDataArea()), xSysCall);
+  
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+
+    //******************************************************************
+    // set rowBuffer in valset
+    //******************************************************************
+    bool bSet = xValSet.bSetRowBuffer(pRowBuffer);
+    ASSERT(bSet);
+  }
   
   nnpTask->m_xParamStack.vPush(xValSet);
   

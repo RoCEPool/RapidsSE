@@ -65,6 +65,23 @@ RowBuffer::RowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+RowBuffer::RowBuffer(i8 iDataBytes)
+: Buffer(CN_ROWBUFFER)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_pFreeSpace  = static_cast<Object*>(pvAdd(pDataArea(),iDataBytes));
+  m_pPrevBuffer = nullptr;
+  m_pNextBuffer = nullptr;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  _checkInitialised_(CN_ROWBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 RowBuffer::~RowBuffer(void)

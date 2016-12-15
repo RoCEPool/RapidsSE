@@ -471,6 +471,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bCreateTenant(pWords, iWords);
   }
   
+  if (String::bEqualTo("pRB",pWords[0],C_NO_CASE)) {
+    return bPrintRowBuffer(pWords);
+  }
+  
   if (String::bEqualTo("pwf",pWords[0],C_NO_CASE)) {
     return bGetDicPath(pWords);
   }
@@ -1535,6 +1539,26 @@ bool SEitf::bPing(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print row buffer                                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPrintRowBuffer(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+
+  ASSERT(String::bEqualTo(pWords[0],"pRB"));
+  String::vConcat(a," pRB");
+  
   return bAppendRequest(sRequest);
 }
 

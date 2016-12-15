@@ -132,6 +132,7 @@ namespace Interface
     bool bSeitfCount(char* pWords[]);
     
     bool bPing(char* pWords[]);
+    bool bPrintRowBuffer(char* pWords[]);
     
     bool bX(char* pWords[]);
     void vPrint(char* pWords[]);
