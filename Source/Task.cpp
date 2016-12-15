@@ -645,6 +645,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("drop",            &vDrop,             false);
   vAddPrimitive("2drop",           &vDropTwo,          false);
   vAddPrimitive("dup",             &vDup,              false);
+  vAddPrimitive("?dup",            &vDupNonZero,       false);
   vAddPrimitive("dump",            &vDump,             false);
   vAddPrimitive("else",            &vElse,             true );
   vAddPrimitive("encodeCall",      &vEncodeCall,       false);
@@ -2691,6 +2692,29 @@ ENTRY("vDup");
   
   nnpTask->m_xParamStack.vPush(xValA);
   nnpTask->m_xParamStack.vPush(xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?dup -- dup top of param stack if non zero                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDupNonZero(NNP_Task nnpTask)
+{
+  ENTRY("vDupNonZero");
+  
+  // could just copy from stack back into stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+    THROW_INVALID_PARAM("?dup");
+  
+  if (xValA.iAsInt()) {
+    nnpTask->m_xParamStack.vPush(xValA);
+    nnpTask->m_xParamStack.vPush(xValA);
+  }
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
   
   EXIT();
 }
