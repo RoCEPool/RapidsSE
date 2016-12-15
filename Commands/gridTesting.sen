@@ -40,12 +40,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : gn
 
+  // test for single node
+  args.nodes 1 == if exit then
+
   args.nodes 1 do
     I se_command
     dup .
     shell.execute .
   loop
-  
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
