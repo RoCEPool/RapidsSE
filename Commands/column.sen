@@ -53,7 +53,7 @@
 /*----------------------------------------------------------------------------*/
 /* add a column (run by participant)                                          */
 /*----------------------------------------------------------------------------*/
-: addColumn$ ( "<columnType>" "<columnNm>" -- <result> )
+: addColumn$ ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
 
   args.tracepoint if
     dup "ADDING COLUMN " swap concat " on NODE " concat args.node >str concat .
@@ -76,7 +76,7 @@ tp: addingColumn
 /*----------------------------------------------------------------------------*/
 /* have participants run: addColumn$                                          */
 /*----------------------------------------------------------------------------*/
-: ~addColumn ( "<columnType>" "<columnNm>" -- )
+: ~addColumn ( "<columnType>" "<columnNm>" "<tableNm>" -- )
 
 tp: addColOnAll
 
