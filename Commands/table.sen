@@ -235,12 +235,6 @@ tp: makingTable
 /*----------------------------------------------------------------------------*/
 : makeTable ( "<tableNm>" ... #folders -- true )
 
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
   makeTable$
 ;
 

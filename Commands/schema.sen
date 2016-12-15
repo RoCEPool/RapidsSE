@@ -89,12 +89,6 @@ tp: makingSchema
 /*----------------------------------------------------------------------------*/
 : makeSchema ( "<schemaNm>" ... #folders -- true )
 
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
   makeSchema$
 ;
 

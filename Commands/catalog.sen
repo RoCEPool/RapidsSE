@@ -103,12 +103,6 @@ tp: makeCatalog
 /*----------------------------------------------------------------------------*/
 : makeCatalog ( "<catalogNm>" ... #folders -- true )
 
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
   makeCatalog$
 ;
 

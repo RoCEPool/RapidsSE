@@ -78,12 +78,6 @@ tp: addingColumn
 /*----------------------------------------------------------------------------*/
 : addColumn ( "<columnType>" "<columnNm>" ... #folders -- true )
 
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
   addColumn$
 ;
 
