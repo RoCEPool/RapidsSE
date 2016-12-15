@@ -219,6 +219,18 @@ tp: layeringParts
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add send to one participant                                                */
+/*----------------------------------------------------------------------------*/
+: addParticipant ( valset node -- valset )
+
+  ">participant>" ( valset node ">participant>" )
+
+ tp: layeringPart
+
+  $$>valset ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
 /* add set caller                                                             */
 /*----------------------------------------------------------------------------*/
 : addCaller
@@ -917,6 +929,48 @@ tp: expandedResult
   tp: allResponded
 ;
 
+/*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to a given participant to execute          */
+/*----------------------------------------------------------------------------*/
+: >participant>
+
+tp: >participant>
+
+  addCaller
+  >r
+
+tp: movedToRstack
+
+  args.nodes 0 do
+
+    1 task.this task.acks!
+
+tp: expectingAcks
+
+    2 rpick
+
+    I ppQueues @
+
+tp: forwardingToPP
+
+    >queue
+
+    task.suspend
+
+tp: haveResultSet
+    valset>
+
+tp: expandedResult
+    drop assert
+
+  loop
+
+  rdrop
+
+  true
+
+tp: allResponded
+;
 
 /*----------------------------------------------------------------------------*/
 /* queue an indirect call to the coordinator and wait for result              */
@@ -935,7 +989,7 @@ tp: viaCoordinator
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinator sends indirect call to each participant to execute             */
+/* coordinator to send indirect call to each participant to execute           */
 /*----------------------------------------------------------------------------*/
 : >>participants>OLD ( ... "<wordNm>" #values -- bool )
 
@@ -986,11 +1040,29 @@ tp: done
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : >>participants> ( $$ ... "<wordNm>" -- bool )
 
-tp: >>participants
+tp: >>participants>
 
   addDicPath
 
   addParticipants
+
+  >coordinator> ( bool )
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinator to send indirect call to a participant to execute              */
+/*----------------------------------------------------------------------------*/
+: >>participant> ( $$ ... "<wordNm>" node# -- bool )
+
+tp: >>participant>
+
+  // save the node number
+  >r
+
+  addDicPath
+
+  r>
+  addParticipant
 
   >coordinator> ( bool )
 ;
