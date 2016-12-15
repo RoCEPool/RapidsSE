@@ -105,13 +105,17 @@ tp: makingTenant
 
 tp: mkTenOnAll
 
-  // set indirect call to be makeTenant
-  $$ swap "makeTenant$"
+  // set up indirect parameters
+  $$ swap
+
+  // the indirect word to be called
+  "makeTenant$"
 
 tp: theIndirectCall
 
   $$>valset ( valset )
 
+  // makeTenant$ to be executed by all participants
   >>participants> ( bool )
 
 tp: mkTenOnAllDone

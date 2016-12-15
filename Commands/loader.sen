@@ -80,9 +80,38 @@
 
 stk
 
-  find execute dup table.name .
+  //find execute dup table.name .
 
-  table.appendBuffer
+  //table.appendBuffer
+
+  loadAppendBuffer$
+;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: ~loadAppendBufferNEW
+
+tp: appBufOnAll ( -- )
+
+  // set up indirect parameters
+  $$
+  loaderSub.rowBuffer
+  nullPtr loaderSub.rowBuffer!
+  loaderSub.partition
+  loaderSub.table table.name
+
+  // the indirect word to be called
+  "loadAppendBuffer$"
+
+tp: theIndirectCall
+
+  $$>valset
+
+  // loadAppendBuffer$ to be executed by one participant
+  loaderSub.partition
+  >>participant> ( bool )
+
+tp: appBufOnAllDone
+
+  drop ( )
 ;
 
 /*----------------------------------------------------------------------------*/
