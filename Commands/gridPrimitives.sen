@@ -964,6 +964,7 @@ tp: expandedResult
   // c) valset on stack to be forwarded to participant on given node
   //    that valset contains one or more indirect calls
 
+"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
 tp: >participant>
 
   // save participant# onto rstack
@@ -1028,53 +1029,6 @@ tp: viaCoordinator
 /*----------------------------------------------------------------------------*/
 /* coordinator to send indirect call to each participant to execute           */
 /*----------------------------------------------------------------------------*/
-: >>participants>OLD ( ... "<wordNm>" #values -- bool )
-
-tp: unpacking
-
-  valset>
-
-tp: fwdToEachPart
-
-  swap ( ... #values "<wordNm>" )
-  >r   ( ... #values )
-  >r   ( ... )
-  // r1 has "<wordNm>"
-  // r0 has #values
-
-  seitf.path@ ( ... "<wordNm>" path... #folders )
-
-  dup ( ... "<wordNm>" path... #folders #folders )
-
-  "dicStack!" swap ( ... "<wordNm>" path... #folders "dicStack!" #folders )
-
-  r> + 2 + ( ... "<wordNm>" path... #folders "dicStack!" #values+#folders+2 )
-  //r0 has "<wordNm>"
-
-  r> swap ( ... "<wordNm>" path... #folders "dicStack!" "<wordNm>" #values+#folders+2 )
-
-tp: splicedDicPath
-
-  dup ( ... "<wordNm>" path... #folders "dicStack!"  "<wordNm>"
-        #values+#folders+2 #values+#folders+2 )
-
-  ">participants>" ( ... "<wordNm>" path... #folders "dicStack!" "<wordNm>"
-                     #values+#folders+2 #values+#folders+2 ">participants>" )
-
-  swap ( ... "<wordNm>" path... #folders "<wordNm>" "dicStack!"
-         #values+#folders+2 ">participants>" #values+#folders+2 )
-
-  2 + ( ... "<wordNm>" path... #folders "<wordNm>" "dicStack!"
-            #values+#folders+2 ">participants>" #totalValues )
-
-tp: ...toBeExecuted
-
-  >coordinator> ( bool )
-
-tp: done
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : >>participants> ( $$ ... "<wordNm>" -- bool )
 
 tp: >>participants>
