@@ -1029,31 +1029,43 @@ tp: viaCoordinator
 /*----------------------------------------------------------------------------*/
 /* coordinator to send indirect call to each participant to execute           */
 /*----------------------------------------------------------------------------*/
-: >>participants> ( $$ ... "<wordNm>" -- bool )
+: >>participants> ( <<!>> -- bool )
+
+  // a) we are in request task (req.task)
+  // b) valset on stack is to be executed by all participants
 
 tp: >>participants>
 
+  // add current dic path << <<!>> dicPath >>
   addDicPath
 
+  // add call to participants << << <<!>> dicPath >> >participants> >>
   addParticipants
 
+  // queue on coordinator and wait
   >coordinator> ( bool )
+
+  // we should have a bool result
 ;
 
 /*----------------------------------------------------------------------------*/
 /* coordinator to send indirect call to a participant to execute              */
 /*----------------------------------------------------------------------------*/
-: >>participant> ( $$ ... "<wordNm>" node# -- bool )
+: >>participant> ( <<!>> nodeNo -- bool )
+
+  // a) we are in request task (req.task)
+  // b) valset on stack is to be executed by participant on nodeNo
 
 tp: >>participant>
 
   // save the node number
   >r
 
+  // add current dic path << <<!>> dicPath >>
   addDicPath
 
-  r>
-  addParticipant
+  // add call to participant << << <<!>> dicPath >> nodeNo >participant> >>
+  r> addParticipant
 
   >coordinator> ( bool )
 ;

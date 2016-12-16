@@ -41,17 +41,23 @@
 /*----------------------------------------------------------------------------*/
 /* distributable form of table.appendBuffer                                   */
 /*----------------------------------------------------------------------------*/
-: loadAppendBuffer$
+: loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
+
+  args.tracepoint if
+    dup "APPENDINGROWBUFFER " swap concat " on NODE " concat args.node >str concat .
+  then
 
   find execute dup table.name .
 
   table.appendBuffer
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* distributable form of table.appendBuffer                                   */
 /*----------------------------------------------------------------------------*/
-: ~loadAppendBuffer
+: ~loadAppendBufferOLD
 
   // append buffer to table
   $$
@@ -73,11 +79,15 @@
 stk
 
   loadAppendBuffer$
+
+  drop
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-: ~loadAppendBufferNEW
+: ~loadAppendBuffer
+
+  // reg0 has ^loaderSub
 
 tp: appBufOnAll ( -- )
 
@@ -139,6 +149,14 @@ tp: appBufOnAllDone
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : loadSub ( ^loaderSub -- )
 
+  // this is being run by a general thread on the originator node
+
+  // first set the taskset in this task
+  // needed when being resumed by coordinator
+
+  task.this task.thread thread.taskset@
+  task.this task.taskset!
+
   // expand dic stack valset and set
   valset> drop dicStack! assert
 
@@ -150,7 +168,7 @@ tp: appBufOnAllDone
   // the c++ code assumes ^loaderSub is in reg0
   >reg0
 
-  // get table, tx and load map
+  // get table, tx and load map from parent loader
   //   open the chunked file
   //   read first chunk
   loaderSub.begin
@@ -181,7 +199,9 @@ tp: bufferFull
         // insert row into new working buffer
         loaderSub.insertRow? assert
       then
-  repeat
+  repeat // for all records in chunked file
+
+
 
   // check for dangling buffers
   args.partitions 0 do
