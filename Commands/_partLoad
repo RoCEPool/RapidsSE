@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* _partLoad -- create and load TPC-H Part table for SF1                      */
+/*============================================================================*/
+
+ping
+
+cf tenants
+//create tenant boray;
+
+cf boray
+cf catalogs
+create catalog borayCatalog;
+
+cf borayCatalog
+cf schemas
+create schema boraySchema;
+
+cf boraySchema
+cf tables
+
+create table part (
+	 P_PARTKEY           INTEGER NOT NULL,
+	 P_NAME              VARCHAR(55) NOT NULL,
+	 P_MFGR              CHAR(25) NOT NULL,
+	 P_BRAND             CHAR(10) NOT NULL,
+	 P_TYPE              VARCHAR(25) NOT NULL,
+	 P_SIZE              INTEGER NOT NULL,
+	 P_CONTAINER         CHAR(10) NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23) NOT NULL
+);
+
+print "loading part.tbl..."
+ld part     "/tpch/part.tbl"
+
+pwf
+lf
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -115,8 +115,8 @@ create table supplier (
 //print "loading orders.tbl..."
 ///ld orders   "/tpch/orders.tbl"
 
-//print "loading part.tbl..."
-//ld part     "/tpch/part.tbl"
+print "loading part.tbl..."
+ld part     "/tpch/part.tbl"
 
 //print "loading partsupp.tbl..."
 //ld partsupp "/tpch/partsupp.tbl"
@@ -124,8 +124,8 @@ create table supplier (
 //print "loading region.tbl..."
 //ld region   "/tpch/region.tbl"
 
-print "loading supplier.tbl..."
-ld supplier "/tpch/supplier.tbl"
+//print "loading supplier.tbl..."
+//ld supplier "/tpch/supplier.tbl"
 
 //ex customer "/tmp/customer.txt"
 //ex lineitem "/tmp/lineitem.txt"

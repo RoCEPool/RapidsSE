@@ -964,7 +964,7 @@ tp: expandedResult
   // c) valset on stack to be forwarded to participant on given node
   //    that valset contains one or more indirect calls
 
-"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" .
+tp: "- - - - - - - - - "
 tp: >participant>
 
   // save participant# onto rstack

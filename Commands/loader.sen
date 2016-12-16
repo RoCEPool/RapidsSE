@@ -55,61 +55,48 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* distributable form of table.appendBuffer                                   */
+/* forward append of rowbuffer to participant for partition                   */
 /*----------------------------------------------------------------------------*/
-: ~loadAppendBufferOLD
+: ~loadAppendBuffer ( -- )
 
-  // append buffer to table
+  // why:
+  //   loaderSub has a full rowBuffer which needs to be sent to participant
+  //   to be appended to partition of table
+
+  // where:
+  //   in lambda task running loadSub on general thread;
+  //   parent task is req.task running tableLoader;
+  //   reg0 has ^loaderSub
+
+  // what:
+  //   we need to have the coordinator send the loadAppendBuffer$ indirect call
+  //   to the participant via a >participant> call
+
+tp: ~loadAppendBuffer
+
+  // stack marker
   $$
-  loaderSub.rowBuffer
-    nullPtr loaderSub.rowBuffer!
-  loaderSub.partition
-  loaderSub.table table.name
-
-  $$>valset
-
-  // dic path
-  seitf.path@
-  $$>valset
-
-  valset> drop dicStack! assert dic.stack
-
-  valset> drop ( rowBuffer partition# tableNm )
-
-stk
-
-  loadAppendBuffer$
-
-  drop
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-: ~loadAppendBuffer
-
-  // reg0 has ^loaderSub
-
-tp: appBufOnAll ( -- )
 
   // set up indirect parameters
-  $$
-  loaderSub.rowBuffer
+  loaderSub.rowBuffer           ( $$ rb )
   nullPtr loaderSub.rowBuffer!
-  loaderSub.partition
-  loaderSub.table table.name
+  loaderSub.partition           ( $$ rb ptn )
+  loaderSub.table table.name    ( $$ rb ptn "<tableNm>" )
 
   // the indirect word to be called
-  "loadAppendBuffer$"
+  "loadAppendBuffer$"           ( $$ rb ptn "<tableNm>" "loadAppendBuffer$" )
 
 tp: theIndirectCall
 
-  $$>valset
+  // form << rb ptn tbl loadAppendBuffer$ >>
+  $$>valset                     ( <<loadAppendBuffer$>> )
 
-  // loadAppendBuffer$ to be executed by one participant
-  loaderSub.partition
-  >>participant> ( bool )
+  // <<loadAppendBuffer$>> to be forwarded to one participant via
+  // >participant> in the coordinatoor
+  loaderSub.partition           ( <<loadAppendBuffer$>> ptn )
+  >>participant> ( bool ) // we expect loadAppendBuffer$ to return a boolean
 
-tp: appBufOnAllDone
+tp: theIndirectResult
 
   drop ( )
 ;
@@ -117,36 +104,6 @@ tp: appBufOnAllDone
 /*----------------------------------------------------------------------------*/
 /* parallel sub-loading of file into table                                    */
 /*----------------------------------------------------------------------------*/
-/*
-: loadSub ( ^LoaderSub -- )
-//traceOn
-
-  reg.push
-
-  >reg0
-
-  loaderSub.begin
-
-  begin
-    loaderSub.fetchrecord if
-      loaderSub.hashRecord
-      loaderSub.insertrow
-    else
-      false
-    then
-    while
-  repeat
-
-  loaderSub.end
-
-  loaderSub.completed if signalParentThread then
-
-  reg.pop
-
-//traceOff
-;
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : loadSub ( ^loaderSub -- )
 
   // this is being run by a general thread on the originator node
