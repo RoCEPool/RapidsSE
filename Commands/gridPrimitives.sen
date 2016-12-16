@@ -889,41 +889,66 @@ tp: sendingToPP
 tp: allResponded
 ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: >participants> // serial Form
+: >participants> ( <<!>> -- true ) // serial Form
+
+  // a) in coordinator (on the originating node)
+  // b) the caller of the coordinator is in reg0 (would be req.task)
+  // c) valset on stack to be forwarded to all particpants
+  //    that valset contains one or more indirect calls
 
 tp: >participants>
 
+  // layer this task as caller into nested valset << <<!>> <<caller>> >>
   addCaller
+
+  // move nested valset to rstack (this gives a reusable copy)
   >r
 
 tp: movedToRstack
 
+  // now send nested valset to each participant
   args.nodes 0 do
 
+    // set ack of 1 (because its the serial form)
     1 task.this task.acks!
 
 tp: expectingAcks
 
+    // get copy of nested valset << <<!>> <<caller>> >> from rstack
     2 rpick
 
+    // get ppQueue[node#]
     I ppQueues @
 
 tp: forwardingToPP
 
+    // forward << <<!>> <<caller>> >> to ppQueue[node#]
     >queue
 
+    // suspend here
     task.suspend
 
+    // now resumed...
+
 tp: haveResultSet
+
+    // non-nested response valset << true >> will be on stack
     valset>
 
 tp: expandedResult
-    drop assert
 
-  loop
+    // drop the number of values that were in valset
+    drop
 
+    // we are expecting a true
+    assert
+
+  loop // each node
+
+  // drop the << <<!>> <<caller>> >> of rstack
   rdrop
 
+  // return true
   true
 
   tp: allResponded
@@ -932,32 +957,53 @@ tp: expandedResult
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to a given participant to execute          */
 /*----------------------------------------------------------------------------*/
-: >participant> ( valset participant# )
+: >participant> ( <<!>> participant# -- true )
+
+  // a) in coordinator (on the originating node)
+  // b) the caller of the coordinator is in reg0 (would be req.task)
+  // c) valset on stack to be forwarded to participant on given node
+  //    that valset contains one or more indirect calls
 
 tp: >participant>
 
+  // save participant# onto rstack
+  >r
+
+  // layer this task as caller into nested valset << <<!>> <<caller>> >>
   addCaller
 
-  swap
-
+  // set ack of 1
   1 task.this task.acks!
 
 tp: expectingAcks
 
-  ppQueues @
+  // using participant# on rstack get ppQueue
+  r> ppQueues @
 
 tp: forwardingToPP
 
+  // forward << <<!>> <<caller>> >> to ppQueue[node#]
   >queue
 
+  // suspend here
   task.suspend
 
+  // now resumed...
+
 tp: haveResultSet
+
+  // non-nested response valset << true >> will be on stack
   valset>
 
 tp: expandedResult
-  drop assert
 
+  // drop the number of values that were in valset
+  drop
+
+  // we are expecting a true
+  assert
+
+  // return true
   true
 
 tp: allResponded
