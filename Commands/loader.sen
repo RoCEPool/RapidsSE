@@ -51,14 +51,6 @@
 /*----------------------------------------------------------------------------*/
 /* distributable form of table.appendBuffer                                   */
 /*----------------------------------------------------------------------------*/
-: loadAppendBuffer
-
-  loadAppendBuffer$
-;
-
-/*----------------------------------------------------------------------------*/
-/* distributable form of table.appendBuffer                                   */
-/*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer
 
   // append buffer to table
@@ -80,13 +72,11 @@
 
 stk
 
-  //find execute dup table.name .
-
-  //table.appendBuffer
-
   loadAppendBuffer$
 ;
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 : ~loadAppendBufferNEW
 
 tp: appBufOnAll ( -- )
@@ -182,6 +172,8 @@ tp: appBufOnAllDone
 
       // was buffer full?
       not if
+
+tp: bufferFull
 
         // append row buffer to table/partition/strand
         ~loadAppendBuffer

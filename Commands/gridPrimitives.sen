@@ -932,40 +932,31 @@ tp: expandedResult
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to a given participant to execute          */
 /*----------------------------------------------------------------------------*/
-: >participant>
+: >participant> ( valset participant# )
 
 tp: >participant>
 
   addCaller
-  >r
 
-tp: movedToRstack
+  swap
 
-  args.nodes 0 do
-
-    1 task.this task.acks!
+  1 task.this task.acks!
 
 tp: expectingAcks
 
-    2 rpick
-
-    I ppQueues @
+  ppQueues @
 
 tp: forwardingToPP
 
-    >queue
+  >queue
 
-    task.suspend
+  task.suspend
 
 tp: haveResultSet
-    valset>
+  valset>
 
 tp: expandedResult
-    drop assert
-
-  loop
-
-  rdrop
+  drop assert
 
   true
 
