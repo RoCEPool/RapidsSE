@@ -116,6 +116,8 @@ tp: handingOn
 tp: receivedValSet
   exeOne
 
+  drop
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -136,6 +138,7 @@ tp: receivedValSet
     //10 sleep
 
     begin
+      depth 0 != if stk "stack of task has grown" . debug.trap then
       recv>
     0 until
 
