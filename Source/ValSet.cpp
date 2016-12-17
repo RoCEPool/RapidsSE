@@ -6,6 +6,9 @@
 
 #include "RowBuffer.hpp"
 
+#include "Arguments.hpp"
+extern Arguments gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -183,7 +186,8 @@ bool ValSet::bHasRowBuffer(void)
   while (bExtract(pCursor, eClassNo, pValWsp)) {
     
     if (CN_ROWBUFFER == eClassNo) {
-      vTrace("HAS ROW BUFFER\n");
+      if (gxArguments.m_bTracepoint)
+        vTrace("HAS ROW BUFFER\n");
       return true;
     }
     

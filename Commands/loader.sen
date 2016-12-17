@@ -31,27 +31,45 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* form loaderSubNm                                                           */
+/* form loader sub name                                                       */
 /*----------------------------------------------------------------------------*/
 : >loadSubNm ( i -- s )
 
-  "loadSub_" swap >str concat
+  "ld" swap >str concat ".task" concat
 ;
 
 /*----------------------------------------------------------------------------*/
-/* distributable form of table.appendBuffer                                   */
+/* append row buffer to partition of given named table                        */
 /*----------------------------------------------------------------------------*/
 : loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
 
+tp: loadAppendBuffer$
+
+  // why:
+  //   loaderSub has forwarded a full rowBuffer which needs to be
+  //   appended to partition of table
+
+  // where:
+  //   in participant task running exeAll.loop on participant thread;
+
+  // what:
+  //   find named table to get pointer to table
+  //   then append row buffer to partition of table
+
+  task.this task.thread thread.name@ 1 0 substr "p" streql assert
+
   args.tracepoint if
-    dup "APPENDINGROWBUFFER " swap concat " on NODE " concat args.node >str concat .
+    dup "APPENDING ROWBUFFER " swap concat " on NODE " concat args.node >str concat .
   then
 
-  find execute dup table.name .
+  // get ^table
+  find execute ( rb ptn table )
 
-  table.appendBuffer
+  // append row buffer to partition of table
+  table.appendBuffer ( )
 
-  true
+  // all $ routines must return true
+  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,12 +77,14 @@
 /*----------------------------------------------------------------------------*/
 : ~loadAppendBuffer ( -- )
 
+tp: ~loadAppendBuffer
+
   // why:
   //   loaderSub has a full rowBuffer which needs to be sent to participant
   //   to be appended to partition of table
 
   // where:
-  //   in lambda task running loadSub on general thread;
+  //   in loadSub task running loadSub on general thread;
   //   parent task is req.task running tableLoader;
   //   reg0 has ^loaderSub
 
@@ -72,33 +92,39 @@
   //   we need to have the coordinator send the loadAppendBuffer$ indirect call
   //   to the participant via a >participant> call
 
-tp: ~loadAppendBuffer
+  task.this task.thread thread.name@ 13 0 substr "generalThread" streql assert
+  task.this task.parent@ task.name@ "req.task" streql assert
 
-  // stack marker
+  //
+  // a) form the indirect call of loadAppendBuffer
+  //
+
   $$
-
-  // set up indirect parameters
-  loaderSub.rowBuffer           ( $$ rb )
-  nullPtr loaderSub.rowBuffer!
-  loaderSub.partition           ( $$ rb ptn )
-  loaderSub.table table.name    ( $$ rb ptn "<tableNm>" )
-
-  // the indirect word to be called
-  "loadAppendBuffer$"           ( $$ rb ptn "<tableNm>" "loadAppendBuffer$" )
+    loaderSub.rowBuffer           ( $$ rb )
+    nullPtr loaderSub.rowBuffer!  // set working row buffer to null
+    loaderSub.partition           ( $$ rb ptn )
+    loaderSub.table table.name    ( $$ rb ptn "<tableNm>" )
+    "loadAppendBuffer$"           ( $$ rb ptn "<tableNm>" "loadAppendBuffer$" )
 
 tp: theIndirectCall
 
-  // form << rb ptn tbl loadAppendBuffer$ >>
-  $$>valset                     ( <<loadAppendBuffer$>> )
+  $$>valset                       ( <<loadAppendBuffer$>> )
 
-  // <<loadAppendBuffer$>> to be forwarded to one participant via
-  // >participant> in the coordinatoor
-  loaderSub.partition           ( <<loadAppendBuffer$>> ptn )
-  >>participant> ( bool ) // we expect loadAppendBuffer$ to return a boolean
+  //
+  // b) <<loadAppendBuffer$>> to be forwarded to one participant
+  //    via >participant> in the coordinatoor
+  //
+
+  // to which node/participant
+  loaderSub.partition             ( <<loadAppendBuffer$>> ptn )
+
+  // forward to coordinator and wait
+  >>participant> ( bool )
 
 tp: theIndirectResult
 
-  drop ( )
+  // we expect loadAppendBuffer$ to return true
+  assert
 ;
 
 /*----------------------------------------------------------------------------*/
