@@ -323,7 +323,8 @@ tp: removedCaller
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto given queue                                      */
 /*----------------------------------------------------------------------------*/
-: >queue ( valset queue -- )
+/*
+: >queue ( <<call*>> queue -- )
 
 tp: appendingToQueue
 
@@ -332,38 +333,31 @@ tp: appendingToQueue
 
 tp: queued
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto given queue, suspend for notification            */
 /*----------------------------------------------------------------------------*/
-: >queue> ( valset queue -- ..result.. )
+: >queue> ( <<call*>> queue -- <<result>> )
 
-  >r
+  >r ( <<call*>> )
 
-  addCaller
+  addCaller ( << <<call*>> <<caller>> >> )
 
-  r>
+  r> ( << <<call*>> <<caller>> >> queue )
 
   // set this task to wait for 1 ack
-  1 task.this task.acks! ( ... wordName #values queue )
+  1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
 
 tp: require1Ack
 
   // append indirect call onto queue
-  >queue ( )
+  queue.append ( )
 
-  // this task suspends till notified
-  task.suspend ( valset )
+  // this task suspends till notified. will have indirect result
+  task.suspend ( <<result>> )
 
 tp: haveResultSet
-
-  // convert valset to values
-  //valset> ( ... #values )
-
-  // discard number of values leaving the indirect result
-  //drop ( ..result.. )
-
-//tp: indirectResultIs
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -569,9 +563,6 @@ tp: passingOn
     r1 ( ... wordName #values queue )
     >queue> ( ... )   //! PP send & recv     >socket>
 
-    // convert indirect result into valset
-    //>result ( valset )
-
     // put indirect result onto stack of caller and signal
     >caller ( ) //! CP send     >socket
 
@@ -614,9 +605,6 @@ tp: coordinator
 
     r1
     >queue> ( ... )
-
-    // convert indirect result into valset
-    //>result ( valset )
 
     addNotifyPp
 
@@ -672,7 +660,7 @@ tp: participantProxy
       // append indirect call onto p.queue
       r1 ( valset queue )
 
-      >queue ( )
+      queue.append ( )
 
     else
       // this is pp1 on node 0
@@ -858,7 +846,7 @@ tp: acksExpected
     I ppQueues @
 
 tp: sendingToPP
-    >queue
+    queue.append
 
     //1 sleep
 
@@ -923,7 +911,7 @@ tp: expectingAcks
 tp: forwardingToPP
 
     // forward << <<!>> <<caller>> >> to ppQueue[node#]
-    >queue
+    queue.append
 
     // suspend here
     task.suspend
@@ -984,7 +972,7 @@ tp: expectingAcks
 tp: forwardingToPP
 
   // forward << <<!>> <<caller>> >> to ppQueue[node#]
-  >queue
+  queue.append
 
   // suspend here
   task.suspend
@@ -1023,13 +1011,11 @@ tp: >coordinator>
   c.queue ( <<call*>> c.queue )
 
   // put indirect call onto c.queue and suspend till notified by coordinator
-  >queue> ( ... )
+  >queue> ( <<result>> )
 
 tp: resumedbyCoord
 
   // we expect an indirect result
-
-  //>result
 ;
 
 /*----------------------------------------------------------------------------*/
