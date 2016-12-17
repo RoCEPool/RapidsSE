@@ -1027,47 +1027,62 @@ tp: viaCoordinator
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinator to send indirect call to each participant to execute           */
+/* get coordinator to send indirect call to each participant to execute       */
 /*----------------------------------------------------------------------------*/
-: >>participants> ( <<!>> -- bool )
+: >>participants> ( <<$$>> -- bool )
 
   // a) we are in request task (req.task)
-  // b) valset on stack is to be executed by all participants
+  // b) indirect call on stack is to be executed by all participants
 
 tp: >>participants>
 
-  // add current dic path << <<!>> dicPath >>
-  addDicPath
+  task.this task.name@ "req.task" streql assert
 
-  // add call to participants << << <<!>> dicPath >> >participants> >>
-  addParticipants
+  // add current dic path of this req.task
+  addDicPath ( << <<$$>> <<dicStack!>> >> )
 
-  // queue on coordinator and wait
+  // add indirect call to participants
+  addParticipants ( << <<$$>> <<dicStack!>> <<>participants>>> >> )
+
+  // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
 
-  // we should have a bool result
+  // we should have a true result
+  assert
+
+  // return true
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* coordinator to send indirect call to a participant to execute              */
+/* get coordinator to send indirect call to participant on a node to execute  */
 /*----------------------------------------------------------------------------*/
-: >>participant> ( <<!>> nodeNo -- bool )
+: >>participant> ( <<$$>> nodeNo -- bool )
 
-  // a) we are in request task (req.task)
-  // b) valset on stack is to be executed by participant on nodeNo
+  // a) we are in loader sub task
+  // b) indirect call on stack is to be executed by participant on given nodeNo
 
 tp: >>participant>
+
+  task.this task.name@ 2 0 substr "ld" streql assert
 
   // save the node number
   >r
 
-  // add current dic path << <<!>> dicPath >>
-  addDicPath
+  // add current dic path of this req.task
+  addDicPath ( << <<$$>> <<dicStack!>> >> )
 
-  // add call to participant << << <<!>> dicPath >> nodeNo >participant> >>
-  r> addParticipant
+  // add indirect call to participant on given node
+  r> addParticipant ( << <<$$>> <<dicStack!>> <<>participant>>> >> )
 
+  // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
+
+  // we should have a true result
+  assert
+
+  // return true
+  true
 ;
 
 /*============================================================================*/
