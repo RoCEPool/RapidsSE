@@ -93,7 +93,7 @@ tp: ~loadAppendBuffer
   //   to the participant via a >participant> call
 
   task.this task.thread thread.name@ 13 0 substr "generalThread" streql assert
-  task.this task.parent@ task.name@ "req.task" streql assert
+  task.parent@ task.name@ "req.task" streql assert
 
   //
   // a) form the indirect call of loadAppendBuffer

@@ -1011,19 +1011,25 @@ tp: allResponded
 ;
 
 /*----------------------------------------------------------------------------*/
-/* queue an indirect call to the coordinator and wait for result              */
+/* queue an indirect call set to the coordinator and wait for indirect result */
 /*----------------------------------------------------------------------------*/
-: >coordinator> ( callSet -- ..results.. )
+: >coordinator> ( <<call*>> -- <<result>> )
 
-tp: viaCoordinator
+tp: >coordinator>
 
-  // the queue is c.queue
-  c.queue ( valset c.queue )
+  // could be task such as req.task or ld#.task
 
-  // put onto c.queue and suspend till notified
+  // target queue is c.queue
+  c.queue ( <<call*>> c.queue )
+
+  // put indirect call onto c.queue and suspend till notified by coordinator
   >queue> ( ... )
 
-  >result
+tp: resumedbyCoord
+
+  // we expect an indirect result
+
+  //>result
 ;
 
 /*----------------------------------------------------------------------------*/
