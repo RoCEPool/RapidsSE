@@ -116,25 +116,6 @@ tp: reg0HasCaller
 ;
 
 /*----------------------------------------------------------------------------*/
-/* expand valset into an indirect call                                        */
-/*----------------------------------------------------------------------------*/
-: >indirect2 ( valset -- ... wordName ; reg0 == caller )
-
-tp: >indirect2
-
-  // expand valset into stack values
-  valset> ( ... wordName caller #values )
-
-  //stk
-
-  // discard the number of values
-  drop ( ... wordName caller )
-
-  // drop caller
-  drop
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute indirect call on the stack                                         */
 /*----------------------------------------------------------------------------*/
 : !indirect ( ... wordName -- ... )
@@ -319,21 +300,6 @@ tp: removingCaller
 
 tp: removedCaller
 ;
-
-/*----------------------------------------------------------------------------*/
-/* append indirect call onto given queue                                      */
-/*----------------------------------------------------------------------------*/
-/*
-: >queue ( <<call*>> queue -- )
-
-tp: appendingToQueue
-
-  // move to target queue
-  queue.append ( )
-
-tp: queued
-;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto given queue, suspend for notification            */
