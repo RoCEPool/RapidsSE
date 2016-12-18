@@ -8,8 +8,6 @@
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
 "requestTask.sen" >>:
-"connectorTask.sen" >>:
-"answerTask.sen" >>:
 
 "generalThread.sen" >>:
 

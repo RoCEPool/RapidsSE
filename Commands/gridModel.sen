@@ -9,11 +9,16 @@
 "nodeCursor.sen" >>:
 
 "gridPrimitives.sen" >>:
+
 "coordinatorTask.sen" >>:
 "participantProxy.sen" >>:
 "coordinatorProxy.sen" >>:
 "receiverTask.sen" >>:
 "senderTask.sen" >>:
+
+"connectorTask.sen" >>:
+"answerTask.sen" >>:
+
 "gridCalls.sen" >>:
 
 /*============================================================================*/
