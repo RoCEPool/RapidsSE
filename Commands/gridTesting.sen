@@ -4,59 +4,6 @@
 
 "gridTesting.sen" .putVerbose
 
-: SE_PATH "../OS\ X/Build/Products/Debug/SE" ;
-
-: se_command
-
-    dup
-    dup
-
-//  "nohup "
-    ""
-    SE_PATH concat
-    " --start " concat
-    " --size " concat args.regionSize >str concat
-//  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" concat
-    " --commands /Users/ray/Desktop/rapidsse/Commands" concat
-    " --region /SE_" concat  swap >str concat
-    " --node  " concat swap >str concat
-    " --nodes " concat args.nodes >str concat
-    " --partitions " concat args.partitions >str concat
-    " --partition " concat swap >str concat
-    " --port  " concat args.port  >str concat
-    " --sleep " concat args.sleep >str concat
-    args.tracepoint if " --tracepoint " concat then
-    args.verbose if " --verbose " concat then
-
-    " &" concat
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn all other nodes for a grid on this machine                           */
-/*----------------------------------------------------------------------------*/
-: spawnNodes
-
-  // test for single node
-  args.nodes 1 == if exit then
-
-  // spawn all other nodes
-  args.nodes 1 do
-
-    // form the shell command to spawn node I
-    I se_command
-
-    // print the shell command
-    dup .
-
-    // execute the shell command
-    shell.execute
-
-    // print result
-    .
-
-loop
-;
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
