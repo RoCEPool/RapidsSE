@@ -12,6 +12,8 @@ args.nodes ptrArray: ppQueues
 args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
 
+args.nodes ptrArray: senderQueue
+
 /*----------------------------------------------------------------------------*/
 /* dump the ppQueues array                                                    */
 /*----------------------------------------------------------------------------*/
@@ -73,6 +75,18 @@ tp: waitNextValset
   until
 
 tp: poppedValset
+;
+
+/*----------------------------------------------------------------------------*/
+/* send on a socket                                                           */
+/*----------------------------------------------------------------------------*/
+: >node ( valSet i )
+
+  // put in the senderQueue of sender
+  senderQueue @   ( valset Q )
+
+  tp: sendingViaQueue
+  queue.append
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -407,116 +421,6 @@ tp: exeAll
   0 until
 ;
 
-/*----------------------------------------------------------------------------*/
-/* coordinator proxy processing loop                                          */
-/*----------------------------------------------------------------------------*/
-: cp.loop ( actorNo forwardQueue -- )
-
-  "cp.loop" task.this task.comment!
-
-tp: coordinator
-
-  // push a register frame
-  reg.push
-
-  >r ( actorNo )
-  >r ( )
-  // r0 has actorNo (nodeNo)
-  // r1 has forwardQueue
-  //! r2 has the originating node
-
-  //"CP " r1 >str concat .
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    // pop valset off queue and push onto this stack
-    queue> ( valset )
-
-    r1
-    >queue> ( ... )
-
-    addNotifyPp
-
-    reg1                                                           //! NOT RIGHT
-    >node
-
-  0 until
-
-  rdrop
-  rdrop
-
-  // pop a register frame
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* participant proxy processing loop                                          */
-/*----------------------------------------------------------------------------*/
-: pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
-
-  "pp.loop" task.this task.comment!
-
-tp: participantProxy
-
-  // push a register frame
-  reg.push
-
-  >r ( actorNo )
-  >r ( )
-  // r0 has actorNo (nodeNo)
-  // r1 has forwardQueue
-
-  task.this r0 ppTasks !
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    // pop valset off queue and push onto this stack
-    queue> ( valset )
-
-    // set caller into reg0
-    exeOne assert
-
-    // set this task to wait for 1 ack
-    1 task.this task.acks! ( ... wordName #values queue )
-
-    r0 args.node ==
-    if
-      // this is pp0 on node 0
-
-      addCaller
-
-      // append indirect call onto p.queue
-      r1 ( valset queue )
-
-      queue.append ( )
-
-    else
-      // this is pp1 on node 0
-
-      addSender
-      r0 addPassOnToCp
-
-      // send to node 1 by appending to snd1.queue
-      r0 >node
-
-    then
-
-    // this task suspends till notified
-    task.suspend ( valset )
-
-    >caller ( )
-
-  0 until
-
-  rdrop
-  rdrop
-
-  // pop a register frame
-  reg.pop
-;
 
 /*----------------------------------------------------------------------------*/
 /* execute one indirect call processing loop                                  */
@@ -581,49 +485,6 @@ tp: participantProxy
   reg.pop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* create the actors for the dl test                                          */
-/*----------------------------------------------------------------------------*/
-: createActors
-
-/*
-
-  r->c->PP->snd ... rcv->CP->p
-     |
-     +->P
-
-*/
-    args.nodes 0 do
-
-    // participant for this I
-    0 "exeAll.loop" "p" I >str concat actorForm
-    I pQueues !
-
-    // coordinator proxy for this I
-    I I pQueues @ 2 "cp.loop" "cp" I >str concat actorForm
-    I cpQueues !
-
-    // partitipant proxy for this I
-    I args.node == if
-      I I pQueues  @ 2 "pp.loop" "pp" I >str concat actorForm
-      I ppQueues !
-    else
-      I I cpQueues @ 2 "pp.loop" "pp" I >str concat actorForm
-      I ppQueues !
-    then
-
-    loop
-
-    // coordinator
-    0 "exeAll.loop" "c" actorForm drop
-
-    args.verbose if
-      cpQueuesDump
-    then
-
-    ;
-
-createActors
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -650,260 +511,6 @@ createActors
 
   // transfer to another actors queue and wait for result
   >queue> ( ..result.. )
-;
-
-/*----------------------------------------------------------------------------*/
-/* coordinator sends indirect call to each participant to execute             */
-/*----------------------------------------------------------------------------*/
-: >participantsPARALLEL> // parallel form
-
-
-  args.nodes task.this task.acks!
-
-tp: acksExpected
-
-  >valset
-
-  >r
-
-  args.nodes 0 do
-
-    2 rpick
-
-    valset>
-
-    I ppQueues @
-
-tp: sendingToPP
-    queue.append
-
-    //1 sleep
-
-  loop
-
-  rdrop
-
-  task.suspend
-
-  // note that each participant will always return a valset
-  // that valset may be empty if the indirect word executed
-  // doesnt return a value
-
-//traceon
-  true >r
-
-  begin
-    depth while
-    valset> drop
-    not if
-      rdrop false >r
-    then
-  repeat
-
-  r>
-//traceoff
-
-tp: allResponded
-;
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: >participants> ( <<!>> -- true ) // serial Form
-
-  // a) in coordinator (on the originating node)
-  // b) the caller of the coordinator is in reg0 (would be req.task)
-  // c) valset on stack to be forwarded to all particpants
-  //    that valset contains one or more indirect calls
-
-tp: >participants>
-
-  // layer this task as caller into nested valset << <<!>> <<caller>> >>
-  addCaller
-
-  // move nested valset to rstack (this gives a reusable copy)
-  >r
-
-tp: movedToRstack
-
-  // now send nested valset to each participant
-  args.nodes 0 do
-
-    // set ack of 1 (because its the serial form)
-    1 task.this task.acks!
-
-tp: expectingAcks
-
-    // get copy of nested valset << <<!>> <<caller>> >> from rstack
-    2 rpick
-
-    // get ppQueue[node#]
-    I ppQueues @
-
-tp: forwardingToPP
-
-    // forward << <<!>> <<caller>> >> to ppQueue[node#]
-    queue.append
-
-    // suspend here
-    task.suspend
-
-    // now resumed...
-
-tp: haveResultSet
-
-    // non-nested response valset << true >> will be on stack
-    valset>
-
-tp: expandedResult
-
-    // drop the number of values that were in valset
-    drop
-
-    // we are expecting a true
-    assert
-
-  loop // each node
-
-  // drop the << <<!>> <<caller>> >> of rstack
-  rdrop
-
-  // return true
-  true
-
-  tp: allResponded
-;
-
-/*----------------------------------------------------------------------------*/
-/* coordinator sends indirect call to a given participant to execute          */
-/*----------------------------------------------------------------------------*/
-: >participant> ( <<!>> participant# -- true )
-
-  // a) in coordinator (on the originating node)
-  // b) the caller of the coordinator is in reg0 (would be req.task)
-  // c) valset on stack to be forwarded to participant on given node
-  //    that valset contains one or more indirect calls
-
-tp: "- - - - - - - - - "
-tp: >participant>
-
-  // save participant# onto rstack
-  >r
-
-  // layer this task as caller into nested valset << <<!>> <<caller>> >>
-  addCaller
-
-  // set ack of 1
-  1 task.this task.acks!
-
-tp: expectingAcks
-
-  // using participant# on rstack get ppQueue
-  r> ppQueues @
-
-tp: forwardingToPP
-
-  // forward << <<!>> <<caller>> >> to ppQueue[node#]
-  queue.append
-
-  // suspend here
-  task.suspend
-
-  // now resumed...
-
-tp: haveResultSet
-
-  // non-nested response valset << true >> will be on stack
-  valset>
-
-tp: expandedResult
-
-  // drop the number of values that were in valset
-  drop
-
-  // we are expecting a true
-  assert
-
-  // return true
-  true
-
-tp: allResponded
-;
-
-/*----------------------------------------------------------------------------*/
-/* queue an indirect call set to the coordinator and wait for indirect result */
-/*----------------------------------------------------------------------------*/
-: >coordinator> ( <<call*>> -- <<result>> )
-
-tp: >coordinator>
-
-  // could be task such as req.task or ld#.task
-
-  // target queue is c.queue
-  c.queue ( <<call*>> c.queue )
-
-  // put indirect call onto c.queue and suspend till notified by coordinator
-  >queue> ( <<result>> )
-
-tp: resumedbyCoord
-
-  // we expect an indirect result
-;
-
-/*----------------------------------------------------------------------------*/
-/* get coordinator to send indirect call to each participant to execute       */
-/*----------------------------------------------------------------------------*/
-: >>participants> ( <<$$>> -- bool )
-
-  // a) we are in request task (req.task)
-  // b) indirect call on stack is to be executed by all participants
-
-tp: >>participants>
-
-  task.this task.name@ "req.task" streql assert
-
-  // add current dic path of this req.task
-  addDicPath ( << <<$$>> <<dicStack!>> >> )
-
-  // add indirect call to participants
-  addParticipants ( << <<$$>> <<dicStack!>> <<>participants>>> >> )
-
-  // queue on coordinator (which waits for a indirect result)
-  >coordinator> ( bool )
-
-  // we should have a true result
-  assert
-
-  // return true
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* get coordinator to send indirect call to participant on a node to execute  */
-/*----------------------------------------------------------------------------*/
-: >>participant> ( <<$$>> nodeNo -- bool )
-
-  // a) we are in loader sub task
-  // b) indirect call on stack is to be executed by participant on given nodeNo
-
-tp: >>participant>
-
-  task.this task.name@ 2 0 substr "ld" streql assert
-
-  // save the node number
-  >r
-
-  // add current dic path of this req.task
-  addDicPath ( << <<$$>> <<dicStack!>> >> )
-
-  // add indirect call to participant on given node
-  r> addParticipant ( << <<$$>> <<dicStack!>> <<>participant>>> >> )
-
-  // queue on coordinator (which waits for a indirect result)
-  >coordinator> ( bool )
-
-  // we should have a true result
-  assert
-
-  // return true
-  true
 ;
 
 /*============================================================================*/

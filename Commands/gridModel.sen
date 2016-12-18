@@ -8,10 +8,13 @@
 "grid.sen" >>:
 "nodeCursor.sen" >>:
 
-"senderTask.sen" >>:
-//"gridPrimitives.sen" >>:
 "gridPrimitives.sen" >>:
+"coordinatorTask.sen" >>:
+"participantProxy.sen" >>:
+"coordinatorProxy.sen" >>:
 "receiverTask.sen" >>:
+"senderTask.sen" >>:
+"gridCalls.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */

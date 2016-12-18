@@ -1,0 +1,132 @@
+/*============================================================================*/
+/* gridCalls -- grid calls                                                    */
+/*============================================================================*/
+
+"gridCalls" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* create the actors for the dl test                                          */
+/*----------------------------------------------------------------------------*/
+: createActors
+
+  /*
+
+    r->c->PP->snd ... rcv->CP->p
+    |
+    +->P
+
+  */
+
+  args.nodes 0 do
+
+    // participant for this I
+    0 "exeAll.loop" "p" I >str concat actorForm
+    I pQueues !
+
+    // coordinator proxy for this I
+    I I pQueues @ 2 "cp.loop" "cp" I >str concat actorForm
+    I cpQueues !
+
+    // partitipant proxy for this I
+    I args.node == if
+      I I pQueues  @ 2 "pp.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    else
+      I I cpQueues @ 2 "pp.loop" "pp" I >str concat actorForm
+      I ppQueues !
+    then
+
+  loop
+
+  // coordinator
+  0 "exeAll.loop" "c" actorForm drop
+
+  args.verbose if
+    cpQueuesDump
+  then
+;
+
+createActors
+
+/*----------------------------------------------------------------------------*/
+/* queue an indirect call set to the coordinator and wait for indirect result */
+/*----------------------------------------------------------------------------*/
+: >coordinator> ( <<call*>> -- <<result>> )
+
+tp: >coordinator>
+
+  // could be task such as req.task or ld#.task
+
+  // target queue is c.queue
+  c.queue ( <<call*>> c.queue )
+
+  // put indirect call onto c.queue and suspend till notified by coordinator
+  >queue> ( <<result>> )
+
+tp: resumedbyCoord
+
+  // we expect an indirect result
+;
+
+/*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to each participant to execute       */
+/*----------------------------------------------------------------------------*/
+: >>participants> ( <<$$>> -- bool )
+
+  // a) we are in request task (req.task)
+  // b) indirect call on stack is to be executed by all participants
+
+tp: >>participants>
+
+  task.this task.name@ "req.task" streql assert
+
+  // add current dic path of this req.task
+  addDicPath ( << <<$$>> <<dicStack!>> >> )
+
+  // add indirect call to participants
+  addParticipants ( << <<$$>> <<dicStack!>> <<>participants>>> >> )
+
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
+
+  // we should have a true result
+  assert
+
+  // return true
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to participant on a node to execute  */
+/*----------------------------------------------------------------------------*/
+: >>participant> ( <<$$>> nodeNo -- bool )
+
+  // a) we are in loader sub task
+  // b) indirect call on stack is to be executed by participant on given nodeNo
+
+tp: >>participant>
+
+  task.this task.name@ 2 0 substr "ld" streql assert
+
+  // save the node number
+  >r
+
+  // add current dic path of this req.task
+  addDicPath ( << <<$$>> <<dicStack!>> >> )
+
+  // add indirect call to participant on given node
+  r> addParticipant ( << <<$$>> <<dicStack!>> <<>participant>>> >> )
+
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
+
+  // we should have a true result
+  assert
+
+  // return true
+  true
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

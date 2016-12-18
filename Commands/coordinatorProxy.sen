@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* coordinatorProxy.sen -- coordinator proxy task                             */
+/*============================================================================*/
+
+"coordinatorProxy.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* coordinator proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: cp.loop ( actorNo forwardQueue -- )
+
+  "cp.loop" task.this task.comment!
+
+tp: coordinator
+
+  // push a register frame
+  reg.push
+
+  >r ( actorNo )
+  >r ( )
+  // r0 has actorNo (nodeNo)
+  // r1 has forwardQueue
+  //! r2 has the originating node
+
+  //"CP " r1 >str concat .
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
+
+    r1
+    >queue> ( ... )
+
+    addNotifyPp
+
+    reg1                                                           //! NOT RIGHT
+    >node
+
+  0 until
+
+  rdrop
+  rdrop
+
+  // pop a register frame
+  reg.pop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
