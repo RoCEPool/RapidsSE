@@ -15,41 +15,41 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : senderForm ( ... socket #args "<loop>" "<actorName>" -- queue )
 
-    reg.push
+  reg.push
 
-    >r
+  >r
 
-    // r0 has <actorName>
+  // r0 has <actorName>
 
-    r0 ".task"    concat :task    execute >reg0  // reg0 has task
-    r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
-    r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-    r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
+  r0 ".task"    concat :task    execute >reg0  // reg0 has task
+  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
+  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
 
-    // seed the task
-    reg0 task.seed
+  // seed the task
+  reg0 task.seed
 
-    // setup the socket in the task
-    reg0 task.socket!
+  // setup the socket in the task
+  reg0 task.socket!
 
-    // attach queue to task
-    reg1 reg0 task.queue!
+  // attach queue to task
+  reg1 reg0 task.queue!
 
-    // put task in taskset
-    reg0 reg2 taskset.append
+  // put task in taskset
+  reg0 reg2 taskset.append
 
-    // attach taskset to thread
-    reg2 reg3 thread.taskset!
+  // attach taskset to thread
+  reg2 reg3 thread.taskset!
 
-    // spawn the os thread
-    reg3 thread.spawn
+  // spawn the os thread
+  reg3 thread.spawn
 
-    rdrop
+  rdrop
 
-    // leave queue on stack
-    reg1
+  // leave queue on stack
+  reg1
 
-    reg.pop
+  reg.pop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -57,12 +57,12 @@ args.nodes ptrArray: senderQueue
 /*----------------------------------------------------------------------------*/
 : senderQDump
 
-    "{ " .put
-    args.nodes 0 do
-    I senderQueue tp: @ .put " " .put
-    loop
+  "{ " .put
+  args.nodes 0 do
+  I senderQueue tp: @ .put " " .put
+  loop
 
-    "}" .put .\n
+  "}" .put .\n
 ;
 
 
@@ -79,33 +79,19 @@ tp: sendingViaQueue
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send on a socket                                                           */
-/*----------------------------------------------------------------------------*/
-: >socket ( valSet )
-
-  // put in the senderQueue of sender
-  senderQueue @   ( valset Q )
-  //dup .
-
-tp: >socket
-
-  queue.append
-;
-
-/*----------------------------------------------------------------------------*/
 /* receive request                                                            */
 /*----------------------------------------------------------------------------*/
 : req>
 
-    begin
-      task.this task.queue@
-      queue.pop
-      dup not
-      if
-        task.yield
-        args.sleep thread.sleep_ms
-      then
-    until
+  begin
+    task.this task.queue@
+    queue.pop
+    dup not
+    if
+      task.yield
+      args.sleep thread.sleep_ms
+    then
+  until
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,32 +101,14 @@ tp: >socket
 
 tp: sendingValset
 
-    task.this task.socket@  ( valset )
-    swap                    ( socket valset )
-    socket.send             ( valset socket )
-    not if
-      "send failure" . ( 0/1 )
-    then
+  task.this task.socket@  ( valset )
+  swap                    ( socket valset )
+  socket.send             ( valset socket )
+  not if
+    "send failure" . ( 0/1 )
+  then
 
-    //"Node " args.node >str concat " sent word to another node " concat .
-;
-
-/*----------------------------------------------------------------------------*/
-/* send response                                                              */
-/*----------------------------------------------------------------------------*/
-: >rsp ( send response    )
-
-    // check stack
-    depth 3 != if "incorrect response stack depth" . process.quit then
-
-    0 stack.class CN_INTVAL != if "incorrect response value 0" . process.quit then
-    1 stack.class CN_INTVAL != if "incorrect response value 1" . process.quit then
-    2 stack.class CN_STRVAL != if "incorrect response value 2" . process.quit then
-
-    >valset
-
-    "rspque" find execute queue.append
-    0 task.this task.seitf!
+  //"Node " args.node >str concat " sent word to another node " concat .
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -148,15 +116,15 @@ tp: sendingValset
 /*----------------------------------------------------------------------------*/
 : snd.loop
 
-    "renaming to sender.task" .putVerbose
+  "renaming to sender.task" .putVerbose
 
-    "snd.task" task.this task.name!
+  "snd.task" task.this task.name!
 
-    "snd.loop" task.this task.comment!
+  "snd.loop" task.this task.comment!
 
-    //"sender.queue"  task.this task.queue!
+  //"sender.queue"  task.this task.queue!
 
-    senderTaskPrint if "Sender running on node" args.node >str concat . then
+  senderTaskPrint if "Sender running on node" args.node >str concat . then
 
   begin
     depth 0 != if "sender task has grown" . debug.trap then
