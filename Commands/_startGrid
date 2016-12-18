@@ -2,7 +2,7 @@
 /* _startGrid -- start grid                                                   */
 /*============================================================================*/
 
-docol gn
+docol spawnNodes
 docol connectorStart
 
 sleep 5

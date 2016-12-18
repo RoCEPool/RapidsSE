@@ -2,9 +2,7 @@
 /* _ct -- create tenant test (shorthand)                                      */
 /*============================================================================*/
 
-docol gn
-//sleep 10
-
+docol spawnNodes
 docol connectorStart
 sleep 5
 
