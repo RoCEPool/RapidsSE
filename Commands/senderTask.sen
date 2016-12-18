@@ -53,42 +53,6 @@ args.nodes ptrArray: senderQueue
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send request                                                               */
-/*----------------------------------------------------------------------------*/
-: send ( toNode param word )
-
-tp: send
-
-  depth       ( toNode param word 3 )
-  args.node   ( toNode param word 3 fromNode )
-  swap        ( toNode param word fromNode 3 )
-  >valset     ( toNode valset )
-  swap        ( valset toNode )
-  dup         ( valset toNode toNode )
-
-  // cannot send to self
-  args.node == if
-    "No connection with self " .
-    2 dropN
-    exit
-  then
-
-  dup         ( valset toNode toNode )
-
-  // cannot send to outside grid nodes
-  args.nodes >= if
-    "No connection with node " swap >str concat .
-    1 dropN
-    exit
-  then
-
-  // put in the senderQueue of sender
-  senderQueue @   ( valset Q )
-
-  queue.append
-;
-
-/*----------------------------------------------------------------------------*/
 /* dump the senderQueue array                                                 */
 /*----------------------------------------------------------------------------*/
 : senderQDump
