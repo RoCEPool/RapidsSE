@@ -21,7 +21,7 @@ args.nodes ptrArray: senderQueue
 
   "{ " .put
   args.nodes 0 do
-  I ppQueues @ .put " " .put
+    I ppQueues @ .put " " .put
   loop
 
   "}" .put .\n
@@ -34,7 +34,7 @@ args.nodes ptrArray: senderQueue
 
   "{ " .put
   args.nodes 0 do
-  I cpQueues @ .put " " .put
+    I cpQueues @ .put " " .put
   loop
 
   "}" .put .\n
@@ -47,7 +47,7 @@ args.nodes ptrArray: senderQueue
 
   "{ " .put
   args.nodes 0 do
-  I pQueues @ .put " " .put
+    I pQueues @ .put " " .put
   loop
 
   "}" .put .\n
@@ -60,7 +60,7 @@ args.nodes ptrArray: senderQueue
 
   "{ " .put
   args.nodes 0 do
-  I senderQueue tp: @ .put " " .put
+    I senderQueue tp: @ .put " " .put
   loop
 
   "}" .put .\n
@@ -498,33 +498,6 @@ tp: exeAll
   reg.pop
 ;
 
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* dispatch indirect call to given participant (for use in coordinator)       */
-/*----------------------------------------------------------------------------*/
-: dispatch ( ... #values actorNo -- ..result.. )
-
-  // determine which queue to forward to
-  dup ( ... #values actorNo actorNo )
-  args.node ( ... #values actorNo actorNo args.node )
-  == ( ... #values actorNo true|false )
-  if ( ... #values actorNo )
-
-    // queue will be the participant for this node
-    pQueues @ ( ... #values pQueue )
-
-  else
-
-    // queue will be participant proxy for other node
-    ppQueues @ ( ... #values ppQueue )
-
-  then
-
-  // transfer to another actors queue and wait for result
-  >queue> ( ..result.. )
-;
 
 ////////////////////////////////////////////////////////////////////////////////
 

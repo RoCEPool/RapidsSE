@@ -23,6 +23,31 @@ args.nodes intArray: ddlInts
 ;
 
 /*----------------------------------------------------------------------------*/
+/* dispatch indirect call to given participant (for use in coordinator)       */
+/*----------------------------------------------------------------------------*/
+: dispatch ( ... #values actorNo -- ..result.. )
+
+  // determine which queue to forward to
+  dup ( ... #values actorNo actorNo )
+  args.node ( ... #values actorNo actorNo args.node )
+  == ( ... #values actorNo true|false )
+  if ( ... #values actorNo )
+
+    // queue will be the participant for this node
+    pQueues @ ( ... #values pQueue )
+
+  else
+
+    // queue will be participant proxy for other node
+    ppQueues @ ( ... #values ppQueue )
+
+  then
+
+  // transfer to another actors queue and wait for result
+  >queue> ( ..result.. )
+;
+
+/*----------------------------------------------------------------------------*/
 /* attempt to grab ddl lock n                                                 */
 /*----------------------------------------------------------------------------*/
 : grabDDL_n ( n -- true|false )
