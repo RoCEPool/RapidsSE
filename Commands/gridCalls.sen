@@ -113,7 +113,8 @@ tp: >>participants>
 
 tp: >>participant>
 
-  task.this task.name@ 2 0 substr "ld" streql assert
+  // assert we are in loader subtask
+  task.this task.name@ 2 0 substr "sl" streql assert
 
   // save the node number
   >r
