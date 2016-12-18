@@ -315,12 +315,6 @@ tp: removedCaller
 /*----------------------------------------------------------------------------*/
 : >queue> ( <<call*>> queue -- <<result>> )
 
-  >r ( <<call*>> )
-
-  addCaller ( << <<call*>> <<caller>> >> )
-
-  r> ( << <<call*>> <<caller>> >> queue )
-
   // set this task to wait for 1 ack
   1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
 

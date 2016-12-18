@@ -30,8 +30,9 @@ tp: coordinator
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-    r1
-    >queue> ( ... )
+    addCaller ( << <<call*>> <<caller>> >> )
+
+    r1 >queue> ( ... )
 
     addNotifyPp
 

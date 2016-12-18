@@ -59,13 +59,14 @@ createGridActors
 
 tp: >coordinator>
 
+/*
   // could be task such as req.task or ld#.task
 
-  // target queue is c.queue
-  c.queue ( <<call*>> c.queue )
+  addCaller ( << <<call*>> <<caller>> >> )
+*/
 
-  // put indirect call onto c.queue and suspend till notified by coordinator
-  >queue> ( <<result>> )
+  // target queue is c.queue
+  c.queue >queue> ( <<result>> )
 
 tp: resumedbyCoord
 
@@ -89,6 +90,8 @@ tp: >>participants>
 
   // add indirect call to participants
   addParticipants ( << <<$$>> <<dicStack!>> <<>participants>>> >> )
+
+  addCaller
 
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
@@ -120,6 +123,8 @@ tp: >>participant>
 
   // add indirect call to participant on given node
   r> addParticipant ( << <<$$>> <<dicStack!>> <<>participant>>> >> )
+
+  addCaller
 
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
