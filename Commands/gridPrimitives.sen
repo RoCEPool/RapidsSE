@@ -54,6 +54,19 @@ args.nodes ptrArray: senderQueue
 ;
 
 /*----------------------------------------------------------------------------*/
+/* dump the senderQueue array                                                 */
+/*----------------------------------------------------------------------------*/
+: senderQDump
+
+  "{ " .put
+  args.nodes 0 do
+  I senderQueue tp: @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
 /* pop indirect valset from this tasks queue (this is a blocking call)        */
 /*----------------------------------------------------------------------------*/
 : queue> ( -- valset )
