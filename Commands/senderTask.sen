@@ -105,38 +105,6 @@ tp: send
 /*----------------------------------------------------------------------------*/
 /* send on a socket                                                           */
 /*----------------------------------------------------------------------------*/
-: >node1 ( valSet )
-
-  1
-
-  // put in the senderQueue of sender
-  senderQueue @   ( valset Q )
-  //dup .
-
-tp: appendedSndQue
-
-  queue.append
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* send on a socket                                                           */
-/*----------------------------------------------------------------------------*/
-: >node0 ( valSet )
-
-  0
-
-  // put in the senderQueue of sender
-  senderQueue @   ( valset Q )
-  //dup .
-
-tp: appendedSndQue
-  queue.append
-;
-
-/*----------------------------------------------------------------------------*/
-/* send on a socket                                                           */
-/*----------------------------------------------------------------------------*/
 : >node ( valSet i )
 
   // put in the senderQueue of sender
