@@ -577,7 +577,8 @@ tp: coordinator
 
     addNotifyPp
 
-    reg1 >node
+    reg1                                                           //! NOT RIGHT
+    >node
 
   0 until
 
