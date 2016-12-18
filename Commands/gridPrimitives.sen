@@ -415,17 +415,19 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* expand valset and execute indirect call                                    */
 /*----------------------------------------------------------------------------*/
-: exeOne ( valset -- x )
+: exeOne ( <<call*>> -- true )
 
-  valset> ( ... wordName #values )
-
-tp: callSet
+  valset> ( ... wordName nValues )
 
   drop ( ... wordName )
 
+tp: callSetUp
+
   !indirect ( bool )
 
-  assert.stack_1+
+  assert
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
