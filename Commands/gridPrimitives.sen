@@ -98,24 +98,6 @@ tp: reg1HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* expand valset into an indirect call                                        */
-/*----------------------------------------------------------------------------*/
-: >indirect ( valset -- ... wordName ; reg0 == caller )
-
-  // expand valset into stack values
-  valset> ( ... wordName caller #values )
-
-tp: expanded
-
-  // discard the number of values
-  drop ( ... wordName caller )
-
-  // put caller into reg0
-  >reg0 ( ... wordName )
-tp: reg0HasCaller
-;
-
-/*----------------------------------------------------------------------------*/
 /* execute indirect call on the stack                                         */
 /*----------------------------------------------------------------------------*/
 : !indirect ( ... wordName -- ... )
