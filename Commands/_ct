@@ -5,7 +5,7 @@
 docol gn
 //sleep 10
 
-docol cs
+docol connectorStart
 sleep 5
 
 cf ~
