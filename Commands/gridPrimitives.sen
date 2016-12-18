@@ -441,53 +441,22 @@ tp: exeAll
   CN_VALSET isType not if assert then
 
   // execute first indirect
-  exeone
+  exeone assert
 
-  // must have a result
-  assert.stack_1+
-
-  // save result
-  >r
-
-  // execute all others
+  // execute all other indirects
   begin
 
     // no more to execute?
     CN_VALSET isType not
     if
-      // restore last result and exit
-      r>
-      exit
+      // return true
+      true exit
     then
 
-    // drop last result
-    rdrop
-
-    // execute the next indirect
-    exeone
-
-    // save result
-    >r
+    // execute next indirect
+    exeone assert
 
   0 until
-;
-
-: exeOneTest
-
-  $$ true "boo" "." $$>valset
-
-  exeOne .
-;
-
-: exeAllTest
-
-  $$ true "hoo" "." $$>valset "never" "boo" "." $$>valset
-
-//traceon
-
-  exeAll .
-
-//traceoff
 ;
 
 /*----------------------------------------------------------------------------*/
