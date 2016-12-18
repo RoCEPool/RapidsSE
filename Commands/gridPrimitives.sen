@@ -499,54 +499,6 @@ tp: exeAll
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass on processing loop     run by Participant Proxy and Coordinator Proxy */
-/*----------------------------------------------------------------------------*/
-: passOn.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
-
-  "passOn.loop" task.this task.comment!
-
-tp: passingOn
-  // push a register frame
-  reg.push
-
-  >r ( actorNo )
-  >r ( )
-  // r0 has actorNo (nodeNo)
-  // r1 has forwardQueue
-  //! r2 has the originating node
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    // pop valset off queue and push onto this stack
-    queue> ( valset ) //! CP recv   socket>
-
-    // set caller into reg0
-    exeOne assert
-
-    // convert valset to indirect call
-    //>indirect ( ... wordName )
-
-    // pass onto forward queue for processing
-    // and suspend till signalled with indirect result
-    //depth ( ... wordName #values )
-    r1 ( ... wordName #values queue )
-    >queue> ( ... )   //! PP send & recv     >socket>
-
-    // put indirect result onto stack of caller and signal
-    >caller ( ) //! CP send     >socket
-
-  0 until
-
-  rdrop
-  rdrop
-
-  // pop a register frame
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
 : cp.loop ( actorNo forwardQueue -- )
@@ -744,7 +696,6 @@ tp: participantProxy
 
     // partitipant proxy for this I
     I args.node == if
-      // I I pQueues  @ 2 "passOn.loop" "pp" I >str concat actorForm
       I I pQueues  @ 2 "pp.loop" "pp" I >str concat actorForm
       I ppQueues !
     else
