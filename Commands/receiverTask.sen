@@ -49,10 +49,12 @@
 : recv>
 
   task.this task.socket@           // get socket from task
+
+tp: receiving
+
   socket.recv                      // recv on socket
 
-tp: receivedValSet
-  exeOne assert
+tp: received
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -66,15 +68,15 @@ tp: receivedValSet
 
   "rcv.loop" task.this task.comment!
 
-  //receiver.queue  task.this task.queue!
-
   receiverTaskPrint if "Receiver running on node" args.node >str concat . then
-
-  //10 sleep
 
   begin
     depth 0 != if stk "stack of task has grown" . debug.trap then
+
     recv>
+
+    exeOne assert
+
   0 until
 ;
 

@@ -53,9 +53,9 @@
 
 tp: sendingValset
 
-  task.this task.socket@  ( valset )
+  task.this task.socket@  ( valset socket )
   swap                    ( socket valset )
-  socket.send             ( valset socket )
+  socket.send             ( bool )
   not if
     "send failure" . ( 0/1 )
   then
