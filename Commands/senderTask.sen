@@ -81,7 +81,7 @@ tp: sendingViaQueue
 /*----------------------------------------------------------------------------*/
 /* receive request                                                            */
 /*----------------------------------------------------------------------------*/
-: req>
+: req>                                       //! SHOULD REPLACE THIS WITH queue>
 
   begin
     task.this task.queue@
