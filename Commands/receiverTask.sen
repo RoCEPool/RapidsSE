@@ -9,100 +9,38 @@
 /*----------------------------------------------------------------------------*/
 : receiverForm ( ... socket #args "<loop>" "<actorName>" -- queue )
 
-    reg.push
+  reg.push
 
-    >r
+  >r
 
-    // r0 has <actorName>
+  // r0 has <actorName>
 
-    r0 ".task"    concat :task    execute >reg0  // reg0 has task
-    r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
-    r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-    r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
+  r0 ".task"    concat :task    execute >reg0  // reg0 has task
+  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
+  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
 
-    // seed the task
-    reg0 task.seed
+  // seed the task
+  reg0 task.seed
 
-    // setup the socket in the task
-    reg0 task.socket!
+  // setup the socket in the task
+  reg0 task.socket!
 
-    // attach queue to task
-    reg1 reg0 task.queue!
+  // attach queue to task
+  reg1 reg0 task.queue!
 
-    // put task in taskset
-    reg0 reg2 taskset.append
+  // put task in taskset
+  reg0 reg2 taskset.append
 
-    // attach taskset to thread
-    reg2 reg3 thread.taskset!
+  // attach taskset to thread
+  reg2 reg3 thread.taskset!
 
-    // spawn the os thread
-    reg3 thread.spawn
+  // spawn the os thread
+  reg3 thread.spawn
 
-    rdrop
+  rdrop
 
-    reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* dummy executeIt command to test send-recv                                  */
-/*----------------------------------------------------------------------------*/
-: executeIt ( parameter )
-   "Node " args.node >str concat
-   " executing executeIt with parameter " concat
-   swap
-   concat .
-;
-
-/*----------------------------------------------------------------------------*/
-/* recv valset from the socket                                                */
-/*----------------------------------------------------------------------------*/
-: recvOLD>
-
-  task.this task.socket@           // get socket from task
-  socket.recv                      // recv on socket
-
-tp: receivedValSet
-
-  //valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
-
-  //stk
-  //"Node " args.node >str concat " received word" concat .
-  //find execute                    // execute the word
-
-  args.node 1 == if
-
-    // Node 1 received a request to be executed
-
-    // put valset onto cp 1 queue
-    //"putting value in cpQueue" .
-    //stk
-    // passing request "mkten" received from node0 to CP
-    args.node cpQueues @
-tp: handingOn
-    queue.append
-
-
-  else
-
-    // Node 0 received a response
-
-    // put valset onto pp 1 queue
-    //"putting value in ppQueue" .
-    //stk
-    // passing response of "mkten" received from node1 to PP
-    //1 ppQueues @
-
-    reg.push
-    1 ppTasks @
-    >reg0
-    >caller
-    reg.pop
-
-  then
-
-
-//"put value in Queue" .
-
+  reg.pop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -122,23 +60,22 @@ tp: receivedValSet
 /*----------------------------------------------------------------------------*/
 : rcv.loop
 
-    "renaming to Receiver Task" .putVerbose
+  "renaming to Receiver Task" .putVerbose
 
-    "rcv.task" task.this task.name!
+  "rcv.task" task.this task.name!
 
-    "rcv.loop" task.this task.comment!
+  "rcv.loop" task.this task.comment!
 
-    //receiver.queue  task.this task.queue!
+  //receiver.queue  task.this task.queue!
 
-    receiverTaskPrint if "Receiver running on node" args.node >str concat . then
+  receiverTaskPrint if "Receiver running on node" args.node >str concat . then
 
-    //10 sleep
+  //10 sleep
 
-    begin
-      depth 0 != if stk "stack of task has grown" . debug.trap then
-      recv>
-    0 until
-
+  begin
+    depth 0 != if stk "stack of task has grown" . debug.trap then
+    recv>
+  0 until
 ;
 
 /*============================================================================*/
