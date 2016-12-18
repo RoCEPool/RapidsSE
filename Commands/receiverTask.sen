@@ -5,45 +5,6 @@
 "ReceiverTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* receiver formation                                                         */
-/*----------------------------------------------------------------------------*/
-: receiverForm ( ... socket #args "<loop>" "<actorName>" -- queue )
-
-  reg.push
-
-  >r
-
-  // r0 has <actorName>
-
-  r0 ".task"    concat :task    execute >reg0  // reg0 has task
-  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
-  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
-
-  // seed the task
-  reg0 task.seed
-
-  // setup the socket in the task
-  reg0 task.socket!
-
-  // attach queue to task
-  reg1 reg0 task.queue!
-
-  // put task in taskset
-  reg0 reg2 taskset.append
-
-  // attach taskset to thread
-  reg2 reg3 thread.taskset!
-
-  // spawn the os thread
-  reg3 thread.spawn
-
-  rdrop
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
 : recv>
@@ -61,6 +22,8 @@ tp: received
 /* receiver loop                                                              */
 /*----------------------------------------------------------------------------*/
 : rcv.loop
+
+  task.this task.socket!
 
   "renaming to Receiver Task" .putVerbose
 
