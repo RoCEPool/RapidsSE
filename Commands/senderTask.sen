@@ -5,11 +5,6 @@
 "SenderTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
 /* sender formation                                                           */
 /*----------------------------------------------------------------------------*/
 : senderForm ( ... socket #args "<loop>" "<actorName>" -- queue )
@@ -64,23 +59,6 @@
   "}" .put .\n
 ;
 
-
-/*----------------------------------------------------------------------------*/
-/* receive request                                                            */
-/*----------------------------------------------------------------------------*/
-: req>                                       //! SHOULD REPLACE THIS WITH queue>
-
-  begin
-    task.this task.queue@
-    queue.pop
-    dup not
-    if
-      task.yield
-      args.sleep thread.sleep_ms
-    then
-  until
-;
-
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
@@ -116,7 +94,7 @@ tp: sendingValset
   begin
     depth 0 != if "sender task has grown" . debug.trap then
 
-    req>          // pop valset off queue and push onto this stack
+    queue>        // pop valset off queue and push onto this stack
 tp: poppedValset
 
     >send         // send the valset across the connection
