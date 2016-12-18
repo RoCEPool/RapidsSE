@@ -441,7 +441,7 @@ tp: exeAll
   CN_VALSET isType not if assert then
 
   // execute first indirect
-  exeone assert
+  exeOne assert
 
   // execute all other indirects
   begin
@@ -454,7 +454,7 @@ tp: exeAll
     then
 
     // execute next indirect
-    exeone assert
+    exeOne assert
 
   0 until
 ;
@@ -522,8 +522,8 @@ tp: passingOn
     // pop valset off queue and push onto this stack
     queue> ( valset ) //! CP recv   socket>
 
-    // set caller
-    exeOne drop
+    // set caller into reg0
+    exeOne assert
 
     // convert valset to indirect call
     //>indirect ( ... wordName )
@@ -572,8 +572,6 @@ tp: coordinator
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-    //removeCaller // exeOne
-
     r1
     >queue> ( ... )
 
@@ -617,7 +615,7 @@ tp: participantProxy
     queue> ( valset )
 
     // set caller into reg0
-    exeOne drop
+    exeOne assert
 
     // set this task to wait for 1 ack
     1 task.this task.acks! ( ... wordName #values queue )
@@ -665,7 +663,6 @@ tp: participantProxy
 
   "exeOne.loop" task.this task.comment!
 
-
   // push a register frame
   reg.push
 
@@ -676,10 +673,10 @@ tp: participantProxy
     // pop valset off queue and push onto this stack
     queue> ( valset )
 
-    exeOne
+    exeOne assert
 
-    // convert indirect result into valset
-    >result ( valset )
+    // convert true result into valset
+    true >result ( valset )
 
     // put indirect result onto stack of caller and signal
     >caller ( )

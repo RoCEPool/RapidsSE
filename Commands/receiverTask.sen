@@ -114,10 +114,7 @@ tp: handingOn
   socket.recv                      // recv on socket
 
 tp: receivedValSet
-  exeOne
-
-  drop
-
+  exeOne assert
 ;
 
 /*----------------------------------------------------------------------------*/
