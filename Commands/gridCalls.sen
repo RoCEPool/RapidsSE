@@ -5,29 +5,29 @@
 "gridCalls" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the actors for the dl test                                          */
+/* create the grid actors C, PP, CP and P                                     */
 /*----------------------------------------------------------------------------*/
-: createActors
+: createGridActors
 
   /*
 
-    r->c->PP->snd ... rcv->CP->p
-    |
-    +->P
+    r->C->PP-> (snd ... rcv) ->CP->P
+       |
+       +->P
 
   */
 
   args.nodes 0 do
 
-    // participant for this I
+    // participant for node I
     0 "exeAll.loop" "p" I >str concat actorForm
     I pQueues !
 
-    // coordinator proxy for this I
+    // coordinator proxy for node I
     I I pQueues @ 2 "cp.loop" "cp" I >str concat actorForm
     I cpQueues !
 
-    // partitipant proxy for this I
+    // partitipant proxy for node I
     I args.node == if
       I I pQueues  @ 2 "pp.loop" "pp" I >str concat actorForm
       I ppQueues !
@@ -38,7 +38,7 @@
 
   loop
 
-  // coordinator
+  // coordinator for this node
   0 "exeAll.loop" "c" actorForm drop
 
   args.verbose if
@@ -46,7 +46,11 @@
   then
 ;
 
-createActors
+////////////////////////////////////////////////////////////////////////////////
+
+createGridActors
+
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* queue an indirect call set to the coordinator and wait for indirect result */
