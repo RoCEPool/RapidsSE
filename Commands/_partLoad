@@ -2,20 +2,16 @@
 /* _partLoad -- create and load TPC-H Part table for SF1                      */
 /*============================================================================*/
 
-ping
-
+cf~
 cf tenants
-//create tenant boray;
-
 cf boray
 cf catalogs
-create catalog borayCatalog;
-
-cf borayCatalog
+cf rapidsse
 cf schemas
-create schema boraySchema;
 
-cf boraySchema
+create schema tpchSchema;
+
+cf tpchSchema
 cf tables
 
 create table part (
