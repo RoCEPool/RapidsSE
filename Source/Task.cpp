@@ -12547,13 +12547,13 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   
 ENTRY("vSocketConnect");
   
-  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.connect");
   
   if ( ! nnpTask->m_xParamStack.bPop(xNode) )
     THROW_INVALID_PARAM("socket.connect");
 
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
     THROW_INVALID_PARAM("socket.connect");
 
   // get address of node
@@ -12661,10 +12661,10 @@ ENTRY("vSocketSend");
   ValSet  xValSet;
   bool    bResult;
   
-  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.send");
   
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
     THROW_INVALID_PARAM("socket.send");
   
   pSocket = reinterpret_cast<Socket*>(pObject);
