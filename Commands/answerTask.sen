@@ -28,11 +28,11 @@ int: connections
 /*----------------------------------------------------------------------------*/
 : ans.loop
 
-  "renaming to Answer Task" .putVerbose
+  //"renaming to Answer Task" .putVerbose
 
-  "answerTask" task.this task.name!
+  //"answerTask" task.this task.name!
 
-  ans.queue  task.this task.queue!
+  //ans.queue  task.this task.queue!
 
   answerTaskPrint if "Answer running..." . then
 
@@ -47,8 +47,9 @@ int: connections
   0 connections !
   begin
 
-
+tp: waitingOnAccept
     r0 socket.accept
+tp: socketAccepted
 
     args.verbose if
       "accepted connection on port "  args.port args.node + >str concat .
