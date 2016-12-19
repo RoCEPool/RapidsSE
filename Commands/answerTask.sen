@@ -20,13 +20,7 @@ int: connections
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-  // set up answer task
-  0 "ans.loop" nullPtr task.new ans.taskset taskSet.append
-
-  // set up the answer thread
-  ans.taskset    ans.thread thread.taskset!
-  "answerThread" ans.thread thread.name!
-                 ans.thread thread.spawn
+  0 "ans.loop" ans.task ans.queue ans.taskset ans.thread actorInterlink
 ;
 
 /*----------------------------------------------------------------------------*/
