@@ -30,8 +30,6 @@ tp: snd.loop
 
   task.this task.socket!
 
-  "snd.task" task.this task.name!
-
   "snd.loop" task.this task.comment!
 
   senderTaskPrint if "Sender running on node" args.node >str concat . then

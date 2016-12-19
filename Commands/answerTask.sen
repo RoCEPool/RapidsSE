@@ -66,7 +66,7 @@ ddlLock.grabWrite
     // start receiver
     //"starting receiver" .
     connections @          ( connection# )
-    >str "receiver" swap concat ( connection# receiverName )
+    >str "rr" swap concat ( connection# receiverName )
 
     1 swap "rcv.loop" swap actorForm
 

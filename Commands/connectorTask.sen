@@ -65,7 +65,7 @@ thread:  connectorThread
         //"starting sender" .
 ddlLock.grabWrite
 
-        1 "snd.loop" "sender" I >str concat actorForm
+        1 "snd.loop" "sr" I >str concat actorForm
 
         I senderQueue !
 ddlLock.dropWrite

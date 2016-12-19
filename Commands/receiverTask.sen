@@ -27,8 +27,6 @@ tp: received
 
   "renaming to Receiver Task" .putVerbose
 
-  "rcv.task" task.this task.name!
-
   "rcv.loop" task.this task.comment!
 
   receiverTaskPrint if "Receiver running on node" args.node >str concat . then
