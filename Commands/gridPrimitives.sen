@@ -330,21 +330,9 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* actor formation                                                            */
+/* interlinkParts                                                             */
 /*----------------------------------------------------------------------------*/
-: actorForm ( ... #args "<loop>" "<actorName>" -- queue )
-
-  reg.push
-
-  >r ( ... #args "<loop>" ) // r0 has <actorName>
-
-  // create the objects
-  r0 ".task"    concat :task    execute >reg0  // reg0 has task
-  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
-  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
-
-  ( ... #args "<loop>" )
+: interlinkParts ( ... #args "<loop>" -- )
 
   // seed the task
   reg0 task.seed ( )
@@ -372,14 +360,50 @@ tp: haveResultSet
   // spawn the os thread
   reg3 ( thread )
   thread.spawn ( )
+;
 
-  rdrop ( )
+/*----------------------------------------------------------------------------*/
+/* actor formation                                                            */
+/*----------------------------------------------------------------------------*/
+: actorForm ( ... #args "<loop>" "<actorName>" -- queue )
+
+  reg.push
+
+  >r ( ... #args "<loop>" ) // r0 has <actorName>
+
+  // create the objects
+  r0 ".task"    concat :task    execute >reg0  // reg0 has task
+  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
+  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
+
+  rdrop (  ... #args "<loop>" )
+
+  interlinkParts
 
   // leave queue on stack
   reg1 ( queue )
 
   reg.pop ( queue )
 ;
+
+/*----------------------------------------------------------------------------*/
+/* actor interlink                                                            */
+/*----------------------------------------------------------------------------*/
+: actorInterlink ( ... #args "<loop>" task queue taskset thread -- )
+
+  reg.push
+
+  >reg3
+  >reg2
+  >reg1
+  >reg0
+
+  interlinkParts
+
+  reg.pop
+;
+
 
 /*----------------------------------------------------------------------------*/
 /* expand valset and execute indirect call                                    */
