@@ -8,24 +8,28 @@
 /* create the parts                                                           */
 /*----------------------------------------------------------------------------*/
 
-queue:   connectorQueue
-
-taskset: connectorTaskSet
-
-thread:  connectorThread
+task:    con.task
+queue:   con.queue
+taskset: con.taskset
+thread:  con.thread
 
 /*----------------------------------------------------------------------------*/
 /* start the connector task                                                   */
 /*----------------------------------------------------------------------------*/
 : connectorStart
 
+tp: connectorStart
+
   // set up connector task
-  0 "con.loop" nullPtr task.new connectorTaskSet taskSet.append
+  0 "con.loop" nullPtr task.new con.taskset taskSet.append
 
   // set up the connector thread
-  connectorTaskSet  connectorThread thread.taskset!
-  "connectorThread" connectorThread thread.name!
-                  connectorThread thread.spawn
+  con.taskset  con.thread thread.taskset!
+  "connectorThread" con.thread thread.name!
+                    con.thread thread.spawn
+
+  // 0 "ans.loop" ans.task ans.queue ans.taskset ans.thread actorInterlink
+  // 0 "con.loop" con.task con.queue con.taskset con.thread actorInterlink
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +41,7 @@ thread:  connectorThread
 
     "connectorTask" task.this task.name!
 
-    connectorQueue  task.this task.queue!
+    con.queue  task.this task.queue!
 
     connectorTaskPrint if "Connector running..." . then
 
