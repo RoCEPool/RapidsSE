@@ -19,49 +19,47 @@ thread:  monitorThread
 /*----------------------------------------------------------------------------*/
 /* start the monitor task                                                     */
 /*----------------------------------------------------------------------------*/
-
 : monitorStart
 
-     0 "monitorLoop" nullPtr task.new monitorTaskSet taskSet.Append
+   0 "mon.loop" nullPtr task.new monitorTaskSet taskSet.Append
 
-     monitorTaskSet  monitorThread thread.taskset!
-     "monitorThread" monitorThread thread.name!
-                     monitorThread thread.spawn
+   monitorTaskSet  monitorThread thread.taskset!
+   "monitorThread" monitorThread thread.name!
+                   monitorThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* monitor task loop                                                          */
 /*----------------------------------------------------------------------------*/
+: mon.loop
 
-: monitorLoop
+  "monitorTask" task.this task.name!
 
-    "monitorTask" task.this task.name!
+  "" monitorString !
 
-    "" monitorString !
+  monitorTaskPrint if "Monitor Task running..." . then
 
-    monitorTaskPrint if "Monitor Task running..." . then
+  begin
 
-    begin
+    monitorLock lock.grabWrite
 
-      monitorLock lock.grabWrite
+      "freespace " freespace >str concat
 
-        "freespace " freespace >str concat
+      " queries " concat
 
-        " queries " concat
+      queryCount @ >str concat
 
-        queryCount @ >str concat
+      monitorString !
 
-        monitorString !
+    monitorLock lock.dropWrite
 
-      monitorLock lock.dropWrite
+    // monitorString @ .
 
-      // monitorString @ .
+    monitorTaskPrint if bpa then
 
-      monitorTaskPrint if bpa then
+    10 sleep
 
-      10 sleep
-
-    0 until
+  0 until
 ;
 
 /*----------------------------------------------------------------------------*/

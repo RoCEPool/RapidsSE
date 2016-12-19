@@ -20,7 +20,7 @@ thread:  connectorThread
 : connectorStart
 
   // set up connector task
-  0 "connectorLoop" nullPtr task.new connectorTaskSet taskSet.append
+  0 "con.loop" nullPtr task.new connectorTaskSet taskSet.append
 
   // set up the connector thread
   connectorTaskSet  connectorThread thread.taskset!
@@ -31,7 +31,7 @@ thread:  connectorThread
 /*----------------------------------------------------------------------------*/
 /* connector loop                                                             */
 /*----------------------------------------------------------------------------*/
-: connectorLoop
+: con.loop
 
     "renaming to Connector Task" .putVerbose
 

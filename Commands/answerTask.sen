@@ -21,19 +21,19 @@ int: connections
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-    // set up answer task
-    0 "answerLoop" nullPtr task.new answerTaskSet taskSet.append
+  // set up answer task
+  0 "ans.loop" nullPtr task.new answerTaskSet taskSet.append
 
-    // set up the answer thread
-    answerTaskSet  answerThread thread.taskset!
-    "answerThread" answerThread thread.name!
-                   answerThread thread.spawn
+  // set up the answer thread
+  answerTaskSet  answerThread thread.taskset!
+  "answerThread" answerThread thread.name!
+                 answerThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* answer loop                                                                */
 /*----------------------------------------------------------------------------*/
-: answerLoop
+: ans.loop
 
   "renaming to Answer Task" .putVerbose
 

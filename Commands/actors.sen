@@ -31,10 +31,6 @@
 
   //dic.main true dic.frozen!
 
-  //  debug.trap
-
-  //  "requestProcessingLoop" find execute
-
   requestStart
   ;
 
