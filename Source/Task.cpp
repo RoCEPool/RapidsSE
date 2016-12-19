@@ -921,6 +921,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
+  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
+  
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
@@ -7777,6 +7779,33 @@ ENTRY("vNodeCursorNext");
   Object* pObject = pNodeCursor->pObject();
   
   nnpTask->m_xParamStack.vPush(pObject);
+  
+  EXIT();
+}
+
+// number: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* number.magnitude -- get magnitude of number                                */
+/*----------------------------------------------------------------------------*/
+void Task::vNumberMagnitude(NNP_Task nnpTask)
+{
+  ENTRY("vNumberMagnitude");
+  
+  i8 iNumber;
+  i8 iScale;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iNumber) )
+    THROW_INVALID_PARAM("number.magnitude");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iScale) )
+    THROW_INVALID_PARAM("number.magnitude");
+  
+  s256 s;
+  
+  Magnitudes::vMagnitude(iNumber, iScale, s.a());
+  
+  nnpTask->m_xParamStack.vPush(s);
   
   EXIT();
 }

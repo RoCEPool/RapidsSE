@@ -584,6 +584,9 @@ namespace Tasks
     static void vNodeCursorNew(NNP_Task nnpTask);
     static void vNodeCursorNext(NNP_Task nnpTask);
     
+    // number
+    static void vNumberMagnitude(NNP_Task nnpTask);
+    
     // object
     static void vObjectDump(NNP_Task nnpTask);
     

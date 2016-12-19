@@ -507,6 +507,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bSelectTable(pWords, iWords);
   }
   
+  if (String::bEqualTo("space",pWords[0],C_NO_CASE)) {
+    return bPoolSpace(pWords, iWords);
+  }
+  
   if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
     return bSizeTable(pWords, iWords);
   }
@@ -1210,6 +1214,27 @@ bool SEitf::bRetTable(char* pWords[], i8 iWords)
   }
   
   String::vConcat(a," return_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pool space                                                             */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPoolSpace(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vConcat(a," space");
   
   return bAppendRequest(sRequest);
 }

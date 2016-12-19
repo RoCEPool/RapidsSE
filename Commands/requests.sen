@@ -745,6 +745,20 @@ tp: lf
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get space in the pool                                                      */
+/*----------------------------------------------------------------------------*/
+: space ( -- <R> )
+
+  "Pool: Size(" 2 totalSpace number.magnitude concat ")" concat
+  "Pool: InUse(" 2 inUseSpace number.magnitude concat ")" concat
+  "Pool: Free(" 2 freeSpace number.magnitude concat ")" concat
+
+  concat concat .
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get free space in the pool                                                 */
 /*----------------------------------------------------------------------------*/
 : getFreeSpace ( -- <R> )

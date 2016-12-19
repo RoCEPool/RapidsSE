@@ -1866,7 +1866,7 @@ bool SePrompt::bPoolSpace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   ASSERT(String::bEqualTo(m_pToken[0],"space"));
-  
+  /*
   i8 iFree;
   i8 iInUse;
   i8 iTotal;
@@ -1876,7 +1876,7 @@ bool SePrompt::bPoolSpace(void)
   s256 sTotal;
 
   String::vCopy(m_pToken[0], "getTotalSpace");
-  if (!bExecuteRequest())
+  if (!bExecuteRequest())r
     return false;
   iTotal = String::iToI8(m_sResponse.a());
   Magnitudes::vMagnitude(iTotal, 2, sTotal.a());
@@ -1896,6 +1896,13 @@ bool SePrompt::bPoolSpace(void)
   vTrace("Pool: Size(%s) InUse(%s) Free(%s)\n",
          sTotal.a(), sInUse.a(), sFree.a());
   m_sResponse = "<ok>";
+  
+  */
+  
+  if (!bExecuteRequest()) {
+    return false;
+  }
+  
   return true;
 }
 
