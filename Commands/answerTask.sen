@@ -48,7 +48,9 @@ int: connections
   begin
 
 tp: waitingOnAccept
+"con.task" find execute tp: con.task drop
     r0 socket.accept
+"con.task" find execute tp: con.task drop
 tp: socketAccepted
 
     args.verbose if

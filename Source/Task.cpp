@@ -12501,6 +12501,8 @@ ENTRY("vSocketAccept");
   if ( ! bResult )
     THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
   
+  Task* pTask = (Task*)0x208f500c8;
+  
   // return the new socket
   nnpTask->m_xParamStack.vPush(new Socket(iSocketId));
   

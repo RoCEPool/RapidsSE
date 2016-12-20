@@ -20,6 +20,7 @@ thread:  con.thread
 
 tp: connectorStart
 
+/*
   // set up connector task
   0 "con.loop" nullPtr task.new con.taskset taskSet.append
 
@@ -27,9 +28,9 @@ tp: connectorStart
   con.taskset  con.thread thread.taskset!
   "connectorThread" con.thread thread.name!
                     con.thread thread.spawn
+*/
 
-  // 0 "ans.loop" ans.task ans.queue ans.taskset ans.thread actorInterlink
-  // 0 "con.loop" con.task con.queue con.taskset con.thread actorInterlink
+  0 "con.loop" con.task con.queue con.taskset con.thread actorInterlink
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -37,46 +38,48 @@ tp: connectorStart
 /*----------------------------------------------------------------------------*/
 : con.loop
 
-    "renaming to Connector Task" .putVerbose
+  "renaming to Connector Task" .putVerbose
 
-    "connectorTask" task.this task.name!
+  "connectorTask" task.this task.name!
 
-    con.queue  task.this task.queue!
+  con.queue  task.this task.queue!
 
-    connectorTaskPrint if "Connector running..." . then
+  connectorTaskPrint if "Connector running..." . then
 
-    //10 thread.sleep_s
+  //10 thread.sleep_s
 
-    args.nodes 0 do
+  args.nodes 0 do
 
-      I args.node == if
-        nullptr I senderQueue !
+    I args.node == if
+      nullptr I senderQueue !
 
-      else
+    else
 
-        args.port I +
-        "127.0.0.1"
-        socket.open  socket.connect
+      args.port I +
+      "127.0.0.1"
+      socket.open  socket.connect
 
-        args.verbose if
-          "Node" args.node >str concat
-          " connected to node" concat
-          I >str concat
-          .
-        then
-
-        // start sender
-        //"starting sender" .
-ddlLock.grabWrite
-
-        1 "snd.loop" "sr" I >str concat actorForm
-
-        I senderQueue !
-ddlLock.dropWrite
-
+      args.verbose if
+        "Node" args.node >str concat
+        " connected to node" concat
+        I >str concat
+        .
       then
 
-    loop
+      // start sender
+      //"starting sender" .
+ddlLock.grabWrite
+
+      1 "snd.loop" "sr" I >str concat actorForm
+
+      I senderQueue !
+ddlLock.dropWrite
+
+    then
+
+  loop
+
+  1000000 thread.sleep_s
 
 ;
 
