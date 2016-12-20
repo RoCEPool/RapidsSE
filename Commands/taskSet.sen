@@ -15,6 +15,7 @@
     word.this >body magic!!
     word.this >body CN_TASKSET class!
     word.this >body taskset.init
+    word.this >body object.wordbody
     does>
 ;
 
@@ -25,6 +26,7 @@
     word.this >body magic!!
     word.this >body CN_TASKSET class!
     word.this >body taskset.init
+    word.this >body object.wordbody
     word.this
     does>
 ;

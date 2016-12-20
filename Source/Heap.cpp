@@ -146,6 +146,9 @@ void Heap::vFree(Object* pObject)
 {
   eCN eAllocClass = pObject->eClass();
   
+  // should not be freeing objects that are part of a word body
+  ASSERT(!pObject->bWordBody());
+  
   eHT eHeap = geWhichHeap[eAllocClass];
   
   switch(eHeap) {

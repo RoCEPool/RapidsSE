@@ -40,6 +40,7 @@ int: queryCount
     word.this >body magic!!
     word.this >body CN_TABLE class!
     word.this >body table.init
+    word.this >body object.wordbody
     ' table word.this word.kind!
     does>
 ;
@@ -54,6 +55,7 @@ int: queryCount
     word.this >body magic!!
     word.this >body CN_TABLE class!
     word.this >body table.init
+    word.this >body object.wordbody
     ' table word.this word.kind!
     word.this
     does>

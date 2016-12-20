@@ -11,6 +11,7 @@
     word.this >body magic!!
     word.this >body CN_TXCOLLECTION class!
     word.this >body txCollection.init
+    word.this >body object.wordbody
     does>
 ;
 

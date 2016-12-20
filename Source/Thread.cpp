@@ -253,7 +253,8 @@ void Thread::vLoop(void)
         m_npTask = nullptr;
       }
       else if (TS_EXITED == m_npTask->eState()) {
-        if (*gnpRootTask != *m_npTask) {
+        NNP_Task nnpTask = *m_npTask;
+        if ( (*gnpRootTask != *m_npTask)  && (!nnpTask->bWordBody()) ) {
           delete *m_npTask;
           m_npTask = nullptr;
         }

@@ -22,6 +22,7 @@
     word.this >body CN_GRID class!
     word.this >body grid.init
     ' grid word.this word.kind!
+    word.this >body object.wordbody
     does>
 ;
 
@@ -36,6 +37,7 @@
     word.this >body CN_GRID class!
     word.this >body grid.init
     ' grid word.this word.kind!
+    word.this >body object.wordbody
     word.this
     does>
 ;

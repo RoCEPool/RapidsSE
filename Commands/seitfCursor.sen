@@ -14,6 +14,7 @@
     word.this >body magic!!
     word.this >body CN_SEITFCURSOR class!
     word.this >body seitfCursor.init
+    word.this >body object.wordbody
     does>
 ;
 
@@ -27,6 +28,7 @@
     word.this >body magic!!
     word.this >body CN_SEITFCURSOR class!
     word.this >body seitfCursor.init
+    word.this >body object.wordbody
     word.this
     does>
 ;

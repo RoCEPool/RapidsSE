@@ -586,6 +586,7 @@ namespace Tasks
     
     // object
     static void vObjectDump(NNP_Task nnpTask);
+    static void vObjectWordBody(NNP_Task nnpTask);
     
     // process
     static void vProcessGetPid(NNP_Task nnpTask);

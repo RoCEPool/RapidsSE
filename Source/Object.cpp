@@ -13,6 +13,8 @@ extern BufferPool*  gpBufferPool;
 Object::Object(eCN eClassNo)
 : cn(eClassNo)
 {
+  m_bWordBody = false;
+  
   _precondition_(_ADDRESS_, _MAGIC_,eClassNo);
 }
 
@@ -25,6 +27,27 @@ void Object::vInitMagic(void)
   
   vSetMagic();
 }
+
+/*----------------------------------------------------------------------------*/
+/* set is word body                                                           */
+/*----------------------------------------------------------------------------*/
+void Object::vWordBody(bool bWordBody)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+  
+  m_bWordBody = bWordBody;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get is word body                                                           */
+/*----------------------------------------------------------------------------*/
+bool Object::bWordBody(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_);
+  
+  return m_bWordBody;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

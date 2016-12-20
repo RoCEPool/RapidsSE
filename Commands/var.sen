@@ -14,6 +14,7 @@
   sizeof_intval allot
   word.this >body magic!!
   word.this >body CN_INTVAL class!
+  word.this >body object.wordbody
   does>
 ;
 
@@ -27,6 +28,7 @@
   dup >r // r0 - number of cells
   sizeof_intval * allot
   word.this >body magic!!
+  word.this >body object.wordbody
 
   r> 0 do
     I sizeof_intval * word.this >body (int) + (ptr)
@@ -48,6 +50,7 @@
   sizeof_ptrval allot
   word.this >body magic!!
   word.this >body CN_PTRVAL class!
+  word.this >body object.wordbody
   does>
 ;
 
@@ -61,6 +64,7 @@
   dup >r // r0 - number of cells
   sizeof_ptrval * allot
   word.this >body magic!!
+  word.this >body object.wordbody
 
   r> 0 do
     I sizeof_ptrval * word.this >body (int) + (ptr)
@@ -83,6 +87,7 @@
   word.this >body magic!!
   word.this >body CN_STRVAL class!
   word.this >body s256.init
+  word.this >body object.wordbody
   does>
 ;
 
