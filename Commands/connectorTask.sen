@@ -79,7 +79,7 @@ ddlLock.dropWrite
 
   loop
 
-  1000000 thread.sleep_s
+  //1000000 thread.sleep_s
 
 ;
 

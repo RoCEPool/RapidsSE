@@ -1,4 +1,5 @@
 
+
 /*============================================================================*/
 /* Task.cpp - task                                                            */
 /*============================================================================*/
@@ -920,6 +921,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.init",   &vNodeCursorInit,   false);
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
+  
+  vAddPrimitive("object.wordbody",   &vObjectWordBody,   false);
   
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
@@ -7799,6 +7802,22 @@ void Task::vObjectDump(NNP_Task nnpTask)
   pDUMPFUN* pDumpFun =gpDump[eClass];
   
   (pDumpFun)(pObject->eClass(), pObject, pSingleTab());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.wordbody -- mark object as a part of a wordbody                     */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectWordBody(NNP_Task nnpTask)
+{
+  ENTRY("vWordBody");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("object.wordbody");
+  
+  pObject->vWordBody(true);
   
   EXIT();
 }
