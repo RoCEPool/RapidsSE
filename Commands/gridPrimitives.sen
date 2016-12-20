@@ -404,7 +404,6 @@ tp: haveResultSet
   reg.pop
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* expand valset and execute indirect call                                    */
 /*----------------------------------------------------------------------------*/
@@ -451,71 +450,6 @@ tp: exeAll
 
   0 until
 ;
-
-
-/*----------------------------------------------------------------------------*/
-/* execute one indirect call processing loop                                  */
-/*----------------------------------------------------------------------------*/
-: exeOne.loop
-
-  "exeOne.loop" task.this task.comment!
-
-  // push a register frame
-  reg.push
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    // pop valset off queue and push onto this stack
-    queue> ( valset )
-
-    exeOne assert
-
-    // convert true result into valset
-    true >result ( valset )
-
-    // put indirect result onto stack of caller and signal
-    >caller ( )
-
-  0 until
-
-  // pop a register frame
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute all indirect call processing loop                                  */
-/*----------------------------------------------------------------------------*/
-: exeAll.loop
-
-  "exeAll.loop" task.this task.comment!
-
-
-  // push a register frame
-  reg.push
-
-  begin
-
-    depth 0 != if "stack of task has grown" . debug.trap then
-
-    // pop valset off queue and push onto this stack
-    queue> ( valset )
-
-    exeAll
-
-    // convert indirect result into valset
-    >result ( valset )
-
-    // put indirect result onto stack of caller and signal
-    >caller ( )
-
-  0 until
-
-  // pop a register frame
-  reg.pop
-;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 

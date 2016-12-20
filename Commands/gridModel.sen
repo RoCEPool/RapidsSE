@@ -13,6 +13,7 @@
 "coordinatorTask.sen" >>:
 "participantProxy.sen" >>:
 "coordinatorProxy.sen" >>:
+"participantTask.sen" >>:
 "receiverTask.sen" >>:
 "senderTask.sen" >>:
 

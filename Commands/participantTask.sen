@@ -4,6 +4,37 @@
 
 "participantTask.sen" .putVerbose
 
+/*----------------------------------------------------------------------------*/
+/* execute all indirect call processing loop                                  */
+/*----------------------------------------------------------------------------*/
+: p.loop
+
+  "p.loop" task.this task.comment!
+
+  // push a register frame
+  reg.push
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    queue> ( valset )
+
+    exeAll
+
+    // convert indirect result into valset
+    >result ( valset )
+
+    // put indirect result onto stack of caller and signal
+    >caller ( )
+
+  0 until
+
+  // pop a register frame
+  reg.pop
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

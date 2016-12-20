@@ -20,7 +20,7 @@
   args.nodes 0 do
 
     // participant for node I
-    0 "exeAll.loop" "p" I >str concat actorForm
+    0 "p.loop" "p" I >str concat actorForm
     I pQueues !
 
     // coordinator proxy for node I
@@ -39,7 +39,7 @@
   loop
 
   // coordinator for this node
-  0 "exeAll.loop" "c" actorForm drop
+  0 "c.loop" "c" actorForm drop
 
   args.verbose if
     cpQueuesDump

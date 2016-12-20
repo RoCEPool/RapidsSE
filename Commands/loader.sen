@@ -52,7 +52,7 @@ tp: loadAppendBuffer$
   //   appended to partition of table
 
   // where:
-  //   in participant task running exeAll.loop on participant thread;
+  //   in participant task running p.loop on participant thread;
 
   // what:
   //   find named table to get pointer to table
