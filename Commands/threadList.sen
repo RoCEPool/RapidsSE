@@ -11,6 +11,7 @@
     word.this >body magic!!
     word.this >body CN_THREADLIST class!
     word.this >body threadlist.init
+    word.this >body object.wordbody
     does>
 ;
 

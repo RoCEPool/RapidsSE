@@ -14,6 +14,7 @@
     word.this >body CN_TIMER class!
    ' timer word.this word.kind!
     word.this >body timer.init
+    word.this >body object.wordbody
     does> 
 ;
 
@@ -25,6 +26,7 @@
     word.this >body CN_TIMER class!
     ' timer word.this word.kind!
     word.this >body timer.init
+    word.this >body object.wordbody
     does>
 ;
 

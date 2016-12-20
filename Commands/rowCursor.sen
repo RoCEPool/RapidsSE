@@ -14,6 +14,7 @@
     word.this >body magic!!
     word.this >body CN_ROWCURSOR class!
     word.this >body rowCursor.init
+    word.this >body object.wordbody
     does>
 ;
 
@@ -27,6 +28,7 @@
     word.this >body magic!!
     word.this >body CN_ROWCURSOR class!
     word.this >body rowCursor.init
+    word.this >body object.wordbody
     word.this
     does>
 ;

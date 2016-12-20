@@ -15,6 +15,7 @@
     word.this >body magic!!
     word.this >body CN_LOADER class!
     word.this >body loader.init
+    word.this >body object.wordbody
     word.this
     does>
 ;
@@ -26,6 +27,7 @@
     word.this >body magic!!
     word.this >body CN_LOADERSUB class!
     word.this >body loaderSub.init
+    word.this >body object.wordbody
     word.this
     does>
 ;

@@ -23,6 +23,7 @@ diclock.grabwrite
     word.this >body CN_DIC class!
     ' folder word.this word.kind!
     word.this >body dic.init
+    word.this >body object.wordbody
 diclock.dropwrite
     does>
 ;
@@ -39,6 +40,7 @@ diclock.grabwrite
     word.this >body CN_DIC class!
     ' folder word.this word.kind!
     word.this >body dic.init
+    word.this >body object.wordbody
     word.this
 diclock.dropwrite
     does>
