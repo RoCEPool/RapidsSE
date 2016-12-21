@@ -620,7 +620,6 @@ void Task::vAddPrimitives(void)
   gpWord = pFindWord("word");
   
   vAddPrimitive("accept",          &vAccept,           false);
-  vAddPrimitive("+",               &vAdd,              false);
   vAddPrimitive("allot",           &vAllot,            false);
   vAddPrimitive("again",           &vAgain,            true );
   vAddPrimitive("again_",          &vAgain_,           false);
@@ -645,7 +644,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("/",               &vDivide,           false);
   vAddPrimitive("do",              &vDo,               true );
   vAddPrimitive("do_rt",           &vDo_RT,            false);
   vAddPrimitive("does>",           &vDoes,             true );
@@ -660,7 +658,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
   vAddPrimitive("]",               &vEnterCompiler,    false);
   vAddPrimitive("[",               &vEnterInterpreter, true );
-  vAddPrimitive("==",              &vEqual,            false);
   vAddPrimitive("eql",             &vEqualAddress,     false);
   vAddPrimitive("execute",         &vExecute,          false);
   vAddPrimitive("exit",            &vExit,             false);
@@ -670,8 +667,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
   vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
-  vAddPrimitive(">",               &vGreater,          false);
-  vAddPrimitive(">=",              &vGreaterEqual,     false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
@@ -691,8 +686,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jump",            &vJump,             false);
   vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
   vAddPrimitive("jumpTrue",        &vJumpTrue,         false);
-  vAddPrimitive("<",               &vLess,             false);
-  vAddPrimitive("<=",              &vLessEqual,        false);
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("loop",            &vLoop,             true );
   vAddPrimitive("loop_rt",         &vLoop_RT,          false);
@@ -700,14 +693,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("+loop_rt",        &vLoopPlus_RT,      false);
   vAddPrimitive("magic@",          &vMagicFetch,       false);
   vAddPrimitive("magic!!",         &vMagicMark,        false);
-  vAddPrimitive("%",               &vModulo,           false);
-  vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
-  vAddPrimitive("neg",             &vNeg,              false);
   vAddPrimitive("next",            &vNext,             true );
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("not",             &vNot,              false);
-  vAddPrimitive("!=",              &vNotEqual,         false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
   vAddPrimitive("object!!",        &vObjectMark,       false);
@@ -728,7 +717,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
-  vAddPrimitive("-",               &vSubtract,         false);
   vAddPrimitive("test",            &vTest,             false);
   vAddPrimitive("then",            &vThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
@@ -876,6 +864,19 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("input.token",     &vInputToken,       false);
   vAddPrimitive("input.type",      &vInputType,        false);
   
+  vAddPrimitive("+",               &vIntAdd,           false);
+  vAddPrimitive("/",               &vIntDivide,        false);
+  vAddPrimitive("==",              &vIntEqual,         false);
+  vAddPrimitive(">",               &vIntGreater,       false);
+  vAddPrimitive(">=",              &vIntGreaterEqual,  false);
+  vAddPrimitive("<",               &vIntLess,          false);
+  vAddPrimitive("<=",              &vIntLessEqual,     false);
+  vAddPrimitive("%",               &vIntModulo,        false);
+  vAddPrimitive("*",               &vIntMultiply,      false);
+  vAddPrimitive("neg",             &vIntNeg,           false);
+  vAddPrimitive("!=",              &vIntNotEqual,      false);
+  vAddPrimitive("-",               &vIntSubtract,      false);
+
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
   vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
@@ -2213,25 +2214,6 @@ ENTRY("vAccept");
 }
 
 /*----------------------------------------------------------------------------*/
-/* + -- add top two integers on stack                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vAdd(NNP_Task nnpTask)
-{
-ENTRY("vAdd");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("+");
-  
-  r = i + j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* again -- unconditionally repeat loop (use only in : docol)                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAgain(NNP_Task nnpTask)
@@ -2611,25 +2593,6 @@ ENTRY("vCursorStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* / -- divide top integer by second integer on stack                         */
-/*----------------------------------------------------------------------------*/
-void Task::vDivide(NNP_Task nnpTask)
-{
-ENTRY("vDivide");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("/");
-    
-  r = DIV(i,j);
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* do -- compile time of do ... loop                                immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vDo(NNP_Task nnpTask)
@@ -2891,25 +2854,6 @@ ENTRY("vEnvGet");
 }
 
 /*----------------------------------------------------------------------------*/
-/* == -- test top two integers on data stack for equality                     */
-/*----------------------------------------------------------------------------*/
-void Task::vEqual(NNP_Task nnpTask)
-{
-ENTRY("vEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("==");
-  
-  r = i == j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
 void Task::vEqualAddress(NNP_Task nnpTask)
@@ -3072,44 +3016,6 @@ ENTRY("vFreeSpace");
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
   nnpTask->m_xParamStack.vPush(iFreeSpace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* > -- test top two integers on data stack for greater than                  */
-/*----------------------------------------------------------------------------*/
-void Task::vGreater(NNP_Task nnpTask)
-{
-ENTRY("vGreater");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM(">");
-  
-  r = i > j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >= -- test top two integers on data stack for greater than equal to        */
-/*----------------------------------------------------------------------------*/
-void Task::vGreaterEqual(NNP_Task nnpTask)
-{
-ENTRY("vGreaterEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM(">=");
-  
-  r = i >= j;
-  
-  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
@@ -3442,44 +3348,6 @@ ENTRY("vJumpTrue");
 }
 
 /*----------------------------------------------------------------------------*/
-/* < -- test top two integers on data stack for less than                     */
-/*----------------------------------------------------------------------------*/
-void Task::vLess(NNP_Task nnpTask)
-{
-ENTRY("vLess");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("<");
-  
-  r = i < j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* <= -- test top two integers on data stack for less than equal to           */
-/*----------------------------------------------------------------------------*/
-void Task::vLessEqual(NNP_Task nnpTask)
-{
-ENTRY("vLessEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("<=");
-  
-  r = i <= j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* locate -- locate word based on ip                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLocate(NNP_Task nnpTask)
@@ -3641,44 +3509,6 @@ ENTRY("vMagicMark");
 }
 
 /*----------------------------------------------------------------------------*/
-/* % -- modulo of top integer by second integer on stack                      */
-/*----------------------------------------------------------------------------*/
-void Task::vModulo(NNP_Task nnpTask)
-{
-ENTRY("vModulo");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("%");
-  
-  r = MOD(i,j);
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* * multiply second integer by top integer on stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vMultiply(NNP_Task nnpTask)
-{
-ENTRY("vMultiply");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("*");
-  
-  r = i * j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* nameWord -- push name of word                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vNameWord(NNP_Task nnpTask)
@@ -3691,25 +3521,6 @@ ENTRY("vNameWord");
   Word* pWord = _pWord(pWordObject);
   
   nnpTask->m_xParamStack.vPush(pWord->sName().a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* neg -- gegate top integer on stack                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vNeg(NNP_Task nnpTask)
-{
-ENTRY("vNeg");
-  
-  i8 r, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(i) )
-    THROW_INVALID_PARAM("neg");
-  
-  r = -1 * i;
-  
-  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
@@ -3766,25 +3577,6 @@ ENTRY("vNot");
   i8 iNotA = iValA ? 0 : 1;
   
   nnpTask->m_xParamStack.vPush(iNotA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* != -- test top two integers on data stack for not equal                    */
-/*----------------------------------------------------------------------------*/
-void Task::vNotEqual(NNP_Task nnpTask)
-{
-ENTRY("vNotEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("!=");
-  
-  r = i != j;
-  
-  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
@@ -4240,25 +4032,6 @@ ENTRY("vStringColon");
   
   nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* - -- subtract second integer from top integer on stack                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSubtract(NNP_Task nnpTask)
-{
-ENTRY("vSubtract");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("-");
-  
-  r = i - j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
   EXIT();
 }
 
@@ -6649,6 +6422,236 @@ ENTRY("vInputType");
   eTK eTokenType = nnpTask->m_eToken;
   
   nnpTask->m_xParamStack.vPush(eTokenType);
+  
+  EXIT();
+}
+
+// int: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* + -- add top two integers on stack                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIntAdd(NNP_Task nnpTask)
+{
+  ENTRY("vIntAdd");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("+");
+  
+  r = i + j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* / -- divide top integer by second integer on stack                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIntDivide(NNP_Task nnpTask)
+{
+  ENTRY("vIntDivide");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("/");
+  
+  r = DIV(i,j);
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* == -- test top two integers on data stack for equality                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIntEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("==");
+  
+  r = i == j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* > -- test top two integers on data stack for greater than                  */
+/*----------------------------------------------------------------------------*/
+void Task::vIntGreater(NNP_Task nnpTask)
+{
+  ENTRY("vIntGreater");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM(">");
+  
+  r = i > j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >= -- test top two integers on data stack for greater than equal to        */
+/*----------------------------------------------------------------------------*/
+void Task::vIntGreaterEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntGreaterEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM(">=");
+  
+  r = i >= j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* < -- test top two integers on data stack for less than                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIntLess(NNP_Task nnpTask)
+{
+  ENTRY("vIntLess");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("<");
+  
+  r = i < j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* <= -- test top two integers on data stack for less than equal to           */
+/*----------------------------------------------------------------------------*/
+void Task::vIntLessEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntLessEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("<=");
+  
+  r = i <= j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* % -- modulo of top integer by second integer on stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vIntModulo(NNP_Task nnpTask)
+{
+  ENTRY("vIntModulo");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("%");
+  
+  r = MOD(i,j);
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* * multiply second integer by top integer on stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vIntMultiply(NNP_Task nnpTask)
+{
+  ENTRY("vIntMultiply");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("*");
+  
+  r = i * j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* neg -- gegate top integer on stack                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIntNeg(NNP_Task nnpTask)
+{
+  ENTRY("vIntNeg");
+  
+  i8 r, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(i) )
+    THROW_INVALID_PARAM("neg");
+  
+  r = -1 * i;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* != -- test top two integers on data stack for not equal                    */
+/*----------------------------------------------------------------------------*/
+void Task::vIntNotEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntNotEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("!=");
+  
+  r = i != j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* - -- subtract second integer from top integer on stack                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIntSubtract(NNP_Task nnpTask)
+{
+  ENTRY("vIntSubtract");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("-");
+  
+  r = i - j;
+  
+  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
