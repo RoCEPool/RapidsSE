@@ -57,6 +57,7 @@ ddlLock.grabWrite
       I senderQueue !
 */
 
+     // set up the seed
       1 "snd.loop" ( socket 1 "snd.loop" )
 
       // create the actor

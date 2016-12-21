@@ -52,14 +52,28 @@ tp: socketAccepted
       "accepted connection on port "  args.port args.node + >str concat .
     then
 
+  // start receiver
+  //"starting receiver" .
+
 ddlLock.grabWrite
 
-    // start receiver
-    //"starting receiver" .
+/*
     connections @          ( connection# )
+
     >str "rr" swap concat ( connection# receiverName )
 
     1 swap "rcv.loop" swap actorForm
+*/
+
+    // set up the seed
+    1 "rcv.loop" ( socket 1 "rcv.loop" )
+
+    // create the actor
+    "rr" connections @ >str concat ( socket 1 "rcv.loop" "rrI" )
+    :actor ( socket 1 "rcv.loop" "rrI" )
+
+    // spawn the actors os thread
+    actor.spawn
 
 ddlLock.dropWrite
 
