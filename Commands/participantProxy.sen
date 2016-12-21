@@ -63,7 +63,7 @@ tp: participantProxy
 
 tp: resumed
 
-    // move valset to paraemeter stack
+    // move valset to parameter stack
     a> ( valset )
 
     >caller ( )

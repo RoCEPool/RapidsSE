@@ -242,7 +242,7 @@ namespace Tasks
     void vRetry(void);
     Threads::Thread* pRootThread(void);
     void vRoutineCall(Word* pWord);
-    void vStackContents(s& sStackContents);
+    void vStackContents(Stack* pStack, s& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
     Threads::Thread* pThread(void);

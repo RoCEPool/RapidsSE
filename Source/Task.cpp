@@ -1838,7 +1838,7 @@ void Task::vPrimitive(const char* aPrimitive)
 //  }
 
   s8K sStackContents;
-  vStackContents(sStackContents);
+  vStackContents(&m_xParamStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
 }
@@ -1914,21 +1914,21 @@ void Task::vRoutineCall(Word* pWord)
 /*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStackContents(s& sStackContents)
+void Task::vStackContents(Stack* pStack, s& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   char* a = sStackContents.a();
   *a = '\0';
   
-  i8 iParamValues = m_xParamStack.iValues();
+  i8 iParamValues = pStack->iValues();
   
   String::vSprintCat(a,"(");
   for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
     
     String::vSprintCat(a," ");
     
-    ValWsp* pValWsp = static_cast<ValWsp*>(m_xParamStack.pPeek(iValue));
+    ValWsp* pValWsp = static_cast<ValWsp*>(pStack->pPeek(iValue));
     
     eCN eClass = pValWsp->eClass();
     
@@ -2053,7 +2053,7 @@ void Task::vTracePoint(const char* aMark)
   i8 iAuxValues    = m_xAuxStack.iValues();
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld r%2lld p%2lld=",
+  vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld=",
          
          gxArguments.m_iNode,
          m_sName.a(),
@@ -2062,14 +2062,16 @@ void Task::vTracePoint(const char* aMark)
          
          aRoutine,
          aMark,
-         iAuxValues,
-         iReturnValues,
-         iParamValues
+         iAuxValues);
          
-         );
-  
   s8K sStackContents;
-  vStackContents(sStackContents);
+  vStackContents(&m_xAuxStack, sStackContents);
+  
+  vTrace("%s",sStackContents.a());
+  
+  vTrace(" r%2lld  p%2lld=", iReturnValues, iParamValues);
+
+  vStackContents(&m_xParamStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
 }
