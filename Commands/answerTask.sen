@@ -5,14 +5,13 @@
 "AnswerTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
+/* define the ans actor (ans.task, ans.queue, ans.taskset, ans.thread)        */
 /*----------------------------------------------------------------------------*/
+actor: ans
 
-task:    ans.task
-queue:   ans.queue
-taskset: ans.taskset
-thread:  ans.thread
-
+/*----------------------------------------------------------------------------*/
+/* declare connections variable to keep the number of connections             */
+/*----------------------------------------------------------------------------*/
 int: connections
 
 /*----------------------------------------------------------------------------*/
@@ -20,19 +19,15 @@ int: connections
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-  0 "ans.loop" ans.task ans.queue ans.taskset ans.thread actorInterlink
+  0 "ans.loop"
+
+  "ans" actor.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* answer loop                                                                */
 /*----------------------------------------------------------------------------*/
 : ans.loop
-
-  //"renaming to Answer Task" .putVerbose
-
-  //"answerTask" task.this task.name!
-
-  //ans.queue  task.this task.queue!
 
   answerTaskPrint if "Answer running..." . then
 

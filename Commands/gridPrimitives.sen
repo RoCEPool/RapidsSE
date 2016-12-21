@@ -342,8 +342,6 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 : interlinkParts ( ... #args "<loop>" -- )
 
-  // seed the task
-  reg0 task.seed ( )
 
   // attach queue to task
   reg1 ( queue )
@@ -365,9 +363,6 @@ tp: haveResultSet
   reg0 ( task )
   task.taskset! ( )
 
-  // spawn the os thread
-  reg3 ( thread )
-  thread.spawn ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -387,7 +382,14 @@ tp: haveResultSet
 
   rdrop (  ... #args "<loop>" )
 
+  // seed the task
+  reg0 task.seed ( )
+
   interlinkParts
+
+  // spawn the os thread
+  reg3 ( thread )
+  thread.spawn ( )
 
   // leave queue on stack
   reg1 ( queue )
@@ -407,9 +409,86 @@ tp: haveResultSet
   >reg1
   >reg0
 
+  // seed the task
+  reg0 task.seed ( )
+
+  interlinkParts
+
+  // spawn the os thread
+  reg3 ( thread )
+  thread.spawn ( )
+
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* create an actor (but don't spawn thread)                                   */
+/*----------------------------------------------------------------------------*/
+: actor: ( -- )
+
+  // get token from compile stream
+  token ( s )
+
+  reg.push
+
+  dup ".task"    concat :task    execute >reg0  // reg0 has task
+  dup ".queue"   concat :queue   execute >reg1  // reg1 has queue
+  dup ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+  dup ".thread"  concat :thread  execute >reg3  // reg3 has thread
+
   interlinkParts
 
   reg.pop
+
+  drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* get task of an actor                                                       */
+/*----------------------------------------------------------------------------*/
+: actor.task ( s -- task )
+
+  ".task" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get queue of an actor                                                      */
+/*----------------------------------------------------------------------------*/
+: actor.queue ( s -- queue )
+
+  ".queue" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get taskset of an actor                                                    */
+/*----------------------------------------------------------------------------*/
+: actor.taskset ( s -- taskset )
+
+  ".taskset" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get thread of an actor                                                     */
+/*----------------------------------------------------------------------------*/
+: actor.thread ( s -- taskset )
+
+  ".thread" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn thread of an actor                                                   */
+/*----------------------------------------------------------------------------*/
+: actor.spawn ( ... nArgs s -- )
+
+  >r ( ... nArgs s )
+
+  // seed the task
+  r@ actor.task task.seed ( )
+
+  // find the thread
+  r@ actor.thread thread.spawn ( )
+
+  rdrop
 ;
 
 /*----------------------------------------------------------------------------*/

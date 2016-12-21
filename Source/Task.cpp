@@ -12691,7 +12691,9 @@ void Task::vToken(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken.a());
+  s32 sToken(nnpTask->m_sToken.a());
+  
+  nnpTask->m_xParamStack.vPush(sToken);
   
   EXIT();
 }
