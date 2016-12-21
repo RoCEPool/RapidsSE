@@ -64,9 +64,28 @@ create
 /* dump the parameter stack                                                   */
 /*----------------------------------------------------------------------------*/
 : stk
-    "parameter stack" .
-    depth dup not if drop exit then
-    0 do I pick dump loop
+
+  "parameter stack" .
+
+  depth not if drop then
+
+  depth 0 do
+    I pick dump
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the auxiliary stack                                                   */
+/*----------------------------------------------------------------------------*/
+: astk
+
+  "auxiliary stack" .
+
+  adepth not if drop exit then
+
+  adepth 0 do
+    I apick dump
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
