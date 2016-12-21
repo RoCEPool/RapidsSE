@@ -59,13 +59,14 @@ tp: acksExpected
 tp: sendingToPP
     queue.append
 
-    //1 sleep
-
   loop
 
   rdrop
 
   task.suspend
+
+  // move from aux to parameter stack
+  a>
 
   // note that each participant will always return a valset
   // that valset may be empty if the indirect word executed
@@ -129,6 +130,11 @@ tp: forwardingToPP
 
     // now resumed...
 
+tp: resumed
+
+    // move from aux to parameter stack
+    a>
+
 tp: haveResultSet
 
     // non-nested response valset << true >> will be on stack
@@ -189,6 +195,11 @@ tp: forwardingToPP
   task.suspend
 
   // now resumed...
+
+tp: resumed
+
+  // move from aux to parameter stack
+  a>
 
 tp: haveResultSet
 

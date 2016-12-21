@@ -59,7 +59,12 @@ tp: participantProxy
     then
 
     // this task suspends till notified
-    task.suspend ( valset )
+    task.suspend
+
+tp: resumed
+
+    // move valset to paraemeter stack
+    a> ( valset )
 
     >caller ( )
 

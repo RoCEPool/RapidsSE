@@ -2050,9 +2050,10 @@ void Task::vTracePoint(const char* aMark)
   else
     String::vCopy(aRoutine,"<unknown>");
   
+  i8 iAuxValues    = m_xAuxStack.iValues();
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : r %2lld ; p%2lld=",
+  vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld r%2lld p%2lld=",
          
          gxArguments.m_iNode,
          m_sName.a(),
@@ -2061,6 +2062,7 @@ void Task::vTracePoint(const char* aMark)
          
          aRoutine,
          aMark,
+         iAuxValues,
          iReturnValues,
          iParamValues
          
@@ -5089,7 +5091,7 @@ void Task::vAstackTransfer(NNP_Task nnpTask)
     THROW_INVALID_PARAM(">auxStack");
   
   pThatTask->m_xLock.vGrabWrite();
-  pThatTask->m_xParamStack.vPush(xValWsp);
+  pThatTask->m_xAuxStack.vPush(xValWsp);
   pThatTask->m_xLock.vDropWrite();
   
   EXIT();

@@ -325,7 +325,12 @@ tp: require1Ack
   queue.append ( )
 
   // this task suspends till notified. will have indirect result
-  task.suspend ( <<result>> )
+  task.suspend ( )
+
+tp: resumed
+
+  // move from aux to parameter stack
+  a> ( <<result>> )
 
 tp: haveResultSet
 ;

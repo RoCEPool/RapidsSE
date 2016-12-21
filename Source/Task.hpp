@@ -156,7 +156,7 @@ namespace Tasks
     
     Stack  m_xParamStack;   // parameter stack
     Stack  m_xReturnStack;  // return stack
-    Stack  m_xAuxStack;     // auxilliary stack
+    Stack  m_xAuxStack;     // auxiliary stack
     RegFrame* m_pRegFrame; // register frame chain
 
     s256      m_sLambda;    // lambda input
