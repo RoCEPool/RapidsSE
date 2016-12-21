@@ -132,22 +132,6 @@ tp: forwardingToPP
 
 tp: resumed
 
-    // move from aux to parameter stack
-    a>
-
-tp: haveResultSet
-
-    // non-nested response valset << true >> will be on stack
-    valset>
-
-tp: expandedResult
-
-    // drop the number of values that were in valset
-    drop
-
-    // we are expecting a true
-    assert
-
   loop // each node
 
   // each node:
@@ -156,6 +140,28 @@ tp: expandedResult
   // <<  s,n s,n s,n s,n s,n #n  f:ec,nn   t|f >>
   // <<  i,n i,n i,n i,n i,n #n  f:ec,nn   t|f >>
   // <<  b,n b,n b,n b,n b,n #n  f:ec,nn   t|f >>
+
+  // now scan resultset from each participant
+  args.nodes 0 do
+
+    // move from aux to parameter stack
+    a>
+
+    tp: haveResultSet
+
+    // non-nested response valset << true >> will be on stack
+    valset>
+
+    tp: expandedResult
+    //stk
+
+    // drop the number of values that were in valset
+    drop
+
+    // we are expecting a true
+    assert
+
+  loop
 
   // drop the << <<!>> <<caller>> >> of rstack
   rdrop
