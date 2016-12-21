@@ -162,6 +162,7 @@ tp: resultAsValset
   // otherwise transfering to that stack will corrupt the
   // tasks execution
 
+/*
   begin
 
     // get the callers state
@@ -171,6 +172,7 @@ tp: resultAsValset
     // test if its waiting
     TS_WAITING == ( valset true|false )
   until
+*/
 
   // transfer to callers stack
   reg0 ( valset caller )
