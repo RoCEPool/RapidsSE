@@ -5,13 +5,9 @@
 "connectorTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
+/* define the con actor (con.task, con.queue, con.taskset, con.thread)        */
 /*----------------------------------------------------------------------------*/
-
-task:    con.task
-queue:   con.queue
-taskset: con.taskset
-thread:  con.thread
+actor: con
 
 /*----------------------------------------------------------------------------*/
 /* start the connector task                                                   */
@@ -20,17 +16,9 @@ thread:  con.thread
 
 tp: connectorStart
 
-/*
-  // set up connector task
-  0 "con.loop" nullPtr task.new con.taskset taskSet.append
+  0 "con.loop"
 
-  // set up the connector thread
-  con.taskset  con.thread thread.taskset!
-  "connectorThread" con.thread thread.name!
-                    con.thread thread.spawn
-*/
-
-  0 "con.loop" con.task con.queue con.taskset con.thread actorInterlink
+  "con" actor.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -38,15 +26,7 @@ tp: connectorStart
 /*----------------------------------------------------------------------------*/
 : con.loop
 
-  "renaming to Connector Task" .putVerbose
-
-  "connectorTask" task.this task.name!
-
-  con.queue  task.this task.queue!
-
   connectorTaskPrint if "Connector running..." . then
-
-  //10 thread.sleep_s
 
   args.nodes 0 do
 
