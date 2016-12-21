@@ -426,10 +426,11 @@ namespace Tasks
     // astack
     static void vAstackDepth(NNP_Task nnpTask);
     static void vAstackDrop(NNP_Task nnpTask);
-    static void vAstackToA(NNP_Task nnpTask);
-    static void vAstackToP(NNP_Task nnpTask);
     static void vAstackFetch(NNP_Task nnpTask);
     static void vAstackPick(NNP_Task nnpTask);
+    static void vAstackToA(NNP_Task nnpTask);
+    static void vAstackToP(NNP_Task nnpTask);
+    static void vAstackTransfer(NNP_Task nnpTask);
     static void vAstack0(NNP_Task nnpTask);
     static void vAstack1(NNP_Task nnpTask);
     static void vAstack2(NNP_Task nnpTask);
@@ -725,7 +726,6 @@ namespace Tasks
     
     // stack
     static void vStackClass(NNP_Task nnpTask);                 //! DUP OF class@
-    static void vStackTransfer(NNP_Task nnpTask);
     
     // steps
     static void vStepsList(NNP_Task nnpTask);

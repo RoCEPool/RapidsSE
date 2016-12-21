@@ -781,6 +781,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("apick",           &vAstackPick,       false);
   vAddPrimitive(">a",              &vAstackToA,        false);
   vAddPrimitive("a>",              &vAstackToP,        false);
+  vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
   vAddPrimitive("a0",              &vAstack0,          false);
   vAddPrimitive("a1",              &vAstack1,          false);
   vAddPrimitive("a2",              &vAstack2,          false);
@@ -1048,7 +1049,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
  
   vAddPrimitive("stack.class", &vStackClass,    false);
-  vAddPrimitive(">stack",      &vStackTransfer, false);
 
   vAddPrimitive("steps.list",  &vStepsList,  false);
   vAddPrimitive("steps.reset", &vStepsReset, false);
@@ -5068,6 +5068,29 @@ void Task::vAstackToP(NNP_Task nnpTask)
     THROW_INVALID_PARAM("a>");
   
   nnpTask->m_xParamStack.vPush(xVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >auxStack -- pop stack of this task and push onto aux stack of that task   */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackTransfer(NNP_Task nnpTask)
+{
+  ENTRY("vAstackTransfer");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM(">auxStack");
+  Task* pThatTask = _pTask(pPtrTask);
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM(">auxStack");
+  
+  pThatTask->m_xLock.vGrabWrite();
+  pThatTask->m_xParamStack.vPush(xValWsp);
+  pThatTask->m_xLock.vDropWrite();
   
   EXIT();
 }
@@ -9746,29 +9769,6 @@ ENTRY("vStackClass");
   eCN eClass = xValWsp.eClass();
   
   nnpTask->m_xParamStack.vPush(eClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* stack.transfer -- pop stack of this task and push onto stack of that task  */
-/*----------------------------------------------------------------------------*/
-void Task::vStackTransfer(NNP_Task nnpTask)
-{
-  ENTRY("vStackTransfer");
-  
-  Object* pPtrTask;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM(">stack");
-  Task* pThatTask = _pTask(pPtrTask);
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(">stack");
-  
-  pThatTask->m_xLock.vGrabWrite();
-  pThatTask->m_xParamStack.vPush(xValWsp);
-  pThatTask->m_xLock.vDropWrite();
   
   EXIT();
 }

@@ -154,7 +154,7 @@ tp: resultAsValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push valset onto callers stack and signal caller                           */
+/* push valset onto callers aux stack and signal caller                       */
 /*----------------------------------------------------------------------------*/
 : >caller ( valset -- )
 
@@ -174,8 +174,9 @@ tp: resultAsValset
 
   // transfer to callers stack
   reg0 ( valset caller )
+
 tp: ontoCallerStack
-  >stack ( )
+  >auxStack ( )
 
   // signal caller
   reg0 ( caller )
