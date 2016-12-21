@@ -114,6 +114,26 @@ void Dic::vAddConstant(const char* aName, const char* aValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add word to this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+void Dic::vAddWord(Word* pWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  ASSERT(!m_bFrozen);
+  
+  ASSERT(pWord->eClass() == CN_WORD);
+  
+  m_xLock.vGrabWrite();
+  
+  pWord->m_pPrevWord = m_pCurrentWord;
+  
+  m_pCurrentWord = pWord;
+  
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a word                                                            */
 /*----------------------------------------------------------------------------*/
 Word* Dic::pAllocWord(eCN eClassNo)
@@ -126,13 +146,13 @@ Word* Dic::pAllocWord(eCN eClassNo)
   
   Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
   
-  m_xLock.vGrabWrite();
-  
-  pWord->m_pPrevWord = m_pCurrentWord;
-  
-  m_pCurrentWord = pWord;
-
-  m_xLock.vDropWrite();
+//  m_xLock.vGrabWrite();
+//  
+//  pWord->m_pPrevWord = m_pCurrentWord;
+//  
+//  m_pCurrentWord = pWord;
+//
+//  m_xLock.vDropWrite();
   
   return pPoolCheck<Word*>(pWord);
 }

@@ -61,13 +61,16 @@ Word::Word(const char* sName)
   m_pKind       = gpWord ? gpWord : this;
   m_bImmediate  = false;
   m_iDataBytes  = 0;
-  
+  m_pPrevWord   = nullptr;
+
   _setFooter_();
   
-  m_pDoesStep = &Tasks::Task::vEnterRoutine;
-  m_pDoesArg  = pFirstCell();
-  
+  m_pDoesStep   = &Tasks::Task::vEnterRoutine;
+  m_pDoesArg    = pFirstCell();
+
   _checkInitialised_(CN_WORD);
+  
+  m_pDic->vAddWord(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 }

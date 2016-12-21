@@ -35,6 +35,7 @@ namespace Dictionaries
 
     void  vAddConstant(const char* aName, i8 iVal);
     void  vAddConstant(const char* aName, const char* aValue);
+    void  vAddWord(Word* pWord);
     Word* pAllocWord(eCN eClassNo);
     Word* pCurrentWord(void);
     Word* pDicKind(void);
