@@ -150,6 +150,13 @@ tp: expandedResult
 
   loop // each node
 
+  // each node:
+  //   << v t nn | ec f nn >>
+
+  // <<  s,n s,n s,n s,n s,n #n  f:ec,nn   t|f >>
+  // <<  i,n i,n i,n i,n i,n #n  f:ec,nn   t|f >>
+  // <<  b,n b,n b,n b,n b,n #n  f:ec,nn   t|f >>
+
   // drop the << <<!>> <<caller>> >> of rstack
   rdrop
 
