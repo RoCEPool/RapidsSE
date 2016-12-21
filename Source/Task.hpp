@@ -156,6 +156,7 @@ namespace Tasks
     
     Stack  m_xParamStack;   // parameter stack
     Stack  m_xReturnStack;  // return stack
+    Stack  m_xAuxStack;     // auxilliary stack
     RegFrame* m_pRegFrame; // register frame chain
 
     s256      m_sLambda;    // lambda input
@@ -286,15 +287,9 @@ namespace Tasks
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
     static void vDivide(NNP_Task nnpTask);
-    static void vDepth(NNP_Task nnpTask);          
-    static void vDo(NNP_Task nnpTask);             
+    static void vDo(NNP_Task nnpTask);
     static void vDo_RT(NNP_Task nnpTask);          
-    static void vDrop(NNP_Task nnpTask);           
-    static void vDropTwo(NNP_Task nnpTask);
-    static void vDup(NNP_Task nnpTask);
-    static void vDupNonZero(NNP_Task nnpTask);
-    static void vDump(NNP_Task nnpTask);
-    static void vElse(NNP_Task nnpTask);           
+    static void vElse(NNP_Task nnpTask);
     static void vEncodeCall(NNP_Task nnpTask);     
     static void vEncodeDoes(NNP_Task nnpTask);     
     static void vEncodeEmb(NNP_Task nnpTask);      
@@ -348,7 +343,6 @@ namespace Tasks
     static void vNameWord(NNP_Task nnpTask);       
     static void vNeg(NNP_Task nnpTask);
     static void vNext(NNP_Task nnpTask);
-    static void vNip(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNot(NNP_Task nnpTask);
     static void vNotEqual(NNP_Task nnpTask);       
@@ -357,8 +351,7 @@ namespace Tasks
     static void vObjectMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
     static void vOr(NNP_Task nnpTask);
-    static void vPick(NNP_Task nnpTask);
-    static void vPrevWord(NNP_Task nnpTask);       
+    static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
     static void vPush(NNP_Task nnpTask);
     static void vPushEmbedded(NNP_Task nnpTask);
@@ -368,10 +361,6 @@ namespace Tasks
     static void vRdtscp(NNP_Task nnpTask);
     static void vRepeat(NNP_Task nnpTask);         
     static void vRetryPoint(NNP_Task nnpTask);
-    static void vRoll(NNP_Task nnpTask);
-    static void vRollInv(NNP_Task nnpTask);
-    static void vRot(NNP_Task nnpTask);
-    static void vRotInv(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
     static void vSemicolon(NNP_Task nnpTask);      
     static void vSnooze(NNP_Task nnpTask);
@@ -379,7 +368,6 @@ namespace Tasks
     static void vStore(NNP_Task nnpTask);
     static void vStringColon(NNP_Task nnpTask);
     static void vSubtract(NNP_Task nnpTask);
-    static void vSwap(NNP_Task nnpTask);           
     static void vTest(NNP_Task nnpTask);
     static void vThen(NNP_Task nnpTask);           
     static void vThrow(NNP_Task nnpTask);          
@@ -388,8 +376,6 @@ namespace Tasks
     static void vToCmd(NNP_Task nnpTask);          
     static void vToDigitName(NNP_Task nnpTask);
     static void vToInt(NNP_Task nnpTask);
-    static void vToPstack(NNP_Task nnpTask);
-    static void vToRstack(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
     static void vToStr(NNP_Task nnpTask);
     static void vTotalSpace(NNP_Task nnpTask);
@@ -400,7 +386,6 @@ namespace Tasks
     static void vTraceOn(NNP_Task nnpTask);
     static void vTracePoint(NNP_Task nnpTask);
     static void vTraceSet(NNP_Task nnpTask);
-    static void vTuck(NNP_Task nnpTask);
     static void vUnloop(NNP_Task nnpTask);
     static void vUntil(NNP_Task nnpTask);          
     static void vVersion(NNP_Task nnpTask);        
@@ -437,6 +422,24 @@ namespace Tasks
     static void vAssertStack_3more(NNP_Task nnpTask);
     static void vAssertStack_4(NNP_Task nnpTask);
     static void vAssertStack_4more(NNP_Task nnpTask);
+    
+    // astack
+    static void vAstackDepth(NNP_Task nnpTask);
+    static void vAstackDrop(NNP_Task nnpTask);
+    static void vAstackToA(NNP_Task nnpTask);
+    static void vAstackToP(NNP_Task nnpTask);
+    static void vAstackFetch(NNP_Task nnpTask);
+    static void vAstackPick(NNP_Task nnpTask);
+    static void vAstack0(NNP_Task nnpTask);
+    static void vAstack1(NNP_Task nnpTask);
+    static void vAstack2(NNP_Task nnpTask);
+    static void vAstack3(NNP_Task nnpTask);
+    static void vAstack4(NNP_Task nnpTask);
+    static void vAstack5(NNP_Task nnpTask);
+    static void vAstack6(NNP_Task nnpTask);
+    static void vAstack7(NNP_Task nnpTask);
+    static void vAstack8(NNP_Task nnpTask);
+    static void vAstack9(NNP_Task nnpTask);
     
     // class
     static void vClassName(NNP_Task nnpTask);
@@ -593,6 +596,22 @@ namespace Tasks
     static void vProcessQuit(NNP_Task nnpTask);
     static void vProcessTestPid(NNP_Task nnpTask);
     
+    // pstack
+    static void vPstackDepth(NNP_Task nnpTask);
+    static void vPstackDrop(NNP_Task nnpTask);
+    static void vPstackDropTwo(NNP_Task nnpTask);
+    static void vPstackDump(NNP_Task nnpTask);
+    static void vPstackDup(NNP_Task nnpTask);
+    static void vPstackDupNonZero(NNP_Task nnpTask);
+    static void vPstackNip(NNP_Task nnpTask);
+    static void vPstackPick(NNP_Task nnpTask);
+    static void vPstackRoll(NNP_Task nnpTask);
+    static void vPstackRollInv(NNP_Task nnpTask);
+    static void vPstackRot(NNP_Task nnpTask);
+    static void vPstackRotInv(NNP_Task nnpTask);
+    static void vPstackSwap(NNP_Task nnpTask);
+    static void vPstackTuck(NNP_Task nnpTask);
+    
     // queue
     static void vQueueAppend(NNP_Task nnpTask);
     static void vQueueDump(NNP_Task nnpTask);
@@ -661,6 +680,8 @@ namespace Tasks
     static void vRstackDrop(NNP_Task nnpTask);
     static void vRstackFetch(NNP_Task nnpTask);
     static void vRstackPick(NNP_Task nnpTask);
+    static void vRstackToP(NNP_Task nnpTask);
+    static void vRstackToR(NNP_Task nnpTask);
     static void vRstack0(NNP_Task nnpTask);
     static void vRstack1(NNP_Task nnpTask);
     static void vRstack2(NNP_Task nnpTask);
@@ -703,17 +724,7 @@ namespace Tasks
     static void vShellExecute(NNP_Task nnpTask);
     
     // stack
-    static void vStackClass(NNP_Task nnpTask);
-    static void vStackClass0(NNP_Task nnpTask);
-    static void vStackClass1(NNP_Task nnpTask);
-    static void vStackClass2(NNP_Task nnpTask);
-    static void vStackClass3(NNP_Task nnpTask);
-    static void vStackClass4(NNP_Task nnpTask);
-    static void vStackClass5(NNP_Task nnpTask);
-    static void vStackClass6(NNP_Task nnpTask);
-    static void vStackClass7(NNP_Task nnpTask);
-    static void vStackClass8(NNP_Task nnpTask);
-    static void vStackClass9(NNP_Task nnpTask);
+    static void vStackClass(NNP_Task nnpTask);                 //! DUP OF class@
     static void vStackTransfer(NNP_Task nnpTask);
     
     // steps
