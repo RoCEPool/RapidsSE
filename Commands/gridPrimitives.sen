@@ -422,6 +422,54 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get task of an actor                                                       */
+/*----------------------------------------------------------------------------*/
+: actor.task ( "<actorNm>" -- task )
+
+  ".task" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get queue of an actor                                                      */
+/*----------------------------------------------------------------------------*/
+: actor.queue ( "<actorNm>" -- queue )
+
+  ".queue" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get taskset of an actor                                                    */
+/*----------------------------------------------------------------------------*/
+: actor.taskset ( "<actorNm>" -- taskset )
+
+  ".taskset" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* get thread of an actor                                                     */
+/*----------------------------------------------------------------------------*/
+: actor.thread ( "<actorNm>" -- taskset )
+
+  ".thread" concat find execute
+;
+
+/*----------------------------------------------------------------------------*/
+/* spawn thread of an actor                                                   */
+/*----------------------------------------------------------------------------*/
+: actor.spawn ( ... nArgs "<actorNm>" "<loopNm>" -- )
+
+  >r ( ... nArgs "<actorNm>" )
+
+  // seed the task
+  r@ actor.task task.seed ( )
+
+  // find the thread
+  r@ actor.thread thread.spawn ( )
+
+  rdrop
+;
+
+/*----------------------------------------------------------------------------*/
 /* create an actor (but don't spawn thread)                                   */
 /*----------------------------------------------------------------------------*/
 : actor: ( -- )
@@ -444,51 +492,20 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get task of an actor                                                       */
+/* create an actor (but don't spawn thread)                                   */
 /*----------------------------------------------------------------------------*/
-: actor.task ( s -- task )
+: :actor ( "actorNm>" -- "<actorNm>" )
 
-  ".task" concat find execute
-;
+  reg.push
 
-/*----------------------------------------------------------------------------*/
-/* get queue of an actor                                                      */
-/*----------------------------------------------------------------------------*/
-: actor.queue ( s -- queue )
+  dup ".task"    concat :task    execute >reg0  // reg0 has task
+  dup ".queue"   concat :queue   execute >reg1  // reg1 has queue
+  dup ".taskset" concat :taskset execute >reg2  // reg2 has taskset
+  dup ".thread"  concat :thread  execute >reg3  // reg3 has thread
 
-  ".queue" concat find execute
-;
+  interlinkParts
 
-/*----------------------------------------------------------------------------*/
-/* get taskset of an actor                                                    */
-/*----------------------------------------------------------------------------*/
-: actor.taskset ( s -- taskset )
-
-  ".taskset" concat find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* get thread of an actor                                                     */
-/*----------------------------------------------------------------------------*/
-: actor.thread ( s -- taskset )
-
-  ".thread" concat find execute
-;
-
-/*----------------------------------------------------------------------------*/
-/* spawn thread of an actor                                                   */
-/*----------------------------------------------------------------------------*/
-: actor.spawn ( ... nArgs s -- )
-
-  >r ( ... nArgs s )
-
-  // seed the task
-  r@ actor.task task.seed ( )
-
-  // find the thread
-  r@ actor.thread thread.spawn ( )
-
-  rdrop
+  reg.pop
 ;
 
 /*----------------------------------------------------------------------------*/

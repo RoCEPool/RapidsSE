@@ -48,22 +48,34 @@ tp: connectorStart
 
       // start sender
       //"starting sender" .
+
 ddlLock.grabWrite
 
+/*
       1 "snd.loop" "sr" I >str concat actorForm
 
       I senderQueue !
+*/
+
+      1 "snd.loop" ( socket 1 "snd.loop" )
+
+      // create the actor
+      "sr" I >str concat :actor ( socket 1 "snd.loop" "srI" )
+
+      // record the senderQueue
+      dup actor.queue ( socket 1 "snd.loop" "srI" queue )
+      I senderQueue ! ( socket 1 "snd.loop" "srI" )
+
+      // spawn the actors os thread
+      actor.spawn
+
 ddlLock.dropWrite
 
     then
 
   loop
 
-  1000000 thread.sleep_s
-  1000000 thread.sleep_s
-  1000000 thread.sleep_s
-  1000000 thread.sleep_s
-  1000000 thread.sleep_s
+  //1000000 thread.sleep_s
 
 ;
 
