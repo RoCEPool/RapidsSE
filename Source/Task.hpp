@@ -370,6 +370,7 @@ namespace Tasks
     static void vToTask(NNP_Task nnpTask);
     static void vToValSet(NNP_Task nnpTask);
     static void vToValues(NNP_Task nnpTask);
+    static void vToken(NNP_Task nnpTask);
     static void vTraceOff(NNP_Task nnpTask);
     static void vTraceOn(NNP_Task nnpTask);
     static void vTracePoint(NNP_Task nnpTask);

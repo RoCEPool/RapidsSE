@@ -731,6 +731,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">task",           &vToTask,           false);
   vAddPrimitive("valset>",         &vToValues,         false);
   vAddPrimitive(">valset",         &vToValSet,         false);
+  vAddPrimitive("token",           &vToken,            false);
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
   vAddPrimitive("tracePoint",      &vTracePoint,       false);
@@ -12677,6 +12678,20 @@ ENTRY("vForget");
   
   bool bResult = nnpTask->bForgetWord(nnpTask->m_sToken);
   ASSERT(bResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* token -- get next token as string on stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vToken(NNP_Task nnpTask)
+{
+  ENTRY("vToken");
+  
+  nnpTask->vTokenNext();
+  
+  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken.a());
   
   EXIT();
 }
