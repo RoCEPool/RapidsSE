@@ -1061,6 +1061,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("subStr", &vSubStr,    false);
   vAddPrimitive("concat", &vConcat,    false);
   vAddPrimitive("clip",   &vClip,      false);
+  vAddPrimitive("prepend",    &vPrepend,     false);
   vAddPrimitive("toDigitName",&vToDigitName, false);
   vAddPrimitive("rndStr", &vRndStr,    false);
   
@@ -10071,6 +10072,53 @@ ENTRY("vToDigitName");
   }
 
   nnpTask->m_xParamStack.vPush(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* prepend -- prepend a string before the other                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPrepend(NNP_Task nnpTask)
+{
+  ENTRY("vPrepend");
+  
+  ValWsp xStrR;
+  ValWsp xStrB;
+  ValWsp xStrA;
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValB,xValA) )
+  THROW_INVALID_PARAM("prepend");
+  
+  // If received INTEGER convert to STRING
+  if (xValA.eClass() == CN_INTVAL) {
+    s8K sString;
+    xValA.vToString(sString.a());
+    xStrA = sString.a();
+  }
+  else {
+   xStrA = xValA;
+  }
+  
+  // If received INTEGER convert to STRING
+  if (xValB.eClass() == CN_INTVAL) {
+    s8K sString;
+    xValB.vToString(sString.a());
+    xStrB = sString.a();
+  }
+  else {
+   xStrB = xValB;
+  }
+  
+  xStrR = xStrB;
+  
+  String::vConcat(xStrR.sStr(),xStrA.sStr());
+  xStrR.pAsStrVal()->vSize();
+  
+  nnpTask->m_xParamStack.vPush(xStrR);
   
   EXIT();
 }
