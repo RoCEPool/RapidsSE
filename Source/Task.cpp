@@ -13,26 +13,26 @@
 #include "SePrompt.hpp"
 
 
-extern Arguments             gxArguments;
+extern Arguments       gxArguments;
 
-extern AttachMap*            gpAttachMap;
-extern BufferPool*           gpBufferPool;
-extern Heap*                 gpMediumHeap;
-extern BPA*                  gpBPA;
-extern Dic*                  gpMainDic;
-extern Word*                 gpWord;
+extern AttachMap*      gpAttachMap;
+extern BufferPool*     gpBufferPool;
+extern Heap*           gpMediumHeap;
+extern BPA*            gpBPA;
+extern Dic*            gpMainDic;
+extern Word*           gpWord;
 
-extern Grid*                 gpGrid;
-extern StepArray*            gpStepArray;
-extern ThreadList*           gpThreadList;
-extern TaskList*             gpTaskList;
-extern TxCollection*         gpTxCollection;
+extern Grid*           gpGrid;
+extern StepArray*      gpStepArray;
+extern ThreadList*     gpThreadList;
+extern TaskList*       gpTaskList;
+extern TxCollection*   gpTxCollection;
 
-extern NP_Task               gnpRootTask;
-extern StepBoard*            gpStepBoard;
-extern Lock                  gxDdlLock;
-extern Lock                  gxDicLock;
-extern SEitfList*            gpSEitfList;
+extern NP_Task         gnpRootTask;
+extern StepBoard*      gpStepBoard;
+extern Lock            gxDdlLock;
+extern Lock            gxDicLock;
+extern SEitfList*      gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -760,6 +760,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("a@",              &vAstackFetch,      false);
   vAddPrimitive("anip",            &vAstackNip,        false);
   vAddPrimitive("apick",           &vAstackPick,       false);
+  vAddPrimitive("areverse",        &vAstackReverse,    false);
   vAddPrimitive(">a",              &vAstackToA,        false);
   vAddPrimitive("a>",              &vAstackToP,        false);
   vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
@@ -940,6 +941,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("?dup",            &vPstackDupNonZero, false);
   vAddPrimitive("nip",             &vPstackNip,        false);
   vAddPrimitive("pick",            &vPstackPick,       false);
+  vAddPrimitive("reverse",         &vPstackReverse,    false);
   vAddPrimitive("roll",            &vPstackRoll,       false);
   vAddPrimitive("-roll",           &vPstackRollInv,    false);
   vAddPrimitive("rot",             &vPstackRot,        false);
@@ -1012,6 +1014,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
   vAddPrimitive("rpick",           &vRstackPick,       false);
+  vAddPrimitive("rreverse",        &vRstackReverse,    false);
   vAddPrimitive("r>",              &vRstackToP,        false);
   vAddPrimitive(">r",              &vRstackToR,        false);
   vAddPrimitive("r0",              &vRstack0,          false);
@@ -4685,6 +4688,40 @@ void Task::vAstackPick(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* areverse -- reverse astack values ( ... D C B A n -- A B C D ... )         */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackReverse(NNP_Task nnpTask)
+{
+  ENTRY("vAstackReverse");
+  
+  ValWsp xVal0;
+  ValWsp xVal1;
+  ValWsp xVal2;
+  ValWsp xVal3;
+  ValWsp xVal4;
+  ValWsp xVal5;
+  ValWsp xVal6;
+  ValWsp xVal7;
+  
+  ValWsp* apValWsp[8] = {
+    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
+  };
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("areverse");
+  
+  for (i8 i = 0; i < nValues; i++) {
+    if ( ! nnpTask->m_xAuxStack.bPop(apValWsp[i]) )
+      THROW_INVALID_PARAM("areverse");
+  }
+  
+  for (i8 i = 0; i < nValues; i++) {
+    nnpTask->m_xAuxStack.vPush(apValWsp[i]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on aux stack                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackSwap(NNP_Task nnpTask)
@@ -7765,6 +7802,40 @@ void Task::vPstackPick(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reverse -- reverse stack values ( ... D C B A n -- A B C D ... )           */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackReverse(NNP_Task nnpTask)
+{
+  ENTRY("vPstackReverse");
+  
+  ValWsp xVal0;
+  ValWsp xVal1;
+  ValWsp xVal2;
+  ValWsp xVal3;
+  ValWsp xVal4;
+  ValWsp xVal5;
+  ValWsp xVal6;
+  ValWsp xVal7;
+  
+  ValWsp* apValWsp[8] = {
+    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
+  };
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("reverse");
+  
+  for (i8 i = 0; i < nValues; i++) {
+    if ( ! nnpTask->m_xParamStack.bPop(apValWsp[i]) )
+      THROW_INVALID_PARAM("reverse");
+  }
+
+  for (i8 i = 0; i < nValues; i++) {
+    nnpTask->m_xParamStack.vPush(apValWsp[i]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* roll -- roll top stack values at n ( ... D C B A n -- A ... D C B )        */
 /*----------------------------------------------------------------------------*/
 void Task::vPstackRoll(NNP_Task nnpTask)
@@ -9124,6 +9195,40 @@ void Task::vRstackPick(NNP_Task nnpTask)
   nnpTask->m_xParamStack.vPush(xValWsp);
   
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rreverse -- reverse rstack values ( ... D C B A n -- A B C D ... )         */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackReverse(NNP_Task nnpTask)
+{
+  ENTRY("vRstackReverse");
+  
+  ValWsp xVal0;
+  ValWsp xVal1;
+  ValWsp xVal2;
+  ValWsp xVal3;
+  ValWsp xVal4;
+  ValWsp xVal5;
+  ValWsp xVal6;
+  ValWsp xVal7;
+  
+  ValWsp* apValWsp[8] = {
+    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
+  };
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("areverse");
+  
+  for (i8 i = 0; i < nValues; i++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(apValWsp[i]) )
+      THROW_INVALID_PARAM("areverse");
+  }
+  
+  for (i8 i = 0; i < nValues; i++) {
+    nnpTask->m_xReturnStack.vPush(apValWsp[i]);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
