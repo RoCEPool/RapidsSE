@@ -364,30 +364,6 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* actor interlink                                                            */
-/*----------------------------------------------------------------------------*/
-: actorInterlink ( ... #args "<loop>" task queue taskset thread -- )
-
-  reg.push
-
-  >reg3
-  >reg2
-  >reg1
-  >reg0
-
-  // seed the task
-  reg0 task.seed ( )
-
-  interlinkParts
-
-  // spawn the os thread
-  reg3 ( thread )
-  thread.spawn ( )
-
-  reg.pop
-;
-
-/*----------------------------------------------------------------------------*/
 /* get task of an actor                                                       */
 /*----------------------------------------------------------------------------*/
 : actor.task ( "<actorNm>" -- task )
