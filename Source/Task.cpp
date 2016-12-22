@@ -766,11 +766,14 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("adepth",          &vAstackDepth,      false);
   vAddPrimitive("adrop",           &vAstackDrop,       false);
+  vAddPrimitive("adup",            &vAstackDup,        false);
   vAddPrimitive("a@",              &vAstackFetch,      false);
+  vAddPrimitive("anip",            &vAstackNip,        false);
   vAddPrimitive("apick",           &vAstackPick,       false);
   vAddPrimitive(">a",              &vAstackToA,        false);
   vAddPrimitive("a>",              &vAstackToP,        false);
   vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
+  vAddPrimitive("aswap",           &vAstackSwap,       false);
   vAddPrimitive("a0",              &vAstack0,          false);
   vAddPrimitive("a1",              &vAstack1,          false);
   vAddPrimitive("a2",              &vAstack2,          false);
@@ -4780,6 +4783,25 @@ void Task::vAstackDrop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dup -- dup top of aux stack                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackDup(NNP_Task nnpTask)
+{
+  ENTRY("vAstackDup");
+  
+  // could just copy from stack back into stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA) )
+  THROW_INVALID_PARAM("adup");
+  
+  nnpTask->m_xAuxStack.vPush(xValA);
+  nnpTask->m_xAuxStack.vPush(xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* a@ -- place copy of top value in aux stack onto param stack                */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackFetch(NNP_Task nnpTask)
@@ -4793,6 +4815,24 @@ void Task::vAstackFetch(NNP_Task nnpTask)
   nnpTask->m_xAuxStack.vPeek(0,&xValWsp);
   
   nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nip -- drop the 2nd value from the aux stack ( B A -- A )                  */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackNip(NNP_Task nnpTask)
+{
+  ENTRY("vAstackNip");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA,xValB) )
+  THROW_INVALID_PARAM("anip");
+  
+  nnpTask->m_xAuxStack.vPush(&xValA);
   
   EXIT();
 }
@@ -4815,6 +4855,25 @@ void Task::vAstackPick(NNP_Task nnpTask)
   nnpTask->m_xAuxStack.vPeek(iPick,&xValWsp);
   
   nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* swap -- swap top two values on aux stack                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackSwap(NNP_Task nnpTask)
+{
+  ENTRY("vAstackSwap");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA,xValB) )
+  THROW_INVALID_PARAM("aswap");
+  
+  nnpTask->m_xAuxStack.vPush(&xValA);
+  nnpTask->m_xAuxStack.vPush(&xValB);
   
   EXIT();
 }

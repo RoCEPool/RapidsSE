@@ -411,11 +411,14 @@ namespace Tasks
     static void vAssertStack_3more(NNP_Task nnpTask);
     static void vAssertStack_4(NNP_Task nnpTask);
     static void vAssertStack_4more(NNP_Task nnpTask);
+    static void vAstackSwap(NNP_Task nnpTask);
     
     // astack
     static void vAstackDepth(NNP_Task nnpTask);
     static void vAstackDrop(NNP_Task nnpTask);
+    static void vAstackDup(NNP_Task nnpTask);
     static void vAstackFetch(NNP_Task nnpTask);
+    static void vAstackNip(NNP_Task nnpTask);
     static void vAstackPick(NNP_Task nnpTask);
     static void vAstackToA(NNP_Task nnpTask);
     static void vAstackToP(NNP_Task nnpTask);
