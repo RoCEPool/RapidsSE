@@ -266,8 +266,7 @@ namespace Tasks
     static void vAllot(NNP_Task nnpTask);
     static void vAgain(NNP_Task nnpTask);          
     static void vAgain_(NNP_Task nnpTask);         
-    static void vAnd(NNP_Task nnpTask);            
-    static void vBegin(NNP_Task nnpTask);          
+    static void vBegin(NNP_Task nnpTask);
     static void vBegin_(NNP_Task nnpTask);         
     static void vBoot(NNP_Task nnpTask);           
     static void vBpa(NNP_Task nnpTask);
@@ -334,12 +333,10 @@ namespace Tasks
     static void vNameWord(NNP_Task nnpTask);
     static void vNext(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
-    static void vNot(NNP_Task nnpTask);
     static void vNullPtr(NNP_Task nnpTask);
     static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
-    static void vOr(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
     static void vPush(NNP_Task nnpTask);
@@ -574,6 +571,11 @@ namespace Tasks
     static void vLockGrabRead(NNP_Task nnpTask);
     static void vLockGrabWrite(NNP_Task nnpTask);
     static void vLockInit(NNP_Task nnpTask);
+    
+    // logic
+    static void vLogicAnd(NNP_Task nnpTask);
+    static void vLogicNot(NNP_Task nnpTask);
+    static void vLogicOr(NNP_Task nnpTask);
     
     // memory
     static void vMemoryByteDump(NNP_Task nnpTask);

@@ -623,7 +623,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("allot",           &vAllot,            false);
   vAddPrimitive("again",           &vAgain,            true );
   vAddPrimitive("again_",          &vAgain_,           false);
-  vAddPrimitive("and",             &vAnd,              false);
   vAddPrimitive("begin",           &vBegin,            true );
   vAddPrimitive("begin_",          &vBegin_,           false);
   vAddPrimitive("boot",            &vBoot,             false);
@@ -696,12 +695,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("next",            &vNext,             true );
   vAddPrimitive("nop",             &vNop,              false);
-  vAddPrimitive("not",             &vNot,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
   vAddPrimitive("object!!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
-  vAddPrimitive("or",              &vOr,               false);
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive("push",            &vPush,             false);
@@ -914,6 +911,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("lock.grabRead",   &vLockGrabRead,     false);
   vAddPrimitive("lock.grabWrite",  &vLockGrabWrite,    false);
   vAddPrimitive("lock.init",       &vLockInit,         false);
+  
+  vAddPrimitive("and",             &vLogicAnd,         false);
+  vAddPrimitive("not",             &vLogicNot,         false);
+  vAddPrimitive("or",              &vLogicOr,          false);
   
   vAddPrimitive("memory.byteDump", &vMemoryByteDump,   false);
   vAddPrimitive("memory.wordDump", &vMemoryWordDump,   false);
@@ -2273,28 +2274,6 @@ ENTRY("vAllot");
 }
 
 /*----------------------------------------------------------------------------*/
-/* and -- logical and of top two values                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vAnd(NNP_Task nnpTask)
-{
-ENTRY("vAnd");
-  
-  i8 iArgB;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
-    THROW_INVALID_PARAM("and");
-  
-  i8 iArgA;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
-    THROW_INVALID_PARAM("and");
-
-  i8 iArgR = (iArgA && iArgB) ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iArgR);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* begin -- begin a loop (use only in : docol)                                */
 /*----------------------------------------------------------------------------*/
 void Task::vBegin(NNP_Task nnpTask)
@@ -3572,24 +3551,6 @@ ENTRY("vNop");
 }
 
 /*----------------------------------------------------------------------------*/
-/* not -- not of top value                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vNot(NNP_Task nnpTask)
-{
-ENTRY("vNot");
-  
-  i8 iValA;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iValA) )
-    THROW_INVALID_PARAM("not");
-  
-  i8 iNotA = iValA ? 0 : 1;
-  
-  nnpTask->m_xParamStack.vPush(iNotA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* nullPtr -- push a nullptr                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vNullPtr(NNP_Task nnpTask)
@@ -3653,28 +3614,6 @@ ENTRY("vObjectMark");
   //pCurrentWord->vImmediate(true);
   pCurrentWord->vWordType(WT_OBJECT);
   pCurrentWord->vDoesStep(&vEncodeEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* or -- logical or of top two values                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vOr(NNP_Task nnpTask)
-{
-ENTRY("vOr");
-  
-  i8 iArgB;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
-    THROW_INVALID_PARAM("or");
-  
-  i8 iArgA;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
-    THROW_INVALID_PARAM("or");
-  
-  i8 iArgR = (iArgA || iArgB) ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iArgR);
   
   EXIT();
 }
@@ -7304,6 +7243,68 @@ ENTRY("vLockInit");
   
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* and -- logical and of top two values                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicAnd(NNP_Task nnpTask)
+{
+  ENTRY("vLogicAnd");
+  
+  i8 iArgB;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
+    THROW_INVALID_PARAM("and");
+  
+  i8 iArgA;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
+    THROW_INVALID_PARAM("and");
+  
+  i8 iArgR = (iArgA && iArgB) ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iArgR);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* not -- not of top value                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicNot(NNP_Task nnpTask)
+{
+  ENTRY("vLogicNot");
+  
+  i8 iValA;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iValA) )
+    THROW_INVALID_PARAM("not");
+  
+  i8 iNotA = iValA ? 0 : 1;
+  
+  nnpTask->m_xParamStack.vPush(iNotA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* or -- logical or of top two values                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicOr(NNP_Task nnpTask)
+{
+  ENTRY("vLogicOr");
+  
+  i8 iArgB;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
+    THROW_INVALID_PARAM("or");
+  
+  i8 iArgA;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
+    THROW_INVALID_PARAM("or");
+  
+  i8 iArgR = (iArgA || iArgB) ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iArgR);
   
   EXIT();
 }
