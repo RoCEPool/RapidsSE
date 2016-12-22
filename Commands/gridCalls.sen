@@ -19,27 +19,50 @@
 
   args.nodes 0 do
 
+    //
     // participant for node I
-    0 "p.loop" "p" I >str concat actorForm
-    I pQueues !
+    //
 
+    0 "p.loop"
+
+    "p" I >str concat :actor
+    dup actor.queue I pQueues !
+    actor.spawn
+
+    //
     // coordinator proxy for node I
-    I I pQueues @ 2 "cp.loop" "cp" I >str concat actorForm
-    I cpQueues !
+    //
 
+    I I pQueues @ 2 "cp.loop"
+    "cp" I >str concat :actor
+    dup actor.queue I cpQueues !
+    actor.spawn
+
+    //
     // partitipant proxy for node I
+    //
+
     I args.node == if
-      I I pQueues  @ 2 "pp.loop" "pp" I >str concat actorForm
-      I ppQueues !
+      I I pQueues  @ 2 "pp.loop"
+      "pp" I >str concat :actor
+      dup actor.queue I ppQueues !
+      actor.spawn
     else
-      I I cpQueues @ 2 "pp.loop" "pp" I >str concat actorForm
-      I ppQueues !
+      I I cpQueues @ 2 "pp.loop"
+      "pp" I >str concat :actor
+      dup actor.queue I ppQueues !
+      actor.spawn
     then
 
   loop
 
+  //
   // coordinator for this node
-  0 "c.loop" "c" actorForm drop
+  //
+  0 "c.loop"
+  "c" :actor  ( 0 "c.loop" "c" )
+
+  actor.spawn
 
   args.verbose if
     cpQueuesDump
