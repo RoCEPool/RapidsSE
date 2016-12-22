@@ -371,7 +371,6 @@ namespace Tasks
     static void vTraceSet(NNP_Task nnpTask);
     static void vUnloop(NNP_Task nnpTask);
     static void vUntil(NNP_Task nnpTask);          
-    static void vVersion(NNP_Task nnpTask);        
     static void vWake(NNP_Task nnpTask);
     static void vWhile(NNP_Task nnpTask);          
     static void vZeroLess(NNP_Task nnpTask);       

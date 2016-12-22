@@ -322,6 +322,8 @@ void Task::vAddConstants(void)
   vAddConstant("_DEBUG",(i8)0);
 #endif
   
+  vAddConstant("version",          RAPIDSSE_VERSION_STRING);
+  
   vAddConstant("largebuffersize",  C_SIZE_POOL_BUFFER);
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
@@ -732,7 +734,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("trace!",          &vTraceSet,         false);
   vAddPrimitive("unloop",          &vUnloop,           false);
   vAddPrimitive("until",           &vUntil,            true );
-  vAddPrimitive("version",         &vVersion,          false);
   vAddPrimitive("wake",            &vWake,             false);
   vAddPrimitive("while",           &vWhile,            true );
   vAddPrimitive("0<",              &vZeroLess,         false);
@@ -4279,21 +4280,6 @@ ENTRY("vUntil");
   //-------------------------------------------------------------------------
   
   pCurrentWord->vEncode("jumpFalse",pBeginLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* version -- push version string                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vVersion(NNP_Task nnpTask)
-{
-ENTRY("vVersion");
-  
-  s256 sVersion;
-  sVersion = RAPIDSSE_VERSION_STRING;
-  
-  nnpTask->m_xParamStack.vPush(sVersion);
   
   EXIT();
 }
