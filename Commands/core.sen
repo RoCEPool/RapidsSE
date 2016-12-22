@@ -288,6 +288,38 @@ create
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get depth of marked aux stack                                              */
+/*----------------------------------------------------------------------------*/
+: $$adepth
+
+  // if the stack is empty then there are 0 marked values
+  adepth 0 == if 0 exit then
+
+  adepth 0 do
+
+  // marked values end at a valset
+  I astack.class CN_VALSET ==
+  if
+    I inc
+    unloop
+    exit
+  then
+
+  // marked values end at $$
+  I apick $$ eql
+  if
+    I
+    unloop
+    exit
+  then
+
+  loop
+
+  // marked values end at bottom of stack
+  adepth
+;
+
+/*----------------------------------------------------------------------------*/
 /* convert contents of marked stack into a valset                             */
 /*----------------------------------------------------------------------------*/
 : $$>valset
@@ -298,6 +330,21 @@ create
     1 pick $$ eql
     if
       nip
+    then
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* convert contents of marked aux stack into a valset                         */
+/*----------------------------------------------------------------------------*/
+: $$>avalset
+
+  $$adepth
+  >avalset
+  adepth 1 > if
+    1 apick $$ eql
+    if
+      anip
     then
   then
 ;

@@ -1055,8 +1055,9 @@ void Task::vAddPrimitives(void)
 
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
  
-  vAddPrimitive("stack.class", &vStackClass,    false);
-
+  vAddPrimitive("astack.class", &vAstackClass,    false);
+  vAddPrimitive("stack.class",  &vStackClass,     false);
+  
   vAddPrimitive("steps.list",  &vStepsList,  false);
   vAddPrimitive("steps.reset", &vStepsReset, false);
   
@@ -9881,6 +9882,28 @@ void Task::vShellExecute(NNP_Task nnpTask)
 }
 
 // stack: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* astack.class -- get class of nth value on aux stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackClass(NNP_Task nnpTask)
+{
+  ENTRY("vAstackClass");
+  
+  i8 nTh;
+  if ( ! nnpTask->m_xParamStack.bPop(nTh) )
+  THROW_INVALID_PARAM("astack.class");
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(nTh,&xValWsp);
+  
+  eCN eClass = xValWsp.eClass();
+  
+  nnpTask->m_xAuxStack.vPush(eClass);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* stack.class -- get class of nth value on stack                             */

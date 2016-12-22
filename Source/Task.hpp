@@ -733,6 +733,7 @@ namespace Tasks
     static void vShellExecute(NNP_Task nnpTask);
     
     // stack
+    static void vAstackClass(NNP_Task nnpTask);
     static void vStackClass(NNP_Task nnpTask);                 //! DUP OF class@
     
     // steps
