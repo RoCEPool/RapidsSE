@@ -340,7 +340,7 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* interlinkParts                                                             */
 /*----------------------------------------------------------------------------*/
-: interlinkParts ( ... #args "<loop>" -- )
+: interlinkParts ( -- )
 
   // attach queue to task
   reg1 ( queue )
@@ -436,7 +436,7 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* create an actor (but don't spawn thread)                                   */
 /*----------------------------------------------------------------------------*/
-: :actor ( "actorNm>" -- "<actorNm>" )
+: :actor ( "<actorNm>" -- "<actorNm>" )
 
   reg.push
 
