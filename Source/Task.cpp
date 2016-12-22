@@ -729,8 +729,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">seitf",          &vToSEitf,          false);
   vAddPrimitive(">str",            &vToStr,            false);
   vAddPrimitive(">task",           &vToTask,           false);
-  vAddPrimitive("valset>",         &vToValues,         false);
-  vAddPrimitive(">valset",         &vToValSet,         false);
   vAddPrimitive("token",           &vToken,            false);
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
@@ -774,6 +772,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("a>",              &vAstackToP,        false);
   vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
   vAddPrimitive("aswap",           &vAstackSwap,       false);
+  vAddPrimitive("avalset>",        &vAstackToValues,   false);
+  vAddPrimitive(">avalset",        &vAstackToValSet,   false);
   vAddPrimitive("a0",              &vAstack0,          false);
   vAddPrimitive("a1",              &vAstack1,          false);
   vAddPrimitive("a2",              &vAstack2,          false);
@@ -950,6 +950,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("-rot",            &vPstackRotInv,     false);
   vAddPrimitive("swap",            &vPstackSwap,       false);
   vAddPrimitive("tuck",            &vPstackTuck,       false);
+  vAddPrimitive("valset>",         &vPstackToValues,   false);
+  vAddPrimitive(">valset",         &vPstackToValSet,   false);
   
   vAddPrimitive("queue.append",    &vQueueAppend,      false);
   vAddPrimitive("queue.dump",      &vQueueDump,        false);
@@ -4263,67 +4265,6 @@ ENTRY("vToTask");
 }
 
 /*----------------------------------------------------------------------------*/
-/* >valset -- collapse values on pstack to a valset                           */
-/*----------------------------------------------------------------------------*/
-void Task::vToValSet(NNP_Task nnpTask)
-{
-ENTRY("vToValSet");
-
-  i8 nVal;
-
-  if ( ! nnpTask->m_xParamStack.bPop(nVal) )
-    THROW_INVALID_PARAM(">valset");
-    
-  if ( ! nnpTask->m_xParamStack.bGuard(nVal) )
-    THROW_INVALID_PARAM(">valset");
-
-  char* pCursor = nullptr;
-  ValSet xValSet;
-  
-  ValWsp xVal;
-  for (i8 iVal = 0; iVal < nVal; iVal++) {
-    
-    if ( ! nnpTask->m_xParamStack.bPop(xVal) )
-      THROW_INVALID_PARAM(">valset");
-    
-    xValSet.vAppend(pCursor,xVal);
-  }
-
-//  vTrace("ValSet %lld bytes\n",xValSet.iSize());
-  
-  nnpTask->m_xParamStack.vPush(xValSet);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >values -- expand valset to values on pstack                               */
-/*----------------------------------------------------------------------------*/
-void Task::vToValues(NNP_Task nnpTask)
-{
-ENTRY("vToValues");
- 
-  ValSet xValSet;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-    THROW_INVALID_PARAM(">values");
-  
-  i8 nVal = 0;
-  ValWsp* pValWsp[128];
-  
-  char* pCursor = nullptr;
-  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
-    nVal++;
-  
-  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    nnpTask->m_xParamStack.vPush(pValWsp[iVal]);
-
-  nnpTask->m_xParamStack.vPush(nVal);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* turn tracing off                                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vTraceOff(NNP_Task nnpTask)
@@ -4783,7 +4724,7 @@ void Task::vAstackDrop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dup -- dup top of aux stack                                                */
+/* dup -- dup top of aux stack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackDup(NNP_Task nnpTask)
 {
@@ -4792,7 +4733,7 @@ void Task::vAstackDup(NNP_Task nnpTask)
   // could just copy from stack back into stack
   
   ValWsp xValA;
-  if ( ! nnpTask->m_xAuxStack.bPop(xValA) )
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
   THROW_INVALID_PARAM("adup");
   
   nnpTask->m_xAuxStack.vPush(xValA);
@@ -4874,6 +4815,67 @@ void Task::vAstackSwap(NNP_Task nnpTask)
   
   nnpTask->m_xAuxStack.vPush(&xValA);
   nnpTask->m_xAuxStack.vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >avalset -- collapse values on aux stack to a valset                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackToValSet(NNP_Task nnpTask)
+{
+  ENTRY("vAstackToValSet");
+  
+  i8 nVal;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(nVal) )
+  THROW_INVALID_PARAM(">avalset");
+  
+  if ( ! nnpTask->m_xAuxStack.bGuard(nVal) )
+  THROW_INVALID_PARAM(">avalset");
+  
+  char* pCursor = nullptr;
+  ValSet xValSet;
+  
+  ValWsp xVal;
+  for (i8 iVal = 0; iVal < nVal; iVal++) {
+    
+    if ( ! nnpTask->m_xAuxStack.bPop(xVal) )
+    THROW_INVALID_PARAM(">avalset");
+    
+    xValSet.vAppend(pCursor,xVal);
+  }
+  
+  //  vTrace("ValSet %lld bytes\n",xValSet.iSize());
+  
+  nnpTask->m_xAuxStack.vPush(xValSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >avalues -- expand valset to values on aux stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackToValues(NNP_Task nnpTask)
+{
+  ENTRY("vPstackToValues");
+  
+  ValSet xValSet;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(xValSet) )
+  THROW_INVALID_PARAM(">avalues");
+  
+  i8 nVal = 0;
+  ValWsp* pValWsp[128];
+  
+  char* pCursor = nullptr;
+  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
+  nVal++;
+  
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+  nnpTask->m_xAuxStack.vPush(pValWsp[iVal]);
+  
+  nnpTask->m_xAuxStack.vPush(nVal);
   
   EXIT();
 }
@@ -7946,6 +7948,67 @@ void Task::vPstackSwap(NNP_Task nnpTask)
   
   nnpTask->m_xParamStack.vPush(&xValA);
   nnpTask->m_xParamStack.vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >valset -- collapse values on pstack to a valset                           */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackToValSet(NNP_Task nnpTask)
+{
+  ENTRY("vPstackToValSet");
+  
+  i8 nVal;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(nVal) )
+  THROW_INVALID_PARAM(">valset");
+  
+  if ( ! nnpTask->m_xParamStack.bGuard(nVal) )
+  THROW_INVALID_PARAM(">valset");
+  
+  char* pCursor = nullptr;
+  ValSet xValSet;
+  
+  ValWsp xVal;
+  for (i8 iVal = 0; iVal < nVal; iVal++) {
+    
+    if ( ! nnpTask->m_xParamStack.bPop(xVal) )
+    THROW_INVALID_PARAM(">valset");
+    
+    xValSet.vAppend(pCursor,xVal);
+  }
+  
+  //  vTrace("ValSet %lld bytes\n",xValSet.iSize());
+  
+  nnpTask->m_xParamStack.vPush(xValSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >values -- expand valset to values on pstack                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackToValues(NNP_Task nnpTask)
+{
+  ENTRY("vPstackToValues");
+  
+  ValSet xValSet;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
+  THROW_INVALID_PARAM(">values");
+  
+  i8 nVal = 0;
+  ValWsp* pValWsp[128];
+  
+  char* pCursor = nullptr;
+  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
+  nVal++;
+  
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+  nnpTask->m_xParamStack.vPush(pValWsp[iVal]);
+  
+  nnpTask->m_xParamStack.vPush(nVal);
   
   EXIT();
 }

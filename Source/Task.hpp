@@ -368,8 +368,6 @@ namespace Tasks
     static void vToStr(NNP_Task nnpTask);
     static void vTotalSpace(NNP_Task nnpTask);
     static void vToTask(NNP_Task nnpTask);
-    static void vToValSet(NNP_Task nnpTask);
-    static void vToValues(NNP_Task nnpTask);
     static void vToken(NNP_Task nnpTask);
     static void vTraceOff(NNP_Task nnpTask);
     static void vTraceOn(NNP_Task nnpTask);
@@ -411,7 +409,6 @@ namespace Tasks
     static void vAssertStack_3more(NNP_Task nnpTask);
     static void vAssertStack_4(NNP_Task nnpTask);
     static void vAssertStack_4more(NNP_Task nnpTask);
-    static void vAstackSwap(NNP_Task nnpTask);
     
     // astack
     static void vAstackDepth(NNP_Task nnpTask);
@@ -420,8 +417,11 @@ namespace Tasks
     static void vAstackFetch(NNP_Task nnpTask);
     static void vAstackNip(NNP_Task nnpTask);
     static void vAstackPick(NNP_Task nnpTask);
+    static void vAstackSwap(NNP_Task nnpTask);
     static void vAstackToA(NNP_Task nnpTask);
     static void vAstackToP(NNP_Task nnpTask);
+    static void vAstackToValSet(NNP_Task nnpTask);
+    static void vAstackToValues(NNP_Task nnpTask);
     static void vAstackTransfer(NNP_Task nnpTask);
     static void vAstack0(NNP_Task nnpTask);
     static void vAstack1(NNP_Task nnpTask);
@@ -618,6 +618,8 @@ namespace Tasks
     static void vPstackRotInv(NNP_Task nnpTask);
     static void vPstackSwap(NNP_Task nnpTask);
     static void vPstackTuck(NNP_Task nnpTask);
+    static void vPstackToValSet(NNP_Task nnpTask);
+    static void vPstackToValues(NNP_Task nnpTask);
     
     // queue
     static void vQueueAppend(NNP_Task nnpTask);
