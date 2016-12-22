@@ -57,14 +57,6 @@ tp: socketAccepted
 
 ddlLock.grabWrite
 
-/*
-    connections @          ( connection# )
-
-    >str "rr" swap concat ( connection# receiverName )
-
-    1 swap "rcv.loop" swap actorForm
-*/
-
     // set up the seed
     1 "rcv.loop" ( socket 1 "rcv.loop" )
 

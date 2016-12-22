@@ -342,7 +342,6 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 : interlinkParts ( ... #args "<loop>" -- )
 
-
   // attach queue to task
   reg1 ( queue )
   reg0 ( queue task )
@@ -362,39 +361,6 @@ tp: haveResultSet
   reg2 ( taskset )
   reg0 ( task )
   task.taskset! ( )
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* actor formation                                                            */
-/*----------------------------------------------------------------------------*/
-: actorForm ( ... #args "<loop>" "<actorName>" -- queue )
-
-  reg.push
-
-  >r ( ... #args "<loop>" ) // r0 has <actorName>
-
-  // create the objects
-  r0 ".task"    concat :task    execute >reg0  // reg0 has task
-  r0 ".queue"   concat :queue   execute >reg1  // reg1 has queue
-  r0 ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-  r0 ".thread"  concat :thread  execute >reg3  // reg3 has thread
-
-  rdrop (  ... #args "<loop>" )
-
-  // seed the task
-  reg0 task.seed ( )
-
-  interlinkParts
-
-  // spawn the os thread
-  reg3 ( thread )
-  thread.spawn ( )
-
-  // leave queue on stack
-  reg1 ( queue )
-
-  reg.pop ( queue )
 ;
 
 /*----------------------------------------------------------------------------*/

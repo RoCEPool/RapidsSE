@@ -51,12 +51,6 @@ tp: connectorStart
 
 ddlLock.grabWrite
 
-/*
-      1 "snd.loop" "sr" I >str concat actorForm
-
-      I senderQueue !
-*/
-
      // set up the seed
       1 "snd.loop" ( socket 1 "snd.loop" )
 
