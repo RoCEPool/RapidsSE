@@ -268,7 +268,6 @@ namespace Tasks
     static void vAgain_(NNP_Task nnpTask);         
     static void vBegin(NNP_Task nnpTask);
     static void vBegin_(NNP_Task nnpTask);         
-    static void vBoot(NNP_Task nnpTask);           
     static void vBpa(NNP_Task nnpTask);
     static void vBpdump(NNP_Task nnpTask);
     static void vCastInt(NNP_Task nnpTask);

@@ -625,7 +625,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("again_",          &vAgain_,           false);
   vAddPrimitive("begin",           &vBegin,            true );
   vAddPrimitive("begin_",          &vBegin_,           false);
-  vAddPrimitive("boot",            &vBoot,             false);
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive("(int)",           &vCastInt,          false);
@@ -2297,22 +2296,6 @@ void Task::vBegin_(NNP_Task nnpTask)
 ENTRY("vBegin_");
   
   nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* boot -- boot                                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBoot(NNP_Task nnpTask)
-{
-  static bool bHasRun = false;
-  
-ENTRY("vBoot");
-  ASSERT( ! bHasRun );
-  bHasRun = true;
-
-  nnpTask->vAddConstants();
   
   EXIT();
 }
