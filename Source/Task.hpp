@@ -373,12 +373,6 @@ namespace Tasks
     static void vUntil(NNP_Task nnpTask);          
     static void vWake(NNP_Task nnpTask);
     static void vWhile(NNP_Task nnpTask);          
-    static void vZeroLess(NNP_Task nnpTask);       
-    static void vZeroLessEqual(NNP_Task nnpTask);  
-    static void vZeroEqual(NNP_Task nnpTask);      
-    static void vZeroNotEqual(NNP_Task nnpTask);   
-    static void vZeroGreaterEqual(NNP_Task nnpTask); 
-    static void vZeroGreater(NNP_Task nnpTask);      
 
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
@@ -910,6 +904,14 @@ namespace Tasks
     static void vWordKindSet(NNP_Task nnpTask);
     static void vWordName(NNP_Task nnpTask);
     static void vWordThis(NNP_Task nnpTask);
+
+    // zero
+    static void vZeroLess(NNP_Task nnpTask);
+    static void vZeroLessEqual(NNP_Task nnpTask);
+    static void vZeroEqual(NNP_Task nnpTask);
+    static void vZeroNotEqual(NNP_Task nnpTask);
+    static void vZeroGreaterEqual(NNP_Task nnpTask);
+    static void vZeroGreater(NNP_Task nnpTask);
     
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/

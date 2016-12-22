@@ -736,12 +736,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("until",           &vUntil,            true );
   vAddPrimitive("wake",            &vWake,             false);
   vAddPrimitive("while",           &vWhile,            true );
-  vAddPrimitive("0<",              &vZeroLess,         false);
-  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
-  vAddPrimitive("0==",             &vZeroEqual,        false);
-  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
-  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
-  vAddPrimitive("0>",              &vZeroGreater,      false);
   
   //----------------------------------------------------------
   vAddPrimitive("args.partition",  &vArgsPartition, false);
@@ -1209,6 +1203,13 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.name",       &vWordName,         false);
   vAddPrimitive("word.this",       &vWordThis,         false);
   
+  vAddPrimitive("0<",              &vZeroLess,         false);
+  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
+  vAddPrimitive("0==",             &vZeroEqual,        false);
+  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
+  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
+  vAddPrimitive("0>",              &vZeroGreater,      false);
+
   //----------------------------------------------------------
   vAddPrimitive("socket.accept",   &vSocketAccept,     false);
   vAddPrimitive("socket.close",    &vSocketClose,      false);
@@ -4309,120 +4310,6 @@ ENTRY("vWhile");
   Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
   nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0< -- test if top value is less than zero                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroLess(NNP_Task nnpTask)
-{
-ENTRY("vZeroLess");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0<");
-  
-  if (iZero < 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0<= -- test if top value is less than or equal to zero                     */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroLessEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroLessEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0<=");
-  
-  if (iZero <= 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0== -- test if top value is equal to zero / nullptr                        */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0==");
-  
-  if (iZero == 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0!= -- test if top value is not equal to zero                              */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroNotEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroNotEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0!=");
-  
-  if (iZero != 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroGreaterEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroGreaterEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0>=");
-  
-  if (iZero >= 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0> -- test if top value is greater than zero                              */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroGreater(NNP_Task nnpTask)
-{
-ENTRY("vZeroGreater");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0>");
-  
-  if (iZero > 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
   
   EXIT();
 }
@@ -12984,6 +12871,122 @@ ENTRY("vWordThis");
   Word* pWord = nnpTask->pCurrentWord();
   
   nnpTask->m_xParamStack.vPush(pWord);
+  
+  EXIT();
+}
+
+// zero: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* 0< -- test if top value is less than zero                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroLess(NNP_Task nnpTask)
+{
+  ENTRY("vZeroLess");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0<");
+  
+  if (iZero < 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0<= -- test if top value is less than or equal to zero                     */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroLessEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroLessEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0<=");
+  
+  if (iZero <= 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0== -- test if top value is equal to zero / nullptr                        */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0==");
+  
+  if (iZero == 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0!= -- test if top value is not equal to zero                              */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroNotEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroNotEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0!=");
+  
+  if (iZero != 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroGreaterEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroGreaterEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0>=");
+  
+  if (iZero >= 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0> -- test if top value is greater than zero                              */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroGreater(NNP_Task nnpTask)
+{
+  ENTRY("vZeroGreater");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0>");
+  
+  if (iZero > 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
   
   EXIT();
 }
