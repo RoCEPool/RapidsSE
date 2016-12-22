@@ -713,6 +713,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
+  vAddPrimitive("sprint",          &vSprint,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
@@ -1709,76 +1710,6 @@ void Task::vNextInSet(NP_Task npNextInSet)
 
 
 /*----------------------------------------------------------------------------*/
-/* seed task to run ::dicCompile                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedDicCompileSen(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pBootSen = pFindWord("::dicCompile");
-  ASSERT(pBootSen);
-  
-  IP.m_pCell = pBootSen->pFirstCell();
-  
-  m_eState = TS_RUNNING;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sLambda = "";
-  
-  m_xTokeniser.vUseString(m_sLambda);
-}
-
-/*----------------------------------------------------------------------------*/
-/* seed task to run given lamda                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedWord(const char* aLambda)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pShellEnter = pFindWord("::docmd");
-  
-  IP.m_pCell = pShellEnter->pFirstCell();
-  
-  m_eState = TS_YIELD;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sLambda = aLambda;
-  if (m_sLambda.iLength())
-    String::vConcat(m_sLambda.a()," ::exit");
-  
-  m_xTokeniser.vUseString(m_sLambda);
-}
-
-/*----------------------------------------------------------------------------*/
-/* seed task to run ::enter                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedDocol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pShellEnter = pFindWord("::enter");
-  
-  IP.m_pCell = pShellEnter->pFirstCell();
-  
-  m_eState = TS_YIELD;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sLambda = "";
-  
-  s32 sPrompt("docol> ");
-  m_xTokeniser.vPrompt(sPrompt);
- 
-  m_xTokeniser.vUseString(m_sLambda);
-  m_xTokeniser.vLineMode(false);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get prev task in set                                                       */
 /*----------------------------------------------------------------------------*/
 NP_Task Task::npPrevInSet(void)
@@ -1920,6 +1851,143 @@ void Task::vRoutineCall(Word* pWord)
   m_xReturnStack.vPush((void*)IP.m_pCell);
     
   IP.m_pCell = pWord->pDoesArg();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seed task to run ::dicCompile                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedDicCompileSen(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pBootSen = pFindWord("::dicCompile");
+  ASSERT(pBootSen);
+  
+  IP.m_pCell = pBootSen->pFirstCell();
+  
+  m_eState = TS_RUNNING;
+  
+  m_xParamStack.vReset();
+  m_xReturnStack.vReset();
+  
+  m_sLambda = "";
+  
+  m_xTokeniser.vUseString(m_sLambda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* seed task to run given lamda                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedWord(const char* aLambda)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pShellEnter = pFindWord("::docmd");
+  
+  IP.m_pCell = pShellEnter->pFirstCell();
+  
+  m_eState = TS_YIELD;
+  
+  m_xParamStack.vReset();
+  m_xReturnStack.vReset();
+  
+  m_sLambda = aLambda;
+  if (m_sLambda.iLength())
+    String::vConcat(m_sLambda.a()," ::exit");
+  
+  m_xTokeniser.vUseString(m_sLambda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* seed task to run ::enter                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedDocol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pShellEnter = pFindWord("::enter");
+  
+  IP.m_pCell = pShellEnter->pFirstCell();
+  
+  m_eState = TS_YIELD;
+  
+  m_xParamStack.vReset();
+  m_xReturnStack.vReset();
+  
+  m_sLambda = "";
+  
+  s32 sPrompt("docol> ");
+  m_xTokeniser.vPrompt(sPrompt);
+  
+  m_xTokeniser.vUseString(m_sLambda);
+  m_xTokeniser.vLineMode(false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint of stack using given format string                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(s8K& sFormat, s8K& sString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  char* pf = sFormat.a();
+  char* ps = sString.a();
+  
+  while (*pf) {
+    
+    // test for ordinary character
+    if ('%' != *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // we have a '%'
+    pf++;
+    
+    // test for %%
+    if ('%' == *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // test for %s
+    if ('s' == *pf) {
+      
+      pf++;
+      
+      s8K sValue;
+      m_xParamStack.bPop(sValue);
+      
+      for (char* pv = sValue.a(); *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+
+    // test for %i
+    if ('i' == *pf) {
+      
+      pf++;
+      
+      i8 iValue;
+      m_xParamStack.bPop(iValue);
+      
+      char aValue[32];
+      String::wToString(iValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+    
+    // just copy %?
+    *ps++ = '%';
+    *ps++ = *pf++;
+  }
+  
+  *pf = '\0';
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3911,6 +3979,26 @@ ENTRY("vSnooze");
   
   pThread->m_xPosixThread.vSleepNano(100_MB);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint -- pop format string and use it for a sprintf                       */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(NNP_Task nnpTask)
+{
+  ENTRY("vSprint");
+  
+  s8K sFormat;
+  if ( ! nnpTask->m_xParamStack.bPop(sFormat) )
+    THROW_INVALID_PARAM("sprint");
+  
+  s8K sString;
+  
+  nnpTask->vSprint(sFormat,sString);
+  
+  nnpTask->m_xParamStack.vPush(sString);
+ 
   EXIT();
 }
 

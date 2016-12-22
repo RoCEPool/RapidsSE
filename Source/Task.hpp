@@ -232,9 +232,6 @@ namespace Tasks
     s&   sName(void);
     void vName(s& sName);
     void vNextInSet(NP_Task npNext);
-    void vSeedDicCompileSen(void);
-    void vSeedDocol(void);
-    void vSeedWord(const char *aWord);
     NP_Task npPrevInSet(void);
     void vPrevInSet(NP_Task npPrev);
     void vPrimitive(const char *aPrimitive);
@@ -242,6 +239,10 @@ namespace Tasks
     void vRetry(void);
     Threads::Thread* pRootThread(void);
     void vRoutineCall(Word* pWord);
+    void vSeedDicCompileSen(void);
+    void vSeedDocol(void);
+    void vSeedWord(const char *aWord);
+    void vSprint(s8K& sFormat, s8K& sString);
     void vStackContents(Stack* pStack, s& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);
@@ -350,6 +351,7 @@ namespace Tasks
     static void vSemicolon(NNP_Task nnpTask);      
     static void vSnooze(NNP_Task nnpTask);
     static void vSleep(NNP_Task nnpTask);
+    static void vSprint(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
     static void vStringColon(NNP_Task nnpTask);
     static void vTest(NNP_Task nnpTask);
