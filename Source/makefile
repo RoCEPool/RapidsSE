@@ -7,9 +7,9 @@ DIR_GUARD=@mkdir -p $(@D)
 
 #Target Files
 CURRENT=${PWD}
-TARGETPATH = $(CURRENT)/../Linux/bin
-TARGET_EXE = $(TARGETPATH)/se 
-TARGET_LIBRARY = $(TARGETPATH)/libRapidsSEv0.1.4.so
+TARGET_PATH = $(CURRENT)/../Linux/bin
+TARGET_EXE = $(TARGET_PATH)/se 
+TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.1.4.so
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
@@ -32,6 +32,7 @@ INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
 LIBS = -lrt -lpthread
+RAPIDS_LIBS = -lRapidsSEv0.1.4
 
 all : $(TARGET_EXE) $(TARGET_LIBRARY)
 
@@ -44,8 +45,8 @@ $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 $(TARGET_EXE): $(TARGET_LIBRARY)
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES)  main.cpp -o main.o
-	cp $(MAN_PAGES) $(TARGETPATH)
-	$(CPP) main.o -L../ThirdParty/bzip2 -L../ThirdParty/lz4 $(LIBS) $(TARGET_LIBRARY) -o $(TARGET_EXE)
+	cp $(MAN_PAGES) $(TARGET_PATH)
+	$(CPP) main.o -L../ThirdParty/bzip2 -L../ThirdParty/lz4 -L$(TARGET_PATH) $(LIBS) $(RAPIDS_LIBS) -o $(TARGET_EXE)
 
 #To obtain object files
 %.o: %.cpp %.d

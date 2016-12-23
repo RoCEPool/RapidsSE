@@ -989,9 +989,14 @@ bool SePrompt::bBeginInsert(void)
     return false;
   }
   
-  m_pSEitf->vBeginTx();
-
-  return true;
+  bool bResult = m_pSEitf->bBeginTx();
+  
+  if (!bResult) {
+    m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+    return false;
+  }
+  
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1756,6 +1761,7 @@ bool SePrompt::bEndInsert(void)
   //m_pSEitf->vCurrentTable(nullptr);
   
   m_pSEitf->vCommitTx();
+  m_pSEitf->vEndTx();
 
   return true;
 }
@@ -1855,6 +1861,9 @@ bool SePrompt::bListDir(void)
   // close the current directory
   xDir.vClose();
   
+  // clear the response
+  m_sResponse = "";
+  
   return true;
 }
 
@@ -1912,8 +1921,11 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(String::bEqualTo(m_pToken[0],"pwd"));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s\n", sDir.a());
+    vTrace("%s", sDir.a());
   }
+  
+  // clear the respnse
+  m_sResponse = "";
   
   return true;
 }

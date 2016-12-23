@@ -334,14 +334,14 @@ void SEitf::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEitf::vBeginTx()
+bool SEitf::bBeginTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pTxRef = new TxRef();
   //vTrace("txref: %x\n", m_pTxRef);
   bool bResult = m_pTxRef->bBeginTx();
-  ASSERT(bResult);
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,6 +352,17 @@ void SEitf::vCommitTx()
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   bool bResult = m_pTxRef->bCommitTx();
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end a tx                                                                   */
+/*----------------------------------------------------------------------------*/
+void SEitf::vEndTx()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  bool bResult = m_pTxRef->bEndTx();
   ASSERT(bResult);
   m_pTxRef = nullptr;
 }

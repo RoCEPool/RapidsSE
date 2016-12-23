@@ -12,6 +12,7 @@ namespace Magic
   {
     /*  0 */ EC_NONE=0,
     /*  1 */ EC_ASSERT,
+    /*    */ EC_BEGIN_TX_FAILED,
     /*  2 */ EC_CATALOG_EXISTS,
 
     /*  3 */ EC_FOLDER_IN_USE,
@@ -69,6 +70,7 @@ namespace Magic
   {
     /*  0 */ "none",
     /*  1 */ "assert",
+    /*    */ "begin transaction failed",
     /*  2 */ "catalog exists",
     /*  3 */ "folder in use",
     
