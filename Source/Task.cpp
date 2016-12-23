@@ -623,10 +623,10 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("accept",          &vAccept,           false);
   vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("again",           &vAgain,            true );
-  vAddPrimitive("again_",          &vAgain_,           false);
-  vAddPrimitive("begin",           &vBegin,            true );
-  vAddPrimitive("begin_",          &vBegin_,           false);
+  vAddPrimitive("again",           &vFlowAgain,            true );
+  vAddPrimitive("again_",          &vFlowAgain_,           false);
+  vAddPrimitive("begin",           &vFlowBegin,            true );
+  vAddPrimitive("begin_",          &vFlowBegin_,           false);
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive("(int)",           &vCastInt,          false);
@@ -644,10 +644,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("do",              &vDo,               true );
-  vAddPrimitive("do_rt",           &vDo_RT,            false);
+  vAddPrimitive("do",              &vFlowDo,               true );
+  vAddPrimitive("do_rt",           &vFlowDo_RT,            false);
   vAddPrimitive("does>",           &vDoes,             true );
-  vAddPrimitive("else",            &vElse,             true );
+  vAddPrimitive("else",            &vFlowElse,             true );
   vAddPrimitive("encodeCall",      &vEncodeCall,       false);
   vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
   vAddPrimitive("encodeEmb",       &vEncodeEmb,        true );
@@ -670,7 +670,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
-  vAddPrimitive("if",              &vIf,               true );
+  vAddPrimitive("if",              &vFlowIf,               true );
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("interpreting",    &vInterpreting,     false);
   vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
@@ -679,22 +679,22 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("isImmediate",     &vIsImmediate,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
-  vAddPrimitive("iterate",         &vIterate,          true );
-  vAddPrimitive("iterate_rt_A",    &vIterate_RT_A,     false);
-  vAddPrimitive("iterate_rt_B",    &vIterate_RT_B,     false);
+  vAddPrimitive("iterate",         &vFlowIterate,          true );
+  vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A,     false);
+  vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B,     false);
   vAddPrimitive("j",               &vJ,                false);
-  vAddPrimitive("jump",            &vJump,             false);
-  vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
-  vAddPrimitive("jumpTrue",        &vJumpTrue,         false);
+  vAddPrimitive("jump",            &vFlowJump,             false);
+  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,        false);
+  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,         false);
   vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("loop",            &vLoop,             true );
-  vAddPrimitive("loop_rt",         &vLoop_RT,          false);
-  vAddPrimitive("+loop",           &vLoopPlus,         true );
-  vAddPrimitive("+loop_rt",        &vLoopPlus_RT,      false);
+  vAddPrimitive("loop",            &vFlowLoop,             true );
+  vAddPrimitive("loop_rt",         &vFlowLoop_RT,          false);
+  vAddPrimitive("+loop",           &vFlowLoopPlus,         true );
+  vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,      false);
   vAddPrimitive("magic@",          &vMagicFetch,       false);
   vAddPrimitive("magic!!",         &vMagicMark,        false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
-  vAddPrimitive("next",            &vNext,             true );
+  vAddPrimitive("next",            &vFlowNext,             true );
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
@@ -707,7 +707,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(".\\n",            &vPutNewline,       false);
   vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
-  vAddPrimitive("repeat",          &vRepeat,           true );
+  vAddPrimitive("repeat",          &vFlowRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
@@ -717,7 +717,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
-  vAddPrimitive("then",            &vThen,             true );
+  vAddPrimitive("then",            &vFlowThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
   vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   vAddPrimitive("'",               &vTick,             true );
@@ -733,10 +733,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("traceOn",         &vTraceOn,          false);
   vAddPrimitive("tracePoint",      &vTracePoint,       false);
   vAddPrimitive("trace!",          &vTraceSet,         false);
-  vAddPrimitive("unloop",          &vUnloop,           false);
-  vAddPrimitive("until",           &vUntil,            true );
+  vAddPrimitive("unloop",          &vFlowUnloop,           false);
+  vAddPrimitive("until",           &vFlowUntil,            true );
   vAddPrimitive("wake",            &vWake,             false);
-  vAddPrimitive("while",           &vWhile,            true );
+  vAddPrimitive("while",           &vFlowWhile,            true );
   
   //----------------------------------------------------------
   vAddPrimitive("args.partition",  &vArgsPartition, false);
@@ -2295,37 +2295,6 @@ ENTRY("vAccept");
 }
 
 /*----------------------------------------------------------------------------*/
-/* again -- unconditionally repeat loop (use only in : docol)                 */
-/*----------------------------------------------------------------------------*/
-void Task::vAgain(NNP_Task nnpTask)
-{
-ENTRY("vAgain");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("again");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-  
-  pCurrentWord->vEncode("jump",pBeginLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* again_ -- unconditionally repeat begin_ loop (use only in : docol)         */
-/*----------------------------------------------------------------------------*/
-void Task::vAgain_(NNP_Task nnpTask)
-{
-ENTRY("vAgain_");
-  
-  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot -- reserve n bytes in current word                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vAllot(NNP_Task nnpTask)
@@ -2341,34 +2310,6 @@ ENTRY("vAllot");
 
   char* pAddress = pCurrentWord->pAllot(iBytes);
   ASSERT(pAddress);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin -- begin a loop (use only in : docol)                                */
-/*----------------------------------------------------------------------------*/
-void Task::vBegin(NNP_Task nnpTask)
-{
-ENTRY("vBegin");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  Cell* pLastCell = pCurrentWord->pLastCell();
-  
-  nnpTask->m_xReturnStack.vPush(pLastCell);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin_ -- begin a loop (use only in : docol)                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBegin_(NNP_Task nnpTask)
-{
-ENTRY("vBegin_");
-  
-  nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
   
   EXIT();
 }
@@ -2631,72 +2572,6 @@ ENTRY("vCursorStore");
     THROW_INVALID_PARAM("cursor!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* do -- compile time of do ... loop                                immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vDo(NNP_Task nnpTask)
-{
-ENTRY("vDo");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("do_rt");
-  
-  Cell* pLastCell = pCurrentWord->pLastCell();
-  
-  nnpTask->m_xReturnStack.vPush((void*)pLastCell);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* do_rt -- runtime of do ... loop                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vDo_RT(NNP_Task nnpTask)
-{
-ENTRY("vDo_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("do_rt");
-  
-  nnpTask->m_xReturnStack.vPush(iLimit);
-  nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* else -- else clause                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vElse(NNP_Task nnpTask)
-{
-ENTRY("vElse");
-
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pIfJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
-    THROW_INVALID_RETURN("else");
-  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
-  
-  //-------------------------------------------------------------------------
-  
-  Cell* pElseJumpArg;
-  
-  pCurrentWord->vEncode("jump");
-  pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pElseJumpArg);
-  
-  //-------------------------------------------------------------------------
-  
-  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -3110,26 +2985,6 @@ ENTRY("vI");
 }
 
 /*----------------------------------------------------------------------------*/
-/* if -- if clause                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vIf(NNP_Task nnpTask)
-{
-ENTRY("vIf");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  Cell* pIfJumpArg;
-
-  pCurrentWord->vEncode("jumpFalse");
-  
-  pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pIfJumpArg);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* immediate -- make the most recent definition an immediate word             */
 /*----------------------------------------------------------------------------*/
 void Task::vImmediate(NNP_Task nnpTask)
@@ -3256,73 +3111,6 @@ ENTRY("vInUseSpace");
 }
 
 /*----------------------------------------------------------------------------*/
-/* iterate -- compile time of iterate ... next                      immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vIterate(NNP_Task nnpTask)
-{
-ENTRY("vIterate");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("iterate_rt_a");
-  
-  Cell* pIterateLoc = pCurrentWord->pLastCell();
-  nnpTask->m_xReturnStack.vPush(pIterateLoc);
-  pCurrentWord->vEncode("iterate_rt_b");
-
-  pCurrentWord->vEncode("jumpFalse");
-  Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  nnpTask->m_xReturnStack.vPush(pJumpFalseArg);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* iterate_rt_a -- runtime of iterate ... next                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIterate_RT_A(NNP_Task nnpTask)
-{
-ENTRY("vIterate_RT_A");
-  
-  Object* pPtrObject;
-  Object* pPtrCursor;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrObject,pPtrCursor) )
-    THROW_INVALID_PARAM("iterate_rt_a");
-  
-  nnpTask->m_xReturnStack.vPush(pPtrCursor);
-  nnpTask->m_xReturnStack.vPush(pPtrObject);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* iterate_rt_b -- runtime of iterate ... next                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIterate_RT_B(NNP_Task nnpTask)
-{
-ENTRY("vIterate_RT_B");
-  
-  i8 iPick = 0;
-  
-  ValWsp xObjectWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
-  nnpTask->m_xParamStack.vPush(xObjectWsp);
-  
-  ValWsp xWsp;
-  
-  if ( ! xObjectWsp.iAsInt() ) {
-    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
-      THROW_INVALID_PARAM("iterate_rt_b");
-    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
-      THROW_INVALID_PARAM("iterate_rt_b");
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto param stack                */
 /*----------------------------------------------------------------------------*/
 void Task::vJ(NNP_Task nnpTask)
@@ -3332,60 +3120,6 @@ ENTRY("vJ");
   Value* pI = nnpTask->m_xReturnStack.pPeek(3);
   
   nnpTask->m_xParamStack.vPush(pI);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jump -- jump to location                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vJump(NNP_Task nnpTask)
-{
-ENTRY("vJump");
-  
-  nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jumpFalse -- jump on false to location                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vJumpFalse(NNP_Task nnpTask)
-{
-ENTRY("vJumpFalse");
-  
-  i8 iVal;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpFalse");
-
-  //  i8 iFlag = nnpTask->m_xParamStack.iPop();
-  
-  // cell points to the jump arg
-  if (iVal)
-    nnpTask->IP.m_pCell++;
-  else
-    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jumpTrue -- jump on true to location                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vJumpTrue(NNP_Task nnpTask)
-{
-ENTRY("vJumpTrue");
-  
-  i8 iVal;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpTrue");
-  
-  // cell points to the jump arg
-  if (iVal)
-    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
-  else
-    nnpTask->IP.m_pCell++;
   
   EXIT();
 }
@@ -3414,104 +3148,6 @@ ENTRY("vLocate");
   else {
     i8 iZero = 0;
     nnpTask->m_xParamStack.vPush(iZero);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loop -- compile time for do ... loop                            immediate  */
-/*----------------------------------------------------------------------------*/
-void Task::vLoop(NNP_Task nnpTask)
-{
-ENTRY("vLoop");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pDoLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
-    THROW_INVALID_RETURN("loop");
-  Cell* pDoLoc = _pCell(pDoLocVoid);
-  
-  pCurrentWord->vEncode("Loop_RT");
-  
-  pCurrentWord->vEncode("jump",pDoLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loop_rt -- runtime for do loop                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vLoop_RT(NNP_Task nnpTask)
-{
-ENTRY("vLoop_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  
-  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("loop_rt");
-  
-  iIndex++;
-  
-  if (iIndex < iLimit) {
-    nnpTask->m_xReturnStack.vPush(iLimit);
-    nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
-  }
-  else {
-    nnpTask->IP.m_pCell += 2;
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loopPlus -- do +loop                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vLoopPlus(NNP_Task nnpTask)
-{
-ENTRY("vLoopPlus");
-
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pDoLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
-    THROW_INVALID_RETURN("+loop");
-  Cell* pDoLoc = _pCell(pDoLocVoid);
-  
-  pCurrentWord->vEncode("+Loop_RT");
-  
-  pCurrentWord->vEncode("jump",pDoLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loopPlus_rt -- runtime for do +loop                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vLoopPlus_RT(NNP_Task nnpTask)
-{
-ENTRY("vLoopPlus_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  i8 iInc;
-  
-  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("loopPlus_rt");
-
-  if ( ! nnpTask->m_xParamStack.bPop(iInc) )
-    THROW_INVALID_PARAM("loopPlus_rt");
-  
-  iIndex += iInc;
-  
-  if (iIndex < iLimit) {
-    nnpTask->m_xReturnStack.vPush(iLimit);
-    nnpTask->m_xReturnStack.vPush(iIndex);
-  }
-  else {
-    nnpTask->IP.m_pCell += 2;
   }
   
   EXIT();
@@ -3564,34 +3200,6 @@ ENTRY("vNameWord");
   Word* pWord = _pWord(pWordObject);
   
   nnpTask->m_xParamStack.vPush(pWord->sName().a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* next -- compile time for iterate ... next                        immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vNext(NNP_Task nnpTask)
-{
-ENTRY("vNext");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pJumpFalseArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pJumpFalseArgVoid) )
-    THROW_INVALID_RETURN("next");
-  Cell* pJumpFalseArg = _pCell(pJumpFalseArgVoid);
-  
-  void* pIterateLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIterateLocVoid) )
-    THROW_INVALID_RETURN("next");
-  Cell* pIterateLoc = _pCell(pIterateLocVoid);
-  
-  //----------------------------------------------------------------------------
-  
-  pCurrentWord->vEncode("jump",pIterateLoc);
-  
-  pJumpFalseArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -3831,7 +3439,7 @@ ENTRY("vRdtscp");
 /*----------------------------------------------------------------------------*/
 /* repeat -- repeat a begin-while-repeat loop                       immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vRepeat(NNP_Task nnpTask)
+void Task::vFlowRepeat(NNP_Task nnpTask)
 {
 ENTRY("vRepeat");
   
@@ -3900,19 +3508,19 @@ ENTRY("vSee");
 
     vTrace("%p: %s",pCell,pDoesWord->sName().a());
   
-    if ( *pCell->m_ppDoesStep == Task::vJump ) {
+    if ( *pCell->m_ppDoesStep == Task::vFlowJump ) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
     }
     else
-    if ( *pCell->m_ppDoesStep == Task::vJumpFalse ) {
+    if ( *pCell->m_ppDoesStep == Task::vFlowJumpFalse ) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
     }
     else
-    if ( *pCell->m_ppDoesStep == Task::vJumpTrue ) {
+    if ( *pCell->m_ppDoesStep == Task::vFlowJumpTrue ) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
@@ -4065,25 +3673,6 @@ void Task::vTest(NNP_Task nnpTask)
 {
 ENTRY("vTest");
   vTrace("[%s] Test\n",nnpTask->m_sName.a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* then -- then clause                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vThen(NNP_Task nnpTask)
-{
-ENTRY("vThen");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pIfJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
-    THROW_INVALID_RETURN("then");
-  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
-  
-  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -4340,43 +3929,6 @@ void Task::vTraceSet(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* unloop -- pop the return stack                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vUnloop(NNP_Task nnpTask)
-{
-ENTRY("vUnloop");
-  
-  // we should just modify the pointers rather than actually pop
-  ValWsp xValA;
-  ValWsp xValB;
-  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
-    THROW_INVALID_RETURN("unloop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* until -- repeat begin loop until true                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vUntil(NNP_Task nnpTask)
-{
-ENTRY("vUntil");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("until");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-  
-  //-------------------------------------------------------------------------
-  
-  pCurrentWord->vEncode("jumpFalse",pBeginLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* wake -- wake task on stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vWake(NNP_Task nnpTask)
@@ -4384,23 +3936,6 @@ void Task::vWake(NNP_Task nnpTask)
 ENTRY("vWake");
   
   // ..tbd..
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* while -- check for continue with loop                            immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vWhile(NNP_Task nnpTask)
-{
-ENTRY("vWhile");
-
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("jumpFalse");
-  Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
   
   EXIT();
 }
@@ -6221,6 +5756,153 @@ ENTRY("vFileWrite");
   EXIT();
 }
 
+// flow: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* again -- unconditionally repeat loop (use only in : docol)                 */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowAgain(NNP_Task nnpTask)
+{
+  ENTRY("vAgain");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("again");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  pCurrentWord->vEncode("jump",pBeginLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* again_ -- unconditionally repeat begin_ loop (use only in : docol)         */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowAgain_(NNP_Task nnpTask)
+{
+  ENTRY("vAgain_");
+  
+  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin -- begin a loop (use only in : docol)                                */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowBegin(NNP_Task nnpTask)
+{
+  ENTRY("vBegin");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  Cell* pLastCell = pCurrentWord->pLastCell();
+  
+  nnpTask->m_xReturnStack.vPush(pLastCell);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin_ -- begin a loop (use only in : docol)                               */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowBegin_(NNP_Task nnpTask)
+{
+  ENTRY("vBegin_");
+  
+  nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* do -- compile time of do ... loop                                immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDo(NNP_Task nnpTask)
+{
+  ENTRY("vDo");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("do_rt");
+  
+  Cell* pLastCell = pCurrentWord->pLastCell();
+  
+  nnpTask->m_xReturnStack.vPush((void*)pLastCell);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* do_rt -- runtime of do ... loop                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDo_RT(NNP_Task nnpTask)
+{
+  ENTRY("vDo_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PARAM("do_rt");
+  
+  nnpTask->m_xReturnStack.vPush(iLimit);
+  nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* else -- else clause                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowElse(NNP_Task nnpTask)
+{
+  ENTRY("vElse");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pIfJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
+    THROW_INVALID_RETURN("else");
+  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  Cell* pElseJumpArg;
+  
+  pCurrentWord->vEncode("jump");
+  pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  
+  nnpTask->m_xReturnStack.vPush(pElseJumpArg);
+  
+  //-------------------------------------------------------------------------
+  
+  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* if -- if clause                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIf(NNP_Task nnpTask)
+{
+  ENTRY("vIf");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  Cell* pIfJumpArg;
+  
+  pCurrentWord->vEncode("jumpFalse");
+  
+  pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  
+  nnpTask->m_xReturnStack.vPush(pIfJumpArg);
+  
+  EXIT();
+}
+
 // grid: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -6260,6 +5942,326 @@ ENTRY("vGridInit");
   ASSERT(CN_GRID == pGrid->eClass());
   
   new(pGrid) Grid;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate -- compile time of iterate ... next                      immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIterate(NNP_Task nnpTask)
+{
+  ENTRY("vIterate");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("iterate_rt_a");
+  
+  Cell* pIterateLoc = pCurrentWord->pLastCell();
+  nnpTask->m_xReturnStack.vPush(pIterateLoc);
+  pCurrentWord->vEncode("iterate_rt_b");
+  
+  pCurrentWord->vEncode("jumpFalse");
+  Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  nnpTask->m_xReturnStack.vPush(pJumpFalseArg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate_rt_a -- runtime of iterate ... next                                */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIterate_RT_A(NNP_Task nnpTask)
+{
+  ENTRY("vIterate_RT_A");
+  
+  Object* pPtrObject;
+  Object* pPtrCursor;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrObject,pPtrCursor) )
+    THROW_INVALID_PARAM("iterate_rt_a");
+  
+  nnpTask->m_xReturnStack.vPush(pPtrCursor);
+  nnpTask->m_xReturnStack.vPush(pPtrObject);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate_rt_b -- runtime of iterate ... next                                */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIterate_RT_B(NNP_Task nnpTask)
+{
+  ENTRY("vIterate_RT_B");
+  
+  i8 iPick = 0;
+  
+  ValWsp xObjectWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  nnpTask->m_xParamStack.vPush(xObjectWsp);
+  
+  ValWsp xWsp;
+  
+  if ( ! xObjectWsp.iAsInt() ) {
+    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
+      THROW_INVALID_PARAM("iterate_rt_b");
+    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
+      THROW_INVALID_PARAM("iterate_rt_b");
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jump -- jump to location                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJump(NNP_Task nnpTask)
+{
+  ENTRY("vJump");
+  
+  nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jumpFalse -- jump on false to location                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJumpFalse(NNP_Task nnpTask)
+{
+  ENTRY("vJumpFalse");
+  
+  i8 iVal;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
+    THROW_INVALID_PARAM("jumpFalse");
+  
+  //  i8 iFlag = nnpTask->m_xParamStack.iPop();
+  
+  // cell points to the jump arg
+  if (iVal)
+    nnpTask->IP.m_pCell++;
+  else
+    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jumpTrue -- jump on true to location                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJumpTrue(NNP_Task nnpTask)
+{
+  ENTRY("vJumpTrue");
+  
+  i8 iVal;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
+    THROW_INVALID_PARAM("jumpTrue");
+  
+  // cell points to the jump arg
+  if (iVal)
+    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  else
+    nnpTask->IP.m_pCell++;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loop -- compile time for do ... loop                            immediate  */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoop(NNP_Task nnpTask)
+{
+  ENTRY("vLoop");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pDoLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
+    THROW_INVALID_RETURN("loop");
+  Cell* pDoLoc = _pCell(pDoLocVoid);
+  
+  pCurrentWord->vEncode("Loop_RT");
+  
+  pCurrentWord->vEncode("jump",pDoLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loop_rt -- runtime for do loop                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoop_RT(NNP_Task nnpTask)
+{
+  ENTRY("vLoop_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PARAM("loop_rt");
+  
+  iIndex++;
+  
+  if (iIndex < iLimit) {
+    nnpTask->m_xReturnStack.vPush(iLimit);
+    nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
+  }
+  else {
+    nnpTask->IP.m_pCell += 2;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loopPlus -- do +loop                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoopPlus(NNP_Task nnpTask)
+{
+  ENTRY("vLoopPlus");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pDoLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
+    THROW_INVALID_RETURN("+loop");
+  Cell* pDoLoc = _pCell(pDoLocVoid);
+  
+  pCurrentWord->vEncode("+Loop_RT");
+  
+  pCurrentWord->vEncode("jump",pDoLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loopPlus_rt -- runtime for do +loop                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoopPlus_RT(NNP_Task nnpTask)
+{
+  ENTRY("vLoopPlus_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  i8 iInc;
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PARAM("loopPlus_rt");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iInc) )
+    THROW_INVALID_PARAM("loopPlus_rt");
+  
+  iIndex += iInc;
+  
+  if (iIndex < iLimit) {
+    nnpTask->m_xReturnStack.vPush(iLimit);
+    nnpTask->m_xReturnStack.vPush(iIndex);
+  }
+  else {
+    nnpTask->IP.m_pCell += 2;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* next -- compile time for iterate ... next                        immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowNext(NNP_Task nnpTask)
+{
+  ENTRY("vNext");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pJumpFalseArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pJumpFalseArgVoid) )
+    THROW_INVALID_RETURN("next");
+  Cell* pJumpFalseArg = _pCell(pJumpFalseArgVoid);
+  
+  void* pIterateLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pIterateLocVoid) )
+    THROW_INVALID_RETURN("next");
+  Cell* pIterateLoc = _pCell(pIterateLocVoid);
+  
+  //----------------------------------------------------------------------------
+  
+  pCurrentWord->vEncode("jump",pIterateLoc);
+  
+  pJumpFalseArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* then -- then clause                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowThen(NNP_Task nnpTask)
+{
+  ENTRY("vThen");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pIfJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
+    THROW_INVALID_RETURN("then");
+  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
+  
+  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* unloop -- pop the return stack                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowUnloop(NNP_Task nnpTask)
+{
+  ENTRY("vUnloop");
+  
+  // we should just modify the pointers rather than actually pop
+  ValWsp xValA;
+  ValWsp xValB;
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
+    THROW_INVALID_RETURN("unloop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* until -- repeat begin loop until true                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowUntil(NNP_Task nnpTask)
+{
+  ENTRY("vUntil");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("until");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  pCurrentWord->vEncode("jumpFalse",pBeginLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* while -- check for continue with loop                            immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowWhile(NNP_Task nnpTask)
+{
+  ENTRY("vWhile");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("jumpFalse");
+  Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  
+  nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
   
   EXIT();
 }
