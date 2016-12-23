@@ -73,15 +73,17 @@ tp: makingSchema
     dup "MAKING SCHEMA " swap concat " on NODE " concat args.node >str concat .
   then
 
-  dup ( "<schemaNm>" )
+    dup ( "<schemaNm>" )
 
-  :schema ( "<schemaNm>" ^schema )
+    :schema ( "<schemaNm>" ^schema )
 
-  drop ( "<schemaNm>" )
+    drop ( "<schemaNm>" )
 
-  makeTables ( )
+    makeTables ( )
 
-  true ( true )
+    true <SUCCESS_RESULT>
+
+    true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -100,9 +102,9 @@ tp: theIndirectCall
 
   >>participants> ( bool )
 
-  tp: mkSchOnAllDone
+tp: mkSchOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -134,6 +136,8 @@ tp: removeSchema$
   then
 
   :forget ( )
+
+  true <SUCCESS_RESULT>
 
   true ( true )
 ;
@@ -170,7 +174,7 @@ tp: theIndirectCall
 
 tp: rmSchOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*============================================================================*/

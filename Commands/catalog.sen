@@ -95,7 +95,9 @@ tp: makeCatalog
 
   makeSchemas ( )
 
-  true ( true )
+  true <SUCCESS_RESULT>
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +118,7 @@ tp: theIndirectCall
 
 tp: mkCatOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +134,9 @@ tp: removeCatalog$
 
   :forget ( )
 
-  true ( true )
+  true <SUCCESS_RESULT>
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -167,7 +171,7 @@ tp: theIndirectCall
 
 tp: rmCatOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*============================================================================*/

@@ -669,7 +669,7 @@ tp: lfOnAll
 
 tp: lfOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -859,7 +859,7 @@ tp: theIndirectCall
 
 tp: printRBOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 int: countRows
@@ -973,7 +973,7 @@ tp: printRB$
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
-  "boray" makeTenant$ assert
+  "boray" makeTenant$ assert drop drop drop
 
   // push boray folder
   "boray" findInCurrent
@@ -984,7 +984,7 @@ tp: printRB$
   execute dic.push
 
   // create catalog rapidsse (and schemas sub-folder)
-  "rapidsse" makeCatalog$ assert
+  "rapidsse" makeCatalog$ assert drop drop drop
 
   // go back to main dictionary
   dic.drop

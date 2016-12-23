@@ -11,6 +11,43 @@
 
 : isGrid word.kind@ ' grid eql ;
 
+: <SUCCESS_RESULT> args.node true ( v n# true ) ;
+
+: <FAILURE_RESULT> args.node false ( ec n# false ) ;
+
+/*----------------------------------------------------------------------------*/
+/* check grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: checkResult ( v t n# | ec f n# .... nn t/f )
+
+tp: checkResult
+
+  // was the final result true ?
+  true == if
+
+    // drop the result
+    depth dropN
+
+  else
+    // lets see which node failed
+    0 do
+
+    false == if
+
+      "Node"  ( .... ec n# "Node" )
+      prepend ( ... ec "Node n#" )
+      " returned error " concat ( ... ec "Node n# returned error " )
+      prepend ( "NODE n# FAILED with ERROR " )
+      .
+    else
+
+      drop drop
+    then
+
+    loop
+
+  then
+;
 /*----------------------------------------------------------------------------*/
 /* create a grid using name from input stream                                 */
 /*----------------------------------------------------------------------------*/

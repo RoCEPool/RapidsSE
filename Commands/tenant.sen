@@ -87,15 +87,17 @@ tp: makingTenant
     dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
   then
 
-  dup ( "<tenantNm>" "<tenantNm>" )
+    dup ( "<tenantNm>" "<tenantNm>" )
 
-  :tenant ( "<tenantNm>" ^tenant )
+    :tenant ( "<tenantNm>" ^tenant )
 
-  drop ( "<tenantNm>" )
+    drop ( "<tenantNm>" )
 
-  makeCatalogs ( )
+    makeCatalogs ( )
 
-  true ( true )
+    true <SUCCESS_RESULT>
+
+    true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +122,7 @@ tp: theIndirectCall
 
 tp: mkTenOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -135,6 +137,8 @@ tp: removetenant$
   then
 
   :forget ( )
+
+  true <SUCCESS_RESULT>
 
   true ( true )
 ;
@@ -171,7 +175,7 @@ tp: rmTenOnAll
 
 tp: rmTenOnAllDone
 
-  drop ( )
+  checkResult
 ;
 
 /*============================================================================*/

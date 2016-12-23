@@ -119,11 +119,16 @@ tp: >>participants>
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
 
+  valset>
+
+  // drop number of values
+  drop
+
   // we should have a true result
-  assert
+  //assert
 
   // return true
-  true
+  //true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +159,7 @@ tp: >>participant>
   >coordinator> ( bool )
 
   // we should have a true result
-  assert
+  //assert
 
   // return true
   true

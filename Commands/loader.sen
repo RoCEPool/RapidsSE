@@ -70,6 +70,8 @@ tp: loadAppendBuffer$
   // append row buffer to partition of table
   table.appendBuffer ( )
 
+  true <SUCCESS_RESULT>
+
   // all $ routines must return true
   true ( true )
 ;
@@ -126,7 +128,9 @@ tp: theIndirectCall
 tp: theIndirectResult
 
   // we expect loadAppendBuffer$ to return true
-  assert
+  //assert
+
+  checkResult
 ;
 
 /*----------------------------------------------------------------------------*/

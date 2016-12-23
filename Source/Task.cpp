@@ -4784,14 +4784,14 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   ValSet xValSet;
   
   if ( ! nnpTask->m_xAuxStack.bPop(xValSet) )
-  THROW_INVALID_PARAM(">avalues");
+    THROW_INVALID_PARAM(">avalues");
   
   i8 nVal = 0;
   ValWsp* pValWsp[128];
   
   char* pCursor = nullptr;
   while (xValSet.bExtract(pCursor,pValWsp[nVal]))
-  nVal++;
+    nVal++;
   
   for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
   nnpTask->m_xAuxStack.vPush(pValWsp[iVal]);

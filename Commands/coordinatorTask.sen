@@ -24,7 +24,13 @@
     exeAll
 
     // convert indirect result into valset
-    >result ( valset )
+    //>result ( valset )
+
+    // assert that exeAll returned true
+    assert
+
+    // move result from astack tp pstack
+    a>
 
     // put indirect result onto stack of caller and signal
     >caller ( )
@@ -88,6 +94,9 @@ tp: sendingToPP
 
 tp: allResponded
 ;
+
+int: finalResult
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : >participants> ( <<!>> -- true ) // serial Form
 
@@ -135,11 +144,14 @@ tp: resumed
   loop // each node
 
   // each node:
-  //   << v t nn | ec f nn >>
+  //   << v nn t | ec nn f >>
 
-  // <<  s,n s,n s,n s,n s,n #n  f:ec,nn   t|f >>
-  // <<  i,n i,n i,n i,n i,n #n  f:ec,nn   t|f >>
-  // <<  b,n b,n b,n b,n b,n #n  f:ec,nn   t|f >>
+  // <<  v,n,t v,n,t ec,n,f v,n,t #n  t|f >>
+
+  true finalResult !
+
+  $$
+tp: $$
 
   // now scan resultset from each participant
   args.nodes 0 do
@@ -153,15 +165,28 @@ tp: resumed
     valset>
 
     tp: expandedResult
-    //stk
 
     // drop the number of values that were in valset
     drop
 
-    // we are expecting a true
     assert
 
+    // check if value is t/f
+    dup false == if
+      0 finalResult !
+    then
+
   loop
+
+  args.nodes
+
+  finalResult @
+
+tp: alldone
+
+  $$>valset
+
+  >a
 
   // drop the << <<!>> <<caller>> >> of rstack
   rdrop
@@ -211,6 +236,8 @@ tp: forwardingToPP
 
 tp: resumed
 
+  $$
+
   // move from aux to parameter stack
   a>
 
@@ -226,6 +253,13 @@ tp: expandedResult
 
   // we are expecting a true
   assert
+
+  1 // number of nodes ( single participant responded )
+
+  true  // all passed
+
+  $$>valset
+  >a
 
   // return true
   true
