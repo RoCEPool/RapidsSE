@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
-: cp.loop ( actorNo forwardQueue -- )
+: cp.loop ( actorNo forwardTask -- )
 
   "cp.loop" task.this task.comment!
 
@@ -19,7 +19,7 @@ tp: coordinator
   >r ( actorNo )
   >r ( )
   // r0 has actorNo (nodeNo)
-  // r1 has forwardQueue
+  // r1 has forwardTask
 
   //"CP " r1 >str concat .
   begin
@@ -31,7 +31,7 @@ tp: coordinator
 
     addCaller ( << <<call*>> <<caller>> >> )
 
-    r1 >queue> ( ... )
+    r1 >taskQueue> ( ... )
 
     addNotifyPp
 

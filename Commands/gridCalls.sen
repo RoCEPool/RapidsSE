@@ -27,14 +27,14 @@
 
     "p" I >str concat :actor
     dup actor.queue I pQueues !
-    dup actor.task  I ptasks  !
+    dup actor.task  I pTasks  !
     actor.spawn
 
     //
     // coordinator proxy for node I
     //
 
-    I I pQueues @ 2 "cp.loop"
+    I I pTasks @ 2 "cp.loop"
     "cp" I >str concat :actor
     dup actor.queue I cpQueues !
     dup actor.task  I cpTasks  !
