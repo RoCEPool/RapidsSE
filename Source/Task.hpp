@@ -23,25 +23,27 @@ namespace Tasks
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
-  /* 1 */ TS_RUNNING,
-  /* 2 */ TS_YIELD,
-  /* 3 */ TS_WAITING,
-  /* 4 */ TS_SLEEPING,
-  /* 5 */ TS_BLOCKED,
-  /* 6 */ TS_EXITED,
-  /* 7 */ TS_ENUMS
+  /* 1 */ TS_BLOCKED,   // task is blocked by another transaction
+  /* 2 */ TS_EXITED,    // task has completed
+  /* 3 */ TS_RUNNING,   // task is currenty being executed by Thread::vLoop
+  /* 4 */ TS_SLEEPING,  // task is sleeping (not yet used)
+  /* 5 */ TS_SUSPENDED, // task is suspended pending inter-task activity
+  /* 6 */ TS_WAITING,   // task is waiting on queue arrival
+  /* 7 */ TS_YIELDED,   // task is yeilded, not running and is in a TaskSet
+  /* 8 */ TS_ENUMS
   };
   
   static const char* const pTS[]
   {
     /* 0 */ "NONE",
-    /* 1 */ "RUNNING",
-    /* 2 */ "YIELD",
-    /* 3 */ "WAITING",
+    /* 1 */ "BLOCKED",
+    /* 2 */ "EXITED",
+    /* 3 */ "RUNNING",
     /* 4 */ "SLEEPING",
-    /* 5 */ "BLOCKED",
-    /* 6 */ "EXITED",
-    /* 7 */ "ENUMS",
+    /* 5 */ "SUSPENDED",
+    /* 6 */ "WAITING",
+    /* 7 */ "YIELDED",
+    /* 8 */ "ENUMS",
   };
   
   typedef NP<Task,CN_TASK> NP_Task;

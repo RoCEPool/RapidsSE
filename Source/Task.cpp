@@ -562,12 +562,13 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("SIZEOF_S16K",              sizeof(s8K));
 
   /*  0 */ vAddConstant("TS_NONE",                  TS_NONE);
-  /*  1 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
-  /*  2 */ vAddConstant("TS_YIELD",                 TS_YIELD);
-  /*  3 */ vAddConstant("TS_WAITING",               TS_WAITING);
-  /*  5 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
-  /*  6 */ vAddConstant("TS_BLOCKED",               TS_BLOCKED);
-  /*  7 */ vAddConstant("TS_EXITED",                TS_EXITED);
+  /*  1 */ vAddConstant("TS_BLOCKED",               TS_BLOCKED);
+  /*  2 */ vAddConstant("TS_EXITED",                TS_EXITED);
+  /*  3 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
+  /*  4 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
+  /*  5 */ vAddConstant("TS_SUSPENDED",             TS_SUSPENDED);
+  /*  6 */ vAddConstant("TS_WAITING",               TS_WAITING);
+  /*  7 */ vAddConstant("TS_YIELDED",               TS_YIELDED);
   /*  8 */ vAddConstant("TS_ENUMS",                 TS_ENUMS);
 
   /*  0 */ vAddConstant("TP_NONE",                  TP_NONE);
@@ -1889,7 +1890,7 @@ void Task::vSeedWord(const char* aLambda)
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
-  m_eState = TS_YIELD;
+  m_eState = TS_YIELDED;
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -1912,7 +1913,7 @@ void Task::vSeedDocol(void)
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
-  m_eState = TS_YIELD;
+  m_eState = TS_YIELDED;
   
   m_xParamStack.vReset();
   m_xReturnStack.vReset();
@@ -11063,7 +11064,7 @@ void Task::vTaskSignal(NNP_Task nnpTask)
              pThatTask->m_sName.a(),
              *pThatTask->m_zAcks);
     
-    while (TS_WAITING != pThatTask->m_eState)
+    while (TS_SUSPENDED != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
     
     //Thread* pThread = Thread::pThread();
@@ -11193,7 +11194,7 @@ void Task::vTaskSuspend(NNP_Task nnpTask)
            nnpTask->m_sComment.a()
            );
   
-  nnpTask->vState(TS_WAITING);
+  nnpTask->vState(TS_SUSPENDED);
   
   EXIT();
 }
@@ -11294,7 +11295,7 @@ void Task::vTaskYield(NNP_Task nnpTask)
 {
   ENTRY("vTaskYield");
   
-  nnpTask->vState(TS_YIELD);
+  nnpTask->vState(TS_YIELDED);
   
   EXIT();
 }

@@ -169,8 +169,8 @@ tp: resultAsValset
     reg0 ( valset caller )
     task.state@ ( valset state )
 
-    // test if its waiting
-    TS_WAITING == ( valset true|false )
+    // test if its suspended
+    TS_SUSPENDED == ( valset true|false )
   until
 */
 
