@@ -424,7 +424,7 @@ void Task::vAddConstants(void)
   
   /*  0 */ vAddConstant("EC_NONE",                  EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT",                EC_ASSERT);
-  /*    */ vAddConstant("EC_BEGIN_TX_FAILED",       EC_BEGIN_TRANSACTION_FAILED);
+  /*    */ vAddConstant("EC_BEGIN_TX_FAILED",       EC_BEGIN_TX_FAILED);
   /*  2 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
 
   /*  3 */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
