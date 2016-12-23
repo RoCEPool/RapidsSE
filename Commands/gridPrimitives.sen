@@ -8,11 +8,14 @@
 /* lock and queue arrays                                                      */
 /*----------------------------------------------------------------------------*/
 args.nodes ptrArray: ppTasks
+args.nodes ptrArray: cpTasks
+args.nodes ptrArray: pTasks
+args.nodes ptrArray: senderTasks
+
 args.nodes ptrArray: ppQueues
 args.nodes ptrArray: cpQueues
 args.nodes ptrArray: pQueues
-
-args.nodes ptrArray: senderQueue
+args.nodes ptrArray: senderQueues
 
 /*----------------------------------------------------------------------------*/
 /* dump the ppQueues array                                                    */
@@ -54,22 +57,30 @@ args.nodes ptrArray: senderQueue
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dump the senderQueue array                                                 */
+/* dump the senderQueues array                                                */
 /*----------------------------------------------------------------------------*/
 : senderQDump
 
   "{ " .put
   args.nodes 0 do
-    I senderQueue tp: @ .put " " .put
+    I senderQueues tp: @ .put " " .put
   loop
 
   "}" .put .\n
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop indirect valset from this tasks queue (this is a blocking call)        */
+/* append value onto given queu                                               */
 /*----------------------------------------------------------------------------*/
-: queue> ( -- valset )
+: >queue ( value queue -- )
+
+  queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* pop value from this tasks queue (this is a blocking call)                  */
+/*----------------------------------------------------------------------------*/
+: queue> ( -- value )
 
 tp: waitNextValset
 
@@ -96,10 +107,10 @@ tp: poppedValset
 : >node ( valSet i )
 
   // put in the senderQueue of sender
-  senderQueue @   ( valset Q )
+  senderQueues @   ( valset Q )
 
   tp: sendingViaQueue
-  queue.append
+  >queue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -279,7 +290,7 @@ tp: passingOnToCp
 : passOnToCp
 
   cpQueues @
-  queue.append
+  >queue
 
   true
 ;
@@ -326,7 +337,7 @@ tp: removedCaller
 tp: require1Ack
 
   // append indirect call onto queue
-  queue.append ( )
+  >queue ( )
 
   // this task suspends till notified. will have indirect result
   task.suspend ( )

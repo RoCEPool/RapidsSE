@@ -45,7 +45,7 @@ tp: participantProxy
       // append indirect call onto p.queue
       r1 ( valset queue )
 
-      queue.append ( )
+      >queue ( )
 
     else
       // this is pp1 on node 0

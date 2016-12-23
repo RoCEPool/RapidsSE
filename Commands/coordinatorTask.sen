@@ -63,7 +63,7 @@ tp: acksExpected
     I ppQueues @
 
 tp: sendingToPP
-    queue.append
+    >queue
 
   loop
 
@@ -132,7 +132,7 @@ tp: expectingAcks
 tp: forwardingToPP
 
     // forward << <<!>> <<caller>> >> to ppQueue[node#]
-    queue.append
+    >queue
 
     // suspend here
     task.suspend
@@ -227,7 +227,7 @@ tp: expectingAcks
 tp: forwardingToPP
 
   // forward << <<!>> <<caller>> >> to ppQueue[node#]
-  queue.append
+  >queue
 
   // suspend here
   task.suspend

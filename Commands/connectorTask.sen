@@ -31,7 +31,7 @@ tp: connectorStart
   args.nodes 0 do
 
     I args.node == if
-      nullptr I senderQueue !
+      nullptr I senderQueues !
 
     else
 
@@ -59,7 +59,7 @@ ddlLock.grabWrite
 
       // record the senderQueue
       dup actor.queue ( socket 1 "snd.loop" "srI" queue )
-      I senderQueue ! ( socket 1 "snd.loop" "srI" )
+      I senderQueues ! ( socket 1 "snd.loop" "srI" )
 
       // spawn the actors os thread
       actor.spawn
