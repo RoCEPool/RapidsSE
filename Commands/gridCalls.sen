@@ -45,18 +45,15 @@
     //
 
     I args.node == if
-      I I pQueues  @ 2 "pp.loop"
-      "pp" I >str concat :actor
-      dup actor.queue I ppQueues !
-      dup actor.task  I ppTasks  !
-      actor.spawn
+      I I pTasks  @ 2 "pp.loop"
     else
-      I I cpQueues @ 2 "pp.loop"
-      "pp" I >str concat :actor
-      dup actor.queue I ppQueues !
-      dup actor.Task  I ppTasks  !
-      actor.spawn
+      I I cpTasks @ 2 "pp.loop"
     then
+
+    "pp" I >str concat :actor
+    dup actor.queue I ppQueues !
+    dup actor.Task  I ppTasks  !
+    actor.spawn
 
   loop
 

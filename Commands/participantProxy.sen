@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* participant proxy processing loop                                          */
 /*----------------------------------------------------------------------------*/
-: pp.loop ( actorNo forwardQueue -- ) //! pp.loop & cp.loop
+: pp.loop ( actorNo forwardTask -- )
 
   "pp.loop" task.this task.comment!
 
@@ -19,7 +19,7 @@ tp: participantProxy
   >r ( actorNo )
   >r ( )
   // r0 has actorNo (nodeNo)
-  // r1 has forwardQueue
+  // r1 has forwardTask
 
   task.this r0 ppTasks !
 
@@ -42,10 +42,10 @@ tp: participantProxy
 
       addCaller
 
-      // append indirect call onto p.queue
-      r1 ( valset queue )
+      // append indirect call onto queue of p.task
+      r1 ( valset task )
 
-      >queue ( )
+      >taskQueue ( )
 
     else
       // this is pp1 on node 0
