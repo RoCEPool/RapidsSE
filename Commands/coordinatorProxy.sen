@@ -20,7 +20,6 @@ tp: coordinator
   >r ( )
   // r0 has actorNo (nodeNo)
   // r1 has forwardQueue
-  //! r2 has the originating node
 
   //"CP " r1 >str concat .
   begin
