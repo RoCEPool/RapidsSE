@@ -70,9 +70,19 @@ args.nodes ptrArray: senderQueues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append value onto given queu                                               */
+/* append value onto given queue                                              */
 /*----------------------------------------------------------------------------*/
 : >queue ( value queue -- )
+
+  queue.append
+;
+
+/*----------------------------------------------------------------------------*/
+/* append value onto queue of given task                                      */
+/*----------------------------------------------------------------------------*/
+: >taskQueue ( value task -- )
+
+  task.queue@
 
   queue.append
 ;
