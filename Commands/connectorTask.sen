@@ -31,7 +31,9 @@ tp: connectorStart
   args.nodes 0 do
 
     I args.node == if
+
       nullptr I senderQueues !
+      nullptr I senderTasks  !
 
     else
 
@@ -58,8 +60,8 @@ ddlLock.grabWrite
       "sr" I >str concat :actor ( socket 1 "snd.loop" "srI" )
 
       // record the senderQueue
-      dup actor.queue ( socket 1 "snd.loop" "srI" queue )
-      I senderQueues ! ( socket 1 "snd.loop" "srI" )
+      dup actor.queue I senderQueues ! ( socket 1 "snd.loop" "srI" )
+      dup actor.task  I senderTasks  ! ( socket 1 "snd.loop" "srI" )
 
       // spawn the actors os thread
       actor.spawn

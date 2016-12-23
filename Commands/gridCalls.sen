@@ -27,6 +27,7 @@
 
     "p" I >str concat :actor
     dup actor.queue I pQueues !
+    dup actor.task  I ptasks  !
     actor.spawn
 
     //
@@ -36,6 +37,7 @@
     I I pQueues @ 2 "cp.loop"
     "cp" I >str concat :actor
     dup actor.queue I cpQueues !
+    dup actor.task  I cpTasks  !
     actor.spawn
 
     //
@@ -46,11 +48,13 @@
       I I pQueues  @ 2 "pp.loop"
       "pp" I >str concat :actor
       dup actor.queue I ppQueues !
+      dup actor.task  I ppTasks  !
       actor.spawn
     else
       I I cpQueues @ 2 "pp.loop"
       "pp" I >str concat :actor
       dup actor.queue I ppQueues !
+      dup actor.Task  I ppTasks  !
       actor.spawn
     then
 
