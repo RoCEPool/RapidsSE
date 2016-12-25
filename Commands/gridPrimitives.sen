@@ -70,14 +70,6 @@ args.nodes ptrArray: senderQueues
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append value onto given queue                                              */
-/*----------------------------------------------------------------------------*/
-: >queue ( value queue -- )
-
-  queue.append
-;
-
-/*----------------------------------------------------------------------------*/
 /* append value onto queue of given task                                      */
 /*----------------------------------------------------------------------------*/
 : >taskQueue ( value task -- )
@@ -109,6 +101,30 @@ tp: waitNextValset
   until
 
 tp: poppedValset
+;
+
+/*----------------------------------------------------------------------------*/
+/* append indirect call onto queue of given task, suspend, move from a to p   */
+/*----------------------------------------------------------------------------*/
+: >taskQueue;a> ( <<call*>> queue -- <<result>> )
+
+  // set this task to wait for 1 ack
+  1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
+
+tp: require1Ack
+
+  // append indirect call onto queue
+  >taskQueue ( )
+
+  // this task suspends till notified. will have indirect result
+  task.suspend ( )
+
+tp: resumed
+
+  // move from aux to parameter stack
+  a> ( <<result>> )
+
+tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -348,30 +364,6 @@ tp: removingCaller
   drop
 
 tp: removedCaller
-;
-
-/*----------------------------------------------------------------------------*/
-/* append indirect call onto queue of given task, suspend, move from a to p   */
-/*----------------------------------------------------------------------------*/
-: >taskQueue;a> ( <<call*>> queue -- <<result>> )
-
-  // set this task to wait for 1 ack
-  1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
-
-tp: require1Ack
-
-  // append indirect call onto queue
-  >taskQueue ( )
-
-  // this task suspends till notified. will have indirect result
-  task.suspend ( )
-
-tp: resumed
-
-  // move from aux to parameter stack
-  a> ( <<result>> )
-
-tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/

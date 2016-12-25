@@ -65,7 +65,7 @@ thread:  requestThread
 
   >valset
 
-  "rspque" find execute >queue
+  "rspque" find execute queue.append
 
   0 task.this task.seitf!
 ;
