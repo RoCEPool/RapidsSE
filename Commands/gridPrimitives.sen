@@ -112,15 +112,17 @@ tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* send on a socket                                                           */
+/* put indirect call onto queue of sender                                     */
 /*----------------------------------------------------------------------------*/
-: >node ( valSet i )
+: >node ( valset senderNo -- )
 
-  // put in the senderQueue of sender
-  senderQueues @   ( valset Q )
+  // get sender task
+  senderTasks @ ( valset task )
 
-  tp: sendingViaQueue
-  >queue
+tp: sendingViaQueue
+
+  // enqueue valset onto queue of task
+  >taskQueue
 ;
 
 /*----------------------------------------------------------------------------*/
