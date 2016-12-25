@@ -142,6 +142,30 @@ tp: sendingViaQueue
 ;
 
 /*----------------------------------------------------------------------------*/
+/* put indirect call onto queue of sender, suspend, move from a to p          */
+/*----------------------------------------------------------------------------*/
+: >node;a> ( valset senderNo -- )
+
+  // get sender task
+  senderTasks @ ( valset task )
+
+tp: sendingViaQueue
+
+  // enqueue valset onto queue of task
+  >taskQueue
+
+  // this task suspends till notified. will have indirect result
+  task.suspend ( )
+
+tp: resumed
+
+  // move from aux to parameter stack
+  a> ( <<result>> )
+
+tp: haveResultSet
+;
+
+/*----------------------------------------------------------------------------*/
 /* set the calling task                                                       */
 /*----------------------------------------------------------------------------*/
 : setCaller ( caller -- ; reg0 == caller )

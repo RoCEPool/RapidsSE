@@ -42,25 +42,16 @@ tp: participantProxy
 
       addCaller
 
-      // append indirect call onto queue of p.task
-      r1 ( valset task )
-
-      >taskQueue;a>
+      r1 >taskQueue;a>
 
     else
       // this is pp1 on node 0
 
       addSender
+
       r0 addPassOnToCp
 
-      // send to node 1 by appending to snd1.queue
-      r0 >node
-
-      // this task suspends till notified
-      task.suspend
-
-      // move valset to parameter stack
-      a> ( valset )
+      r0 >node;a>
 
     then
 
