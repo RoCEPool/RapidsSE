@@ -42,6 +42,16 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* put indirect call into participant proxy queue                             */
+/*----------------------------------------------------------------------------*/
+: enqueuePP ( indirect targetNodeNo -- )
+
+  ppTasks @
+
+  >taskQueue
+;
+
+/*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
 : >participantsPARALLEL> // parallel form

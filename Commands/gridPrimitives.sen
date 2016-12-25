@@ -4,8 +4,11 @@
 
 "gridPrimitives.sen" .putVerbose
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
-/* lock and queue arrays                                                      */
+/* task and queue arrays                                                      */
 /*----------------------------------------------------------------------------*/
 args.nodes ptrArray: ppTasks
 args.nodes ptrArray: cpTasks
@@ -69,6 +72,9 @@ args.nodes ptrArray: senderQueues
   "}" .put .\n
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 /*----------------------------------------------------------------------------*/
 /* append value onto queue of given task                                      */
 /*----------------------------------------------------------------------------*/
@@ -77,30 +83,6 @@ args.nodes ptrArray: senderQueues
   task.queue@
 
   queue.append
-;
-
-/*----------------------------------------------------------------------------*/
-/* pop value from this tasks queue (this is a blocking call)                  */
-/*----------------------------------------------------------------------------*/
-: queue> ( -- value )
-
-tp: waitNextValset
-
-  begin
-
-    // attempt to pop value off the tasks queue
-    task.this task.queue@ queue.pop ( value | false )
-
-    // test for value
-    dup not if
-      task.yield
-      args.sleep thread.sleep_ms
-    then
-
-    ( value | false )
-  until
-
-tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,6 +148,51 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
+/* pop value from this tasks queue (this is a blocking call)                  */
+/*----------------------------------------------------------------------------*/
+: queue> ( -- value )
+
+tp: waitNextValset
+
+  begin
+
+    // attempt to pop value off the tasks queue
+    task.this task.queue@ queue.pop ( value | false )
+
+    // test for value
+    dup not if
+      task.yield
+      args.sleep thread.sleep_ms
+    then
+
+  ( value | false )
+  until
+
+tp: poppedValset
+;
+
+/*----------------------------------------------------------------------------*/
+/* push valset onto callers aux stack and signal caller                       */
+/*----------------------------------------------------------------------------*/
+: >caller ( valset -- )
+
+tp: caller
+
+  // transfer to callers stack
+  reg0 ( valset caller )
+
+  tp: ontoCallerStack
+  >auxStack ( )
+
+  // signal caller
+  reg0 ( caller )
+  task.signal ( )
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* set the calling task                                                       */
 /*----------------------------------------------------------------------------*/
 : setCaller ( caller -- ; reg0 == caller )
@@ -188,14 +215,45 @@ tp: reg1HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
+/* pass indirect call to coordinator proxy                                    */
+/*----------------------------------------------------------------------------*/
+: passOnToCp
+
+  cpTasks @
+
+  >taskQueue
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* notifyPp                                                                   */
+/*----------------------------------------------------------------------------*/
+: notifyPp
+
+  reg.push
+  ppTasks @
+  >reg0
+  >caller
+  reg.pop
+
+  true
+;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* execute indirect call on the stack                                         */
 /*----------------------------------------------------------------------------*/
 : !indirect ( ... wordName -- ... )
 
 tp: executing...
+
   // find the word in dic stack
   find ( word )
                                                           //! WHAT IF NOT FOUND?
+
   // execute it
   execute ( ... )
 ;
@@ -217,38 +275,54 @@ tp: resultAsValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push valset onto callers aux stack and signal caller                       */
+/* expand valset and execute indirect call                                    */
 /*----------------------------------------------------------------------------*/
-: >caller ( valset -- )
+: exeOne ( <<call*>> -- true )
 
-  // loop until caller is in the waiting state
-  // otherwise transfering to that stack will corrupt the
-  // tasks execution
+  valset> ( ... wordName nValues )
 
-/*
+  drop ( ... wordName )
+
+  tp: callSetUp
+
+  !indirect ( bool )
+
+  assert
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute all nested valsets                                                 */
+/*----------------------------------------------------------------------------*/
+: exeAll ( ... valset -- x )
+
+tp: exeAll
+
+  // we exect at least one indirect
+  CN_VALSET isType not if assert then
+
+  // execute first indirect
+  exeOne assert
+
+  // execute all other indirects
   begin
 
-    // get the callers state
-    reg0 ( valset caller )
-    task.state@ ( valset state )
+    // no more to execute?
+    CN_VALSET isType not
+    if
+      // return true
+      true exit
+    then
 
-    // test if its suspended
-    TS_SUSPENDED == ( valset true|false )
-  until
-*/
+  // execute next indirect
+  exeOne assert
 
-tp: caller
-
-  // transfer to callers stack
-  reg0 ( valset caller )
-
-tp: ontoCallerStack
-  >auxStack ( )
-
-  // signal caller
-  reg0 ( caller )
-  task.signal ( )
+  0 until
 ;
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* add set dic path                                                           */
@@ -334,60 +408,6 @@ tp: passingOnToCp
   tp: notifyingPp
 
   $$>valset
-;
-
-/*----------------------------------------------------------------------------*/
-/* pass indirect call to coordinator proxy                                    */
-/*----------------------------------------------------------------------------*/
-: passOnToCp
-
-  cpTasks @
-
-  >taskQueue
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* put indirect call into participant proxy queue                             */
-/*----------------------------------------------------------------------------*/
-: enqueuePP ( indirect targetNodeNo -- )
-
-  ppTasks @
-
-  >taskQueue
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* notifyPp                                                                   */
-/*----------------------------------------------------------------------------*/
-: notifyPp
-
-  reg.push
-  ppTasks @
-  >reg0
-  >caller
-  reg.pop
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove caller                                                              */
-/*----------------------------------------------------------------------------*/
-: removeCaller
-
-  valset>
-tp: removingCaller
-
-  3 == assert
-
-  "setCaller" streql assert
-
-  drop
-
-tp: removedCaller
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -503,53 +523,7 @@ tp: removedCaller
   reg.pop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* expand valset and execute indirect call                                    */
-/*----------------------------------------------------------------------------*/
-: exeOne ( <<call*>> -- true )
-
-  valset> ( ... wordName nValues )
-
-  drop ( ... wordName )
-
-tp: callSetUp
-
-  !indirect ( bool )
-
-  assert
-
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute all nested valsets                                                 */
-/*----------------------------------------------------------------------------*/
-: exeAll ( ... valset -- x )
-
-tp: exeAll
-
-  // we exect at least one indirect
-  CN_VALSET isType not if assert then
-
-  // execute first indirect
-exeOne assert
-
-  // execute all other indirects
-  begin
-
-    // no more to execute?
-    CN_VALSET isType not
-    if
-      // return true
-      true exit
-    then
-
-    // execute next indirect
-    exeOne assert
-
-  0 until
-;
-
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
