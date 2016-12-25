@@ -89,8 +89,8 @@ tp: >coordinator>
   addCaller ( << <<call*>> <<caller>> >> )
 */
 
-  // target queue is c.queue
-  c.queue >queue;a> ( <<result>> )
+  // target actor is coordinator
+  c.task >taskQueue;a> ( <<result>> )
 
 tp: resumedbyCoord
 

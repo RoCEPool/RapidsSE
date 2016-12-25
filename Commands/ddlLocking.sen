@@ -35,19 +35,19 @@ args.nodes intArray: ddlInts
   == ( ... #values actorNo true|false )
   if ( ... #values actorNo )
 
-    // queue will be the participant for this node
-    pQueues @ ( ... #values pQueue )
+    // actor will be the participant for this node
+    pTasks @ ( ... #values pTask )
 
   else
 
-    // queue will be participant proxy for other node
-    ppQueues @ ( ... #values ppQueue )
+    // actor will be participant proxy for other node
+    ppTasks @ ( ... #values ppTask )
 
   then
 
 
-  // transfer to another actors queue and wait for result
-  >queue;a> ( ..result.. )
+  // transfer to another actors and wait for result
+  >taskQueue;a> ( ..result.. )
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -351,9 +351,9 @@ tp: removedCaller
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append indirect call onto given queue, suspend for notification            */
+/* append indirect call onto queue of given task, suspend, move from a to p   */
 /*----------------------------------------------------------------------------*/
-: >queue;a> ( <<call*>> queue -- <<result>> )
+: >taskQueue;a> ( <<call*>> queue -- <<result>> )
 
   // set this task to wait for 1 ack
   1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
@@ -361,7 +361,7 @@ tp: removedCaller
 tp: require1Ack
 
   // append indirect call onto queue
-  >queue ( )
+  >taskQueue ( )
 
   // this task suspends till notified. will have indirect result
   task.suspend ( )
