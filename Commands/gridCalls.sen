@@ -90,7 +90,7 @@ tp: >coordinator>
 */
 
   // target queue is c.queue
-  c.queue >queue> ( <<result>> )
+  c.queue >queue;a> ( <<result>> )
 
 tp: resumedbyCoord
 

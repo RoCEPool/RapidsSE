@@ -353,7 +353,7 @@ tp: removedCaller
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto given queue, suspend for notification            */
 /*----------------------------------------------------------------------------*/
-: >queue> ( <<call*>> queue -- <<result>> )
+: >queue;a> ( <<call*>> queue -- <<result>> )
 
   // set this task to wait for 1 ack
   1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
