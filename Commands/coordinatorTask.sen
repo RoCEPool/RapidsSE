@@ -60,10 +60,10 @@ tp: acksExpected
 
     valset>
 
-    I ppQueues @
+    I ppTasks @
 
 tp: sendingToPP
-    >queue
+    >taskQueue
 
   loop
 
@@ -126,13 +126,13 @@ tp: expectingAcks
     // get copy of nested valset << <<!>> <<caller>> >> from rstack
     2 rpick
 
-    // get ppQueue[node#]
-    I ppQueues @
+    // get ppTasks[node#]
+    I ppTasks @
 
 tp: forwardingToPP
 
     // forward << <<!>> <<caller>> >> to ppQueue[node#]
-    >queue
+    >taskQueue
 
     // suspend here
     task.suspend
@@ -221,13 +221,13 @@ tp: >participant>
 
 tp: expectingAcks
 
-  // using participant# on rstack get ppQueue
-  r> ppQueues @
+  // using participant# on rstack get ppTask
+  r> ppTasks @
 
 tp: forwardingToPP
 
   // forward << <<!>> <<caller>> >> to ppQueue[node#]
-  >queue
+  >taskQueue
 
   // suspend here
   task.suspend
