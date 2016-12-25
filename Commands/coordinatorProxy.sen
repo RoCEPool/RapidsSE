@@ -31,7 +31,7 @@ tp: coordinator
 
     addCaller ( << <<call*>> <<caller>> >> )
 
-    r1 >taskQueue> ( ... )
+    r1 >taskQueue;a> ( ... )
 
     addNotifyPp
 

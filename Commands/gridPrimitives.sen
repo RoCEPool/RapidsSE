@@ -375,30 +375,6 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append indirect call onto queue of given task, suspend for notification    */
-/*----------------------------------------------------------------------------*/
-: >taskQueue> ( <<call*>> task -- <<result>> )
-
-  // set this task to wait for 1 ack
-  1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
-
-  tp: require1Ack
-
-  // append indirect call onto queue
-  >taskQueue ( )
-
-  // this task suspends till notified. will have indirect result
-  task.suspend ( )
-
-  tp: resumed
-
-  // move from aux to parameter stack
-  a> ( <<result>> )
-
-  tp: haveResultSet
-;
-
-/*----------------------------------------------------------------------------*/
 /* interlinkParts                                                             */
 /*----------------------------------------------------------------------------*/
 : interlinkParts ( -- )
