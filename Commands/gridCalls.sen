@@ -98,6 +98,41 @@ tp: resumedbyCoord
 ;
 
 /*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to participant on a node to execute  */
+/*----------------------------------------------------------------------------*/
+: >>participant> ( <<call>> nodeNo -- bool )
+
+  // a) we are in loader sub task
+  // b) indirect call on stack is to be executed by participant on given nodeNo
+
+  tp: >>participant>
+
+  // assert we are in loader subtask
+  task.this task.name@ 2 0 substr "sl" streql assert
+
+  // save the node number
+  >r
+
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
+
+  // add indirect call to participant on given node
+  r> addSendParticipant ( <<call>> )
+
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
+
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
+
+  // we should have a true result
+  //assert
+
+  // return true
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* get coordinator to send indirect call to each participant to execute       */
 /*----------------------------------------------------------------------------*/
 : >>participants> ( <<$$>> -- bool )
@@ -131,41 +166,6 @@ tp: >>participants>
 
   // return true
   //true
-;
-
-/*----------------------------------------------------------------------------*/
-/* get coordinator to send indirect call to participant on a node to execute  */
-/*----------------------------------------------------------------------------*/
-: >>participant> ( <<call>> nodeNo -- bool )
-
-  // a) we are in loader sub task
-  // b) indirect call on stack is to be executed by participant on given nodeNo
-
-tp: >>participant>
-
-  // assert we are in loader subtask
-  task.this task.name@ 2 0 substr "sl" streql assert
-
-  // save the node number
-  >r
-
-  // add call to setDicPath to be same as this req.task (run by participant)
-  addSetDicPath ( <<call>> )
-
-  // add indirect call to participant on given node
-  r> addSendParticipant ( <<call>> )
-
-  // add call to setCaller (to be run by coordinator)
-  addSetCaller ( <<call>> )
-
-  // queue on coordinator (which waits for a indirect result)
-  >coordinator> ( bool )
-
-  // we should have a true result
-  //assert
-
-  // return true
-  true
 ;
 
 /*============================================================================*/

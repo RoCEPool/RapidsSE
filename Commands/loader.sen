@@ -94,7 +94,7 @@ tp: ~loadAppendBuffer
 
   // what:
   //   we need to have the coordinator send the loadAppendBuffer$ indirect call
-  //   to the participant via a >participant> call
+  //   to the participant via a sendParticipant call
 
   task.this task.thread thread.name@ 13 0 substr "generalThread" streql assert
   task.parent@ task.name@ "req.task" streql assert
@@ -116,7 +116,7 @@ tp: theIndirectCall
 
   //
   // b) <<loadAppendBuffer$>> to be forwarded to one participant
-  //    via >participant> in the coordinatoor
+  //    via sendParticipant in the coordinatoor
   //
 
   // to which node/participant

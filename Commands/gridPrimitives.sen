@@ -374,7 +374,7 @@ tp: exeAll
 /*----------------------------------------------------------------------------*/
 : addSendParticipant ( valset node -- valset )
 
-  ">participant>" ( valset node ">participant>" )
+  "sendParticipant" ( valset node "sendParticipant" )
 
 tp: addingSendP
 

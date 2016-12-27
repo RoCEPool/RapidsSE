@@ -208,7 +208,7 @@ tp: alldone
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to a given participant to execute          */
 /*----------------------------------------------------------------------------*/
-: >participant> ( <<!>> participant# -- true )
+: sendParticipant ( <<!>> participant# -- true )
 
   // a) in coordinator (on the originating node)
   // b) the caller of the coordinator is in reg0 (would be req.task)
@@ -216,7 +216,7 @@ tp: alldone
   //    that valset contains one or more indirect calls
 
 tp: "- - - - - - - - - "
-tp: >participant>
+tp: sendParticipant
 
   // save participant# onto rstack
   >r
