@@ -51,7 +51,7 @@ tp: participantProxy
 
       r0 addPassOnToCp
 
-      r0 >node;a>
+      r0 >sndQueue;a>
 
     then
 

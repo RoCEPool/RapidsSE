@@ -37,7 +37,7 @@ tp: coordinator
     addPassBackToPP
 
     reg1                                                           //! NOT RIGHT
-    >node
+    >sndQueue
 
   0 until
 

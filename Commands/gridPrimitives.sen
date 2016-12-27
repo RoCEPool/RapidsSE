@@ -128,7 +128,7 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* put indirect call onto queue of sender                                     */
 /*----------------------------------------------------------------------------*/
-: >node ( <<call>> nodeNo -- )
+: >sndQueue ( <<call>> nodeNo -- )
 
   // get sender task
   senderTasks @ ( <<call>> task )
@@ -142,7 +142,7 @@ tp: sendingViaTask
 /*----------------------------------------------------------------------------*/
 /* put indirect call onto queue of sender, suspend, move from a to p          */
 /*----------------------------------------------------------------------------*/
-: >node;a> ( <<call>> nodeNo -- )
+: >sndQueue;a> ( <<call>> nodeNo -- )
 
   // get sender task
   senderTasks @ ( <<call>> task )
