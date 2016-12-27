@@ -187,10 +187,9 @@ tp: grabbingMutex
 
   getState TS_RUNNING == assert
 
-  popQueue ( value | false )
+  popQueue ( value true | false )
 
-  dup not if
-    drop
+  not if
 
     TS_WAITING setState
 tp: nowWaiting
@@ -202,8 +201,6 @@ tp: nowRunning
 
     popQueue assert
 
-  else
-    drop
   then
 
 tp: droppingMutex

@@ -43,16 +43,14 @@ tp: waitNextValset
   begin
 
     // attempt to pop value off the tasks queue
-    task.this task.queue@ queue.pop ( value | false )
+    task.this task.queue@ queue.pop ( value true | false )
 
-    // test for value
-    dup not if
+    // try again of no value
+    not while
       task.yield
       args.sleep thread.sleep_ms
-    then
 
-  ( value | false )
-  until
+  repeat
 
 tp: poppedValset
 ;
