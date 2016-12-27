@@ -29,7 +29,7 @@ tp: coordinator
     // pop valset off queue and push onto this stack
     taskQueue> ( valset )
 
-    addCaller ( << <<call*>> <<caller>> >> )
+    addSetCaller ( << <<call*>> <<caller>> >> )
 
     r1 >taskQueue;a> ( ... )
 

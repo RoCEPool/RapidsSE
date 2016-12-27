@@ -27,7 +27,7 @@ args.nodes intArray: ddlInts
 /*----------------------------------------------------------------------------*/
 : dispatch ( ... #values actorNo -- ..result.. )
 
-  addCaller ( << <<call*>> <<caller>> >> )
+  addSetCaller ( << <<call*>> <<caller>> >> )
 
   // determine which queue to forward to
   dup ( ... #values actorNo actorNo )
@@ -188,7 +188,7 @@ args.nodes intArray: ddlInts
   // coordinate grab of dist ddl lock
   "grabDistDDL" 1  ( "grabDistDdl" 1 )
 
-  addCaller
+  addSetCaller
   >coordinator>     ( true|false )
   .
 
@@ -196,7 +196,7 @@ args.nodes intArray: ddlInts
 
   // coordinate drop of dist ddl lock
   "dropDistDDL" 1 ( "dropDistDdl" 1 )
-  addCaller
+  addSetCaller
   >coordinator>      ( true|false )
   .
 

@@ -408,9 +408,9 @@ tp: addedParticipants
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add set caller                                                             */
+/* add set caller onto indirect call valset                                   */
 /*----------------------------------------------------------------------------*/
-: addCaller ( valset -- valset )
+: addSetCaller ( valset -- valset )
 
   task.this "setCaller"
 
@@ -420,9 +420,9 @@ tp: addedSetCaller
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add set sender                                                             */
+/* add set sender onto indirect call valset                                   */
 /*----------------------------------------------------------------------------*/
-: addSender ( valset -- valset )
+: addSetSender ( valset -- valset )
 
   args.node "setSender"
 

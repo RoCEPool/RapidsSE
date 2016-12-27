@@ -86,7 +86,7 @@ tp: >coordinator>
 /*
   // could be task such as req.task or ld#.task
 
-  addCaller ( << <<call*>> <<caller>> >> )
+  addSetCaller ( << <<call*>> <<caller>> >> )
 */
 
   // target actor is coordinator
@@ -115,7 +115,7 @@ tp: >>participants>
   // add indirect call to participants
   addParticipants ( << <<$$>> <<dicStack!>> <<>participants>>> >> )
 
-  addCaller
+  addSetCaller
 
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
@@ -154,7 +154,7 @@ tp: >>participant>
   // add indirect call to participant on given node
   r> addParticipant ( << <<$$>> <<dicStack!>> <<>participant>>> >> )
 
-  addCaller
+  addSetCaller
 
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )

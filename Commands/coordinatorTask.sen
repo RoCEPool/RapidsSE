@@ -119,7 +119,7 @@ int: finalResult
 tp: >participants>
 
   // layer this task as caller into nested valset << <<!>> <<caller>> >>
-  addCaller
+  addSetCaller
 
   // move nested valset to rstack (this gives a reusable copy)
   >r
@@ -222,7 +222,7 @@ tp: >participant>
   >r
 
   // layer this task as caller into nested valset << <<!>> <<caller>> >>
-  addCaller
+  addSetCaller
 
   // set ack of 1
   1 task.this task.acks!

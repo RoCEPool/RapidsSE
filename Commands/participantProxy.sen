@@ -40,14 +40,14 @@ tp: participantProxy
     if
       // this is pp0 on node 0
 
-      addCaller
+      addSetCaller
 
       r1 >taskQueue;a>
 
     else
       // this is pp1 on node 0
 
-      addSender
+      addSetSender
 
       r0 addPassOnToCp
 
