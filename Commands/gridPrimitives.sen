@@ -76,9 +76,18 @@ args.nodes ptrArray: senderQueues
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append value onto queue of given task and signal if needed                 */
+: grabMutex task.this task.thread thread.mutexLock ;
+: dropMutex task.this task.thread thread.mutexUnlock ;
+: getState  task.this task.state@ ;
+: setState  task.this task.state! ;
+: setAcks   task.this task.acks! ;
+: popQueue  task.this task.queue@ queue.pop ;
+: waitCond  task.this task.thread thread.condWait ;
+
 /*----------------------------------------------------------------------------*/
-: >taskQueue ( value task -- )
+/* append valset onto queue of given task and signal if needed                */
+/*----------------------------------------------------------------------------*/
+: >taskQueue ( valset task -- )
 
 tp: >taskQueue
 
@@ -88,15 +97,22 @@ tp: >taskQueue
   // r0 has thread
   // r1 has task
 
+  // grab the mutex of target task
   r0 thread.mutexLock
 
+  // append valset onto queue of given task
   r1 task.queue@ queue.append
 
-  r1 task.state@ TS_RUNNING == not
-  if r0 thread.condSignal then
+  // signal the target task if it is waiting for a queued valset
+  r1 task.state@ TS_WAITING ==
+  if
+    r0 thread.condSignal
+  then
 
+  // drop the mutex of target task
   r0 thread.mutexUnlock
 
+  // drop thread and task
   rdrop
   rdrop
 ;
@@ -107,11 +123,11 @@ tp: >taskQueue
 : >taskQueue;a> ( <<call>> task -- <<result>> )
 
   // set this task to wait for 1 ack
-  1 task.this task.acks! ( <<call>> task )
+  1 setAcks ( <<call>> task )
 
 tp: require1Ack
 
-  // append indirect call onto queue
+  // append indirect call onto queue of given task
   >taskQueue ( )
 
   // this task suspends till notified. will have indirect result
@@ -144,8 +160,8 @@ tp: sendingViaTask
 /*----------------------------------------------------------------------------*/
 : >sndQueue;a> ( <<call>> nodeNo -- )
 
-  // set this task to wait for 1 ack
-  1 task.this task.acks! ( ... wordName #values queue )
+  // this task to wait for 1 ack
+  1 setAcks ( ... wordName #values queue )
 
   // get sender task
   senderTasks @ ( <<call>> task )
@@ -165,14 +181,6 @@ tp: resumed
 
 tp: haveResultSet
 ;
-
-/*----------------------------------------------------------------------------*/
-: grabMutex task.this task.thread thread.mutexLock ;
-: dropMutex task.this task.thread thread.mutexUnlock ;
-: getState  task.this task.state@ ;
-: setState  task.this task.state! ;
-: popQueue  task.this task.queue@ queue.pop ;
-: waitCond  task.this task.thread thread.condWait ;
 
 /*----------------------------------------------------------------------------*/
 /* pop value from this tasks queue (this is a blocking call)                  */
@@ -215,7 +223,7 @@ tp: haveValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push indrect result onto callers aux stack and signal caller               */
+/* push indirect result onto callers aux stack and signal caller              */
 /*----------------------------------------------------------------------------*/
 : >callerAux ( <<result>> -- )
 
