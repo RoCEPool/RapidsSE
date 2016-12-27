@@ -33,9 +33,6 @@ tp: participantProxy
     // set caller into reg0
     exeOne assert
 
-    // set this task to wait for 1 ack
-    1 task.this task.acks! ( ... wordName #values queue )
-
     r0 args.node ==
     if
       // this is pp0 on node 0

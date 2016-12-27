@@ -10676,6 +10676,8 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iInt) )
     THROW_INVALID_PARAM("task.acks!");
   
+  ASSERT(0 == *pGivenTask->m_zAcks);
+
   pGivenTask->m_zAcks = iInt;
   
   EXIT();

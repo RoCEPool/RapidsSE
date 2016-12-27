@@ -144,6 +144,9 @@ tp: sendingViaTask
 /*----------------------------------------------------------------------------*/
 : >sndQueue;a> ( <<call>> nodeNo -- )
 
+  // set this task to wait for 1 ack
+  1 task.this task.acks! ( ... wordName #values queue )
+
   // get sender task
   senderTasks @ ( <<call>> task )
 
