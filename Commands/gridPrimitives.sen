@@ -370,15 +370,13 @@ tp: exeAll
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add call to set dic path                                                   */
+/* add call to send to one participant                                        */
 /*----------------------------------------------------------------------------*/
-: addSetDicPath ( valset -- valset )
+: addSendParticipant ( valset node -- valset )
 
-  // add dicStack! indirect
-  seitf.path@ ( valset path... #folders )
-  "dicStack!" ( valset path... #folders "dicStack!" )
+  ">participant>" ( valset node ">participant>" )
 
-tp: addingSetDicPath
+tp: addingSendP
 
   $$>valset ( valset )
 ;
@@ -386,23 +384,11 @@ tp: addingSetDicPath
 /*----------------------------------------------------------------------------*/
 /* add call to send to all participants                                       */
 /*----------------------------------------------------------------------------*/
-: addParticipants ( valset -- valset )
+: addSendParticipants ( valset -- valset )
 
   ">participants>" ( valset ">participants>" )
 
-tp: addingParticipants
-
-  $$>valset ( valset )
-;
-
-/*----------------------------------------------------------------------------*/
-/* add call to send to one participant                                        */
-/*----------------------------------------------------------------------------*/
-: addParticipant ( valset node -- valset )
-
-  ">participant>" ( valset node ">participant>" )
-
- tp: addingParticipant
+tp: addingSendPs
 
   $$>valset ( valset )
 ;
@@ -420,6 +406,20 @@ tp: addingSetCaller
 ;
 
 /*----------------------------------------------------------------------------*/
+/* add call to set dic path                                                   */
+/*----------------------------------------------------------------------------*/
+: addSetDicPath ( valset -- valset )
+
+  // add dicStack! indirect
+  seitf.path@ ( valset path... #folders )
+  "dicStack!" ( valset path... #folders "dicStack!" )
+
+tp: addingSetDicPath
+
+  $$>valset ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
 /* add call to set sender                                                     */
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
@@ -432,18 +432,6 @@ tp: addingSetSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add call to pass call onto coordinator proxy                               */
-/*----------------------------------------------------------------------------*/
-: addPassOnToCP ( valset -- valset )
-
-  "passOnToCP"
-
-tp: addingPassOnToCP
-
-  $$>valset
-;
-
-/*----------------------------------------------------------------------------*/
 /* add call to bass result back to participant proxy                          */
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
@@ -451,6 +439,18 @@ tp: addingPassOnToCP
   args.node "passBackToPP"
 
   tp: addingPassBackToPP
+
+  $$>valset
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to pass call onto coordinator proxy                               */
+/*----------------------------------------------------------------------------*/
+: addPassOnToCP ( valset -- valset )
+
+  "passOnToCP"
+
+tp: addingPassOnToCP
 
   $$>valset
 ;

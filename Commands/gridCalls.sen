@@ -113,7 +113,7 @@ tp: >>participants>
   addSetDicPath ( <<call>> )
 
   // add indirect call to participants
-  addParticipants ( <<call>> )
+  addSendParticipants ( <<call>> )
 
   // add call to setCaller (to be run by coordinator)
   addSetCaller ( <<call>> )
@@ -153,7 +153,7 @@ tp: >>participant>
   addSetDicPath ( <<call>> )
 
   // add indirect call to participant on given node
-  r> addParticipant ( <<call>> )
+  r> addSendParticipant ( <<call>> )
 
   // add call to setCaller (to be run by coordinator)
   addSetCaller ( <<call>> )
