@@ -90,7 +90,7 @@ thread:  requestThread
   begin
     depth 0 != if "request task has grown" . debug.trap then
 
-    queue>
+    queueSpin>
 
     !req
 

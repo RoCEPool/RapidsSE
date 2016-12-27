@@ -176,7 +176,7 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* pop value from this tasks queue (this is a blocking call)                  */
 /*----------------------------------------------------------------------------*/
-: queue> ( -- value )
+: queueSpin> ( -- value )
 
 tp: waitNextValset
 
@@ -208,7 +208,7 @@ tp: poppedValset
 /*----------------------------------------------------------------------------*/
 /* pop value from this tasks queue (this is a blocking call)                  */
 /*----------------------------------------------------------------------------*/
-: queueSignalled> ( -- value )
+: queueSignal> ( -- value )
 
 //args.node 0 == if traceon then
 
@@ -294,7 +294,7 @@ tp: reg1HasSender
 /*----------------------------------------------------------------------------*/
 /* pass indirect call to coordinator proxy                                    */
 /*----------------------------------------------------------------------------*/
-: passOnToCp
+: passOnToCP
 
   cpTasks @
 
@@ -304,14 +304,16 @@ tp: reg1HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* notifyPp                                                                   */
+/* give result back to participant proxy                                      */
 /*----------------------------------------------------------------------------*/
-: notifyPp
+: notifyPP ( nodeNo -- true )
 
   reg.push
-  ppTasks @
-  >reg0
+
+  ppTasks @ >reg0
+
   >caller
+
   reg.pop
 
   true
@@ -336,7 +338,7 @@ tp: executing...
 ;
 
 /*----------------------------------------------------------------------------*/
-/* convert values on stack into a result valset                               */
+/* convert all values on stack into a result valset                           */
 /*----------------------------------------------------------------------------*/
 : >result ( ... -- valset )
 
@@ -404,13 +406,13 @@ tp: exeAll
 /*----------------------------------------------------------------------------*/
 /* add set dic path                                                           */
 /*----------------------------------------------------------------------------*/
-: addDicPath
+: addDicPath ( valset -- valset )
 
   // add dicStack! indirect
   seitf.path@ ( valset path... #folders )
   "dicStack!" ( valset path... #folders "dicStack!" )
 
-tp: layeringDicPath
+tp: addeSetDicPath
 
   $$>valset ( valset )
 ;
@@ -418,11 +420,11 @@ tp: layeringDicPath
 /*----------------------------------------------------------------------------*/
 /* add send to participants                                                   */
 /*----------------------------------------------------------------------------*/
-: addParticipants
+: addParticipants ( valset -- valset )
 
   ">participants>" ( valset ">participants>" )
 
-tp: layeringParts
+tp: addedParticipants
 
   $$>valset ( valset )
 ;
@@ -434,7 +436,7 @@ tp: layeringParts
 
   ">participant>" ( valset node ">participant>" )
 
- tp: layeringPart
+ tp: addedParticipant
 
   $$>valset ( valset )
 ;
@@ -442,11 +444,11 @@ tp: layeringParts
 /*----------------------------------------------------------------------------*/
 /* add set caller                                                             */
 /*----------------------------------------------------------------------------*/
-: addCaller
+: addCaller ( valset -- valset )
 
   task.this "setCaller"
 
-tp: layeringCaller
+tp: addedSetCaller
 
   $$>valset
 ;
@@ -454,35 +456,35 @@ tp: layeringCaller
 /*----------------------------------------------------------------------------*/
 /* add set sender                                                             */
 /*----------------------------------------------------------------------------*/
-: addSender
+: addSender ( valset -- valset )
 
   args.node "setSender"
 
-tp: layeringSender
+tp: addedSetSender
 
   $$>valset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add passOnToCp                                                             */
+/* add passOnToCP                                                             */
 /*----------------------------------------------------------------------------*/
-: addPassOnToCp
+: addPassOnToCP ( valset -- valset )
 
-  "passOnToCp"
+  "passOnToCP"
 
-tp: passingOnToCp
+tp: addedPassOnToCP
 
   $$>valset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add notifyPp                                                               */
+/* add notifyPP                                                               */
 /*----------------------------------------------------------------------------*/
-: addNotifyPp
+: addNotifyPP ( valset -- valset )
 
-  args.node "notifyPp"
+  args.node "notifyPP"
 
-  tp: notifyingPp
+  tp: addedNotifyPP
 
   $$>valset
 ;
@@ -611,7 +613,7 @@ tp: passingOnToCp
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning a node                                 */
 /*----------------------------------------------------------------------------*/
-: se_command
+: se_command ( nodeNo -- "<command>" )
 
   dup
   dup
@@ -639,7 +641,7 @@ tp: passingOnToCp
 /*----------------------------------------------------------------------------*/
 /* spawn all other nodes for a grid on this machine                           */
 /*----------------------------------------------------------------------------*/
-: spawnNodes
+: spawnNodes ( -- )
 
   // test for single node
   args.nodes 1 == if exit then
