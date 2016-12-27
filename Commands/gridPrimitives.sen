@@ -21,6 +21,17 @@ args.nodes ptrArray: pQueues
 args.nodes ptrArray: senderQueues
 
 /*----------------------------------------------------------------------------*/
+: to_TASK    >reg0 ;
+: to_QUEUE   >reg1 ;
+: to_TASKSET >reg2 ;
+: to_THREAD  >reg3 ;
+
+: _TASK      reg0 ;
+: _QUEUE     reg1 ;
+: _TASKSET   reg2 ;
+: _THREAD    reg3 ;
+
+/*----------------------------------------------------------------------------*/
 /* dump the ppQueues array                                                    */
 /*----------------------------------------------------------------------------*/
 : ppQueuesDump
