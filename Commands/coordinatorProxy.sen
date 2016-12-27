@@ -33,7 +33,8 @@ tp: coordinator
 
     r1 >taskQueue;a> ( ... )
 
-    addNotifyPp
+    // have receiver pass indirect result onto participant proxy
+    addPassBackToPP
 
     reg1                                                           //! NOT RIGHT
     >node

@@ -258,7 +258,7 @@ tp: reg1HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pass indirect call to coordinator proxy                                    */
+/* pass indirect call onto coordinator proxy                                  */
 /*----------------------------------------------------------------------------*/
 : passOnToCP
 
@@ -270,9 +270,9 @@ tp: reg1HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* give result back to participant proxy                                      */
+/* pass indirect result back to participant proxy                             */
 /*----------------------------------------------------------------------------*/
-: notifyPP ( nodeNo -- true )
+: passBackToPP ( <<result>> nodeNo -- true )
 
   reg.push
 
@@ -378,7 +378,7 @@ tp: exeAll
   seitf.path@ ( valset path... #folders )
   "dicStack!" ( valset path... #folders "dicStack!" )
 
-tp: addeSetDicPath
+tp: addingSetDicPath
 
   $$>valset ( valset )
 ;
@@ -390,7 +390,7 @@ tp: addeSetDicPath
 
   ">participants>" ( valset ">participants>" )
 
-tp: addedParticipants
+tp: addingParticipants
 
   $$>valset ( valset )
 ;
@@ -402,7 +402,7 @@ tp: addedParticipants
 
   ">participant>" ( valset node ">participant>" )
 
- tp: addedParticipant
+ tp: addingParticipant
 
   $$>valset ( valset )
 ;
@@ -414,7 +414,7 @@ tp: addedParticipants
 
   task.this "setCaller"
 
-tp: addedSetCaller
+tp: addingSetCaller
 
   $$>valset
 ;
@@ -426,7 +426,7 @@ tp: addedSetCaller
 
   args.node "setSender"
 
-tp: addedSetSender
+tp: addingSetSender
 
   $$>valset
 ;
@@ -438,19 +438,19 @@ tp: addedSetSender
 
   "passOnToCP"
 
-tp: addedPassOnToCP
+tp: addingPassOnToCP
 
   $$>valset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add notifyPP                                                               */
+/* add passBackToPP                                                           */
 /*----------------------------------------------------------------------------*/
-: addNotifyPP ( valset -- valset )
+: addPassBackToPP ( valset -- valset )
 
-  args.node "notifyPP"
+  args.node "passBackToPP"
 
-  tp: addedNotifyPP
+  tp: addingPassBackToPP
 
   $$>valset
 ;
