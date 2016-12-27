@@ -37,7 +37,7 @@ tp: snd.loop
     depth 0 != if "sender task has grown" . debug.trap then
 
     // pop valset off queue and push onto this stack
-    queue>
+    queueSignalled>
 
 tp: poppedValset
 

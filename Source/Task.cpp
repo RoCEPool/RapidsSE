@@ -2205,7 +2205,7 @@ void Task::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  while (TS_RUNNING == m_eState) {
+  while (TS_RUNNING == m_eState || TS_WAITING == m_eState) {
     
     TaskStep pTaskStep = *IP.m_pCell->m_ppDoesStep;
     

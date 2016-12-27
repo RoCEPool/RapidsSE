@@ -11,6 +11,8 @@
 
   "c.loop" task.this task.comment!
 
+  task.this task.thread assert
+
   // push a register frame
   reg.push
 
@@ -19,7 +21,7 @@
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop valset off queue and push onto this stack
-    queue> ( valset )
+    queueSignalled> ( valset )
 
     exeAll
 
@@ -48,7 +50,7 @@
 
   ppTasks @
 
-  >taskQueue
+  >taskQueueSignalled
 ;
 
 /*----------------------------------------------------------------------------*/

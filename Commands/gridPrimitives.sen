@@ -86,6 +86,32 @@ args.nodes ptrArray: senderQueues
 ;
 
 /*----------------------------------------------------------------------------*/
+/* append value onto queue of given task                                      */
+/*----------------------------------------------------------------------------*/
+: >taskQueueSignalled ( value task -- )
+
+tp: >taskQueueSignalled
+
+  >r
+  r0 task.thread >r
+
+  // r0 has thread
+  // r1 has task
+
+  r0 thread.mutexLock
+
+  r1 task.queue@ queue.append
+
+  r1 task.state@ TS_RUNNING == not
+  if r0 thread.condSignal then
+
+  r0 thread.mutexUnlock
+
+  rdrop
+  rdrop
+;
+
+/*----------------------------------------------------------------------------*/
 /* append indirect call onto queue of given task, suspend, move from a to p   */
 /*----------------------------------------------------------------------------*/
 : >taskQueue;a> ( <<call*>> queue -- <<result>> )
@@ -96,7 +122,7 @@ args.nodes ptrArray: senderQueues
 tp: require1Ack
 
   // append indirect call onto queue
-  >taskQueue ( )
+  >taskQueueSignalled ( )
 
   // this task suspends till notified. will have indirect result
   task.suspend ( )
@@ -120,7 +146,7 @@ tp: haveResultSet
 tp: sendingViaQueue
 
   // enqueue valset onto queue of task
-  >taskQueue
+  >taskQueueSignalled
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +160,7 @@ tp: sendingViaQueue
 tp: sendingViaQueue
 
   // enqueue valset onto queue of task
-  >taskQueue
+  >taskQueueSignalled
 
   // this task suspends till notified. will have indirect result
   task.suspend ( )
@@ -169,6 +195,57 @@ tp: waitNextValset
   until
 
 tp: poppedValset
+;
+
+/*----------------------------------------------------------------------------*/
+: grabMutex task.this task.thread thread.mutexLock ;
+: dropMutex task.this task.thread thread.mutexUnlock ;
+: getState  task.this task.state@ ;
+: setState  task.this task.state! ;
+: popQueue  task.this task.queue@ queue.pop ;
+: waitCond  task.this task.thread thread.condWait ;
+
+/*----------------------------------------------------------------------------*/
+/* pop value from this tasks queue (this is a blocking call)                  */
+/*----------------------------------------------------------------------------*/
+: queueSignalled> ( -- value )
+
+//args.node 0 == if traceon then
+
+tp: waitNextValset
+
+  task.this task.thread assert
+
+tp: grabbingMutex
+  grabMutex
+
+  getState TS_RUNNING == assert
+
+  popQueue ( value | false )
+
+  dup not if
+    drop
+
+    TS_WAITING setState
+tp: nowWaiting
+
+    waitCond
+
+    TS_RUNNING setState
+tp: nowRunning
+
+    popQueue assert
+
+  else
+    drop
+  then
+
+tp: droppingMutex
+  dropMutex
+
+tp: haveValset
+
+//args.node 0 == if traceoff then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -221,7 +298,7 @@ tp: reg1HasSender
 
   cpTasks @
 
-  >taskQueue
+  >taskQueueSignalled
 
   true
 ;

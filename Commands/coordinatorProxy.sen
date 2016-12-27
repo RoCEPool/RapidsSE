@@ -27,7 +27,7 @@ tp: coordinator
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop valset off queue and push onto this stack
-    queue> ( valset )
+    queueSignalled> ( valset )
 
     addCaller ( << <<call*>> <<caller>> >> )
 
