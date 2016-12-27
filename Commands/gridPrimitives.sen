@@ -370,9 +370,9 @@ tp: exeAll
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* add set dic path                                                           */
+/* add call to set dic path                                                   */
 /*----------------------------------------------------------------------------*/
-: addDicPath ( valset -- valset )
+: addSetDicPath ( valset -- valset )
 
   // add dicStack! indirect
   seitf.path@ ( valset path... #folders )
@@ -384,7 +384,7 @@ tp: addingSetDicPath
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add send to participants                                                   */
+/* add call to send to all participants                                       */
 /*----------------------------------------------------------------------------*/
 : addParticipants ( valset -- valset )
 
@@ -396,7 +396,7 @@ tp: addingParticipants
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add send to one participant                                                */
+/* add call to send to one participant                                        */
 /*----------------------------------------------------------------------------*/
 : addParticipant ( valset node -- valset )
 
@@ -408,7 +408,7 @@ tp: addingParticipants
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add set caller onto indirect call valset                                   */
+/* add call to set caller                                                     */
 /*----------------------------------------------------------------------------*/
 : addSetCaller ( valset -- valset )
 
@@ -420,7 +420,7 @@ tp: addingSetCaller
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add set sender onto indirect call valset                                   */
+/* add call to set sender                                                     */
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
 
@@ -432,7 +432,7 @@ tp: addingSetSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add passOnToCP                                                             */
+/* add call to pass call onto coordinator proxy                               */
 /*----------------------------------------------------------------------------*/
 : addPassOnToCP ( valset -- valset )
 
@@ -444,7 +444,7 @@ tp: addingPassOnToCP
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add passBackToPP                                                           */
+/* add call to bass result back to participant proxy                          */
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
 

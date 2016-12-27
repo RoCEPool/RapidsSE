@@ -109,13 +109,14 @@ tp: >>participants>
 
   task.this task.name@ "req.task" streql assert
 
-  // add current dic path of this req.task
-  addDicPath ( << <<$$>> <<dicStack!>> >> )
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
 
   // add indirect call to participants
-  addParticipants ( << <<$$>> <<dicStack!>> <<>participants>>> >> )
+  addParticipants ( <<call>> )
 
-  addSetCaller
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
 
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
@@ -135,7 +136,7 @@ tp: >>participants>
 /*----------------------------------------------------------------------------*/
 /* get coordinator to send indirect call to participant on a node to execute  */
 /*----------------------------------------------------------------------------*/
-: >>participant> ( <<$$>> nodeNo -- bool )
+: >>participant> ( <<call>> nodeNo -- bool )
 
   // a) we are in loader sub task
   // b) indirect call on stack is to be executed by participant on given nodeNo
@@ -148,13 +149,14 @@ tp: >>participant>
   // save the node number
   >r
 
-  // add current dic path of this req.task
-  addDicPath ( << <<$$>> <<dicStack!>> >> )
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
 
   // add indirect call to participant on given node
-  r> addParticipant ( << <<$$>> <<dicStack!>> <<>participant>>> >> )
+  r> addParticipant ( <<call>> )
 
-  addSetCaller
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
 
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
