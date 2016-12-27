@@ -394,7 +394,7 @@ tp: addingSendP
 /*----------------------------------------------------------------------------*/
 : addSendParticipants ( valset -- valset )
 
-  ">participants>" ( valset ">participants>" )
+  "sendParticipants" ( valset "sendParticipants" )
 
 tp: addingSendPs
 

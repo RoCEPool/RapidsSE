@@ -56,7 +56,7 @@
 /*----------------------------------------------------------------------------*/
 /* coordinator sends indirect call to each participant to execute             */
 /*----------------------------------------------------------------------------*/
-: >participantsPARALLEL> // parallel form
+: sendParticipantsPARALLEL // parallel form
 
   args.nodes task.this task.acks!
 
@@ -109,14 +109,14 @@ tp: allResponded
 int: finalResult
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: >participants> ( <<!>> -- true ) // serial Form
+: sendParticipants ( <<!>> -- true ) // serial Form
 
   // a) in coordinator (on the originating node)
   // b) the caller of the coordinator is in reg0 (would be req.task)
   // c) valset on stack to be forwarded to all particpants
   //    that valset contains one or more indirect calls
 
-tp: >participants>
+tp: sendParticipants
 
   // layer this task as caller into nested valset << <<!>> <<caller>> >>
   addSetCaller
