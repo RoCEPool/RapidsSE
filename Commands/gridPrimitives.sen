@@ -104,10 +104,10 @@ tp: >taskQueue
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto queue of given task, suspend, move from a to p   */
 /*----------------------------------------------------------------------------*/
-: >taskQueue;a> ( <<call*>> queue -- <<result>> )
+: >taskQueue;a> ( <<call>> task -- <<result>> )
 
   // set this task to wait for 1 ack
-  1 task.this task.acks! ( << <<call*>> <<caller>> >> queue )
+  1 task.this task.acks! ( <<call>> task )
 
 tp: require1Ack
 
@@ -128,12 +128,12 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* put indirect call onto queue of sender                                     */
 /*----------------------------------------------------------------------------*/
-: >node ( valset senderNo -- )
+: >node ( <<call>> nodeNo -- )
 
   // get sender task
-  senderTasks @ ( valset task )
+  senderTasks @ ( <<call>> task )
 
-tp: sendingViaQueue
+tp: sendingViaTask
 
   // enqueue valset onto queue of task
   >taskQueue
@@ -142,12 +142,12 @@ tp: sendingViaQueue
 /*----------------------------------------------------------------------------*/
 /* put indirect call onto queue of sender, suspend, move from a to p          */
 /*----------------------------------------------------------------------------*/
-: >node;a> ( valset senderNo -- )
+: >node;a> ( <<call>> nodeNo -- )
 
   // get sender task
-  senderTasks @ ( valset task )
+  senderTasks @ ( <<call>> task )
 
-tp: sendingViaQueue
+tp: sendingViaTask
 
   // enqueue valset onto queue of task
   >taskQueue
@@ -174,11 +174,11 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 /* pop value from this tasks queue (this is a blocking call)                  */
 /*----------------------------------------------------------------------------*/
-: queueSignal> ( -- value )
+: taskQueue> ( -- valset )
 
 //args.node 0 == if traceon then
 
-tp: waitNextValset
+tp: taskQueue>
 
   task.this task.thread assert
 
@@ -215,16 +215,16 @@ tp: haveValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push valset onto callers aux stack and signal caller                       */
+/* push indrect result onto callers aux stack and signal caller               */
 /*----------------------------------------------------------------------------*/
-: >callerAux ( valset -- )
+: >callerAux ( <<result>> -- )
 
-tp: callerAux
+tp: >callerAux
 
   // transfer to callers stack
-  reg0 ( valset caller )
+  reg0 ( <<result>> callingTask )
 
-  tp: ontoCallerStack
+tp: ontoCallersAux
   >auxStack ( )
 
   // signal caller
