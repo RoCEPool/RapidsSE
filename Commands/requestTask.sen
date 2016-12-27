@@ -34,6 +34,30 @@ thread:  requestThread
 ;
 
 /*----------------------------------------------------------------------------*/
+/* pop value from this tasks queue (this is a blocking call)                  */
+/*----------------------------------------------------------------------------*/
+: req> ( -- value )
+
+tp: waitNextValset
+
+  begin
+
+    // attempt to pop value off the tasks queue
+    task.this task.queue@ queue.pop ( value | false )
+
+    // test for value
+    dup not if
+      task.yield
+      args.sleep thread.sleep_ms
+    then
+
+  ( value | false )
+  until
+
+tp: poppedValset
+;
+
+/*----------------------------------------------------------------------------*/
 /* process request                                                            */
 /*----------------------------------------------------------------------------*/
 : !req
@@ -90,7 +114,7 @@ thread:  requestThread
   begin
     depth 0 != if "request task has grown" . debug.trap then
 
-    queueSpin>
+    req>
 
     !req
 
