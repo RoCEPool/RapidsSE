@@ -27,7 +27,7 @@
     >result ( valset )
 
     // put indirect result onto stack of caller and signal
-    >caller ( )
+    >callerAux ( )
 
   0 until
 

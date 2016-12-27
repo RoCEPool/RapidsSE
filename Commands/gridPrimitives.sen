@@ -76,11 +76,11 @@ args.nodes ptrArray: senderQueues
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append value onto queue of given task                                      */
+/* append value onto queue of given task and signal if needed                 */
 /*----------------------------------------------------------------------------*/
-: >taskQueueSignalled ( value task -- )
+: >taskQueue ( value task -- )
 
-tp: >taskQueueSignalled
+tp: >taskQueue
 
   >r
   r0 task.thread >r
@@ -112,7 +112,7 @@ tp: >taskQueueSignalled
 tp: require1Ack
 
   // append indirect call onto queue
-  >taskQueueSignalled ( )
+  >taskQueue ( )
 
   // this task suspends till notified. will have indirect result
   task.suspend ( )
@@ -136,7 +136,7 @@ tp: haveResultSet
 tp: sendingViaQueue
 
   // enqueue valset onto queue of task
-  >taskQueueSignalled
+  >taskQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +150,7 @@ tp: sendingViaQueue
 tp: sendingViaQueue
 
   // enqueue valset onto queue of task
-  >taskQueueSignalled
+  >taskQueue
 
   // this task suspends till notified. will have indirect result
   task.suspend ( )
@@ -217,9 +217,9 @@ tp: haveValset
 /*----------------------------------------------------------------------------*/
 /* push valset onto callers aux stack and signal caller                       */
 /*----------------------------------------------------------------------------*/
-: >caller ( valset -- )
+: >callerAux ( valset -- )
 
-tp: caller
+tp: callerAux
 
   // transfer to callers stack
   reg0 ( valset caller )
@@ -264,7 +264,7 @@ tp: reg1HasSender
 
   cpTasks @
 
-  >taskQueueSignalled
+  >taskQueue
 
   true
 ;
@@ -278,7 +278,7 @@ tp: reg1HasSender
 
   ppTasks @ >reg0
 
-  >caller
+  >callerAux
 
   reg.pop
 

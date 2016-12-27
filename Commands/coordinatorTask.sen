@@ -34,8 +34,8 @@
     // move result from astack tp pstack
     a>
 
-    // put indirect result onto stack of caller and signal
-    >caller ( )
+    // put indirect result onto aux stack of caller and signal
+    >callerAux ( )
 
   0 until
 
@@ -50,7 +50,7 @@
 
   ppTasks @
 
-  >taskQueueSignalled
+  >taskQueue
 ;
 
 /*----------------------------------------------------------------------------*/
