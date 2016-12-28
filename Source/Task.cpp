@@ -3674,8 +3674,12 @@ ENTRY("vSemicolon");
   
   nnpTask->m_bCompiling = false;
   
-  // reset the number of local variables
-  nnpTask->m_nLocals = 0;
+  if (nnpTask->m_nLocals) {
+    
+    // reset the number of local variables
+    nnpTask->m_nLocals = 0;
+  }
+  
   
   EXIT();
 }

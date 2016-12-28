@@ -25,9 +25,10 @@ Dic* Dictionaries::_pDic(void* pAddr)
 void* Dic::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Dictionary class cannot be new'd");
   
-  RASSERT(0);
+  Dic* pDic = (Dic*)(Heap::pAllocate(CN_DIC));
+  
+  return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,18 +37,20 @@ void* Dic::operator new(size_t iSize)
 void* Dic::operator new(size_t iSize, Dic* pDic)
 {
   RASSERT(iSize);
+  
   return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Dic::operator delete(void* pBufferAddress)
+void Dic::operator delete(void* pDicAddress)
 {
-  RASSERT(pBufferAddress);
-  vFatal("fatal: Dictionary class cannot be deleted");
+  RASSERT(pDicAddress);
   
-  ASSERT(0);
+  Dic* pDic = reinterpret_cast<Dic*>(pDicAddress);
+  
+  Heap::vFree(pDic);
 }
 
 /*----------------------------------------------------------------------------*/
