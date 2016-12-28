@@ -206,7 +206,8 @@ void Task::vInit(const char* aLambda)
   //m_xParamStack
   //m_xReturnStack
   //m_xAuxStack
-  m_pRegFrame = nullptr;
+  m_pRegFrame    = nullptr;
+  m_pLocalsFrame = nullptr;
   
   IP.m_pCell      = nullptr;
   m_pResetIP   = nullptr;
@@ -214,6 +215,7 @@ void Task::vInit(const char* aLambda)
   m_pWord      = nullptr;
   m_bCompiling = false;
   m_iTracing   = 0;
+  m_nLocals    = 0;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
@@ -903,6 +905,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
   vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
   vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
+  
+  vAddPrimitive("locals|",         &vLocalsBar,        false);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -1642,13 +1646,6 @@ bool Task::bForgetWord(s& sName)
   return bResult;
 }
 
-
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
@@ -1659,6 +1656,32 @@ bool Task::bIsName(s& sName)
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop locals frame                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RegFrame* pLocalsframe = m_pLocalsFrame;
+  
+  m_pLocalsFrame = m_pLocalsFrame->pNext();
+  
+  delete pLocalsframe;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push a locals frame                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPush(void)
+{
+  RegFrame* pLocalsframe = new RegFrame;
+  
+  pLocalsframe->vNext(m_pLocalsFrame);
+  
+  m_pLocalsFrame = pLocalsframe;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -7125,6 +7148,18 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
   Table* pTable = pLoaderSub->pTable();
   
   nnpTask->m_xParamStack.vPush(pTable);
+  
+  EXIT();
+}
+
+// locals: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* locals| -- declare set of locals                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsBar(NNP_Task nnpTask)
+{
+  ENTRY("vLocalsBar");
   
   EXIT();
 }

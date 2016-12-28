@@ -156,10 +156,12 @@ namespace Tasks
     Queue* m_pQueue;         // processing queue
     Socket* m_pSocket;       // socket
     
-    Stack  m_xParamStack;   // parameter stack
-    Stack  m_xReturnStack;  // return stack
-    Stack  m_xAuxStack;     // auxiliary stack
-    RegFrame* m_pRegFrame; // register frame chain
+    Stack  m_xParamStack;     // parameter stack
+    Stack  m_xReturnStack;    // return stack
+    Stack  m_xAuxStack;       // auxiliary stack
+    
+    RegFrame* m_pRegFrame;    // register frame chain
+    RegFrame* m_pLocalsFrame; // register frame chain
 
     s256      m_sLambda;    // lambda input
     Tokeniser m_xTokeniser; // input stream tokenizer
@@ -180,6 +182,7 @@ namespace Tasks
     Word* m_pWord;
     bool  m_bCompiling;
     i8    m_iTracing;
+    i8    m_nLocals;      // number of locals
     
     // exception
     s256  m_sFile;
@@ -228,6 +231,8 @@ namespace Tasks
     bool  bForgetWord(s& sName);
     void vInitialiseDictionary(void);
     bool  bIsName(s& sName);
+    void  vLocalsPop(void);
+    void  vLocalsPush(void);
     Word* pLocateWord(Cell* pCell);
     void vLoop(void);
     NP_Task npNextInSet(void);
@@ -306,7 +311,7 @@ namespace Tasks
     static void vIsImmediate(NNP_Task nnpTask);    
     static void vIsInterpreting(NNP_Task nnpTask); 
     static void vIsPrimitive(NNP_Task nnpTask);
-    static void vJ(NNP_Task nnpTask);              
+    static void vJ(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vMagicFetch(NNP_Task nnpTask);
     static void vMagicMark(NNP_Task nnpTask);      
@@ -504,6 +509,8 @@ namespace Tasks
     // grid
     static void vGridAppendNode(NNP_Task nnpTask);
     static void vGridInit(NNP_Task nnpTask);
+    
+    // enter
     static void vEnterDoes(NNP_Task nnpTask);
     static void vEnterRoutine(NNP_Task nnpTask);
     static void vEnterCompiler(NNP_Task nnpTask);
@@ -563,7 +570,10 @@ namespace Tasks
     static void vLoaderSubRowBuffer(NNP_Task nnpTask);
     static void vLoaderSubRowBufferStore(NNP_Task nnpTask);
     static void vLoaderSubTable(NNP_Task nnpTask);
-    
+ 
+    // locals
+    static void vLocalsBar(NNP_Task nnpTask);
+   
     // lock
     static void vLockDropRead(NNP_Task nnpTask);
     static void vLockDropWrite(NNP_Task nnpTask);
