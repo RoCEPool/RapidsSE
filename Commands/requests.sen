@@ -623,7 +623,7 @@ tp: droppedTable
 : lf
 
   ""
-  word.this dup iterate
+  0 dic.pick dic.last dup iterate
 
     dup strlen if "\n" concat then
 
@@ -692,7 +692,7 @@ tp: lf
   "LISTING FOLDER on NODE " args.node >str concat .
 
   ""
-  word.this dup iterate
+  0 dic.pick dic.last dup iterate
 
   dup strlen if "\n" concat then
 

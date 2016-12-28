@@ -216,6 +216,7 @@ void Task::vInit(const char* aLambda)
   m_bCompiling = false;
   m_iTracing   = 0;
   m_nLocals    = 0;
+  m_pCurrentWord = nullptr;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
@@ -282,11 +283,13 @@ void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
   
   Dic* pDic = m_xDicStack.pTop();
   
-  Word* pWord = new(pDic) Word(pName);
+  Word* pNewWord = new(pDic) Word(pName);
   
-  pWord->vWordType(WT_PRIMITIVE);
-  pWord->vDoesStep(pStep);
-  pWord->vImmediate(bImmediate);
+  vCurrentWord(pNewWord);
+  
+  pNewWord->vWordType(WT_PRIMITIVE);
+  pNewWord->vDoesStep(pStep);
+  pNewWord->vImmediate(bImmediate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1455,6 +1458,8 @@ Word* Task::pCompileColon(s& sDefinition)
   
   pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
   
+  vCurrentWord(pNewWord);
+
   vTokenNext();
   
   while (TK_NONE != m_eToken) {
@@ -1512,22 +1517,34 @@ Word* Task::pCompileColon(s& sDefinition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* current word                                                               */
+/* get current word                                                           */
 /*----------------------------------------------------------------------------*/
 Word* Task::pCurrentWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic;
-  
-  if (m_pSEitf)
-    pDic = m_pSEitf->pDicStack()->pTop();
-  else
-    pDic = m_xDicStack.pTop();
+//  Dic* pDic;
+//  
+//  if (m_pSEitf)
+//    pDic = m_pSEitf->pDicStack()->pTop();
+//  else
+//    pDic = m_xDicStack.pTop();
+//
+//  Word* pWord = pDic->pCurrentWord();
+//  
+//  return pWord;
 
-  Word* pWord = pDic->pCurrentWord();
+  return m_pCurrentWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current word                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vCurrentWord(Word* pWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return pWord;
+  m_pCurrentWord = pWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2608,7 +2625,9 @@ ENTRY("vColon");
 
   nnpTask->vTokenNext();
   
-  new(nnpTask->m_xDicStack.pTop())  Word(nnpTask->m_sToken.a());
+  Word* pNewWord = new(nnpTask->m_xDicStack.pTop()) Word(nnpTask->m_sToken.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
   
   EXIT();
 }
@@ -3679,7 +3698,6 @@ ENTRY("vSemicolon");
     // reset the number of local variables
     nnpTask->m_nLocals = 0;
   }
-  
   
   EXIT();
 }
@@ -7404,6 +7422,7 @@ ENTRY("vLocalsBar");
     
     // create new word for local in current dictionary
     Word* pWordLocal = new(pDic) Word(nnpTask->m_sToken.a());
+    // ** do not set as current word **
     
     // set word as local variable
     pWordLocal->vWordType(WT_LOCAL);
@@ -13213,7 +13232,9 @@ ENTRY("vCreate");
   else
     pDic = nnpTask->m_xDicStack.pTop();
   
-  new(pDic) Word(nnpTask->m_sToken.a());
+  Word* pNewWord = new(pDic) Word(nnpTask->m_sToken.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
   
   EXIT();
 }
@@ -13235,7 +13256,9 @@ ENTRY("vCreateFrom");
   else
     pDic = nnpTask->m_xDicStack.pTop();
   
-  new(pDic) Word(sName.a());
+  Word* pNewWord = new(pDic) Word(sName.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
   
   EXIT();
 }

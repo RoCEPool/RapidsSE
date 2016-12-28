@@ -25,7 +25,8 @@ create
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
 : words
-    word.this dup iterate          // iterate word cursor
+    0 dic.pick dic.last dup
+    iterate                        // iterate word cursor
       object@ word.name .          // print the name of the word
       object@ prevWord object!     // advance cursor backwards thru words
     next
@@ -35,7 +36,7 @@ create
 /* list all words (long form) in the current dictionary                       */
 /*----------------------------------------------------------------------------*/
 : symbols
-    word.this
+    0 dic.pick dic.last
     begin dup while
       dup nameWord .put " " .put dup word.kind@ nameword .put .\n
       prevWord
@@ -50,7 +51,8 @@ create
 
     ""                             // initial contents string
 // "(" concat                     //
-    word.this dup iterate          // setup iteration of words
+    0 dic.pick dic.last dup
+    iterate                        // setup iteration of words
       object@ word.name concat     // add name of the word to contents string
                                    // add word kind to ls string
       " " concat                   //

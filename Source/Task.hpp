@@ -183,6 +183,7 @@ namespace Tasks
     bool  m_bCompiling;
     i8    m_iTracing;
     i8    m_nLocals;      // number of locals
+    Word* m_pCurrentWord;
     
     // exception
     s256  m_sFile;
@@ -222,6 +223,7 @@ namespace Tasks
     void vCheckLocked(void);
     Word* pCompileColon(s& sDefinition);
     Word* pCurrentWord(void);
+    void  vCurrentWord(Word* pWord);
     static void vDebug(void);
     void vDicDrop(void);
     Dic* pDicPeek(void);
