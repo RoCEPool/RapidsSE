@@ -580,6 +580,8 @@ namespace Tasks
     static void vLocalFetch(NNP_Task nnpTask);
     static void vLocalStore(NNP_Task nnpTask);
     static void vLocalsBar(NNP_Task nnpTask);
+    static void vLocalsPop(NNP_Task nnpTask);
+    static void vLocalsPush(NNP_Task nnpTask);
     static void vLocalsTo(NNP_Task nnpTask);
    
     // lock

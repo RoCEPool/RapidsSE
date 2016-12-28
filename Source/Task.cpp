@@ -912,6 +912,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("localFetch",      &vLocalFetch,       false);
   vAddPrimitive("localStore",      &vLocalStore,       false);
   vAddPrimitive("locals|",         &vLocalsBar,        true);
+  vAddPrimitive("locals.pop",      &vLocalsPop,        false);
+  vAddPrimitive("locals.push",     &vLocalsPush,       false);
   vAddPrimitive("to",              &vLocalsTo,         true);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
@@ -7384,6 +7386,41 @@ ENTRY("vLocalsBar");
     pWordLocal->vLocal(nnpTask->m_nLocals);
     nnpTask->m_nLocals++;
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locals.pop -- pop locals frame                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPop(NNP_Task nnpTask)
+{
+ENTRY("vLocalsPop");
+  
+  RegFrame* pLocalsFrame = nnpTask->m_pLocalsFrame;
+  
+  if ( ! pLocalsFrame )
+    THROW_INVALID_PARAM("locals.pop");
+  
+  nnpTask->m_pLocalsFrame = nnpTask->m_pLocalsFrame->pNext();
+  
+  delete pLocalsFrame;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locals.push -- push locals frame                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPush(NNP_Task nnpTask)
+{
+ENTRY("vLocalsPush");
+  
+  RegFrame* pLocalsFrame = new RegFrame;
+  
+  pLocalsFrame->vNext(nnpTask->m_pLocalsFrame);
+  
+  nnpTask->m_pLocalsFrame = pLocalsFrame;
   
   EXIT();
 }
