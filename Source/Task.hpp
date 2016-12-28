@@ -512,6 +512,8 @@ namespace Tasks
     // grid
     static void vGridAppendNode(NNP_Task nnpTask);
     static void vGridInit(NNP_Task nnpTask);
+    static void vGridStartedStore(NNP_Task nnpTask);
+    static void vGridStartedFetch(NNP_Task nnpTask);
     
     // enter
     static void vEnterDoes(NNP_Task nnpTask);
@@ -600,6 +602,7 @@ namespace Tasks
     static void vNodeInit(NNP_Task nnpTask);
     static void vNodeNew(NNP_Task nnpTask);
     static void vNodeNo(NNP_Task nnpTask);
+    static void vNodeStatus(NNP_Task nnpTask);
     
     // nodeCursor
     static void vNodeCursorBegin(NNP_Task nnpTask);

@@ -67,6 +67,8 @@ Grid::~Grid(void)
 void Grid::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_bHasStarted = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +82,27 @@ void Grid::vDump(eCN eClass, Object* pObject, const char* pTab)
   Grid* pGrid = reinterpret_cast<Grid*>(pObject);
   
   vTrace("%sGrid %p:\n", pTab, pGrid);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set grid started                                                           */
+/*----------------------------------------------------------------------------*/
+void Grid::vHasStarted(bool bHasStarted)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_bHasStarted = bHasStarted;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get grid started                                                           */
+/*----------------------------------------------------------------------------*/
+bool Grid::bHasStarted(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_bHasStarted;
 }
 
 /*----------------------------------------------------------------------------*/

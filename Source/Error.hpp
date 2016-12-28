@@ -17,6 +17,8 @@ namespace Magic
 
     /*  3 */ EC_FOLDER_IN_USE,
 
+    /*    */ EC_GRID_NOT_STARTED,
+    
     /*  4 */ EC_INVALID_CLASS,
     /*  5 */ EC_INVALID_COMMAND,
     /*  6 */ EC_INVALID_FILE,
@@ -73,6 +75,8 @@ namespace Magic
     /*    */ "begin transaction failed",
     /*  2 */ "catalog exists",
     /*  3 */ "folder in use",
+    
+    /*    */ "grid not started",
     
     /*  4 */ "invalid class",
     /*  5 */ "invalid command",

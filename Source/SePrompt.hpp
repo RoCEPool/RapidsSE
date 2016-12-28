@@ -96,6 +96,7 @@ private:
   bool bEndInsert(void);
   bool bInsertRow(void);
   bool bListDir(void);
+  bool bNodeStatus(void);
   bool bPoolSpace(void);
   bool bPrintWorkingDir(void);
   bool bReturnTable(void);

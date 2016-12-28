@@ -341,7 +341,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose",     gxArguments.m_bVerbose);
   
-  vAddConstant("true",    1);
+  vAddConstant("true",    (i8)1);
   vAddConstant("false",   (i8)0);
 
   vAddConstant("C_1KB",   C_1KB);
@@ -430,6 +430,7 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
 
   /*  3 */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
+  /*    */ vAddConstant("EC_GRID_NOT_STARTED",      EC_GRID_NOT_STARTED);
   
   /*  4 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
   /*  5 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
@@ -852,6 +853,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("while",           &vFlowWhile,        true );
   
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
+  vAddPrimitive("grid.started!",   &vGridStartedStore, false);
+  vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
   
   vAddPrimitive("input.close",     &vInputClose,       false);
@@ -927,6 +930,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("node.init",       &vNodeInit,         false);
   vAddPrimitive("node.new",        &vNodeNew,          false);
   vAddPrimitive("node.no",         &vNodeNo,           false);
+  vAddPrimitive("node.status",     &vNodeStatus,       false);
   
   vAddPrimitive("nodeCursor.begin",  &vNodeCursorBegin,  false);
   vAddPrimitive("nodeCursor.delete", &vNodeCursorDelete, false);
@@ -6018,6 +6022,50 @@ ENTRY("vGridInit");
 }
 
 /*----------------------------------------------------------------------------*/
+/* grid.started! -- set grid started                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartedStore(NNP_Task nnpTask)
+{
+  ENTRY("vGridSetStarted");
+  
+  Object* pPtrGrid;
+  i8 iStarted;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.started!");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iStarted) )
+    THROW_INVALID_PARAM("grid.started!");
+  
+  pGrid->vHasStarted(iStarted == 1 ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.started@ -- get grid started                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartedFetch(NNP_Task nnpTask)
+{
+  ENTRY("vGridGetStarted");
+  
+  Object* pPtrGrid;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.started@");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  nnpTask->m_xParamStack.vPush(pGrid->bHasStarted());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* iterate -- compile time of iterate ... next                      immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIterate(NNP_Task nnpTask)
@@ -7555,6 +7603,25 @@ ENTRY("vNodeNo");
   ASSERT(CN_NODE == pNode->eClass());
   
   nnpTask->m_xParamStack.vPush(pNode->iNodeNo());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.status -- get status of this node (of a grid)                         */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeStatus(NNP_Task nnpTask)
+{
+  ENTRY("vNodeStatus");
+
+  s256 s;
+  
+  if (Region::bTest(gxArguments.m_sRegionName))
+    String::vSprint(s.a(),"RapidsSE instance %s running", gxArguments.m_sRegionName.a());
+  else
+    String::vSprint(s.a(),"RapidsSE instance %s not running",gxArguments.m_sRegionName.a());
+  
+  nnpTask->m_xParamStack.vPush(s);
   
   EXIT();
 }

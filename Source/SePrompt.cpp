@@ -933,6 +933,7 @@ void SePrompt::vHelp(void)
   vTrace("rmten  -- drop tenant\n");
   vTrace("sel    -- select * from table\n");
   vTrace("space  -- pool space\n");
+  vTrace("status -- grid status\n");
   vTrace("sz     -- size of table\n");
   vTrace("tpch   -- tpch shorthand\n");
   vTrace("tr     -- truncate table\n");
@@ -1876,6 +1877,22 @@ bool SePrompt::bPoolSpace(void)
   
   ASSERT(String::bEqualTo(m_pToken[0],"space"));
     
+  if (!bExecuteRequest()) {
+    return false;
+  }
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* print node status                                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bNodeStatus(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"status"));
+  
   if (!bExecuteRequest()) {
     return false;
   }

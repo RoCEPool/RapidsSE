@@ -647,6 +647,10 @@ tp: addingPassOnToCP
     not assert
 
   loop
+
+  // set grid as started
+  true grid.this grid.started!
+
 ;
 
 /*============================================================================*/

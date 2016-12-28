@@ -32,16 +32,15 @@ tp: checkResult
     // lets see which node failed
     0 do
 
-    false == if  ( ... ec n# )R
+    false == if  ( ... ec n# )
 
-      "Node"  ( .... ec n# "Node" )
-      prepend ( ... ec "Node n#" )
-      " returned error " concat ( ... ec "Node n# returned error " )
-      prepend ( "NODE n# FAILED with ERROR " )
-      .
+      swap error.msg swap
+      "Node%i ERROR: %s" sprint .
+
     else
 
-      drop drop
+      drop drop  ( ... )
+
     then
 
     loop
@@ -63,13 +62,7 @@ tp: printResult
     0 do  ( s n# t | s n# f .... )
 
       assert // should be true
-
-      "Node"
-      prepend ( "Node#" s )
-      ": "
-      concat ( "Node#" s )
-      prepend .
-
+      "Node%i: %s"  sprint .
     loop
 
 
@@ -80,11 +73,8 @@ tp: printResult
 
       false == if ( s n# t | ec n# )
 
-        "Node"  ( .... ec n# "Node" )
-        prepend ( ... ec "Node n#" )
-        " returned error " concat ( ... ec "Node n# returned error " )
-        prepend ( "NODE n# FAILED with ERROR " )
-        .
+        swap error.msg swap
+        "Node%i ERROR: %s" sprint .
 
       else
 

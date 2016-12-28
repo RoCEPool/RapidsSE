@@ -522,6 +522,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bPoolSpace(pWords, iWords);
   }
   
+  if (String::bEqualTo("status",pWords[0],C_NO_CASE)) {
+    return bNodeStatus(pWords, iWords);
+  }
+  
   if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
     return bSizeTable(pWords, iWords);
   }
@@ -1246,6 +1250,27 @@ bool SEitf::bPoolSpace(char* pWords[], i8 iWords)
   }
   
   String::vConcat(a," space");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node status                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bNodeStatus(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vConcat(a," status");
   
   return bAppendRequest(sRequest);
 }

@@ -107,6 +107,13 @@ tp: resumedbyCoord
 
   tp: >>participant>
 
+  // check if grid has been started if number of nodes > 1
+  args.nodes 1 > if
+    grid.this grid.started@ true != if
+      "GRID NOT STARTED ..." . false
+    then
+  then
+
   // assert we are in loader subtask
   task.this task.name@ 2 0 substr "sl" streql assert
 
@@ -141,6 +148,14 @@ tp: resumedbyCoord
   // b) indirect call on stack is to be executed by all participants
 
 tp: >>participants>
+
+   // check if grid has been started if number of nodes > 1
+   args.nodes 1 > if
+     grid.this grid.started@ true != if
+       drop ( ) // drop the valsetr
+       EC_GRID_NOT_STARTED <FAILURE_RESULT> 1 false exit
+     then
+  then
 
   task.this task.name@ "req.task" streql assert
 
