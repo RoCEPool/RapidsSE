@@ -2011,6 +2011,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
   char* pf = sFormat.a();
   char* ps = sString.a();
   
+  /*
   while (*pf) {
     
     // test for ordinary character
@@ -2045,6 +2046,70 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
     // test for %i
     if ('i' == *pf) {
       
+      pf++;
+      
+      i8 iValue;
+      m_xParamStack.bPop(iValue);
+      
+      char aValue[32];
+      String::wToString(iValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+    
+    // just copy %?
+    *ps++ = '%';
+    *ps++ = *pf++;
+  }
+  
+  *pf = '\0';
+   
+  */
+  
+  while (*pf) {
+    
+    // test for ordinary character
+    if ('%' != *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // we have a '%'
+    pf++;
+    
+    // test for %%
+    if ('%' == *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // should be %v
+    ASSERT('v' == *pf);
+    
+    Value* pValue0 = m_xParamStack.pPeek(0);
+    
+    // test for strval
+    if (CN_STRVAL == pValue0->eClass()) {
+
+      *pf = 's';
+      pf++;
+      
+      s8K sValue;
+      m_xParamStack.bPop(sValue);
+      
+      for (char* pv = sValue.a(); *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+    
+    // test for intval
+    if (CN_INTVAL == pValue0->eClass()) {
+    
+      *pf = 'i';
       pf++;
       
       i8 iValue;
