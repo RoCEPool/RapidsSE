@@ -1,5 +1,3 @@
-
-
 /*============================================================================*/
 /* Task.cpp - task                                                            */
 /*============================================================================*/
@@ -7492,6 +7490,21 @@ ENTRY("vLocalsPush");
 void Task::vLocalsTo(NNP_Task nnpTask)
 {
 ENTRY("vLocalsTo");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // get name of local
+  nnpTask->vTokenNext();
+
+  Word* pWordLocal = nnpTask->pFindWord(nnpTask->m_sToken.a());
+  ASSERT(pWordLocal);
+ 
+  ValWsp xValWsp;
+  xValWsp = pWordLocal->iLocal();
+  
+  pCurrentWord->vEncode("push",&xValWsp);
+  pCurrentWord->vEncode("local.store");
+
   EXIT();
 }
 
