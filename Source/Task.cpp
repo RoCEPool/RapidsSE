@@ -426,58 +426,58 @@ void Task::vAddConstants(void)
   
   /*  0 */ vAddConstant("EC_NONE",                  EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT",                EC_ASSERT);
-  /*    */ vAddConstant("EC_BEGIN_TX_FAILED",       EC_BEGIN_TX_FAILED);
-  /*  2 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
+  /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED",       EC_BEGIN_TX_FAILED);
+  /*  3 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
 
-  /*  3 */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
-  /*    */ vAddConstant("EC_GRID_NOT_STARTED",      EC_GRID_NOT_STARTED);
+  /*  4 */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
+  /*  5 */ vAddConstant("EC_GRID_NOT_STARTED",      EC_GRID_NOT_STARTED);
   
-  /*  4 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
-  /*  5 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
-  /*  6 */ vAddConstant("EC_INVALID_FILE",          EC_INVALID_FILE);
-  /*  7 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
-  /*  8 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
-  /*  9 */ vAddConstant("EC_INVALID_PARAMETERS",    EC_INVALID_PARAMETERS);
-  /* 10 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
-  /* 11 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
+  /*  6 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
+  /*  7 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
+  /*  8 */ vAddConstant("EC_INVALID_FILE",          EC_INVALID_FILE);
+  /*  9 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
+  /* 10 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
+  /* 11 */ vAddConstant("EC_INVALID_PARAMETERS",    EC_INVALID_PARAMETERS);
+  /* 12 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
+  /* 13 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
   
-  /* 12 */ vAddConstant("EC_LOW_BUFFERS",           EC_LOW_BUFFERS);
+  /* 14 */ vAddConstant("EC_LOW_BUFFERS",           EC_LOW_BUFFERS);
   
-  /* 13 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
+  /* 15 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
   
-  /* 14 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
-  /* 15 */ vAddConstant("EC_NO_SUCH_DIRECTORY",     EC_NO_SUCH_DIRECTORY);
-  /* 16 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
-  /* 17 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
-  /* 18 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
-  /* 19 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
-  /* 20 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
+  /* 16 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
+  /* 17 */ vAddConstant("EC_NO_SUCH_DIRECTORY",     EC_NO_SUCH_DIRECTORY);
+  /* 18 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
+  /* 19 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
+  /* 20 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
+  /* 21 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
+  /* 22 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
   
-  /* 21 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
-  /* 22 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
-  /* 23 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
-  /* 24 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
-  /* 25 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
+  /* 23 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
+  /* 24 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
+  /* 25 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
+  /* 26 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
+  /* 27 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
   
-  /* 26 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
-  /* 27 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
-  /* 28 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
-  /* 29 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
-  /* 30 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
+  /* 28 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
+  /* 29 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
+  /* 31 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
+  /* 31 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
+  /* 32 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
   
-  /* 31 */ vAddConstant("EC_NULL_INTERFACE",        EC_NULL_INTERFACE);
-  /* 32 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
-  /* 33 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
-  /* 34 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
+  /* 33 */ vAddConstant("EC_NULL_INTERFACE",        EC_NULL_INTERFACE);
+  /* 34 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
+  /* 35 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
+  /* 36 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
   
-  /* 35 */ vAddConstant("EC_SEND_FAILURE",          EC_SEND_FAILURE);
-  /* 36 */ vAddConstant("EC_SE_NOT_RUNNING",        EC_SE_NOT_RUNNING);
+  /* 37 */ vAddConstant("EC_SEND_FAILURE",          EC_SEND_FAILURE);
+  /* 38 */ vAddConstant("EC_SE_NOT_RUNNING",        EC_SE_NOT_RUNNING);
   
-  /* 37 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
-  /* 38 */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
-  /* 39 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
-  /* 40 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
-  /* 41 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
+  /* 39 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /* 40 */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
+  /* 41 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
+  /* 42 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
+  /* 43 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
 
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
   /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
