@@ -62,6 +62,7 @@ Word::Word(const char* sName)
   m_bImmediate  = false;
   m_iDataBytes  = 0;
   m_pPrevWord   = nullptr;
+  m_iLocal      = 0;
 
   _setFooter_();
   
@@ -522,6 +523,26 @@ Cell* Word::pLastCell(void)
   Cell* pLast = reinterpret_cast<Cell*>(pcAdd((void*)this,sizeof(Word) + m_iDataBytes));
   
   return pPoolCheck<Cell*>(pLast);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set local variable number                                                  */
+/*----------------------------------------------------------------------------*/
+void Word::vLocal(i8 iLocal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_iLocal = iLocal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get local variable number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Word::iLocal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iLocal;
 }
 
 /*----------------------------------------------------------------------------*/

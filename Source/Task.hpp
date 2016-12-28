@@ -575,6 +575,8 @@ namespace Tasks
     static void vLoaderSubTable(NNP_Task nnpTask);
  
     // locals
+    static void vLocalFetch(NNP_Task nnpTask);
+    static void vLocalStore(NNP_Task nnpTask);
     static void vLocalsBar(NNP_Task nnpTask);
    
     // lock

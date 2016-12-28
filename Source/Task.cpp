@@ -906,7 +906,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
   vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
   
-  vAddPrimitive("locals|",         &vLocalsBar,        false);
+  vAddPrimitive("localFetch",      &vLocalFetch,       false);
+  vAddPrimitive("localStore",      &vLocalStore,       false);
+  vAddPrimitive("locals|",         &vLocalsBar,        true);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -7196,11 +7198,76 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
 // locals: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* localFetch -- push locals[n] onto pstack                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalFetch(NNP_Task nnpTask)
+{
+  ENTRY("vLocalFetch");
+  
+  if ( ! nnpTask->m_pLocalsFrame )
+    THROW_INVALID_PARAM("localFetch");
+  
+  i8 iLocal;
+  if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
+    THROW_INVALID_PARAM("localFetch");
+  
+  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* localStore -- pop pstack into locals[n]                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalStore(NNP_Task nnpTask)
+{
+  ENTRY("vLocalStore");
+  
+  if ( ! nnpTask->m_pLocalsFrame )
+    THROW_INVALID_PARAM("localStore");
+  
+  i8 iLocal;
+  if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
+    THROW_INVALID_PARAM("localStore");
+  
+  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* locals| -- declare set of locals                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsBar(NNP_Task nnpTask)
 {
-  ENTRY("vLocalsBar");
+ENTRY("vLocalsBar");
+  
+  // we have no local variables so far
+  nnpTask->m_nLocals = 0;
+  
+  // current dictionary
+  Dic* pDic = nnpTask->pDicPeek();
+  
+  for (;;) {
+    
+    // get name of local
+    nnpTask->vTokenNext();
+    
+    // end of locals declaration?
+    if (String::bEqualTo("|",nnpTask->m_sToken.a()))
+      break;
+
+    // create new word for local in current dictionary
+    Word* pWordLocal = new(pDic) Word(nnpTask->m_sToken.a());
+    
+    // set local variable number
+    pWordLocal->vLocal(nnpTask->m_nLocals);
+    nnpTask->m_nLocals++;
+  }
   
   EXIT();
 }

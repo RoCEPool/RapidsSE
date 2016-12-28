@@ -37,6 +37,7 @@ namespace Dictionaries
     Word*    m_pKind;       // kind of word
     bool     m_bImmediate;  // immediate execution during compile?
     Word*    m_pPrevWord;   // previous word in dictionary
+    i8       m_iLocal;      // local variable number
     i8       m_iDataBytes;  // number of data bytes
     TaskStep m_pDoesStep;   // "entry step" for this word
     Cell*    m_pDoesArg;    // "entry step" argument
@@ -85,6 +86,8 @@ namespace Dictionaries
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
+    i8    iLocal(void);
+    void  vLocal(i8 iLocal);
     s&    sName(void);
     Word* pPrevWord(void);
     void  vPrevWord(Word* pPrevWord);
