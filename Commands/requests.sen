@@ -745,6 +745,60 @@ tp: lf
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get space in the pool (run by participant)                                 */
+/*----------------------------------------------------------------------------*/
+: space$ ( "<tenantNm>" -- true )
+
+tp: gettingSpace
+
+  args.tracepoint if
+    "GETTING SPACE on NODE "args.node >str concat .
+  then
+
+  "Pool - Size(" 2 totalSpace number.magnitude concat ")" concat
+  " InUse(" 2 inUseSpace number.magnitude concat ")" concat
+  " Free(" 2 freeSpace number.magnitude concat ")" concat
+
+  concat concat
+
+  <SUCCESS_RESULT>
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: space$                                              */
+/*----------------------------------------------------------------------------*/
+: ~space (  )
+
+tp: spaceOnAll
+
+  // the indirect word to be called
+  "space$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  // space$ to be executed by all participants
+  >>participants> ( bool )
+
+  tp: spaceOnAllDone
+
+  printResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* get space in the pool                                                      */
+/*----------------------------------------------------------------------------*/
+: space ( -- <R> )
+
+  ~space ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* get free space in the pool                                                 */
 /*----------------------------------------------------------------------------*/
 : getFreeSpace ( -- <R> )

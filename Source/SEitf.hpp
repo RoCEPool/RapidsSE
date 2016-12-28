@@ -113,6 +113,7 @@ namespace Interface
     bool bGetTable(char* pWords[], i8 iWords);
     bool bInUseTable(char* pWords[], i8 iWords);
     bool bRetTable(char* pWords[], i8 iWords);
+    bool bPoolSpace(char* pWords[], i8 iWords);
     bool bSizeTable(char* pWords[], i8 iWords);
     bool bTruncateTable(char* pWords[], i8 iWords);
     

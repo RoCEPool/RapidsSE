@@ -1875,36 +1875,11 @@ bool SePrompt::bPoolSpace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   ASSERT(String::bEqualTo(m_pToken[0],"space"));
+    
+  if (!bExecuteRequest()) {
+    return false;
+  }
   
-  i8 iFree;
-  i8 iInUse;
-  i8 iTotal;
-  
-  s256 sFree;
-  s256 sInUse;
-  s256 sTotal;
-
-  String::vCopy(m_pToken[0], "getTotalSpace");
-  if (!bExecuteRequest())
-    return false;
-  iTotal = String::iToI8(m_sResponse.a());
-  Magnitudes::vMagnitude(iTotal, 2, sTotal.a());
-             
-  String::vCopy(m_pToken[0], "getInUseSpace");
-  if (!bExecuteRequest())
-    return false;
-  iInUse = String::iToI8(m_sResponse.a());
-  Magnitudes::vMagnitude(iInUse, 2, sInUse.a());
-             
-  String::vCopy(m_pToken[0], "getFreeSpace");
-  if (!bExecuteRequest())
-    return false;
-  iFree = String::iToI8(m_sResponse.a());
-  Magnitudes::vMagnitude(iFree, 2, sFree.a());
-             
-  vTrace("Pool: Size(%s) InUse(%s) Free(%s)\n",
-         sTotal.a(), sInUse.a(), sFree.a());
-  m_sResponse = "<ok>";
   return true;
 }
 
