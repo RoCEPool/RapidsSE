@@ -912,8 +912,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
   vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
   
-  vAddPrimitive("localFetch",      &vLocalFetch,       false);
-  vAddPrimitive("localStore",      &vLocalStore,       false);
+  vAddPrimitive("local.fetch",     &vLocalFetch,       false);
+  vAddPrimitive("local.store",     &vLocalStore,       false);
   vAddPrimitive("locals|",         &vLocalsBar,        true);
   vAddPrimitive("locals.pop",      &vLocalsPop,        false);
   vAddPrimitive("locals.push",     &vLocalsPush,       false);
@@ -3638,7 +3638,7 @@ ENTRY("vSee");
   s8K sWorkspace;
   
 //  while ((char*)pCell < pcAdd(pWord->pDataArea(),pWord->iDataBytes())) {
-  while (pCell <= pWord->pLastCell()) {
+  while (pCell < pWord->pLastCell()) {
  
     Word* pDoesWord = nnpTask->m_xDicStack.pFindStep(*pCell->m_ppDoesStep);
 
@@ -3697,6 +3697,9 @@ ENTRY("vSemicolon");
     
     // reset the number of local variables
     nnpTask->m_nLocals = 0;
+    
+    // pop top dictionary
+    nnpTask->vDicDrop();
   }
   
   nnpTask->vCurrentWord(nullptr);
@@ -7348,18 +7351,18 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
 // locals: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* localFetch -- push locals[n] onto pstack                                   */
+/* local.fetch -- push locals[n] onto pstack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalFetch(NNP_Task nnpTask)
 {
   ENTRY("vLocalFetch");
   
   if ( ! nnpTask->m_pLocalsFrame )
-    THROW_INVALID_PARAM("localFetch");
+    THROW_INVALID_PARAM("local.fetch");
   
   i8 iLocal;
   if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
-    THROW_INVALID_PARAM("localFetch");
+    THROW_INVALID_PARAM("local.fetch");
   
   ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
   
@@ -7433,10 +7436,12 @@ ENTRY("vLocalsBar");
     // encode the word
     xValWsp = nnpTask->m_nLocals;
     pWordLocal->vEncode("push",&xValWsp);
+    pWordLocal->vEncode("local.fetch");
     pWordLocal->vEncode("exit");
 
     // initialise the local from pstack
-    pWordLocal->vEncode("to",&xValWsp);
+    pCurrentWord->vEncode("push",&xValWsp);
+    pCurrentWord->vEncode("local.store");
     
     nnpTask->m_nLocals++;
   }
@@ -7482,7 +7487,7 @@ ENTRY("vLocalsPush");
 }
 
 /*----------------------------------------------------------------------------*/
-/* to -- store value into local variable                            immediate */
+/* to -- compile store value into local variable                    immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsTo(NNP_Task nnpTask)
 {
