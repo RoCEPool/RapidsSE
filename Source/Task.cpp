@@ -624,10 +624,6 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("accept",          &vAccept,           false);
   vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("again",           &vFlowAgain,            true );
-  vAddPrimitive("again_",          &vFlowAgain_,           false);
-  vAddPrimitive("begin",           &vFlowBegin,            true );
-  vAddPrimitive("begin_",          &vFlowBegin_,           false);
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive("(int)",           &vCastInt,          false);
@@ -645,10 +641,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("do",              &vFlowDo,               true );
-  vAddPrimitive("do_rt",           &vFlowDo_RT,            false);
   vAddPrimitive("does>",           &vDoes,             true );
-  vAddPrimitive("else",            &vFlowElse,             true );
   vAddPrimitive("encodeCall",      &vEncodeCall,       false);
   vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
   vAddPrimitive("encodeEmb",       &vEncodeEmb,        true );
@@ -671,7 +664,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
-  vAddPrimitive("if",              &vFlowIf,               true );
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("interpreting",    &vInterpreting,     false);
   vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
@@ -680,22 +672,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("isImmediate",     &vIsImmediate,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
-  vAddPrimitive("iterate",         &vFlowIterate,          true );
-  vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A,     false);
-  vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B,     false);
   vAddPrimitive("j",               &vJ,                false);
-  vAddPrimitive("jump",            &vFlowJump,             false);
-  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,        false);
-  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,         false);
   vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("loop",            &vFlowLoop,             true );
-  vAddPrimitive("loop_rt",         &vFlowLoop_RT,          false);
-  vAddPrimitive("+loop",           &vFlowLoopPlus,         true );
-  vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,      false);
   vAddPrimitive("magic@",          &vMagicFetch,       false);
   vAddPrimitive("magic!!",         &vMagicMark,        false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
-  vAddPrimitive("next",            &vFlowNext,             true );
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
@@ -708,7 +689,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(".\\n",            &vPutNewline,       false);
   vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
-  vAddPrimitive("repeat",          &vFlowRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
@@ -718,7 +698,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
-  vAddPrimitive("then",            &vFlowThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
   vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   vAddPrimitive("'",               &vTick,             true );
@@ -734,10 +713,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("traceOn",         &vTraceOn,          false);
   vAddPrimitive("tracePoint",      &vTracePoint,       false);
   vAddPrimitive("trace!",          &vTraceSet,         false);
-  vAddPrimitive("unloop",          &vFlowUnloop,           false);
-  vAddPrimitive("until",           &vFlowUntil,            true );
   vAddPrimitive("wake",            &vWake,             false);
-  vAddPrimitive("while",           &vFlowWhile,            true );
   
   //----------------------------------------------------------
   vAddPrimitive("args.partition",  &vArgsPartition, false);
@@ -847,6 +823,31 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("file.read",       &vFileRead,         false);
   vAddPrimitive("file.readRecord", &vFileReadRecord,   false);
   vAddPrimitive("file.write",      &vFileWrite,        false);
+  
+  vAddPrimitive("again",           &vFlowAgain,        true );
+  vAddPrimitive("again_",          &vFlowAgain_,       false);
+  vAddPrimitive("begin",           &vFlowBegin,        true );
+  vAddPrimitive("begin_",          &vFlowBegin_,       false);
+  vAddPrimitive("do",              &vFlowDo,           true );
+  vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
+  vAddPrimitive("else",            &vFlowElse,         true );
+  vAddPrimitive("if",              &vFlowIf,           true );
+  vAddPrimitive("iterate",         &vFlowIterate,      true );
+  vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
+  vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B, false);
+  vAddPrimitive("jump",            &vFlowJump,         false);
+  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
+  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
+  vAddPrimitive("loop",            &vFlowLoop,         true );
+  vAddPrimitive("loop_rt",         &vFlowLoop_RT,      false);
+  vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
+  vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,  false);
+  vAddPrimitive("next",            &vFlowNext,         true );
+  vAddPrimitive("repeat",          &vFlowRepeat,       true );
+  vAddPrimitive("then",            &vFlowThen,         true );
+  vAddPrimitive("unloop",          &vFlowUnloop,       false);
+  vAddPrimitive("until",           &vFlowUntil,        true );
+  vAddPrimitive("while",           &vFlowWhile,        true );
   
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
@@ -8170,7 +8171,7 @@ void Task::vRegPop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg.push -- begin using row cursor                                         */
+/* reg.push -- push a register set                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vRegPush(NNP_Task nnpTask)
 {
