@@ -1527,6 +1527,47 @@ void Task::vDebug(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop dic                                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vDicDrop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (m_pSEitf)
+    m_pSEitf->vPopDic();
+  else
+    m_xDicStack.vDiscard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek dic                                                                   */
+/*----------------------------------------------------------------------------*/
+Dic* Task::pDicPeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Dic* pDic = nullptr;
+  
+  if (m_pSEitf)
+    pDic = m_pSEitf->pDicStack()->pPick(0);
+  else
+    pDic = m_xDicStack.pPick(0);
+  
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push dic                                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vDicPush(Dic* pDic)
+{
+  if (m_pSEitf)
+    m_pSEitf->vPushDic(pDic);
+  else
+    m_xDicStack.vPush(pDic);
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
