@@ -3699,6 +3699,8 @@ ENTRY("vSemicolon");
     nnpTask->m_nLocals = 0;
   }
   
+  nnpTask->vCurrentWord(nullptr);
+  
   EXIT();
 }
 
