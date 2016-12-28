@@ -909,6 +909,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("localFetch",      &vLocalFetch,       false);
   vAddPrimitive("localStore",      &vLocalStore,       false);
   vAddPrimitive("locals|",         &vLocalsBar,        true);
+  vAddPrimitive("to",              &vLocalsTo,         true);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -7269,6 +7270,15 @@ ENTRY("vLocalsBar");
     nnpTask->m_nLocals++;
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* to -- store value into local variable                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsTo(NNP_Task nnpTask)
+{
+ENTRY("vLocalsTo");
   EXIT();
 }
 

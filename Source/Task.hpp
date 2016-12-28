@@ -578,6 +578,7 @@ namespace Tasks
     static void vLocalFetch(NNP_Task nnpTask);
     static void vLocalStore(NNP_Task nnpTask);
     static void vLocalsBar(NNP_Task nnpTask);
+    static void vLocalsTo(NNP_Task nnpTask);
    
     // lock
     static void vLockDropRead(NNP_Task nnpTask);
