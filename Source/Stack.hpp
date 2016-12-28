@@ -88,6 +88,8 @@ namespace Structures
     void   vReset(void);
     i8     iValues(void);
     
+    Value* pTopValue(void);
+    
   private:
     Value* pGetValue(i8 iValue);
     void   vPushBy(i8 iBytes);
@@ -96,7 +98,6 @@ namespace Structures
     void   vPushVal(Value* pValue);
     Value* pStackBase(void);
     Value* pStackLimit(void);
-    Value* pTopValue(void);
     
     Footer* pFooter(void);
     Footer* pHazard(void);

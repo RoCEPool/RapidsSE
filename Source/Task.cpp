@@ -2989,6 +2989,11 @@ ENTRY("vExit");
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
     nnpTask->vTracePoint("<");
   
+  if (nnpTask->m_pLocalsFrame &&
+        nnpTask->m_pLocalsFrame->pStackPtr() ==
+         (void*)nnpTask->m_xReturnStack.pTopValue())
+    nnpTask->vLocalsPop();
+  
   void* pCellVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
     THROW_INVALID_RETURN("exit");
@@ -7441,6 +7446,8 @@ void Task::vLocalsPush(NNP_Task nnpTask)
 ENTRY("vLocalsPush");
   
   RegFrame* pLocalsFrame = new RegFrame;
+  
+  pLocalsFrame->vStackPtr(nnpTask->m_xReturnStack.pTopValue());
   
   pLocalsFrame->vNext(nnpTask->m_pLocalsFrame);
   
