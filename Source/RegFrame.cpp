@@ -46,7 +46,8 @@ RegFrame::RegFrame(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
 
-  m_pNext = nullptr;
+  m_pNext     = nullptr;
+  m_pStackPtr = nullptr;
   //m_xValReg
   
   _checkInitialised_(CN_REGFRAME);
@@ -97,6 +98,26 @@ void RegFrame::vNext(RegFrame* pNext)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
   
   m_pNext = pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stack pointer                                                          */
+/*----------------------------------------------------------------------------*/
+void* RegFrame::pStackPtr(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  return m_pStackPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stack pointer                                                          */
+/*----------------------------------------------------------------------------*/
+void RegFrame::vStackPtr(void* pStackPtr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  m_pStackPtr = pStackPtr;
 }
 
 /*----------------------------------------------------------------------------*/

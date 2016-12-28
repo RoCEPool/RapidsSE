@@ -3579,36 +3579,6 @@ ENTRY("vRdtscp");
 }
 
 /*----------------------------------------------------------------------------*/
-/* repeat -- repeat a begin-while-repeat loop                       immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowRepeat(NNP_Task nnpTask)
-{
-ENTRY("vRepeat");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-
-  void* pWhileJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
-    THROW_INVALID_RETURN("repeat");
-  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
-  
-  //-------------------------------------------------------------------------
-
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("repeat");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-
-  pCurrentWord->vEncode("jump",pBeginLoc);
-  
-  //-------------------------------------------------------------------------
-  
-  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* retryPoint -- mark retry point                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vRetryPoint(NNP_Task nnpTask)
@@ -3698,6 +3668,9 @@ ENTRY("vSemicolon");
   pCurrentWord->vEncode("exit");
   
   nnpTask->m_bCompiling = false;
+  
+  // reset the number of local variables
+  nnpTask->m_nLocals = 0;
   
   EXIT();
 }
@@ -6045,6 +6018,36 @@ void Task::vFlowIf(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* repeat -- repeat a begin-while-repeat loop                       immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowRepeat(NNP_Task nnpTask)
+{
+  ENTRY("vRepeat");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pWhileJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
+    THROW_INVALID_RETURN("repeat");
+  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("repeat");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  pCurrentWord->vEncode("jump",pBeginLoc);
+  
+  //-------------------------------------------------------------------------
+  
+  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
 // grid: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -7358,17 +7361,17 @@ void Task::vLocalStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locals| -- declare set of locals                                           */
+/* locals| -- declare set of locals                                immediate  */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsBar(NNP_Task nnpTask)
 {
 ENTRY("vLocalsBar");
   
-  // we have no local variables so far
-  nnpTask->m_nLocals = 0;
+  Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // current dictionary
   Dic* pDic = nnpTask->pDicPeek();
+
+  ValWsp xValWsp;
   
   for (;;) {
     
@@ -7379,11 +7382,32 @@ ENTRY("vLocalsBar");
     if (String::bEqualTo("|",nnpTask->m_sToken.a()))
       break;
 
+    // test for first use of locals|
+    if ( ! nnpTask->m_nLocals ) {
+      
+      // create a locals dictionary
+      pDic = new Dic;
+      nnpTask->vDicPush(pDic);
+      
+      // enocde locals frame push
+      pCurrentWord->vEncode("locals.push");
+    }
+    
     // create new word for local in current dictionary
     Word* pWordLocal = new(pDic) Word(nnpTask->m_sToken.a());
     
-    // set local variable number
+    // set word as local variable
+    pWordLocal->vWordType(WT_LOCAL);
     pWordLocal->vLocal(nnpTask->m_nLocals);
+    
+    // encode the word
+    xValWsp = nnpTask->m_nLocals;
+    pWordLocal->vEncode("push",&xValWsp);
+    pWordLocal->vEncode("exit");
+
+    // initialise the local from pstack
+    pWordLocal->vEncode("to",&xValWsp);
+    
     nnpTask->m_nLocals++;
   }
   
@@ -7426,7 +7450,7 @@ ENTRY("vLocalsPush");
 }
 
 /*----------------------------------------------------------------------------*/
-/* to -- store value into local variable                                      */
+/* to -- store value into local variable                            immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalsTo(NNP_Task nnpTask)
 {

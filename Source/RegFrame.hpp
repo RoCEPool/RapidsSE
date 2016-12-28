@@ -14,6 +14,7 @@ namespace Tasks
   {
   public:
     RegFrame* m_pNext;
+    void*     m_pStackPtr;
     ValReg    m_xValReg[C_VALREGS];
     
     // must be last
@@ -30,6 +31,9 @@ namespace Tasks
     
     RegFrame* pNext(void);
     void      vNext(RegFrame* pRegFrame);
+
+    void*     pStackPtr(void);
+    void      vStackPtr(void* pStackPtr);
     
     ValReg* pValReg(i8 iReg);
     
