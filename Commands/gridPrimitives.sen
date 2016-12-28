@@ -21,12 +21,12 @@ args.nodes ptrArray: pQueues
 args.nodes ptrArray: senderQueues
 
 /*----------------------------------------------------------------------------*/
-: to_TASK    >reg0 ;
+: to_CALLER  >reg0 ;
 : to_QUEUE   >reg1 ;
 : to_TASKSET >reg2 ;
 : to_THREAD  >reg3 ;
 
-: _TASK      reg0 ;
+: _CALLER    reg0 ;
 : _QUEUE     reg1 ;
 : _TASKSET   reg2 ;
 : _THREAD    reg3 ;
@@ -241,13 +241,13 @@ tp: haveValset
 tp: >callerAux
 
   // transfer to callers stack
-  reg0 ( <<result>> callingTask )
+  _CALLER ( <<result>> callingTask )
 
 tp: ontoCallersAux
   >auxStack ( )
 
   // signal caller
-  reg0 ( caller )
+  _CALLER ( caller )
   task.signal ( )
 ;
 
@@ -259,7 +259,7 @@ tp: ontoCallersAux
 /*----------------------------------------------------------------------------*/
 : setCaller ( caller -- ; reg0 == caller )
 
-  >reg0 ( )
+  to_CALLER ( )
 tp: reg0HasCaller
 
   true
@@ -270,7 +270,7 @@ tp: reg0HasCaller
 /*----------------------------------------------------------------------------*/
 : setSender ( sender -- ; reg1 == sender )
 
-  >reg1 ( )
+  to_QUEUE ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
 tp: reg1HasSender
 
   true
@@ -295,7 +295,7 @@ tp: reg1HasSender
 
   reg.push
 
-  ppTasks @ >reg0
+  ppTasks @ to_CALLER
 
   >callerAux
 
@@ -480,23 +480,23 @@ tp: addingPassOnToCP
 : interlinkParts ( -- )
 
   // attach queue to task
-  reg1 ( queue )
-  reg0 ( queue task )
+  _QUEUE ( queue )
+  _CALLER ( queue task )
   task.queue! ( )
 
   // put task in taskset
-  reg0 ( task )
-  reg2 ( task taskset )
+  _CALLER ( task )
+  _TASKSET ( task taskset )
   taskset.append ( )
 
   // attach taskset to thread
-  reg2 ( taskset )
-  reg3 ( taskset thread )
+  _TASKSET ( taskset )
+  _THREAD ( taskset thread )
   thread.taskset! ( )
 
   // record taskset in task
-  reg2 ( taskset )
-  reg0 ( task )
+  _TASKSET ( taskset )
+  _CALLER ( task )
   task.taskset! ( )
 ;
 
@@ -558,10 +558,10 @@ tp: addingPassOnToCP
 
   reg.push
 
-  dup ".task"    concat :task    execute >reg0  // reg0 has task
-  dup ".queue"   concat :queue   execute >reg1  // reg1 has queue
-  dup ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-  dup ".thread"  concat :thread  execute >reg3  // reg3 has thread
+  dup ".task"    concat :task    execute to_CALLER  // reg0 has task
+  dup ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
+  dup ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
+  dup ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
 
   interlinkParts
 
@@ -577,10 +577,10 @@ tp: addingPassOnToCP
 
   reg.push
 
-  dup ".task"    concat :task    execute >reg0  // reg0 has task
-  dup ".queue"   concat :queue   execute >reg1  // reg1 has queue
-  dup ".taskset" concat :taskset execute >reg2  // reg2 has taskset
-  dup ".thread"  concat :thread  execute >reg3  // reg3 has thread
+  dup ".task"    concat :task    execute to_CALLER  // reg0 has task
+  dup ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
+  dup ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
+  dup ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
 
   interlinkParts
 
