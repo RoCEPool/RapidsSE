@@ -28,21 +28,44 @@ namespace Dictionaries
     /*  5 */ "ENUMS",
   };
   
+  enum eDT // distributed type
+  {
+    /*  0 */ DT_NONE=0,          // none
+    /*  1 */ DT_ALLPARTICIPANTS, // word is distributed to all participants
+    /*  2 */ DT_ONEPARTICIPANT,  // word is distributed to one participants
+    /*  3 */ DT_NOPARTICIPANT,   // word is not distributed to any participants
+    /*  4 */ DT_ENUMS
+  };
+  
+  static const char* const pDT[]
+  {
+    /*  0 */ "NONE",
+    /*  1 */ "ALLPARTICIPANTS",
+    /*  2 */ "ONEPARTICIPANT",
+    /*  3 */ "NOPARTICIPANT",
+    /*  5 */ "ENUMS",
+  };
+  
   class Word : public Object
   {
     friend class Dic;
     
   private:
-    s32      m_sName;       // the name of this word
-    eWT      m_eWordType;   // type of word
-    Dic*     m_pDic;        // which dictionary this word in
-    Word*    m_pKind;       // kind of word
-    bool     m_bImmediate;  // immediate execution during compile?
-    Word*    m_pPrevWord;   // previous word in dictionary
-    i8       m_iLocal;      // local variable number
-    i8       m_iDataBytes;  // number of data bytes
-    TaskStep m_pDoesStep;   // "entry step" for this word
-    Cell*    m_pDoesArg;    // "entry step" argument
+    s32      m_sName;        // the name of this word
+    eWT      m_eWordType;    // type of word
+    eDT      m_eDistributed; // distributed
+    Dic*     m_pDic;         // which dictionary this word in
+    Word*    m_pKind;        // kind of word
+    Word*    m_pParticipant; // allParticipant/oneParticipant word
+    
+    bool     m_bImmediate;   // immediate execution during compile?
+    
+    i8       m_nParams;      // number of parameters
+    Word*    m_pPrevWord;    // previous word in dictionary
+    i8       m_iLocal;       // local variable number
+    i8       m_iDataBytes;   // number of data bytes
+    TaskStep m_pDoesStep;    // "entry step" for this word
+    Cell*    m_pDoesArg;     // "entry step" argument
     // ..data.. (being an array of cells)
     
    public:

@@ -55,14 +55,17 @@ Word::Word(const char* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_sName       = sName;
-  m_eWordType   = WT_ROUTINE;
-  //m_pDic      = pDic;
-  m_pKind       = gpWord ? gpWord : this;
-  m_bImmediate  = false;
-  m_iDataBytes  = 0;
-  m_pPrevWord   = nullptr;
-  m_iLocal      = 0;
+  m_sName        = sName;
+  m_eWordType    = WT_ROUTINE;
+  m_eDistributed = DT_NOPARTICIPANT;
+  //m_pDic       = pDic;
+  m_pKind        = gpWord ? gpWord : this;
+  m_pParticipant = nullptr;
+  m_bImmediate   = false;
+  m_nParams      = 0;
+  m_iDataBytes   = 0;
+  m_pPrevWord    = nullptr;
+  m_iLocal       = 0;
 
   _setFooter_();
   
