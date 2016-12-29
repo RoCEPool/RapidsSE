@@ -36,20 +36,21 @@ int: connections
     args.port args.node + >str "Listening on port " swap concat .
   then
 
-  args.port args.node + socket.listen
-  >r
+  args.port args.node + socket.listen ( socket )
+
+  locals| listeningSocket |
 
   0 connections !
   begin
 
 tp: waitingOnAccept
-"con.task" find execute tp: con.task drop
-    r0 socket.accept
-"con.task" find execute tp: con.task drop
+
+    listeningSocket socket.accept
+
 tp: socketAccepted
 
     args.verbose if
-      "accepted connection on port "  args.port args.node + >str concat .
+      "accepted connection on port " args.port args.node + >str concat .
     then
 
   // start receiver
