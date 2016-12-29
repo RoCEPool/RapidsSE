@@ -3688,36 +3688,39 @@ ENTRY("vSee");
   
   vTrace("See: %s\n",pWord->sName().a());
   
-  Cell* pCell = pWord->pDoesArg();
+  Cell* pDoesCell = pWord->pDoesArg();
   
-  while (pCell < pWord->pLastCell()) {
+  Word* pDoesWord = (Word*)( ((u8)pDoesCell & (u8)~0xFFFF)
+                             + sizeof(HeapBuffer));
+
+  while (pDoesCell < pDoesWord->pLastCell()) {
  
-    Word* pDoesWord = nnpTask->m_xDicStack.pFindStep(*pCell->m_ppDoesStep);
+    Word* pCallsWord = nnpTask->m_xDicStack.pFindStep(*pDoesCell->m_ppDoesStep);
 
     // jumps
-    if ( *pCell->m_ppDoesStep == Task::vFlowJump ||
-         *pCell->m_ppDoesStep == Task::vFlowJumpFalse ||
-         *pCell->m_ppDoesStep == Task::vFlowJumpTrue ) {
+    if ( *pDoesCell->m_ppDoesStep == Task::vFlowJump ||
+         *pDoesCell->m_ppDoesStep == Task::vFlowJumpFalse ||
+         *pDoesCell->m_ppDoesStep == Task::vFlowJumpTrue ) {
       
-      vTrace("%p: %s",pCell,pDoesWord->sName().a());
+      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
       
-      pCell++;
+      pDoesCell++;
       
-      vTrace(" %p\n",pCell->m_pJumpTo);
+      vTrace(" %p\n",pDoesCell->m_pJumpTo);
       
-      pCell++;
+      pDoesCell++;
       
       continue;
     }
     
     // push
-    if ( *pCell->m_ppDoesStep == Task::vPush ) {
+    if ( *pDoesCell->m_ppDoesStep == Task::vPush ) {
       
-      vTrace("%p: %s",pCell,pDoesWord->sName().a());
+      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
       
-      pCell++;
+      pDoesCell++;
       
-      ValWsp* pValue = reinterpret_cast<ValWsp*>(pCell);
+      ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
       
       if (CN_STRVAL == pValue->eClass()) {
         vTrace(" \"%s\"\n",pValue->sStr());
@@ -3728,27 +3731,26 @@ ENTRY("vSee");
       }
 
       i8 iBytes = pValue->iSize();
-      pCell = reinterpret_cast<Cell*>(pcAdd(pCell,iBytes));
+      pDoesCell = reinterpret_cast<Cell*>(pcAdd(pDoesCell,iBytes));
 
       continue;
     }
     
     // enterRoutine
-    if ( *pCell->m_ppDoesStep == Task::vEnterRoutine ) {
+    if ( *pDoesCell->m_ppDoesStep == Task::vEnterRoutine ) {
       
-      Word* pCallsWord = (Word*)( ((u8)pCell->m_ppDoesStep & (u8)~0xFFFF)
+      Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppDoesStep & (u8)~0xFFFF)
                                   + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n",pCell,pCallsWord->sName().a());
-      pCell++;
+      vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
+      pDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n",pCell,pDoesWord->sName().a());
+    vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
     
-    pCell++;
-    
+    pDoesCell++;
   }
   
   EXIT();
