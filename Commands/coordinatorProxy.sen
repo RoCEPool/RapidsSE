@@ -13,15 +13,8 @@
 
 tp: coordinator
 
-  // push a register frame
-  reg.push
+  locals| forwardTask actorNo |
 
-  >r ( actorNo )
-  >r ( )
-  // r0 has actorNo (nodeNo)
-  // r1 has forwardTask
-
-  //"CP " r1 >str concat .
   begin
 
     depth 0 != if "stack of task has grown" . debug.trap then
@@ -31,21 +24,15 @@ tp: coordinator
 
     addSetCaller ( << <<call*>> <<caller>> >> )
 
-    r1 >taskQueue;a> ( ... )
+    forwardTask >taskQueue;a> ( ... )
 
     // have receiver pass indirect result onto participant proxy
     addPassBackToPP
 
-    reg1                                                           //! NOT RIGHT
+    0                                                              //! NOT RIGHT
     >sndQueue
 
   0 until
-
-  rdrop
-  rdrop
-
-  // pop a register frame
-  reg.pop
 ;
 
 /*============================================================================*/
