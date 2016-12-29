@@ -6,8 +6,12 @@
 
 : column: ;
 
-: makeColumns ( table --  )
-   table.dic {{ "columns" :dic drop }}
+//: makeColumns ( table --  ) table.dic {{ "columns" :dic drop }} ;
+
+: makeColumns ( "<tableNm>" -- )
+
+  find execute ( dic )
+  table.dic {{ "columns" :dic drop }}
 ;
 
 : withinColumns
@@ -39,41 +43,93 @@
     :constant
 ;
 
-: addColumn ( "<columnType>" "<columnName" -- <result> )
+: checkAddColumn ( -- true | eEC false )
 
-    :column
+  checkInTables not if false exit then
 
-    true
+  true
 ;
 
+/*----------------------------------------------------------------------------*/
+/* add a column (run by participant)                                          */
+/*----------------------------------------------------------------------------*/
+: addColumn$ ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
+
+  args.tracepoint if
+    dup "ADDING COLUMN " swap concat " on NODE " concat args.node >str concat .
+  then
+
+tp: addingColumn
+  pushTable   assert // not if false exit then
+
+  pushColumns assert // not if false exit then
+
+  :column
+
+  popColumns
+
+  popTable
+
+  true <SUCCESS_RESULT>
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: addColumn$                                          */
+/*----------------------------------------------------------------------------*/
+: ~addColumn ( "<columnType>" "<columnNm>" "<tableNm>" -- )
+
+tp: addColOnAll
+
+  // set indirect call to be addColumn
+  >r >r >r $$ r> r> r> "addColumn$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+  tp: addColOnAllDone
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* list columns of a table                                                    */
+/*----------------------------------------------------------------------------*/
 : listColumns ( -- )
 
-    ""                             // initial ls string
-    0 dic.pick dic.last            // get last word of current dic
-    dup                            // setup iteration of words
-    iterate                        //
+  pushTable     assert
+  pushColumns   assert
 
-      object@ word.name            // column name
+  ""                             // initial ls string
+  0 dic.pick dic.last            // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
 
-      " " concat
-      object@ execute concat       // column type
+    object@ word.name            // column name
 
-      swap
+    " " concat
+    object@ execute concat       // column type
 
-      dup strlen
-      if " , " swap concat then    //
+    swap
 
-      concat                       // prepend column to ls
+    dup strlen
+    if " , " swap concat then    //
 
-      object@ prevWord object!     // step backwards thru words
+    concat                       // prepend column to ls
 
-    next                           //
+    object@ prevWord object!     // step backwards thru words
 
-    //"\n" concat
+  next                           //
 
+  //"\n" concat
+
+  popColumns
+  popTable
 ;
-
-
 
 /*============================================================================*/
 /* end                                                                        */

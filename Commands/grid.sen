@@ -11,6 +11,84 @@
 
 : isGrid word.kind@ ' grid eql ;
 
+: <SUCCESS_RESULT> args.node true ( v n# true ) ;
+
+: <FAILURE_RESULT> args.node false ( ec n# false ) ;
+
+/*----------------------------------------------------------------------------*/
+/* check grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: checkResult ( b n# t | ec n# f .... nn t/f )
+
+tp: checkResult
+
+  // was the final result true ?
+  true == if  ( b n# t | ec n# f .... nn )
+
+    // drop the rest of the result
+    depth dropN ( )
+
+  else
+    // lets see which node failed
+    0 do
+
+    false == if  ( ... ec n# )
+
+      swap error.msg swap
+      "Node%v ERROR: %v" sprint .
+
+    else
+
+      drop drop  ( ... )
+
+    then
+
+    loop
+
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* print grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: printResult ( s n# t | ec n# f .... nn t/f )
+
+tp: printResult
+
+  // was the final result true ?
+  true == if ( s n# t | ec n# f .... nn )
+
+    // pretty print the results resturned
+    0 do  ( s n# t | s n# f .... )
+
+      assert // should be true
+      "Node%v: %v"  sprint .
+    loop
+
+
+  else
+
+    // lets see which node failed
+    0 do  ( s n# t | ec n# f .... )
+
+      false == if ( s n# t | ec n# )
+
+        swap error.msg swap
+        "Node%v ERROR: %v" sprint .
+
+      else
+
+        drop drop
+
+      then
+
+    loop
+
+  then
+
+;
+
+
 /*----------------------------------------------------------------------------*/
 /* create a grid using name from input stream                                 */
 /*----------------------------------------------------------------------------*/
@@ -22,6 +100,7 @@
     word.this >body CN_GRID class!
     word.this >body grid.init
     ' grid word.this word.kind!
+    word.this >body object.wordbody
     does>
 ;
 
@@ -36,6 +115,7 @@
     word.this >body CN_GRID class!
     word.this >body grid.init
     ' grid word.this word.kind!
+    word.this >body object.wordbody
     word.this
     does>
 ;

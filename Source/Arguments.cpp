@@ -20,7 +20,8 @@ Arguments::Arguments(void)
   m_nPartitions = 1;
   m_iNode       = 0;
   m_nNodes      = 1;
-  m_iPort       = 8421;
+  m_iPort       = 5000;
+  m_bTracepoint = false;
   
 #ifdef __APPLE__
   m_sCommands   = "../../../../Commands";
@@ -51,6 +52,7 @@ Arguments::Arguments(void)
   m_bUnitTests  = false;
   m_bVerbose    = false;
   m_bWelcome    = true;
+  m_iSleep      = 1;
   
   m_iPartition  = 0;
   
@@ -318,6 +320,11 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    if (String::bEqualTo("--tracepoint",argv[iArg],C_NO_CASE)) {
+      m_bTracepoint = true;
+      continue;
+    }
+    
     if (String::bEqualTo("--tracing",argv[iArg],C_NO_CASE)) {
       m_bTracing = true;
       continue;
@@ -340,6 +347,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     if (String::bEqualTo("--nowelcome",argv[iArg],C_NO_CASE)) {
       m_bWelcome = false;
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--sleep",argv[iArg],C_NO_CASE)) {
+      m_iSleep = String::iToI8(argv[++iArg]);
       continue;
     }
     

@@ -1,0 +1,40 @@
+/*============================================================================*/
+/* coordinatorProxy.sen -- coordinator proxy task                             */
+/*============================================================================*/
+
+"coordinatorProxy.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* coordinator proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: cp.loop ( actorNo forwardTask -- )
+
+  "cp.loop" task.this task.comment!
+
+tp: coordinator
+
+  locals| forwardTask actorNo |
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    taskQueue> ( valset )
+
+    addSetCaller ( << <<call*>> <<caller>> >> )
+
+    forwardTask >taskQueue;a> ( ... )
+
+    // have receiver pass indirect result onto participant proxy
+    addPassBackToPP
+
+    0                                                              //! NOT RIGHT
+    >sndQueue
+
+  0 until
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

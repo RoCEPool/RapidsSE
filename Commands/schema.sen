@@ -6,7 +6,8 @@
 
 : schema ;
 
-: makeSchemas {{ "schemas" :dic ' folder swap execute dic.kind! }} ;
+//: makeSchemas {{ "schemas" :dic ' folder swap execute dic.kind! }} ;
+
 
 : :schema
     :dic
@@ -33,6 +34,147 @@
 : checkIsNotSchema ( word )
   dup findInCurrent not if true exit then
   EC_SCHEMA_EXISTS false
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable schema folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
+
+  checkInSchemas   not if false exit then
+  checkIsNotSchema not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a schemas folder under given named catalog                            */
+/*----------------------------------------------------------------------------*/
+: makeSchemas ( "<catalogNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING SCHEMAS FOR CATALOG " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  find execute ( dic )
+  "schemas"    ( dic "schemas" )
+  swap         ( "schemas" dic )
+  :folder      ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a schema folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeSchema$ ( "<schemaNm>" -- true )
+
+tp: makingSchema
+
+  args.tracepoint if
+    dup "MAKING SCHEMA " swap concat " on NODE " concat args.node >str concat .
+  then
+
+    dup ( "<schemaNm>" )
+
+    :schema ( "<schemaNm>" ^schema )
+
+    drop ( "<schemaNm>" )
+
+    makeTables ( )
+
+    true <SUCCESS_RESULT>
+
+    true
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeSchema$                                         */
+/*----------------------------------------------------------------------------*/
+: ~makeSchema ( "<schemaNm>" -- )
+
+tp: mkSchOnAll
+
+  // set indirect call to be makeSchema
+  $$ swap "makeSchema$"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: mkSchOnAllDone
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable schema folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkRemoveSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
+
+  dup ( "<schemaNm>" "<schemaNm>" )
+
+  checkInSchemas not if false exit then ( "<schemaNm>" word )
+  checkIsWord    not if false exit then ( "<schemaNm>" word )
+  checkIsSchema  not if false exit then ( "<schemaNm>" word )
+  checkNotUsed   not if false exit then ( "<schemaNm>" word )
+
+  drop ( "<schemaNm>" )
+
+  true ( "<schemaNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchema$ ( "<schemaNm>" -- true )
+
+tp: removeSchema$
+
+  args.tracepoint if
+    dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  :forget ( )
+
+  true <SUCCESS_RESULT>
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchema ( "<schemaNm>" -- true )
+
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
+  then
+
+  removeSchema$
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: ~removeSchema ( "<schemaNm>" -- )
+
+tp: rmSchOnAll
+
+  // set indirect call to be dropCatalog
+  $$ swap "removeSchema"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: rmSchOnAllDone
+
+  checkResult
 ;
 
 /*============================================================================*/

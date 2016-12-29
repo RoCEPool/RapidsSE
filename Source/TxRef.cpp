@@ -94,6 +94,9 @@ bool TxRef::bBeginTx(void)
   
   m_pTx = gpTxMap->pBeginTx();
   
+  if (m_pTx == nullptr)
+    return false;
+  
   m_pTx->vPhase(TP_EXECUTING);
   
   return true;

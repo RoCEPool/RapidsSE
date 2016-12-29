@@ -28,12 +28,12 @@ int main(int argc, const char* argv[])
 //  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
   
   
-  Timer xTimer;
-  xTimer.vStart();
-  PosixThread::vSleepMicro(500);
-  xTimer.vUpdate();
-  
-  printf("Timert %lld\n",xTimer.iMicroseconds());
+//  Timer xTimer;
+//  xTimer.vStart();
+//  PosixThread::vSleepMicro(500);
+//  xTimer.vUpdate();
+//  
+//  printf("Timert %lld\n",xTimer.iMicroseconds());
   
   const char *aRelDbg;
 #ifdef _DEBUG
@@ -60,8 +60,8 @@ int main(int argc, const char* argv[])
 
   Dir xDir;
   s256 sCurrent;
-  if (xDir.bGetCurrent(sCurrent))
-    printf("dir: %s\n",sCurrent.a());
+//  if (xDir.bGetCurrent(sCurrent))
+//    printf("dir: %s\n",sCurrent.a());
   
   
 //  vTrace("Task::vWord %p\n",Task::vWord);
@@ -82,8 +82,8 @@ int main(int argc, const char* argv[])
   // change working directory to commands dir
   bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
   // ignore error
-  if (xDir.bGetCurrent(sCurrent))
-    printf("dir: %s\n",sCurrent.a());
+//  if (xDir.bGetCurrent(sCurrent))
+//    printf("dir: %s\n",sCurrent.a());
   
   
   // kill previous

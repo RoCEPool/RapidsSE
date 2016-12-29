@@ -36,6 +36,7 @@ namespace DBobjects
     void    vNext(void);
     Row*    pRow(void);
     char*   pRowAsStr(void);
+    RowBuffer* pRowBuffer(void);
     Table*  pTable(void);
     void    vTable(Table* pTable);
     

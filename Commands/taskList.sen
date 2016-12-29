@@ -12,6 +12,7 @@
     word.this >body magic!!
     word.this >body CN_TASKLIST class!
     word.this >body tasklist.init
+    word.this >body object.wordbody
     does> 
 ;
 
@@ -22,6 +23,7 @@
     word.this >body magic!!
     word.this >body CN_TASKCURSOR class!
     word.this >body taskcursor.init
+    word.this >body object.wordbody
     does>
 ;
 

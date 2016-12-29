@@ -89,12 +89,15 @@ void Row::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes)\n",
+  StrVal* pStr = (StrVal*)pData();
+  
+  vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n",
          this,
          m_iTxId,
          m_iDataBytes,
          pData(),
-         String::iSize(pData())
+         String::iSize(pData()),
+         pStr->sStr()
          );
 }
 

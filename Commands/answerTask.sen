@@ -5,58 +5,83 @@
 "AnswerTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
+/* define the ans actor (ans.task, ans.queue, ans.taskset, ans.thread)        */
 /*----------------------------------------------------------------------------*/
+actor: ans
 
-queue:   answerQueue
-
-taskset: answerTaskSet
-
-thread:  answerThread
+/*----------------------------------------------------------------------------*/
+/* declare connections variable to keep the number of connections             */
+/*----------------------------------------------------------------------------*/
+int: connections
 
 /*----------------------------------------------------------------------------*/
 /* start the answer task                                                      */
 /*----------------------------------------------------------------------------*/
 : answerStart
 
-    // set up answer task
-    0 "answerLoop" nullPtr task.new answerTaskSet taskSet.append
+  0 "ans.loop"
 
-    // set up the answer thread
-    answerTaskSet  answerThread thread.taskset!
-    "answerThread" answerThread thread.name!
-                   answerThread thread.spawn
+  "ans" actor.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* answer loop                                                                */
 /*----------------------------------------------------------------------------*/
-: answerLoop
+: ans.loop
 
-    "renaming to Answer Task" .putVerbose
+  answerTaskPrint if "Answer running..." . then
 
-    "answerTask" task.this task.name!
+  args.verbose if
+    "waiting for connections on port "  args.port args.node + >str concat .
+    args.port args.node + >str "Listening on port " swap concat .
+  then
 
-    answerQueue  task.this task.queue!
+  args.port args.node + socket.listen ( socket )
 
-    answerTaskPrint if "Answer running..." . then
+  locals| listeningSocket |
 
-    "waiting for connections on port "  5000 args.node + >str concat .
+  0 connections !
+  begin
 
-    5000 args.node + >str "Listening on port " swap concat .
-    5000 args.node + socket.listen
-    >r
+tp: waitingOnAccept
 
-    begin
+    listeningSocket socket.accept
 
-      r0 socket.accept
-      //"accepted connection on port "  5000 args.node + >str concat .
+tp: socketAccepted
 
-      // start receiver
-      "starting receiver" .
-      0 "receiver.loop" "receiver" receiverForm
+    args.verbose if
+      "accepted connection on port " args.port args.node + >str concat .
+    then
 
-    0 until
+  // start receiver
+  //"starting receiver" .
+
+ddlLock.grabWrite
+
+    // set up the seed
+    1 "rcv.loop" ( socket 1 "rcv.loop" )
+
+    // create the actor
+    "rr" connections @ >str concat ( socket 1 "rcv.loop" "rrI" )
+    :actor ( socket 1 "rcv.loop" "rrI" )
+
+    // spawn the actors os thread
+    actor.spawn
+
+ddlLock.dropWrite
+
+    connections @          ( connection# )
+    1 +                    ( connections# 1 )
+    dup                    ( connections# connections# )
+    connections !          ( connections# )
+
+    1  == if               ( connection# )
+      args.node 0 != if
+        connectorStart
+      then
+    then
+      
+  0 until
 ;
 
 /*============================================================================*/

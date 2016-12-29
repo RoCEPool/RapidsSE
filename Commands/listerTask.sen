@@ -17,20 +17,18 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 /* start the lister task                                                      */
 /*----------------------------------------------------------------------------*/
-
 : listerStart
 
-     0 "listerLoop" nullPtr task.new listerTaskSet taskSet.Append
+   0 "lis.loop" nullPtr task.new listerTaskSet taskSet.Append
 
-     listerTaskSet  listerThread thread.taskset!
-     "listerThread" listerThread thread.name!
-                    listerThread thread.spawn
+   listerTaskSet  listerThread thread.taskset!
+   "listerThread" listerThread thread.name!
+                  listerThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* lister iteration                                                           */
 /*----------------------------------------------------------------------------*/
-
 : iterateTaskList
 
     listerTaskPrint if
@@ -56,8 +54,7 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 /* lister task loop                                                           */
 /*----------------------------------------------------------------------------*/
-
-: listerLoop
+: lis.loop
 
     "listerTask" task.this task.name!
 

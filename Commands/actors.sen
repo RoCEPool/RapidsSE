@@ -4,16 +4,10 @@
 
 "actors.sen" .putVerbose
 
-int: queryCount
-
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
 "reclaimTask.sen" >>:
 "requestTask.sen" >>:
-"senderTask.sen"  >>:
-"receiverTask.sen" >>:
-"answerTask.sen" >>:
-"connectorTask.sen" >>:
 
 "generalThread.sen" >>:
 
@@ -24,22 +18,18 @@ int: queryCount
 
   "startActors" .putVerbose
 
-  bgtasks if
+  args.bgtasks if
 
     snooze generalThreadStart
 
     snooze listerStart
     snooze monitorStart
     snooze reclaimStart
-    //snooze answerStart
-    //snooze connectorStart
+    snooze answerStart
+
   then
 
   //dic.main true dic.frozen!
-
-  //  debug.trap
-
-  //  "requestProcessingLoop" find execute
 
   requestStart
   ;

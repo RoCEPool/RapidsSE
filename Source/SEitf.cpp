@@ -334,14 +334,14 @@ void SEitf::vResponseQueue(Queue* pResponseQueue)
 /*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
-void SEitf::vBeginTx()
+bool SEitf::bBeginTx()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pTxRef = new TxRef();
   //vTrace("txref: %x\n", m_pTxRef);
   bool bResult = m_pTxRef->bBeginTx();
-  ASSERT(bResult);
+  return bResult;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,6 +352,17 @@ void SEitf::vCommitTx()
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   bool bResult = m_pTxRef->bCommitTx();
+  ASSERT(bResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end a tx                                                                   */
+/*----------------------------------------------------------------------------*/
+void SEitf::vEndTx()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  bool bResult = m_pTxRef->bEndTx();
   ASSERT(bResult);
   m_pTxRef = nullptr;
 }
@@ -431,6 +442,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bGetDicContents(pWords);
   }
   
+  if (String::bEqualTo("lfG",pWords[0],C_NO_CASE)) {
+    return bGetDicContentsG(pWords);
+  }
+  
   if (String::bEqualTo("lscat",pWords[0],C_NO_CASE)) {
     return bListCatalogs(pWords, iWords);
   }
@@ -467,6 +482,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return bCreateTenant(pWords, iWords);
   }
   
+  if (String::bEqualTo("pRB",pWords[0],C_NO_CASE)) {
+    return bPrintRowBuffer(pWords);
+  }
+  
   if (String::bEqualTo("pwf",pWords[0],C_NO_CASE)) {
     return bGetDicPath(pWords);
   }
@@ -497,6 +516,14 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   
   if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
     return bSelectTable(pWords, iWords);
+  }
+  
+  if (String::bEqualTo("space",pWords[0],C_NO_CASE)) {
+    return bPoolSpace(pWords, iWords);
+  }
+  
+  if (String::bEqualTo("status",pWords[0],C_NO_CASE)) {
+    return bNodeStatus(pWords, iWords);
   }
   
   if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
@@ -1207,6 +1234,48 @@ bool SEitf::bRetTable(char* pWords[], i8 iWords)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pool space                                                             */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPoolSpace(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vConcat(a," space");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node status                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bNodeStatus(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vConcat(a," status");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
 /* size of table                                                              */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bSizeTable(char* pWords[], i8 iWords)
@@ -1437,6 +1506,20 @@ bool SEitf::bGetDicContents(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
+/* get dictionary contents                                                    */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bGetDicContentsG(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(String::bEqualTo(pWords[0],"lfG"));
+  sRequest = "lfG";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get monitor string                                                         */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bGetMonitor(char* pWords[])
@@ -1517,6 +1600,26 @@ bool SEitf::bPing(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print row buffer                                                           */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bPrintRowBuffer(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  char* a = sRequest.a();
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+
+  ASSERT(String::bEqualTo(pWords[0],"pRB"));
+  String::vConcat(a," pRB");
+  
   return bAppendRequest(sRequest);
 }
 
@@ -1615,7 +1718,7 @@ bool SEitf::bAppendRequest(s& sRequest)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop response from reponse queue (response is from pointer in seitf(shm))   */
+/* pop response from response queue (response is from pointer in seitf(shm))  */
 /*----------------------------------------------------------------------------*/
 eEC SEitf::eGetResponse(void)
 {
@@ -1634,7 +1737,7 @@ eEC SEitf::eGetResponse(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop response from reponse queue                                            */
+/* pop response from response queue                                           */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bPopResponse(eEC& eResult, s& sResponse)
 {

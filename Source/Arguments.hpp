@@ -19,6 +19,7 @@ namespace StorageEngine
     i8    m_iNode;       // this node number
     i8    m_nNodes;      // out of this number of nodes
     i8    m_iPort;       // port number
+    bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
     
     // commands
@@ -45,6 +46,7 @@ namespace StorageEngine
     bool m_bUnitTests;  // run unit tests
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
+    i8   m_iSleep;      // sleep period for yield (temporary)
     
     // seitf options
     i8   m_iPartition;  // which partition

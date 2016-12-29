@@ -61,13 +61,17 @@ Word::Word(const char* sName)
   m_pKind       = gpWord ? gpWord : this;
   m_bImmediate  = false;
   m_iDataBytes  = 0;
-  
+  m_pPrevWord   = nullptr;
+  m_iLocal      = 0;
+
   _setFooter_();
   
-  m_pDoesStep = &Tasks::Task::vEnterRoutine;
-  m_pDoesArg  = pFirstCell();
-  
+  m_pDoesStep   = &Tasks::Task::vEnterRoutine;
+  m_pDoesArg    = pFirstCell();
+
   _checkInitialised_(CN_WORD);
+  
+  m_pDic->vAddWord(this);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 }
@@ -317,7 +321,7 @@ void Word::vDump(void)
          pStepWord ? pStepWord->sName().a() : "<not-found>",
          pFirstCell()
          );
-  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
@@ -326,17 +330,34 @@ void Word::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("%sWord %p: %s %s %s DataBytes %lld "
+  vTrace("%sWord %p: %s (%s) %s %s DataBytes %lld "
          "Step %p ..Data.. %p\n",
          pTab,
          this,
          m_sName.a(),
+         m_pDic->sName().a(),
          pWT[m_eWordType],
          m_bImmediate ? "Immediate" : "Not Immediate",
          m_iDataBytes,
          m_pDoesStep,
          pFirstCell()
          );
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump dictionary                                                            */
+/*----------------------------------------------------------------------------*/
+void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_WORD);
+  ASSERT(pObject->eClass() == CN_WORD);
+  
+  Word* pWord = reinterpret_cast<Word*>(pObject);
+  
+  pWord->vDump(pTab);
+  
+  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //  pWord->vDump();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -347,6 +368,7 @@ void Word::vEncode(const char* aWord)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   Word* pCalledWord = gpMainDic->pFind(aWord);
+  ASSERT(pCalledWord);
   
   vAppend(pCalledWord->ppDoesStep());
 }
@@ -502,6 +524,26 @@ Cell* Word::pLastCell(void)
   Cell* pLast = reinterpret_cast<Cell*>(pcAdd((void*)this,sizeof(Word) + m_iDataBytes));
   
   return pPoolCheck<Cell*>(pLast);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set local variable number                                                  */
+/*----------------------------------------------------------------------------*/
+void Word::vLocal(i8 iLocal)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_iLocal = iLocal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get local variable number                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Word::iLocal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iLocal;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -7,6 +7,9 @@
 
 extern Heap* gpMediumHeap;
 
+#include "Arguments.hpp"
+extern Arguments gxArguments;
+
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
@@ -832,6 +835,9 @@ void Parser::vReadLineStdin(void)
   ASSERT(! m_bEOF);
   
   m_pRawChar = m_sRawLine.a();
+  
+  if (gxArguments.m_bTracepoint)
+    PosixThread::vSleepMilli(300);
   
   printf("%s",m_sPrompt.a());
   fflush(stdin);

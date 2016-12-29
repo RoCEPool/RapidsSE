@@ -22,6 +22,11 @@ private:
   bool      m_bContinue;  // continue processing commands?
   s32       m_sPrompt;    // prompt
   bool      m_bUseString; // use string
+
+  bool      m_bEcho;      // echo response?
+  
+  bool      m_bExpect;    // is there an expected response?
+  s8K       m_sExpect;    // the expected response;
   
   s8K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
@@ -57,6 +62,12 @@ private:
   
   bool bProcessCommand(bool bPostProcess = true);
   
+  void vSetEcho(void);
+  void vClearEcho(void);
+  void vSetExpect(void);
+  void vClearExpect(void);
+  void vClipTokens(i8 nTokens);
+  
   bool bExecuteRequest(void);
   bool bGetFirstRow(void);
   bool bGetNextRow(void);
@@ -85,11 +96,14 @@ private:
   bool bEndInsert(void);
   bool bInsertRow(void);
   bool bListDir(void);
+  bool bNodeStatus(void);
   bool bPoolSpace(void);
   bool bPrintWorkingDir(void);
   bool bReturnTable(void);
 
   bool bUseSchema(void);
+  
+  bool bSleep(void);
   
   Footer* pFooter(void);
 };

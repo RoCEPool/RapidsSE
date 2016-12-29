@@ -1,0 +1,188 @@
+/*============================================================================*/
+/* gridCalls -- grid calls                                                    */
+/*============================================================================*/
+
+"gridCalls" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* create the grid actors C, PP, CP and P                                     */
+/*----------------------------------------------------------------------------*/
+: createGridActors
+
+  /*
+
+    r->C->PP-> (snd ... rcv) ->CP->P
+       |
+       +->P
+
+  */
+
+  args.nodes 0 do
+
+    //
+    // participant for node I
+    //
+
+    0 "p.loop"
+
+    "p" I >str concat :actor
+    dup actor.queue I pQueues !
+    dup actor.task  I pTasks  !
+    actor.spawn
+
+    //
+    // coordinator proxy for node I
+    //
+
+    I I pTasks @ 2 "cp.loop"
+    "cp" I >str concat :actor
+    dup actor.queue I cpQueues !
+    dup actor.task  I cpTasks  !
+    actor.spawn
+
+    //
+    // partitipant proxy for node I
+    //
+
+    I args.node == if
+      I I pTasks  @ 2 "pp.loop"
+    else
+      I I cpTasks @ 2 "pp.loop"
+    then
+
+    "pp" I >str concat :actor
+    dup actor.queue I ppQueues !
+    dup actor.Task  I ppTasks  !
+    actor.spawn
+
+  loop
+
+  //
+  // coordinator for this node
+  //
+  0 "c.loop"
+  "c" :actor  ( 0 "c.loop" "c" )
+
+  actor.spawn
+
+  args.verbose if
+    cpQueuesDump
+  then
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+createGridActors
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* queue an indirect call set to the coordinator and wait for indirect result */
+/*----------------------------------------------------------------------------*/
+: >coordinator> ( <<call*>> -- <<result>> )
+
+tp: >coordinator>
+
+/*
+  // could be task such as req.task or ld#.task
+
+  addSetCaller ( << <<call*>> <<caller>> >> )
+*/
+
+  // target actor is coordinator
+  c.task >taskQueue;a> ( <<result>> )
+
+tp: resumedbyCoord
+
+  // we expect an indirect result
+;
+
+/*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to participant on a node to execute  */
+/*----------------------------------------------------------------------------*/
+: >>participant> ( <<call>> nodeNo -- bool )
+
+  // a) we are in loader sub task
+  // b) indirect call on stack is to be executed by participant on given nodeNo
+
+  tp: >>participant>
+
+  // check if grid has been started if number of nodes > 1
+  args.nodes 1 > if
+    grid.this grid.started@ true != if
+      "GRID NOT STARTED ..." . false
+    then
+  then
+
+  // assert we are in loader subtask
+  task.this task.name@ 2 0 substr "sl" streql assert
+
+  // save the node number
+  >r
+
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
+
+  // add indirect call to participant on given node
+  r> addSendParticipant ( <<call>> )
+
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
+
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
+
+  // we should have a true result
+  //assert
+
+  // return true
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to each participant to execute       */
+/*----------------------------------------------------------------------------*/
+: >>participants> ( <<$$>> -- bool )
+
+  // a) we are in request task (req.task)
+  // b) indirect call on stack is to be executed by all participants
+
+tp: >>participants>
+
+   // check if grid has been started if number of nodes > 1
+   args.nodes 1 > if
+     grid.this grid.started@ true != if
+       drop ( ) // drop the valsetr
+       EC_GRID_NOT_STARTED <FAILURE_RESULT> 1 false exit
+     then
+  then
+
+  task.this task.name@ "req.task" streql assert
+
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
+
+  // add indirect call to participants
+  addSendParticipants ( <<call>> )
+
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
+
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
+
+  valset>
+
+  // drop number of values
+  drop
+
+  // we should have a true result
+  //assert
+
+  // return true
+  //true
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

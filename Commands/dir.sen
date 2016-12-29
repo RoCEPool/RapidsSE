@@ -22,6 +22,7 @@
     word.this >body CN_DIR class!
     ' dir word.this word.kind!
     word.this >body dir.init
+    word.this >body object.wordbody
     does>
 ;
 
@@ -36,6 +37,7 @@
     word.this >body CN_DIR class!
     ' dir word.this word.kind!
     word.this >body dir.init
+    word.this >body object.wordbody
     word.this
     does>
 ;

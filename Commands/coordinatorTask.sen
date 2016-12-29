@@ -1,0 +1,277 @@
+/*============================================================================*/
+/* coordinatorTask.sen -- coordinator task                                    */
+/*============================================================================*/
+
+"coordinatorTask.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* execute all indirect call processing loop                                  */
+/*----------------------------------------------------------------------------*/
+: c.loop
+
+  "c.loop" task.this task.comment!
+
+  task.this task.thread assert
+
+  // push a register frame
+  reg.push
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    taskQueue> ( valset )
+
+    exeAll
+
+    // convert indirect result into valset
+    //>result ( valset )
+
+    // assert that exeAll returned true
+    assert
+
+    // move result from astack tp pstack
+    a>
+
+    // put indirect result onto aux stack of caller and signal
+    >callerAux ( )
+
+  0 until
+
+  // pop a register frame
+  reg.pop
+;
+
+/*----------------------------------------------------------------------------*/
+/* put indirect call into participant proxy queue                             */
+/*----------------------------------------------------------------------------*/
+: enqueuePP ( indirect targetNodeNo -- )
+
+  ppTasks @
+
+  >taskQueue
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to each participant to execute             */
+/*----------------------------------------------------------------------------*/
+: sendParticipantsPARALLEL // parallel form
+
+  args.nodes task.this task.acks!
+
+tp: acksExpected
+
+  >valset
+
+  >r
+
+  args.nodes 0 do
+
+    2 rpick
+
+    valset>
+
+    I
+
+    enqueuePP
+
+  loop
+
+  rdrop
+
+  task.suspend
+
+  // move from aux to parameter stack
+  a>
+
+  // note that each participant will always return a valset
+  // that valset may be empty if the indirect word executed
+  // doesnt return a value
+
+//traceon
+  true >r
+
+  begin
+    depth while
+    valset> drop
+    not if
+      rdrop false >r
+    then
+  repeat
+
+  r>
+//traceoff
+
+tp: allResponded
+;
+
+int: finalResult
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: sendParticipants ( <<!>> -- true ) // serial Form
+
+  // a) in coordinator (on the originating node)
+  // b) the caller of the coordinator is in reg0 (would be req.task)
+  // c) valset on stack to be forwarded to all particpants
+  //    that valset contains one or more indirect calls
+
+tp: sendParticipants
+
+  // layer this task as caller into nested valset << <<!>> <<caller>> >>
+  addSetCaller
+
+  // move nested valset to rstack (this gives a reusable copy)
+  >r
+
+tp: movedToRstack
+
+  // now send nested valset to each participant
+  args.nodes 0 do
+
+    // set ack of 1 (because its the serial form)
+    1 task.this task.acks!
+
+tp: expectingAcks
+
+    // get copy of nested valset << <<!>> <<caller>> >> from rstack
+    2 rpick
+
+    // get ppTasks[node#]
+    I
+
+    enqueuePP
+
+    // suspend here
+    task.suspend
+
+    // now resumed...
+
+tp: resumed
+
+  loop // each node
+
+  // each node:
+  //   << v nn t | ec nn f >>
+
+  // <<  v,n,t v,n,t ec,n,f v,n,t #n  t|f >>
+
+  true finalResult !
+
+  $$
+tp: $$
+
+  // now scan resultset from each participant
+  args.nodes 0 do
+
+    // move from aux to parameter stack
+    a>
+
+    tp: haveResultSet
+
+    // non-nested response valset << true >> will be on stack
+    valset>
+
+    tp: expandedResult
+
+    // drop the number of values that were in valset
+    drop
+
+    assert
+
+    // check if value is t/f
+    dup false == if
+      0 finalResult !
+    then
+
+  loop
+
+  args.nodes
+
+  finalResult @
+
+tp: alldone
+
+  $$>valset
+
+  >a
+
+  // drop the << <<!>> <<caller>> >> of rstack
+  rdrop
+
+  // return true
+  true
+
+  tp: allResponded
+;
+
+/*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to a given participant to execute          */
+/*----------------------------------------------------------------------------*/
+: sendParticipant ( <<!>> participant# -- true )
+
+  // a) in coordinator (on the originating node)
+  // b) the caller of the coordinator is in reg0 (would be req.task)
+  // c) valset on stack to be forwarded to participant on given node
+  //    that valset contains one or more indirect calls
+
+tp: "- - - - - - - - - "
+tp: sendParticipant
+
+  // save participant# onto rstack
+  >r
+
+  // layer this task as caller into nested valset << <<!>> <<caller>> >>
+  addSetCaller
+
+  // set ack of 1
+  1 task.this task.acks!
+
+tp: expectingAcks
+
+  // using participant# on rstack get ppTask
+  r>
+
+  enqueuePP
+
+  // suspend here
+  task.suspend
+
+  // now resumed...
+
+tp: resumed
+
+  $$
+
+  // move from aux to parameter stack
+  a>
+
+tp: haveResultSet
+
+  // non-nested response valset << true >> will be on stack
+  valset>
+
+tp: expandedResult
+
+  // drop the number of values that were in valset
+  drop
+
+  // we are expecting a true
+  assert
+
+  1 // number of nodes ( single participant responded )
+
+  true  // all passed
+
+  $$>valset
+  >a
+
+  // return true
+  true
+
+tp: allResponded
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

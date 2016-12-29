@@ -9,6 +9,7 @@
 namespace DBobjects
 {
   static const i8 C_BUFFER_THRESHOLD = 100;
+  static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
   
   class RowBuffer : public Buffer
   {
@@ -24,6 +25,7 @@ namespace DBobjects
     void  operator delete(void*);
     
     RowBuffer(void);
+    RowBuffer(i8 iDataBytes);
     ~RowBuffer(void);
     
     static RowBuffer* pNewRowBuffer(void);
@@ -46,8 +48,10 @@ namespace DBobjects
     
     bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
-  private:
     Object* pDataArea(void);
+    
+  private:
+    
     i8      iFreeSpace(void);
   };
   

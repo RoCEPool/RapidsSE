@@ -7,7 +7,21 @@
 "node.sen" >>:
 "grid.sen" >>:
 "nodeCursor.sen" >>:
+
 "gridPrimitives.sen" >>:
+
+"coordinatorTask.sen" >>:
+"participantProxy.sen" >>:
+"coordinatorProxy.sen" >>:
+"participantTask.sen" >>:
+"receiverTask.sen" >>:
+"senderTask.sen" >>:
+
+"connectorTask.sen" >>:
+"answerTask.sen" >>:
+
+"gridCalls.sen" >>:
+"ddlLocking.sen" >>:
 
 /*============================================================================*/
 /* end                                                                        */

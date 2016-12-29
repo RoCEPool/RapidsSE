@@ -4,12 +4,29 @@
 
 "table.sen" .putVerbose
 
+int: queryCount
+
 /*----------------------------------------------------------------------------*/
 /* table is use as a kind of word to identify tables                          */
 /*----------------------------------------------------------------------------*/
 : table ;
 
-: makeTables {{ "tables" :dic ' folder swap execute dic.kind! }} ;
+//: makeTables {{ "tables" :dic ' folder swap execute dic.kind! }} ;
+
+/*----------------------------------------------------------------------------*/
+/* make a tables folder under given named schema                              */
+/*----------------------------------------------------------------------------*/
+: makeTables ( "<schemaNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING TABLES FOR SCHEMA " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  find execute ( dic )
+  "tables"     ( dic "tables" )
+  swap         ( "tables" dic )
+  :folder      ( )
+;
 
 : isTable word.kind@ ' table eql ;
 
@@ -23,6 +40,7 @@
     word.this >body magic!!
     word.this >body CN_TABLE class!
     word.this >body table.init
+    word.this >body object.wordbody
     ' table word.this word.kind!
     does>
 ;
@@ -37,6 +55,7 @@
     word.this >body magic!!
     word.this >body CN_TABLE class!
     word.this >body table.init
+    word.this >body object.wordbody
     ' table word.this word.kind!
     word.this
     does>
@@ -56,13 +75,63 @@
     EC_NOT_IN_TABLES false
 ;
 
-: checkIsTable ( word )
+/*----------------------------------------------------------------------------*/
+/* check word is a table                                                      */
+/*----------------------------------------------------------------------------*/
+/*
+: checkIsTableOld ( "<tableNm>" -- ^w:table true | errorCode false )
 
-  dup not if drop EC_NO_SUCH_TABLE false exit then
+  find ( ^w:table )
 
-  dup word.kind@ ' table eql if true exit then
-  drop
-  EC_NOT_A_TABLE false
+  dup not ( ^w:table bool )
+  if
+    drop EC_NO_SUCH_TABLE false ( errorCode false )
+    exit
+  then
+
+  dup ( ^w:table ^w:table )
+  word.kind@ ( ^w:table ^word )
+  ' table ( ^w:table ^word ^word )
+  eql ( ^w:table bool )
+  if
+    true ( ^w:table true )
+    exit
+  then
+
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
+;
+*/
+//------------------------------------------------------------------------------
+: checkIsTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
+
+  dup ( "<tableNm>" "<tableNm>" )
+
+  find ( "<tableNm>" ^w:table )
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+  not ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    drop ( )
+    EC_NO_SUCH_TABLE false ( errorCode false )
+  exit
+  then
+
+  dup ( "<tableNm>" ^w:table ^w:table )
+
+  word.kind@ ( "<tableNm>" ^w:table ^word )
+  ' table ( "<tableNm>" ^w:table ^word ^word )
+  eql ( "<tableNm>" ^w:table bool )
+  if
+    drop ( "<tableNm>" )
+    true ( "<tableNm>" true )
+    exit
+  then
+
+  drop ( "<tableNm>" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
 ;
 
 : checkIsNotTable ( word )
@@ -73,11 +142,9 @@
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
-    find
-
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    execute table.dic dic.push
+    find execute table.dic dic.push
 
     true
 ;
@@ -87,15 +154,13 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-: get_tableRef ( "<tableNm>" -- <R> )
+: getTableRef ( "<tableNm>" -- <R> )
 
     checkInTables not if false exit then
 
-    find
-
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    execute ( table )
+    find execute ( table )
 
     task.this task.seitf@ seitf.tableRef
 
@@ -103,7 +168,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-: return_tableRef ( )
+: returnTableRef ( )
 
     task.this task.seitf@ seitf.tableDeref
 
@@ -113,13 +178,210 @@
 /*----------------------------------------------------------------------------*/
 /* any outstanding table references                                           */
 /*----------------------------------------------------------------------------*/
-: tableInUse ( ^ table -- <R> )
+: tableInUse ( "<tableNm>" -- <R> )
 
-    table.ref if true exit then
+  find execute
 
-    false
+  table.ref
+  if true else false then
 ;
 
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable table                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
+
+  checkInTables   not if false exit then
+  checkIsNotTable not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable table folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveTable ( "<tableNm>" -- "<tableNm>" true | "<tableNm>" errorCode false )
+
+  checkInTables not if false exit then ( "<tableNm>" )
+  checkIsTable not if false exit then ( "<tableNm>" )
+  dup tableInUse if EC_TABLE_IN_USE false exit then ( "<tableNm>" )
+
+  true ( "<tableNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a tenant (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: makeTable$ ( "<tableNm>" -- true )
+
+tp: makingTable
+
+  args.tracepoint if
+    dup "MAKING TABLE " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  dup ( "<tableNm>" "<tableNm>" )
+
+  :table ( "<tableNm>" ^table )
+
+  drop ( "<tableNm>" )
+
+  // forward reference :-(
+  "makeColumns" find execute
+
+  true <SUCCESS_RESULT>
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeTable$                                          */
+/*----------------------------------------------------------------------------*/
+: ~makeTable ( "<tableNm>" -- )
+
+tp: mkTblOnAll
+
+  // set indirect call to be makeTable
+  $$ swap "makeTable$"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: mkTblOnAllDone
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable$ ( "<tableNm>" -- true )
+
+tp: removeTable$
+
+  dup
+
+  find execute
+  table.truncate
+
+  :forget
+
+  true <SUCCESS_RESULT>
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable ( "<tableNm>" -- true )
+
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
+  then
+
+  removeTable$
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: ~removeTable ( "<tableNm>" -- )
+
+tp: rmTblOnAll
+
+  // set indirect call to be dropTable
+  //"removeTable" 2 ( "<tableNm>" "dropTable" 2 )
+  $$ swap "removeTable"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: rmTblOnAllDone
+
+  checkResult
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeTable ( "<tableNm>" -- "<size>" )
+
+  find execute ( table )
+
+  table.space >str
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+: dumpTable ( "<tableNm>" )
+
+  find execute ( table )
+
+  "__row_cursor" find dup
+  if
+  else
+    drop
+    "__row_cursor" :rowCursor
+  then
+  execute
+
+  >r
+  // r0 ^rowCursor
+
+  r0 rowcursor.table!
+  args.partitions 0
+  do
+    // r2 ^rowCursor
+    I r2 rowcursor.begin
+    r2 rowcursor.first
+    begin
+      while
+      r2 rowcursor.get
+      .
+      r2 rowcursor.next
+      repeat
+
+      r2 rowCursor.end
+  loop
+
+  rdrop
+
+  "__row_cursor" find >forget
+;
+
+/*----------------------------------------------------------------------------*/
+/* get row cursor for table                                                   */
+/*----------------------------------------------------------------------------*/
+: selecttable ( "<tableNm>" -- <rowCursor> )
+
+  queryCount ++
+
+  task.this task.seitf@ seitf.table@
+
+  rowcursor.new dup rot rowcursor.table!
+
+  >str
+;
+
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncateTable ( "<tableNm>" -- )
+
+  find execute ( table )
+
+  table.truncate
+;
 
 /*============================================================================*/
 /* end                                                                        */

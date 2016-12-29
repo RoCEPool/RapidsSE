@@ -33,6 +33,7 @@ namespace Common
     static void  vConcat(char* psDst, const char* psArg);
     static void  vConcat(char* psDst, const char* psArg1, const char* psArg2);
     static char* wConcat(const char* s1, const char* s2);
+    static void  vConcat(char* pWS, i8 i);
     static bool  bContains(char* s, const char cArg);
     static bool  bContains(char* s, const char* sArg);
     static void  vCopy(char* psDst, const char* psSrc);

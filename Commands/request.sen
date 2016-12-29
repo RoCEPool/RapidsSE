@@ -11,6 +11,8 @@
 
 "requests.sen" >>:
 
+"streamLoader.sen" >>:
+
 // create /tenants/boray/catalogs/rapidsse
 createDefaultFolders
 

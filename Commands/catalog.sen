@@ -34,14 +34,144 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a makeable tenant folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeCatalog ( "<catalogNm>" -- "<catalogNm>" true | "<catalogNm>" errorCode false )
+
+  checkInCatalogs   not if false exit then
+  checkIsNotCatalog not if false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable catalog folder                                */
+/*----------------------------------------------------------------------------*/
+: checkRemoveCatalog ( "<catalogNm>" -- "<catalogNm>" true | "<catalogNm>" errorCode false )
+
+  dup ( "<catalogNm>" "<catalogNm>" )
+
+  checkInCatalogs not if false exit then ( "<catalogNm>" word )
+  checkIsWord     not if false exit then ( "<catalogNm>" word )
+  checkIsCatalog  not if false exit then ( "<catalogNm>" word )
+  checkNotUsed    not if false exit then ( "<catalogNm>" word )
+
+  drop ( "<catalogNm>" )
+
+  true ( "<catalogNm>" true )
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a catalogs folder under given named tenant                            */
 /*----------------------------------------------------------------------------*/
 : makeCatalogs ( "<tenantNm>" -- )
+
+  args.tracepoint if
+    dup "MAKING CATALOGS FOR TENANT " swap concat " on NODE " concat args.node >str concat .
+  then
 
   find execute ( dic )
   "catalogs"   ( dic "catalogs" )
   swap         ( "catalogs" dic )
   :folder      ( )
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a named catalog folder (run by participant)                           */
+/*----------------------------------------------------------------------------*/
+: makeCatalog$ ( "<catalogNm>" -- true )
+
+tp: makeCatalog
+
+  args.tracepoint if
+    dup "MAKING CATALOG " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  dup ( "<catalogNm>" "<catalogNm>" )
+
+  :catalog ( "<catalogNm>" ^catalog )
+
+  drop ( "<catalogNm>" )
+
+  makeSchemas ( )
+
+  true <SUCCESS_RESULT>
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeCatalog$                                        */
+/*----------------------------------------------------------------------------*/
+: ~makeCatalog ( "<catalogNm>" -- )
+
+tp: mkTenOnAll
+
+  // set indirect call to be makeTenant
+  $$ swap "makeCatalog$"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: mkCatOnAllDone
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                    */
+/*----------------------------------------------------------------------------*/
+: removeCatalog$ ( "<catalogNm>" -- true )
+
+tp: removeCatalog$
+
+  args.tracepoint if
+    dup "REMOVING CATALOG " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  :forget ( )
+
+  true <SUCCESS_RESULT>
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                    */
+/*----------------------------------------------------------------------------*/
+: removeCatalog ( "<catalogNm>" -- true )
+
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
+  then
+
+  removeCatalog$
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                     */
+/*----------------------------------------------------------------------------*/
+: ~removeCatalog ( "<catalogNm>" -- )
+
+tp: rmCatOnAll
+
+  // set indirect call to be removeCatalog
+  $$ swap "removeCatalog"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>participants> ( bool )
+
+tp: rmCatOnAllDone
+
+  checkResult
 ;
 
 /*============================================================================*/

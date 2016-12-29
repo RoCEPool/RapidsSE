@@ -25,9 +25,10 @@ Dic* Dictionaries::_pDic(void* pAddr)
 void* Dic::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Dictionary class cannot be new'd");
   
-  RASSERT(0);
+  Dic* pDic = (Dic*)(Heap::pAllocate(CN_DIC));
+  
+  return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,18 +37,20 @@ void* Dic::operator new(size_t iSize)
 void* Dic::operator new(size_t iSize, Dic* pDic)
 {
   RASSERT(iSize);
+  
   return pDic;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Dic::operator delete(void* pBufferAddress)
+void Dic::operator delete(void* pDicAddress)
 {
-  RASSERT(pBufferAddress);
-  vFatal("fatal: Dictionary class cannot be deleted");
+  RASSERT(pDicAddress);
   
-  ASSERT(0);
+  Dic* pDic = reinterpret_cast<Dic*>(pDicAddress);
+  
+  Heap::vFree(pDic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -63,6 +66,7 @@ Dic::Dic(void)
   m_bFrozen  = false;
   m_pCurrentWord = nullptr;
   m_zRefCount.vCheckInit();
+  m_xLock.vCheckInit();
   
   // this is because of GlobalDictionary (ugh)
   //vInit();
@@ -113,6 +117,26 @@ void Dic::vAddConstant(const char* aName, const char* aValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add word to this dictionary                                                */
+/*----------------------------------------------------------------------------*/
+void Dic::vAddWord(Word* pWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  ASSERT(!m_bFrozen);
+  
+  ASSERT(pWord->eClass() == CN_WORD);
+  
+  m_xLock.vGrabWrite();
+  
+  pWord->m_pPrevWord = m_pCurrentWord;
+  
+  m_pCurrentWord = pWord;
+  
+  m_xLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* allocate a word                                                            */
 /*----------------------------------------------------------------------------*/
 Word* Dic::pAllocWord(eCN eClassNo)
@@ -125,9 +149,13 @@ Word* Dic::pAllocWord(eCN eClassNo)
   
   Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
   
-  pWord->m_pPrevWord = m_pCurrentWord;
-  
-  m_pCurrentWord = pWord;
+//  m_xLock.vGrabWrite();
+//  
+//  pWord->m_pPrevWord = m_pCurrentWord;
+//  
+//  m_pCurrentWord = pWord;
+//
+//  m_xLock.vDropWrite();
   
   return pPoolCheck<Word*>(pWord);
 }

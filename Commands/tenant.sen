@@ -48,7 +48,6 @@
   EC_TENANT_EXISTS false
 ;
 
-
 /*----------------------------------------------------------------------------*/
 /* check if word is a makeable tenant folder                                  */
 /*----------------------------------------------------------------------------*/
@@ -77,54 +76,53 @@
   true ( "<tenantNm>" true )
 ;
 
-
 /*----------------------------------------------------------------------------*/
-/* make a named tenant folder                                                 */
+/* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
 : makeTenant$ ( "<tenantNm>" -- true )
 
-tp: maketenant$
+tp: makingTenant
 
-  :tenant ( ^tenant )
-
-  drop ( )
-
-  true ( true )
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a named tenant folder                                                 */
-/*----------------------------------------------------------------------------*/
-: makeTenant ( "<tenantNm>" ... #folders -- true )
-
-  dicStack!
-
-//dic.stack
-
-  task.this task.name@ "p0.task" streql not if
-    "_" concat task.this task.name@ concat
+  args.tracepoint if
+    dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
   then
 
-  dup "making tenant " swap concat .
+    dup ( "<tenantNm>" "<tenantNm>" )
 
-  makeTenant$
+    :tenant ( "<tenantNm>" ^tenant )
 
+    drop ( "<tenantNm>" )
+
+    makeCatalogs ( )
+
+    true <SUCCESS_RESULT>
+
+    true
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a named tenant folder                                                 */
+/* have participants run: makeTenant$                                         */
 /*----------------------------------------------------------------------------*/
 : ~makeTenant ( "<tenantNm>" -- )
 
-  // set indirect call to be makeTenant
-  "makeTenant" 2 ( "<tenantNm>" "makeTenant" 2 )
+tp: mkTenOnAll
 
+  // set up indirect parameters
+  $$ swap
+
+  // the indirect word to be called
+  "makeTenant$"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  // makeTenant$ to be executed by all participants
   >>participants> ( bool )
 
-  drop ( )
+tp: mkTenOnAllDone
 
-//traceoff
-
+  checkResult
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -132,9 +130,15 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 : removeTenant$ ( "<tenantNm>" -- true )
 
-  tp: removetenant$
+tp: removetenant$
+
+  args.tracepoint if
+    dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
+  then
 
   :forget ( )
+
+  true <SUCCESS_RESULT>
 
   true ( true )
 ;
@@ -144,16 +148,13 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 : removeTenant ( "<tenantNm>" -- true )
 
-  dicStack!
-
-  task.this task.name@ "p0.task" streql not if
-  "_" concat task.this task.name@ concat
+  dup "dicStack!" strEql
+  if
+tp: settingDicStack
+    !indirect drop
   then
 
-  dup "removing tenant " swap concat .
-
   removeTenant$
-
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -161,12 +162,20 @@ tp: maketenant$
 /*----------------------------------------------------------------------------*/
 : ~removeTenant ( "<tenantNm>" -- )
 
-  // set indirect call to be dropTenant
-  "removeTenant" 2 ( "<tenantNm>" "dropTenant" 2 )
+tp: rmTenOnAll
+
+  // set indirect call to be removeTenant
+  $$ swap "removeTenant"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
 
   >>participants> ( bool )
 
-  drop ( )
+tp: rmTenOnAllDone
+
+  checkResult
 ;
 
 /*============================================================================*/

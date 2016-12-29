@@ -1,96 +1,54 @@
 /*============================================================================*/
-/* gridTesting.sen -- grid testing                                            */
+/* ddlLocking.sen -- distributed ddl locking                                  */
 /*============================================================================*/
 
-"gridTesting.sen" .putVerbose
-
-: SE_PATH "../OS\ X/Build/Products/Debug/SE" ;
-
-: se_command
-
-    dup
-
-//  "nohup "
-    ""
-    SE_PATH concat
-    " --start --size 4gb " concat
-    " --commands /Users/ray/Desktop/rapidsse/Commands" concat
-    " --region /SE_" concat
-    swap >str concat
-
-    " --node " concat
-    swap >str concat
-
-    " --nodes 8" concat
-
-    " &" concat
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: g
-
-  1 se_command dup . shell.execute .
-  2 se_command dup . shell.execute .
-  3 se_command dup . shell.execute .
-  4 se_command dup . shell.execute .
-  5 se_command dup . shell.execute .
-  6 se_command dup . shell.execute .
-  7 se_command dup . shell.execute .
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: gn
-
-  args.nodes 1 do
-    I se_command
-    dup .
-    shell.execute .
-  loop
-  
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: ipcChild
-
-  3 sleep
-
-//traceon
-
-  "ipcChild" task.this task.name!
-
-  "ipcChild" .
-
-  task.parent@ task.signal
-//traceoff
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-: ipc
-
-//traceon
-
-  3 task.this task.acks!
-
-  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
-  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
-  0 "ipcChild" task.this task.new rootTaskSet taskSet.Append
-
-  //TS_WAITING task.this task.state!
-
-  task.suspend
-
-  "Parent" .
-//traceoff
-;
-
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+"ddlLocking.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
 /* lock array                                                                 */
 /*----------------------------------------------------------------------------*/
 args.nodes intArray: ddlInts
+
+/*----------------------------------------------------------------------------*/
+/* dump the ddlInts array                                                     */
+/*----------------------------------------------------------------------------*/
+: ddlDump
+
+  "{ " .put
+  args.nodes 0 do
+    I ddlInts @ .put " " .put
+  loop
+
+  "}" .put .\n
+;
+
+/*----------------------------------------------------------------------------*/
+/* dispatch indirect call to given participant (for use in coordinator)       */
+/*----------------------------------------------------------------------------*/
+: dispatch ( ... #values actorNo -- ..result.. )
+
+  addSetCaller ( << <<call*>> <<caller>> >> )
+
+  // determine which queue to forward to
+  dup ( ... #values actorNo actorNo )
+  args.node ( ... #values actorNo actorNo args.node )
+  == ( ... #values actorNo true|false )
+  if ( ... #values actorNo )
+
+    // actor will be the participant for this node
+    pTasks @ ( ... #values pTask )
+
+  else
+
+    // actor will be participant proxy for other node
+    ppTasks @ ( ... #values ppTask )
+
+  then
+
+
+  // transfer to another actors and wait for result
+  >taskQueue;a> ( ..result.. )
+;
 
 /*----------------------------------------------------------------------------*/
 /* attempt to grab ddl lock n                                                 */
@@ -218,19 +176,6 @@ args.nodes intArray: ddlInts
 ;
 
 /*----------------------------------------------------------------------------*/
-/* dump the ddlInts array                                                     */
-/*----------------------------------------------------------------------------*/
-: ddlDump
-
-  "{ " .put
-  args.nodes 0 do
-    I ddlInts @ .put " " .put
-  loop
-
-  "}" .put .\n
-;
-
-/*----------------------------------------------------------------------------*/
 /* distributed lock test                                                      */
 /*----------------------------------------------------------------------------*/
 : dl
@@ -242,6 +187,8 @@ args.nodes intArray: ddlInts
 
   // coordinate grab of dist ddl lock
   "grabDistDDL" 1  ( "grabDistDdl" 1 )
+
+  addSetCaller
   >coordinator>     ( true|false )
   .
 
@@ -249,6 +196,7 @@ args.nodes intArray: ddlInts
 
   // coordinate drop of dist ddl lock
   "dropDistDDL" 1 ( "dropDistDdl" 1 )
+  addSetCaller
   >coordinator>      ( true|false )
   .
 

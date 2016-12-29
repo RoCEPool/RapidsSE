@@ -146,6 +146,9 @@ void Heap::vFree(Object* pObject)
 {
   eCN eAllocClass = pObject->eClass();
   
+  // should not be freeing objects that are part of a word body
+  ASSERT(!pObject->bWordBody());
+  
   eHT eHeap = geWhichHeap[eAllocClass];
   
   switch(eHeap) {
@@ -455,11 +458,32 @@ void Heap::vPushFree(FreeChunk* pFreeChunk)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
+  if (m_iObjectSize <= C_1MB)
+    vValidFree(pFreeChunk);
+  
   pFreeChunk->vClass(CN_FREECHUNK);
   pFreeChunk->vNextFree(m_pFreeHead);
   m_pFreeHead = pFreeChunk;
   
   m_iFreeCount++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push free chunk onto free chain                                            */
+/*----------------------------------------------------------------------------*/
+void Heap::vValidFree(FreeChunk* pFreeChunk)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  HeapBuffer* pHeapBuffer = (HeapBuffer*)((u8)pFreeChunk & (u8)~0xFFFFF);
+  
+  ASSERT(pHeapBuffer->eClass() == CN_HEAPBUFFER);
+  
+  u8 uSize = (u8)pFreeChunk & (u8)0xFF;
+
+  u8 uSizeHeapBuffer = sizeof(HeapBuffer);
+  
+  ASSERT(uSize == uSizeHeapBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

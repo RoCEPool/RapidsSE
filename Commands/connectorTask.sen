@@ -5,62 +5,74 @@
 "connectorTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* create the parts                                                           */
+/* define the con actor (con.task, con.queue, con.taskset, con.thread)        */
 /*----------------------------------------------------------------------------*/
-
-queue:   connectorQueue
-
-taskset: connectorTaskSet
-
-thread:  connectorThread
+actor: con
 
 /*----------------------------------------------------------------------------*/
 /* start the connector task                                                   */
 /*----------------------------------------------------------------------------*/
 : connectorStart
 
-    // set up connector task
-    0 "connectorLoop" nullPtr task.new connectorTaskSet taskSet.append
+tp: connectorStart
 
-    // set up the connector thread
-    connectorTaskSet  connectorThread thread.taskset!
-    "connectorThread" connectorThread thread.name!
-                    connectorThread thread.spawn
+  0 "con.loop"
+
+  "con" actor.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* connector loop                                                             */
 /*----------------------------------------------------------------------------*/
-: connectorLoop
+: con.loop
 
-    "renaming to Connector Task" .putVerbose
+  connectorTaskPrint if "Connector running..." . then
 
-    "connectorTask" task.this task.name!
+  args.nodes 0 do
 
-    connectorQueue  task.this task.queue!
+    I args.node == if
 
-    connectorTaskPrint if "Connector running..." . then
+      nullptr I senderQueues !
+      nullptr I senderTasks  !
 
-    10 thread.sleep_s
+    else
 
-    args.nodes 0 do
+      args.port I +
+      "127.0.0.1"
+      socket.open  socket.connect
 
-      I args.node != if
-        socket.open
-        "127.0.0.1"
-        5000 I + socket.connect
-        "Node" args.node >str concat " connected to node" concat
+      args.verbose if
+        "Node" args.node >str concat
+        " connected to node" concat
         I >str concat
         .
-
-        // start sender
-        "starting sender" .
-        0 "sender.loop" "sender" I >str concat senderForm
-        I senderQueue !
-
       then
 
-    loop
+      // start sender
+      //"starting sender" .
+
+ddlLock.grabWrite
+
+     // set up the seed
+      1 "snd.loop" ( socket 1 "snd.loop" )
+
+      // create the actor
+      "sr" I >str concat :actor ( socket 1 "snd.loop" "srI" )
+
+      // record the senderQueue
+      dup actor.queue I senderQueues ! ( socket 1 "snd.loop" "srI" )
+      dup actor.task  I senderTasks  ! ( socket 1 "snd.loop" "srI" )
+
+      // spawn the actors os thread
+      actor.spawn
+
+ddlLock.dropWrite
+
+    then
+
+  loop
+
+  //1000000 thread.sleep_s
 
 ;
 

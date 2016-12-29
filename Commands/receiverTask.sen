@@ -5,86 +5,40 @@
 "ReceiverTask.sen" .putVerbose
 
 /*----------------------------------------------------------------------------*/
-/* receiver formation                                                         */
-/*----------------------------------------------------------------------------*/
-: receiverForm ( ... socket #args "<loop>" "<actorName>" -- queue )
-
-    reg.push
-
-    >r
-
-    // r0 has <actorName>
-
-    r0 ".task"    concat dup . :task    execute >reg0  // reg0 has task
-    r0 ".queue"   concat dup . :queue   execute >reg1  // reg1 has queue
-    r0 ".taskset" concat dup . :taskset execute >reg2  // reg2 has taskset
-    r0 ".thread"  concat dup . :thread  execute >reg3  // reg3 has thread
-
-    stk
-
-    // seed the task
-    reg0 task.seed
-
-    stk
-    // setup the socket in the task
-    reg0 task.socket!
-
-    // attach queue to task
-    reg1 reg0 task.queue!
-
-    // put task in taskset
-    reg0 reg2 taskset.append
-
-    // attach taskset to thread
-    reg2 reg3 thread.taskset!
-
-    // spawn the os thread
-    reg3 thread.spawn
-
-    rdrop
-
-    reg.pop
-;
-
-: executeIt ( NodeName )
-  "Node executing executeIt with parameter " swap concat .
-;
-
-/*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
-: !recv
+: recv>
 
   task.this task.socket@           // get socket from task
+
+tp: receiving
+
   socket.recv                      // recv on socket
-  "RECEIVED" .
 
-  valset>  ( parameters wordName senderNode #values ) // expand valset into stack values
-
-  drop                            // drop #values
-  drop                            // drop the sender node#
-  find execute
+tp: received
 ;
 
 /*----------------------------------------------------------------------------*/
 /* receiver loop                                                              */
 /*----------------------------------------------------------------------------*/
-: receiver.loop
+: rcv.loop
 
-    "renaming to Receiver Task" .putVerbose
+  task.this task.socket!
 
-    "receiver.task" task.this task.name!
+  "renaming to Receiver Task" .putVerbose
 
-    //receiver.queue  task.this task.queue!
+  "rcv.loop" task.this task.comment!
 
-    receiverTaskPrint if "Receiver running on node" args.node >str concat . then
+  receiverTaskPrint if "Receiver running on node" args.node >str concat . then
 
-    10 sleep
+  begin
+    depth 0 != if stk "stack of task has grown" . debug.trap then
 
-    begin
-      !recv
-    0 until
+    recv>
 
+    exeOne assert
+
+  0 until
 ;
 
 /*============================================================================*/

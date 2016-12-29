@@ -118,7 +118,7 @@ pDUMPFUN *gpDump[]
   /* 85 */ &Dump::vUndefined,       // CN_TXMAP
   /* 86 */ &Dump::vUndefined,       // CN_TXREF
 
-  /* 87 */ &Dump::vDummy,           // CN_WORD
+  /* 87 */ &Word::vDump,            // CN_WORD
   
   /* 88 */ &Dump::vUndefined,       // CN_ZSMALL_
   /* 89 */ &Dump::vUndefined,       // CN_ZMEDIUM_

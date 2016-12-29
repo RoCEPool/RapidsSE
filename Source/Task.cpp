@@ -1,4 +1,3 @@
-
 /*============================================================================*/
 /* Task.cpp - task                                                            */
 /*============================================================================*/
@@ -12,26 +11,26 @@
 #include "SePrompt.hpp"
 
 
-extern Arguments             gxArguments;
+extern Arguments       gxArguments;
 
-extern AttachMap*            gpAttachMap;
-extern BufferPool*           gpBufferPool;
-extern Heap*                 gpMediumHeap;
-extern BPA*                  gpBPA;
-extern Dic*                  gpMainDic;
-extern Word*                 gpWord;
+extern AttachMap*      gpAttachMap;
+extern BufferPool*     gpBufferPool;
+extern Heap*           gpMediumHeap;
+extern BPA*            gpBPA;
+extern Dic*            gpMainDic;
+extern Word*           gpWord;
 
-extern Grid*                 gpGrid;
-extern StepArray*            gpStepArray;
-extern ThreadList*           gpThreadList;
-extern TaskList*             gpTaskList;
-extern TxCollection*         gpTxCollection;
+extern Grid*           gpGrid;
+extern StepArray*      gpStepArray;
+extern ThreadList*     gpThreadList;
+extern TaskList*       gpTaskList;
+extern TxCollection*   gpTxCollection;
 
-extern NP_Task               gnpRootTask;
-extern StepBoard*            gpStepBoard;
-extern Lock                  gxDdlLock;
-extern Lock                  gxDicLock;
-extern SEitfList*            gpSEitfList;
+extern NP_Task         gnpRootTask;
+extern StepBoard*      gpStepBoard;
+extern Lock            gxDdlLock;
+extern Lock            gxDicLock;
+extern SEitfList*      gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -193,6 +192,9 @@ void Task::vInit(const char* aLambda)
   m_pParentTask = nullptr;
   m_zAcks.vCheckInit();
   m_pThread     = nullptr;
+  m_pTaskSet    = nullptr;
+  
+  m_sComment    = "";
   
   m_xDicStack.vPush(gpMainDic);
   
@@ -201,7 +203,9 @@ void Task::vInit(const char* aLambda)
   
   //m_xParamStack
   //m_xReturnStack
-  m_pRegFrame = nullptr;
+  //m_xAuxStack
+  m_pRegFrame    = nullptr;
+  m_pLocalsFrame = nullptr;
   
   IP.m_pCell      = nullptr;
   m_pResetIP   = nullptr;
@@ -209,6 +213,8 @@ void Task::vInit(const char* aLambda)
   m_pWord      = nullptr;
   m_bCompiling = false;
   m_iTracing   = 0;
+  m_nLocals    = 0;
+  m_pCurrentWord = nullptr;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
@@ -275,11 +281,13 @@ void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
   
   Dic* pDic = m_xDicStack.pTop();
   
-  Word* pWord = new(pDic) Word(pName);
+  Word* pNewWord = new(pDic) Word(pName);
   
-  pWord->vWordType(WT_PRIMITIVE);
-  pWord->vDoesStep(pStep);
-  pWord->vImmediate(bImmediate);
+  vCurrentWord(pNewWord);
+  
+  pNewWord->vWordType(WT_PRIMITIVE);
+  pNewWord->vDoesStep(pStep);
+  pNewWord->vImmediate(bImmediate);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -311,18 +319,30 @@ void Task::vAddConstants(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+#ifdef _DEBUG
+  vAddConstant("_DEBUG",1);
+#else
+  vAddConstant("_DEBUG",(i8)0);
+#endif
+  
+  vAddConstant("version",          RAPIDSSE_VERSION_STRING);
+  
   vAddConstant("largebuffersize",  C_SIZE_POOL_BUFFER);
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic",            MAGIC);
-  vAddConstant("regionsize",       gxArguments.m_iRegionSize);
-  vAddConstant("bgtasks",          gxArguments.m_bBgTasks);
-  vAddConstant("partitions",       gxArguments.m_nPartitions);
+  vAddConstant("args.bgtasks",     gxArguments.m_bBgTasks);
   vAddConstant("args.config",      gxArguments.m_bConfig);
   vAddConstant("args.node",        gxArguments.m_iNode);
   vAddConstant("args.nodes",       gxArguments.m_nNodes);
+  vAddConstant("args.partitions",  gxArguments.m_nPartitions);
+  vAddConstant("args.port",        gxArguments.m_iPort);
+  vAddConstant("args.regionSize",  gxArguments.m_iRegionSize);
+  vAddConstant("args.sleep",       gxArguments.m_iSleep);
+  vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
+  vAddConstant("args.verbose",     gxArguments.m_bVerbose);
   
-  vAddConstant("true",    1);
+  vAddConstant("true",    (i8)1);
   vAddConstant("false",   (i8)0);
 
   vAddConstant("C_1KB",   C_1KB);
@@ -407,57 +427,58 @@ void Task::vAddConstants(void)
   
   /*  0 */ vAddConstant("EC_NONE",                  EC_NONE);
   /*  1 */ vAddConstant("EC_ASSERT",                EC_ASSERT);
+  /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED",       EC_BEGIN_TX_FAILED);
+  /*  3 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
 
-  /*  2 */ vAddConstant("EC_CATALOG_EXISTS",        EC_CATALOG_EXISTS);
-
-  /*  3 */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
+  /*  4 */ vAddConstant("EC_FOLDER_IN_USE",         EC_FOLDER_IN_USE);
+  /*  5 */ vAddConstant("EC_GRID_NOT_STARTED",      EC_GRID_NOT_STARTED);
   
-  /*  4 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
-  /*  5 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
-  /*  6 */ vAddConstant("EC_INVALID_FILE",          EC_INVALID_FILE);
-  /*  7 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
-  /*  8 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
-  /*  9 */ vAddConstant("EC_INVALID_PARAMETERS",    EC_INVALID_PARAMETERS);
-  /* 10 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
-  /* 11 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
+  /*  6 */ vAddConstant("EC_INVALID_CLASS",         EC_INVALID_CLASS);
+  /*  7 */ vAddConstant("EC_INVALID_COMMAND",       EC_INVALID_COMMAND);
+  /*  8 */ vAddConstant("EC_INVALID_FILE",          EC_INVALID_FILE);
+  /*  9 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
+  /* 10 */ vAddConstant("EC_INVALID_PARAMETER",     EC_INVALID_PARAMETER);
+  /* 11 */ vAddConstant("EC_INVALID_PARAMETERS",    EC_INVALID_PARAMETERS);
+  /* 12 */ vAddConstant("EC_INVALID_INTERFACE",     EC_INVALID_INTERFACE);
+  /* 13 */ vAddConstant("EC_INVALID_SYNTAX",        EC_INVALID_SYNTAX);
   
-  /* 12 */ vAddConstant("EC_LOW_BUFFERS",           EC_LOW_BUFFERS);
+  /* 14 */ vAddConstant("EC_LOW_BUFFERS",           EC_LOW_BUFFERS);
   
-  /* 13 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
+  /* 15 */ vAddConstant("EC_NO_COLUMNS_DIC",        EC_NO_COLUMNS_DIC);
   
-  /* 14 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
-  /* 15 */ vAddConstant("EC_NO_SUCH_DIRECTORY",     EC_NO_SUCH_DIRECTORY);
-  /* 16 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
-  /* 17 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
-  /* 18 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
-  /* 19 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
-  /* 20 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
+  /* 16 */ vAddConstant("EC_NO_SUCH_CATALOG",       EC_NO_SUCH_CATALOG);
+  /* 17 */ vAddConstant("EC_NO_SUCH_DIRECTORY",     EC_NO_SUCH_DIRECTORY);
+  /* 18 */ vAddConstant("EC_NO_SUCH_FOLDER",        EC_NO_SUCH_FOLDER);
+  /* 19 */ vAddConstant("EC_NO_SUCH_SCHEMA",        EC_NO_SUCH_SCHEMA);
+  /* 20 */ vAddConstant("EC_NO_SUCH_TABLE",         EC_NO_SUCH_TABLE);
+  /* 21 */ vAddConstant("EC_NO_SUCH_TENANT",        EC_NO_SUCH_TENANT);
+  /* 22 */ vAddConstant("EC_NO_SUCH_WORD",          EC_NO_SUCH_WORD);
   
-  /* 21 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
-  /* 22 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
-  /* 23 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
-  /* 24 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
-  /* 25 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
+  /* 23 */ vAddConstant("EC_NOT_A_CATALOG",         EC_NOT_A_CATALOG);
+  /* 24 */ vAddConstant("EC_NOT_A_FOLDER",          EC_NOT_A_FOLDER);
+  /* 25 */ vAddConstant("EC_NOT_A_SCHEMA",          EC_NOT_A_SCHEMA);
+  /* 26 */ vAddConstant("EC_NOT_A_TABLE",           EC_NOT_A_TABLE);
+  /* 27 */ vAddConstant("EC_NOT_A_TENANT",          EC_NOT_A_TENANT);
   
-  /* 26 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
-  /* 27 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
-  /* 28 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
-  /* 29 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
-  /* 30 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
+  /* 28 */ vAddConstant("EC_NOT_IN_CATALOGS",       EC_NOT_IN_CATALOGS);
+  /* 29 */ vAddConstant("EC_NOT_IN_COLUMNS",        EC_NOT_IN_COLUMNS);
+  /* 31 */ vAddConstant("EC_NOT_IN_SCHEMAS",        EC_NOT_IN_SCHEMAS);
+  /* 31 */ vAddConstant("EC_NOT_IN_TABLES",         EC_NOT_IN_TABLES);
+  /* 32 */ vAddConstant("EC_NOT_IN_TENANTS",        EC_NOT_IN_TENANTS);
   
-  /* 31 */ vAddConstant("EC_NULL_INTERFACE",        EC_NULL_INTERFACE);
-  /* 32 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
-  /* 33 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
-  /* 34 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
+  /* 33 */ vAddConstant("EC_NULL_INTERFACE",        EC_NULL_INTERFACE);
+  /* 34 */ vAddConstant("EC_NULLPTR",               EC_NULLPTR);
+  /* 35 */ vAddConstant("EC_RESPONSE_PENDING",      EC_RESPONSE_PENDING);
+  /* 36 */ vAddConstant("EC_SCHEMA_EXISTS",         EC_SCHEMA_EXISTS);
   
-  /* 35 */ vAddConstant("EC_SEND_FAILURE",          EC_SEND_FAILURE);
-  /* 36 */ vAddConstant("EC_SE_NOT_RUNNING",        EC_SE_NOT_RUNNING);
+  /* 37 */ vAddConstant("EC_SEND_FAILURE",          EC_SEND_FAILURE);
+  /* 38 */ vAddConstant("EC_SE_NOT_RUNNING",        EC_SE_NOT_RUNNING);
   
-  /* 37 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
-  /* 38 */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
-  /* 39 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
-  /* 40 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
-  /* 41 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
+  /* 39 */ vAddConstant("EC_TABLE_EXISTS",          EC_TABLE_EXISTS);
+  /* 40 */ vAddConstant("EC_TABLE_IN_USE",          EC_TABLE_IN_USE);
+  /* 41 */ vAddConstant("EC_TENANT_EXISTS",         EC_TENANT_EXISTS);
+  /* 42 */ vAddConstant("EC_VERSION_MISMATCH",      EC_VERSION_MISMATCH);
+  /* 43 */ vAddConstant("EC_ENUMS",                 EC_ENUMS);
 
   /*  0 */ vAddConstant("TK_NONE",                  TK_NONE);
   /*  1 */ vAddConstant("TK_NAME",                  TK_NAME);
@@ -545,12 +566,13 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("SIZEOF_S16K",              sizeof(s8K));
 
   /*  0 */ vAddConstant("TS_NONE",                  TS_NONE);
-  /*  1 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
-  /*  2 */ vAddConstant("TS_YIELD",                 TS_YIELD);
-  /*  3 */ vAddConstant("TS_WAITING",               TS_WAITING);
-  /*  5 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
-  /*  6 */ vAddConstant("TS_BLOCKED",               TS_BLOCKED);
-  /*  7 */ vAddConstant("TS_EXITED",                TS_EXITED);
+  /*  1 */ vAddConstant("TS_BLOCKED",               TS_BLOCKED);
+  /*  2 */ vAddConstant("TS_EXITED",                TS_EXITED);
+  /*  3 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
+  /*  4 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
+  /*  5 */ vAddConstant("TS_SUSPENDED",             TS_SUSPENDED);
+  /*  6 */ vAddConstant("TS_WAITING",               TS_WAITING);
+  /*  7 */ vAddConstant("TS_YIELDED",               TS_YIELDED);
   /*  8 */ vAddConstant("TS_ENUMS",                 TS_ENUMS);
 
   /*  0 */ vAddConstant("TP_NONE",                  TP_NONE);
@@ -588,10 +610,10 @@ void Task::vAddConstants(void)
   vAddConstant("monitorTaskPrint",(i8)0);
   vAddConstant("reclaimTaskPrint",(i8)0);
   vAddConstant("requestTaskPrint",(i8)0);
-  vAddConstant("answerTaskPrint",(i8)1);
-  vAddConstant("connectorTaskPrint",(i8)1);
-  vAddConstant("senderTaskPrint", (i8)1);
-  vAddConstant("receiverTaskPrint", (i8)1);
+  vAddConstant("answerTaskPrint",(i8)0);
+  vAddConstant("connectorTaskPrint",(i8)0);
+  vAddConstant("senderTaskPrint", (i8)0);
+  vAddConstant("receiverTaskPrint", (i8)0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,14 +627,7 @@ void Task::vAddPrimitives(void)
   gpWord = pFindWord("word");
   
   vAddPrimitive("accept",          &vAccept,           false);
-  vAddPrimitive("+",               &vAdd,              false);
   vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("again",           &vAgain,            true );
-  vAddPrimitive("again_",          &vAgain_,           false);
-  vAddPrimitive("and",             &vAnd,              false);
-  vAddPrimitive("begin",           &vBegin,            true );
-  vAddPrimitive("begin_",          &vBegin_,           false);
-  vAddPrimitive("boot",            &vBoot,             false);
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive("(int)",           &vCastInt,          false);
@@ -630,15 +645,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("depth",           &vDepth,            false);
-  vAddPrimitive("/",               &vDivide,           false);
-  vAddPrimitive("do",              &vDo,               true );
-  vAddPrimitive("do_rt",           &vDo_RT,            false);
   vAddPrimitive("does>",           &vDoes,             true );
-  vAddPrimitive("drop",            &vDrop,             false);
-  vAddPrimitive("dup",             &vDup,              false);
-  vAddPrimitive("dump",            &vDump,             false);
-  vAddPrimitive("else",            &vElse,             true );
   vAddPrimitive("encodeCall",      &vEncodeCall,       false);
   vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
   vAddPrimitive("encodeEmb",       &vEncodeEmb,        true );
@@ -649,7 +656,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
   vAddPrimitive("]",               &vEnterCompiler,    false);
   vAddPrimitive("[",               &vEnterInterpreter, true );
-  vAddPrimitive("==",              &vEqual,            false);
   vAddPrimitive("eql",             &vEqualAddress,     false);
   vAddPrimitive("execute",         &vExecute,          false);
   vAddPrimitive("exit",            &vExit,             false);
@@ -659,12 +665,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
   vAddPrimitive("freePercent",     &vFreePercent,      false);
   vAddPrimitive("freeSpace",       &vFreeSpace,        false);
-  vAddPrimitive(">",               &vGreater,          false);
-  vAddPrimitive(">=",              &vGreaterEqual,     false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
-  vAddPrimitive("if",              &vIf,               true );
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("interpreting",    &vInterpreting,     false);
   vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
@@ -673,37 +676,16 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("isImmediate",     &vIsImmediate,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
-  vAddPrimitive("iterate",         &vIterate,          true );
-  vAddPrimitive("iterate_rt_A",    &vIterate_RT_A,     false);
-  vAddPrimitive("iterate_rt_B",    &vIterate_RT_B,     false);
   vAddPrimitive("j",               &vJ,                false);
-  vAddPrimitive("jump",            &vJump,             false);
-  vAddPrimitive("jumpFalse",       &vJumpFalse,        false);
-  vAddPrimitive("jumpTrue",        &vJumpTrue,         false);
-  vAddPrimitive("<",               &vLess,             false);
-  vAddPrimitive("<=",              &vLessEqual,        false);
   vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("loop",            &vLoop,             true );
-  vAddPrimitive("loop_rt",         &vLoop_RT,          false);
-  vAddPrimitive("+loop",           &vLoopPlus,         true );
-  vAddPrimitive("+loop_rt",        &vLoopPlus_RT,      false);
   vAddPrimitive("magic@",          &vMagicFetch,       false);
   vAddPrimitive("magic!!",         &vMagicMark,        false);
-  vAddPrimitive("%",               &vModulo,           false);
-  vAddPrimitive("*",               &vMultiply,         false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
-  vAddPrimitive("neg",             &vNeg,              false);
-  vAddPrimitive("next",            &vNext,             true );
-  vAddPrimitive("nip",             &vNip,              false);
   vAddPrimitive("nop",             &vNop,              false);
-  vAddPrimitive("not",             &vNot,              false);
-  vAddPrimitive("!=",              &vNotEqual,         false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
   vAddPrimitive("object!!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
-  vAddPrimitive("or",              &vOr,               false);
-  vAddPrimitive("pick",            &vPick,             false);
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive("push",            &vPush,             false);
@@ -711,22 +693,15 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(".\\n",            &vPutNewline,       false);
   vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
-  vAddPrimitive("repeat",          &vRepeat,           true );
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
-  vAddPrimitive("roll",            &vRoll,             false);
-  vAddPrimitive("-roll",           &vRollInv,          false);
-  vAddPrimitive("rot",             &vRot,              false);
-  vAddPrimitive("-rot",            &vRotInv,           false);
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
+  vAddPrimitive("sprint",          &vSprint,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
-  vAddPrimitive("-",               &vSubtract,         false);
-  vAddPrimitive("swap",            &vSwap,             false);
   vAddPrimitive("test",            &vTest,             false);
-  vAddPrimitive("then",            &vThen,             true );
   vAddPrimitive("throw",           &vThrow,            false);
   vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   vAddPrimitive("'",               &vTick,             true );
@@ -734,31 +709,16 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">cmd",            &vToCmd,            false);
   vAddPrimitive(">digitName",      &vToDigitName,      false);
   vAddPrimitive(">int",            &vToInt,            false);
-  vAddPrimitive("r>",              &vToPstack,         false);
-  vAddPrimitive(">r",              &vToRstack,         false);
   vAddPrimitive(">seitf",          &vToSEitf,          false);
   vAddPrimitive(">str",            &vToStr,            false);
   vAddPrimitive(">task",           &vToTask,           false);
-  vAddPrimitive("valset>",         &vToValues,         false);
-  vAddPrimitive(">valset",         &vToValSet,         false);
-  vAddPrimitive("traceOff",        &vTraceOff,         false);
-  vAddPrimitive("traceOn",         &vTraceOn,          false);
-  vAddPrimitive("tracePoint",      &vTracePoint,       false);
-  vAddPrimitive("trace!",          &vTraceSet,         false);
-  vAddPrimitive("tuck",            &vTuck,             false);
-  vAddPrimitive("unloop",          &vUnloop,           false);
-  vAddPrimitive("until",           &vUntil,            true );
-  vAddPrimitive("version",         &vVersion,          false);
+  vAddPrimitive("token",           &vToken,            false);
   vAddPrimitive("wake",            &vWake,             false);
-  vAddPrimitive("while",           &vWhile,            true );
-  vAddPrimitive("0<",              &vZeroLess,         false);
-  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
-  vAddPrimitive("0==",             &vZeroEqual,        false);
-  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
-  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
-  vAddPrimitive("0>",              &vZeroGreater,      false);
   
   //----------------------------------------------------------
+  vAddPrimitive("args.partition",  &vArgsPartition, false);
+  vAddPrimitive("args.print",      &vArgsPrint,     false);
+  
   vAddPrimitive("assert",          &vAssert,            false);
   vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
   vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
@@ -771,8 +731,31 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
   vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
   
-  vAddPrimitive("args.partition",  &vArgsPartition, false);
-  vAddPrimitive("args.print",      &vArgsPrint,     false);
+  vAddPrimitive("adepth",          &vAstackDepth,      false);
+  vAddPrimitive("adrop",           &vAstackDrop,       false);
+  vAddPrimitive("adup",            &vAstackDup,        false);
+  vAddPrimitive("a@",              &vAstackFetch,      false);
+  vAddPrimitive("anip",            &vAstackNip,        false);
+  vAddPrimitive("apick",           &vAstackPick,       false);
+  vAddPrimitive("areverse",        &vAstackReverse,    false);
+  vAddPrimitive(">a",              &vAstackToA,        false);
+  vAddPrimitive("a>",              &vAstackToP,        false);
+  vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
+  vAddPrimitive("aswap",           &vAstackSwap,       false);
+  vAddPrimitive("avalset>",        &vAstackToValues,   false);
+  vAddPrimitive(">avalset",        &vAstackToValSet,   false);
+  vAddPrimitive("a0",              &vAstack0,          false);
+  vAddPrimitive("a1",              &vAstack1,          false);
+  vAddPrimitive("a2",              &vAstack2,          false);
+  vAddPrimitive("a3",              &vAstack3,          false);
+  vAddPrimitive("a4",              &vAstack4,          false);
+  vAddPrimitive("a5",              &vAstack5,          false);
+  vAddPrimitive("a6",              &vAstack6,          false);
+  vAddPrimitive("a7",              &vAstack7,          false);
+  vAddPrimitive("a8",              &vAstack8,          false);
+  vAddPrimitive("a9",              &vAstack9,          false);
+  
+  vAddPrimitive("class.name",      &vClassName,    false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
@@ -841,7 +824,34 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("file.readRecord", &vFileReadRecord,   false);
   vAddPrimitive("file.write",      &vFileWrite,        false);
   
+  vAddPrimitive("again",           &vFlowAgain,        true );
+  vAddPrimitive("again_",          &vFlowAgain_,       false);
+  vAddPrimitive("begin",           &vFlowBegin,        true );
+  vAddPrimitive("begin_",          &vFlowBegin_,       false);
+  vAddPrimitive("do",              &vFlowDo,           true );
+  vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
+  vAddPrimitive("else",            &vFlowElse,         true );
+  vAddPrimitive("if",              &vFlowIf,           true );
+  vAddPrimitive("iterate",         &vFlowIterate,      true );
+  vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
+  vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B, false);
+  vAddPrimitive("jump",            &vFlowJump,         false);
+  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
+  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
+  vAddPrimitive("loop",            &vFlowLoop,         true );
+  vAddPrimitive("loop_rt",         &vFlowLoop_RT,      false);
+  vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
+  vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,  false);
+  vAddPrimitive("next",            &vFlowNext,         true );
+  vAddPrimitive("repeat",          &vFlowRepeat,       true );
+  vAddPrimitive("then",            &vFlowThen,         true );
+  vAddPrimitive("unloop",          &vFlowUnloop,       false);
+  vAddPrimitive("until",           &vFlowUntil,        true );
+  vAddPrimitive("while",           &vFlowWhile,        true );
+  
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
+  vAddPrimitive("grid.started!",   &vGridStartedStore, false);
+  vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
   
   vAddPrimitive("input.close",     &vInputClose,       false);
@@ -855,6 +865,19 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("input.token",     &vInputToken,       false);
   vAddPrimitive("input.type",      &vInputType,        false);
   
+  vAddPrimitive("+",               &vIntAdd,           false);
+  vAddPrimitive("/",               &vIntDivide,        false);
+  vAddPrimitive("==",              &vIntEqual,         false);
+  vAddPrimitive(">",               &vIntGreater,       false);
+  vAddPrimitive(">=",              &vIntGreaterEqual,  false);
+  vAddPrimitive("<",               &vIntLess,          false);
+  vAddPrimitive("<=",              &vIntLessEqual,     false);
+  vAddPrimitive("%",               &vIntModulo,        false);
+  vAddPrimitive("*",               &vIntMultiply,      false);
+  vAddPrimitive("neg",             &vIntNeg,           false);
+  vAddPrimitive("!=",              &vIntNotEqual,      false);
+  vAddPrimitive("-",               &vIntSubtract,      false);
+
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
   vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
@@ -865,6 +888,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
   vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
   
+  vAddPrimitive("loaderSub.appendBuffer",&vLoaderSubAppendBuffer,false);
   vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
   vAddPrimitive("loaderSub.completed",   &vLoaderSubCompleted,   false);
   vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
@@ -873,8 +897,21 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
   vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
   vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
+  vAddPrimitive("loaderSub.insertRow?",  &vLoaderSubInsertRow2,  false);
   vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
   vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
+  vAddPrimitive("loaderSub.partition",   &vLoaderSubPartition,   false);
+  vAddPrimitive("loaderSub.partition!",  &vLoaderSubPartitionStore, false);
+  vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
+  vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
+  vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
+  
+  vAddPrimitive("local.fetch",     &vLocalFetch,       false);
+  vAddPrimitive("local.store",     &vLocalStore,       false);
+  vAddPrimitive("locals|",         &vLocalsBar,        true);
+  vAddPrimitive("locals.pop",      &vLocalsPop,        false);
+  vAddPrimitive("locals.push",     &vLocalsPush,       false);
+  vAddPrimitive("to",              &vLocalsTo,         true);
   
   vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
   vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
@@ -882,12 +919,17 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("lock.grabWrite",  &vLockGrabWrite,    false);
   vAddPrimitive("lock.init",       &vLockInit,         false);
   
+  vAddPrimitive("and",             &vLogicAnd,         false);
+  vAddPrimitive("not",             &vLogicNot,         false);
+  vAddPrimitive("or",              &vLogicOr,          false);
+  
   vAddPrimitive("memory.byteDump", &vMemoryByteDump,   false);
   vAddPrimitive("memory.wordDump", &vMemoryWordDump,   false);
   
   vAddPrimitive("node.init",       &vNodeInit,         false);
   vAddPrimitive("node.new",        &vNodeNew,          false);
   vAddPrimitive("node.no",         &vNodeNo,           false);
+  vAddPrimitive("node.status",     &vNodeStatus,       false);
   
   vAddPrimitive("nodeCursor.begin",  &vNodeCursorBegin,  false);
   vAddPrimitive("nodeCursor.delete", &vNodeCursorDelete, false);
@@ -897,9 +939,31 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
+  vAddPrimitive("object.wordbody",   &vObjectWordBody,   false);
+
+  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
+  
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
+  
+  vAddPrimitive("depth",           &vPstackDepth,      false);
+  vAddPrimitive("drop",            &vPstackDrop,       false);
+  vAddPrimitive("2drop",           &vPstackDropTwo,    false);
+  vAddPrimitive("dump",            &vPstackDump,       false);
+  vAddPrimitive("dup",             &vPstackDup,        false);
+  vAddPrimitive("?dup",            &vPstackDupNonZero, false);
+  vAddPrimitive("nip",             &vPstackNip,        false);
+  vAddPrimitive("pick",            &vPstackPick,       false);
+  vAddPrimitive("reverse",         &vPstackReverse,    false);
+  vAddPrimitive("roll",            &vPstackRoll,       false);
+  vAddPrimitive("-roll",           &vPstackRollInv,    false);
+  vAddPrimitive("rot",             &vPstackRot,        false);
+  vAddPrimitive("-rot",            &vPstackRotInv,     false);
+  vAddPrimitive("swap",            &vPstackSwap,       false);
+  vAddPrimitive("tuck",            &vPstackTuck,       false);
+  vAddPrimitive("valset>",         &vPstackToValues,   false);
+  vAddPrimitive(">valset",         &vPstackToValSet,   false);
   
   vAddPrimitive("queue.append",    &vQueueAppend,      false);
   vAddPrimitive("queue.dump",      &vQueueDump,        false);
@@ -908,6 +972,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
   vAddPrimitive("rowBuffer.appendRecord", &vRowBufferAppendRecord, false);
+  vAddPrimitive("rowBuffer.dump",   &vRowBufferDump,    false);
   vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
   
   vAddPrimitive("rowCursor.begin",  &vRowCursorBegin,  false);
@@ -918,6 +983,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rowCursor.init",   &vRowCursorInit,   false);
   vAddPrimitive("rowCursor.new",    &vRowCursorNew,    false);
   vAddPrimitive("rowCursor.next",   &vRowCursorNext,   false);
+  vAddPrimitive("rowCursor.rowBuffer", &vRowCursorRowBuffer,  false);
   vAddPrimitive("rowCursor.table@", &vRowCursorTableFetch, false);
   vAddPrimitive("rowCursor.table!", &vRowCursorTableStore, false);
   
@@ -962,6 +1028,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
   vAddPrimitive("rpick",           &vRstackPick,       false);
+  vAddPrimitive("rreverse",        &vRstackReverse,    false);
+  vAddPrimitive("r>",              &vRstackToP,        false);
+  vAddPrimitive(">r",              &vRstackToR,        false);
   vAddPrimitive("r0",              &vRstack0,          false);
   vAddPrimitive("r1",              &vRstack1,          false);
   vAddPrimitive("r2",              &vRstack2,          false);
@@ -999,9 +1068,9 @@ void Task::vAddPrimitives(void)
 
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
  
-  vAddPrimitive("stack.class", &vStackClass,    false);
-  vAddPrimitive(">stack",      &vStackTransfer, false);
-
+  vAddPrimitive("astack.class", &vAstackClass,    false);
+  vAddPrimitive("stack.class",  &vStackClass,     false);
+  
   vAddPrimitive("steps.list",  &vStepsList,  false);
   vAddPrimitive("steps.reset", &vStepsReset, false);
   
@@ -1011,6 +1080,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("subStr", &vSubStr,    false);
   vAddPrimitive("concat", &vConcat,    false);
   vAddPrimitive("clip",   &vClip,      false);
+  vAddPrimitive("prepend",    &vPrepend,     false);
   vAddPrimitive("toDigitName",&vToDigitName, false);
   vAddPrimitive("rndStr", &vRndStr,    false);
   
@@ -1022,6 +1092,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.drop",         &vTableDrop,         false);
   vAddPrimitive("table.init",         &vTableInit,         false);
   vAddPrimitive("table.insert",       &vTableInsert,       false);
+  vAddPrimitive("table.name",         &vTableName,         false);
   vAddPrimitive("table.ref",          &vTableRef,          false);
   vAddPrimitive("table.space",        &vTableSpace,        false);
   vAddPrimitive("table.truncate",     &vTableTruncate,     false);
@@ -1029,6 +1100,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.dec",        &vTaskAcksDec,      false);
   vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
   vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
+  vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
+  vAddPrimitive("task.comment!",   &vTaskCommentStore, false);
   vAddPrimitive("task.dic",        &vTaskDic,          false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
   vAddPrimitive("task.init",       &vTaskInit,         false);
@@ -1048,6 +1121,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
   vAddPrimitive("task.suspend",    &vTaskSuspend,      false);
+  vAddPrimitive("task.taskset@",   &vTaskTaskSetFetch, false);
+  vAddPrimitive("task.taskset!",   &vTaskTaskSetStore, false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
   vAddPrimitive("task.thread",     &vTaskThread,       false);
   vAddPrimitive("task.wait",       &vTaskWait,         false);
@@ -1115,6 +1190,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
   vAddPrimitive("timer.update",    &vTimerUpdate,      false);
   
+  vAddPrimitive("traceOff",        &vTraceOff,         false);
+  vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("tracePoint",      &vTracePoint,       false);
+  vAddPrimitive("trace!",          &vTraceSet,         false);
+  
   vAddPrimitive("tx.dump",         &vTxDump,           false);
   
   vAddPrimitive("txCursor.begin",  &vTxCursorBegin,  false);
@@ -1146,6 +1226,13 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.name",       &vWordName,         false);
   vAddPrimitive("word.this",       &vWordThis,         false);
   
+  vAddPrimitive("0<",              &vZeroLess,         false);
+  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
+  vAddPrimitive("0==",             &vZeroEqual,        false);
+  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
+  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
+  vAddPrimitive("0>",              &vZeroGreater,      false);
+
   //----------------------------------------------------------
   vAddPrimitive("socket.accept",   &vSocketAccept,     false);
   vAddPrimitive("socket.close",    &vSocketClose,      false);
@@ -1370,6 +1457,8 @@ Word* Task::pCompileColon(s& sDefinition)
   
   pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
   
+  vCurrentWord(pNewWord);
+
   vTokenNext();
   
   while (TK_NONE != m_eToken) {
@@ -1427,22 +1516,34 @@ Word* Task::pCompileColon(s& sDefinition)
 }
 
 /*----------------------------------------------------------------------------*/
-/* current word                                                               */
+/* get current word                                                           */
 /*----------------------------------------------------------------------------*/
 Word* Task::pCurrentWord(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic;
-  
-  if (m_pSEitf)
-    pDic = m_pSEitf->pDicStack()->pTop();
-  else
-    pDic = m_xDicStack.pTop();
+//  Dic* pDic;
+//  
+//  if (m_pSEitf)
+//    pDic = m_pSEitf->pDicStack()->pTop();
+//  else
+//    pDic = m_xDicStack.pTop();
+//
+//  Word* pWord = pDic->pCurrentWord();
+//  
+//  return pWord;
 
-  Word* pWord = pDic->pCurrentWord();
+  return m_pCurrentWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set current word                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vCurrentWord(Word* pWord)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  return pWord;
+  m_pCurrentWord = pWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1450,6 +1551,47 @@ Word* Task::pCurrentWord(void)
 /*----------------------------------------------------------------------------*/
 void Task::vDebug(void)
 {
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop dic                                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vDicDrop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (m_pSEitf)
+    m_pSEitf->vPopDic();
+  else
+    m_xDicStack.vDiscard();
+}
+
+/*----------------------------------------------------------------------------*/
+/* peek dic                                                                   */
+/*----------------------------------------------------------------------------*/
+Dic* Task::pDicPeek(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Dic* pDic = nullptr;
+  
+  if (m_pSEitf)
+    pDic = m_pSEitf->pDicStack()->pPick(0);
+  else
+    pDic = m_xDicStack.pPick(0);
+  
+  return pDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push dic                                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vDicPush(Dic* pDic)
+{
+  if (m_pSEitf)
+    m_pSEitf->vPushDic(pDic);
+  else
+    m_xDicStack.vPush(pDic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1572,13 +1714,6 @@ bool Task::bForgetWord(s& sName)
   return bResult;
 }
 
-
-
-
-
-
-
-
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
@@ -1589,6 +1724,32 @@ bool Task::bIsName(s& sName)
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop locals frame                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPop(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  RegFrame* pLocalsframe = m_pLocalsFrame;
+  
+  m_pLocalsFrame = m_pLocalsFrame->pNext();
+  
+  delete pLocalsframe;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push a locals frame                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPush(void)
+{
+  RegFrame* pLocalsframe = new RegFrame;
+  
+  pLocalsframe->vNext(m_pLocalsFrame);
+  
+  m_pLocalsFrame = pLocalsframe;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1643,76 +1804,6 @@ void Task::vNextInSet(NP_Task npNextInSet)
   m_npNextInSet = npNextInSet;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* seed task to run ::dicCompile                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedDicCompileSen(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pBootSen = pFindWord("::dicCompile");
-  ASSERT(pBootSen);
-  
-  IP.m_pCell = pBootSen->pFirstCell();
-  
-  m_eState = TS_RUNNING;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sLambda = "";
-  
-  m_xTokeniser.vUseString(m_sLambda);
-}
-
-/*----------------------------------------------------------------------------*/
-/* seed task to run given lamda                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedWord(const char* aLambda)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pShellEnter = pFindWord("::docmd");
-  
-  IP.m_pCell = pShellEnter->pFirstCell();
-  
-  m_eState = TS_YIELD;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sLambda = aLambda;
-  if (m_sLambda.iLength())
-    String::vConcat(m_sLambda.a()," ::exit");
-  
-  m_xTokeniser.vUseString(m_sLambda);
-}
-
-/*----------------------------------------------------------------------------*/
-/* seed task to run ::enter                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSeedDocol(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pShellEnter = pFindWord("::enter");
-  
-  IP.m_pCell = pShellEnter->pFirstCell();
-  
-  m_eState = TS_YIELD;
-  
-  m_xParamStack.vReset();
-  m_xReturnStack.vReset();
-  
-  m_sLambda = "";
-  
-  s32 sPrompt("docol> ");
-  m_xTokeniser.vPrompt(sPrompt);
- 
-  m_xTokeniser.vUseString(m_sLambda);
-  m_xTokeniser.vLineMode(false);
-}
 
 /*----------------------------------------------------------------------------*/
 /* get prev task in set                                                       */
@@ -1785,7 +1876,7 @@ void Task::vPrimitive(const char* aPrimitive)
 //  }
 
   s8K sStackContents;
-  vStackContents(sStackContents);
+  vStackContents(&m_xParamStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
 }
@@ -1859,23 +1950,225 @@ void Task::vRoutineCall(Word* pWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* seed task to run ::dicCompile                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedDicCompileSen(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pBootSen = pFindWord("::dicCompile");
+  ASSERT(pBootSen);
+  
+  IP.m_pCell = pBootSen->pFirstCell();
+  
+  m_eState = TS_RUNNING;
+  
+  m_xParamStack.vReset();
+  m_xReturnStack.vReset();
+  
+  m_sLambda = "";
+  
+  m_xTokeniser.vUseString(m_sLambda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* seed task to run given lamda                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedWord(const char* aLambda)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pShellEnter = pFindWord("::docmd");
+  
+  IP.m_pCell = pShellEnter->pFirstCell();
+  
+  m_eState = TS_YIELDED;
+  
+  m_xParamStack.vReset();
+  m_xReturnStack.vReset();
+  
+  m_sLambda = aLambda;
+  if (m_sLambda.iLength())
+    String::vConcat(m_sLambda.a()," ::exit");
+  
+  m_xTokeniser.vUseString(m_sLambda);
+}
+
+/*----------------------------------------------------------------------------*/
+/* seed task to run ::enter                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSeedDocol(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word* pShellEnter = pFindWord("::enter");
+  
+  IP.m_pCell = pShellEnter->pFirstCell();
+  
+  m_eState = TS_YIELDED;
+  
+  m_xParamStack.vReset();
+  m_xReturnStack.vReset();
+  
+  m_sLambda = "";
+  
+  s32 sPrompt("docol> ");
+  m_xTokeniser.vPrompt(sPrompt);
+  
+  m_xTokeniser.vUseString(m_sLambda);
+  m_xTokeniser.vLineMode(false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint of stack using given format string                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(s8K& sFormat, s8K& sString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  char* pf = sFormat.a();
+  char* ps = sString.a();
+  
+  /*
+  while (*pf) {
+    
+    // test for ordinary character
+    if ('%' != *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // we have a '%'
+    pf++;
+    
+    // test for %%
+    if ('%' == *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // test for %s
+    if ('s' == *pf) {
+      
+      pf++;
+      
+      s8K sValue;
+      m_xParamStack.bPop(sValue);
+      
+      for (char* pv = sValue.a(); *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+
+    // test for %i
+    if ('i' == *pf) {
+      
+      pf++;
+      
+      i8 iValue;
+      m_xParamStack.bPop(iValue);
+      
+      char aValue[32];
+      String::wToString(iValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+    
+    // just copy %?
+    *ps++ = '%';
+    *ps++ = *pf++;
+  }
+  
+  *pf = '\0';
+   
+  */
+  
+  while (*pf) {
+    
+    // test for ordinary character
+    if ('%' != *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // we have a '%'
+    pf++;
+    
+    // test for %%
+    if ('%' == *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // should be %v
+    ASSERT('v' == *pf);
+    
+    Value* pValue0 = m_xParamStack.pPeek(0);
+    
+    // test for strval
+    if (CN_STRVAL == pValue0->eClass()) {
+
+      *pf = 's';
+      pf++;
+      
+      s8K sValue;
+      m_xParamStack.bPop(sValue);
+      
+      for (char* pv = sValue.a(); *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+    
+    // test for intval
+    if (CN_INTVAL == pValue0->eClass()) {
+    
+      *pf = 'i';
+      pf++;
+      
+      i8 iValue;
+      m_xParamStack.bPop(iValue);
+      
+      char aValue[32];
+      String::wToString(iValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+        *ps++ = *pv++;
+      
+      continue;
+    }
+    
+    // just copy %?
+    *ps++ = '%';
+    *ps++ = *pf++;
+  }
+  
+  *pf = '\0';
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStackContents(s& sStackContents)
+void Task::vStackContents(Stack* pStack, s& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   char* a = sStackContents.a();
   *a = '\0';
   
-  i8 iParamValues = m_xParamStack.iValues();
+  i8 iParamValues = pStack->iValues();
   
   String::vSprintCat(a,"(");
   for (i8 iValue = iParamValues - 1; iValue >= 0; iValue--) {
     
     String::vSprintCat(a," ");
     
-    ValWsp* pValWsp = static_cast<ValWsp*>(m_xParamStack.pPeek(iValue));
+    ValWsp* pValWsp = static_cast<ValWsp*>(pStack->pPeek(iValue));
     
     eCN eClass = pValWsp->eClass();
     
@@ -1883,10 +2176,31 @@ void Task::vStackContents(s& sStackContents)
       String::vSprintCat(a,"%lld",pValWsp->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (pValWsp->pPtr())
-        String::vSprintCat(a,"^%s=%p",
-                           pCN[((Object*)pValWsp->pPtr())->eClass()],
-                           pValWsp->pPtr());
+      if (pValWsp->pPtr()) {
+        if (CN_WORD == ((Object*)pValWsp->pPtr())->eClass())
+          String::vSprintCat(a,"^%s=%p:%s",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr(),
+                             ((Word*)pValWsp->pPtr())->sName().a());
+        else if (CN_QUEUE == ((Object*)pValWsp->pPtr())->eClass() ) {
+          Word* pWord = Word::pToWord(pValWsp->pPtr());
+          String::vSprintCat(a,"^%s=%p:%s",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr(),
+                             pWord->sName().a());
+        }
+        else if (CN_TASK == ((Object*)pValWsp->pPtr())->eClass() ) {
+          Task* pTask = _pTask(pValWsp->pPtr());
+          String::vSprintCat(a,"^%s=%p:%s",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr(),
+                             pTask->sName().a());
+        }
+        else
+          String::vSprintCat(a,"^%s=%p",
+                             pCN[((Object*)pValWsp->pPtr())->eClass()],
+                             pValWsp->pPtr());
+      }
       else
         String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),pValWsp->pPtr());
     }
@@ -1961,6 +2275,11 @@ void Task::vTokenNext(void)
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(const char* aMark)
 {
+  if (gxArguments.m_nNodes > 1) {
+    i8 iPause = Random::iRandom(999,99999);
+    PosixThread::vSleepMicro(iPause);
+  }
+  
   char aRoutine[128];
   
   Cell* pCell = IP.m_pCell;
@@ -1971,13 +2290,28 @@ void Task::vTracePoint(const char* aMark)
   else
     String::vCopy(aRoutine,"<unknown>");
   
+  i8 iAuxValues    = m_xAuxStack.iValues();
   i8 iParamValues  = m_xParamStack.iValues();
   i8 iReturnValues = m_xReturnStack.iValues();
-  vTrace("%s %-15s : r %lld ; p%2d=",
-         aMark,aRoutine,iReturnValues,iParamValues);
-  
+  vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld=",
+         
+         gxArguments.m_iNode,
+         m_sName.a(),
+         *m_zAcks,
+         m_sComment.a(),
+         
+         aRoutine,
+         aMark,
+         iAuxValues);
+         
   s8K sStackContents;
-  vStackContents(sStackContents);
+  vStackContents(&m_xAuxStack, sStackContents);
+  
+  vTrace("%s",sStackContents.a());
+  
+  vTrace(" r%2lld  p%2lld=", iReturnValues, iParamValues);
+
+  vStackContents(&m_xParamStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
 }
@@ -2028,7 +2362,7 @@ void Task::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  while (TS_RUNNING == m_eState) {
+  while (TS_RUNNING == m_eState || TS_WAITING == m_eState) {
     
     TaskStep pTaskStep = *IP.m_pCell->m_ppDoesStep;
     
@@ -2119,56 +2453,6 @@ ENTRY("vAccept");
 }
 
 /*----------------------------------------------------------------------------*/
-/* + -- add top two integers on stack                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vAdd(NNP_Task nnpTask)
-{
-ENTRY("vAdd");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("+");
-  
-  r = i + j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* again -- unconditionally repeat loop (use only in : docol)                 */
-/*----------------------------------------------------------------------------*/
-void Task::vAgain(NNP_Task nnpTask)
-{
-ENTRY("vAgain");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("again");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-  
-  pCurrentWord->vEncode("jump",pBeginLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* again_ -- unconditionally repeat begin_ loop (use only in : docol)         */
-/*----------------------------------------------------------------------------*/
-void Task::vAgain_(NNP_Task nnpTask)
-{
-ENTRY("vAgain_");
-  
-  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* allot -- reserve n bytes in current word                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vAllot(NNP_Task nnpTask)
@@ -2184,72 +2468,6 @@ ENTRY("vAllot");
 
   char* pAddress = pCurrentWord->pAllot(iBytes);
   ASSERT(pAddress);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* and -- logical and of top two values                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vAnd(NNP_Task nnpTask)
-{
-ENTRY("vAnd");
-  
-  i8 iArgB;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
-    THROW_INVALID_PARAM("and");
-  
-  i8 iArgA;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
-    THROW_INVALID_PARAM("and");
-
-  i8 iArgR = (iArgA && iArgB) ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iArgR);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin -- begin a loop (use only in : docol)                                */
-/*----------------------------------------------------------------------------*/
-void Task::vBegin(NNP_Task nnpTask)
-{
-ENTRY("vBegin");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  Cell* pLastCell = pCurrentWord->pLastCell();
-  
-  nnpTask->m_xReturnStack.vPush(pLastCell);
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* begin_ -- begin a loop (use only in : docol)                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBegin_(NNP_Task nnpTask)
-{
-ENTRY("vBegin_");
-  
-  nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* boot -- boot                                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBoot(NNP_Task nnpTask)
-{
-  static bool bHasRun = false;
-  
-ENTRY("vBoot");
-  ASSERT( ! bHasRun );
-  bHasRun = true;
-
-  nnpTask->vAddConstants();
   
   EXIT();
 }
@@ -2406,7 +2624,9 @@ ENTRY("vColon");
 
   nnpTask->vTokenNext();
   
-  new(nnpTask->m_xDicStack.pTop())  Word(nnpTask->m_sToken.a());
+  Word* pNewWord = new(nnpTask->m_xDicStack.pTop()) Word(nnpTask->m_sToken.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
   
   EXIT();
 }
@@ -2512,178 +2732,6 @@ ENTRY("vCursorStore");
     THROW_INVALID_PARAM("cursor!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* depth -- push depth of parameters stack onto stack                         */
-/*----------------------------------------------------------------------------*/
-void Task::vDepth(NNP_Task nnpTask)
-{
-ENTRY("vDepth");
-  
-  i8 iDepth = nnpTask->m_xParamStack.iValues();
-  
-  nnpTask->m_xParamStack.vPush(iDepth);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* / -- divide top integer by second integer on stack                         */
-/*----------------------------------------------------------------------------*/
-void Task::vDivide(NNP_Task nnpTask)
-{
-ENTRY("vDivide");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("/");
-    
-  r = DIV(i,j);
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* do -- compile time of do ... loop                                immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vDo(NNP_Task nnpTask)
-{
-ENTRY("vDo");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("do_rt");
-  
-  Cell* pLastCell = pCurrentWord->pLastCell();
-  
-  nnpTask->m_xReturnStack.vPush((void*)pLastCell);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* do_rt -- runtime of do ... loop                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vDo_RT(NNP_Task nnpTask)
-{
-ENTRY("vDo_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("do_rt");
-  
-  nnpTask->m_xReturnStack.vPush(iLimit);
-  nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* drop -- discard top value off stack                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vDrop(NNP_Task nnpTask)
-{
-ENTRY("vDrop");
-  
-  // should just discard on stack
-  
-  ValWsp xValA;
-  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("drop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dup -- dup top of param stack                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vDup(NNP_Task nnpTask)
-{
-ENTRY("vDup");
-  
-  // could just copy from stack back into stack
-  
-  ValWsp xValA;
-  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("dup");
-  
-  nnpTask->m_xParamStack.vPush(xValA);
-  nnpTask->m_xParamStack.vPush(xValA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump -- dump top of param stack                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vDump(NNP_Task nnpTask)
-{
-ENTRY("vDump");
-  
-  s8K sWorkspace;
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM("dump");
-  
-  xValWsp.vToString(sWorkspace.a());
-  char* aClass = xValWsp.aClass();
-  
-  eCN eClass = xValWsp.eClass();
-  
-  if (CN_PTRVAL == eClass) {
-    PtrVal* pPtrVal = xValWsp.pAsPtrVal();
-    Object* pObject = pPtrVal->pObject();
-    if (pObject) {
-      eCN ePtdClass   = pObject->eClass();
-      vTrace("[%s] %s (%s %s)\n",
-            nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
-    }
-    else {
-      vTrace("[%s] nullptr\n",nnpTask->m_sName.a());
-    }
-  }
-  else {
-    vTrace("[%s] %s (%s)\n",
-           nnpTask->m_sName.a(),sWorkspace.a(),aClass);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* else -- else clause                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vElse(NNP_Task nnpTask)
-{
-ENTRY("vElse");
-
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pIfJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
-    THROW_INVALID_RETURN("else");
-  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
-  
-  //-------------------------------------------------------------------------
-  
-  Cell* pElseJumpArg;
-  
-  pCurrentWord->vEncode("jump");
-  pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pElseJumpArg);
-  
-  //-------------------------------------------------------------------------
-  
-  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -2884,25 +2932,6 @@ ENTRY("vEnvGet");
 }
 
 /*----------------------------------------------------------------------------*/
-/* == -- test top two integers on data stack for equality                     */
-/*----------------------------------------------------------------------------*/
-void Task::vEqual(NNP_Task nnpTask)
-{
-ENTRY("vEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("==");
-  
-  r = i == j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
 void Task::vEqualAddress(NNP_Task nnpTask)
@@ -2977,6 +3006,11 @@ ENTRY("vExit");
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
     nnpTask->vTracePoint("<");
+  
+  if (nnpTask->m_pLocalsFrame &&
+        nnpTask->m_pLocalsFrame->pStackPtr() ==
+         (void*)nnpTask->m_xReturnStack.pTopValue())
+    nnpTask->vLocalsPop();
   
   void* pCellVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
@@ -3070,44 +3104,6 @@ ENTRY("vFreeSpace");
 }
 
 /*----------------------------------------------------------------------------*/
-/* > -- test top two integers on data stack for greater than                  */
-/*----------------------------------------------------------------------------*/
-void Task::vGreater(NNP_Task nnpTask)
-{
-ENTRY("vGreater");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM(">");
-  
-  r = i > j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >= -- test top two integers on data stack for greater than equal to        */
-/*----------------------------------------------------------------------------*/
-void Task::vGreaterEqual(NNP_Task nnpTask)
-{
-ENTRY("vGreaterEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM(">=");
-  
-  r = i >= j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* hash -- get hash of string                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vHash(NNP_Task nnpTask)
@@ -3154,26 +3150,6 @@ ENTRY("vI");
 }
 
 /*----------------------------------------------------------------------------*/
-/* if -- if clause                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vIf(NNP_Task nnpTask)
-{
-ENTRY("vIf");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  Cell* pIfJumpArg;
-
-  pCurrentWord->vEncode("jumpFalse");
-  
-  pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pIfJumpArg);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* immediate -- make the most recent definition an immediate word             */
 /*----------------------------------------------------------------------------*/
 void Task::vImmediate(NNP_Task nnpTask)
@@ -3182,7 +3158,7 @@ ENTRY("vImmediate");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
   pCurrentWord->vImmediate(true);
   
@@ -3300,73 +3276,6 @@ ENTRY("vInUseSpace");
 }
 
 /*----------------------------------------------------------------------------*/
-/* iterate -- compile time of iterate ... next                      immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vIterate(NNP_Task nnpTask)
-{
-ENTRY("vIterate");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("iterate_rt_a");
-  
-  Cell* pIterateLoc = pCurrentWord->pLastCell();
-  nnpTask->m_xReturnStack.vPush(pIterateLoc);
-  pCurrentWord->vEncode("iterate_rt_b");
-
-  pCurrentWord->vEncode("jumpFalse");
-  Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  nnpTask->m_xReturnStack.vPush(pJumpFalseArg);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* iterate_rt_a -- runtime of iterate ... next                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIterate_RT_A(NNP_Task nnpTask)
-{
-ENTRY("vIterate_RT_A");
-  
-  Object* pPtrObject;
-  Object* pPtrCursor;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrObject,pPtrCursor) )
-    THROW_INVALID_PARAM("iterate_rt_a");
-  
-  nnpTask->m_xReturnStack.vPush(pPtrCursor);
-  nnpTask->m_xReturnStack.vPush(pPtrObject);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* iterate_rt_b -- runtime of iterate ... next                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIterate_RT_B(NNP_Task nnpTask)
-{
-ENTRY("vIterate_RT_B");
-  
-  i8 iPick = 0;
-  
-  ValWsp xObjectWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
-  nnpTask->m_xParamStack.vPush(xObjectWsp);
-  
-  ValWsp xWsp;
-  
-  if ( ! xObjectWsp.iAsInt() ) {
-    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
-      THROW_INVALID_PARAM("iterate_rt_b");
-    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
-      THROW_INVALID_PARAM("iterate_rt_b");
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* j -- copy 2nd loop index from return stack onto param stack                */
 /*----------------------------------------------------------------------------*/
 void Task::vJ(NNP_Task nnpTask)
@@ -3376,98 +3285,6 @@ ENTRY("vJ");
   Value* pI = nnpTask->m_xReturnStack.pPeek(3);
   
   nnpTask->m_xParamStack.vPush(pI);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jump -- jump to location                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vJump(NNP_Task nnpTask)
-{
-ENTRY("vJump");
-  
-  nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jumpFalse -- jump on false to location                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vJumpFalse(NNP_Task nnpTask)
-{
-ENTRY("vJumpFalse");
-  
-  i8 iVal;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpFalse");
-
-  //  i8 iFlag = nnpTask->m_xParamStack.iPop();
-  
-  // cell points to the jump arg
-  if (iVal)
-    nnpTask->IP.m_pCell++;
-  else
-    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* jumpTrue -- jump on true to location                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vJumpTrue(NNP_Task nnpTask)
-{
-ENTRY("vJumpTrue");
-  
-  i8 iVal;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpTrue");
-  
-  // cell points to the jump arg
-  if (iVal)
-    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
-  else
-    nnpTask->IP.m_pCell++;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* < -- test top two integers on data stack for less than                     */
-/*----------------------------------------------------------------------------*/
-void Task::vLess(NNP_Task nnpTask)
-{
-ENTRY("vLess");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("<");
-  
-  r = i < j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* <= -- test top two integers on data stack for less than equal to           */
-/*----------------------------------------------------------------------------*/
-void Task::vLessEqual(NNP_Task nnpTask)
-{
-ENTRY("vLessEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("<=");
-  
-  r = i <= j;
-  
-  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
@@ -3496,104 +3313,6 @@ ENTRY("vLocate");
   else {
     i8 iZero = 0;
     nnpTask->m_xParamStack.vPush(iZero);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loop -- compile time for do ... loop                            immediate  */
-/*----------------------------------------------------------------------------*/
-void Task::vLoop(NNP_Task nnpTask)
-{
-ENTRY("vLoop");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pDoLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
-    THROW_INVALID_RETURN("loop");
-  Cell* pDoLoc = _pCell(pDoLocVoid);
-  
-  pCurrentWord->vEncode("Loop_RT");
-  
-  pCurrentWord->vEncode("jump",pDoLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loop_rt -- runtime for do loop                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vLoop_RT(NNP_Task nnpTask)
-{
-ENTRY("vLoop_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  
-  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("loop_rt");
-  
-  iIndex++;
-  
-  if (iIndex < iLimit) {
-    nnpTask->m_xReturnStack.vPush(iLimit);
-    nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
-  }
-  else {
-    nnpTask->IP.m_pCell += 2;
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loopPlus -- do +loop                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vLoopPlus(NNP_Task nnpTask)
-{
-ENTRY("vLoopPlus");
-
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pDoLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
-    THROW_INVALID_RETURN("+loop");
-  Cell* pDoLoc = _pCell(pDoLocVoid);
-  
-  pCurrentWord->vEncode("+Loop_RT");
-  
-  pCurrentWord->vEncode("jump",pDoLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loopPlus_rt -- runtime for do +loop                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vLoopPlus_RT(NNP_Task nnpTask)
-{
-ENTRY("vLoopPlus_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  i8 iInc;
-  
-  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("loopPlus_rt");
-
-  if ( ! nnpTask->m_xParamStack.bPop(iInc) )
-    THROW_INVALID_PARAM("loopPlus_rt");
-  
-  iIndex += iInc;
-  
-  if (iIndex < iLimit) {
-    nnpTask->m_xReturnStack.vPush(iLimit);
-    nnpTask->m_xReturnStack.vPush(iIndex);
-  }
-  else {
-    nnpTask->IP.m_pCell += 2;
   }
   
   EXIT();
@@ -3634,44 +3353,6 @@ ENTRY("vMagicMark");
 }
 
 /*----------------------------------------------------------------------------*/
-/* % -- modulo of top integer by second integer on stack                      */
-/*----------------------------------------------------------------------------*/
-void Task::vModulo(NNP_Task nnpTask)
-{
-ENTRY("vModulo");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("%");
-  
-  r = MOD(i,j);
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* * multiply second integer by top integer on stack                          */
-/*----------------------------------------------------------------------------*/
-void Task::vMultiply(NNP_Task nnpTask)
-{
-ENTRY("vMultiply");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("*");
-  
-  r = i * j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* nameWord -- push name of word                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vNameWord(NNP_Task nnpTask)
@@ -3689,113 +3370,11 @@ ENTRY("vNameWord");
 }
 
 /*----------------------------------------------------------------------------*/
-/* neg -- gegate top integer on stack                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vNeg(NNP_Task nnpTask)
-{
-ENTRY("vNeg");
-  
-  i8 r, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(i) )
-    THROW_INVALID_PARAM("neg");
-  
-  r = -1 * i;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* next -- compile time for iterate ... next                        immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vNext(NNP_Task nnpTask)
-{
-ENTRY("vNext");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pJumpFalseArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pJumpFalseArgVoid) )
-    THROW_INVALID_RETURN("next");
-  Cell* pJumpFalseArg = _pCell(pJumpFalseArgVoid);
-  
-  void* pIterateLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIterateLocVoid) )
-    THROW_INVALID_RETURN("next");
-  Cell* pIterateLoc = _pCell(pIterateLocVoid);
-  
-  //----------------------------------------------------------------------------
-  
-  pCurrentWord->vEncode("jump",pIterateLoc);
-  
-  pJumpFalseArg->m_pJumpTo = pCurrentWord->pLastCell();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* nip -- drop the 2nd value from the stack ( B A -- A )                      */
-/*----------------------------------------------------------------------------*/
-void Task::vNip(NNP_Task nnpTask)
-{
-  ENTRY("vRot");
-  
-  ValWsp xValA;
-  ValWsp xValB;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("nip");
-  
-  nnpTask->m_xParamStack.vPush(&xValA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* nop -- no op                                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vNop(NNP_Task nnpTask)
 {
 ENTRY("vNop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* not -- not of top value                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vNot(NNP_Task nnpTask)
-{
-ENTRY("vNot");
-  
-  i8 iValA;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iValA) )
-    THROW_INVALID_PARAM("not");
-  
-  i8 iNotA = iValA ? 0 : 1;
-  
-  nnpTask->m_xParamStack.vPush(iNotA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* != -- test top two integers on data stack for not equal                    */
-/*----------------------------------------------------------------------------*/
-void Task::vNotEqual(NNP_Task nnpTask)
-{
-ENTRY("vNotEqual");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("!=");
-  
-  r = i != j;
-  
-  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
@@ -3869,50 +3448,6 @@ ENTRY("vObjectMark");
 }
 
 /*----------------------------------------------------------------------------*/
-/* or -- logical or of top two values                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vOr(NNP_Task nnpTask)
-{
-ENTRY("vOr");
-  
-  i8 iArgB;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
-    THROW_INVALID_PARAM("or");
-  
-  i8 iArgA;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
-    THROW_INVALID_PARAM("or");
-  
-  i8 iArgR = (iArgA || iArgB) ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iArgR);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pick -- place copy of nth value in stack onto stack                        */
-/*----------------------------------------------------------------------------*/
-void Task::vPick(NNP_Task nnpTask)
-{
-ENTRY("vPick");
-
-  i8 iPick;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("pick");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xParamStack.vPeek(iPick,&xValWsp);
-
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* prevWord -- push prev word                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vPrevWord(NNP_Task nnpTask)
@@ -3945,7 +3480,15 @@ ENTRY("vPrint");
     THROW_INVALID_PARAM(".");
   
   xValWsp.vToString(sWorkspace.a());
-  vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
+  vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
+         
+         gxArguments.m_iNode,
+         nnpTask->m_sName.a(),
+         *nnpTask->m_zAcks,
+         nnpTask->m_sComment.a(),
+         
+         sWorkspace.a()
+         );
   
   EXIT();
 }
@@ -4059,36 +3602,6 @@ ENTRY("vRdtscp");
 }
 
 /*----------------------------------------------------------------------------*/
-/* repeat -- repeat a begin-while-repeat loop                       immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vRepeat(NNP_Task nnpTask)
-{
-ENTRY("vRepeat");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-
-  void* pWhileJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
-    THROW_INVALID_RETURN("repeat");
-  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
-  
-  //-------------------------------------------------------------------------
-
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("repeat");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-
-  pCurrentWord->vEncode("jump",pBeginLoc);
-  
-  //-------------------------------------------------------------------------
-  
-  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* retryPoint -- mark retry point                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vRetryPoint(NNP_Task nnpTask)
@@ -4099,371 +3612,6 @@ ENTRY("vRetryMark");
   
   nnpTask->m_xParamStack.vRetryPoint();
   nnpTask->m_xReturnStack.vRetryPoint();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* roll -- roll top stack values at n ( ... D C B A n -- A ... D C B )        */
-/*----------------------------------------------------------------------------*/
-void Task::vRoll(NNP_Task nnpTask)
-{
-  ENTRY("vRoll");
-  
-  ValWsp xValA;
-  ValWsp xValX;
-  
-  i8 nValues;
-  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("roll");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("roll");
-
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
-      THROW_INVALID_PARAM("roll");
-    
-    nnpTask->m_xReturnStack.vPush(&xValX);
-  }
-  
-  nnpTask->m_xParamStack.vPush(&xValA);
-
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
-      THROW_INVALID_PARAM("roll");
-    
-    nnpTask->m_xParamStack.vPush(&xValX);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* -roll -- inverse roll top stack values at n ( Z ... B A n -- ... B A Z )   */
-/*----------------------------------------------------------------------------*/
-void Task::vRollInv(NNP_Task nnpTask)
-{
-  ENTRY("vRollInv");
-  
-  ValWsp xValZ;
-  ValWsp xValX;
-  
-  i8 nValues;
-  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("-roll");
-  
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
-      THROW_INVALID_PARAM("-roll");
-    
-    nnpTask->m_xReturnStack.vPush(&xValX);
-  }
-
-  if ( ! nnpTask->m_xParamStack.bPop(xValZ) )
-    THROW_INVALID_PARAM("-roll");
-  
- 
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
-      THROW_INVALID_PARAM("-roll");
-    
-    nnpTask->m_xParamStack.vPush(&xValX);
-  }
-
-  nnpTask->m_xParamStack.vPush(&xValZ);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* rot -- rotate top 3 values ( C B A -- A C B )                              */
-/*----------------------------------------------------------------------------*/
-void Task::vRot(NNP_Task nnpTask)
-{
-ENTRY("vRot");
-  
-  ValWsp xValA;
-  ValWsp xValB;
-  ValWsp xValC;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
-    THROW_INVALID_PARAM("rot");
-  
-  nnpTask->m_xParamStack.vPush(&xValA);
-  nnpTask->m_xParamStack.vPush(&xValC);
-  nnpTask->m_xParamStack.vPush(&xValB);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* -rot -- inverse rotate top 3 values ( C B A -- B A C )                     */
-/*----------------------------------------------------------------------------*/
-void Task::vRotInv(NNP_Task nnpTask)
-{
-  ENTRY("vRotInv");
-  
-  ValWsp xValA;
-  ValWsp xValB;
-  ValWsp xValC;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
-    THROW_INVALID_PARAM("rot");
-  
-  nnpTask->m_xParamStack.vPush(&xValB);
-  nnpTask->m_xParamStack.vPush(&xValA);
-  nnpTask->m_xParamStack.vPush(&xValC);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* rdepth -- put number of values in return stack onto param stack            */
-/*----------------------------------------------------------------------------*/
-void Task::vRstackDepth(NNP_Task nnpTask)
-{
-ENTRY("vRstackDepth");
-  
-  i8 iDepth = nnpTask->m_xReturnStack.iValues();
-  
-  nnpTask->m_xParamStack.vPush(iDepth);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* rdrop -- discard top value off rstack                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vRstackDrop(NNP_Task nnpTask)
-{
-ENTRY("vRstackDrop");
-  
-  // should just discard on stack
-  
-  ValWsp xValA;
-  if ( ! nnpTask->m_xReturnStack.bPop(xValA) )
-    THROW_INVALID_RETURN("rdrop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r@ -- place copy of top value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstackFetch(NNP_Task nnpTask)
-{
-ENTRY("vRstackFetch");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* rpick -- place copy of nth value in return stack onto param stack          */
-/*----------------------------------------------------------------------------*/
-void Task::vRstackPick(NNP_Task nnpTask)
-{
-ENTRY("vRstackPick");
-  
-  i8 iPick;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("rpick");
-    
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r0 -- place copy of 0th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack0(NNP_Task nnpTask)
-{
-ENTRY("vRstack0");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r1 -- place copy of 1st value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack1(NNP_Task nnpTask)
-{
-ENTRY("vRstack1");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(1,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r2 -- place copy of 2nd value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack2(NNP_Task nnpTask)
-{
-ENTRY("vRstack2");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(2,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r3 -- place copy of 3rd value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack3(NNP_Task nnpTask)
-{
-ENTRY("vRstack3");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(3,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r4 -- place copy of 4th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack4(NNP_Task nnpTask)
-{
-ENTRY("vRstack4");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(4,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r5 -- place copy of 0th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack5(NNP_Task nnpTask)
-{
-ENTRY("vRstack5");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(5,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r6 -- place copy of 6th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack6(NNP_Task nnpTask)
-{
-ENTRY("vRstack6");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(6,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r7 -- place copy of 7th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack7(NNP_Task nnpTask)
-{
-ENTRY("vRstack7");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(7,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r8 -- place copy of 8th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack8(NNP_Task nnpTask)
-{
-ENTRY("vRstack8");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(8,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* r9 -- place copy of 9th value in return stack onto param stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vRstack9(NNP_Task nnpTask)
-{
-ENTRY("vRstack9");
-  
-  // could do this directly on stack
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(9,&xValWsp);
-  
-  nnpTask->m_xParamStack.vPush(xValWsp);
   
   EXIT();
 }
@@ -4489,25 +3637,25 @@ ENTRY("vSee");
   s8K sWorkspace;
   
 //  while ((char*)pCell < pcAdd(pWord->pDataArea(),pWord->iDataBytes())) {
-  while (pCell <= pWord->pLastCell()) {
+  while (pCell < pWord->pLastCell()) {
  
     Word* pDoesWord = nnpTask->m_xDicStack.pFindStep(*pCell->m_ppDoesStep);
 
     vTrace("%p: %s",pCell,pDoesWord->sName().a());
   
-    if ( *pCell->m_ppDoesStep == Task::vJump ) {
+    if ( *pCell->m_ppDoesStep == Task::vFlowJump ) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
     }
     else
-    if ( *pCell->m_ppDoesStep == Task::vJumpFalse ) {
+    if ( *pCell->m_ppDoesStep == Task::vFlowJumpFalse ) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
     }
     else
-    if ( *pCell->m_ppDoesStep == Task::vJumpTrue ) {
+    if ( *pCell->m_ppDoesStep == Task::vFlowJumpTrue ) {
       pCell++;
       vTrace(" %p\n",pCell->m_pJumpTo);
       pCell++;
@@ -4544,6 +3692,17 @@ ENTRY("vSemicolon");
   
   nnpTask->m_bCompiling = false;
   
+  if (nnpTask->m_nLocals) {
+    
+    // reset the number of local variables
+    nnpTask->m_nLocals = 0;
+    
+    // pop top dictionary
+    nnpTask->vDicDrop();
+  }
+  
+  nnpTask->vCurrentWord(nullptr);
+  
   EXIT();
 }
 
@@ -4577,6 +3736,26 @@ ENTRY("vSnooze");
   
   pThread->m_xPosixThread.vSleepNano(100_MB);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint -- pop format string and use it for a sprintf                       */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(NNP_Task nnpTask)
+{
+  ENTRY("vSprint");
+  
+  s8K sFormat;
+  if ( ! nnpTask->m_xParamStack.bPop(sFormat) )
+    THROW_INVALID_PARAM("sprint");
+  
+  s8K sString;
+  
+  nnpTask->vSprint(sFormat,sString);
+  
+  nnpTask->m_xParamStack.vPush(sString);
+ 
   EXIT();
 }
 
@@ -4634,69 +3813,12 @@ ENTRY("vStringColon");
 }
 
 /*----------------------------------------------------------------------------*/
-/* - -- subtract second integer from top integer on stack                     */
-/*----------------------------------------------------------------------------*/
-void Task::vSubtract(NNP_Task nnpTask)
-{
-ENTRY("vSubtract");
-  
-  i8 r, j, i;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("-");
-  
-  r = i - j;
-  
-  nnpTask->m_xParamStack.vPush(r);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* swap -- swap top two values on param stack                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vSwap(NNP_Task nnpTask)
-{
-ENTRY("vSwap");
-  
-  ValWsp xValA;
-  ValWsp xValB;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("swap");
-  
-  nnpTask->m_xParamStack.vPush(&xValA);
-  nnpTask->m_xParamStack.vPush(&xValB);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* test -- print test                                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTest(NNP_Task nnpTask)
 {
 ENTRY("vTest");
   vTrace("[%s] Test\n",nnpTask->m_sName.a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* then -- then clause                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vThen(NNP_Task nnpTask)
-{
-ENTRY("vThen");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pIfJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
-    THROW_INVALID_RETURN("then");
-  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
-  
-  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -4824,38 +3946,6 @@ ENTRY("vToInt");
 }
 
 /*----------------------------------------------------------------------------*/
-/* r> -- move value from rstack to pstack                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vToPstack(NNP_Task nnpTask)
-{
-ENTRY("vToPstack");
-  
-  ValWsp xVal;
-  if ( ! nnpTask->m_xReturnStack.bPop(xVal) )
-    THROW_INVALID_PARAM("r>");
-  
-  nnpTask->m_xParamStack.vPush(xVal);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >r -- move value from pstack to rstack                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vToRstack(NNP_Task nnpTask)
-{
-ENTRY("vToRstack");
-  
-  ValWsp xValOpaque;
-  if ( ! nnpTask->m_xParamStack.bPop(xValOpaque) )
-    THROW_INVALID_PARAM(">r");
-
-  nnpTask->m_xReturnStack.vPush(xValOpaque);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* >seitf -- convert int to seitf ptr                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vToSEitf(NNP_Task nnpTask)
@@ -4926,197 +4016,6 @@ ENTRY("vToTask");
 }
 
 /*----------------------------------------------------------------------------*/
-/* >valset -- collapse values on pstack to a valset                           */
-/*----------------------------------------------------------------------------*/
-void Task::vToValSet(NNP_Task nnpTask)
-{
-ENTRY("vToValSet");
-
-  i8 nVal;
-
-  if ( ! nnpTask->m_xParamStack.bPop(nVal) )
-    THROW_INVALID_PARAM(">valset");
-    
-  if ( ! nnpTask->m_xParamStack.bGuard(nVal) )
-    THROW_INVALID_PARAM(">valset");
-
-  char* pCursor = nullptr;
-  ValSet xValSet;
-  
-  ValWsp xVal;
-  for (i8 iVal = 0; iVal < nVal; iVal++) {
-    
-    if ( ! nnpTask->m_xParamStack.bPop(xVal) )
-      THROW_INVALID_PARAM(">valset");
-    
-    
-    xValSet.vAppend(pCursor,xVal);
-  }
-
-//  vTrace("ValSet %lld bytes\n",xValSet.iSize());
-  
-  nnpTask->m_xParamStack.vPush(xValSet);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >values -- expand valset to values on pstack                               */
-/*----------------------------------------------------------------------------*/
-void Task::vToValues(NNP_Task nnpTask)
-{
-ENTRY("vToValues");
- 
-  ValSet xValSet;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-    THROW_INVALID_PARAM(">values");
-  
-  i8 nVal = 0;
-  ValWsp* pValWsp[128];
-  
-  char* pCursor = nullptr;
-  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
-    nVal++;
-  
-  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
-    nnpTask->m_xParamStack.vPush(pValWsp[iVal]);
-
-  nnpTask->m_xParamStack.vPush(nVal);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* turn tracing off                                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vTraceOff(NNP_Task nnpTask)
-{
-ENTRY("vTraceOff");
-  
-  nnpTask->m_iTracing = 0;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* turn tracing on                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vTraceOn(NNP_Task nnpTask)
-{
-ENTRY("vTraceOn");
-  
-  nnpTask->m_iTracing = C_TRACE_STEPS;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace point                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vTracePoint(NNP_Task nnpTask)
-{
-  ENTRY("vTracePoint");
-  
-  s256 sPointName;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
-    THROW_INVALID_PARAM("tracePoint");
-  
-  nnpTask->vTracePoint(sPointName.a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set tracing                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vTraceSet(NNP_Task nnpTask)
-{
-  ENTRY("vTraceSet");
-  
-  i8 iTrace;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iTrace) )
-    THROW_INVALID_PARAM("trace!");
-  
-  nnpTask->m_iTracing = iTrace;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tuck -- copy the first stack value below second ( B A -- A B A )           */
-/*----------------------------------------------------------------------------*/
-void Task::vTuck(NNP_Task nnpTask)
-{
-  ENTRY("vTuck");
-  
-  ValWsp xValA;
-  ValWsp xValB;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("tuck");
-  
-  nnpTask->m_xParamStack.vPush(&xValA);
-  nnpTask->m_xParamStack.vPush(&xValB);
-  nnpTask->m_xParamStack.vPush(&xValA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* unloop -- pop the return stack                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vUnloop(NNP_Task nnpTask)
-{
-ENTRY("vUnloop");
-  
-  // we should just modify the pointers rather than actually pop
-  ValWsp xValOpaque;
-  if ( ! nnpTask->m_xReturnStack.bPop(xValOpaque) )
-    THROW_INVALID_RETURN("unloop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* until -- repeat begin loop until true                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vUntil(NNP_Task nnpTask)
-{
-ENTRY("vUntil");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("until");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-  
-  //-------------------------------------------------------------------------
-  
-  pCurrentWord->vEncode("jumpFalse",pBeginLoc);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* version -- push version string                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vVersion(NNP_Task nnpTask)
-{
-ENTRY("vVersion");
-  
-  s256 sVersion;
-  sVersion = RAPIDSSE_VERSION_STRING;
-  
-  nnpTask->m_xParamStack.vPush(sVersion);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* wake -- wake task on stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vWake(NNP_Task nnpTask)
@@ -5124,137 +4023,6 @@ void Task::vWake(NNP_Task nnpTask)
 ENTRY("vWake");
   
   // ..tbd..
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* while -- check for continue with loop                            immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vWhile(NNP_Task nnpTask)
-{
-ENTRY("vWhile");
-
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("jumpFalse");
-  Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0< -- test if top value is less than zero                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroLess(NNP_Task nnpTask)
-{
-ENTRY("vZeroLess");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0<");
-  
-  if (iZero < 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0<= -- test if top value is less than or equal to zero                     */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroLessEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroLessEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0<=");
-  
-  if (iZero <= 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0== -- test if top value is equal to zero / nullptr                        */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0==");
-  
-  if (iZero == 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0!= -- test if top value is not equal to zero                              */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroNotEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroNotEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0!=");
-  
-  if (iZero != 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroGreaterEqual(NNP_Task nnpTask)
-{
-ENTRY("vZeroGreaterEqual");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0>=");
-  
-  if (iZero >= 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* 0> -- test if top value is greater than zero                              */
-/*----------------------------------------------------------------------------*/
-void Task::vZeroGreater(NNP_Task nnpTask)
-{
-ENTRY("vZeroGreater");
-  
-  i8 iZero;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0>");
-  
-  if (iZero > 0)
-    nnpTask->m_xParamStack.vPush((i8)1);
-  else
-    nnpTask->m_xParamStack.vPush((i8)0);
   
   EXIT();
 }
@@ -5432,6 +4200,464 @@ ENTRY("vAssertStack_4more");
   EXIT();
 }
 
+// astack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* adepth -- put number of values in aux stack onto param stack               */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackDepth(NNP_Task nnpTask)
+{
+  ENTRY("vAstackDepth");
+  
+  i8 iDepth = nnpTask->m_xAuxStack.iValues();
+  
+  nnpTask->m_xParamStack.vPush(iDepth);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* adrop -- discard top value off astack                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackDrop(NNP_Task nnpTask)
+{
+  ENTRY("vAstackDrop");
+  
+  // should just discard on stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA) )
+    THROW_INVALID_RETURN("adrop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dup -- dup top of aux stack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackDup(NNP_Task nnpTask)
+{
+  ENTRY("vAstackDup");
+  
+  // could just copy from stack back into stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+  THROW_INVALID_PARAM("adup");
+  
+  nnpTask->m_xAuxStack.vPush(xValA);
+  nnpTask->m_xAuxStack.vPush(xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* a@ -- place copy of top value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackFetch(NNP_Task nnpTask)
+{
+  ENTRY("vAstackFetch");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(0,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nip -- drop the 2nd value from the aux stack ( B A -- A )                  */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackNip(NNP_Task nnpTask)
+{
+  ENTRY("vAstackNip");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA,xValB) )
+  THROW_INVALID_PARAM("anip");
+  
+  nnpTask->m_xAuxStack.vPush(&xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* apick -- place copy of nth value in aux stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackPick(NNP_Task nnpTask)
+{
+  ENTRY("vAstackPick");
+  
+  i8 iPick;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
+    THROW_INVALID_PARAM("apick");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(iPick,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* areverse -- reverse astack values ( ... D C B A n -- A B C D ... )         */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackReverse(NNP_Task nnpTask)
+{
+  ENTRY("vAstackReverse");
+  
+  ValWsp xVal0;
+  ValWsp xVal1;
+  ValWsp xVal2;
+  ValWsp xVal3;
+  ValWsp xVal4;
+  ValWsp xVal5;
+  ValWsp xVal6;
+  ValWsp xVal7;
+  
+  ValWsp* apValWsp[8] = {
+    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
+  };
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("areverse");
+  
+  for (i8 i = 0; i < nValues; i++) {
+    if ( ! nnpTask->m_xAuxStack.bPop(apValWsp[i]) )
+      THROW_INVALID_PARAM("areverse");
+  }
+  
+  for (i8 i = 0; i < nValues; i++) {
+    nnpTask->m_xAuxStack.vPush(apValWsp[i]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* swap -- swap top two values on aux stack                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackSwap(NNP_Task nnpTask)
+{
+  ENTRY("vAstackSwap");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA,xValB) )
+  THROW_INVALID_PARAM("aswap");
+  
+  nnpTask->m_xAuxStack.vPush(&xValA);
+  nnpTask->m_xAuxStack.vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >avalset -- collapse values on aux stack to a valset                       */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackToValSet(NNP_Task nnpTask)
+{
+  ENTRY("vAstackToValSet");
+  
+  i8 nVal;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(nVal) )
+  THROW_INVALID_PARAM(">avalset");
+  
+  if ( ! nnpTask->m_xAuxStack.bGuard(nVal) )
+  THROW_INVALID_PARAM(">avalset");
+  
+  char* pCursor = nullptr;
+  ValSet xValSet;
+  
+  ValWsp xVal;
+  for (i8 iVal = 0; iVal < nVal; iVal++) {
+    
+    if ( ! nnpTask->m_xAuxStack.bPop(xVal) )
+    THROW_INVALID_PARAM(">avalset");
+    
+    xValSet.vAppend(pCursor,xVal);
+  }
+  
+  //  vTrace("ValSet %lld bytes\n",xValSet.iSize());
+  
+  nnpTask->m_xAuxStack.vPush(xValSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >avalues -- expand valset to values on aux stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackToValues(NNP_Task nnpTask)
+{
+  ENTRY("vPstackToValues");
+  
+  ValSet xValSet;
+  
+  if ( ! nnpTask->m_xAuxStack.bPop(xValSet) )
+    THROW_INVALID_PARAM(">avalues");
+  
+  i8 nVal = 0;
+  ValWsp* pValWsp[128];
+  
+  char* pCursor = nullptr;
+  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
+    nVal++;
+  
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+  nnpTask->m_xAuxStack.vPush(pValWsp[iVal]);
+  
+  nnpTask->m_xAuxStack.vPush(nVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >a -- move value from pstack to astack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackToA(NNP_Task nnpTask)
+{
+  ENTRY("vRstackToR");
+  
+  ValWsp xValOpaque;
+  if ( ! nnpTask->m_xParamStack.bPop(xValOpaque) )
+    THROW_INVALID_PARAM(">r");
+  
+  nnpTask->m_xAuxStack.vPush(xValOpaque);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* a> -- move value from astack to pstack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackToP(NNP_Task nnpTask)
+{
+  ENTRY("vAstackToP");
+  
+  ValWsp xVal;
+  if ( ! nnpTask->m_xAuxStack.bPop(xVal) )
+    THROW_INVALID_PARAM("a>");
+  
+  nnpTask->m_xParamStack.vPush(xVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >auxStack -- pop stack of this task and push onto aux stack of that task   */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackTransfer(NNP_Task nnpTask)
+{
+  ENTRY("vAstackTransfer");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM(">auxStack");
+  Task* pThatTask = _pTask(pPtrTask);
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM(">auxStack");
+  
+  pThatTask->m_xLock.vGrabWrite();
+  pThatTask->m_xAuxStack.vPush(xValWsp);
+  pThatTask->m_xLock.vDropWrite();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* a0 -- place copy of 0th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack0(NNP_Task nnpTask)
+{
+  ENTRY("vAstack0");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(0,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* a1 -- place copy of 1st value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack1(NNP_Task nnpTask)
+{
+  ENTRY("vAstack1");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(1,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r2 -- place copy of 2nd value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack2(NNP_Task nnpTask)
+{
+  ENTRY("vAstack2");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(2,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r3 -- place copy of 3rd value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack3(NNP_Task nnpTask)
+{
+  ENTRY("vAstack3");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(3,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r4 -- place copy of 4th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack4(NNP_Task nnpTask)
+{
+  ENTRY("vAstack4");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(4,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r5 -- place copy of 0th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack5(NNP_Task nnpTask)
+{
+  ENTRY("vAstack5");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(5,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r6 -- place copy of 6th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack6(NNP_Task nnpTask)
+{
+  ENTRY("vAstack6");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(6,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r7 -- place copy of 7th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack7(NNP_Task nnpTask)
+{
+  ENTRY("vAstack7");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(7,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r8 -- place copy of 8th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack8(NNP_Task nnpTask)
+{
+  ENTRY("vAstack8");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(8,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r9 -- place copy of 9th value in aux stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vAstack9(NNP_Task nnpTask)
+{
+  ENTRY("vAstack9");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(9,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
 // args: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -5454,6 +4680,28 @@ void Task::vArgsPrint(NNP_Task nnpTask)
 ENTRY("vArgsPrint");
   
   gxArguments.vPrint();
+  
+  EXIT();
+}
+
+// class: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* class.name -- translate class no to name                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vClassName(NNP_Task nnpTask)
+{
+  ENTRY("vClassName");
+  
+  i8 iClassNo;
+  if ( ! nnpTask->m_xParamStack.bPop(iClassNo) )
+    THROW_INVALID_PARAM("class.name");
+  
+  s32 sClassName;
+  
+  sClassName = pCN[iClassNo];
+  
+  nnpTask->m_xParamStack.vPush(sClassName);
   
   EXIT();
 }
@@ -6595,6 +5843,503 @@ ENTRY("vFileWrite");
   EXIT();
 }
 
+// flow: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* again -- unconditionally repeat loop (use only in : docol)                 */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowAgain(NNP_Task nnpTask)
+{
+  ENTRY("vAgain");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("again");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  pCurrentWord->vEncode("jump",pBeginLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* again_ -- unconditionally repeat begin_ loop (use only in : docol)         */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowAgain_(NNP_Task nnpTask)
+{
+  ENTRY("vAgain_");
+  
+  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin -- begin a loop (use only in : docol)                                */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowBegin(NNP_Task nnpTask)
+{
+  ENTRY("vBegin");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  Cell* pLastCell = pCurrentWord->pLastCell();
+  
+  nnpTask->m_xReturnStack.vPush(pLastCell);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin_ -- begin a loop (use only in : docol)                               */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowBegin_(NNP_Task nnpTask)
+{
+  ENTRY("vBegin_");
+  
+  nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* do -- compile time of do ... loop                                immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDo(NNP_Task nnpTask)
+{
+  ENTRY("vDo");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("do_rt");
+  
+  Cell* pLastCell = pCurrentWord->pLastCell();
+  
+  nnpTask->m_xReturnStack.vPush((void*)pLastCell);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* do_rt -- runtime of do ... loop                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDo_RT(NNP_Task nnpTask)
+{
+  ENTRY("vDo_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PARAM("do_rt");
+  
+  nnpTask->m_xReturnStack.vPush(iLimit);
+  nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* else -- else clause                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowElse(NNP_Task nnpTask)
+{
+  ENTRY("vElse");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pIfJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
+    THROW_INVALID_RETURN("else");
+  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  Cell* pElseJumpArg;
+  
+  pCurrentWord->vEncode("jump");
+  pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  
+  nnpTask->m_xReturnStack.vPush(pElseJumpArg);
+  
+  //-------------------------------------------------------------------------
+  
+  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* if -- if clause                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIf(NNP_Task nnpTask)
+{
+  ENTRY("vIf");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  Cell* pIfJumpArg;
+  
+  pCurrentWord->vEncode("jumpFalse");
+  
+  pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  
+  nnpTask->m_xReturnStack.vPush(pIfJumpArg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate -- compile time of iterate ... next                      immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIterate(NNP_Task nnpTask)
+{
+  ENTRY("vIterate");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("iterate_rt_a");
+  
+  Cell* pIterateLoc = pCurrentWord->pLastCell();
+  nnpTask->m_xReturnStack.vPush(pIterateLoc);
+  pCurrentWord->vEncode("iterate_rt_b");
+  
+  pCurrentWord->vEncode("jumpFalse");
+  Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  nnpTask->m_xReturnStack.vPush(pJumpFalseArg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate_rt_a -- runtime of iterate ... next                                */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIterate_RT_A(NNP_Task nnpTask)
+{
+  ENTRY("vIterate_RT_A");
+  
+  Object* pPtrObject;
+  Object* pPtrCursor;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrObject,pPtrCursor) )
+    THROW_INVALID_PARAM("iterate_rt_a");
+  
+  nnpTask->m_xReturnStack.vPush(pPtrCursor);
+  nnpTask->m_xReturnStack.vPush(pPtrObject);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* iterate_rt_b -- runtime of iterate ... next                                */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowIterate_RT_B(NNP_Task nnpTask)
+{
+  ENTRY("vIterate_RT_B");
+  
+  i8 iPick = 0;
+  
+  ValWsp xObjectWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  nnpTask->m_xParamStack.vPush(xObjectWsp);
+  
+  ValWsp xWsp;
+  
+  if ( ! xObjectWsp.iAsInt() ) {
+    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
+      THROW_INVALID_PARAM("iterate_rt_b");
+    if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
+      THROW_INVALID_PARAM("iterate_rt_b");
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jump -- jump to location                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJump(NNP_Task nnpTask)
+{
+  ENTRY("vJump");
+  
+  nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jumpFalse -- jump on false to location                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJumpFalse(NNP_Task nnpTask)
+{
+  ENTRY("vJumpFalse");
+  
+  i8 iVal;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
+    THROW_INVALID_PARAM("jumpFalse");
+  
+  //  i8 iFlag = nnpTask->m_xParamStack.iPop();
+  
+  // cell points to the jump arg
+  if (iVal)
+    nnpTask->IP.m_pCell++;
+  else
+    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jumpTrue -- jump on true to location                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJumpTrue(NNP_Task nnpTask)
+{
+  ENTRY("vJumpTrue");
+  
+  i8 iVal;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
+    THROW_INVALID_PARAM("jumpTrue");
+  
+  // cell points to the jump arg
+  if (iVal)
+    nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
+  else
+    nnpTask->IP.m_pCell++;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loop -- compile time for do ... loop                            immediate  */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoop(NNP_Task nnpTask)
+{
+  ENTRY("vLoop");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pDoLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
+    THROW_INVALID_RETURN("loop");
+  Cell* pDoLoc = _pCell(pDoLocVoid);
+  
+  pCurrentWord->vEncode("Loop_RT");
+  
+  pCurrentWord->vEncode("jump",pDoLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loop_rt -- runtime for do loop                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoop_RT(NNP_Task nnpTask)
+{
+  ENTRY("vLoop_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PARAM("loop_rt");
+  
+  iIndex++;
+  
+  if (iIndex < iLimit) {
+    nnpTask->m_xReturnStack.vPush(iLimit);
+    nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
+  }
+  else {
+    nnpTask->IP.m_pCell += 2;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loopPlus -- do +loop                                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoopPlus(NNP_Task nnpTask)
+{
+  ENTRY("vLoopPlus");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pDoLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
+    THROW_INVALID_RETURN("+loop");
+  Cell* pDoLoc = _pCell(pDoLocVoid);
+  
+  pCurrentWord->vEncode("+Loop_RT");
+  
+  pCurrentWord->vEncode("jump",pDoLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loopPlus_rt -- runtime for do +loop                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoopPlus_RT(NNP_Task nnpTask)
+{
+  ENTRY("vLoopPlus_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  i8 iInc;
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PARAM("loopPlus_rt");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iInc) )
+    THROW_INVALID_PARAM("loopPlus_rt");
+  
+  iIndex += iInc;
+  
+  if (iIndex < iLimit) {
+    nnpTask->m_xReturnStack.vPush(iLimit);
+    nnpTask->m_xReturnStack.vPush(iIndex);
+  }
+  else {
+    nnpTask->IP.m_pCell += 2;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* next -- compile time for iterate ... next                        immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowNext(NNP_Task nnpTask)
+{
+  ENTRY("vNext");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pJumpFalseArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pJumpFalseArgVoid) )
+    THROW_INVALID_RETURN("next");
+  Cell* pJumpFalseArg = _pCell(pJumpFalseArgVoid);
+  
+  void* pIterateLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pIterateLocVoid) )
+    THROW_INVALID_RETURN("next");
+  Cell* pIterateLoc = _pCell(pIterateLocVoid);
+  
+  //----------------------------------------------------------------------------
+  
+  pCurrentWord->vEncode("jump",pIterateLoc);
+  
+  pJumpFalseArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* repeat -- repeat a begin-while-repeat loop                       immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowRepeat(NNP_Task nnpTask)
+{
+  ENTRY("vRepeat");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pWhileJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
+    THROW_INVALID_RETURN("repeat");
+  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("repeat");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  pCurrentWord->vEncode("jump",pBeginLoc);
+  
+  //-------------------------------------------------------------------------
+  
+  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* then -- then clause                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowThen(NNP_Task nnpTask)
+{
+  ENTRY("vThen");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pIfJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
+    THROW_INVALID_RETURN("then");
+  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
+  
+  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* unloop -- pop the return stack                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowUnloop(NNP_Task nnpTask)
+{
+  ENTRY("vUnloop");
+  
+  // we should just modify the pointers rather than actually pop
+  ValWsp xValA;
+  ValWsp xValB;
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
+    THROW_INVALID_RETURN("unloop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* until -- repeat begin loop until true                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowUntil(NNP_Task nnpTask)
+{
+  ENTRY("vUntil");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("until");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  pCurrentWord->vEncode("jumpFalse",pBeginLoc);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* while -- check for continue with loop                            immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowWhile(NNP_Task nnpTask)
+{
+  ENTRY("vWhile");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("jumpFalse");
+  Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  
+  nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
+  
+  EXIT();
+}
+
 // grid: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -6634,6 +6379,50 @@ ENTRY("vGridInit");
   ASSERT(CN_GRID == pGrid->eClass());
   
   new(pGrid) Grid;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.started! -- set grid started                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartedStore(NNP_Task nnpTask)
+{
+  ENTRY("vGridSetStarted");
+  
+  Object* pPtrGrid;
+  i8 iStarted;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.started!");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iStarted) )
+    THROW_INVALID_PARAM("grid.started!");
+  
+  pGrid->vHasStarted(iStarted == 1 ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.started@ -- get grid started                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartedFetch(NNP_Task nnpTask)
+{
+  ENTRY("vGridGetStarted");
+  
+  Object* pPtrGrid;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.started@");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  nnpTask->m_xParamStack.vPush(pGrid->bHasStarted());
   
   EXIT();
 }
@@ -6780,6 +6569,236 @@ ENTRY("vInputType");
   eTK eTokenType = nnpTask->m_eToken;
   
   nnpTask->m_xParamStack.vPush(eTokenType);
+  
+  EXIT();
+}
+
+// int: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* + -- add top two integers on stack                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIntAdd(NNP_Task nnpTask)
+{
+  ENTRY("vIntAdd");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("+");
+  
+  r = i + j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* / -- divide top integer by second integer on stack                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIntDivide(NNP_Task nnpTask)
+{
+  ENTRY("vIntDivide");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("/");
+  
+  r = DIV(i,j);
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* == -- test top two integers on data stack for equality                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIntEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("==");
+  
+  r = i == j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* > -- test top two integers on data stack for greater than                  */
+/*----------------------------------------------------------------------------*/
+void Task::vIntGreater(NNP_Task nnpTask)
+{
+  ENTRY("vIntGreater");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM(">");
+  
+  r = i > j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >= -- test top two integers on data stack for greater than equal to        */
+/*----------------------------------------------------------------------------*/
+void Task::vIntGreaterEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntGreaterEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM(">=");
+  
+  r = i >= j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* < -- test top two integers on data stack for less than                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIntLess(NNP_Task nnpTask)
+{
+  ENTRY("vIntLess");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("<");
+  
+  r = i < j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* <= -- test top two integers on data stack for less than equal to           */
+/*----------------------------------------------------------------------------*/
+void Task::vIntLessEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntLessEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("<=");
+  
+  r = i <= j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* % -- modulo of top integer by second integer on stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vIntModulo(NNP_Task nnpTask)
+{
+  ENTRY("vIntModulo");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("%");
+  
+  r = MOD(i,j);
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* * multiply second integer by top integer on stack                          */
+/*----------------------------------------------------------------------------*/
+void Task::vIntMultiply(NNP_Task nnpTask)
+{
+  ENTRY("vIntMultiply");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("*");
+  
+  r = i * j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* neg -- gegate top integer on stack                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vIntNeg(NNP_Task nnpTask)
+{
+  ENTRY("vIntNeg");
+  
+  i8 r, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(i) )
+    THROW_INVALID_PARAM("neg");
+  
+  r = -1 * i;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* != -- test top two integers on data stack for not equal                    */
+/*----------------------------------------------------------------------------*/
+void Task::vIntNotEqual(NNP_Task nnpTask)
+{
+  ENTRY("vIntNotEqual");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("!=");
+  
+  r = i != j;
+  
+  nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* - -- subtract second integer from top integer on stack                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIntSubtract(NNP_Task nnpTask)
+{
+  ENTRY("vIntSubtract");
+  
+  i8 r, j, i;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(j,i) )
+    THROW_INVALID_PARAM("-");
+  
+  r = i - j;
+  
+  nnpTask->m_xParamStack.vPush(r);
   
   EXIT();
 }
@@ -6977,6 +6996,21 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 // loaderSub: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* loaderSub.appendBuffer -- append buffer into table                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubAppendBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubAppendBuffer");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  pLoaderSub->vAppendBuffer();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loaderSub.begin -- begin loading                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubBegin(NNP_Task nnpTask)
@@ -7090,7 +7124,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loaderSub.insertRow -- insert row into table being loaded                  */
+/* loaderSub.insertRow -- insert row into buffer (buffer into table when full)*/
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
 {
@@ -7100,6 +7134,23 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   bool bInserted = pLoaderSub->bInsertRow();
+  
+  nnpTask->m_xParamStack.vPush(bInserted);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.insertRow2 -- insert row into buffer                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubInsertRow2(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubInsertRow?");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  bool bInserted = pLoaderSub->bInsertRow2();
   
   nnpTask->m_xParamStack.vPush(bInserted);
   
@@ -7142,6 +7193,260 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
   
   nnpTask->m_xParamStack.vPush(pLoaderSub);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.partition -- get partition number derived from hash of record    */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubPartition(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubPartition");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  i8 iPartition = pLoaderSub->iPartition();
+  
+  nnpTask->m_xParamStack.vPush(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.partition! -- store partition number                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubPartitionStore(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubPartitionStore");
+  
+  i8 iPartition;
+  if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
+    THROW_INVALID_PARAM("loaderSub.partition!");
+ 
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+
+  pLoaderSub->vPartition(iPartition);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.rowBuffer -- get row buffer of given partition                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubRowBuffer");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer();
+  
+  nnpTask->m_xParamStack.vPush(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.rowBuffer! -- store row buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubRowBufferStore");
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("loaderSub.rowBuffer!");
+  
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  pLoaderSub->vRowBuffer(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.table -- get table being loaded                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubTable(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubTable");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+  
+  Table* pTable = pLoaderSub->pTable();
+  
+  nnpTask->m_xParamStack.vPush(pTable);
+  
+  EXIT();
+}
+
+// locals: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* local.fetch -- push locals[n] onto pstack                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalFetch(NNP_Task nnpTask)
+{
+  ENTRY("vLocalFetch");
+  
+  if ( ! nnpTask->m_pLocalsFrame )
+    THROW_INVALID_PARAM("local.fetch");
+  
+  i8 iLocal;
+  if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
+    THROW_INVALID_PARAM("local.fetch");
+  
+  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  
+  nnpTask->m_xParamStack.vPush(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* localStore -- pop pstack into locals[n]                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalStore(NNP_Task nnpTask)
+{
+  ENTRY("vLocalStore");
+  
+  if ( ! nnpTask->m_pLocalsFrame )
+    THROW_INVALID_PARAM("localStore");
+  
+  i8 iLocal;
+  if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
+    THROW_INVALID_PARAM("localStore");
+  
+  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  
+  nnpTask->m_xParamStack.bPop(pValReg);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locals| -- declare set of locals                                immediate  */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsBar(NNP_Task nnpTask)
+{
+ENTRY("vLocalsBar");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  Dic* pDic = nnpTask->pDicPeek();
+
+  ValWsp xValWsp;
+  
+  for (;;) {
+    
+    // get name of local
+    nnpTask->vTokenNext();
+    
+    // end of locals declaration?
+    if (String::bEqualTo("|",nnpTask->m_sToken.a()))
+      break;
+
+    // test for first use of locals|
+    if ( ! nnpTask->m_nLocals ) {
+      
+      // create a locals dictionary
+      pDic = new Dic;
+      nnpTask->vDicPush(pDic);
+      
+      // enocde locals frame push
+      pCurrentWord->vEncode("locals.push");
+    }
+    
+    // create new word for local in current dictionary
+    Word* pWordLocal = new(pDic) Word(nnpTask->m_sToken.a());
+    // ** do not set as current word **
+    
+    // set word as local variable
+    pWordLocal->vWordType(WT_LOCAL);
+    pWordLocal->vLocal(nnpTask->m_nLocals);
+    
+    // encode the word
+    xValWsp = nnpTask->m_nLocals;
+    pWordLocal->vEncode("push",&xValWsp);
+    pWordLocal->vEncode("local.fetch");
+    pWordLocal->vEncode("exit");
+
+    // initialise the local from pstack
+    pCurrentWord->vEncode("push",&xValWsp);
+    pCurrentWord->vEncode("local.store");
+    
+    nnpTask->m_nLocals++;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locals.pop -- pop locals frame                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPop(NNP_Task nnpTask)
+{
+ENTRY("vLocalsPop");
+  
+  RegFrame* pLocalsFrame = nnpTask->m_pLocalsFrame;
+  
+  if ( ! pLocalsFrame )
+    THROW_INVALID_PARAM("locals.pop");
+  
+  nnpTask->m_pLocalsFrame = nnpTask->m_pLocalsFrame->pNext();
+  
+  delete pLocalsFrame;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locals.push -- push locals frame                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsPush(NNP_Task nnpTask)
+{
+ENTRY("vLocalsPush");
+  
+  RegFrame* pLocalsFrame = new RegFrame;
+  
+  pLocalsFrame->vStackPtr(nnpTask->m_xReturnStack.pTopValue());
+  
+  pLocalsFrame->vNext(nnpTask->m_pLocalsFrame);
+  
+  nnpTask->m_pLocalsFrame = pLocalsFrame;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* to -- compile store value into local variable                    immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalsTo(NNP_Task nnpTask)
+{
+ENTRY("vLocalsTo");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // get name of local
+  nnpTask->vTokenNext();
+
+  Word* pWordLocal = nnpTask->pFindWord(nnpTask->m_sToken.a());
+  ASSERT(pWordLocal);
+ 
+  ValWsp xValWsp;
+  xValWsp = pWordLocal->iLocal();
+  
+  pCurrentWord->vEncode("push",&xValWsp);
+  pCurrentWord->vEncode("local.store");
+
   EXIT();
 }
 
@@ -7244,6 +7549,68 @@ ENTRY("vLockInit");
   
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* and -- logical and of top two values                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicAnd(NNP_Task nnpTask)
+{
+  ENTRY("vLogicAnd");
+  
+  i8 iArgB;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
+    THROW_INVALID_PARAM("and");
+  
+  i8 iArgA;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
+    THROW_INVALID_PARAM("and");
+  
+  i8 iArgR = (iArgA && iArgB) ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iArgR);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* not -- not of top value                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicNot(NNP_Task nnpTask)
+{
+  ENTRY("vLogicNot");
+  
+  i8 iValA;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iValA) )
+    THROW_INVALID_PARAM("not");
+  
+  i8 iNotA = iValA ? 0 : 1;
+  
+  nnpTask->m_xParamStack.vPush(iNotA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* or -- logical or of top two values                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vLogicOr(NNP_Task nnpTask)
+{
+  ENTRY("vLogicOr");
+  
+  i8 iArgB;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
+    THROW_INVALID_PARAM("or");
+  
+  i8 iArgA;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
+    THROW_INVALID_PARAM("or");
+  
+  i8 iArgR = (iArgA || iArgB) ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iArgR);
   
   EXIT();
 }
@@ -7354,6 +7721,25 @@ ENTRY("vNodeNo");
   ASSERT(CN_NODE == pNode->eClass());
   
   nnpTask->m_xParamStack.vPush(pNode->iNodeNo());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.status -- get status of this node (of a grid)                         */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeStatus(NNP_Task nnpTask)
+{
+  ENTRY("vNodeStatus");
+
+  s256 s;
+  
+  if (Region::bTest(gxArguments.m_sRegionName))
+    String::vSprint(s.a(),"RapidsSE instance %s running", gxArguments.m_sRegionName.a());
+  else
+    String::vSprint(s.a(),"RapidsSE instance %s not running",gxArguments.m_sRegionName.a());
+  
+  nnpTask->m_xParamStack.vPush(s);
   
   EXIT();
 }
@@ -7540,6 +7926,22 @@ void Task::vObjectDump(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* object.wordbody -- mark object as a part of a wordbody                     */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectWordBody(NNP_Task nnpTask)
+{
+  ENTRY("vWordBody");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("object.wordbody");
+  
+  pObject->vWordBody(true);
+  
+  EXIT();
+}
+
 // process: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -7570,6 +7972,424 @@ ENTRY("vProcessTestPid");
   i8 iExists = Process::bTestPid(iPid);
   
   nnpTask->m_xParamStack.vPush(iExists);
+  
+  EXIT();
+}
+
+// pstack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* depth -- push depth of parameters stack onto stack                         */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackDepth(NNP_Task nnpTask)
+{
+  ENTRY("vPstackDepth");
+  
+  i8 iDepth = nnpTask->m_xParamStack.iValues();
+  
+  nnpTask->m_xParamStack.vPush(iDepth);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop -- discard top value off stack                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackDrop(NNP_Task nnpTask)
+{
+  ENTRY("vPstackDrop");
+  
+  // should just discard on stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+    THROW_INVALID_PARAM("drop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 2drop -- discard top two values off stack                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackDropTwo(NNP_Task nnpTask)
+{
+  ENTRY("vPstackDrop");
+  
+  // should just discard on stack
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+    THROW_INVALID_PARAM("2drop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dup -- dup top of param stack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackDup(NNP_Task nnpTask)
+{
+  ENTRY("vPstackDup");
+  
+  // could just copy from stack back into stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+    THROW_INVALID_PARAM("dup");
+  
+  nnpTask->m_xParamStack.vPush(xValA);
+  nnpTask->m_xParamStack.vPush(xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?dup -- dup top of param stack if non zero                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackDupNonZero(NNP_Task nnpTask)
+{
+  ENTRY("vPstackDupNonZero");
+  
+  // could just copy from stack back into stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+    THROW_INVALID_PARAM("?dup");
+  
+  if (xValA.iAsInt()) {
+    nnpTask->m_xParamStack.vPush(xValA);
+    nnpTask->m_xParamStack.vPush(xValA);
+  }
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump -- dump top of param stack                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackDump(NNP_Task nnpTask)
+{
+  ENTRY("vPstackDump");
+  
+  s8K sWorkspace;
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM("dump");
+  
+  xValWsp.vToString(sWorkspace.a());
+  char* aClass = xValWsp.aClass();
+  
+  eCN eClass = xValWsp.eClass();
+  
+  if (CN_PTRVAL == eClass) {
+    PtrVal* pPtrVal = xValWsp.pAsPtrVal();
+    Object* pObject = pPtrVal->pObject();
+    if (pObject) {
+      eCN ePtdClass   = pObject->eClass();
+      vTrace("[%s] %s (%s %s)\n",
+             nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
+    }
+    else {
+      vTrace("[%s] nullptr\n",nnpTask->m_sName.a());
+    }
+  }
+  else {
+    vTrace("[%s] %s (%s)\n",
+           nnpTask->m_sName.a(),sWorkspace.a(),aClass);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* nip -- drop the 2nd value from the stack ( B A -- A )                      */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackNip(NNP_Task nnpTask)
+{
+  ENTRY("vPstackNip");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+    THROW_INVALID_PARAM("nip");
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pick -- place copy of nth value in stack onto stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackPick(NNP_Task nnpTask)
+{
+  ENTRY("vPstackPick");
+  
+  i8 iPick;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
+    THROW_INVALID_PARAM("pick");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xParamStack.vPeek(iPick,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* reverse -- reverse stack values ( ... D C B A n -- A B C D ... )           */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackReverse(NNP_Task nnpTask)
+{
+  ENTRY("vPstackReverse");
+  
+  ValWsp xVal0;
+  ValWsp xVal1;
+  ValWsp xVal2;
+  ValWsp xVal3;
+  ValWsp xVal4;
+  ValWsp xVal5;
+  ValWsp xVal6;
+  ValWsp xVal7;
+  
+  ValWsp* apValWsp[8] = {
+    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
+  };
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("reverse");
+  
+  for (i8 i = 0; i < nValues; i++) {
+    if ( ! nnpTask->m_xParamStack.bPop(apValWsp[i]) )
+      THROW_INVALID_PARAM("reverse");
+  }
+
+  for (i8 i = 0; i < nValues; i++) {
+    nnpTask->m_xParamStack.vPush(apValWsp[i]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* roll -- roll top stack values at n ( ... D C B A n -- A ... D C B )        */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackRoll(NNP_Task nnpTask)
+{
+  ENTRY("vPstackRoll");
+  
+  ValWsp xValA;
+  ValWsp xValX;
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("roll");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+    THROW_INVALID_PARAM("roll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
+      THROW_INVALID_PARAM("roll");
+    
+    nnpTask->m_xReturnStack.vPush(&xValX);
+  }
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+      THROW_INVALID_PARAM("roll");
+    
+    nnpTask->m_xParamStack.vPush(&xValX);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* -roll -- inverse roll top stack values at n ( Z ... B A n -- ... B A Z )   */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackRollInv(NNP_Task nnpTask)
+{
+  ENTRY("vPstackRollInv");
+  
+  ValWsp xValZ;
+  ValWsp xValX;
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("-roll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
+      THROW_INVALID_PARAM("-roll");
+    
+    nnpTask->m_xReturnStack.vPush(&xValX);
+  }
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValZ) )
+    THROW_INVALID_PARAM("-roll");
+  
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+      THROW_INVALID_PARAM("-roll");
+    
+    nnpTask->m_xParamStack.vPush(&xValX);
+  }
+  
+  nnpTask->m_xParamStack.vPush(&xValZ);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rot -- rotate top 3 values ( C B A -- A C B )                              */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackRot(NNP_Task nnpTask)
+{
+  ENTRY("vPstackRot");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  ValWsp xValC;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
+    THROW_INVALID_PARAM("rot");
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
+  nnpTask->m_xParamStack.vPush(&xValC);
+  nnpTask->m_xParamStack.vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* -rot -- inverse rotate top 3 values ( C B A -- B A C )                     */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackRotInv(NNP_Task nnpTask)
+{
+  ENTRY("vPstackRotInv");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  ValWsp xValC;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
+    THROW_INVALID_PARAM("rot");
+  
+  nnpTask->m_xParamStack.vPush(&xValB);
+  nnpTask->m_xParamStack.vPush(&xValA);
+  nnpTask->m_xParamStack.vPush(&xValC);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* swap -- swap top two values on param stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackSwap(NNP_Task nnpTask)
+{
+  ENTRY("vPstackSwap");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+    THROW_INVALID_PARAM("swap");
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
+  nnpTask->m_xParamStack.vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >valset -- collapse values on pstack to a valset                           */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackToValSet(NNP_Task nnpTask)
+{
+  ENTRY("vPstackToValSet");
+  
+  i8 nVal;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(nVal) )
+  THROW_INVALID_PARAM(">valset");
+  
+  if ( ! nnpTask->m_xParamStack.bGuard(nVal) )
+  THROW_INVALID_PARAM(">valset");
+  
+  char* pCursor = nullptr;
+  ValSet xValSet;
+  
+  ValWsp xVal;
+  for (i8 iVal = 0; iVal < nVal; iVal++) {
+    
+    if ( ! nnpTask->m_xParamStack.bPop(xVal) )
+    THROW_INVALID_PARAM(">valset");
+    
+    xValSet.vAppend(pCursor,xVal);
+  }
+  
+  //  vTrace("ValSet %lld bytes\n",xValSet.iSize());
+  
+  nnpTask->m_xParamStack.vPush(xValSet);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >values -- expand valset to values on pstack                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackToValues(NNP_Task nnpTask)
+{
+  ENTRY("vPstackToValues");
+  
+  ValSet xValSet;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
+  THROW_INVALID_PARAM(">values");
+  
+  i8 nVal = 0;
+  ValWsp* pValWsp[128];
+  
+  char* pCursor = nullptr;
+  while (xValSet.bExtract(pCursor,pValWsp[nVal]))
+  nVal++;
+  
+  for (i8 iVal = nVal - 1; iVal >= 0; iVal--)
+  nnpTask->m_xParamStack.vPush(pValWsp[iVal]);
+  
+  nnpTask->m_xParamStack.vPush(nVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tuck -- copy the first stack value below second ( B A -- A B A )           */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackTuck(NNP_Task nnpTask)
+{
+  ENTRY("vPstackTuck");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
+    THROW_INVALID_PARAM("tuck");
+  
+  nnpTask->m_xParamStack.vPush(&xValA);
+  nnpTask->m_xParamStack.vPush(&xValB);
+  nnpTask->m_xParamStack.vPush(&xValA);
   
   EXIT();
 }
@@ -7691,7 +8511,7 @@ void Task::vRegPop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg.push -- begin using row cursor                                         */
+/* reg.push -- push a register set                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vRegPush(NNP_Task nnpTask)
 {
@@ -7841,6 +8661,35 @@ void Task::vRegReg7(NNP_Task nnpTask)
   
   EXIT();
 }
+
+// number: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* number.magnitude -- get magnitude of number                                */
+/*----------------------------------------------------------------------------*/
+void Task::vNumberMagnitude(NNP_Task nnpTask)
+{
+  ENTRY("vNumberMagnitude");
+  
+  i8 iNumber;
+  i8 iScale;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iNumber) )
+    THROW_INVALID_PARAM("number.magnitude");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iScale) )
+    THROW_INVALID_PARAM("number.magnitude");
+  
+  s256 s;
+  
+  Magnitudes::vMagnitude(iNumber, iScale, s.a());
+  
+  nnpTask->m_xParamStack.vPush(s);
+  
+  EXIT();
+}
+
+// object: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* reg8 -- push reg8 onto pstack                                              */
@@ -8303,19 +9152,19 @@ ENTRY("vRowBufferAppend");
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PARAM("rowbuffer.append");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PARAM("rowbuffer.append");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   s8K sRecord;
   if ( ! nnpTask->m_xParamStack.bPop(sRecord) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PARAM("rowbuffer.append");
 
   i8 iLength = sRecord.iLength();
   
@@ -8369,6 +9218,29 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   }
   else {
     nnpTask->m_xParamStack.vPush((i8)0);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowbuffer.dump -- dump the row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vRowBufferDump(NNP_Task nnpTask)
+{
+  ENTRY("vRowBufferDump");
+  
+  Object* pPtrRowBuffer;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
+    THROW_INVALID_PARAM("rowbuffer.dump");
+  RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
+  ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
+
+  Row* pRow = pRowBuffer->pFirstRow();
+  
+  while (pRow) {
+    pRow->vDump();
+    pRow = pRowBuffer->pNextRow(pRow);
   }
   
   EXIT();
@@ -8558,6 +9430,28 @@ ENTRY("vRowCursorNext");
 }
 
 /*----------------------------------------------------------------------------*/
+/* rowcursor.rowBuffer -- get current rowBuffer                               */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorRowBuffer(NNP_Task nnpTask)
+{
+  ENTRY("vRowCursorRowBuffer");
+  
+  Object* pPtrRowCursor;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
+  THROW_INVALID_PARAM("rowcursor.rowBuffer");
+  
+  RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  RowBuffer* pRowBuffer;
+  pRowBuffer = pRowCursor->pRowBuffer();
+  
+  nnpTask->m_xParamStack.vPush(pRowBuffer);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* rowcursor.table@ -- fetch table from row cursor                            */
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorTableFetch(NNP_Task nnpTask)
@@ -8600,6 +9494,324 @@ ENTRY("vRowCursorTableStore");
   ASSERT(CN_TABLE == pTable->eClass());
   
   pRowCursor->vTable(pTable);
+  
+  EXIT();
+}
+
+// rstack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* rdepth -- put number of values in return stack onto param stack            */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackDepth(NNP_Task nnpTask)
+{
+  ENTRY("vRstackDepth");
+  
+  i8 iDepth = nnpTask->m_xReturnStack.iValues();
+  
+  nnpTask->m_xParamStack.vPush(iDepth);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rdrop -- discard top value off rstack                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackDrop(NNP_Task nnpTask)
+{
+  ENTRY("vRstackDrop");
+  
+  // should just discard on stack
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA) )
+    THROW_INVALID_RETURN("rdrop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r@ -- place copy of top value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackFetch(NNP_Task nnpTask)
+{
+  ENTRY("vRstackFetch");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rpick -- place copy of nth value in return stack onto param stack          */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackPick(NNP_Task nnpTask)
+{
+  ENTRY("vRstackPick");
+  
+  i8 iPick;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
+    THROW_INVALID_PARAM("rpick");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rreverse -- reverse rstack values ( ... D C B A n -- A B C D ... )         */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackReverse(NNP_Task nnpTask)
+{
+  ENTRY("vRstackReverse");
+  
+  ValWsp xVal0;
+  ValWsp xVal1;
+  ValWsp xVal2;
+  ValWsp xVal3;
+  ValWsp xVal4;
+  ValWsp xVal5;
+  ValWsp xVal6;
+  ValWsp xVal7;
+  
+  ValWsp* apValWsp[8] = {
+    &xVal0, &xVal1, &xVal2, &xVal3, &xVal4, &xVal5, &xVal6, &xVal7
+  };
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM("areverse");
+  
+  for (i8 i = 0; i < nValues; i++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(apValWsp[i]) )
+      THROW_INVALID_PARAM("areverse");
+  }
+  
+  for (i8 i = 0; i < nValues; i++) {
+    nnpTask->m_xReturnStack.vPush(apValWsp[i]);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* r> -- move value from rstack to pstack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackToP(NNP_Task nnpTask)
+{
+  ENTRY("vRstackToP");
+  
+  ValWsp xVal;
+  if ( ! nnpTask->m_xReturnStack.bPop(xVal) )
+    THROW_INVALID_PARAM("r>");
+  
+  nnpTask->m_xParamStack.vPush(xVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >r -- move value from pstack to rstack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackToR(NNP_Task nnpTask)
+{
+  ENTRY("vRstackToR");
+  
+  ValWsp xValOpaque;
+  if ( ! nnpTask->m_xParamStack.bPop(xValOpaque) )
+    THROW_INVALID_PARAM(">r");
+  
+  nnpTask->m_xReturnStack.vPush(xValOpaque);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r0 -- place copy of 0th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack0(NNP_Task nnpTask)
+{
+  ENTRY("vRstack0");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r1 -- place copy of 1st value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack1(NNP_Task nnpTask)
+{
+  ENTRY("vRstack1");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(1,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r2 -- place copy of 2nd value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack2(NNP_Task nnpTask)
+{
+  ENTRY("vRstack2");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(2,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r3 -- place copy of 3rd value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack3(NNP_Task nnpTask)
+{
+  ENTRY("vRstack3");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(3,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r4 -- place copy of 4th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack4(NNP_Task nnpTask)
+{
+  ENTRY("vRstack4");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(4,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r5 -- place copy of 0th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack5(NNP_Task nnpTask)
+{
+  ENTRY("vRstack5");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(5,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r6 -- place copy of 6th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack6(NNP_Task nnpTask)
+{
+  ENTRY("vRstack6");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(6,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r7 -- place copy of 7th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack7(NNP_Task nnpTask)
+{
+  ENTRY("vRstack7");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(7,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r8 -- place copy of 8th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack8(NNP_Task nnpTask)
+{
+  ENTRY("vRstack8");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(8,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* r9 -- place copy of 9th value in return stack onto param stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vRstack9(NNP_Task nnpTask)
+{
+  ENTRY("vRstack9");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(9,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
   
   EXIT();
 }
@@ -9095,6 +10307,28 @@ void Task::vShellExecute(NNP_Task nnpTask)
 // stack: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* astack.class -- get class of nth value on aux stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackClass(NNP_Task nnpTask)
+{
+  ENTRY("vAstackClass");
+  
+  i8 nTh;
+  if ( ! nnpTask->m_xParamStack.bPop(nTh) )
+  THROW_INVALID_PARAM("astack.class");
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(nTh,&xValWsp);
+  
+  eCN eClass = xValWsp.eClass();
+  
+  nnpTask->m_xAuxStack.vPush(eClass);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* stack.class -- get class of nth value on stack                             */
 /*----------------------------------------------------------------------------*/
 void Task::vStackClass(NNP_Task nnpTask)
@@ -9112,29 +10346,6 @@ ENTRY("vStackClass");
   eCN eClass = xValWsp.eClass();
   
   nnpTask->m_xParamStack.vPush(eClass);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* stack.transfer -- pop stack of this task and push onto stack of that task  */
-/*----------------------------------------------------------------------------*/
-void Task::vStackTransfer(NNP_Task nnpTask)
-{
-  ENTRY("vStackTransfer");
-  
-  Object* pPtrTask;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM(">stack");
-  Task* pThatTask = _pTask(pPtrTask);
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(">stack");
-  
-  pThatTask->m_xLock.vGrabWrite();
-  pThatTask->m_xParamStack.vPush(xValWsp);
-  pThatTask->m_xLock.vDropWrite();
   
   EXIT();
 }
@@ -9434,6 +10645,53 @@ ENTRY("vToDigitName");
 }
 
 /*----------------------------------------------------------------------------*/
+/* prepend -- prepend a string before the other                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPrepend(NNP_Task nnpTask)
+{
+  ENTRY("vPrepend");
+  
+  ValWsp xStrR;
+  ValWsp xStrB;
+  ValWsp xStrA;
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValB,xValA) )
+  THROW_INVALID_PARAM("prepend");
+  
+  // If received INTEGER convert to STRING
+  if (xValA.eClass() == CN_INTVAL) {
+    s8K sString;
+    xValA.vToString(sString.a());
+    xStrA = sString.a();
+  }
+  else {
+   xStrA = xValA;
+  }
+  
+  // If received INTEGER convert to STRING
+  if (xValB.eClass() == CN_INTVAL) {
+    s8K sString;
+    xValB.vToString(sString.a());
+    xStrB = sString.a();
+  }
+  else {
+   xStrB = xValB;
+  }
+  
+  xStrR = xStrB;
+  
+  String::vConcat(xStrR.sStr(),xStrA.sStr());
+  xStrR.pAsStrVal()->vSize();
+  
+  nnpTask->m_xParamStack.vPush(xStrR);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* rndStr -- generate random string of given length                           */
 /*----------------------------------------------------------------------------*/
 void Task::vRndStr(NNP_Task nnpTask)
@@ -9516,21 +10774,19 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
     THROW_INVALID_PARAM("table.appendBuffer");
-  
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
+  i8 iPartition = 0;
+  if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
+    THROW_INVALID_PARAM("table.appendBuffer");
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
     THROW_INVALID_PARAM("table.appendBuffer");
-  
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
-  
-  
-  i8 iPartition = 0;
-  
+    
   pTable->vAppendBuffer(iPartition,pRowBuffer);
   
   EXIT();
@@ -9651,6 +10907,29 @@ ENTRY("vTableInsert");
 }
 
 /*----------------------------------------------------------------------------*/
+/* table.name -- get table name                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vTableName(NNP_Task nnpTask)
+{
+  ENTRY("vTableName");
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
+    THROW_INVALID_PARAM("table.init");
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  s32 sName;
+  
+  sName = pTable->pTableName();
+  
+  nnpTask->m_xParamStack.vPush(sName);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* table.ref -- has table got references?                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vTableRef(NNP_Task nnpTask)
@@ -9765,9 +11044,49 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
   
   i8 iInt;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iInt) )
-    THROW_INVALID_PARAM("and");
+    THROW_INVALID_PARAM("task.acks!");
   
+  ASSERT(0 == *pGivenTask->m_zAcks);
+
   pGivenTask->m_zAcks = iInt;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.comment@ -- push comment of given task                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCommentFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskCommentFetch");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("task.comment@");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  nnpTask->m_xParamStack.vPush(pGivenTask->m_sComment);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.comment! -- store comment into given task                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskCommentStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskCommentStore");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
+    THROW_INVALID_PARAM("task.comment!");
+  Task* pGivenTask = _pTask(pPtrTask);
+  
+  s32 sComment;
+  if ( ! nnpTask->m_xParamStack.bPop(sComment) )
+    THROW_INVALID_PARAM("task.comment!");
+  
+  pGivenTask->m_sComment = sComment;
   
   EXIT();
 }
@@ -10104,16 +11423,40 @@ void Task::vTaskSignal(NNP_Task nnpTask)
   i8 iMore = --pThatTask->m_zAcks;
   
   if ( ! iMore ) {
-    vTrace("Task::vTaskSignal: task %p %s is resuming task %p %s\n",
-           *nnpTask,nnpTask->m_sName.a(),
-           pThatTask,pThatTask->m_sName.a());
+//    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
+//           *nnpTask,nnpTask->m_sName.a(),
+//           pThatTask,pThatTask->m_sName.a());
+    if (gxArguments.m_bTracepoint)
+      vTrace("[N%lld:%8s\\%lld %-11s] resuming %s\\%lld\n",
+             gxArguments.m_iNode,
+             nnpTask->m_sName.a(),
+             *nnpTask->m_zAcks,
+             nnpTask->m_sComment.a(),
+             
+             pThatTask->m_sName.a(),
+             *pThatTask->m_zAcks);
     
-    while (TS_WAITING != pThatTask->m_eState)
+    while (TS_SUSPENDED != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
     
-    Thread* pThread = Thread::pThread();
+    //Thread* pThread = Thread::pThread();
+    //pThread->m_pTaskSet->vAppend(pThatTask);
+    pThatTask->m_pTaskSet->vAppend(pThatTask);
     
-    pThread->m_pTaskSet->vAppend(pThatTask);
+  }
+  else {
+//    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
+//           *nnpTask,nnpTask->m_sName.a(),
+//           pThatTask,iMore,pThatTask->m_sName.a());
+    vTrace("[N%lld:%8s\\%lld %-11s] signalled %s\\%lld\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a(),
+           
+           pThatTask->m_sName.a(),
+           iMore);
+    
   }
   
   EXIT();
@@ -10212,7 +11555,63 @@ void Task::vTaskSuspend(NNP_Task nnpTask)
 {
   ENTRY("vTaskSuspend");
   
-  nnpTask->vState(TS_WAITING);
+//  vTrace("Task::vTaskSuspend: task %p %s suspends\n",
+//         *nnpTask,nnpTask->m_sName.a());
+  
+  if (gxArguments.m_bTracepoint)
+    vTrace("[N%lld:%8s\\%lld %-11s] suspends\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a()
+           );
+  
+  nnpTask->vState(TS_SUSPENDED);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.taskset@ -- fetch taskset of task on param stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskTaskSetFetch");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.taskset@");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  TaskSet* pTaskSet = pThatTask->m_pTaskSet;
+  
+  Object* pTaskSetEmb = static_cast<Object*>(pTaskSet);
+  
+  nnpTask->m_xParamStack.vPush(pTaskSetEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.taskset! -- store taskset on param stack into task                    */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskTaskSetStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskTaskSetStore");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
+    THROW_INVALID_PARAM("task.taskset!");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* ptrTaskSet;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(ptrTaskSet) )
+    THROW_INVALID_PARAM("task.taskset!");
+  
+  TaskSet* pTaskSet = static_cast<TaskSet*>(ptrTaskSet);
+  
+  pThatTask->m_pTaskSet = pTaskSet;
   
   EXIT();
 }
@@ -10268,7 +11667,7 @@ void Task::vTaskYield(NNP_Task nnpTask)
 {
   ENTRY("vTaskYield");
   
-  nnpTask->vState(TS_YIELD);
+  nnpTask->vState(TS_YIELDED);
   
   EXIT();
 }
@@ -11431,6 +12830,67 @@ ENTRY("vTimerUpdate");
   EXIT();
 }
 
+// trace: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* turn tracing off                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceOff(NNP_Task nnpTask)
+{
+  ENTRY("vTraceOff");
+  
+  nnpTask->m_iTracing = 0;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* turn tracing on                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceOn(NNP_Task nnpTask)
+{
+  ENTRY("vTraceOn");
+  
+  nnpTask->m_iTracing = C_TRACE_STEPS;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace point                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTracePoint(NNP_Task nnpTask)
+{
+  ENTRY("vTracePoint");
+  
+  s256 sPointName;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
+    THROW_INVALID_PARAM("tracePoint");
+  
+  if (gxArguments.m_bTracepoint)
+    nnpTask->vTracePoint(sPointName.a());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tracing                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceSet(NNP_Task nnpTask)
+{
+  ENTRY("vTraceSet");
+  
+  i8 iTrace;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iTrace) )
+    THROW_INVALID_PARAM("trace!");
+  
+  nnpTask->m_iTracing = iTrace;
+  
+  EXIT();
+}
+
 // tx: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -11795,7 +13255,9 @@ ENTRY("vCreate");
   else
     pDic = nnpTask->m_xDicStack.pTop();
   
-  new(pDic) Word(nnpTask->m_sToken.a());
+  Word* pNewWord = new(pDic) Word(nnpTask->m_sToken.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
   
   EXIT();
 }
@@ -11817,7 +13279,9 @@ ENTRY("vCreateFrom");
   else
     pDic = nnpTask->m_xDicStack.pTop();
   
-  new(pDic) Word(sName.a());
+  Word* pNewWord = new(pDic) Word(sName.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
   
   EXIT();
 }
@@ -11897,6 +13361,22 @@ ENTRY("vForget");
   
   bool bResult = nnpTask->bForgetWord(nnpTask->m_sToken);
   ASSERT(bResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* token -- get next token as string on stack                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vToken(NNP_Task nnpTask)
+{
+  ENTRY("vToken");
+  
+  nnpTask->vTokenNext();
+  
+  s32 sToken(nnpTask->m_sToken.a());
+  
+  nnpTask->m_xParamStack.vPush(sToken);
   
   EXIT();
 }
@@ -12028,6 +13508,122 @@ ENTRY("vWordThis");
   EXIT();
 }
 
+// zero: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* 0< -- test if top value is less than zero                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroLess(NNP_Task nnpTask)
+{
+  ENTRY("vZeroLess");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0<");
+  
+  if (iZero < 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0<= -- test if top value is less than or equal to zero                     */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroLessEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroLessEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0<=");
+  
+  if (iZero <= 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0== -- test if top value is equal to zero / nullptr                        */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0==");
+  
+  if (iZero == 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0!= -- test if top value is not equal to zero                              */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroNotEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroNotEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0!=");
+  
+  if (iZero != 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* zeroGreaterEqual -- test if top value is greater than or equal to zero     */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroGreaterEqual(NNP_Task nnpTask)
+{
+  ENTRY("vZeroGreaterEqual");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0>=");
+  
+  if (iZero >= 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 0> -- test if top value is greater than zero                              */
+/*----------------------------------------------------------------------------*/
+void Task::vZeroGreater(NNP_Task nnpTask)
+{
+  ENTRY("vZeroGreater");
+  
+  i8 iZero;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
+    THROW_INVALID_PARAM("0>");
+  
+  if (iZero > 0)
+    nnpTask->m_xParamStack.vPush((i8)1);
+  else
+    nnpTask->m_xParamStack.vPush((i8)0);
+  
+  EXIT();
+}
+
 // sockets: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -12053,6 +13649,8 @@ ENTRY("vSocketAccept");
   
   if ( ! bResult )
     THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
+  
+  Task* pTask = (Task*)0x208f500c8;
   
   // return the new socket
   nnpTask->m_xParamStack.vPush(new Socket(iSocketId));
@@ -12100,13 +13698,13 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   
 ENTRY("vSocketConnect");
   
-  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.connect");
   
   if ( ! nnpTask->m_xParamStack.bPop(xNode) )
     THROW_INVALID_PARAM("socket.connect");
 
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
     THROW_INVALID_PARAM("socket.connect");
 
   // get address of node
@@ -12119,15 +13717,28 @@ ENTRY("vSocketConnect");
   
   // try connecting in a loop if timeout occurs
   // possibly other node not back to accepting connections
+  
+  i8 iTimedOutCount = 0;
+  i8 iConnRefusedCount = 0;
+  
   while (!bResult) {
     bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
     if ( ! bResult ) {
       i8 iError = xSysCall.iError();
       
-      if (iError == ETIMEDOUT)
-        vTrace("Connect timedout... retrying...\n");
-      else
-        THROW("Unable to connect: Errno %d!", iError);
+      if (iError == ETIMEDOUT) {
+        if (0 == iTimedOutCount++)
+          vTrace("Connect timedout... retrying...\n");
+        continue;
+      }
+      
+      if (iError == ECONNREFUSED) {
+        if (0 == iConnRefusedCount++)
+          vTrace("Connect refused... retrying...\n");
+        continue;
+      }
+      
+      THROW("Unable to connect: Errno %d!", iError);
     }
   }
   
@@ -12189,7 +13800,7 @@ ENTRY("vSocketOpen");
 }
 
 /*----------------------------------------------------------------------------*/
-/* socket.send: send to a socket                                              */
+/* socket.send: send to a socket ( valset socket -- 1 )                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSocketSend(NNP_Task nnpTask)
 {
@@ -12198,26 +13809,34 @@ ENTRY("vSocketSend");
   SysCall xSysCall;
   Socket* pSocket;
   Object* pObject;
-  ValSet xValSet;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-    THROW_INVALID_PARAM("socket.send");
+  ValSet  xValSet;
+  bool    bResult;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
     THROW_INVALID_PARAM("socket.send");
   
-  pSocket = reinterpret_cast<Socket*>(pObject);
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
+    THROW_INVALID_PARAM("socket.send");
   
-  // first send the number of bytes that will follow
+  pSocket = reinterpret_cast<Socket*>(pObject);
+
+  //******************************************************************
+  // Send the size of valset
+  //******************************************************************
   i8 iBytes = xValSet.iSize();
-  bool bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+  bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
   if ( ! bResult ) {
     //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
     nnpTask->m_xParamStack.vPush((i8)0);
+    
+    //goto exit;
+    EXIT();
   }
   
+  //******************************************************************
   // now send the actual value set
+  //******************************************************************
   bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
   
   if ( ! bResult ) {
@@ -12225,8 +13844,45 @@ ENTRY("vSocketSend");
     nnpTask->m_xParamStack.vPush((i8)0);
   }
   
+  //******************************************************************
+  // get rowBuffer if any in valset
+  //******************************************************************
+  RowBuffer* pRowBuffer = xValSet.pGetRowBuffer();
+  
+  if (pRowBuffer) {
+    
+    //******************************************************************
+    // send rowBuffer size
+    //******************************************************************
+    i8 iBytes = pRowBuffer->iBytesUsed();
+    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+    
+    if ( ! bResult ) {
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      nnpTask->m_xParamStack.vPush((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+    //******************************************************************
+    // send rowBuffer itself
+    //******************************************************************
+    bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
+    
+    if ( ! bResult ) {
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      nnpTask->m_xParamStack.vPush((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+  }
+
   nnpTask->m_xParamStack.vPush((i8)1);
   
+exit:
   EXIT();
 }
 
@@ -12249,21 +13905,62 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   
   pSocket = reinterpret_cast<Socket*>(pObject);
 
-  vTrace("%s receiving on %lld\n", nnpTask->m_sName.a(), pSocket->m_iSocketId);
+  if (gxArguments.m_bTracepoint)
+    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a(),
+           
+           pSocket->m_iSocketId);
   
-  // recv number of bytes that follow
+  //******************************************************************
+  // Receive the size of valset
+  //******************************************************************
   bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
   
-  // recv value set
+  //******************************************************************
+  // Receive the valset
+  //******************************************************************
   bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
-  
-  vTrace("%s received on %lld %p\n", nnpTask->m_sName.a(), pSocket->m_iSocketId, &xValSet);
   
   if ( ! bResult )
     THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+  //******************************************************************
+  // Check if valset has a row buffer
+  //******************************************************************
+  bool bHasRowBuffer = xValSet.bHasRowBuffer();
+  
+  if (bHasRowBuffer) {
+    
+    //******************************************************************
+    // receive rowBuffer size
+    //******************************************************************
+    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+    
+    //******************************************************************
+    // receive rowBuffer
+    //******************************************************************
+    RowBuffer* pRowBuffer = new RowBuffer(iBytes);
+    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->pDataArea()), xSysCall);
+  
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+
+    //******************************************************************
+    // set rowBuffer in valset
+    //******************************************************************
+    bool bSet = xValSet.bSetRowBuffer(pRowBuffer);
+    ASSERT(bSet);
+  }
   
   nnpTask->m_xParamStack.vPush(xValSet);
   

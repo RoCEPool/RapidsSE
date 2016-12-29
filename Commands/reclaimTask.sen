@@ -21,20 +21,18 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 /* start the reclaim task                                                     */
 /*----------------------------------------------------------------------------*/
-
 : reclaimStart
 
-     0 "reclaimLoop" nullPtr task.new reclaimTaskSet taskSet.Append
+   0 "rec.loop" nullPtr task.new reclaimTaskSet taskSet.Append
 
-     reclaimTaskSet  reclaimThread thread.taskset!
-     "reclaimThread" reclaimThread thread.name!
-                     reclaimThread thread.spawn
+   reclaimTaskSet  reclaimThread thread.taskset!
+   "reclaimThread" reclaimThread thread.name!
+                   reclaimThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
 /* reclaim task loop                                                          */
 /*----------------------------------------------------------------------------*/
-
 : iterateSEitfList
 
     seitfcrs seitfcrs seitfcursor.begin
@@ -75,8 +73,7 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 /* reclaim task loop                                                          */
 /*----------------------------------------------------------------------------*/
-
-: reclaimLoop
+: rec.loop
 
     "reclaimTask" task.this task.name!
 

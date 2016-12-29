@@ -21,28 +21,38 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : requestStart
 
-    // set up first request processing task
-    0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
+  // set up first request processing task
+  0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
 
-    // set up second request processing task
-    0 "requestLoop" nullPtr task.new requestTaskSet taskSet.append
+  // set up second request processing task
+  0 "req.loop" nullPtr task.new requestTaskSet taskSet.append
 
-    // set up the request thread
-    requestTaskSet  requestThread thread.taskset!
-    "requestThread" requestThread thread.name!
-                    requestThread thread.spawn
+  // set up the request thread
+  requestTaskSet  requestThread thread.taskset!
+  "requestThread" requestThread thread.name!
+                  requestThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
-/* receive request                                                            */
+/* pop value from this tasks queue (this is a blocking call)                  */
 /*----------------------------------------------------------------------------*/
-: req>
+: req> ( -- value )
 
-    begin
-      task.this task.queue@
-      queue.pop
-      dup not if task.yield /*100 thread.sleep_us*/ then
-    until
+tp: waitNextValset
+
+  begin
+
+    // attempt to pop value off the tasks queue
+    task.this task.queue@ queue.pop ( value true | false )
+
+    // try again of no value
+    not while
+      task.yield
+      args.sleep thread.sleep_ms
+
+  repeat
+
+tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -50,17 +60,17 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : !req
 
-    valset>
+  valset>
 
-    // check stack
-    depth 3 != if "incorrect request stack depth" . process.quit then
-    0 stack.class CN_INTVAL != if "incorrect request value 0" . process.quit then
-    1 stack.class CN_STRVAL != if "incorrect request value 1" . process.quit then
-    2 stack.class CN_STRVAL != if "incorrect request value 2" . process.quit then
+  // check stack
+  depth 3 != if "incorrect request stack depth" . process.quit then
+  0 stack.class CN_INTVAL != if "incorrect request value 0" . process.quit then
+  1 stack.class CN_STRVAL != if "incorrect request value 1" . process.quit then
+  2 stack.class CN_STRVAL != if "incorrect request value 2" . process.quit then
 
-    drop // the count
-    >:   // execute the response return address
-    >:   // decode/push the request
+  drop // the count
+  >:   // execute the response return address
+  >:   // decode/push the request
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -68,45 +78,47 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : >rsp ( send response    )
 
-    // check stack
-    depth 3 != if "incorrect reponse stack depth" . process.quit then
+  // check stack
+  depth 3 != if "incorrect response stack depth" . process.quit then
 
-    0 stack.class CN_INTVAL != if "incorrect reponse value 0" . process.quit then
-    1 stack.class CN_INTVAL != if "incorrect reponse value 1" . process.quit then
-    2 stack.class CN_STRVAL != if "incorrect reponse value 2" . process.quit then
+  0 stack.class CN_INTVAL != if "incorrect response value 0" . process.quit then
+  1 stack.class CN_INTVAL != if "incorrect response value 1" . process.quit then
+  2 stack.class CN_STRVAL != if "incorrect response value 2" . process.quit then
 
+  >valset
 
-    >valset
+  "rspque" find execute queue.append
 
-//    valset>
-//traceon
-//    rot rot drop "..substitute.." rot
-//traceoff
-//    >valset
-
-    "rspque" find execute queue.append
-    0 task.this task.seitf!
+  0 task.this task.seitf!
 ;
 
 /*----------------------------------------------------------------------------*/
 /* request processing loop                                                    */
 /*----------------------------------------------------------------------------*/
-: requestLoop
+: req.loop
 
-    "renaming to Request Task" .putVerbose
+  requestTaskSet task.this task.taskset!
 
-    "requestTask" task.this task.name!
+  "renaming to Request Task" .putVerbose
 
-    requestQueue  task.this task.queue!
+  "req.task" task.this task.name!
 
-    requestTaskPrint if "Request Server running..." . then
+  "req.loop" task.this task.comment!
 
-    begin
-      depth 0 != if "request task has grown" . debug.trap then
-      req>
-      !req
-      >rsp
-    0 until
+  requestQueue  task.this task.queue!
+
+  requestTaskPrint if "Request Server running..." . then
+
+  begin
+    depth 0 != if "request task has grown" . debug.trap then
+
+    req>
+
+    !req
+
+    >rsp
+
+  0 until
 ;
 
 /*============================================================================*/

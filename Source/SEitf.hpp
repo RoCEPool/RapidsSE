@@ -23,7 +23,7 @@ namespace Interface
     DicStack m_xDicStack;      // dictionary stack
     
     Queue* m_pRequestQueue;    // request queue
-    Queue* m_pResponseQueue;   // reponse queue
+    Queue* m_pResponseQueue;   // response queue
     
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;
@@ -71,8 +71,9 @@ namespace Interface
 
     //--------------------------------------------------------------------------
     
-    void vBeginTx(void);
+    bool bBeginTx(void);
     void vCommitTx(void);
+    void vEndTx(void);
     
     bool bDecode(char* pWords[], i8 iWords);
     
@@ -112,6 +113,8 @@ namespace Interface
     bool bGetTable(char* pWords[], i8 iWords);
     bool bInUseTable(char* pWords[], i8 iWords);
     bool bRetTable(char* pWords[], i8 iWords);
+    bool bNodeStatus(char* pWords[], i8 iWords);
+    bool bPoolSpace(char* pWords[], i8 iWords);
     bool bSizeTable(char* pWords[], i8 iWords);
     bool bTruncateTable(char* pWords[], i8 iWords);
     
@@ -122,6 +125,7 @@ namespace Interface
     bool bPushDic(char* pWords[]);
     bool bGetDicPath(char* pWords[]);
     bool bGetDicContents(char* pWords[]);
+    bool bGetDicContentsG(char* pWords[]);
 
     bool bGetMonitor(char* pWords[]);
     bool bGetFreeSpace(char* pWords[]);
@@ -131,6 +135,7 @@ namespace Interface
     bool bSeitfCount(char* pWords[]);
     
     bool bPing(char* pWords[]);
+    bool bPrintRowBuffer(char* pWords[]);
     
     bool bX(char* pWords[]);
     void vPrint(char* pWords[]);

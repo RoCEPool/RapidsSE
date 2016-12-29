@@ -44,9 +44,27 @@ SePrompt::SePrompt(i8 iPartition)
   ASSERT(EC_NONE == eResult);
   
   m_bContinue = true;
-  m_sPrompt = "se ";
-  String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
-  String::vConcat(m_sPrompt.a(), "> ");
+  
+  //m_sPrompt = "se ";
+  //String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
+  //String::vConcat(m_sPrompt.a(), "> ");
+  
+  String::vSprint(m_sPrompt.a(),
+                  "[N%lld %lld] se %s%c> ",
+                  gxArguments.m_iNode,
+                  Process::iGetPid(),
+                  RAPIDSSE_VERSION_STRING,
+#ifdef _DEBUG
+                  'd'
+#else
+                  'r'
+#endif
+                  );
+  
+  m_bEcho   = false;
+  
+  m_bExpect = false;
+  m_sExpect = "";
   
   m_sResponse  = "";
   //m_xHistory
@@ -125,15 +143,42 @@ void SePrompt::vLoop(void)
   
   // get and process commands
   while (m_bContinue) {
+    
     vGetCommand();
-    if (!bProcessCommand()) {
-      if (m_pSEitf->eGetLastError() != EC_NONE)
-        vTrace("Error: %s\n",m_pSEitf->pGetLastError());
+    
+    if (0 == String::iLength(m_pToken[0]))
+      continue;
+    
+    bool b = bProcessCommand();
+    
+    if (m_bExpect) {
+      if ( ! String::bEqualTo(m_sExpect.a(),m_sResponse.a(),C_NO_CASE)) {
+        vTrace("Expected \"%s\" : Got \"%s\"\n",m_sExpect.a(),m_sResponse.a());
+        PosixThread::vSleepSec(10000);
+      }
+    }
+    
+    if (m_bEcho) {
+      vTrace("cmd: ");
+      for (i8 iToken = 0; iToken < C_TOKENS; iToken++) {
+        if (String::bEqualTo("",m_pToken[iToken]))
+          break;
+        vTrace("%s ",m_pToken[iToken]);
+      }
+      vTrace(": got: %s\n",m_sResponse.a());
+      continue;
+    }
+    
+    if (b) {
+      if ( ! m_bExpect )
+        if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
+          vTrace("%s\n",m_sResponse.a());
+      }
     }
     else {
-      if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
-        vTrace("%s\n",m_sResponse.a());
-      }
+      if (m_pSEitf->eGetLastError() != EC_NONE)
+        if ( ! m_bExpect )
+         vTrace("Error: %s\n",m_pSEitf->pGetLastError());
     }
   }
   
@@ -307,6 +352,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return true;
   }
   
+  if (String::bEqualTo("sleep",m_pToken[0],C_NO_CASE)) {
+    return bSleep();
+  }
+
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
     return bChangeWorkingDir();
   }
@@ -422,6 +471,19 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
+  // - test for echo prefix
+  if (String::bEqualTo("echo",m_pToken[0],C_NO_CASE))
+    vSetEcho();
+  else
+    vClearEcho();
+  
+  // - test for expect prefix
+  if (String::bEqualTo("expect",m_pToken[0],C_NO_CASE))
+    vSetExpect();
+  else
+    vClearExpect();
+ 
+  
   // - test for builtin comands
   
   if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
@@ -433,6 +495,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (String::bEqualTo("bye",m_pToken[0],C_NO_CASE)) {
     m_bContinue = false;
     return true;
+  }
+  
+  if (String::bEqualTo("sleep",m_pToken[0],C_NO_CASE)) {
+    return bSleep();
   }
   
   if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
@@ -542,6 +608,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
     m_xTokeniser.vLineMode(true);
+    m_sResponse = "<ok>";
     return true;
   }
   
@@ -580,6 +647,63 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* set echo result                                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSetEcho(void)
+{
+  m_bEcho = true;
+  
+  vClipTokens(1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear echo result                                                          */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vClearEcho(void)
+{
+  m_bEcho = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect and set expected result                                            */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vSetExpect(void)
+{
+  m_sExpect = m_pToken[1];
+  
+  m_bExpect = true;
+  
+  vClipTokens(2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* clear expected result                                                      */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vClearExpect(void)
+{
+  m_sExpect = "";
+  
+  m_bExpect = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* clip tokens                                                                */
+/*----------------------------------------------------------------------------*/
+void SePrompt::vClipTokens(i8 nTokens)
+{
+  i8 iToToken = 0;
+  
+  for (i8 iFromToken = nTokens; iFromToken < C_TOKENS; iFromToken++) {
+    
+    String::vCopy(m_pToken[iToToken++],m_pToken[iFromToken]);
+    
+    if (String::bEqualTo("",m_pToken[iFromToken]))
+      break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* execute an se request                                                      */
 /*----------------------------------------------------------------------------*/
 bool SePrompt::bExecuteRequest(void)
@@ -600,7 +724,9 @@ bool SePrompt::bExecuteRequest(void)
   bool bResult = RapidsSE_ExecuteRequest(m_pSEitf,m_pToken,iTokens,&aResponse);
   
   if (bResult)
-    m_sResponse = aResponse;
+    m_sResponse = aResponse ? aResponse : "";
+  else
+    m_sResponse = aResponse ? aResponse : "";
   
   xTimer.vUpdate();
   
@@ -807,6 +933,7 @@ void SePrompt::vHelp(void)
   vTrace("rmten  -- drop tenant\n");
   vTrace("sel    -- select * from table\n");
   vTrace("space  -- pool space\n");
+  vTrace("status -- grid status\n");
   vTrace("sz     -- size of table\n");
   vTrace("tpch   -- tpch shorthand\n");
   vTrace("tr     -- truncate table\n");
@@ -863,8 +990,29 @@ bool SePrompt::bBeginInsert(void)
     return false;
   }
   
-  m_pSEitf->vBeginTx();
+  bool bResult = m_pSEitf->bBeginTx();
+  
+  if (!bResult) {
+    m_pSEitf->vSetLastError(EC_BEGIN_TX_FAILED);
+    return false;
+  }
+  
+  return bResult;
+}
 
+/*----------------------------------------------------------------------------*/
+/* sleep n seconds                                                            */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bSleep(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"sleep"));
+  
+  i8 nSeconds = String::iToI8(m_pToken[1]);
+
+  PosixThread::vSleepSec(nSeconds);
+  
   return true;
 }
 
@@ -1614,6 +1762,7 @@ bool SePrompt::bEndInsert(void)
   //m_pSEitf->vCurrentTable(nullptr);
   
   m_pSEitf->vCommitTx();
+  m_pSEitf->vEndTx();
 
   return true;
 }
@@ -1713,6 +1862,9 @@ bool SePrompt::bListDir(void)
   // close the current directory
   xDir.vClose();
   
+  // clear the response
+  m_sResponse = "";
+  
   return true;
 }
 
@@ -1724,36 +1876,27 @@ bool SePrompt::bPoolSpace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   ASSERT(String::bEqualTo(m_pToken[0],"space"));
+    
+  if (!bExecuteRequest()) {
+    return false;
+  }
   
-  i8 iFree;
-  i8 iInUse;
-  i8 iTotal;
-  
-  s256 sFree;
-  s256 sInUse;
-  s256 sTotal;
+  return true;
+}
 
-  String::vCopy(m_pToken[0], "getTotalSpace");
-  if (!bExecuteRequest())
+/*----------------------------------------------------------------------------*/
+/* print node status                                                          */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bNodeStatus(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"status"));
+  
+  if (!bExecuteRequest()) {
     return false;
-  iTotal = String::iToI8(m_sResponse.a());
-  Magnitudes::vMagnitude(iTotal, 2, sTotal.a());
-             
-  String::vCopy(m_pToken[0], "getInUseSpace");
-  if (!bExecuteRequest())
-    return false;
-  iInUse = String::iToI8(m_sResponse.a());
-  Magnitudes::vMagnitude(iInUse, 2, sInUse.a());
-             
-  String::vCopy(m_pToken[0], "getFreeSpace");
-  if (!bExecuteRequest())
-    return false;
-  iFree = String::iToI8(m_sResponse.a());
-  Magnitudes::vMagnitude(iFree, 2, sFree.a());
-             
-  vTrace("Pool: Size(%s) InUse(%s) Free(%s)\n",
-         sTotal.a(), sInUse.a(), sFree.a());
-  m_sResponse = "<ok>";
+  }
+  
   return true;
 }
 
@@ -1770,8 +1913,11 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(String::bEqualTo(m_pToken[0],"pwd"));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s\n", sDir.a());
+    vTrace("%s", sDir.a());
   }
+  
+  // clear the respnse
+  m_sResponse = "";
   
   return true;
 }

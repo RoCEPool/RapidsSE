@@ -6,13 +6,20 @@
 
 #include "Values.h"
 
+namespace DBobjects {
+  class RowBuffer;
+}
+
 namespace Values
 {
   class ValSet : public Value
   {
     static const i8 C_VALSET_WORKSPACE = C_1KB * 14;
+    
   private:
-    i8   m_iBytes; // bytes used out of space
+    i8  m_iBytes; // bytes used in work space
+    DBobjects::RowBuffer* m_pRowBuffer;
+    i8  m_iRowBufferBytes;
     char m_wWorkspace[C_VALSET_WORKSPACE];
     
   public:
@@ -21,6 +28,15 @@ namespace Values
     
     void vAppend(char*& pCursor, ValWsp& xVal);
     bool bExtract(char*& pCursor, ValWsp*& pVal);
+    bool bExtract(char*& pCursor, eCN& eClassNo, ValWsp*& pVal);
+    
+    DBobjects::RowBuffer* pRowBuffer(void);
+    void vRowBuffer(DBobjects::RowBuffer* pRowBuffer);
+    
+    DBobjects::RowBuffer* pGetRowBuffer();
+    bool bHasRowBuffer();
+    bool bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer);
+    
     i8   iSize(void);
     
     void vToCommand(char* aWorkspace);

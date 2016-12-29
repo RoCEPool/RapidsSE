@@ -25,7 +25,8 @@ create
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
 : words
-    word.this dup iterate          // iterate word cursor
+    0 dic.pick dic.last dup
+    iterate                        // iterate word cursor
       object@ word.name .          // print the name of the word
       object@ prevWord object!     // advance cursor backwards thru words
     next
@@ -35,7 +36,7 @@ create
 /* list all words (long form) in the current dictionary                       */
 /*----------------------------------------------------------------------------*/
 : symbols
-    word.this
+    0 dic.pick dic.last
     begin dup while
       dup nameWord .put " " .put dup word.kind@ nameword .put .\n
       prevWord
@@ -46,11 +47,12 @@ create
 /*----------------------------------------------------------------------------*/
 /* get all words in the current dictionary as a single string                 */
 /*----------------------------------------------------------------------------*/
-: contentsString
+: listContents
 
     ""                             // initial contents string
 // "(" concat                     //
-    word.this dup iterate          // setup iteration of words
+    0 dic.pick dic.last dup
+    iterate                        // setup iteration of words
       object@ word.name concat     // add name of the word to contents string
                                    // add word kind to ls string
       " " concat                   //
@@ -64,9 +66,28 @@ create
 /* dump the parameter stack                                                   */
 /*----------------------------------------------------------------------------*/
 : stk
-    "parameter stack" .
-    depth dup not if drop exit then
-    0 do I pick dump loop
+
+  "parameter stack" .
+
+  depth not if drop then
+
+  depth 0 do
+    I pick dump
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump the auxiliary stack                                                   */
+/*----------------------------------------------------------------------------*/
+: astk
+
+  "auxiliary stack" .
+
+  adepth not if drop exit then
+
+  adepth 0 do
+    I apick dump
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -165,6 +186,18 @@ create
 ;
 
 /*----------------------------------------------------------------------------*/
+/* unnamed trace point                                                        */
+/*----------------------------------------------------------------------------*/
+: tp immediate
+
+  "tp"
+
+  encodeVal
+
+  ' tracepoint compile,
+;
+
+/*----------------------------------------------------------------------------*/
 /* named trace point                                                          */
 /*----------------------------------------------------------------------------*/
 : tp: immediate
@@ -174,6 +207,171 @@ create
   encodeVal
 
   ' tracepoint compile,
+;
+
+/*----------------------------------------------------------------------------*/
+/* test type of top stack value                                               */
+/*----------------------------------------------------------------------------*/
+: isType ( CN_ -- bool )
+
+  // false if stack empty
+  depth 2 >= not if drop false exit then
+
+  // no more if not indirect
+  1 stack.class ==
+;
+
+/*----------------------------------------------------------------------------*/
+/* an end marker                                                              */
+/*----------------------------------------------------------------------------*/
+: $$
+  //1234
+
+  [ word.this encodeVal ]
+;
+
+/*----------------------------------------------------------------------------*/
+/* test of end marker                                                         */
+/*----------------------------------------------------------------------------*/
+: $$test
+
+  $$ $$ eql
+  if
+    "equal" .
+  else
+    "not equal" .
+  then
+
+  "a" $$ eql
+  if
+    "equal" .
+  else
+    "not equal" .
+  then
+
+  1 $$ eql
+  if
+    "equal" .
+  else
+    "not equal" .
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* get depth of marked stack                                                  */
+/*----------------------------------------------------------------------------*/
+: $$depth
+
+  // if the stack is empty then there are 0 marked values
+  depth 0 == if 0 exit then
+
+  depth 0 do
+
+    // marked values end at a valset
+    I stack.class CN_VALSET ==
+    if
+      I inc
+      unloop
+      exit
+    then
+
+    // marked values end at $$
+    I pick $$ eql
+    if
+      I
+      unloop
+      exit
+    then
+
+  loop
+
+  // marked values end at bottom of stack
+  depth
+;
+
+/*----------------------------------------------------------------------------*/
+/* get depth of marked aux stack                                              */
+/*----------------------------------------------------------------------------*/
+: $$adepth
+
+  // if the stack is empty then there are 0 marked values
+  adepth 0 == if 0 exit then
+
+  adepth 0 do
+
+  // marked values end at a valset
+  I astack.class CN_VALSET ==
+  if
+    I inc
+    unloop
+    exit
+  then
+
+  // marked values end at $$
+  I apick $$ eql
+  if
+    I
+    unloop
+    exit
+  then
+
+  loop
+
+  // marked values end at bottom of stack
+  adepth
+;
+
+/*----------------------------------------------------------------------------*/
+/* convert contents of marked stack into a valset                             */
+/*----------------------------------------------------------------------------*/
+: $$>valset
+
+  $$depth
+  >valset
+  depth 1 > if
+    1 pick $$ eql
+    if
+      nip
+    then
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* convert contents of marked aux stack into a valset                         */
+/*----------------------------------------------------------------------------*/
+: $$>avalset
+
+  $$adepth
+  >avalset
+  adepth 1 > if
+    1 apick $$ eql
+    if
+      anip
+    then
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* test marked valset                                                         */
+/*----------------------------------------------------------------------------*/
+: $$vs
+
+  $$
+  1 2 3
+tp: a
+  $$>valset
+tp: b
+  "a" "b"
+tp: c
+  $$>valset
+tp: d
+  valset>
+tp: e
+  1 - dropN
+  valset>
+tp: f
+  drop
+tp: g
 ;
 
 //traceon

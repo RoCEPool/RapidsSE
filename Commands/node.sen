@@ -22,6 +22,7 @@
     word.this >body CN_NODE class!
     word.this >body node.init
     ' node word.this word.kind!
+    word.this >body object.wordbody
     does>
 ;
 
@@ -36,6 +37,7 @@
     word.this >body CN_NODE class!
     word.this >body node.init
     ' node word.this word.kind!
+    word.this >body object.wordbody
     word.this
     does>
 ;

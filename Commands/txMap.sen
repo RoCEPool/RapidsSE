@@ -11,6 +11,7 @@
     word.this >body magic!!
     word.this >body CN_TXMAP class!
     word.this >body txmap.init
+    word.this >body object.wordbody
     does>
 ;
 

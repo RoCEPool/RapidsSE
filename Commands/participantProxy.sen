@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* participantProxy.sen -- participant proxy                                  */
+/*============================================================================*/
+
+"participantProxy.sen" .putVerbose
+
+/*----------------------------------------------------------------------------*/
+/* participant proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: pp.loop ( actorNo forwardTask -- )
+
+  "pp.loop" task.this task.comment!
+
+tp: participantProxy
+
+  // push a register frame
+  reg.push
+
+  >r ( actorNo )
+  >r ( )
+  // r0 has actorNo (nodeNo)
+  // r1 has forwardTask
+
+  task.this r0 ppTasks !
+
+  begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
+
+    // pop valset off queue and push onto this stack
+    taskQueue> ( valset )
+
+    // set caller into reg0
+    exeOne assert
+
+    r0 args.node ==
+    if
+      // this is pp0 on node 0
+
+      addSetCaller
+
+      r1 >taskQueue;a>
+
+    else
+      // this is pp1 on node 0
+
+      addSetSender
+
+      r0 addPassOnToCp
+
+      r0 >sndQueue;a>
+
+    then
+
+
+tp: resumed
+
+    >callerAux ( )
+
+  0 until
+
+  rdrop
+  rdrop
+
+  // pop a register frame
+  reg.pop
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
