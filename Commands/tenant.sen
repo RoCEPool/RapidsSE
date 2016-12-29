@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeTenant$ ( "<tenantNm>" -- true )
+: makeTenant$ allParticipants 1 ( "<tenantNm>" -- true )
 
 tp: makingTenant
 

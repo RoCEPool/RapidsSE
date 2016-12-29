@@ -62,7 +62,7 @@ Word::Word(const char* sName)
   m_pKind        = gpWord ? gpWord : this;
   m_pParticipant = nullptr;
   m_bImmediate   = false;
-  m_nParams      = 0;
+  m_iParams      = 0;
   m_iDataBytes   = 0;
   m_pPrevWord    = nullptr;
   m_iLocal       = 0;
@@ -301,6 +301,26 @@ TaskStep* Word::ppDoesStep(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return &m_pDoesStep;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get distributed type                                                       */
+/*----------------------------------------------------------------------------*/
+eDT Word::eDistributed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_eDistributed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed type                                                       */
+/*----------------------------------------------------------------------------*/
+void Word::vDistributed(eDT eDistributed)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_eDistributed = eDistributed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -557,6 +577,26 @@ s& Word::sName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of parameters                                                   */
+/*----------------------------------------------------------------------------*/
+void Word::vParams(i8 iParams)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_iParams = iParams;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of parameters                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Word::iParams(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iParams;
 }
 
 /*----------------------------------------------------------------------------*/

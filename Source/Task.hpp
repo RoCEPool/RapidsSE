@@ -277,6 +277,7 @@ namespace Tasks
     
     static void vAccept(NNP_Task nnpTask);
     static void vAllot(NNP_Task nnpTask);
+    static void vAllParticipants(NNP_Task nnpTask);
     static void vBpa(NNP_Task nnpTask);
     static void vBpdump(NNP_Task nnpTask);
     static void vCastInt(NNP_Task nnpTask);
@@ -326,6 +327,7 @@ namespace Tasks
     static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
+    static void vOneParticipant(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
     static void vPush(NNP_Task nnpTask);

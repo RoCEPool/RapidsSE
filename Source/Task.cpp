@@ -628,6 +628,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("accept",          &vAccept,           false);
   vAddPrimitive("allot",           &vAllot,            false);
+  vAddPrimitive("allParticipants", &vAllParticipants,  true );
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive("(int)",           &vCastInt,          false);
@@ -686,6 +687,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("object@",         &vObjectFetch,      false);
   vAddPrimitive("object!!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
+  vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive("push",            &vPush,             false);
@@ -2473,6 +2475,34 @@ ENTRY("vAllot");
 }
 
 /*----------------------------------------------------------------------------*/
+/* allParticipants -- create an allParticipant word                           */
+/*----------------------------------------------------------------------------*/
+void Task::vAllParticipants(NNP_Task nnpTask)
+{
+  ENTRY("vAllParticipants");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  
+  pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
+  
+  // get number of parameters
+  nnpTask->vTokenNext();
+
+  // get next token
+  char* pToken = nnpTask->m_sToken.a();
+  
+  // convert token to integer
+  i8 iParams = String::iToI8(pToken);
+  
+  // set the number of parameters in the current word
+  pCurrentWord->vParams(iParams);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* bpa -- buffer pool analyze                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vBpa(NNP_Task nnpTask)
@@ -3443,6 +3473,31 @@ ENTRY("vObjectMark");
   //pCurrentWord->vImmediate(true);
   pCurrentWord->vWordType(WT_OBJECT);
   pCurrentWord->vDoesStep(&vEncodeEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* oneParticipant -- create a oneParticipant word                             */
+/*----------------------------------------------------------------------------*/
+void Task::vOneParticipant(NNP_Task nnpTask)
+{
+  ENTRY("vAllParticipants");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  
+  pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
+  
+  // get number of parameters
+  nnpTask->vTokenNext();
+  
+  // convert token to integer
+  i8 iParams = String::iToI8(nnpTask->m_sToken.a());
+  
+  // set the number of parameters in the current word
+  pCurrentWord->vParams(iParams);
   
   EXIT();
 }

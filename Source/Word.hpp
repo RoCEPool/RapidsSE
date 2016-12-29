@@ -60,7 +60,7 @@ namespace Dictionaries
     
     bool     m_bImmediate;   // immediate execution during compile?
     
-    i8       m_nParams;      // number of parameters
+    i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iLocal;       // local variable number
     i8       m_iDataBytes;   // number of data bytes
@@ -95,6 +95,8 @@ namespace Dictionaries
     void  vDoesStep(TaskStep pStep);
     TaskStep pDoesStep(void);
     TaskStep* ppDoesStep(void);
+    void  vDistributed(eDT eDistributed);
+    eDT   eDistributed(void);
     void  vDump(void);
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
@@ -114,6 +116,8 @@ namespace Dictionaries
     i8    iLocal(void);
     void  vLocal(i8 iLocal);
     s&    sName(void);
+    void  vParams(i8 iParams);
+    i8    iParams(void);
     Word* pPrevWord(void);
     void  vPrevWord(Word* pPrevWord);
     void  vReset(void);
