@@ -691,6 +691,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive("push",            &vPush,             false);
+  vAddPrimitive("pushBody",        &vPushBody,         false);
   vAddPrimitive(".put",            &vPut,              false);
   vAddPrimitive(".\\n",            &vPutNewline,       false);
   vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
@@ -2878,14 +2879,12 @@ void Task::vEnterDoes(NNP_Task nnpTask)
   
   Word* pWord = reinterpret_cast<Word*>(pcAdd(pDoesArg, -(sizeof(Word)-sizeof(Cell*)) ));
   
+  nnpTask->IP.m_pCell = *pDoesArg;
+  
   ASSERT(WT_OBJECT == pWord->eWordType());
   
-  if (WT_OBJECT == pWord->eWordType()) {
-    Cell* pCell = pWord->pFirstCell();
-    nnpTask->m_xParamStack.vPush(pCell);
-  }
-  
-  nnpTask->IP.m_pCell = *pDoesArg;
+  Cell* pCell = pWord->pFirstCell();
+  nnpTask->m_xParamStack.vPush(pCell);
   
   EXIT();
 }
@@ -3575,15 +3574,19 @@ ENTRY("vPush");
 }
 
 /*----------------------------------------------------------------------------*/
-/* pushEmbedded -- push ptr to embedded object                                */
+/* pushBody -- push ptr to body of this word                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vPushEmbedded(NNP_Task nnpTask)
+void Task::vPushBody(NNP_Task nnpTask)
 {
-ENTRY("vPushEmbedded");
+ENTRY("vPushBody");
   
-  Object* pPtrObject = nnpTask->IP.m_pObject;
+  Word* pWord = reinterpret_cast<Word*>(
+                  ((u8)nnpTask->IP.m_pCell & (u8)~0xFFFF) + sizeof(HeapBuffer)
+                );
   
-  nnpTask->m_xParamStack.vPush(pPtrObject);
+  Cell* pCell = pWord->pFirstCell();
+  
+  nnpTask->m_xParamStack.vPush(pCell);
   
   EXIT();
 }

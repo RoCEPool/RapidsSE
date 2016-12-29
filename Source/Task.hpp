@@ -331,7 +331,7 @@ namespace Tasks
     static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
     static void vPush(NNP_Task nnpTask);
-    static void vPushEmbedded(NNP_Task nnpTask);
+    static void vPushBody(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
     static void vPutNewline(NNP_Task nnpTask);     
     static void vPutVerbose(NNP_Task nnpTask);
