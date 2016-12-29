@@ -248,7 +248,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkTblOnAllDone
 
@@ -303,7 +303,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmTblOnAllDone
 

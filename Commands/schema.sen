@@ -100,7 +100,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkSchOnAllDone
 
@@ -170,7 +170,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmSchOnAllDone
 

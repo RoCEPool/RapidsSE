@@ -665,7 +665,7 @@ tp: lfOnAll
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: lfOnAllDone
 
@@ -781,7 +781,7 @@ tp: spaceOnAll
   $$>valset ( valset )
 
   // space$ to be executed by all participants
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
   tp: spaceOnAllDone
 
@@ -884,7 +884,7 @@ tp: statusOnAll
   $$>valset ( valset )
 
   // status$ to be executed by all participants
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
   tp: statusOnAllDone
 
@@ -964,7 +964,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: printRBOnAllDone
 

@@ -118,7 +118,7 @@ tp: theIndirectCall
   $$>valset ( valset )
 
   // makeTenant$ to be executed by all participants
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkTenOnAllDone
 
@@ -171,7 +171,7 @@ tp: rmTenOnAll
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmTenOnAllDone
 

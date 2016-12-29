@@ -89,7 +89,7 @@ tp: addColOnAll
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
   tp: addColOnAllDone
 

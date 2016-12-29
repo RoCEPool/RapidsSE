@@ -114,7 +114,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkCatOnAllDone
 
@@ -167,7 +167,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmCatOnAllDone
 
