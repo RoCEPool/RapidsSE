@@ -31,7 +31,7 @@ INCLUDES = -I. -I../ThirdParty -I../ThirdParty/lz4 -I../ThirdParty/bzip2
 
 #Libraries
 THIRDPARTY_LIBS = -llz4 -lbz2
-LIBS = -lrt -lpthread
+LIBS = -lrt -pthread
 RAPIDS_LIBS = -lRapidsSEv0.1.4
 
 all : $(TARGET_EXE) $(TARGET_LIBRARY)
@@ -39,7 +39,7 @@ all : $(TARGET_EXE) $(TARGET_LIBRARY)
 #Library target
 $(TARGET_LIBRARY): $(OBJECTS) $(DEPFILES)
 	$(DIR_GUARD)
-	$(CPP) $(LIBFLAGS) $(LIBS) -o $(TARGET_LIBRARY) $(OBJECTS)
+	$(CPP) $(LIBFLAGS) -o $(TARGET_LIBRARY) $(OBJECTS) $(LIBS)
 
 #Main target
 $(TARGET_EXE): $(TARGET_LIBRARY)
