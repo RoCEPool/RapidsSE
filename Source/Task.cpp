@@ -713,10 +713,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">str",            &vToStr,            false);
   vAddPrimitive(">task",           &vToTask,           false);
   vAddPrimitive("token",           &vToken,            false);
-  vAddPrimitive("traceOff",        &vTraceOff,         false);
-  vAddPrimitive("traceOn",         &vTraceOn,          false);
-  vAddPrimitive("tracePoint",      &vTracePoint,       false);
-  vAddPrimitive("trace!",          &vTraceSet,         false);
   vAddPrimitive("wake",            &vWake,             false);
   
   //----------------------------------------------------------
@@ -1193,6 +1189,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("timer.start",     &vTimerStart,       false);
   vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
   vAddPrimitive("timer.update",    &vTimerUpdate,      false);
+  
+  vAddPrimitive("traceOff",        &vTraceOff,         false);
+  vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("tracePoint",      &vTracePoint,       false);
+  vAddPrimitive("trace!",          &vTraceSet,         false);
   
   vAddPrimitive("tx.dump",         &vTxDump,           false);
   
@@ -4015,65 +4016,6 @@ ENTRY("vToTask");
 }
 
 /*----------------------------------------------------------------------------*/
-/* turn tracing off                                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vTraceOff(NNP_Task nnpTask)
-{
-ENTRY("vTraceOff");
-  
-  nnpTask->m_iTracing = 0;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* turn tracing on                                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vTraceOn(NNP_Task nnpTask)
-{
-ENTRY("vTraceOn");
-  
-  nnpTask->m_iTracing = C_TRACE_STEPS;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* trace point                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vTracePoint(NNP_Task nnpTask)
-{
-  ENTRY("vTracePoint");
-  
-  s256 sPointName;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
-    THROW_INVALID_PARAM("tracePoint");
-  
-  if (gxArguments.m_bTracepoint)
-    nnpTask->vTracePoint(sPointName.a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* set tracing                                                                */
-/*----------------------------------------------------------------------------*/
-void Task::vTraceSet(NNP_Task nnpTask)
-{
-  ENTRY("vTraceSet");
-  
-  i8 iTrace;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iTrace) )
-    THROW_INVALID_PARAM("trace!");
-  
-  nnpTask->m_iTracing = iTrace;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* wake -- wake task on stack                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vWake(NNP_Task nnpTask)
@@ -6049,123 +5991,6 @@ void Task::vFlowIf(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* repeat -- repeat a begin-while-repeat loop                       immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowRepeat(NNP_Task nnpTask)
-{
-  ENTRY("vRepeat");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  void* pWhileJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
-    THROW_INVALID_RETURN("repeat");
-  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
-  
-  //-------------------------------------------------------------------------
-  
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("repeat");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
-  
-  pCurrentWord->vEncode("jump",pBeginLoc);
-  
-  //-------------------------------------------------------------------------
-  
-  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
-  
-  EXIT();
-}
-
-// grid: ///////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* grid.appendNode -- append grid node into grid                              */
-/*----------------------------------------------------------------------------*/
-void Task::vGridAppendNode(NNP_Task nnpTask)
-{
-ENTRY("vGridAppendNode");
-  
-  Object* pPtrNode;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrNode) )
-    THROW_INVALID_PARAM("grid.addNode");
-
-  Node* pNode = _pNode(pPtrNode);
-  ASSERT(pNode);
-  ASSERT(CN_NODE == pNode->eClass());
-  
-  gpGrid->vAppend(pNode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid.init -- initialise a grid                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vGridInit(NNP_Task nnpTask)
-{
-ENTRY("vGridInit");
-  
-  Object* pPtrGrid;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
-    THROW_INVALID_PARAM("grid.init");
-  
-  Grid* pGrid = _pGrid(pPtrGrid);
-  ASSERT(CN_GRID == pGrid->eClass());
-  
-  new(pGrid) Grid;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid.started! -- set grid started                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vGridStartedStore(NNP_Task nnpTask)
-{
-  ENTRY("vGridSetStarted");
-  
-  Object* pPtrGrid;
-  i8 iStarted;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
-    THROW_INVALID_PARAM("grid.started!");
-  
-  Grid* pGrid = _pGrid(pPtrGrid);
-  ASSERT(CN_GRID == pGrid->eClass());
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iStarted) )
-    THROW_INVALID_PARAM("grid.started!");
-  
-  pGrid->vHasStarted(iStarted == 1 ? true : false);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid.started@ -- get grid started                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vGridStartedFetch(NNP_Task nnpTask)
-{
-  ENTRY("vGridGetStarted");
-  
-  Object* pPtrGrid;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
-    THROW_INVALID_PARAM("grid.started@");
-  
-  Grid* pGrid = _pGrid(pPtrGrid);
-  ASSERT(CN_GRID == pGrid->eClass());
-  
-  nnpTask->m_xParamStack.vPush(pGrid->bHasStarted());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* iterate -- compile time of iterate ... next                      immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIterate(NNP_Task nnpTask)
@@ -6413,6 +6238,36 @@ void Task::vFlowNext(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* repeat -- repeat a begin-while-repeat loop                       immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowRepeat(NNP_Task nnpTask)
+{
+  ENTRY("vRepeat");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  void* pWhileJumpArgVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
+    THROW_INVALID_RETURN("repeat");
+  Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
+  
+  //-------------------------------------------------------------------------
+  
+  void* pBeginLocVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+    THROW_INVALID_RETURN("repeat");
+  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  
+  pCurrentWord->vEncode("jump",pBeginLoc);
+  
+  //-------------------------------------------------------------------------
+  
+  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* then -- then clause                                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThen(NNP_Task nnpTask)
@@ -6481,6 +6336,93 @@ void Task::vFlowWhile(NNP_Task nnpTask)
   Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
   nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
+  
+  EXIT();
+}
+
+// grid: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* grid.appendNode -- append grid node into grid                              */
+/*----------------------------------------------------------------------------*/
+void Task::vGridAppendNode(NNP_Task nnpTask)
+{
+ENTRY("vGridAppendNode");
+  
+  Object* pPtrNode;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrNode) )
+    THROW_INVALID_PARAM("grid.addNode");
+
+  Node* pNode = _pNode(pPtrNode);
+  ASSERT(pNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  gpGrid->vAppend(pNode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.init -- initialise a grid                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vGridInit(NNP_Task nnpTask)
+{
+ENTRY("vGridInit");
+  
+  Object* pPtrGrid;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.init");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  new(pGrid) Grid;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.started! -- set grid started                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartedStore(NNP_Task nnpTask)
+{
+  ENTRY("vGridSetStarted");
+  
+  Object* pPtrGrid;
+  i8 iStarted;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.started!");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iStarted) )
+    THROW_INVALID_PARAM("grid.started!");
+  
+  pGrid->vHasStarted(iStarted == 1 ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.started@ -- get grid started                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartedFetch(NNP_Task nnpTask)
+{
+  ENTRY("vGridGetStarted");
+  
+  Object* pPtrGrid;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
+    THROW_INVALID_PARAM("grid.started@");
+  
+  Grid* pGrid = _pGrid(pPtrGrid);
+  ASSERT(CN_GRID == pGrid->eClass());
+  
+  nnpTask->m_xParamStack.vPush(pGrid->bHasStarted());
   
   EXIT();
 }
@@ -12884,6 +12826,67 @@ ENTRY("vTimerUpdate");
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vUpdate();
+  
+  EXIT();
+}
+
+// trace: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* turn tracing off                                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceOff(NNP_Task nnpTask)
+{
+  ENTRY("vTraceOff");
+  
+  nnpTask->m_iTracing = 0;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* turn tracing on                                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceOn(NNP_Task nnpTask)
+{
+  ENTRY("vTraceOn");
+  
+  nnpTask->m_iTracing = C_TRACE_STEPS;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* trace point                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTracePoint(NNP_Task nnpTask)
+{
+  ENTRY("vTracePoint");
+  
+  s256 sPointName;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
+    THROW_INVALID_PARAM("tracePoint");
+  
+  if (gxArguments.m_bTracepoint)
+    nnpTask->vTracePoint(sPointName.a());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set tracing                                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vTraceSet(NNP_Task nnpTask)
+{
+  ENTRY("vTraceSet");
+  
+  i8 iTrace;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iTrace) )
+    THROW_INVALID_PARAM("trace!");
+  
+  nnpTask->m_iTracing = iTrace;
   
   EXIT();
 }
