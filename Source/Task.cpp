@@ -3006,24 +3006,15 @@ ENTRY("vExecute");
   }
   else if (WT_OBJECT == pWord->eWordType()) {
     nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+    nnpTask->IP.m_pCell = pWord->pDoesArg();
 
     Cell* pCell = pWord->pFirstCell();
     nnpTask->m_xParamStack.vPush(pCell);
-    
-//    TaskStep pTaskStep = pWord->pDoesStep();
-//    if (!pTaskStep || Task::vNop == pTaskStep) {
-//      void* pCellVoid;
-//      if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
-//        THROW_INVALID_RETURN("execute");
-//      nnpTask->IP.m_pCell = _pCell(pCellVoid);
-//    }
-//    else {
-      // does> inherited code
-      nnpTask->IP.m_pCell = pWord->pDoesArg();
-//    }
   }
   else if (WT_ROUTINE == pWord->eWordType()){
-    nnpTask->vRoutineCall(pWord);
+    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+    nnpTask->IP.m_pCell = pWord->pDoesArg();
+    //nnpTask->vRoutineCall(pWord);                   //! USE THIS IN ALL CASES?
   }
   else {
     ASSERT(0);
