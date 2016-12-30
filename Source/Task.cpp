@@ -647,8 +647,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
   vAddPrimitive("does>",           &vDoes,             true );
+  vAddPrimitive("does_rt",         &vDoes_RT,          false);
   vAddPrimitive("encodeCall",      &vEncodeCall,       false);
-  vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
   vAddPrimitive("encodeFun",       &vEncodeFun,        false);
   vAddPrimitive("encodeVal",       &vEncodeVal,        false);
   vAddPrimitive("env@",            &vEnvGet,           false);
@@ -2801,21 +2801,6 @@ ENTRY("vEncodeCall");
   }
 
   pCurrentWord->vEncode(pCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodeDoes -- encode does part                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodeDoes(NNP_Task nnpTask)
-{
-ENTRY("vEncodeDoes");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-
-  pCurrentWord->vDoesStep(&Task::vEnterDoes);
-  pCurrentWord->vDoesArg(nnpTask->IP.m_pCell+1);
   
   EXIT();
 }
@@ -13439,10 +13424,25 @@ ENTRY("vDoes");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vEncode("encodeDoes");
+  pCurrentWord->vEncode("does_rt");
   pCurrentWord->vEncode("exit");
   
   //pCurrentWord->vEncode("pushBody");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* does_rt -- runtime for does>                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vDoes_RT(NNP_Task nnpTask)
+{
+  ENTRY("vDoes_RT");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vDoesStep(&Task::vEnterDoes);
+  pCurrentWord->vDoesArg(nnpTask->IP.m_pCell+1);
   
   EXIT();
 }
