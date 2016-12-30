@@ -939,6 +939,8 @@ namespace Tasks
     static void vWordKindSet(NNP_Task nnpTask);
     static void vWordName(NNP_Task nnpTask);
     static void vWordThis(NNP_Task nnpTask);
+    static void vWordTypeGet(NNP_Task nnpTask);
+    static void vWordTypeSet(NNP_Task nnpTask);
 
     // zero
     static void vZeroLess(NNP_Task nnpTask);

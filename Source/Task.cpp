@@ -588,6 +588,13 @@ void Task::vAddConstants(void)
   /*  8 */ vAddConstant("TP_FREE",                  TP_FREE);
   /*  9 */ vAddConstant("TP_ENUMS",                 TP_ENUMS);
 
+  /*  0 */ vAddConstant("WT_NONE",                  WT_NONE);
+  /*  0 */ vAddConstant("WT_OBJECT",                WT_OBJECT);
+  /*  0 */ vAddConstant("WT_PRIMITIVE",             WT_PRIMITIVE);
+  /*  0 */ vAddConstant("WT_ROUTINE",               WT_ROUTINE);
+  /*  0 */ vAddConstant("WT_LOCAL",                 WT_LOCAL);
+  /*  0 */ vAddConstant("WT_ENUMS",                 WT_ENUMS);
+  
   /*  0 */ vAddConstant("OPEN_READ",                C_OPEN_READ);
   /*  1 */ vAddConstant("OPEN_WRITE",               C_OPEN_WRITE);
   /*  2 */ vAddConstant("OPEN_APPEND",              C_OPEN_APPEND);
@@ -1229,6 +1236,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.kind!",      &vWordKindSet,      false);
   vAddPrimitive("word.name",       &vWordName,         false);
   vAddPrimitive("word.this",       &vWordThis,         false);
+  vAddPrimitive("word.type@",      &vWordTypeGet,      false);
+  vAddPrimitive("word.type!",      &vWordTypeSet,      false);
   
   vAddPrimitive("0<",              &vZeroLess,         false);
   vAddPrimitive("0<=",             &vZeroLessEqual,    false);
@@ -13575,6 +13584,48 @@ ENTRY("vWordThis");
   Word* pWord = nnpTask->pCurrentWord();
   
   nnpTask->m_xParamStack.vPush(pWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.type@ -- word type get                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vWordTypeGet(NNP_Task nnpTask)
+{
+  ENTRY("vWordTypeGet");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("vWordTypeGet");
+  Word* pWord = _pWord(pWordObject);
+  
+  eWT eWordType = pWord->eWordType();
+  
+  nnpTask->m_xParamStack.vPush(eWordType);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.type! -- word type set                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vWordTypeSet(NNP_Task nnpTask)
+{
+  ENTRY("vWordTypeSet");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("vWordTypeSet");
+  Word* pWord = _pWord(pWordObject);
+  
+  i8 iWordType;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iWordType) )
+    THROW_INVALID_PARAM("vWordTypeSet");
+  Word* pWordKind = _pWord(pWordObject);
+  
+  pWord->vWordType((eWT)iWordType);
   
   EXIT();
 }
