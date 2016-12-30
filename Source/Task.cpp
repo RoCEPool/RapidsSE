@@ -3010,20 +3010,23 @@ ENTRY("vExecute");
     Cell* pCell = pWord->pFirstCell();
     nnpTask->m_xParamStack.vPush(pCell);
     
-    TaskStep pTaskStep = pWord->pDoesStep();
-    if (!pTaskStep || Task::vNop == pTaskStep) {
-      void* pCellVoid;
-      if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
-        THROW_INVALID_RETURN("execute");
-      nnpTask->IP.m_pCell = _pCell(pCellVoid);
-    }
-    else {
+//    TaskStep pTaskStep = pWord->pDoesStep();
+//    if (!pTaskStep || Task::vNop == pTaskStep) {
+//      void* pCellVoid;
+//      if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
+//        THROW_INVALID_RETURN("execute");
+//      nnpTask->IP.m_pCell = _pCell(pCellVoid);
+//    }
+//    else {
       // does> inherited code
       nnpTask->IP.m_pCell = pWord->pDoesArg();
-    }
+//    }
+  }
+  else if (WT_ROUTINE == pWord->eWordType()){
+    nnpTask->vRoutineCall(pWord);
   }
   else {
-    nnpTask->vRoutineCall(pWord);
+    ASSERT(0);
   }
   
   EXIT();

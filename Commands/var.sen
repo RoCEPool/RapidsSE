@@ -4,6 +4,11 @@
 
 "var.sen" .putVerbose
 
+: emptyDoes:
+
+  does>
+;
+
 /*----------------------------------------------------------------------------*/
 /* create int variable in current dictionary using name from input stream     */
 /*----------------------------------------------------------------------------*/

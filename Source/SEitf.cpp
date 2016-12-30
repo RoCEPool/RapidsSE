@@ -222,7 +222,14 @@ void SEitf::vInit(void)
   Word* pRspQueWord = new(&m_xDic) Word("rspque");
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
-  pRspQueWord->vDoesStep(nullptr);
+
+  //pRspQueWord->vDoesStep(nullptr);
+  
+  Word* pEmptyDoesWord = gpMainDic->pFind("emptyDoes:");
+  pRspQueWord->vDoesStep(pEmptyDoesWord->pDoesStep());
+  pRspQueWord->vDoesArg(pEmptyDoesWord->pDoesArg() + 2);
+ 
+  
   pRspQueWord->pAllot(sizeof(Queue));
   
   m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pDataArea());
