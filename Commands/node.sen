@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 : node:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_node allot
     word.this >body magic!!
     word.this >body CN_NODE class!
@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : :node
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_node allot
     word.this >body magic!!
     word.this >body CN_NODE class!

@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 : dir:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_dir allot
     word.this >body magic!!
     word.this >body CN_DIR class!
@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : :dir
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_dir allot
     word.this >body magic!!
     word.this >body CN_DIR class!

@@ -10,7 +10,7 @@
 
 : thread:
     create 
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_thread allot
     word.this >body magic!!
     word.this >body CN_THREAD class!
@@ -21,7 +21,7 @@
 
 : :thread
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_thread allot
     word.this >body magic!!
     word.this >body CN_THREAD class!

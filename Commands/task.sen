@@ -11,7 +11,7 @@
 : task:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_task allot
   word.this >body magic!!
   word.this >body CN_TASK class!
@@ -23,7 +23,7 @@
 : :task
 
   >create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_task allot
   word.this >body magic!!
   word.this >body CN_TASK class!

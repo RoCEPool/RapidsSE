@@ -6,7 +6,7 @@
 
 : seitfList:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitflist allot
     word.this >body magic!!
     word.this >body CN_SEITFLIST class!
@@ -17,7 +17,7 @@
 
 : seitfCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitfcursor allot
     word.this >body magic!!
     word.this >body CN_SEITFCURSOR class!

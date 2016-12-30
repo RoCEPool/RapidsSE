@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : threadCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_threadCursor allot
     word.this >body magic!!
     word.this >body CN_THREADCURSOR class!
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : :threadCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_threadCursor allot
     word.this >body magic!!
     word.this >body CN_THREADCURSOR class!

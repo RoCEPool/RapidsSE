@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 : file:
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_file allot
   word.this >body magic!!
   word.this >body CN_FILE class!
@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : :file
   >create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_file allot
   word.this >body magic!!
   word.this >body CN_FILE class!

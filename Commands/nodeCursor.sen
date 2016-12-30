@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : nodeCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_nodeCursor allot
     word.this >body magic!!
     word.this >body CN_NODECURSOR class!
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : :nodeCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_nodeCursor allot
     word.this >body magic!!
     word.this >body CN_NODECURSOR class!

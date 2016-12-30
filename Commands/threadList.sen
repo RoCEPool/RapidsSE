@@ -6,7 +6,7 @@
 
 : threadList:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_threadlist allot
     word.this >body magic!!
     word.this >body CN_THREADLIST class!

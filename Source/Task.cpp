@@ -689,7 +689,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
-  vAddPrimitive("object!!",        &vObjectMark,       false);
+  vAddPrimitive("WT_OBJECT word.this word.type!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("prevWord",        &vPrevWord,         false);
@@ -3352,7 +3352,7 @@ ENTRY("vObjectStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* object!! -- mark current word as an object                                 */
+/* WT_OBJECT word.this word.type! -- mark current word as an object                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectMark(NNP_Task nnpTask)
 {

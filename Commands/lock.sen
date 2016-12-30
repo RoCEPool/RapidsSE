@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 : lock:
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_lock allot
   word.this >body magic!!
   word.this >body CN_LOCK class!
@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : :lock
   >create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_lock allot
   word.this >body magic!!
   word.this >body CN_LOCK class!

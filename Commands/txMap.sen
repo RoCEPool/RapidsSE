@@ -6,7 +6,7 @@
 
 : txMap:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_txmap allot
     word.this >body magic!!
     word.this >body CN_TXMAP class!

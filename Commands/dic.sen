@@ -17,7 +17,7 @@
 : dic:
 diclock.grabwrite
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_dic allot
     word.this >body magic!!
     word.this >body CN_DIC class!
@@ -34,7 +34,7 @@ diclock.dropwrite
 : :dic
 diclock.grabwrite
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_dic allot
     word.this >body magic!!
     word.this >body CN_DIC class!

@@ -15,7 +15,7 @@
 : int:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_intval allot
   word.this >body magic!!
   word.this >body CN_INTVAL class!
@@ -29,7 +29,7 @@
 : intArray:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   dup >r // r0 - number of cells
   sizeof_intval * allot
   word.this >body magic!!
@@ -51,7 +51,7 @@
 : ptr:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_ptrval allot
   word.this >body magic!!
   word.this >body CN_PTRVAL class!
@@ -65,7 +65,7 @@
 : ptrArray:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   dup >r // r0 - number of cells
   sizeof_ptrval * allot
   word.this >body magic!!
@@ -87,7 +87,7 @@
 : str:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_strval sizeof_s256 + allot
   word.this >body magic!!
   word.this >body CN_STRVAL class!

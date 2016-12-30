@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : seitfCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitfCursor allot
     word.this >body magic!!
     word.this >body CN_SEITFCURSOR class!
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : :seitfCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitfCursor allot
     word.this >body magic!!
     word.this >body CN_SEITFCURSOR class!

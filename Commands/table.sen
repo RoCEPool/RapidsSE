@@ -35,7 +35,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : table:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_table allot
     word.this >body magic!!
     word.this >body CN_TABLE class!
@@ -50,7 +50,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : :table
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_table allot
     word.this >body magic!!
     word.this >body CN_TABLE class!

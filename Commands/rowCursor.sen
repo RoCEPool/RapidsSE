@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : rowCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_rowCursor allot
     word.this >body magic!!
     word.this >body CN_ROWCURSOR class!
@@ -23,7 +23,7 @@
 /*----------------------------------------------------------------------------*/
 : :rowCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_rowCursor allot
     word.this >body magic!!
     word.this >body CN_ROWCURSOR class!

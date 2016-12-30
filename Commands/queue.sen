@@ -8,7 +8,7 @@
 
 : queue:
     create 
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_queue allot
     word.this >body magic!!
     word.this >body CN_QUEUE class!
@@ -20,7 +20,7 @@
 
 : :queue
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_queue allot
     word.this >body magic!!
     word.this >body CN_QUEUE class!

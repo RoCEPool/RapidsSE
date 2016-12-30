@@ -6,7 +6,7 @@
 
 : txCollection:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_txcollection allot
     word.this >body magic!!
     word.this >body CN_TXCOLLECTION class!
