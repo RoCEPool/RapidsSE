@@ -77,38 +77,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* have participants run: makeTenant$                                         */
-/*----------------------------------------------------------------------------*/
-: put$$ ( atDepth -- )
-
-  drop $$ swap
-;
-
-/*----------------------------------------------------------------------------*/
-/* make a tenant folder (run by participant)                                  */
-/*----------------------------------------------------------------------------*/
-: makeTenantBOOT ( "<tenantNm>" -- true )
-
-tp: makingTenant
-
-args.tracepoint if
-dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
-then
-
-dup ( "<tenantNm>" "<tenantNm>" )
-
-:tenant ( "<tenantNm>" ^tenant )
-
-drop ( "<tenantNm>" )
-
-makeCatalogs ( )
-
-true <SUCCESS_RESULT>
-
-true
-;
-
-/*----------------------------------------------------------------------------*/
 /* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
 : makeTenant allParticipants 1 ( "<tenantNm>" -- true )

@@ -318,6 +318,7 @@ namespace Tasks
     static void vIsInterpreting(NNP_Task nnpTask); 
     static void vIsPrimitive(NNP_Task nnpTask);
     static void vJ(NNP_Task nnpTask);
+    static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vMagicFetch(NNP_Task nnpTask);
     static void vMagicMark(NNP_Task nnpTask);      
@@ -647,9 +648,9 @@ namespace Tasks
     static void vPstackRot(NNP_Task nnpTask);
     static void vPstackRotInv(NNP_Task nnpTask);
     static void vPstackSwap(NNP_Task nnpTask);
-    static void vPstackTuck(NNP_Task nnpTask);
     static void vPstackToValSet(NNP_Task nnpTask);
     static void vPstackToValues(NNP_Task nnpTask);
+    static void vPstackTuck(NNP_Task nnpTask);
     
     // queue
     static void vQueueAppend(NNP_Task nnpTask);

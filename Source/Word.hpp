@@ -34,7 +34,8 @@ namespace Dictionaries
     /*  1 */ DT_ALLPARTICIPANTS, // word is distributed to all participants
     /*  2 */ DT_ONEPARTICIPANT,  // word is distributed to one participants
     /*  3 */ DT_NOPARTICIPANT,   // word is not distributed to any participants
-    /*  4 */ DT_ENUMS
+    /*  4 */ DT_LOCALCALLS,      // word only issues local calls
+    /*  5 */ DT_ENUMS
   };
   
   static const char* const pDT[]
@@ -43,6 +44,7 @@ namespace Dictionaries
     /*  1 */ "ALLPARTICIPANTS",
     /*  2 */ "ONEPARTICIPANT",
     /*  3 */ "NOPARTICIPANT",
+    /*  4 */ "LOCALCALLS",
     /*  5 */ "ENUMS",
   };
   

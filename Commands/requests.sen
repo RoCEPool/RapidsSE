@@ -130,7 +130,9 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
 
+traceon
   makeTenant ( ) assert.stack_0
+traceoff
 
 tp: createdTenant
 
@@ -234,7 +236,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
 
-  ~makeSchema ( ) assert.stack_0
+  makeSchema ( ) assert.stack_0
 
   <OK>
 ;
@@ -1073,7 +1075,7 @@ tp: printRB$
 /*----------------------------------------------------------------------------*/
 /* create /tenants/boray/catalogs/rapidsse                                    */
 /*----------------------------------------------------------------------------*/
-: createDefaultFolders ( )
+: createDefaultFolders localCalls ( )
 
   assert.stack_0
 
@@ -1082,7 +1084,7 @@ tp: printRB$
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
-  "boray" makeTenantBOOT assert drop drop drop
+  "boray" makeTenant assert drop drop drop
 
   // push boray folder
   "boray" findInCurrent

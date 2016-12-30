@@ -678,6 +678,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
   vAddPrimitive("j",               &vJ,                false);
+  vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("magic@",          &vMagicFetch,       false);
   vAddPrimitive("magic!!",         &vMagicMark,        false);
@@ -964,9 +965,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rot",             &vPstackRot,        false);
   vAddPrimitive("-rot",            &vPstackRotInv,     false);
   vAddPrimitive("swap",            &vPstackSwap,       false);
-  vAddPrimitive("tuck",            &vPstackTuck,       false);
   vAddPrimitive("valset>",         &vPstackToValues,   false);
   vAddPrimitive(">valset",         &vPstackToValSet,   false);
+  vAddPrimitive("tuck",            &vPstackTuck,       false);
   
   vAddPrimitive("queue.append",    &vQueueAppend,      false);
   vAddPrimitive("queue.dump",      &vQueueDump,        false);
@@ -2786,8 +2787,20 @@ ENTRY("vEncodeCall");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  TaskStep* pCode = pCalledWord->ppDoesStep();
-  
+  TaskStep* pCode;
+  if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
+      DT_LOCALCALLS    == pCurrentWord->eDistributed()) {
+    pCode = pCalledWord->ppDoesStep();
+  }
+  else {
+    s32 sTildeName;
+    sTildeName = "~";
+    String::vConcat(sTildeName.a(),pCalledWord->sName().a());
+    
+    Word* pWordTilde = nnpTask->pFindWord(sTildeName);
+    pCode = pWordTilde->ppDoesStep();
+  }
+
   pCurrentWord->vEncode(pCode);
   
   EXIT();
@@ -3318,6 +3331,20 @@ ENTRY("vJ");
 }
 
 /*----------------------------------------------------------------------------*/
+/* localCalls -- set current word as a locals calls only word                 */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalCalls(NNP_Task nnpTask)
+{
+  ENTRY("vLocalCalls");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vDistributed(DT_LOCALCALLS);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* locate -- locate word based on ip                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLocate(NNP_Task nnpTask)
@@ -3796,8 +3823,55 @@ ENTRY("vSemicolon");
     nnpTask->vDicDrop();
   }
   
-  nnpTask->vCurrentWord(nullptr);
   
+  if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed() ||
+      DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
+    
+    s32 sTildeName;
+    sTildeName = "~";
+    String::vConcat(sTildeName.a(),pCurrentWord->sName().a());
+    
+    // create new word for tilde of current word
+    Dic* pDic = nnpTask->pDicPeek();
+    Word* pWordTilde = new(pDic) Word(sTildeName.a());
+    // ** do not set as current word **
+        
+    // encode the word
+    ValWsp xValWsp;
+    
+    xValWsp = sTildeName.a();
+    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("tracePoint");
+   
+    xValWsp = pCurrentWord->iParams();
+    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("put$$");
+    
+    xValWsp = pCurrentWord->sName().a();
+    pWordTilde->vEncode("push",&xValWsp);
+    
+    xValWsp = "theIndirectCall";
+    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("tracePoint");
+
+    pWordTilde->vEncode("$$>valset");
+
+    if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
+      pWordTilde->vEncode(">>allParticipants>");
+    else
+      pWordTilde->vEncode(">>oneParticipant>");
+    
+    xValWsp = sTildeName.a();
+    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("tracePoint");
+
+    pWordTilde->vEncode("checkResult");
+    
+    pWordTilde->vEncode("exit");
+  }
+  
+  nnpTask->vCurrentWord(nullptr);
+ 
   EXIT();
 }
 

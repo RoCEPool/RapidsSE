@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a schema folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeSchema$ ( "<schemaNm>" -- true )
+: makeSchema allParticipants 1 ( "<schemaNm>" -- true )
 
 tp: makingSchema
 
@@ -89,6 +89,7 @@ tp: makingSchema
 /*----------------------------------------------------------------------------*/
 /* have participants run: makeSchema$                                         */
 /*----------------------------------------------------------------------------*/
+/*
 : ~makeSchema ( "<schemaNm>" -- )
 
 tp: mkSchOnAll
@@ -106,6 +107,7 @@ tp: mkSchOnAllDone
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable schema folder                                 */
