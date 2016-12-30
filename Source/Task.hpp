@@ -323,7 +323,6 @@ namespace Tasks
     static void vNop(NNP_Task nnpTask);
     static void vNullPtr(NNP_Task nnpTask);
     static void vObjectFetch(NNP_Task nnpTask);
-    static void vObjectMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);

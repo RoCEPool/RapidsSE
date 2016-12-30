@@ -689,7 +689,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("object@",         &vObjectFetch,      false);
-  vAddPrimitive("WT_OBJECT word.this word.type!",        &vObjectMark,       false);
   vAddPrimitive("object!",         &vObjectStore,      false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("prevWord",        &vPrevWord,         false);
@@ -3347,20 +3346,6 @@ ENTRY("vObjectStore");
     THROW_INVALID_PARAM("object!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* WT_OBJECT word.this word.type! -- mark current word as an object                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectMark(NNP_Task nnpTask)
-{
-ENTRY("vObjectMark");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vWordType(WT_OBJECT);
   
   EXIT();
 }
