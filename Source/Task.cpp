@@ -2199,10 +2199,17 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
                              pValWsp->pPtr(),
                              pTask->sName().a());
         }
-        else
-          String::vSprintCat(a,"^%s=%p",
-                             pCN[((Object*)pValWsp->pPtr())->eClass()],
-                             pValWsp->pPtr());
+        else {
+          Object* pObject = (Object*)pValWsp->pPtr();
+          
+          if (pObject->iMagic() == MAGIC && pObject->eClass() < CN_ENUMS)
+            String::vSprintCat(a,"^%s=%p",
+                               pCN[pObject->eClass()],
+                               pValWsp->pPtr());
+          else
+            String::vSprintCat(a,"%p",
+                               pValWsp->pPtr());
+        }
       }
       else
         String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),pValWsp->pPtr());
@@ -2794,7 +2801,7 @@ void Task::vEncodeDoes(NNP_Task nnpTask)
 ENTRY("vEncodeDoes");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
-  
+
   pCurrentWord->vDoesStep(&Task::vEnterDoes);
   pCurrentWord->vDoesArg(nnpTask->IP.m_pCell+1);
   
@@ -3580,8 +3587,22 @@ void Task::vPushBody(NNP_Task nnpTask)
 {
 ENTRY("vPushBody");
   
+  ValWsp xValWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
+  
+  Cell* pIPcell = (Cell*)xValWsp.pPtr();
+  
+//  Cell*     pPrevCell = nnpTask->IP.m_pCell - 1;
+//  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
+//  Cell**    ppDoesArg = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
+//
+//  Word* pWord = reinterpret_cast<Word*>(
+//                  ((u8)ppDoesArg & (u8)~0xFFFF) + sizeof(HeapBuffer)
+//                );
+
   Word* pWord = reinterpret_cast<Word*>(
-                  ((u8)nnpTask->IP.m_pCell & (u8)~0xFFFF) + sizeof(HeapBuffer)
+                  ((u8)pIPcell & (u8)~0xFFFF) + sizeof(HeapBuffer)
                 );
   
   Cell* pCell = pWord->pFirstCell();
@@ -13377,6 +13398,8 @@ ENTRY("vDoes");
   
   pCurrentWord->vEncode("encodeDoes");
   pCurrentWord->vEncode("exit");
+  
+  //pCurrentWord->vEncode("pushBody");
   
   EXIT();
 }

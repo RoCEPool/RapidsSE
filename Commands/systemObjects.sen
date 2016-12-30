@@ -4,6 +4,7 @@
 
 "systemObjects.sen" .putVerbose
 
+
 ( tasklist will already exist )
 
 ( threadList holds all thread's )
@@ -21,11 +22,14 @@ seitfList: seitfList
 ( task set for root thread )
 taskSet: rootTaskSet
 
+//traceon
 ( root thread and name it )
 thread: rootThread "rootThread" rootThread thread.name!
+//traceoff
 
 ( give root task set to root thread )
 rootTaskSet rootThread thread.taskSet!
+
 
 /*============================================================================*/
 /* end                                                                        */
