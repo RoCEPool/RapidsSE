@@ -174,7 +174,7 @@ namespace Tasks
       Object* m_pObject;  // points to an embedded object within a word
       Header* m_pHeader;  // points to an embbeded header within a word
     } IP;
-    TaskStep* m_pDoesArg; //s point to does arg 
+    TaskStep* m_pEntryCell; //s point to does arg 
     
     
 //  u8    m_uMarker1;

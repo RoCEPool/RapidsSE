@@ -59,16 +59,19 @@ namespace Dictionaries
     Dic*     m_pDic;         // which dictionary this word in
     Word*    m_pKind;        // kind of word
     Word*    m_pParticipant; // allParticipant/oneParticipant word
-    
     bool     m_bImmediate;   // immediate execution during compile?
-    
     i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
     i8       m_iLocal;       // local variable number
     i8       m_iDataBytes;   // number of data bytes
-    TaskStep m_pDoesStep;    // "entry step" for this word
-    Cell*    m_pDoesArg;     // "entry step" argument
-    // ..data.. (being an array of cells)
+    TaskStep m_pEntryStep;   // entry step for this word
+    Cell*    m_pEntryCell;   // the cell to start executing from
+                             //   for normal words this will be the first cell
+                             //     in the data area
+                             //   for objects this will be the cell after
+                             //     does in the defining word
+                             //   for primitives this will be null
+    // ..data..
     
    public:
     void* operator new(size_t, Dic* pDic);
@@ -92,11 +95,11 @@ namespace Dictionaries
     i8    iDataBytes(void);
     char* pDataEnd(void);
     Dic*  pDic(void);
-    void  vDoesArg(Cell* pCell);
-    Cell* pDoesArg(void);
-    void  vDoesStep(TaskStep pStep);
-    TaskStep pDoesStep(void);
-    TaskStep* ppDoesStep(void);
+    void  vEntryCell(Cell* pCell);
+    Cell* pEntryCell(void);
+    void  vEntryStep(TaskStep pStep);
+    TaskStep pEntryStep(void);
+    TaskStep* ppEntryStep(void);
     void  vDistributed(eDT eDistributed);
     eDT   eDistributed(void);
     void  vDump(void);

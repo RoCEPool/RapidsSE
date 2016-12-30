@@ -230,7 +230,7 @@ Word* Dic::pFindStep(TaskStep pStep)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
   for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pDoesStep())
+    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
       return pWord;
   
   return nullptr;

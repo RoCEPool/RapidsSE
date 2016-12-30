@@ -223,11 +223,11 @@ void SEitf::vInit(void)
   pRspQueWord->vWordType(WT_OBJECT);
   pRspQueWord->vKind(pQueueWord);
 
-  //pRspQueWord->vDoesStep(nullptr);
+  //pRspQueWord->vEntryStep(nullptr);
   
   Word* pEmptyDoesWord = gpMainDic->pFind("emptyDoes:");
-  pRspQueWord->vDoesStep(pEmptyDoesWord->pDoesStep());
-  pRspQueWord->vDoesArg(pEmptyDoesWord->pDoesArg() + 2);
+  pRspQueWord->vEntryStep(pEmptyDoesWord->pEntryStep());
+  pRspQueWord->vEntryCell(pEmptyDoesWord->pEntryCell() + 2);
  
   
   pRspQueWord->pAllot(sizeof(Queue));

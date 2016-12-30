@@ -182,7 +182,7 @@ Word* DicStack::pFindStep(TaskStep pStep)
   
   for (i8 i = m_iTop; i >= 0; i--) {
     for (Word* pWord = m_pDic[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
-      if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pDoesStep())
+      if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
         return pWord;
   }
   
