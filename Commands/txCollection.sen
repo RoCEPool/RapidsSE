@@ -9,7 +9,7 @@
     WT_OBJECT word.this word.type!
     sizeof_txcollection allot
     word.this >body magic!!
-    word.this >body CN_TXCOLLECTION object.class!
+    CN_TXCOLLECTION word.this >body object.class!
     word.this >body txCollection.init
     true word.this >body object.wordbody!
     does>

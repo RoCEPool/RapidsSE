@@ -686,8 +686,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
-  vAddPrimitive("object@",         &vObjectFetch,      false);
-  vAddPrimitive("object!",         &vObjectStore,      false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
@@ -947,6 +945,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
+  vAddPrimitive("object@",           &vObjectFetch,      false);
+  vAddPrimitive("object!",           &vObjectStore,      false);
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
@@ -3270,43 +3270,6 @@ void Task::vNullPtr(NNP_Task nnpTask)
   xPtrVal = nullptr;
   
   nnpTask->m_xParamStack.vPush(xPtrVal);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object@ -- fetch object from return stack onto param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectFetch(NNP_Task nnpTask)
-{
-ENTRY("vObjectFetch");
-  
-  i8 iPick = 0;
-  
-  ValWsp xObjectWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
-  
-  nnpTask->m_xParamStack.vPush(xObjectWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object! -- replace object on return stack from param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectStore(NNP_Task nnpTask)
-{
-ENTRY("vObjectStore");
-  
-  i8 iPeek = 0;
-  
-  ValWsp xObjectWsp;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xObjectWsp) )
-    THROW_INVALID_PARAM("object!");
-  
-  nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
   
   EXIT();
 }
@@ -7916,6 +7879,43 @@ ENTRY("vNodeCursorNext");
 // object: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* object@ -- fetch object from return stack onto param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectFetch(NNP_Task nnpTask)
+{
+  ENTRY("vObjectFetch");
+  
+  i8 iPick = 0;
+  
+  ValWsp xObjectWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  
+  nnpTask->m_xParamStack.vPush(xObjectWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object! -- replace object on return stack from param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectStore(NNP_Task nnpTask)
+{
+  ENTRY("vObjectStore");
+  
+  i8 iPeek = 0;
+  
+  ValWsp xObjectWsp;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xObjectWsp) )
+    THROW_INVALID_PARAM("object!");
+  
+  nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* object.class@ -- fetch class number from object                            */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassFetch(NNP_Task nnpTask)
@@ -7935,18 +7935,18 @@ void Task::vObjectClassFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.object.class! -- store class number into object                            */
+/* object.class! -- store class number into object                            */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassStore(NNP_Task nnpTask)
 {
   ENTRY("vObjectClassStore");
   
-  eCN eClassNo;
-  if ( ! nnpTask->m_xParamStack.bPop(eClassNo) )
-    THROW_INVALID_PARAM("object.object.class!");
-  
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("object.object.class!");
+  
+  eCN eClassNo;
+  if ( ! nnpTask->m_xParamStack.bPop(eClassNo) )
     THROW_INVALID_PARAM("object.object.class!");
   
   pObject->vClass(eClassNo);

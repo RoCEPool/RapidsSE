@@ -13,7 +13,7 @@
     WT_OBJECT word.this word.type!
     sizeof_thread allot
     word.this >body magic!!
-    word.this >body CN_THREAD object.class!
+    CN_THREAD word.this >body object.class!
     word.this >body thread.init
     true word.this >body object.wordbody!
     does>
@@ -24,7 +24,7 @@
     WT_OBJECT word.this word.type!
     sizeof_thread allot
     word.this >body magic!!
-    word.this >body CN_THREAD object.class!
+    CN_THREAD word.this >body object.class!
     word.this >body thread.init
     true word.this >body object.wordbody!
     word.this

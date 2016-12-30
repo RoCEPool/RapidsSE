@@ -9,7 +9,7 @@
     WT_OBJECT word.this word.type!
     sizeof_seitflist allot
     word.this >body magic!!
-    word.this >body CN_SEITFLIST object.class!
+    CN_SEITFLIST word.this >body object.class!
     word.this >body seitflist.init
     true word.this >body object.wordbody!
     does>
@@ -20,7 +20,7 @@
     WT_OBJECT word.this word.type!
     sizeof_seitfcursor allot
     word.this >body magic!!
-    word.this >body CN_SEITFCURSOR object.class!
+    CN_SEITFCURSOR word.this >body object.class!
     word.this >body seitfcursor.init
     true word.this >body object.wordbody!
     does>

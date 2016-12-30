@@ -12,7 +12,7 @@
     WT_OBJECT word.this word.type!
     sizeof_nodeCursor allot
     word.this >body magic!!
-    word.this >body CN_NODECURSOR object.class!
+    CN_NODECURSOR word.this >body object.class!
     word.this >body nodeCursor.init
     true word.this >body object.wordbody!
     does>
@@ -26,7 +26,7 @@
     WT_OBJECT word.this word.type!
     sizeof_nodeCursor allot
     word.this >body magic!!
-    word.this >body CN_NODECURSOR object.class!
+    CN_NODECURSOR word.this >body object.class!
     word.this >body nodeCursor.init
     true word.this >body object.wordbody!
     word.this

@@ -14,7 +14,7 @@
   WT_OBJECT word.this word.type!
   sizeof_task allot
   word.this >body magic!!
-  word.this >body CN_TASK object.class!
+  CN_TASK word.this >body object.class!
   word.this >body task.init
   true word.this >body object.wordbody!
   does>
@@ -26,7 +26,7 @@
   WT_OBJECT word.this word.type!
   sizeof_task allot
   word.this >body magic!!
-  word.this >body CN_TASK object.class!
+  CN_TASK word.this >body object.class!
   word.this >body task.init
   true word.this >body object.wordbody!
   word.this

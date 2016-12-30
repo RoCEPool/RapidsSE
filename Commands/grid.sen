@@ -97,7 +97,7 @@ tp: printResult
     WT_OBJECT word.this word.type!
     sizeof_grid allot
     word.this >body magic!!
-    word.this >body CN_GRID object.class!
+    CN_GRID word.this >body object.class!
     word.this >body grid.init
     ' grid word.this word.kind!
     true word.this >body object.wordbody!
@@ -112,7 +112,7 @@ tp: printResult
     WT_OBJECT word.this word.type!
     sizeof_grid allot
     word.this >body magic!!
-    word.this >body CN_GRID object.class!
+    CN_GRID word.this >body object.class!
     word.this >body grid.init
     ' grid word.this word.kind!
     true word.this >body object.wordbody!

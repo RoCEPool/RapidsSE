@@ -18,7 +18,7 @@
   WT_OBJECT word.this word.type!
   sizeof_intval allot
   word.this >body magic!!
-  word.this >body CN_INTVAL object.class!
+  CN_INTVAL word.this >body object.class!
   true word.this >body object.wordbody!
   does>
 ;
@@ -39,7 +39,7 @@
     I sizeof_intval * word.this >body (int) + (ptr)
     dup
     magic!!
-    CN_INTVAL object.class!
+    CN_INTVAL swap object.class!
   loop
 
   does> (int) swap sizeof_intval * + (ptr)
@@ -54,7 +54,7 @@
   WT_OBJECT word.this word.type!
   sizeof_ptrval allot
   word.this >body magic!!
-  word.this >body CN_PTRVAL object.class!
+  CN_PTRVAL word.this >body object.class!
   true word.this >body object.wordbody!
   does>
 ;
@@ -75,7 +75,7 @@
     I sizeof_ptrval * word.this >body (int) + (ptr)
     dup
     magic!!
-    CN_PTRVAL object.class!
+    CN_PTRVAL swap object.class!
   loop
 
   does> (int) swap sizeof_ptrval * + (ptr)
@@ -90,7 +90,7 @@
   WT_OBJECT word.this word.type!
   sizeof_strval sizeof_s256 + allot
   word.this >body magic!!
-  word.this >body CN_STRVAL object.class!
+  CN_STRVAL word.this >body object.class!
   word.this >body s256.init
   true word.this >body object.wordbody!
   does>

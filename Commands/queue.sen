@@ -11,8 +11,8 @@
     WT_OBJECT word.this word.type!
     sizeof_queue allot
     word.this >body magic!!
-    word.this >body CN_QUEUE object.class!
-   ' queue word.this word.kind!
+    CN_QUEUE word.this >body object.class!
+    ' queue word.this word.kind!
     word.this >body queue.init
     true word.this >body object.wordbody!
     does> 
@@ -23,7 +23,7 @@
     WT_OBJECT word.this word.type!
     sizeof_queue allot
     word.this >body magic!!
-    word.this >body CN_QUEUE object.class!
+    CN_QUEUE word.this >body object.class!
     ' queue word.this word.kind!
     word.this >body queue.init
     true word.this >body object.wordbody!

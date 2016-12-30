@@ -12,7 +12,7 @@
     WT_OBJECT word.this word.type!
     sizeof_txRef allot
     word.this >body magic!!
-    word.this >body CN_TXREF object.class!
+    CN_TXREF word.this >body object.class!
     word.this >body txRef.init
     true word.this >body object.wordbody!
     word.this

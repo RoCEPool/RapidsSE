@@ -12,7 +12,7 @@
     WT_OBJECT word.this word.type!
     sizeof_threadCursor allot
     word.this >body magic!!
-    word.this >body CN_THREADCURSOR object.class!
+    CN_THREADCURSOR word.this >body object.class!
     word.this >body threadCursor.init
     true word.this >body object.wordbody!
     does>
@@ -26,7 +26,7 @@
     WT_OBJECT word.this word.type!
     sizeof_threadCursor allot
     word.this >body magic!!
-    word.this >body CN_THREADCURSOR object.class!
+    CN_THREADCURSOR word.this >body object.class!
     word.this >body threadCursor.init
     true word.this >body object.wordbody!
     word.this

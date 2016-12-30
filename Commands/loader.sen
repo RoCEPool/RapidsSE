@@ -13,7 +13,7 @@
     WT_OBJECT word.this word.type!
     sizeof_loader allot
     word.this >body magic!!
-    word.this >body CN_LOADER object.class!
+    CN_LOADER word.this >body object.class!
     word.this >body loader.init
     true word.this >body object.wordbody!
     word.this
@@ -25,7 +25,7 @@
     WT_OBJECT word.this word.type!
     sizeof_loader allot
     word.this >body magic!!
-    word.this >body CN_LOADERSUB object.class!
+    CN_LOADERSUB word.this >body object.class!
     word.this >body loaderSub.init
     true word.this >body object.wordbody!
     word.this
