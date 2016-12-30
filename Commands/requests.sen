@@ -130,7 +130,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
 
-  ~makeTenant ( ) assert.stack_0
+  makeTenant ( ) assert.stack_0
 
 tp: createdTenant
 
@@ -1082,7 +1082,7 @@ tp: printRB$
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
-  "boray" makeTenant$ assert drop drop drop
+  "boray" makeTenantBOOT assert drop drop drop
 
   // push boray folder
   "boray" findInCurrent

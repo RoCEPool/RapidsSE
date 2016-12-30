@@ -77,9 +77,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* have participants run: makeTenant$                                         */
+/*----------------------------------------------------------------------------*/
+: put$$ ( atDepth -- )
+
+  drop $$ swap
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeTenant$ allParticipants 1 ( "<tenantNm>" -- true )
+: makeTenantBOOT ( "<tenantNm>" -- true )
+
+tp: makingTenant
+
+args.tracepoint if
+dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
+then
+
+dup ( "<tenantNm>" "<tenantNm>" )
+
+:tenant ( "<tenantNm>" ^tenant )
+
+drop ( "<tenantNm>" )
+
+makeCatalogs ( )
+
+true <SUCCESS_RESULT>
+
+true
+;
+
+/*----------------------------------------------------------------------------*/
+/* make a tenant folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeTenant allParticipants 1 ( "<tenantNm>" -- true )
 
 tp: makingTenant
 
@@ -103,15 +135,16 @@ tp: makingTenant
 /*----------------------------------------------------------------------------*/
 /* have participants run: makeTenant$                                         */
 /*----------------------------------------------------------------------------*/
+/*
 : ~makeTenant ( "<tenantNm>" -- )
 
 tp: mkTenOnAll
 
-  // set up indirect parameters
-  $$ swap
+  // put $$ before parameters
+  1 put$$
 
   // the indirect word to be called
-  "makeTenant$"
+  "makeTenant"
 
 tp: theIndirectCall
 
@@ -124,6 +157,7 @@ tp: mkTenOnAllDone
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
