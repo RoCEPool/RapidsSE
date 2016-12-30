@@ -251,7 +251,6 @@ namespace Tasks
     void vReset(void);
     void vRetry(void);
     Threads::Thread* pRootThread(void);
-    void vRoutineCall(Word* pWord);
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(const char *aWord);
@@ -330,7 +329,6 @@ namespace Tasks
     static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
     static void vPush(NNP_Task nnpTask);
-    static void vPushBody(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
     static void vPutNewline(NNP_Task nnpTask);     
     static void vPutVerbose(NNP_Task nnpTask);

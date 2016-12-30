@@ -688,7 +688,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive("push",            &vPush,             false);
-  vAddPrimitive("pushBody",        &vPushBody,         false);
   vAddPrimitive(".put",            &vPut,              false);
   vAddPrimitive(".\\n",            &vPutNewline,       false);
   vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
@@ -1941,20 +1940,6 @@ Thread* Task::pRootThread(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* call routine                                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vRoutineCall(Word* pWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  ASSERT(WT_ROUTINE == pWord->eWordType());
-    
-  m_xReturnStack.vPush((void*)IP.m_pCell);
-    
-  IP.m_pCell = pWord->pEntryCell();
-}
-
-/*----------------------------------------------------------------------------*/
 /* seed task to run ::dicCompile                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vSeedDicCompileSen(void)
@@ -2899,7 +2884,6 @@ ENTRY("vExecute");
   else if (WT_ROUTINE == pWord->eWordType()){
     nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
     nnpTask->IP.m_pCell = pWord->pEntryCell();
-    //nnpTask->vRoutineCall(pWord);                   //! USE THIS IN ALL CASES?
   }
   else {
     ASSERT(0);
@@ -3467,38 +3451,6 @@ ENTRY("vPush");
   nnpTask->m_xParamStack.vPush(pValue);
   
   nnpTask->vAdjustNext(pValue->iSize());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* pushBody -- push ptr to body of this word                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vPushBody(NNP_Task nnpTask)
-{
-ENTRY("vPushBody");
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
-  
-  Cell* pIPcell = (Cell*)xValWsp.pPtr();
-  
-//  Cell*     pPrevCell = nnpTask->IP.m_pCell - 1;
-//  TaskStep* pEntryStep = pPrevCell->m_ppEntryStep;
-//  Cell**    ppEntryCell = reinterpret_cast<Cell**>(pvAdd((void*)pEntryStep,sizeof(Cell*)));
-//
-//  Word* pWord = reinterpret_cast<Word*>(
-//                  ((u8)ppEntryCell & (u8)~0xFFFF) + sizeof(HeapBuffer)
-//                );
-
-  Word* pWord = reinterpret_cast<Word*>(
-                  ((u8)pIPcell & (u8)~0xFFFF) + sizeof(HeapBuffer)
-                );
-  
-  Cell* pCell = pWord->pFirstCell();
-  
-  nnpTask->m_xParamStack.vPush(pCell);
   
   EXIT();
 }
