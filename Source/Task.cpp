@@ -649,7 +649,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("encodeCall",      &vEncodeCall,       false);
   vAddPrimitive("encodeDoes",      &vEncodeDoes,       false);
-  vAddPrimitive("encodeEmb",       &vEncodeEmb,        true );
   vAddPrimitive("encodeFun",       &vEncodeFun,        false);
   vAddPrimitive("encodeVal",       &vEncodeVal,        false);
   vAddPrimitive("env@",            &vEnvGet,           false);
@@ -2822,28 +2821,6 @@ ENTRY("vEncodeDoes");
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeEmb -- encode push ptr to object                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodeEmb(NNP_Task nnpTask)
-{
-ENTRY("vEncodeEmb");
-  
-  PtrVal xPtrObject;
-  
-  xPtrObject = nnpTask->m_pWord->pFirstCell();
-  
-  if (nnpTask->m_bCompiling) {
-    Word* pCurrentWord = nnpTask->pCurrentWord();
-    pCurrentWord->vEncode("push",&xPtrObject);
-  }
-  else {
-    nnpTask->m_xParamStack.vPush(&xPtrObject);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* encodeFun -- encode primitive fun                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeFun(NNP_Task nnpTask)
@@ -3495,9 +3472,7 @@ ENTRY("vObjectMark");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  //pCurrentWord->vImmediate(true);
   pCurrentWord->vWordType(WT_OBJECT);
-  pCurrentWord->vDoesStep(&vEncodeEmb);
   
   EXIT();
 }
