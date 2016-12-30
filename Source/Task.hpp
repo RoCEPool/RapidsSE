@@ -519,7 +519,7 @@ namespace Tasks
     static void vGridStartedFetch(NNP_Task nnpTask);
     
     // enter
-    static void vEnterDoes(NNP_Task nnpTask);
+    static void vEnterObject(NNP_Task nnpTask);
     static void vEnterRoutine(NNP_Task nnpTask);
     static void vEnterCompiler(NNP_Task nnpTask);
     static void vEnterInterpreter(NNP_Task nnpTask);

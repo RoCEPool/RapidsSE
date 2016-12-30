@@ -653,10 +653,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
   vAddPrimitive("encodePushValue", &vEncodePushValue,  false);
   vAddPrimitive("env@",            &vEnvGet,           false);
-  vAddPrimitive("]",               &vEnterCompiler,    false);
-  vAddPrimitive("enterDoes",       &vEnterDoes,        false);
-  vAddPrimitive("[",               &vEnterInterpreter, true );
-  vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
   vAddPrimitive("eql",             &vEqualAddress,     false);
   vAddPrimitive("execute",         &vExecute,          false);
   vAddPrimitive("exit",            &vExit,             false);
@@ -815,6 +811,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.seek",        &vDirSeek,          false);
   vAddPrimitive("dir.tell",        &vDirTell,          false);
  
+  vAddPrimitive("]",               &vEnterCompiler,    false);
+  vAddPrimitive("[",               &vEnterInterpreter, true );
+  vAddPrimitive("enterObject",     &vEnterObject,      false);
+  vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
+  
   vAddPrimitive("error.msg",       &vErrorMsg,         false);
   
   vAddPrimitive("file.close",      &vFileClose,        false);
@@ -2823,85 +2824,6 @@ ENTRY("vEncodePushValue");
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vEncode("push",&xValA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* enterDoes -- enter does routine                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vEnterDoes(NNP_Task nnpTask)
-{
-  ENTRY("vEnterDoes");
-  
-  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
-  
-//  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
-//  
-//  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
-//  
-//  Cell**   pDoesArg  = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
-//  
-//  assert(pDoesArg == (Cell**)nnpTask->m_pDoesArg);
-  
-  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pDoesArg;
-  
-  Word* pWord = reinterpret_cast<Word*>(
-                  pcAdd(nnpTask->m_pDoesArg, -(sizeof(Word)-sizeof(Cell*)) ));
-  
-  ASSERT(WT_OBJECT == pWord->eWordType());
-  
-  Cell* pCell = pWord->pFirstCell();
-  nnpTask->m_xParamStack.vPush(pCell);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* enterRoutine -- enter word routine                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vEnterRoutine(NNP_Task nnpTask)
-{
-ENTRY("vEnterRoutine");
-  
-  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
-  
-//  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
-//  
-//  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
-//  
-//  Cell**   pDoesArg  = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
-//  
-//  assert(pDoesArg == (Cell**)nnpTask->m_pDoesArg);
-  
-  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pDoesArg;
-  
-  if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint(">");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ] -- enter compiler state                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vEnterCompiler(NNP_Task nnpTask)
-{
-ENTRY("vEnterCompiler");
-  
-  nnpTask->m_bCompiling = true;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* [ -- enter interpreter state                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vEnterInterpreter(NNP_Task nnpTask)
-{
-ENTRY("vEnterInterpreter");
-
-  nnpTask->m_bCompiling = false;
   
   EXIT();
 }
@@ -5702,6 +5624,69 @@ ENTRY("vDirTell");
   i8 iPosition = pDir->iTell();
   
   nnpTask->m_xParamStack.vPush(iPosition);
+  
+  EXIT();
+}
+
+// enter: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* ] -- enter compiler state                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vEnterCompiler(NNP_Task nnpTask)
+{
+  ENTRY("vEnterCompiler");
+  
+  nnpTask->m_bCompiling = true;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* [ -- enter interpreter state                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vEnterInterpreter(NNP_Task nnpTask)
+{
+  ENTRY("vEnterInterpreter");
+  
+  nnpTask->m_bCompiling = false;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enterObject -- enter object routine   (this is the does step for a object) */
+/*----------------------------------------------------------------------------*/
+void Task::vEnterObject(NNP_Task nnpTask)
+{
+  ENTRY("vEnterObject");
+  
+  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pDoesArg;
+  
+  Word* pWord = reinterpret_cast<Word*>(
+                  pcAdd(nnpTask->m_pDoesArg, -(sizeof(Word)-sizeof(Cell*)) ));
+  
+  ASSERT(WT_OBJECT == pWord->eWordType());
+  
+  Cell* pCell = pWord->pFirstCell();
+  nnpTask->m_xParamStack.vPush(pCell);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* enterRoutine -- enter word routine    (this is the does step for a : word) */
+/*----------------------------------------------------------------------------*/
+void Task::vEnterRoutine(NNP_Task nnpTask)
+{
+  ENTRY("vEnterRoutine");
+  
+  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pDoesArg;
+ 
+   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
+    nnpTask->vTracePoint(">");
   
   EXIT();
 }
@@ -13429,7 +13414,7 @@ void Task::vDoes_RT(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vDoesStep(&Task::vEnterDoes);
+  pCurrentWord->vDoesStep(&Task::vEnterObject);
   pCurrentWord->vDoesArg(nnpTask->IP.m_pCell+1);
   
   EXIT();
