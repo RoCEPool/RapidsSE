@@ -648,9 +648,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("cursor!",         &vCursorStore,      false);
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("does_rt",         &vDoes_RT,          false);
-  vAddPrimitive("encodeCall",      &vEncodeCall,       false);
-  vAddPrimitive("encodeFun",       &vEncodeFun,        false);
-  vAddPrimitive("encodeVal",       &vEncodeVal,        false);
+  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
+  vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
+  vAddPrimitive("encodePushValue", &vEncodePushValue,  false);
   vAddPrimitive("env@",            &vEnvGet,           false);
   vAddPrimitive("]",               &vEnterCompiler,    false);
   vAddPrimitive("enterDoes",       &vEnterDoes,        false);
@@ -1287,7 +1287,7 @@ void Task::vAddRoutines(void)
   "      then"
   
   "      iscompiling if"          // compile encodes push intval
-  "        encodeVal"
+  "        encodePushValue"
   "        again_"
   "      then"
   
@@ -1303,7 +1303,7 @@ void Task::vAddRoutines(void)
   "      then"
   
   "      iscompiling if"          // compile encodes push strval
-  "        encodeVal"
+  "        encodePushValue"
   "        again_"
   "      then"
   
@@ -1336,11 +1336,11 @@ void Task::vAddRoutines(void)
   // compiling
   "    isCompiling if "          // compile encodes call to word
   "      dup isPrimitive if"
-  "        encodeFun"
+  "        encodeCallPrimitive"
   "        again_"
   "      then"
   "      dup isPrimitive not if"
-  "        encodeCall"
+  "        encodeCallWord"
   "        again_"
   "      then"
   "    then"
@@ -2773,15 +2773,15 @@ ENTRY("vCursorStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeCall -- encode call                                                  */
+/* encodeCallWord -- encode call to a : word                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeCall(NNP_Task nnpTask)
+void Task::vEncodeCallWord(NNP_Task nnpTask)
 {
-ENTRY("vEncodeCall");
+ENTRY("vEncodeCallWord");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("encodeCall");
+    THROW_INVALID_PARAM("encodeCallWord");
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -2806,15 +2806,15 @@ ENTRY("vEncodeCall");
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeFun -- encode primitive fun                                          */
+/* encodeCallPrimitive -- encode call to primitive step                       */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeFun(NNP_Task nnpTask)
+void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
 {
-ENTRY("vEncodeFun");
+ENTRY("vEncodeCallPrimitive");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vEncodeFun");
+    THROW_INVALID_PARAM("vEncodeCallPrimitive");
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -2827,15 +2827,15 @@ ENTRY("vEncodeFun");
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeVal -- encode push value                                             */
+/* encodePushValue -- encode push value                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodeVal(NNP_Task nnpTask)
+void Task::vEncodePushValue(NNP_Task nnpTask)
 {
-ENTRY("vEncodeVal");
+ENTRY("vEncodePushValue");
   
   ValWsp xValA;
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("encodeVal");
+    THROW_INVALID_PARAM("encodePushValue");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   

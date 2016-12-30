@@ -293,9 +293,9 @@ namespace Tasks
     static void vCompiling(NNP_Task nnpTask);
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
-    static void vEncodeCall(NNP_Task nnpTask);
-    static void vEncodeFun(NNP_Task nnpTask);
-    static void vEncodeVal(NNP_Task nnpTask);      
+    static void vEncodeCallPrimitive(NNP_Task nnpTask);
+    static void vEncodeCallWord(NNP_Task nnpTask);
+    static void vEncodePushValue(NNP_Task nnpTask);
     static void vEnvGet(NNP_Task nnpTask);
     static void vEqualAddress(NNP_Task nnpTask);
     static void vExecute(NNP_Task nnpTask);

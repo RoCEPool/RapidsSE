@@ -192,7 +192,7 @@ create
 
   "tp"
 
-  encodeVal
+  encodePushValue
 
   ' tracepoint compile,
 ;
@@ -204,7 +204,7 @@ create
 
   str:
 
-  encodeVal
+  encodePushValue
 
   ' tracepoint compile,
 ;
@@ -227,7 +227,7 @@ create
 : $$
   //1234
 
-  [ word.this encodeVal ]
+  [ word.this encodePushValue ]
 ;
 
 /*----------------------------------------------------------------------------*/
