@@ -18,7 +18,7 @@
     create
     WT_OBJECT word.this word.type!
     sizeof_node allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_NODE word.this >body object.class!
     word.this >body node.init
     ' node word.this word.kind!
@@ -33,7 +33,7 @@
     >create
     WT_OBJECT word.this word.type!
     sizeof_node allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_NODE word.this >body object.class!
     word.this >body node.init
     ' node word.this word.kind!

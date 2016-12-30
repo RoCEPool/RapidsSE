@@ -11,7 +11,7 @@
     create
     WT_OBJECT word.this word.type!
     sizeof_txCursor allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TXCURSOR word.this >body object.class!
     word.this >body txCursor.init
     true word.this >body object.wordbody!
@@ -25,7 +25,7 @@
     >create
     WT_OBJECT word.this word.type!
     sizeof_txCursor allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TXCURSOR word.this >body object.class!
     word.this >body txCursor.init
     true word.this >body object.wordbody!

@@ -18,7 +18,7 @@
   create
   WT_OBJECT word.this word.type!
   sizeof_file allot
-  word.this >body magic!!
+  word.this >body object.magic!!
   CN_FILE word.this >body object.class!
   ' file word.this word.kind!
   word.this >body file.init
@@ -33,7 +33,7 @@
   >create
   WT_OBJECT word.this word.type!
   sizeof_file allot
-  word.this >body magic!!
+  word.this >body object.magic!!
   CN_FILE word.this >body object.class!
   ' file word.this word.kind!
   word.this >body file.init

@@ -681,8 +681,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("j",               &vJ,                false);
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("magic@",          &vMagicFetch,       false);
-  vAddPrimitive("magic!!",         &vMagicMark,        false);
   vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
@@ -949,6 +947,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("object!",           &vObjectStore,      false);
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
+  vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
 
   vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
@@ -3198,39 +3197,6 @@ ENTRY("vLocate");
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* magicFetch -- fetch magic number from Object object                        */
-/*----------------------------------------------------------------------------*/
-void Task::vMagicFetch(NNP_Task nnpTask)
-{
-ENTRY("vMagicFetch");
-
-  Object* pObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_RETURN("magicFetch");
-  
-  i8 iMagic = pObject->iMagic();
-
-  nnpTask->m_xParamStack.vPush(iMagic);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* magicMark -- put magic number into Object object                           */
-/*----------------------------------------------------------------------------*/
-void Task::vMagicMark(NNP_Task nnpTask)
-{
-ENTRY("vMagicMark");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_RETURN("magicMark");
-  
-  pObject->vSetMagic();
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* nameWord -- push name of word                                              */
@@ -7974,6 +7940,21 @@ void Task::vObjectDump(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* object.magic!! -- put magic number into object                             */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectMagicMark(NNP_Task nnpTask)
+{
+  ENTRY("vObjectMagicMark");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_RETURN("object.magic!!");
+  
+  pObject->vSetMagic();
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* object.wordbody! -- mark object as a part of a wordbody                    */
 /*----------------------------------------------------------------------------*/

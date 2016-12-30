@@ -18,7 +18,7 @@
     create
     WT_OBJECT word.this word.type!
     sizeof_dir allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_DIR word.this >body object.class!
     ' dir word.this word.kind!
     word.this >body dir.init
@@ -33,7 +33,7 @@
     >create
     WT_OBJECT word.this word.type!
     sizeof_dir allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_DIR word.this >body object.class!
     ' dir word.this word.kind!
     word.this >body dir.init

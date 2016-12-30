@@ -10,7 +10,7 @@
     create 
     WT_OBJECT word.this word.type!
     sizeof_timer allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TIMER word.this >body object.class!
     ' timer word.this word.kind!
     word.this >body timer.init
@@ -22,7 +22,7 @@
     >create
     WT_OBJECT word.this word.type!
     sizeof_timer allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TIMER word.this >body object.class!
     ' timer word.this word.kind!
     word.this >body timer.init

@@ -315,8 +315,6 @@ namespace Tasks
     static void vJ(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
-    static void vMagicFetch(NNP_Task nnpTask);
-    static void vMagicMark(NNP_Task nnpTask);      
     static void vNameWord(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNullPtr(NNP_Task nnpTask);
@@ -621,6 +619,7 @@ namespace Tasks
     static void vObjectClassFetch(NNP_Task nnpTask);
     static void vObjectClassStore(NNP_Task nnpTask);
     static void vObjectDump(NNP_Task nnpTask);
+    static void vObjectMagicMark(NNP_Task nnpTask);
     static void vObjectWordBodySet(NNP_Task nnpTask);
     
     // process

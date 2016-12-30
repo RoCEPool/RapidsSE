@@ -19,7 +19,7 @@ diclock.grabwrite
     create
     WT_OBJECT word.this word.type!
     sizeof_dic allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_DIC word.this >body object.class!
     ' folder word.this word.kind!
     word.this >body dic.init
@@ -36,7 +36,7 @@ diclock.grabwrite
     >create
     WT_OBJECT word.this word.type!
     sizeof_dic allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_DIC word.this >body object.class!
     ' folder word.this word.kind!
     word.this >body dic.init

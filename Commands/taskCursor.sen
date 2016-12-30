@@ -11,7 +11,7 @@
     create
     WT_OBJECT word.this word.type!
     sizeof_taskCursor allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TASKCURSOR word.this >body object.class!
     word.this >body taskCursor.init
     true word.this >body object.wordbody!
@@ -25,7 +25,7 @@
     >create
     WT_OBJECT word.this word.type!
     sizeof_taskCursor allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TASKCURSOR word.this >body object.class!
     word.this >body taskCursor.init
     true word.this >body object.wordbody!

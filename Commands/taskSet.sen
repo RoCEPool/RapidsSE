@@ -12,7 +12,7 @@
     create 
     WT_OBJECT word.this word.type!
     sizeof_taskset allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TASKSET word.this >body object.class!
     word.this >body taskset.init
     true word.this >body object.wordbody!
@@ -23,7 +23,7 @@
     >create
     WT_OBJECT word.this word.type!
     sizeof_taskset allot
-    word.this >body magic!!
+    word.this >body object.magic!!
     CN_TASKSET word.this >body object.class!
     word.this >body taskset.init
     true word.this >body object.wordbody!
