@@ -174,6 +174,7 @@ namespace Tasks
       Object* m_pObject;  // points to an embedded object within a word
       Header* m_pHeader;  // points to an embbeded header within a word
     } IP;
+    TaskStep* m_pDoesArg; //s point to does arg 
     
     
 //  u8    m_uMarker1;
@@ -285,8 +286,7 @@ namespace Tasks
     static void vCells(NNP_Task nnpTask);
     static void vClassFetch(NNP_Task nnpTask);
     static void vClassStore(NNP_Task nnpTask);     
-    static void vCodeAssign(NNP_Task nnpTask);
-    static void vColon(NNP_Task nnpTask);          
+    static void vColon(NNP_Task nnpTask);
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
     static void vCompileComma(NNP_Task nnpTask);

@@ -207,7 +207,9 @@ void Task::vInit(const char* aLambda)
   m_pRegFrame    = nullptr;
   m_pLocalsFrame = nullptr;
   
-  IP.m_pCell      = nullptr;
+  IP.m_pCell   = nullptr;
+  m_pDoesArg   = nullptr;
+  
   m_pResetIP   = nullptr;
   m_pBeginIP   = nullptr;
   m_pWord      = nullptr;
@@ -636,7 +638,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("cells",           &vCells,            false);
   vAddPrimitive("class@",          &vClassFetch,       false);
   vAddPrimitive("class!",          &vClassStore,       false);
-  vAddPrimitive("code=",           &vCodeAssign,       false);
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
@@ -2376,6 +2377,8 @@ void Task::vLoop(void)
     
     TaskStep pTaskStep = *IP.m_pCell->m_ppDoesStep;
     
+    m_pDoesArg = IP.m_pCell->m_ppDoesStep + 1;
+    
     //vTrace("pTaskStep %p\n",pTaskStep);
     
     IP.m_pCell++;
@@ -2630,26 +2633,6 @@ ENTRY("vClassStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* codeAssign -- fetch ptr from word.code on stack into this word             */
-/*----------------------------------------------------------------------------*/
-void Task::vCodeAssign(NNP_Task nnpTask)
-{
-ENTRY("vCodeAssign");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("codeAssign");
-  Word* pThatWord = _pWord(pObject);
-  
-  Word* pThisWord = nnpTask->pCurrentWord();
-  
-  ASSERT(pThatWord->pDoesStep() == pThatWord->pDoesStep());
-  pThisWord->vDoesStep(pThatWord->pDoesStep());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* : -- colon                                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vColon(NNP_Task nnpTask)
@@ -2845,7 +2828,7 @@ ENTRY("vEncodePushValue");
 }
 
 /*----------------------------------------------------------------------------*/
-/* enterDoes -- enter this routine                                            */
+/* enterDoes -- enter does routine                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vEnterDoes(NNP_Task nnpTask)
 {
@@ -2853,15 +2836,18 @@ void Task::vEnterDoes(NNP_Task nnpTask)
   
   nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
   
-  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
+//  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
+//  
+//  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
+//  
+//  Cell**   pDoesArg  = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
+//  
+//  assert(pDoesArg == (Cell**)nnpTask->m_pDoesArg);
   
-  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
+  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pDoesArg;
   
-  Cell**   pDoesArg  = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
-  
-  Word* pWord = reinterpret_cast<Word*>(pcAdd(pDoesArg, -(sizeof(Word)-sizeof(Cell*)) ));
-  
-  nnpTask->IP.m_pCell = *pDoesArg;
+  Word* pWord = reinterpret_cast<Word*>(
+                  pcAdd(nnpTask->m_pDoesArg, -(sizeof(Word)-sizeof(Cell*)) ));
   
   ASSERT(WT_OBJECT == pWord->eWordType());
   
@@ -2872,7 +2858,7 @@ void Task::vEnterDoes(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* enterRoutine -- enter routine                                              */
+/* enterRoutine -- enter word routine                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vEnterRoutine(NNP_Task nnpTask)
 {
@@ -2880,13 +2866,15 @@ ENTRY("vEnterRoutine");
   
   nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
   
-  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
+//  Cell*    pPrevCell = nnpTask->IP.m_pCell - 1;
+//  
+//  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
+//  
+//  Cell**   pDoesArg  = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
+//  
+//  assert(pDoesArg == (Cell**)nnpTask->m_pDoesArg);
   
-  TaskStep* pDoesStep = pPrevCell->m_ppDoesStep;
-  
-  Cell**   pDoesArg  = reinterpret_cast<Cell**>(pvAdd((void*)pDoesStep,sizeof(Cell*)));
-  
-  nnpTask->IP.m_pCell = *pDoesArg;
+  nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pDoesArg;
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
     nnpTask->vTracePoint(">");
