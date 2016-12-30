@@ -10,9 +10,9 @@
     ( this should be a @ to gpTaskList )
     sizeof_tasklist allot
     word.this >body magic!!
-    word.this >body CN_TASKLIST class!
+    word.this >body CN_TASKLIST object.class!
     word.this >body tasklist.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does> 
 ;
 
@@ -21,9 +21,9 @@
     WT_OBJECT word.this word.type!
     sizeof_taskcursor allot
     word.this >body magic!!
-    word.this >body CN_TASKCURSOR class!
+    word.this >body CN_TASKCURSOR object.class!
     word.this >body taskcursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 

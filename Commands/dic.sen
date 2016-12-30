@@ -20,10 +20,10 @@ diclock.grabwrite
     WT_OBJECT word.this word.type!
     sizeof_dic allot
     word.this >body magic!!
-    word.this >body CN_DIC class!
+    word.this >body CN_DIC object.class!
     ' folder word.this word.kind!
     word.this >body dic.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
 diclock.dropwrite
     does>
 ;
@@ -37,10 +37,10 @@ diclock.grabwrite
     WT_OBJECT word.this word.type!
     sizeof_dic allot
     word.this >body magic!!
-    word.this >body CN_DIC class!
+    word.this >body CN_DIC object.class!
     ' folder word.this word.kind!
     word.this >body dic.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
 diclock.dropwrite
     does>

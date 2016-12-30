@@ -9,9 +9,9 @@
     WT_OBJECT word.this word.type!
     sizeof_threadlist allot
     word.this >body magic!!
-    word.this >body CN_THREADLIST class!
+    word.this >body CN_THREADLIST object.class!
     word.this >body threadlist.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 

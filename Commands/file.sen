@@ -19,10 +19,10 @@
   WT_OBJECT word.this word.type!
   sizeof_file allot
   word.this >body magic!!
-  word.this >body CN_FILE class!
+  word.this >body CN_FILE object.class!
   ' file word.this word.kind!
   word.this >body file.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -34,10 +34,10 @@
   WT_OBJECT word.this word.type!
   sizeof_file allot
   word.this >body magic!!
-  word.this >body CN_FILE class!
+  word.this >body CN_FILE object.class!
   ' file word.this word.kind!
   word.this >body file.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   word.this
   does>
 ;

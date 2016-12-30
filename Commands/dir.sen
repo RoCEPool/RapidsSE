@@ -19,10 +19,10 @@
     WT_OBJECT word.this word.type!
     sizeof_dir allot
     word.this >body magic!!
-    word.this >body CN_DIR class!
+    word.this >body CN_DIR object.class!
     ' dir word.this word.kind!
     word.this >body dir.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -34,10 +34,10 @@
     WT_OBJECT word.this word.type!
     sizeof_dir allot
     word.this >body magic!!
-    word.this >body CN_DIR class!
+    word.this >body CN_DIR object.class!
     ' dir word.this word.kind!
     word.this >body dir.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

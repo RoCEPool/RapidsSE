@@ -11,10 +11,10 @@
     WT_OBJECT word.this word.type!
     sizeof_timer allot
     word.this >body magic!!
-    word.this >body CN_TIMER class!
+    word.this >body CN_TIMER object.class!
    ' timer word.this word.kind!
     word.this >body timer.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does> 
 ;
 
@@ -23,10 +23,10 @@
     WT_OBJECT word.this word.type!
     sizeof_timer allot
     word.this >body magic!!
-    word.this >body CN_TIMER class!
+    word.this >body CN_TIMER object.class!
     ' timer word.this word.kind!
     word.this >body timer.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 

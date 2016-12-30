@@ -19,10 +19,10 @@
     WT_OBJECT word.this word.type!
     sizeof_node allot
     word.this >body magic!!
-    word.this >body CN_NODE class!
+    word.this >body CN_NODE object.class!
     word.this >body node.init
     ' node word.this word.kind!
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -34,10 +34,10 @@
     WT_OBJECT word.this word.type!
     sizeof_node allot
     word.this >body magic!!
-    word.this >body CN_NODE class!
+    word.this >body CN_NODE object.class!
     word.this >body node.init
     ' node word.this word.kind!
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

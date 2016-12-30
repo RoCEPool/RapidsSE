@@ -643,8 +643,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("(int)",           &vCastInt,          false);
   vAddPrimitive("(ptr)",           &vCastPtr,          false);
   vAddPrimitive("cells",           &vCells,            false);
-  vAddPrimitive("class@",          &vClassFetch,       false);
-  vAddPrimitive("class!",          &vClassStore,       false);
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
@@ -949,7 +947,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
-  vAddPrimitive("object.wordbody",   &vObjectWordBody,   false);
+  vAddPrimitive("object.class@",     &vObjectClassFetch, false);
+  vAddPrimitive("object.class!",     &vObjectClassStore, false);
+  vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
 
   vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
   
@@ -2583,45 +2583,6 @@ void Task::vCells(NNP_Task nnpTask)
   i8 nBytes = nCells * sizeof(void*);
   
   nnpTask->m_xParamStack.vPush(nBytes);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* classFetch -- fetch class number from Object object                        */
-/*----------------------------------------------------------------------------*/
-void Task::vClassFetch(NNP_Task nnpTask)
-{
-ENTRY("vClassFetch");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("classFetch");
-  
-  eCN eClassNo;
-  eClassNo = pObject->eClass();
-  
-  nnpTask->m_xParamStack.vPush(eClassNo);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* classStore -- store class number into Object object                        */
-/*----------------------------------------------------------------------------*/
-void Task::vClassStore(NNP_Task nnpTask)
-{
-ENTRY("vClassStore");
-
-  eCN eClassNo;
-  if ( ! nnpTask->m_xParamStack.bPop(eClassNo) )
-    THROW_INVALID_PARAM("class!");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("classStore");
-
-  pObject->vClass(eClassNo);
   
   EXIT();
 }
@@ -7955,6 +7916,45 @@ ENTRY("vNodeCursorNext");
 // object: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* object.class@ -- fetch class number from object                            */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectClassFetch(NNP_Task nnpTask)
+{
+  ENTRY("vObjectClassFetch");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("object.class@");
+  
+  eCN eClassNo;
+  eClassNo = pObject->eClass();
+  
+  nnpTask->m_xParamStack.vPush(eClassNo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* object.object.class! -- store class number into object                            */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectClassStore(NNP_Task nnpTask)
+{
+  ENTRY("vObjectClassStore");
+  
+  eCN eClassNo;
+  if ( ! nnpTask->m_xParamStack.bPop(eClassNo) )
+    THROW_INVALID_PARAM("object.object.class!");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("object.object.class!");
+  
+  pObject->vClass(eClassNo);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* object.dump -- dump the given object                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectDump(NNP_Task nnpTask)
@@ -7975,17 +7975,21 @@ void Task::vObjectDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.wordbody -- mark object as a part of a wordbody                     */
+/* object.wordbody! -- mark object as a part of a wordbody                    */
 /*----------------------------------------------------------------------------*/
-void Task::vObjectWordBody(NNP_Task nnpTask)
+void Task::vObjectWordBodySet(NNP_Task nnpTask)
 {
-  ENTRY("vWordBody");
+  ENTRY("vObjectWordBodySet");
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("object.wordbody");
+    THROW_INVALID_PARAM("object.wordbody!");
   
-  pObject->vWordBody(true);
+  i8 iIsBody;
+  if ( ! nnpTask->m_xParamStack.bPop(iIsBody) )
+    THROW_INVALID_PARAM("object.object.class!");
+  
+  pObject->vWordBody(iIsBody);
   
   EXIT();
 }

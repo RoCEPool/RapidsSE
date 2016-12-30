@@ -12,9 +12,9 @@
     WT_OBJECT word.this word.type!
     sizeof_taskCursor allot
     word.this >body magic!!
-    word.this >body CN_TASKCURSOR class!
+    word.this >body CN_TASKCURSOR object.class!
     word.this >body taskCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -26,9 +26,9 @@
     WT_OBJECT word.this word.type!
     sizeof_taskCursor allot
     word.this >body magic!!
-    word.this >body CN_TASKCURSOR class!
+    word.this >body CN_TASKCURSOR object.class!
     word.this >body taskCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

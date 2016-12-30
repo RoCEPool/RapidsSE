@@ -18,8 +18,8 @@
   WT_OBJECT word.this word.type!
   sizeof_intval allot
   word.this >body magic!!
-  word.this >body CN_INTVAL class!
-  word.this >body object.wordbody
+  word.this >body CN_INTVAL object.class!
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -33,13 +33,13 @@
   dup >r // r0 - number of cells
   sizeof_intval * allot
   word.this >body magic!!
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
 
   r> 0 do
     I sizeof_intval * word.this >body (int) + (ptr)
     dup
     magic!!
-    CN_INTVAL class!
+    CN_INTVAL object.class!
   loop
 
   does> (int) swap sizeof_intval * + (ptr)
@@ -54,8 +54,8 @@
   WT_OBJECT word.this word.type!
   sizeof_ptrval allot
   word.this >body magic!!
-  word.this >body CN_PTRVAL class!
-  word.this >body object.wordbody
+  word.this >body CN_PTRVAL object.class!
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -69,13 +69,13 @@
   dup >r // r0 - number of cells
   sizeof_ptrval * allot
   word.this >body magic!!
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
 
   r> 0 do
     I sizeof_ptrval * word.this >body (int) + (ptr)
     dup
     magic!!
-    CN_PTRVAL class!
+    CN_PTRVAL object.class!
   loop
 
   does> (int) swap sizeof_ptrval * + (ptr)
@@ -90,9 +90,9 @@
   WT_OBJECT word.this word.type!
   sizeof_strval sizeof_s256 + allot
   word.this >body magic!!
-  word.this >body CN_STRVAL class!
+  word.this >body CN_STRVAL object.class!
   word.this >body s256.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   does>
 ;
 

@@ -38,9 +38,9 @@ int: queryCount
     WT_OBJECT word.this word.type!
     sizeof_table allot
     word.this >body magic!!
-    word.this >body CN_TABLE class!
+    word.this >body CN_TABLE object.class!
     word.this >body table.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     ' table word.this word.kind!
     does>
 ;
@@ -53,9 +53,9 @@ int: queryCount
     WT_OBJECT word.this word.type!
     sizeof_table allot
     word.this >body magic!!
-    word.this >body CN_TABLE class!
+    word.this >body CN_TABLE object.class!
     word.this >body table.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     ' table word.this word.kind!
     word.this
     does>

@@ -283,8 +283,6 @@ namespace Tasks
     static void vCastInt(NNP_Task nnpTask);
     static void vCastPtr(NNP_Task nnpTask);
     static void vCells(NNP_Task nnpTask);
-    static void vClassFetch(NNP_Task nnpTask);
-    static void vClassStore(NNP_Task nnpTask);     
     static void vColon(NNP_Task nnpTask);
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
@@ -620,8 +618,10 @@ namespace Tasks
     static void vNumberMagnitude(NNP_Task nnpTask);
     
     // object
+    static void vObjectClassFetch(NNP_Task nnpTask);
+    static void vObjectClassStore(NNP_Task nnpTask);
     static void vObjectDump(NNP_Task nnpTask);
-    static void vObjectWordBody(NNP_Task nnpTask);
+    static void vObjectWordBodySet(NNP_Task nnpTask);
     
     // process
     static void vProcessGetPid(NNP_Task nnpTask);
