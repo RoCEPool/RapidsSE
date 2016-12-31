@@ -648,8 +648,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
-  vAddPrimitive("test",            &vTest,             false);
-  vAddPrimitive("throw",           &vThrow,            false);
   
   //----------------------------------------------------------
   vAddPrimitive("args.partition",  &vArgsPartition, false);
@@ -797,6 +795,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
   vAddPrimitive("else",            &vFlowElse,         true );
   vAddPrimitive("execute",         &vFlowExecute,      false);
+  vAddPrimitive("hazard",          &vFlowHazard,       false);
   vAddPrimitive("if",              &vFlowIf,           true );
   vAddPrimitive("iterate",         &vFlowIterate,      true );
   vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
@@ -809,9 +808,12 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
   vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,  false);
   vAddPrimitive("next",            &vFlowNext,         true );
+  vAddPrimitive("nop",             &vFlowNop,          false);
   vAddPrimitive("repeat",          &vFlowRepeat,       true );
   vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
+  vAddPrimitive("test",            &vFlowTest,         false);
   vAddPrimitive("then",            &vFlowThen,         true );
+  vAddPrimitive("throw",           &vFlowThrow,        false);
   vAddPrimitive("unloop",          &vFlowUnloop,       false);
   vAddPrimitive("until",           &vFlowUntil,        true );
   vAddPrimitive("while",           &vFlowWhile,        true );
@@ -907,8 +909,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
-  vAddPrimitive("nop",             &vNop,              false);
-  vAddPrimitive("hazard",          &vNopHazard,        false);
   
   vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
   
@@ -2698,33 +2698,6 @@ ENTRY("vStringColon");
   
   nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
     
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* test -- print test                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTest(NNP_Task nnpTask)
-{
-ENTRY("vTest");
-  vTrace("[%s] Test\n",nnpTask->m_sName.a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* throw -- throw c++ exception (for testing purposes)                        */
-/*----------------------------------------------------------------------------*/
-void Task::vThrow(NNP_Task nnpTask)
-{
-ENTRY("vThrow");
-  
-  char wBuffer[256];
-  
-  String::vSprint(wBuffer,"THROW TEST");
-  
-  throw wBuffer;
-  
   EXIT();
 }
 
@@ -5089,6 +5062,18 @@ void Task::vFlowExecute(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* hazard -- should never be called                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowHazard(NNP_Task nnpTask)
+{
+  ENTRY("vFlowHazard");
+  
+  THROW("Entered hazard");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* if -- if clause                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIf(NNP_Task nnpTask)
@@ -5356,6 +5341,16 @@ void Task::vFlowNext(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* nop -- no op                                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowNop(NNP_Task nnpTask)
+{
+  ENTRY("vFlowNop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* repeat -- repeat a begin-while-repeat loop                       immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowRepeat(NNP_Task nnpTask)
@@ -5401,6 +5396,18 @@ void Task::vFlowRetryPoint(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test -- print test                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowTest(NNP_Task nnpTask)
+{
+  ENTRY("vFlowTest");
+  
+  vTrace("[%s] Test\n",nnpTask->m_sName.a());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* then -- then clause                                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThen(NNP_Task nnpTask)
@@ -5415,6 +5422,22 @@ void Task::vFlowThen(NNP_Task nnpTask)
   Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
   pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* throw -- throw c++ exception (for testing purposes)                        */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowThrow(NNP_Task nnpTask)
+{
+  ENTRY("vFlowThrow");
+  
+  char wBuffer[256];
+  
+  String::vSprint(wBuffer,"THROW TEST");
+  
+  throw wBuffer;
   
   EXIT();
 }
@@ -7053,30 +7076,6 @@ ENTRY("vNodeCursorNext");
   Object* pObject = pNodeCursor->pObject();
   
   nnpTask->m_xParamStack.vPush(pObject);
-  
-  EXIT();
-}
-
-// nop: ////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* nop -- no op                                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vNop(NNP_Task nnpTask)
-{
-  ENTRY("vNop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* hazard -- should never be called                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vNopHazard(NNP_Task nnpTask)
-{
-  ENTRY("vNopHazard");
-  
-  THROW("Entered hazard");
   
   EXIT();
 }

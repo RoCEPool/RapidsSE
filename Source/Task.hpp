@@ -286,8 +286,6 @@ namespace Tasks
     static void vFetch(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
     static void vStringColon(NNP_Task nnpTask);
-    static void vTest(NNP_Task nnpTask);
-    static void vThrow(NNP_Task nnpTask);
 
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
@@ -462,6 +460,7 @@ namespace Tasks
     static void vFlowDo_RT(NNP_Task nnpTask);
     static void vFlowElse(NNP_Task nnpTask);
     static void vFlowExecute(NNP_Task nnpTask);
+    static void vFlowHazard(NNP_Task nnpTask);
     static void vFlowIf(NNP_Task nnpTask);
     static void vFlowIterate(NNP_Task nnpTask);
     static void vFlowIterate_RT_A(NNP_Task nnpTask);
@@ -474,9 +473,12 @@ namespace Tasks
     static void vFlowLoopPlus(NNP_Task nnpTask);
     static void vFlowLoopPlus_RT(NNP_Task nnpTask);
     static void vFlowNext(NNP_Task nnpTask);
+    static void vFlowNop(NNP_Task nnpTask);
     static void vFlowRepeat(NNP_Task nnpTask);
     static void vFlowRetryPoint(NNP_Task nnpTask);
+    static void vFlowTest(NNP_Task nnpTask);
     static void vFlowThen(NNP_Task nnpTask);
+    static void vFlowThrow(NNP_Task nnpTask);
     static void vFlowUnloop(NNP_Task nnpTask);
     static void vFlowUntil(NNP_Task nnpTask);
     static void vFlowWhile(NNP_Task nnpTask);
@@ -583,10 +585,6 @@ namespace Tasks
     static void vNodeCursorInit(NNP_Task nnpTask);
     static void vNodeCursorNew(NNP_Task nnpTask);
     static void vNodeCursorNext(NNP_Task nnpTask);
-    
-    // nop
-    static void vNop(NNP_Task nnpTask);
-    static void vNopHazard(NNP_Task nnpTask);
     
     // number
     static void vNumberMagnitude(NNP_Task nnpTask);
