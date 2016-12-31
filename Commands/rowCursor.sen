@@ -2,7 +2,7 @@
 /* rowCursor.sen -- Row Cursor                                                */
 /*============================================================================*/
 
-"rowCursor.sen" .putVerbose
+"rowCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a rowCursor using name from input stream                            */

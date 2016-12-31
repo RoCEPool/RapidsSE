@@ -297,10 +297,6 @@ namespace Tasks
     static void vLocate(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
-    static void vPrint(NNP_Task nnpTask);
-    static void vPut(NNP_Task nnpTask);
-    static void vPutNewline(NNP_Task nnpTask);     
-    static void vPutVerbose(NNP_Task nnpTask);
     static void vRdtscp(NNP_Task nnpTask);
     static void vRetryPoint(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
@@ -435,6 +431,12 @@ namespace Tasks
     static void vDocolInterpreting(NNP_Task nnpTask);
     static void vDocolIsCompiling(NNP_Task nnpTask);
     static void vDocolIsInterpreting(NNP_Task nnpTask);
+    
+    // dot
+    static void vDot(NNP_Task nnpTask);
+    static void vDotPut(NNP_Task nnpTask);
+    static void vDotNewline(NNP_Task nnpTask);
+    static void vDotVerbose(NNP_Task nnpTask);
     
     // encode
     static void vEncodeCallPrimitive(NNP_Task nnpTask);

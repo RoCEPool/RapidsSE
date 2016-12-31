@@ -2,7 +2,7 @@
 /* requestTask.sen -- request processing task                                 */
 /*============================================================================*/
 
-"requestTask.sen" .putVerbose
+"requestTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -99,7 +99,7 @@ tp: poppedValset
 
   requestTaskSet task.this task.taskset!
 
-  "renaming to Request Task" .putVerbose
+  "renaming to Request Task" .verbose
 
   "req.task" task.this task.name!
 

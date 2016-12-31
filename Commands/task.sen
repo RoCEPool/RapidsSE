@@ -2,7 +2,7 @@
 /* task.sen -- task related words                                             */
 /*============================================================================*/
 
-"task.sen" .putVerbose
+"task.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a task using string from input stream as name                       */

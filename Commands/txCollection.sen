@@ -2,7 +2,7 @@
 /* txCollection.sen -- Transaction Collection                                 */
 /*============================================================================*/
 
-"txCollection.sen" .putVerbose
+"txCollection.sen" .verbose
 
 : txCollection:
     create

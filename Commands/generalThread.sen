@@ -2,7 +2,7 @@
 /* generalThread.sen -- General Processing Threads                            */
 /*============================================================================*/
 
-"generalThread.sen" .putVerbose
+"generalThread.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create and spawn the general processing threads                            */

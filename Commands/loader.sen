@@ -2,7 +2,7 @@
 /* loader.sen -- Parallel Table Loader                                        */
 /*============================================================================*/
 
-"loader.sen" .putVerbose
+"loader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */

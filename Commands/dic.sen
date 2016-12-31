@@ -2,7 +2,7 @@
 /* dic.sen -- dictionary related words                                        */
 /*============================================================================*/
 
-"dic.sen" .putVerbose
+"dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* folder is use as a kind of word to identify folders                        */

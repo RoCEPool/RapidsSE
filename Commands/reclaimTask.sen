@@ -2,7 +2,7 @@
 /* reclaimTask.sen -- reclaim task                                            */
 /*============================================================================*/
 
-"reclaimTask.sen" .putVerbose
+"reclaimTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */

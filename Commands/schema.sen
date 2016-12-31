@@ -2,7 +2,7 @@
 /* schema.sen -- schema related words                                         */
 /*============================================================================*/
 
-"schema.sen" .putVerbose
+"schema.sen" .verbose
 
 : schema ;
 

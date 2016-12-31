@@ -2,7 +2,7 @@
 /* participantTask.sen -- participant task                                    */
 /*============================================================================*/
 
-"participantTask.sen" .putVerbose
+"participantTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute all indirect call processing loop                                  */

@@ -2,7 +2,7 @@
 /* unitTests.sen -- unit testing                                              */
 /*============================================================================*/
 
-"unitTests.sen" .putVerbose
+"unitTests.sen" .verbose
 
 "arithmeticTests.sen" >>:
 

@@ -2,7 +2,7 @@
 /* SenderTask.sen -- sender task                                              */
 /*============================================================================*/
 
-"SenderTask.sen" .putVerbose
+"SenderTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */

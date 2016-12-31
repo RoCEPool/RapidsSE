@@ -659,10 +659,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
-  vAddPrimitive(".",               &vPrint,            false);
-  vAddPrimitive(".put",            &vPut,              false);
-  vAddPrimitive(".\\n",            &vPutNewline,       false);
-  vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
   vAddPrimitive("see",             &vSee,              false);
@@ -780,6 +776,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("[",                     &vDocolInterpreting,   true );
   vAddPrimitive("docol.isCompiling",     &vDocolIsCompiling,    false);
   vAddPrimitive("docol.isInterpreting",  &vDocolIsInterpreting, false);
+  
+  vAddPrimitive(".",               &vDot,              false);
+  vAddPrimitive(".put",            &vDotPut,           false);
+  vAddPrimitive(".\\n",            &vDotNewline,       false);
+  vAddPrimitive(".verbose",     &vDotVerbose,       false);
   
   vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
   vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
@@ -1413,24 +1414,24 @@ void Task::vAddRoutines(void)
 #ifdef __APPLE__
   sDefinition =
   ": ::dicCompile"
-  "  \"::dicCompile\" .putVerbose"
-//  "  gwd .putVerbose"
+  "  \"::dicCompile\" .verbose"
+//  "  gwd .verbose"
 //  "  \"../../../../Commands\" cwd"
-//  "  gwd .putVerbose"
+//  "  gwd .verbose"
 //  "  traceon"
   "  \"compile.sen\" >>:"
-  "  \"::dicCompile exit\" .putVerbose"
+  "  \"::dicCompile exit\" .verbose"
   "  ::exit"
   "  ;";
 #else
   sDefinition =
   ": ::dicCompile"
-  "  \"::dicCompile\" .putVerbose"
-//  "  gwd .putVerbose"
+  "  \"::dicCompile\" .verbose"
+//  "  gwd .verbose"
 //  "  \"../../Commands\" cwd"
-//  "  gwd .putVerbose"
+//  "  gwd .verbose"
   "  \"compile.sen\" >>:"
-  "  \"::dicCompile exit\" .putVerbose"
+  "  \"::dicCompile exit\" .verbose"
   "  ::exit"
   "  ;";
 #endif
@@ -2918,33 +2919,6 @@ void Task::vOneParticipant(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* . -- print top value on stack                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vPrint(NNP_Task nnpTask)
-{
-ENTRY("vPrint");
-  
-  s8K sWorkspace;
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(".");
-  
-  xValWsp.vToString(sWorkspace.a());
-  vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
-         
-         gxArguments.m_iNode,
-         nnpTask->m_sName.a(),
-         *nnpTask->m_zAcks,
-         nnpTask->m_sComment.a(),
-         
-         sWorkspace.a()
-         );
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* processQuit -- process exits early                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vProcessQuit(NNP_Task nnpTask)
@@ -2952,58 +2926,6 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 ENTRY("vProcessQuit");
   
   exit(EXIT_FAILURE);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* .put -- print top value on stack (no new line)                             */
-/*----------------------------------------------------------------------------*/
-void Task::vPut(NNP_Task nnpTask)
-{
-ENTRY("vPut");
-  
-  s8K sWorkspace;
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(".put");
-  
-  xValWsp.vToString(sWorkspace.a());
-  vTrace("%s",sWorkspace.a());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* .putVerbose -- print top value on stack if arg.m_bverbose                  */
-/*----------------------------------------------------------------------------*/
-void Task::vPutVerbose(NNP_Task nnpTask)
-{
-  ENTRY("vPutVerbose");
-  
-  s8K sWorkspace;
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(".put");
-  
-  if (gxArguments.m_bVerbose) {
-    xValWsp.vToString(sWorkspace.a());
-    vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* .putNewline -- print new line                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vPutNewline(NNP_Task nnpTask)
-{
-ENTRY("vPut");
-  
-  vTrace("\n");
   
   EXIT();
 }
@@ -5004,6 +4926,87 @@ void Task::vDocolIsInterpreting(NNP_Task nnpTask)
   i8 iIsInterpreting = nnpTask->m_bCompiling ? 0 : 1;
   
   nnpTask->m_xParamStack.vPush(iIsInterpreting);
+  
+  EXIT();
+}
+
+// dot: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* . -- print top value on stack                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vDot(NNP_Task nnpTask)
+{
+  ENTRY("vDot");
+  
+  s8K sWorkspace;
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM(".");
+  
+  xValWsp.vToString(sWorkspace.a());
+  vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
+         
+         gxArguments.m_iNode,
+         nnpTask->m_sName.a(),
+         *nnpTask->m_zAcks,
+         nnpTask->m_sComment.a(),
+         
+         sWorkspace.a()
+         );
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* .put -- print top value on stack (no new line)                             */
+/*----------------------------------------------------------------------------*/
+void Task::vDotPut(NNP_Task nnpTask)
+{
+  ENTRY("vDotPut");
+  
+  s8K sWorkspace;
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM(".put");
+  
+  xValWsp.vToString(sWorkspace.a());
+  vTrace("%s",sWorkspace.a());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* .\n -- print new line                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vDotNewline(NNP_Task nnpTask)
+{
+  ENTRY("vDotNewline");
+  
+  vTrace("\n");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* .verbose -- print top value on stack if arg.m_bVerbose                     */
+/*----------------------------------------------------------------------------*/
+void Task::vDotVerbose(NNP_Task nnpTask)
+{
+  ENTRY("vDotVerbose");
+  
+  s8K sWorkspace;
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM(".verbose");
+  
+  if (gxArguments.m_bVerbose) {
+    xValWsp.vToString(sWorkspace.a());
+    vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
+  }
   
   EXIT();
 }

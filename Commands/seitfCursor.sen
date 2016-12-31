@@ -2,7 +2,7 @@
 /* seitfCursor.sen -- SEitf Cursor                                            */
 /*============================================================================*/
 
-"seitfCursor.sen" .putVerbose
+"seitfCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a seitfCursor using name from input stream                          */

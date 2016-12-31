@@ -2,7 +2,7 @@
 /* catalog.sen -- catalog related words                                       */
 /*============================================================================*/
 
-"catalog.sen" .putVerbose
+"catalog.sen" .verbose
 
 : catalog ;
 

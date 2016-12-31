@@ -2,7 +2,7 @@
 /* compile.sen -- compile the dictionary                                      */
 /*============================================================================*/
 
-"compile.sen" .putVerbose
+"compile.sen" .verbose
 
 //
 // step 1: compile all the words

@@ -2,7 +2,7 @@
 /* ReceiverTask.sen -- receiver task                                          */
 /*============================================================================*/
 
-"ReceiverTask.sen" .putVerbose
+"ReceiverTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
@@ -25,7 +25,7 @@ tp: received
 
   task.this task.socket!
 
-  "renaming to Receiver Task" .putVerbose
+  "renaming to Receiver Task" .verbose
 
   "rcv.loop" task.this task.comment!
 

@@ -2,7 +2,7 @@
 /* miscTesting.sen -- miscellaneous testing                                   */
 /*============================================================================*/
 
-"miscTesting.sen" .putVerbose
+"miscTesting.sen" .verbose
 
 : iftest if "yes" . then ;
 

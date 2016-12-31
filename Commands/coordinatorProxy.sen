@@ -2,7 +2,7 @@
 /* coordinatorProxy.sen -- coordinator proxy task                             */
 /*============================================================================*/
 
-"coordinatorProxy.sen" .putVerbose
+"coordinatorProxy.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */

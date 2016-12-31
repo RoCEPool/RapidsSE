@@ -2,7 +2,7 @@
 /* logicTests.sen -- logic unit testing                                       */
 /*============================================================================*/
 
-"logicTests.sen" .putVerbose
+"logicTests.sen" .verbose
 
 : logicTests
 

@@ -2,7 +2,7 @@
 /* txCursor.sen -- Tx Cursor                                                  */
 /*============================================================================*/
 
-"txCursor.sen" .putVerbose
+"txCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a txCursor using name from input stream                             */

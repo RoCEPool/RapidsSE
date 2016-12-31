@@ -2,7 +2,7 @@
 /* dbObjects.sen -- dbObjects group                                           */
 /*============================================================================*/
 
-"dbObjects.sen" .putVerbose
+"dbObjects.sen" .verbose
 
 "rowCursor.sen" >>:
 "table.sen" >>:

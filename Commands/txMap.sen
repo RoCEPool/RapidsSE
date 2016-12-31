@@ -2,7 +2,7 @@
 /* txMap.sen -- transaction map related words                                 */
 /*============================================================================*/
 
-"txmap.sen" .putVerbose
+"txmap.sen" .verbose
 
 : txMap:
     create

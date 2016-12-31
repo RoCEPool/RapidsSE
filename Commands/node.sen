@@ -2,7 +2,7 @@
 /* node.sen -- node routines                                                  */
 /*============================================================================*/
 
-"node.sen" .putVerbose
+"node.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* node is use as a kind of word to identify nodes (of a grid)                */

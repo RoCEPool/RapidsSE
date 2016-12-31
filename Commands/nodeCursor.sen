@@ -2,7 +2,7 @@
 /* nodeCursor.sen -- Node Cursor                                              */
 /*============================================================================*/
 
-"nodeCursor.sen" .putVerbose
+"nodeCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a nodeCursor using name from input stream                           */

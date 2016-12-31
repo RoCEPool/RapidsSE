@@ -2,7 +2,7 @@
 /* monitorTask.sen -- monitor task                                            */
 /*============================================================================*/
 
-"monitorTask.sen" .putVerbose
+"monitorTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */

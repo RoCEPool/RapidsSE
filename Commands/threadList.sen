@@ -2,7 +2,7 @@
 /* threadList.sen -- thread list related words                                */
 /*============================================================================*/
 
-"threadList.sen" .putVerbose
+"threadList.sen" .verbose
 
 : threadList:
     create

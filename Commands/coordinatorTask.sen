@@ -2,7 +2,7 @@
 /* coordinatorTask.sen -- coordinator task                                    */
 /*============================================================================*/
 
-"coordinatorTask.sen" .putVerbose
+"coordinatorTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute all indirect call processing loop                                  */

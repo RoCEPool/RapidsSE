@@ -2,7 +2,7 @@
 /* participantProxy.sen -- participant proxy                                  */
 /*============================================================================*/
 
-"participantProxy.sen" .putVerbose
+"participantProxy.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* participant proxy processing loop                                          */

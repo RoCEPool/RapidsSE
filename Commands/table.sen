@@ -2,7 +2,7 @@
 /* table.sen -- table related words                                           */
 /*============================================================================*/
 
-"table.sen" .putVerbose
+"table.sen" .verbose
 
 int: queryCount
 

@@ -2,7 +2,7 @@
 /* requests.sen -- the set of requests supported by requestTask               */
 /*============================================================================*/
 
-"requests.sen" .putVerbose
+"requests.sen" .verbose
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 

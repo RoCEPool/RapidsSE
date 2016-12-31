@@ -2,7 +2,7 @@
 /* common.sen -- common related words                                         */
 /*============================================================================*/
 
-"common.sen" .putVerbose
+"common.sen" .verbose
 
 "dir.sen" >>:
 "file.sen" >>:

@@ -2,7 +2,7 @@
 /* useful.sen -- misc useful stuff                                            */
 /*============================================================================*/
 
-"useful.sen" .putVerbose
+"useful.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* put task into infinite snooze loop                                         */

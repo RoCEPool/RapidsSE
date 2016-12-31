@@ -2,7 +2,7 @@
 /* threadCursor.sen -- Thread Cursor                                          */
 /*============================================================================*/
 
-"threadCursor.sen" .putVerbose
+"threadCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a threadCursor using name from input stream                         */
