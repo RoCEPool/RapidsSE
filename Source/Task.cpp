@@ -673,7 +673,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
-  vAddPrimitive("isImmediate",     &vIsImmediate,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
   vAddPrimitive("j",               &vJ,                false);
@@ -1229,6 +1228,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive("forget",          &vForget,           false);
   vAddPrimitive(">forget",         &vWordForget,       false);
+  vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
   vAddPrimitive("word.kind@",      &vWordKindGet,      false);
   vAddPrimitive("word.kind!",      &vWordKindSet,      false);
   vAddPrimitive("word.name",       &vWordName,         false);
@@ -1335,7 +1335,7 @@ void Task::vAddRoutines(void)
   // known word on stack
   
   // immediate
-  "    dup isImmediate if"       // execute an immediate word
+  "    dup word.isImmediate if"  // execute an immediate word
   "      execute"
   "      again_"
   "    then"
@@ -3043,27 +3043,6 @@ ENTRY("vIsCompiling");
   i8 iIsCompiling = nnpTask->m_bCompiling ? 1 : 0;
   
   nnpTask->m_xParamStack.vPush(iIsCompiling);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* isImmediate -- is word immediate?                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vIsImmediate(NNP_Task nnpTask)
-{
-ENTRY("vIsImmediate");
-  
-  // we should just modify the pointers rather than actually pop
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("isImmediate");
-  Word* pWord = _pWord(pWordObject);
-  
-  i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iIsImmediate);
   
   EXIT();
 }
@@ -13458,6 +13437,27 @@ ENTRY("vWordDic");
   Dic* pDic = pWord->pDic();
   
   nnpTask->m_xParamStack.vPush(pDic->sName().a());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* isImmediate -- is word immediate?                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vWordIsImmediate(NNP_Task nnpTask)
+{
+  ENTRY("vWordIsImmediate");
+  
+  // we should just modify the pointers rather than actually pop
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("isImmediate");
+  Word* pWord = _pWord(pWordObject);
+  
+  i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iIsImmediate);
   
   EXIT();
 }

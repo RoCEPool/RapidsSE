@@ -307,8 +307,7 @@ namespace Tasks
     static void vInUseSpace(NNP_Task nnpTask);
     static void vIsBooted(NNP_Task nnpTask);       
     static void vIsCompiling(NNP_Task nnpTask);    
-    static void vIsImmediate(NNP_Task nnpTask);    
-    static void vIsInterpreting(NNP_Task nnpTask); 
+    static void vIsInterpreting(NNP_Task nnpTask);
     static void vIsPrimitive(NNP_Task nnpTask);
     static void vJ(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
@@ -934,6 +933,7 @@ namespace Tasks
     static void vWordDic(NNP_Task nnpTask);
     static void vWordDump(NNP_Task nnpTask);
     static void vWordForget(NNP_Task nnpTask);
+    static void vWordIsImmediate(NNP_Task nnpTask);
     static void vWordKindGet(NNP_Task nnpTask);
     static void vWordKindSet(NNP_Task nnpTask);
     static void vWordName(NNP_Task nnpTask);
