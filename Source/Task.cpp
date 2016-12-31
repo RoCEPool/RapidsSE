@@ -655,12 +655,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
-  vAddPrimitive("i",               &vI,                false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
-  vAddPrimitive("j",               &vJ,                false);
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("nop",             &vNop,              false);
@@ -668,7 +666,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
-  vAddPrimitive("push",            &vPush,             false);
   vAddPrimitive(".put",            &vPut,              false);
   vAddPrimitive(".\\n",            &vPutNewline,       false);
   vAddPrimitive(".putVerbose",     &vPutVerbose,       false);
@@ -956,6 +953,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("valset>",         &vPstackToValues,   false);
   vAddPrimitive(">valset",         &vPstackToValSet,   false);
   vAddPrimitive("tuck",            &vPstackTuck,       false);
+  
+  vAddPrimitive("i",               &vPushI,            false);
+  vAddPrimitive("j",               &vPushJ,            false);
+  vAddPrimitive("pushValue",       &vPushValue,        false);
   
   vAddPrimitive("queue.append",    &vQueueAppend,      false);
   vAddPrimitive("queue.dump",      &vQueueDump,        false);
@@ -1486,7 +1487,7 @@ Word* Task::pCompileColon(s& sDefinition)
         
       case TK_INTEGER:
         xValWsp = String::iToI8(m_sToken.a());
-        pNewWord->vEncode("push",&xValWsp);
+        pNewWord->vEncode("pushValue",&xValWsp);
         break;
         
       case TK_NAME:
@@ -1509,7 +1510,7 @@ Word* Task::pCompileColon(s& sDefinition)
         
       case TK_STRING: {
         xValWsp = m_sToken.a();
-        pNewWord->vEncode("push",&xValWsp);
+        pNewWord->vEncode("pushValue",&xValWsp);
         break;
       }
         
@@ -2588,7 +2589,7 @@ ENTRY("vComma");
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
     THROW_INVALID_PARAM("comma");
     
-  pCurrentWord->vEncode("push",&xValWsp);
+  pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("exit");
   
   EXIT();
@@ -2824,20 +2825,6 @@ ENTRY("vHazard");
 }
 
 /*----------------------------------------------------------------------------*/
-/* i -- copy loop index from return stack onto param stack                    */
-/*----------------------------------------------------------------------------*/
-void Task::vI(NNP_Task nnpTask)
-{
-ENTRY("vI");
-  
-  Value* pI = nnpTask->m_xReturnStack.pPeek();
-  
-  nnpTask->m_xParamStack.vPush(pI);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* immediate -- make the most recent definition an immediate word             */
 /*----------------------------------------------------------------------------*/
 void Task::vImmediate(NNP_Task nnpTask)
@@ -2912,20 +2899,6 @@ ENTRY("vIsPrimitive");
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
   nnpTask->m_xParamStack.vPush(iIsPrimitive);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* j -- copy 2nd loop index from return stack onto param stack                */
-/*----------------------------------------------------------------------------*/
-void Task::vJ(NNP_Task nnpTask)
-{
-ENTRY("vJ");
-  
-  Value* pI = nnpTask->m_xReturnStack.pPeek(3);
-  
-  nnpTask->m_xParamStack.vPush(pI);
   
   EXIT();
 }
@@ -3082,22 +3055,6 @@ ENTRY("vProcessQuit");
 }
 
 /*----------------------------------------------------------------------------*/
-/* push -- push value arg onto stack                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vPush(NNP_Task nnpTask)
-{ 
-ENTRY("vPush");
-  
-  Value* pValue = nnpTask->IP.m_pValue;
-  
-  nnpTask->m_xParamStack.vPush(pValue);
-  
-  nnpTask->vAdjustNext(pValue->iSize());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* .put -- print top value on stack (no new line)                             */
 /*----------------------------------------------------------------------------*/
 void Task::vPut(NNP_Task nnpTask)
@@ -3223,7 +3180,7 @@ ENTRY("vSee");
     }
     
     // push
-    if ( *pDoesCell->m_ppEntryStep == Task::vPush ) {
+    if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
       
       vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
       
@@ -3304,18 +3261,18 @@ ENTRY("vSemicolon");
     ValWsp xValWsp;
     
     xValWsp = sTildeName.a();
-    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
    
     xValWsp = pCurrentWord->iParams();
-    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("put$$");
     
     xValWsp = pCurrentWord->sName().a();
-    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("pushValue",&xValWsp);
     
     xValWsp = "theIndirectCall";
-    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
 
     pWordTilde->vEncode("$$>valset");
@@ -3326,7 +3283,7 @@ ENTRY("vSemicolon");
       pWordTilde->vEncode(">>oneParticipant>");
     
     xValWsp = sTildeName.a();
-    pWordTilde->vEncode("push",&xValWsp);
+    pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
 
     pWordTilde->vEncode("checkResult");
@@ -3494,7 +3451,7 @@ ENTRY("vTick");
 
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->pCurrentWord();
-    pCurrentWord->vEncode("push",pWord);
+    pCurrentWord->vEncode("pushValue",pWord);
   }
   else {
     nnpTask->m_xParamStack.vPush(pWord);
@@ -5206,7 +5163,7 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vEncode("push",&xValA);
+  pCurrentWord->vEncode("pushValue",&xValA);
   
   EXIT();
 }
@@ -7060,12 +7017,12 @@ ENTRY("vLocalsBar");
     
     // encode the word
     xValWsp = nnpTask->m_nLocals;
-    pWordLocal->vEncode("push",&xValWsp);
+    pWordLocal->vEncode("pushValue",&xValWsp);
     pWordLocal->vEncode("local.fetch");
     pWordLocal->vEncode("exit");
 
     // initialise the local from pstack
-    pCurrentWord->vEncode("push",&xValWsp);
+    pCurrentWord->vEncode("pushValue",&xValWsp);
     pCurrentWord->vEncode("local.store");
     
     nnpTask->m_nLocals++;
@@ -7129,7 +7086,7 @@ ENTRY("vLocalsTo");
   ValWsp xValWsp;
   xValWsp = pWordLocal->iLocal();
   
-  pCurrentWord->vEncode("push",&xValWsp);
+  pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("local.store");
 
   EXIT();
@@ -8171,6 +8128,52 @@ void Task::vPstackTuck(NNP_Task nnpTask)
   nnpTask->m_xParamStack.vPush(&xValA);
   nnpTask->m_xParamStack.vPush(&xValB);
   nnpTask->m_xParamStack.vPush(&xValA);
+  
+  EXIT();
+}
+
+// push: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* i -- copy loop index from return stack onto param stack                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPushI(NNP_Task nnpTask)
+{
+  ENTRY("vPushI");
+  
+  Value* pI = nnpTask->m_xReturnStack.pPeek();
+  
+  nnpTask->m_xParamStack.vPush(pI);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* j -- copy 2nd loop index from return stack onto param stack                */
+/*----------------------------------------------------------------------------*/
+void Task::vPushJ(NNP_Task nnpTask)
+{
+  ENTRY("vPushJ");
+  
+  Value* pI = nnpTask->m_xReturnStack.pPeek(3);
+  
+  nnpTask->m_xParamStack.vPush(pI);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* push -- push value arg onto stack                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vPushValue(NNP_Task nnpTask)
+{
+  ENTRY("vPushValue");
+  
+  Value* pValue = nnpTask->IP.m_pValue;
+  
+  nnpTask->m_xParamStack.vPush(pValue);
+  
+  nnpTask->vAdjustNext(pValue->iSize());
   
   EXIT();
 }

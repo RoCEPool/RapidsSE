@@ -96,7 +96,7 @@ void Dic::vAddConstant(const char* aName, i8 iVal)
   IntVal xIntVal;
   xIntVal = iVal;
   
-  pNewWord->vEncode("push",&xIntVal);
+  pNewWord->vEncode("pushValue",&xIntVal);
   pNewWord->vEncode("exit");
 }
 
@@ -112,7 +112,7 @@ void Dic::vAddConstant(const char* aName, const char* aValue)
   ValWsp xWspStr;
   xWspStr = aValue;
   
-  pNewWord->vEncode("push",&xWspStr);
+  pNewWord->vEncode("pushValue",&xWspStr);
   pNewWord->vEncode("exit");
 }
 

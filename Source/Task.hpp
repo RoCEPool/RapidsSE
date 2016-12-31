@@ -293,12 +293,10 @@ namespace Tasks
     static void vFetch(NNP_Task nnpTask);
     static void vHazard(NNP_Task nnpTask);
     static void vHash(NNP_Task nnpTask);
-    static void vI(NNP_Task nnpTask);
     static void vIsBooted(NNP_Task nnpTask);
     static void vIsCompiling(NNP_Task nnpTask);    
     static void vIsInterpreting(NNP_Task nnpTask);
     static void vIsPrimitive(NNP_Task nnpTask);
-    static void vJ(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
@@ -306,7 +304,6 @@ namespace Tasks
     static void vOneParticipant(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
-    static void vPush(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
     static void vPutNewline(NNP_Task nnpTask);     
     static void vPutVerbose(NNP_Task nnpTask);
@@ -633,6 +630,11 @@ namespace Tasks
     static void vPstackToValSet(NNP_Task nnpTask);
     static void vPstackToValues(NNP_Task nnpTask);
     static void vPstackTuck(NNP_Task nnpTask);
+    
+    // push
+    static void vPushI(NNP_Task nnpTask);
+    static void vPushJ(NNP_Task nnpTask);
+    static void vPushValue(NNP_Task nnpTask);
     
     // queue
     static void vQueueAppend(NNP_Task nnpTask);
