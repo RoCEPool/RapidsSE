@@ -636,14 +636,9 @@ void Task::vAddPrimitives(void)
   gpWord = pFindWord("word");
   
   vAddPrimitive("accept",          &vAccept,           false);
-  vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("allParticipants", &vAllParticipants,  true );
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
-  vAddPrimitive("cells",           &vCells,            false);
-  vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
-  vAddPrimitive("(",               &vComment,          true );
   vAddPrimitive("compile,",        &vCompileComma,     false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
@@ -655,22 +650,15 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
-  vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("nop",             &vNop,              false);
-  vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("rdtscp",          &vRdtscp,           false);
   vAddPrimitive("retryPoint",      &vRetryPoint,       false);
-  vAddPrimitive("see",             &vSee,              false);
-  vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
   vAddPrimitive("throw",           &vThrow,            false);
-  vAddPrimitive("'",               &vTick,             true );
-  vAddPrimitive("token",           &vToken,            false);
   
   //----------------------------------------------------------
   vAddPrimitive("args.partition",  &vArgsPartition, false);
@@ -716,6 +704,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("(ptr)",           &vCastPtr,          false);
   
   vAddPrimitive("class.name",      &vClassName,    false);
+  
+  vAddPrimitive("(",               &vComment,          true );
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
@@ -918,6 +908,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.init",   &vNodeCursorInit,   false);
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
+  
+  vAddPrimitive("nop",             &vNop,              false);
   
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
@@ -1222,12 +1214,22 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("txRef.commit",    &vTxRefCommit,      false);
   vAddPrimitive("txRef.rollback",  &vTxRefRollback,    false);
   
+  vAddPrimitive("allParticipants", &vAllParticipants,  true );
+  vAddPrimitive("allot",           &vAllot,            false);
+  vAddPrimitive("cells",           &vCells,            false);
+  vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("does_rt",         &vDoes_RT,          false);
   vAddPrimitive("forget",          &vForget,           false);
   vAddPrimitive("immediate",       &vImmediate,        true );
+  vAddPrimitive("localCalls",      &vLocalCalls,       true );
+  vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
+  vAddPrimitive("see",             &vSee,              false);
+  vAddPrimitive(";",               &vSemicolon,        true );
+  vAddPrimitive("'",               &vTick,             true );
+  vAddPrimitive("token",           &vToken,            false);
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive(">forget",         &vWordForget,       false);
@@ -2463,52 +2465,6 @@ ENTRY("vAccept");
 }
 
 /*----------------------------------------------------------------------------*/
-/* allot -- reserve n bytes in current word                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vAllot(NNP_Task nnpTask)
-{
-ENTRY("vAllot");
-  
-  i8 iBytes;
-  
-  if ( !  nnpTask->m_xParamStack.bPop(iBytes) )
-    THROW_INVALID_PARAM("allot");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-
-  char* pAddress = pCurrentWord->pAllot(iBytes);
-  ASSERT(pAddress);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* allParticipants -- create an allParticipant word                           */
-/*----------------------------------------------------------------------------*/
-void Task::vAllParticipants(NNP_Task nnpTask)
-{
-  ENTRY("vAllParticipants");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
-  
-  pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
-  
-  // get number of parameters
-  nnpTask->vTokenNext();
-
-  // convert string to integer
-  char* aToken = nnpTask->m_sToken.a();
-  i8 iParams = String::iToI8(aToken);
-  
-  // set the number of parameters in the current word
-  pCurrentWord->vParams(iParams);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* bpa -- buffer pool analyze                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vBpa(NNP_Task nnpTask)
@@ -2541,42 +2497,6 @@ ENTRY("vBpdump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* cells -- convert cells into n bytes                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vCells(NNP_Task nnpTask)
-{
-  ENTRY("vCells");
-  
-  i8 nCells;
-  if ( !  nnpTask->m_xParamStack.bPop(nCells) )
-    THROW_INVALID_PARAM("cells");
-  
-  i8 nBytes = nCells * sizeof(void*);
-  
-  nnpTask->m_xParamStack.vPush(nBytes);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* : -- colon                                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vColon(NNP_Task nnpTask)
-{
-ENTRY("vColon");
-  
-  nnpTask->m_bCompiling = true;
-
-  nnpTask->vTokenNext();
-  
-  Word* pNewWord = new(nnpTask->m_xDicStack.pTop()) Word(nnpTask->m_sToken.a());
-  
-  nnpTask->vCurrentWord(pNewWord);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* comma -- encode push value                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vComma(NNP_Task nnpTask)
@@ -2591,22 +2511,6 @@ ENTRY("vComma");
     
   pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("exit");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* comment -- comment                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vComment(NNP_Task nnpTask)
-{
-ENTRY("vComment");
-  
-  for (;;) {
-    nnpTask->vTokenNext();
-    if (String::bEqualTo(")",nnpTask->m_sToken.a()))
-      break;
-  }
   
   EXIT();
 }
@@ -2825,36 +2729,6 @@ ENTRY("vHazard");
 }
 
 /*----------------------------------------------------------------------------*/
-/* immediate -- make the most recent definition an immediate word             */
-/*----------------------------------------------------------------------------*/
-void Task::vImmediate(NNP_Task nnpTask)
-{
-ENTRY("vImmediate");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
-  
-  pCurrentWord->vImmediate(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* localCalls -- set current word as a locals calls only word                 */
-/*----------------------------------------------------------------------------*/
-void Task::vLocalCalls(NNP_Task nnpTask)
-{
-  ENTRY("vLocalCalls");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vDistributed(DT_LOCALCALLS);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* locate -- locate word based on ip                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vLocate(NNP_Task nnpTask)
@@ -2879,41 +2753,6 @@ ENTRY("vLocate");
     i8 iZero = 0;
     nnpTask->m_xParamStack.vPush(iZero);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* nop -- no op                                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vNop(NNP_Task nnpTask)
-{
-ENTRY("vNop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* oneParticipant -- create a oneParticipant word                             */
-/*----------------------------------------------------------------------------*/
-void Task::vOneParticipant(NNP_Task nnpTask)
-{
-  ENTRY("vAllParticipants");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
-  
-  pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
-  
-  // get number of parameters
-  nnpTask->vTokenNext();
-  
-  // convert token to integer
-  i8 iParams = String::iToI8(nnpTask->m_sToken.a());
-  
-  // set the number of parameters in the current word
-  pCurrentWord->vParams(iParams);
   
   EXIT();
 }
@@ -2956,167 +2795,6 @@ ENTRY("vRetryMark");
   nnpTask->m_xParamStack.vRetryPoint();
   nnpTask->m_xReturnStack.vRetryPoint();
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* see -- dump routine                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSee(NNP_Task nnpTask)
-{
-ENTRY("vSee");
-  
-  s8K sWorkspace;
-  
-  nnpTask->vTokenNext();
-  
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
-  if ( ! pWord ) {
-    vTrace("See: %s unknown\n",nnpTask->m_sToken.a());
-    return;
-  }
-  
-  vTrace("See: %s\n",pWord->sName().a());
-  
-  Cell* pDoesCell = pWord->pEntryCell();
-  
-  Word* pDoesWord = (Word*)( ((u8)pDoesCell & (u8)~0xFFFF)
-                             + sizeof(HeapBuffer));
-
-  while (pDoesCell < pDoesWord->pLastCell()) {
- 
-    Word* pCallsWord = nnpTask->m_xDicStack.pFindStep(*pDoesCell->m_ppEntryStep);
-
-    // jumps
-    if ( *pDoesCell->m_ppEntryStep == Task::vFlowJump ||
-         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
-         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
-      
-      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
-      
-      pDoesCell++;
-      
-      vTrace(" %p\n",pDoesCell->m_pJumpTo);
-      
-      pDoesCell++;
-      
-      continue;
-    }
-    
-    // push
-    if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
-      
-      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
-      
-      pDoesCell++;
-      
-      ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
-      
-      if (CN_STRVAL == pValue->eClass()) {
-        vTrace(" \"%s\"\n",pValue->sStr());
-      }
-      else {
-        pValue->vToString(sWorkspace.a());
-        vTrace(" %s\n",sWorkspace.a());
-      }
-
-      i8 iBytes = pValue->iSize();
-      pDoesCell = reinterpret_cast<Cell*>(pcAdd(pDoesCell,iBytes));
-
-      continue;
-    }
-    
-    // enterRoutine
-    if ( *pDoesCell->m_ppEntryStep == Task::vEnterRoutine ) {
-      
-      Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
-                                  + sizeof(HeapBuffer));
-      
-      vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
-      pDoesCell++;
-      continue;
-    }
-    
-    // other
-    vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
-    
-    pDoesCell++;
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ; -- end compile routine                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSemicolon(NNP_Task nnpTask)
-{
-ENTRY("vSemicolon");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-
-  pCurrentWord->vEncode("exit");
-  
-  nnpTask->m_bCompiling = false;
-  
-  if (nnpTask->m_nLocals) {
-    
-    // reset the number of local variables
-    nnpTask->m_nLocals = 0;
-    
-    // pop top dictionary
-    nnpTask->vDicDrop();
-  }
-  
-  
-  if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed() ||
-      DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
-    
-    s32 sTildeName;
-    sTildeName = "~";
-    String::vConcat(sTildeName.a(),pCurrentWord->sName().a());
-    
-    // create new word for tilde of current word
-    Dic* pDic = nnpTask->pDicPeek();
-    Word* pWordTilde = new(pDic) Word(sTildeName.a());
-    // ** do not set as current word **
-        
-    // encode the word
-    ValWsp xValWsp;
-    
-    xValWsp = sTildeName.a();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("tracePoint");
-   
-    xValWsp = pCurrentWord->iParams();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("put$$");
-    
-    xValWsp = pCurrentWord->sName().a();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    
-    xValWsp = "theIndirectCall";
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("tracePoint");
-
-    pWordTilde->vEncode("$$>valset");
-
-    if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
-      pWordTilde->vEncode(">>allParticipants>");
-    else
-      pWordTilde->vEncode(">>oneParticipant>");
-    
-    xValWsp = sTildeName.a();
-    pWordTilde->vEncode("pushValue",&xValWsp);
-    pWordTilde->vEncode("tracePoint");
-
-    pWordTilde->vEncode("checkResult");
-    
-    pWordTilde->vEncode("exit");
-  }
-  
-  nnpTask->vCurrentWord(nullptr);
- 
   EXIT();
 }
 
@@ -3229,37 +2907,6 @@ ENTRY("vThrow");
   String::vSprint(wBuffer,"THROW TEST");
   
   throw wBuffer;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* tick -- find next word                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vTick(NNP_Task nnpTask)
-{
-ENTRY("vTick");
-  
-  nnpTask->vTokenNext();
-  
-//  if ( ! bExtracted ) {
-//    String::vSprint(nnpTask->m_sException,"No name: ' ");
-//    nnpTask->m_sFile = __FILE__;
-//    throw (i8)__LINE__;
-//  }
-  
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
-
-  if ( ! pWord )
-    THROW("No word: %s ",nnpTask->m_sToken.a());
-
-  if (nnpTask->m_bCompiling) {
-    Word* pCurrentWord = nnpTask->pCurrentWord();
-    pCurrentWord->vEncode("pushValue",pWord);
-  }
-  else {
-    nnpTask->m_xParamStack.vPush(pWord);
-  }
   
   EXIT();
 }
@@ -3973,6 +3620,24 @@ void Task::vClassName(NNP_Task nnpTask)
   sClassName = pCN[iClassNo];
   
   nnpTask->m_xParamStack.vPush(sClassName);
+  
+  EXIT();
+}
+
+// comment: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* comment -- comment                                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vComment(NNP_Task nnpTask)
+{
+  ENTRY("vComment");
+  
+  for (;;) {
+    nnpTask->vTokenNext();
+    if (String::bEqualTo(")",nnpTask->m_sToken.a()))
+      break;
+  }
   
   EXIT();
 }
@@ -7459,6 +7124,18 @@ ENTRY("vNodeCursorNext");
   Object* pObject = pNodeCursor->pObject();
   
   nnpTask->m_xParamStack.vPush(pObject);
+  
+  EXIT();
+}
+
+// nop: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* nop -- no op                                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vNop(NNP_Task nnpTask)
+{
+  ENTRY("vNop");
   
   EXIT();
 }
@@ -13182,6 +12859,88 @@ ENTRY("vTxRefRollback");
 // words: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* allParticipants -- create an allParticipant word                 immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vAllParticipants(NNP_Task nnpTask)
+{
+  ENTRY("vAllParticipants");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  
+  pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
+  
+  // get number of parameters
+  nnpTask->vTokenNext();
+  
+  // convert string to integer
+  char* aToken = nnpTask->m_sToken.a();
+  i8 iParams = String::iToI8(aToken);
+  
+  // set the number of parameters in the current word
+  pCurrentWord->vParams(iParams);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot -- reserve n bytes in current word                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vAllot(NNP_Task nnpTask)
+{
+  ENTRY("vAllot");
+  
+  i8 iBytes;
+  
+  if ( !  nnpTask->m_xParamStack.bPop(iBytes) )
+    THROW_INVALID_PARAM("allot");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  char* pAddress = pCurrentWord->pAllot(iBytes);
+  ASSERT(pAddress);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cells -- convert cells into n bytes                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vCells(NNP_Task nnpTask)
+{
+  ENTRY("vCells");
+  
+  i8 nCells;
+  if ( !  nnpTask->m_xParamStack.bPop(nCells) )
+    THROW_INVALID_PARAM("cells");
+  
+  i8 nBytes = nCells * sizeof(void*);
+  
+  nnpTask->m_xParamStack.vPush(nBytes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* : -- colon                                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vColon(NNP_Task nnpTask)
+{
+  ENTRY("vColon");
+  
+  nnpTask->m_bCompiling = true;
+  
+  nnpTask->vTokenNext();
+  
+  Word* pNewWord = new(nnpTask->m_xDicStack.pTop()) Word(nnpTask->m_sToken.a());
+  
+  nnpTask->vCurrentWord(pNewWord);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* create -- create word in dictionary                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vCreate(NNP_Task nnpTask)
@@ -13319,6 +13078,253 @@ ENTRY("vForget");
   
   bool bResult = nnpTask->bForgetWord(nnpTask->m_sToken);
   ASSERT(bResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* immediate -- make the most recent definition an immediate word             */
+/*----------------------------------------------------------------------------*/
+void Task::vImmediate(NNP_Task nnpTask)
+{
+  ENTRY("vImmediate");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  
+  pCurrentWord->vImmediate(true);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* localCalls -- set current word as a locals calls only word       immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vLocalCalls(NNP_Task nnpTask)
+{
+  ENTRY("vLocalCalls");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vDistributed(DT_LOCALCALLS);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* oneParticipant -- create a oneParticipant word                   immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vOneParticipant(NNP_Task nnpTask)
+{
+  ENTRY("vAllParticipants");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  
+  pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
+  
+  // get number of parameters
+  nnpTask->vTokenNext();
+  
+  // convert token to integer
+  i8 iParams = String::iToI8(nnpTask->m_sToken.a());
+  
+  // set the number of parameters in the current word
+  pCurrentWord->vParams(iParams);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* see -- dump routine                                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vSee(NNP_Task nnpTask)
+{
+  ENTRY("vSee");
+  
+  s8K sWorkspace;
+  
+  nnpTask->vTokenNext();
+  
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  if ( ! pWord ) {
+    vTrace("See: %s unknown\n",nnpTask->m_sToken.a());
+    return;
+  }
+  
+  vTrace("See: %s\n",pWord->sName().a());
+  
+  Cell* pDoesCell = pWord->pEntryCell();
+  
+  Word* pDoesWord = (Word*)( ((u8)pDoesCell & (u8)~0xFFFF)
+                            + sizeof(HeapBuffer));
+  
+  while (pDoesCell < pDoesWord->pLastCell()) {
+    
+    Word* pCallsWord = nnpTask->m_xDicStack.pFindStep(*pDoesCell->m_ppEntryStep);
+    
+    // jumps
+    if ( *pDoesCell->m_ppEntryStep == Task::vFlowJump ||
+        *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
+        *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
+      
+      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
+      
+      pDoesCell++;
+      
+      vTrace(" %p\n",pDoesCell->m_pJumpTo);
+      
+      pDoesCell++;
+      
+      continue;
+    }
+    
+    // push
+    if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
+      
+      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
+      
+      pDoesCell++;
+      
+      ValWsp* pValue = reinterpret_cast<ValWsp*>(pDoesCell);
+      
+      if (CN_STRVAL == pValue->eClass()) {
+        vTrace(" \"%s\"\n",pValue->sStr());
+      }
+      else {
+        pValue->vToString(sWorkspace.a());
+        vTrace(" %s\n",sWorkspace.a());
+      }
+      
+      i8 iBytes = pValue->iSize();
+      pDoesCell = reinterpret_cast<Cell*>(pcAdd(pDoesCell,iBytes));
+      
+      continue;
+    }
+    
+    // enterRoutine
+    if ( *pDoesCell->m_ppEntryStep == Task::vEnterRoutine ) {
+      
+      Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
+                                 + sizeof(HeapBuffer));
+      
+      vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
+      pDoesCell++;
+      continue;
+    }
+    
+    // other
+    vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
+    
+    pDoesCell++;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ; -- end compile routine                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vSemicolon(NNP_Task nnpTask)
+{
+  ENTRY("vSemicolon");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("exit");
+  
+  nnpTask->m_bCompiling = false;
+  
+  if (nnpTask->m_nLocals) {
+    
+    // reset the number of local variables
+    nnpTask->m_nLocals = 0;
+    
+    // pop top dictionary
+    nnpTask->vDicDrop();
+  }
+  
+  
+  if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed() ||
+      DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
+    
+    s32 sTildeName;
+    sTildeName = "~";
+    String::vConcat(sTildeName.a(),pCurrentWord->sName().a());
+    
+    // create new word for tilde of current word
+    Dic* pDic = nnpTask->pDicPeek();
+    Word* pWordTilde = new(pDic) Word(sTildeName.a());
+    // ** do not set as current word **
+    
+    // encode the word
+    ValWsp xValWsp;
+    
+    xValWsp = sTildeName.a();
+    pWordTilde->vEncode("pushValue",&xValWsp);
+    pWordTilde->vEncode("tracePoint");
+    
+    xValWsp = pCurrentWord->iParams();
+    pWordTilde->vEncode("pushValue",&xValWsp);
+    pWordTilde->vEncode("put$$");
+    
+    xValWsp = pCurrentWord->sName().a();
+    pWordTilde->vEncode("pushValue",&xValWsp);
+    
+    xValWsp = "theIndirectCall";
+    pWordTilde->vEncode("pushValue",&xValWsp);
+    pWordTilde->vEncode("tracePoint");
+    
+    pWordTilde->vEncode("$$>valset");
+    
+    if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
+      pWordTilde->vEncode(">>allParticipants>");
+    else
+      pWordTilde->vEncode(">>oneParticipant>");
+    
+    xValWsp = sTildeName.a();
+    pWordTilde->vEncode("pushValue",&xValWsp);
+    pWordTilde->vEncode("tracePoint");
+    
+    pWordTilde->vEncode("checkResult");
+    
+    pWordTilde->vEncode("exit");
+  }
+  
+  nnpTask->vCurrentWord(nullptr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tick -- find next word                                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vTick(NNP_Task nnpTask)
+{
+  ENTRY("vTick");
+  
+  nnpTask->vTokenNext();
+  
+  //  if ( ! bExtracted ) {
+  //    String::vSprint(nnpTask->m_sException,"No name: ' ");
+  //    nnpTask->m_sFile = __FILE__;
+  //    throw (i8)__LINE__;
+  //  }
+  
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  
+  if ( ! pWord )
+    THROW("No word: %s ",nnpTask->m_sToken.a());
+  
+  if (nnpTask->m_bCompiling) {
+    Word* pCurrentWord = nnpTask->pCurrentWord();
+    pCurrentWord->vEncode("pushValue",pWord);
+  }
+  else {
+    nnpTask->m_xParamStack.vPush(pWord);
+  }
   
   EXIT();
 }
