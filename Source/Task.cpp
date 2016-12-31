@@ -682,7 +682,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("throw",           &vThrow,            false);
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive("token",           &vToken,            false);
-  vAddPrimitive("wake",            &vWake,             false);
   
   //----------------------------------------------------------
   vAddPrimitive("args.partition",  &vArgsPartition, false);
@@ -3456,18 +3455,6 @@ ENTRY("vTick");
   else {
     nnpTask->m_xParamStack.vPush(pWord);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* wake -- wake task on stack                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vWake(NNP_Task nnpTask)
-{
-ENTRY("vWake");
-  
-  // ..tbd..
   
   EXIT();
 }

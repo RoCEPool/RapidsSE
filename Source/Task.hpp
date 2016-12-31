@@ -320,7 +320,6 @@ namespace Tasks
     static void vThrow(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);           
     static void vToken(NNP_Task nnpTask);
-    static void vWake(NNP_Task nnpTask);
 
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
