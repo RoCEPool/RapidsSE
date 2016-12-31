@@ -293,13 +293,11 @@ namespace Tasks
     static void vFetch(NNP_Task nnpTask);
     static void vHazard(NNP_Task nnpTask);
     static void vHash(NNP_Task nnpTask);
-    static void vIsBooted(NNP_Task nnpTask);
-    static void vIsCompiling(NNP_Task nnpTask);    
+    static void vIsCompiling(NNP_Task nnpTask);
     static void vIsInterpreting(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
-    static void vNullPtr(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
@@ -311,7 +309,6 @@ namespace Tasks
     static void vSemicolon(NNP_Task nnpTask);      
     static void vSnooze(NNP_Task nnpTask);
     static void vSleep(NNP_Task nnpTask);
-    static void vSprint(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
     static void vStringColon(NNP_Task nnpTask);
     static void vTest(NNP_Task nnpTask);
@@ -399,6 +396,7 @@ namespace Tasks
     static void vDicFrozenGet(NNP_Task nnpTask);
     static void vDicFrozenSet(NNP_Task nnpTask);
     static void vDicInit(NNP_Task nnpTask);
+    static void vDicIsCompiled(NNP_Task nnpTask);
     static void vDicKindGet(NNP_Task nnpTask);
     static void vDicKindSet(NNP_Task nnpTask);
     static void vDicLast(NNP_Task nnpTask);
@@ -631,6 +629,7 @@ namespace Tasks
     // push
     static void vPushI(NNP_Task nnpTask);
     static void vPushJ(NNP_Task nnpTask);
+    static void vPushNullPtr(NNP_Task nnpTask);
     static void vPushValue(NNP_Task nnpTask);
     
     // queue
@@ -769,6 +768,7 @@ namespace Tasks
     static void vClip(NNP_Task nnpTask);
     static void vPrepend(NNP_Task nnpTask);
     static void vRndStr(NNP_Task nnpTask);
+    static void vSprint(NNP_Task nnpTask);
     
     static void vS256Init(NNP_Task nnpTask);
     

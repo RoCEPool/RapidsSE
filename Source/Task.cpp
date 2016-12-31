@@ -655,13 +655,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
-  vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("nop",             &vNop,              false);
-  vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive(".put",            &vPut,              false);
@@ -673,7 +671,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
-  vAddPrimitive("sprint",          &vSprint,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
@@ -745,6 +742,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
   vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
   vAddPrimitive("dic.init",        &vDicInit,          false);
+  vAddPrimitive("dic.isCompiled",  &vDicIsCompiled,    false);
   vAddPrimitive("dic.kind@",       &vDicKindGet,       false);
   vAddPrimitive("dic.kind!",       &vDicKindSet,       false);
   vAddPrimitive("dic.last",        &vDicLast,          false);
@@ -953,6 +951,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("i",               &vPushI,            false);
   vAddPrimitive("j",               &vPushJ,            false);
+  vAddPrimitive("nullPtr",         &vPushNullPtr,      false);
   vAddPrimitive("pushValue",       &vPushValue,        false);
   
   vAddPrimitive("queue.append",    &vQueueAppend,      false);
@@ -1070,15 +1069,16 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("steps.list",  &vStepsList,  false);
   vAddPrimitive("steps.reset", &vStepsReset, false);
   
-  vAddPrimitive("strpad", &vStringPad, false);
-  vAddPrimitive("streql", &vStrEql,    false);
-  vAddPrimitive("strlen", &vStrLen,    false);
-  vAddPrimitive("subStr", &vSubStr,    false);
-  vAddPrimitive("concat", &vConcat,    false);
-  vAddPrimitive("clip",   &vClip,      false);
-  vAddPrimitive("prepend",    &vPrepend,     false);
-  vAddPrimitive("toDigitName",&vToDigitName, false);
-  vAddPrimitive("rndStr", &vRndStr,    false);
+  vAddPrimitive("strpad",      &vStringPad,   false);
+  vAddPrimitive("streql",      &vStrEql,      false);
+  vAddPrimitive("strlen",      &vStrLen,      false);
+  vAddPrimitive("subStr",      &vSubStr,      false);
+  vAddPrimitive("concat",      &vConcat,      false);
+  vAddPrimitive("clip",        &vClip,        false);
+  vAddPrimitive("prepend",     &vPrepend,     false);
+  vAddPrimitive("toDigitName", &vToDigitName, false);
+  vAddPrimitive("rndStr",      &vRndStr,      false);
+  vAddPrimitive("sprint",      &vSprint,      false);
   
   vAddPrimitive("s256.init", &vS256Init, false);
  
@@ -1332,7 +1332,7 @@ void Task::vAddRoutines(void)
   "      drop"
   "      \"unknown\" ."
   "      input.token ."
-  "      isBooted not if process.quit then "
+  "      dic.isCompiled not if process.quit then "
   "      again_"
   "    then"
   
@@ -2840,22 +2840,6 @@ ENTRY("vImmediate");
 }
 
 /*----------------------------------------------------------------------------*/
-/* isBooted -- has system booted?                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vIsBooted(NNP_Task nnpTask)
-{
-ENTRY("vIsBooted");
-  
-  Word* pWord = nnpTask->pFindWord("__compiled__");
-  
-  i8 bIsBooted = pWord ? true : false;
-  
-  nnpTask->m_xParamStack.vPush(bIsBooted);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* isCompiling -- currently in compiling mode?                                */
 /*----------------------------------------------------------------------------*/
 void Task::vIsCompiling(NNP_Task nnpTask)
@@ -2932,21 +2916,6 @@ ENTRY("vLocate");
 void Task::vNop(NNP_Task nnpTask)
 {
 ENTRY("vNop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* nullPtr -- push a nullptr                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vNullPtr(NNP_Task nnpTask)
-{
-  ENTRY("vNullPtr");
-  
-  PtrVal xPtrVal;
-  xPtrVal = nullptr;
-  
-  nnpTask->m_xParamStack.vPush(xPtrVal);
   
   EXIT();
 }
@@ -3287,26 +3256,6 @@ ENTRY("vSnooze");
   
   pThread->m_xPosixThread.vSleepNano(100_MB);
   
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint -- pop format string and use it for a sprintf                       */
-/*----------------------------------------------------------------------------*/
-void Task::vSprint(NNP_Task nnpTask)
-{
-  ENTRY("vSprint");
-  
-  s8K sFormat;
-  if ( ! nnpTask->m_xParamStack.bPop(sFormat) )
-    THROW_INVALID_PARAM("sprint");
-  
-  s8K sString;
-  
-  nnpTask->vSprint(sFormat,sString);
-  
-  nnpTask->m_xParamStack.vPush(sString);
- 
   EXIT();
 }
 
@@ -4402,6 +4351,22 @@ ENTRY("vDicInit");
   
   // this is because of GlobalDictionary (ugh)
   pDic->vInit();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.isCompiled -- has main dictionary been fully compiled?                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDicIsCompiled(NNP_Task nnpTask)
+{
+  ENTRY("vDicIsCompiled");
+  
+  Word* pWord = nnpTask->pFindWord("__compiled__");
+  
+  i8 bIsCompiled = pWord ? true : false;
+  
+  nnpTask->m_xParamStack.vPush(bIsCompiled);
   
   EXIT();
 }
@@ -8112,7 +8077,22 @@ void Task::vPushJ(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push -- push value arg onto stack                                          */
+/* nullPtr -- push a nullptr                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vPushNullPtr(NNP_Task nnpTask)
+{
+  ENTRY("vPushNullPtr");
+  
+  PtrVal xPtrVal;
+  xPtrVal = nullptr;
+  
+  nnpTask->m_xParamStack.vPush(xPtrVal);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pushValue -- push value arg onto stack                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vPushValue(NNP_Task nnpTask)
 {
@@ -10512,6 +10492,26 @@ void Task::vRndStr(NNP_Task nnpTask)
   sRnd = Random::sRandomString(iLength).a();
   
   nnpTask->m_xParamStack.vPush(sRnd);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint -- pop format string and use it for a sprintf                       */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(NNP_Task nnpTask)
+{
+  ENTRY("vSprint");
+  
+  s8K sFormat;
+  if ( ! nnpTask->m_xParamStack.bPop(sFormat) )
+    THROW_INVALID_PARAM("sprint");
+  
+  s8K sString;
+  
+  nnpTask->vSprint(sFormat,sString);
+  
+  nnpTask->m_xParamStack.vPush(sString);
   
   EXIT();
 }
