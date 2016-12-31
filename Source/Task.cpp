@@ -635,21 +635,18 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word",            &vWord,             false);
   gpWord = pFindWord("word");
   
-  vAddPrimitive("accept",          &vAccept,           false);
-  vAddPrimitive("bpa",             &vBpa,              false);
-  vAddPrimitive("bpdump",          &vBpdump,           false);
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("compile,",        &vCompileComma,     false);
-  vAddPrimitive("cursor@",         &vCursorFetch,      false);
-  vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("eql",             &vEqualAddress,     false);
-  vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   
-  //----------------------------------------------------------
+  //------------------------------------------------------------
+
+  vAddPrimitive("eql",             &vAddressEqual,     false);
+  vAddPrimitive("@",               &vAddressFetch,     false);
+  vAddPrimitive("!",               &vAddressStore,     false);
+  
   vAddPrimitive("args.partition",  &vArgsPartition, false);
   vAddPrimitive("args.print",      &vArgsPrint,     false);
   
@@ -689,6 +686,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("a8",              &vAstack8,          false);
   vAddPrimitive("a9",              &vAstack9,          false);
   
+  vAddPrimitive("bpa",             &vBpa,              false);
+  vAddPrimitive("bpdump",          &vBpdump,           false);
+  
   vAddPrimitive("(int)",           &vCastInt,          false);
   vAddPrimitive("(ptr)",           &vCastPtr,          false);
   
@@ -699,6 +699,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("cpu.rdtscp",      &vCpuRdtscp,        false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+  
+  vAddPrimitive("cursor@",         &vCursorFetch,      false);
+  vAddPrimitive("cursor!",         &vCursorStore,      false);
   
   vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
   vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
@@ -823,6 +826,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
   
+  vAddPrimitive("accept",          &vInputAccept,      false);
   vAddPrimitive("input.close",     &vInputClose,       false);
   vAddPrimitive("input.depth",     &vInputDepth,       false);
   vAddPrimitive("input.next",      &vInputNext,        false);
@@ -909,7 +913,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
-  
   vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
   
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
@@ -920,8 +923,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
   
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
-  vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
+  vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   
   vAddPrimitive("depth",           &vPstackDepth,      false);
   vAddPrimitive("drop",            &vPstackDrop,       false);
@@ -2441,62 +2444,6 @@ ENTRY("vWord");
 }
 
 /*----------------------------------------------------------------------------*/
-/* accept -- accept input string and push on stack                            */
-/*----------------------------------------------------------------------------*/
-void Task::vAccept(NNP_Task nnpTask)
-{
-ENTRY("vAccept");
-  
-  ValWsp xWsp;
-  xWsp.vClass(CN_STRVAL);
-  
-  char* y = xWsp.sStr();
-  
-  y = xWsp.sStr();
-  while ( '\n' != (*y++ = getc(stdin)) ) ;
-  
-  *--y = '\0';
-  
-  xWsp.pAsStrVal()->vSize();
-  
-  nnpTask->m_xParamStack.vPush(xWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* bpa -- buffer pool analyze                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vBpa(NNP_Task nnpTask)
-{
-ENTRY("vBpa");
-  
-  BPA* pBPA = new BPA;
-  
-  pBPA->vAnalyze();
-  
-  delete pBPA;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* bpdump -- dump of objects in the buffer pool                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBpdump(NNP_Task nnpTask)
-{
-ENTRY("vBpdump");
-  
-  BPA* pBPA = new BPA;
-  
-  pBPA->vDump();
-  
-  delete pBPA;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* comma -- encode push value                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vComma(NNP_Task nnpTask)
@@ -2537,48 +2484,31 @@ void Task::vCompileComma(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cursor@ -- fetch cursor from return stack onto param stack                 */
+/* str: -- string colon                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vCursorFetch(NNP_Task nnpTask)
+void Task::vStringColon(NNP_Task nnpTask)
 {
-ENTRY("vCursorFetch");
+ENTRY("vStringColon");
   
-  i8 iPick = 1;
+  nnpTask->vTokenNext();
   
-  ValWsp xCursorWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xCursorWsp);
-  
-  nnpTask->m_xParamStack.vPush(xCursorWsp);
-  
+  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
+    
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* cursor! -- replace cursor on return stack from param stack                 */
 /*----------------------------------------------------------------------------*/
-void Task::vCursorStore(NNP_Task nnpTask)
-{
-ENTRY("vCursorStore");
-  
-  i8 iPeek = 1;
-  
-  ValWsp xCursorWsp;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xCursorWsp) )
-    THROW_INVALID_PARAM("cursor!");
-  
-  nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
-  
-  EXIT();
-}
+/*----------------------------------------------------------------------------*/
+
+// address: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
-void Task::vEqualAddress(NNP_Task nnpTask)
+void Task::vAddressEqual(NNP_Task nnpTask)
 {
-ENTRY("vEql");
+  ENTRY("vAddressEql");
   
   ValWsp xAddressA;
   ValWsp xAddressB;
@@ -2599,9 +2529,9 @@ ENTRY("vEql");
 /*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
-void Task::vFetch(NNP_Task nnpTask)
+void Task::vAddressFetch(NNP_Task nnpTask)
 {
-  ENTRY("vFetch");
+  ENTRY("vAddressFetch");
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
@@ -2635,25 +2565,12 @@ void Task::vFetch(NNP_Task nnpTask)
   EXIT();
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* processQuit -- process exits early                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vProcessQuit(NNP_Task nnpTask)
-{
-ENTRY("vProcessQuit");
-  
-  exit(EXIT_FAILURE);
-  
-  EXIT();
-}
-
 /*----------------------------------------------------------------------------*/
 /* ! -- store value                                                           */
 /*----------------------------------------------------------------------------*/
-void Task::vStore(NNP_Task nnpTask)
+void Task::vAddressStore(NNP_Task nnpTask)
 {
-  ENTRY("vStore");
+  ENTRY("vAddressStore");
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
@@ -2686,24 +2603,6 @@ void Task::vStore(NNP_Task nnpTask)
   
   EXIT();
 }
-
-/*----------------------------------------------------------------------------*/
-/* str: -- string colon                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vStringColon(NNP_Task nnpTask)
-{
-ENTRY("vStringColon");
-  
-  nnpTask->vTokenNext();
-  
-  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
-    
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 // assert: /////////////////////////////////////////////////////////////////////
 
@@ -3358,6 +3257,40 @@ ENTRY("vArgsPrint");
   EXIT();
 }
 
+// bp: /////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* bpa -- buffer pool analyze                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vBpa(NNP_Task nnpTask)
+{
+  ENTRY("vBpa");
+  
+  BPA* pBPA = new BPA;
+  
+  pBPA->vAnalyze();
+  
+  delete pBPA;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* bpdump -- dump of objects in the buffer pool                               */
+/*----------------------------------------------------------------------------*/
+void Task::vBpdump(NNP_Task nnpTask)
+{
+  ENTRY("vBpdump");
+  
+  BPA* pBPA = new BPA;
+  
+  pBPA->vDump();
+  
+  delete pBPA;
+  
+  EXIT();
+}
+
 // cast: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -3469,6 +3402,45 @@ ENTRY("vCsvFirstValue");
     sFirstValue = "";
   
   nnpTask->m_xParamStack.vPush(sFirstValue);
+  
+  EXIT();
+}
+
+// cursor: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* cursor@ -- fetch cursor from return stack onto param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vCursorFetch(NNP_Task nnpTask)
+{
+  ENTRY("vCursorFetch");
+  
+  i8 iPick = 1;
+  
+  ValWsp xCursorWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xCursorWsp);
+  
+  nnpTask->m_xParamStack.vPush(xCursorWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cursor! -- replace cursor on return stack from param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vCursorStore(NNP_Task nnpTask)
+{
+  ENTRY("vCursorStore");
+  
+  i8 iPeek = 1;
+  
+  ValWsp xCursorWsp;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xCursorWsp) )
+    THROW_INVALID_PARAM("cursor!");
+  
+  nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
   
   EXIT();
 }
@@ -5586,6 +5558,30 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
 // input: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* accept -- accept input string and push on stack                            */
+/*----------------------------------------------------------------------------*/
+void Task::vInputAccept(NNP_Task nnpTask)
+{
+  ENTRY("vInputAccept");
+  
+  ValWsp xWsp;
+  xWsp.vClass(CN_STRVAL);
+  
+  char* y = xWsp.sStr();
+  
+  y = xWsp.sStr();
+  while ( '\n' != (*y++ = getc(stdin)) ) ;
+  
+  *--y = '\0';
+  
+  xWsp.pAsStrVal()->vSize();
+  
+  nnpTask->m_xParamStack.vPush(xWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* input.close -- close current input stream                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInputClose(NNP_Task nnpTask)
@@ -7226,6 +7222,18 @@ ENTRY("vProcessGetPid");
   i8 iPid = Process::iGetPid();
   
   nnpTask->m_xParamStack.vPush(iPid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* process.quit -- process exits early                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vProcessQuit(NNP_Task nnpTask)
+{
+  ENTRY("vProcessQuit");
+  
+  exit(EXIT_FAILURE);
   
   EXIT();
 }

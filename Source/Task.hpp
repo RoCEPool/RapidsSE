@@ -270,31 +270,20 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     
-   
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
     
-    static void vAccept(NNP_Task nnpTask);
-    static void vBpa(NNP_Task nnpTask);
-    static void vBpdump(NNP_Task nnpTask);
     static void vComma(NNP_Task nnpTask);
     static void vCompileComma(NNP_Task nnpTask);
-    static void vCursorFetch(NNP_Task nnpTask);
-    static void vCursorStore(NNP_Task nnpTask);
-    static void vEqualAddress(NNP_Task nnpTask);
-    static void vFetch(NNP_Task nnpTask);
-    static void vStore(NNP_Task nnpTask);
     static void vStringColon(NNP_Task nnpTask);
 
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
 
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
-
+    // address
+    static void vAddressEqual(NNP_Task nnpTask);
+    static void vAddressFetch(NNP_Task nnpTask);
+    static void vAddressStore(NNP_Task nnpTask);
+    
     // args
     static void vArgsPartition(NNP_Task nnpTask);
     static void vArgsPrint(NNP_Task nnpTask);
@@ -337,6 +326,10 @@ namespace Tasks
     static void vAstack8(NNP_Task nnpTask);
     static void vAstack9(NNP_Task nnpTask);
     
+    // bp
+    static void vBpa(NNP_Task nnpTask);
+    static void vBpdump(NNP_Task nnpTask);
+    
     // cast
     static void vCastInt(NNP_Task nnpTask);
     static void vCastPtr(NNP_Task nnpTask);
@@ -349,6 +342,10 @@ namespace Tasks
     
     // cpu
     static void vCpuRdtscp(NNP_Task nnpTask);
+    
+    // cursor
+    static void vCursorFetch(NNP_Task nnpTask);
+    static void vCursorStore(NNP_Task nnpTask);
     
     // csv
     static void vCsvFirstValue(NNP_Task nnpTask);
@@ -491,6 +488,7 @@ namespace Tasks
     
     
     // input
+    static void vInputAccept(NNP_Task nnpTask);
     static void vInputClose(NNP_Task nnpTask);
     static void vInputDepth(NNP_Task nnpTask);
     static void vInputNext(NNP_Task nnpTask);
