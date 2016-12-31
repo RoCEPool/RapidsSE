@@ -35,7 +35,7 @@ timer: testTimer
 : timerTest
 
     testTimer timer.start
-    1 sleep
+    1 thread.sleep_s
     testTimer timer.update
     testTimer timer.millisecs .
     testTimer timer.microsecs .

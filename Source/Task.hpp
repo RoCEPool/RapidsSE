@@ -284,8 +284,6 @@ namespace Tasks
     static void vCursorStore(NNP_Task nnpTask);
     static void vEqualAddress(NNP_Task nnpTask);
     static void vFetch(NNP_Task nnpTask);
-    static void vSnooze(NNP_Task nnpTask);
-    static void vSleep(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
     static void vStringColon(NNP_Task nnpTask);
     static void vTest(NNP_Task nnpTask);
@@ -855,6 +853,7 @@ namespace Tasks
     static void vThreadNameStore(NNP_Task nnpTask);
     static void vThreadSfetch(NNP_Task nnpTask);
     static void vThreadSstore(NNP_Task nnpTask);
+    static void vSnooze(NNP_Task nnpTask);
     static void vThreadSleep_s(NNP_Task nnpTask);
     static void vThreadSleep_ms(NNP_Task nnpTask);
     static void vThreadSleep_us(NNP_Task nnpTask);

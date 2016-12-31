@@ -646,7 +646,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
@@ -2646,25 +2645,6 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 ENTRY("vProcessQuit");
   
   exit(EXIT_FAILURE);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* sleep -- sleep for n seconds                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vSleep(NNP_Task nnpTask)
-{
-ENTRY("vSleep");
-  
-  i8 nSeconds;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(nSeconds) )
-    THROW_INVALID_PARAM("sleep");
-  
-  Thread* pThread = Thread::pThread();
-  
-  pThread->m_xPosixThread.vSleepSec(nSeconds);
   
   EXIT();
 }

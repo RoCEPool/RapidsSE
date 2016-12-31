@@ -91,7 +91,7 @@ seitfCursor: seitfCrs
 
       // reclaimString @ .
 
-      3 sleep
+      3 thread.sleep_s
 
     0 until
 ;
