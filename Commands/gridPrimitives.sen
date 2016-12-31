@@ -554,7 +554,7 @@ tp: addingPassOnToCP
 : actor: ( -- )
 
   // get token from compile stream
-  token ( s )
+  token: ( s )
 
   reg.push
 

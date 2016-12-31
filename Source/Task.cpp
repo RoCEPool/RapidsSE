@@ -635,12 +635,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word",            &vWord,             false);
   gpWord = pFindWord("word");
   
-  vAddPrimitive(",",               &vComma,            false);
-  vAddPrimitive("compile,",        &vCompileComma,     false);
-  vAddPrimitive("find",            &vFind,             false);
-  vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("str:",            &vStringColon,      false);
-  
   //------------------------------------------------------------
 
   vAddPrimitive("eql",             &vAddressEqual,     false);
@@ -1189,6 +1183,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">str",            &vToStr,            false);
   vAddPrimitive(">task",           &vToTask,           false);
   
+  vAddPrimitive("token:",          &vTokenColon,       false);
+  
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
   vAddPrimitive("tracePoint",      &vTracePoint,       false);
@@ -1220,10 +1216,14 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("allot",           &vAllot,            false);
   vAddPrimitive("cells",           &vCells,            false);
   vAddPrimitive(":",               &vColon,            false);
+  vAddPrimitive(",",               &vComma,            false);
+  vAddPrimitive("compile,",        &vCompileComma,     false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("does_rt",         &vDoes_RT,          false);
+  vAddPrimitive("find",            &vFind,             false);
+  vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("forget",          &vForget,           false);
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
@@ -1232,7 +1232,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("'",               &vTick,             true );
-  vAddPrimitive("token",           &vToken,            false);
+  vAddPrimitive(" token",           &vToken,            false);
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive(">forget",         &vWordForget,       false);
@@ -2433,69 +2433,6 @@ void Task::vLoop(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* word -- root kind                                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vWord(NNP_Task nnpTask)
-{
-ENTRY("vWord");
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* comma -- encode push value                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vComma(NNP_Task nnpTask)
-{
-ENTRY("vComma");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  ValWsp xValWsp;
-  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM("comma");
-    
-  pCurrentWord->vEncode("pushValue",&xValWsp);
-  pCurrentWord->vEncode("exit");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* compile, -- encode call                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vCompileComma(NNP_Task nnpTask)
-{
-  ENTRY("vCompileComma");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("compile,");
-  Word* pCalledWord = _pWord(pWordObject);
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  TaskStep* pCode = pCalledWord->ppEntryStep();
-  
-  pCurrentWord->vEncode(pCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* str: -- string colon                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vStringColon(NNP_Task nnpTask)
-{
-ENTRY("vStringColon");
-  
-  nnpTask->vTokenNext();
-  
-  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
-    
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -12396,6 +12333,22 @@ void Task::vToTask(NNP_Task nnpTask)
   EXIT();
 }
 
+// token: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* token: -- token colon                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTokenColon(NNP_Task nnpTask)
+{
+  ENTRY("vTokenColon");
+  
+  nnpTask->vTokenNext();
+  
+  nnpTask->m_xParamStack.vPush(nnpTask->m_sToken);
+  
+  EXIT();
+}
+
 // trace: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -12889,6 +12842,46 @@ void Task::vColon(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* comma -- encode push value                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vComma(NNP_Task nnpTask)
+{
+  ENTRY("vComma");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  ValWsp xValWsp;
+  if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
+    THROW_INVALID_PARAM("comma");
+  
+  pCurrentWord->vEncode("pushValue",&xValWsp);
+  pCurrentWord->vEncode("exit");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile, -- encode call                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vCompileComma(NNP_Task nnpTask)
+{
+  ENTRY("vCompileComma");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("compile,");
+  Word* pCalledWord = _pWord(pWordObject);
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  TaskStep* pCode = pCalledWord->ppEntryStep();
+  
+  pCurrentWord->vEncode(pCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* create -- create word in dictionary                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vCreate(NNP_Task nnpTask)
@@ -13319,6 +13312,15 @@ void Task::vToken(NNP_Task nnpTask)
   
   nnpTask->m_xParamStack.vPush(sToken);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word -- root kind                                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vWord(NNP_Task nnpTask)
+{
+  ENTRY("vWord");
   EXIT();
 }
 

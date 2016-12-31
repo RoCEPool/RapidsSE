@@ -266,14 +266,6 @@ namespace Tasks
     void vTxId(i8 iTxId);
     void vUndirect(void);
     
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
-    /*------------------------------------------------------------------------*/
-    
-    
-    static void vComma(NNP_Task nnpTask);
-    static void vCompileComma(NNP_Task nnpTask);
-    static void vStringColon(NNP_Task nnpTask);
 
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
@@ -891,7 +883,10 @@ namespace Tasks
     static void vToStr(NNP_Task nnpTask);
     static void vToTask(NNP_Task nnpTask);
     
-    // trace
+    // token
+    static void vTokenColon(NNP_Task nnpTask);
+    
+   // trace
     static void vTraceOff(NNP_Task nnpTask);
     static void vTraceOn(NNP_Task nnpTask);
     static void vTracePoint(NNP_Task nnpTask);
@@ -928,6 +923,8 @@ namespace Tasks
     static void vAllot(NNP_Task nnpTask);
     static void vCells(NNP_Task nnpTask);
     static void vColon(NNP_Task nnpTask);
+    static void vComma(NNP_Task nnpTask);
+    static void vCompileComma(NNP_Task nnpTask);
     static void vCreate(NNP_Task nnpTask);
     static void vCreateFrom(NNP_Task nnpTask);
     static void vDoes(NNP_Task nnpTask);
