@@ -294,6 +294,7 @@ namespace Tasks
     static void vAssertStack_4more(NNP_Task nnpTask);
     
     // astack
+    static void vAstackClass(NNP_Task nnpTask);
     static void vAstackDepth(NNP_Task nnpTask);
     static void vAstackDrop(NNP_Task nnpTask);
     static void vAstackDup(NNP_Task nnpTask);
@@ -321,6 +322,11 @@ namespace Tasks
     // bp
     static void vBpa(NNP_Task nnpTask);
     static void vBpdump(NNP_Task nnpTask);
+    static void vFreeBuffers(NNP_Task nnpTask);
+    static void vFreePercent(NNP_Task nnpTask);
+    static void vFreeSpace(NNP_Task nnpTask);
+    static void vInUseSpace(NNP_Task nnpTask);
+    static void vTotalSpace(NNP_Task nnpTask);
     
     // cast
     static void vCastInt(NNP_Task nnpTask);
@@ -478,7 +484,6 @@ namespace Tasks
     static void vGridStartedStore(NNP_Task nnpTask);
     static void vGridStartedFetch(NNP_Task nnpTask);
     
-    
     // input
     static void vInputAccept(NNP_Task nnpTask);
     static void vInputClose(NNP_Task nnpTask);
@@ -518,6 +523,7 @@ namespace Tasks
     static void vLoaderTableStore(NNP_Task nnpTask);
     static void vLoaderTxRefStore(NNP_Task nnpTask);
     
+    // loader sub
     static void vLoaderSubAppendBuffer(NNP_Task nnpTask);
     static void vLoaderSubBegin(NNP_Task nnpTask);
     static void vLoaderSubCompleted(NNP_Task nnpTask);
@@ -556,6 +562,10 @@ namespace Tasks
     static void vLogicNot(NNP_Task nnpTask);
     static void vLogicOr(NNP_Task nnpTask);
     
+    // magnitude
+    static void vBytesMagnitude(NNP_Task nnpTask);
+    static void vNumberMagnitude(NNP_Task nnpTask);
+    
     // memory
     static void vMemoryByteDump(NNP_Task nnpTask);
     static void vMemoryWordDump(NNP_Task nnpTask);
@@ -576,9 +586,6 @@ namespace Tasks
     static void vNodeCursorNew(NNP_Task nnpTask);
     static void vNodeCursorNext(NNP_Task nnpTask);
     
-    // number
-    static void vNumberMagnitude(NNP_Task nnpTask);
-    
     // object
     static void vObjectClassFetch(NNP_Task nnpTask);
     static void vObjectClassStore(NNP_Task nnpTask);
@@ -594,6 +601,7 @@ namespace Tasks
     static void vProcessTestPid(NNP_Task nnpTask);
     
     // pstack
+    static void vPstackClass(NNP_Task nnpTask);                 //! DUP OF class@
     static void vPstackDepth(NNP_Task nnpTask);
     static void vPstackDrop(NNP_Task nnpTask);
     static void vPstackDropTwo(NNP_Task nnpTask);
@@ -730,16 +738,14 @@ namespace Tasks
     // shell
     static void vShellExecute(NNP_Task nnpTask);
     
-    // space
-    static void vFreeBuffers(NNP_Task nnpTask);
-    static void vFreePercent(NNP_Task nnpTask);
-    static void vFreeSpace(NNP_Task nnpTask);
-    static void vInUseSpace(NNP_Task nnpTask);
-    static void vTotalSpace(NNP_Task nnpTask);
-    
-    // stack
-    static void vAstackClass(NNP_Task nnpTask);
-    static void vStackClass(NNP_Task nnpTask);                 //! DUP OF class@
+    // socket
+    static void vSocketAccept(NNP_Task nnpTask);
+    static void vSocketClose(NNP_Task nnpTask);
+    static void vSocketConnect(NNP_Task nnpTask);
+    static void vSocketListen(NNP_Task nnpTask);
+    static void vSocketOpen(NNP_Task nnpTask);
+    static void vSocketRecv(NNP_Task nnpTask);
+    static void vSocketSend(NNP_Task nnpTask);
     
     // steps
     static void vStepsList(NNP_Task nnpTask);
@@ -965,17 +971,6 @@ namespace Tasks
     /*------------------------------------------------------------------------*/
     /*------------------------------------------------------------------------*/
     
-    // socket
-    static void vSocketAccept(NNP_Task nnpTask);   
-    static void vSocketClose(NNP_Task nnpTask);    
-    static void vSocketConnect(NNP_Task nnpTask);  
-    static void vSocketListen(NNP_Task nnpTask);   
-    static void vSocketOpen(NNP_Task nnpTask);     
-    static void vSocketRecv(NNP_Task nnpTask);     
-    static void vSocketSend(NNP_Task nnpTask);
-    
-    // utilities
-    static void vBytesMagnitude(NNP_Task nnpTask);
     
     Footer* pFooter(void);
   };

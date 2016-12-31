@@ -656,6 +656,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
   vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
   
+  vAddPrimitive("astack.class",    &vAstackClass,      false);
   vAddPrimitive("adepth",          &vAstackDepth,      false);
   vAddPrimitive("adrop",           &vAstackDrop,       false);
   vAddPrimitive("adup",            &vAstackDup,        false);
@@ -682,6 +683,11 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
+  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
+  vAddPrimitive("freePercent",     &vFreePercent,      false);
+  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
+  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
+  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   
   vAddPrimitive("(int)",           &vCastInt,          false);
   vAddPrimitive("(ptr)",           &vCastPtr,          false);
@@ -891,6 +897,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("not",             &vLogicNot,         false);
   vAddPrimitive("or",              &vLogicOr,          false);
   
+  vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
+  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
+  
   vAddPrimitive("memory.byteDump", &vMemoryByteDump,   false);
   vAddPrimitive("memory.wordDump", &vMemoryWordDump,   false);
   
@@ -907,7 +916,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
-  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
   
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
@@ -920,6 +928,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   
+  vAddPrimitive("stack.class",     &vPstackClass,      false);
   vAddPrimitive("depth",           &vPstackDepth,      false);
   vAddPrimitive("drop",            &vPstackDrop,       false);
   vAddPrimitive("2drop",           &vPstackDropTwo,    false);
@@ -1046,14 +1055,13 @@ void Task::vAddPrimitives(void)
 
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
  
-  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
-  vAddPrimitive("freePercent",     &vFreePercent,      false);
-  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
-  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
-  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
-  
-  vAddPrimitive("astack.class", &vAstackClass,    false);
-  vAddPrimitive("stack.class",  &vStackClass,     false);
+  vAddPrimitive("socket.accept",   &vSocketAccept,     false);
+  vAddPrimitive("socket.close",    &vSocketClose,      false);
+  vAddPrimitive("socket.connect",  &vSocketConnect,    false);
+  vAddPrimitive("socket.listen",   &vSocketListen,     false);
+  vAddPrimitive("socket.open",     &vSocketOpen,       false);
+  vAddPrimitive("socket.recv",     &vSocketRecv,       false);
+  vAddPrimitive("socket.send",     &vSocketSend,       false);
   
   vAddPrimitive("steps.list",  &vStepsList,  false);
   vAddPrimitive("steps.reset", &vStepsReset, false);
@@ -1253,16 +1261,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("0>",              &vZeroGreater,      false);
 
   //----------------------------------------------------------
-  vAddPrimitive("socket.accept",   &vSocketAccept,     false);
-  vAddPrimitive("socket.close",    &vSocketClose,      false);
-  vAddPrimitive("socket.connect",  &vSocketConnect,    false);
-  vAddPrimitive("socket.listen",   &vSocketListen,     false);
-  vAddPrimitive("socket.open",     &vSocketOpen,       false);
-  vAddPrimitive("socket.recv",     &vSocketRecv,       false);
-  vAddPrimitive("socket.send",     &vSocketSend,       false);
-  
   //----------------------------------------------------------
-  vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2502,7 +2501,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ! -- store value                                                           */
+/* ! -- store value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vAddressStore(NNP_Task nnpTask)
 {
@@ -2543,7 +2542,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
 // assert: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* assert -- assert top value on stack                                        */
+/* assert -- assert top value on stack is true                                */
 /*----------------------------------------------------------------------------*/
 void Task::vAssert(NNP_Task nnpTask)
 {
@@ -2710,6 +2709,28 @@ ENTRY("vAssertStack_4more");
 }
 
 // astack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* astack.class -- get class of nth value on aux stack                        */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackClass(NNP_Task nnpTask)
+{
+  ENTRY("vAstackClass");
+  
+  i8 nTh;
+  if ( ! nnpTask->m_xParamStack.bPop(nTh) )
+    THROW_INVALID_PARAM("astack.class");
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xAuxStack.vPeek(nTh,&xValWsp);
+  
+  eCN eClass = xValWsp.eClass();
+  
+  nnpTask->m_xAuxStack.vPush(eClass);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* adepth -- put number of values in aux stack onto param stack               */
@@ -3227,6 +3248,76 @@ void Task::vBpdump(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* freeBuffers -- push number of free buffers in buffer pool onto stack       */
+/*----------------------------------------------------------------------------*/
+void Task::vFreeBuffers(NNP_Task nnpTask)
+{
+  ENTRY("vFreePercent");
+  
+  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  
+  nnpTask->m_xParamStack.vPush(iFreeBuffers);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* freePercent -- push free percent of buffer pool onto stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vFreePercent(NNP_Task nnpTask)
+{
+  ENTRY("vFreePercent");
+  
+  i8 iFreePercent = gpBufferPool->iFreePercent();
+  
+  nnpTask->m_xParamStack.vPush(iFreePercent);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* freeSpace -- push free space in buffer pool onto stack                     */
+/*----------------------------------------------------------------------------*/
+void Task::vFreeSpace(NNP_Task nnpTask)
+{
+  ENTRY("vFreeSpace");
+  
+  i8 iFreeSpace = gpBufferPool->iFreeSpace();
+  
+  nnpTask->m_xParamStack.vPush(iFreeSpace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inUseSpace -- push in-use space in buffer pool onto stack                  */
+/*----------------------------------------------------------------------------*/
+void Task::vInUseSpace(NNP_Task nnpTask)
+{
+  ENTRY("vInUseSpace");
+  
+  i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
+  
+  nnpTask->m_xParamStack.vPush(iInUseSpace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TotalSpace -- push total space in buffer pool onto stack                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTotalSpace(NNP_Task nnpTask)
+{
+  ENTRY("vTotalSpace");
+  
+  i8 iTotalSpace = gpBufferPool->iRegionSize();
+  
+  nnpTask->m_xParamStack.vPush(iTotalSpace);
+  
+  EXIT();
+}
+
 // cast: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -3384,7 +3475,7 @@ void Task::vCursorStore(NNP_Task nnpTask)
 // diclock: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* diclLock.dropWrite -- drop dic lock for write                               */
+/* diclLock.dropWrite -- drop dic lock for write                              */
 /*----------------------------------------------------------------------------*/
 void Task::vDicLockDropWrite(NNP_Task nnpTask)
 {
@@ -6723,6 +6814,52 @@ void Task::vLogicOr(NNP_Task nnpTask)
   EXIT();
 }
 
+// magnitude: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* bytes.magnitude -- return magnitude of bytes                               */
+/*----------------------------------------------------------------------------*/
+void Task::vBytesMagnitude(NNP_Task nnpTask)
+{
+  ENTRY("vBytesMagnitude");
+  
+  i8 iBytes;
+  if ( ! nnpTask->m_xParamStack.bPop(iBytes) )
+    THROW_INVALID_PARAM("bytes.magnitude");
+  
+  s256 sMag;
+  Magnitudes::vMagnitude(iBytes, sMag.a());
+  
+  nnpTask->m_xParamStack.vPush(sMag);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* number.magnitude -- get magnitude of number                                */
+/*----------------------------------------------------------------------------*/
+void Task::vNumberMagnitude(NNP_Task nnpTask)
+{
+  ENTRY("vNumberMagnitude");
+  
+  i8 iNumber;
+  i8 iScale;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iNumber) )
+    THROW_INVALID_PARAM("number.magnitude");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iScale) )
+    THROW_INVALID_PARAM("number.magnitude");
+  
+  s256 s;
+  
+  Magnitudes::vMagnitude(iNumber, iScale, s.a());
+  
+  nnpTask->m_xParamStack.vPush(s);
+  
+  EXIT();
+}
+
 // memory: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -7193,6 +7330,28 @@ ENTRY("vProcessTestPid");
 }
 
 // pstack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* stack.class -- get class of nth value on stack                             */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackClass(NNP_Task nnpTask)
+{
+  ENTRY("vPstackClass");
+  
+  i8 nTh;
+  if ( ! nnpTask->m_xParamStack.bPop(nTh) )
+    THROW_INVALID_PARAM("stack.class");
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xParamStack.vPeek(nTh,&xValWsp);
+  
+  eCN eClass = xValWsp.eClass();
+  
+  nnpTask->m_xParamStack.vPush(eClass);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* depth -- push depth of parameters stack onto stack                         */
@@ -7935,33 +8094,6 @@ void Task::vRegReg7(NNP_Task nnpTask)
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(7);
   
   nnpTask->m_xParamStack.vPush(pValReg);
-  
-  EXIT();
-}
-
-// number: /////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* number.magnitude -- get magnitude of number                                */
-/*----------------------------------------------------------------------------*/
-void Task::vNumberMagnitude(NNP_Task nnpTask)
-{
-  ENTRY("vNumberMagnitude");
-  
-  i8 iNumber;
-  i8 iScale;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iNumber) )
-    THROW_INVALID_PARAM("number.magnitude");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iScale) )
-    THROW_INVALID_PARAM("number.magnitude");
-  
-  s256 s;
-  
-  Magnitudes::vMagnitude(iNumber, iScale, s.a());
-  
-  nnpTask->m_xParamStack.vPush(s);
   
   EXIT();
 }
@@ -9581,120 +9713,345 @@ void Task::vShellExecute(NNP_Task nnpTask)
   EXIT();
 }
 
-// space: //////////////////////////////////////////////////////////////////////
+// sockets: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* freeBuffers -- push number of free buffers in buffer pool onto stack       */
+/* socket.accept: accept a socket connection                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vFreeBuffers(NNP_Task nnpTask)
+void Task::vSocketAccept(NNP_Task nnpTask)
 {
-  ENTRY("vFreePercent");
+  SysCall xSysCall;
+  Socket* pSocket;
+  int     iSocketId;
+  Object* pObject;
   
-  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  ENTRY("vSocketAccept");
   
-  nnpTask->m_xParamStack.vPush(iFreeBuffers);
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("socket.accept");
+  
+  // get pSocket
+  pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  // accept a connection
+  bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
+  
+  Task* pTask = (Task*)0x208f500c8;
+  
+  // return the new socket
+  nnpTask->m_xParamStack.vPush(new Socket(iSocketId));
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* freePercent -- push free percent of buffer pool onto stack                 */
+/* open a socket                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vFreePercent(NNP_Task nnpTask)
+void Task::vSocketClose(NNP_Task nnpTask)
 {
-  ENTRY("vFreePercent");
+  SysCall xSysCall;
+  Socket* pSocket;
+  Object* pObject;
   
-  i8 iFreePercent = gpBufferPool->iFreePercent();
+  ENTRY("vSocketClose");
   
-  nnpTask->m_xParamStack.vPush(iFreePercent);
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("socketclose");
+  
+  // get pSocket
+  pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  // close the socket
+  bool bResult = pSocket->bClose(xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to close socket: Errno %d!", xSysCall.iError());
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* freeSpace -- push free space in buffer pool onto stack                     */
+/* socket.connect: connect to a server                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vFreeSpace(NNP_Task nnpTask)
+void Task::vSocketConnect(NNP_Task nnpTask)
 {
-  ENTRY("vFreeSpace");
+  SysCall xSysCall;
+  Socket* pSocket;
+  Object* pObject;
+  ValWsp xNode;
   
-  i8 iFreeSpace = gpBufferPool->iFreeSpace();
+  i8 iPort;
   
-  nnpTask->m_xParamStack.vPush(iFreeSpace);
+  ENTRY("vSocketConnect");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("socket.connect");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xNode) )
+    THROW_INVALID_PARAM("socket.connect");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
+    THROW_INVALID_PARAM("socket.connect");
+  
+  // get address of node
+  const char* sAddr = reinterpret_cast<char*>(xNode.sStr());
+  
+  // get pSocket
+  pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  bool bResult = false;
+  
+  // try connecting in a loop if timeout occurs
+  // possibly other node not back to accepting connections
+  
+  i8 iTimedOutCount = 0;
+  i8 iConnRefusedCount = 0;
+  
+  while (!bResult) {
+    bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
+    if ( ! bResult ) {
+      i8 iError = xSysCall.iError();
+      
+      if (iError == ETIMEDOUT) {
+        if (0 == iTimedOutCount++)
+          vTrace("Connect timedout... retrying...\n");
+        continue;
+      }
+      
+      if (iError == ECONNREFUSED) {
+        if (0 == iConnRefusedCount++)
+          vTrace("Connect refused... retrying...\n");
+        continue;
+      }
+      
+      THROW("Unable to connect: Errno %d!", iError);
+    }
+  }
+  
+  // return the socket object
+  Object* pPtrSocket = pSocket;
+  nnpTask->m_xParamStack.vPush(pPtrSocket);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* inUseSpace -- push in-use space in buffer pool onto stack                  */
+/* socket.listen: listen in for socket connections                            */
 /*----------------------------------------------------------------------------*/
-void Task::vInUseSpace(NNP_Task nnpTask)
+void Task::vSocketListen(NNP_Task nnpTask)
 {
-  ENTRY("vInUseSpace");
+  SysCall xSysCall;
+  Socket* pSocket;
+  i8      iPort;
   
-  i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
+  ENTRY("vSocketListen");
   
-  nnpTask->m_xParamStack.vPush(iInUseSpace);
+  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
+    THROW_INVALID_PARAM("socketlisten");
+  
+  pSocket = new Socket;
+  bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
+  
+  // return new socket
+  Object* pPtrSocket = pSocket;
+  nnpTask->m_xParamStack.vPush(pPtrSocket);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* TotalSpace -- push total space in buffer pool onto stack                   */
+/* socket.open: open a socket                                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vTotalSpace(NNP_Task nnpTask)
+void Task::vSocketOpen(NNP_Task nnpTask)
 {
-  ENTRY("vTotalSpace");
+  SysCall xSysCall;
+  Socket* pSocket;
   
-  i8 iTotalSpace = gpBufferPool->iRegionSize();
+  ENTRY("vSocketOpen");
   
-  nnpTask->m_xParamStack.vPush(iTotalSpace);
+  pSocket = new Socket;
+  bool bResult = pSocket->bSocket(xSysCall);
   
-  EXIT();
-}
-
-// stack: //////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* astack.class -- get class of nth value on aux stack                        */
-/*----------------------------------------------------------------------------*/
-void Task::vAstackClass(NNP_Task nnpTask)
-{
-  ENTRY("vAstackClass");
+  if ( ! bResult )
+    THROW("Unable to create socker: Errno %d!", xSysCall.iError());
   
-  i8 nTh;
-  if ( ! nnpTask->m_xParamStack.bPop(nTh) )
-  THROW_INVALID_PARAM("astack.class");
-  
-  ValWsp xValWsp;
-  
-  nnpTask->m_xAuxStack.vPeek(nTh,&xValWsp);
-  
-  eCN eClass = xValWsp.eClass();
-  
-  nnpTask->m_xAuxStack.vPush(eClass);
+  // return pSocket
+  Object* pPtrSocket = pSocket;
+  nnpTask->m_xParamStack.vPush(pPtrSocket);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* stack.class -- get class of nth value on stack                             */
+/* socket.send: send to a socket ( valset socket -- 1 )                       */
 /*----------------------------------------------------------------------------*/
-void Task::vStackClass(NNP_Task nnpTask)
+void Task::vSocketSend(NNP_Task nnpTask)
 {
-ENTRY("vStackClass");
+  ENTRY("vSocketSend");
+  
+  SysCall xSysCall;
+  Socket* pSocket;
+  Object* pObject;
+  ValSet  xValSet;
+  bool    bResult;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("socket.send");
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
+    THROW_INVALID_PARAM("socket.send");
+  
+  pSocket = reinterpret_cast<Socket*>(pObject);
+  
+  //******************************************************************
+  // Send the size of valset
+  //******************************************************************
+  i8 iBytes = xValSet.iSize();
+  bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+  
+  if ( ! bResult ) {
+    //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+    nnpTask->m_xParamStack.vPush((i8)0);
+    
+    //goto exit;
+    EXIT();
+  }
+  
+  //******************************************************************
+  // now send the actual value set
+  //******************************************************************
+  bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
+  
+  if ( ! bResult ) {
+    //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+    nnpTask->m_xParamStack.vPush((i8)0);
+  }
+  
+  //******************************************************************
+  // get rowBuffer if any in valset
+  //******************************************************************
+  RowBuffer* pRowBuffer = xValSet.pGetRowBuffer();
+  
+  if (pRowBuffer) {
+    
+    //******************************************************************
+    // send rowBuffer size
+    //******************************************************************
+    i8 iBytes = pRowBuffer->iBytesUsed();
+    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
+    
+    if ( ! bResult ) {
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      nnpTask->m_xParamStack.vPush((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+    //******************************************************************
+    // send rowBuffer itself
+    //******************************************************************
+    bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
+    
+    if ( ! bResult ) {
+      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
+      nnpTask->m_xParamStack.vPush((i8)0);
+      
+      //goto exit;
+      EXIT();
+    }
+    
+  }
+  
+  nnpTask->m_xParamStack.vPush((i8)1);
+  
+exit:
+  EXIT();
+}
 
-  i8 nTh;
-  if ( ! nnpTask->m_xParamStack.bPop(nTh) )
-    THROW_INVALID_PARAM("stack.class");
+/*----------------------------------------------------------------------------*/
+/* socket.recv: recv from a socket                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vSocketRecv(NNP_Task nnpTask)
+{
+  ENTRY("vSocketRecv");
   
-  ValWsp xValWsp;
+  SysCall xSysCall;
+  Socket* pSocket;
+  ValSet xValSet;
+  //s8K   sWorkspace;
+  Object* pObject;
+  i8 iBytes;
   
-  nnpTask->m_xParamStack.vPeek(nTh,&xValWsp);
+  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
+    THROW_INVALID_PARAM("socketrecv");
   
-  eCN eClass = xValWsp.eClass();
+  pSocket = reinterpret_cast<Socket*>(pObject);
   
-  nnpTask->m_xParamStack.vPush(eClass);
+  if (gxArguments.m_bTracepoint)
+    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a(),
+           
+           pSocket->m_iSocketId);
+  
+  //******************************************************************
+  // Receive the size of valset
+  //******************************************************************
+  bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+  //******************************************************************
+  // Receive the valset
+  //******************************************************************
+  bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
+  
+  if ( ! bResult )
+    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+  
+  //******************************************************************
+  // Check if valset has a row buffer
+  //******************************************************************
+  bool bHasRowBuffer = xValSet.bHasRowBuffer();
+  
+  if (bHasRowBuffer) {
+    
+    //******************************************************************
+    // receive rowBuffer size
+    //******************************************************************
+    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+    
+    //******************************************************************
+    // receive rowBuffer
+    //******************************************************************
+    RowBuffer* pRowBuffer = new RowBuffer(iBytes);
+    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->pDataArea()), xSysCall);
+    
+    if ( ! bResult )
+      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
+    
+    
+    //******************************************************************
+    // set rowBuffer in valset
+    //******************************************************************
+    bool bSet = xValSet.bSetRowBuffer(pRowBuffer);
+    ASSERT(bSet);
+  }
+  
+  nnpTask->m_xParamStack.vPush(xValSet);
   
   EXIT();
 }
@@ -13647,370 +14004,6 @@ void Task::vZeroGreater(NNP_Task nnpTask)
     nnpTask->m_xParamStack.vPush((i8)1);
   else
     nnpTask->m_xParamStack.vPush((i8)0);
-  
-  EXIT();
-}
-
-// sockets: ////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* socket.accept: accept a socket connection                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketAccept(NNP_Task nnpTask)
-{
-  SysCall xSysCall;
-  Socket* pSocket;
-  int     iSocketId;
-  Object* pObject;
-  
-ENTRY("vSocketAccept");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socket.accept");
-  
-  // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
-  
-  // accept a connection
-  bool bResult = pSocket->bAcceptClient(iSocketId, xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to accept connection: Errno %d!", xSysCall.iError());
-  
-  Task* pTask = (Task*)0x208f500c8;
-  
-  // return the new socket
-  nnpTask->m_xParamStack.vPush(new Socket(iSocketId));
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* open a socket                                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketClose(NNP_Task nnpTask)
-{
-  SysCall xSysCall;
-  Socket* pSocket;
-  Object* pObject;
-  
-ENTRY("vSocketClose");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketclose");
-  
-  // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
-  
-  // close the socket
-  bool bResult = pSocket->bClose(xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to close socket: Errno %d!", xSysCall.iError());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket.connect: connect to a server                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketConnect(NNP_Task nnpTask)
-{
-  SysCall xSysCall;
-  Socket* pSocket;
-  Object* pObject;
-  ValWsp xNode;
-  
-  i8 iPort;
-  
-ENTRY("vSocketConnect");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socket.connect");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xNode) )
-    THROW_INVALID_PARAM("socket.connect");
-
-  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
-    THROW_INVALID_PARAM("socket.connect");
-
-  // get address of node
-  const char* sAddr = reinterpret_cast<char*>(xNode.sStr());
-  
-  // get pSocket
-  pSocket = reinterpret_cast<Socket*>(pObject);
-  
-  bool bResult = false;
-  
-  // try connecting in a loop if timeout occurs
-  // possibly other node not back to accepting connections
-  
-  i8 iTimedOutCount = 0;
-  i8 iConnRefusedCount = 0;
-  
-  while (!bResult) {
-    bResult = pSocket->bConnectServer(sAddr, (int)iPort, xSysCall);
-    if ( ! bResult ) {
-      i8 iError = xSysCall.iError();
-      
-      if (iError == ETIMEDOUT) {
-        if (0 == iTimedOutCount++)
-          vTrace("Connect timedout... retrying...\n");
-        continue;
-      }
-      
-      if (iError == ECONNREFUSED) {
-        if (0 == iConnRefusedCount++)
-          vTrace("Connect refused... retrying...\n");
-        continue;
-      }
-      
-      THROW("Unable to connect: Errno %d!", iError);
-    }
-  }
-  
-  // return the socket object
-  Object* pPtrSocket = pSocket;
-  nnpTask->m_xParamStack.vPush(pPtrSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket.listen: listen in for socket connections                            */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketListen(NNP_Task nnpTask)
-{
-  SysCall xSysCall;
-  Socket* pSocket;
-  i8      iPort;
-  
-ENTRY("vSocketListen");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iPort) )
-    THROW_INVALID_PARAM("socketlisten");
-  
-  pSocket = new Socket;
-  bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to listen for connections: Errno %d!", xSysCall.iError());
-  
-  // return new socket
-  Object* pPtrSocket = pSocket;
-  nnpTask->m_xParamStack.vPush(pPtrSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket.open: open a socket                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketOpen(NNP_Task nnpTask)
-{
-  SysCall xSysCall;
-  Socket* pSocket;
-  
-ENTRY("vSocketOpen");
-  
-  pSocket = new Socket;
-  bool bResult = pSocket->bSocket(xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to create socker: Errno %d!", xSysCall.iError());
-  
-  // return pSocket
-  Object* pPtrSocket = pSocket;
-  nnpTask->m_xParamStack.vPush(pPtrSocket);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket.send: send to a socket ( valset socket -- 1 )                       */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketSend(NNP_Task nnpTask)
-{
-ENTRY("vSocketSend");
-
-  SysCall xSysCall;
-  Socket* pSocket;
-  Object* pObject;
-  ValSet  xValSet;
-  bool    bResult;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socket.send");
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-    THROW_INVALID_PARAM("socket.send");
-  
-  pSocket = reinterpret_cast<Socket*>(pObject);
-
-  //******************************************************************
-  // Send the size of valset
-  //******************************************************************
-  i8 iBytes = xValSet.iSize();
-  bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
-  
-  if ( ! bResult ) {
-    //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-    nnpTask->m_xParamStack.vPush((i8)0);
-    
-    //goto exit;
-    EXIT();
-  }
-  
-  //******************************************************************
-  // now send the actual value set
-  //******************************************************************
-  bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
-  
-  if ( ! bResult ) {
-    //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-    nnpTask->m_xParamStack.vPush((i8)0);
-  }
-  
-  //******************************************************************
-  // get rowBuffer if any in valset
-  //******************************************************************
-  RowBuffer* pRowBuffer = xValSet.pGetRowBuffer();
-  
-  if (pRowBuffer) {
-    
-    //******************************************************************
-    // send rowBuffer size
-    //******************************************************************
-    i8 iBytes = pRowBuffer->iBytesUsed();
-    bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
-    
-    if ( ! bResult ) {
-      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      nnpTask->m_xParamStack.vPush((i8)0);
-      
-      //goto exit;
-      EXIT();
-    }
-    
-    //******************************************************************
-    // send rowBuffer itself
-    //******************************************************************
-    bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
-    
-    if ( ! bResult ) {
-      //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
-      nnpTask->m_xParamStack.vPush((i8)0);
-      
-      //goto exit;
-      EXIT();
-    }
-    
-  }
-
-  nnpTask->m_xParamStack.vPush((i8)1);
-  
-exit:
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* socket.recv: recv from a socket                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vSocketRecv(NNP_Task nnpTask)
-{
-  ENTRY("vSocketRecv");
-  
-  SysCall xSysCall;
-  Socket* pSocket;
-  ValSet xValSet;
-  //s8K   sWorkspace;
-  Object* pObject;
-  i8 iBytes;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketrecv");
-  
-  pSocket = reinterpret_cast<Socket*>(pObject);
-
-  if (gxArguments.m_bTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] receiving on %lld\n",
-           gxArguments.m_iNode,
-           nnpTask->m_sName.a(),
-           *nnpTask->m_zAcks,
-           nnpTask->m_sComment.a(),
-           
-           pSocket->m_iSocketId);
-  
-  //******************************************************************
-  // Receive the size of valset
-  //******************************************************************
-  bool bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
-  
-  //******************************************************************
-  // Receive the valset
-  //******************************************************************
-  bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(&xValSet), xSysCall);
-  
-  if ( ! bResult )
-    THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
-  
-  //******************************************************************
-  // Check if valset has a row buffer
-  //******************************************************************
-  bool bHasRowBuffer = xValSet.bHasRowBuffer();
-  
-  if (bHasRowBuffer) {
-    
-    //******************************************************************
-    // receive rowBuffer size
-    //******************************************************************
-    bResult = pSocket->bRecvBytes(sizeof(iBytes), reinterpret_cast<void*>(&iBytes), xSysCall);
-    
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
-    
-    //******************************************************************
-    // receive rowBuffer
-    //******************************************************************
-    RowBuffer* pRowBuffer = new RowBuffer(iBytes);
-    bResult = pSocket->bRecvBytes(iBytes, reinterpret_cast<void*>(pRowBuffer->pDataArea()), xSysCall);
-  
-    if ( ! bResult )
-      THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
-  
-
-    //******************************************************************
-    // set rowBuffer in valset
-    //******************************************************************
-    bool bSet = xValSet.bSetRowBuffer(pRowBuffer);
-    ASSERT(bSet);
-  }
-  
-  nnpTask->m_xParamStack.vPush(xValSet);
-  
-  EXIT();
-}
-
-// sockets: ////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* bytes.magnitude -- return magnitude of bytes                               */
-/*----------------------------------------------------------------------------*/
-void Task::vBytesMagnitude(NNP_Task nnpTask)
-{
-  ENTRY("vBytesMagnitude");
-  
-  i8 iBytes;
-  if ( ! nnpTask->m_xParamStack.bPop(iBytes) )
-    THROW_INVALID_PARAM("bytes.magnitude");
-  
-  s256 sMag;
-  Magnitudes::vMagnitude(iBytes, sMag.a());
-
-  nnpTask->m_xParamStack.vPush(sMag);
   
   EXIT();
 }
