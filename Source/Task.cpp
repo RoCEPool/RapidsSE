@@ -808,8 +808,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.seek",        &vDirSeek,          false);
   vAddPrimitive("dir.tell",        &vDirTell,          false);
  
-  vAddPrimitive("]",               &vEnterCompiler,    false);
-  vAddPrimitive("[",               &vEnterInterpreter, true );
+  vAddPrimitive("]",               &vDocolCompiling,   false);
+  vAddPrimitive("[",               &vDocolInterpreting,true );
+  
   vAddPrimitive("enterObject",     &vEnterObject,      false);
   vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
   
@@ -5438,14 +5439,14 @@ ENTRY("vDirTell");
   EXIT();
 }
 
-// enter: //////////////////////////////////////////////////////////////////////
+// docol: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* ] -- enter compiler state                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vEnterCompiler(NNP_Task nnpTask)
+void Task::vDocolCompiling(NNP_Task nnpTask)
 {
-  ENTRY("vEnterCompiler");
+  ENTRY("vDocolCompiling");
   
   nnpTask->m_bCompiling = true;
   
@@ -5455,14 +5456,16 @@ void Task::vEnterCompiler(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* [ -- enter interpreter state                                               */
 /*----------------------------------------------------------------------------*/
-void Task::vEnterInterpreter(NNP_Task nnpTask)
+void Task::vDocolInterpreting(NNP_Task nnpTask)
 {
-  ENTRY("vEnterInterpreter");
+  ENTRY("vDocolInterpreting");
   
   nnpTask->m_bCompiling = false;
   
   EXIT();
 }
+
+// enter: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */

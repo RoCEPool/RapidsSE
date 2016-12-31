@@ -419,6 +419,9 @@ namespace Tasks
     static void vDdlLockGrabWrite(NNP_Task nnpTask);
     static void vDdlLockTestDrop(NNP_Task nnpTask);
     
+    // debug
+    static void vDebugTrap(NNP_Task nnpTask);
+    
     // dic
     static void vDicCount(NNP_Task nnpTask);
     static void vDicDrop(NNP_Task nnpTask);       
@@ -460,8 +463,14 @@ namespace Tasks
     static void vDirSeek(NNP_Task nnpTask);
     static void vDirTell(NNP_Task nnpTask);
     
-    static void vDebugTrap(NNP_Task nnpTask);
-
+    // docol
+    static void vDocolCompiling(NNP_Task nnpTask);
+    static void vDocolInterpreting(NNP_Task nnpTask);
+    
+    // enter
+    static void vEnterObject(NNP_Task nnpTask);
+    static void vEnterRoutine(NNP_Task nnpTask);
+    
     // errors
     static void vErrorMsg(NNP_Task nnpTask);
     
@@ -508,12 +517,6 @@ namespace Tasks
     static void vGridInit(NNP_Task nnpTask);
     static void vGridStartedStore(NNP_Task nnpTask);
     static void vGridStartedFetch(NNP_Task nnpTask);
-    
-    // enter
-    static void vEnterObject(NNP_Task nnpTask);
-    static void vEnterRoutine(NNP_Task nnpTask);
-    static void vEnterCompiler(NNP_Task nnpTask);
-    static void vEnterInterpreter(NNP_Task nnpTask);
     
     // input
     static void vInputClose(NNP_Task nnpTask);
