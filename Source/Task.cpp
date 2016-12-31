@@ -655,8 +655,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
-  vAddPrimitive("isCompiling",     &vIsCompiling,      false);
-  vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("nop",             &vNop,              false);
@@ -778,8 +776,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dir.seek",        &vDirSeek,          false);
   vAddPrimitive("dir.tell",        &vDirTell,          false);
  
-  vAddPrimitive("]",               &vDocolCompiling,   false);
-  vAddPrimitive("[",               &vDocolInterpreting,true );
+  vAddPrimitive("]",                     &vDocolCompiling,      false);
+  vAddPrimitive("[",                     &vDocolInterpreting,   true );
+  vAddPrimitive("docol.isCompiling",     &vDocolIsCompiling,    false);
+  vAddPrimitive("docol.isInterpreting",  &vDocolIsInterpreting, false);
   
   vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
   vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
@@ -1293,11 +1293,11 @@ void Task::vAddRoutines(void)
   
   "      input.token >int"        // convert str to int, leave on stack
   
-  "      isinterpreting if"       // interpret leaves int on stack
+  "      docol.isInterpreting if" // interpret leaves int on stack
   "        again_"
   "      then"
   
-  "      iscompiling if"          // compile encodes push intval
+  "      docol.isCompiling if"    // compile encodes push intval
   "        encodePushValue"
   "        again_"
   "      then"
@@ -1309,11 +1309,11 @@ void Task::vAddRoutines(void)
   
   "      input.token"             // put str on stack
   
-  "      isinterpreting if"       // interpret leaves str on stack
+  "      docol.isInterpreting if" // interpret leaves str on stack
   "        again_"
   "      then"
   
-  "      iscompiling if"          // compile encodes push strval
+  "      docol.isCompiling if"    // compile encodes push strval
   "        encodePushValue"
   "        again_"
   "      then"
@@ -1345,7 +1345,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // compiling
-  "    isCompiling if "          // compile encodes call to word
+  "    docol.isCompiling if "    // compile encodes call to word
   "      dup word.isPrimitive if"
   "        encodeCallPrimitive"
   "        again_"
@@ -1357,7 +1357,7 @@ void Task::vAddRoutines(void)
   "    then"
   
   // interpreting
-  "    isInterpreting if "       // interpreting calls word
+  "    docol.isInterpreting if " // interpreting calls word
   "      execute"
   "      again_"
   "    then"
@@ -2835,34 +2835,6 @@ ENTRY("vImmediate");
   //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
   pCurrentWord->vImmediate(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* isCompiling -- currently in compiling mode?                                */
-/*----------------------------------------------------------------------------*/
-void Task::vIsCompiling(NNP_Task nnpTask)
-{
-ENTRY("vIsCompiling");
-  
-  i8 iIsCompiling = nnpTask->m_bCompiling ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iIsCompiling);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* isInterpreting -- currently in interpreting mode?                          */
-/*----------------------------------------------------------------------------*/
-void Task::vIsInterpreting(NNP_Task nnpTask)
-{
-ENTRY("vIsInterpreting");
-  
-  i8 iIsInterpreting = nnpTask->m_bCompiling ? 0 : 1;
-  
-  nnpTask->m_xParamStack.vPush(iIsInterpreting);
   
   EXIT();
 }
@@ -5004,6 +4976,34 @@ void Task::vDocolInterpreting(NNP_Task nnpTask)
   ENTRY("vDocolInterpreting");
   
   nnpTask->m_bCompiling = false;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol.isCompiling -- currently in compiling mode?                          */
+/*----------------------------------------------------------------------------*/
+void Task::vDocolIsCompiling(NNP_Task nnpTask)
+{
+  ENTRY("vDocolIsCompiling");
+  
+  i8 iIsCompiling = nnpTask->m_bCompiling ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iIsCompiling);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* docol.isInterpreting -- currently in interpreting mode?                    */
+/*----------------------------------------------------------------------------*/
+void Task::vDocolIsInterpreting(NNP_Task nnpTask)
+{
+  ENTRY("vDocolIsInterpreting");
+  
+  i8 iIsInterpreting = nnpTask->m_bCompiling ? 0 : 1;
+  
+  nnpTask->m_xParamStack.vPush(iIsInterpreting);
   
   EXIT();
 }

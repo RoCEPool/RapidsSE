@@ -293,8 +293,6 @@ namespace Tasks
     static void vFetch(NNP_Task nnpTask);
     static void vHazard(NNP_Task nnpTask);
     static void vHash(NNP_Task nnpTask);
-    static void vIsCompiling(NNP_Task nnpTask);
-    static void vIsInterpreting(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
@@ -435,6 +433,8 @@ namespace Tasks
     // docol
     static void vDocolCompiling(NNP_Task nnpTask);
     static void vDocolInterpreting(NNP_Task nnpTask);
+    static void vDocolIsCompiling(NNP_Task nnpTask);
+    static void vDocolIsInterpreting(NNP_Task nnpTask);
     
     // encode
     static void vEncodeCallPrimitive(NNP_Task nnpTask);
