@@ -38,7 +38,7 @@ create
 : symbols
     0 dic.pick dic.last
     begin dup while
-      dup nameWord .put " " .put dup word.kind@ nameword .put .\n
+      dup word.name .put " " .put dup word.kind@ word.name .put .\n
       prevWord
     repeat
     drop

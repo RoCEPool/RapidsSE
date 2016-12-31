@@ -308,7 +308,6 @@ namespace Tasks
     static void vJ(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
-    static void vNameWord(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNullPtr(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);

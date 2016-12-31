@@ -670,7 +670,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("j",               &vJ,                false);
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("nameWord",        &vNameWord,         false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
@@ -3056,24 +3055,6 @@ ENTRY("vLocate");
     i8 iZero = 0;
     nnpTask->m_xParamStack.vPush(iZero);
   }
-  
-  EXIT();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* nameWord -- push name of word                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vNameWord(NNP_Task nnpTask)
-{
-ENTRY("vNameWord");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("nameWord");
-  Word* pWord = _pWord(pWordObject);
-  
-  nnpTask->m_xParamStack.vPush(pWord->sName().a());
   
   EXIT();
 }
