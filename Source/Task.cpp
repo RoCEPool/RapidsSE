@@ -647,16 +647,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
   vAddPrimitive("compile,",        &vCompileComma,     false);
-  vAddPrimitive("create",          &vCreate,           false);
-  vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
-  vAddPrimitive("does>",           &vDoes,             true );
-  vAddPrimitive("does_rt",         &vDoes_RT,          false);
-  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
-  vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
-  vAddPrimitive("encodePushValue", &vEncodePushValue,  false);
-  vAddPrimitive("env@",            &vEnvGet,           false);
   vAddPrimitive("eql",             &vEqualAddress,     false);
   vAddPrimitive("execute",         &vExecute,          false);
   vAddPrimitive("exit",            &vExit,             false);
@@ -701,13 +693,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("throw",           &vThrow,            false);
   vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   vAddPrimitive("'",               &vTick,             true );
-  vAddPrimitive(">body",           &vToBody,           false);
-  vAddPrimitive(">cmd",            &vToCmd,            false);
-  vAddPrimitive(">digitName",      &vToDigitName,      false);
-  vAddPrimitive(">int",            &vToInt,            false);
-  vAddPrimitive(">seitf",          &vToSEitf,          false);
-  vAddPrimitive(">str",            &vToStr,            false);
-  vAddPrimitive(">task",           &vToTask,           false);
   vAddPrimitive("token",           &vToken,            false);
   vAddPrimitive("wake",            &vWake,             false);
   
@@ -810,8 +795,14 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("]",               &vDocolCompiling,   false);
   vAddPrimitive("[",               &vDocolInterpreting,true );
   
+  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
+  vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
+  vAddPrimitive("encodePushValue", &vEncodePushValue,  false);
+  
   vAddPrimitive("enterObject",     &vEnterObject,      false);
   vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
+  
+  vAddPrimitive("env@",            &vEnvGet,           false);
   
   vAddPrimitive("error.msg",       &vErrorMsg,         false);
   
@@ -941,11 +932,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
-  vAddPrimitive("object@",           &vObjectFetch,      false);
-  vAddPrimitive("object!",           &vObjectStore,      false);
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
+  vAddPrimitive("object@",           &vObjectFetch,      false);
   vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
+  vAddPrimitive("object!",           &vObjectStore,      false);
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
 
   vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
@@ -1197,6 +1188,14 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
   vAddPrimitive("timer.update",    &vTimerUpdate,      false);
   
+  vAddPrimitive(">body",           &vToBody,           false);
+  vAddPrimitive(">cmd",            &vToCmd,            false);
+  vAddPrimitive(">digitName",      &vToDigitName,      false);
+  vAddPrimitive(">int",            &vToInt,            false);
+  vAddPrimitive(">seitf",          &vToSEitf,          false);
+  vAddPrimitive(">str",            &vToStr,            false);
+  vAddPrimitive(">task",           &vToTask,           false);
+  
   vAddPrimitive("traceOff",        &vTraceOff,         false);
   vAddPrimitive("traceOn",         &vTraceOn,          false);
   vAddPrimitive("tracePoint",      &vTracePoint,       false);
@@ -1224,6 +1223,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("txRef.commit",    &vTxRefCommit,      false);
   vAddPrimitive("txRef.rollback",  &vTxRefRollback,    false);
   
+  vAddPrimitive("create",          &vCreate,           false);
+  vAddPrimitive(">create",         &vCreateFrom,       false);
+  vAddPrimitive("does>",           &vDoes,             true );
+  vAddPrimitive("does_rt",         &vDoes_RT,          false);
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive("forget",          &vForget,           false);
@@ -2697,100 +2700,6 @@ ENTRY("vCursorStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodeCallWord -- encode call to a : word                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodeCallWord(NNP_Task nnpTask)
-{
-ENTRY("vEncodeCallWord");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("encodeCallWord");
-  Word* pCalledWord = _pWord(pWordObject);
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  TaskStep* pCode;
-  if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
-      DT_LOCALCALLS    == pCurrentWord->eDistributed()) {
-    pCode = pCalledWord->ppEntryStep();
-  }
-  else {
-    s32 sTildeName;
-    sTildeName = "~";
-    String::vConcat(sTildeName.a(),pCalledWord->sName().a());
-    
-    Word* pWordTilde = nnpTask->pFindWord(sTildeName);
-    pCode = pWordTilde->ppEntryStep();
-  }
-
-  pCurrentWord->vEncode(pCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodeCallPrimitive -- encode call to primitive step                       */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
-{
-ENTRY("vEncodeCallPrimitive");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vEncodeCallPrimitive");
-  Word* pCalledWord = _pWord(pWordObject);
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  TaskStep* pCode = pCalledWord->ppEntryStep();
-  
-  pCurrentWord->vAppend(pCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodePushValue -- encode push value                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodePushValue(NNP_Task nnpTask)
-{
-ENTRY("vEncodePushValue");
-  
-  ValWsp xValA;
-  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("encodePushValue");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("push",&xValA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* env@ -- get environment variable                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vEnvGet(NNP_Task nnpTask)
-{
-ENTRY("vEnvGet");
-  
-  s256 sEnvName;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(sEnvName) )
-    THROW_INVALID_PARAM("env@");
-  
-  s256 sEnvVal;
-  
-  if (! Env::bGet(sEnvName,sEnvVal))
-    sEnvVal = "";
-  
-  nnpTask->m_xParamStack.vPush(sEnvVal);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
 /*----------------------------------------------------------------------------*/
 void Task::vEqualAddress(NNP_Task nnpTask)
@@ -3700,146 +3609,15 @@ ENTRY("vTick");
 }
 
 /*----------------------------------------------------------------------------*/
-/* >body -- convert word pointer to body pointer                              */
-/*----------------------------------------------------------------------------*/
-void Task::vToBody(NNP_Task nnpTask)
-{
-ENTRY("vToBody");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM(">body");
-  Word* pWord = _pWord(pWordObject);
-
-  char* pBody = pcAdd(pWord,sizeof(Word));
-  
-  Object* pPtrBody = reinterpret_cast<Object*>(pBody);
-
-  nnpTask->m_xParamStack.vPush(pPtrBody);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >cmd -- convert stack values to cmd string                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vToCmd(NNP_Task nnpTask)
-{
-ENTRY("vToCmd");
-
-  i8 nValues;
-  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM(">cmd");
-
-  s8K sCmd;
-
-  ValWsp xStr;
-  xStr = "<cmd>";
-  
-  for (i8 i = 0; i < nValues; i++) {
-    ValWsp xValWsp;
-    nnpTask->m_xParamStack.vPeek(i,&xValWsp);
-
-    if (i)
-      String::vConcat(sCmd.a()," ");
-    
-    xValWsp.vToCommand(sCmd.z());
-  }
-  
-  xStr = sCmd.a();
-  
-  nnpTask->m_xParamStack.vPush(&xStr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >int -- convert value to int                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vToInt(NNP_Task nnpTask)
-{
-ENTRY("vToInt");
-  
-  ValWsp xStr;
-  if ( ! nnpTask->m_xParamStack.bPop(xStr) )
-    THROW_INVALID_PARAM(">int");
-  
-  s256 sBuff;
-  xStr.vToString(sBuff.a());
-  
-  i8 i = String::iToI8(sBuff.a());
-
-  nnpTask->m_xParamStack.vPush(i);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >seitf -- convert int to seitf ptr                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vToSEitf(NNP_Task nnpTask)
-{
-ENTRY("vToSEitf");
-  
-  i8 iVal;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(iVal) )
-    THROW_INVALID_PARAM(">seitf");
-  
-  Object* pPtrSEitf = _pSEitf(iVal);
-  
-  nnpTask->m_xParamStack.vPush(pPtrSEitf);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >str -- convert value to str                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vToStr(NNP_Task nnpTask)
-{
-ENTRY("vToStr");
-  
-  ValWsp xVal;
-  if ( ! nnpTask->m_xParamStack.bPop(xVal) )
-    THROW_INVALID_PARAM(">str");
-
-  s8K sString;
-  xVal.vToString(sString.a());
-  
-  nnpTask->m_xParamStack.vPush(sString);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* TotalSpace -- push total space in buffer pool onto stack                   */
 /*----------------------------------------------------------------------------*/
 void Task::vTotalSpace(NNP_Task nnpTask)
 {
-ENTRY("vTotalSpace");
+  ENTRY("vTotalSpace");
   
   i8 iTotalSpace = gpBufferPool->iRegionSize();
   
   nnpTask->m_xParamStack.vPush(iTotalSpace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >task -- convert int to task ptr                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vToTask(NNP_Task nnpTask)
-{
-ENTRY("vToTask");
-  
-  i8 iVal;
-  if ( ! nnpTask->m_xParamStack.bPop(iVal) )
-    THROW_INVALID_PARAM(">task");
-  
-  Object* pPtrTask = _pTask(iVal);
-  
-  nnpTask->m_xParamStack.vPush(pPtrTask);
   
   EXIT();
 }
@@ -5444,6 +5222,80 @@ void Task::vDocolInterpreting(NNP_Task nnpTask)
   EXIT();
 }
 
+// encode: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* encodeCallWord -- encode call to a : word                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodeCallWord(NNP_Task nnpTask)
+{
+  ENTRY("vEncodeCallWord");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("encodeCallWord");
+  Word* pCalledWord = _pWord(pWordObject);
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  TaskStep* pCode;
+  if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
+      DT_LOCALCALLS    == pCurrentWord->eDistributed()) {
+    pCode = pCalledWord->ppEntryStep();
+  }
+  else {
+    s32 sTildeName;
+    sTildeName = "~";
+    String::vConcat(sTildeName.a(),pCalledWord->sName().a());
+    
+    Word* pWordTilde = nnpTask->pFindWord(sTildeName);
+    pCode = pWordTilde->ppEntryStep();
+  }
+  
+  pCurrentWord->vEncode(pCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encodeCallPrimitive -- encode call to primitive step                       */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
+{
+  ENTRY("vEncodeCallPrimitive");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("vEncodeCallPrimitive");
+  Word* pCalledWord = _pWord(pWordObject);
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  TaskStep* pCode = pCalledWord->ppEntryStep();
+  
+  pCurrentWord->vAppend(pCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encodePushValue -- encode push value                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodePushValue(NNP_Task nnpTask)
+{
+  ENTRY("vEncodePushValue");
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
+    THROW_INVALID_PARAM("encodePushValue");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("push",&xValA);
+  
+  EXIT();
+}
+
 // enter: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -5479,6 +5331,30 @@ void Task::vEnterRoutine(NNP_Task nnpTask)
  
    if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
     nnpTask->vTracePoint(">");
+  
+  EXIT();
+}
+
+// env: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* env@ -- get environment variable                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vEnvGet(NNP_Task nnpTask)
+{
+  ENTRY("vEnvGet");
+  
+  s256 sEnvName;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(sEnvName) )
+    THROW_INVALID_PARAM("env@");
+  
+  s256 sEnvVal;
+  
+  if (! Env::bGet(sEnvName,sEnvVal))
+    sEnvVal = "";
+  
+  nnpTask->m_xParamStack.vPush(sEnvVal);
   
   EXIT();
 }
@@ -7801,43 +7677,6 @@ ENTRY("vNodeCursorNext");
 // object: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* object@ -- fetch object from return stack onto param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectFetch(NNP_Task nnpTask)
-{
-  ENTRY("vObjectFetch");
-  
-  i8 iPick = 0;
-  
-  ValWsp xObjectWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
-  
-  nnpTask->m_xParamStack.vPush(xObjectWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object! -- replace object on return stack from param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectStore(NNP_Task nnpTask)
-{
-  ENTRY("vObjectStore");
-  
-  i8 iPeek = 0;
-  
-  ValWsp xObjectWsp;
-  
-  if ( ! nnpTask->m_xParamStack.bPop(xObjectWsp) )
-    THROW_INVALID_PARAM("object!");
-  
-  nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* object.class@ -- fetch class number from object                            */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassFetch(NNP_Task nnpTask)
@@ -7897,6 +7736,24 @@ void Task::vObjectDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* object@ -- fetch object from return stack onto param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectFetch(NNP_Task nnpTask)
+{
+  ENTRY("vObjectFetch");
+  
+  i8 iPick = 0;
+  
+  ValWsp xObjectWsp;
+  
+  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  
+  nnpTask->m_xParamStack.vPush(xObjectWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* object.magic!! -- put magic number into object                             */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectMagicMark(NNP_Task nnpTask)
@@ -7911,6 +7768,26 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* object! -- replace object on return stack from param stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vObjectStore(NNP_Task nnpTask)
+{
+  ENTRY("vObjectStore");
+  
+  i8 iPeek = 0;
+  
+  ValWsp xObjectWsp;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(xObjectWsp) )
+    THROW_INVALID_PARAM("object!");
+  
+  nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
+  
+  EXIT();
+}
+
 /*----------------------------------------------------------------------------*/
 /* object.wordbody! -- mark object as a part of a wordbody                    */
 /*----------------------------------------------------------------------------*/
@@ -12815,6 +12692,139 @@ ENTRY("vTimerUpdate");
   ASSERT(CN_TIMER == pTimer->eClass());
   
   pTimer->vUpdate();
+  
+  EXIT();
+}
+
+// to: /////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* >body -- convert word pointer to body pointer                              */
+/*----------------------------------------------------------------------------*/
+void Task::vToBody(NNP_Task nnpTask)
+{
+  ENTRY("vToBody");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM(">body");
+  Word* pWord = _pWord(pWordObject);
+  
+  char* pBody = pcAdd(pWord,sizeof(Word));
+  
+  Object* pPtrBody = reinterpret_cast<Object*>(pBody);
+  
+  nnpTask->m_xParamStack.vPush(pPtrBody);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >cmd -- convert stack values to cmd string                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vToCmd(NNP_Task nnpTask)
+{
+  ENTRY("vToCmd");
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PARAM(">cmd");
+  
+  s8K sCmd;
+  
+  ValWsp xStr;
+  xStr = "<cmd>";
+  
+  for (i8 i = 0; i < nValues; i++) {
+    ValWsp xValWsp;
+    nnpTask->m_xParamStack.vPeek(i,&xValWsp);
+    
+    if (i)
+      String::vConcat(sCmd.a()," ");
+    
+    xValWsp.vToCommand(sCmd.z());
+  }
+  
+  xStr = sCmd.a();
+  
+  nnpTask->m_xParamStack.vPush(&xStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >int -- convert value to int                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vToInt(NNP_Task nnpTask)
+{
+  ENTRY("vToInt");
+  
+  ValWsp xStr;
+  if ( ! nnpTask->m_xParamStack.bPop(xStr) )
+    THROW_INVALID_PARAM(">int");
+  
+  s256 sBuff;
+  xStr.vToString(sBuff.a());
+  
+  i8 i = String::iToI8(sBuff.a());
+  
+  nnpTask->m_xParamStack.vPush(i);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >seitf -- convert int to seitf ptr                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vToSEitf(NNP_Task nnpTask)
+{
+  ENTRY("vToSEitf");
+  
+  i8 iVal;
+  
+  if ( ! nnpTask->m_xParamStack.bPop(iVal) )
+    THROW_INVALID_PARAM(">seitf");
+  
+  Object* pPtrSEitf = _pSEitf(iVal);
+  
+  nnpTask->m_xParamStack.vPush(pPtrSEitf);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >str -- convert value to str                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vToStr(NNP_Task nnpTask)
+{
+  ENTRY("vToStr");
+  
+  ValWsp xVal;
+  if ( ! nnpTask->m_xParamStack.bPop(xVal) )
+    THROW_INVALID_PARAM(">str");
+  
+  s8K sString;
+  xVal.vToString(sString.a());
+  
+  nnpTask->m_xParamStack.vPush(sString);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >task -- convert int to task ptr                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vToTask(NNP_Task nnpTask)
+{
+  ENTRY("vToTask");
+  
+  i8 iVal;
+  if ( ! nnpTask->m_xParamStack.bPop(iVal) )
+    THROW_INVALID_PARAM(">task");
+  
+  Object* pPtrTask = _pTask(iVal);
+  
+  nnpTask->m_xParamStack.vPush(pPtrTask);
   
   EXIT();
 }

@@ -289,10 +289,6 @@ namespace Tasks
     static void vCompileComma(NNP_Task nnpTask);
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
-    static void vEncodeCallPrimitive(NNP_Task nnpTask);
-    static void vEncodeCallWord(NNP_Task nnpTask);
-    static void vEncodePushValue(NNP_Task nnpTask);
-    static void vEnvGet(NNP_Task nnpTask);
     static void vEqualAddress(NNP_Task nnpTask);
     static void vExecute(NNP_Task nnpTask);
     static void vExit(NNP_Task nnpTask);           
@@ -315,8 +311,6 @@ namespace Tasks
     static void vNameWord(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNullPtr(NNP_Task nnpTask);
-    static void vObjectFetch(NNP_Task nnpTask);
-    static void vObjectStore(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
     static void vPrevWord(NNP_Task nnpTask);
     static void vPrint(NNP_Task nnpTask);          
@@ -336,19 +330,8 @@ namespace Tasks
     static void vTest(NNP_Task nnpTask);
     static void vThrow(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);           
-    static void vToBody(NNP_Task nnpTask);         
-    static void vToCmd(NNP_Task nnpTask);          
-    static void vToDigitName(NNP_Task nnpTask);
-    static void vToInt(NNP_Task nnpTask);
-    static void vToSEitf(NNP_Task nnpTask);
-    static void vToStr(NNP_Task nnpTask);
     static void vTotalSpace(NNP_Task nnpTask);
-    static void vToTask(NNP_Task nnpTask);
     static void vToken(NNP_Task nnpTask);
-    static void vTraceOff(NNP_Task nnpTask);
-    static void vTraceOn(NNP_Task nnpTask);
-    static void vTracePoint(NNP_Task nnpTask);
-    static void vTraceSet(NNP_Task nnpTask);
     static void vWake(NNP_Task nnpTask);
 
     /*------------------------------------------------------------------------*/
@@ -466,9 +449,17 @@ namespace Tasks
     static void vDocolCompiling(NNP_Task nnpTask);
     static void vDocolInterpreting(NNP_Task nnpTask);
     
+    // encode
+    static void vEncodeCallPrimitive(NNP_Task nnpTask);
+    static void vEncodeCallWord(NNP_Task nnpTask);
+    static void vEncodePushValue(NNP_Task nnpTask);
+    
     // enter
     static void vEnterObject(NNP_Task nnpTask);
     static void vEnterRoutine(NNP_Task nnpTask);
+    
+    // env
+    static void vEnvGet(NNP_Task nnpTask);
     
     // errors
     static void vErrorMsg(NNP_Task nnpTask);
@@ -619,7 +610,9 @@ namespace Tasks
     static void vObjectClassFetch(NNP_Task nnpTask);
     static void vObjectClassStore(NNP_Task nnpTask);
     static void vObjectDump(NNP_Task nnpTask);
+    static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMagicMark(NNP_Task nnpTask);
+    static void vObjectStore(NNP_Task nnpTask);
     static void vObjectWordBodySet(NNP_Task nnpTask);
     
     // process
@@ -894,6 +887,20 @@ namespace Tasks
     static void vTimerTicks(NNP_Task nnpTask);
     static void vTimerUpdate(NNP_Task nnpTask);
     
+    // to
+    static void vToBody(NNP_Task nnpTask);
+    static void vToCmd(NNP_Task nnpTask);
+    static void vToDigitName(NNP_Task nnpTask);
+    static void vToInt(NNP_Task nnpTask);
+    static void vToSEitf(NNP_Task nnpTask);
+    static void vToStr(NNP_Task nnpTask);
+    static void vToTask(NNP_Task nnpTask);
+    
+    // trace
+    static void vTraceOff(NNP_Task nnpTask);
+    static void vTraceOn(NNP_Task nnpTask);
+    static void vTracePoint(NNP_Task nnpTask);
+    static void vTraceSet(NNP_Task nnpTask);
     // tx
     static void vTxDump(NNP_Task nnpTask);
     
