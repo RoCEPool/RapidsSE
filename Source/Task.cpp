@@ -647,7 +647,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("(",               &vComment,          true );
   vAddPrimitive("compile,",        &vCompileComma,     false);
-  vAddPrimitive("compiling",       &vCompiling,        false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
@@ -671,7 +670,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
   vAddPrimitive("immediate",       &vImmediate,        true );
-  vAddPrimitive("interpreting",    &vInterpreting,     false);
   vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
@@ -2661,18 +2659,6 @@ void Task::vCompileComma(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* compiling -- enter compiling mode                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vCompiling(NNP_Task nnpTask)
-{
-ENTRY("vCompiling");
-  
-  nnpTask->m_bCompiling = true;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* cursor@ -- fetch cursor from return stack onto param stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vCursorFetch(NNP_Task nnpTask)
@@ -3026,18 +3012,6 @@ ENTRY("vImmediate");
   //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
   pCurrentWord->vImmediate(true);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* interpreting -- enter interpreting mode                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vInterpreting(NNP_Task nnpTask)
-{
-ENTRY("vInterpreting");
-  
-  nnpTask->m_bCompiling = false;
   
   EXIT();
 }

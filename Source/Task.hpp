@@ -287,7 +287,6 @@ namespace Tasks
     static void vComma(NNP_Task nnpTask);          
     static void vComment(NNP_Task nnpTask);        
     static void vCompileComma(NNP_Task nnpTask);
-    static void vCompiling(NNP_Task nnpTask);
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
     static void vEncodeCallPrimitive(NNP_Task nnpTask);
@@ -305,7 +304,6 @@ namespace Tasks
     static void vHash(NNP_Task nnpTask);
     static void vI(NNP_Task nnpTask);
     static void vImmediate(NNP_Task nnpTask);
-    static void vInterpreting(NNP_Task nnpTask);
     static void vInUseSpace(NNP_Task nnpTask);
     static void vIsBooted(NNP_Task nnpTask);       
     static void vIsCompiling(NNP_Task nnpTask);    
