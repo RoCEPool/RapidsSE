@@ -853,7 +853,6 @@ namespace Tasks
     static void vThreadNameStore(NNP_Task nnpTask);
     static void vThreadSfetch(NNP_Task nnpTask);
     static void vThreadSstore(NNP_Task nnpTask);
-    static void vSnooze(NNP_Task nnpTask);
     static void vThreadSleep_s(NNP_Task nnpTask);
     static void vThreadSleep_ms(NNP_Task nnpTask);
     static void vThreadSleep_us(NNP_Task nnpTask);

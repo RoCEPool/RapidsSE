@@ -646,7 +646,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
@@ -2645,20 +2644,6 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 ENTRY("vProcessQuit");
   
   exit(EXIT_FAILURE);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* snooze -- snooze briefly                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vSnooze(NNP_Task nnpTask)
-{
-ENTRY("vSnooze");
-  
-  Thread* pThread = Thread::pThread();
-  
-  pThread->m_xPosixThread.vSleepNano(100_MB);
   
   EXIT();
 }
