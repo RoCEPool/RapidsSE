@@ -643,16 +643,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
   vAddPrimitive("eql",             &vEqualAddress,     false);
-  vAddPrimitive("execute",         &vExecute,          false);
-  vAddPrimitive("exit",            &vExit,             false);
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("hash",            &vHash,             false);
-  vAddPrimitive("hazard",          &vHazard,           false);
-  vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("rdtscp",          &vRdtscp,           false);
-  vAddPrimitive("retryPoint",      &vRetryPoint,       false);
   vAddPrimitive("sleep",           &vSleep,            false);
   vAddPrimitive("snooze",          &vSnooze,           false);
   vAddPrimitive("!",               &vStore,            false);
@@ -706,6 +699,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("class.name",      &vClassName,    false);
   
   vAddPrimitive("(",               &vComment,          true );
+  
+  vAddPrimitive("cpu.rdtscp",      &vCpuRdtscp,        false);
   
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
@@ -783,6 +778,8 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("error.msg",       &vErrorMsg,         false);
   
+  vAddPrimitive("exit",            &vExit,             false);
+  
   vAddPrimitive("file.close",      &vFileClose,        false);
   vAddPrimitive("file.delete",     &vFileDelete,       false);
   vAddPrimitive("file.init",       &vFileInit,         false);
@@ -801,6 +798,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("do",              &vFlowDo,           true );
   vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
   vAddPrimitive("else",            &vFlowElse,         true );
+  vAddPrimitive("execute",         &vFlowExecute,      false);
   vAddPrimitive("if",              &vFlowIf,           true );
   vAddPrimitive("iterate",         &vFlowIterate,      true );
   vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
@@ -814,6 +812,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,  false);
   vAddPrimitive("next",            &vFlowNext,         true );
   vAddPrimitive("repeat",          &vFlowRepeat,       true );
+  vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
   vAddPrimitive("then",            &vFlowThen,         true );
   vAddPrimitive("unloop",          &vFlowUnloop,       false);
   vAddPrimitive("until",           &vFlowUntil,        true );
@@ -840,6 +839,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("==",              &vIntEqual,         false);
   vAddPrimitive(">",               &vIntGreater,       false);
   vAddPrimitive(">=",              &vIntGreaterEqual,  false);
+  vAddPrimitive("hash",            &vIntHash,          false);
   vAddPrimitive("<",               &vIntLess,          false);
   vAddPrimitive("<=",              &vIntLessEqual,     false);
   vAddPrimitive("%",               &vIntModulo,        false);
@@ -910,6 +910,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
   
   vAddPrimitive("nop",             &vNop,              false);
+  vAddPrimitive("hazard",          &vNopHazard,        false);
+  
+  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
   
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
@@ -917,8 +920,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
   vAddPrimitive("object!",           &vObjectStore,      false);
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
-
-  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
   
   vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
@@ -1225,6 +1226,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("forget",          &vForget,           false);
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
+  vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
@@ -2597,66 +2599,6 @@ ENTRY("vEql");
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute -- execute word on param stack                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vExecute(NNP_Task nnpTask)
-{
-ENTRY("vExecute");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vExecute");
-  Word* pWord = _pWord(pWordObject);
-  
-  if (WT_PRIMITIVE == pWord->eWordType()) {
-    TaskStep pTaskStep = pWord->pEntryStep();
-    (pTaskStep)(nnpTask);
-  }
-  else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
-    nnpTask->IP.m_pCell = pWord->pEntryCell();
-
-    Cell* pCell = pWord->pFirstCell();
-    nnpTask->m_xParamStack.vPush(pCell);
-  }
-  else if (WT_ROUTINE == pWord->eWordType()){
-    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
-    nnpTask->IP.m_pCell = pWord->pEntryCell();
-  }
-  else {
-    ASSERT(0);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* exit -- exit from routine                                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vExit(NNP_Task nnpTask)
-{
-ENTRY("vExit");
-  
-  //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
-  
-  if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
-    nnpTask->vTracePoint("<");
-  
-  if (nnpTask->m_pLocalsFrame &&
-        nnpTask->m_pLocalsFrame->pStackPtr() ==
-         (void*)nnpTask->m_xReturnStack.pTopValue())
-    nnpTask->vLocalsPop();
-  
-  void* pCellVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
-    THROW_INVALID_RETURN("exit");
-  
-  nnpTask->IP.m_pCell = _pCell(pCellVoid);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* @ -- fetch value using pointer on stack                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vFetch(NNP_Task nnpTask)
@@ -2697,67 +2639,6 @@ void Task::vFetch(NNP_Task nnpTask)
 
 
 /*----------------------------------------------------------------------------*/
-/* hash -- get hash of string                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vHash(NNP_Task nnpTask)
-{
-ENTRY("vHash");
-  
-  s8K sString;
-  if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("hash");
-  
-  i8 iLength = String::iLength(sString.a());
-  
-  i8 iHash = XXH32(sString.a(),iLength,0);
-  
-  nnpTask->m_xParamStack.vPush(iHash);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* hazard -- should never be called                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vHazard(NNP_Task nnpTask)
-{
-ENTRY("vHazard");
-  
-  THROW("Entered hazard");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate -- locate word based on ip                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vLocate(NNP_Task nnpTask)
-{
-ENTRY("vLocate");
-  
-  i8 iAsInt;
-  if ( ! nnpTask->m_xParamStack.bPopParamInt(iAsInt) )
-    THROW_INVALID_PARAM("locate");
-  
-  void* pCellVoid = (void*)iAsInt;
-  Cell* pCell = _pCell(pCellVoid);
-  
-  Word* pLocatedWord = nnpTask->pLocateWord(pCell);
-  
-  if (pLocatedWord) {
-    s32 sName;
-    sName = pLocatedWord->sName();
-    nnpTask->m_xParamStack.vPush(sName);
-  }
-  else {
-    i8 iZero = 0;
-    nnpTask->m_xParamStack.vPush(iZero);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* processQuit -- process exits early                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vProcessQuit(NNP_Task nnpTask)
@@ -2765,35 +2646,6 @@ void Task::vProcessQuit(NNP_Task nnpTask)
 ENTRY("vProcessQuit");
   
   exit(EXIT_FAILURE);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* rdtscp -- get the time                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vRdtscp(NNP_Task nnpTask)
-{
-ENTRY("vRdtscp");
-  
-  i8 iTscp = Synch::iTicks();
-
-  nnpTask->m_xParamStack.vPush(iTscp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* retryPoint -- mark retry point                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vRetryPoint(NNP_Task nnpTask)
-{
-ENTRY("vRetryMark");
-  
-  nnpTask->m_pResetIP = nnpTask->IP.m_pCell;
-  
-  nnpTask->m_xParamStack.vRetryPoint();
-  nnpTask->m_xReturnStack.vRetryPoint();
   
   EXIT();
 }
@@ -3638,6 +3490,22 @@ void Task::vComment(NNP_Task nnpTask)
     if (String::bEqualTo(")",nnpTask->m_sToken.a()))
       break;
   }
+  
+  EXIT();
+}
+
+// cpu: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* cpu.rdtscp -- read cpu time stamp counter                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vCpuRdtscp(NNP_Task nnpTask)
+{
+  ENTRY("vCpuRdtscp");
+  
+  i8 iTscp = Synch::iTicks();
+  
+  nnpTask->m_xParamStack.vPush(iTscp);
   
   EXIT();
 }
@@ -4838,6 +4706,33 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   EXIT();
 }
 
+// exit: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* exit -- exit from routine                                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vExit(NNP_Task nnpTask)
+{
+  ENTRY("vExit");
+  
+  //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
+  
+  if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
+    nnpTask->vTracePoint("<");
+  
+  if (nnpTask->m_pLocalsFrame &&
+      nnpTask->m_pLocalsFrame->pStackPtr() ==
+      (void*)nnpTask->m_xReturnStack.pTopValue())
+    nnpTask->vLocalsPop();
+  
+  void* pCellVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
+    THROW_INVALID_RETURN("exit");
+  
+  nnpTask->IP.m_pCell = _pCell(pCellVoid);
+  
+  EXIT();
+}
 
 // file: ///////////////////////////////////////////////////////////////////////
 
@@ -5195,6 +5090,40 @@ void Task::vFlowElse(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* execute -- execute word on param stack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowExecute(NNP_Task nnpTask)
+{
+  ENTRY("vFlowExecute");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("execute");
+  Word* pWord = _pWord(pWordObject);
+  
+  if (WT_PRIMITIVE == pWord->eWordType()) {
+    TaskStep pTaskStep = pWord->pEntryStep();
+    (pTaskStep)(nnpTask);
+  }
+  else if (WT_OBJECT == pWord->eWordType()) {
+    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+    nnpTask->IP.m_pCell = pWord->pEntryCell();
+    
+    Cell* pCell = pWord->pFirstCell();
+    nnpTask->m_xParamStack.vPush(pCell);
+  }
+  else if (WT_ROUTINE == pWord->eWordType()){
+    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+    nnpTask->IP.m_pCell = pWord->pEntryCell();
+  }
+  else {
+    ASSERT(0);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* if -- if clause                                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIf(NNP_Task nnpTask)
@@ -5487,6 +5416,21 @@ void Task::vFlowRepeat(NNP_Task nnpTask)
   //-------------------------------------------------------------------------
   
   pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* retryPoint -- mark retry point                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowRetryPoint(NNP_Task nnpTask)
+{
+  ENTRY("vFlowRetryPoint");
+  
+  nnpTask->m_pResetIP = nnpTask->IP.m_pCell;
+  
+  nnpTask->m_xParamStack.vRetryPoint();
+  nnpTask->m_xReturnStack.vRetryPoint();
   
   EXIT();
 }
@@ -5890,6 +5834,26 @@ void Task::vIntGreaterEqual(NNP_Task nnpTask)
   r = i >= j;
   
   nnpTask->m_xParamStack.vPush(r);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* hash -- get hash of string                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vIntHash(NNP_Task nnpTask)
+{
+  ENTRY("vIntHash");
+  
+  s8K sString;
+  if ( ! nnpTask->m_xParamStack.bPop(sString) )
+    THROW_INVALID_PARAM("hash");
+  
+  i8 iLength = String::iLength(sString.a());
+  
+  i8 iHash = XXH32(sString.a(),iLength,0);
+  
+  nnpTask->m_xParamStack.vPush(iHash);
   
   EXIT();
 }
@@ -7136,6 +7100,18 @@ ENTRY("vNodeCursorNext");
 void Task::vNop(NNP_Task nnpTask)
 {
   ENTRY("vNop");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* hazard -- should never be called                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vNopHazard(NNP_Task nnpTask)
+{
+  ENTRY("vNopHazard");
+  
+  THROW("Entered hazard");
   
   EXIT();
 }
@@ -13108,6 +13084,35 @@ void Task::vLocalCalls(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vDistributed(DT_LOCALCALLS);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* locate -- locate word based on ip                                          */
+/*----------------------------------------------------------------------------*/
+void Task::vLocate(NNP_Task nnpTask)
+{
+  ENTRY("vLocate");
+  
+  i8 iAsInt;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(iAsInt) )
+    THROW_INVALID_PARAM("locate");
+  
+  void* pCellVoid = (void*)iAsInt;
+  Cell* pCell = _pCell(pCellVoid);
+  
+  Word* pLocatedWord = nnpTask->pLocateWord(pCell);
+  
+  if (pLocatedWord) {
+    s32 sName;
+    sName = pLocatedWord->sName();
+    nnpTask->m_xParamStack.vPush(sName);
+  }
+  else {
+    i8 iZero = 0;
+    nnpTask->m_xParamStack.vPush(iZero);
+  }
   
   EXIT();
 }

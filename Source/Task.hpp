@@ -283,14 +283,7 @@ namespace Tasks
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
     static void vEqualAddress(NNP_Task nnpTask);
-    static void vExecute(NNP_Task nnpTask);
-    static void vExit(NNP_Task nnpTask);           
     static void vFetch(NNP_Task nnpTask);
-    static void vHazard(NNP_Task nnpTask);
-    static void vHash(NNP_Task nnpTask);
-    static void vLocate(NNP_Task nnpTask);
-    static void vRdtscp(NNP_Task nnpTask);
-    static void vRetryPoint(NNP_Task nnpTask);
     static void vSnooze(NNP_Task nnpTask);
     static void vSleep(NNP_Task nnpTask);
     static void vStore(NNP_Task nnpTask);
@@ -357,6 +350,9 @@ namespace Tasks
 
     // comment
     static void vComment(NNP_Task nnpTask);
+    
+    // cpu
+    static void vCpuRdtscp(NNP_Task nnpTask);
     
     // csv
     static void vCsvFirstValue(NNP_Task nnpTask);
@@ -444,6 +440,9 @@ namespace Tasks
     // errors
     static void vErrorMsg(NNP_Task nnpTask);
     
+    // exit
+    static void vExit(NNP_Task nnpTask);
+    
     // file
     static void vFileClose(NNP_Task nnpTask);     
     static void vFileDelete(NNP_Task nnpTask);
@@ -464,6 +463,7 @@ namespace Tasks
     static void vFlowDo(NNP_Task nnpTask);
     static void vFlowDo_RT(NNP_Task nnpTask);
     static void vFlowElse(NNP_Task nnpTask);
+    static void vFlowExecute(NNP_Task nnpTask);
     static void vFlowIf(NNP_Task nnpTask);
     static void vFlowIterate(NNP_Task nnpTask);
     static void vFlowIterate_RT_A(NNP_Task nnpTask);
@@ -477,6 +477,7 @@ namespace Tasks
     static void vFlowLoopPlus_RT(NNP_Task nnpTask);
     static void vFlowNext(NNP_Task nnpTask);
     static void vFlowRepeat(NNP_Task nnpTask);
+    static void vFlowRetryPoint(NNP_Task nnpTask);
     static void vFlowThen(NNP_Task nnpTask);
     static void vFlowUnloop(NNP_Task nnpTask);
     static void vFlowUntil(NNP_Task nnpTask);
@@ -487,6 +488,7 @@ namespace Tasks
     static void vGridInit(NNP_Task nnpTask);
     static void vGridStartedStore(NNP_Task nnpTask);
     static void vGridStartedFetch(NNP_Task nnpTask);
+    
     
     // input
     static void vInputClose(NNP_Task nnpTask);
@@ -506,6 +508,7 @@ namespace Tasks
     static void vIntEqual(NNP_Task nnpTask);
     static void vIntGreater(NNP_Task nnpTask);
     static void vIntGreaterEqual(NNP_Task nnpTask);
+    static void vIntHash(NNP_Task nnpTask);
     static void vIntLess(NNP_Task nnpTask);
     static void vIntLessEqual(NNP_Task nnpTask);
     static void vIntModulo(NNP_Task nnpTask);
@@ -585,6 +588,7 @@ namespace Tasks
     
     // nop
     static void vNop(NNP_Task nnpTask);
+    static void vNopHazard(NNP_Task nnpTask);
     
     // number
     static void vNumberMagnitude(NNP_Task nnpTask);
@@ -939,6 +943,7 @@ namespace Tasks
     static void vForget(NNP_Task nnpTask);
     static void vImmediate(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
+    static void vLocate(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
     static void vSemicolon(NNP_Task nnpTask);
