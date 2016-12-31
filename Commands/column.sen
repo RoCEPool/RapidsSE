@@ -121,7 +121,7 @@ tp: addColOnAll
 
     concat                       // prepend column to ls
 
-    object@ prevWord object!     // step backwards thru words
+    object@ word.prev object!    // step backwards thru words
 
   next                           //
 

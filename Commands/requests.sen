@@ -644,7 +644,7 @@ tp: droppedTable
 
     ")" concat
 
-    object@ prevWord object!
+    object@ word.prev object!
 
   next
 
@@ -713,7 +713,7 @@ tp: lf
 
   ")" concat
 
-  object@ prevWord object!
+  object@ word.prev object!
 
   next
 

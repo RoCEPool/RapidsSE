@@ -28,7 +28,7 @@ create
     0 dic.pick dic.last dup
     iterate                        // iterate word cursor
       object@ word.name .          // print the name of the word
-      object@ prevWord object!     // advance cursor backwards thru words
+      object@ word.prev object!     // advance cursor backwards thru words
     next
 ;
 
@@ -39,7 +39,7 @@ create
     0 dic.pick dic.last
     begin dup while
       dup word.name .put " " .put dup word.kind@ word.name .put .\n
-      prevWord
+      word.prev
     repeat
     drop
 ;
@@ -56,7 +56,7 @@ create
       object@ word.name concat     // add name of the word to contents string
                                    // add word kind to ls string
       " " concat                   //
-      object@ prevWord object!     // step backwards thru words
+      object@ word.prev object!     // step backwards thru words
     next                           //
 //    ")" concat                     //
 

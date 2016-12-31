@@ -296,14 +296,12 @@ namespace Tasks
     static void vIsBooted(NNP_Task nnpTask);
     static void vIsCompiling(NNP_Task nnpTask);    
     static void vIsInterpreting(NNP_Task nnpTask);
-    static void vIsPrimitive(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vNop(NNP_Task nnpTask);
     static void vNullPtr(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
-    static void vPrevWord(NNP_Task nnpTask);
-    static void vPrint(NNP_Task nnpTask);          
+    static void vPrint(NNP_Task nnpTask);
     static void vPut(NNP_Task nnpTask);
     static void vPutNewline(NNP_Task nnpTask);     
     static void vPutVerbose(NNP_Task nnpTask);
@@ -945,9 +943,11 @@ namespace Tasks
     static void vWordDump(NNP_Task nnpTask);
     static void vWordForget(NNP_Task nnpTask);
     static void vWordIsImmediate(NNP_Task nnpTask);
+    static void vWordIsPrimitive(NNP_Task nnpTask);
     static void vWordKindGet(NNP_Task nnpTask);
     static void vWordKindSet(NNP_Task nnpTask);
     static void vWordName(NNP_Task nnpTask);
+    static void vWordPrev(NNP_Task nnpTask);
     static void vWordThis(NNP_Task nnpTask);
     static void vWordTypeGet(NNP_Task nnpTask);
     static void vWordTypeSet(NNP_Task nnpTask);

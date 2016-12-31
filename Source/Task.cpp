@@ -658,13 +658,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
-  vAddPrimitive("isPrimitive",     &vIsPrimitive,      false);
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("nop",             &vNop,              false);
   vAddPrimitive("nullPtr",         &vNullPtr,          false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
-  vAddPrimitive("prevWord",        &vPrevWord,         false);
   vAddPrimitive(".",               &vPrint,            false);
   vAddPrimitive(".put",            &vPut,              false);
   vAddPrimitive(".\\n",            &vPutNewline,       false);
@@ -1233,9 +1231,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive(">forget",         &vWordForget,       false);
   vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
+  vAddPrimitive("word.isPrimitive",&vWordIsPrimitive,  false);
   vAddPrimitive("word.kind@",      &vWordKindGet,      false);
   vAddPrimitive("word.kind!",      &vWordKindSet,      false);
   vAddPrimitive("word.name",       &vWordName,         false);
+  vAddPrimitive("word.prev",       &vWordPrev,         false);
   vAddPrimitive("word.this",       &vWordThis,         false);
   vAddPrimitive("word.type@",      &vWordTypeGet,      false);
   vAddPrimitive("word.type!",      &vWordTypeSet,      false);
@@ -1346,11 +1346,11 @@ void Task::vAddRoutines(void)
   
   // compiling
   "    isCompiling if "          // compile encodes call to word
-  "      dup isPrimitive if"
+  "      dup word.isPrimitive if"
   "        encodeCallPrimitive"
   "        again_"
   "      then"
-  "      dup isPrimitive not if"
+  "      dup word.isPrimitive not if"
   "        encodeCallWord"
   "        again_"
   "      then"
@@ -2884,25 +2884,6 @@ ENTRY("vIsInterpreting");
 }
 
 /*----------------------------------------------------------------------------*/
-/* isPrimitive -- is word a primitive?                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vIsPrimitive(NNP_Task nnpTask)
-{
-ENTRY("vIsPrimitive");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("isPrimitive");
-  Word* pWord = _pWord(pWordObject);
-  
-  i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
-  
-  nnpTask->m_xParamStack.vPush(iIsPrimitive);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* localCalls -- set current word as a locals calls only word                 */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalCalls(NNP_Task nnpTask)
@@ -2991,25 +2972,6 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prevWord -- push prev word                                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vPrevWord(NNP_Task nnpTask)
-{
-ENTRY("vPrevWord");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("prevWord");
-  Word* pWord = _pWord(pWordObject);
-  
-  Word* pPrevWord = pWord->pPrevWord();
-  
-  nnpTask->m_xParamStack.vPush(pPrevWord);
   
   EXIT();
 }
@@ -13450,6 +13412,25 @@ void Task::vWordIsImmediate(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* word.isPrimitive -- is word a primitive?                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vWordIsPrimitive(NNP_Task nnpTask)
+{
+  ENTRY("vWordIsPrimitive");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("word.isPrimitive");
+  Word* pWord = _pWord(pWordObject);
+  
+  i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
+  
+  nnpTask->m_xParamStack.vPush(iIsPrimitive);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* word.kind@ -- word kind get                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vWordKindGet(NNP_Task nnpTask)
@@ -13504,6 +13485,25 @@ ENTRY("vWordName");
   s32 sWordName(pWord->sName().a());
   
   nnpTask->m_xParamStack.vPush(sWordName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.prev -- push prev word                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vWordPrev(NNP_Task nnpTask)
+{
+  ENTRY("vWordPrev");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("wordPrev");
+  Word* pWord = _pWord(pWordObject);
+  
+  Word* pPrevWord = pWord->pPrevWord();
+  
+  nnpTask->m_xParamStack.vPush(pPrevWord);
   
   EXIT();
 }
