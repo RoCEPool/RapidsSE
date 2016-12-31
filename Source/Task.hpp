@@ -280,8 +280,6 @@ namespace Tasks
     static void vAllParticipants(NNP_Task nnpTask);
     static void vBpa(NNP_Task nnpTask);
     static void vBpdump(NNP_Task nnpTask);
-    static void vCastInt(NNP_Task nnpTask);
-    static void vCastPtr(NNP_Task nnpTask);
     static void vCells(NNP_Task nnpTask);
     static void vColon(NNP_Task nnpTask);
     static void vComma(NNP_Task nnpTask);          
@@ -293,15 +291,10 @@ namespace Tasks
     static void vExecute(NNP_Task nnpTask);
     static void vExit(NNP_Task nnpTask);           
     static void vFetch(NNP_Task nnpTask);
-    static void vFreeBuffers(NNP_Task nnpTask);
-    static void vFreePercent(NNP_Task nnpTask);
-    static void vFreeSpace(NNP_Task nnpTask);
     static void vHazard(NNP_Task nnpTask);
     static void vHash(NNP_Task nnpTask);
     static void vI(NNP_Task nnpTask);
-    static void vImmediate(NNP_Task nnpTask);
-    static void vInUseSpace(NNP_Task nnpTask);
-    static void vIsBooted(NNP_Task nnpTask);       
+    static void vIsBooted(NNP_Task nnpTask);
     static void vIsCompiling(NNP_Task nnpTask);    
     static void vIsInterpreting(NNP_Task nnpTask);
     static void vIsPrimitive(NNP_Task nnpTask);
@@ -329,7 +322,6 @@ namespace Tasks
     static void vTest(NNP_Task nnpTask);
     static void vThrow(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);           
-    static void vTotalSpace(NNP_Task nnpTask);
     static void vToken(NNP_Task nnpTask);
     static void vWake(NNP_Task nnpTask);
 
@@ -382,6 +374,10 @@ namespace Tasks
     static void vAstack7(NNP_Task nnpTask);
     static void vAstack8(NNP_Task nnpTask);
     static void vAstack9(NNP_Task nnpTask);
+    
+    // cast
+    static void vCastInt(NNP_Task nnpTask);
+    static void vCastPtr(NNP_Task nnpTask);
     
     // class
     static void vClassName(NNP_Task nnpTask);
@@ -750,6 +746,13 @@ namespace Tasks
     // shell
     static void vShellExecute(NNP_Task nnpTask);
     
+    // space
+    static void vFreeBuffers(NNP_Task nnpTask);
+    static void vFreePercent(NNP_Task nnpTask);
+    static void vFreeSpace(NNP_Task nnpTask);
+    static void vInUseSpace(NNP_Task nnpTask);
+    static void vTotalSpace(NNP_Task nnpTask);
+    
     // stack
     static void vAstackClass(NNP_Task nnpTask);
     static void vStackClass(NNP_Task nnpTask);                 //! DUP OF class@
@@ -935,6 +938,7 @@ namespace Tasks
     static void vFind(NNP_Task nnpTask);
     static void vFindInCurrent(NNP_Task nnpTask);
     static void vForget(NNP_Task nnpTask);
+    static void vImmediate(NNP_Task nnpTask);
     static void vWord(NNP_Task nnpTask);
     static void vWordDic(NNP_Task nnpTask);
     static void vWordDump(NNP_Task nnpTask);

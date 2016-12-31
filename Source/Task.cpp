@@ -640,8 +640,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("allParticipants", &vAllParticipants,  true );
   vAddPrimitive("bpa",             &vBpa,              false);
   vAddPrimitive("bpdump",          &vBpdump,           false);
-  vAddPrimitive("(int)",           &vCastInt,          false);
-  vAddPrimitive("(ptr)",           &vCastPtr,          false);
   vAddPrimitive("cells",           &vCells,            false);
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
@@ -655,14 +653,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("@",               &vFetch,            false);
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
-  vAddPrimitive("freePercent",     &vFreePercent,      false);
-  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
   vAddPrimitive("hash",            &vHash,             false);
   vAddPrimitive("hazard",          &vHazard,           false);
   vAddPrimitive("i",               &vI,                false);
-  vAddPrimitive("immediate",       &vImmediate,        true );
-  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
   vAddPrimitive("isBooted",        &vIsBooted,         false);
   vAddPrimitive("isCompiling",     &vIsCompiling,      false);
   vAddPrimitive("isInterpreting",  &vIsInterpreting,   false);
@@ -690,7 +683,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("str:",            &vStringColon,      false);
   vAddPrimitive("test",            &vTest,             false);
   vAddPrimitive("throw",           &vThrow,            false);
-  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive("token",           &vToken,            false);
   vAddPrimitive("wake",            &vWake,             false);
@@ -734,6 +726,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("a7",              &vAstack7,          false);
   vAddPrimitive("a8",              &vAstack8,          false);
   vAddPrimitive("a9",              &vAstack9,          false);
+  
+  vAddPrimitive("(int)",           &vCastInt,          false);
+  vAddPrimitive("(ptr)",           &vCastPtr,          false);
   
   vAddPrimitive("class.name",      &vClassName,    false);
   
@@ -1065,6 +1060,12 @@ void Task::vAddPrimitives(void)
 
   vAddPrimitive("shell.execute",  &vShellExecute,  false);
  
+  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
+  vAddPrimitive("freePercent",     &vFreePercent,      false);
+  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
+  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
+  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
+  
   vAddPrimitive("astack.class", &vAstackClass,    false);
   vAddPrimitive("stack.class",  &vStackClass,     false);
   
@@ -1226,9 +1227,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">create",         &vCreateFrom,       false);
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("does_rt",         &vDoes_RT,          false);
+  vAddPrimitive("forget",          &vForget,           false);
+  vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
-  vAddPrimitive("forget",          &vForget,           false);
   vAddPrimitive(">forget",         &vWordForget,       false);
   vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
   vAddPrimitive("word.kind@",      &vWordKindGet,      false);
@@ -2538,38 +2540,6 @@ ENTRY("vBpdump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* (int) -- cast ptr to int                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vCastInt(NNP_Task nnpTask)
-{
-  ENTRY("vCastInt");
-  
-  Object* pPtr;
-  if ( ! nnpTask->m_xParamStack.bPop(pPtr) )
-    THROW_INVALID_PARAM("(int)");
-  
-  nnpTask->m_xParamStack.vPush((i8)pPtr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* (ptr) -- cast int to ptr                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vCastPtr(NNP_Task nnpTask)
-{
-  ENTRY("vCastPtr");
-  
-  i8 iInt;
-  if ( ! nnpTask->m_xParamStack.bPop(iInt) )
-    THROW_INVALID_PARAM("(ptr)");
-  
-  nnpTask->m_xParamStack.vPush((Object*)iInt);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* cells -- convert cells into n bytes                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vCells(NNP_Task nnpTask)
@@ -2822,48 +2792,6 @@ void Task::vFetch(NNP_Task nnpTask)
 
 
 /*----------------------------------------------------------------------------*/
-/* freeBuffers -- push number of free buffers in buffer pool onto stack       */
-/*----------------------------------------------------------------------------*/
-void Task::vFreeBuffers(NNP_Task nnpTask)
-{
-  ENTRY("vFreePercent");
-  
-  i8 iFreeBuffers = gpBufferPool->iFreeCount();
-  
-  nnpTask->m_xParamStack.vPush(iFreeBuffers);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* freePercent -- push free percent of buffer pool onto stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vFreePercent(NNP_Task nnpTask)
-{
-ENTRY("vFreePercent");
-  
-  i8 iFreePercent = gpBufferPool->iFreePercent();
-  
-  nnpTask->m_xParamStack.vPush(iFreePercent);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* freeSpace -- push free space in buffer pool onto stack                     */
-/*----------------------------------------------------------------------------*/
-void Task::vFreeSpace(NNP_Task nnpTask)
-{
-ENTRY("vFreeSpace");
-  
-  i8 iFreeSpace = gpBufferPool->iFreeSpace();
-  
-  nnpTask->m_xParamStack.vPush(iFreeSpace);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* hash -- get hash of string                                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vHash(NNP_Task nnpTask)
@@ -2984,20 +2912,6 @@ ENTRY("vIsPrimitive");
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
   nnpTask->m_xParamStack.vPush(iIsPrimitive);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* inUseSpace -- push in-use space in buffer pool onto stack                  */
-/*----------------------------------------------------------------------------*/
-void Task::vInUseSpace(NNP_Task nnpTask)
-{
-ENTRY("vInUseSpace");
-  
-  i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
-  
-  nnpTask->m_xParamStack.vPush(iInUseSpace);
   
   EXIT();
 }
@@ -3585,20 +3499,6 @@ ENTRY("vTick");
   else {
     nnpTask->m_xParamStack.vPush(pWord);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* TotalSpace -- push total space in buffer pool onto stack                   */
-/*----------------------------------------------------------------------------*/
-void Task::vTotalSpace(NNP_Task nnpTask)
-{
-  ENTRY("vTotalSpace");
-  
-  i8 iTotalSpace = gpBufferPool->iRegionSize();
-  
-  nnpTask->m_xParamStack.vPush(iTotalSpace);
   
   EXIT();
 }
@@ -4268,6 +4168,40 @@ void Task::vArgsPrint(NNP_Task nnpTask)
 ENTRY("vArgsPrint");
   
   gxArguments.vPrint();
+  
+  EXIT();
+}
+
+// cast: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* (int) -- cast ptr to int                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vCastInt(NNP_Task nnpTask)
+{
+  ENTRY("vCastInt");
+  
+  Object* pPtr;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtr) )
+    THROW_INVALID_PARAM("(int)");
+  
+  nnpTask->m_xParamStack.vPush((i8)pPtr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* (ptr) -- cast int to ptr                                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vCastPtr(NNP_Task nnpTask)
+{
+  ENTRY("vCastPtr");
+  
+  i8 iInt;
+  if ( ! nnpTask->m_xParamStack.bPop(iInt) )
+    THROW_INVALID_PARAM("(ptr)");
+  
+  nnpTask->m_xParamStack.vPush((Object*)iInt);
   
   EXIT();
 }
@@ -10147,6 +10081,78 @@ void Task::vShellExecute(NNP_Task nnpTask)
   i8 iExitStatus = Shell::iExecute(xCommand.sStr(),xSysCall);
   
   nnpTask->m_xParamStack.vPush(iExitStatus);
+  
+  EXIT();
+}
+
+// space: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* freeBuffers -- push number of free buffers in buffer pool onto stack       */
+/*----------------------------------------------------------------------------*/
+void Task::vFreeBuffers(NNP_Task nnpTask)
+{
+  ENTRY("vFreePercent");
+  
+  i8 iFreeBuffers = gpBufferPool->iFreeCount();
+  
+  nnpTask->m_xParamStack.vPush(iFreeBuffers);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* freePercent -- push free percent of buffer pool onto stack                 */
+/*----------------------------------------------------------------------------*/
+void Task::vFreePercent(NNP_Task nnpTask)
+{
+  ENTRY("vFreePercent");
+  
+  i8 iFreePercent = gpBufferPool->iFreePercent();
+  
+  nnpTask->m_xParamStack.vPush(iFreePercent);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* freeSpace -- push free space in buffer pool onto stack                     */
+/*----------------------------------------------------------------------------*/
+void Task::vFreeSpace(NNP_Task nnpTask)
+{
+  ENTRY("vFreeSpace");
+  
+  i8 iFreeSpace = gpBufferPool->iFreeSpace();
+  
+  nnpTask->m_xParamStack.vPush(iFreeSpace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* inUseSpace -- push in-use space in buffer pool onto stack                  */
+/*----------------------------------------------------------------------------*/
+void Task::vInUseSpace(NNP_Task nnpTask)
+{
+  ENTRY("vInUseSpace");
+  
+  i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
+  
+  nnpTask->m_xParamStack.vPush(iInUseSpace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* TotalSpace -- push total space in buffer pool onto stack                   */
+/*----------------------------------------------------------------------------*/
+void Task::vTotalSpace(NNP_Task nnpTask)
+{
+  ENTRY("vTotalSpace");
+  
+  i8 iTotalSpace = gpBufferPool->iRegionSize();
+  
+  nnpTask->m_xParamStack.vPush(iTotalSpace);
   
   EXIT();
 }
