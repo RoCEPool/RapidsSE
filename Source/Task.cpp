@@ -1232,7 +1232,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("'",               &vTick,             true );
-  vAddPrimitive(" token",           &vToken,            false);
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive(">forget",         &vWordForget,       false);
@@ -13295,22 +13294,6 @@ void Task::vTick(NNP_Task nnpTask)
   else {
     nnpTask->m_xParamStack.vPush(pWord);
   }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* token -- get next token as string on stack                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vToken(NNP_Task nnpTask)
-{
-  ENTRY("vToken");
-  
-  nnpTask->vTokenNext();
-  
-  s32 sToken(nnpTask->m_sToken.a());
-  
-  nnpTask->m_xParamStack.vPush(sToken);
   
   EXIT();
 }

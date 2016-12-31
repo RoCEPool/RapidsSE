@@ -939,7 +939,6 @@ namespace Tasks
     static void vSee(NNP_Task nnpTask);
     static void vSemicolon(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);
-    static void vToken(NNP_Task nnpTask);
     static void vWord(NNP_Task nnpTask);
     static void vWordDic(NNP_Task nnpTask);
     static void vWordDump(NNP_Task nnpTask);
