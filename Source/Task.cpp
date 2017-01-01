@@ -4904,7 +4904,7 @@ ENTRY("vFileWrite");
 // flow: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* again -- unconditionally repeat loop (use only in : docol)                 */
+/* again -- unconditionally repeat begin loop                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAgain(NNP_Task nnpTask)
 {
@@ -4912,12 +4912,14 @@ void Task::vFlowAgain(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+  // get destination address for backward jump
+  void* pBackwardDestVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestVoid) )
     THROW_INVALID_RSTACK("again");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  Cell* pBackwardDest = _pCell(pBackwardDestVoid);
   
-  pCurrentWord->vEncode("jump",pBeginLoc);
+  // jump backwards
+  pCurrentWord->vEncode("jump",pBackwardDest);
   
   EXIT();
 }
@@ -4943,9 +4945,11 @@ void Task::vFlowBegin(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pLastCell = pCurrentWord->pLastCell();
+  // get destination address for a backward jump
+  Cell* pBackwardDest = pCurrentWord->pLastCell();
   
-  nnpTask->m_xReturnStack.vPush(pLastCell);
+  // record destination address for a backward jump
+  nnpTask->m_xReturnStack.vPush(pBackwardDest);
   
   EXIT();
 }
@@ -5083,13 +5087,12 @@ void Task::vFlowIf(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pIfJumpArg;
-  
+  // append call to jumpFalse with unknown forward address
   pCurrentWord->vEncode("jumpFalse");
+  Cell* pFordardBranchOrig = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  pIfJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  nnpTask->m_xReturnStack.vPush(pIfJumpArg);
+  // record origin of forward conditional branch
+  nnpTask->m_xReturnStack.vPush(pFordardBranchOrig);
   
   EXIT();
 }
@@ -5417,12 +5420,15 @@ void Task::vFlowThen(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  void* pIfJumpArgVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
+  // get origin of forward conditional branch
+  void* pFordardBranchOrigVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pFordardBranchOrigVoid) )
     THROW_INVALID_RSTACK("then");
-  Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
-  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  Cell* pFordardBranchOrig = _pCell(pFordardBranchOrigVoid);
+  
+  // resolve forward conditional branch
+  pFordardBranchOrig->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -5468,14 +5474,12 @@ void Task::vFlowUntil(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  void* pBeginLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
+  void* pBackwardDestVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestVoid) )
     THROW_INVALID_RSTACK("until");
-  Cell* pBeginLoc = _pCell(pBeginLocVoid);
+  Cell* pBackwardDest = _pCell(pBackwardDestVoid);
   
-  //-------------------------------------------------------------------------
-  
-  pCurrentWord->vEncode("jumpFalse",pBeginLoc);
+  pCurrentWord->vEncode("jumpFalse",pBackwardDest);
   
   EXIT();
 }
