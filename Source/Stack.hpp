@@ -6,6 +6,11 @@
 
 #include "Structures.h"
 
+namespace Dictionaries
+{
+  class Cell;
+}
+
 namespace Structures
 {
   class Stack : public Object
@@ -39,6 +44,7 @@ namespace Structures
     bool bGuard(eCN eClass0, eCN eClass1);
     bool bGuard(eCN eClass0, eCN eClass1, eCN eClass2);
     
+    bool bPop(Dictionaries::Cell*& pCell);
     bool bPop(eCN& eArg1);
     bool bPop(Header*& pHeader);
     bool bPop(i8& iArg1);
@@ -60,7 +66,6 @@ namespace Structures
     bool bPop(s256& sArg1);
     bool bPop(s8K& sArg1);
     bool bPop(s8K& sArg1, s8K& sArg2);
-    bool bPop(void*& pVoid);
     bool bPopParamInt(i8& iArg1);
     
     void vPush(Header* pHeader);
