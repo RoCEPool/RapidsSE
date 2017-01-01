@@ -454,7 +454,6 @@ namespace Tasks
     
     // flow
     static void vFlowAgain(NNP_Task nnpTask);
-    static void vFlowAgain_(NNP_Task nnpTask);
     static void vFlowAhead(NNP_Task nnpTask);
     static void vFlowBegin(NNP_Task nnpTask);
     static void vFlowBegin_(NNP_Task nnpTask);
@@ -468,6 +467,7 @@ namespace Tasks
     static void vFlowIterate_RT_A(NNP_Task nnpTask);
     static void vFlowIterate_RT_B(NNP_Task nnpTask);
     static void vFlowJump(NNP_Task nnpTask);
+    static void vFlowJumpBegin_(NNP_Task nnpTask);
     static void vFlowJumpFalse(NNP_Task nnpTask);
     static void vFlowJumpTrue(NNP_Task nnpTask);
     static void vFlowLoop(NNP_Task nnpTask);

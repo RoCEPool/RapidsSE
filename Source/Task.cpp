@@ -790,7 +790,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("file.write",      &vFileWrite,        false);
   
   vAddPrimitive("again",           &vFlowAgain,        true );
-  vAddPrimitive("again_",          &vFlowAgain_,       false);
   vAddPrimitive("ahead",           &vFlowAhead,        true );
   vAddPrimitive("begin",           &vFlowBegin,        true );
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
@@ -804,6 +803,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
   vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B, false);
   vAddPrimitive("jump",            &vFlowJump,         false);
+  vAddPrimitive("jumpBegin_",          &vFlowJumpBegin_,   false);
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
   vAddPrimitive("loop",            &vFlowLoop,         true );
@@ -1284,8 +1284,9 @@ void Task::vAddRoutines(void)
   ": docol "
   
   "  retryPoint"
-  
   "  begin_"
+  
+  // get next input token
   "    input.next"
   
   // end of input
@@ -1299,12 +1300,12 @@ void Task::vAddRoutines(void)
   "      input.token >int"        // convert str to int, leave on stack
   
   "      docol.isInterpreting if" // interpret leaves int on stack
-  "        again_"
+  "        jumpBegin_"
   "      then"
   
   "      docol.isCompiling if"    // compile encodes push intval
   "        encodePushValue"
-  "        again_"
+  "        jumpBegin_"
   "      then"
   
   "    then"
@@ -1315,12 +1316,12 @@ void Task::vAddRoutines(void)
   "      input.token"             // put str on stack
   
   "      docol.isInterpreting if" // interpret leaves str on stack
-  "        again_"
+  "        jumpBegin_"
   "      then"
   
   "      docol.isCompiling if"    // compile encodes push strval
   "        encodePushValue"
-  "        again_"
+  "        jumpBegin_"
   "      then"
   
   "    then"
@@ -1328,17 +1329,18 @@ void Task::vAddRoutines(void)
   // what?
   "    input.type TK_NAME != if"  // double check we have a name
   "      \"strange token\" . input.type ."
-  "      again_"
+  "      jumpBegin_"
   "    then"
   
-  // known name?
-  "    input.token find"         // attempt to find
-  "    dup not if"
+  // is token a known word?
+  "    input.token find"         // attempt to find word
+  
+  "    dup not if"               // unknwon word
   "      drop"
   "      \"unknown\" ."
   "      input.token ."
   "      dic.isCompiled not if process.quit then "
-  "      again_"
+  "      jumpBegin_"
   "    then"
   
   // known word on stack
@@ -1346,28 +1348,28 @@ void Task::vAddRoutines(void)
   // immediate
   "    dup word.isImmediate if"  // execute an immediate word
   "      execute"
-  "      again_"
+  "      jumpBegin_"
   "    then"
   
   // compiling
   "    docol.isCompiling if "    // compile encodes call to word
   "      dup word.isPrimitive if"
   "        encodeCallPrimitive"
-  "        again_"
+  "        jumpBegin_"
   "      then"
   "      dup word.isPrimitive not if"
   "        encodeCallWord"
-  "        again_"
+  "        jumpBegin_"
   "      then"
   "    then"
   
   // interpreting
   "    docol.isInterpreting if " // interpreting calls word
   "      execute"
-  "      again_"
+  "      jumpBegin_"
   "    then"
   
-  "  again_"
+  "  jumpBegin_"
   " ;";
   
   pCompileColon(sDefinition);
@@ -4905,7 +4907,7 @@ ENTRY("vFileWrite");
 // flow: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* again -- unconditionally repeat begin loop                                 */
+/* again -- encode jump to backward destination                     immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAgain(NNP_Task nnpTask)
 {
@@ -4913,32 +4915,20 @@ void Task::vFlowAgain(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get destination address for backward jump
-  void* pBackwardDestVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestVoid) )
+  // get destination for backward jump
+  void* pBackwardDestinationVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestinationVoid) )
     THROW_INVALID_RSTACK("again");
-  Cell* pBackwardDest = _pCell(pBackwardDestVoid);
+  Cell* pBackwardDestination = _pCell(pBackwardDestinationVoid);
   
-  // jump backwards
-  pCurrentWord->vEncode("jump",pBackwardDest);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* again_ -- unconditionally repeat begin_ loop (use only in : docol)         */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowAgain_(NNP_Task nnpTask)
-{
-  ENTRY("vAgain_");
-  
-  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
+  // append : jump to backward destination
+  pCurrentWord->vEncode("jump",pBackwardDestination);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ahead -- unconditional branch to unresolved forward reference              */
+/* ahead -- encode jump to unresolved forward destination           immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAhead(NNP_Task nnpTask)
 {
@@ -4946,18 +4936,18 @@ void Task::vFlowAhead(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // append : jump with unknown forward address
+  // append : jump to unknown forward destination
   pCurrentWord->vEncode("jump");
-  Cell* pFordardBranchOrig = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  // record origin of forward unconditional branch
-  nnpTask->m_xReturnStack.vPush(pFordardBranchOrig);
+  // record address of forward unconditional branch
+  nnpTask->m_xReturnStack.vPush(pForwardOrigin);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin -- begin a loop (use only in : docol)                                */
+/* begin -- record backward destination                             immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin(NNP_Task nnpTask)
 {
@@ -4965,17 +4955,17 @@ void Task::vFlowBegin(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get destination address for a backward jump
-  Cell* pBackwardDest = pCurrentWord->pLastCell();
+  // get address for a backward jump
+  Cell* pBackwardDestination = pCurrentWord->pLastCell();
   
-  // record destination address for a backward jump
-  nnpTask->m_xReturnStack.vPush(pBackwardDest);
+  // record backward destination
+  nnpTask->m_xReturnStack.vPush(pBackwardDestination);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin_ -- begin a loop (use only in : docol)                               */
+/* begin_ -- begin the loop : docol (used only in docol)            immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin_(NNP_Task nnpTask)
 {
@@ -4987,7 +4977,7 @@ void Task::vFlowBegin_(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* do -- compile time of do ... loop                                immediate */
+/* do -- encode runtime form of : do                                immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowDo(NNP_Task nnpTask)
 {
@@ -4997,15 +4987,17 @@ void Task::vFlowDo(NNP_Task nnpTask)
   
   pCurrentWord->vEncode("do_rt");
   
-  Cell* pLastCell = pCurrentWord->pLastCell();
+  // get address for a backward jump
+  Cell* pBackwardDestination = pCurrentWord->pLastCell();
   
-  nnpTask->m_xReturnStack.vPush((void*)pLastCell);
+  // record backward destination
+  nnpTask->m_xReturnStack.vPush(pBackwardDestination);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* do_rt -- runtime of do ... loop                                            */
+/* do_rt -- runtime form of do                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowDo_RT(NNP_Task nnpTask)
 {
@@ -5023,7 +5015,7 @@ void Task::vFlowDo_RT(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* else -- else clause                                                        */
+/* else -- encode else                                              immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowElse(NNP_Task nnpTask)
 {
@@ -5099,7 +5091,7 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* if -- conditional false branch to unresolved forward reference             */
+/* if -- encode branch on false to unknown forward reference        immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIf(NNP_Task nnpTask)
 {
@@ -5107,18 +5099,18 @@ void Task::vFlowIf(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // append call to jumpFalse with unknown forward address
+  // append : jumpFalse to unresolved forward destination
   pCurrentWord->vEncode("jumpFalse");
-  Cell* pFordardBranchOrig = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  // record origin of forward conditional branch
-  nnpTask->m_xReturnStack.vPush(pFordardBranchOrig);
+  // record address of unresolved forward branch
+  nnpTask->m_xReturnStack.vPush(pForwardOrigin);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* iterate -- compile time of iterate ... next                      immediate */
+/* iterate -- encode runtime form of : iterate                      immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIterate(NNP_Task nnpTask)
 {
@@ -5197,6 +5189,18 @@ void Task::vFlowJump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* jumpBegin_ -- jump to begin_ (used only in : docol)              immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowJumpBegin_(NNP_Task nnpTask)
+{
+  ENTRY("vFlowJumpBegin_");
+  
+  nnpTask->IP.m_pCell = nnpTask->m_pBeginIP;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* jumpFalse -- jump on false to location                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowJumpFalse(NNP_Task nnpTask)
@@ -5207,12 +5211,13 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
     THROW_INVALID_PSTACK("jumpFalse");
   
-  //  i8 iFlag = nnpTask->m_xParamStack.iPop();
+  // n.b. the IP points to the jump arg
   
-  // cell points to the jump arg
   if (iVal)
+    // do not jump, skip over argument
     nnpTask->IP.m_pCell++;
   else
+    // jump to location
     nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
   
   EXIT();
@@ -5229,17 +5234,20 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
     THROW_INVALID_PSTACK("jumpTrue");
   
-  // cell points to the jump arg
+  // n.b. the IP points to the jump arg
+  
   if (iVal)
+    // jump to location
     nnpTask->IP.m_pCell = nnpTask->IP.m_pCell->m_pJumpTo;
   else
+    // do not jump, skip over argument
     nnpTask->IP.m_pCell++;
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop -- compile time for do ... loop                            immediate  */
+/* loop -- encode runtime form of : loop                            immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoop(NNP_Task nnpTask)
 {
@@ -5247,20 +5255,21 @@ void Task::vFlowLoop(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  void* pDoLocVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
+  // get address of backward jump
+  void* pBackwardDestinationVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestinationVoid) )
     THROW_INVALID_RSTACK("loop");
-  Cell* pDoLoc = _pCell(pDoLocVoid);
+  Cell* pBackwardDestination = _pCell(pBackwardDestinationVoid);
   
   pCurrentWord->vEncode("Loop_RT");
   
-  pCurrentWord->vEncode("jump",pDoLoc);
+  pCurrentWord->vEncode("jump",pBackwardDestination);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop_rt -- runtime for do loop                                             */
+/* loop_rt -- runtime form of loop                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoop_RT(NNP_Task nnpTask)
 {
@@ -5286,7 +5295,7 @@ void Task::vFlowLoop_RT(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loopPlus -- do +loop                                                       */
+/* loopPlus -- encode runtime form of : +loop                       immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoopPlus(NNP_Task nnpTask)
 {
@@ -5432,7 +5441,7 @@ void Task::vFlowTest(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* then -- then clause                                                        */
+/* then -- resolve forward conditional branch                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThen(NNP_Task nnpTask)
 {
@@ -5441,14 +5450,14 @@ void Task::vFlowThen(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   // get origin of forward conditional branch
-  void* pFordardBranchOrigVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pFordardBranchOrigVoid) )
+  void* pForwardOriginVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pForwardOriginVoid) )
     THROW_INVALID_RSTACK("then");
   
-  Cell* pFordardBranchOrig = _pCell(pFordardBranchOrigVoid);
+  Cell* pForwardOrigin = _pCell(pForwardOriginVoid);
   
   // resolve forward conditional branch
-  pFordardBranchOrig->m_pJumpTo = pCurrentWord->pLastCell();
+  pForwardOrigin->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -5486,7 +5495,7 @@ void Task::vFlowUnloop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* until -- repeat begin loop until true                                      */
+/* until -- backward conditional branch                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowUntil(NNP_Task nnpTask)
 {
@@ -5494,12 +5503,14 @@ void Task::vFlowUntil(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  void* pBackwardDestVoid;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestVoid) )
+  // get destination address for backward conditional branch
+  void* pBackwardDestinationVoid;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestinationVoid) )
     THROW_INVALID_RSTACK("until");
-  Cell* pBackwardDest = _pCell(pBackwardDestVoid);
+  Cell* pBackwardDestination = _pCell(pBackwardDestinationVoid);
   
-  pCurrentWord->vEncode("jumpFalse",pBackwardDest);
+  // jump on false to backward destination
+  pCurrentWord->vEncode("jumpFalse",pBackwardDestination);
   
   EXIT();
 }
