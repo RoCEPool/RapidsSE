@@ -791,6 +791,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("again",           &vFlowAgain,        true );
   vAddPrimitive("again_",          &vFlowAgain_,       false);
+  vAddPrimitive("ahead",           &vFlowAhead,        true );
   vAddPrimitive("begin",           &vFlowBegin,        true );
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
   vAddPrimitive("do",              &vFlowDo,           true );
@@ -4937,6 +4938,25 @@ void Task::vFlowAgain_(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* ahead -- unconditional branch to unresolved forward reference              */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowAhead(NNP_Task nnpTask)
+{
+  ENTRY("vAhead");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // append : jump with unknown forward address
+  pCurrentWord->vEncode("jump");
+  Cell* pFordardBranchOrig = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  
+  // record origin of forward unconditional branch
+  nnpTask->m_xReturnStack.vPush(pFordardBranchOrig);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin -- begin a loop (use only in : docol)                                */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin(NNP_Task nnpTask)
@@ -5079,7 +5099,7 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* if -- if clause                                                            */
+/* if -- conditional false branch to unresolved forward reference             */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIf(NNP_Task nnpTask)
 {
