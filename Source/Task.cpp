@@ -2450,7 +2450,7 @@ void Task::vAddressEqual(NNP_Task nnpTask)
   ValWsp xAddressB;
   
   if ( ! nnpTask->m_xParamStack.bPop(xAddressA,xAddressB) )
-    THROW_INVALID_PARAM("eql");
+    THROW_INVALID_PSTACK("eql");
   
   i8 iA = xAddressA.iAsInt();
   i8 iB = xAddressB.iAsInt();
@@ -2471,7 +2471,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("@");
+    THROW_INVALID_PSTACK("@");
   
   ValWsp xValFetched;
   
@@ -2510,11 +2510,11 @@ void Task::vAddressStore(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("!");
+    THROW_INVALID_PSTACK("!");
   
   ValWsp xValStored;
   if ( ! nnpTask->m_xParamStack.bPop(xValStored) )
-    THROW_INVALID_PARAM("!");
+    THROW_INVALID_PSTACK("!");
   
   Value* pValue = reinterpret_cast<Value*>(pObject);
   
@@ -2551,7 +2551,7 @@ void Task::vAssert(NNP_Task nnpTask)
   
   i8 iTrue;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iTrue) )
-    THROW_INVALID_PARAM("assert");
+    THROW_INVALID_PSTACK("assert");
   
   if ( ! iTrue )
     THROW("assert");
@@ -2720,7 +2720,7 @@ void Task::vAstackClass(NNP_Task nnpTask)
   
   i8 nTh;
   if ( ! nnpTask->m_xParamStack.bPop(nTh) )
-    THROW_INVALID_PARAM("astack.class");
+    THROW_INVALID_PSTACK("astack.class");
   
   ValWsp xValWsp;
   
@@ -2758,13 +2758,13 @@ void Task::vAstackDrop(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_xAuxStack.bPop(xValA) )
-    THROW_INVALID_RETURN("adrop");
+    THROW_INVALID_ASTACK("adrop");
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* dup -- dup top of aux stack                                              */
+/* adup -- dup top of aux stack                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackDup(NNP_Task nnpTask)
 {
@@ -2773,8 +2773,8 @@ void Task::vAstackDup(NNP_Task nnpTask)
   // could just copy from stack back into stack
   
   ValWsp xValA;
-  if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-  THROW_INVALID_PARAM("adup");
+  if ( ! nnpTask->m_xAuxStack.bPop(xValA) )
+  THROW_INVALID_PSTACK("adup");
   
   nnpTask->m_xAuxStack.vPush(xValA);
   nnpTask->m_xAuxStack.vPush(xValA);
@@ -2811,7 +2811,7 @@ void Task::vAstackNip(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_xAuxStack.bPop(xValA,xValB) )
-  THROW_INVALID_PARAM("anip");
+  THROW_INVALID_ASTACK("anip");
   
   nnpTask->m_xAuxStack.vPush(&xValA);
   
@@ -2827,7 +2827,7 @@ void Task::vAstackPick(NNP_Task nnpTask)
   
   i8 iPick;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("apick");
+    THROW_INVALID_PSTACK("apick");
   
   // could do this directly on stack
   
@@ -2862,11 +2862,11 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("areverse");
+    THROW_INVALID_PSTACK("areverse");
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! nnpTask->m_xAuxStack.bPop(apValWsp[i]) )
-      THROW_INVALID_PARAM("areverse");
+      THROW_INVALID_ASTACK("areverse");
   }
   
   for (i8 i = 0; i < nValues; i++) {
@@ -2885,7 +2885,7 @@ void Task::vAstackSwap(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_xAuxStack.bPop(xValA,xValB) )
-  THROW_INVALID_PARAM("aswap");
+  THROW_INVALID_ASTACK("aswap");
   
   nnpTask->m_xAuxStack.vPush(&xValA);
   nnpTask->m_xAuxStack.vPush(&xValB);
@@ -2903,10 +2903,10 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   i8 nVal;
   
   if ( ! nnpTask->m_xAuxStack.bPop(nVal) )
-  THROW_INVALID_PARAM(">avalset");
+  THROW_INVALID_ASTACK(">avalset");
   
   if ( ! nnpTask->m_xAuxStack.bGuard(nVal) )
-  THROW_INVALID_PARAM(">avalset");
+  THROW_INVALID_ASTACK(">avalset");
   
   char* pCursor = nullptr;
   ValSet xValSet;
@@ -2915,7 +2915,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
     if ( ! nnpTask->m_xAuxStack.bPop(xVal) )
-    THROW_INVALID_PARAM(">avalset");
+    THROW_INVALID_ASTACK(">avalset");
     
     xValSet.vAppend(pCursor,xVal);
   }
@@ -2937,7 +2937,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
   ValSet xValSet;
   
   if ( ! nnpTask->m_xAuxStack.bPop(xValSet) )
-    THROW_INVALID_PARAM(">avalues");
+    THROW_INVALID_ASTACK(">avalues");
   
   i8 nVal = 0;
   ValWsp* pValWsp[128];
@@ -2963,7 +2963,7 @@ void Task::vAstackToA(NNP_Task nnpTask)
   
   ValWsp xValOpaque;
   if ( ! nnpTask->m_xParamStack.bPop(xValOpaque) )
-    THROW_INVALID_PARAM(">r");
+    THROW_INVALID_PSTACK(">r");
   
   nnpTask->m_xAuxStack.vPush(xValOpaque);
   
@@ -2979,7 +2979,7 @@ void Task::vAstackToP(NNP_Task nnpTask)
   
   ValWsp xVal;
   if ( ! nnpTask->m_xAuxStack.bPop(xVal) )
-    THROW_INVALID_PARAM("a>");
+    THROW_INVALID_ASTACK("a>");
   
   nnpTask->m_xParamStack.vPush(xVal);
   
@@ -2995,12 +2995,12 @@ void Task::vAstackTransfer(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM(">auxStack");
+    THROW_INVALID_PSTACK(">auxStack");
   Task* pThatTask = _pTask(pPtrTask);
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(">auxStack");
+    THROW_INVALID_PSTACK(">auxStack");
   
   pThatTask->m_xLock.vGrabWrite();
   pThatTask->m_xAuxStack.vPush(xValWsp);
@@ -3330,7 +3330,7 @@ void Task::vCastInt(NNP_Task nnpTask)
   
   Object* pPtr;
   if ( ! nnpTask->m_xParamStack.bPop(pPtr) )
-    THROW_INVALID_PARAM("(int)");
+    THROW_INVALID_PSTACK("(int)");
   
   nnpTask->m_xParamStack.vPush((i8)pPtr);
   
@@ -3346,7 +3346,7 @@ void Task::vCastPtr(NNP_Task nnpTask)
   
   i8 iInt;
   if ( ! nnpTask->m_xParamStack.bPop(iInt) )
-    THROW_INVALID_PARAM("(ptr)");
+    THROW_INVALID_PSTACK("(ptr)");
   
   nnpTask->m_xParamStack.vPush((Object*)iInt);
   
@@ -3364,7 +3364,7 @@ void Task::vClassName(NNP_Task nnpTask)
   
   i8 iClassNo;
   if ( ! nnpTask->m_xParamStack.bPop(iClassNo) )
-    THROW_INVALID_PARAM("class.name");
+    THROW_INVALID_PSTACK("class.name");
   
   s32 sClassName;
   
@@ -3420,7 +3420,7 @@ ENTRY("vCsvFirstValue");
   
   ValWsp xStr;
   if ( ! nnpTask->m_xParamStack.bPop(xStr) )
-    THROW_INVALID_PARAM("csv.firstValue");
+    THROW_INVALID_PSTACK("csv.firstValue");
   
   s256 sFirstValue;
   
@@ -3466,7 +3466,7 @@ void Task::vCursorStore(NNP_Task nnpTask)
   ValWsp xCursorWsp;
   
   if ( ! nnpTask->m_xParamStack.bPop(xCursorWsp) )
-    THROW_INVALID_PARAM("cursor!");
+    THROW_INVALID_PSTACK("cursor!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
   
@@ -3650,7 +3650,7 @@ ENTRY("vDicFrozenGet");
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.frozen@");
+    THROW_INVALID_PSTACK("dic.frozen@");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3672,7 +3672,7 @@ ENTRY("vDicFrozenSet");
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(iFrozen,pPtrDic) )
-    THROW_INVALID_PARAM("dic.frozen@");
+    THROW_INVALID_PSTACK("dic.frozen@");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3708,7 +3708,7 @@ ENTRY("vDicInit");
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.init");
+    THROW_INVALID_PSTACK("dic.init");
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -3746,7 +3746,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.kind@");
+    THROW_INVALID_PSTACK("dic.kind@");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3769,7 +3769,7 @@ void Task::vDicKindSet(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic,pPtrKind) )
-    THROW_INVALID_PARAM("dic.kind@");
+    THROW_INVALID_PSTACK("dic.kind@");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3790,7 +3790,7 @@ ENTRY("vDicLast");
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.last");
+    THROW_INVALID_PSTACK("dic.last");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3822,7 +3822,7 @@ ENTRY("vDicName");
  
   Object* pPtrDic;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.name");
+    THROW_INVALID_PSTACK("dic.name");
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -3843,7 +3843,7 @@ ENTRY("vDicPick");
   
   i8 iDic;
   if ( ! nnpTask->m_xParamStack.bPop(iDic) )
-    THROW_INVALID_PARAM("dic.pick");
+    THROW_INVALID_PSTACK("dic.pick");
   
   Object* pPtrDic;
 
@@ -3869,7 +3869,7 @@ ENTRY("vDicPush");
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.push");
+    THROW_INVALID_PSTACK("dic.push");
 
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3893,7 +3893,7 @@ void Task::vDicRef(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dic.ref");
+    THROW_INVALID_PSTACK("dic.ref");
   
   Dic* pDic = _pDic(pPtrDic);
 
@@ -3913,7 +3913,7 @@ void Task::vDicStackPush(NNP_Task nnpTask)
   
   Object* pPtrDic;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDic) )
-    THROW_INVALID_PARAM("dicStack.push");
+    THROW_INVALID_PSTACK("dicStack.push");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -3934,7 +3934,7 @@ ENTRY("vDirExists");
   s256 sPath;
   
   if ( ! nnpTask->m_xParamStack.bPop(sPath) )
-    THROW_INVALID_PARAM("dir.exists");
+    THROW_INVALID_PSTACK("dir.exists");
   
   Dir xDir;
   
@@ -3954,7 +3954,7 @@ ENTRY("vDirMake");
   s256 sPath;
   
   if ( ! nnpTask->m_xParamStack.bPop(sPath) )
-    THROW_INVALID_PARAM("dir.make");
+    THROW_INVALID_PSTACK("dir.make");
   
   Dir xDir;
   
@@ -3974,7 +3974,7 @@ ENTRY("vDirRemove");
   s256 sPath;
   
   if ( ! nnpTask->m_xParamStack.bPop(sPath) )
-    THROW_INVALID_PARAM("dir.remove");
+    THROW_INVALID_PSTACK("dir.remove");
   
   Dir xDir;
   
@@ -3993,7 +3993,7 @@ ENTRY("vCwd");
   
   s256 sDir;
   if ( ! nnpTask->m_xParamStack.bPop(sDir) )
-    THROW_INVALID_PARAM("cwd");
+    THROW_INVALID_PSTACK("cwd");
   
   Dir xDir;
   if ( ! xDir.bSetCurrent(sDir) )
@@ -4037,7 +4037,7 @@ ENTRY("vDirClose");
   Object* pPtrDir;
 
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.close");
+    THROW_INVALID_PSTACK("dir.close");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4056,7 +4056,7 @@ ENTRY("vDirDelete");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("file.delete");
+    THROW_INVALID_PSTACK("file.delete");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4075,7 +4075,7 @@ ENTRY("vDirEntryName");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.close");
+    THROW_INVALID_PSTACK("dir.close");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4098,7 +4098,7 @@ ENTRY("vDirEntryType");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.close");
+    THROW_INVALID_PSTACK("dir.close");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4121,7 +4121,7 @@ ENTRY("vDirInit");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.init");
+    THROW_INVALID_PSTACK("dir.init");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4142,7 +4142,7 @@ ENTRY("vDirIsClosed");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.close");
+    THROW_INVALID_PSTACK("dir.close");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4163,7 +4163,7 @@ ENTRY("vDirIsOpen");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.close");
+    THROW_INVALID_PSTACK("dir.close");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4201,7 +4201,7 @@ ENTRY("vDirOpen");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.open");
+    THROW_INVALID_PSTACK("dir.open");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4222,7 +4222,7 @@ ENTRY("vDirPathGet");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.path@");
+    THROW_INVALID_PSTACK("dir.path@");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4246,14 +4246,14 @@ ENTRY("vDirPathSet");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.path!");
+    THROW_INVALID_PSTACK("dir.path!");
   
   Dir* pDir = _pDir(pPtrDir);
   
   ValWsp xWspPath;
 
   if ( ! nnpTask->m_xParamStack.bPop(xWspPath) )
-    THROW_INVALID_PARAM("dir.path!");
+    THROW_INVALID_PSTACK("dir.path!");
   
   s256 sPath;
   sPath = xWspPath.sStr();
@@ -4273,7 +4273,7 @@ ENTRY("vDirRead");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.read");
+    THROW_INVALID_PSTACK("dir.read");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4294,7 +4294,7 @@ ENTRY("vDirRewind");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.rewind");
+    THROW_INVALID_PSTACK("dir.rewind");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4313,13 +4313,13 @@ ENTRY("vDirSeek");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.seek");
+    THROW_INVALID_PSTACK("dir.seek");
   
   Dir* pDir = _pDir(pPtrDir);
   
   i8 iPosition;
   if ( ! nnpTask->m_xParamStack.bPop(iPosition) )
-    THROW_INVALID_PARAM("dir.seek");
+    THROW_INVALID_PSTACK("dir.seek");
   
   pDir->vSeek(iPosition);
   
@@ -4336,7 +4336,7 @@ ENTRY("vDirTell");
   Object* pPtrDir;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrDir) )
-    THROW_INVALID_PARAM("dir.tell");
+    THROW_INVALID_PSTACK("dir.tell");
   
   Dir* pDir = _pDir(pPtrDir);
   
@@ -4414,7 +4414,7 @@ void Task::vDot(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(".");
+    THROW_INVALID_PSTACK(".");
   
   xValWsp.vToString(sWorkspace.a());
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
@@ -4441,7 +4441,7 @@ void Task::vDotPut(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(".put");
+    THROW_INVALID_PSTACK(".put");
   
   xValWsp.vToString(sWorkspace.a());
   vTrace("%s",sWorkspace.a());
@@ -4472,7 +4472,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM(".verbose");
+    THROW_INVALID_PSTACK(".verbose");
   
   if (gxArguments.m_bVerbose) {
     xValWsp.vToString(sWorkspace.a());
@@ -4493,7 +4493,7 @@ void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vEncodeCallPrimitive");
+    THROW_INVALID_PSTACK("vEncodeCallPrimitive");
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -4514,7 +4514,7 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("encodePushValue");
+    THROW_INVALID_PSTACK("encodePushValue");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -4532,7 +4532,7 @@ void Task::vEncodeCallWord(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("encodeCallWord");
+    THROW_INVALID_PSTACK("encodeCallWord");
   
   Word* pCalledWord = _pWord(pWordObject);
   
@@ -4608,7 +4608,7 @@ void Task::vEnvGet(NNP_Task nnpTask)
   s256 sEnvName;
   
   if ( ! nnpTask->m_xParamStack.bPop(sEnvName) )
-    THROW_INVALID_PARAM("env@");
+    THROW_INVALID_PSTACK("env@");
   
   s256 sEnvVal;
   
@@ -4632,7 +4632,7 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   
   i8 iErrorCode;
   if ( ! nnpTask->m_xParamStack.bPop(iErrorCode) )
-    THROW_INVALID_PARAM("error.msg");
+    THROW_INVALID_PSTACK("error.msg");
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
     THROW("error.msg");
@@ -4666,7 +4666,7 @@ void Task::vExit(NNP_Task nnpTask)
   
   void* pCellVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pCellVoid) )
-    THROW_INVALID_RETURN("exit");
+    THROW_INVALID_RSTACK("exit");
   
   nnpTask->IP.m_pCell = _pCell(pCellVoid);
   
@@ -4685,7 +4685,7 @@ ENTRY("vFileClose");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.close");
+    THROW_INVALID_PSTACK("file.close");
   
   File* pFile = _pFile(pPtrFile);
   
@@ -4704,7 +4704,7 @@ ENTRY("vFileDelete");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.delete");
+    THROW_INVALID_PSTACK("file.delete");
   
   File* pFile = _pFile(pPtrFile);
 
@@ -4724,7 +4724,7 @@ ENTRY("vFileInit");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.init");
+    THROW_INVALID_PSTACK("file.init");
   
   File* pFile = _pFile(pPtrFile);
   
@@ -4760,7 +4760,7 @@ ENTRY("vFileOpen");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.open");
+    THROW_INVALID_PSTACK("file.open");
   
   File* pFile = _pFile(pPtrFile);
   
@@ -4786,7 +4786,7 @@ ENTRY("vFilePathGet");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.path@");
+    THROW_INVALID_PSTACK("file.path@");
   
   File* pFile = _pFile(pPtrFile);
 
@@ -4807,14 +4807,14 @@ ENTRY("vFilePathSet");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.path!");
+    THROW_INVALID_PSTACK("file.path!");
   
   File* pFile = _pFile(pPtrFile);
   
   s256 sPath;
   
   if ( ! nnpTask->m_xParamStack.bPop(sPath) )
-    THROW_INVALID_PARAM("file.path!");
+    THROW_INVALID_PSTACK("file.path!");
   
   pFile->vPath(sPath.a());
   
@@ -4831,7 +4831,7 @@ ENTRY("vFileRead");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.read");
+    THROW_INVALID_PSTACK("file.read");
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -4859,7 +4859,7 @@ void Task::vFileReadRecord(NNP_Task nnpTask)
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.readRecord");
+    THROW_INVALID_PSTACK("file.readRecord");
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -4884,7 +4884,7 @@ ENTRY("vFileWrite");
   Object* pPtrFile;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("file.write");
+    THROW_INVALID_PSTACK("file.write");
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
@@ -4892,7 +4892,7 @@ ENTRY("vFileWrite");
   ValWsp xValue;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValue) )
-    THROW_INVALID_PARAM("file.write");
+    THROW_INVALID_PSTACK("file.write");
   
   char* wStr = xValue.pAsStrVal()->sStr();
   
@@ -4914,7 +4914,7 @@ void Task::vFlowAgain(NNP_Task nnpTask)
   
   void* pBeginLocVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("again");
+    THROW_INVALID_RSTACK("again");
   Cell* pBeginLoc = _pCell(pBeginLocVoid);
   
   pCurrentWord->vEncode("jump",pBeginLoc);
@@ -4990,7 +4990,7 @@ void Task::vFlowDo_RT(NNP_Task nnpTask)
   i8 iIndex;
   i8 iLimit;
   if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("do_rt");
+    THROW_INVALID_PSTACK("do_rt");
   
   nnpTask->m_xReturnStack.vPush(iLimit);
   nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
@@ -5009,7 +5009,7 @@ void Task::vFlowElse(NNP_Task nnpTask)
   
   void* pIfJumpArgVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
-    THROW_INVALID_RETURN("else");
+    THROW_INVALID_RSTACK("else");
   Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
   //-------------------------------------------------------------------------
@@ -5037,7 +5037,7 @@ void Task::vFlowExecute(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("execute");
+    THROW_INVALID_PSTACK("execute");
   Word* pWord = _pWord(pWordObject);
   
   if (WT_PRIMITIVE == pWord->eWordType()) {
@@ -5127,7 +5127,7 @@ void Task::vFlowIterate_RT_A(NNP_Task nnpTask)
   Object* pPtrCursor;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrObject,pPtrCursor) )
-    THROW_INVALID_PARAM("iterate_rt_a");
+    THROW_INVALID_PSTACK("iterate_rt_a");
   
   nnpTask->m_xReturnStack.vPush(pPtrCursor);
   nnpTask->m_xReturnStack.vPush(pPtrObject);
@@ -5153,9 +5153,9 @@ void Task::vFlowIterate_RT_B(NNP_Task nnpTask)
   
   if ( ! xObjectWsp.iAsInt() ) {
     if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
-      THROW_INVALID_PARAM("iterate_rt_b");
+      THROW_INVALID_PSTACK("iterate_rt_b");
     if ( !nnpTask->m_xReturnStack.bPop(xWsp) )
-      THROW_INVALID_PARAM("iterate_rt_b");
+      THROW_INVALID_PSTACK("iterate_rt_b");
   }
   
   EXIT();
@@ -5182,7 +5182,7 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
   
   i8 iVal;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpFalse");
+    THROW_INVALID_PSTACK("jumpFalse");
   
   //  i8 iFlag = nnpTask->m_xParamStack.iPop();
   
@@ -5204,7 +5204,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
   
   i8 iVal;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iVal) )
-    THROW_INVALID_PARAM("jumpTrue");
+    THROW_INVALID_PSTACK("jumpTrue");
   
   // cell points to the jump arg
   if (iVal)
@@ -5226,7 +5226,7 @@ void Task::vFlowLoop(NNP_Task nnpTask)
   
   void* pDoLocVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
-    THROW_INVALID_RETURN("loop");
+    THROW_INVALID_RSTACK("loop");
   Cell* pDoLoc = _pCell(pDoLocVoid);
   
   pCurrentWord->vEncode("Loop_RT");
@@ -5247,7 +5247,7 @@ void Task::vFlowLoop_RT(NNP_Task nnpTask)
   i8 iLimit;
   
   if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("loop_rt");
+    THROW_INVALID_PSTACK("loop_rt");
   
   iIndex++;
   
@@ -5273,7 +5273,7 @@ void Task::vFlowLoopPlus(NNP_Task nnpTask)
   
   void* pDoLocVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pDoLocVoid) )
-    THROW_INVALID_RETURN("+loop");
+    THROW_INVALID_RSTACK("+loop");
   Cell* pDoLoc = _pCell(pDoLocVoid);
   
   pCurrentWord->vEncode("+Loop_RT");
@@ -5295,10 +5295,10 @@ void Task::vFlowLoopPlus_RT(NNP_Task nnpTask)
   i8 iInc;
   
   if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PARAM("loopPlus_rt");
+    THROW_INVALID_PSTACK("loopPlus_rt");
   
   if ( ! nnpTask->m_xParamStack.bPop(iInc) )
-    THROW_INVALID_PARAM("loopPlus_rt");
+    THROW_INVALID_PSTACK("loopPlus_rt");
   
   iIndex += iInc;
   
@@ -5324,12 +5324,12 @@ void Task::vFlowNext(NNP_Task nnpTask)
   
   void* pJumpFalseArgVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pJumpFalseArgVoid) )
-    THROW_INVALID_RETURN("next");
+    THROW_INVALID_RSTACK("next");
   Cell* pJumpFalseArg = _pCell(pJumpFalseArgVoid);
   
   void* pIterateLocVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pIterateLocVoid) )
-    THROW_INVALID_RETURN("next");
+    THROW_INVALID_RSTACK("next");
   Cell* pIterateLoc = _pCell(pIterateLocVoid);
   
   //----------------------------------------------------------------------------
@@ -5362,14 +5362,14 @@ void Task::vFlowRepeat(NNP_Task nnpTask)
   
   void* pWhileJumpArgVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArgVoid) )
-    THROW_INVALID_RETURN("repeat");
+    THROW_INVALID_RSTACK("repeat");
   Cell* pWhileJumpArg = _pCell(pWhileJumpArgVoid);
   
   //-------------------------------------------------------------------------
   
   void* pBeginLocVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("repeat");
+    THROW_INVALID_RSTACK("repeat");
   Cell* pBeginLoc = _pCell(pBeginLocVoid);
   
   pCurrentWord->vEncode("jump",pBeginLoc);
@@ -5419,7 +5419,7 @@ void Task::vFlowThen(NNP_Task nnpTask)
   
   void* pIfJumpArgVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArgVoid) )
-    THROW_INVALID_RETURN("then");
+    THROW_INVALID_RSTACK("then");
   Cell* pIfJumpArg = _pCell(pIfJumpArgVoid);
   
   pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
@@ -5454,7 +5454,7 @@ void Task::vFlowUnloop(NNP_Task nnpTask)
   ValWsp xValA;
   ValWsp xValB;
   if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
-    THROW_INVALID_RETURN("unloop");
+    THROW_INVALID_RSTACK("unloop");
   
   EXIT();
 }
@@ -5470,7 +5470,7 @@ void Task::vFlowUntil(NNP_Task nnpTask)
   
   void* pBeginLocVoid;
   if ( ! nnpTask->m_xReturnStack.bPop(pBeginLocVoid) )
-    THROW_INVALID_RETURN("until");
+    THROW_INVALID_RSTACK("until");
   Cell* pBeginLoc = _pCell(pBeginLocVoid);
   
   //-------------------------------------------------------------------------
@@ -5509,7 +5509,7 @@ ENTRY("vGridAppendNode");
   Object* pPtrNode;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNode) )
-    THROW_INVALID_PARAM("grid.addNode");
+    THROW_INVALID_PSTACK("grid.addNode");
 
   Node* pNode = _pNode(pPtrNode);
   ASSERT(pNode);
@@ -5530,7 +5530,7 @@ ENTRY("vGridInit");
   Object* pPtrGrid;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
-    THROW_INVALID_PARAM("grid.init");
+    THROW_INVALID_PSTACK("grid.init");
   
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
@@ -5551,13 +5551,13 @@ void Task::vGridStartedStore(NNP_Task nnpTask)
   i8 iStarted;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
-    THROW_INVALID_PARAM("grid.started!");
+    THROW_INVALID_PSTACK("grid.started!");
   
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
   
   if ( ! nnpTask->m_xParamStack.bPop(iStarted) )
-    THROW_INVALID_PARAM("grid.started!");
+    THROW_INVALID_PSTACK("grid.started!");
   
   pGrid->vHasStarted(iStarted == 1 ? true : false);
   
@@ -5574,7 +5574,7 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
   Object* pPtrGrid;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrGrid) )
-    THROW_INVALID_PARAM("grid.started@");
+    THROW_INVALID_PSTACK("grid.started@");
   
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
@@ -5664,7 +5664,7 @@ ENTRY("vInputOpen");
   s256 sFilePath;
   
   if ( ! nnpTask->m_xParamStack.bPop(sFilePath) )
-    THROW_INVALID_PARAM("input.open");
+    THROW_INVALID_PSTACK("input.open");
   
   bool bOpened = nnpTask->m_xTokeniser.bUseFile(sFilePath);
   
@@ -5721,7 +5721,7 @@ ENTRY("vInputText");
   s256 sInput;
   
   if ( ! nnpTask->m_xParamStack.bPop(sInput) )
-    THROW_INVALID_PARAM("input.text");
+    THROW_INVALID_PSTACK("input.text");
     
   nnpTask->m_xTokeniser.vUseString(sInput);
   
@@ -5766,7 +5766,7 @@ void Task::vIntAdd(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("+");
+    THROW_INVALID_PSTACK("+");
   
   r = i + j;
   
@@ -5785,7 +5785,7 @@ void Task::vIntDivide(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("/");
+    THROW_INVALID_PSTACK("/");
   
   r = DIV(i,j);
   
@@ -5804,7 +5804,7 @@ void Task::vIntEqual(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("==");
+    THROW_INVALID_PSTACK("==");
   
   r = i == j;
   
@@ -5823,7 +5823,7 @@ void Task::vIntGreater(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM(">");
+    THROW_INVALID_PSTACK(">");
   
   r = i > j;
   
@@ -5842,7 +5842,7 @@ void Task::vIntGreaterEqual(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM(">=");
+    THROW_INVALID_PSTACK(">=");
   
   r = i >= j;
   
@@ -5860,7 +5860,7 @@ void Task::vIntHash(NNP_Task nnpTask)
   
   s8K sString;
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("hash");
+    THROW_INVALID_PSTACK("hash");
   
   i8 iLength = String::iLength(sString.a());
   
@@ -5881,7 +5881,7 @@ void Task::vIntLess(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("<");
+    THROW_INVALID_PSTACK("<");
   
   r = i < j;
   
@@ -5900,7 +5900,7 @@ void Task::vIntLessEqual(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("<=");
+    THROW_INVALID_PSTACK("<=");
   
   r = i <= j;
   
@@ -5919,7 +5919,7 @@ void Task::vIntModulo(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("%");
+    THROW_INVALID_PSTACK("%");
   
   r = MOD(i,j);
   
@@ -5938,7 +5938,7 @@ void Task::vIntMultiply(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("*");
+    THROW_INVALID_PSTACK("*");
   
   r = i * j;
   
@@ -5957,7 +5957,7 @@ void Task::vIntNeg(NNP_Task nnpTask)
   i8 r, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(i) )
-    THROW_INVALID_PARAM("neg");
+    THROW_INVALID_PSTACK("neg");
   
   r = -1 * i;
   
@@ -5976,7 +5976,7 @@ void Task::vIntNotEqual(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("!=");
+    THROW_INVALID_PSTACK("!=");
   
   r = i != j;
   
@@ -5995,7 +5995,7 @@ void Task::vIntSubtract(NNP_Task nnpTask)
   i8 r, j, i;
   
   if ( ! nnpTask->m_xParamStack.bPop(j,i) )
-    THROW_INVALID_PARAM("-");
+    THROW_INVALID_PSTACK("-");
   
   r = i - j;
   
@@ -6015,7 +6015,7 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.delete");
+    THROW_INVALID_PSTACK("loader.delete");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6034,7 +6034,7 @@ void Task::vLoaderFindChunk(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.findChunk");
+    THROW_INVALID_PSTACK("loader.findChunk");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6055,7 +6055,7 @@ void Task::vLoaderInit(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.init");
+    THROW_INVALID_PSTACK("loader.init");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6089,7 +6089,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.init");
+    THROW_INVALID_PSTACK("loader.init");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6114,7 +6114,7 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
   ValWsp xWspPath;
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,xWspPath) )
-    THROW_INVALID_PARAM("loader.path!");
+    THROW_INVALID_PSTACK("loader.path!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6137,7 +6137,7 @@ void Task::vLoaderSubsStore(NNP_Task nnpTask)
   i8 nSubs;
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,nSubs) )
-    THROW_INVALID_PARAM("loader.subs!");
+    THROW_INVALID_PSTACK("loader.subs!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6157,7 +6157,7 @@ void Task::vLoaderTableStore(NNP_Task nnpTask)
   Object* pPtrTable;
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,pPtrTable) )
-    THROW_INVALID_PARAM("loader.tableStore");
+    THROW_INVALID_PSTACK("loader.tableStore");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6181,7 +6181,7 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
   Object* pPtrLoader;
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader,pPtrTxRef) )
-    THROW_INVALID_PARAM("loader.txref!");
+    THROW_INVALID_PSTACK("loader.txref!");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6314,7 +6314,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.init");
+    THROW_INVALID_PSTACK("loaderSub.init");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6367,14 +6367,14 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
   
   Object* pPtrLoaderSub;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoaderSub) )
-    THROW_INVALID_PARAM("loaderSub.loader!");
+    THROW_INVALID_PSTACK("loaderSub.loader!");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
-    THROW_INVALID_PARAM("loader.openfile");
+    THROW_INVALID_PSTACK("loader.openfile");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
@@ -6423,7 +6423,7 @@ void Task::vLoaderSubPartitionStore(NNP_Task nnpTask)
   
   i8 iPartition;
   if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
-    THROW_INVALID_PARAM("loaderSub.partition!");
+    THROW_INVALID_PSTACK("loaderSub.partition!");
  
   LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
@@ -6459,7 +6459,7 @@ void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("loaderSub.rowBuffer!");
+    THROW_INVALID_PSTACK("loaderSub.rowBuffer!");
   
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
@@ -6499,11 +6499,11 @@ void Task::vLocalFetch(NNP_Task nnpTask)
   ENTRY("vLocalFetch");
   
   if ( ! nnpTask->m_pLocalsFrame )
-    THROW_INVALID_PARAM("local.fetch");
+    THROW_INVALID_PSTACK("local.fetch");
   
   i8 iLocal;
   if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
-    THROW_INVALID_PARAM("local.fetch");
+    THROW_INVALID_PSTACK("local.fetch");
   
   ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
   
@@ -6520,11 +6520,11 @@ void Task::vLocalStore(NNP_Task nnpTask)
   ENTRY("vLocalStore");
   
   if ( ! nnpTask->m_pLocalsFrame )
-    THROW_INVALID_PARAM("localStore");
+    THROW_INVALID_PSTACK("localStore");
   
   i8 iLocal;
   if ( ! nnpTask->m_xParamStack.bPop(iLocal) )
-    THROW_INVALID_PARAM("localStore");
+    THROW_INVALID_PSTACK("localStore");
   
   ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
   
@@ -6600,7 +6600,7 @@ ENTRY("vLocalsPop");
   RegFrame* pLocalsFrame = nnpTask->m_pLocalsFrame;
   
   if ( ! pLocalsFrame )
-    THROW_INVALID_PARAM("locals.pop");
+    THROW_INVALID_PSTACK("locals.pop");
   
   nnpTask->m_pLocalsFrame = nnpTask->m_pLocalsFrame->pNext();
   
@@ -6662,7 +6662,7 @@ ENTRY("vLockDropRead");
   
   Object* pPtrLock;;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLock) )
-    THROW_INVALID_PARAM("lock.dropread");
+    THROW_INVALID_PSTACK("lock.dropread");
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -6682,7 +6682,7 @@ ENTRY("vLockDropWrite");
 
   Object* pPtrLock;;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLock) )
-    THROW_INVALID_PARAM("lock.dropwrite");
+    THROW_INVALID_PSTACK("lock.dropwrite");
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -6702,7 +6702,7 @@ ENTRY("vLockGrabRead");
 
   Object* pPtrLock;;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLock) )
-    THROW_INVALID_PARAM("lock.grabread");
+    THROW_INVALID_PSTACK("lock.grabread");
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -6722,7 +6722,7 @@ ENTRY("vLockGrabWrite");
 
   Object* pPtrLock;;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLock) )
-    THROW_INVALID_PARAM("lock.grabwrite");
+    THROW_INVALID_PSTACK("lock.grabwrite");
   
   Lock* pLock = _pLock(pPtrLock);
   ASSERT(pLock);
@@ -6742,7 +6742,7 @@ ENTRY("vLockInit");
   
   Object* pPtrLock;;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrLock) )
-    THROW_INVALID_PARAM("lock.init");
+    THROW_INVALID_PSTACK("lock.init");
   
   Lock* pLock = _pLock(pPtrLock);
   
@@ -6763,11 +6763,11 @@ void Task::vLogicAnd(NNP_Task nnpTask)
   
   i8 iArgB;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
-    THROW_INVALID_PARAM("and");
+    THROW_INVALID_PSTACK("and");
   
   i8 iArgA;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
-    THROW_INVALID_PARAM("and");
+    THROW_INVALID_PSTACK("and");
   
   i8 iArgR = (iArgA && iArgB) ? 1 : 0;
   
@@ -6785,7 +6785,7 @@ void Task::vLogicNot(NNP_Task nnpTask)
   
   i8 iValA;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iValA) )
-    THROW_INVALID_PARAM("not");
+    THROW_INVALID_PSTACK("not");
   
   i8 iNotA = iValA ? 0 : 1;
   
@@ -6803,11 +6803,11 @@ void Task::vLogicOr(NNP_Task nnpTask)
   
   i8 iArgB;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgB) )
-    THROW_INVALID_PARAM("or");
+    THROW_INVALID_PSTACK("or");
   
   i8 iArgA;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iArgA) )
-    THROW_INVALID_PARAM("or");
+    THROW_INVALID_PSTACK("or");
   
   i8 iArgR = (iArgA || iArgB) ? 1 : 0;
   
@@ -6827,7 +6827,7 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
   
   i8 iBytes;
   if ( ! nnpTask->m_xParamStack.bPop(iBytes) )
-    THROW_INVALID_PARAM("bytes.magnitude");
+    THROW_INVALID_PSTACK("bytes.magnitude");
   
   s256 sMag;
   Magnitudes::vMagnitude(iBytes, sMag.a());
@@ -6848,10 +6848,10 @@ void Task::vNumberMagnitude(NNP_Task nnpTask)
   i8 iScale;
   
   if ( ! nnpTask->m_xParamStack.bPop(iNumber) )
-    THROW_INVALID_PARAM("number.magnitude");
+    THROW_INVALID_PSTACK("number.magnitude");
   
   if ( ! nnpTask->m_xParamStack.bPop(iScale) )
-    THROW_INVALID_PARAM("number.magnitude");
+    THROW_INVALID_PSTACK("number.magnitude");
   
   s256 s;
   
@@ -6873,11 +6873,11 @@ ENTRY("vMemoryByteDump");
   
   i8 iSize;
   if ( ! nnpTask->m_xParamStack.bPop(iSize) )
-    THROW_INVALID_PARAM("memory.bytedump");
+    THROW_INVALID_PSTACK("memory.bytedump");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("memory.bytedump");
+    THROW_INVALID_PSTACK("memory.bytedump");
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vByteDump(iSize);
@@ -6895,11 +6895,11 @@ ENTRY("vMemoryWordDump");
   
   i8 iSize;
   if ( ! nnpTask->m_xParamStack.bPop(iSize) )
-    THROW_INVALID_PARAM("memory.worddump");
+    THROW_INVALID_PSTACK("memory.worddump");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("memory.worddump");
+    THROW_INVALID_PSTACK("memory.worddump");
   Word* pWord = _pWord(pWordObject);
   
   //pWord->vWordDump(iSize);
@@ -6920,7 +6920,7 @@ ENTRY("vNodeInit");
   Object* pPtrNode;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNode) )
-    THROW_INVALID_PARAM("node.init");
+    THROW_INVALID_PSTACK("node.init");
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -6940,7 +6940,7 @@ ENTRY("vNodeNew");
   i8 iNodeNo;
   
   if ( ! nnpTask->m_xParamStack.bPop(iNodeNo) )
-    THROW_INVALID_PARAM("node.new");
+    THROW_INVALID_PSTACK("node.new");
   
   Node* pNode = new Node;
   ASSERT(CN_NODE == pNode->eClass());
@@ -6962,7 +6962,7 @@ ENTRY("vNodeNo");
   Object* pPtrNode;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNode) )
-    THROW_INVALID_PARAM("node.no");
+    THROW_INVALID_PSTACK("node.no");
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
@@ -7002,7 +7002,7 @@ ENTRY("vNodeCursorBegin");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodeCursor.begin");
+    THROW_INVALID_PSTACK("nodeCursor.begin");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7021,7 +7021,7 @@ ENTRY("vNodeCursorDelete");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodeCursor.delete");
+    THROW_INVALID_PSTACK("nodeCursor.delete");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7040,7 +7040,7 @@ ENTRY("vNodeCursorEnd");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodecursor.end");
+    THROW_INVALID_PSTACK("nodecursor.end");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7059,7 +7059,7 @@ ENTRY("vNodeCursorFirst");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodeCursor.first");
+    THROW_INVALID_PSTACK("nodeCursor.first");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7082,7 +7082,7 @@ ENTRY("vNodeCursorGet");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodeCursor.get");
+    THROW_INVALID_PSTACK("nodeCursor.get");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7103,7 +7103,7 @@ ENTRY("vNodeCursorInit");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodeCursor.init");
+    THROW_INVALID_PSTACK("nodeCursor.init");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7137,7 +7137,7 @@ ENTRY("vNodeCursorNext");
   
   Object* pPtrNodeCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrNodeCursor) )
-    THROW_INVALID_PARAM("nodeCursor.next");
+    THROW_INVALID_PSTACK("nodeCursor.next");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
@@ -7162,7 +7162,7 @@ void Task::vObjectClassFetch(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("object.class@");
+    THROW_INVALID_PSTACK("object.class@");
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
@@ -7181,11 +7181,11 @@ void Task::vObjectClassStore(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("object.object.class!");
+    THROW_INVALID_PSTACK("object.object.class!");
   
   eCN eClassNo;
   if ( ! nnpTask->m_xParamStack.bPop(eClassNo) )
-    THROW_INVALID_PARAM("object.object.class!");
+    THROW_INVALID_PSTACK("object.object.class!");
   
   pObject->vClass(eClassNo);
   
@@ -7201,7 +7201,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("object.dump");
+    THROW_INVALID_PSTACK("object.dump");
   
   eCN eClass = pObject->eClass();
   
@@ -7239,7 +7239,7 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_RETURN("object.magic!!");
+    THROW_INVALID_RSTACK("object.magic!!");
   
   pObject->vSetMagic();
   
@@ -7258,7 +7258,7 @@ void Task::vObjectStore(NNP_Task nnpTask)
   ValWsp xObjectWsp;
   
   if ( ! nnpTask->m_xParamStack.bPop(xObjectWsp) )
-    THROW_INVALID_PARAM("object!");
+    THROW_INVALID_PSTACK("object!");
   
   nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
   
@@ -7274,11 +7274,11 @@ void Task::vObjectWordBodySet(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("object.wordbody!");
+    THROW_INVALID_PSTACK("object.wordbody!");
   
   i8 iIsBody;
   if ( ! nnpTask->m_xParamStack.bPop(iIsBody) )
-    THROW_INVALID_PARAM("object.object.class!");
+    THROW_INVALID_PSTACK("object.object.class!");
   
   pObject->vWordBody(iIsBody);
   
@@ -7322,7 +7322,7 @@ ENTRY("vProcessTestPid");
 
   i8 iPid;
   if ( ! nnpTask->m_xParamStack.bPop(iPid) )
-    THROW_INVALID_PARAM("process.testpid");
+    THROW_INVALID_PSTACK("process.testpid");
   
   i8 iExists = Process::bTestPid(iPid);
   
@@ -7342,7 +7342,7 @@ void Task::vPstackClass(NNP_Task nnpTask)
   
   i8 nTh;
   if ( ! nnpTask->m_xParamStack.bPop(nTh) )
-    THROW_INVALID_PARAM("stack.class");
+    THROW_INVALID_PSTACK("stack.class");
   
   ValWsp xValWsp;
   
@@ -7380,7 +7380,7 @@ void Task::vPstackDrop(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("drop");
+    THROW_INVALID_PSTACK("drop");
   
   EXIT();
 }
@@ -7397,7 +7397,7 @@ void Task::vPstackDropTwo(NNP_Task nnpTask)
   ValWsp xValA;
   ValWsp xValB;
   if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("2drop");
+    THROW_INVALID_PSTACK("2drop");
   
   EXIT();
 }
@@ -7413,7 +7413,7 @@ void Task::vPstackDup(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("dup");
+    THROW_INVALID_PSTACK("dup");
   
   nnpTask->m_xParamStack.vPush(xValA);
   nnpTask->m_xParamStack.vPush(xValA);
@@ -7432,7 +7432,7 @@ void Task::vPstackDupNonZero(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("?dup");
+    THROW_INVALID_PSTACK("?dup");
   
   if (xValA.iAsInt()) {
     nnpTask->m_xParamStack.vPush(xValA);
@@ -7455,7 +7455,7 @@ void Task::vPstackDump(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM("dump");
+    THROW_INVALID_PSTACK("dump");
   
   xValWsp.vToString(sWorkspace.a());
   char* aClass = xValWsp.aClass();
@@ -7493,7 +7493,7 @@ void Task::vPstackNip(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("nip");
+    THROW_INVALID_PSTACK("nip");
   
   nnpTask->m_xParamStack.vPush(&xValA);
   
@@ -7509,7 +7509,7 @@ void Task::vPstackPick(NNP_Task nnpTask)
   
   i8 iPick;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("pick");
+    THROW_INVALID_PSTACK("pick");
   
   // could do this directly on stack
   
@@ -7544,11 +7544,11 @@ void Task::vPstackReverse(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("reverse");
+    THROW_INVALID_PSTACK("reverse");
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! nnpTask->m_xParamStack.bPop(apValWsp[i]) )
-      THROW_INVALID_PARAM("reverse");
+      THROW_INVALID_PSTACK("reverse");
   }
 
   for (i8 i = 0; i < nValues; i++) {
@@ -7568,14 +7568,14 @@ void Task::vPstackRoll(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("roll");
+    THROW_INVALID_PSTACK("roll");
   
   if ( ! nnpTask->m_xParamStack.bPop(xValA) )
-    THROW_INVALID_PARAM("roll");
+    THROW_INVALID_PSTACK("roll");
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_xParamStack.bPop(xValX) )
-      THROW_INVALID_PARAM("roll");
+      THROW_INVALID_PSTACK("roll");
     
     nnpTask->m_xReturnStack.vPush(&xValX);
   }
@@ -7584,7 +7584,7 @@ void Task::vPstackRoll(NNP_Task nnpTask)
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
-      THROW_INVALID_PARAM("roll");
+      THROW_INVALID_PSTACK("roll");
     
     nnpTask->m_xParamStack.vPush(&xValX);
   }
@@ -7604,22 +7604,22 @@ void Task::vPstackRollInv(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("-roll");
+    THROW_INVALID_PSTACK("-roll");
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_xParamStack.bPop(xValX) )
-      THROW_INVALID_PARAM("-roll");
+      THROW_INVALID_PSTACK("-roll");
     
     nnpTask->m_xReturnStack.vPush(&xValX);
   }
   
   if ( ! nnpTask->m_xParamStack.bPop(xValZ) )
-    THROW_INVALID_PARAM("-roll");
+    THROW_INVALID_PSTACK("-roll");
   
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
-      THROW_INVALID_PARAM("-roll");
+      THROW_INVALID_PSTACK("-roll");
     
     nnpTask->m_xParamStack.vPush(&xValX);
   }
@@ -7641,7 +7641,7 @@ void Task::vPstackRot(NNP_Task nnpTask)
   ValWsp xValC;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
-    THROW_INVALID_PARAM("rot");
+    THROW_INVALID_PSTACK("rot");
   
   nnpTask->m_xParamStack.vPush(&xValA);
   nnpTask->m_xParamStack.vPush(&xValC);
@@ -7662,7 +7662,7 @@ void Task::vPstackRotInv(NNP_Task nnpTask)
   ValWsp xValC;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB,xValC) )
-    THROW_INVALID_PARAM("rot");
+    THROW_INVALID_PSTACK("rot");
   
   nnpTask->m_xParamStack.vPush(&xValB);
   nnpTask->m_xParamStack.vPush(&xValA);
@@ -7682,7 +7682,7 @@ void Task::vPstackSwap(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("swap");
+    THROW_INVALID_PSTACK("swap");
   
   nnpTask->m_xParamStack.vPush(&xValA);
   nnpTask->m_xParamStack.vPush(&xValB);
@@ -7700,10 +7700,10 @@ void Task::vPstackToValSet(NNP_Task nnpTask)
   i8 nVal;
   
   if ( ! nnpTask->m_xParamStack.bPop(nVal) )
-  THROW_INVALID_PARAM(">valset");
+  THROW_INVALID_PSTACK(">valset");
   
   if ( ! nnpTask->m_xParamStack.bGuard(nVal) )
-  THROW_INVALID_PARAM(">valset");
+  THROW_INVALID_PSTACK(">valset");
   
   char* pCursor = nullptr;
   ValSet xValSet;
@@ -7712,7 +7712,7 @@ void Task::vPstackToValSet(NNP_Task nnpTask)
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
     if ( ! nnpTask->m_xParamStack.bPop(xVal) )
-    THROW_INVALID_PARAM(">valset");
+    THROW_INVALID_PSTACK(">valset");
     
     xValSet.vAppend(pCursor,xVal);
   }
@@ -7734,7 +7734,7 @@ void Task::vPstackToValues(NNP_Task nnpTask)
   ValSet xValSet;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-  THROW_INVALID_PARAM(">values");
+  THROW_INVALID_PSTACK(">values");
   
   i8 nVal = 0;
   ValWsp* pValWsp[128];
@@ -7762,7 +7762,7 @@ void Task::vPstackTuck(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValA,xValB) )
-    THROW_INVALID_PARAM("tuck");
+    THROW_INVALID_PSTACK("tuck");
   
   nnpTask->m_xParamStack.vPush(&xValA);
   nnpTask->m_xParamStack.vPush(&xValB);
@@ -7845,7 +7845,7 @@ ENTRY("vQueueAppend");
   ValWsp xValWsp;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject,xValWsp) )
-    THROW_INVALID_PARAM("queue.append");
+    THROW_INVALID_PSTACK("queue.append");
   
   Queue* pQueue = static_cast<Queue*>(pObject);
   ASSERT(pQueue);
@@ -7866,7 +7866,7 @@ ENTRY("vQueueDump");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("q.dump");
+    THROW_INVALID_PSTACK("q.dump");
   
   ASSERT(CN_QUEUE == pObject->eClass());
   
@@ -7887,7 +7887,7 @@ ENTRY("vQueueInit");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("queue.init");
+    THROW_INVALID_PSTACK("queue.init");
     
   ASSERT(CN_QUEUE == pObject->eClass());
   
@@ -7909,7 +7909,7 @@ ENTRY("vQueuePop");
   ValWsp xValWsp;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("queue.pop");
+    THROW_INVALID_PSTACK("queue.pop");
   
   ASSERT(CN_QUEUE == pObject->eClass());
   
@@ -7939,7 +7939,7 @@ void Task::vRegPop(NNP_Task nnpTask)
   RegFrame* pRegFrame = nnpTask->m_pRegFrame;
   
   if ( ! pRegFrame )
-    THROW_INVALID_PARAM("reg.pop");
+    THROW_INVALID_PSTACK("reg.pop");
   
   nnpTask->m_pRegFrame = nnpTask->m_pRegFrame->pNext();
   
@@ -7972,7 +7972,7 @@ void Task::vRegReg0(NNP_Task nnpTask)
 ENTRY("vRegReg0");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg0");
+    THROW_INVALID_PSTACK("reg0");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(0);
   
@@ -7989,7 +7989,7 @@ void Task::vRegReg1(NNP_Task nnpTask)
   ENTRY("vRegReg1");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg1");
+    THROW_INVALID_PSTACK("reg1");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(1);
   
@@ -8006,7 +8006,7 @@ void Task::vRegReg2(NNP_Task nnpTask)
   ENTRY("vRegReg2");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg2");
+    THROW_INVALID_PSTACK("reg2");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(2);
   
@@ -8023,7 +8023,7 @@ void Task::vRegReg3(NNP_Task nnpTask)
   ENTRY("vRegReg3");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg3");
+    THROW_INVALID_PSTACK("reg3");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(3);
   
@@ -8040,7 +8040,7 @@ void Task::vRegReg4(NNP_Task nnpTask)
   ENTRY("vRegReg4");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg4");
+    THROW_INVALID_PSTACK("reg4");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(4);
   
@@ -8057,7 +8057,7 @@ void Task::vRegReg5(NNP_Task nnpTask)
   ENTRY("vRegReg5");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg5");
+    THROW_INVALID_PSTACK("reg5");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(5);
   
@@ -8074,7 +8074,7 @@ void Task::vRegReg6(NNP_Task nnpTask)
   ENTRY("vRegReg6");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg6");
+    THROW_INVALID_PSTACK("reg6");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(6);
   
@@ -8091,7 +8091,7 @@ void Task::vRegReg7(NNP_Task nnpTask)
   ENTRY("vRegReg7");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg7");
+    THROW_INVALID_PSTACK("reg7");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(7);
   
@@ -8110,7 +8110,7 @@ void Task::vRegReg8(NNP_Task nnpTask)
   ENTRY("vRegReg8");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg8");
+    THROW_INVALID_PSTACK("reg8");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(8);
   
@@ -8127,7 +8127,7 @@ void Task::vRegReg9(NNP_Task nnpTask)
   ENTRY("vRegReg9");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("reg9");
+    THROW_INVALID_PSTACK("reg9");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(9);
   
@@ -8144,7 +8144,7 @@ void Task::vRegRegA(NNP_Task nnpTask)
   ENTRY("vRegRegA");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regA");
+    THROW_INVALID_PSTACK("regA");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(10);
   
@@ -8161,7 +8161,7 @@ void Task::vRegRegB(NNP_Task nnpTask)
   ENTRY("vRegRegB");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regB");
+    THROW_INVALID_PSTACK("regB");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(11);
   
@@ -8178,7 +8178,7 @@ void Task::vRegRegC(NNP_Task nnpTask)
   ENTRY("vRegRegC");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regC");
+    THROW_INVALID_PSTACK("regC");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(12);
   
@@ -8195,7 +8195,7 @@ void Task::vRegRegD(NNP_Task nnpTask)
   ENTRY("vRegRegD");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regD");
+    THROW_INVALID_PSTACK("regD");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(13);
   
@@ -8212,7 +8212,7 @@ void Task::vRegRegE(NNP_Task nnpTask)
   ENTRY("vRegRegE");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regE");
+    THROW_INVALID_PSTACK("regE");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(14);
   
@@ -8229,7 +8229,7 @@ void Task::vRegRegF(NNP_Task nnpTask)
   ENTRY("vRegRegF");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regF");
+    THROW_INVALID_PSTACK("regF");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(15);
   
@@ -8246,11 +8246,11 @@ void Task::vRegRegNth(NNP_Task nnpTask)
   ENTRY("vRegRegNth");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM("regN");
+    THROW_INVALID_PSTACK("regN");
   
   i8 iReg;
   if ( ! nnpTask->m_xParamStack.bPop(iReg) )
-    THROW_INVALID_PARAM("regN");
+    THROW_INVALID_PSTACK("regN");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(iReg);
   
@@ -8267,7 +8267,7 @@ void Task::vRegToReg0(NNP_Task nnpTask)
 ENTRY("vRegToReg0");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg0");
+    THROW_INVALID_PSTACK(">reg0");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(0);
   
@@ -8284,7 +8284,7 @@ void Task::vRegToReg1(NNP_Task nnpTask)
   ENTRY("vRegToReg1");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg1");
+    THROW_INVALID_PSTACK(">reg1");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(1);
   
@@ -8301,7 +8301,7 @@ void Task::vRegToReg2(NNP_Task nnpTask)
   ENTRY("vRegToReg2");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg2");
+    THROW_INVALID_PSTACK(">reg2");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(2);
   
@@ -8318,7 +8318,7 @@ void Task::vRegToReg3(NNP_Task nnpTask)
   ENTRY("vRegToReg3");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg3");
+    THROW_INVALID_PSTACK(">reg3");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(3);
   
@@ -8335,7 +8335,7 @@ void Task::vRegToReg4(NNP_Task nnpTask)
   ENTRY("vRegToReg4");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg4");
+    THROW_INVALID_PSTACK(">reg4");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(4);
   
@@ -8352,7 +8352,7 @@ void Task::vRegToReg5(NNP_Task nnpTask)
   ENTRY("vRegToReg5");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg5");
+    THROW_INVALID_PSTACK(">reg5");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(5);
   
@@ -8369,7 +8369,7 @@ void Task::vRegToReg6(NNP_Task nnpTask)
   ENTRY("vRegToReg6");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg6");
+    THROW_INVALID_PSTACK(">reg6");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(6);
   
@@ -8386,7 +8386,7 @@ void Task::vRegToReg7(NNP_Task nnpTask)
   ENTRY("vRegToReg7");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg7");
+    THROW_INVALID_PSTACK(">reg7");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(7);
   
@@ -8403,7 +8403,7 @@ void Task::vRegToReg8(NNP_Task nnpTask)
   ENTRY("vRegToReg8");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg8");
+    THROW_INVALID_PSTACK(">reg8");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(8);
   
@@ -8420,7 +8420,7 @@ void Task::vRegToReg9(NNP_Task nnpTask)
   ENTRY("vRegToReg9");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">reg9");
+    THROW_INVALID_PSTACK(">reg9");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(9);
   
@@ -8437,7 +8437,7 @@ void Task::vRegToRegA(NNP_Task nnpTask)
   ENTRY("vRegToRegA");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regA");
+    THROW_INVALID_PSTACK(">regA");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(10);
   
@@ -8454,7 +8454,7 @@ void Task::vRegToRegB(NNP_Task nnpTask)
   ENTRY("vRegToRegB");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regB");
+    THROW_INVALID_PSTACK(">regB");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(11);
   
@@ -8471,7 +8471,7 @@ void Task::vRegToRegC(NNP_Task nnpTask)
   ENTRY("vRegToRegC");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regC");
+    THROW_INVALID_PSTACK(">regC");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(12);
   
@@ -8488,7 +8488,7 @@ void Task::vRegToRegD(NNP_Task nnpTask)
   ENTRY("vRegToRegD");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regD");
+    THROW_INVALID_PSTACK(">regD");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(13);
   
@@ -8505,7 +8505,7 @@ void Task::vRegToRegE(NNP_Task nnpTask)
   ENTRY("vRegToRegE");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regE");
+    THROW_INVALID_PSTACK(">regE");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(14);
   
@@ -8522,7 +8522,7 @@ void Task::vRegToRegF(NNP_Task nnpTask)
   ENTRY("vRegToRegF");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regF");
+    THROW_INVALID_PSTACK(">regF");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(15);
   
@@ -8539,11 +8539,11 @@ void Task::vRegToRegNth(NNP_Task nnpTask)
   ENTRY("vRegToRegNth");
   
   if ( ! nnpTask->m_pRegFrame )
-    THROW_INVALID_PARAM(">regN");
+    THROW_INVALID_PSTACK(">regN");
   
   i8 iReg;
   if ( ! nnpTask->m_xParamStack.bPop(iReg) )
-    THROW_INVALID_PARAM(">regNth");
+    THROW_INVALID_PSTACK(">regNth");
   
   ValReg* pValReg = nnpTask->m_pRegFrame->pValReg(iReg);
   
@@ -8563,19 +8563,19 @@ ENTRY("vRowBufferAppend");
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("rowbuffer.append");
+    THROW_INVALID_PSTACK("rowbuffer.append");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("rowbuffer.append");
+    THROW_INVALID_PSTACK("rowbuffer.append");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   s8K sRecord;
   if ( ! nnpTask->m_xParamStack.bPop(sRecord) )
-    THROW_INVALID_PARAM("rowbuffer.append");
+    THROW_INVALID_PSTACK("rowbuffer.append");
 
   i8 iLength = sRecord.iLength();
   
@@ -8601,19 +8601,19 @@ void Task::vRowBufferAppendRecord(NNP_Task nnpTask)
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("rowBuffer.appendRecord");
+    THROW_INVALID_PSTACK("rowBuffer.appendRecord");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("rowBuffer.appendRecord");
+    THROW_INVALID_PSTACK("rowBuffer.appendRecord");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
   Object* pPtrFile;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrFile) )
-    THROW_INVALID_PARAM("rowBuffer.appendRecord");
+    THROW_INVALID_PSTACK("rowBuffer.appendRecord");
   
   File* pFile = _pFile(pPtrFile);
   
@@ -8643,7 +8643,7 @@ void Task::vRowBufferDump(NNP_Task nnpTask)
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("rowbuffer.dump");
+    THROW_INVALID_PSTACK("rowbuffer.dump");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
 
@@ -8683,14 +8683,14 @@ ENTRY("vRowCursorBegin");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.begin");
+    THROW_INVALID_PSTACK("rowcursor.begin");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   i8 iPartn;
   if ( ! nnpTask->m_xParamStack.bPop(iPartn) )
-    THROW_INVALID_PARAM("rowcursor.begin");
+    THROW_INVALID_PSTACK("rowcursor.begin");
   
   pRowCursor->vBegin(iPartn);
   
@@ -8706,7 +8706,7 @@ ENTRY("vRowCursorDelete");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.delete");
+    THROW_INVALID_PSTACK("rowcursor.delete");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8728,7 +8728,7 @@ ENTRY("vRowCursorEnd");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.end");
+    THROW_INVALID_PSTACK("rowcursor.end");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8747,7 +8747,7 @@ ENTRY("vRowCursorFirst");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.first");
+    THROW_INVALID_PSTACK("rowcursor.first");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8770,7 +8770,7 @@ ENTRY("vRowCursorGet");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.get");
+    THROW_INVALID_PSTACK("rowcursor.get");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8792,7 +8792,7 @@ ENTRY("vRowCursorInit");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.init");
+    THROW_INVALID_PSTACK("rowcursor.init");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8826,7 +8826,7 @@ ENTRY("vRowCursorNext");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.next");
+    THROW_INVALID_PSTACK("rowcursor.next");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8849,7 +8849,7 @@ void Task::vRowCursorRowBuffer(NNP_Task nnpTask)
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-  THROW_INVALID_PARAM("rowcursor.rowBuffer");
+  THROW_INVALID_PSTACK("rowcursor.rowBuffer");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8871,7 +8871,7 @@ ENTRY("vRowCursorTableFetch");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.table@");
+    THROW_INVALID_PSTACK("rowcursor.table@");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
@@ -8892,14 +8892,14 @@ ENTRY("vRowCursorTableStore");
   
   Object* pPtrRowCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowCursor) )
-    THROW_INVALID_PARAM("rowcursor.table!");
+    THROW_INVALID_PSTACK("rowcursor.table!");
   
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("rowcursor.table!");
+    THROW_INVALID_PSTACK("rowcursor.table!");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -8936,7 +8936,7 @@ void Task::vRstackDrop(NNP_Task nnpTask)
   
   ValWsp xValA;
   if ( ! nnpTask->m_xReturnStack.bPop(xValA) )
-    THROW_INVALID_RETURN("rdrop");
+    THROW_INVALID_RSTACK("rdrop");
   
   EXIT();
 }
@@ -8968,7 +8968,7 @@ void Task::vRstackPick(NNP_Task nnpTask)
   
   i8 iPick;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iPick) )
-    THROW_INVALID_PARAM("rpick");
+    THROW_INVALID_PSTACK("rpick");
   
   // could do this directly on stack
   
@@ -9003,11 +9003,11 @@ void Task::vRstackReverse(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM("areverse");
+    THROW_INVALID_PSTACK("areverse");
   
   for (i8 i = 0; i < nValues; i++) {
     if ( ! nnpTask->m_xReturnStack.bPop(apValWsp[i]) )
-      THROW_INVALID_PARAM("areverse");
+      THROW_INVALID_PSTACK("areverse");
   }
   
   for (i8 i = 0; i < nValues; i++) {
@@ -9024,7 +9024,7 @@ void Task::vRstackToP(NNP_Task nnpTask)
   
   ValWsp xVal;
   if ( ! nnpTask->m_xReturnStack.bPop(xVal) )
-    THROW_INVALID_PARAM("r>");
+    THROW_INVALID_PSTACK("r>");
   
   nnpTask->m_xParamStack.vPush(xVal);
   
@@ -9040,7 +9040,7 @@ void Task::vRstackToR(NNP_Task nnpTask)
   
   ValWsp xValOpaque;
   if ( ! nnpTask->m_xParamStack.bPop(xValOpaque) )
-    THROW_INVALID_PARAM(">r");
+    THROW_INVALID_PSTACK(">r");
   
   nnpTask->m_xReturnStack.vPush(xValOpaque);
   
@@ -9253,7 +9253,7 @@ ENTRY("vSEitfDelete");
   Object* pPtrSEitf;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.delete");
+    THROW_INVALID_PSTACK("seitf.delete");
 
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9272,7 +9272,7 @@ ENTRY("vSEitfDump");
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.dump");
+    THROW_INVALID_PSTACK("seitf.dump");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9308,7 +9308,7 @@ ENTRY("vSEitfReqFetch");
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.req@");
+    THROW_INVALID_PSTACK("seitf.req@");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9329,7 +9329,7 @@ ENTRY("vSEitfReqStore");
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.req!");
+    THROW_INVALID_PSTACK("seitf.req!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9337,7 +9337,7 @@ ENTRY("vSEitfReqStore");
   Object* pPtrQueue;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrQueue) )
-    THROW_INVALID_PARAM("seitf.req!");
+    THROW_INVALID_PSTACK("seitf.req!");
   
   Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pQueue->eClass());
@@ -9356,7 +9356,7 @@ ENTRY("vSEitfRspFetch");
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.rsp@");
+    THROW_INVALID_PSTACK("seitf.rsp@");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9377,7 +9377,7 @@ ENTRY("vSEitfRspStore");
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PSTACK("seitf.rsp!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9385,7 +9385,7 @@ ENTRY("vSEitfRspStore");
   Object* pPtrQueue;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrQueue) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PSTACK("seitf.rsp!");
   
   Queue* pQueue = _pQueue(pPtrQueue);
   ASSERT(CN_QUEUE == pQueue->eClass());
@@ -9404,7 +9404,7 @@ void Task::vSEitfTableFetch(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.rsp!");
+    THROW_INVALID_PSTACK("seitf.rsp!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9423,7 +9423,7 @@ void Task::vSEitfTableDeref(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.tableDeref");
+    THROW_INVALID_PSTACK("seitf.tableDeref");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9447,7 +9447,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("seitf.tableRef");
+    THROW_INVALID_PSTACK("seitf.tableRef");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
@@ -9455,7 +9455,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   Object* pPtrTable;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("seitf.tableRef");
+    THROW_INVALID_PSTACK("seitf.tableRef");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -9478,7 +9478,7 @@ ENTRY("vSEitfCursorBegin");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.begin");
+    THROW_INVALID_PSTACK("seitfcursor.begin");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9502,7 +9502,7 @@ ENTRY("vSEitfCursorDelete");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.delete");
+    THROW_INVALID_PSTACK("seitfcursor.delete");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9524,7 +9524,7 @@ ENTRY("vSEitfCursorEnd");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.end");
+    THROW_INVALID_PSTACK("seitfcursor.end");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9543,7 +9543,7 @@ ENTRY("vSEitfCursorFirst");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.first");
+    THROW_INVALID_PSTACK("seitfcursor.first");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9566,7 +9566,7 @@ ENTRY("vSEitfCursorGet");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.get");
+    THROW_INVALID_PSTACK("seitfcursor.get");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9587,7 +9587,7 @@ ENTRY("vSEitfCursorInit");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.init");
+    THROW_INVALID_PSTACK("seitfcursor.init");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9613,7 +9613,7 @@ ENTRY("vSEitfCursorNew");
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfList) )
-    THROW_INVALID_PARAM("seitfcursor.new");
+    THROW_INVALID_PSTACK("seitfcursor.new");
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
@@ -9638,7 +9638,7 @@ ENTRY("vSEitfCursorNext");
   
   Object* pPtrSEitfCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfCursor) )
-    THROW_INVALID_PARAM("seitfcursor.next");
+    THROW_INVALID_PSTACK("seitfcursor.next");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
   ASSERT(CN_SEITFCURSOR == pSEitfCursor->eClass());
@@ -9663,7 +9663,7 @@ ENTRY("vSEitfListDump");
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfList) )
-    THROW_INVALID_PARAM("seitflist.dump");
+    THROW_INVALID_PSTACK("seitflist.dump");
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
@@ -9682,7 +9682,7 @@ ENTRY("vSEitfListInit");
   
   Object* pPtrSEitfList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitfList) )
-    THROW_INVALID_PARAM("seitflist.init");
+    THROW_INVALID_PSTACK("seitflist.init");
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
   ASSERT(CN_SEITFLIST == pSEitfList->eClass());
@@ -9704,7 +9704,7 @@ void Task::vShellExecute(NNP_Task nnpTask)
   ValWsp xCommand;
   
   if ( ! nnpTask->m_xParamStack.bPop(xCommand) )
-    THROW_INVALID_PARAM("shell.execute");
+    THROW_INVALID_PSTACK("shell.execute");
   
   SysCall xSysCall;
   
@@ -9730,7 +9730,7 @@ void Task::vSocketAccept(NNP_Task nnpTask)
   ENTRY("vSocketAccept");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socket.accept");
+    THROW_INVALID_PSTACK("socket.accept");
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -9761,7 +9761,7 @@ void Task::vSocketClose(NNP_Task nnpTask)
   ENTRY("vSocketClose");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketclose");
+    THROW_INVALID_PSTACK("socketclose");
   
   // get pSocket
   pSocket = reinterpret_cast<Socket*>(pObject);
@@ -9790,13 +9790,13 @@ void Task::vSocketConnect(NNP_Task nnpTask)
   ENTRY("vSocketConnect");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socket.connect");
+    THROW_INVALID_PSTACK("socket.connect");
   
   if ( ! nnpTask->m_xParamStack.bPop(xNode) )
-    THROW_INVALID_PARAM("socket.connect");
+    THROW_INVALID_PSTACK("socket.connect");
   
   if ( ! nnpTask->m_xParamStack.bPop(iPort) )
-    THROW_INVALID_PARAM("socket.connect");
+    THROW_INVALID_PSTACK("socket.connect");
   
   // get address of node
   const char* sAddr = reinterpret_cast<char*>(xNode.sStr());
@@ -9852,7 +9852,7 @@ void Task::vSocketListen(NNP_Task nnpTask)
   ENTRY("vSocketListen");
   
   if ( ! nnpTask->m_xParamStack.bPop(iPort) )
-    THROW_INVALID_PARAM("socketlisten");
+    THROW_INVALID_PSTACK("socketlisten");
   
   pSocket = new Socket;
   bool bResult = pSocket->bCreateServer((int)iPort, xSysCall);
@@ -9904,10 +9904,10 @@ void Task::vSocketSend(NNP_Task nnpTask)
   bool    bResult;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socket.send");
+    THROW_INVALID_PSTACK("socket.send");
   
   if ( ! nnpTask->m_xParamStack.bPop(xValSet) )
-    THROW_INVALID_PARAM("socket.send");
+    THROW_INVALID_PSTACK("socket.send");
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
@@ -9992,7 +9992,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   i8 iBytes;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("socketrecv");
+    THROW_INVALID_PSTACK("socketrecv");
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
@@ -10099,7 +10099,7 @@ ENTRY("vStringPad");
   
   // get the arguments
   if ( ! nnpTask->m_xParamStack.bPop(iLength,xStringA) )
-    THROW_INVALID_PARAM("strpad");
+    THROW_INVALID_PSTACK("strpad");
   
   String::vPad(xStringA.sStr(),iLength,' ');
   xStringA.pAsStrVal()->vSize();
@@ -10121,7 +10121,7 @@ ENTRY("vStrEql");
   
   // get the arguments
   if ( ! nnpTask->m_xParamStack.bPop(xStringB,xStringA) )
-    THROW_INVALID_PARAM("streql");
+    THROW_INVALID_PSTACK("streql");
   
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
@@ -10142,7 +10142,7 @@ ENTRY("vStrLen");
   
   // get the arguments
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("strlen");
+    THROW_INVALID_PSTACK("strlen");
   
   iLength = String::iLength(sString.a());
   
@@ -10167,7 +10167,7 @@ ENTRY("vStrLen");
 //  
 //  // get the arguments
 //  if ( ! nnpTask->m_xParamStack.bPop(iStart,iLength,xString) )
-//    THROW_INVALID_PARAM("substr");
+//    THROW_INVALID_PSTACK("substr");
 //  
 //  // validate start index
 //  if ( iStart < 0 || iStart >= pStrVal->iChars())
@@ -10202,7 +10202,7 @@ void Task::vSubStr(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_xParamStack.bPop(iStart,iLength,sString) )
-    THROW_INVALID_PARAM("substr");
+    THROW_INVALID_PSTACK("substr");
   
   i8 iHasLength = String::iLength(sString.a());
   
@@ -10238,7 +10238,7 @@ ENTRY("vConcat");
   ValWsp xStrA;
   
   if ( ! nnpTask->m_xParamStack.bPop(xStrB,xStrA) )
-    THROW_INVALID_PARAM("concat");
+    THROW_INVALID_PSTACK("concat");
   
   xStrR = xStrA;
   
@@ -10265,7 +10265,7 @@ ENTRY("vConcat");
 //  
 //  // get the arguments
 //  if ( ! nnpTask->m_xParamStack.bPop(iLength,xString) )
-//    THROW_INVALID_PARAM("clip");
+//    THROW_INVALID_PSTACK("clip");
 //  
 //  // validate length
 //  i8 iStrLength = pStrVal->iChars();
@@ -10296,7 +10296,7 @@ void Task::vClip(NNP_Task nnpTask)
   
   // get the arguments
   if ( ! nnpTask->m_xParamStack.bPop(iLength,sString) )
-    THROW_INVALID_PARAM("clip");
+    THROW_INVALID_PSTACK("clip");
   
   // validate length
   i8 iHasLength = String::iLength(sString.a());
@@ -10329,7 +10329,7 @@ ENTRY("vToDigitName");
   
   // get the arguments
   if ( ! nnpTask->m_xParamStack.bPop(iDigit) )
-    THROW_INVALID_PARAM(">DigitName");
+    THROW_INVALID_PSTACK(">DigitName");
   
   s32 sName;
   
@@ -10367,7 +10367,7 @@ void Task::vPrepend(NNP_Task nnpTask)
   ValWsp xValB;
   
   if ( ! nnpTask->m_xParamStack.bPop(xValB,xValA) )
-  THROW_INVALID_PARAM("prepend");
+  THROW_INVALID_PSTACK("prepend");
   
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
@@ -10408,7 +10408,7 @@ void Task::vRndStr(NNP_Task nnpTask)
   
   i8 iLength;
   if ( ! nnpTask->m_xParamStack.bPop(iLength) )
-    THROW_INVALID_PARAM("rndStr");
+    THROW_INVALID_PSTACK("rndStr");
   
   s8K sRnd;
   
@@ -10428,7 +10428,7 @@ void Task::vSprint(NNP_Task nnpTask)
   
   s8K sFormat;
   if ( ! nnpTask->m_xParamStack.bPop(sFormat) )
-    THROW_INVALID_PARAM("sprint");
+    THROW_INVALID_PSTACK("sprint");
   
   s8K sString;
   
@@ -10449,7 +10449,7 @@ void Task::vS256Init(NNP_Task nnpTask)
   Object* pPtrStrVal;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrStrVal) )
-    THROW_INVALID_PARAM("s256.init");
+    THROW_INVALID_PSTACK("s256.init");
   
   StrVal* pStrVal = _pStrVal(pPtrStrVal);
   
@@ -10472,19 +10472,19 @@ void Task::vTableAppend(NNP_Task nnpTask)
   s8K sString;
   
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("table.append");
+    THROW_INVALID_PSTACK("table.append");
   
   Table* pTable = reinterpret_cast<Table*>(String::iToI8(sString.a()));
   ASSERT(CN_TABLE == pTable->eClass());
   
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("table.append");
+    THROW_INVALID_PSTACK("table.append");
   
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(String::iToI8(sString.a()));
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
   
   if ( ! nnpTask->m_xParamStack.bPop(sString) )
-    THROW_INVALID_PARAM("table.append");
+    THROW_INVALID_PSTACK("table.append");
   
   iPartition = String::iToI8(sString.a());
   pTable->vAppendBuffer(iPartition,pRowBuffer);
@@ -10501,17 +10501,17 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
 
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PSTACK("table.appendBuffer");
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 iPartition = 0;
   if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PSTACK("table.appendBuffer");
   
   Object* pPtrRowBuffer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrRowBuffer) )
-    THROW_INVALID_PARAM("table.appendBuffer");
+    THROW_INVALID_PSTACK("table.appendBuffer");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
     
@@ -10529,7 +10529,7 @@ ENTRY("vTableDic");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.dic");
+    THROW_INVALID_PSTACK("table.dic");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10550,7 +10550,7 @@ ENTRY("vTableDrop");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.drop");
+    THROW_INVALID_PSTACK("table.drop");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10569,7 +10569,7 @@ ENTRY("vTableDump");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.dump");
+    THROW_INVALID_PSTACK("table.dump");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10588,7 +10588,7 @@ ENTRY("vTableInit");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.init");
+    THROW_INVALID_PSTACK("table.init");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10610,15 +10610,15 @@ ENTRY("vTableInsert");
   ValWsp xRow;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.insert");
+    THROW_INVALID_PSTACK("table.insert");
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("table.insert");
+    THROW_INVALID_PSTACK("table.insert");
   if ( ! nnpTask->m_xParamStack.bPop(xRow) )
-    THROW_INVALID_PARAM("table.insert");
+    THROW_INVALID_PSTACK("table.insert");
 
   i8 iPartition;
   if ( ! nnpTask->m_xParamStack.bPop(iPartition) )
-    THROW_INVALID_PARAM("table.insert");
+    THROW_INVALID_PSTACK("table.insert");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10643,7 +10643,7 @@ void Task::vTableName(NNP_Task nnpTask)
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.init");
+    THROW_INVALID_PSTACK("table.init");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10667,7 +10667,7 @@ void Task::vTableRef(NNP_Task nnpTask)
   Object* pPtrTable;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.ref");
+    THROW_INVALID_PSTACK("table.ref");
   
   Table* pTable = _pTable(pPtrTable);
   
@@ -10687,7 +10687,7 @@ ENTRY("vTableTruncate");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.truncate");
+    THROW_INVALID_PSTACK("table.truncate");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10706,7 +10706,7 @@ ENTRY("vTableSpace");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTable) )
-    THROW_INVALID_PARAM("table.spave");
+    THROW_INVALID_PSTACK("table.spave");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
@@ -10731,7 +10731,7 @@ void Task::vTaskAcksDec(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM("--task.acks");
+    THROW_INVALID_PSTACK("--task.acks");
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 iResult = --pGivenTask->m_zAcks;
@@ -10750,7 +10750,7 @@ void Task::vTaskAcksFetch(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM("task.acks@");
+    THROW_INVALID_PSTACK("task.acks@");
   Task* pGivenTask = _pTask(pPtrTask);
   
   nnpTask->m_xParamStack.vPush(*pGivenTask->m_zAcks);
@@ -10767,12 +10767,12 @@ void Task::vTaskAcksStore(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM("task.acks!");
+    THROW_INVALID_PSTACK("task.acks!");
   Task* pGivenTask = _pTask(pPtrTask);
   
   i8 iInt;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iInt) )
-    THROW_INVALID_PARAM("task.acks!");
+    THROW_INVALID_PSTACK("task.acks!");
   
   ASSERT(0 == *pGivenTask->m_zAcks);
 
@@ -10790,7 +10790,7 @@ void Task::vTaskCommentFetch(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM("task.comment@");
+    THROW_INVALID_PSTACK("task.comment@");
   Task* pGivenTask = _pTask(pPtrTask);
   
   nnpTask->m_xParamStack.vPush(pGivenTask->m_sComment);
@@ -10807,12 +10807,12 @@ void Task::vTaskCommentStore(NNP_Task nnpTask)
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM("task.comment!");
+    THROW_INVALID_PSTACK("task.comment!");
   Task* pGivenTask = _pTask(pPtrTask);
   
   s32 sComment;
   if ( ! nnpTask->m_xParamStack.bPop(sComment) )
-    THROW_INVALID_PARAM("task.comment!");
+    THROW_INVALID_PSTACK("task.comment!");
   
   pGivenTask->m_sComment = sComment;
   
@@ -10842,7 +10842,7 @@ ENTRY("vTaskDump");
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PSTACK("task.dump");
   Task* pThatTask = _pTask(pObject);
   
   pThatTask->vDump();
@@ -10859,7 +10859,7 @@ ENTRY("vTaskInit");
   
   Object* pPtrTask;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTask) )
-    THROW_INVALID_PARAM("task.init");
+    THROW_INVALID_PSTACK("task.init");
   
   Task* pThatTask = _pTask(pPtrTask);
   ASSERT(CN_TASK == pThatTask->eClass());
@@ -10885,7 +10885,7 @@ ENTRY("vTaskNameFetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.name@");
+    THROW_INVALID_PSTACK("task.name@");
   Task* pThatTask = _pTask(pTaskObject);
   
   nnpTask->m_xParamStack.vPush(pThatTask->m_sName);
@@ -10902,12 +10902,12 @@ ENTRY("vTaskNameStore");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.name!");
+    THROW_INVALID_PSTACK("task.name!");
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sName;
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
-    THROW_INVALID_PARAM("task.name!");
+    THROW_INVALID_PSTACK("task.name!");
   
   pThatTask->m_sName = sName;
   
@@ -10922,26 +10922,26 @@ void Task::vTaskNew(NNP_Task nnpTask)
 ENTRY("vTaskNew");
   //                                   pParent   sSeed     nTaskArgs
   if ( ! nnpTask->m_xParamStack.bGuard(CN_PTRVAL,CN_STRVAL,CN_INTVAL) )
-    THROW_INVALID_PARAM("task.new");
+    THROW_INVALID_PSTACK("task.new");
   
   Object* pParent;
   if ( ! nnpTask->m_xParamStack.bPop(pParent) )
-    THROW_INVALID_PARAM("task.new");
+    THROW_INVALID_PSTACK("task.new");
   Task* pParentTask = _pTask(pParent);
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   s32 sSeed;
   if ( ! nnpTask->m_xParamStack.bPop(sSeed) )
-    THROW_INVALID_PARAM("task.new");
+    THROW_INVALID_PSTACK("task.new");
   char* aSeedWord = sSeed.a();
   
   i8 nTaskArgs;
   if ( ! nnpTask->m_xParamStack.bPop(nTaskArgs) )
-    THROW_INVALID_PARAM("task.new");
+    THROW_INVALID_PSTACK("task.new");
   //ASSERT(! nTaskArgs);
 
   if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
-    THROW_INVALID_PARAM("task.new");
+    THROW_INVALID_PSTACK("task.new");
   
   // create new task (will be automatically appended to task list)
   NNP_Task nnpNewTask = new Task;
@@ -10991,7 +10991,7 @@ void Task::vTaskParentStore(NNP_Task nnpTask)
   
   Object* pParent;
   if ( ! nnpTask->m_xParamStack.bPop(pParent) )
-    THROW_INVALID_PARAM("task.parent!");
+    THROW_INVALID_PSTACK("task.parent!");
   Task* pParentTask = _pTask(pParent);
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
@@ -11009,7 +11009,7 @@ ENTRY("vTaskQfetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.queue@");
+    THROW_INVALID_PSTACK("task.queue@");
   Task* pThatTask = _pTask(pTaskObject);
   
   Queue* pQueue = pThatTask->m_pQueue;
@@ -11030,13 +11030,13 @@ ENTRY("vTaskQstore");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.queue!");
+    THROW_INVALID_PSTACK("task.queue!");
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pQueueEmb;
   
   if ( ! nnpTask->m_xParamStack.bPop(pQueueEmb) )
-    THROW_INVALID_PARAM("task.queue!");
+    THROW_INVALID_PSTACK("task.queue!");
   
   Queue* pQueue = static_cast<Queue*>(pQueueEmb);
   
@@ -11054,25 +11054,25 @@ ENTRY("vTaskSeed");
   
 //  //                                   sSeed     nTaskArgs
 //  if ( ! nnpTask->m_xParamStack.bGuard(CN_STRVAL,CN_INTVAL) )
-//    THROW_INVALID_PARAM("task.seed");
+//    THROW_INVALID_PSTACK("task.seed");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.seed");
+    THROW_INVALID_PSTACK("task.seed");
   Task* pThatTask = _pTask(pTaskObject);
   
   s32 sSeed;
   if ( ! nnpTask->m_xParamStack.bPop(sSeed) )
-    THROW_INVALID_PARAM("task.seed");
+    THROW_INVALID_PSTACK("task.seed");
   pThatTask->vSeedWord(sSeed.a());
 
   i8 nTaskArgs;
   if ( ! nnpTask->m_xParamStack.bPop(nTaskArgs) )
-    THROW_INVALID_PARAM("task.seed");
+    THROW_INVALID_PSTACK("task.seed");
   //ASSERT(! nTaskArgs);
   
   if ( ! nnpTask->m_xParamStack.bGuard(nTaskArgs) )
-    THROW_INVALID_PARAM("task.seed");
+    THROW_INVALID_PSTACK("task.seed");
   
   // copy task arguments to new task (preserving stack order)
   ValWsp xValWsp;
@@ -11099,7 +11099,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("task.seitf@");
+    THROW_INVALID_PSTACK("task.seitf@");
   Task* pThatTask = _pTask(pObject);
   
   SEitf* pSEitf = pThatTask->m_pSEitf;
@@ -11120,13 +11120,13 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.seitf!");
+    THROW_INVALID_PSTACK("task.seitf!");
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* pPtrSEitf;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrSEitf) )
-    THROW_INVALID_PARAM("task.seitf!");
+    THROW_INVALID_PSTACK("task.seitf!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
@@ -11145,7 +11145,7 @@ void Task::vTaskSignal(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.signal");
+    THROW_INVALID_PSTACK("task.signal");
   Task* pThatTask = _pTask(pTaskObject);
   
   i8 iMore = --pThatTask->m_zAcks;
@@ -11199,7 +11199,7 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.socket@");
+    THROW_INVALID_PSTACK("task.socket@");
   Task* pThatTask = _pTask(pTaskObject);
   
   Socket* pSocket = pThatTask->m_pSocket;
@@ -11220,13 +11220,13 @@ void Task::vTaskSocketStore(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.socket!");
+    THROW_INVALID_PSTACK("task.socket!");
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* ptrSocket;
   
   if ( ! nnpTask->m_xParamStack.bPop(ptrSocket) )
-    THROW_INVALID_PARAM("task.socket!");
+    THROW_INVALID_PSTACK("task.socket!");
   
   Socket* pSocket = static_cast<Socket*>(ptrSocket);
   
@@ -11244,7 +11244,7 @@ ENTRY("vTaskStateFetch");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.state@");
+    THROW_INVALID_PSTACK("task.state@");
   Task* pThatTask = _pTask(pTaskObject);
   
   eTS eState = pThatTask->m_eState;
@@ -11263,13 +11263,13 @@ ENTRY("vTaskStateStore");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.state!");
+    THROW_INVALID_PSTACK("task.state!");
   Task* pThatTask = _pTask(pTaskObject);
   
   i8 iState;
   
   if ( ! nnpTask->m_xParamStack.bPop(iState) )
-    THROW_INVALID_PARAM("task.state!");
+    THROW_INVALID_PSTACK("task.state!");
   
   pThatTask->m_eState = (eTS)iState;
   
@@ -11308,7 +11308,7 @@ void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.taskset@");
+    THROW_INVALID_PSTACK("task.taskset@");
   Task* pThatTask = _pTask(pTaskObject);
   
   TaskSet* pTaskSet = pThatTask->m_pTaskSet;
@@ -11329,13 +11329,13 @@ void Task::vTaskTaskSetStore(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.taskset!");
+    THROW_INVALID_PSTACK("task.taskset!");
   Task* pThatTask = _pTask(pTaskObject);
   
   Object* ptrTaskSet;
   
   if ( ! nnpTask->m_xParamStack.bPop(ptrTaskSet) )
-    THROW_INVALID_PARAM("task.taskset!");
+    THROW_INVALID_PSTACK("task.taskset!");
   
   TaskSet* pTaskSet = static_cast<TaskSet*>(ptrTaskSet);
   
@@ -11367,7 +11367,7 @@ void Task::vTaskThread(NNP_Task nnpTask)
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.thread");
+    THROW_INVALID_PSTACK("task.thread");
   Task* pThatTask = _pTask(pTaskObject);
 
   Thread* pThread = pThatTask->m_pThread;
@@ -11411,7 +11411,7 @@ ENTRY("vTaskCursorBegin");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.begin");
+    THROW_INVALID_PSTACK("taskCursor.begin");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -11430,7 +11430,7 @@ ENTRY("vTaskCursorDelete");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.delete");
+    THROW_INVALID_PSTACK("taskCursor.delete");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -11452,7 +11452,7 @@ ENTRY("vTaskCursorEnd");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.end");
+    THROW_INVALID_PSTACK("taskCursor.end");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -11471,7 +11471,7 @@ ENTRY("vTaskCursorFirst");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.first");
+    THROW_INVALID_PSTACK("taskCursor.first");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -11494,7 +11494,7 @@ ENTRY("vTaskCursorGet");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.get");
+    THROW_INVALID_PSTACK("taskCursor.get");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -11517,7 +11517,7 @@ ENTRY("vTaskCursorInit");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.init");
+    THROW_INVALID_PSTACK("taskCursor.init");
   
 //  s32 sName;
 //  sName = "tasklist";
@@ -11552,7 +11552,7 @@ ENTRY("vTaskCursorNext");
   
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskCursor) )
-    THROW_INVALID_PARAM("taskCursor.next");
+    THROW_INVALID_PSTACK("taskCursor.next");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
@@ -11589,14 +11589,14 @@ ENTRY("vTaskListAppend");
   
   Object* pPtrTaskList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskList) )
-    THROW_INVALID_PARAM("tasklist.append");
+    THROW_INVALID_PSTACK("tasklist.append");
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PSTACK("task.dump");
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskList->vAppend(pThatTask);
@@ -11613,7 +11613,7 @@ ENTRY("vTaskListDump");
   
   Object* pPtrTaskList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTaskList) )
-    THROW_INVALID_PARAM("tasklist.dump");
+    THROW_INVALID_PSTACK("tasklist.dump");
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
@@ -11645,7 +11645,7 @@ ENTRY("vTaskSetAppend");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("taskset.append");
+    THROW_INVALID_PSTACK("taskset.append");
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -11653,7 +11653,7 @@ ENTRY("vTaskSetAppend");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("taskset.append");
+    THROW_INVALID_PSTACK("taskset.append");
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
@@ -11671,7 +11671,7 @@ ENTRY("vTaskSetDump");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("taskset.dump");
+    THROW_INVALID_PSTACK("taskset.dump");
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -11692,7 +11692,7 @@ ENTRY("vTaskSetInit");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("taskset.init");
+    THROW_INVALID_PSTACK("taskset.init");
   
   ASSERT(CN_TASKSET == pObject->eClass());
   
@@ -11715,7 +11715,7 @@ ENTRY("vThreadAppend");
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_xParamStack.bPop(pThreadEmb) )
-    THROW_INVALID_PARAM("thread.append");
+    THROW_INVALID_PSTACK("thread.append");
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -11725,7 +11725,7 @@ ENTRY("vThreadAppend");
   
   Object* pTaskObject;
   if ( ! nnpTask->m_xParamStack.bPop(pTaskObject) )
-    THROW_INVALID_PARAM("task.dump");
+    THROW_INVALID_PSTACK("task.dump");
   Task* pThatTask = _pTask(pTaskObject);
   
   pTaskSet->vAppend(pThatTask);
@@ -11744,10 +11744,10 @@ ENTRY("vThreadBind");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(iCpu) )
-    THROW_INVALID_PARAM("thread.bind");
+    THROW_INVALID_PSTACK("thread.bind");
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.bind");
+    THROW_INVALID_PSTACK("thread.bind");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11767,7 +11767,7 @@ void Task::vThreadCondSignal(NNP_Task nnpTask)
   
   Object* pThreadObject;
   if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
-    THROW_INVALID_PARAM("thread.condSignal");
+    THROW_INVALID_PSTACK("thread.condSignal");
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -11786,7 +11786,7 @@ void Task::vThreadCondWait(NNP_Task nnpTask)
   
   Object* pThreadObject;
   if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
-    THROW_INVALID_PARAM("thread.condWait");
+    THROW_INVALID_PSTACK("thread.condWait");
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -11806,7 +11806,7 @@ ENTRY("vThreadCpu");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.cpu");
+    THROW_INVALID_PSTACK("thread.cpu");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11827,7 +11827,7 @@ ENTRY("vThreadDump");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.dump");
+    THROW_INVALID_PSTACK("thread.dump");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11848,7 +11848,7 @@ ENTRY("vThreadId");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.id");
+    THROW_INVALID_PSTACK("thread.id");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11869,7 +11869,7 @@ ENTRY("vThreadInit");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.init");
+    THROW_INVALID_PSTACK("thread.init");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11896,7 +11896,7 @@ ENTRY("vThreadMutexLock");
   
   Object* pThreadObject;
   if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
-    THROW_INVALID_PARAM("thread.mutexLock");
+    THROW_INVALID_PSTACK("thread.mutexLock");
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -11915,7 +11915,7 @@ ENTRY("vThreadMutexUnlock");
 
   Object* pThreadObject;
   if ( ! nnpTask->m_xParamStack.bPop(pThreadObject) )
-    THROW_INVALID_PARAM("thread.mutexUnlock");
+    THROW_INVALID_PSTACK("thread.mutexUnlock");
   
   Thread* pThread = _pThread(pThreadObject);
   ASSERT(CN_THREAD == pThread->eClass());
@@ -11935,7 +11935,7 @@ ENTRY("vThreadNameFetch");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.name@");
+    THROW_INVALID_PSTACK("thread.name@");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11959,7 +11959,7 @@ ENTRY("vThreadNameStore");
   Object* pObject;
   
   if ( ! nnpTask->m_xParamStack.bPop(pObject) )
-    THROW_INVALID_PARAM("thread.name!");
+    THROW_INVALID_PSTACK("thread.name!");
   
   ASSERT(CN_THREAD == pObject->eClass());
   
@@ -11968,7 +11968,7 @@ ENTRY("vThreadNameStore");
   s32 sName;
   ValWsp xNameWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xNameWsp) )
-    THROW_INVALID_PARAM("thread.name!");
+    THROW_INVALID_PSTACK("thread.name!");
   
   sName = xNameWsp.sStr();
   
@@ -11987,7 +11987,7 @@ ENTRY("vThreadSfetch");
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_xParamStack.bPop(pThreadEmb) )
-    THROW_INVALID_PARAM("thread.taskset@");
+    THROW_INVALID_PSTACK("thread.taskset@");
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -12012,7 +12012,7 @@ ENTRY("vThreadSstore");
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_xParamStack.bPop(pThreadEmb) )
-    THROW_INVALID_PARAM("thread.taskset!");
+    THROW_INVALID_PSTACK("thread.taskset!");
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -12021,7 +12021,7 @@ ENTRY("vThreadSstore");
   Object* pTaskSetEmb;
   
   if ( ! nnpTask->m_xParamStack.bPop(pTaskSetEmb) )
-    THROW_INVALID_PARAM("thread.taskset!");
+    THROW_INVALID_PSTACK("thread.taskset!");
   
   ASSERT(CN_TASKSET == pTaskSetEmb->eClass());
   
@@ -12042,7 +12042,7 @@ ENTRY("vThreadSleep_s");
   i8 nSeconds;
   
   if ( ! nnpTask->m_xParamStack.bPop(nSeconds) )
-    THROW_INVALID_PARAM("sleep_s");
+    THROW_INVALID_PSTACK("sleep_s");
   
   Thread* pThread = Thread::pThread();
   
@@ -12061,7 +12061,7 @@ ENTRY("vThreadSleep_ms");
   i8 nMilliseconds;
   
   if ( ! nnpTask->m_xParamStack.bPop(nMilliseconds) )
-    THROW_INVALID_PARAM("sleep_ms");
+    THROW_INVALID_PSTACK("sleep_ms");
   
   Thread* pThread = Thread::pThread();
   
@@ -12080,7 +12080,7 @@ ENTRY("vThreadSleep_us");
   i8 nMicroseconds;
   
   if ( ! nnpTask->m_xParamStack.bPop(nMicroseconds) )
-    THROW_INVALID_PARAM("sleep_us");
+    THROW_INVALID_PSTACK("sleep_us");
   
   Thread* pThread = Thread::pThread();
   
@@ -12099,7 +12099,7 @@ ENTRY("vThreadSleep_ns");
   i8 nNanoseconds;
   
   if ( ! nnpTask->m_xParamStack.bPop(nNanoseconds) )
-    THROW_INVALID_PARAM("sleep_ns");
+    THROW_INVALID_PSTACK("sleep_ns");
   
   Thread* pThread = Thread::pThread();
   
@@ -12118,7 +12118,7 @@ ENTRY("vThreadSpawn");
   Object* pThreadEmb;
   
   if ( ! nnpTask->m_xParamStack.bPop(pThreadEmb) )
-    THROW_INVALID_PARAM("thread.spawn");
+    THROW_INVALID_PSTACK("thread.spawn");
   
   ASSERT(CN_THREAD == pThreadEmb->eClass());
   
@@ -12140,7 +12140,7 @@ ENTRY("vThreadCursorBegin");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadCursor.begin");
+    THROW_INVALID_PSTACK("threadCursor.begin");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12159,7 +12159,7 @@ ENTRY("vTheadCursorDelete");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadCursor.delete");
+    THROW_INVALID_PSTACK("threadCursor.delete");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12178,7 +12178,7 @@ ENTRY("vThreadCursorEnd");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadcursor.end");
+    THROW_INVALID_PSTACK("threadcursor.end");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12197,7 +12197,7 @@ ENTRY("vThreadCursorFirst");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadCursor.first");
+    THROW_INVALID_PSTACK("threadCursor.first");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12220,7 +12220,7 @@ ENTRY("vThreadCursorGet");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadCursor.get");
+    THROW_INVALID_PSTACK("threadCursor.get");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12241,7 +12241,7 @@ ENTRY("vThreadCursorInit");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadCursor.init");
+    THROW_INVALID_PSTACK("threadCursor.init");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12275,7 +12275,7 @@ ENTRY("vThreadCursorNext");
   
   Object* pPtrThreadCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadCursor) )
-    THROW_INVALID_PARAM("threadCursor.next");
+    THROW_INVALID_PSTACK("threadCursor.next");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
@@ -12300,7 +12300,7 @@ ENTRY("vThreadListDump");
   
   Object* pPtrThreadList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadList) )
-    THROW_INVALID_PARAM("threadlist.dump");
+    THROW_INVALID_PSTACK("threadlist.dump");
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
@@ -12319,7 +12319,7 @@ ENTRY("vThreadListInit");
   
   Object* pPtrThreadList;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrThreadList) )
-    THROW_INVALID_PARAM("threadlist.init");
+    THROW_INVALID_PSTACK("threadlist.init");
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
   ASSERT(CN_THREADLIST == pThreadList->eClass());
@@ -12341,7 +12341,7 @@ ENTRY("vTimeDelete");
   Header* pPtrTimer;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.delete");
+    THROW_INVALID_PSTACK("timer.delete");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12364,7 +12364,7 @@ ENTRY("vTimerInit");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.init");
+    THROW_INVALID_PSTACK("timer.init");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12383,7 +12383,7 @@ ENTRY("vTimerMicrosecs");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.microsecs");
+    THROW_INVALID_PSTACK("timer.microsecs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12404,7 +12404,7 @@ ENTRY("vTimerMillisecs");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.millisecs");
+    THROW_INVALID_PSTACK("timer.millisecs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12425,7 +12425,7 @@ ENTRY("vTimerNanosecs");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.nanosecs");
+    THROW_INVALID_PSTACK("timer.nanosecs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12468,7 +12468,7 @@ ENTRY("vTimerReset");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.reset");
+    THROW_INVALID_PSTACK("timer.reset");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12487,7 +12487,7 @@ ENTRY("vTimerSecs");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.secs");
+    THROW_INVALID_PSTACK("timer.secs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12508,7 +12508,7 @@ ENTRY("vTimerStart");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.Start");
+    THROW_INVALID_PSTACK("timer.Start");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12527,7 +12527,7 @@ ENTRY("vTimerTicks");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.ticks");
+    THROW_INVALID_PSTACK("timer.ticks");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12548,7 +12548,7 @@ ENTRY("vTimerUpdate");
   
   Header* pPtrTimer;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTimer) )
-    THROW_INVALID_PARAM("timer.update");
+    THROW_INVALID_PSTACK("timer.update");
   
   Timer* pTimer = _pTimer(pPtrTimer);
   ASSERT(CN_TIMER == pTimer->eClass());
@@ -12569,7 +12569,7 @@ void Task::vToBody(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM(">body");
+    THROW_INVALID_PSTACK(">body");
   Word* pWord = _pWord(pWordObject);
   
   char* pBody = pcAdd(pWord,sizeof(Word));
@@ -12590,7 +12590,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   
   i8 nValues;
   if ( ! nnpTask->m_xParamStack.bPop(nValues) )
-    THROW_INVALID_PARAM(">cmd");
+    THROW_INVALID_PSTACK(">cmd");
   
   s8K sCmd;
   
@@ -12623,7 +12623,7 @@ void Task::vToInt(NNP_Task nnpTask)
   
   ValWsp xStr;
   if ( ! nnpTask->m_xParamStack.bPop(xStr) )
-    THROW_INVALID_PARAM(">int");
+    THROW_INVALID_PSTACK(">int");
   
   s256 sBuff;
   xStr.vToString(sBuff.a());
@@ -12645,7 +12645,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
   i8 iVal;
   
   if ( ! nnpTask->m_xParamStack.bPop(iVal) )
-    THROW_INVALID_PARAM(">seitf");
+    THROW_INVALID_PSTACK(">seitf");
   
   Object* pPtrSEitf = _pSEitf(iVal);
   
@@ -12663,7 +12663,7 @@ void Task::vToStr(NNP_Task nnpTask)
   
   ValWsp xVal;
   if ( ! nnpTask->m_xParamStack.bPop(xVal) )
-    THROW_INVALID_PARAM(">str");
+    THROW_INVALID_PSTACK(">str");
   
   s8K sString;
   xVal.vToString(sString.a());
@@ -12682,7 +12682,7 @@ void Task::vToTask(NNP_Task nnpTask)
   
   i8 iVal;
   if ( ! nnpTask->m_xParamStack.bPop(iVal) )
-    THROW_INVALID_PARAM(">task");
+    THROW_INVALID_PSTACK(">task");
   
   Object* pPtrTask = _pTask(iVal);
   
@@ -12743,7 +12743,7 @@ void Task::vTracePoint(NNP_Task nnpTask)
   s256 sPointName;
   
   if ( ! nnpTask->m_xParamStack.bPop(sPointName) )
-    THROW_INVALID_PARAM("tracePoint");
+    THROW_INVALID_PSTACK("tracePoint");
   
   if (gxArguments.m_bTracepoint)
     nnpTask->vTracePoint(sPointName.a());
@@ -12761,7 +12761,7 @@ void Task::vTraceSet(NNP_Task nnpTask)
   i8 iTrace;
   
   if ( ! nnpTask->m_xParamStack.bPop(iTrace) )
-    THROW_INVALID_PARAM("trace!");
+    THROW_INVALID_PSTACK("trace!");
   
   nnpTask->m_iTracing = iTrace;
   
@@ -12780,7 +12780,7 @@ ENTRY("vTxDump");
   Object* pPtrTx;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTx) )
-    THROW_INVALID_PARAM("tx.delete");
+    THROW_INVALID_PSTACK("tx.delete");
   
   Tx* pTx = _pTx(pPtrTx);
   ASSERT(CN_TX == pTx->eClass());
@@ -12801,7 +12801,7 @@ ENTRY("vTxCollectionDump");
   
   Object* pPtrTxCollection;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCollection) )
-    THROW_INVALID_PARAM("txCollection.dump");
+    THROW_INVALID_PSTACK("txCollection.dump");
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
@@ -12820,7 +12820,7 @@ ENTRY("vTxCollectionInit");
   
   Object* pPtrTxCollection;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCollection) )
-    THROW_INVALID_PARAM("txCollection.init");
+    THROW_INVALID_PSTACK("txCollection.init");
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
@@ -12841,7 +12841,7 @@ ENTRY("vTxCursorBegin");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txCursor.begin");
+    THROW_INVALID_PSTACK("txCursor.begin");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -12860,7 +12860,7 @@ ENTRY("vTxCursorDelete");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txCursor.delete");
+    THROW_INVALID_PSTACK("txCursor.delete");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -12879,7 +12879,7 @@ ENTRY("vTxCursorEnd");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txcursor.end");
+    THROW_INVALID_PSTACK("txcursor.end");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -12898,7 +12898,7 @@ ENTRY("vTxCursorFirst");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txCursor.first");
+    THROW_INVALID_PSTACK("txCursor.first");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -12921,7 +12921,7 @@ ENTRY("vTxCursorGet");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txCursor.get");
+    THROW_INVALID_PSTACK("txCursor.get");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -12942,7 +12942,7 @@ ENTRY("vTxCursorInit");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txCursor.init");
+    THROW_INVALID_PSTACK("txCursor.init");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_TXCURSOR == pTxCursor->eClass());
@@ -12971,7 +12971,7 @@ ENTRY("vTxCursorNext");
   
   Object* pPtrTxCursor;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxCursor) )
-    THROW_INVALID_PARAM("txCursor.next");
+    THROW_INVALID_PSTACK("txCursor.next");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
   ASSERT(CN_THREADCURSOR == pTxCursor->eClass());
@@ -12996,7 +12996,7 @@ ENTRY("vTxMapInit");
   
   Object* pPtrTxMap;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxMap) )
-    THROW_INVALID_PARAM("txMap.init");
+    THROW_INVALID_PSTACK("txMap.init");
   
   TxMap* pTxMap = _pTxMap(pPtrTxMap);
   ASSERT(CN_TXMAP == pTxMap->eClass());
@@ -13017,7 +13017,7 @@ ENTRY("vTxRefInit");
   
   Object* pPtrTxRef;
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("txRef.init");
+    THROW_INVALID_PSTACK("txRef.init");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -13037,7 +13037,7 @@ ENTRY("vTxRefBegin");
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("tx.begin");
+    THROW_INVALID_PSTACK("tx.begin");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -13059,7 +13059,7 @@ ENTRY("vTxRefEnd");
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("txRef.end");
+    THROW_INVALID_PSTACK("txRef.end");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -13081,7 +13081,7 @@ ENTRY("vTxRefCommit");
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("txRef.commit");
+    THROW_INVALID_PSTACK("txRef.commit");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -13103,7 +13103,7 @@ ENTRY("vTxRefRollback");
   Object* pPtrTxRef;
   
   if ( ! nnpTask->m_xParamStack.bPop(pPtrTxRef) )
-    THROW_INVALID_PARAM("txRef.rollback");
+    THROW_INVALID_PSTACK("txRef.rollback");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
@@ -13153,7 +13153,7 @@ void Task::vAllot(NNP_Task nnpTask)
   i8 iBytes;
   
   if ( !  nnpTask->m_xParamStack.bPop(iBytes) )
-    THROW_INVALID_PARAM("allot");
+    THROW_INVALID_PSTACK("allot");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
@@ -13172,7 +13172,7 @@ void Task::vCells(NNP_Task nnpTask)
   
   i8 nCells;
   if ( !  nnpTask->m_xParamStack.bPop(nCells) )
-    THROW_INVALID_PARAM("cells");
+    THROW_INVALID_PSTACK("cells");
   
   i8 nBytes = nCells * sizeof(void*);
   
@@ -13210,7 +13210,7 @@ void Task::vComma(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_xParamStack.bPop(xValWsp) )
-    THROW_INVALID_PARAM("comma");
+    THROW_INVALID_PSTACK("comma");
   
   pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("exit");
@@ -13227,7 +13227,7 @@ void Task::vCompileComma(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("compile,");
+    THROW_INVALID_PSTACK("compile,");
   Word* pCalledWord = _pWord(pWordObject);
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -13270,7 +13270,7 @@ ENTRY("vCreateFrom");
 
   s32 sName;
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
-    THROW_INVALID_PARAM(">create");
+    THROW_INVALID_PSTACK(">create");
   
   Dic* pDic;
   if (nnpTask->m_pSEitf)
@@ -13326,7 +13326,7 @@ ENTRY("vFind");
   
   s256 sName;
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
-    THROW_INVALID_PARAM("find");
+    THROW_INVALID_PSTACK("find");
  
   if (nnpTask->m_iTracing) {
     i8 i = 0; i++;
@@ -13348,7 +13348,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
   
   s256 sName;
   if ( ! nnpTask->m_xParamStack.bPop(sName) )
-    THROW_INVALID_PARAM("findInCurrent");
+    THROW_INVALID_PSTACK("findInCurrent");
   
   if (nnpTask->m_iTracing) {
     i8 i = 0; i++;
@@ -13420,7 +13420,7 @@ void Task::vLocate(NNP_Task nnpTask)
   
   i8 iAsInt;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iAsInt) )
-    THROW_INVALID_PARAM("locate");
+    THROW_INVALID_PSTACK("locate");
   
   void* pCellVoid = (void*)iAsInt;
   Cell* pCell = _pCell(pCellVoid);
@@ -13701,7 +13701,7 @@ ENTRY("vWordForget");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordForget");
+    THROW_INVALID_PSTACK("vWordForget");
   Word* pWord = _pWord(pWordObject);
   
   bool bResult = nnpTask->bForgetWord(pWord->sName());
@@ -13719,7 +13719,7 @@ ENTRY("vWordDump");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordDump");
+    THROW_INVALID_PSTACK("vWordDump");
   Word* pWord = _pWord(pWordObject);
   
   pWord->vDump();
@@ -13736,7 +13736,7 @@ ENTRY("vWordDic");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordDic");
+    THROW_INVALID_PSTACK("vWordDic");
   Word* pWord = _pWord(pWordObject);
   
   Dic* pDic = pWord->pDic();
@@ -13757,7 +13757,7 @@ void Task::vWordIsImmediate(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("isImmediate");
+    THROW_INVALID_PSTACK("isImmediate");
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
@@ -13776,7 +13776,7 @@ void Task::vWordIsPrimitive(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("word.isPrimitive");
+    THROW_INVALID_PSTACK("word.isPrimitive");
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
@@ -13795,7 +13795,7 @@ ENTRY("vWordKindGet");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordKindGet");
+    THROW_INVALID_PSTACK("vWordKindGet");
   Word* pWord = _pWord(pWordObject);
   
   Word* pWordKind = pWord->pKind();
@@ -13814,11 +13814,11 @@ ENTRY("vWordKindSet");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordKindSet");
+    THROW_INVALID_PSTACK("vWordKindSet");
   Word* pWord = _pWord(pWordObject);
   
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordKindSet");
+    THROW_INVALID_PSTACK("vWordKindSet");
   Word* pWordKind = _pWord(pWordObject);
   
   pWord->vKind(pWordKind);
@@ -13835,7 +13835,7 @@ ENTRY("vWordName");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("word.name");
+    THROW_INVALID_PSTACK("word.name");
   Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName().a());
@@ -13854,7 +13854,7 @@ void Task::vWordPrev(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("wordPrev");
+    THROW_INVALID_PSTACK("wordPrev");
   Word* pWord = _pWord(pWordObject);
   
   Word* pPrevWord = pWord->pPrevWord();
@@ -13887,7 +13887,7 @@ void Task::vWordTypeGet(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordTypeGet");
+    THROW_INVALID_PSTACK("vWordTypeGet");
   Word* pWord = _pWord(pWordObject);
   
   eWT eWordType = pWord->eWordType();
@@ -13906,13 +13906,13 @@ void Task::vWordTypeSet(NNP_Task nnpTask)
   
   Object* pWordObject;
   if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("vWordTypeSet");
+    THROW_INVALID_PSTACK("vWordTypeSet");
   Word* pWord = _pWord(pWordObject);
   
   i8 iWordType;
   
   if ( ! nnpTask->m_xParamStack.bPop(iWordType) )
-    THROW_INVALID_PARAM("vWordTypeSet");
+    THROW_INVALID_PSTACK("vWordTypeSet");
   Word* pWordKind = _pWord(pWordObject);
   
   pWord->vWordType((eWT)iWordType);
@@ -13931,7 +13931,7 @@ void Task::vZeroLess(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0<");
+    THROW_INVALID_PSTACK("0<");
   
   if (iZero < 0)
     nnpTask->m_xParamStack.vPush((i8)1);
@@ -13950,7 +13950,7 @@ void Task::vZeroLessEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0<=");
+    THROW_INVALID_PSTACK("0<=");
   
   if (iZero <= 0)
     nnpTask->m_xParamStack.vPush((i8)1);
@@ -13969,7 +13969,7 @@ void Task::vZeroEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0==");
+    THROW_INVALID_PSTACK("0==");
   
   if (iZero == 0)
     nnpTask->m_xParamStack.vPush((i8)1);
@@ -13988,7 +13988,7 @@ void Task::vZeroNotEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0!=");
+    THROW_INVALID_PSTACK("0!=");
   
   if (iZero != 0)
     nnpTask->m_xParamStack.vPush((i8)1);
@@ -14007,7 +14007,7 @@ void Task::vZeroGreaterEqual(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0>=");
+    THROW_INVALID_PSTACK("0>=");
   
   if (iZero >= 0)
     nnpTask->m_xParamStack.vPush((i8)1);
@@ -14026,7 +14026,7 @@ void Task::vZeroGreater(NNP_Task nnpTask)
   
   i8 iZero;
   if ( ! nnpTask->m_xParamStack.bPopParamInt(iZero) )
-    THROW_INVALID_PARAM("0>");
+    THROW_INVALID_PSTACK("0>");
   
   if (iZero > 0)
     nnpTask->m_xParamStack.vPush((i8)1);

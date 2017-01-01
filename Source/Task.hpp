@@ -80,14 +80,20 @@ namespace Tasks
       throw (i8)__LINE__; \
     }
     
+    // throw invalid auxiliary stack
+    #define THROW_INVALID_ASTACK(primitive) \
+    { \
+    THROW("Invalid param stack for: %s",primitive); \
+    }
+    
     // throw invalid parameter stack
-    #define THROW_INVALID_PARAM(primitive) \
+    #define THROW_INVALID_PSTACK(primitive) \
     { \
       THROW("Invalid param stack for: %s",primitive); \
     }
 
     // throw invalid return stack
-    #define THROW_INVALID_RETURN(primitive) \
+    #define THROW_INVALID_RSTACK(primitive) \
     { \
       THROW("Invalid return stack for: %s",primitive); \
     }
