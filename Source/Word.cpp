@@ -384,7 +384,7 @@ void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to named word                                                  */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord)
 {
@@ -393,11 +393,13 @@ void Word::vEncode(const char* aWord)
   Word* pCalledWord = gpMainDic->pFind(aWord);
   ASSERT(pCalledWord);
   
+  
+  
   vAppend(pCalledWord->ppEntryStep());
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word, with cell* argument                                   */
+/* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Cell* pCell)
 {
@@ -409,19 +411,7 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word, with cell* argument                                   */
-/*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, TaskStep* pStep)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  vEncode(aWord);
-  
-  vAppend(pStep);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode call to word, with value argument                                   */
+/* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Value* pValue)
 {
@@ -433,28 +423,26 @@ void Word::vEncode(const char* aWord, Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word, with word* argument                                   */
+/* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncode(aWord);
-    
   PtrVal xPtrWord;
   xPtrWord = pWord;
   
-  vAppend(&xPtrWord);
+  vEncode(aWord,&xPtrWord);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word does                                                   */
+/* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(TaskStep* ppCalledDoes)
+void Word::vEncode(TaskStep* ppEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vAppend(ppCalledDoes);
+  vAppend(ppEntryStep);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -10,7 +10,6 @@
 //#include "Tasks.h"
 #include "SePrompt.hpp"
 
-
 extern Arguments       gxArguments;
 
 extern AttachMap*      gpAttachMap;
@@ -1237,6 +1236,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
+  vAddPrimitive("postpone",        &vPostpone,         true );
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("'",               &vTick,             true );
@@ -1460,7 +1460,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
   Word* pNewWord;
   TaskStep  pStep;
-  Word* pFoundWord;
+  Word* pCalledWord;
   ValWsp xValWsp;
   
   m_xTokeniser.vUseString(sDefinition);
@@ -1494,20 +1494,21 @@ Word* Task::pCompileColon(s& sDefinition)
         break;
         
       case TK_NAME:
-        pFoundWord = pFindWord(m_sToken);
-        if (WT_PRIMITIVE == pFoundWord->eWordType()) {
-          pStep = pFoundWord->pEntryStep();
-          if (pFoundWord->bImmediate())
+        pCalledWord = pFindWord(m_sToken);
+        if (WT_PRIMITIVE == pCalledWord->eWordType()) {
+          pStep = pCalledWord->pEntryStep();
+          if (pCalledWord->bImmediate())
             (*pStep)(this);
           else {
-            pNewWord->vAppend(pFoundWord->ppEntryStep());
+            pNewWord->vAppend(pCalledWord->ppEntryStep());
           }
         }
-        else if (WT_ROUTINE == pFoundWord->eWordType()) {
-          pNewWord->vEncode(pFoundWord->ppEntryStep());
+        else if (WT_ROUTINE == pCalledWord->eWordType()) {
+          TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+          pNewWord->vEncode(ppCalledEntryStep);
         }
         else {
-          THROW("Invalid eWordType %lld",pFoundWord->eWordType());
+          THROW("Invalid eWordType %lld",pCalledWord->eWordType());
         }
         break;
         
@@ -4484,39 +4485,6 @@ void Task::vDotVerbose(NNP_Task nnpTask)
 // encode: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* encodeCallWord -- encode call to a : word                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodeCallWord(NNP_Task nnpTask)
-{
-  ENTRY("vEncodeCallWord");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
-    THROW_INVALID_PARAM("encodeCallWord");
-  Word* pCalledWord = _pWord(pWordObject);
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  TaskStep* pCode;
-  if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
-      DT_LOCALCALLS    == pCurrentWord->eDistributed()) {
-    pCode = pCalledWord->ppEntryStep();
-  }
-  else {
-    s32 sTildeName;
-    sTildeName = "~";
-    String::vConcat(sTildeName.a(),pCalledWord->sName().a());
-    
-    Word* pWordTilde = nnpTask->pFindWord(sTildeName);
-    pCode = pWordTilde->ppEntryStep();
-  }
-  
-  pCurrentWord->vEncode(pCode);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* encodeCallPrimitive -- encode call to primitive step                       */
 /*----------------------------------------------------------------------------*/
 void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
@@ -4551,6 +4519,40 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   pCurrentWord->vEncode("pushValue",&xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encodeCallWord -- encode call to a : word                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodeCallWord(NNP_Task nnpTask)
+{
+  ENTRY("vEncodeCallWord");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PARAM("encodeCallWord");
+  
+  Word* pCalledWord = _pWord(pWordObject);
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  TaskStep* ppCalledEntryStep;
+  if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
+      DT_LOCALCALLS    == pCurrentWord->eDistributed()) {
+    ppCalledEntryStep = pCalledWord->ppEntryStep();
+  }
+  else {
+    s32 sTildeName;
+    sTildeName = "~";
+    String::vConcat(sTildeName.a(),pCalledWord->sName().a());
+    
+    Word* pWordTilde = nnpTask->pFindWord(sTildeName);
+    ppCalledEntryStep = pWordTilde->ppEntryStep();
+  }
+  
+  pCurrentWord->vEncode(ppCalledEntryStep);
   
   EXIT();
 }
@@ -13230,9 +13232,9 @@ void Task::vCompileComma(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  TaskStep* pCode = pCalledWord->ppEntryStep();
+  TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
   
-  pCurrentWord->vEncode(pCode);
+  pCurrentWord->vEncode(ppCalledEntryStep);
   
   EXIT();
 }
@@ -13459,6 +13461,32 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* postpone -- append call to next word from input to current word  immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vPostpone(NNP_Task nnpTask)
+{
+  ENTRY("vPostpone");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // get name of word to be called
+  nnpTask->vTokenNext();
+  
+  // find the word in dic stack
+  Word* pCalledWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  if ( ! pCalledWord )
+    THROW("No word: %s ",nnpTask->m_sToken.a());
+  
+  // get indirect pointer to entry step of called word
+  TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+ 
+  // copy indirect pointer into the current word
+  pCurrentWord->vEncode(ppCalledEntryStep);
   
   EXIT();
 }

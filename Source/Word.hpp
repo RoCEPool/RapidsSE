@@ -106,10 +106,9 @@ namespace Dictionaries
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
-    void  vEncode(const char* aWord, TaskStep* ppCalledDoes);
-    void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
-    void  vEncode(TaskStep* pCode);
+    void  vEncode(const char* aWord, Value* pValue);
+    void  vEncode(TaskStep* ppEntryStep);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
     bool  bImmediate(void);

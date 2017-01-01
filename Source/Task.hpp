@@ -942,6 +942,7 @@ namespace Tasks
     static void vLocalCalls(NNP_Task nnpTask);
     static void vLocate(NNP_Task nnpTask);
     static void vOneParticipant(NNP_Task nnpTask);
+    static void vPostpone(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
     static void vSemicolon(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);
