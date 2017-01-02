@@ -702,6 +702,8 @@ namespace Tasks
     static void vRstackFetch(NNP_Task nnpTask);
     static void vRstackPick(NNP_Task nnpTask);
     static void vRstackReverse(NNP_Task nnpTask);
+    static void vRstackRoll(NNP_Task nnpTask);
+    static void vRstackRollInv(NNP_Task nnpTask);
     static void vRstackToP(NNP_Task nnpTask);
     static void vRstackToR(NNP_Task nnpTask);
     static void vRstack0(NNP_Task nnpTask);

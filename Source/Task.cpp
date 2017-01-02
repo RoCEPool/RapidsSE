@@ -1016,6 +1016,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("r@",              &vRstackFetch,      false);
   vAddPrimitive("rpick",           &vRstackPick,       false);
   vAddPrimitive("rreverse",        &vRstackReverse,    false);
+  vAddPrimitive("rroll",           &vRstackRoll,       false);
+  vAddPrimitive("-rroll",          &vRstackRollInv,    false);
   vAddPrimitive("r>",              &vRstackToP,        false);
   vAddPrimitive(">r",              &vRstackToR,        false);
   vAddPrimitive("r0",              &vRstack0,          false);
@@ -9044,6 +9046,79 @@ void Task::vRstackReverse(NNP_Task nnpTask)
   for (i8 i = 0; i < nValues; i++) {
     nnpTask->m_xReturnStack.vPush(apValWsp[i]);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* rroll -- roll top rstack values at n ( ... D C B A n -- A ... D C B )      */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackRoll(NNP_Task nnpTask)
+{
+  ENTRY("vRstackRoll");
+  
+  ValWsp xValA;
+  ValWsp xValX;
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PSTACK("rroll");
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA) )
+    THROW_INVALID_RSTACK("rroll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+      THROW_INVALID_RSTACK("rroll");
+    
+    nnpTask->m_xParamStack.vPush(&xValX);
+  }
+  
+  nnpTask->m_xReturnStack.vPush(&xValA);
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
+      THROW_INVALID_PSTACK("rroll");
+    
+    nnpTask->m_xReturnStack.vPush(&xValX);
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* -rroll -- inverse roll top rstack values at n ( Z ... B A n -- ... B A Z ) */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackRollInv(NNP_Task nnpTask)
+{
+  ENTRY("vRstackRollInv");
+  
+  ValWsp xValZ;
+  ValWsp xValX;
+  
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PSTACK("-rroll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+      THROW_INVALID_RSTACK("-rroll");
+    
+    nnpTask->m_xParamStack.vPush(&xValX);
+  }
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(xValZ) )
+    THROW_INVALID_PSTACK("-rroll");
+  
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xParamStack.bPop(xValX) )
+      THROW_INVALID_PSTACK("-rroll");
+    
+    nnpTask->m_xReturnStack.vPush(&xValX);
+  }
+  
+  nnpTask->m_xReturnStack.vPush(&xValZ);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
