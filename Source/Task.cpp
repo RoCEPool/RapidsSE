@@ -4912,58 +4912,58 @@ ENTRY("vFileWrite");
 // flow: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* again -- encode jump to backward destination                     immediate */
+/* again -- encode jump to known backward destination address       immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAgain(NNP_Task nnpTask)
 {
-  ENTRY("vAgain");
+  ENTRY("vAgain"); // ( dest -- / -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get destination for backward jump
-  Cell* pBackwardDestination;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestination) )
+  // pop pointer to known backward destination address from control stack
+  Cell* pDestinationAddress;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDestinationAddress) )
     THROW_INVALID_RSTACK("again");
   
-  // append : jump to backward destination
-  pCurrentWord->vEncode("jump",pBackwardDestination);
+  // append : jump to backward destination address
+  pCurrentWord->vEncode("jump",pDestinationAddress);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* ahead -- encode jump to unresolved forward destination           immediate */
+/* ahead -- encode jump to unknown forward origin address           immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAhead(NNP_Task nnpTask)
 {
-  ENTRY("vAhead");
+  ENTRY("vAhead");// ( -- orig / -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // append : jump to unknown forward destination
+  // append : jump to unknown forward address
   pCurrentWord->vEncode("jump");
-  Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  Cell* pOriginAddress = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  // record address of forward unconditional branch
-  nnpTask->m_xReturnStack.vPush(pForwardOrigin);
+  // push pointer to unknown forward origin address onto control stack
+  nnpTask->m_xReturnStack.vPush(pOriginAddress);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* begin -- record address for a backward destination               immediate */
+/* begin -- push known backward destination address onto CS         immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin(NNP_Task nnpTask)
 {
-  ENTRY("vBegin");
+  ENTRY("vBegin"); // ( -- dest / -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get this point in routine as address for a backward jump
-  Cell* pBackwardDestination = pCurrentWord->pLastCell();
+  // get address of this point in routine
+  Cell* pDestinationAddress = pCurrentWord->pLastCell();
   
-  // record address of backward destination
-  nnpTask->m_xReturnStack.vPush(pBackwardDestination);
+  // push pointer to known backward destination address onto control stack
+  nnpTask->m_xReturnStack.vPush(pDestinationAddress);
   
   EXIT();
 }
@@ -5100,20 +5100,20 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* if -- encode branch on false to unknown forward destination      immediate */
+/* if -- encode jump on false to unknown forward origin address     immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIf(NNP_Task nnpTask)
 {
-  ENTRY("vIf");
+  ENTRY("vIf"); // ( -- orig / flag -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // append : jumpFalse to unresolved forward destination
+  // append : jumpFalse to unknown forward address
   pCurrentWord->vEncode("jumpFalse");
-  Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  Cell* pOriginAddress = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  // record address of unknown forward branch (yet to be resolved)
-  nnpTask->m_xReturnStack.vPush(pForwardOrigin);
+  // push pointer to unknown forward origin address onto control stack
+  nnpTask->m_xReturnStack.vPush(pOriginAddress);
   
   EXIT();
 }
@@ -5445,21 +5445,21 @@ void Task::vFlowTest(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* then -- resolve jump on condition to forward destination         immediate */
+/* then -- resolve jump on condition to unknown forward destination immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThen(NNP_Task nnpTask)
 {
-  ENTRY("vThen");
+  ENTRY("vThen");  // ( orig -- / -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get address of unknown forward branch
-  Cell* pForwardOrigin;
-  if ( ! nnpTask->m_xReturnStack.bPop(pForwardOrigin) )
+  // pop pointer to unknown forward origin address from control stack
+  Cell* pOriginAddress;
+  if ( ! nnpTask->m_xReturnStack.bPop(pOriginAddress) )
     THROW_INVALID_RSTACK("then");
   
   // resolve forward branch to this point in routine
-  pForwardOrigin->m_pJumpTo = pCurrentWord->pLastCell();
+  pOriginAddress->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -5497,21 +5497,21 @@ void Task::vFlowUnloop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* until -- encode jump on false to backward destination           immediate  */
+/* until -- encode jump false to known backward destination address immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowUntil(NNP_Task nnpTask)
 {
-  ENTRY("vUntil");
+  ENTRY("vUntil"); // ( dest -- / flag -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get destination for backward jump
-  Cell* pBackwardDestination;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestination) )
+  // pop pointer to known backward destination address from control stack
+  Cell* pDestinationAddress;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDestinationAddress) )
     THROW_INVALID_RSTACK("until");
   
-  // append : jump on false to backward destination
-  pCurrentWord->vEncode("jumpFalse",pBackwardDestination);
+  // append : jump on false to backward destination address
+  pCurrentWord->vEncode("jumpFalse",pDestinationAddress);
   
   EXIT();
 }
@@ -8962,9 +8962,9 @@ void Task::vRstackCsPick(NNP_Task nnpTask)
     THROW_INVALID_PSTACK("cs-pick");
   
   // pop one return address
-  ValWsp xRtnWsp;
-  bool b = nnpTask->m_xReturnStack.bPop(&xRtnWsp);
-  ASSERT(b);
+//  ValWsp xRtnWsp;
+//  bool b = nnpTask->m_xReturnStack.bPop(&xRtnWsp);
+//  ASSERT(b);
   
   // copy n-th value onto top
   ValWsp xValWsp;
@@ -8972,7 +8972,7 @@ void Task::vRstackCsPick(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPush(xValWsp);
   
   // push back the one return address
-  nnpTask->m_xReturnStack.vPush(xRtnWsp);
+//  nnpTask->m_xReturnStack.vPush(xRtnWsp);
   
   EXIT();
 }

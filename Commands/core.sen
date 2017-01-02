@@ -31,18 +31,41 @@
 /*----------------------------------------------------------------------------*/
 /* resolve IF supplying alternate execution                                   */
 /*----------------------------------------------------------------------------*/
-: ELSE_alt immediate
+: ELSE_alt immediate ( orig1 -- orig2 / -- )
 
-//  traceon
-  r>
+  r> // save return address onto pstack
 
-  POSTPONE AHEAD
-  1 CS-ROLL
-  POSTPONE THEN
+  POSTPONE AHEAD // unconditional forward branch orig2
+  1 CS-ROLL      // put orig1 back on top
+  POSTPONE THEN  // resolve forward branch from orig1
 
-  >r
+  >r // restore return address
+;
 
-//  traceoff
+/*----------------------------------------------------------------------------*/
+/* conditional exit from loops                                                */
+/*----------------------------------------------------------------------------*/
+: WHILE_alt immediate ( dest -- orig dest / flag -- )
+
+  r> // save return address onto pstack
+
+  POSTPONE IF // conditional forward branch
+  1 CS-ROLL   // keep dest on top
+
+  >r // restore return address
+;
+
+/*----------------------------------------------------------------------------*/
+/* resolve a single WHILE and jump to BEGIN                                   */
+/*----------------------------------------------------------------------------*/
+: REPEAT_alt immediate ( orig dest-- orig dest / flag -- )
+
+  r> // save return address onto pstack
+
+  POSTPONE AGAIN // unconditional backward branch to dest
+  POSTPONE THEN  // resolve forward branch from orig
+
+  >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/
