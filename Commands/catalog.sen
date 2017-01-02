@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named catalog folder (run by participant)                           */
 /*----------------------------------------------------------------------------*/
-: makeCatalog$ ( "<catalogNm>" -- true )
+: makeCatalog allParticipants 1 ( "<catalogNm>" -- true n# true )
 
 tp: makeCatalog
 
@@ -101,6 +101,7 @@ tp: makeCatalog
 /*----------------------------------------------------------------------------*/
 /* have participants run: makeCatalog$                                        */
 /*----------------------------------------------------------------------------*/
+/*
 : ~makeCatalog ( "<catalogNm>" -- )
 
 tp: mkTenOnAll
@@ -118,6 +119,7 @@ tp: mkCatOnAllDone
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */

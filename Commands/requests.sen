@@ -185,7 +185,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  ~makeCatalog ( ) assert.stack_0
+  makeCatalog ( ) assert.stack_0
 
   <OK>
 ;
@@ -1091,7 +1091,7 @@ tp: printRB$
   execute dic.push
 
   // create catalog rapidsse (and schemas sub-folder)
-  "rapidsse" makeCatalog$ drop drop drop
+  "rapidsse" makeCatalog drop drop drop
 
   // go back to main dictionary
   dic.drop
