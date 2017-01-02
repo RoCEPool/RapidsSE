@@ -962,6 +962,8 @@ namespace Tasks
     static void vWordDic(NNP_Task nnpTask);
     static void vWordDump(NNP_Task nnpTask);
     static void vWordForget(NNP_Task nnpTask);
+    static void vWordImmediateGet(NNP_Task nnpTask);
+    static void vWordImmediateSet(NNP_Task nnpTask);
     static void vWordIsImmediate(NNP_Task nnpTask);
     static void vWordIsPrimitive(NNP_Task nnpTask);
     static void vWordKindGet(NNP_Task nnpTask);

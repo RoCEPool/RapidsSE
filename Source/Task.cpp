@@ -13949,6 +13949,47 @@ ENTRY("vWordDic");
 }
 
 /*----------------------------------------------------------------------------*/
+/* word.immediate@ -- get immediate flag of word                              */
+/*----------------------------------------------------------------------------*/
+void Task::vWordImmediateGet(NNP_Task nnpTask)
+{
+  ENTRY("vWordImmediateGet");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PSTACK("word.immediate@");
+  Word* pWord = _pWord(pWordObject);
+  
+  i8 iImmediate = pWord->bImmediate();
+  
+  nnpTask->m_xParamStack.vPush(iImmediate);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* word.immediate! -- set immediate flag of word                              */
+/*----------------------------------------------------------------------------*/
+void Task::vWordImmediateSet(NNP_Task nnpTask)
+{
+  ENTRY("vWordImmediateSet");
+  
+  Object* pWordObject;
+  if ( ! nnpTask->m_xParamStack.bPop(pWordObject) )
+    THROW_INVALID_PSTACK("word.immediate!");
+  Word* pWord = _pWord(pWordObject);
+  
+  i8 iImmediate;
+  if ( ! nnpTask->m_xParamStack.bPop(iImmediate) )
+    THROW_INVALID_PSTACK("word.immediate!");
+  Word* pWordKind = _pWord(pWordObject);
+  
+  pWord->vImmediate(iImmediate);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* isImmediate -- is word immediate?                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vWordIsImmediate(NNP_Task nnpTask)
