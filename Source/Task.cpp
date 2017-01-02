@@ -803,7 +803,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
   vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B, false);
   vAddPrimitive("jump",            &vFlowJump,         false);
-  vAddPrimitive("jumpBegin_",          &vFlowJumpBegin_,   false);
+  vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
   vAddPrimitive("loop",            &vFlowLoop,         true );
@@ -1011,6 +1011,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(">regF",            &vRegToRegF,       false);
   vAddPrimitive(">regN",            &vRegToRegNth,     false);
   
+  vAddPrimitive("cs-pick",         &vRstackCsPick,     false);
+  vAddPrimitive("cs-roll",         &vRstackCsRoll,     false);
   vAddPrimitive("rdepth",          &vRstackDepth,      false);
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
@@ -1018,6 +1020,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rreverse",        &vRstackReverse,    false);
   vAddPrimitive("rroll",           &vRstackRoll,       false);
   vAddPrimitive("-rroll",          &vRstackRollInv,    false);
+  vAddPrimitive("rswap",           &vRstackSwap,       false);
   vAddPrimitive("r>",              &vRstackToP,        false);
   vAddPrimitive(">r",              &vRstackToR,        false);
   vAddPrimitive("r0",              &vRstack0,          false);
@@ -1337,7 +1340,7 @@ void Task::vAddRoutines(void)
   // is token a known word?
   "    input.token find"         // attempt to find word
   
-  "    dup not if"               // unknwon word
+  "    dup not if"               // unknown word
   "      drop"
   "      \"unknown\" ."
   "      input.token ."
@@ -8945,6 +8948,80 @@ ENTRY("vRowCursorTableStore");
 // rstack: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* cs-pick -- place copy of nth value in control stack onto control stack     */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackCsPick(NNP_Task nnpTask)
+{
+  ENTRY("vRstackCsPick");
+  
+  // could do this directly on stack
+  
+  // pop which value
+  i8 nThValue;
+  if ( ! nnpTask->m_xParamStack.bPopParamInt(nThValue) )
+    THROW_INVALID_PSTACK("cs-pick");
+  
+  // pop one return address
+  ValWsp xRtnWsp;
+  bool b = nnpTask->m_xReturnStack.bPop(&xRtnWsp);
+  ASSERT(b);
+  
+  // copy n-th value onto top
+  ValWsp xValWsp;
+  nnpTask->m_xReturnStack.vPeek(nThValue,&xValWsp);
+  nnpTask->m_xReturnStack.vPush(xValWsp);
+  
+  // push back the one return address
+  nnpTask->m_xReturnStack.vPush(xRtnWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* cs-roll -- roll top control values at n ( Z Y ... B A n -- Y ... B A Z )   */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackCsRoll(NNP_Task nnpTask)
+{
+  ENTRY("vRstackCsRoll");
+  
+  // pop n values
+  i8 nValues;
+  if ( ! nnpTask->m_xParamStack.bPop(nValues) )
+    THROW_INVALID_PSTACK("cs-roll");
+  
+  // pop one return address
+//  Cell* pCellReturn;
+//  bool b = nnpTask->m_xReturnStack.bPop(pCellReturn);
+//  ASSERT(b);
+  
+  ValWsp xValMid;
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValMid) )
+      THROW_INVALID_RSTACK("cs-roll");
+    
+    nnpTask->m_xParamStack.vPush(&xValMid);
+  }
+  
+  Cell* pCellZ;
+  if ( ! nnpTask->m_xReturnStack.bPop(pCellZ) )
+    THROW_INVALID_RSTACK("cs-roll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xParamStack.bPop(xValMid) )
+      THROW_INVALID_PSTACK("cs-roll");
+    
+    nnpTask->m_xReturnStack.vPush(&xValMid);
+  }
+
+  nnpTask->m_xReturnStack.vPush(pCellZ);
+  
+  // push back the one return address
+//  nnpTask->m_xReturnStack.vPush(pCellReturn);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* rdepth -- put number of values in return stack onto param stack            */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDepth(NNP_Task nnpTask)
@@ -9117,6 +9194,25 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
   }
   
   nnpTask->m_xReturnStack.vPush(&xValZ);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rswap -- swap top two values on return stack                               */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackSwap(NNP_Task nnpTask)
+{
+  ENTRY("vRstackSwap");
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
+    THROW_INVALID_PSTACK("swap");
+  
+  nnpTask->m_xReturnStack.vPush(&xValA);
+  nnpTask->m_xReturnStack.vPush(&xValB);
   
   EXIT();
 }

@@ -697,6 +697,8 @@ namespace Tasks
     static void vRowCursorTableStore(NNP_Task nnpTask);
     
     // rstack
+    static void vRstackCsPick(NNP_Task nnpTask);
+    static void vRstackCsRoll(NNP_Task nnpTask);
     static void vRstackDepth(NNP_Task nnpTask);
     static void vRstackDrop(NNP_Task nnpTask);
     static void vRstackFetch(NNP_Task nnpTask);
@@ -704,6 +706,7 @@ namespace Tasks
     static void vRstackReverse(NNP_Task nnpTask);
     static void vRstackRoll(NNP_Task nnpTask);
     static void vRstackRollInv(NNP_Task nnpTask);
+    static void vRstackSwap(NNP_Task nnpTask);
     static void vRstackToP(NNP_Task nnpTask);
     static void vRstackToR(NNP_Task nnpTask);
     static void vRstack0(NNP_Task nnpTask);
