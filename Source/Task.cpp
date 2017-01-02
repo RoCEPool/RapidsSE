@@ -936,6 +936,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dup",             &vPstackDup,        false);
   vAddPrimitive("?dup",            &vPstackDupNonZero, false);
   vAddPrimitive("nip",             &vPstackNip,        false);
+  vAddPrimitive("over",            &vPstackOver,       false);
   vAddPrimitive("pick",            &vPstackPick,       false);
   vAddPrimitive("reverse",         &vPstackReverse,    false);
   vAddPrimitive("roll",            &vPstackRoll,       false);
@@ -1249,6 +1250,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive(">forget",         &vWordForget,       false);
+  vAddPrimitive("word.immediate@", &vWordImmediateGet, false);
+  vAddPrimitive("word.immediate!", &vWordImmediateSet, false);
   vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
   vAddPrimitive("word.isPrimitive",&vWordIsPrimitive,  false);
   vAddPrimitive("word.kind@",      &vWordKindGet,      false);
@@ -7532,6 +7535,24 @@ void Task::vPstackNip(NNP_Task nnpTask)
     THROW_INVALID_PSTACK("nip");
   
   nnpTask->m_xParamStack.vPush(&xValA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* over -- place copy of 2nd value on top stack                               */
+/*----------------------------------------------------------------------------*/
+void Task::vPstackOver(NNP_Task nnpTask)
+{
+  ENTRY("vPstackOver");
+  
+  // could do this directly on stack
+  
+  ValWsp xValWsp;
+  
+  nnpTask->m_xParamStack.vPeek(1,&xValWsp);
+  
+  nnpTask->m_xParamStack.vPush(xValWsp);
   
   EXIT();
 }

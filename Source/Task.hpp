@@ -616,6 +616,7 @@ namespace Tasks
     static void vPstackDup(NNP_Task nnpTask);
     static void vPstackDupNonZero(NNP_Task nnpTask);
     static void vPstackNip(NNP_Task nnpTask);
+    static void vPstackOver(NNP_Task nnpTask);
     static void vPstackPick(NNP_Task nnpTask);
     static void vPstackReverse(NNP_Task nnpTask);
     static void vPstackRoll(NNP_Task nnpTask);
