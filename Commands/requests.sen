@@ -266,7 +266,7 @@ ddlLock.grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
-  ~removeSchema ( ) assert.stack_0
+  removeSchema ( ) assert.stack_0
 
 tp: droppedSchema
 

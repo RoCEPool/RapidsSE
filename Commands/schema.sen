@@ -127,9 +127,9 @@ tp: mkSchOnAllDone
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema$ ( "<schemaNm>" -- true )
+: removeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
 
-tp: removeSchema$
+tp: removeSchema
 
   args.tracepoint if
     dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
@@ -143,20 +143,7 @@ tp: removeSchema$
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema ( "<schemaNm>" -- true )
-
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
-  removeSchema$
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a schema folder                                                     */
-/*----------------------------------------------------------------------------*/
+/*
 : ~removeSchema ( "<schemaNm>" -- )
 
 tp: rmSchOnAll
@@ -174,7 +161,7 @@ tp: rmSchOnAllDone
 
   checkResult
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
