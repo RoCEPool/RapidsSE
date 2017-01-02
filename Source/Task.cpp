@@ -794,7 +794,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("begin",           &vFlowBegin,        true );
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
   vAddPrimitive("do",              &vFlowDo,           true );
+  vAddPrimitive("do2",             &vFlowDo2,          true );
   vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
+  vAddPrimitive("do_rt2",          &vFlowDo_RT2,       false);
   vAddPrimitive("else",            &vFlowElse,         true );
   vAddPrimitive("execute",         &vFlowExecute,      false);
   vAddPrimitive("hazard",          &vFlowHazard,       false);
@@ -807,7 +809,9 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
   vAddPrimitive("loop",            &vFlowLoop,         true );
+  vAddPrimitive("loop2",           &vFlowLoop2,        true );
   vAddPrimitive("loop_rt",         &vFlowLoop_RT,      false);
+  vAddPrimitive("loop_rt2",        &vFlowLoop_RT2,     false);
   vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
   vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,  false);
   vAddPrimitive("next",            &vFlowNext,         true );
@@ -1017,6 +1021,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rdepth",          &vRstackDepth,      false);
   vAddPrimitive("rdrop",           &vRstackDrop,       false);
   vAddPrimitive("r@",              &vRstackFetch,      false);
+  vAddPrimitive("2r@",             &vRstackFetchTwo,   false);
   vAddPrimitive("rpick",           &vRstackPick,       false);
   vAddPrimitive("rreverse",        &vRstackReverse,    false);
   vAddPrimitive("rroll",           &vRstackRoll,       false);
@@ -5004,6 +5009,26 @@ void Task::vFlowDo(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* do2 -- encode runtime form of : do                               immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDo2(NNP_Task nnpTask)
+{
+  ENTRY("vDo");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("do_rt2");
+  
+  // get address for a backward jump
+  Cell* pBackwardDestination = pCurrentWord->pLastCell();
+  
+  // record backward destination
+  nnpTask->m_xReturnStack.vPush(pBackwardDestination);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* do_rt -- runtime form of do                                                */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowDo_RT(NNP_Task nnpTask)
@@ -5014,6 +5039,24 @@ void Task::vFlowDo_RT(NNP_Task nnpTask)
   i8 iLimit;
   if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
     THROW_INVALID_PSTACK("do_rt");
+  
+  nnpTask->m_xReturnStack.vPush(iLimit);
+  nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* do_rt2 -- runtime form of do                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDo_RT2(NNP_Task nnpTask)
+{
+  ENTRY("vDo_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PSTACK("do_rt2");
   
   nnpTask->m_xReturnStack.vPush(iLimit);
   nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
@@ -5280,9 +5323,56 @@ void Task::vFlowLoop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
+/* loop2 -- encode runtime form of : loop                           immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoop2(NNP_Task nnpTask)
+{
+  ENTRY("vLoop");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // get address of backward jump
+  Cell* pBackwardDestination;
+  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestination) )
+    THROW_INVALID_RSTACK("loop");
+  
+  pCurrentWord->vEncode("Loop_RT");
+  
+  pCurrentWord->vEncode("jump",pBackwardDestination);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* loop_rt -- runtime form of loop                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoop_RT(NNP_Task nnpTask)
+{
+  ENTRY("vLoop_RT");
+  
+  i8 iIndex;
+  i8 iLimit;
+  
+  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
+    THROW_INVALID_PSTACK("loop_rt");
+  
+  iIndex++;
+  
+  if (iIndex < iLimit) {
+    nnpTask->m_xReturnStack.vPush(iLimit);
+    nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
+  }
+  else {
+    nnpTask->IP.m_pCell += 2;
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loop_rt2 -- runtime form of loop                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowLoop_RT2(NNP_Task nnpTask)
 {
   ENTRY("vLoop_RT");
   
@@ -9086,6 +9176,27 @@ void Task::vRstackFetch(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
   
   nnpTask->m_xParamStack.vPush(xValWsp);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 2r@ -- place copy of two top values in return stack onto param stack       */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackFetchTwo(NNP_Task nnpTask)
+{
+  ENTRY("vRstackFetchTwo");
+  
+  // could do this directly on stack
+  
+  ValWsp xValX0;
+  ValWsp xValX1;
+  
+  nnpTask->m_xReturnStack.vPeek(0,&xValX0);
+  nnpTask->m_xReturnStack.vPeek(1,&xValX1);
+  
+  nnpTask->m_xParamStack.vPush(xValX1);
+  nnpTask->m_xParamStack.vPush(xValX0);
   
   EXIT();
 }

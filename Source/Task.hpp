@@ -458,7 +458,9 @@ namespace Tasks
     static void vFlowBegin(NNP_Task nnpTask);
     static void vFlowBegin_(NNP_Task nnpTask);
     static void vFlowDo(NNP_Task nnpTask);
+    static void vFlowDo2(NNP_Task nnpTask);
     static void vFlowDo_RT(NNP_Task nnpTask);
+    static void vFlowDo_RT2(NNP_Task nnpTask);
     static void vFlowElse(NNP_Task nnpTask);
     static void vFlowExecute(NNP_Task nnpTask);
     static void vFlowHazard(NNP_Task nnpTask);
@@ -471,7 +473,9 @@ namespace Tasks
     static void vFlowJumpFalse(NNP_Task nnpTask);
     static void vFlowJumpTrue(NNP_Task nnpTask);
     static void vFlowLoop(NNP_Task nnpTask);
+    static void vFlowLoop2(NNP_Task nnpTask);
     static void vFlowLoop_RT(NNP_Task nnpTask);
+    static void vFlowLoop_RT2(NNP_Task nnpTask);
     static void vFlowLoopPlus(NNP_Task nnpTask);
     static void vFlowLoopPlus_RT(NNP_Task nnpTask);
     static void vFlowNext(NNP_Task nnpTask);
@@ -703,6 +707,7 @@ namespace Tasks
     static void vRstackDepth(NNP_Task nnpTask);
     static void vRstackDrop(NNP_Task nnpTask);
     static void vRstackFetch(NNP_Task nnpTask);
+    static void vRstackFetchTwo(NNP_Task nnpTask);
     static void vRstackPick(NNP_Task nnpTask);
     static void vRstackReverse(NNP_Task nnpTask);
     static void vRstackRoll(NNP_Task nnpTask);
