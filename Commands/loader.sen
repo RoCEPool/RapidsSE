@@ -346,7 +346,7 @@ stk
         drop
       then
 
-      regF inc dup >regF
+      regF 1+ dup >regF
       100000 % not if regF . then
   repeat
 
@@ -408,7 +408,7 @@ stk
         drop
       then
 
-      regF inc dup >regF
+      regF 1+ dup >regF
       100000 % not if task.yield then
   repeat
 

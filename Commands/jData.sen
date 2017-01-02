@@ -22,7 +22,7 @@
       >int           ( "BD"   "<dw>" d      )
       >digitName     ( "BD"   "<dw>" "name" )
 
-      r> dup inc >r
+      r> dup 1+ >r
       if swap " " concat swap then
 
       concat         ( "BD"   "<dw>"        )

@@ -87,7 +87,7 @@ diclock.dropwrite
 
   dic.count 0 do
     // calculate dic subscript
-    //dic.count I - dec ( d )
+    //dic.count I - 1- ( d )
 
     I
     // get dictionary[d]
