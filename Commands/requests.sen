@@ -497,7 +497,7 @@ ddlLock.grabWrite
 
 tp ( "<tableNm>" )
 
-  ~removeTable ( ) assert.stack_0
+  removeTable ( ) assert.stack_0
 
 tp: droppedTable
 
