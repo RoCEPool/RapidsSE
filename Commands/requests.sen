@@ -321,7 +321,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTable     not if <NIP+ERROR> exit then
 
-  ~makeTable ( ) assert.stack_0
+  makeTable ( ) assert.stack_0
 
   <OK>
 ;
