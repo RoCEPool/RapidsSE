@@ -1029,6 +1029,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("rswap",           &vRstackSwap,       false);
   vAddPrimitive("r>",              &vRstackToP,        false);
   vAddPrimitive(">r",              &vRstackToR,        false);
+  vAddPrimitive("2>r",             &vRstackToRTwo,     false);
   vAddPrimitive("r0",              &vRstack0,          false);
   vAddPrimitive("r1",              &vRstack1,          false);
   vAddPrimitive("r2",              &vRstack2,          false);
@@ -5052,14 +5053,12 @@ void Task::vFlowDo_RT(NNP_Task nnpTask)
 void Task::vFlowDo_RT2(NNP_Task nnpTask)
 {
   ENTRY("vDo_RT");
+
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Cell* pAddress = pCurrentWord->pLastCell();
   
-  i8 iIndex;
-  i8 iLimit;
-  if ( ! nnpTask->m_xParamStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_PSTACK("do_rt2");
+  pCurrentWord->vEncode("jump",pAddress + 4);
   
-  nnpTask->m_xReturnStack.vPush(iLimit);
-  nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
   
   EXIT();
 }
@@ -9377,6 +9376,24 @@ void Task::vRstackToR(NNP_Task nnpTask)
     THROW_INVALID_PSTACK(">r");
   
   nnpTask->m_xReturnStack.vPush(xValOpaque);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* 2>r -- move two values from pstack to rstack preserving order              */
+/*----------------------------------------------------------------------------*/
+void Task::vRstackToRTwo(NNP_Task nnpTask)
+{
+  ENTRY("vRstackToRTwo");
+  
+  ValWsp xValX0;
+  ValWsp xValX1;
+  if ( ! nnpTask->m_xParamStack.bPop(xValX0,xValX1) )
+    THROW_INVALID_PSTACK("2>r");
+  
+  nnpTask->m_xReturnStack.vPush(xValX1);
+  nnpTask->m_xReturnStack.vPush(xValX0);
   
   EXIT();
 }

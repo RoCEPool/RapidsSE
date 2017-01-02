@@ -715,6 +715,7 @@ namespace Tasks
     static void vRstackSwap(NNP_Task nnpTask);
     static void vRstackToP(NNP_Task nnpTask);
     static void vRstackToR(NNP_Task nnpTask);
+    static void vRstackToRTwo(NNP_Task nnpTask);
     static void vRstack0(NNP_Task nnpTask);
     static void vRstack1(NNP_Task nnpTask);
     static void vRstack2(NNP_Task nnpTask);
