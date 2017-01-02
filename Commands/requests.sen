@@ -215,7 +215,7 @@ ddlLock.grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
-  ~removeCatalog ( ) assert.stack_0
+  removeCatalog ( ) assert.stack_0
 
 tp: removedCatalog
 

@@ -124,9 +124,9 @@ tp: mkCatOnAllDone
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
-: removeCatalog$ ( "<catalogNm>" -- true )
+: removeCatalog allParticipants 1 ( "<catalogNm>" -- true n# true )
 
-tp: removeCatalog$
+tp: removeCatalog
 
   args.tracepoint if
     dup "REMOVING CATALOG " swap concat " on NODE " concat args.node >str concat .
@@ -140,20 +140,7 @@ tp: removeCatalog$
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
-: removeCatalog ( "<catalogNm>" -- true )
-
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
-  removeCatalog$
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a catalog folder                                                     */
-/*----------------------------------------------------------------------------*/
+/*
 : ~removeCatalog ( "<catalogNm>" -- )
 
 tp: rmCatOnAll
@@ -171,7 +158,7 @@ tp: rmCatOnAllDone
 
   checkResult
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
