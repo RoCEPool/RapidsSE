@@ -128,9 +128,9 @@ tp: mkTenOnAllDone
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeTenant$ ( "<tenantNm>" -- true )
+: removeTenant allParticipants 1 ( "<tenantNm>" -- true n# true )
 
-tp: removetenant$
+tp: removetenant
 
   args.tracepoint if
     dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
@@ -144,20 +144,7 @@ tp: removetenant$
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeTenant ( "<tenantNm>" -- true )
-
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
-  removeTenant$
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a tenant folder                                                     */
-/*----------------------------------------------------------------------------*/
+/*
 : ~removeTenant ( "<tenantNm>" -- )
 
 tp: rmTenOnAll
@@ -175,7 +162,7 @@ tp: rmTenOnAllDone
 
   checkResult
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

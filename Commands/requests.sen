@@ -164,7 +164,7 @@ ddlLock.grabWrite
 
   checkRemoveTenant not if <NIP+ERROR> exit then
 
-  ~removeTenant ( ) assert.stack_0
+  removeTenant ( ) assert.stack_0
 
 tp: removedTenant
 
