@@ -5014,7 +5014,7 @@ void Task::vFlowDo_RT(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* else -- encode else                                              immediate */
+/* else -- encode else behavior                                     immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowElse(NNP_Task nnpTask)
 {
@@ -5022,22 +5022,28 @@ void Task::vFlowElse(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Cell* pIfJumpArg;
-  if ( ! nnpTask->m_xReturnStack.bPop(pIfJumpArg) )
+  // get address of forward branch (encoded by if)
+  Cell* pResolvableForward;
+  if ( ! nnpTask->m_xReturnStack.bPop(pResolvableForward) )
     THROW_INVALID_RSTACK("else");
   
-  //-------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   
-  Cell* pElseJumpArg;
+  // end of if block
   
+  // append : jump to unknown forward destination
   pCurrentWord->vEncode("jump");
-  pElseJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
+  Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  nnpTask->m_xReturnStack.vPush(pElseJumpArg);
+  // record address of forward unconditional branch
+  nnpTask->m_xReturnStack.vPush(pForwardOrigin);
   
-  //-------------------------------------------------------------------------
+  //--------------------------------------------------------------------------
   
-  pIfJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
+  // start of else block
+  
+  // resolve forward branch to this point in routine
+  pResolvableForward->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
