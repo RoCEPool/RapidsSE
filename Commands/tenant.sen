@@ -96,8 +96,6 @@ tp: makingTenant
     makeCatalogs ( )
 
     true <SUCCESS_RESULT>
-
-    true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -141,8 +139,6 @@ tp: removetenant$
   :forget ( )
 
   true <SUCCESS_RESULT>
-
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -262,7 +262,6 @@ tp: ontoCallersAux
   to_CALLER ( )
 tp: reg0HasCaller
 
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +272,6 @@ tp: reg0HasCaller
   to_QUEUE ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
 tp: reg1HasSender
 
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -284,8 +282,6 @@ tp: reg1HasSender
   cpTasks @
 
   >taskQueue
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +297,6 @@ tp: reg1HasSender
 
   reg.pop
 
-  true
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -341,7 +336,7 @@ tp: resultAsValset
 /*----------------------------------------------------------------------------*/
 /* expand valset and execute indirect call                                    */
 /*----------------------------------------------------------------------------*/
-: exeOne ( <<call*>> -- true )
+: exeOne ( <<call*>> )
 
   valset> ( ... wordName nValues )
 
@@ -350,10 +345,6 @@ tp: resultAsValset
   tp: callSetUp
 
   !indirect ( bool )
-
-  assert
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +358,7 @@ tp: exeAll
   CN_VALSET isType not if assert then
 
   // execute first indirect
-  exeOne assert
+  exeOne
 
   // execute all other indirects
   begin
@@ -375,12 +366,11 @@ tp: exeAll
     // no more to execute?
     CN_VALSET isType not
     if
-      // return true
-      true exit
+      exit
     then
 
   // execute next indirect
-  exeOne assert
+  exeOne
 
   again
 ;

@@ -31,7 +31,7 @@ tp: participantProxy
     taskQueue> ( valset )
 
     // set caller into reg0
-    exeOne assert
+    exeOne 
 
     r0 args.node ==
     if

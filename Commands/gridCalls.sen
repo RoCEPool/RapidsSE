@@ -132,11 +132,10 @@ tp: resumedbyCoord
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
 
-  // we should have a true result
-  //assert
+  valset>
 
-  // return true
-  true
+  // drop number of values
+  drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -175,12 +174,6 @@ tp: >>allParticipants>
 
   // drop number of values
   drop
-
-  // we should have a true result
-  //assert
-
-  // return true
-  //true
 ;
 
 /*============================================================================*/

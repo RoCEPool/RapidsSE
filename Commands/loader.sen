@@ -71,9 +71,6 @@ tp: loadAppendBuffer$
   table.appendBuffer ( )
 
   true <SUCCESS_RESULT>
-
-  // all $ routines must return true
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -147,7 +144,7 @@ tp: theIndirectResult
   task.this task.taskset!
 
   // expand dic stack valset and set
-  valset> drop dicStack! assert
+  valset> drop dicStack!
 
   // expand args valset
   valset> drop

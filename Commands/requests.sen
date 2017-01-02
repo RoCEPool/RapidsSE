@@ -130,9 +130,9 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
 
-traceon
+//traceon
   makeTenant ( ) assert.stack_0
-traceoff
+//traceoff
 
 tp: createdTenant
 
@@ -764,8 +764,6 @@ tp: gettingSpace
   concat concat
 
   <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -867,8 +865,6 @@ tp: gettingStatus
   node.status
 
   <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -1084,7 +1080,7 @@ tp: printRB$
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
-  "boray" makeTenant assert drop drop drop
+  "boray" makeTenant drop drop drop
 
   // push boray folder
   "boray" findInCurrent
@@ -1095,7 +1091,7 @@ tp: printRB$
   execute dic.push
 
   // create catalog rapidsse (and schemas sub-folder)
-  "rapidsse" makeCatalog$ assert drop drop drop
+  "rapidsse" makeCatalog$ drop drop drop
 
   // go back to main dictionary
   dic.drop

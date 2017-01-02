@@ -230,8 +230,6 @@ tp: makingTable
   "makeColumns" find execute
 
   true <SUCCESS_RESULT>
-
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -270,8 +268,6 @@ tp: removeTable$
   :forget
 
   true <SUCCESS_RESULT>
-
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
