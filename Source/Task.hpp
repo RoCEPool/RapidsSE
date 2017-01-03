@@ -83,13 +83,13 @@ namespace Tasks
     // throw invalid auxiliary stack
     #define THROW_INVALID_ASTACK(primitive) \
     { \
-    THROW("Invalid param stack for: %s",primitive); \
+    THROW("Invalid aux stack for: %s",primitive); \
     }
         
     // throw invalid parameter stack
-    #define THROW_INVALID_PSTACK(primitive) \
+    #define THROW_INVALID_DSTACK(primitive) \
     { \
-      THROW("Invalid param stack for: %s",primitive); \
+      THROW("Invalid data stack for: %s",primitive); \
     }
 
     // throw invalid return stack
@@ -162,7 +162,7 @@ namespace Tasks
     Queue* m_pQueue;         // processing queue
     Socket* m_pSocket;       // socket
     
-    Stack  m_xParamStack;     // parameter stack
+    Stack  m_xDataStack;     // parameter stack
     Stack  m_xReturnStack;    // return stack
     Stack  m_xAuxStack;       // auxiliary stack
     
