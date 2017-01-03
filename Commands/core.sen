@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* begin a loop                                                               */
 /*----------------------------------------------------------------------------*/
-: begin_alt immediate
+: begin immediate
 
   here
 ;
@@ -59,7 +59,7 @@
 /*----------------------------------------------------------------------------*/
 /* do a loop                                                                  */
 /*----------------------------------------------------------------------------*/
-: do_alt immediate
+: do immediate
 
   postpone 2>r here 
 ;
@@ -87,13 +87,13 @@
 /*----------------------------------------------------------------------------*/
 : ELSE_alt immediate ( orig1 -- orig2 / -- )
 
-  r> // save return address onto pstack
+//  r> // save return address onto pstack
 
   POSTPONE AHEAD // unconditional forward branch orig2
   1 CS-ROLL      // put orig1 back on top
   POSTPONE THEN  // resolve forward branch from orig1
 
-  >r // restore return address
+//  >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/

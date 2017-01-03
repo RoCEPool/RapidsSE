@@ -4512,9 +4512,9 @@ void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  TaskStep* pCode = pCalledWord->ppEntryStep();
+  TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
   
-  pCurrentWord->vAppend(pCode);
+  pCurrentWord->vAppend(ppCalledEntryStep);
   
   EXIT();
 }
@@ -9174,34 +9174,27 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
   if ( ! nnpTask->m_xDataStack.bPop(nValues) )
     THROW_INVALID_DSTACK("cs-roll");
   
-  // pop one return address
-//  Cell* pCellReturn;
-//  bool b = nnpTask->m_xReturnStack.bPop(pCellReturn);
-//  ASSERT(b);
-  
   ValWsp xValMid;
-  for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(xValMid) )
-      THROW_INVALID_RSTACK("cs-roll");
-    
-    nnpTask->m_xDataStack.vPush(&xValMid);
-  }
-  
-  Cell* pCellZ;
-  if ( ! nnpTask->m_xReturnStack.bPop(pCellZ) )
-    THROW_INVALID_RSTACK("cs-roll");
-  
   for (i8 iCount = 0; iCount < nValues; iCount++) {
     if ( ! nnpTask->m_xDataStack.bPop(xValMid) )
       THROW_INVALID_DSTACK("cs-roll");
     
     nnpTask->m_xReturnStack.vPush(&xValMid);
   }
-
-  nnpTask->m_xReturnStack.vPush(pCellZ);
   
-  // push back the one return address
-//  nnpTask->m_xReturnStack.vPush(pCellReturn);
+  Cell* pCellZ;
+  if ( ! nnpTask->m_xDataStack.bPop(pCellZ) )
+    THROW_INVALID_DSTACK("cs-roll");
+  
+  for (i8 iCount = 0; iCount < nValues; iCount++) {
+    if ( ! nnpTask->m_xReturnStack.bPop(xValMid) )
+      THROW_INVALID_RSTACK("cs-roll");
+    
+    nnpTask->m_xDataStack.vPush(&xValMid);
+  }
+
+  nnpTask->m_xDataStack.vPush(pCellZ);
+  
   
   EXIT();
 }
@@ -13908,11 +13901,27 @@ void Task::vPostpone(NNP_Task nnpTask)
   if ( ! pCalledWord )
     THROW("No word: %s ",nnpTask->m_sToken.a());
   
-  // get indirect pointer to entry step of called word
-  TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
- 
-  // copy indirect pointer into the current word
-  pCurrentWord->vEncode(ppCalledEntryStep);
+//  if (pCalledWord->bImmediate()) {
+//    
+//    // put call to immediate word into this current definition
+//    
+//    // get indirect pointer to entry step of called word
+//    TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+//    
+//    // copy indirect pointer into the current word
+//    pCurrentWord->vEncode(ppCalledEntryStep);
+//  }
+//  else {
+  
+    // put call to normal word into some future definition
+    
+    // copy indirect pointer into the current word
+    pCurrentWord->vEncode("pushValue",pCalledWord);
+    if (WT_PRIMITIVE == pCalledWord->eWordType())
+      pCurrentWord->vEncode("encodeCallPrimitive");
+    else
+      pCurrentWord->vEncode("encodeCallRoutine");
+//  }
   
   EXIT();
 }
