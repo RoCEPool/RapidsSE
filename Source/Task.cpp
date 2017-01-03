@@ -795,6 +795,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
   vAddPrimitive("do",              &vFlowDo,           true );
   vAddPrimitive("do2",             &vFlowDo2,          true );
+  vAddPrimitive("?do",             &vFlowDoCheck,      true );
   vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
   vAddPrimitive("do_rt2",          &vFlowDo_RT2,       false);
   vAddPrimitive("else",            &vFlowElse,         true );
@@ -5036,6 +5037,34 @@ void Task::vFlowDo2(NNP_Task nnpTask)
   nnpTask->m_xReturnStack.vPush(pDoEnd);
   nnpTask->m_xReturnStack.vPush(pDoLimitTest);
 
+  // doBlock:
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ?do -- encode runtime form of : ?do                              immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowDoCheck(NNP_Task nnpTask)
+{
+  ENTRY("vFlowDoCheck"); // ( limit index -- )
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // do loop init
+  pCurrentWord->vEncode("2>r");  // encode move limit index to rstack
+  
+  // doLimitTest:
+  Cell* pDoLimitTest = pCurrentWord->pLastCell();
+  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
+  pCurrentWord->vEncode(">");   // test for limit > index
+  pCurrentWord->vEncode("jumpFalse"); // jump on false to doEnd:
+  Cell* pDoEnd = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  
+  // record addresses on control stack for use/resolution in loop
+  nnpTask->m_xReturnStack.vPush(pDoEnd);
+  nnpTask->m_xReturnStack.vPush(pDoLimitTest);
+  
   // doBlock:
   
   EXIT();
