@@ -1378,12 +1378,10 @@ void Task::vAddRoutines(void)
   "    then"
   
   // interpreting
-  "    docol.isInterpreting if " // interpreting calls word
-  "      execute"
-  "      jumpBegin_"
-  "    then"
+  "    execute"
   
   "  jumpBegin_"
+  
   " ;";
   
   pCompileColon(sDefinition);
