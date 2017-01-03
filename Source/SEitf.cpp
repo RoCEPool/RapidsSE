@@ -339,6 +339,7 @@ bool SEitf::bBeginTx()
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   m_pTxRef = new TxRef();
+  
   //vTrace("txref: %x\n", m_pTxRef);
   bool bResult = m_pTxRef->bBeginTx();
   return bResult;
@@ -364,6 +365,7 @@ void SEitf::vEndTx()
   
   bool bResult = m_pTxRef->bEndTx();
   ASSERT(bResult);
+  delete m_pTxRef;
   m_pTxRef = nullptr;
 }
 

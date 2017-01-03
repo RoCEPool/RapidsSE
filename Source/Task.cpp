@@ -4545,7 +4545,10 @@ ENTRY("vToSEitf");
   if ( ! nnpTask->m_xParamStack.bPop(iVal) )
     THROW_INVALID_PARAM(">seitf");
   
-  Object* pPtrSEitf = _pSEitf(iVal);
+  SEitf* pSEitf = _pSEitf(iVal);
+  RASSERT(pSEitf->eClass() == CN_SEITF);
+  
+  Object* pPtrSEitf = pSEitf;
   
   nnpTask->m_xParamStack.vPush(pPtrSEitf);
   

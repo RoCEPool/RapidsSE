@@ -27,6 +27,11 @@ eEC RapidsSE_AddColumn(SEitf* pSEitf, char* pColumnName, char* pColumnType)
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -80,6 +85,11 @@ eEC RapidsSE_BeginInsert(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
   
   // pSEitf should be a pool address
   if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
     return EC_INVALID_INTERFACE;
   }
   
@@ -251,6 +261,11 @@ eEC RapidsSE_CreateTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTa
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -408,6 +423,11 @@ eEC RapidsSE_DropTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -540,6 +560,11 @@ eEC RapidsSE_EndInsert(SEitf* pSEitf)
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -607,6 +632,11 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
   
   if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
     return EC_INVALID_INTERFACE;
   }
   
@@ -689,6 +719,11 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   
   // pSEitf should be a pool address
   if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
     return EC_INVALID_INTERFACE;
   }
   
@@ -851,6 +886,11 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -895,6 +935,11 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -925,6 +970,11 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   
   // pSEitf should be a pool address
   if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
     return EC_INVALID_INTERFACE;
   }
   
@@ -1039,6 +1089,11 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -1076,6 +1131,11 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   
   // pSEitf should be a pool address
   if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
     return EC_INVALID_INTERFACE;
   }
   
@@ -1213,6 +1273,11 @@ eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
     return EC_INVALID_INTERFACE;
   }
   
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+
   // clear the last error
   pSEitf->vClearLastError();
   
@@ -1275,6 +1340,11 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   
   // pSEitf should be a pool address
   if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
     return EC_INVALID_INTERFACE;
   }
   
