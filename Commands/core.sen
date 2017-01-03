@@ -116,20 +116,21 @@ true ' CASE word.immediate!
 /* OF block                                                                   */
 /*----------------------------------------------------------------------------*/
 : OF immediate
+traceon
 
-  r> // save return address onto pstack
+  r> >a // save return address onto astack
 
-  1+ // inc number of OFs
-  >R // save OFs counter
+  1+   // inc number of OFs
+  >R   // save OFs counter
 
   POSTPONE OVER  // copy case value
-  POSTPONE ==    // test case value
+  POSTPONE ==    // test case value against of value
   POSTPONE IF    // add conditional block (with orig on control stack)
   POSTPONE DROP  // discard case value within conditional block
 
-  R> // restore OFs counter
+  >r // restore OFs counter
 
-  >r // restore return address
+  a> >r // restore return addresstraceoff
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -137,7 +138,7 @@ true ' CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : ENDOF immediate
 
-  r> // save return address onto pstack
+  r> >a // save return address onto pstack
 
   >R // save OFs counter
 
@@ -145,7 +146,7 @@ true ' CASE word.immediate!
 
   R> // restore OFs counter
 
-  >r // restore return address
+  a> >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -153,7 +154,7 @@ true ' CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : ENDCASE immediate
 
-  r> // save return address onto pstack
+  r> >a // save return address onto pstack
 
   POSTPONE DROP  // discard case value
 
@@ -161,8 +162,29 @@ true ' CASE word.immediate!
     POSTPONE THEN
   LOOP2
 
-  >r // restore return address
+  a> >r // restore return address
 ;
+
+/*----------------------------------------------------------------------------*/
+/* case test                                                                  */
+/*----------------------------------------------------------------------------*/
+/*
+: caseTest
+
+  10 case
+    10 of "zero"  . endof
+    1 of "one"   . endof
+    2 of "two"   . endof
+    3 of "three" . endof
+    4 of "four"  . endof
+    5 of "five"  . endof
+    6 of "six"   . endof
+    7 of "seven" . endof
+    8 of "eight" . endof
+    9 of "nine"  . endof
+  endcase
+;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */

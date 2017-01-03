@@ -2977,11 +2977,11 @@ void Task::vAstackToValues(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAstackToA(NNP_Task nnpTask)
 {
-  ENTRY("vRstackToR");
+  ENTRY("vAstackToA");
   
   ValWsp xValOpaque;
   if ( ! nnpTask->m_xParamStack.bPop(xValOpaque) )
-    THROW_INVALID_PSTACK(">r");
+    THROW_INVALID_PSTACK(">a");
   
   nnpTask->m_xAuxStack.vPush(xValOpaque);
   
