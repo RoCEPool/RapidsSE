@@ -5014,17 +5014,29 @@ void Task::vFlowDo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vFlowDo2(NNP_Task nnpTask)
 {
-  ENTRY("vDo");
+  ENTRY("vDo"); // ( limit index -- )
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
+
+  // do loop init
+  pCurrentWord->vEncode("2>r");  // encode move limit index to rstack
+
+  // jump to do block
+  Cell* pDoBlock = pCurrentWord->pLastCell() + 2 + 1 + 1 + 2;
+  pCurrentWord->vEncode("jump",pDoBlock); // encode jump to do block
   
-  pCurrentWord->vEncode("do_rt2");
-  
-  // get address for a backward jump
-  Cell* pBackwardDestination = pCurrentWord->pLastCell();
-  
-  // record backward destination
-  nnpTask->m_xReturnStack.vPush(pBackwardDestination);
+  // doLimitTest:
+  Cell* pDoLimitTest = pCurrentWord->pLastCell();
+  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
+  pCurrentWord->vEncode(">");   // test for limit > index
+  pCurrentWord->vEncode("jumpFalse"); // jump on false to doEnd:
+  Cell* pDoEnd = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+
+  // record addresses on control stack for use/resolution in loop
+  nnpTask->m_xReturnStack.vPush(pDoEnd);
+  nnpTask->m_xReturnStack.vPush(pDoLimitTest);
+
+  // doBlock:
   
   EXIT();
 }
@@ -5054,11 +5066,6 @@ void Task::vFlowDo_RT2(NNP_Task nnpTask)
 {
   ENTRY("vDo_RT");
 
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  Cell* pAddress = pCurrentWord->pLastCell();
-  
-  pCurrentWord->vEncode("jump",pAddress + 4);
-  
   
   EXIT();
 }
@@ -5330,14 +5337,25 @@ void Task::vFlowLoop2(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // get address of backward jump
-  Cell* pBackwardDestination;
-  if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestination) )
+  // incremenet index:
+  pCurrentWord->vEncode("r>");
+  pCurrentWord->vEncode("1+");
+  pCurrentWord->vEncode(">r");
+  
+  // jump to doLimitTest:
+  Cell* pDoLimitTest;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDoLimitTest) )
     THROW_INVALID_RSTACK("loop");
+  pCurrentWord->vEncode("jump",pDoLimitTest);
   
-  pCurrentWord->vEncode("Loop_RT");
+  // resolve forward branch to doEnd:
+  Cell* pDoEnd;
+  if ( ! nnpTask->m_xReturnStack.bPop(pDoEnd) )
+    THROW_INVALID_RSTACK("loop");
+  pDoEnd->m_pJumpTo = pCurrentWord->pLastCell();
   
-  pCurrentWord->vEncode("jump",pBackwardDestination);
+  pCurrentWord->vEncode("rdrop");
+  pCurrentWord->vEncode("rdrop");
   
   EXIT();
 }

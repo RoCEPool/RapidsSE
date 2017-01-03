@@ -13,6 +13,7 @@
 : whiletest 0 begin 1 + dup 10 < while dup . repeat ;
 
 : dotest 10 0 do I . loop ;
+: do2test 10 0 do2 I . loop2 ;
 
 : +looptest 10 0 do I . 2 +loop ;
 
