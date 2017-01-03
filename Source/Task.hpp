@@ -465,6 +465,7 @@ namespace Tasks
     static void vFlowElse(NNP_Task nnpTask);
     static void vFlowExecute(NNP_Task nnpTask);
     static void vFlowHazard(NNP_Task nnpTask);
+    static void vFlowHere(NNP_Task nnpTask);
     static void vFlowIf(NNP_Task nnpTask);
     static void vFlowIterate(NNP_Task nnpTask);
     static void vFlowIterate_RT_A(NNP_Task nnpTask);

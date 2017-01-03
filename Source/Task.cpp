@@ -801,6 +801,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("else",            &vFlowElse,         true );
   vAddPrimitive("execute",         &vFlowExecute,      false);
   vAddPrimitive("hazard",          &vFlowHazard,       false);
+  vAddPrimitive("here",            &vFlowHere,         false);
   vAddPrimitive("if",              &vFlowIf,           true );
   vAddPrimitive("iterate",         &vFlowIterate,      true );
   vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
@@ -5176,6 +5177,22 @@ void Task::vFlowHazard(NNP_Task nnpTask)
   ENTRY("vFlowHazard");
   
   THROW("Entered hazard");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* here -- push address of last cell of word                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vFlowHere(NNP_Task nnpTask)
+{
+  ENTRY("vFlowHere");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  Cell* pHere = pCurrentWord->pLastCell();
+  
+  nnpTask->m_xReturnStack.vPush(pHere);
   
   EXIT();
 }
