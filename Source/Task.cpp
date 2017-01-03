@@ -766,8 +766,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(".verbose",     &vDotVerbose,       false);
   
   vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
-  vAddPrimitive("encodeCallWord",  &vEncodeCallWord,   false);
-  vAddPrimitive("encodePushValue", &vEncodePushValue,  false);
+  vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
+  vAddPrimitive("encodePushValue",     &vEncodePushValue,     false);
   
   vAddPrimitive("enterObject",     &vEnterObject,      false);
   vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
@@ -1373,10 +1373,8 @@ void Task::vAddRoutines(void)
   "        encodeCallPrimitive"
   "        jumpBegin_"
   "      then"
-  "      dup word.isPrimitive not if"
-  "        encodeCallWord"
-  "        jumpBegin_"
-  "      then"
+  "      encodeCallRoutine"
+  "      jumpBegin_"
   "    then"
   
   // interpreting
@@ -4525,33 +4523,15 @@ void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encodePushValue -- encode push value                                       */
+/* encodeCallRoutine -- encode call to a routine of calls                     */
 /*----------------------------------------------------------------------------*/
-void Task::vEncodePushValue(NNP_Task nnpTask)
+void Task::vEncodeCallRoutine(NNP_Task nnpTask)
 {
-  ENTRY("vEncodePushValue");
-  
-  ValWsp xValA;
-  if ( ! nnpTask->m_xDataStack.bPop(xValA) )
-    THROW_INVALID_DSTACK("encodePushValue");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("pushValue",&xValA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* encodeCallWord -- encode call to a : word                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vEncodeCallWord(NNP_Task nnpTask)
-{
-  ENTRY("vEncodeCallWord");
+  ENTRY("vEncodeCallRoutine");
   
   Object* pWordObject;
   if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
-    THROW_INVALID_DSTACK("encodeCallWord");
+    THROW_INVALID_DSTACK("encodeCallRoutine");
   
   Word* pCalledWord = _pWord(pWordObject);
   
@@ -4572,6 +4552,24 @@ void Task::vEncodeCallWord(NNP_Task nnpTask)
   }
   
   pCurrentWord->vEncode(ppCalledEntryStep);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encodePushValue -- encode push value                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodePushValue(NNP_Task nnpTask)
+{
+  ENTRY("vEncodePushValue");
+  
+  ValWsp xValA;
+  if ( ! nnpTask->m_xDataStack.bPop(xValA) )
+    THROW_INVALID_DSTACK("encodePushValue");
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  pCurrentWord->vEncode("pushValue",&xValA);
   
   EXIT();
 }

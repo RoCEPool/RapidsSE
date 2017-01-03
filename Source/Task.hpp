@@ -424,7 +424,7 @@ namespace Tasks
     
     // encode
     static void vEncodeCallPrimitive(NNP_Task nnpTask);
-    static void vEncodeCallWord(NNP_Task nnpTask);
+    static void vEncodeCallRoutine(NNP_Task nnpTask);
     static void vEncodePushValue(NNP_Task nnpTask);
     
     // enter
