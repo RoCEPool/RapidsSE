@@ -5183,7 +5183,7 @@ void Task::vFlowHazard(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* here -- push address of last cell of word                                  */
+/* here -- push address of last cell of word                        immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowHere(NNP_Task nnpTask)
 {
