@@ -152,17 +152,16 @@ true ' CASE word.immediate!
 /* ENDCASE block                                                              */
 /*----------------------------------------------------------------------------*/
 : ENDCASE immediate
-/*
+
   r> // save return address onto pstack
 
   POSTPONE DROP  // discard case value
 
   0 ?DO          // resolve all forward ENDOF branches
     POSTPONE THEN
-  LOOP
+  LOOP2
 
   >r // restore return address
-*/
 ;
 
 /*----------------------------------------------------------------------------*/
