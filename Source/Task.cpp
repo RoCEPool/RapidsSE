@@ -1297,7 +1297,7 @@ void Task::vAddRoutines(void)
   
   //-----------------------------------------------------
   sDefinition =
-  ": docol "
+  ": docol"
   
   "  retryPoint"
   "  begin_"
@@ -1305,12 +1305,12 @@ void Task::vAddRoutines(void)
   // get next input token
   "    input.next"
   
-  // end of input
+  // test for end of input?
   "    input.type TK_NONE == if"
   "      exit"
   "    then"
   
-  // integer
+  // is token an integer?
   "    input.type TK_INTEGER == if"
   
   "      input.token >int"        // convert str to int, leave on stack
@@ -1326,7 +1326,7 @@ void Task::vAddRoutines(void)
   
   "    then"
   
-  // string
+  // is token a string?
   "    input.type TK_STRING == if"
   
   "      input.token"             // put str on stack
@@ -1342,16 +1342,15 @@ void Task::vAddRoutines(void)
   
   "    then"
   
-  // what?
+  // should be a name
   "    input.type TK_NAME != if"  // double check we have a name
   "      \"strange token\" . input.type ."
   "      jumpBegin_"
   "    then"
   
   // is token a known word?
-  "    input.token find"         // attempt to find word
-  
-  "    dup not if"               // unknown word
+  "    input.token find"
+  "    dup not if"                // we have an unknown word
   "      drop"
   "      \"unknown\" ."
   "      input.token ."
@@ -1361,24 +1360,24 @@ void Task::vAddRoutines(void)
   
   // known word on stack
   
-  // immediate
-  "    dup word.isImmediate if"  // execute an immediate word
+  // is an immediate word?
+  "    dup word.isImmediate if"   // execute an immediate word
   "      execute"
   "      jumpBegin_"
   "    then"
   
-  // compiling
-  "    docol.isCompiling if "    // compile encodes call to word
+  // are we compiling?
+  "    docol.isCompiling if "     // compile encodes call to word
   "      dup word.isPrimitive if"
-  "        encodeCallPrimitive"
+  "        encodeCallPrimitive"   // primitive
   "        jumpBegin_"
   "      then"
-  "      encodeCallRoutine"
+  "      encodeCallRoutine"       // routine
   "      jumpBegin_"
   "    then"
   
-  // interpreting
-  "    execute"
+  // we are interpreting
+  "    execute"                   // execute word
   
   "  jumpBegin_"
   
