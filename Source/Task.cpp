@@ -4922,6 +4922,8 @@ ENTRY("vFileWrite");
 
 // flow: ///////////////////////////////////////////////////////////////////////
 
+//#define CS_RSTACK
+
 /*----------------------------------------------------------------------------*/
 /* again -- encode jump to known backward destination address       immediate */
 /*----------------------------------------------------------------------------*/
@@ -4933,7 +4935,11 @@ void Task::vFlowAgain(NNP_Task nnpTask)
   
   // pop pointer to known backward destination address from control stack
   Cell* pDestinationAddress;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pDestinationAddress) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pDestinationAddress) )
+#endif
     THROW_INVALID_RSTACK("again");
   
   // append : jump to backward destination address
@@ -4956,7 +4962,11 @@ void Task::vFlowAhead(NNP_Task nnpTask)
   Cell* pOriginAddress = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // push pointer to unknown forward origin address onto control stack
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pOriginAddress);
+#else
+  nnpTask->m_xParamStack.vPush(pOriginAddress);
+#endif
   
   EXIT();
 }
@@ -4974,7 +4984,11 @@ void Task::vFlowBegin(NNP_Task nnpTask)
   Cell* pDestinationAddress = pCurrentWord->pLastCell();
   
   // push pointer to known backward destination address onto control stack
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pDestinationAddress);
+#else
+  nnpTask->m_xParamStack.vPush(pDestinationAddress);
+#endif
   
   EXIT();
 }
@@ -5006,7 +5020,11 @@ void Task::vFlowDo(NNP_Task nnpTask)
   Cell* pBackwardDestination = pCurrentWord->pLastCell();
   
   // record backward destination
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pBackwardDestination);
+#else
+  nnpTask->m_xParamStack.vPush(pBackwardDestination);
+#endif
   
   EXIT();
 }
@@ -5035,9 +5053,13 @@ void Task::vFlowDo2(NNP_Task nnpTask)
   Cell* pDoEnd = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
 
   // record addresses on control stack for use/resolution in loop
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pDoEnd);
   nnpTask->m_xReturnStack.vPush(pDoLimitTest);
-
+#else
+  nnpTask->m_xParamStack.vPush(pDoEnd);
+  nnpTask->m_xParamStack.vPush(pDoLimitTest);
+#endif
   // doBlock:
   
   EXIT();
@@ -5063,8 +5085,13 @@ void Task::vFlowDoCheck(NNP_Task nnpTask)
   Cell* pDoEnd = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // record addresses on control stack for use/resolution in loop
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pDoEnd);
   nnpTask->m_xReturnStack.vPush(pDoLimitTest);
+#else
+  nnpTask->m_xParamStack.vPush(pDoEnd);
+  nnpTask->m_xParamStack.vPush(pDoLimitTest);
+#endif
   
   // doBlock:
   
@@ -5111,7 +5138,11 @@ void Task::vFlowElse(NNP_Task nnpTask)
   
   // get address of forward branch (encoded by if)
   Cell* pResolvableForward;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pResolvableForward) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pResolvableForward) )
+#endif
     THROW_INVALID_RSTACK("else");
   
   //--------------------------------------------------------------------------
@@ -5123,7 +5154,11 @@ void Task::vFlowElse(NNP_Task nnpTask)
   Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // record address of forward unconditional branch
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pForwardOrigin);
+#else
+  nnpTask->m_xParamStack.vPush(pForwardOrigin);
+#endif
   
   //--------------------------------------------------------------------------
   
@@ -5192,7 +5227,11 @@ void Task::vFlowHere(NNP_Task nnpTask)
   
   Cell* pHere = pCurrentWord->pLastCell();
   
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pHere);
+#else
+  nnpTask->m_xParamStack.vPush(pHere);
+#endif
   
   EXIT();
 }
@@ -5211,7 +5250,11 @@ void Task::vFlowIf(NNP_Task nnpTask)
   Cell* pOriginAddress = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // push pointer to unknown forward origin address onto control stack
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pOriginAddress);
+#else
+  nnpTask->m_xParamStack.vPush(pOriginAddress);
+#endif
   
   EXIT();
 }
@@ -5228,12 +5271,20 @@ void Task::vFlowIterate(NNP_Task nnpTask)
   pCurrentWord->vEncode("iterate_rt_a");
   
   Cell* pIterateLoc = pCurrentWord->pLastCell();
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pIterateLoc);
+#else
+  nnpTask->m_xParamStack.vPush(pIterateLoc);
+#endif
   pCurrentWord->vEncode("iterate_rt_b");
   
   pCurrentWord->vEncode("jumpFalse");
   Cell* pJumpFalseArg = (Cell*)pCurrentWord->pAppend((i8)0);
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pJumpFalseArg);
+#else
+  nnpTask->m_xParamStack.vPush(pJumpFalseArg);
+#endif
   
   EXIT();
 }
@@ -5364,7 +5415,11 @@ void Task::vFlowLoop(NNP_Task nnpTask)
   
   // get address of backward jump
   Cell* pBackwardDestination;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pBackwardDestination) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pBackwardDestination) )
+#endif
     THROW_INVALID_RSTACK("loop");
   
   pCurrentWord->vEncode("Loop_RT");
@@ -5390,13 +5445,21 @@ void Task::vFlowLoop2(NNP_Task nnpTask)
   
   // jump to doLimitTest:
   Cell* pDoLimitTest;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pDoLimitTest) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pDoLimitTest) )
+#endif
     THROW_INVALID_RSTACK("loop");
   pCurrentWord->vEncode("jump",pDoLimitTest);
   
   // resolve forward branch to doEnd:
   Cell* pDoEnd;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pDoEnd) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pDoEnd) )
+#endif
     THROW_INVALID_RSTACK("loop");
   pDoEnd->m_pJumpTo = pCurrentWord->pLastCell();
   
@@ -5468,7 +5531,11 @@ void Task::vFlowLoopPlus(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pDoLoc;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pDoLoc) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pDoLoc) )
+#endif
     THROW_INVALID_RSTACK("+loop");
   
   pCurrentWord->vEncode("+Loop_RT");
@@ -5518,11 +5585,19 @@ void Task::vFlowNext(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pJumpFalseArg;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pJumpFalseArg) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pJumpFalseArg) )
+#endif
     THROW_INVALID_RSTACK("next");
   
   Cell* pIterateLoc;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pIterateLoc) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pIterateLoc) )
+#endif
     THROW_INVALID_RSTACK("next");
   
   //----------------------------------------------------------------------------
@@ -5554,13 +5629,21 @@ void Task::vFlowRepeat(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   Cell* pWhileJumpArg;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pWhileJumpArg) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pWhileJumpArg) )
+#endif
     THROW_INVALID_RSTACK("repeat");
   
   //-------------------------------------------------------------------------
   
   Cell* pBeginLoc;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pBeginLoc) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pBeginLoc) )
+#endif
     THROW_INVALID_RSTACK("repeat");
   
   pCurrentWord->vEncode("jump",pBeginLoc);
@@ -5611,7 +5694,11 @@ void Task::vFlowThen(NNP_Task nnpTask)
   
   // pop pointer to unknown forward origin address from control stack
   Cell* pOriginAddress;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pOriginAddress) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pOriginAddress) )
+#endif
     THROW_INVALID_RSTACK("then");
   
   // resolve forward branch to this point in routine
@@ -5646,7 +5733,11 @@ void Task::vFlowUnloop(NNP_Task nnpTask)
   // we should just modify the pointers rather than actually pop
   ValWsp xValA;
   ValWsp xValB;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
+#else
+  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
+#endif
     THROW_INVALID_RSTACK("unloop");
   
   EXIT();
@@ -5663,7 +5754,11 @@ void Task::vFlowUntil(NNP_Task nnpTask)
   
   // pop pointer to known backward destination address from control stack
   Cell* pDestinationAddress;
+#ifdef CS_RSTACK
   if ( ! nnpTask->m_xReturnStack.bPop(pDestinationAddress) )
+#else
+  if ( ! nnpTask->m_xParamStack.bPop(pDestinationAddress) )
+#endif
     THROW_INVALID_RSTACK("until");
   
   // append : jump on false to backward destination address
@@ -5684,7 +5779,11 @@ void Task::vFlowWhile(NNP_Task nnpTask)
   pCurrentWord->vEncode("jumpFalse");
   Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
   
+#ifdef CS_RSTACK
   nnpTask->m_xReturnStack.vPush(pWhileJumpArg);
+#else
+  nnpTask->m_xParamStack.vPush(pWhileJumpArg);
+#endif
   
   EXIT();
 }
