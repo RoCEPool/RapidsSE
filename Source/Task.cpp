@@ -812,7 +812,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loop",            &vFlowLoop,         true );
   vAddPrimitive("loop2",           &vFlowLoop2,        true );
   vAddPrimitive("loop_rt",         &vFlowLoop_RT,      false);
-  vAddPrimitive("loop_rt2",        &vFlowLoop_RT2,     false);
   vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
   vAddPrimitive("+loop_rt",        &vFlowLoopPlus_RT,  false);
   vAddPrimitive("next",            &vFlowNext,         true );
@@ -5389,32 +5388,6 @@ void Task::vFlowLoop2(NNP_Task nnpTask)
 /* loop_rt -- runtime form of loop                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoop_RT(NNP_Task nnpTask)
-{
-  ENTRY("vLoop_RT");
-  
-  i8 iIndex;
-  i8 iLimit;
-  
-  if ( ! nnpTask->m_xReturnStack.bPop(iIndex,iLimit) )
-    THROW_INVALID_DSTACK("loop_rt");
-  
-  iIndex++;
-  
-  if (iIndex < iLimit) {
-    nnpTask->m_xReturnStack.vPush(iLimit);
-    nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
-  }
-  else {
-    nnpTask->IP.m_pCell += 2;
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loop_rt2 -- runtime form of loop                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowLoop_RT2(NNP_Task nnpTask)
 {
   ENTRY("vLoop_RT");
   

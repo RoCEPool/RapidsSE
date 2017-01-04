@@ -476,7 +476,6 @@ namespace Tasks
     static void vFlowLoop(NNP_Task nnpTask);
     static void vFlowLoop2(NNP_Task nnpTask);
     static void vFlowLoop_RT(NNP_Task nnpTask);
-    static void vFlowLoop_RT2(NNP_Task nnpTask);
     static void vFlowLoopPlus(NNP_Task nnpTask);
     static void vFlowLoopPlus_RT(NNP_Task nnpTask);
     static void vFlowNext(NNP_Task nnpTask);
