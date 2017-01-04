@@ -85,7 +85,7 @@ diclock.dropwrite
   // this word puts the dictionary path onto the stack as a series of names
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
-  dic.count 0 do2
+  dic.count 0 do
     // calculate dic subscript
     //dic.count I - 1- ( d )
 
@@ -95,7 +95,7 @@ diclock.dropwrite
 
     // push dictionary name
     dic.name ( ... dicNm )
-  loop2
+  loop
 
   // push number of dictionary names
   dic.count ( ... #dics )
@@ -110,11 +110,11 @@ diclock.dropwrite
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
 tp: dicStack!
-  dic.count 0 do2
+  dic.count 0 do
     dic.drop
-  loop2
+  loop
 
-  0 do2
+  0 do
 
     dup "<main>" streql if
       drop
@@ -135,7 +135,7 @@ tp: dicStack!
 
     then
 
-  loop2
+  loop
 ;
 
 /*============================================================================*/

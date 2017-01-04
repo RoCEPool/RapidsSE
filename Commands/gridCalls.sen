@@ -17,7 +17,7 @@
 
   */
 
-  args.nodes 0 do2
+  args.nodes 0 do
 
     //
     // participant for node I
@@ -55,7 +55,7 @@
     dup actor.Task  I ppTasks  !
     actor.spawn
 
-  loop2
+  loop
 
   //
   // coordinator for this node

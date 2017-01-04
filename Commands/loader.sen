@@ -190,7 +190,7 @@ tp: bufferFull
 
 
   // check for dangling buffers
-  args.partitions 0 do2
+  args.partitions 0 do
 
     // set the partition we are using
     I loaderSub.partition!
@@ -202,7 +202,7 @@ tp: bufferFull
       ~loadAppendBuffer
     then
 
-  loop2
+  loop
 
   // close the file
   loaderSub.end
@@ -266,7 +266,7 @@ timer: loadTimer
 
   N_GENERAL_THREADS r0 loader.subs!
 
-  N_GENERAL_THREADS 0 do2
+  N_GENERAL_THREADS 0 do
 
 //traceon
     $$ r2 loader.newSub $$>valset
@@ -278,7 +278,7 @@ timer: loadTimer
     dup I >loadSubNm swap task.name!
 
     I >genTaskSet taskSet.append
-  loop2
+  loop
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   begin r0 loader.findChunk while repeat

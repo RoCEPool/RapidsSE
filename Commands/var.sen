@@ -35,12 +35,12 @@
   word.this >body object.magic!!
   true word.this >body object.wordbody!
 
-  r> 0 do2
+  r> 0 do
     I sizeof_intval * word.this >body (int) + (ptr)
     dup
     object.magic!!
     CN_INTVAL swap object.class!
-  loop2
+  loop
 
   does> (int) swap sizeof_intval * + (ptr)
 ;
@@ -71,12 +71,12 @@
   word.this >body object.magic!!
   true word.this >body object.wordbody!
 
-  r> 0 do2
+  r> 0 do
     I sizeof_ptrval * word.this >body (int) + (ptr)
     dup
     object.magic!!
     CN_PTRVAL swap object.class!
-  loop2
+  loop
 
   does> (int) swap sizeof_ptrval * + (ptr)
 ;

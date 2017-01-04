@@ -30,7 +30,7 @@ tp: checkResult
 
   else
     // lets see which node failed
-    0 do2
+    0 do
 
       false == if  ( ... ec n# )
 
@@ -43,7 +43,7 @@ tp: checkResult
 
       then
 
-    loop2
+    loop
 
   then
 ;
@@ -59,16 +59,16 @@ tp: printResult
   true == if ( s n# t | ec n# f .... nn )
 
     // pretty print the results resturned
-    0 do2  ( s n# t | s n# f .... )
+    0 do  ( s n# t | s n# f .... )
 
       assert // should be true
       "Node%v: %v"  sprint .
-    loop2
+    loop
 
   else
 
     // lets see which node failed
-    0 do2  ( s n# t | ec n# f .... )
+    0 do  ( s n# t | ec n# f .... )
 
       false == if ( s n# t | ec n# )
 
@@ -81,7 +81,7 @@ tp: printResult
 
       then
 
-    loop2
+    loop
 
   then
 

@@ -804,8 +804,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
-  vAddPrimitive("loop2",           &vFlowLoop,         true );
-  vAddPrimitive("+loop2",          &vFlowLoopPlus,     true );
+  vAddPrimitive("loop",           &vFlowLoop,         true );
+  vAddPrimitive("+loop",          &vFlowLoopPlus,     true );
   vAddPrimitive("next",            &vFlowNext,         true );
   vAddPrimitive("nop",             &vFlowNop,          false);
   vAddPrimitive("repeat",          &vFlowRepeat,       true );

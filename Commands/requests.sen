@@ -610,11 +610,11 @@ tp: droppedTable
 : pwf
 
   "/"
-  dic.count 2 do2
+  dic.count 2 do
     dic.count 1 - I -
     dic.pick dic.name concat
     "/" concat
-  loop2
+  loop
 
   <SUCCESS>
 ;
@@ -996,9 +996,9 @@ tp: pRB
 */
 
   10 countRows !
-  countRows @ 0 do2
+  countRows @ 0 do
     "Hello there " I >str concat reg1 reg0 rowbuffer.append
-  loop2
+  loop
 
   // commit the transaction
   commitTransaction

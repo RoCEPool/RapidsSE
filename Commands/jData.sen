@@ -40,7 +40,7 @@
   OPEN_WRITE r0 file.open not if "file not opened" . exit then
 
   1000 0
-  do2
+  do
     I >str          r2 file.write
     "|"             r2 file.write
     I >DigitWords   r2 file.write
@@ -49,7 +49,7 @@
     "|"             r2 file.write
     I 10 % >str     r2 file.write
     "\n"            r2 file.write
-  loop2
+  loop
 
   r0 file.close
 
@@ -65,14 +65,14 @@
   OPEN_WRITE r0 file.open not if "file not opened" . exit then
 
   100 0
-  do2
+  do
     I >str          r2 file.write
     "|"             r2 file.write
     I >DigitWords   r2 file.write
     "|"             r2 file.write
     I 10 % >str     r2 file.write
     "\n"            r2 file.write
-  loop2
+  loop
 
   r0 file.close
 
@@ -88,12 +88,12 @@
   OPEN_WRITE r0 file.open not if "file not opened" . exit then
 
   10 0
-  do2
+  do
     I >str          r2 file.write
     "|"             r2 file.write
     I >DigitWords   r2 file.write
     "\n"            r2 file.write
-  loop2
+  loop
 
   r0 file.close
 
