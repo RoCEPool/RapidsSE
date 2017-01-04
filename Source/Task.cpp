@@ -792,7 +792,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("again",           &vFlowAgain,        true );
   vAddPrimitive("ahead",           &vFlowAhead,        true );
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
-  vAddPrimitive("?do",             &vFlowDoCheck,      true );
   vAddPrimitive("execute",         &vFlowExecute,      false);
   vAddPrimitive("hazard",          &vFlowHazard,       false);
   vAddPrimitive("here",            &vFlowHere,         false);
@@ -803,8 +802,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
-  vAddPrimitive("loop",           &vFlowLoop,         true );
-  vAddPrimitive("+loop",          &vFlowLoopPlus,     true );
+  vAddPrimitive("loop",            &vFlowLoop,         true );
+  vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
   vAddPrimitive("next",            &vFlowNext,         true );
   vAddPrimitive("nop",             &vFlowNop,          false);
   vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
@@ -4951,30 +4950,6 @@ void Task::vFlowBegin_(NNP_Task nnpTask)
   ENTRY("vBegin_");
   
   nnpTask->m_pBeginIP = nnpTask->IP.m_pCell;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* ?do -- encode runtime form of : ?do                              immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowDoCheck(NNP_Task nnpTask)
-{
-  ENTRY("vFlowDoCheck"); // ( limit index -- )
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  // do loop init
-  pCurrentWord->vEncode("2>r");  // encode move limit index to rstack
-  
-  pCurrentWord->vEncode("jump"); // jump on doLimitTest:
-  Cell* pDoLimitTest = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
-  
-  // cstack: record addresses for use/resolution in loop
-  nnpTask->m_xDataStack.vPush(pDoLimitTest);
-  nnpTask->m_xDataStack.vPush(false);
-  
-  // doBlock:
   
   EXIT();
 }

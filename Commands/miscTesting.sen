@@ -14,7 +14,7 @@
 
 : dotest 10 0 do I . loop ;
 : do2test 10 0 do I . loop ;
-: ?dotest 10 10 ?do I . loop ;
+: ?dotest 10 0 ?do I . loop 10 10 ?do I . loop ;
 
 : +looptest 10 0 do I . 2 +loop ;
 
