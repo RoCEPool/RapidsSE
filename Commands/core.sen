@@ -69,6 +69,14 @@
 /*----------------------------------------------------------------------------*/
 /* define a constant                                                          */
 /*----------------------------------------------------------------------------*/
+: ,_ALT
+
+  HERE ! CELL ALLOT
+;
+
+/*----------------------------------------------------------------------------*/
+/* define a constant                                                          */
+/*----------------------------------------------------------------------------*/
 : constant
 
   create
@@ -122,9 +130,6 @@ true ' CASE word.immediate!
 /* OF block                                                                   */
 /*----------------------------------------------------------------------------*/
 : OF immediate
-traceon
-
-  r> >a // save return address onto astack
 
   1+   // inc number of OFs
   >R   // save OFs counter
@@ -134,9 +139,7 @@ traceon
   POSTPONE IF    // add conditional block (with orig on control stack)
   POSTPONE DROP  // discard case value within conditional block
 
-  >r // restore OFs counter
-
-  a> >r // restore return addresstraceoff
+  R> // restore OFs counter
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -144,15 +147,11 @@ traceon
 /*----------------------------------------------------------------------------*/
 : ENDOF immediate
 
-  r> >a // save return address onto pstack
-
   >R // save OFs counter
 
   POSTPONE ELSE // add conditional block (with orig2 on control stack)
 
   R> // restore OFs counter
-
-  a> >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -160,37 +159,33 @@ traceon
 /*----------------------------------------------------------------------------*/
 : ENDCASE immediate
 
-  r> >a // save return address onto pstack
-
   POSTPONE DROP  // discard case value
 
   0 ?DO          // resolve all forward ENDOF branches
     POSTPONE THEN
-  LOOP2
-
-  a> >r // restore return address
+  loop2
 ;
 
 /*----------------------------------------------------------------------------*/
 /* case test                                                                  */
 /*----------------------------------------------------------------------------*/
-/*
 : caseTest
 
-  10 case
-    10 of "zero"  . endof
-    1 of "one"   . endof
-    2 of "two"   . endof
-    3 of "three" . endof
-    4 of "four"  . endof
-    5 of "five"  . endof
-    6 of "six"   . endof
-    7 of "seven" . endof
-    8 of "eight" . endof
-    9 of "nine"  . endof
-  endcase
+  10 0 do
+    I case
+      0 of "zero"  . endof
+      1 of "one"   . endof
+      2 of "two"   . endof
+      3 of "three" . endof
+      4 of "four"  . endof
+      5 of "five"  . endof
+      6 of "six"   . endof
+      7 of "seven" . endof
+      8 of "eight" . endof
+      9 of "nine"  . endof
+    endcase
+  loop
 ;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
