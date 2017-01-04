@@ -1236,7 +1236,7 @@ void Task::vAddPrimitives(void)
   
   vAddPrimitive("allParticipants", &vAllParticipants,  true );
   vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("cells",           &vCells,            false);
+  vAddPrimitive("cell",            &vCell,             false);
   vAddPrimitive(":",               &vColon,            false);
   vAddPrimitive(",",               &vComma,            false);
   vAddPrimitive("compile,",        &vCompileComma,     false);
@@ -13583,17 +13583,13 @@ void Task::vAllot(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cells -- convert cells into n bytes                                        */
+/* cell -- push size of cell                                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vCells(NNP_Task nnpTask)
+void Task::vCell(NNP_Task nnpTask)
 {
-  ENTRY("vCells");
+  ENTRY("vCell");
   
-  i8 nCells;
-  if ( !  nnpTask->m_xDataStack.bPop(nCells) )
-    THROW_INVALID_DSTACK("cells");
-  
-  i8 nBytes = nCells * sizeof(void*);
+  i8 nBytes = sizeof(void*);
   
   nnpTask->m_xDataStack.vPush(nBytes);
   

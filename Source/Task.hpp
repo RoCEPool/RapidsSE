@@ -948,7 +948,7 @@ namespace Tasks
     // word
     static void vAllParticipants(NNP_Task nnpTask);
     static void vAllot(NNP_Task nnpTask);
-    static void vCells(NNP_Task nnpTask);
+    static void vCell(NNP_Task nnpTask);
     static void vColon(NNP_Task nnpTask);
     static void vComma(NNP_Task nnpTask);
     static void vCompileComma(NNP_Task nnpTask);
