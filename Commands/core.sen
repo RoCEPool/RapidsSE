@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* begin a loop                                                               */
 /*----------------------------------------------------------------------------*/
-: begin immediate
+: BEGIN immediate
 
   here
 ;
@@ -59,9 +59,11 @@
 /*----------------------------------------------------------------------------*/
 /* do a loop                                                                  */
 /*----------------------------------------------------------------------------*/
-: do immediate
+: DO immediate
 
-  postpone 2>r here 
+  POSTPONE 2>R // encode 2>r into future word
+
+  HERE         // push address of last cell
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -85,41 +87,29 @@
 /*----------------------------------------------------------------------------*/
 /* resolve IF supplying alternate execution                                   */
 /*----------------------------------------------------------------------------*/
-: ELSE_alt immediate ( orig1 -- orig2 / -- )
-
-//  r> // save return address onto pstack
+: ELSE immediate ( orig1 -- orig2 / -- )
 
   POSTPONE AHEAD // unconditional forward branch orig2
   1 CS-ROLL      // put orig1 back on top
   POSTPONE THEN  // resolve forward branch from orig1
-
-//  >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/
 /* conditional exit from loops                                                */
 /*----------------------------------------------------------------------------*/
-: WHILE_alt immediate ( dest -- orig dest / flag -- )
-
-  r> // save return address onto pstack
+: WHILE immediate ( dest -- orig dest / flag -- )
 
   POSTPONE IF // conditional forward branch
   1 CS-ROLL   // keep dest on top
-
-  >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/
 /* resolve a single WHILE and jump to BEGIN                                   */
 /*----------------------------------------------------------------------------*/
-: REPEAT_alt immediate ( orig dest-- orig dest / flag -- )
-
-  r> // save return address onto pstack
+: REPEAT immediate ( orig dest-- orig dest / flag -- )
 
   POSTPONE AGAIN // unconditional backward branch to dest
   POSTPONE THEN  // resolve forward branch from orig
-
-  >r // restore return address
 ;
 
 /*----------------------------------------------------------------------------*/

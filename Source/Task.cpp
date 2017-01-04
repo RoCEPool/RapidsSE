@@ -13901,17 +13901,17 @@ void Task::vPostpone(NNP_Task nnpTask)
   if ( ! pCalledWord )
     THROW("No word: %s ",nnpTask->m_sToken.a());
   
-//  if (pCalledWord->bImmediate()) {
-//    
-//    // put call to immediate word into this current definition
-//    
-//    // get indirect pointer to entry step of called word
-//    TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
-//    
-//    // copy indirect pointer into the current word
-//    pCurrentWord->vEncode(ppCalledEntryStep);
-//  }
-//  else {
+  if (pCalledWord->bImmediate()) {
+    
+    // put call to immediate word into this current definition
+    
+    // get indirect pointer to entry step of called word
+    TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
+    
+    // copy indirect pointer into the current word
+    pCurrentWord->vEncode(ppCalledEntryStep);
+  }
+  else {
   
     // put call to normal word into some future definition
     
@@ -13921,7 +13921,7 @@ void Task::vPostpone(NNP_Task nnpTask)
       pCurrentWord->vEncode("encodeCallPrimitive");
     else
       pCurrentWord->vEncode("encodeCallRoutine");
-//  }
+  }
   
   EXIT();
 }
