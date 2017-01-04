@@ -804,8 +804,8 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
-  vAddPrimitive("loop2",           &vFlowLoop2,        true );
-  vAddPrimitive("+loop2",          &vFlowLoopPlus2,    true );
+  vAddPrimitive("loop2",           &vFlowLoop,         true );
+  vAddPrimitive("+loop2",          &vFlowLoopPlus,     true );
   vAddPrimitive("next",            &vFlowNext,         true );
   vAddPrimitive("nop",             &vFlowNop,          false);
   vAddPrimitive("repeat",          &vFlowRepeat,       true );
@@ -5219,9 +5219,9 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop2 -- encode runtime form of : loop                           immediate */
+/* loop -- encode runtime form of : loop                            immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowLoop2(NNP_Task nnpTask)
+void Task::vFlowLoop(NNP_Task nnpTask)
 {
   ENTRY("vLoop");
   
@@ -5267,9 +5267,9 @@ void Task::vFlowLoop2(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loopPlus2 -- encode runtime form of : +loop                      immediate */
+/* loopPlus -- encode runtime form of : +loop                       immediate */
 /*----------------------------------------------------------------------------*/
-void Task::vFlowLoopPlus2(NNP_Task nnpTask)
+void Task::vFlowLoopPlus(NNP_Task nnpTask)
 {
   ENTRY("vLoopPlus");
   
