@@ -60,7 +60,10 @@ SEitf::SEitf(i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  m_iPid = 0;
+  // pid
+  m_iPid = Process::iGetPid();
+  m_xDic.vAddConstant("pid",m_iPid);
+
   m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;
   
@@ -212,10 +215,6 @@ void SEitf::vDump(eCN eClass, Object* pObject, const char* pTab)
 void SEitf::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  // pid
-  m_iPid = Process::iGetPid();
-  m_xDic.vAddConstant("pid",m_iPid);
   
   // response queue
   Word* pQueueWord = gpMainDic->pFind("queue");
