@@ -132,8 +132,8 @@ int main(int argc, const char* argv[])
 /*----------------------------------------------------------------------------*/
 void vKillPrev(void)
 {
-  // only node0 does this
-  if (0 != gxArguments.m_iNode)
+  // only node0 does this when starting
+  if ( ! (0 == gxArguments.m_iNode && gxArguments.m_bStart) )
     return;
   
   // an assumption is that regions will be /SE_<node>
