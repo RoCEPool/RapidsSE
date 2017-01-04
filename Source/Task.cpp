@@ -815,7 +815,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("throw",           &vFlowThrow,        false);
   vAddPrimitive("unloop",          &vFlowUnloop,       false);
   vAddPrimitive("until",           &vFlowUntil,        true );
-  vAddPrimitive("while",           &vFlowWhile,        true );
   
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
   vAddPrimitive("grid.started!",   &vGridStartedStore, false);
@@ -4916,13 +4915,13 @@ void Task::vFlowAgain(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // cstack: pop pointer to known backward destination address
-  Cell* pDestinationAddress;
-  if ( ! nnpTask->m_xDataStack.bPop(pDestinationAddress) )
+  // cstack: pop known backward address
+  Cell* pKnownDestination;
+  if ( ! nnpTask->m_xDataStack.bPop(pKnownDestination) )
     THROW_INVALID_DSTACK("again");
   
-  // append : jump to backward destination address
-  pCurrentWord->vEncode("jump",pDestinationAddress);
+  // append : jump to known backward address
+  pCurrentWord->vEncode("jump",pKnownDestination);
   
   EXIT();
 }
@@ -4938,10 +4937,10 @@ void Task::vFlowAhead(NNP_Task nnpTask)
   
   // append : jump to unknown forward address
   pCurrentWord->vEncode("jump");
-  Cell* pOriginAddress = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  Cell* pUnknownOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  // cstack: push pointer to unknown forward origin address
-  nnpTask->m_xDataStack.vPush(pOriginAddress);
+  // cstack: push unknown forward address
+  nnpTask->m_xDataStack.vPush(pUnknownOrigin);
   
   EXIT();
 }
@@ -5092,10 +5091,10 @@ void Task::vFlowIf(NNP_Task nnpTask)
   
   // append : jumpFalse to unknown forward address
   pCurrentWord->vEncode("jumpFalse");
-  Cell* pOriginAddress = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  Cell* pUnknownOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
-  // cstack: push pointer to unknown forward origin address
-  nnpTask->m_xDataStack.vPush(pOriginAddress);
+  // cstack: push unknown forward address
+  nnpTask->m_xDataStack.vPush(pUnknownOrigin);
   
   EXIT();
 }
@@ -5419,14 +5418,13 @@ void Task::vFlowThen(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // pop pointer to unknown forward origin address from control stack
-  Cell* pOriginAddress;
-  // cstack: pop origin address of forward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pOriginAddress) )
+  // cstack: pop unknown forward address
+  Cell* pUnknownOrigin;
+  if ( ! nnpTask->m_xDataStack.bPop(pUnknownOrigin) )
     THROW_INVALID_DSTACK("then");
   
   // resolve forward branch to this point in routine
-  pOriginAddress->m_pJumpTo = pCurrentWord->pLastCell();
+  pUnknownOrigin->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
@@ -5474,32 +5472,13 @@ void Task::vFlowUntil(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // pop pointer to known backward destination address from control stack
-  Cell* pDestinationAddress;
-  // cstack: pop destination address for a backward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pDestinationAddress) )
+  // cstack: pop known backward address
+  Cell* pKnownDestination;
+  if ( ! nnpTask->m_xDataStack.bPop(pKnownDestination) )
     THROW_INVALID_DSTACK("until");
   
-  // append : jump on false to backward destination address
-  pCurrentWord->vEncode("jumpFalse",pDestinationAddress);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* while -- check for continue with loop                            immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowWhile(NNP_Task nnpTask)
-{
-  ENTRY("vWhile");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("jumpFalse");
-  Cell* pWhileJumpArg = (Cell*)pCurrentWord->pAppend((i8)0);
-  
-  // CSTACK
-  nnpTask->m_xDataStack.vPush(pWhileJumpArg);
+  // append : jump on false to known backward address
+  pCurrentWord->vEncode("jumpFalse",pKnownDestination);
   
   EXIT();
 }

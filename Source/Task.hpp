@@ -479,7 +479,6 @@ namespace Tasks
     static void vFlowThrow(NNP_Task nnpTask);
     static void vFlowUnloop(NNP_Task nnpTask);
     static void vFlowUntil(NNP_Task nnpTask);
-    static void vFlowWhile(NNP_Task nnpTask);
     
     // grid
     static void vGridAppendNode(NNP_Task nnpTask);
