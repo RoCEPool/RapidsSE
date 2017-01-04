@@ -797,7 +797,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("do2",             &vFlowDo2,          true );
   vAddPrimitive("?do",             &vFlowDoCheck,      true );
   vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
-  vAddPrimitive("do_rt2",          &vFlowDo_RT2,       false);
   vAddPrimitive("else",            &vFlowElse,         true );
   vAddPrimitive("execute",         &vFlowExecute,      false);
   vAddPrimitive("hazard",          &vFlowHazard,       false);
@@ -5079,17 +5078,6 @@ void Task::vFlowDo_RT(NNP_Task nnpTask)
   
   nnpTask->m_xReturnStack.vPush(iLimit);
   nnpTask->m_xReturnStack.vPush(iIndex); // index is on top
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* do_rt2 -- runtime form of do                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowDo_RT2(NNP_Task nnpTask)
-{
-  ENTRY("vDo_RT");
-
   
   EXIT();
 }
