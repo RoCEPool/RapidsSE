@@ -616,7 +616,7 @@ void Task::vAddConstants(void)
 
   vAddConstant("listerTaskPrint", (i8)0);
   vAddConstant("monitorTaskPrint",(i8)0);
-  vAddConstant("reclaimTaskPrint",(i8)0);
+  vAddConstant("reclaimTaskPrint",(i8)1);
   vAddConstant("requestTaskPrint",(i8)0);
   vAddConstant("answerTaskPrint",(i8)0);
   vAddConstant("connectorTaskPrint",(i8)0);
@@ -804,7 +804,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("here",            &vFlowHere,         false);
   vAddPrimitive("if",              &vFlowIf,           true );
   vAddPrimitive("iterate",         &vFlowIterate,      true );
-  vAddPrimitive("iterate_rt_A",    &vFlowIterate_RT_A, false);
   vAddPrimitive("iterate_rt_B",    &vFlowIterate_RT_B, false);
   vAddPrimitive("jump",            &vFlowJump,         false);
   vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
@@ -5221,8 +5220,8 @@ void Task::vFlowIterate(NNP_Task nnpTask)
   ENTRY("vIterate");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  pCurrentWord->vEncode("iterate_rt_a");
+
+  pCurrentWord->vEncode("2>r"); // ( cursor object -- )
   
   Cell* pIterateLoc = pCurrentWord->pLastCell();
   // cstack: push address of iterate begin
@@ -5238,36 +5237,15 @@ void Task::vFlowIterate(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* iterate_rt_a -- runtime of iterate ... next                                */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowIterate_RT_A(NNP_Task nnpTask)
-{
-  ENTRY("vIterate_RT_A");
-  
-  Object* pPtrObject;
-  Object* pPtrCursor;
-  
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrObject,pPtrCursor) )
-    THROW_INVALID_DSTACK("iterate_rt_a");
-  
-  nnpTask->m_xReturnStack.vPush(pPtrCursor);
-  nnpTask->m_xReturnStack.vPush(pPtrObject);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* iterate_rt_b -- runtime of iterate ... next                                */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIterate_RT_B(NNP_Task nnpTask)
 {
   ENTRY("vIterate_RT_B");
   
-  i8 iPick = 0;
-  
   ValWsp xObjectWsp;
   
-  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  nnpTask->m_xReturnStack.vPeek(0,&xObjectWsp);
   nnpTask->m_xDataStack.vPush(xObjectWsp);
   
   ValWsp xWsp;
@@ -5382,7 +5360,7 @@ void Task::vFlowLoop2(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  // incremenet index:
+  // increment index:
   pCurrentWord->vEncode("r>");
   pCurrentWord->vEncode("1+");
   pCurrentWord->vEncode(">r");
