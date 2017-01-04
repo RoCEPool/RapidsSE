@@ -793,7 +793,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("ahead",           &vFlowAhead,        true );
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
   vAddPrimitive("?do",             &vFlowDoCheck,      true );
-  vAddPrimitive("else",            &vFlowElse,         true );
   vAddPrimitive("execute",         &vFlowExecute,      false);
   vAddPrimitive("hazard",          &vFlowHazard,       false);
   vAddPrimitive("here",            &vFlowHere,         false);
@@ -808,7 +807,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("+loop",          &vFlowLoopPlus,     true );
   vAddPrimitive("next",            &vFlowNext,         true );
   vAddPrimitive("nop",             &vFlowNop,          false);
-  vAddPrimitive("repeat",          &vFlowRepeat,       true );
   vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
   vAddPrimitive("test",            &vFlowTest,         false);
   vAddPrimitive("then",            &vFlowThen,         true );
@@ -4982,42 +4980,6 @@ void Task::vFlowDoCheck(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* else -- encode else behavior                                     immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowElse(NNP_Task nnpTask)
-{
-  ENTRY("vElse");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  // get address of forward branch (encoded by if)
-  Cell* pResolvableForward;
-  // CS_RSTACK
-  if ( ! nnpTask->m_xDataStack.bPop(pResolvableForward) )
-    THROW_INVALID_DSTACK("else");
-  
-  //--------------------------------------------------------------------------
-  
-  // end of if block
-  
-  // append : jump to unknown forward destination
-  pCurrentWord->vEncode("jump");
-  Cell* pForwardOrigin = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
-  
-  // cstack: record address of forward unconditional branch
-  nnpTask->m_xDataStack.vPush(pForwardOrigin);
-  
-  //--------------------------------------------------------------------------
-  
-  // start of else block
-  
-  // resolve forward branch to this point in routine
-  pResolvableForward->m_pJumpTo = pCurrentWord->pLastCell();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* execute -- execute word on param stack                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowExecute(NNP_Task nnpTask)
@@ -5347,36 +5309,6 @@ void Task::vFlowNext(NNP_Task nnpTask)
 void Task::vFlowNop(NNP_Task nnpTask)
 {
   ENTRY("vFlowNop");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* repeat -- repeat a begin-while-repeat loop                       immediate */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowRepeat(NNP_Task nnpTask)
-{
-  ENTRY("vRepeat");
-  
-  Word* pCurrentWord = nnpTask->pCurrentWord();
-  
-  Cell* pWhileJumpArg;
-  // cstack: pop origin address of forward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pWhileJumpArg) )
-    THROW_INVALID_DSTACK("repeat");
-  
-  //-------------------------------------------------------------------------
-  
-  Cell* pBeginLoc;
-  // cstack: pop destination address of backward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pBeginLoc) )
-    THROW_INVALID_DSTACK("repeat");
-  
-  pCurrentWord->vEncode("jump",pBeginLoc);
-  
-  //-------------------------------------------------------------------------
-  
-  pWhileJumpArg->m_pJumpTo = pCurrentWord->pLastCell();
   
   EXIT();
 }
