@@ -37,9 +37,9 @@ args.nodes ptrArray: senderQueues
 : ppQueuesDump
 
   "{ " .put
-  args.nodes 0 do
+  args.nodes 0 do2
     I ppQueues @ .put " " .put
-  loop
+  loop2
 
   "}" .put .\n
 ;
@@ -50,9 +50,9 @@ args.nodes ptrArray: senderQueues
 : cpQueuesDump
 
   "{ " .put
-  args.nodes 0 do
+  args.nodes 0 do2
     I cpQueues @ .put " " .put
-  loop
+  loop2
 
   "}" .put .\n
 ;
@@ -63,9 +63,9 @@ args.nodes ptrArray: senderQueues
 : pQueuesDump
 
   "{ " .put
-  args.nodes 0 do
+  args.nodes 0 do2
     I pQueues @ .put " " .put
-  loop
+  loop2
 
   "}" .put .\n
 ;
@@ -76,9 +76,9 @@ args.nodes ptrArray: senderQueues
 : senderQDump
 
   "{ " .put
-  args.nodes 0 do
+  args.nodes 0 do2
     I senderQueues tp: @ .put " " .put
-  loop
+  loop2
 
   "}" .put .\n
 ;
@@ -622,7 +622,7 @@ tp: addingPassOnToCP
   args.nodes 1 == if exit then
 
   // spawn all other nodes
-  args.nodes 1 do
+  args.nodes 1 do2
 
     // form the shell command to spawn node I
     I se_command
@@ -636,7 +636,7 @@ tp: addingPassOnToCP
     // check result
     not assert
 
-  loop
+  loop2
 
   // set grid as started
   true grid.this grid.started!

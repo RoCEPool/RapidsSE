@@ -616,7 +616,7 @@ void Task::vAddConstants(void)
 
   vAddConstant("listerTaskPrint", (i8)0);
   vAddConstant("monitorTaskPrint",(i8)0);
-  vAddConstant("reclaimTaskPrint",(i8)1);
+  vAddConstant("reclaimTaskPrint",(i8)0);
   vAddConstant("requestTaskPrint",(i8)0);
   vAddConstant("answerTaskPrint",(i8)0);
   vAddConstant("connectorTaskPrint",(i8)0);
@@ -793,7 +793,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("ahead",           &vFlowAhead,        true );
   vAddPrimitive("begin",           &vFlowBegin,        true );
   vAddPrimitive("begin_",          &vFlowBegin_,       false);
-  vAddPrimitive("do",              &vFlowDo,           true );
+  vAddPrimitive(" do",              &vFlowDo,           true );
   vAddPrimitive("do2",             &vFlowDo2,          true );
   vAddPrimitive("?do",             &vFlowDoCheck,      true );
   vAddPrimitive("do_rt",           &vFlowDo_RT,        false);
@@ -808,7 +808,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
   vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
   vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
-  vAddPrimitive("loop",            &vFlowLoop,         true );
+  vAddPrimitive(" loop",            &vFlowLoop,         true );
   vAddPrimitive("loop2",           &vFlowLoop2,        true );
   vAddPrimitive("loop_rt",         &vFlowLoop_RT,      false);
   vAddPrimitive("+loop",           &vFlowLoopPlus,     true );
@@ -5048,16 +5048,12 @@ void Task::vFlowDoCheck(NNP_Task nnpTask)
   // do loop init
   pCurrentWord->vEncode("2>r");  // encode move limit index to rstack
   
-  // doLimitTest:
-  Cell* pDoLimitTest = pCurrentWord->pLastCell();
-  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
-  pCurrentWord->vEncode(">");   // test for limit > index
-  pCurrentWord->vEncode("jumpFalse"); // jump on false to doEnd:
-  Cell* pDoEnd = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
+  pCurrentWord->vEncode("jump"); // jump on doLimitTest:
+  Cell* pDoLimitTest = (Cell*)pCurrentWord->pAppend((Cell*)nullptr);
   
   // cstack: record addresses for use/resolution in loop
-  nnpTask->m_xDataStack.vPush(pDoEnd);
   nnpTask->m_xDataStack.vPush(pDoLimitTest);
+  nnpTask->m_xDataStack.vPush(false);
   
   // doBlock:
   
@@ -5342,6 +5338,37 @@ void Task::vFlowLoop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loop2 -- encode runtime form of : loop                           immediate */
 /*----------------------------------------------------------------------------*/
+//void Task::vFlowLoop2(NNP_Task nnpTask)
+//{
+//  ENTRY("vLoop");
+//  
+//  Word* pCurrentWord = nnpTask->pCurrentWord();
+//  
+//  // increment index:
+//  pCurrentWord->vEncode("r>");
+//  pCurrentWord->vEncode("1+");
+//  pCurrentWord->vEncode(">r");
+//  
+//  // jump to doLimitTest:
+//  Cell* pDoLimitTest;
+//  // cstack: pop destination address of backward jump
+//  if ( ! nnpTask->m_xDataStack.bPop(pDoLimitTest) )
+//    THROW_INVALID_DSTACK("loop");
+//  pCurrentWord->vEncode("jump",pDoLimitTest);
+//  
+//  // resolve forward branch to doEnd:
+//  Cell* pDoEnd;
+//  // cstack: pop destination address of backward jump
+//  if ( ! nnpTask->m_xDataStack.bPop(pDoEnd) )
+//    THROW_INVALID_DSTACK("loop");
+//  pDoEnd->m_pJumpTo = pCurrentWord->pLastCell();
+//  
+//  pCurrentWord->vEncode("rdrop");
+//  pCurrentWord->vEncode("rdrop");
+//  
+//  EXIT();
+//}
+//------------------------------------------------------------------------------
 void Task::vFlowLoop2(NNP_Task nnpTask)
 {
   ENTRY("vLoop");
@@ -5352,20 +5379,34 @@ void Task::vFlowLoop2(NNP_Task nnpTask)
   pCurrentWord->vEncode("r>");
   pCurrentWord->vEncode("1+");
   pCurrentWord->vEncode(">r");
-  
-  // jump to doLimitTest:
-  Cell* pDoLimitTest;
-  // cstack: pop destination address of backward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pDoLimitTest) )
+
+  i8 iIsDo;
+  // cstack: is do ?
+  if ( ! nnpTask->m_xDataStack.bPop(iIsDo) )
     THROW_INVALID_DSTACK("loop");
-  pCurrentWord->vEncode("jump",pDoLimitTest);
   
-  // resolve forward branch to doEnd:
-  Cell* pDoEnd;
-  // cstack: pop destination address of backward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pDoEnd) )
-    THROW_INVALID_DSTACK("loop");
-  pDoEnd->m_pJumpTo = pCurrentWord->pLastCell();
+  Cell* pDoLimitTest = nullptr;
+  if (! iIsDo) {
+    // cstack: pop destination address of backward jump
+    if ( ! nnpTask->m_xDataStack.bPop(pDoLimitTest) )
+      THROW_INVALID_DSTACK("loop");
+    pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
+  }
+  
+  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
+  pCurrentWord->vEncode(">");   // test for limit > index
+  
+  if (iIsDo) {
+    // jump on true to doHere:
+    Cell* pDoHere;
+    // cstack: pop destination address of backward jump
+    if ( ! nnpTask->m_xDataStack.bPop(pDoHere) )
+      THROW_INVALID_DSTACK("loop");
+    pCurrentWord->vEncode("jumpTrue",pDoHere);
+  }
+  else {
+    pCurrentWord->vEncode("jumpTrue",pDoLimitTest+1);
+  }
   
   pCurrentWord->vEncode("rdrop");
   pCurrentWord->vEncode("rdrop");
@@ -5423,6 +5464,37 @@ void Task::vFlowLoopPlus(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* loopPlus2 -- encode runtime form of : +loop                      immediate */
 /*----------------------------------------------------------------------------*/
+//void Task::vFlowLoopPlus2(NNP_Task nnpTask)
+//{
+//  ENTRY("vLoopPlus");
+//  
+//  Word* pCurrentWord = nnpTask->pCurrentWord();
+//  
+//  // increment index:
+//  pCurrentWord->vEncode("r>");
+//  pCurrentWord->vEncode("+");
+//  pCurrentWord->vEncode(">r");
+//  
+//  // jump to doLimitTest:
+//  Cell* pDoLimitTest;
+//  // cstack: pop destination address of backward jump
+//  if ( ! nnpTask->m_xDataStack.bPop(pDoLimitTest) )
+//    THROW_INVALID_DSTACK("loop");
+//  pCurrentWord->vEncode("jump",pDoLimitTest);
+//  
+//  // resolve forward branch to doEnd:
+//  Cell* pDoEnd;
+//  // cstack: pop destination address of backward jump
+//  if ( ! nnpTask->m_xDataStack.bPop(pDoEnd) )
+//    THROW_INVALID_DSTACK("loop");
+//  pDoEnd->m_pJumpTo = pCurrentWord->pLastCell();
+//  
+//  pCurrentWord->vEncode("rdrop");
+//  pCurrentWord->vEncode("rdrop");
+//  
+//  EXIT();
+//}
+//------------------------------------------------------------------------------
 void Task::vFlowLoopPlus2(NNP_Task nnpTask)
 {
   ENTRY("vLoopPlus");
@@ -5434,19 +5506,33 @@ void Task::vFlowLoopPlus2(NNP_Task nnpTask)
   pCurrentWord->vEncode("+");
   pCurrentWord->vEncode(">r");
   
-  // jump to doLimitTest:
-  Cell* pDoLimitTest;
-  // cstack: pop destination address of backward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pDoLimitTest) )
+  i8 iIsDo;
+  // cstack: is do ?
+  if ( ! nnpTask->m_xDataStack.bPop(iIsDo) )
     THROW_INVALID_DSTACK("loop");
-  pCurrentWord->vEncode("jump",pDoLimitTest);
   
-  // resolve forward branch to doEnd:
-  Cell* pDoEnd;
-  // cstack: pop destination address of backward jump
-  if ( ! nnpTask->m_xDataStack.bPop(pDoEnd) )
-    THROW_INVALID_DSTACK("loop");
-  pDoEnd->m_pJumpTo = pCurrentWord->pLastCell();
+  Cell* pDoLimitTest = nullptr;
+  if (! iIsDo) {
+    // cstack: pop destination address of backward jump
+    if ( ! nnpTask->m_xDataStack.bPop(pDoLimitTest) )
+      THROW_INVALID_DSTACK("loop");
+    pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
+  }
+  
+  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
+  pCurrentWord->vEncode(">");   // test for limit > index
+  
+  if (iIsDo) {
+    // jump on true to doHere:
+    Cell* pDoHere;
+    // cstack: pop destination address of backward jump
+    if ( ! nnpTask->m_xDataStack.bPop(pDoHere) )
+      THROW_INVALID_DSTACK("loop");
+    pCurrentWord->vEncode("jumpTrue",pDoHere);
+  }
+  else {
+    pCurrentWord->vEncode("jumpTrue",pDoLimitTest+1);
+  }
   
   pCurrentWord->vEncode("rdrop");
   pCurrentWord->vEncode("rdrop");

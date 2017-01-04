@@ -59,11 +59,12 @@
 /*----------------------------------------------------------------------------*/
 /* do a loop                                                                  */
 /*----------------------------------------------------------------------------*/
-: DO immediate
+
+: DO2 immediate
 
   POSTPONE 2>R // encode 2>r into future word
 
-  HERE         // push address of last cell
+  HERE true   // push address of last cell & simple do
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +172,7 @@ true ' CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 : caseTest
 
-  10 0 do
+  10 0 do2
     I case
       0 of "zero"  . endof
       1 of "one"   . endof
@@ -184,7 +185,7 @@ true ' CASE word.immediate!
       8 of "eight" . endof
       9 of "nine"  . endof
     endcase
-  loop
+  loop2
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -237,9 +238,9 @@ true ' CASE word.immediate!
 
   depth not if drop then
 
-  depth 0 do
+  depth 0 do2
     I pick dump
-  loop
+  loop2
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -251,9 +252,9 @@ true ' CASE word.immediate!
 
   adepth not if drop exit then
 
-  adepth 0 do
+  adepth 0 do2
     I apick dump
-  loop
+  loop2
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -263,14 +264,14 @@ true ' CASE word.immediate!
 
   "return stack" .
   rdepth dup not if drop exit then
-  0 do
+  0 do2
     I 2 + rpick
     dup .put
     " ".put
     locate
     dup if .put else drop then
     .\n
-  loop
+  loop2
 ;
 
 
@@ -332,9 +333,9 @@ true ' CASE word.immediate!
   depth not if exit then
 
   // drop everything else
-  0 do
+  0 do2
     drop
-  loop
+  loop2
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -401,7 +402,7 @@ true ' CASE word.immediate!
   // if the stack is empty then there are 0 marked values
   depth 0 == if 0 exit then
 
-  depth 0 do
+  depth 0 do2
 
     // marked values end at a valset
     I stack.class CN_VALSET ==
@@ -419,7 +420,7 @@ true ' CASE word.immediate!
       exit
     then
 
-  loop
+  loop2
 
   // marked values end at bottom of stack
   depth
@@ -433,25 +434,25 @@ true ' CASE word.immediate!
   // if the stack is empty then there are 0 marked values
   adepth 0 == if 0 exit then
 
-  adepth 0 do
+  adepth 0 do2
 
-  // marked values end at a valset
-  I astack.class CN_VALSET ==
-  if
-    I 1+
-    unloop
-    exit
-  then
+    // marked values end at a valset
+    I astack.class CN_VALSET ==
+    if
+      I 1+
+      unloop
+      exit
+    then
 
-  // marked values end at $$
-  I apick $$ eql
-  if
-    I
-    unloop
-    exit
-  then
+    // marked values end at $$
+    I apick $$ eql
+    if
+      I
+      unloop
+      exit
+    then
 
-  loop
+  loop2
 
   // marked values end at bottom of stack
   adepth

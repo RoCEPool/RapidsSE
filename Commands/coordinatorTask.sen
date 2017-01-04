@@ -66,7 +66,7 @@ tp: acksExpected
 
   >r
 
-  args.nodes 0 do
+  args.nodes 0 do2
 
     2 rpick
 
@@ -76,7 +76,7 @@ tp: acksExpected
 
     enqueuePP
 
-  loop
+  loop2
 
   rdrop
 
@@ -127,7 +127,7 @@ tp: sendParticipants
 tp: movedToRstack
 
   // now send nested valset to each participant
-  args.nodes 0 do
+  args.nodes 0 do2
 
     // set ack of 1 (because its the serial form)
     1 task.this task.acks!
@@ -149,7 +149,7 @@ tp: expectingAcks
 
 tp: resumed
 
-  loop // each node
+  loop2 // each node
 
   // each node:
   //   << v nn t | ec nn f >>
@@ -162,7 +162,7 @@ tp: resumed
 tp: $$
 
   // now scan resultset from each participant
-  args.nodes 0 do
+  args.nodes 0 do2
 
     // move from aux to parameter stack
     a>
@@ -182,7 +182,7 @@ tp: $$
       0 finalResult !
     then
 
-  loop
+  loop2
 
   args.nodes
 

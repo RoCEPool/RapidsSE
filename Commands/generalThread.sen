@@ -24,7 +24,7 @@
 
   args.verbose if "N_GENERAL_THREADS " .put N_GENERAL_THREADS .put .\n then
 
-  N_GENERAL_THREADS 0 do
+  N_GENERAL_THREADS 0 do2
 
     I :genTaskSet  drop ( create a taskSet called generalTaskSetI )
     I :genThread   drop ( create a thread called generalThreadI )
@@ -33,7 +33,7 @@
     I >genThreadNm I >genThread thread.name!    ( set the threads name )
     I >genThread   thread.spawn                 ( spawn os thread )
 
-  loop
+  loop2
 ;
 
 /*----------------------------------------------------------------------------*/

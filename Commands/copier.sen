@@ -31,7 +31,7 @@
   // r3 ^fromTable
 
   args.partitions 0
-  do
+  do2
     // r0 partition
     // r1 partitions
     // r2 ^txRefCursor
@@ -49,7 +49,7 @@
     repeat
 
     r3 rowcursor.end
-  loop
+  loop2
 
   commitTransaction
 

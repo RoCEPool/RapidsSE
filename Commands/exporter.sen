@@ -26,7 +26,7 @@
   r0 rowcursor.table!
 
   args.partitions 0
-  do
+  do2
     // r2 ^rowCursor
     // r3 ^file
 
@@ -42,7 +42,7 @@
     repeat
 
     r2 rowcursor.end
-  loop
+  loop2
 
   r1 file.close
 

@@ -28,7 +28,7 @@ tp: connectorStart
 
   connectorTaskPrint if "Connector running..." . then
 
-  args.nodes 0 do
+  args.nodes 0 do2
 
     I args.node == if
 
@@ -70,7 +70,7 @@ ddlLock.dropWrite
 
     then
 
-  loop
+  loop2
 
   //1000000 thread.sleep_s
 

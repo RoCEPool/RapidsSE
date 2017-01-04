@@ -324,7 +324,7 @@ tp: rmTblOnAllDone
 
   r0 rowcursor.table!
   args.partitions 0
-  do
+  do2
     // r2 ^rowCursor
     I r2 rowcursor.begin
     r2 rowcursor.first
@@ -336,7 +336,7 @@ tp: rmTblOnAllDone
       repeat
 
       r2 rowCursor.end
-  loop
+  loop2
 
   rdrop
 

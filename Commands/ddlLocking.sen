@@ -15,9 +15,9 @@ args.nodes intArray: ddlInts
 : ddlDump
 
   "{ " .put
-  args.nodes 0 do
+  args.nodes 0 do2
     I ddlInts @ .put " " .put
-  loop
+  loop2
 
   "}" .put .\n
 ;
@@ -120,7 +120,7 @@ args.nodes intArray: ddlInts
 
   // dispatch grab of lock I to all other nodes
 
-  args.nodes 1 do
+  args.nodes 1 do2
     I            // participant is to grab lock I
     "grabDDL_n"  // the word to execute
     2            // there are 2 indirect values
@@ -132,7 +132,7 @@ args.nodes intArray: ddlInts
 
     // just print the indirect result for the moment
     . ( )
-  loop
+  loop2
 
   true ( true )
 ;
@@ -144,7 +144,7 @@ args.nodes intArray: ddlInts
 
   // dispatch drop to all other nodes
 
-  args.nodes 1 do
+  args.nodes 1 do2
     I            // participant is to drop lock 0
     "dropDDL_n"  // the word to execute
     2            // there are 2 args now on stack
@@ -156,7 +156,7 @@ args.nodes intArray: ddlInts
 
     // just print the indirect result
     .
-  loop
+  loop2
 
   // dispatch drop to node 0
 
@@ -181,9 +181,9 @@ args.nodes intArray: ddlInts
 : dl
 
   // put 0 into all ddlInts
-  args.nodes 0 do
+  args.nodes 0 do2
     0 I ddlInts !
-  loop
+  loop2
 
   // coordinate grab of dist ddl lock
   "grabDistDDL" 1  ( "grabDistDdl" 1 )
