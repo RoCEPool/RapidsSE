@@ -810,7 +810,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("test",            &vFlowTest,         false);
   vAddPrimitive("then",            &vFlowThen,         true );
   vAddPrimitive("throw",           &vFlowThrow,        false);
-  vAddPrimitive("unloop",          &vFlowUnloop,       false);
   vAddPrimitive("until",           &vFlowUntil,        true );
   
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
@@ -4904,7 +4903,7 @@ ENTRY("vFileWrite");
 // flow: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* again -- encode jump to known backward destination address       immediate */
+/* again -- encode jump to known backward address                   immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAgain(NNP_Task nnpTask)
 {
@@ -4924,7 +4923,7 @@ void Task::vFlowAgain(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ahead -- encode jump to unknown forward origin address           immediate */
+/* ahead -- encode jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowAhead(NNP_Task nnpTask)
 {
@@ -5018,7 +5017,7 @@ void Task::vFlowHere(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* if -- encode jump on false to unknown forward origin address     immediate */
+/* if -- encode jump on false to unknown forward address            immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowIf(NNP_Task nnpTask)
 {
@@ -5317,7 +5316,7 @@ void Task::vFlowTest(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* then -- resolve jump on condition to unknown forward destination immediate */
+/* then -- resolve jump to unknown forward address                  immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowThen(NNP_Task nnpTask)
 {
@@ -5348,24 +5347,6 @@ void Task::vFlowThrow(NNP_Task nnpTask)
   String::vSprint(wBuffer,"THROW TEST");
   
   throw wBuffer;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* unloop -- drop the do loop value pair from return stack                    */
-/*----------------------------------------------------------------------------*/
-void Task::vFlowUnloop(NNP_Task nnpTask)
-{
-  ENTRY("vUnloop");
-  
-  // we should just modify the pointers rather than actually pop
-  
-  ValWsp xValIndex;
-  ValWsp xValLimit;
-  // cstack: discard limit and index values
-  if ( ! nnpTask->m_xReturnStack.bPop(xValIndex,xValLimit) )
-    THROW_INVALID_RSTACK("unloop");
   
   EXIT();
 }

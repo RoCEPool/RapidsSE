@@ -474,7 +474,6 @@ namespace Tasks
     static void vFlowTest(NNP_Task nnpTask);
     static void vFlowThen(NNP_Task nnpTask);
     static void vFlowThrow(NNP_Task nnpTask);
-    static void vFlowUnloop(NNP_Task nnpTask);
     static void vFlowUntil(NNP_Task nnpTask);
     
     // grid
