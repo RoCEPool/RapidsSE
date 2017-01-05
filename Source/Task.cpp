@@ -5104,7 +5104,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loop -- encode runtime form of : loop                            immediate */
+/* loop -- encode runtime for : LOOP                                immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoop(NNP_Task nnpTask)
 {
@@ -5152,7 +5152,7 @@ void Task::vFlowLoop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loopPlus -- encode runtime form of : +loop                       immediate */
+/* loopPlus -- encode runtime for : +LOOP                           immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowLoopPlus(NNP_Task nnpTask)
 {
@@ -5200,7 +5200,7 @@ void Task::vFlowLoopPlus(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* next -- compile time for iterate ... next                        immediate */
+/* next -- encode runtime for : NEXT                                immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowNext(NNP_Task nnpTask)
 {
@@ -5299,7 +5299,7 @@ void Task::vFlowThrow(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* until -- encode jump false to known backward destination address immediate */
+/* until -- encode jump false to known backward address             immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowUntil(NNP_Task nnpTask)
 {
