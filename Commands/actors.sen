@@ -6,7 +6,7 @@
 
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
-"reclaimTask.sen" >>:
+//"reclaimTask.sen" >>:
 "requestTask.sen" >>:
 
 "generalThread.sen" >>:
@@ -24,7 +24,8 @@
 
     snooze listerStart
     snooze monitorStart
-    snooze reclaimStart
+
+    //snooze reclaimStart
     snooze answerStart
 
   then
