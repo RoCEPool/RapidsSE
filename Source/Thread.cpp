@@ -245,7 +245,7 @@ void Thread::vLoop(void)
       m_npTask->vThread(this);
       m_npTask->vLoop();
       
-      if (TS_SUSPENDED != m_npTask->eState())
+      if (TS_WAITING_ACK != m_npTask->eState())
         m_npTask->vThread(nullptr);
       // clear rdtscp
       

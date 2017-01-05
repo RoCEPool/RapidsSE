@@ -571,8 +571,8 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("TS_EXITED",                TS_EXITED);
   /*  3 */ vAddConstant("TS_RUNNING",               TS_RUNNING);
   /*  4 */ vAddConstant("TS_SLEEPING",              TS_SLEEPING);
-  /*  5 */ vAddConstant("TS_SUSPENDED",             TS_SUSPENDED);
-  /*  6 */ vAddConstant("TS_WAITING",               TS_WAITING);
+  /*  5 */ vAddConstant("TS_WAITING_ACK",            TS_WAITING_ACK);
+  /*  6 */ vAddConstant("TS_WAITING_QUEUE",          TS_WAITING_QUEUE);
   /*  7 */ vAddConstant("TS_YIELDED",               TS_YIELDED);
   /*  8 */ vAddConstant("TS_ENUMS",                 TS_ENUMS);
 
@@ -2368,7 +2368,7 @@ void Task::vLoop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  while (TS_RUNNING == m_eState || TS_WAITING == m_eState) {
+  while (TS_RUNNING == m_eState || TS_WAITING_QUEUE == m_eState) {
     
     assert(0 == m_iTaskNo || m_pThread);
     
@@ -10787,7 +10787,7 @@ void Task::vTaskAck(NNP_Task nnpTask)
              pThatTask->m_sName.a(),
              *pThatTask->m_zAcks);
     
-    while (TS_SUSPENDED != pThatTask->m_eState)
+    while (TS_WAITING_ACK != pThatTask->m_eState)
       PosixThread::vSleepMicro(10);
     
     //Thread* pThread = Thread::pThread();

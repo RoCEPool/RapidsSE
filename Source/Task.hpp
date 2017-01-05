@@ -23,13 +23,13 @@ namespace Tasks
   enum eTS // Task State
   {
   /* 0 */ TS_NONE=0,
-  /* 1 */ TS_BLOCKED,   // task is blocked by another transaction
-  /* 2 */ TS_EXITED,    // task has completed
-  /* 3 */ TS_RUNNING,   // task is currenty being executed by Thread::vLoop
-  /* 4 */ TS_SLEEPING,  // task is sleeping (not yet used)
-  /* 5 */ TS_SUSPENDED, // task is suspended pending inter-task activity
-  /* 6 */ TS_WAITING,   // task is waiting on queue arrival
-  /* 7 */ TS_YIELDED,   // task is yeilded, not running and is in a TaskSet
+  /* 1 */ TS_BLOCKED,       // task is blocked by another transaction
+  /* 2 */ TS_EXITED,        // task has completed
+  /* 3 */ TS_RUNNING,       // task is currenty being executed by Thread::vLoop
+  /* 4 */ TS_SLEEPING,      // task is sleeping (not yet used)
+  /* 5 */ TS_WAITING_ACK,   // task is waiting on inter-task ack from other task
+  /* 6 */ TS_WAITING_QUEUE, // task is waiting on queue arrival
+  /* 7 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
   /* 8 */ TS_ENUMS
   };
   
