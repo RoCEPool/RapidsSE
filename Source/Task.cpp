@@ -1030,7 +1030,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("seitf.count",     &vSEitfCount,       false);
   vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
   vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
-  vAddPrimitive("seitf.new",       &vSEitfNew,         false);
   vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
   vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
   vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
@@ -9335,23 +9334,6 @@ ENTRY("vSEitfDump");
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vDump();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* seitf.new -- new SE interface                                              */
-/*----------------------------------------------------------------------------*/
-void Task::vSEitfNew(NNP_Task nnpTask)
-{
-ENTRY("vSEitfNew");
-  
-  SEitf* pSEitf = new SEitf(0);
-  ASSERT(CN_SEITF == pSEitf->eClass());
-  
-  Object* pPtrSEitf = pSEitf;
-  
-  nnpTask->m_xDataStack.vPush(pPtrSEitf);
   
   EXIT();
 }
