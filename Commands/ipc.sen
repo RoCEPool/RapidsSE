@@ -4,10 +4,10 @@
 
 "ipc.sen" .verbose
 
+: running     ( task -- ) task.state@ TS_RUNNING == ;
+
 : getState    ( -- ) task.this task.state@ ;
 : setState    ( -- ) task.this task.state! ;
-: waiting     ( task -- ) task.state@ TS_WAITING == ;
-: running     ( task -- ) task.state@ TS_RUNNING == ;
 
 : setAcks     ( -- ) task.this task.acks! ;
 : suspend     ( -- ) TS_SUSPENDED setState ;
@@ -17,10 +17,24 @@
 : popQueue    ( -- ) task.this task.queue@ queue.pop ;
 
 
-: grabMutex   ( task -- ) task.thread thread.mutexLock ;
-: waitSignal  ( -- ) task.this task.thread thread.condWait ;
-: dropMutex   ( task -- ) task.thread thread.mutexUnlock ;
-: signal      ( task -- ) task.thread thread.condSignal ;
+: grabMutex    ( task -- ) task.thread thread.mutexLock ;
+: waitSignal   ( -- ) task.this task.thread thread.condWait ;
+: dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
+: queueWaiting ( task -- ) task.state@ TS_WAITING == ;
+: signal       ( task -- ) task.thread thread.condSignal ;
+
+: queueWait    ( -- )
+
+  TS_WAITING setState
+
+tp: nowWaiting
+
+  waitSignal
+
+TS_RUNNING setState
+
+  tp: nowRunning
+;
 
 /*============================================================================*/
 /* end                                                                        */

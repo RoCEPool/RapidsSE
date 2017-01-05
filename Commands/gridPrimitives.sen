@@ -101,8 +101,8 @@ tp: >taskQueue
   // append valset onto queue of target task
   targetTask appendQueue ( )
 
-  // signal the target task if it is waiting for a queued valset
-  targetTask waiting if
+  // signal the target task if it is waiting for a valset to be queued
+  targetTask queueWaiting if
     targetTask signal ( )
   then
 
@@ -182,32 +182,14 @@ tp: haveResultSet
 
 //args.node 0 == if traceon then
 
-tp: taskQueue>
-
-  task.this task.thread assert
-
 tp: grabbingMutex
 
   task.this grabMutex
 
-  task.this running assert
-
   popQueue ( value true | false )
-
   not if
-
-    TS_WAITING setState
-
-tp: nowWaiting
-
-    waitSignal
-
-    TS_RUNNING setState
-
-tp: nowRunning
-
+    queueWait
     popQueue assert
-
   then
 
 tp: droppingMutex
