@@ -2373,6 +2373,8 @@ void Task::vLoop(void)
   
   while (TS_RUNNING == m_eState || TS_WAITING == m_eState) {
     
+    assert(0 == m_iTaskNo || m_pThread);
+    
     TaskStep pTaskStep = *IP.m_pCell->m_ppEntryStep;
     
     m_pEntryCell = IP.m_pCell->m_ppEntryStep + 1;

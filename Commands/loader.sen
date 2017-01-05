@@ -211,7 +211,7 @@ tp: bufferFull
   loaderSub.completed
   if
     // this loader sub is decider, signal parent loader
-    signalParentThread
+    signalParent
   then
 
   reg.pop
@@ -262,7 +262,7 @@ timer: loadTimer
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  grabThreadMutex
+  grabMutex
 
   N_GENERAL_THREADS r0 loader.subs!
 
@@ -284,8 +284,8 @@ timer: loadTimer
   begin r0 loader.findChunk while repeat
 
 
-  threadCondWait
-  dropThreadMutex
+  waitCond
+  dropMutex
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

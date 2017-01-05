@@ -87,13 +87,16 @@ args.nodes ptrArray: senderQueues
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-: grabMutex task.this task.thread thread.mutexLock ;
-: dropMutex task.this task.thread thread.mutexUnlock ;
-: getState  task.this task.state@ ;
-: setState  task.this task.state! ;
-: setAcks   task.this task.acks! ;
-: popQueue  task.this task.queue@ queue.pop ;
-: waitCond  task.this task.thread thread.condWait ;
+/* ipc                                                                        */
+/*----------------------------------------------------------------------------*/
+: grabMutex    ( -- ) task.this task.thread thread.mutexLock ;
+: dropMutex    ( -- ) task.this task.thread thread.mutexUnlock ;
+: getState     ( -- ) task.this task.state@ ;
+: setState     ( -- ) task.this task.state! ;
+: setAcks      ( -- ) task.this task.acks! ;
+: popQueue     ( -- ) task.this task.queue@ queue.pop ;
+: waitCond     ( -- ) task.this task.thread thread.condWait ;
+: signalParent ( -- ) task.parent@ task.thread thread.condSignal ;
 
 /*----------------------------------------------------------------------------*/
 /* append valset onto queue of given task and signal if needed                */
