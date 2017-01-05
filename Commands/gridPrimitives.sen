@@ -108,7 +108,7 @@ tp: >taskQueue
   // signal the target task if it is waiting for a queued valset
   r1 task.state@ TS_WAITING ==
   if
-    r0 thread.condSignal
+    r1 signalTask
   then
 
   // drop the mutex of target task

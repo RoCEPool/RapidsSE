@@ -211,7 +211,7 @@ tp: bufferFull
   loaderSub.completed
   if
     // this loader sub is decider, signal parent loader
-    signalParent
+    task.parent@ signalTask
   then
 
   reg.pop

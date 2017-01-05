@@ -11,9 +11,9 @@
 : setAcks      ( -- ) task.this task.acks! ;
 : popQueue     ( -- ) task.this task.queue@ queue.pop ;
 : waitCond     ( -- ) task.this task.thread thread.condWait ;
-: signalParent ( -- ) task.parent@ task.thread thread.condSignal ;
 
 : suspendTask  ( -- ) TS_SUSPENDED setState ;
+: signalTask   ( task -- ) task.thread thread.condSignal ;
 
 /*============================================================================*/
 /* end                                                                        */
