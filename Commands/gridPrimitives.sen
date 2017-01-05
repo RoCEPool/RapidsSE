@@ -100,7 +100,7 @@ tp: >taskQueue
   // r1 has task
 
   // grab the mutex of target task
-  r0 thread.mutexLock
+  r1 grabMutex
 
   // append valset onto queue of given task
   r1 task.queue@ queue.append
@@ -112,7 +112,7 @@ tp: >taskQueue
   then
 
   // drop the mutex of target task
-  r0 thread.mutexUnlock
+  r1 dropMutex
 
   // drop thread and task
   rdrop
@@ -196,7 +196,7 @@ tp: taskQueue>
   task.this task.thread assert
 
 tp: grabbingMutex
-  grabMutex
+  task.this grabMutex
 
   getState TS_RUNNING == assert
 
@@ -217,7 +217,7 @@ tp: nowRunning
   then
 
 tp: droppingMutex
-  dropMutex
+  task.this dropMutex
 
 tp: haveValset
 

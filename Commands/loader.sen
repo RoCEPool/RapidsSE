@@ -262,7 +262,7 @@ timer: loadTimer
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  grabMutex
+  task.this grabMutex
 
   N_GENERAL_THREADS r0 loader.subs!
 
@@ -285,7 +285,7 @@ timer: loadTimer
 
 
   waitCond
-  dropMutex
+  task.this dropMutex
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
