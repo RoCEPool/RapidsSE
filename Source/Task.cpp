@@ -640,7 +640,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("@",               &vAddressFetch,     false);
   vAddPrimitive("!",               &vAddressStore,     false);
   
-  vAddPrimitive("args.partition",  &vArgsPartition, false);
   vAddPrimitive("args.print",      &vArgsPrint,     false);
   
   vAddPrimitive("assert",          &vAssert,            false);
@@ -3189,18 +3188,6 @@ void Task::vAstack9(NNP_Task nnpTask)
 }
 
 // args: ///////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* args.partition -- get the speficic partition from arguments                */
-/*----------------------------------------------------------------------------*/
-void Task::vArgsPartition(NNP_Task nnpTask)
-{
-ENTRY("vArgsPartition");
-  
-  nnpTask->m_xDataStack.vPush(gxArguments.m_iPartition);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* args.print -- print arguments                                              */

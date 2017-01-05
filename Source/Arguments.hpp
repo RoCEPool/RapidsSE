@@ -48,9 +48,6 @@ namespace StorageEngine
     bool m_bWelcome;    // print banner
     i8   m_iSleep;      // sleep period for yield (temporary)
     
-    // seitf options
-    i8   m_iPartition;  // which partition
-    
     // must be last
     Footer m_xFooter;
     

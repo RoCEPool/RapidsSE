@@ -54,8 +54,6 @@ Arguments::Arguments(void)
   m_bWelcome    = true;
   m_iSleep      = 1;
   
-  m_iPartition  = 0;
-  
   _checkInitialised_(CN_ARGUMENTS);
   
   vEnvironmentVariables();
@@ -356,12 +354,6 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
-    // seitf options -----------------------------------------------------------
-    if (String::bEqualTo("--partition",argv[iArg],C_NO_CASE)) {
-      m_iPartition = String::iToI8(argv[++iArg]);
-      continue;
-    }
-    
   /*
     if (String::iLength(m_sCommand.a()))
       String::vConcat(m_sCommand.a(),' ');
@@ -403,7 +395,6 @@ void Arguments::vPrint(void)
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
-  vTrace("  --partition %lld\n",m_iPartition);
   vTrace("  --partitions %lld\n",m_nPartitions);
   vTrace("  --port %lld\n",m_iPort);
   vTrace("  --commands %s\n",m_sCommands.a());
@@ -428,7 +419,6 @@ void Arguments::vPrintHelp(void)
   
   printf("\n");
   printf("--partitions <i>  (number of partitions)\n");
-  printf("--partition <i>   (which partition)\n");
   printf("--region <name>   (name of shm region)\n");
   printf("--size <i>        (size in bytes of shm region)\n");
 

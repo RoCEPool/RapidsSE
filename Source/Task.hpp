@@ -283,7 +283,6 @@ namespace Tasks
     static void vAddressStore(NNP_Task nnpTask);
     
     // args
-    static void vArgsPartition(NNP_Task nnpTask);
     static void vArgsPrint(NNP_Task nnpTask);
 
     // assert
