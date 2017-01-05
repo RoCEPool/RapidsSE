@@ -1573,7 +1573,6 @@ eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
   //if (gxArguments.m_bVerbose)
   //  vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
   
-  //SEitf* pSEitf = pSEitf = RapidsSE::pSEitfNew();
   SEitf* pSEitf = new SEitf(iPartition);
   pSEitf->vInit();
   

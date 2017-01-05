@@ -26,7 +26,6 @@ namespace StorageEngine
     static void   vPoolOpen(void);
     static bool   bPoolOpen(s& sPoolName);
     static void   vSEitfDelete(SEitf* pSEitf);
-    static SEitf* pSEitfNew(void);
 
     //-------------------------------------------------------------------------
     
