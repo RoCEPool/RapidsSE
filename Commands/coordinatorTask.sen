@@ -58,7 +58,7 @@
 /*----------------------------------------------------------------------------*/
 : sendParticipantsPARALLEL // parallel form
 
-  args.nodes task.this task.acks!
+  args.nodes setAcks
 
 tp: acksExpected
 
@@ -130,7 +130,7 @@ tp: movedToRstack
   args.nodes 0 do
 
     // set ack of 1 (because its the serial form)
-    1 task.this task.acks!
+    1 setAcks
 
 tp: expectingAcks
 
@@ -223,7 +223,7 @@ tp: sendParticipant
   addSetCaller
 
   // set ack of 1
-  1 task.this task.acks!
+  1 setAcks
 
 tp: expectingAcks
 

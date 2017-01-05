@@ -17,8 +17,8 @@
 
 : grabMutex    ( task -- ) task.thread thread.mutexLock ;
 : waitSignal   ( -- ) task.this task.thread thread.condWait ;
-: signal       ( task -- ) task.thread thread.condSignal ;
 : dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
+: signal       ( task -- ) task.thread thread.condSignal ;
 
 /*============================================================================*/
 /* end                                                                        */
