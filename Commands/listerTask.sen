@@ -2,7 +2,7 @@
 /* listerTask.sen -- task lister                                              */
 /*============================================================================*/
 
-"listerTask.sen" .putVerbose
+"listerTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -64,9 +64,9 @@ taskCursor: taskCrs
 
       iterateTaskList
 
-      3 sleep
+      3 thread.sleep_s
 
-    0 until
+    again
 ;
 
 /*============================================================================*/

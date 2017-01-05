@@ -2,19 +2,19 @@
 /* txCursor.sen -- Tx Cursor                                                  */
 /*============================================================================*/
 
-"txCursor.sen" .putVerbose
+"txCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a txCursor using name from input stream                             */
 /*----------------------------------------------------------------------------*/
 : txCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_txCursor allot
-    word.this >body magic!!
-    word.this >body CN_TXCURSOR class!
+    word.this >body object.magic!!
+    CN_TXCURSOR word.this >body object.class!
     word.this >body txCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -23,12 +23,12 @@
 /*----------------------------------------------------------------------------*/
 : :txCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_txCursor allot
-    word.this >body magic!!
-    word.this >body CN_TXCURSOR class!
+    word.this >body object.magic!!
+    CN_TXCURSOR word.this >body object.class!
     word.this >body txCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

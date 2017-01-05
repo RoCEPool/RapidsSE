@@ -2,31 +2,31 @@
 /* timer.sen -- timer                                                         */
 /*============================================================================*/
 
-"timer.sen" .putVerbose
+"timer.sen" .verbose
 
 : timer ;
 
 : timer:
     create 
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_timer allot
-    word.this >body magic!!
-    word.this >body CN_TIMER class!
-   ' timer word.this word.kind!
+    word.this >body object.magic!!
+    CN_TIMER word.this >body object.class!
+    ' timer word.this word.kind!
     word.this >body timer.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does> 
 ;
 
 : :timer
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_timer allot
-    word.this >body magic!!
-    word.this >body CN_TIMER class!
+    word.this >body object.magic!!
+    CN_TIMER word.this >body object.class!
     ' timer word.this word.kind!
     word.this >body timer.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -35,7 +35,7 @@ timer: testTimer
 : timerTest
 
     testTimer timer.start
-    1 sleep
+    1 thread.sleep_s
     testTimer timer.update
     testTimer timer.millisecs .
     testTimer timer.microsecs .

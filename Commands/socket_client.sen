@@ -1,4 +1,4 @@
-"client.sen" .putVerbose
+"client.sen" .verbose
 : client_code:
     "client running" .
     4334

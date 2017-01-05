@@ -2,7 +2,7 @@
 /* requests.sen -- the set of requests supported by requestTask               */
 /*============================================================================*/
 
-"requests.sen" .putVerbose
+"requests.sen" .verbose
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -130,7 +130,9 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
   checkMakeTenant    not if <NIP+ERROR> exit then
 
-  ~makeTenant ( ) assert.stack_0
+//traceon
+  makeTenant ( ) assert.stack_0
+//traceoff
 
 tp: createdTenant
 
@@ -162,7 +164,7 @@ ddlLock.grabWrite
 
   checkRemoveTenant not if <NIP+ERROR> exit then
 
-  ~removeTenant ( ) assert.stack_0
+  removeTenant ( ) assert.stack_0
 
 tp: removedTenant
 
@@ -183,7 +185,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  ~makeCatalog ( ) assert.stack_0
+  makeCatalog ( ) assert.stack_0
 
   <OK>
 ;
@@ -213,7 +215,7 @@ ddlLock.grabWrite
 
   checkRemoveCatalog not if <NIP+ERROR> exit then
 
-  ~removeCatalog ( ) assert.stack_0
+  removeCatalog ( ) assert.stack_0
 
 tp: removedCatalog
 
@@ -234,7 +236,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeSchema    not if <NIP+ERROR> exit then
 
-  ~makeSchema ( ) assert.stack_0
+  makeSchema ( ) assert.stack_0
 
   <OK>
 ;
@@ -264,7 +266,7 @@ ddlLock.grabWrite
 
   checkRemoveSchema not if <NIP+ERROR> exit then
 
-  ~removeSchema ( ) assert.stack_0
+  removeSchema ( ) assert.stack_0
 
 tp: droppedSchema
 
@@ -319,7 +321,7 @@ ddlLock.grabWrite
   checkEnoughBuffers not if <NIP+ERROR> exit then
   checkMakeTable     not if <NIP+ERROR> exit then
 
-  ~makeTable ( ) assert.stack_0
+  makeTable ( ) assert.stack_0
 
   <OK>
 ;
@@ -495,7 +497,7 @@ ddlLock.grabWrite
 
 tp ( "<tableNm>" )
 
-  ~removeTable ( ) assert.stack_0
+  removeTable ( ) assert.stack_0
 
 tp: droppedTable
 
@@ -642,7 +644,7 @@ tp: droppedTable
 
     ")" concat
 
-    object@ prevWord object!
+    object@ word.prev object!
 
   next
 
@@ -665,7 +667,7 @@ tp: lfOnAll
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: lfOnAllDone
 
@@ -711,7 +713,7 @@ tp: lf
 
   ")" concat
 
-  object@ prevWord object!
+  object@ word.prev object!
 
   next
 
@@ -762,8 +764,6 @@ tp: gettingSpace
   concat concat
 
   <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -781,7 +781,7 @@ tp: spaceOnAll
   $$>valset ( valset )
 
   // space$ to be executed by all participants
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
   tp: spaceOnAllDone
 
@@ -865,8 +865,6 @@ tp: gettingStatus
   node.status
 
   <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -884,7 +882,7 @@ tp: statusOnAll
   $$>valset ( valset )
 
   // status$ to be executed by all participants
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
   tp: statusOnAllDone
 
@@ -964,7 +962,7 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: printRBOnAllDone
 
@@ -1073,7 +1071,7 @@ tp: printRB$
 /*----------------------------------------------------------------------------*/
 /* create /tenants/boray/catalogs/rapidsse                                    */
 /*----------------------------------------------------------------------------*/
-: createDefaultFolders ( )
+: createDefaultFolders localCalls ( )
 
   assert.stack_0
 
@@ -1082,7 +1080,7 @@ tp: printRB$
   execute dic.push
 
   // create tenant boray (and catalogs sub-folder)
-  "boray" makeTenant$ assert drop drop drop
+  "boray" makeTenant drop drop drop
 
   // push boray folder
   "boray" findInCurrent
@@ -1093,7 +1091,7 @@ tp: printRB$
   execute dic.push
 
   // create catalog rapidsse (and schemas sub-folder)
-  "rapidsse" makeCatalog$ assert drop drop drop
+  "rapidsse" makeCatalog drop drop drop
 
   // go back to main dictionary
   dic.drop

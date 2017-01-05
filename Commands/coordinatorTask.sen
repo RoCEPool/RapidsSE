@@ -2,7 +2,7 @@
 /* coordinatorTask.sen -- coordinator task                                    */
 /*============================================================================*/
 
-"coordinatorTask.sen" .putVerbose
+"coordinatorTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute all indirect call processing loop                                  */
@@ -29,7 +29,7 @@
     //>result ( valset )
 
     // assert that exeAll returned true
-    assert
+    //assert
 
     // move result from astack tp pstack
     a>
@@ -37,7 +37,7 @@
     // put indirect result onto aux stack of caller and signal
     >callerAux ( )
 
-  0 until
+  again
 
   // pop a register frame
   reg.pop
@@ -177,8 +177,6 @@ tp: $$
     // drop the number of values that were in valset
     drop
 
-    assert
-
     // check if value is t/f
     dup false == if
       0 finalResult !
@@ -200,7 +198,7 @@ tp: alldone
   rdrop
 
   // return true
-  true
+  //true
 
   tp: allResponded
 ;
@@ -257,7 +255,7 @@ tp: expandedResult
   drop
 
   // we are expecting a true
-  assert
+  //assert
 
   1 // number of nodes ( single participant responded )
 
@@ -267,7 +265,7 @@ tp: expandedResult
   >a
 
   // return true
-  true
+  //true
 
 tp: allResponded
 ;

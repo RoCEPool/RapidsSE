@@ -2,7 +2,7 @@
 /* monitorTask.sen -- monitor task                                            */
 /*============================================================================*/
 
-"monitorTask.sen" .putVerbose
+"monitorTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -57,9 +57,10 @@ thread:  monitorThread
 
     monitorTaskPrint if bpa then
 
-    10 sleep
+  10 thread.sleep_s
 
-  0 until
+
+  again
 ;
 
 /*----------------------------------------------------------------------------*/

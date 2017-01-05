@@ -2,7 +2,7 @@
 /* loader.sen -- Parallel Table Loader                                        */
 /*============================================================================*/
 
-"loader.sen" .putVerbose
+"loader.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a loader using name on the stack (leaves loader on stack)           */
@@ -10,24 +10,24 @@
 
 : :loader
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_loader allot
-    word.this >body magic!!
-    word.this >body CN_LOADER class!
+    word.this >body object.magic!!
+    CN_LOADER word.this >body object.class!
     word.this >body loader.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;
 
 : :loaderSub
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_loader allot
-    word.this >body magic!!
-    word.this >body CN_LOADERSUB class!
+    word.this >body object.magic!!
+    CN_LOADERSUB word.this >body object.class!
     word.this >body loaderSub.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;
@@ -71,9 +71,6 @@ tp: loadAppendBuffer$
   table.appendBuffer ( )
 
   true <SUCCESS_RESULT>
-
-  // all $ routines must return true
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -123,7 +120,7 @@ tp: theIndirectCall
   loaderSub.partition             ( <<loadAppendBuffer$>> ptn )
 
   // forward to coordinator and wait
-  >>participant> ( bool )
+  >>oneParticipant> ( bool )
 
 tp: theIndirectResult
 
@@ -147,7 +144,7 @@ tp: theIndirectResult
   task.this task.taskset!
 
   // expand dic stack valset and set
-  valset> drop dicStack! assert
+  valset> drop dicStack!
 
   // expand args valset
   valset> drop
@@ -214,7 +211,7 @@ tp: bufferFull
   loaderSub.completed
   if
     // this loader sub is decider, signal parent loader
-    signalParentThread
+    signalParent
   then
 
   reg.pop
@@ -265,7 +262,7 @@ timer: loadTimer
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  grabThreadMutex
+  grabMutex
 
   N_GENERAL_THREADS r0 loader.subs!
 
@@ -287,8 +284,8 @@ timer: loadTimer
   begin r0 loader.findChunk while repeat
 
 
-  threadCondWait
-  dropThreadMutex
+  waitCond
+  dropMutex
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -349,7 +346,7 @@ stk
         drop
       then
 
-      regF inc dup >regF
+      regF 1+ dup >regF
       100000 % not if regF . then
   repeat
 
@@ -411,7 +408,7 @@ stk
         drop
       then
 
-      regF inc dup >regF
+      regF 1+ dup >regF
       100000 % not if task.yield then
   repeat
 

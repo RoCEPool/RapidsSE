@@ -2,7 +2,7 @@
 /* lock.sen -- lock related words                                             */
 /*============================================================================*/
 
-"lock.sen" .putVerbose
+"lock.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* lock is used as a kind of word to identify locks                           */
@@ -16,13 +16,13 @@
 /*----------------------------------------------------------------------------*/
 : lock:
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_lock allot
-  word.this >body magic!!
-  word.this >body CN_LOCK class!
+  word.this >body object.magic!!
+  CN_LOCK word.this >body object.class!
   ' lock word.this word.kind!
   word.this >body lock.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -31,13 +31,13 @@
 /*----------------------------------------------------------------------------*/
 : :lock
   >create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_lock allot
-  word.this >body magic!!
-  word.this >body CN_LOCK class!
+  word.this >body object.magic!!
+  CN_LOCK word.this >body object.class!
   ' lock word.this word.kind!
   word.this >body lock.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   word.this
   does>
 ;

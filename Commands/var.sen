@@ -2,7 +2,12 @@
 /* var.sen -- variable related words                                          */
 /*============================================================================*/
 
-"var.sen" .putVerbose
+"var.sen" .verbose
+
+: emptyDoes:
+
+  does>
+;
 
 /*----------------------------------------------------------------------------*/
 /* create int variable in current dictionary using name from input stream     */
@@ -10,11 +15,11 @@
 : int:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_intval allot
-  word.this >body magic!!
-  word.this >body CN_INTVAL class!
-  word.this >body object.wordbody
+  word.this >body object.magic!!
+  CN_INTVAL word.this >body object.class!
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -24,17 +29,17 @@
 : intArray:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   dup >r // r0 - number of cells
   sizeof_intval * allot
-  word.this >body magic!!
-  word.this >body object.wordbody
+  word.this >body object.magic!!
+  true word.this >body object.wordbody!
 
   r> 0 do
     I sizeof_intval * word.this >body (int) + (ptr)
     dup
-    magic!!
-    CN_INTVAL class!
+    object.magic!!
+    CN_INTVAL swap object.class!
   loop
 
   does> (int) swap sizeof_intval * + (ptr)
@@ -46,11 +51,11 @@
 : ptr:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_ptrval allot
-  word.this >body magic!!
-  word.this >body CN_PTRVAL class!
-  word.this >body object.wordbody
+  word.this >body object.magic!!
+  CN_PTRVAL word.this >body object.class!
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -60,17 +65,17 @@
 : ptrArray:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   dup >r // r0 - number of cells
   sizeof_ptrval * allot
-  word.this >body magic!!
-  word.this >body object.wordbody
+  word.this >body object.magic!!
+  true word.this >body object.wordbody!
 
   r> 0 do
     I sizeof_ptrval * word.this >body (int) + (ptr)
     dup
-    magic!!
-    CN_PTRVAL class!
+    object.magic!!
+    CN_PTRVAL swap object.class!
   loop
 
   does> (int) swap sizeof_ptrval * + (ptr)
@@ -82,12 +87,12 @@
 : str:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_strval sizeof_s256 + allot
-  word.this >body magic!!
-  word.this >body CN_STRVAL class!
+  word.this >body object.magic!!
+  CN_STRVAL word.this >body object.class!
   word.this >body s256.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   does>
 ;
 

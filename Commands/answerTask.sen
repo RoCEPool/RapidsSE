@@ -2,7 +2,7 @@
 /* AnswerTask.sen -- answer task                                              */
 /*============================================================================*/
 
-"AnswerTask.sen" .putVerbose
+"AnswerTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* define the ans actor (ans.task, ans.queue, ans.taskset, ans.thread)        */
@@ -81,7 +81,7 @@ ddlLock.dropWrite
       then
     then
       
-  0 until
+  again
 ;
 
 /*============================================================================*/

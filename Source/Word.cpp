@@ -55,19 +55,22 @@ Word::Word(const char* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_sName       = sName;
-  m_eWordType   = WT_ROUTINE;
-  //m_pDic      = pDic;
-  m_pKind       = gpWord ? gpWord : this;
-  m_bImmediate  = false;
-  m_iDataBytes  = 0;
-  m_pPrevWord   = nullptr;
-  m_iLocal      = 0;
+  m_sName        = sName;
+  m_eWordType    = WT_ROUTINE;
+  m_eDistributed = DT_NOPARTICIPANT;
+  //m_pDic       = pDic;
+  m_pKind        = gpWord ? gpWord : this;
+  m_pParticipant = nullptr;
+  m_bImmediate   = false;
+  m_iParams      = 0;
+  m_iDataBytes   = 0;
+  m_pPrevWord    = nullptr;
+  m_iLocal       = 0;
 
   _setFooter_();
   
-  m_pDoesStep   = &Tasks::Task::vEnterRoutine;
-  m_pDoesArg    = pFirstCell();
+  m_pEntryStep   = &Tasks::Task::vEnterRoutine;
+  m_pEntryCell    = pFirstCell();
 
   _checkInitialised_(CN_WORD);
   
@@ -217,23 +220,23 @@ Dic* Word::pDic(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get step ptr                                                               */
+/* get entry step                                                             */
 /*----------------------------------------------------------------------------*/
-TaskStep Word::pDoesStep(void)
+TaskStep Word::pEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pDoesStep;
+  return m_pEntryStep;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set does step                                                              */
+/* set entry step                                                             */
 /*----------------------------------------------------------------------------*/
-void Word::vDoesStep(TaskStep pStep)
+void Word::vEntryStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pDoesStep = pStep;
+  m_pEntryStep = pStep;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -271,33 +274,53 @@ char* Word::pDataEnd(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get does argument                                                          */
+/* get which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-Cell* Word::pDoesArg(void)
+Cell* Word::pEntryCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return m_pDoesArg;
+  return m_pEntryCell;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set does argument                                                          */
+/* set which cell to start executing from                                     */
 /*----------------------------------------------------------------------------*/
-void Word::vDoesArg(Cell* pCell)
+void Word::vEntryCell(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  m_pDoesArg = pCell;
+  m_pEntryCell = pCell;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get address of does step pointer                                           */
+/* get address of this words entry step                                       */
 /*----------------------------------------------------------------------------*/
-TaskStep* Word::ppDoesStep(void)
+TaskStep* Word::ppEntryStep(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  return &m_pDoesStep;
+  return &m_pEntryStep;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get distributed type                                                       */
+/*----------------------------------------------------------------------------*/
+eDT Word::eDistributed(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_eDistributed;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed type                                                       */
+/*----------------------------------------------------------------------------*/
+void Word::vDistributed(eDT eDistributed)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_eDistributed = eDistributed;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -307,7 +330,7 @@ void Word::vDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pStepWord = gpMainDic->pFindStep(m_pDoesStep);
+  Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
   
   vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
          "Step %p %s ..Data.. %p\n",
@@ -317,7 +340,7 @@ void Word::vDump(void)
          m_pKind->m_sName.a(),
          m_bImmediate,
          m_iDataBytes,
-         m_pDoesStep,
+         m_pEntryStep,
          pStepWord ? pStepWord->sName().a() : "<not-found>",
          pFirstCell()
          );
@@ -339,7 +362,7 @@ void Word::vDump(const char* pTab)
          pWT[m_eWordType],
          m_bImmediate ? "Immediate" : "Not Immediate",
          m_iDataBytes,
-         m_pDoesStep,
+         m_pEntryStep,
          pFirstCell()
          );
 }
@@ -361,7 +384,7 @@ void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word                                                        */
+/* encode call to named word                                                  */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord)
 {
@@ -370,11 +393,13 @@ void Word::vEncode(const char* aWord)
   Word* pCalledWord = gpMainDic->pFind(aWord);
   ASSERT(pCalledWord);
   
-  vAppend(pCalledWord->ppDoesStep());
+  
+  
+  vAppend(pCalledWord->ppEntryStep());
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word, with cell* argument                                   */
+/* encode call to named word which has a cell* argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Cell* pCell)
 {
@@ -386,19 +411,7 @@ void Word::vEncode(const char* aWord, Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word, with cell* argument                                   */
-/*----------------------------------------------------------------------------*/
-void Word::vEncode(const char* aWord, TaskStep* pStep)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  vEncode(aWord);
-  
-  vAppend(pStep);
-}
-
-/*----------------------------------------------------------------------------*/
-/* encode call to word, with value argument                                   */
+/* encode call to named word which has a value argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Value* pValue)
 {
@@ -410,28 +423,26 @@ void Word::vEncode(const char* aWord, Value* pValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word, with word* argument                                   */
+/* encode call to named word which has a word* argument                       */
 /*----------------------------------------------------------------------------*/
 void Word::vEncode(const char* aWord, Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vEncode(aWord);
-    
   PtrVal xPtrWord;
   xPtrWord = pWord;
   
-  vAppend(&xPtrWord);
+  vEncode(aWord,&xPtrWord);
 }
 
 /*----------------------------------------------------------------------------*/
-/* encode call to word does                                                   */
+/* encode call of entry step                                                  */
 /*----------------------------------------------------------------------------*/
-void Word::vEncode(TaskStep* ppCalledDoes)
+void Word::vEncode(TaskStep* ppEntryStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vAppend(ppCalledDoes);
+  vAppend(ppEntryStep);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,6 +565,26 @@ s& Word::sName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set number of parameters                                                   */
+/*----------------------------------------------------------------------------*/
+void Word::vParams(i8 iParams)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_iParams = iParams;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of parameters                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Word::iParams(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iParams;
 }
 
 /*----------------------------------------------------------------------------*/

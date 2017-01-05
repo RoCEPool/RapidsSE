@@ -2,19 +2,19 @@
 /* rowCursor.sen -- Row Cursor                                                */
 /*============================================================================*/
 
-"rowCursor.sen" .putVerbose
+"rowCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a rowCursor using name from input stream                            */
 /*----------------------------------------------------------------------------*/
 : rowCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_rowCursor allot
-    word.this >body magic!!
-    word.this >body CN_ROWCURSOR class!
+    word.this >body object.magic!!
+    CN_ROWCURSOR word.this >body object.class!
     word.this >body rowCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -23,12 +23,12 @@
 /*----------------------------------------------------------------------------*/
 : :rowCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_rowCursor allot
-    word.this >body magic!!
-    word.this >body CN_ROWCURSOR class!
+    word.this >body object.magic!!
+    CN_ROWCURSOR word.this >body object.class!
     word.this >body rowCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

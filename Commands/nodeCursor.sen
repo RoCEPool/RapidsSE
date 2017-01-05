@@ -2,19 +2,19 @@
 /* nodeCursor.sen -- Node Cursor                                              */
 /*============================================================================*/
 
-"nodeCursor.sen" .putVerbose
+"nodeCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a nodeCursor using name from input stream                           */
 /*----------------------------------------------------------------------------*/
 : nodeCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_nodeCursor allot
-    word.this >body magic!!
-    word.this >body CN_NODECURSOR class!
+    word.this >body object.magic!!
+    CN_NODECURSOR word.this >body object.class!
     word.this >body nodeCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -23,12 +23,12 @@
 /*----------------------------------------------------------------------------*/
 : :nodeCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_nodeCursor allot
-    word.this >body magic!!
-    word.this >body CN_NODECURSOR class!
+    word.this >body object.magic!!
+    CN_NODECURSOR word.this >body object.class!
     word.this >body nodeCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

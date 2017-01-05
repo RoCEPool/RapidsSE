@@ -2,7 +2,7 @@
 /* SenderTask.sen -- sender task                                              */
 /*============================================================================*/
 
-"SenderTask.sen" .putVerbose
+"SenderTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
@@ -44,7 +44,7 @@ tp: poppedValset
     // send the valset across the connection
     >send
 
-  0 until
+  again
 ;
 
 /*============================================================================*/

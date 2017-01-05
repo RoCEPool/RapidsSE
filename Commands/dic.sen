@@ -2,7 +2,7 @@
 /* dic.sen -- dictionary related words                                        */
 /*============================================================================*/
 
-"dic.sen" .putVerbose
+"dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* folder is use as a kind of word to identify folders                        */
@@ -17,13 +17,13 @@
 : dic:
 diclock.grabwrite
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_dic allot
-    word.this >body magic!!
-    word.this >body CN_DIC class!
+    word.this >body object.magic!!
+    CN_DIC word.this >body object.class!
     ' folder word.this word.kind!
     word.this >body dic.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
 diclock.dropwrite
     does>
 ;
@@ -34,13 +34,13 @@ diclock.dropwrite
 : :dic
 diclock.grabwrite
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_dic allot
-    word.this >body magic!!
-    word.this >body CN_DIC class!
+    word.this >body object.magic!!
+    CN_DIC word.this >body object.class!
     ' folder word.this word.kind!
     word.this >body dic.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
 diclock.dropwrite
     does>
@@ -87,7 +87,7 @@ diclock.dropwrite
 
   dic.count 0 do
     // calculate dic subscript
-    //dic.count I - dec ( d )
+    //dic.count I - 1- ( d )
 
     I
     // get dictionary[d]
@@ -136,8 +136,6 @@ tp: dicStack!
     then
 
   loop
-
-  true
 ;
 
 /*============================================================================*/

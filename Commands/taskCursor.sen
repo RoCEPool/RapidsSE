@@ -2,19 +2,19 @@
 /* taskCursor.sen -- Task Cursor                                              */
 /*============================================================================*/
 
-"taskCursor.sen" .putVerbose
+"taskCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a taskCursor using name from input stream                           */
 /*----------------------------------------------------------------------------*/
 : taskCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_taskCursor allot
-    word.this >body magic!!
-    word.this >body CN_TASKCURSOR class!
+    word.this >body object.magic!!
+    CN_TASKCURSOR word.this >body object.class!
     word.this >body taskCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -23,12 +23,12 @@
 /*----------------------------------------------------------------------------*/
 : :taskCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_taskCursor allot
-    word.this >body magic!!
-    word.this >body CN_TASKCURSOR class!
+    word.this >body object.magic!!
+    CN_TASKCURSOR word.this >body object.class!
     word.this >body taskCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

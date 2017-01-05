@@ -2,7 +2,7 @@
 /* node.sen -- node routines                                                  */
 /*============================================================================*/
 
-"node.sen" .putVerbose
+"node.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* node is use as a kind of word to identify nodes (of a grid)                */
@@ -16,13 +16,13 @@
 /*----------------------------------------------------------------------------*/
 : node:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_node allot
-    word.this >body magic!!
-    word.this >body CN_NODE class!
+    word.this >body object.magic!!
+    CN_NODE word.this >body object.class!
     word.this >body node.init
     ' node word.this word.kind!
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -31,13 +31,13 @@
 /*----------------------------------------------------------------------------*/
 : :node
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_node allot
-    word.this >body magic!!
-    word.this >body CN_NODE class!
+    word.this >body object.magic!!
+    CN_NODE word.this >body object.class!
     word.this >body node.init
     ' node word.this word.kind!
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

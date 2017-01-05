@@ -28,22 +28,50 @@ namespace Dictionaries
     /*  5 */ "ENUMS",
   };
   
+  enum eDT // distributed type
+  {
+    /*  0 */ DT_NONE=0,          // none
+    /*  1 */ DT_ALLPARTICIPANTS, // word is distributed to all participants
+    /*  2 */ DT_ONEPARTICIPANT,  // word is distributed to one participants
+    /*  3 */ DT_NOPARTICIPANT,   // word is not distributed to any participants
+    /*  4 */ DT_LOCALCALLS,      // word only issues local calls
+    /*  5 */ DT_ENUMS
+  };
+  
+  static const char* const pDT[]
+  {
+    /*  0 */ "NONE",
+    /*  1 */ "ALLPARTICIPANTS",
+    /*  2 */ "ONEPARTICIPANT",
+    /*  3 */ "NOPARTICIPANT",
+    /*  4 */ "LOCALCALLS",
+    /*  5 */ "ENUMS",
+  };
+  
   class Word : public Object
   {
     friend class Dic;
     
   private:
-    s32      m_sName;       // the name of this word
-    eWT      m_eWordType;   // type of word
-    Dic*     m_pDic;        // which dictionary this word in
-    Word*    m_pKind;       // kind of word
-    bool     m_bImmediate;  // immediate execution during compile?
-    Word*    m_pPrevWord;   // previous word in dictionary
-    i8       m_iLocal;      // local variable number
-    i8       m_iDataBytes;  // number of data bytes
-    TaskStep m_pDoesStep;   // "entry step" for this word
-    Cell*    m_pDoesArg;    // "entry step" argument
-    // ..data.. (being an array of cells)
+    s32      m_sName;        // the name of this word
+    eWT      m_eWordType;    // type of word
+    eDT      m_eDistributed; // distributed
+    Dic*     m_pDic;         // which dictionary this word in
+    Word*    m_pKind;        // kind of word
+    Word*    m_pParticipant; // allParticipant/oneParticipant word
+    bool     m_bImmediate;   // immediate execution during compile?
+    i8       m_iParams;      // number of parameters
+    Word*    m_pPrevWord;    // previous word in dictionary
+    i8       m_iLocal;       // local variable number
+    i8       m_iDataBytes;   // number of data bytes
+    TaskStep m_pEntryStep;   // entry step for this word
+    Cell*    m_pEntryCell;   // the cell to start executing from
+                             //   for normal words this will be the first cell
+                             //     in the data area
+                             //   for objects this will be the cell after
+                             //     does in the defining word
+                             //   for primitives this will be null
+    // ..data..
     
    public:
     void* operator new(size_t, Dic* pDic);
@@ -67,19 +95,20 @@ namespace Dictionaries
     i8    iDataBytes(void);
     char* pDataEnd(void);
     Dic*  pDic(void);
-    void  vDoesArg(Cell* pCell);
-    Cell* pDoesArg(void);
-    void  vDoesStep(TaskStep pStep);
-    TaskStep pDoesStep(void);
-    TaskStep* ppDoesStep(void);
+    void  vEntryCell(Cell* pCell);
+    Cell* pEntryCell(void);
+    void  vEntryStep(TaskStep pStep);
+    TaskStep pEntryStep(void);
+    TaskStep* ppEntryStep(void);
+    void  vDistributed(eDT eDistributed);
+    eDT   eDistributed(void);
     void  vDump(void);
     void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
-    void  vEncode(const char* aWord, TaskStep* ppCalledDoes);
-    void  vEncode(const char* aWord, Value* pValue);
     void  vEncode(const char* aWord, Word* pWord);
-    void  vEncode(TaskStep* pCode);
+    void  vEncode(const char* aWord, Value* pValue);
+    void  vEncode(TaskStep* ppEntryStep);
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
     bool  bImmediate(void);
@@ -91,6 +120,8 @@ namespace Dictionaries
     i8    iLocal(void);
     void  vLocal(i8 iLocal);
     s&    sName(void);
+    void  vParams(i8 iParams);
+    i8    iParams(void);
     Word* pPrevWord(void);
     void  vPrevWord(Word* pPrevWord);
     void  vReset(void);

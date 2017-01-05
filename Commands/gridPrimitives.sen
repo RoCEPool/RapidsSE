@@ -2,7 +2,7 @@
 /* gridPrimitives.sen -- grid primitives                                      */
 /*============================================================================*/
 
-"gridPrimitives.sen" .putVerbose
+"gridPrimitives.sen" .verbose
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,13 +87,16 @@ args.nodes ptrArray: senderQueues
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-: grabMutex task.this task.thread thread.mutexLock ;
-: dropMutex task.this task.thread thread.mutexUnlock ;
-: getState  task.this task.state@ ;
-: setState  task.this task.state! ;
-: setAcks   task.this task.acks! ;
-: popQueue  task.this task.queue@ queue.pop ;
-: waitCond  task.this task.thread thread.condWait ;
+/* ipc                                                                        */
+/*----------------------------------------------------------------------------*/
+: grabMutex    ( -- ) task.this task.thread thread.mutexLock ;
+: dropMutex    ( -- ) task.this task.thread thread.mutexUnlock ;
+: getState     ( -- ) task.this task.state@ ;
+: setState     ( -- ) task.this task.state! ;
+: setAcks      ( -- ) task.this task.acks! ;
+: popQueue     ( -- ) task.this task.queue@ queue.pop ;
+: waitCond     ( -- ) task.this task.thread thread.condWait ;
+: signalParent ( -- ) task.parent@ task.thread thread.condSignal ;
 
 /*----------------------------------------------------------------------------*/
 /* append valset onto queue of given task and signal if needed                */
@@ -262,7 +265,6 @@ tp: ontoCallersAux
   to_CALLER ( )
 tp: reg0HasCaller
 
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -273,7 +275,6 @@ tp: reg0HasCaller
   to_QUEUE ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
 tp: reg1HasSender
 
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -284,8 +285,6 @@ tp: reg1HasSender
   cpTasks @
 
   >taskQueue
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -301,7 +300,6 @@ tp: reg1HasSender
 
   reg.pop
 
-  true
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -341,7 +339,7 @@ tp: resultAsValset
 /*----------------------------------------------------------------------------*/
 /* expand valset and execute indirect call                                    */
 /*----------------------------------------------------------------------------*/
-: exeOne ( <<call*>> -- true )
+: exeOne ( <<call*>> )
 
   valset> ( ... wordName nValues )
 
@@ -350,10 +348,6 @@ tp: resultAsValset
   tp: callSetUp
 
   !indirect ( bool )
-
-  assert
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +361,7 @@ tp: exeAll
   CN_VALSET isType not if assert then
 
   // execute first indirect
-  exeOne assert
+  exeOne
 
   // execute all other indirects
   begin
@@ -375,14 +369,13 @@ tp: exeAll
     // no more to execute?
     CN_VALSET isType not
     if
-      // return true
-      true exit
+      exit
     then
 
   // execute next indirect
-  exeOne assert
+  exeOne
 
-  0 until
+  again
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -554,7 +547,7 @@ tp: addingPassOnToCP
 : actor: ( -- )
 
   // get token from compile stream
-  token ( s )
+  token: ( s )
 
   reg.push
 

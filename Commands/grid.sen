@@ -2,7 +2,7 @@
 /* grid.sen -- grid routines                                                  */
 /*============================================================================*/
 
-"grid.sen" .putVerbose
+"grid.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* grid is use as a kind of word to identify grids                            */
@@ -32,16 +32,16 @@ tp: checkResult
     // lets see which node failed
     0 do
 
-    false == if  ( ... ec n# )
+      false == if  ( ... ec n# )
 
-      swap error.msg swap
-      "Node%v ERROR: %v" sprint .
+        swap error.msg swap
+        "Node%v ERROR: %v" sprint .
 
-    else
+      else
 
-      drop drop  ( ... )
+        drop drop  ( ... )
 
-    then
+      then
 
     loop
 
@@ -64,7 +64,6 @@ tp: printResult
       assert // should be true
       "Node%v: %v"  sprint .
     loop
-
 
   else
 
@@ -94,13 +93,13 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 : grid:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_grid allot
-    word.this >body magic!!
-    word.this >body CN_GRID class!
+    word.this >body object.magic!!
+    CN_GRID word.this >body object.class!
     word.this >body grid.init
     ' grid word.this word.kind!
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -109,13 +108,13 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 : :grid
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_grid allot
-    word.this >body magic!!
-    word.this >body CN_GRID class!
+    word.this >body object.magic!!
+    CN_GRID word.this >body object.class!
     word.this >body grid.init
     ' grid word.this word.kind!
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

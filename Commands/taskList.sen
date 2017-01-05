@@ -2,28 +2,28 @@
 /* taskList.sen -- task list related words                                    */
 /*============================================================================*/
 
-"taskList.sen" .putVerbose
+"taskList.sen" .verbose
 
 : taskList:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     ( this should be a @ to gpTaskList )
     sizeof_tasklist allot
-    word.this >body magic!!
-    word.this >body CN_TASKLIST class!
+    word.this >body object.magic!!
+    CN_TASKLIST word.this >body object.class!
     word.this >body tasklist.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does> 
 ;
 
 : taskCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_taskcursor allot
-    word.this >body magic!!
-    word.this >body CN_TASKCURSOR class!
+    word.this >body object.magic!!
+    CN_TASKCURSOR word.this >body object.class!
     word.this >body taskcursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 

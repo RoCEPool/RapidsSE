@@ -2,7 +2,7 @@
 /* column.sen -- column related words                                         */
 /*============================================================================*/
 
-"column.sen" .putVerbose
+"column.sen" .verbose
 
 : column: ;
 
@@ -71,8 +71,6 @@ tp: addingColumn
   popTable
 
   true <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +87,7 @@ tp: addColOnAll
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
   tp: addColOnAllDone
 
@@ -121,7 +119,7 @@ tp: addColOnAll
 
     concat                       // prepend column to ls
 
-    object@ prevWord object!     // step backwards thru words
+    object@ word.prev object!    // step backwards thru words
 
   next                           //
 

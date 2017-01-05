@@ -2,7 +2,7 @@
 /* thread.sen -- thread related words                                         */
 /*============================================================================*/
 
-"thread.sen" .putVerbose
+"thread.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a thread using string from input stream as name                     */
@@ -10,23 +10,23 @@
 
 : thread:
     create 
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_thread allot
-    word.this >body magic!!
-    word.this >body CN_THREAD class!
+    word.this >body object.magic!!
+    CN_THREAD word.this >body object.class!
     word.this >body thread.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
 : :thread
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_thread allot
-    word.this >body magic!!
-    word.this >body CN_THREAD class!
+    word.this >body object.magic!!
+    CN_THREAD word.this >body object.class!
     word.this >body thread.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

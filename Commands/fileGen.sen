@@ -2,7 +2,7 @@
 /* fileGen.sen -- Data File Generator                                         */
 /*============================================================================*/
 
-"fileGen.sen" .putVerbose
+"fileGen.sen" .verbose
 
 timer: fileGenTimer
 

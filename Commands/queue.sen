@@ -2,31 +2,31 @@
 /* queue.sen -- a generic queue                                               */
 /*============================================================================*/
 
-"queue.sen" .putVerbose
+"queue.sen" .verbose
 
 : queue ;
 
 : queue:
     create 
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_queue allot
-    word.this >body magic!!
-    word.this >body CN_QUEUE class!
-   ' queue word.this word.kind!
+    word.this >body object.magic!!
+    CN_QUEUE word.this >body object.class!
+    ' queue word.this word.kind!
     word.this >body queue.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does> 
 ;
 
 : :queue
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_queue allot
-    word.this >body magic!!
-    word.this >body CN_QUEUE class!
+    word.this >body object.magic!!
+    CN_QUEUE word.this >body object.class!
     ' queue word.this word.kind!
     word.this >body queue.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

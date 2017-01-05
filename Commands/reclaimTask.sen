@@ -2,7 +2,7 @@
 /* reclaimTask.sen -- reclaim task                                            */
 /*============================================================================*/
 
-"reclaimTask.sen" .putVerbose
+"reclaimTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the parts                                                           */
@@ -91,9 +91,9 @@ seitfCursor: seitfCrs
 
       // reclaimString @ .
 
-      3 sleep
+      3 thread.sleep_s
 
-    0 until
+    again
 ;
 
 /*----------------------------------------------------------------------------*/

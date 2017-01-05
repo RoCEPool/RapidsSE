@@ -2,7 +2,7 @@
 /* table.sen -- table related words                                           */
 /*============================================================================*/
 
-"table.sen" .putVerbose
+"table.sen" .verbose
 
 int: queryCount
 
@@ -35,12 +35,12 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : table:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_table allot
-    word.this >body magic!!
-    word.this >body CN_TABLE class!
+    word.this >body object.magic!!
+    CN_TABLE word.this >body object.class!
     word.this >body table.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     ' table word.this word.kind!
     does>
 ;
@@ -50,12 +50,12 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : :table
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_table allot
-    word.this >body magic!!
-    word.this >body CN_TABLE class!
+    word.this >body object.magic!!
+    CN_TABLE word.this >body object.class!
     word.this >body table.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     ' table word.this word.kind!
     word.this
     does>
@@ -212,7 +212,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* make a tenant (run by participant)                                         */
 /*----------------------------------------------------------------------------*/
-: makeTable$ ( "<tableNm>" -- true )
+: makeTable allParticipants 1 ( "<tableNm>" -- true n# true )
 
 tp: makingTable
 
@@ -230,13 +230,12 @@ tp: makingTable
   "makeColumns" find execute
 
   true <SUCCESS_RESULT>
-
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
 /* have participants run: makeTable$                                          */
 /*----------------------------------------------------------------------------*/
+/*
 : ~makeTable ( "<tableNm>" -- )
 
 tp: mkTblOnAll
@@ -248,19 +247,19 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkTblOnAllDone
 
   checkResult
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeTable$ ( "<tableNm>" -- true )
+: removeTable allParticipants 1 ( "<tableNm>" -- true n# true )
 
-tp: removeTable$
+tp: removeTable
 
   dup
 
@@ -270,27 +269,12 @@ tp: removeTable$
   :forget
 
   true <SUCCESS_RESULT>
-
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeTable ( "<tableNm>" -- true )
-
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
-  removeTable$
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a table folder                                                      */
-/*----------------------------------------------------------------------------*/
+/*
 : ~removeTable ( "<tableNm>" -- )
 
 tp: rmTblOnAll
@@ -303,14 +287,14 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmTblOnAllDone
 
   checkResult
 
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/

@@ -2,19 +2,19 @@
 /* threadCursor.sen -- Thread Cursor                                          */
 /*============================================================================*/
 
-"threadCursor.sen" .putVerbose
+"threadCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a threadCursor using name from input stream                         */
 /*----------------------------------------------------------------------------*/
 : threadCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_threadCursor allot
-    word.this >body magic!!
-    word.this >body CN_THREADCURSOR class!
+    word.this >body object.magic!!
+    CN_THREADCURSOR word.this >body object.class!
     word.this >body threadCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -23,12 +23,12 @@
 /*----------------------------------------------------------------------------*/
 : :threadCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_threadCursor allot
-    word.this >body magic!!
-    word.this >body CN_THREADCURSOR class!
+    word.this >body object.magic!!
+    CN_THREADCURSOR word.this >body object.class!
     word.this >body threadCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

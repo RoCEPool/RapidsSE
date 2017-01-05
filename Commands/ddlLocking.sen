@@ -2,7 +2,7 @@
 /* ddlLocking.sen -- distributed ddl locking                                  */
 /*============================================================================*/
 
-"ddlLocking.sen" .putVerbose
+"ddlLocking.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* lock array                                                                 */

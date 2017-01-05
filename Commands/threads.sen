@@ -2,7 +2,7 @@
 /* threads.sen -- threads group                                               */
 /*============================================================================*/
 
-"threads.sen" .putVerbose
+"threads.sen" .verbose
 
 "thread.sen" >>:
 "threadList.sen" >>:

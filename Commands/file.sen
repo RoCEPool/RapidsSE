@@ -2,7 +2,7 @@
 /* file.sen -- file related words                                             */
 /*============================================================================*/
 
-"file.sen" .putVerbose
+"file.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* file is use as a kind of word to identify files                            */
@@ -16,13 +16,13 @@
 /*----------------------------------------------------------------------------*/
 : file:
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_file allot
-  word.this >body magic!!
-  word.this >body CN_FILE class!
+  word.this >body object.magic!!
+  CN_FILE word.this >body object.class!
   ' file word.this word.kind!
   word.this >body file.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   does>
 ;
 
@@ -31,13 +31,13 @@
 /*----------------------------------------------------------------------------*/
 : :file
   >create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_file allot
-  word.this >body magic!!
-  word.this >body CN_FILE class!
+  word.this >body object.magic!!
+  CN_FILE word.this >body object.class!
   ' file word.this word.kind!
   word.this >body file.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   word.this
   does>
 ;

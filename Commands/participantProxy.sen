@@ -2,7 +2,7 @@
 /* participantProxy.sen -- participant proxy                                  */
 /*============================================================================*/
 
-"participantProxy.sen" .putVerbose
+"participantProxy.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* participant proxy processing loop                                          */
@@ -31,7 +31,7 @@ tp: participantProxy
     taskQueue> ( valset )
 
     // set caller into reg0
-    exeOne assert
+    exeOne 
 
     r0 args.node ==
     if
@@ -57,7 +57,7 @@ tp: resumed
 
     >callerAux ( )
 
-  0 until
+  again
 
   rdrop
   rdrop

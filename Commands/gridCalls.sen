@@ -2,7 +2,7 @@
 /* gridCalls -- grid calls                                                    */
 /*============================================================================*/
 
-"gridCalls" .putVerbose
+"gridCalls" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create the grid actors C, PP, CP and P                                     */
@@ -100,12 +100,12 @@ tp: resumedbyCoord
 /*----------------------------------------------------------------------------*/
 /* get coordinator to send indirect call to participant on a node to execute  */
 /*----------------------------------------------------------------------------*/
-: >>participant> ( <<call>> nodeNo -- bool )
+: >>oneParticipant> ( <<call>> nodeNo -- bool )
 
   // a) we are in loader sub task
   // b) indirect call on stack is to be executed by participant on given nodeNo
 
-  tp: >>participant>
+  tp: >>oneParticipant>
 
   // check if grid has been started if number of nodes > 1
   args.nodes 1 > if
@@ -132,22 +132,21 @@ tp: resumedbyCoord
   // queue on coordinator (which waits for a indirect result)
   >coordinator> ( bool )
 
-  // we should have a true result
-  //assert
+  valset>
 
-  // return true
-  true
+  // drop number of values
+  drop
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get coordinator to send indirect call to each participant to execute       */
+/* get coordinator to send indirect call to all participant to execute        */
 /*----------------------------------------------------------------------------*/
-: >>participants> ( <<$$>> -- bool )
+: >>allParticipants> ( <<$$>> -- bool )
 
   // a) we are in request task (req.task)
   // b) indirect call on stack is to be executed by all participants
 
-tp: >>participants>
+tp: >>allParticipants>
 
    // check if grid has been started if number of nodes > 1
    args.nodes 1 > if
@@ -175,12 +174,6 @@ tp: >>participants>
 
   // drop number of values
   drop
-
-  // we should have a true result
-  //assert
-
-  // return true
-  //true
 ;
 
 /*============================================================================*/

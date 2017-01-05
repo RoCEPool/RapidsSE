@@ -2,14 +2,31 @@
 /* generalThread.sen -- General Processing Threads                            */
 /*============================================================================*/
 
-"generalThread.sen" .putVerbose
+"generalThread.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create and spawn the general processing threads                            */
 /*----------------------------------------------------------------------------*/
 
 //CORE_COUNT 8 * 10 / constant N_GENERAL_THREADS
-1 constant N_GENERAL_THREADS
+
+: noGeneralThreads ( memorySize -- noThreads )
+
+  C_1GB /
+
+  dup 0 <= if
+    drop 1
+  else
+    dup CORE_COUNT 8 * 10 / > if
+      drop
+      CORE_COUNT 8 * 10 /
+    then
+  then
+;
+
+args.regionSize noGeneralThreads constant N_GENERAL_THREADS
+
+N_GENERAL_THREADS "General threads: %v" sprint .
 
 : >genTaskSetNm ( i -- s ) "generalTaskSet" swap >str concat ;
 : >genThreadNm  ( i -- s ) "generalThread"  swap >str concat ;
@@ -35,16 +52,6 @@
 
   loop
 ;
-
-/*----------------------------------------------------------------------------*/
-/* thread level IPC                                                           */
-/*----------------------------------------------------------------------------*/
-
-: grabThreadMutex ( -- ) task.this task.thread thread.mutexLock ;
-: dropThreadMutex ( -- ) task.this task.thread thread.mutexUnlock ;
-
-: threadCondWait     ( -- ) task.this task.thread thread.condWait ;
-: signalParentThread ( -- ) task.parent@ task.thread thread.condSignal ;
 
 /*============================================================================*/
 /* end                                                                        */

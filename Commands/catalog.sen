@@ -2,7 +2,7 @@
 /* catalog.sen -- catalog related words                                       */
 /*============================================================================*/
 
-"catalog.sen" .putVerbose
+"catalog.sen" .verbose
 
 : catalog ;
 
@@ -79,7 +79,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a named catalog folder (run by participant)                           */
 /*----------------------------------------------------------------------------*/
-: makeCatalog$ ( "<catalogNm>" -- true )
+: makeCatalog allParticipants 1 ( "<catalogNm>" -- true n# true )
 
 tp: makeCatalog
 
@@ -96,13 +96,12 @@ tp: makeCatalog
   makeSchemas ( )
 
   true <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* have participants run: makeCatalog$                                        */
 /*----------------------------------------------------------------------------*/
+/*
 : ~makeCatalog ( "<catalogNm>" -- )
 
 tp: mkTenOnAll
@@ -114,19 +113,20 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkCatOnAllDone
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
-: removeCatalog$ ( "<catalogNm>" -- true )
+: removeCatalog allParticipants 1 ( "<catalogNm>" -- true n# true )
 
-tp: removeCatalog$
+tp: removeCatalog
 
   args.tracepoint if
     dup "REMOVING CATALOG " swap concat " on NODE " concat args.node >str concat .
@@ -135,27 +135,12 @@ tp: removeCatalog$
   :forget ( )
 
   true <SUCCESS_RESULT>
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
-: removeCatalog ( "<catalogNm>" -- true )
-
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
-  removeCatalog$
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a catalog folder                                                     */
-/*----------------------------------------------------------------------------*/
+/*
 : ~removeCatalog ( "<catalogNm>" -- )
 
 tp: rmCatOnAll
@@ -167,13 +152,13 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmCatOnAllDone
 
   checkResult
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

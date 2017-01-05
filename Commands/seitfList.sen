@@ -2,27 +2,27 @@
 /* seitfList.sen -- list of se interfaces                                     */
 /*============================================================================*/
 
-"seitfList.sen" .putVerbose
+"seitfList.sen" .verbose
 
 : seitfList:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitflist allot
-    word.this >body magic!!
-    word.this >body CN_SEITFLIST class!
+    word.this >body object.magic!!
+    CN_SEITFLIST word.this >body object.class!
     word.this >body seitflist.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
 : seitfCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitfcursor allot
-    word.this >body magic!!
-    word.this >body CN_SEITFCURSOR class!
+    word.this >body object.magic!!
+    CN_SEITFCURSOR word.this >body object.class!
     word.this >body seitfcursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 

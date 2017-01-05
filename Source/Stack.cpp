@@ -4,6 +4,8 @@
 
 #include "Structures.h"
 
+#include "Cell.hpp"
+
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
@@ -144,6 +146,25 @@ bool Stack::bGuard(eCN eClass0, eCN eClass1, eCN eClass2)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* pop cell from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(Dictionaries::Cell*& pCell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_PTRVAL) )
+    return false;
+  
+  PtrVal xPtrVoid;
+  
+  vPopVal(&xPtrVoid);
+  
+  pCell = (Dictionaries::Cell*)xPtrVoid.pPtr();
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /* pop Header* from param stack                                               */
@@ -563,25 +584,6 @@ bool Stack::bPop(Value& pValue1, Value& pValue2, Value& pValue3)
   vPopVal(&pValue2);
   
   vPopVal(&pValue3);
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop cell from param stack                                                  */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(void*& pVoid)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_PTRVAL) )
-    return false;
-  
-  PtrVal xPtrVoid;
-  
-  vPopVal(&xPtrVoid);
-  
-  pVoid = xPtrVoid.pPtr();
   
   return true;
 }

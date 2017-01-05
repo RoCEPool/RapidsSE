@@ -2,7 +2,7 @@
 /* actors.sen -- actors group                                                 */
 /*============================================================================*/
 
-"actors.sen" .putVerbose
+"actors.sen" .verbose
 
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
@@ -16,7 +16,7 @@
 /*----------------------------------------------------------------------------*/
 : startActors
 
-  "startActors" .putVerbose
+  "startActors" .verbose
 
   args.bgtasks if
 

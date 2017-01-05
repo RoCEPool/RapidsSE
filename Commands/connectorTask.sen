@@ -2,7 +2,7 @@
 /* connectorTask.sen -- connector task                                        */
 /*============================================================================*/
 
-"connectorTask.sen" .putVerbose
+"connectorTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* define the con actor (con.task, con.queue, con.taskset, con.thread)        */

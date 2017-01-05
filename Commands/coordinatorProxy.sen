@@ -2,7 +2,7 @@
 /* coordinatorProxy.sen -- coordinator proxy task                             */
 /*============================================================================*/
 
-"coordinatorProxy.sen" .putVerbose
+"coordinatorProxy.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* coordinator proxy processing loop                                          */
@@ -32,7 +32,7 @@ tp: coordinator
     0                                                              //! NOT RIGHT
     >sndQueue
 
-  0 until
+  again
 ;
 
 /*============================================================================*/

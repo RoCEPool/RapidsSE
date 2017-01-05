@@ -2,24 +2,221 @@
 /* core.sen -- additional high-level core words                               */
 /*============================================================================*/
 
-"core.sen" .putVerbose
+"core.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* unnamed trace point                                                        */
+/*----------------------------------------------------------------------------*/
+: tp immediate
+
+  "tp"
+
+  encodePushValue
+
+  ' tracepoint compile,
+;
+
+/*----------------------------------------------------------------------------*/
+/* named trace point                                                          */
+/*----------------------------------------------------------------------------*/
+: tp: immediate
+
+  token:
+
+  encodePushValue
+
+  ' tracepoint compile,
+;
+
+/*----------------------------------------------------------------------------*/
+/* add 1 to integer on stack                                                  */
+/*----------------------------------------------------------------------------*/
+: 1+ 1 + ;
+
+/*----------------------------------------------------------------------------*/
+/* increment integer variable                                                 */
+/*----------------------------------------------------------------------------*/
+: ++ dup @ 1+ swap ! ;
+
+/*----------------------------------------------------------------------------*/
+/* decrement integer on stack                                                 */
+/*----------------------------------------------------------------------------*/
+: 1- 1 - ;
+
+/*----------------------------------------------------------------------------*/
+/* decrement integer variable                                                 */
+/*----------------------------------------------------------------------------*/
+: -- dup @ 1- swap ! ;
+
+/*----------------------------------------------------------------------------*/
+/* begin a loop                                                               */
+/*----------------------------------------------------------------------------*/
+: BEGIN immediate
+
+  here
+;
+
+/*----------------------------------------------------------------------------*/
+/* do a loop                                                                  */
+/*----------------------------------------------------------------------------*/
+: DO immediate
+
+  POSTPONE 2>R // encode 2>r into future word
+
+  HERE true   // push address of last cell & simple do
+;
+
+/*----------------------------------------------------------------------------*/
+/* ?do a loop                                                                 */
+/*----------------------------------------------------------------------------*/
+: ?DO immediate
+
+  POSTPONE 2>R // encode 2>r into future word
+
+  POSTPONE AHEAD
+
+  false   // push address of last cell & simple do
+;
+
+/*----------------------------------------------------------------------------*/
+/* unloop by dropping limit and index off rstack                              */
+/*----------------------------------------------------------------------------*/
+: UNLOOP immediate
+
+  POSTPONE rdrop
+  POSTPONE rdrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* iterate a loop                                                             */
+/*----------------------------------------------------------------------------*/
+: ITERATE immediate
+
+  POSTPONE 2>R // encode 2>r into future word
+
+  POSTPONE AHEAD
+;
+
+/*----------------------------------------------------------------------------*/
+/* define a constant                                                          */
+/*----------------------------------------------------------------------------*/
+: ,_ALT
+
+  HERE ! CELL ALLOT
+;
 
 /*----------------------------------------------------------------------------*/
 /* define a constant                                                          */
 /*----------------------------------------------------------------------------*/
 : constant
-create
-,
-//    does>
+
+  create
+  ,
 ;
 
+/*----------------------------------------------------------------------------*/
+/* define a constant (using name on stack)                                    */
+/*----------------------------------------------------------------------------*/
 : :constant
->create
-,
-//    does>
+
+  >create
+  ,
 ;
 
-//"errorCodes.sen" >>:
+/*----------------------------------------------------------------------------*/
+/* resolve IF supplying alternate execution                                   */
+/*----------------------------------------------------------------------------*/
+: ELSE immediate ( orig1 -- orig2 / -- )
+
+  POSTPONE AHEAD // unconditional forward branch orig2
+  1 CS-ROLL      // put orig1 back on top
+  POSTPONE THEN  // resolve forward branch from orig1
+;
+
+/*----------------------------------------------------------------------------*/
+/* conditional exit from loops                                                */
+/*----------------------------------------------------------------------------*/
+: WHILE immediate ( dest -- orig dest / flag -- )
+
+  POSTPONE IF // conditional forward branch
+  1 CS-ROLL   // keep dest on top
+;
+
+/*----------------------------------------------------------------------------*/
+/* resolve a single WHILE and jump to BEGIN                                   */
+/*----------------------------------------------------------------------------*/
+: REPEAT immediate ( orig dest-- orig dest / flag -- )
+
+  POSTPONE AGAIN // unconditional backward branch to dest
+  POSTPONE THEN  // resolve forward branch from orig
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise OFs counter                                                     */
+/*----------------------------------------------------------------------------*/
+0 CONSTANT CASE
+true ' CASE word.immediate!
+
+/*----------------------------------------------------------------------------*/
+/* OF block                                                                   */
+/*----------------------------------------------------------------------------*/
+: OF immediate
+
+  1+   // inc number of OFs
+  >R   // save OFs counter
+
+  POSTPONE OVER  // copy case value
+  POSTPONE ==    // test case value against of value
+  POSTPONE IF    // add conditional block (with orig on control stack)
+  POSTPONE DROP  // discard case value within conditional block
+
+  R> // restore OFs counter
+;
+
+/*----------------------------------------------------------------------------*/
+/* ENDOF block                                                                */
+/*----------------------------------------------------------------------------*/
+: ENDOF immediate
+
+  >R // save OFs counter
+
+  POSTPONE ELSE // add conditional block (with orig2 on control stack)
+
+  R> // restore OFs counter
+;
+
+/*----------------------------------------------------------------------------*/
+/* ENDCASE block                                                              */
+/*----------------------------------------------------------------------------*/
+: ENDCASE immediate
+
+  POSTPONE DROP  // discard case value
+
+  0 ?DO          // resolve all forward ENDOF branches
+    POSTPONE THEN
+  LOOP
+;
+
+/*----------------------------------------------------------------------------*/
+/* case test                                                                  */
+/*----------------------------------------------------------------------------*/
+: caseTest
+
+  10 0 do
+    I case
+      0 of "zero"  . endof
+      1 of "one"   . endof
+      2 of "two"   . endof
+      3 of "three" . endof
+      4 of "four"  . endof
+      5 of "five"  . endof
+      6 of "six"   . endof
+      7 of "seven" . endof
+      8 of "eight" . endof
+      9 of "nine"  . endof
+    endcase
+  loop
+;
 
 /*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
@@ -28,7 +225,7 @@ create
     0 dic.pick dic.last dup
     iterate                        // iterate word cursor
       object@ word.name .          // print the name of the word
-      object@ prevWord object!     // advance cursor backwards thru words
+      object@ word.prev object!     // advance cursor backwards thru words
     next
 ;
 
@@ -38,8 +235,8 @@ create
 : symbols
     0 dic.pick dic.last
     begin dup while
-      dup nameWord .put " " .put dup word.kind@ nameword .put .\n
-      prevWord
+      dup word.name .put " " .put dup word.kind@ word.name .put .\n
+      word.prev
     repeat
     drop
 ;
@@ -56,7 +253,7 @@ create
       object@ word.name concat     // add name of the word to contents string
                                    // add word kind to ls string
       " " concat                   //
-      object@ prevWord object!     // step backwards thru words
+      object@ word.prev object!     // step backwards thru words
     next                           //
 //    ")" concat                     //
 
@@ -107,22 +304,8 @@ create
   loop
 ;
 
-/*----------------------------------------------------------------------------*/
-/* increment integer on stack                                                 */
-/*----------------------------------------------------------------------------*/
-: inc 1 + ;
 
-: ++ dup @ 1 + swap ! ;
-
-/*----------------------------------------------------------------------------*/
-/* increment integer on stack twice                                           */
-/*----------------------------------------------------------------------------*/
-: incinc inc inc ;
-
-/*----------------------------------------------------------------------------*/
-/* decrement integer on stack                                                 */
-/*----------------------------------------------------------------------------*/
-: dec 1 - ;
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* interpret string on stack                                                  */
@@ -186,30 +369,6 @@ create
 ;
 
 /*----------------------------------------------------------------------------*/
-/* unnamed trace point                                                        */
-/*----------------------------------------------------------------------------*/
-: tp immediate
-
-  "tp"
-
-  encodeVal
-
-  ' tracepoint compile,
-;
-
-/*----------------------------------------------------------------------------*/
-/* named trace point                                                          */
-/*----------------------------------------------------------------------------*/
-: tp: immediate
-
-  str:
-
-  encodeVal
-
-  ' tracepoint compile,
-;
-
-/*----------------------------------------------------------------------------*/
 /* test type of top stack value                                               */
 /*----------------------------------------------------------------------------*/
 : isType ( CN_ -- bool )
@@ -222,12 +381,20 @@ create
 ;
 
 /*----------------------------------------------------------------------------*/
+/* snooze briefly                                                             */
+/*----------------------------------------------------------------------------*/
+: snooze ( -- )
+
+  C_1M thread.sleep_ns
+;
+
+/*----------------------------------------------------------------------------*/
 /* an end marker                                                              */
 /*----------------------------------------------------------------------------*/
 : $$
   //1234
 
-  [ word.this encodeVal ]
+  [ word.this encodePushValue ]
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -270,7 +437,7 @@ create
     // marked values end at a valset
     I stack.class CN_VALSET ==
     if
-      I inc
+      I 1+
       unloop
       exit
     then
@@ -299,26 +466,34 @@ create
 
   adepth 0 do
 
-  // marked values end at a valset
-  I astack.class CN_VALSET ==
-  if
-    I inc
-    unloop
-    exit
-  then
+    // marked values end at a valset
+    I astack.class CN_VALSET ==
+    if
+      I 1+
+      unloop
+      exit
+    then
 
-  // marked values end at $$
-  I apick $$ eql
-  if
-    I
-    unloop
-    exit
-  then
+    // marked values end at $$
+    I apick $$ eql
+    if
+      I
+      unloop
+      exit
+    then
 
   loop
 
   // marked values end at bottom of stack
   adepth
+;
+
+/*----------------------------------------------------------------------------*/
+/* put $$ at given stack depth                                                */
+/*----------------------------------------------------------------------------*/
+: put$$ ( atDepth -- )
+
+  $$ swap roll
 ;
 
 /*----------------------------------------------------------------------------*/

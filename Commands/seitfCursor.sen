@@ -2,19 +2,19 @@
 /* seitfCursor.sen -- SEitf Cursor                                            */
 /*============================================================================*/
 
-"seitfCursor.sen" .putVerbose
+"seitfCursor.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a seitfCursor using name from input stream                          */
 /*----------------------------------------------------------------------------*/
 : seitfCursor:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitfCursor allot
-    word.this >body magic!!
-    word.this >body CN_SEITFCURSOR class!
+    word.this >body object.magic!!
+    CN_SEITFCURSOR word.this >body object.class!
     word.this >body seitfCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 
@@ -23,12 +23,12 @@
 /*----------------------------------------------------------------------------*/
 : :seitfCursor
     >create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_seitfCursor allot
-    word.this >body magic!!
-    word.this >body CN_SEITFCURSOR class!
+    word.this >body object.magic!!
+    CN_SEITFCURSOR word.this >body object.class!
     word.this >body seitfCursor.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     word.this
     does>
 ;

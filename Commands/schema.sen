@@ -2,7 +2,7 @@
 /* schema.sen -- schema related words                                         */
 /*============================================================================*/
 
-"schema.sen" .putVerbose
+"schema.sen" .verbose
 
 : schema ;
 
@@ -65,7 +65,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a schema folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeSchema$ ( "<schemaNm>" -- true )
+: makeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
 
 tp: makingSchema
 
@@ -82,13 +82,12 @@ tp: makingSchema
     makeTables ( )
 
     true <SUCCESS_RESULT>
-
-    true
 ;
 
 /*----------------------------------------------------------------------------*/
 /* have participants run: makeSchema$                                         */
 /*----------------------------------------------------------------------------*/
+/*
 : ~makeSchema ( "<schemaNm>" -- )
 
 tp: mkSchOnAll
@@ -100,12 +99,13 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: mkSchOnAllDone
 
   checkResult
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* check if word is a removable schema folder                                 */
@@ -127,9 +127,9 @@ tp: mkSchOnAllDone
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema$ ( "<schemaNm>" -- true )
+: removeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
 
-tp: removeSchema$
+tp: removeSchema
 
   args.tracepoint if
     dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
@@ -138,27 +138,12 @@ tp: removeSchema$
   :forget ( )
 
   true <SUCCESS_RESULT>
-
-  true ( true )
 ;
 
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema ( "<schemaNm>" -- true )
-
-  dup "dicStack!" strEql
-  if
-tp: settingDicStack
-    !indirect drop
-  then
-
-  removeSchema$
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a schema folder                                                     */
-/*----------------------------------------------------------------------------*/
+/*
 : ~removeSchema ( "<schemaNm>" -- )
 
 tp: rmSchOnAll
@@ -170,13 +155,13 @@ tp: theIndirectCall
 
   $$>valset ( valset )
 
-  >>participants> ( bool )
+  >>allParticipants> ( bool )
 
 tp: rmSchOnAllDone
 
   checkResult
 ;
-
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

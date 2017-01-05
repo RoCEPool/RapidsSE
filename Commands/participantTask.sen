@@ -2,7 +2,7 @@
 /* participantTask.sen -- participant task                                    */
 /*============================================================================*/
 
-"participantTask.sen" .putVerbose
+"participantTask.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* execute all indirect call processing loop                                  */
@@ -29,7 +29,7 @@
     // put indirect result onto stack of caller and signal
     >callerAux ( )
 
-  0 until
+  again
 
   // pop a register frame
   reg.pop

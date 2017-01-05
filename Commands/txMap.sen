@@ -2,16 +2,16 @@
 /* txMap.sen -- transaction map related words                                 */
 /*============================================================================*/
 
-"txmap.sen" .putVerbose
+"txmap.sen" .verbose
 
 : txMap:
     create
-    object!!
+    WT_OBJECT word.this word.type!
     sizeof_txmap allot
-    word.this >body magic!!
-    word.this >body CN_TXMAP class!
+    word.this >body object.magic!!
+    CN_TXMAP word.this >body object.class!
     word.this >body txmap.init
-    word.this >body object.wordbody
+    true word.this >body object.wordbody!
     does>
 ;
 

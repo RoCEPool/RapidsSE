@@ -2,7 +2,7 @@
 /* task.sen -- task related words                                             */
 /*============================================================================*/
 
-"task.sen" .putVerbose
+"task.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* create a task using string from input stream as name                       */
@@ -11,24 +11,24 @@
 : task:
 
   create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_task allot
-  word.this >body magic!!
-  word.this >body CN_TASK class!
+  word.this >body object.magic!!
+  CN_TASK word.this >body object.class!
   word.this >body task.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   does>
 ;
 
 : :task
 
   >create
-  object!!
+  WT_OBJECT word.this word.type!
   sizeof_task allot
-  word.this >body magic!!
-  word.this >body CN_TASK class!
+  word.this >body object.magic!!
+  CN_TASK word.this >body object.class!
   word.this >body task.init
-  word.this >body object.wordbody
+  true word.this >body object.wordbody!
   word.this
   does>
 ;
