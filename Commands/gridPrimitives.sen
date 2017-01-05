@@ -198,7 +198,7 @@ tp: grabbingMutex
     TS_WAITING setState
 tp: nowWaiting
 
-    waitCond
+    waitSignal
 
     TS_RUNNING setState
 tp: nowRunning

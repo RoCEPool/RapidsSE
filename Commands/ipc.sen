@@ -9,15 +9,15 @@
 : waiting      ( task -- ) task.state@ TS_WAITING == ;
 
 : setAcks      ( -- ) task.this task.acks! ;
-
-: waitCond     ( -- ) task.this task.thread thread.condWait ;
+: suspendTask  ( -- ) TS_SUSPENDED setState ;
 
 : appendQueue  ( task -- ) task.queue@ queue.append ;
 : popQueue     ( -- ) task.this task.queue@ queue.pop ;
 
-: suspendTask  ( -- ) TS_SUSPENDED setState ;
-: signal       ( task -- ) task.thread thread.condSignal ;
+
 : grabMutex    ( task -- ) task.thread thread.mutexLock ;
+: waitSignal   ( -- ) task.this task.thread thread.condWait ;
+: signal       ( task -- ) task.thread thread.condSignal ;
 : dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
 
 /*============================================================================*/
