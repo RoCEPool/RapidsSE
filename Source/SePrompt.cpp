@@ -745,13 +745,19 @@ void SePrompt::vIterateRows(void)
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  pRowCursor->vBegin(m_iPartition);
-  pRowCursor->vFirst();
-  char* pStr = pRowCursor->pRowAsStr();
-  while (pStr) {
-    vTrace("Row: %s\n",pStr);
-    pRowCursor->vNext();
-    pStr = pRowCursor->pRowAsStr();
+  i8 iRowCount = 0;
+  
+  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+    vTrace("Partition %lld: \n", iPartition);
+    pRowCursor->vBegin(iPartition);
+    pRowCursor->vFirst();
+    char* pStr = pRowCursor->pRowAsStr();
+    while (pStr) {
+      iRowCount++;
+      vTrace("Row: %s\n",pStr);
+      pRowCursor->vNext();
+      pStr = pRowCursor->pRowAsStr();
+    }
   }
   
   pRowCursor->vEnd();

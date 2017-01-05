@@ -117,7 +117,7 @@ tp: theIndirectCall
   //
 
   // to which node/participant
-  loaderSub.partition             ( <<loadAppendBuffer$>> ptn )
+  loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )
 
   // forward to coordinator and wait
   >>oneParticipant> ( bool )

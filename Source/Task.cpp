@@ -857,6 +857,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
   vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
   vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
+  vAddPrimitive("loaderSub.hashPartition",&vLoaderSubHashPartition, false);
   vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
   vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
   vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
@@ -6109,6 +6110,23 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
   bool bFetched = pLoaderSub->bFetchRecord();
   
   nnpTask->m_xDataStack.vPush(bFetched);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loaderSub.hashPartition -- hash partition & get node where partition lives */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderSubHashPartition(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderSubHashRecord");
+  
+  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
+  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
+
+  i8 iNode = pLoaderSub->iPartition() % gxArguments.m_nNodes;
+  
+  nnpTask->m_xDataStack.vPush(iNode);
   
   EXIT();
 }
