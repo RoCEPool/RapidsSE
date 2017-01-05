@@ -1086,7 +1086,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.space",        &vTableSpace,        false);
   vAddPrimitive("table.truncate",     &vTableTruncate,     false);
   
-  vAddPrimitive("task.dec",        &vTaskAcksDec,      false);
   vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
   vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
   vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
@@ -10759,25 +10758,6 @@ ENTRY("vTableSpace");
 }
 
 // task: ///////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* --task.acks -- decrement given tasks m_zAcks and push result               */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskAcksDec(NNP_Task nnpTask)
-{
-  ENTRY("vTaskAcksFetch");
-  
-  Object* pPtrTask;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTask) )
-    THROW_INVALID_DSTACK("--task.acks");
-  Task* pGivenTask = _pTask(pPtrTask);
-  
-  i8 iResult = --pGivenTask->m_zAcks;
-  
-  nnpTask->m_xDataStack.vPush(iResult);
-  
-  EXIT();
-}
 
 /*----------------------------------------------------------------------------*/
 /* task.acks@ -- push current value of given tasks m_zAcks                    */

@@ -783,7 +783,6 @@ namespace Tasks
     static void vTableTruncate(NNP_Task nnpTask);
     
     // task
-    static void vTaskAcksDec(NNP_Task nnpTask);
     static void vTaskAcksFetch(NNP_Task nnpTask);
     static void vTaskAcksStore(NNP_Task nnpTask);
     static void vTaskCommentFetch(NNP_Task nnpTask);
