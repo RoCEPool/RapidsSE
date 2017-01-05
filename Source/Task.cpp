@@ -5572,7 +5572,7 @@ ENTRY("vInputType");
 void Task::vIntAdd(NNP_Task nnpTask)
 {
   ENTRY("vIntAdd");
-  
+  /*
   i8 r, j, i;
   
   if ( ! nnpTask->m_xDataStack.bPop(j,i) )
@@ -5581,6 +5581,19 @@ void Task::vIntAdd(NNP_Task nnpTask)
   r = i + j;
   
   nnpTask->m_xDataStack.vPush(r);
+  */
+  
+  // get pointer to value on the top of the stack
+  Value* j = nnpTask->m_xDataStack.pTopValue();
+  
+  // discard the value
+  nnpTask->m_xDataStack.vDiscard();
+  
+  // get pointer to value on the top of the stack
+  Value* i = nnpTask->m_xDataStack.pTopValue();
+  
+  // add the two values and leave the result on the stack
+  *i = j->iInt() + i->iInt();
   
   EXIT();
 }
