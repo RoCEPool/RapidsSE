@@ -123,10 +123,10 @@ tp: require1Ack
   // append indirect call onto queue of given task
   >taskQueue ( )
 
-  // this task suspends till notified. will have indirect result
-  suspendTask ( )
+  // this task suspends till ack'd. will have indirect result
+  suspend ( )
 
-tp: resumed
+tp: running
 
   // move from aux to parameter stack
   a> ( <<result>> )
@@ -164,10 +164,10 @@ tp: sendingViaTask
   // enqueue valset onto queue of task
   >taskQueue
 
-  // this task suspends till notified. will have indirect result
-  suspendTask ( )
+  // this task suspends till ack'd. will have indirect result
+  suspend ( )
 
-tp: resumed
+tp: running
 
   // move from aux to parameter stack
   a> ( <<result>> )
@@ -187,20 +187,23 @@ tp: taskQueue>
   task.this task.thread assert
 
 tp: grabbingMutex
+
   task.this grabMutex
 
-  getState TS_RUNNING == assert
+  task.this running assert
 
   popQueue ( value true | false )
 
   not if
 
     TS_WAITING setState
+
 tp: nowWaiting
 
     waitSignal
 
     TS_RUNNING setState
+
 tp: nowRunning
 
     popQueue assert
@@ -208,6 +211,7 @@ tp: nowRunning
   then
 
 tp: droppingMutex
+
   task.this dropMutex
 
 tp: haveValset
@@ -216,7 +220,7 @@ tp: haveValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* push indirect result onto callers aux stack and signal caller              */
+/* push indirect result onto callers aux stack and ack caller                 */
 /*----------------------------------------------------------------------------*/
 : >callerAux ( <<result>> -- )
 
@@ -228,9 +232,8 @@ tp: >callerAux
 tp: ontoCallersAux
   >auxStack ( )
 
-  // signal caller
-  _CALLER ( caller )
-  task.signal ( )
+  // ack caller
+  _CALLER ack ( )
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

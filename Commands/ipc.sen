@@ -4,21 +4,23 @@
 
 "ipc.sen" .verbose
 
-: getState     ( -- ) task.this task.state@ ;
-: setState     ( -- ) task.this task.state! ;
-: waiting      ( task -- ) task.state@ TS_WAITING == ;
+: getState    ( -- ) task.this task.state@ ;
+: setState    ( -- ) task.this task.state! ;
+: waiting     ( task -- ) task.state@ TS_WAITING == ;
+: running     ( task -- ) task.state@ TS_RUNNING == ;
 
-: setAcks      ( -- ) task.this task.acks! ;
-: suspendTask  ( -- ) TS_SUSPENDED setState ;
+: setAcks     ( -- ) task.this task.acks! ;
+: suspend     ( -- ) TS_SUSPENDED setState ;
+: ack         ( task -- ) task.ack ;
 
-: appendQueue  ( task -- ) task.queue@ queue.append ;
-: popQueue     ( -- ) task.this task.queue@ queue.pop ;
+: appendQueue ( task -- ) task.queue@ queue.append ;
+: popQueue    ( -- ) task.this task.queue@ queue.pop ;
 
 
-: grabMutex    ( task -- ) task.thread thread.mutexLock ;
-: waitSignal   ( -- ) task.this task.thread thread.condWait ;
-: dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
-: signal       ( task -- ) task.thread thread.condSignal ;
+: grabMutex   ( task -- ) task.thread thread.mutexLock ;
+: waitSignal  ( -- ) task.this task.thread thread.condWait ;
+: dropMutex   ( task -- ) task.thread thread.mutexUnlock ;
+: signal      ( task -- ) task.thread thread.condSignal ;
 
 /*============================================================================*/
 /* end                                                                        */

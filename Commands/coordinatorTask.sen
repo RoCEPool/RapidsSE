@@ -80,7 +80,8 @@ tp: acksExpected
 
   rdrop
 
-  suspendTask
+  // this task suspends till ack'd
+  suspend
 
   // move from aux to parameter stack
   a>
@@ -142,12 +143,12 @@ tp: expectingAcks
 
     enqueuePP
 
-    // suspend here
-    suspendTask
+    // this task suspends till ack'd
+    suspend
 
-    // now resumed...
+    // now running...
 
-tp: resumed
+tp: running
 
   loop // each node
 
@@ -232,12 +233,12 @@ tp: expectingAcks
 
   enqueuePP
 
-  // suspend here
-  suspendTask
+  // this task suspends till ack'd
+  suspend
 
-  // now resumed...
+  // now running...
 
-tp: resumed
+tp: running
 
   $$
 

@@ -1086,6 +1086,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("table.space",        &vTableSpace,        false);
   vAddPrimitive("table.truncate",     &vTableTruncate,     false);
   
+  vAddPrimitive("task.ack",        &vTaskAck,          false);
   vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
   vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
   vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
@@ -1103,7 +1104,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.seed",       &vTaskSeed,         false);
   vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
   vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
-  vAddPrimitive("task.signal",     &vTaskSignal,       false);
   vAddPrimitive("task.socket@",    &vTaskSocketFetch,  false);
   vAddPrimitive("task.socket!",    &vTaskSocketStore,  false);
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
@@ -10760,6 +10760,60 @@ ENTRY("vTableSpace");
 // task: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* ack -- acknowledge that task of this tasks completion                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskAck(NNP_Task nnpTask)
+{
+  ENTRY("vTaskAck");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_xDataStack.bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.ack");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  i8 iMore = --pThatTask->m_zAcks;
+  
+  if ( ! iMore ) {
+    //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
+    //           *nnpTask,nnpTask->m_sName.a(),
+    //           pThatTask,pThatTask->m_sName.a());
+    if (gxArguments.m_bTracepoint)
+      vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n",
+             gxArguments.m_iNode,
+             nnpTask->m_sName.a(),
+             *nnpTask->m_zAcks,
+             nnpTask->m_sComment.a(),
+             
+             pThatTask->m_sName.a(),
+             *pThatTask->m_zAcks);
+    
+    while (TS_SUSPENDED != pThatTask->m_eState)
+      PosixThread::vSleepMicro(10);
+    
+    //Thread* pThread = Thread::pThread();
+    //pThread->m_pTaskSet->vAppend(pThatTask);
+    pThatTask->m_pTaskSet->vAppend(pThatTask);
+    
+  }
+  else {
+    //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
+    //           *nnpTask,nnpTask->m_sName.a(),
+    //           pThatTask,iMore,pThatTask->m_sName.a());
+    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n",
+           gxArguments.m_iNode,
+           nnpTask->m_sName.a(),
+           *nnpTask->m_zAcks,
+           nnpTask->m_sComment.a(),
+           
+           pThatTask->m_sName.a(),
+           iMore);
+    
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.acks@ -- push current value of given tasks m_zAcks                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskAcksFetch(NNP_Task nnpTask)
@@ -11150,60 +11204,6 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
   ASSERT(! pSEitf || CN_SEITF == pSEitf->eClass());
   
   pThatTask->m_pSEitf = pSEitf;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* signal -- signal task on stack                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSignal(NNP_Task nnpTask)
-{
-  ENTRY("vTaskSignal");
-  
-  Object* pTaskObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.signal");
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  i8 iMore = --pThatTask->m_zAcks;
-  
-  if ( ! iMore ) {
-//    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
-//           *nnpTask,nnpTask->m_sName.a(),
-//           pThatTask,pThatTask->m_sName.a());
-    if (gxArguments.m_bTracepoint)
-      vTrace("[N%lld:%8s\\%lld %-11s] resuming %s\\%lld\n",
-             gxArguments.m_iNode,
-             nnpTask->m_sName.a(),
-             *nnpTask->m_zAcks,
-             nnpTask->m_sComment.a(),
-             
-             pThatTask->m_sName.a(),
-             *pThatTask->m_zAcks);
-    
-    while (TS_SUSPENDED != pThatTask->m_eState)
-      PosixThread::vSleepMicro(10);
-    
-    //Thread* pThread = Thread::pThread();
-    //pThread->m_pTaskSet->vAppend(pThatTask);
-    pThatTask->m_pTaskSet->vAppend(pThatTask);
-    
-  }
-  else {
-//    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
-//           *nnpTask,nnpTask->m_sName.a(),
-//           pThatTask,iMore,pThatTask->m_sName.a());
-    vTrace("[N%lld:%8s\\%lld %-11s] signalled %s\\%lld\n",
-           gxArguments.m_iNode,
-           nnpTask->m_sName.a(),
-           *nnpTask->m_zAcks,
-           nnpTask->m_sComment.a(),
-           
-           pThatTask->m_sName.a(),
-           iMore);
-    
-  }
   
   EXIT();
 }

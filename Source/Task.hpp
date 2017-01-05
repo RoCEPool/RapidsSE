@@ -783,6 +783,7 @@ namespace Tasks
     static void vTableTruncate(NNP_Task nnpTask);
     
     // task
+    static void vTaskAck(NNP_Task nnpTask);
     static void vTaskAcksFetch(NNP_Task nnpTask);
     static void vTaskAcksStore(NNP_Task nnpTask);
     static void vTaskCommentFetch(NNP_Task nnpTask);
@@ -801,7 +802,6 @@ namespace Tasks
     static void vTaskSeed(NNP_Task nnpTask);
     static void vTaskSeitfFetch(NNP_Task nnpTask);
     static void vTaskSeitfStore(NNP_Task nnpTask);
-    static void vTaskSignal(NNP_Task nnpTask);
     static void vTaskSocketFetch(NNP_Task nnpTask);
     static void vTaskSocketStore(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
