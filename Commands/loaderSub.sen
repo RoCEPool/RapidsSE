@@ -1,0 +1,212 @@
+/*============================================================================*/
+/* loaderSub.sen -- Parallel Table Loader Sub                                 */
+/*============================================================================*/
+
+"loaderSub.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create a sub loader using name on the stack (leaves loader on stack)       */
+/*----------------------------------------------------------------------------*/
+: :loaderSub
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_loader allot
+  word.this >body object.magic!!
+  CN_LOADERSUB word.this >body object.class!
+  word.this >body loaderSub.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
+;
+
+/*----------------------------------------------------------------------------*/
+/* form loader sub name                                                       */
+/*----------------------------------------------------------------------------*/
+: >loadSubNm ( i -- s )
+
+  "sl" swap >str concat ".task" concat
+;
+
+/*----------------------------------------------------------------------------*/
+/* append row buffer to partition of given named table                        */
+/*----------------------------------------------------------------------------*/
+: loadAppendBuffer$ ( rowBuffer partitionNo "<tableNm>" -- true )
+
+tp: loadAppendBuffer$
+
+  // why:
+  //   loaderSub has forwarded a full rowBuffer which needs to be
+  //   appended to partition of table
+
+  // where:
+  //   in participant task running p.loop on participant thread;
+
+  // what:
+  //   find named table to get pointer to table
+  //   then append row buffer to partition of table
+
+  task.this task.thread thread.name@ 1 0 substr "p" streql assert
+
+  args.tracepoint if
+    dup "APPENDING ROWBUFFER " swap concat " on NODE " concat args.node >str concat .
+  then
+
+  // get ^table
+  find execute ( rb ptn table )
+
+  // append row buffer to partition of table
+  table.appendBuffer ( )
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* forward append of rowbuffer to participant for partition                   */
+/*----------------------------------------------------------------------------*/
+: ~loadAppendBuffer ( -- )
+
+tp: ~loadAppendBuffer
+
+  // why:
+  //   loaderSub has a full rowBuffer which needs to be sent to participant
+  //   to be appended to partition of table
+
+  // where:
+  //   in loadSub task running loadSub on general thread;
+  //   parent task is req.task running tableLoader;
+  //   reg0 has ^loaderSub
+
+  // what:
+  //   we need to have the coordinator send the loadAppendBuffer$ indirect call
+  //   to the participant via a sendParticipant call
+
+  task.this task.thread thread.name@ 13 0 substr "generalThread" streql assert
+  task.parent@ task.name@ "req.task" streql assert
+
+  //
+  // a) form the indirect call of loadAppendBuffer
+  //
+
+  $$
+    loaderSub.rowBuffer           ( $$ rb )
+    nullPtr loaderSub.rowBuffer!  // set working row buffer to null
+    loaderSub.partition           ( $$ rb ptn )
+    loaderSub.table table.name    ( $$ rb ptn "<tableNm>" )
+    "loadAppendBuffer$"           ( $$ rb ptn "<tableNm>" "loadAppendBuffer$" )
+
+tp: theIndirectCall
+
+  $$>valset                       ( <<loadAppendBuffer$>> )
+
+  //
+  // b) <<loadAppendBuffer$>> to be forwarded to one participant
+  //    via sendParticipant in the coordinatoor
+  //
+
+  // to which node/participant
+  loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )
+
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
+
+tp: theIndirectResult
+
+  // we expect loadAppendBuffer$ to return true
+  //assert
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* parallel sub-loading of file into table                                    */
+/*----------------------------------------------------------------------------*/
+: loadSub ( ^loaderSub -- )
+
+  // this is being run by a general thread on the originator node
+
+  // first set the taskset in this task
+  // needed when being resumed by coordinator
+
+  task.this task.thread thread.taskset@
+  task.this task.taskset!
+
+  // expand dic stack valset and set
+  valset> drop dicStack!
+
+  // expand args valset
+  valset> drop
+
+  reg.push
+
+  // the c++ code assumes ^loaderSub is in reg0
+  >reg0
+
+  // get table, tx and load map from parent loader
+  //   open the chunked file
+  //   read first chunk
+  loaderSub.begin
+
+  // load each record
+  begin
+
+    // attempt to fetch next record from file
+    loaderSub.fetchRecord
+
+    // process record
+    while
+
+      // hash the record to get partition
+      loaderSub.hashRecord
+
+      // attempt to insert record as row into working buffer for partition
+      loaderSub.insertRow?
+
+      // was buffer full?
+      not if
+
+tp: bufferFull
+
+        // append row buffer to table/partition/strand
+        ~loadAppendBuffer
+
+        // insert row into new working buffer
+        loaderSub.insertRow? assert
+      then
+  repeat // for all records in chunked file
+
+
+
+  // check for dangling buffers
+  args.partitions 0 do
+
+    // set the partition we are using
+    I loaderSub.partition!
+
+    // test for a dangling row buffer for parition I
+    loaderSub.rowBuffer
+    if
+      // append row buffer to table/partition/strand
+      ~loadAppendBuffer
+    then
+
+  loop
+
+  // close the file
+  loaderSub.end
+
+  // this sub has completed, decrement number of sub loaders still running
+  loaderSub.completed
+  if
+    // this loader sub is decider, signal parent loader
+    task.parent@ signal
+  then
+
+  reg.pop
+
+//traceOff
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
