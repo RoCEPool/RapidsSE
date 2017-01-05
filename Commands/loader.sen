@@ -54,9 +54,6 @@ timer: loadTimer
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // open the file to be loaded
-//r0 loader.openFile not if "file not opened" . rdrop exit then
-
   // begin a new transaction
   beginTransaction r0 loader.txref!
 
@@ -64,11 +61,10 @@ timer: loadTimer
 
   task.this grabMutex
 
-  N_GENERAL_THREADS r0 loader.subs!
+  N_GENERAL_THREADS setAcks
 
   N_GENERAL_THREADS 0 do
 
-//traceon
     $$ r2 loader.newSub $$>valset
 
     seitf.path@ $$>valset
@@ -84,7 +80,8 @@ timer: loadTimer
   begin r0 loader.findChunk while repeat
 
 
-  waitSignal
+  ackWait
+
   task.this dropMutex
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -104,8 +101,6 @@ timer: loadTimer
   loadTimer timer.millisecs .put "ms" .put .\n
 
   true
-
-//traceoff
 ;
 
 /*----------------------------------------------------------------------------*/

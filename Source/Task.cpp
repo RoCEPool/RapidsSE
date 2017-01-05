@@ -846,13 +846,11 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
   vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
   vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
-  vAddPrimitive("loader.subs!",       &vLoaderSubsStore,   false);
   vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
   vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
   
   vAddPrimitive("loaderSub.appendBuffer",&vLoaderSubAppendBuffer,false);
   vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
-  vAddPrimitive("loaderSub.completed",   &vLoaderSubCompleted,   false);
   vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
   vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
   vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
@@ -5949,26 +5947,6 @@ void Task::vLoaderPathStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* loader.subs! -- store number of subordinates into loader                   */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubsStore(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderSubsStore");
-  
-  i8 nSubs;
-  Object* pPtrLoader;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrLoader,nSubs) )
-    THROW_INVALID_DSTACK("loader.subs!");
-  
-  Loader* pLoader = _pLoader(pPtrLoader);
-  ASSERT(CN_LOADER == pLoader->eClass());
-  
-  pLoader->vSubs(nSubs);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* loader.table! -- store table into loader                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderTableStore(NNP_Task nnpTask)
@@ -6043,23 +6021,6 @@ void Task::vLoaderSubBegin(NNP_Task nnpTask)
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   pLoaderSub->vBegin();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* loaderSub.completed -- this sub-loader has completed                       */
-/*----------------------------------------------------------------------------*/
-void Task::vLoaderSubCompleted(NNP_Task nnpTask)
-{
-  ENTRY("vLoaderSubCompleted");
-  
-  LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
-  ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
-  
-  bool bIsDecider = pLoaderSub->bCompleted();
-  
-  nnpTask->m_xDataStack.vPush(bIsDecider);
   
   EXIT();
 }

@@ -176,7 +176,6 @@ tp: bufferFull
   repeat // for all records in chunked file
 
 
-
   // check for dangling buffers
   args.partitions 0 do
 
@@ -195,12 +194,8 @@ tp: bufferFull
   // close the file
   loaderSub.end
 
-  // this sub has completed, decrement number of sub loaders still running
-  loaderSub.completed
-  if
-    // this loader sub is decider, signal parent loader
-    task.parent@ signal
-  then
+  // this sub has completed, ack the parent loader
+  task.parent@ ack
 
   reg.pop
 

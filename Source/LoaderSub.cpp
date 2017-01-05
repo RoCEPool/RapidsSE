@@ -145,21 +145,6 @@ void LoaderSub::vBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* this sub-loader has completed                                              */
-/*----------------------------------------------------------------------------*/
-bool LoaderSub::bCompleted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
-  
-  bool bIsDecider = m_pLoader->bSubCompleted();
-  
-  if (bIsDecider)
-    m_pLoadMap->vStats();
-  
-  return bIsDecider;
-}
-
-/*----------------------------------------------------------------------------*/
 /* end loading                                                                */
 /*----------------------------------------------------------------------------*/
 void LoaderSub::vEnd(void)

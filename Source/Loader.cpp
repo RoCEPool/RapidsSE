@@ -61,7 +61,6 @@ Loader::Loader(void)
   m_sPath    = "<none>";
   m_pTable   = nullptr;
   m_pTxRef   = nullptr;
-  m_zSubs    = 0;
   m_pLoadMap = new LoadMap;
   
   _checkInitialised_(CN_LOADER);
@@ -139,33 +138,6 @@ void Loader::vPath(s& sPath)
   m_sPath = sPath;
     
   m_pLoadMap->vFilePath(sPath);
-}
-
-/*----------------------------------------------------------------------------*/
-/* set number of subordinates                                                 */
-/*----------------------------------------------------------------------------*/
-void Loader::vSubs(i8 nSubs)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  m_zSubs = nSubs;
-}
-
-/*----------------------------------------------------------------------------*/
-/* subordinate completes, returns true if last one to complete                */
-/*----------------------------------------------------------------------------*/
-bool Loader::bSubCompleted(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
-  
-  bool bIsDecider;
-  
-  if (0 == --m_zSubs)
-    bIsDecider = true;
-  else
-    bIsDecider = false;
-  
-  return bIsDecider;
 }
 
 /*----------------------------------------------------------------------------*/

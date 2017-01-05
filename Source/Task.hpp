@@ -514,14 +514,12 @@ namespace Tasks
     static void vLoaderNew(NNP_Task nnpTask);
     static void vLoaderNewSub(NNP_Task nnpTask);
     static void vLoaderPathStore(NNP_Task nnpTask);
-    static void vLoaderSubsStore(NNP_Task nnpTask);
     static void vLoaderTableStore(NNP_Task nnpTask);
     static void vLoaderTxRefStore(NNP_Task nnpTask);
     
     // loader sub
     static void vLoaderSubAppendBuffer(NNP_Task nnpTask);
     static void vLoaderSubBegin(NNP_Task nnpTask);
-    static void vLoaderSubCompleted(NNP_Task nnpTask);
     static void vLoaderSubDelete(NNP_Task nnpTask);
     static void vLoaderSubEnd(NNP_Task nnpTask);
     static void vLoaderSubFetchRecord(NNP_Task nnpTask);

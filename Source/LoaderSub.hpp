@@ -40,7 +40,6 @@ namespace DBobjects
     
     void vAppendBuffer(void);
     void vBegin(void);
-    bool bCompleted(void);
     void vEnd(void);
     bool bFetchRecord(void);
     void vHashRecord(void);
