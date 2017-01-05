@@ -460,8 +460,6 @@ namespace Tasks
     static void vFlowHazard(NNP_Task nnpTask);
     static void vFlowHere(NNP_Task nnpTask);
     static void vFlowIf(NNP_Task nnpTask);
-    static void vFlowIterate(NNP_Task nnpTask);
-    static void vFlowIterate_RT_B(NNP_Task nnpTask);
     static void vFlowJump(NNP_Task nnpTask);
     static void vFlowJumpBegin_(NNP_Task nnpTask);
     static void vFlowJumpFalse(NNP_Task nnpTask);
