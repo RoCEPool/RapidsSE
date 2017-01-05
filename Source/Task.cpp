@@ -12686,7 +12686,10 @@ void Task::vToSEitf(NNP_Task nnpTask)
   if ( ! nnpTask->m_xDataStack.bPop(iVal) )
     THROW_INVALID_DSTACK(">seitf");
   
-  Object* pPtrSEitf = _pSEitf(iVal);
+  SEitf* pSEitf = _pSEitf(iVal);
+  RASSERT(pSEitf->eClass() == CN_SEITF);
+  
+  Object* pPtrSEitf = pSEitf;
   
   nnpTask->m_xDataStack.vPush(pPtrSEitf);
   
