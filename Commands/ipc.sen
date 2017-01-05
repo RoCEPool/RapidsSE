@@ -1,0 +1,18 @@
+/*============================================================================*/
+/* ipc.sen -- ipc primitives                                                  */
+/*============================================================================*/
+
+"ipc.sen" .verbose
+
+: grabMutex    ( -- ) task.this task.thread thread.mutexLock ;
+: dropMutex    ( -- ) task.this task.thread thread.mutexUnlock ;
+: getState     ( -- ) task.this task.state@ ;
+: setState     ( -- ) task.this task.state! ;
+: setAcks      ( -- ) task.this task.acks! ;
+: popQueue     ( -- ) task.this task.queue@ queue.pop ;
+: waitCond     ( -- ) task.this task.thread thread.condWait ;
+: signalParent ( -- ) task.parent@ task.thread thread.condSignal ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

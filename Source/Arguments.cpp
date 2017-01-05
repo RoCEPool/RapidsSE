@@ -15,7 +15,7 @@ Arguments::Arguments(void)
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
   m_pRegionAddr = C_ADDR_POOL;
-  m_sRegionName = "/RapidsSE_Instance1";
+  m_sRegionName = "/SE_0";
   m_iRegionSize = 1_GB * 4 ;
   m_nPartitions = 1;
   m_iNode       = 0;
