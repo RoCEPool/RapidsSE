@@ -114,7 +114,7 @@ int main(int argc, const char* argv[])
 //      if (xDir.bGetCurrent(sCurrent))
 //        printf("dir: %s\n",sCurrent.a());
 //    }
-    SePrompt* pSePrompt = new SePrompt(gxArguments.m_iPartition);
+    SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
   }
 

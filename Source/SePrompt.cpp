@@ -33,12 +33,12 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-SePrompt::SePrompt(i8 iPartition)
+SePrompt::SePrompt(void)
 : Object(CN_SEPROMPT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_iPartition = iPartition;
+  m_iPartition = 0;
 
   eEC eResult = RapidsSE_SEitfNew(gpAttachMap, (void**)&m_pSEitf,m_iPartition);
   ASSERT(EC_NONE == eResult);
