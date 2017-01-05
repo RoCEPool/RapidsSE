@@ -93,30 +93,22 @@ args.nodes ptrArray: senderQueues
 
 tp: >taskQueue
 
-  >r
-  r0 task.thread >r
-
-  // r0 has thread
-  // r1 has task
+  locals| targetTask |
 
   // grab the mutex of target task
-  r1 grabMutex
+  targetTask grabMutex
 
-  // append valset onto queue of given task
-  r1 task.queue@ queue.append
+  // append valset onto queue of target task
+  targetTask task.queue@ queue.append
 
   // signal the target task if it is waiting for a queued valset
-  r1 task.state@ TS_WAITING ==
+  targetTask task.state@ TS_WAITING ==
   if
-    r1 signalTask
+    targetTask signalTask
   then
 
   // drop the mutex of target task
-  r1 dropMutex
-
-  // drop thread and task
-  rdrop
-  rdrop
+  targetTask dropMutex
 ;
 
 /*----------------------------------------------------------------------------*/
