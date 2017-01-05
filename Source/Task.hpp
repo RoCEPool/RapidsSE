@@ -27,8 +27,8 @@ namespace Tasks
   /* 2 */ TS_EXITED,        // task has completed
   /* 3 */ TS_RUNNING,       // task is currenty being executed by Thread::vLoop
   /* 4 */ TS_SLEEPING,      // task is sleeping (not yet used)
-  /* 5 */ TS_WAITING_ACK,   // task is waiting on inter-task ack from other task
-  /* 6 */ TS_WAITING_QUEUE, // task is waiting on queue arrival
+  /* 5 */ TS_WAITING_ACK,   // task is waiting on ack from cooperating task
+  /* 6 */ TS_WAITING_SIGNAL,// task is waiting on signal indicating queue arrival
   /* 7 */ TS_YIELDED,       // task is yielded, not running and is in a TaskSet
   /* 8 */ TS_ENUMS
   };

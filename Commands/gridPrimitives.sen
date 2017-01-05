@@ -102,7 +102,7 @@ tp: >taskQueue
   targetTask appendQueue ( )
 
   // signal the target task if it is waiting for a valset to be queued
-  targetTask queueWaiting if
+  targetTask isSignalWaiting if
     targetTask signal ( )
   then
 
@@ -188,7 +188,7 @@ tp: grabbingMutex
 
   popQueue ( value true | false )
   not if
-    queueWait
+    signalWait
     popQueue assert
   then
 

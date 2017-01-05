@@ -4,7 +4,7 @@
 
 "ipc.sen" .verbose
 
-: running     ( task -- ) task.state@ TS_RUNNING == ;
+: isRunning   ( task -- ) task.state@ TS_RUNNING == ;
 
 : getState    ( -- ) task.this task.state@ ;
 : setState    ( -- ) task.this task.state! ;
@@ -19,12 +19,12 @@
 : grabMutex    ( task -- ) task.thread thread.mutexLock ;
 : waitSignal   ( -- ) task.this task.thread thread.condWait ;
 : dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
-: queueWaiting ( task -- ) task.state@ TS_WAITING_QUEUE == ;
+: isSignalWaiting ( task -- ) task.state@ TS_WAITING_SIGNAL == ;
 : signal       ( task -- ) task.thread thread.condSignal ;
 
-: queueWait    ( -- )
+: signalWait    ( -- )
 
-  TS_WAITING_QUEUE setState
+  TS_WAITING_SIGNAL setState
 
 tp: nowWaiting
 
