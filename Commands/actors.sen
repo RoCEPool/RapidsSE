@@ -8,7 +8,7 @@ int: queryCount
 
 "listerTask.sen"  >>:
 "monitorTask.sen" >>:
-"reclaimTask.sen" >>:
+//"reclaimTask.sen" >>:
 "requestTask.sen" >>:
 
 "generalThread.sen" >>:
@@ -27,7 +27,7 @@ int: queryCount
 
     snooze listerStart
     snooze monitorStart
-    snooze reclaimStart
+    //snooze reclaimStart
 
   then
 
