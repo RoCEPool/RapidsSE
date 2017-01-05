@@ -111,7 +111,7 @@ tp: >taskQueue
 ;
 
 /*----------------------------------------------------------------------------*/
-/* append indirect call onto queue of given task, suspend, move from a to p   */
+/* append indirect call onto queue of given task, wait for ack, move a to p   */
 /*----------------------------------------------------------------------------*/
 : >taskQueue;a> ( <<call>> task -- <<result>> )
 
@@ -123,8 +123,8 @@ tp: require1Ack
   // append indirect call onto queue of given task
   >taskQueue ( )
 
-  // this task suspends till ack'd. will have indirect result
-  suspend ( )
+  // this task waits till ack'd. will have indirect result
+  ackWait ( )
 
 tp: running
 
@@ -164,8 +164,8 @@ tp: sendingViaTask
   // enqueue valset onto queue of task
   >taskQueue
 
-  // this task suspends till ack'd. will have indirect result
-  suspend ( )
+  // this task waits till ack'd. will have indirect result on aux
+  ackWait ( )
 
 tp: running
 

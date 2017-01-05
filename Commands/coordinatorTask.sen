@@ -80,8 +80,8 @@ tp: acksExpected
 
   rdrop
 
-  // this task suspends till ack'd
-  suspend
+  // this task waits till ack'd
+  ackWait
 
   // move from aux to parameter stack
   a>
@@ -143,8 +143,8 @@ tp: expectingAcks
 
     enqueuePP
 
-    // this task suspends till ack'd
-    suspend
+    // this task waits till ack'd
+    ackWait
 
     // now running...
 
@@ -233,8 +233,8 @@ tp: expectingAcks
 
   enqueuePP
 
-  // this task suspends till ack'd
-  suspend
+  // this task waits till ack'd
+  ackWait
 
   // now running...
 
