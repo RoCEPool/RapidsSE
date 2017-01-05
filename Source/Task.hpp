@@ -807,7 +807,6 @@ namespace Tasks
     static void vTaskSocketStore(NNP_Task nnpTask);
     static void vTaskStateFetch(NNP_Task nnpTask);
     static void vTaskStateStore(NNP_Task nnpTask);
-    static void vTaskSuspend(NNP_Task nnpTask);
     static void vTaskTaskSetFetch(NNP_Task nnpTask);
     static void vTaskTaskSetStore(NNP_Task nnpTask);
     static void vTaskThread(NNP_Task nnpTask);

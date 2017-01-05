@@ -1109,7 +1109,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("task.socket!",    &vTaskSocketStore,  false);
   vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
   vAddPrimitive("task.state!",     &vTaskStateStore,   false);
-  vAddPrimitive("task.suspend",    &vTaskSuspend,      false);
   vAddPrimitive("task.taskset@",   &vTaskTaskSetFetch, false);
   vAddPrimitive("task.taskset!",   &vTaskTaskSetStore, false);
   vAddPrimitive("task.this",       &vTaskThis,         false);
@@ -11311,29 +11310,6 @@ ENTRY("vTaskStateStore");
     THROW_INVALID_DSTACK("task.state!");
   
   pThatTask->m_eState = (eTS)iState;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.suspend -- this task suspends                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskSuspend(NNP_Task nnpTask)
-{
-  ENTRY("vTaskSuspend");
-  
-//  vTrace("Task::vTaskSuspend: task %p %s suspends\n",
-//         *nnpTask,nnpTask->m_sName.a());
-  
-  if (gxArguments.m_bTracepoint)
-    vTrace("[N%lld:%8s\\%lld %-11s] suspends\n",
-           gxArguments.m_iNode,
-           nnpTask->m_sName.a(),
-           *nnpTask->m_zAcks,
-           nnpTask->m_sComment.a()
-           );
-  
-  nnpTask->vState(TS_SUSPENDED);
   
   EXIT();
 }

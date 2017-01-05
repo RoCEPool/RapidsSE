@@ -13,6 +13,8 @@
 : waitCond     ( -- ) task.this task.thread thread.condWait ;
 : signalParent ( -- ) task.parent@ task.thread thread.condSignal ;
 
+: suspendTask  ( -- ) TS_SUSPENDED setState ;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

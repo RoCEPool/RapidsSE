@@ -80,7 +80,7 @@ tp: acksExpected
 
   rdrop
 
-  task.suspend
+  suspendTask
 
   // move from aux to parameter stack
   a>
@@ -143,7 +143,7 @@ tp: expectingAcks
     enqueuePP
 
     // suspend here
-    task.suspend
+    suspendTask
 
     // now resumed...
 
@@ -233,7 +233,7 @@ tp: expectingAcks
   enqueuePP
 
   // suspend here
-  task.suspend
+  suspendTask
 
   // now resumed...
 
