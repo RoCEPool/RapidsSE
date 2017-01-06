@@ -101,7 +101,7 @@ tp: acksExpected
 tp: allResponded
 ;
 
-int: finalResult
+//int: finalResult
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 : sendParticipants ( <<!>> -- true ) // serial Form
@@ -127,7 +127,6 @@ tp: movedToRstack
     // set ack of 1 (because its the serial form)
     1 setAcks
 
-
     // get copy of nested valset << <<!>> <<caller>> >> from rstack
     2 rpick
 
@@ -152,7 +151,7 @@ tp: running
 
   // <<  v,n,t v,n,t ec,n,f v,n,t #n  t|f >>
 
-  true finalResult !
+  true locals| finalResult |
 
   $$
 tp: $$
@@ -175,14 +174,14 @@ tp: $$
 
     // check if value is t/f
     dup false == if
-      0 finalResult !
+      0 to finalResult
     then
 
   loop
 
   args.nodes
 
-  finalResult @
+  finalResult
 
 tp: alldone
 
