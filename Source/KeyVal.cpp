@@ -13,6 +13,8 @@ KeyVal* Structures::_pKeyVal(void* pAddr)
 {
   KeyVal* pKeyVal = reinterpret_cast<KeyVal*>(pAddr);
   
+  RASSERT( !pKeyVal || CN_KEYVAL == pKeyVal->eClass() );
+  
   return pKeyVal;
 }
 

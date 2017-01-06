@@ -13,7 +13,9 @@ KeyCpp* Structures::_pKeyCpp(void* pAddr)
 {
   KeyCpp* pKeyCpp = reinterpret_cast<KeyCpp*>(pAddr);
   
-  return pKeyCpp;
+  RASSERT( !pKeyCpp || CN_KEYCPP == pKeyCpp->eClass() );
+  
+ return pKeyCpp;
 }
 
 /*----------------------------------------------------------------------------*/

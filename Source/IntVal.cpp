@@ -11,6 +11,8 @@ IntVal* Values::_pIntVal(void* pAddr)
 {
   IntVal* pIntVal = reinterpret_cast<IntVal*>(pAddr);
   
+  RASSERT( !pIntVal || CN_INTVAL == pIntVal->eClass() );
+  
   return pIntVal;
 }
 
