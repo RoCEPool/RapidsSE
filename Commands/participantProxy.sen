@@ -13,15 +13,17 @@
 
 tp: participantProxy
 
-  // push a register frame
+  // push a register frame (holds CALLER etc)
   reg.push
 
-  >r ( actorNo )
-  >r ( )
+  locals| forwardTask actorNo |
+
+  //>r ( actorNo )
+  //>r ( )
   // r0 has actorNo (nodeNo)
   // r1 has forwardTask
 
-  task.this r0 ppTasks !
+  task.this actorNo ppTasks !
 
   begin
 
@@ -33,25 +35,24 @@ tp: participantProxy
     // set caller into reg0
     exeOne 
 
-    r0 args.node ==
+    actorNo args.node ==
     if
-      // this is pp0 on node 0
+      // forward to participant on local node
 
       addSetCaller
 
-      r1 >taskQueue;a>
+      forwardTask >taskQueue;a>
 
     else
-      // this is pp1 on node 0
+      // forward to participant on other node (via CP)
 
       addSetSender
 
-      r0 addPassOnToCp
+      actorNo addPassOnToCp
 
-      r0 >sndQueue;a>
+      actorNo >sndQueue;a>
 
     then
-
 
 tp: resumed
 
@@ -59,8 +60,8 @@ tp: resumed
 
   again
 
-  rdrop
-  rdrop
+  // rdrop
+  // rdrop
 
   // pop a register frame
   reg.pop
