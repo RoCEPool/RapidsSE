@@ -705,9 +705,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("cursor@",         &vCursorFetch,      false);
   vAddPrimitive("cursor!",         &vCursorStore,      false);
   
-  vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
-  vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
-  
   vAddPrimitive("ddlLock.dropRead", &vDdlLockDropRead,  false);
   vAddPrimitive("ddlLock.dropWrite",&vDdlLockDropWrite, false);
   vAddPrimitive("ddlLock.grabRead", &vDdlLockGrabRead,  false);
@@ -734,6 +731,10 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("dic.ref",         &vDicRef,           false);
   vAddPrimitive("dic.stack",       &vDicStack,         false);
 
+  vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
+  vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
+  
+  
   vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
   
   vAddPrimitive("dir.exists",      &vDirExists,        false);
@@ -768,17 +769,36 @@ void Task::vAddPrimitives(void)
   vAddPrimitive(".\\n",            &vDotNewline,       false);
   vAddPrimitive(".verbose",     &vDotVerbose,       false);
   
-  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
-  vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
-  vAddPrimitive("encodePushValue",     &vEncodePushValue,     false);
+  vAddPrimitive("stack.class",     &vDstackClass,      false);
+  vAddPrimitive("depth",           &vDstackDepth,      false);
+  vAddPrimitive("drop",            &vDstackDrop,       false);
+  vAddPrimitive("2drop",           &vDstackDropTwo,    false);
+  vAddPrimitive("dump",            &vDstackDump,       false);
+  vAddPrimitive("dup",             &vDstackDup,        false);
+  vAddPrimitive("?dup",            &vDstackDupNonZero, false);
+  vAddPrimitive("nip",             &vDstackNip,        false);
+  vAddPrimitive("over",            &vDstackOver,       false);
+  vAddPrimitive("pick",            &vDstackPick,       false);
+  vAddPrimitive("reverse",         &vDstackReverse,    false);
+  vAddPrimitive("roll",            &vDstackRoll,       false);
+  vAddPrimitive("-roll",           &vDstackRollInv,    false);
+  vAddPrimitive("rot",             &vDstackRot,        false);
+  vAddPrimitive("-rot",            &vDstackRotInv,     false);
+  vAddPrimitive("swap",            &vDstackSwap,       false);
+  vAddPrimitive("valset>",         &vDstackToValues,   false);
+  vAddPrimitive(">valset",         &vDstackToValSet,   false);
+  vAddPrimitive("tuck",            &vDstackTuck,       false);
   
   vAddPrimitive("again",               &vEncodeAgain,         true );
   vAddPrimitive("ahead",               &vEncodeAhead,         true );
+  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
+  vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
   vAddPrimitive("here",                &vEncodeHere,          false);
   vAddPrimitive("if",                  &vEncodeIf,            true );
   vAddPrimitive("loop",                &vEncodeLoop,          true );
   vAddPrimitive("+loop",               &vEncodeLoopPlus,      true );
   vAddPrimitive("next",                &vEncodeNext,          true );
+  vAddPrimitive("encodePushValue",     &vEncodePushValue,     false);
   vAddPrimitive("then",                &vEncodeThen,          true );
   vAddPrimitive("until",               &vEncodeUntil,         true );
   
@@ -921,26 +941,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   
-  vAddPrimitive("stack.class",     &vDstackClass,      false);
-  vAddPrimitive("depth",           &vDstackDepth,      false);
-  vAddPrimitive("drop",            &vDstackDrop,       false);
-  vAddPrimitive("2drop",           &vDstackDropTwo,    false);
-  vAddPrimitive("dump",            &vDstackDump,       false);
-  vAddPrimitive("dup",             &vDstackDup,        false);
-  vAddPrimitive("?dup",            &vDstackDupNonZero, false);
-  vAddPrimitive("nip",             &vDstackNip,        false);
-  vAddPrimitive("over",            &vDstackOver,       false);
-  vAddPrimitive("pick",            &vDstackPick,       false);
-  vAddPrimitive("reverse",         &vDstackReverse,    false);
-  vAddPrimitive("roll",            &vDstackRoll,       false);
-  vAddPrimitive("-roll",           &vDstackRollInv,    false);
-  vAddPrimitive("rot",             &vDstackRot,        false);
-  vAddPrimitive("-rot",            &vDstackRotInv,     false);
-  vAddPrimitive("swap",            &vDstackSwap,       false);
-  vAddPrimitive("valset>",         &vDstackToValues,   false);
-  vAddPrimitive(">valset",         &vDstackToValSet,   false);
-  vAddPrimitive("tuck",            &vDstackTuck,       false);
-  
   vAddPrimitive("i",               &vPushI,            false);
   vAddPrimitive("j",               &vPushJ,            false);
   vAddPrimitive("nullPtr",         &vPushNullPtr,      false);
@@ -1076,8 +1076,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("toDigitName", &vToDigitName, false);
   vAddPrimitive("rndStr",      &vRndStr,      false);
   vAddPrimitive("sprint",      &vSprint,      false);
-  
-  vAddPrimitive("s256.init", &vS256Init, false);
+  vAddPrimitive("s256.init",   &vS256Init,    false);
  
   vAddPrimitive("table.append",       &vTableAppend,       false);
   vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
