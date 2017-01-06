@@ -11,6 +11,8 @@ Graph* Structures::_pGraph(void* pAddr)
 {
   Graph* pGraph = reinterpret_cast<Graph*>(pAddr);
   
+  RASSERT( !pGraph || CN_GRAPH == pGraph->eClass() );
+  
   return pGraph;
 }
 

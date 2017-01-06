@@ -11,6 +11,8 @@ GraphNode* Structures::_pGraphNode(void* pAddr)
 {
   GraphNode* pGraphNode = reinterpret_cast<GraphNode*>(pAddr);
   
+  RASSERT( !pGraphNode || CN_GRAPHNODE == pGraphNode->eClass() );
+  
   return pGraphNode;
 }
 
