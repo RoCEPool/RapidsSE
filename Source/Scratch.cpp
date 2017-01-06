@@ -15,6 +15,8 @@ Scratch* Common::_pScratch(void* pAddress)
 {
   Scratch* pScratch = reinterpret_cast<Scratch*>(pAddress);
   
+  RASSERT( !pScratch || CN_SCRATCH == pScratch->eClass() );
+  
   return pScratch;
 }
 

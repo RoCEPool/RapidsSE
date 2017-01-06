@@ -17,6 +17,8 @@ SEitf* Interface::_pSEitf(void* pAddr)
 {
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pAddr);
   
+  RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
+  
   return pSEitf;
 }
 
@@ -26,6 +28,8 @@ SEitf* Interface::_pSEitf(void* pAddr)
 SEitf* Interface::_pSEitf(i8 iAddr)
 {
   SEitf* pSEitf = reinterpret_cast<SEitf*>(iAddr);
+  
+  RASSERT( !pSEitf || CN_SEITF == pSEitf->eClass() );
   
   return pSEitf;
 }

@@ -11,6 +11,8 @@ StrVal* Values::_pStrVal(void* pAddr)
 {
   StrVal* pStrVal = reinterpret_cast<StrVal*>(pAddr);
   
+  RASSERT( !pStrVal || CN_STRVAL == pStrVal->eClass() );
+  
   return pStrVal;
 }
 

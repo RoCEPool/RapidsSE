@@ -14,6 +14,8 @@ SEitfList* Interface::_pSEitfList(void* pAddr)
 {
   SEitfList* pSEitfList = reinterpret_cast<SEitfList*>(pAddr);
   
+  RASSERT( !pSEitfList || CN_SEITFLIST == pSEitfList->eClass() );
+  
   return pSEitfList;
 }
 

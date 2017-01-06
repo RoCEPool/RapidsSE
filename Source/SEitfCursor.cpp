@@ -14,6 +14,8 @@ SEitfCursor* Interface::_pSEitfCursor(void* pAddr)
 {
   SEitfCursor* pSEitfCursor = reinterpret_cast<SEitfCursor*>(pAddr);
   
+  RASSERT( !pSEitfCursor || CN_SEITFCURSOR == pSEitfCursor->eClass() );
+  
   return pSEitfCursor;
 }
 
