@@ -87,7 +87,7 @@ args.nodes ptrArray: senderQueues
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* append valset onto queue of given task and signal if needed                */
+/* append valset onto queue of given task and signal if its waiting           */
 /*----------------------------------------------------------------------------*/
 : >taskQueue ( valset task -- )
 
@@ -95,7 +95,7 @@ tp: >taskQueue
 
   locals| targetTask | ( valset )
 
-  // grab the mutex of target task
+  // grab mutex of target task
   targetTask grabMutex ( valset )
 
   // append valset onto queue of target task
@@ -106,7 +106,7 @@ tp: >taskQueue
     targetTask signal ( )
   then
 
-  // drop the mutex of target task
+  // drop mutex of target task
   targetTask dropMutex ( )
 ;
 
@@ -118,38 +118,38 @@ tp: >taskQueue
   // set this task to wait for 1 ack
   1 setAcks ( <<call>> task )
 
-tp: require1Ack
-
   // append indirect call onto queue of given task
   >taskQueue ( )
 
-  // this task waits till ack'd. will have indirect result
+  tp: ackWait
+
+  // this task waits till ack'd
   ackWait ( )
 
-tp: running
+  tp: running
 
-  // move from aux to parameter stack
+  // move indirect result from aux to data stack
   a> ( <<result>> )
 
 tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* put indirect call onto queue of sender                                     */
+/* put indirect call onto queue of sender task                                */
 /*----------------------------------------------------------------------------*/
 : >sndQueue ( <<call>> nodeNo -- )
 
   // get sender task
   senderTasks @ ( <<call>> task )
 
-tp: sendingViaTask
+  tp: sendingViaTask
 
   // enqueue valset onto queue of task
-  >taskQueue
+  >taskQueue ( )
 ;
 
 /*----------------------------------------------------------------------------*/
-/* put indirect call onto queue of sender, suspend, move from a to p          */
+/* put indirect call onto queue of sender task, suspend, move from a to p     */
 /*----------------------------------------------------------------------------*/
 : >sndQueue;a> ( <<call>> nodeNo -- )
 
@@ -164,12 +164,12 @@ tp: sendingViaTask
   // enqueue valset onto queue of task
   >taskQueue
 
-  // this task waits till ack'd. will have indirect result on aux
+  // this task waits till ack'd
   ackWait ( )
 
 tp: running
 
-  // move from aux to parameter stack
+  // move indirect result from aux to parameter stack
   a> ( <<result>> )
 
 tp: haveResultSet
@@ -180,25 +180,24 @@ tp: haveResultSet
 /*----------------------------------------------------------------------------*/
 : taskQueue> ( -- valset )
 
-//args.node 0 == if traceon then
+  tp: taskQueue>
 
-tp: grabbingMutex
-
+  // grab mutex of this task
   task.this grabMutex
 
+  // attempt to pop from this task's queue
   popQueue ( value true | false )
   not if
+    // queue empty; wait till signalled
     signalWait
+    // pop from this tasks queue
     popQueue assert
   then
 
-tp: droppingMutex
-
+  // grab mutex of this task
   task.this dropMutex
 
-tp: haveValset
-
-//args.node 0 == if traceoff then
+  tp: haveValset
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -211,7 +210,8 @@ tp: >callerAux
   // transfer to callers stack
   _CALLER ( <<result>> callingTask )
 
-tp: ontoCallersAux
+  tp: callingTask
+
   >auxStack ( )
 
   // ack caller
@@ -227,8 +227,8 @@ tp: ontoCallersAux
 : setCaller ( caller -- ; reg0 == caller )
 
   to_CALLER ( )
-tp: reg0HasCaller
 
+  tp: reg0HasCaller
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -237,24 +237,24 @@ tp: reg0HasCaller
 : setSender ( sender -- ; reg1 == sender )
 
   to_QUEUE ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
-tp: reg1HasSender
 
+  tp: reg1HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
 /* pass indirect call onto coordinator proxy                                  */
 /*----------------------------------------------------------------------------*/
-: passOnToCP
+: passOnToCP ( valset nodeNo -- )
 
-  cpTasks @
+  cpTasks @ ( valset task )
 
-  >taskQueue
+  >taskQueue ( )
 ;
 
 /*----------------------------------------------------------------------------*/
 /* pass indirect result back to participant proxy                             */
 /*----------------------------------------------------------------------------*/
-: passBackToPP ( <<result>> nodeNo -- true )
+: passBackToPP ( <<result>> nodeNo -- )
 
   reg.push
 
@@ -263,7 +263,6 @@ tp: reg1HasSender
   >callerAux
 
   reg.pop
-
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -492,9 +491,9 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 /* spawn thread of an actor                                                   */
 /*----------------------------------------------------------------------------*/
-: actor.spawn ( ... nArgs "<actorNm>" "<loopNm>" -- )
+: actor.spawn ( ... nArgs "<loopNm>" "<actorNm>" -- )
 
-  >r ( ... nArgs "<actorNm>" )
+  >r ( ... nArgs "<loopNm>" )
 
   // seed the task
   r@ actor.task task.seed ( )

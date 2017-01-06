@@ -29,7 +29,7 @@ tp: participantProxy
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
-    // pop valset off queue and push onto this stack
+    // pop valset off this tasks queue
     taskQueue> ( valset )
 
     // set caller into reg0
