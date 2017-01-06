@@ -16,6 +16,8 @@ Loader* DBobjects::_pLoader(void* pAddr)
 {
   Loader* pLoader = reinterpret_cast<Loader*>(pAddr);
   
+  RASSERT( !pLoader || CN_LOADER == pLoader->eClass() );
+  
   return pLoader;
 }
 

@@ -13,9 +13,11 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 LoaderSub* DBobjects::_pLoaderSub(void* pAddr)
 {
-  LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pAddr);
+  LoaderSub* pLoaderSub = reinterpret_cast<LoaderSub*>(pAddr);
   
-  return pLoader;
+  RASSERT( !pLoaderSub || CN_LOADERSUB == pLoaderSub->eClass() );
+  
+  return pLoaderSub;
 }
 
 /*----------------------------------------------------------------------------*/

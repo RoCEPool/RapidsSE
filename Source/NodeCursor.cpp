@@ -15,6 +15,8 @@ NodeCursor* GridModel::_pNodeCursor(void* pAddr)
 {
   NodeCursor* pNodeCursor = reinterpret_cast<NodeCursor*>(pAddr);
   
+  RASSERT( !pNodeCursor || CN_NODECURSOR == pNodeCursor->eClass() );
+  
   return pNodeCursor;
 }
 

@@ -13,9 +13,11 @@ extern Arguments gxArguments;
 /*----------------------------------------------------------------------------*/
 LoadMap* DBobjects::_pSeekMap(void* pAddr)
 {
-  LoadMap* pSeekMap = reinterpret_cast<LoadMap*>(pAddr);
+  LoadMap* pLoadMap = reinterpret_cast<LoadMap*>(pAddr);
   
-  return pSeekMap;
+  RASSERT( !pLoadMap || CN_LOADMAP == pLoadMap->eClass() );
+  
+  return pLoadMap;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,6 +12,8 @@ Lock* Common::_pLock(void* pAddr)
 {
   Lock* pLock = reinterpret_cast<Lock*>(pAddr);
   
+  RASSERT( !pLock || CN_LOCK == pLock->eClass() );
+  
   return pLock;
 }
 

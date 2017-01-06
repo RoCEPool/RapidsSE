@@ -11,6 +11,8 @@ Node* GridModel::_pNode(void* pAddr)
 {
   Node* pNode = reinterpret_cast<Node*>(pAddr);
   
+  RASSERT( !pNode || CN_NODE == pNode->eClass() );
+  
   return pNode;
 }
 
