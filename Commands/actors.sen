@@ -9,7 +9,7 @@
 //"reclaimTask.sen" >>:
 "requestTask.sen" >>:
 
-"generalThread.sen" >>:
+"generalThreads.sen" >>:
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */
@@ -20,7 +20,7 @@
 
   args.bgtasks if
 
-    snooze generalThreadStart
+    snooze generalThreadsStart
 
     snooze listerStart
     snooze monitorStart
