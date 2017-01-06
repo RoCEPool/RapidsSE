@@ -13,6 +13,8 @@ RowBuffer* DBobjects::_pRowBuffer(void* pAddr)
 {
   RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(pAddr);
   
+  RASSERT( !pRowBuffer || CN_ROWBUFFER == pRowBuffer->eClass() );
+  
   return pRowBuffer;
 }
 
@@ -97,7 +99,8 @@ RowBuffer* RowBuffer::pNewRowBuffer(void)
   if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
     return nullptr;
   
-  RowBuffer* pRowBuffer = _pRowBuffer(Heap::pAllocate(CN_ROWBUFFER));
+  RowBuffer* pRowBuffer = reinterpret_cast<RowBuffer*>(
+                            Heap::pAllocate(CN_ROWBUFFER));
   if (! pRowBuffer)
     return nullptr;
   

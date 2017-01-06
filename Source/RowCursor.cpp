@@ -13,6 +13,8 @@ RowCursor* DBobjects::_pRowCursor(void* pAddr)
 {
   RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(pAddr);
   
+  RASSERT( !pRowCursor || CN_ROWCURSOR == pRowCursor->eClass() );
+  
   return pRowCursor;
 }
 

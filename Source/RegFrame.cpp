@@ -13,6 +13,8 @@ RegFrame* Tasks::_pRegFrame(void* pAddr)
 {
   RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(pAddr);
   
+  RASSERT( !pRegFrame || CN_REGFRAME == pRegFrame->eClass() );
+
   return pRegFrame;
 }
 
@@ -23,7 +25,7 @@ void* RegFrame::operator new(size_t iSize)
 {
   RASSERT(iSize);
   
-  RegFrame* pRegFrame = _pRegFrame(Heap::pAllocate(CN_REGFRAME));
+  void* pRegFrame = Heap::pAllocate(CN_REGFRAME);
   
   return pRegFrame;
 }
