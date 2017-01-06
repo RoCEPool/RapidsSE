@@ -15,6 +15,9 @@ extern Heap* gpSmallHeap;
 Dir* Common::_pDir(void* pAddr)
 {
   Dir* pDir = reinterpret_cast<Dir*>(pAddr);
+  
+  RASSERT( !pDir || CN_DIR == pDir->eClass() );
+  
   return pDir;
 }
 

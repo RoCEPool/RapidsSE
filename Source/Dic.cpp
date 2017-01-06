@@ -14,8 +14,9 @@ extern BufferPool* gpBufferPool;
 Dic* Dictionaries::_pDic(void* pAddr)
 {
   Dic* pDic = reinterpret_cast<Dic*>(pAddr);
-  ASSERT(pDic);
-  ASSERT(CN_DIC == pDic->eClass());
+  
+  RASSERT( !pDic || CN_DIC == pDic->eClass() );
+
   return pDic;
 }
 

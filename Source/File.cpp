@@ -45,6 +45,8 @@ File* Common::_pFile(void* pAddr)
 {
   File* pFile = reinterpret_cast<File*>(pAddr);
   
+  RASSERT( !pFile || CN_FILE == pFile->eClass() );
+  
   return pFile;
 }
 
