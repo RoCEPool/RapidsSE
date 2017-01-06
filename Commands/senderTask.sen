@@ -7,12 +7,14 @@
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
-: >send
+: >send ( valset -- )
 
-tp: sendingValset
+  task.this task.socket@
 
-  task.this task.socket@  ( valset socket )
-  socket.send             ( bool )
+  tp: sending
+
+  socket.send ( bool )
+
   not if
     "send failure" . ( 0/1 )
   then
@@ -21,7 +23,7 @@ tp: sendingValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* sender task processing                                                     */
+/* sender task processing loop                                                */
 /*----------------------------------------------------------------------------*/
 : snd.loop ( socket -- )
 
