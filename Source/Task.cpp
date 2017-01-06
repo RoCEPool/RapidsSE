@@ -915,25 +915,25 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("process.quit",    &vProcessQuit,      false);
   vAddPrimitive("process.testPid", &vProcessTestPid,   false);
   
-  vAddPrimitive("stack.class",     &vPstackClass,      false);
-  vAddPrimitive("depth",           &vPstackDepth,      false);
-  vAddPrimitive("drop",            &vPstackDrop,       false);
-  vAddPrimitive("2drop",           &vPstackDropTwo,    false);
-  vAddPrimitive("dump",            &vPstackDump,       false);
-  vAddPrimitive("dup",             &vPstackDup,        false);
-  vAddPrimitive("?dup",            &vPstackDupNonZero, false);
-  vAddPrimitive("nip",             &vPstackNip,        false);
-  vAddPrimitive("over",            &vPstackOver,       false);
-  vAddPrimitive("pick",            &vPstackPick,       false);
-  vAddPrimitive("reverse",         &vPstackReverse,    false);
-  vAddPrimitive("roll",            &vPstackRoll,       false);
-  vAddPrimitive("-roll",           &vPstackRollInv,    false);
-  vAddPrimitive("rot",             &vPstackRot,        false);
-  vAddPrimitive("-rot",            &vPstackRotInv,     false);
-  vAddPrimitive("swap",            &vPstackSwap,       false);
-  vAddPrimitive("valset>",         &vPstackToValues,   false);
-  vAddPrimitive(">valset",         &vPstackToValSet,   false);
-  vAddPrimitive("tuck",            &vPstackTuck,       false);
+  vAddPrimitive("stack.class",     &vDstackClass,      false);
+  vAddPrimitive("depth",           &vDstackDepth,      false);
+  vAddPrimitive("drop",            &vDstackDrop,       false);
+  vAddPrimitive("2drop",           &vDstackDropTwo,    false);
+  vAddPrimitive("dump",            &vDstackDump,       false);
+  vAddPrimitive("dup",             &vDstackDup,        false);
+  vAddPrimitive("?dup",            &vDstackDupNonZero, false);
+  vAddPrimitive("nip",             &vDstackNip,        false);
+  vAddPrimitive("over",            &vDstackOver,       false);
+  vAddPrimitive("pick",            &vDstackPick,       false);
+  vAddPrimitive("reverse",         &vDstackReverse,    false);
+  vAddPrimitive("roll",            &vDstackRoll,       false);
+  vAddPrimitive("-roll",           &vDstackRollInv,    false);
+  vAddPrimitive("rot",             &vDstackRot,        false);
+  vAddPrimitive("-rot",            &vDstackRotInv,     false);
+  vAddPrimitive("swap",            &vDstackSwap,       false);
+  vAddPrimitive("valset>",         &vDstackToValues,   false);
+  vAddPrimitive(">valset",         &vDstackToValSet,   false);
+  vAddPrimitive("tuck",            &vDstackTuck,       false);
   
   vAddPrimitive("i",               &vPushI,            false);
   vAddPrimitive("j",               &vPushJ,            false);
@@ -2926,7 +2926,7 @@ void Task::vAstackToValSet(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vAstackToValues(NNP_Task nnpTask)
 {
-  ENTRY("vPstackToValues");
+  ENTRY("vDstackToValues");
   
   ValSet xValSet;
   
@@ -2949,7 +2949,7 @@ void Task::vAstackToValues(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >a -- move value from pstack to astack                                     */
+/* >a -- move value from dstack to astack                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackToA(NNP_Task nnpTask)
 {
@@ -2965,7 +2965,7 @@ void Task::vAstackToA(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* a> -- move value from astack to pstack                                     */
+/* a> -- move value from astack to dstack                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackToP(NNP_Task nnpTask)
 {
@@ -5115,7 +5115,7 @@ void Task::vFlowLoop(NNP_Task nnpTask)
     pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
   }
   
-  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
+  pCurrentWord->vEncode("2r@"); // copy index limit to dstack
   pCurrentWord->vEncode(">");   // test for limit > index
   
   if (iIsDo) {
@@ -5163,7 +5163,7 @@ void Task::vFlowLoopPlus(NNP_Task nnpTask)
     pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
   }
   
-  pCurrentWord->vEncode("2r@"); // copy index limit to pstack
+  pCurrentWord->vEncode("2r@"); // copy index limit to dstack
   pCurrentWord->vEncode(">");   // test for limit > index
   
   if (iIsDo) {
@@ -5199,7 +5199,7 @@ void Task::vFlowNext(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("loop");
   pDoLimitTest->m_pJumpTo = pCurrentWord->pLastCell();
   
-  pCurrentWord->vEncode("r@"); // copy index limit to pstack
+  pCurrentWord->vEncode("r@"); // copy index limit to dstack
   
   pCurrentWord->vEncode("jumpTrue",pDoLimitTest+1);
   
@@ -6291,7 +6291,7 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
 // locals: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* local.fetch -- push locals[n] onto pstack                                  */
+/* local.fetch -- push locals[n] onto dstack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalFetch(NNP_Task nnpTask)
 {
@@ -6312,7 +6312,7 @@ void Task::vLocalFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* localStore -- pop pstack into locals[n]                                    */
+/* localStore -- pop dstack into locals[n]                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vLocalStore(NNP_Task nnpTask)
 {
@@ -6379,7 +6379,7 @@ ENTRY("vLocalsBar");
     pWordLocal->vEncode("local.fetch");
     pWordLocal->vEncode("exit");
 
-    // initialise the local from pstack
+    // initialise the local from dstack
     pCurrentWord->vEncode("pushValue",&xValWsp);
     pCurrentWord->vEncode("local.store");
     
@@ -7130,14 +7130,14 @@ ENTRY("vProcessTestPid");
   EXIT();
 }
 
-// pstack: /////////////////////////////////////////////////////////////////////
+// dstack: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* stack.class -- get class of nth value on stack                             */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackClass(NNP_Task nnpTask)
+void Task::vDstackClass(NNP_Task nnpTask)
 {
-  ENTRY("vPstackClass");
+  ENTRY("vDstackClass");
   
   i8 nTh;
   if ( ! nnpTask->m_xDataStack.bPop(nTh) )
@@ -7157,9 +7157,9 @@ void Task::vPstackClass(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* depth -- push depth of parameters stack onto stack                         */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackDepth(NNP_Task nnpTask)
+void Task::vDstackDepth(NNP_Task nnpTask)
 {
-  ENTRY("vPstackDepth");
+  ENTRY("vDstackDepth");
   
   i8 iDepth = nnpTask->m_xDataStack.iValues();
   
@@ -7171,9 +7171,9 @@ void Task::vPstackDepth(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* drop -- discard top value off stack                                        */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackDrop(NNP_Task nnpTask)
+void Task::vDstackDrop(NNP_Task nnpTask)
 {
-  ENTRY("vPstackDrop");
+  ENTRY("vDstackDrop");
   
   // should just discard on stack
   
@@ -7187,9 +7187,9 @@ void Task::vPstackDrop(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* 2drop -- discard top two values off stack                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackDropTwo(NNP_Task nnpTask)
+void Task::vDstackDropTwo(NNP_Task nnpTask)
 {
-  ENTRY("vPstackDrop");
+  ENTRY("vDstackDrop");
   
   // should just discard on stack
   
@@ -7204,9 +7204,9 @@ void Task::vPstackDropTwo(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dup -- dup top of param stack                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackDup(NNP_Task nnpTask)
+void Task::vDstackDup(NNP_Task nnpTask)
 {
-  ENTRY("vPstackDup");
+  ENTRY("vDstackDup");
   
   // could just copy from stack back into stack
   
@@ -7223,9 +7223,9 @@ void Task::vPstackDup(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* ?dup -- dup top of param stack if non zero                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackDupNonZero(NNP_Task nnpTask)
+void Task::vDstackDupNonZero(NNP_Task nnpTask)
 {
-  ENTRY("vPstackDupNonZero");
+  ENTRY("vDstackDupNonZero");
   
   // could just copy from stack back into stack
   
@@ -7246,9 +7246,9 @@ void Task::vPstackDupNonZero(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dump -- dump top of param stack                                            */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackDump(NNP_Task nnpTask)
+void Task::vDstackDump(NNP_Task nnpTask)
 {
-  ENTRY("vPstackDump");
+  ENTRY("vDstackDump");
   
   s8K sWorkspace;
   
@@ -7284,9 +7284,9 @@ void Task::vPstackDump(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* nip -- drop the 2nd value from the stack ( B A -- A )                      */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackNip(NNP_Task nnpTask)
+void Task::vDstackNip(NNP_Task nnpTask)
 {
-  ENTRY("vPstackNip");
+  ENTRY("vDstackNip");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -7302,9 +7302,9 @@ void Task::vPstackNip(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* over -- place copy of 2nd value on top stack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackOver(NNP_Task nnpTask)
+void Task::vDstackOver(NNP_Task nnpTask)
 {
-  ENTRY("vPstackOver");
+  ENTRY("vDstackOver");
   
   // could do this directly on stack
   
@@ -7320,9 +7320,9 @@ void Task::vPstackOver(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* pick -- place copy of nth value in stack onto stack                        */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackPick(NNP_Task nnpTask)
+void Task::vDstackPick(NNP_Task nnpTask)
 {
-  ENTRY("vPstackPick");
+  ENTRY("vDstackPick");
   
   i8 iPick;
   if ( ! nnpTask->m_xDataStack.bPopParamInt(iPick) )
@@ -7342,9 +7342,9 @@ void Task::vPstackPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* reverse -- reverse stack values ( ... D C B A n -- A B C D ... )           */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackReverse(NNP_Task nnpTask)
+void Task::vDstackReverse(NNP_Task nnpTask)
 {
-  ENTRY("vPstackReverse");
+  ENTRY("vDstackReverse");
   
   ValWsp xVal0;
   ValWsp xVal1;
@@ -7376,9 +7376,9 @@ void Task::vPstackReverse(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* roll -- roll top stack values at n ( ... D C B A n -- A ... D C B )        */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackRoll(NNP_Task nnpTask)
+void Task::vDstackRoll(NNP_Task nnpTask)
 {
-  ENTRY("vPstackRoll");
+  ENTRY("vDstackRoll");
   
   ValWsp xValA;
   ValWsp xValX;
@@ -7412,9 +7412,9 @@ void Task::vPstackRoll(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* -roll -- inverse roll top stack values at n ( Z ... B A n -- ... B A Z )   */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackRollInv(NNP_Task nnpTask)
+void Task::vDstackRollInv(NNP_Task nnpTask)
 {
-  ENTRY("vPstackRollInv");
+  ENTRY("vDstackRollInv");
   
   ValWsp xValZ;
   ValWsp xValX;
@@ -7449,9 +7449,9 @@ void Task::vPstackRollInv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* rot -- rotate top 3 values ( C B A -- A C B )                              */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackRot(NNP_Task nnpTask)
+void Task::vDstackRot(NNP_Task nnpTask)
 {
-  ENTRY("vPstackRot");
+  ENTRY("vDstackRot");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -7470,9 +7470,9 @@ void Task::vPstackRot(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* -rot -- inverse rotate top 3 values ( C B A -- B A C )                     */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackRotInv(NNP_Task nnpTask)
+void Task::vDstackRotInv(NNP_Task nnpTask)
 {
-  ENTRY("vPstackRotInv");
+  ENTRY("vDstackRotInv");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -7491,9 +7491,9 @@ void Task::vPstackRotInv(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* swap -- swap top two values on param stack                                 */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackSwap(NNP_Task nnpTask)
+void Task::vDstackSwap(NNP_Task nnpTask)
 {
-  ENTRY("vPstackSwap");
+  ENTRY("vDstackSwap");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -7508,11 +7508,11 @@ void Task::vPstackSwap(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >valset -- collapse values on pstack to a valset                           */
+/* >valset -- collapse values on dstack to a valset                           */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackToValSet(NNP_Task nnpTask)
+void Task::vDstackToValSet(NNP_Task nnpTask)
 {
-  ENTRY("vPstackToValSet");
+  ENTRY("vDstackToValSet");
   
   i8 nVal;
   
@@ -7542,11 +7542,11 @@ void Task::vPstackToValSet(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >values -- expand valset to values on pstack                               */
+/* >values -- expand valset to values on dstack                               */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackToValues(NNP_Task nnpTask)
+void Task::vDstackToValues(NNP_Task nnpTask)
 {
-  ENTRY("vPstackToValues");
+  ENTRY("vDstackToValues");
   
   ValSet xValSet;
   
@@ -7571,9 +7571,9 @@ void Task::vPstackToValues(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* tuck -- copy the first stack value below second ( B A -- A B A )           */
 /*----------------------------------------------------------------------------*/
-void Task::vPstackTuck(NNP_Task nnpTask)
+void Task::vDstackTuck(NNP_Task nnpTask)
 {
-  ENTRY("vPstackTuck");
+  ENTRY("vDstackTuck");
   
   ValWsp xValA;
   ValWsp xValB;
@@ -7782,7 +7782,7 @@ ENTRY("vRegPush");
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg0 -- push reg0 onto pstack                                              */
+/* reg0 -- push reg0 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg0(NNP_Task nnpTask)
 {
@@ -7799,7 +7799,7 @@ ENTRY("vRegReg0");
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg1 -- push reg1 onto pstack                                              */
+/* reg1 -- push reg1 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg1(NNP_Task nnpTask)
 {
@@ -7816,7 +7816,7 @@ void Task::vRegReg1(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg2 -- push reg2 onto pstack                                              */
+/* reg2 -- push reg2 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg2(NNP_Task nnpTask)
 {
@@ -7833,7 +7833,7 @@ void Task::vRegReg2(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg3 -- push reg3 onto pstack                                              */
+/* reg3 -- push reg3 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg3(NNP_Task nnpTask)
 {
@@ -7850,7 +7850,7 @@ void Task::vRegReg3(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg4 -- push reg4 onto pstack                                              */
+/* reg4 -- push reg4 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg4(NNP_Task nnpTask)
 {
@@ -7867,7 +7867,7 @@ void Task::vRegReg4(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg5 -- push reg5 onto pstack                                              */
+/* reg5 -- push reg5 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg5(NNP_Task nnpTask)
 {
@@ -7884,7 +7884,7 @@ void Task::vRegReg5(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg6 -- push reg6 onto pstack                                              */
+/* reg6 -- push reg6 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg6(NNP_Task nnpTask)
 {
@@ -7901,7 +7901,7 @@ void Task::vRegReg6(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg7 -- push reg7 onto pstack                                              */
+/* reg7 -- push reg7 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg7(NNP_Task nnpTask)
 {
@@ -7920,7 +7920,7 @@ void Task::vRegReg7(NNP_Task nnpTask)
 // object: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* reg8 -- push reg8 onto pstack                                              */
+/* reg8 -- push reg8 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg8(NNP_Task nnpTask)
 {
@@ -7937,7 +7937,7 @@ void Task::vRegReg8(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reg9 -- push reg9 onto pstack                                              */
+/* reg9 -- push reg9 onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegReg9(NNP_Task nnpTask)
 {
@@ -7954,7 +7954,7 @@ void Task::vRegReg9(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regA -- push regA onto pstack                                              */
+/* regA -- push regA onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegA(NNP_Task nnpTask)
 {
@@ -7971,7 +7971,7 @@ void Task::vRegRegA(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regB -- push regB onto pstack                                              */
+/* regB -- push regB onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegB(NNP_Task nnpTask)
 {
@@ -7988,7 +7988,7 @@ void Task::vRegRegB(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regC -- push regC onto pstack                                              */
+/* regC -- push regC onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegC(NNP_Task nnpTask)
 {
@@ -8005,7 +8005,7 @@ void Task::vRegRegC(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regD -- push regD onto pstack                                              */
+/* regD -- push regD onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegD(NNP_Task nnpTask)
 {
@@ -8022,7 +8022,7 @@ void Task::vRegRegD(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regE -- push regE onto pstack                                              */
+/* regE -- push regE onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegE(NNP_Task nnpTask)
 {
@@ -8039,7 +8039,7 @@ void Task::vRegRegE(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regF -- push regF onto pstack                                              */
+/* regF -- push regF onto dstack                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegF(NNP_Task nnpTask)
 {
@@ -8056,7 +8056,7 @@ void Task::vRegRegF(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* regN -- push reg[n] onto pstack                                            */
+/* regN -- push reg[n] onto dstack                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vRegRegNth(NNP_Task nnpTask)
 {
@@ -8077,7 +8077,7 @@ void Task::vRegRegNth(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg0 -- pop pstack into reg0                                              */
+/* >reg0 -- pop dstack into reg0                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg0(NNP_Task nnpTask)
 {
@@ -8094,7 +8094,7 @@ ENTRY("vRegToReg0");
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg1 -- pop pstack into reg1                                              */
+/* >reg1 -- pop dstack into reg1                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg1(NNP_Task nnpTask)
 {
@@ -8111,7 +8111,7 @@ void Task::vRegToReg1(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg2 -- pop pstack into reg2                                              */
+/* >reg2 -- pop dstack into reg2                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg2(NNP_Task nnpTask)
 {
@@ -8128,7 +8128,7 @@ void Task::vRegToReg2(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg3 -- pop pstack into reg3                                              */
+/* >reg3 -- pop dstack into reg3                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg3(NNP_Task nnpTask)
 {
@@ -8145,7 +8145,7 @@ void Task::vRegToReg3(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg4 -- pop pstack into reg4                                              */
+/* >reg4 -- pop dstack into reg4                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg4(NNP_Task nnpTask)
 {
@@ -8162,7 +8162,7 @@ void Task::vRegToReg4(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg5 -- pop pstack into reg5                                              */
+/* >reg5 -- pop dstack into reg5                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg5(NNP_Task nnpTask)
 {
@@ -8179,7 +8179,7 @@ void Task::vRegToReg5(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg6 -- pop pstack into reg6                                              */
+/* >reg6 -- pop dstack into reg6                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg6(NNP_Task nnpTask)
 {
@@ -8196,7 +8196,7 @@ void Task::vRegToReg6(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg7 -- pop pstack into reg7                                              */
+/* >reg7 -- pop dstack into reg7                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg7(NNP_Task nnpTask)
 {
@@ -8213,7 +8213,7 @@ void Task::vRegToReg7(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg8 -- pop pstack into reg8                                              */
+/* >reg8 -- pop dstack into reg8                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg8(NNP_Task nnpTask)
 {
@@ -8230,7 +8230,7 @@ void Task::vRegToReg8(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >reg9 -- pop pstack into reg9                                              */
+/* >reg9 -- pop dstack into reg9                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToReg9(NNP_Task nnpTask)
 {
@@ -8247,7 +8247,7 @@ void Task::vRegToReg9(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regA -- pop pstack into regA                                              */
+/* >regA -- pop dstack into regA                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegA(NNP_Task nnpTask)
 {
@@ -8264,7 +8264,7 @@ void Task::vRegToRegA(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regB -- pop pstack into regB                                              */
+/* >regB -- pop dstack into regB                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegB(NNP_Task nnpTask)
 {
@@ -8281,7 +8281,7 @@ void Task::vRegToRegB(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regC -- pop pstack into regC                                              */
+/* >regC -- pop dstack into regC                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegC(NNP_Task nnpTask)
 {
@@ -8298,7 +8298,7 @@ void Task::vRegToRegC(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regD -- pop pstack into regD                                              */
+/* >regD -- pop dstack into regD                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegD(NNP_Task nnpTask)
 {
@@ -8315,7 +8315,7 @@ void Task::vRegToRegD(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regE -- pop pstack into regE                                              */
+/* >regE -- pop dstack into regE                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegE(NNP_Task nnpTask)
 {
@@ -8332,7 +8332,7 @@ void Task::vRegToRegE(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regF -- pop pstack into regF                                              */
+/* >regF -- pop dstack into regF                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegF(NNP_Task nnpTask)
 {
@@ -8349,7 +8349,7 @@ void Task::vRegToRegF(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >regN -- pop pstack into regN                                              */
+/* >regN -- pop dstack into regN                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vRegToRegNth(NNP_Task nnpTask)
 {
@@ -9013,7 +9013,7 @@ void Task::vRstackSwap(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r> -- move value from rstack to pstack                                     */
+/* r> -- move value from rstack to dstack                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackToP(NNP_Task nnpTask)
 {
@@ -9029,7 +9029,7 @@ void Task::vRstackToP(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >r -- move value from pstack to rstack                                     */
+/* >r -- move value from dstack to rstack                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackToR(NNP_Task nnpTask)
 {
@@ -9045,7 +9045,7 @@ void Task::vRstackToR(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* 2>r -- move two values from pstack to rstack preserving order              */
+/* 2>r -- move two values from dstack to rstack preserving order              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackToRTwo(NNP_Task nnpTask)
 {

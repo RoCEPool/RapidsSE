@@ -594,26 +594,26 @@ namespace Tasks
     static void vProcessQuit(NNP_Task nnpTask);
     static void vProcessTestPid(NNP_Task nnpTask);
     
-    // pstack
-    static void vPstackClass(NNP_Task nnpTask);                 //! DUP OF class@
-    static void vPstackDepth(NNP_Task nnpTask);
-    static void vPstackDrop(NNP_Task nnpTask);
-    static void vPstackDropTwo(NNP_Task nnpTask);
-    static void vPstackDump(NNP_Task nnpTask);
-    static void vPstackDup(NNP_Task nnpTask);
-    static void vPstackDupNonZero(NNP_Task nnpTask);
-    static void vPstackNip(NNP_Task nnpTask);
-    static void vPstackOver(NNP_Task nnpTask);
-    static void vPstackPick(NNP_Task nnpTask);
-    static void vPstackReverse(NNP_Task nnpTask);
-    static void vPstackRoll(NNP_Task nnpTask);
-    static void vPstackRollInv(NNP_Task nnpTask);
-    static void vPstackRot(NNP_Task nnpTask);
-    static void vPstackRotInv(NNP_Task nnpTask);
-    static void vPstackSwap(NNP_Task nnpTask);
-    static void vPstackToValSet(NNP_Task nnpTask);
-    static void vPstackToValues(NNP_Task nnpTask);
-    static void vPstackTuck(NNP_Task nnpTask);
+    // dstack
+    static void vDstackClass(NNP_Task nnpTask);                 //! DUP OF class@
+    static void vDstackDepth(NNP_Task nnpTask);
+    static void vDstackDrop(NNP_Task nnpTask);
+    static void vDstackDropTwo(NNP_Task nnpTask);
+    static void vDstackDump(NNP_Task nnpTask);
+    static void vDstackDup(NNP_Task nnpTask);
+    static void vDstackDupNonZero(NNP_Task nnpTask);
+    static void vDstackNip(NNP_Task nnpTask);
+    static void vDstackOver(NNP_Task nnpTask);
+    static void vDstackPick(NNP_Task nnpTask);
+    static void vDstackReverse(NNP_Task nnpTask);
+    static void vDstackRoll(NNP_Task nnpTask);
+    static void vDstackRollInv(NNP_Task nnpTask);
+    static void vDstackRot(NNP_Task nnpTask);
+    static void vDstackRotInv(NNP_Task nnpTask);
+    static void vDstackSwap(NNP_Task nnpTask);
+    static void vDstackToValSet(NNP_Task nnpTask);
+    static void vDstackToValues(NNP_Task nnpTask);
+    static void vDstackTuck(NNP_Task nnpTask);
     
     // push
     static void vPushI(NNP_Task nnpTask);
