@@ -13,6 +13,8 @@ Tx* Transactions::_pTx(void* pAddr)
 {
   Tx* pTx = reinterpret_cast<Tx*>(pAddr);
   
+  RASSERT( !pTx || CN_TX == pTx->eClass() );
+  
   return pTx;
 }
 

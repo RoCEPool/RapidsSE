@@ -13,6 +13,8 @@ TxCursor* Transactions::_pTxCursor(void* pAddr)
 {
   TxCursor* pTxCursor = reinterpret_cast<TxCursor*>(pAddr);
   
+  RASSERT( !pTxCursor || CN_TXCURSOR == pTxCursor->eClass() );
+  
   return pTxCursor;
 }
 

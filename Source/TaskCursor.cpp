@@ -14,6 +14,8 @@ TaskCursor* Tasks::_pTaskCursor(void* pAddr)
 {
   TaskCursor* pTaskCursor = reinterpret_cast<TaskCursor*>(pAddr);
   
+  RASSERT( !pTaskCursor || CN_TASKCURSOR == pTaskCursor->eClass() );
+  
   return pTaskCursor;
 }
 

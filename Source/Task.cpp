@@ -38,6 +38,8 @@ Task* Tasks::_pTask(void* pAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(pAddr);
   
+  RASSERT( !pTask || CN_TASK == pTask->eClass() );
+
   return pTask;
 }
 
@@ -47,6 +49,8 @@ Task* Tasks::_pTask(void* pAddr)
 Task* Tasks::_pTask(i8 iAddr)
 {
   Task* pTask = reinterpret_cast<Task*>(iAddr);
+  
+  RASSERT( !pTask || CN_TASK == pTask->eClass() );
   
   return pTask;
 }
@@ -59,7 +63,7 @@ void* Task::operator new(size_t iSize)
   RASSERT(iSize);
   ASSERT(gpTaskList);
   
-  Task* pTask = _pTask(Heap::pAllocate(CN_TASK));
+  Task* pTask = reinterpret_cast<Task*>(Heap::pAllocate(CN_TASK));
   
   return pTask;
 }

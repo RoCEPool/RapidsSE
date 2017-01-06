@@ -15,6 +15,8 @@ ThreadCursor* Threads::_pThreadCursor(void* pAddr)
 {
   ThreadCursor* pThreadCursor = reinterpret_cast<ThreadCursor*>(pAddr);
   
+  RASSERT( !pThreadCursor || CN_THREADCURSOR == pThreadCursor->eClass() );
+  
   return pThreadCursor;
 }
 

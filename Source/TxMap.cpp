@@ -14,6 +14,8 @@ TxMap* Transactions::_pTxMap(void* pAddr)
 {
   TxMap* pTxMap = reinterpret_cast<TxMap*>(pAddr);
   
+  RASSERT( !pTxMap || CN_TXMAP == pTxMap->eClass() );
+  
   return pTxMap;
 }
 

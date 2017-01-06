@@ -16,6 +16,8 @@ Table* DBobjects::_pTable(void* pAddr)
 {
   Table* pTable = reinterpret_cast<Table*>(pAddr);
   
+  RASSERT( !pTable || CN_TABLE == pTable->eClass() );
+  
   return pTable;
 }
 

@@ -14,6 +14,8 @@ ThreadList* Threads::_pThreadList(void* pAddr)
 {
   ThreadList* pThreadList = reinterpret_cast<ThreadList*>(pAddr);
   
+  RASSERT( !pThreadList || CN_THREADLIST == pThreadList->eClass() );
+  
   return pThreadList;
 }
 

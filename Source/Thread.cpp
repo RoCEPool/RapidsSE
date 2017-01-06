@@ -23,6 +23,8 @@ Thread* Threads::_pThread(void* pAddr)
 {
   Thread* pThread = reinterpret_cast<Thread*>(pAddr);
   
+  RASSERT( !pThread || CN_THREAD == pThread->eClass() );
+  
   return pThread;
 }
 

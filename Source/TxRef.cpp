@@ -14,6 +14,8 @@ TxRef* Transactions::_pTxRef(void* pAddr)
 {
   TxRef* pTxRef = reinterpret_cast<TxRef*>(pAddr);
   
+  RASSERT( !pTxRef || CN_TXREF == pTxRef->eClass() );
+  
   return pTxRef;
 }
 

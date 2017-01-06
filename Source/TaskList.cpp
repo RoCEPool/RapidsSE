@@ -15,6 +15,8 @@ TaskList* Tasks::_pTaskList(void* pAddr)
 {
   TaskList* pTaskList = reinterpret_cast<TaskList*>(pAddr);
   
+  RASSERT( !pTaskList || CN_TASKLIST == pTaskList->eClass() );
+  
   return pTaskList;
 }
 

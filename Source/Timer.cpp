@@ -15,6 +15,8 @@ Timer* Common::_pTimer(void* pAddr)
 {
   Timer* pTimer = reinterpret_cast<Timer*>(pAddr);
   
+  RASSERT( !pTimer || CN_TIMER == pTimer->eClass() );
+  
   return pTimer;
 }
 

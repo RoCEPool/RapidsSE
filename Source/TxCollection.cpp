@@ -15,6 +15,8 @@ TxCollection* Transactions::_pTxCollection(void* pAddr)
 {
   TxCollection* pTxCollection = reinterpret_cast<TxCollection*>(pAddr);
   
+  RASSERT( !pTxCollection || CN_TXCOLLECTION == pTxCollection->eClass() );
+  
   return pTxCollection;
 }
 
@@ -52,7 +54,7 @@ TxCollection::TxCollection(void)
   for (i8 iTxSlot = 0; iTxSlot < C_TX_ARRAY; iTxSlot++) {
     
     // allocate tx
-    Tx* pTx = _pTx(Heap::pAllocate(CN_TX));
+    Tx* pTx = reinterpret_cast<Tx*>(Heap::pAllocate(CN_TX));
     
     // initialize it
     new(pTx) Tx;
