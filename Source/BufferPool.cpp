@@ -49,9 +49,10 @@ BufferPool::BufferPool(void)
   m_iFreeCount    = 0;
   
   m_nFreeHead     = bn::nNil();
-  m_pBase         = _pBuffer(this);
-  m_pLimit        = _pBuffer(pvAdd(m_pBase,m_iRegionSize));
-  m_pJumbo        = _pBuffer(pvAdd(m_pLimit,-(m_nBuffersTaken * C_SIZE_POOL_BUFFER)));
+  m_pBase         = reinterpret_cast<Buffer*>(this);
+  m_pLimit        = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
+  m_pJumbo        = reinterpret_cast<Buffer*>(
+                      pvAdd(m_pLimit,-(m_nBuffersTaken * C_SIZE_POOL_BUFFER)));
   
   vInitialise();
   
@@ -394,7 +395,8 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
     pJumbo = m_pJumbo;
   }
   else {
-    pJumbo = _pBuffer(pvAdd(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO));
+    pJumbo = reinterpret_cast<Buffer*>(
+               pvAdd(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO));
     if (pJumbo >= m_pLimit)
       pJumbo = nullptr;
   }

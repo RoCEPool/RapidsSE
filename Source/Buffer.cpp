@@ -13,6 +13,8 @@ Buffer* Pool::_pBuffer(void* pAddr)
 {
   Buffer* pBuffer = reinterpret_cast<Buffer*>(pAddr);
   
+  RASSERT( !pBuffer || CN_BUFFER == pBuffer->eClass() );
+  
   return pBuffer;
 }
 

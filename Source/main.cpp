@@ -156,7 +156,9 @@ void vKillPrev(void)
     AttachMap* pAttachMap =
       reinterpret_cast<AttachMap*>(pcAdd(pRegion,C_SIZE_POOL_BUFFER));
 
-    if (Process::bTestPid(pAttachMap->m_iPid)) {
+    if (pAttachMap->m_iPid &&
+        pAttachMap->m_iPid != Process::iGetPid() &&
+        Process::bTestPid(pAttachMap->m_iPid)) {
       
       b = Process::bKillPid(pAttachMap->m_iPid);
       if ( b )
