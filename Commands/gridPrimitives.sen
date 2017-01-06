@@ -510,18 +510,18 @@ tp: addingPassOnToCP
   // get token from compile stream
   token: ( s )
 
+  locals| actorNm |
+
   reg.push
 
-  dup ".task"    concat :task    execute to_CALLER  // reg0 has task
-  dup ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
-  dup ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
-  dup ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
+  actorNm ".task"    concat :task    execute to_CALLER  // reg0 has task
+  actorNm ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
 
   interlinkParts
 
   reg.pop
-
-  drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -529,16 +529,20 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : :actor ( "<actorNm>" -- "<actorNm>" )
 
+  locals| actorNm |
+
   reg.push
 
-  dup ".task"    concat :task    execute to_CALLER  // reg0 has task
-  dup ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
-  dup ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
-  dup ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
+  actorNm ".task"    concat :task    execute to_CALLER  // reg0 has task
+  actorNm ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
 
   interlinkParts
 
   reg.pop
+
+  actorNm
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
