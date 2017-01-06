@@ -422,9 +422,18 @@ namespace Tasks
     static void vDotVerbose(NNP_Task nnpTask);
     
     // encode
+    static void vEncodeAgain(NNP_Task nnpTask);
+    static void vEncodeAhead(NNP_Task nnpTask);
     static void vEncodeCallPrimitive(NNP_Task nnpTask);
     static void vEncodeCallRoutine(NNP_Task nnpTask);
+    static void vEncodeHere(NNP_Task nnpTask);
+    static void vEncodeIf(NNP_Task nnpTask);
+    static void vEncodeLoop(NNP_Task nnpTask);
+    static void vEncodeLoopPlus(NNP_Task nnpTask);
+    static void vEncodeNext(NNP_Task nnpTask);
     static void vEncodePushValue(NNP_Task nnpTask);
+    static void vEncodeThen(NNP_Task nnpTask);
+    static void vEncodeUntil(NNP_Task nnpTask);
     
     // enter
     static void vEnterObject(NNP_Task nnpTask);
@@ -452,26 +461,17 @@ namespace Tasks
     static void vFileWrite(NNP_Task nnpTask);
     
     // flow
-    static void vFlowAgain(NNP_Task nnpTask);
-    static void vFlowAhead(NNP_Task nnpTask);
     static void vFlowBegin_(NNP_Task nnpTask);
     static void vFlowExecute(NNP_Task nnpTask);
     static void vFlowHazard(NNP_Task nnpTask);
-    static void vFlowHere(NNP_Task nnpTask);
-    static void vFlowIf(NNP_Task nnpTask);
     static void vFlowJump(NNP_Task nnpTask);
     static void vFlowJumpBegin_(NNP_Task nnpTask);
     static void vFlowJumpFalse(NNP_Task nnpTask);
     static void vFlowJumpTrue(NNP_Task nnpTask);
-    static void vFlowLoop(NNP_Task nnpTask);
-    static void vFlowLoopPlus(NNP_Task nnpTask);
-    static void vFlowNext(NNP_Task nnpTask);
     static void vFlowNop(NNP_Task nnpTask);
     static void vFlowRetryPoint(NNP_Task nnpTask);
     static void vFlowTest(NNP_Task nnpTask);
-    static void vFlowThen(NNP_Task nnpTask);
     static void vFlowThrow(NNP_Task nnpTask);
-    static void vFlowUntil(NNP_Task nnpTask);
     
     // grid
     static void vGridAppendNode(NNP_Task nnpTask);
