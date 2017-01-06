@@ -489,19 +489,17 @@ tp: addingPassOnToCP
 ;
 
 /*----------------------------------------------------------------------------*/
-/* spawn thread of an actor                                                   */
+/* spawn an actor by seeding its task and spawning the os thread for it       */
 /*----------------------------------------------------------------------------*/
 : actor.spawn ( ... nArgs "<loopNm>" "<actorNm>" -- )
 
-  >r ( ... nArgs "<loopNm>" )
+  locals| actorNm | ( ... nArgs "<loopNm>" )
 
   // seed the task
-  r@ actor.task task.seed ( )
+  actorNm actor.task task.seed ( )
 
-  // find the thread
-  r@ actor.thread thread.spawn ( )
-
-  rdrop
+  // spawn the os thread
+  actorNm actor.thread thread.spawn ( )
 ;
 
 /*----------------------------------------------------------------------------*/
