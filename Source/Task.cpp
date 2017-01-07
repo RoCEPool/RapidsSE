@@ -647,7 +647,6 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Class();
   vAddPrimitives_Comment();
   vAddPrimitives_Cpu();
-  vAddPrimitives_Csv();
   vAddPrimitives_Cursor();
   vAddPrimitives_DdlLock();
   vAddPrimitives_Debug();

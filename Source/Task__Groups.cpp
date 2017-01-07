@@ -31,214 +31,6 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-// cast: ///////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("(int)",           &vCastInt,          false);
-  vAddPrimitive("(ptr)",           &vCastPtr,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* (int) -- cast ptr to int                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vCastInt(NNP_Task nnpTask)
-{
-  ENTRY("vCastInt");
-  
-  Object* pPtr;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtr) )
-    THROW_INVALID_DSTACK("(int)");
-  
-  nnpTask->m_xDataStack.vPush((i8)pPtr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* (ptr) -- cast int to ptr                                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vCastPtr(NNP_Task nnpTask)
-{
-  ENTRY("vCastPtr");
-  
-  i8 iInt;
-  if ( ! nnpTask->m_xDataStack.bPop(iInt) )
-    THROW_INVALID_DSTACK("(ptr)");
-  
-  nnpTask->m_xDataStack.vPush((Object*)iInt);
-  
-  EXIT();
-}
-
-// class: //////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Class(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("class.name",      &vClassName,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* class.name -- translate class no to name                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vClassName(NNP_Task nnpTask)
-{
-  ENTRY("vClassName");
-  
-  i8 iClassNo;
-  if ( ! nnpTask->m_xDataStack.bPop(iClassNo) )
-    THROW_INVALID_DSTACK("class.name");
-  
-  s32 sClassName;
-  
-  sClassName = pCN[iClassNo];
-  
-  nnpTask->m_xDataStack.vPush(sClassName);
-  
-  EXIT();
-}
-
-// comment: ////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Comment(void)
-{
-  vAddPrimitive("(",               &vComment,          true );
-}
-
-/*----------------------------------------------------------------------------*/
-/* comment -- comment                                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vComment(NNP_Task nnpTask)
-{
-  ENTRY("vComment");
-  
-  for (;;) {
-    nnpTask->vTokenNext();
-    if (String::bEqualTo(")",nnpTask->m_sToken.a()))
-      break;
-  }
-  
-  EXIT();
-}
-
-// cpu: ////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cpu(void)
-{
-  vAddPrimitive("cpu.rdtscp",      &vCpuRdtscp,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* cpu.rdtscp -- read cpu time stamp counter                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vCpuRdtscp(NNP_Task nnpTask)
-{
-  ENTRY("vCpuRdtscp");
-  
-  i8 iTscp = Synch::iTicks();
-  
-  nnpTask->m_xDataStack.vPush(iTscp);
-  
-  EXIT();
-}
-
-// csv: ////////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Csv(void)
-{
-  vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* csv.firstValue -- get first value from csv string                          */
-/*----------------------------------------------------------------------------*/
-void Task::vCsvFirstValue(NNP_Task nnpTask)
-{
-ENTRY("vCsvFirstValue");
-  
-  ValWsp xStr;
-  if ( ! nnpTask->m_xDataStack.bPop(xStr) )
-    THROW_INVALID_DSTACK("csv.firstValue");
-  
-  s256 sFirstValue;
-  
-  char* z = xStr.sStr();
-  
-  if (! String::bExtractItem(&z,sFirstValue.a()))
-    sFirstValue = "";
-  
-  nnpTask->m_xDataStack.vPush(sFirstValue);
-  
-  EXIT();
-}
-
-// cursor: /////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cursor(void)
-{
-  vAddPrimitive("cursor@",         &vCursorFetch,      false);
-  vAddPrimitive("cursor!",         &vCursorStore,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* cursor@ -- fetch cursor from return stack onto param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vCursorFetch(NNP_Task nnpTask)
-{
-  ENTRY("vCursorFetch");
-  
-  i8 iPick = 1;
-  
-  ValWsp xCursorWsp;
-  
-  nnpTask->m_xReturnStack.vPeek(iPick,&xCursorWsp);
-  
-  nnpTask->m_xDataStack.vPush(xCursorWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* cursor! -- replace cursor on return stack from param stack                 */
-/*----------------------------------------------------------------------------*/
-void Task::vCursorStore(NNP_Task nnpTask)
-{
-  ENTRY("vCursorStore");
-  
-  i8 iPeek = 1;
-  
-  ValWsp xCursorWsp;
-  
-  if ( ! nnpTask->m_xDataStack.bPop(xCursorWsp) )
-    THROW_INVALID_DSTACK("cursor!");
-  
-  nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
-  
-  EXIT();
-}
-
 // diclock: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -7513,6 +7305,30 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("rndStr",      &vRndStr,      false);
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
+  vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* csv.firstValue -- get first value from csv string                          */
+/*----------------------------------------------------------------------------*/
+void Task::vCsvFirstValue(NNP_Task nnpTask)
+{
+  ENTRY("vCsvFirstValue");
+  
+  ValWsp xStr;
+  if ( ! nnpTask->m_xDataStack.bPop(xStr) )
+    THROW_INVALID_DSTACK("csv.firstValue");
+  
+  s256 sFirstValue;
+  
+  char* z = xStr.sStr();
+  
+  if (! String::bExtractItem(&z,sFirstValue.a()))
+    sFirstValue = "";
+  
+  nnpTask->m_xDataStack.vPush(sFirstValue);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

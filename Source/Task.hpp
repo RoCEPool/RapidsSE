@@ -282,7 +282,6 @@ namespace Tasks
     void vAddPrimitives_Class(void);
     void vAddPrimitives_Comment(void);
     void vAddPrimitives_Cpu(void);
-    void vAddPrimitives_Csv(void);
     void vAddPrimitives_Cursor(void);
     void vAddPrimitives_DdlLock(void);
     void vAddPrimitives_Debug(void);
