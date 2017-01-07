@@ -315,9 +315,9 @@ namespace Tasks
     void vAddPrimitives_Process(void);
     void vAddPrimitives_Push(void);
     void vAddPrimitives_Queue(void);
+    void vAddPrimitives_Reg(void);
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
-    void vAddPrimitives_Reg(void);
     void vAddPrimitives_Rstack(void);
     void vAddPrimitives_SEitf(void);
     void vAddPrimitives_SEitfCursor(void);
