@@ -28,1072 +28,22 @@ extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+// address: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Address(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-
+  
   vAddPrimitive("eql",             &vAddressEqual,     false);
   vAddPrimitive("@",               &vAddressFetch,     false);
   vAddPrimitive("!",               &vAddressStore,     false);
 }
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Args(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("args.print",      &vArgsPrint,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Assert(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("assert",          &vAssert,            false);
-  vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
-  vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
-  vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
-  vAddPrimitive("assert.stack_1+", &vAssertStack_1more, false);
-  vAddPrimitive("assert.stack_2",  &vAssertStack_2,     false);
-  vAddPrimitive("assert.stack_2+", &vAssertStack_2more, false);
-  vAddPrimitive("assert.stack_3",  &vAssertStack_3,     false);
-  vAddPrimitive("assert.stack_3+", &vAssertStack_3more, false);
-  vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
-  vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Astack(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("astack.class",    &vAstackClass,      false);
-  vAddPrimitive("adepth",          &vAstackDepth,      false);
-  vAddPrimitive("adrop",           &vAstackDrop,       false);
-  vAddPrimitive("adup",            &vAstackDup,        false);
-  vAddPrimitive("a@",              &vAstackFetch,      false);
-  vAddPrimitive("anip",            &vAstackNip,        false);
-  vAddPrimitive("apick",           &vAstackPick,       false);
-  vAddPrimitive("areverse",        &vAstackReverse,    false);
-  vAddPrimitive(">a",              &vAstackToA,        false);
-  vAddPrimitive("a>",              &vAstackToP,        false);
-  vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
-  vAddPrimitive("aswap",           &vAstackSwap,       false);
-  vAddPrimitive("avalset>",        &vAstackToValues,   false);
-  vAddPrimitive(">avalset",        &vAstackToValSet,   false);
-  vAddPrimitive("a0",              &vAstack0,          false);
-  vAddPrimitive("a1",              &vAstack1,          false);
-  vAddPrimitive("a2",              &vAstack2,          false);
-  vAddPrimitive("a3",              &vAstack3,          false);
-  vAddPrimitive("a4",              &vAstack4,          false);
-  vAddPrimitive("a5",              &vAstack5,          false);
-  vAddPrimitive("a6",              &vAstack6,          false);
-  vAddPrimitive("a7",              &vAstack7,          false);
-  vAddPrimitive("a8",              &vAstack8,          false);
-  vAddPrimitive("a9",              &vAstack9,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Bp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("bpa",             &vBpa,              false);
-  vAddPrimitive("bpdump",          &vBpdump,           false);
-  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
-  vAddPrimitive("freePercent",     &vFreePercent,      false);
-  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
-  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
-  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cast(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("(int)",           &vCastInt,          false);
-  vAddPrimitive("(ptr)",           &vCastPtr,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Class(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  vAddPrimitive("class.name",      &vClassName,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Comment(void)
-{
-  vAddPrimitive("(",               &vComment,          true );
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cpu(void)
-{
-  vAddPrimitive("cpu.rdtscp",      &vCpuRdtscp,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Csv(void)
-{
-  vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Cursor(void)
-{
-  vAddPrimitive("cursor@",         &vCursorFetch,      false);
-  vAddPrimitive("cursor!",         &vCursorStore,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_DdlLock(void)
-{
-  vAddPrimitive("ddlLock.dropRead", &vDdlLockDropRead,  false);
-  vAddPrimitive("ddlLock.dropWrite",&vDdlLockDropWrite, false);
-  vAddPrimitive("ddlLock.grabRead", &vDdlLockGrabRead,  false);
-  vAddPrimitive("ddlLock.grabWrite",&vDdlLockGrabWrite, false);
-  vAddPrimitive("ddlLock.testDrop", &vDdlLockTestDrop,  false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Debug(void)
-{
-  vAddPrimitive("debug.trap",      &vDebugTrap,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Dic(void)
-{
-  vAddPrimitive("dic.count",       &vDicCount,         false);
-  vAddPrimitive("dic.drop",        &vDicDrop,          false);
-  vAddPrimitive("}}",              &vDicDrop,          false);
-  vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
-  vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
-  vAddPrimitive("dic.init",        &vDicInit,          false);
-  vAddPrimitive("dic.isCompiled",  &vDicIsCompiled,    false);
-  vAddPrimitive("dic.kind@",       &vDicKindGet,       false);
-  vAddPrimitive("dic.kind!",       &vDicKindSet,       false);
-  vAddPrimitive("dic.last",        &vDicLast,          false);
-  vAddPrimitive("dic.main",        &vDicMain,          false);
-  vAddPrimitive("dic.name",        &vDicName,          false);
-  vAddPrimitive("dic.pick",        &vDicPick,          false);
-  vAddPrimitive("dic.push",        &vDicPush,          false);
-  vAddPrimitive("{{",              &vDicPush,          false);
-  vAddPrimitive("dic.ref",         &vDicRef,           false);
-  vAddPrimitive("dic.stack",       &vDicStack,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_DicLock(void)
-{
-  vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
-  vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
-}
-  
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_DicStack(void)
-{
-  vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Dir(void)
-{
-  vAddPrimitive("dir.exists",      &vDirExists,        false);
-  vAddPrimitive("dir.make",        &vDirMake,          false);
-  vAddPrimitive("dir.remove",      &vDirRemove,        false);
-  vAddPrimitive("cwd",             &vCwd,              false);
-  vAddPrimitive("gwd",             &vGwd,              false);
-  
-  vAddPrimitive("dir.close",       &vDirClose,         false);
-  vAddPrimitive("dir.delete",      &vDirDelete,        false);
-  vAddPrimitive("dir.entryName",   &vDirEntryName,     false);
-  vAddPrimitive("dir.entryType",   &vDirEntryType,     false);
-  vAddPrimitive("dir.init",        &vDirInit,          false);
-  vAddPrimitive("dir.isClosed",    &vDirIsClosed,      false);
-  vAddPrimitive("dir.isOpen",      &vDirIsOpen,        false);
-  vAddPrimitive("dir.new",         &vDirNew,           false);
-  vAddPrimitive("dir.open",        &vDirOpen,          false);
-  vAddPrimitive("dir.path@",       &vDirPathGet,       false);
-  vAddPrimitive("dir.path!",       &vDirPathSet,       false);
-  vAddPrimitive("dir.read",        &vDirRead,          false);
-  vAddPrimitive("dir.rewind",      &vDirRewind,        false);
-  vAddPrimitive("dir.seek",        &vDirSeek,          false);
-  vAddPrimitive("dir.tell",        &vDirTell,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Docol(void)
-{
-  vAddPrimitive("]",                     &vDocolCompiling,      false);
-  vAddPrimitive("[",                     &vDocolInterpreting,   true );
-  vAddPrimitive("docol.isCompiling",     &vDocolIsCompiling,    false);
-  vAddPrimitive("docol.isInterpreting",  &vDocolIsInterpreting, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Dot(void)
-{
-  vAddPrimitive(".",               &vDot,              false);
-  vAddPrimitive(".put",            &vDotPut,           false);
-  vAddPrimitive(".\\n",            &vDotNewline,       false);
-  vAddPrimitive(".verbose",     &vDotVerbose,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Dstack(void)
-{
-  vAddPrimitive("stack.class",     &vDstackClass,      false);
-  vAddPrimitive("depth",           &vDstackDepth,      false);
-  vAddPrimitive("drop",            &vDstackDrop,       false);
-  vAddPrimitive("2drop",           &vDstackDropTwo,    false);
-  vAddPrimitive("dump",            &vDstackDump,       false);
-  vAddPrimitive("dup",             &vDstackDup,        false);
-  vAddPrimitive("?dup",            &vDstackDupNonZero, false);
-  vAddPrimitive("nip",             &vDstackNip,        false);
-  vAddPrimitive("over",            &vDstackOver,       false);
-  vAddPrimitive("pick",            &vDstackPick,       false);
-  vAddPrimitive("reverse",         &vDstackReverse,    false);
-  vAddPrimitive("roll",            &vDstackRoll,       false);
-  vAddPrimitive("-roll",           &vDstackRollInv,    false);
-  vAddPrimitive("rot",             &vDstackRot,        false);
-  vAddPrimitive("-rot",            &vDstackRotInv,     false);
-  vAddPrimitive("swap",            &vDstackSwap,       false);
-  vAddPrimitive("valset>",         &vDstackToValues,   false);
-  vAddPrimitive(">valset",         &vDstackToValSet,   false);
-  vAddPrimitive("tuck",            &vDstackTuck,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Encode(void)
-{
-  vAddPrimitive("again",               &vEncodeAgain,         true );
-  vAddPrimitive("ahead",               &vEncodeAhead,         true );
-  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
-  vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
-  vAddPrimitive("here",                &vEncodeHere,          false);
-  vAddPrimitive("if",                  &vEncodeIf,            true );
-  vAddPrimitive("loop",                &vEncodeLoop,          true );
-  vAddPrimitive("+loop",               &vEncodeLoopPlus,      true );
-  vAddPrimitive("next",                &vEncodeNext,          true );
-  vAddPrimitive("encodePushValue",     &vEncodePushValue,     false);
-  vAddPrimitive("then",                &vEncodeThen,          true );
-  vAddPrimitive("until",               &vEncodeUntil,         true );
-}
-  
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Enter(void)
-{
-  vAddPrimitive("enterObject",     &vEnterObject,      false);
-  vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Env(void)
-{
-  vAddPrimitive("env@",            &vEnvGet,           false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Error(void)
-{
-  vAddPrimitive("error.msg",       &vErrorMsg,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Exit(void)
-{
-  vAddPrimitive("exit",            &vExit,             false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_File(void)
-{
-  vAddPrimitive("file.close",      &vFileClose,        false);
-  vAddPrimitive("file.delete",     &vFileDelete,       false);
-  vAddPrimitive("file.init",       &vFileInit,         false);
-  vAddPrimitive("file.new",        &vFileNew,          false);
-  vAddPrimitive("file.open",       &vFileOpen,         false);
-  vAddPrimitive("file.path@",      &vFilePathGet,      false);
-  vAddPrimitive("file.path!",      &vFilePathSet,      false);
-  vAddPrimitive("file.read",       &vFileRead,         false);
-  vAddPrimitive("file.readRecord", &vFileReadRecord,   false);
-  vAddPrimitive("file.write",      &vFileWrite,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Flow(void)
-{
-  vAddPrimitive("begin_",          &vFlowBegin_,       false);
-  vAddPrimitive("execute",         &vFlowExecute,      false);
-  vAddPrimitive("hazard",          &vFlowHazard,       false);
-  vAddPrimitive("jump",            &vFlowJump,         false);
-  vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
-  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
-  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
-  vAddPrimitive("nop",             &vFlowNop,          false);
-  vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
-  vAddPrimitive("test",            &vFlowTest,         false);
-  vAddPrimitive("throw",           &vFlowThrow,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Grid(void)
-{
-  vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
-  vAddPrimitive("grid.started!",   &vGridStartedStore, false);
-  vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
-  vAddPrimitive("grid.init",       &vGridInit,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Input(void)
-{
-  vAddPrimitive("accept",          &vInputAccept,      false);
-  vAddPrimitive("input.close",     &vInputClose,       false);
-  vAddPrimitive("input.depth",     &vInputDepth,       false);
-  vAddPrimitive("input.next",      &vInputNext,        false);
-  vAddPrimitive("input.open",      &vInputOpen,        false);
-  vAddPrimitive("input.pop",       &vInputPop,         false);
-  vAddPrimitive("input.push",      &vInputPush,        false);
-  vAddPrimitive("input.stdin",     &vInputStdin,       false);
-  vAddPrimitive("input.text",      &vInputText,        false);
-  vAddPrimitive("input.token",     &vInputToken,       false);
-  vAddPrimitive("input.type",      &vInputType,        false);
-  vAddPrimitive("token:",          &vTokenColon,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Int(void)
-{
-  vAddPrimitive("+",               &vIntAdd,           false);
-  vAddPrimitive("/",               &vIntDivide,        false);
-  vAddPrimitive("==",              &vIntEqual,         false);
-  vAddPrimitive(">",               &vIntGreater,       false);
-  vAddPrimitive(">=",              &vIntGreaterEqual,  false);
-  vAddPrimitive("hash",            &vIntHash,          false);
-  vAddPrimitive("<",               &vIntLess,          false);
-  vAddPrimitive("<=",              &vIntLessEqual,     false);
-  vAddPrimitive("%",               &vIntModulo,        false);
-  vAddPrimitive("*",               &vIntMultiply,      false);
-  vAddPrimitive("neg",             &vIntNeg,           false);
-  vAddPrimitive("!=",              &vIntNotEqual,      false);
-  vAddPrimitive("-",               &vIntSubtract,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Loader(void)
-{
-  vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
-  vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
-  vAddPrimitive("loader.init",        &vLoaderInit,        false);
-  vAddPrimitive("loader.new",         &vLoaderNew,         false);
-  vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
-  vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
-  vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
-  vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_LoaderSub(void)
-{
-  vAddPrimitive("loaderSub.appendBuffer",&vLoaderSubAppendBuffer,false);
-  vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
-  vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
-  vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
-  vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
-  vAddPrimitive("loaderSub.hashPartition",&vLoaderSubHashPartition, false);
-  vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
-  vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
-  vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
-  vAddPrimitive("loaderSub.insertRow?",  &vLoaderSubInsertRow2,  false);
-  vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
-  vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
-  vAddPrimitive("loaderSub.partition",   &vLoaderSubPartition,   false);
-  vAddPrimitive("loaderSub.partition!",  &vLoaderSubPartitionStore, false);
-  vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
-  vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
-  vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Local(void)
-{
-  vAddPrimitive("local.fetch",     &vLocalFetch,       false);
-  vAddPrimitive("local.store",     &vLocalStore,       false);
-  vAddPrimitive("locals|",         &vLocalsBar,        true);
-  vAddPrimitive("locals.pop",      &vLocalsPop,        false);
-  vAddPrimitive("locals.push",     &vLocalsPush,       false);
-  vAddPrimitive("to",              &vLocalsTo,         true);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Lock(void)
-{
-  vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
-  vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
-  vAddPrimitive("lock.grabRead",   &vLockGrabRead,     false);
-  vAddPrimitive("lock.grabWrite",  &vLockGrabWrite,    false);
-  vAddPrimitive("lock.init",       &vLockInit,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Logic(void)
-{
-  vAddPrimitive("and",             &vLogicAnd,         false);
-  vAddPrimitive("not",             &vLogicNot,         false);
-  vAddPrimitive("or",              &vLogicOr,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Magnitude(void)
-{
-  vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
-  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Memory(void)
-{
-  vAddPrimitive("memory.byteDump", &vMemoryByteDump,   false);
-  vAddPrimitive("memory.wordDump", &vMemoryWordDump,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Node(void)
-{
-  vAddPrimitive("node.init",       &vNodeInit,         false);
-  vAddPrimitive("node.new",        &vNodeNew,          false);
-  vAddPrimitive("node.no",         &vNodeNo,           false);
-  vAddPrimitive("node.status",     &vNodeStatus,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_NodeCursor(void)
-{
-  vAddPrimitive("nodeCursor.begin",  &vNodeCursorBegin,  false);
-  vAddPrimitive("nodeCursor.delete", &vNodeCursorDelete, false);
-  vAddPrimitive("nodeCursor.first",  &vNodeCursorFirst,  false);
-  vAddPrimitive("nodeCursor.get",    &vNodeCursorGet,    false);
-  vAddPrimitive("nodeCursor.init",   &vNodeCursorInit,   false);
-  vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
-  vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
-}
-  
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Object(void)
-{
-  vAddPrimitive("object.class@",     &vObjectClassFetch, false);
-  vAddPrimitive("object.class!",     &vObjectClassStore, false);
-  vAddPrimitive("object@",           &vObjectFetch,      false);
-  vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
-  vAddPrimitive("object!",           &vObjectStore,      false);
-  vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Process(void)
-{
-  vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
-  vAddPrimitive("process.quit",    &vProcessQuit,      false);
-  vAddPrimitive("process.testPid", &vProcessTestPid,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Push(void)
-{
-  vAddPrimitive("i",               &vPushI,            false);
-  vAddPrimitive("j",               &vPushJ,            false);
-  vAddPrimitive("nullPtr",         &vPushNullPtr,      false);
-  vAddPrimitive("pushValue",       &vPushValue,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Queue(void)
-{
-  vAddPrimitive("queue.append",    &vQueueAppend,      false);
-  vAddPrimitive("queue.dump",      &vQueueDump,        false);
-  vAddPrimitive("queue.init",      &vQueueInit,        false);
-  vAddPrimitive("queue.pop",       &vQueuePop,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_RowBuffer(void)
-{
-  vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
-  vAddPrimitive("rowBuffer.appendRecord", &vRowBufferAppendRecord, false);
-  vAddPrimitive("rowBuffer.dump",   &vRowBufferDump,    false);
-  vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_RowCursor(void)
-{
-  vAddPrimitive("rowCursor.begin",  &vRowCursorBegin,  false);
-  vAddPrimitive("rowCursor.delete", &vRowCursorDelete, false);
-  vAddPrimitive("rowCursor.end",    &vRowCursorEnd,    false);
-  vAddPrimitive("rowCursor.first",  &vRowCursorFirst,  false);
-  vAddPrimitive("rowCursor.get",    &vRowCursorGet,    false);
-  vAddPrimitive("rowCursor.init",   &vRowCursorInit,   false);
-  vAddPrimitive("rowCursor.new",    &vRowCursorNew,    false);
-  vAddPrimitive("rowCursor.next",   &vRowCursorNext,   false);
-  vAddPrimitive("rowCursor.rowBuffer", &vRowCursorRowBuffer,  false);
-  vAddPrimitive("rowCursor.table@", &vRowCursorTableFetch, false);
-  vAddPrimitive("rowCursor.table!", &vRowCursorTableStore, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Reg(void)
-{
-  vAddPrimitive("reg.pop",          &vRegPop,          false);
-  vAddPrimitive("reg.push",         &vRegPush,         false);
-  vAddPrimitive("reg0",             &vRegReg0,         false);
-  vAddPrimitive("reg1",             &vRegReg1,         false);
-  vAddPrimitive("reg2",             &vRegReg2,         false);
-  vAddPrimitive("reg3",             &vRegReg3,         false);
-  vAddPrimitive("reg4",             &vRegReg4,         false);
-  vAddPrimitive("reg5",             &vRegReg5,         false);
-  vAddPrimitive("reg6",             &vRegReg6,         false);
-  vAddPrimitive("reg7",             &vRegReg7,         false);
-  vAddPrimitive("reg8",             &vRegReg8,         false);
-  vAddPrimitive("reg9",             &vRegReg9,         false);
-  vAddPrimitive("regA",             &vRegRegA,         false);
-  vAddPrimitive("regB",             &vRegRegB,         false);
-  vAddPrimitive("regC",             &vRegRegC,         false);
-  vAddPrimitive("regD",             &vRegRegD,         false);
-  vAddPrimitive("regE",             &vRegRegE,         false);
-  vAddPrimitive("regF",             &vRegRegF,         false);
-  vAddPrimitive("regN",             &vRegRegNth,       false);
-  vAddPrimitive(">reg0",            &vRegToReg0,       false);
-  vAddPrimitive(">reg1",            &vRegToReg1,       false);
-  vAddPrimitive(">reg2",            &vRegToReg2,       false);
-  vAddPrimitive(">reg3",            &vRegToReg3,       false);
-  vAddPrimitive(">reg4",            &vRegToReg4,       false);
-  vAddPrimitive(">reg5",            &vRegToReg5,       false);
-  vAddPrimitive(">reg6",            &vRegToReg6,       false);
-  vAddPrimitive(">reg7",            &vRegToReg7,       false);
-  vAddPrimitive(">reg8",            &vRegToReg8,       false);
-  vAddPrimitive(">reg9",            &vRegToReg9,       false);
-  vAddPrimitive(">regA",            &vRegToRegA,       false);
-  vAddPrimitive(">regB",            &vRegToRegB,       false);
-  vAddPrimitive(">regC",            &vRegToRegC,       false);
-  vAddPrimitive(">regD",            &vRegToRegD,       false);
-  vAddPrimitive(">regE",            &vRegToRegE,       false);
-  vAddPrimitive(">regF",            &vRegToRegF,       false);
-  vAddPrimitive(">regN",            &vRegToRegNth,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Rstack(void)
-{
-  vAddPrimitive("cs-pick",         &vRstackCsPick,     false);
-  vAddPrimitive("cs-roll",         &vRstackCsRoll,     false);
-  vAddPrimitive("rdepth",          &vRstackDepth,      false);
-  vAddPrimitive("rdrop",           &vRstackDrop,       false);
-  vAddPrimitive("r@",              &vRstackFetch,      false);
-  vAddPrimitive("2r@",             &vRstackFetchTwo,   false);
-  vAddPrimitive("rpick",           &vRstackPick,       false);
-  vAddPrimitive("rreverse",        &vRstackReverse,    false);
-  vAddPrimitive("rroll",           &vRstackRoll,       false);
-  vAddPrimitive("-rroll",          &vRstackRollInv,    false);
-  vAddPrimitive("rswap",           &vRstackSwap,       false);
-  vAddPrimitive("r>",              &vRstackToP,        false);
-  vAddPrimitive(">r",              &vRstackToR,        false);
-  vAddPrimitive("2>r",             &vRstackToRTwo,     false);
-  vAddPrimitive("r0",              &vRstack0,          false);
-  vAddPrimitive("r1",              &vRstack1,          false);
-  vAddPrimitive("r2",              &vRstack2,          false);
-  vAddPrimitive("r3",              &vRstack3,          false);
-  vAddPrimitive("r4",              &vRstack4,          false);
-  vAddPrimitive("r5",              &vRstack5,          false);
-  vAddPrimitive("r6",              &vRstack6,          false);
-  vAddPrimitive("r7",              &vRstack7,          false);
-  vAddPrimitive("r8",              &vRstack8,          false);
-  vAddPrimitive("r9",              &vRstack9,          false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_SEitf(void)
-{
-  vAddPrimitive("seitf.count",     &vSEitfCount,       false);
-  vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
-  vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
-  vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
-  vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
-  vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
-  vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
-  vAddPrimitive("seitf.table@",    &vSEitfTableFetch,  false);
-  vAddPrimitive("seitf.tableRef",  &vSEitfTableRef,    false);
-  vAddPrimitive("seitf.tableDeref",&vSEitfTableDeref,  false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_SEitfCursor(void)
-{
-  vAddPrimitive("seitfCursor.begin",  &vSEitfCursorBegin,  false);
-  vAddPrimitive("seitfCursor.delete", &vSEitfCursorDelete, false);
-  vAddPrimitive("seitfCursor.end",    &vSEitfCursorEnd,    false);
-  vAddPrimitive("seitfCursor.first",  &vSEitfCursorFirst,  false);
-  vAddPrimitive("seitfCursor.get",    &vSEitfCursorGet,    false);
-  vAddPrimitive("seitfCursor.init",   &vSEitfCursorInit,   false);
-  vAddPrimitive("seitfCursor.new",    &vSEitfCursorNew,    false);
-  vAddPrimitive("seitfCursor.next",   &vSEitfCursorNext,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_SEitfList(void)
-{
-  vAddPrimitive("seitfList.dump",  &vSEitfListDump,    false);
-  vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Shell(void)
-{
-  vAddPrimitive("shell.execute",  &vShellExecute,  false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Socket(void)
-{
-  vAddPrimitive("socket.accept",   &vSocketAccept,     false);
-  vAddPrimitive("socket.close",    &vSocketClose,      false);
-  vAddPrimitive("socket.connect",  &vSocketConnect,    false);
-  vAddPrimitive("socket.listen",   &vSocketListen,     false);
-  vAddPrimitive("socket.open",     &vSocketOpen,       false);
-  vAddPrimitive("socket.recv",     &vSocketRecv,       false);
-  vAddPrimitive("socket.send",     &vSocketSend,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Steps(void)
-{
-  vAddPrimitive("steps.list",  &vStepsList,  false);
-  vAddPrimitive("steps.reset", &vStepsReset, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Str(void)
-{
-  vAddPrimitive("strpad",      &vStringPad,   false);
-  vAddPrimitive("streql",      &vStrEql,      false);
-  vAddPrimitive("strlen",      &vStrLen,      false);
-  vAddPrimitive("subStr",      &vSubStr,      false);
-  vAddPrimitive("concat",      &vConcat,      false);
-  vAddPrimitive("clip",        &vClip,        false);
-  vAddPrimitive("prepend",     &vPrepend,     false);
-  vAddPrimitive("toDigitName", &vToDigitName, false);
-  vAddPrimitive("rndStr",      &vRndStr,      false);
-  vAddPrimitive("sprint",      &vSprint,      false);
-  vAddPrimitive("s256.init",   &vS256Init,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Table(void)
-{
-  vAddPrimitive("table.append",       &vTableAppend,       false);
-  vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
-  vAddPrimitive("table.dic",          &vTableDic,          false);
-  vAddPrimitive("table.drop",         &vTableDrop,         false);
-  vAddPrimitive("table.init",         &vTableInit,         false);
-  vAddPrimitive("table.insert",       &vTableInsert,       false);
-  vAddPrimitive("table.name",         &vTableName,         false);
-  vAddPrimitive("table.ref",          &vTableRef,          false);
-  vAddPrimitive("table.space",        &vTableSpace,        false);
-  vAddPrimitive("table.truncate",     &vTableTruncate,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Task(void)
-{
-  vAddPrimitive("task.ack",        &vTaskAck,          false);
-  vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
-  vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
-  vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
-  vAddPrimitive("task.comment!",   &vTaskCommentStore, false);
-  vAddPrimitive("task.dic",        &vTaskDic,          false);
-  vAddPrimitive("task.dump",       &vTaskDump,         false);
-  vAddPrimitive("task.init",       &vTaskInit,         false);
-  vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
-  vAddPrimitive("task.name!",      &vTaskNameStore,    false);
-  vAddPrimitive("task.new",        &vTaskNew,          false);
-  vAddPrimitive("task.parent@",    &vTaskParentFetch,  false);
-  vAddPrimitive("task.parent!",    &vTaskParentStore,  false);
-  vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
-  vAddPrimitive("task.queue!",     &vTaskQstore,       false);
-  vAddPrimitive("task.seed",       &vTaskSeed,         false);
-  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
-  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
-  vAddPrimitive("task.socket@",    &vTaskSocketFetch,  false);
-  vAddPrimitive("task.socket!",    &vTaskSocketStore,  false);
-  vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
-  vAddPrimitive("task.state!",     &vTaskStateStore,   false);
-  vAddPrimitive("task.taskset@",   &vTaskTaskSetFetch, false);
-  vAddPrimitive("task.taskset!",   &vTaskTaskSetStore, false);
-  vAddPrimitive("task.this",       &vTaskThis,         false);
-  vAddPrimitive("task.thread",     &vTaskThread,       false);
-  vAddPrimitive("task.wait",       &vTaskWait,         false);
-  vAddPrimitive("task.yield",      &vTaskYield,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TaskCursor(void)
-{
-  vAddPrimitive("taskCursor.begin",  &vTaskCursorBegin,  false);
-  vAddPrimitive("taskCursor.delete", &vTaskCursorDelete, false);
-  vAddPrimitive("taskCursor.end",    &vTaskCursorEnd,    false);
-  vAddPrimitive("taskCursor.first",  &vTaskCursorFirst,  false);
-  vAddPrimitive("taskcursor.get",    &vTaskCursorGet,    false);
-  vAddPrimitive("taskcursor.init",   &vTaskCursorInit,   false);
-  vAddPrimitive("taskcursor.new",    &vTaskCursorNew,    false);
-  vAddPrimitive("taskcursor.next",   &vTaskCursorNext,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TaskList(void)
-{
-  vAddPrimitive("taskList",        &vTaskList,         false);
-  vAddPrimitive("taskList.append", &vTaskListAppend,   false);
-  vAddPrimitive("taskList.dump",   &vTaskListDump,     false);
-  vAddPrimitive("taskList.init",   &vTaskListInit,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TaskSet(void)
-{
-  vAddPrimitive("taskSet.append",  &vTaskSetAppend,    false);
-  vAddPrimitive("taskSet.dump",    &vTaskSetDump,      false);
-  vAddPrimitive("taskSet.init",    &vTaskSetInit,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Thread(void)
-{
-  vAddPrimitive("thread.append",      &vThreadAppend,      false);
-  vAddPrimitive("thread.bind",        &vThreadBind,        false);
-  vAddPrimitive("thread.condSignal",  &vThreadCondSignal,  false);
-  vAddPrimitive("thread.condWait",    &vThreadCondWait,    false);
-  vAddPrimitive("thread.cpu",         &vThreadCpu,         false);
-  vAddPrimitive("thread.dump",        &vThreadDump,        false);
-  vAddPrimitive("thread.init",        &vThreadInit,        false);
-  vAddPrimitive("thread.id",          &vThreadId,          false);
-  vAddPrimitive("thread.mutexLock",   &vThreadMutexLock,   false);
-  vAddPrimitive("thread.mutexUnlock", &vThreadMutexUnlock, false);
-  vAddPrimitive("thread.name@",       &vThreadNameFetch,   false);
-  vAddPrimitive("thread.name!",       &vThreadNameStore,   false);
-  vAddPrimitive("thread.taskset@",    &vThreadSfetch,      false);
-  vAddPrimitive("thread.taskset!",    &vThreadSstore,      false);
-  vAddPrimitive("thread.sleep_s",     &vThreadSleep_s,     false);
-  vAddPrimitive("thread.sleep_ms",    &vThreadSleep_ms,    false);
-  vAddPrimitive("thread.sleep_us",    &vThreadSleep_us,    false);
-  vAddPrimitive("thread.sleep_ns",    &vThreadSleep_ns,    false);
-  vAddPrimitive("thread.spawn",       &vThreadSpawn,       false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_ThreadCursor(void)
-{
-  vAddPrimitive("threadCursor.begin",  &vThreadCursorBegin,  false);
-  vAddPrimitive("threadCursor.delete", &vThreadCursorDelete, false);
-  vAddPrimitive("threadCursor.end",    &vThreadCursorEnd,    false);
-  vAddPrimitive("threadCursor.first",  &vThreadCursorFirst,  false);
-  vAddPrimitive("threadCursor.get",    &vThreadCursorGet,    false);
-  vAddPrimitive("threadCursor.init",   &vThreadCursorInit,   false);
-  vAddPrimitive("threadCursor.new",    &vThreadCursorNew,    false);
-  vAddPrimitive("threadCursor.next",   &vThreadCursorNext,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_ThreadList(void)
-{
-  vAddPrimitive("threadList.dump", &vThreadListDump,   false);
-  vAddPrimitive("threadList.init", &vThreadListInit,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Timer(void)
-{
-  vAddPrimitive("timer.delete",    &vTimerDelete,      false);
-  vAddPrimitive("timer.init",      &vTimerInit,        false);
-  vAddPrimitive("timer.microsecs", &vTimerMicrosecs,   false);
-  vAddPrimitive("timer.millisecs", &vTimerMillisecs,   false);
-  vAddPrimitive("timer.nanosecs",  &vTimerNanosecs,    false);
-  vAddPrimitive("timer.new",       &vTimerNew,         false);
-  vAddPrimitive("timer.reset",     &vTimerReset,       false);
-  vAddPrimitive("timer.secs",      &vTimerSecs,        false);
-  vAddPrimitive("timer.start",     &vTimerStart,       false);
-  vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
-  vAddPrimitive("timer.update",    &vTimerUpdate,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_To(void)
-{
-  vAddPrimitive(">body",           &vToBody,           false);
-  vAddPrimitive(">cmd",            &vToCmd,            false);
-  vAddPrimitive(">digitName",      &vToDigitName,      false);
-  vAddPrimitive(">int",            &vToInt,            false);
-  vAddPrimitive(">seitf",          &vToSEitf,          false);
-  vAddPrimitive(">str",            &vToStr,            false);
-  vAddPrimitive(">task",           &vToTask,           false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Trace(void)
-{
-  vAddPrimitive("traceOff",        &vTraceOff,         false);
-  vAddPrimitive("traceOn",         &vTraceOn,          false);
-  vAddPrimitive("tracePoint",      &vTracePoint,       false);
-  vAddPrimitive("trace!",          &vTraceSet,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Tx(void)
-{
-  vAddPrimitive("tx.dump",         &vTxDump,           false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TxCursor(void)
-{
-  vAddPrimitive("txCursor.begin",  &vTxCursorBegin,  false);
-  vAddPrimitive("txCursor.delete", &vTxCursorDelete, false);
-  vAddPrimitive("txCursor.end",    &vTxCursorEnd,    false);
-  vAddPrimitive("txCursor.first",  &vTxCursorFirst,  false);
-  vAddPrimitive("txCursor.get",    &vTxCursorGet,    false);
-  vAddPrimitive("txCursor.init",   &vTxCursorInit,   false);
-  vAddPrimitive("txCursor.new",    &vTxCursorNew,    false);
-  vAddPrimitive("txCursor.next",   &vTxCursorNext,   false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TxCollection(void)
-{
-  vAddPrimitive("txCollection.dump", &vTxCollectionDump, false);
-  vAddPrimitive("txCollection.init", &vTxCollectionInit, false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TxMap(void)
-{
-  vAddPrimitive("txMap.init",      &vTxMapInit,        false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_TxRef(void)
-{
-  vAddPrimitive("txRef.init",      &vTxRefInit,        false);
-  vAddPrimitive("txRef.begin",     &vTxRefBegin,       false);
-  vAddPrimitive("txRef.end",       &vTxRefEnd,         false);
-  vAddPrimitive("txRef.commit",    &vTxRefCommit,      false);
-  vAddPrimitive("txRef.rollback",  &vTxRefRollback,    false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Word(void)
-{
-  vAddPrimitive("allParticipants", &vAllParticipants,  true );
-  vAddPrimitive("allot",           &vAllot,            false);
-  vAddPrimitive("cell",            &vCell,             false);
-  vAddPrimitive(":",               &vColon,            false);
-  vAddPrimitive(",",               &vComma,            false);
-  vAddPrimitive("compile,",        &vCompileComma,     false);
-  vAddPrimitive("create",          &vCreate,           false);
-  vAddPrimitive(">create",         &vCreateFrom,       false);
-  vAddPrimitive("does>",           &vDoes,             true );
-  vAddPrimitive("does_rt",         &vDoes_RT,          false);
-  vAddPrimitive("find",            &vFind,             false);
-  vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
-  vAddPrimitive("forget",          &vForget,           false);
-  vAddPrimitive("immediate",       &vImmediate,        true );
-  vAddPrimitive("localCalls",      &vLocalCalls,       true );
-  vAddPrimitive("locate",          &vLocate,           false);
-  vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
-  vAddPrimitive("postpone",        &vPostpone,         true );
-  vAddPrimitive("see",             &vSee,              false);
-  vAddPrimitive(";",               &vSemicolon,        true );
-  vAddPrimitive("'",               &vTick,             true );
-  vAddPrimitive("word.dump",       &vWordDump,         false);
-  vAddPrimitive("word.dic",        &vWordDic,          false);
-  vAddPrimitive(">forget",         &vWordForget,       false);
-  vAddPrimitive("word.immediate@", &vWordImmediateGet, false);
-  vAddPrimitive("word.immediate!", &vWordImmediateSet, false);
-  vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
-  vAddPrimitive("word.isPrimitive",&vWordIsPrimitive,  false);
-  vAddPrimitive("word.kind@",      &vWordKindGet,      false);
-  vAddPrimitive("word.kind!",      &vWordKindSet,      false);
-  vAddPrimitive("word.name",       &vWordName,         false);
-  vAddPrimitive("word.prev",       &vWordPrev,         false);
-  vAddPrimitive("word.this",       &vWordThis,         false);
-  vAddPrimitive("word.type@",      &vWordTypeGet,      false);
-  vAddPrimitive("word.type!",      &vWordTypeSet,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add primitives                                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Zero(void)
-{
-  vAddPrimitive("0<",              &vZeroLess,         false);
-  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
-  vAddPrimitive("0==",             &vZeroEqual,        false);
-  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
-  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
-  vAddPrimitive("0>",              &vZeroGreater,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-// address: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* eql -- test top two address on data stack for equality                     */
@@ -1197,6 +147,26 @@ void Task::vAddressStore(NNP_Task nnpTask)
 }
 
 // assert: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Assert(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vAddPrimitive("assert",          &vAssert,            false);
+  vAddPrimitive("assert.stack_0",  &vAssertStack_0,     false);
+  vAddPrimitive("assert.stack_0+", &vAssertStack_0more, false);
+  vAddPrimitive("assert.stack_1",  &vAssertStack_1,     false);
+  vAddPrimitive("assert.stack_1+", &vAssertStack_1more, false);
+  vAddPrimitive("assert.stack_2",  &vAssertStack_2,     false);
+  vAddPrimitive("assert.stack_2+", &vAssertStack_2more, false);
+  vAddPrimitive("assert.stack_3",  &vAssertStack_3,     false);
+  vAddPrimitive("assert.stack_3+", &vAssertStack_3more, false);
+  vAddPrimitive("assert.stack_4",  &vAssertStack_4,     false);
+  vAddPrimitive("assert.stack_5+", &vAssertStack_4more, false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* assert -- assert top value on stack is true                                */
@@ -1366,6 +336,39 @@ ENTRY("vAssertStack_4more");
 }
 
 // astack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Astack(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vAddPrimitive("astack.class",    &vAstackClass,      false);
+  vAddPrimitive("adepth",          &vAstackDepth,      false);
+  vAddPrimitive("adrop",           &vAstackDrop,       false);
+  vAddPrimitive("adup",            &vAstackDup,        false);
+  vAddPrimitive("a@",              &vAstackFetch,      false);
+  vAddPrimitive("anip",            &vAstackNip,        false);
+  vAddPrimitive("apick",           &vAstackPick,       false);
+  vAddPrimitive("areverse",        &vAstackReverse,    false);
+  vAddPrimitive(">a",              &vAstackToA,        false);
+  vAddPrimitive("a>",              &vAstackToP,        false);
+  vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
+  vAddPrimitive("aswap",           &vAstackSwap,       false);
+  vAddPrimitive("avalset>",        &vAstackToValues,   false);
+  vAddPrimitive(">avalset",        &vAstackToValSet,   false);
+  vAddPrimitive("a0",              &vAstack0,          false);
+  vAddPrimitive("a1",              &vAstack1,          false);
+  vAddPrimitive("a2",              &vAstack2,          false);
+  vAddPrimitive("a3",              &vAstack3,          false);
+  vAddPrimitive("a4",              &vAstack4,          false);
+  vAddPrimitive("a5",              &vAstack5,          false);
+  vAddPrimitive("a6",              &vAstack6,          false);
+  vAddPrimitive("a7",              &vAstack7,          false);
+  vAddPrimitive("a8",              &vAstack8,          false);
+  vAddPrimitive("a9",              &vAstack9,          false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* astack.class -- get class of nth value on aux stack                        */
@@ -1848,6 +851,16 @@ void Task::vAstack9(NNP_Task nnpTask)
 // args: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Args(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vAddPrimitive("args.print",      &vArgsPrint,     false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* args.print -- print arguments                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vArgsPrint(NNP_Task nnpTask)
@@ -1860,6 +873,22 @@ ENTRY("vArgsPrint");
 }
 
 // bp: /////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Bp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vAddPrimitive("bpa",             &vBpa,              false);
+  vAddPrimitive("bpdump",          &vBpdump,           false);
+  vAddPrimitive("freeBuffers",     &vFreeBuffers,      false);
+  vAddPrimitive("freePercent",     &vFreePercent,      false);
+  vAddPrimitive("freeSpace",       &vFreeSpace,        false);
+  vAddPrimitive("inUseSpace",      &vInUseSpace,       false);
+  vAddPrimitive("totalSpace",      &vTotalSpace,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* bpa -- buffer pool analyze                                                 */
@@ -1966,6 +995,17 @@ void Task::vTotalSpace(NNP_Task nnpTask)
 // cast: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Cast(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vAddPrimitive("(int)",           &vCastInt,          false);
+  vAddPrimitive("(ptr)",           &vCastPtr,          false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* (int) -- cast ptr to int                                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vCastInt(NNP_Task nnpTask)
@@ -2000,6 +1040,16 @@ void Task::vCastPtr(NNP_Task nnpTask)
 // class: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Class(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  vAddPrimitive("class.name",      &vClassName,    false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* class.name -- translate class no to name                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vClassName(NNP_Task nnpTask)
@@ -2022,6 +1072,14 @@ void Task::vClassName(NNP_Task nnpTask)
 // comment: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Comment(void)
+{
+  vAddPrimitive("(",               &vComment,          true );
+}
+
+/*----------------------------------------------------------------------------*/
 /* comment -- comment                                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vComment(NNP_Task nnpTask)
@@ -2040,6 +1098,14 @@ void Task::vComment(NNP_Task nnpTask)
 // cpu: ////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Cpu(void)
+{
+  vAddPrimitive("cpu.rdtscp",      &vCpuRdtscp,        false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* cpu.rdtscp -- read cpu time stamp counter                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vCpuRdtscp(NNP_Task nnpTask)
@@ -2054,6 +1120,14 @@ void Task::vCpuRdtscp(NNP_Task nnpTask)
 }
 
 // csv: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Csv(void)
+{
+  vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* csv.firstValue -- get first value from csv string                          */
@@ -2079,6 +1153,15 @@ ENTRY("vCsvFirstValue");
 }
 
 // cursor: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Cursor(void)
+{
+  vAddPrimitive("cursor@",         &vCursorFetch,      false);
+  vAddPrimitive("cursor!",         &vCursorStore,      false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* cursor@ -- fetch cursor from return stack onto param stack                 */
@@ -2120,6 +1203,15 @@ void Task::vCursorStore(NNP_Task nnpTask)
 // diclock: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_DicLock(void)
+{
+  vAddPrimitive("dicLock.dropWrite",&vDicLockDropWrite, false);
+  vAddPrimitive("dicLock.grabWrite",&vDicLockGrabWrite, false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* diclLock.dropWrite -- drop dic lock for write                              */
 /*----------------------------------------------------------------------------*/
 void Task::vDicLockDropWrite(NNP_Task nnpTask)
@@ -2145,6 +1237,18 @@ void Task::vDicLockGrabWrite(NNP_Task nnpTask)
 }
 
 // ddllock: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_DdlLock(void)
+{
+  vAddPrimitive("ddlLock.dropRead", &vDdlLockDropRead,  false);
+  vAddPrimitive("ddlLock.dropWrite",&vDdlLockDropWrite, false);
+  vAddPrimitive("ddlLock.grabRead", &vDdlLockGrabRead,  false);
+  vAddPrimitive("ddlLock.grabWrite",&vDdlLockGrabWrite, false);
+  vAddPrimitive("ddlLock.testDrop", &vDdlLockTestDrop,  false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* ddlLock.dropRead -- drop ddl lock for read                                 */
@@ -2233,6 +1337,14 @@ void Task::vDdlLockTestDrop(NNP_Task nnpTask)
 // debug: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Debug(void)
+{
+  vAddPrimitive("debug.trap",      &vDebugTrap,        false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* debug.trap -- call debug trap                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vDebugTrap(NNP_Task nnpTask)
@@ -2245,6 +1357,30 @@ ENTRY("vDebugTrap");
 }
 
 // dic: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Dic(void)
+{
+  vAddPrimitive("dic.count",       &vDicCount,         false);
+  vAddPrimitive("dic.drop",        &vDicDrop,          false);
+  vAddPrimitive("}}",              &vDicDrop,          false);
+  vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
+  vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
+  vAddPrimitive("dic.init",        &vDicInit,          false);
+  vAddPrimitive("dic.isCompiled",  &vDicIsCompiled,    false);
+  vAddPrimitive("dic.kind@",       &vDicKindGet,       false);
+  vAddPrimitive("dic.kind!",       &vDicKindSet,       false);
+  vAddPrimitive("dic.last",        &vDicLast,          false);
+  vAddPrimitive("dic.main",        &vDicMain,          false);
+  vAddPrimitive("dic.name",        &vDicName,          false);
+  vAddPrimitive("dic.pick",        &vDicPick,          false);
+  vAddPrimitive("dic.push",        &vDicPush,          false);
+  vAddPrimitive("{{",              &vDicPush,          false);
+  vAddPrimitive("dic.ref",         &vDicRef,           false);
+  vAddPrimitive("dic.stack",       &vDicStack,         false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* dic.count -- get number of dictionaries on dictionary stack                */
@@ -2548,6 +1684,16 @@ void Task::vDicRef(NNP_Task nnpTask)
   EXIT();
 }
 
+// dicstack: ///////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_DicStack(void)
+{
+  vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
+}
+
 /*----------------------------------------------------------------------------*/
 /* dicStack.push -- push a dictionary from stack onto task dictionary stack   */
 /*----------------------------------------------------------------------------*/
@@ -2567,6 +1713,34 @@ void Task::vDicStackPush(NNP_Task nnpTask)
 }
 
 // dir: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Dir(void)
+{
+  vAddPrimitive("dir.exists",      &vDirExists,        false);
+  vAddPrimitive("dir.make",        &vDirMake,          false);
+  vAddPrimitive("dir.remove",      &vDirRemove,        false);
+  vAddPrimitive("cwd",             &vCwd,              false);
+  vAddPrimitive("gwd",             &vGwd,              false);
+  
+  vAddPrimitive("dir.close",       &vDirClose,         false);
+  vAddPrimitive("dir.delete",      &vDirDelete,        false);
+  vAddPrimitive("dir.entryName",   &vDirEntryName,     false);
+  vAddPrimitive("dir.entryType",   &vDirEntryType,     false);
+  vAddPrimitive("dir.init",        &vDirInit,          false);
+  vAddPrimitive("dir.isClosed",    &vDirIsClosed,      false);
+  vAddPrimitive("dir.isOpen",      &vDirIsOpen,        false);
+  vAddPrimitive("dir.new",         &vDirNew,           false);
+  vAddPrimitive("dir.open",        &vDirOpen,          false);
+  vAddPrimitive("dir.path@",       &vDirPathGet,       false);
+  vAddPrimitive("dir.path!",       &vDirPathSet,       false);
+  vAddPrimitive("dir.read",        &vDirRead,          false);
+  vAddPrimitive("dir.rewind",      &vDirRewind,        false);
+  vAddPrimitive("dir.seek",        &vDirSeek,          false);
+  vAddPrimitive("dir.tell",        &vDirTell,          false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* dir.exists -- test if a directory exists                                   */
@@ -2994,6 +2168,17 @@ ENTRY("vDirTell");
 // docol: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Docol(void)
+{
+  vAddPrimitive("]",                     &vDocolCompiling,      false);
+  vAddPrimitive("[",                     &vDocolInterpreting,   true );
+  vAddPrimitive("docol.isCompiling",     &vDocolIsCompiling,    false);
+  vAddPrimitive("docol.isInterpreting",  &vDocolIsInterpreting, false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* ] -- enter compiler state                                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vDocolCompiling(NNP_Task nnpTask)
@@ -3046,6 +2231,17 @@ void Task::vDocolIsInterpreting(NNP_Task nnpTask)
 }
 
 // dot: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Dot(void)
+{
+  vAddPrimitive(".",               &vDot,              false);
+  vAddPrimitive(".put",            &vDotPut,           false);
+  vAddPrimitive(".\\n",            &vDotNewline,       false);
+  vAddPrimitive(".verbose",     &vDotVerbose,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* . -- print top value on stack                                              */
@@ -3127,6 +2323,25 @@ void Task::vDotVerbose(NNP_Task nnpTask)
 }
 
 // encode: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Encode(void)
+{
+  vAddPrimitive("again",               &vEncodeAgain,         true );
+  vAddPrimitive("ahead",               &vEncodeAhead,         true );
+  vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
+  vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
+  vAddPrimitive("here",                &vEncodeHere,          false);
+  vAddPrimitive("if",                  &vEncodeIf,            true );
+  vAddPrimitive("loop",                &vEncodeLoop,          true );
+  vAddPrimitive("+loop",               &vEncodeLoopPlus,      true );
+  vAddPrimitive("next",                &vEncodeNext,          true );
+  vAddPrimitive("encodePushValue",     &vEncodePushValue,     false);
+  vAddPrimitive("then",                &vEncodeThen,          true );
+  vAddPrimitive("until",               &vEncodeUntil,         true );
+}
 
 /*----------------------------------------------------------------------------*/
 /* again -- encode jump to known backward address                   immediate */
@@ -3440,6 +2655,15 @@ void Task::vEncodeUntil(NNP_Task nnpTask)
 // enter: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Enter(void)
+{
+  vAddPrimitive("enterObject",     &vEnterObject,      false);
+  vAddPrimitive("enterRoutine",    &vEnterRoutine,     false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* enterObject -- enter object routine   (this is the does step for a object) */
 /*----------------------------------------------------------------------------*/
 void Task::vEnterObject(NNP_Task nnpTask)
@@ -3479,6 +2703,14 @@ void Task::vEnterRoutine(NNP_Task nnpTask)
 // env: ////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Env(void)
+{
+  vAddPrimitive("env@",            &vEnvGet,           false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* env@ -- get environment variable                                           */
 /*----------------------------------------------------------------------------*/
 void Task::vEnvGet(NNP_Task nnpTask)
@@ -3500,7 +2732,15 @@ void Task::vEnvGet(NNP_Task nnpTask)
   EXIT();
 }
 
-// errors: /////////////////////////////////////////////////////////////////////
+// error: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Error(void)
+{
+  vAddPrimitive("error.msg",       &vErrorMsg,         false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* error.msg -- get error message given the error code                        */
@@ -3526,6 +2766,14 @@ void Task::vErrorMsg(NNP_Task nnpTask)
 }
 
 // exit: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Exit(void)
+{
+  vAddPrimitive("exit",            &vExit,             false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* exit -- exit from routine                                                  */
@@ -3554,6 +2802,23 @@ void Task::vExit(NNP_Task nnpTask)
 }
 
 // file: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_File(void)
+{
+  vAddPrimitive("file.close",      &vFileClose,        false);
+  vAddPrimitive("file.delete",     &vFileDelete,       false);
+  vAddPrimitive("file.init",       &vFileInit,         false);
+  vAddPrimitive("file.new",        &vFileNew,          false);
+  vAddPrimitive("file.open",       &vFileOpen,         false);
+  vAddPrimitive("file.path@",      &vFilePathGet,      false);
+  vAddPrimitive("file.path!",      &vFilePathSet,      false);
+  vAddPrimitive("file.read",       &vFileRead,         false);
+  vAddPrimitive("file.readRecord", &vFileReadRecord,   false);
+  vAddPrimitive("file.write",      &vFileWrite,        false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* file.close -- close a file                                                 */
@@ -3784,6 +3049,24 @@ ENTRY("vFileWrite");
 // flow: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Flow(void)
+{
+  vAddPrimitive("begin_",          &vFlowBegin_,       false);
+  vAddPrimitive("execute",         &vFlowExecute,      false);
+  vAddPrimitive("hazard",          &vFlowHazard,       false);
+  vAddPrimitive("jump",            &vFlowJump,         false);
+  vAddPrimitive("jumpBegin_",      &vFlowJumpBegin_,   false);
+  vAddPrimitive("jumpFalse",       &vFlowJumpFalse,    false);
+  vAddPrimitive("jumpTrue",        &vFlowJumpTrue,     false);
+  vAddPrimitive("nop",             &vFlowNop,          false);
+  vAddPrimitive("retryPoint",      &vFlowRetryPoint,   false);
+  vAddPrimitive("test",            &vFlowTest,         false);
+  vAddPrimitive("throw",           &vFlowThrow,        false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin_ -- begin of the docol loop : docol (used only in docol)   immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowBegin_(NNP_Task nnpTask)
@@ -3968,6 +3251,17 @@ void Task::vFlowThrow(NNP_Task nnpTask)
 // grid: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Grid(void)
+{
+  vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
+  vAddPrimitive("grid.started!",   &vGridStartedStore, false);
+  vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
+  vAddPrimitive("grid.init",       &vGridInit,         false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* grid.appendNode -- append grid node into grid                              */
 /*----------------------------------------------------------------------------*/
 void Task::vGridAppendNode(NNP_Task nnpTask)
@@ -4053,6 +3347,25 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
 }
 
 // input: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Input(void)
+{
+  vAddPrimitive("accept",          &vInputAccept,      false);
+  vAddPrimitive("input.close",     &vInputClose,       false);
+  vAddPrimitive("input.depth",     &vInputDepth,       false);
+  vAddPrimitive("input.next",      &vInputNext,        false);
+  vAddPrimitive("input.open",      &vInputOpen,        false);
+  vAddPrimitive("input.pop",       &vInputPop,         false);
+  vAddPrimitive("input.push",      &vInputPush,        false);
+  vAddPrimitive("input.stdin",     &vInputStdin,       false);
+  vAddPrimitive("input.text",      &vInputText,        false);
+  vAddPrimitive("input.token",     &vInputToken,       false);
+  vAddPrimitive("input.type",      &vInputType,        false);
+  vAddPrimitive("token:",          &vTokenColon,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* accept -- accept input string and push on stack                            */
@@ -4222,7 +3535,41 @@ ENTRY("vInputType");
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* token: -- token colon                                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTokenColon(NNP_Task nnpTask)
+{
+  ENTRY("vTokenColon");
+  
+  nnpTask->vTokenNext();
+  
+  nnpTask->m_xDataStack.vPush(nnpTask->m_sToken);
+  
+  EXIT();
+}
+
 // int: ////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Int(void)
+{
+  vAddPrimitive("+",               &vIntAdd,           false);
+  vAddPrimitive("/",               &vIntDivide,        false);
+  vAddPrimitive("==",              &vIntEqual,         false);
+  vAddPrimitive(">",               &vIntGreater,       false);
+  vAddPrimitive(">=",              &vIntGreaterEqual,  false);
+  vAddPrimitive("hash",            &vIntHash,          false);
+  vAddPrimitive("<",               &vIntLess,          false);
+  vAddPrimitive("<=",              &vIntLessEqual,     false);
+  vAddPrimitive("%",               &vIntModulo,        false);
+  vAddPrimitive("*",               &vIntMultiply,      false);
+  vAddPrimitive("neg",             &vIntNeg,           false);
+  vAddPrimitive("!=",              &vIntNotEqual,      false);
+  vAddPrimitive("-",               &vIntSubtract,      false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* + -- add top two integers on stack                                         */
@@ -4488,6 +3835,21 @@ void Task::vIntSubtract(NNP_Task nnpTask)
 // loader: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Loader(void)
+{
+  vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
+  vAddPrimitive("loader.init",        &vLoaderInit,        false);
+  vAddPrimitive("loader.new",         &vLoaderNew,         false);
+  vAddPrimitive("loader.newSub",      &vLoaderNewSub,      false);
+  vAddPrimitive("loader.path!",       &vLoaderPathStore,   false);
+  vAddPrimitive("loader.table!",      &vLoaderTableStore,  false);
+  vAddPrimitive("loader.txref!",      &vLoaderTxRefStore,  false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* loader.delete -- delete a table loader                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
@@ -4656,6 +4018,30 @@ void Task::vLoaderTxRefStore(NNP_Task nnpTask)
 }
 
 // loaderSub: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_LoaderSub(void)
+{
+  vAddPrimitive("loaderSub.appendBuffer",&vLoaderSubAppendBuffer,false);
+  vAddPrimitive("loaderSub.begin",       &vLoaderSubBegin,       false);
+  vAddPrimitive("loaderSub.delete",      &vLoaderSubDelete,      false);
+  vAddPrimitive("loaderSub.end",         &vLoaderSubEnd,         false);
+  vAddPrimitive("loaderSub.fetchRecord", &vLoaderSubFetchRecord, false);
+  vAddPrimitive("loaderSub.hashPartition",&vLoaderSubHashPartition, false);
+  vAddPrimitive("loaderSub.hashRecord",  &vLoaderSubHashRecord,  false);
+  vAddPrimitive("loaderSub.init",        &vLoaderSubInit,        false);
+  vAddPrimitive("loaderSub.insertRow",   &vLoaderSubInsertRow,   false);
+  vAddPrimitive("loaderSub.insertRow?",  &vLoaderSubInsertRow2,  false);
+  vAddPrimitive("loaderSub.loader!",     &vLoaderSubLoaderStore, false);
+  vAddPrimitive("loaderSub.new",         &vLoaderSubNew,         false);
+  vAddPrimitive("loaderSub.partition",   &vLoaderSubPartition,   false);
+  vAddPrimitive("loaderSub.partition!",  &vLoaderSubPartitionStore, false);
+  vAddPrimitive("loaderSub.rowBuffer",   &vLoaderSubRowBuffer,   false);
+  vAddPrimitive("loaderSub.rowBuffer!",  &vLoaderSubRowBufferStore, false);
+  vAddPrimitive("loaderSub.table",       &vLoaderSubTable,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* loaderSub.appendBuffer -- append buffer into table                         */
@@ -4950,7 +4336,20 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
   EXIT();
 }
 
-// locals: /////////////////////////////////////////////////////////////////////
+// local: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Local(void)
+{
+  vAddPrimitive("local.fetch",     &vLocalFetch,       false);
+  vAddPrimitive("local.store",     &vLocalStore,       false);
+  vAddPrimitive("locals|",         &vLocalsBar,        true);
+  vAddPrimitive("locals.pop",      &vLocalsPop,        false);
+  vAddPrimitive("locals.push",     &vLocalsPush,       false);
+  vAddPrimitive("to",              &vLocalsTo,         true);
+}
 
 /*----------------------------------------------------------------------------*/
 /* local.fetch -- push locals[n] onto dstack                                  */
@@ -5115,6 +4514,18 @@ ENTRY("vLocalsTo");
 // lock: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Lock(void)
+{
+  vAddPrimitive("lock.dropRead",   &vLockDropRead,     false);
+  vAddPrimitive("lock.dropWrite",  &vLockDropWrite,    false);
+  vAddPrimitive("lock.grabRead",   &vLockGrabRead,     false);
+  vAddPrimitive("lock.grabWrite",  &vLockGrabWrite,    false);
+  vAddPrimitive("lock.init",       &vLockInit,         false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* lock.dropread -- drop read lock                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vLockDropRead(NNP_Task nnpTask)
@@ -5215,6 +4626,18 @@ ENTRY("vLockInit");
   EXIT();
 }
 
+// logic: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Logic(void)
+{
+  vAddPrimitive("and",             &vLogicAnd,         false);
+  vAddPrimitive("not",             &vLogicNot,         false);
+  vAddPrimitive("or",              &vLogicOr,          false);
+}
+
 /*----------------------------------------------------------------------------*/
 /* and -- logical and of top two values                                       */
 /*----------------------------------------------------------------------------*/
@@ -5280,6 +4703,15 @@ void Task::vLogicOr(NNP_Task nnpTask)
 // magnitude: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Magnitude(void)
+{
+  vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
+  vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* bytes.magnitude -- return magnitude of bytes                               */
 /*----------------------------------------------------------------------------*/
 void Task::vBytesMagnitude(NNP_Task nnpTask)
@@ -5326,6 +4758,15 @@ void Task::vNumberMagnitude(NNP_Task nnpTask)
 // memory: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Memory(void)
+{
+  vAddPrimitive("memory.byteDump", &vMemoryByteDump,   false);
+  vAddPrimitive("memory.wordDump", &vMemoryWordDump,   false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* memory.bytedump -- byte-oriented dump                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vMemoryByteDump(NNP_Task nnpTask)
@@ -5370,6 +4811,17 @@ ENTRY("vMemoryWordDump");
 }
 
 // node: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Node(void)
+{
+  vAddPrimitive("node.init",       &vNodeInit,         false);
+  vAddPrimitive("node.new",        &vNodeNew,          false);
+  vAddPrimitive("node.no",         &vNodeNo,           false);
+  vAddPrimitive("node.status",     &vNodeStatus,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* node.init -- initialise a node (of a grid)                                 */
@@ -5453,6 +4905,20 @@ void Task::vNodeStatus(NNP_Task nnpTask)
 }
 
 // nodecursor: /////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_NodeCursor(void)
+{
+  vAddPrimitive("nodeCursor.begin",  &vNodeCursorBegin,  false);
+  vAddPrimitive("nodeCursor.delete", &vNodeCursorDelete, false);
+  vAddPrimitive("nodeCursor.first",  &vNodeCursorFirst,  false);
+  vAddPrimitive("nodeCursor.get",    &vNodeCursorGet,    false);
+  vAddPrimitive("nodeCursor.init",   &vNodeCursorInit,   false);
+  vAddPrimitive("nodeCursor.new",    &vNodeCursorNew,    false);
+  vAddPrimitive("nodeCursor.next",   &vNodeCursorNext,   false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* nodecursor.begin -- begin using node (of grid) cursor                      */
@@ -5615,6 +5081,19 @@ ENTRY("vNodeCursorNext");
 // object: /////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Object(void)
+{
+  vAddPrimitive("object.class@",     &vObjectClassFetch, false);
+  vAddPrimitive("object.class!",     &vObjectClassStore, false);
+  vAddPrimitive("object@",           &vObjectFetch,      false);
+  vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
+  vAddPrimitive("object!",           &vObjectStore,      false);
+  vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* object.class@ -- fetch class number from object                            */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectClassFetch(NNP_Task nnpTask)
@@ -5749,6 +5228,16 @@ void Task::vObjectWordBodySet(NNP_Task nnpTask)
 // process: ////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Process(void)
+{
+  vAddPrimitive("process.getPid",  &vProcessGetPid,    false);
+  vAddPrimitive("process.quit",    &vProcessQuit,      false);
+  vAddPrimitive("process.testPid", &vProcessTestPid,   false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* process.getpid -- get pid of this process                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vProcessGetPid(NNP_Task nnpTask)
@@ -5793,6 +5282,32 @@ ENTRY("vProcessTestPid");
 }
 
 // dstack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Dstack(void)
+{
+  vAddPrimitive("stack.class",     &vDstackClass,      false);
+  vAddPrimitive("depth",           &vDstackDepth,      false);
+  vAddPrimitive("drop",            &vDstackDrop,       false);
+  vAddPrimitive("2drop",           &vDstackDropTwo,    false);
+  vAddPrimitive("dump",            &vDstackDump,       false);
+  vAddPrimitive("dup",             &vDstackDup,        false);
+  vAddPrimitive("?dup",            &vDstackDupNonZero, false);
+  vAddPrimitive("nip",             &vDstackNip,        false);
+  vAddPrimitive("over",            &vDstackOver,       false);
+  vAddPrimitive("pick",            &vDstackPick,       false);
+  vAddPrimitive("reverse",         &vDstackReverse,    false);
+  vAddPrimitive("roll",            &vDstackRoll,       false);
+  vAddPrimitive("-roll",           &vDstackRollInv,    false);
+  vAddPrimitive("rot",             &vDstackRot,        false);
+  vAddPrimitive("-rot",            &vDstackRotInv,     false);
+  vAddPrimitive("swap",            &vDstackSwap,       false);
+  vAddPrimitive("valset>",         &vDstackToValues,   false);
+  vAddPrimitive(">valset",         &vDstackToValSet,   false);
+  vAddPrimitive("tuck",            &vDstackTuck,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* stack.class -- get class of nth value on stack                             */
@@ -6253,6 +5768,17 @@ void Task::vDstackTuck(NNP_Task nnpTask)
 // push: ///////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Push(void)
+{
+  vAddPrimitive("i",               &vPushI,            false);
+  vAddPrimitive("j",               &vPushJ,            false);
+  vAddPrimitive("nullPtr",         &vPushNullPtr,      false);
+  vAddPrimitive("pushValue",       &vPushValue,        false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* i -- copy loop index from return stack onto param stack                    */
 /*----------------------------------------------------------------------------*/
 void Task::vPushI(NNP_Task nnpTask)
@@ -6312,6 +5838,17 @@ void Task::vPushValue(NNP_Task nnpTask)
 }
 
 // queue: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Queue(void)
+{
+  vAddPrimitive("queue.append",    &vQueueAppend,      false);
+  vAddPrimitive("queue.dump",      &vQueueDump,        false);
+  vAddPrimitive("queue.init",      &vQueueInit,        false);
+  vAddPrimitive("queue.pop",       &vQueuePop,         false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* queue.append -- append onto queue                                          */
@@ -6407,6 +5944,49 @@ ENTRY("vQueuePop");
 }
 
 // registers: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Reg(void)
+{
+  vAddPrimitive("reg.pop",          &vRegPop,          false);
+  vAddPrimitive("reg.push",         &vRegPush,         false);
+  vAddPrimitive("reg0",             &vRegReg0,         false);
+  vAddPrimitive("reg1",             &vRegReg1,         false);
+  vAddPrimitive("reg2",             &vRegReg2,         false);
+  vAddPrimitive("reg3",             &vRegReg3,         false);
+  vAddPrimitive("reg4",             &vRegReg4,         false);
+  vAddPrimitive("reg5",             &vRegReg5,         false);
+  vAddPrimitive("reg6",             &vRegReg6,         false);
+  vAddPrimitive("reg7",             &vRegReg7,         false);
+  vAddPrimitive("reg8",             &vRegReg8,         false);
+  vAddPrimitive("reg9",             &vRegReg9,         false);
+  vAddPrimitive("regA",             &vRegRegA,         false);
+  vAddPrimitive("regB",             &vRegRegB,         false);
+  vAddPrimitive("regC",             &vRegRegC,         false);
+  vAddPrimitive("regD",             &vRegRegD,         false);
+  vAddPrimitive("regE",             &vRegRegE,         false);
+  vAddPrimitive("regF",             &vRegRegF,         false);
+  vAddPrimitive("regN",             &vRegRegNth,       false);
+  vAddPrimitive(">reg0",            &vRegToReg0,       false);
+  vAddPrimitive(">reg1",            &vRegToReg1,       false);
+  vAddPrimitive(">reg2",            &vRegToReg2,       false);
+  vAddPrimitive(">reg3",            &vRegToReg3,       false);
+  vAddPrimitive(">reg4",            &vRegToReg4,       false);
+  vAddPrimitive(">reg5",            &vRegToReg5,       false);
+  vAddPrimitive(">reg6",            &vRegToReg6,       false);
+  vAddPrimitive(">reg7",            &vRegToReg7,       false);
+  vAddPrimitive(">reg8",            &vRegToReg8,       false);
+  vAddPrimitive(">reg9",            &vRegToReg9,       false);
+  vAddPrimitive(">regA",            &vRegToRegA,       false);
+  vAddPrimitive(">regB",            &vRegToRegB,       false);
+  vAddPrimitive(">regC",            &vRegToRegC,       false);
+  vAddPrimitive(">regD",            &vRegToRegD,       false);
+  vAddPrimitive(">regE",            &vRegToRegE,       false);
+  vAddPrimitive(">regF",            &vRegToRegF,       false);
+  vAddPrimitive(">regN",            &vRegToRegNth,     false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* reg.pop -- pop register set                                                */
@@ -7034,6 +6614,17 @@ void Task::vRegToRegNth(NNP_Task nnpTask)
 // rowbuffer: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_RowBuffer(void)
+{
+  vAddPrimitive("rowBuffer.append", &vRowBufferAppend, false);
+  vAddPrimitive("rowBuffer.appendRecord", &vRowBufferAppendRecord, false);
+  vAddPrimitive("rowBuffer.dump",   &vRowBufferDump,    false);
+  vAddPrimitive("rowBuffer.new",    &vRowBufferNew,    false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* rowbuffer.append -- attempt to append row onto row buffer                  */
 /*----------------------------------------------------------------------------*/
 void Task::vRowBufferAppend(NNP_Task nnpTask)
@@ -7152,6 +6743,24 @@ void Task::vRowBufferNew(NNP_Task nnpTask)
 }
 
 // rowcursor: //////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_RowCursor(void)
+{
+  vAddPrimitive("rowCursor.begin",  &vRowCursorBegin,  false);
+  vAddPrimitive("rowCursor.delete", &vRowCursorDelete, false);
+  vAddPrimitive("rowCursor.end",    &vRowCursorEnd,    false);
+  vAddPrimitive("rowCursor.first",  &vRowCursorFirst,  false);
+  vAddPrimitive("rowCursor.get",    &vRowCursorGet,    false);
+  vAddPrimitive("rowCursor.init",   &vRowCursorInit,   false);
+  vAddPrimitive("rowCursor.new",    &vRowCursorNew,    false);
+  vAddPrimitive("rowCursor.next",   &vRowCursorNext,   false);
+  vAddPrimitive("rowCursor.rowBuffer", &vRowCursorRowBuffer,  false);
+  vAddPrimitive("rowCursor.table@", &vRowCursorTableFetch, false);
+  vAddPrimitive("rowCursor.table!", &vRowCursorTableStore, false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* rowcursor.begin -- begin using row cursor                                  */
@@ -7389,6 +6998,37 @@ ENTRY("vRowCursorTableStore");
 }
 
 // rstack: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Rstack(void)
+{
+  vAddPrimitive("cs-pick",         &vRstackCsPick,     false);
+  vAddPrimitive("cs-roll",         &vRstackCsRoll,     false);
+  vAddPrimitive("rdepth",          &vRstackDepth,      false);
+  vAddPrimitive("rdrop",           &vRstackDrop,       false);
+  vAddPrimitive("r@",              &vRstackFetch,      false);
+  vAddPrimitive("2r@",             &vRstackFetchTwo,   false);
+  vAddPrimitive("rpick",           &vRstackPick,       false);
+  vAddPrimitive("rreverse",        &vRstackReverse,    false);
+  vAddPrimitive("rroll",           &vRstackRoll,       false);
+  vAddPrimitive("-rroll",          &vRstackRollInv,    false);
+  vAddPrimitive("rswap",           &vRstackSwap,       false);
+  vAddPrimitive("r>",              &vRstackToP,        false);
+  vAddPrimitive(">r",              &vRstackToR,        false);
+  vAddPrimitive("2>r",             &vRstackToRTwo,     false);
+  vAddPrimitive("r0",              &vRstack0,          false);
+  vAddPrimitive("r1",              &vRstack1,          false);
+  vAddPrimitive("r2",              &vRstack2,          false);
+  vAddPrimitive("r3",              &vRstack3,          false);
+  vAddPrimitive("r4",              &vRstack4,          false);
+  vAddPrimitive("r5",              &vRstack5,          false);
+  vAddPrimitive("r6",              &vRstack6,          false);
+  vAddPrimitive("r7",              &vRstack7,          false);
+  vAddPrimitive("r8",              &vRstack8,          false);
+  vAddPrimitive("r9",              &vRstack9,          false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* cs-pick -- place copy of nth value in control stack onto control stack     */
@@ -7907,6 +7547,23 @@ void Task::vRstack9(NNP_Task nnpTask)
 // seitf: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_SEitf(void)
+{
+  vAddPrimitive("seitf.count",     &vSEitfCount,       false);
+  vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
+  vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
+  vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
+  vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
+  vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
+  vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
+  vAddPrimitive("seitf.table@",    &vSEitfTableFetch,  false);
+  vAddPrimitive("seitf.tableRef",  &vSEitfTableRef,    false);
+  vAddPrimitive("seitf.tableDeref",&vSEitfTableDeref,  false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* seitf.count -- get count of SE interface's                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCount(NNP_Task nnpTask)
@@ -8130,6 +7787,21 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
 // seitfcursor: ////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_SEitfCursor(void)
+{
+  vAddPrimitive("seitfCursor.begin",  &vSEitfCursorBegin,  false);
+  vAddPrimitive("seitfCursor.delete", &vSEitfCursorDelete, false);
+  vAddPrimitive("seitfCursor.end",    &vSEitfCursorEnd,    false);
+  vAddPrimitive("seitfCursor.first",  &vSEitfCursorFirst,  false);
+  vAddPrimitive("seitfCursor.get",    &vSEitfCursorGet,    false);
+  vAddPrimitive("seitfCursor.init",   &vSEitfCursorInit,   false);
+  vAddPrimitive("seitfCursor.new",    &vSEitfCursorNew,    false);
+  vAddPrimitive("seitfCursor.next",   &vSEitfCursorNext,   false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* seitfcursor.begin -- begin using seitf currsor                             */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfCursorBegin(NNP_Task nnpTask)
@@ -8315,6 +7987,15 @@ ENTRY("vSEitfCursorNext");
 // seitflist: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_SEitfList(void)
+{
+  vAddPrimitive("seitfList.dump",  &vSEitfListDump,    false);
+  vAddPrimitive("seitfList.init",  &vSEitfListInit,    false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* seitflist.dump -- dump of seitfList on param stack                         */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListDump(NNP_Task nnpTask)
@@ -8355,6 +8036,14 @@ ENTRY("vSEitfListInit");
 // shell: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Shell(void)
+{
+  vAddPrimitive("shell.execute",  &vShellExecute,  false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* shell.execute -- execute given shell command                               */
 /*----------------------------------------------------------------------------*/
 void Task::vShellExecute(NNP_Task nnpTask)
@@ -8376,6 +8065,20 @@ void Task::vShellExecute(NNP_Task nnpTask)
 }
 
 // sockets: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Socket(void)
+{
+  vAddPrimitive("socket.accept",   &vSocketAccept,     false);
+  vAddPrimitive("socket.close",    &vSocketClose,      false);
+  vAddPrimitive("socket.connect",  &vSocketConnect,    false);
+  vAddPrimitive("socket.listen",   &vSocketListen,     false);
+  vAddPrimitive("socket.open",     &vSocketOpen,       false);
+  vAddPrimitive("socket.recv",     &vSocketRecv,       false);
+  vAddPrimitive("socket.send",     &vSocketSend,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* socket.accept: accept a socket connection                                  */
@@ -8721,6 +8424,15 @@ void Task::vSocketRecv(NNP_Task nnpTask)
 // steps: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Steps(void)
+{
+  vAddPrimitive("steps.list",  &vStepsList,  false);
+  vAddPrimitive("steps.reset", &vStepsReset, false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* steps.list -- list steps                                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vStepsList(NNP_Task nnpTask)
@@ -8745,6 +8457,24 @@ void Task::vStepsReset(NNP_Task nnpTask)
 }
 
 // string: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Str(void)
+{
+  vAddPrimitive("strpad",      &vStringPad,   false);
+  vAddPrimitive("streql",      &vStrEql,      false);
+  vAddPrimitive("strlen",      &vStrLen,      false);
+  vAddPrimitive("subStr",      &vSubStr,      false);
+  vAddPrimitive("concat",      &vConcat,      false);
+  vAddPrimitive("clip",        &vClip,        false);
+  vAddPrimitive("prepend",     &vPrepend,     false);
+  vAddPrimitive("toDigitName", &vToDigitName, false);
+  vAddPrimitive("rndStr",      &vRndStr,      false);
+  vAddPrimitive("sprint",      &vSprint,      false);
+  vAddPrimitive("s256.init",   &vS256Init,    false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* strpad -- pad string to given length                                       */
@@ -9123,6 +8853,23 @@ void Task::vS256Init(NNP_Task nnpTask)
 // table: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Table(void)
+{
+  vAddPrimitive("table.append",       &vTableAppend,       false);
+  vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
+  vAddPrimitive("table.dic",          &vTableDic,          false);
+  vAddPrimitive("table.drop",         &vTableDrop,         false);
+  vAddPrimitive("table.init",         &vTableInit,         false);
+  vAddPrimitive("table.insert",       &vTableInsert,       false);
+  vAddPrimitive("table.name",         &vTableName,         false);
+  vAddPrimitive("table.ref",          &vTableRef,          false);
+  vAddPrimitive("table.space",        &vTableSpace,        false);
+  vAddPrimitive("table.truncate",     &vTableTruncate,     false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* table.append -- append buffer into table (from seitf)                      */
 /*----------------------------------------------------------------------------*/
 void Task::vTableAppend(NNP_Task nnpTask)
@@ -9381,6 +9128,41 @@ ENTRY("vTableSpace");
 }
 
 // task: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Task(void)
+{
+  vAddPrimitive("task.ack",        &vTaskAck,          false);
+  vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
+  vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
+  vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
+  vAddPrimitive("task.comment!",   &vTaskCommentStore, false);
+  vAddPrimitive("task.dic",        &vTaskDic,          false);
+  vAddPrimitive("task.dump",       &vTaskDump,         false);
+  vAddPrimitive("task.init",       &vTaskInit,         false);
+  vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
+  vAddPrimitive("task.name!",      &vTaskNameStore,    false);
+  vAddPrimitive("task.new",        &vTaskNew,          false);
+  vAddPrimitive("task.parent@",    &vTaskParentFetch,  false);
+  vAddPrimitive("task.parent!",    &vTaskParentStore,  false);
+  vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
+  vAddPrimitive("task.queue!",     &vTaskQstore,       false);
+  vAddPrimitive("task.seed",       &vTaskSeed,         false);
+  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
+  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
+  vAddPrimitive("task.socket@",    &vTaskSocketFetch,  false);
+  vAddPrimitive("task.socket!",    &vTaskSocketStore,  false);
+  vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
+  vAddPrimitive("task.state!",     &vTaskStateStore,   false);
+  vAddPrimitive("task.taskset@",   &vTaskTaskSetFetch, false);
+  vAddPrimitive("task.taskset!",   &vTaskTaskSetStore, false);
+  vAddPrimitive("task.this",       &vTaskThis,         false);
+  vAddPrimitive("task.thread",     &vTaskThread,       false);
+  vAddPrimitive("task.wait",       &vTaskWait,         false);
+  vAddPrimitive("task.yield",      &vTaskYield,        false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* ack -- acknowledge that task of this tasks completion                      */
@@ -10021,6 +9803,21 @@ void Task::vTaskYield(NNP_Task nnpTask)
 // taskCursor: /////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TaskCursor(void)
+{
+  vAddPrimitive("taskCursor.begin",  &vTaskCursorBegin,  false);
+  vAddPrimitive("taskCursor.delete", &vTaskCursorDelete, false);
+  vAddPrimitive("taskCursor.end",    &vTaskCursorEnd,    false);
+  vAddPrimitive("taskCursor.first",  &vTaskCursorFirst,  false);
+  vAddPrimitive("taskcursor.get",    &vTaskCursorGet,    false);
+  vAddPrimitive("taskcursor.init",   &vTaskCursorInit,   false);
+  vAddPrimitive("taskcursor.new",    &vTaskCursorNew,    false);
+  vAddPrimitive("taskcursor.next",   &vTaskCursorNext,   false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* taskcursor.begin -- begin using task currsor                               */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskCursorBegin(NNP_Task nnpTask)
@@ -10187,6 +9984,17 @@ ENTRY("vTaskCursorNext");
 // tasklist: ///////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TaskList(void)
+{
+  vAddPrimitive("taskList",        &vTaskList,         false);
+  vAddPrimitive("taskList.append", &vTaskListAppend,   false);
+  vAddPrimitive("taskList.dump",   &vTaskListDump,     false);
+  vAddPrimitive("taskList.init",   &vTaskListInit,     false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* tasklist -- tasklist                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskList(NNP_Task nnpTask)
@@ -10252,6 +10060,16 @@ ENTRY("vTaskListInit");
 }
 
 // taskset: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TaskSet(void)
+{
+  vAddPrimitive("taskSet.append",  &vTaskSetAppend,    false);
+  vAddPrimitive("taskSet.dump",    &vTaskSetDump,      false);
+  vAddPrimitive("taskSet.init",    &vTaskSetInit,      false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* taskset.append -- taskset append                                           */
@@ -10322,6 +10140,32 @@ ENTRY("vTaskSetInit");
 }
 
 // thread: /////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Thread(void)
+{
+  vAddPrimitive("thread.append",      &vThreadAppend,      false);
+  vAddPrimitive("thread.bind",        &vThreadBind,        false);
+  vAddPrimitive("thread.condSignal",  &vThreadCondSignal,  false);
+  vAddPrimitive("thread.condWait",    &vThreadCondWait,    false);
+  vAddPrimitive("thread.cpu",         &vThreadCpu,         false);
+  vAddPrimitive("thread.dump",        &vThreadDump,        false);
+  vAddPrimitive("thread.init",        &vThreadInit,        false);
+  vAddPrimitive("thread.id",          &vThreadId,          false);
+  vAddPrimitive("thread.mutexLock",   &vThreadMutexLock,   false);
+  vAddPrimitive("thread.mutexUnlock", &vThreadMutexUnlock, false);
+  vAddPrimitive("thread.name@",       &vThreadNameFetch,   false);
+  vAddPrimitive("thread.name!",       &vThreadNameStore,   false);
+  vAddPrimitive("thread.taskset@",    &vThreadSfetch,      false);
+  vAddPrimitive("thread.taskset!",    &vThreadSstore,      false);
+  vAddPrimitive("thread.sleep_s",     &vThreadSleep_s,     false);
+  vAddPrimitive("thread.sleep_ms",    &vThreadSleep_ms,    false);
+  vAddPrimitive("thread.sleep_us",    &vThreadSleep_us,    false);
+  vAddPrimitive("thread.sleep_ns",    &vThreadSleep_ns,    false);
+  vAddPrimitive("thread.spawn",       &vThreadSpawn,       false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* thread.append -- append task to threads taskset                            */
@@ -10750,6 +10594,21 @@ ENTRY("vThreadSpawn");
 // threadCursor: ///////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_ThreadCursor(void)
+{
+  vAddPrimitive("threadCursor.begin",  &vThreadCursorBegin,  false);
+  vAddPrimitive("threadCursor.delete", &vThreadCursorDelete, false);
+  vAddPrimitive("threadCursor.end",    &vThreadCursorEnd,    false);
+  vAddPrimitive("threadCursor.first",  &vThreadCursorFirst,  false);
+  vAddPrimitive("threadCursor.get",    &vThreadCursorGet,    false);
+  vAddPrimitive("threadCursor.init",   &vThreadCursorInit,   false);
+  vAddPrimitive("threadCursor.new",    &vThreadCursorNew,    false);
+  vAddPrimitive("threadCursor.next",   &vThreadCursorNext,   false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* threadCursor.begin -- begin using thread cursor                            */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadCursorBegin(NNP_Task nnpTask)
@@ -10910,6 +10769,15 @@ ENTRY("vThreadCursorNext");
 // threadlist: //////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_ThreadList(void)
+{
+  vAddPrimitive("threadList.dump", &vThreadListDump,   false);
+  vAddPrimitive("threadList.init", &vThreadListInit,   false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* threadlist.dump -- dump the threadList on param stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListDump(NNP_Task nnpTask)
@@ -10948,6 +10816,24 @@ ENTRY("vThreadListInit");
 }
 
 // timer: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Timer(void)
+{
+  vAddPrimitive("timer.delete",    &vTimerDelete,      false);
+  vAddPrimitive("timer.init",      &vTimerInit,        false);
+  vAddPrimitive("timer.microsecs", &vTimerMicrosecs,   false);
+  vAddPrimitive("timer.millisecs", &vTimerMillisecs,   false);
+  vAddPrimitive("timer.nanosecs",  &vTimerNanosecs,    false);
+  vAddPrimitive("timer.new",       &vTimerNew,         false);
+  vAddPrimitive("timer.reset",     &vTimerReset,       false);
+  vAddPrimitive("timer.secs",      &vTimerSecs,        false);
+  vAddPrimitive("timer.start",     &vTimerStart,       false);
+  vAddPrimitive("timer.ticks",     &vTimerTicks,       false);
+  vAddPrimitive("timer.update",    &vTimerUpdate,      false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* timer.delete -- delete timer                                               */
@@ -11179,6 +11065,20 @@ ENTRY("vTimerUpdate");
 // to: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_To(void)
+{
+  vAddPrimitive(">body",           &vToBody,           false);
+  vAddPrimitive(">cmd",            &vToCmd,            false);
+  vAddPrimitive(">digitName",      &vToDigitName,      false);
+  vAddPrimitive(">int",            &vToInt,            false);
+  vAddPrimitive(">seitf",          &vToSEitf,          false);
+  vAddPrimitive(">str",            &vToStr,            false);
+  vAddPrimitive(">task",           &vToTask,           false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* >body -- convert word pointer to body pointer                              */
 /*----------------------------------------------------------------------------*/
 void Task::vToBody(NNP_Task nnpTask)
@@ -11312,23 +11212,18 @@ void Task::vToTask(NNP_Task nnpTask)
   EXIT();
 }
 
-// token: //////////////////////////////////////////////////////////////////////
-
-/*----------------------------------------------------------------------------*/
-/* token: -- token colon                                                      */
-/*----------------------------------------------------------------------------*/
-void Task::vTokenColon(NNP_Task nnpTask)
-{
-  ENTRY("vTokenColon");
-  
-  nnpTask->vTokenNext();
-  
-  nnpTask->m_xDataStack.vPush(nnpTask->m_sToken);
-  
-  EXIT();
-}
-
 // trace: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Trace(void)
+{
+  vAddPrimitive("traceOff",        &vTraceOff,         false);
+  vAddPrimitive("traceOn",         &vTraceOn,          false);
+  vAddPrimitive("tracePoint",      &vTracePoint,       false);
+  vAddPrimitive("trace!",          &vTraceSet,         false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* turn tracing off                                                           */
@@ -11392,6 +11287,14 @@ void Task::vTraceSet(NNP_Task nnpTask)
 // tx: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Tx(void)
+{
+  vAddPrimitive("tx.dump",         &vTxDump,           false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* tx.dump -- delete tx                                                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTxDump(NNP_Task nnpTask)
@@ -11412,6 +11315,15 @@ ENTRY("vTxDump");
 }
 
 // txCollection: ///////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TxCollection(void)
+{
+  vAddPrimitive("txCollection.dump", &vTxCollectionDump, false);
+  vAddPrimitive("txCollection.init", &vTxCollectionInit, false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* txCollection.dump -- dump of txCollection on param stack                  */
@@ -11452,6 +11364,21 @@ ENTRY("vTxCollectionInit");
 }
 
 // txCursor: ///////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TxCursor(void)
+{
+  vAddPrimitive("txCursor.begin",  &vTxCursorBegin,  false);
+  vAddPrimitive("txCursor.delete", &vTxCursorDelete, false);
+  vAddPrimitive("txCursor.end",    &vTxCursorEnd,    false);
+  vAddPrimitive("txCursor.first",  &vTxCursorFirst,  false);
+  vAddPrimitive("txCursor.get",    &vTxCursorGet,    false);
+  vAddPrimitive("txCursor.init",   &vTxCursorInit,   false);
+  vAddPrimitive("txCursor.new",    &vTxCursorNew,    false);
+  vAddPrimitive("txCursor.next",   &vTxCursorNext,   false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* txCursor.begin -- begin using tx cursor                                    */
@@ -11609,6 +11536,14 @@ ENTRY("vTxCursorNext");
 // txMap: //////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TxMap(void)
+{
+  vAddPrimitive("txMap.init",      &vTxMapInit,        false);
+}
+
+/*----------------------------------------------------------------------------*/
 /* txMap.init -- init of txmap on param stack                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(NNP_Task nnpTask)
@@ -11628,6 +11563,18 @@ ENTRY("vTxMapInit");
 }
 
 // txRef: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_TxRef(void)
+{
+  vAddPrimitive("txRef.init",      &vTxRefInit,        false);
+  vAddPrimitive("txRef.begin",     &vTxRefBegin,       false);
+  vAddPrimitive("txRef.end",       &vTxRefEnd,         false);
+  vAddPrimitive("txRef.commit",    &vTxRefCommit,      false);
+  vAddPrimitive("txRef.rollback",  &vTxRefRollback,    false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* txRef.init -- init of txref on param stack                                 */
@@ -11737,6 +11684,48 @@ ENTRY("vTxRefRollback");
 }
 
 // words: //////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Word(void)
+{
+  vAddPrimitive("allParticipants", &vAllParticipants,  true );
+  vAddPrimitive("allot",           &vAllot,            false);
+  vAddPrimitive("cell",            &vCell,             false);
+  vAddPrimitive(":",               &vColon,            false);
+  vAddPrimitive(",",               &vComma,            false);
+  vAddPrimitive("compile,",        &vCompileComma,     false);
+  vAddPrimitive("create",          &vCreate,           false);
+  vAddPrimitive(">create",         &vCreateFrom,       false);
+  vAddPrimitive("does>",           &vDoes,             true );
+  vAddPrimitive("does_rt",         &vDoes_RT,          false);
+  vAddPrimitive("find",            &vFind,             false);
+  vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
+  vAddPrimitive("forget",          &vForget,           false);
+  vAddPrimitive("immediate",       &vImmediate,        true );
+  vAddPrimitive("localCalls",      &vLocalCalls,       true );
+  vAddPrimitive("locate",          &vLocate,           false);
+  vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
+  vAddPrimitive("postpone",        &vPostpone,         true );
+  vAddPrimitive("see",             &vSee,              false);
+  vAddPrimitive(";",               &vSemicolon,        true );
+  vAddPrimitive("'",               &vTick,             true );
+  vAddPrimitive("word.dump",       &vWordDump,         false);
+  vAddPrimitive("word.dic",        &vWordDic,          false);
+  vAddPrimitive(">forget",         &vWordForget,       false);
+  vAddPrimitive("word.immediate@", &vWordImmediateGet, false);
+  vAddPrimitive("word.immediate!", &vWordImmediateSet, false);
+  vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
+  vAddPrimitive("word.isPrimitive",&vWordIsPrimitive,  false);
+  vAddPrimitive("word.kind@",      &vWordKindGet,      false);
+  vAddPrimitive("word.kind!",      &vWordKindSet,      false);
+  vAddPrimitive("word.name",       &vWordName,         false);
+  vAddPrimitive("word.prev",       &vWordPrev,         false);
+  vAddPrimitive("word.this",       &vWordThis,         false);
+  vAddPrimitive("word.type@",      &vWordTypeGet,      false);
+  vAddPrimitive("word.type!",      &vWordTypeSet,      false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* allParticipants -- create an allParticipant word                 immediate */
@@ -12595,6 +12584,19 @@ void Task::vWordTypeSet(NNP_Task nnpTask)
 }
 
 // zero: ///////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_Zero(void)
+{
+  vAddPrimitive("0<",              &vZeroLess,         false);
+  vAddPrimitive("0<=",             &vZeroLessEqual,    false);
+  vAddPrimitive("0==",             &vZeroEqual,        false);
+  vAddPrimitive("0!=",             &vZeroNotEqual,     false);
+  vAddPrimitive("0>=",             &vZeroGreaterEqual, false);
+  vAddPrimitive("0>",              &vZeroGreater,      false);
+}
 
 /*----------------------------------------------------------------------------*/
 /* 0< -- test if top value is less than zero                                  */
