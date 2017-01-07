@@ -338,8 +338,8 @@ namespace Tasks
     void vAddPrimitives_To(void);
     void vAddPrimitives_Trace(void);
     void vAddPrimitives_Tx(void);
-    void vAddPrimitives_TxCursor(void);
     void vAddPrimitives_TxCollection(void);
+    void vAddPrimitives_TxCursor(void);
     void vAddPrimitives_TxMap(void);
     void vAddPrimitives_TxRef(void);
     void vAddPrimitives_Word(void);
