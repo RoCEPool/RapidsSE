@@ -306,9 +306,12 @@ namespace Tasks
     void vAddPrimitives_Loader(void);
     void vAddPrimitives_LoaderSub(void);
     void vAddPrimitives_Local(void);
+    void vAddPrimitives_Lock(void);
+    void vAddPrimitives_Logic(void);
     void vAddPrimitives_Magnitude(void);
     void vAddPrimitives_Memory(void);
     void vAddPrimitives_Node(void);
+    void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_Process(void);
     void vAddPrimitives_Push(void);
@@ -331,13 +334,14 @@ namespace Tasks
     void vAddPrimitives_TaskSet(void);
     void vAddPrimitives_Thread(void);
     void vAddPrimitives_ThreadCursor(void);
+    void vAddPrimitives_ThreadList(void);
     void vAddPrimitives_Timer(void);
     void vAddPrimitives_To(void);
-    void vAddPrimitives_Token(void);
     void vAddPrimitives_Trace(void);
     void vAddPrimitives_Tx(void);
     void vAddPrimitives_TxCursor(void);
     void vAddPrimitives_TxCollection(void);
+    void vAddPrimitives_TxMap(void);
     void vAddPrimitives_TxRef(void);
     void vAddPrimitives_Word(void);
     void vAddPrimitives_Zero(void);
