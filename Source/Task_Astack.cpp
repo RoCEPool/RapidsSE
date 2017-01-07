@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* Task_groups.cpp - task groups                                              */
+/* Task_Astack.cpp - task aux stack group                                     */
 /*============================================================================*/
 
 #include "StorageEngine.h"
-//#include "Tasks.h"
 #include "SePrompt.hpp"
 
 extern Arguments       gxArguments;

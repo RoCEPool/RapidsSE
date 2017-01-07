@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Task_groups.cpp - task groups                                              */
+/* Task_ThreadCursor.cpp - task thread cursor group                           */
 /*============================================================================*/
 
 #include "StorageEngine.h"

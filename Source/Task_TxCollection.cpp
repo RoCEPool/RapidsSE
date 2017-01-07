@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Task_groups.cpp - task groups                                              */
+/* Task_TxCollection.cpp - task tx collection group                           */
 /*============================================================================*/
 
 #include "StorageEngine.h"
