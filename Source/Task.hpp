@@ -826,7 +826,6 @@ namespace Tasks
     static void vStepsReset(NNP_Task nnpTask);
     
     // string
-    static void vSubStr(NNP_Task nnpTask);
     static void vSprint(NNP_Task nnpTask);
 
     static void vStrCat(NNP_Task nnpTask);
@@ -838,6 +837,7 @@ namespace Tasks
     static void vStrPrepend(NNP_Task nnpTask);
     static void vStrRandom(NNP_Task nnpTask);
     static void vStrRight(NNP_Task nnpTask);
+    static void vStrSub(NNP_Task nnpTask);
 
     static void vS256Init(NNP_Task nnpTask);
     

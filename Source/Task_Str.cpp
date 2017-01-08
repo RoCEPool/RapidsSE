@@ -34,7 +34,6 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Str(void)
 {
-  vAddPrimitive("subStr",      &vSubStr,      false);
   vAddPrimitive("toDigitName", &vToDigitName, false);
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
@@ -49,6 +48,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("str.prepend", &vStrPrepend,  false);
   vAddPrimitive("str.random",  &vStrRandom,   false);
   vAddPrimitive("str.right",   &vStrRight,    false);
+  vAddPrimitive("str.sub",     &vStrSub,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,81 +70,6 @@ void Task::vCsvFirstValue(NNP_Task nnpTask)
     sFirstValue = "";
   
   nnpTask->m_xDataStack.vPush(sFirstValue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* substr -- substring ( start length str == substr )                         */
-/*----------------------------------------------------------------------------*/
-//void Task::vSubStr(NNP_Task nnpTask)
-//{
-//ENTRY("vSubStr");
-//  
-//  i8 iLength;
-//  i8 iStart;
-//  ValWsp xString;
-//  ValWsp xSubStr;
-//  
-//  StrVal* pStrVal = xString.pAsStrVal();
-//  
-//  // get the arguments
-//  if ( ! nnpTask->m_xDataStack.bPop(iStart,iLength,xString) )
-//    THROW_INVALID_DSTACK("substr");
-//  
-//  // validate start index
-//  if ( iStart < 0 || iStart >= pStrVal->iChars())
-//    THROW("Invalid start index for: subStr");
-//  
-//  // handle to end of string case
-//  if (-1 == iLength)
-//    iLength = pStrVal->iChars() - iStart;
-//  
-//  if ( iLength <= 0 || iStart + iLength > pStrVal->iChars())
-//    THROW("Invalid length for: substr");
-//  
-//  // compute substring
-//  //xSubStr.vCopyString(xString.sStr() + iStartIndex,iLength);
-//  
-//  char* pStart = xString.sStr() + iStart;
-//  
-//  xSubStr.pAsStrVal()->vCopyString(pStart,iLength);
-//  
-//  nnpTask->m_xDataStack.vPush(&xSubStr);
-//  
-//  EXIT();
-//}
-void Task::vSubStr(NNP_Task nnpTask)
-{
-  ENTRY("vSubStr");
-  
-  i8 iLength;
-  i8 iStart;
-  s8K sString;
-  s8K sSubStr;
-  
-  // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iStart,iLength,sString) )
-    THROW_INVALID_DSTACK("substr");
-  
-  i8 iHasLength = String::iLength(sString.a());
-  
-  // validate start index
-  if ( iStart < 0 || iStart >= iHasLength)
-    THROW("Invalid start index for: subStr");
-  
-  // handle to end of string case
-  if (-1 == iLength)
-    iLength = iHasLength - iStart;
-  
-  if ( iLength <= 0 || iStart + iLength > iHasLength)
-    THROW("Invalid length for: substr");
-  
-  char* pStart = sString.a() + iStart;
-  
-  String::vCopyLen(sSubStr.a(),pStart,iLength);
-  
-  nnpTask->m_xDataStack.vPush(sSubStr);
   
   EXIT();
 }
@@ -472,6 +397,44 @@ void Task::vStrRight(NNP_Task nnpTask)
     iLength = iHasLength;
   
   char* pStart = sString.a() + iHasLength - iLength;
+  
+  String::vCopyLen(sSubStr.a(),pStart,iLength);
+  
+  nnpTask->m_xDataStack.vPush(sSubStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* substr -- substring ( start length str == substr )                         */
+/*----------------------------------------------------------------------------*/
+void Task::vStrSub(NNP_Task nnpTask)
+{
+  ENTRY("vStrSub");
+  
+  i8 iLength;
+  i8 iStart;
+  s8K sString;
+  s8K sSubStr;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(iStart,iLength,sString) )
+    THROW_INVALID_DSTACK("str.sub");
+  
+  i8 iHasLength = String::iLength(sString.a());
+  
+  // validate start index
+  if ( iStart < 0 || iStart >= iHasLength)
+    THROW("Invalid start index for: str.sub");
+  
+  // handle to end of string case
+  if (-1 == iLength)
+    iLength = iHasLength - iStart;
+  
+  if ( iLength <= 0 || iStart + iLength > iHasLength)
+    THROW("Invalid length for: str.sub");
+  
+  char* pStart = sString.a() + iStart;
   
   String::vCopyLen(sSubStr.a(),pStart,iLength);
   
