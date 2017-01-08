@@ -1303,10 +1303,10 @@ bool SePrompt::bCreateTable(void)
       
       if (String::bEqualTo(m_pToken2[iCurrentToken], "(")) {
         
-        // concat '('
+        // str.cat '('
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
         
-        // concat the size
+        // str.cat the size
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
         
         // check if it was numeric
@@ -1324,7 +1324,7 @@ bool SePrompt::bCreateTable(void)
           return false;
         }
         
-        // concat ')'
+        // str.cat ')'
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
         
       }
@@ -1336,10 +1336,10 @@ bool SePrompt::bCreateTable(void)
       
       if (String::bEqualTo(m_pToken2[iCurrentToken], "(")) {
         
-        // concat '('
+        // str.cat '('
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
         
-        // concat the size
+        // str.cat the size
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
         
         // check if it was numeric
@@ -1355,10 +1355,10 @@ bool SePrompt::bCreateTable(void)
           return false;
         }
         
-        // concat ','
+        // str.cat ','
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
         
-        // concat the size
+        // str.cat the size
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken]);
         
         // check if it was numeric
@@ -1374,7 +1374,7 @@ bool SePrompt::bCreateTable(void)
           return false;
         }
         
-        // concat ')'
+        // str.cat ')'
         String::vConcat(m_pToken[j], m_pToken2[iCurrentToken++]);
       }
     }

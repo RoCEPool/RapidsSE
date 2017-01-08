@@ -23,9 +23,9 @@
       >digitName     ( "BD"   "<dw>" "name" )
 
       r> dup 1+ >r
-      if swap " " concat swap then
+      if swap " " str.cat swap then
 
-      concat         ( "BD"   "<dw>"        )
+      str.cat         ( "BD"   "<dw>"        )
   repeat
   drop               ( "<dw>"               )
   rdrop

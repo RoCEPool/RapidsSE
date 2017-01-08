@@ -247,15 +247,15 @@ true ' CASE word.immediate!
 : listContents
 
     ""                             // initial contents string
-// "(" concat                     //
+// "(" str.cat                     //
     0 dic.pick dic.last dup
     iterate                        // setup iteration of words
-      object@ word.name concat     // add name of the word to contents string
+      object@ word.name str.cat     // add name of the word to contents string
                                    // add word kind to ls string
-      " " concat                   //
+      " " str.cat                   //
       object@ word.prev object!     // step backwards thru words
     next                           //
-//    ")" concat                     //
+//    ")" str.cat                     //
 
 ;
 

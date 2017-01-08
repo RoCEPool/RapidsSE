@@ -56,7 +56,7 @@
 : addColumn$ ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
 
   args.tracepoint if
-    dup "ADDING COLUMN " swap concat " on NODE " concat args.node >str concat .
+    dup "ADDING COLUMN " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
 tp: addingColumn
@@ -109,21 +109,21 @@ tp: addColOnAll
 
     object@ word.name            // column name
 
-    " " concat
-    object@ execute concat       // column type
+    " " str.cat
+    object@ execute str.cat       // column type
 
     swap
 
     dup str.length
-    if " , " swap concat then    //
+    if " , " swap str.cat then    //
 
-    concat                       // prepend column to ls
+    str.cat                       // prepend column to ls
 
     object@ word.prev object!    // step backwards thru words
 
   next                           //
 
-  //"\n" concat
+  //"\n" str.cat
 
   popColumns
   popTable

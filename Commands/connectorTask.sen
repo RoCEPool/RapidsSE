@@ -42,9 +42,9 @@ tp: connectorStart
       socket.open  socket.connect
 
       args.verbose if
-        "Node" args.node >str concat
-        " connected to node" concat
-        I >str concat
+        "Node" args.node >str str.cat
+        " connected to node" str.cat
+        I >str str.cat
         .
       then
 
@@ -57,7 +57,7 @@ ddlLock.grabWrite
       1 "snd.loop" ( socket 1 "snd.loop" )
 
       // create the actor
-      "sr" I >str concat :actor ( socket 1 "snd.loop" "srI" )
+      "sr" I >str str.cat :actor ( socket 1 "snd.loop" "srI" )
 
       // record the senderQueue
       dup actor.queue I senderQueues ! ( socket 1 "snd.loop" "srI" )

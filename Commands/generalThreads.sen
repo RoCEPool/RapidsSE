@@ -38,8 +38,8 @@ N_GENERAL_THREADS "General threads: %v" sprint .
 /*----------------------------------------------------------------------------*/
 /* create and spawn the general processing threads                            */
 /*----------------------------------------------------------------------------*/
-: >genTaskSetNm ( i -- s ) "generalTaskSet" swap >str concat ;
-: >genThreadNm  ( i -- s ) "generalThread"  swap >str concat ;
+: >genTaskSetNm ( i -- s ) "generalTaskSet" swap >str str.cat ;
+: >genThreadNm  ( i -- s ) "generalThread"  swap >str str.cat ;
 
 : :genTaskSet ( i -- w ) >genTaskSetNm :taskSet ;
 : :genThread  ( i -- w ) >genThreadNm  :thread  ;

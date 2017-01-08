@@ -84,7 +84,7 @@
 tp: makingTenant
 
   args.tracepoint if
-    dup "MAKING TENANT " swap concat " on NODE " concat args.node >str concat .
+    dup "MAKING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
     dup ( "<tenantNm>" "<tenantNm>" )
@@ -133,7 +133,7 @@ tp: mkTenOnAllDone
 tp: removetenant
 
   args.tracepoint if
-    dup "REMOVING TENANT " swap concat " on NODE " concat args.node >str concat .
+    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   :forget ( )

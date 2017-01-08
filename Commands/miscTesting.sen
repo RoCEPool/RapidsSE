@@ -31,7 +31,7 @@ traceon
     "abcdefghijklmnopqrstuvwxyz"
     1000000 0 do
       "abcdefghijklmnopqrstuvwxyz"
-      concat
+      str.cat
     loop
 ;
 
@@ -44,7 +44,7 @@ traceon
 
   "a" strvar !
   1000000 0 do
-    strvar @ "a" concat strvar !
+    strvar @ "a" str.cat strvar !
   loop
 
 ;

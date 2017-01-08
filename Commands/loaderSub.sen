@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : >loadSubNm ( i -- s )
 
-  "sl" swap >str concat ".task" concat
+  "sl" swap >str str.cat ".task" str.cat
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ tp: loadAppendBuffer$
   task.this task.thread thread.name@ 1 0 substr "p" str.equal assert
 
   args.tracepoint if
-    dup "APPENDING ROWBUFFER " swap concat " on NODE " concat args.node >str concat .
+    dup "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   // get ^table

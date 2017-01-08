@@ -43,11 +43,11 @@ thread:  monitorThread
 
     monitorLock lock.grabWrite
 
-      "freespace " freespace >str concat
+      "freespace " freespace >str str.cat
 
-      " queries " concat
+      " queries " str.cat
 
-      queryCount @ >str concat
+      queryCount @ >str str.cat
 
       monitorString !
 

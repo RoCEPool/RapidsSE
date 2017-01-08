@@ -612,8 +612,8 @@ tp: droppedTable
   "/"
   dic.count 2 do
     dic.count 1 - I -
-    dic.pick dic.name concat
-    "/" concat
+    dic.pick dic.name str.cat
+    "/" str.cat
   loop
 
   <SUCCESS>
@@ -627,22 +627,22 @@ tp: droppedTable
   ""
   0 dic.pick dic.last dup iterate
 
-    dup str.length if "\n" concat then
+    dup str.length if "\n" str.cat then
 
-    object@ word.name 12 str.pad concat
+    object@ word.name 12 str.pad str.cat
 
-    "(" concat
+    "(" str.cat
 
     object@ isTable if
-      "table " concat
-      object@ execute table.space bytes.magnitude concat
+      "table " str.cat
+      object@ execute table.space bytes.magnitude str.cat
     then
 
     object@ isFolder if
-      object@ execute dic.kind@ word.name concat
+      object@ execute dic.kind@ word.name str.cat
     then
 
-    ")" concat
+    ")" str.cat
 
     object@ word.prev object!
 
@@ -689,27 +689,27 @@ tp: lfOnAllDone
 
 tp: lf
 
-  "LISTING FOLDER on NODE " args.node >str concat .
+  "LISTING FOLDER on NODE " args.node >str str.cat .
 
   ""
   0 dic.pick dic.last dup iterate
 
-  dup str.length if "\n" concat then
+  dup str.length if "\n" str.cat then
 
-  object@ word.name 12 str.pad concat
+  object@ word.name 12 str.pad str.cat
 
-  "(" concat
+  "(" str.cat
 
   object@ isTable if
-  "table " concat
-  object@ execute table.space bytes.magnitude concat
+  "table " str.cat
+  object@ execute table.space bytes.magnitude str.cat
   then
 
   object@ isFolder if
-  object@ execute dic.kind@ word.name concat
+  object@ execute dic.kind@ word.name str.cat
   then
 
-  ")" concat
+  ")" str.cat
 
   object@ word.prev object!
 
@@ -750,14 +750,14 @@ tp: lf
 tp: gettingSpace
 
   args.tracepoint if
-    "GETTING SPACE on NODE "args.node >str concat .
+    "GETTING SPACE on NODE "args.node >str str.cat .
   then
 
-  "Pool - Size(" 2 totalSpace number.magnitude concat ")" concat
-  " InUse(" 2 inUseSpace number.magnitude concat ")" concat
-  " Free(" 2 freeSpace number.magnitude concat ")" concat
+  "Pool - Size(" 2 totalSpace number.magnitude str.cat ")" str.cat
+  " InUse(" 2 inUseSpace number.magnitude str.cat ")" str.cat
+  " Free(" 2 freeSpace number.magnitude str.cat ")" str.cat
 
-  concat concat
+  str.cat str.cat
 
   <SUCCESS_RESULT>
 ;
@@ -855,7 +855,7 @@ tp: dpne
 tp: gettingStatus
 
   args.tracepoint if
-  "GETTING STATUS on NODE "args.node >str concat .
+  "GETTING STATUS on NODE "args.node >str str.cat .
   then
 
   node.status
@@ -984,7 +984,7 @@ tp: pRB
   begin
   while
     countRows @ >str
-    "Hello there " swap concat reg1 reg0 rowbuffer.append
+    "Hello there " swap str.cat reg1 reg0 rowbuffer.append
     countRows @
     1 +
     countRows !
@@ -993,7 +993,7 @@ tp: pRB
 
   10 countRows !
   countRows @ 0 do
-    "Hello there " I >str concat reg1 reg0 rowbuffer.append
+    "Hello there " I >str str.cat reg1 reg0 rowbuffer.append
   loop
 
   // commit the transaction
@@ -1025,7 +1025,7 @@ tp: valset
 
 tp: printRB$
 
-  "PRINTING ROWBUFFER on NODE " args.node >str concat .
+  "PRINTING ROWBUFFER on NODE " args.node >str str.cat .
 
   rowbuffer.dump
 

@@ -35,13 +35,13 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Str(void)
 {
   vAddPrimitive("subStr",      &vSubStr,      false);
-  vAddPrimitive("concat",      &vConcat,      false);
   vAddPrimitive("prepend",     &vPrepend,     false);
   vAddPrimitive("toDigitName", &vToDigitName, false);
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
+  vAddPrimitive("str.cat",     &vStrCat,      false);
   vAddPrimitive("str.clip",    &vStrClip,     false);
   vAddPrimitive("str.equal",   &vStrEqual,    false);
   vAddPrimitive("str.left",    &vStrLeft,     false);
@@ -145,30 +145,6 @@ void Task::vSubStr(NNP_Task nnpTask)
   String::vCopyLen(sSubStr.a(),pStart,iLength);
   
   nnpTask->m_xDataStack.vPush(sSubStr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* concat -- concat two strings                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vConcat(NNP_Task nnpTask)
-{
-ENTRY("vConcat");
-  
-  ValWsp xStrR;
-  ValWsp xStrB;
-  ValWsp xStrA;
-  
-  if ( ! nnpTask->m_xDataStack.bPop(xStrB,xStrA) )
-    THROW_INVALID_DSTACK("concat");
-  
-  xStrR = xStrA;
-  
-  String::vConcat(xStrR.sStr(),xStrB.sStr());
-  xStrR.pAsStrVal()->vSize();
-  
-  nnpTask->m_xDataStack.vPush(xStrR);
   
   EXIT();
 }
@@ -298,6 +274,30 @@ void Task::vS256Init(NNP_Task nnpTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* str.cat -- str.cat two strings                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vStrCat(NNP_Task nnpTask)
+{
+  ENTRY("vStrCat");
+  
+  ValWsp xStrR;
+  ValWsp xStrB;
+  ValWsp xStrA;
+  
+  if ( ! nnpTask->m_xDataStack.bPop(xStrB,xStrA) )
+    THROW_INVALID_DSTACK("str.cat");
+  
+  xStrR = xStrA;
+  
+  String::vConcat(xStrR.sStr(),xStrB.sStr());
+  xStrR.pAsStrVal()->vSize();
+  
+  nnpTask->m_xDataStack.vPush(xStrR);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* str.clip -- returns left or right n part of a string ( length str -- str ) */
 /*----------------------------------------------------------------------------*/
 void Task::vStrClip(NNP_Task nnpTask)
@@ -309,7 +309,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iLength,sString) )
+  if ( ! nnpTask->m_xDataStack.bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.clip");
   
   // validate length

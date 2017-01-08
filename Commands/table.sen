@@ -19,7 +19,7 @@ int: queryCount
 : makeTables ( "<schemaNm>" -- )
 
   args.tracepoint if
-    dup "MAKING TABLES FOR SCHEMA " swap concat " on NODE " concat args.node >str concat .
+    dup "MAKING TABLES FOR SCHEMA " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   find execute ( dic )
@@ -217,7 +217,7 @@ int: queryCount
 tp: makingTable
 
   args.tracepoint if
-    dup "MAKING TABLE " swap concat " on NODE " concat args.node >str concat .
+    dup "MAKING TABLE " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   dup ( "<tableNm>" "<tableNm>" )

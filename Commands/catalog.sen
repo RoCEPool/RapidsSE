@@ -67,7 +67,7 @@
 : makeCatalogs ( "<tenantNm>" -- )
 
   args.tracepoint if
-    dup "MAKING CATALOGS FOR TENANT " swap concat " on NODE " concat args.node >str concat .
+    dup "MAKING CATALOGS FOR TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   find execute ( dic )
@@ -84,7 +84,7 @@
 tp: makeCatalog
 
   args.tracepoint if
-    dup "MAKING CATALOG " swap concat " on NODE " concat args.node >str concat .
+    dup "MAKING CATALOG " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   dup ( "<catalogNm>" "<catalogNm>" )
@@ -129,7 +129,7 @@ tp: mkCatOnAllDone
 tp: removeCatalog
 
   args.tracepoint if
-    dup "REMOVING CATALOG " swap concat " on NODE " concat args.node >str concat .
+    dup "REMOVING CATALOG " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   :forget ( )

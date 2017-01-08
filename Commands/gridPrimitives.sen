@@ -461,7 +461,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : actor.task ( "<actorNm>" -- task )
 
-  ".task" concat find execute
+  ".task" str.cat find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -469,7 +469,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : actor.queue ( "<actorNm>" -- queue )
 
-  ".queue" concat find execute
+  ".queue" str.cat find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -477,7 +477,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : actor.taskset ( "<actorNm>" -- taskset )
 
-  ".taskset" concat find execute
+  ".taskset" str.cat find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -485,7 +485,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 : actor.thread ( "<actorNm>" -- taskset )
 
-  ".thread" concat find execute
+  ".thread" str.cat find execute
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -514,10 +514,10 @@ tp: addingPassOnToCP
 
   reg.push
 
-  actorNm ".task"    concat :task    execute to_CALLER  // reg0 has task
-  actorNm ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
-  actorNm ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
-  actorNm ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
+  actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
+  actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
   interlinkParts
 
@@ -533,10 +533,10 @@ tp: addingPassOnToCP
 
   reg.push
 
-  actorNm ".task"    concat :task    execute to_CALLER  // reg0 has task
-  actorNm ".queue"   concat :queue   execute to_QUEUE   // reg1 has queue
-  actorNm ".taskset" concat :taskset execute to_TASKSET // reg2 has taskset
-  actorNm ".thread"  concat :thread  execute to_THREAD  // reg3 has thread
+  actorNm ".task"    str.cat :task    execute to_CALLER  // reg0 has task
+  actorNm ".queue"   str.cat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm ".taskset" str.cat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm ".thread"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
   interlinkParts
 
@@ -563,21 +563,21 @@ tp: addingPassOnToCP
 
   //  "nohup "
   ""
-  SE_PATH concat
-  " --start " concat
-  " --size " concat args.regionSize >str concat
-  //  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" concat
-  " --commands /Users/ray/Desktop/rapidsse/Commands" concat
-  " --region /SE_" concat  swap >str concat
-  " --node  " concat swap >str concat
-  " --nodes " concat args.nodes >str concat
-  " --partitions " concat args.partitions >str concat
-  " --port  " concat args.port  >str concat
-  " --sleep " concat args.sleep >str concat
-  args.tracepoint if " --tracepoint " concat then
-  args.verbose if " --verbose " concat then
+  SE_PATH str.cat
+  " --start " str.cat
+  " --size " str.cat args.regionSize >str str.cat
+  //  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
+  " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
+  " --region /SE_" str.cat  swap >str str.cat
+  " --node  " str.cat swap >str str.cat
+  " --nodes " str.cat args.nodes >str str.cat
+  " --partitions " str.cat args.partitions >str str.cat
+  " --port  " str.cat args.port  >str str.cat
+  " --sleep " str.cat args.sleep >str str.cat
+  args.tracepoint if " --tracepoint " str.cat then
+  args.verbose if " --verbose " str.cat then
 
-  " &" concat
+  " &" str.cat
 ;
 
 /*----------------------------------------------------------------------------*/

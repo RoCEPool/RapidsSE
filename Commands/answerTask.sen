@@ -32,8 +32,8 @@ int: connections
   answerTaskPrint if "Answer running..." . then
 
   args.verbose if
-    "waiting for connections on port "  args.port args.node + >str concat .
-    args.port args.node + >str "Listening on port " swap concat .
+    "waiting for connections on port "  args.port args.node + >str str.cat .
+    args.port args.node + >str "Listening on port " swap str.cat .
   then
 
   args.port args.node + socket.listen ( socket )
@@ -50,7 +50,7 @@ tp: waitingOnAccept
 tp: socketAccepted
 
     args.verbose if
-      "accepted connection on port " args.port args.node + >str concat .
+      "accepted connection on port " args.port args.node + >str str.cat .
     then
 
   // start receiver
@@ -62,7 +62,7 @@ ddlLock.grabWrite
     1 "rcv.loop" ( socket 1 "rcv.loop" )
 
     // create the actor
-    "rr" connections @ >str concat ( socket 1 "rcv.loop" "rrI" )
+    "rr" connections @ >str str.cat ( socket 1 "rcv.loop" "rrI" )
     :actor ( socket 1 "rcv.loop" "rrI" )
 
     // spawn the actors os thread
