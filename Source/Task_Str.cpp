@@ -36,13 +36,13 @@ void Task::vAddPrimitives_Str(void)
 {
   vAddPrimitive("subStr",      &vSubStr,      false);
   vAddPrimitive("concat",      &vConcat,      false);
-  vAddPrimitive("clip",        &vClip,        false);
   vAddPrimitive("prepend",     &vPrepend,     false);
   vAddPrimitive("toDigitName", &vToDigitName, false);
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
+  vAddPrimitive("str.clip",    &vStrClip,     false);
   vAddPrimitive("str.equal",   &vStrEqual,    false);
   vAddPrimitive("str.left",    &vStrLeft,     false);
   vAddPrimitive("str.length",  &vStrLength,   false);
@@ -174,74 +174,6 @@ ENTRY("vConcat");
 }
 
 /*----------------------------------------------------------------------------*/
-/* clip -- clip string ( length str -- str )                                  */
-/*----------------------------------------------------------------------------*/
-//void Task::vClip(NNP_Task nnpTask)
-//{
-//ENTRY("vClip");
-//  
-//  i8 iLength;
-//  ValWsp xString;
-//  ValWsp xSubStr;
-//  
-//  StrVal* pStrVal = xString.pAsStrVal();
-//  
-//  // get the arguments
-//  if ( ! nnpTask->m_xDataStack.bPop(iLength,xString) )
-//    THROW_INVALID_DSTACK("clip");
-//  
-//  // validate length
-//  i8 iStrLength = pStrVal->iChars();
-//  
-//  if ( iLength == 0 || llabs(iLength) >= iStrLength)
-//    THROW("Invalid length for: clip");
-//  
-//  char* pStart;
-//  
-//  if (iLength > 0)
-//    pStart = xString.sStr();
-//  else
-//    pStart = xString.sStr() + iStrLength - 1 - llabs(iLength);
-//  
-//  xSubStr.pAsStrVal()->vCopyString(pStart,llabs(iLength));
-//  
-//  nnpTask->m_xDataStack.vPush(&xSubStr);
-//  
-//  EXIT();
-//}
-void Task::vClip(NNP_Task nnpTask)
-{
-  ENTRY("vClip");
-  
-  i8 iLength;
-  s8K sString;
-  s8K sSubStr;
-  
-  // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iLength,sString) )
-    THROW_INVALID_DSTACK("clip");
-  
-  // validate length
-  i8 iHasLength = String::iLength(sString.a());
-  
-  if ( iLength == 0 || llabs(iLength) >= iHasLength)
-    THROW("Invalid length for: clip");
-  
-  char* pStart;
-  
-  if (iLength > 0)
-    pStart = sString.a();
-  else
-    pStart = sString.a() + iHasLength - 1 - llabs(iLength);
-  
-  String::vCopyLen(sSubStr.a(),pStart,llabs(iLength));
-  
-  nnpTask->m_xDataStack.vPush(sSubStr);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* >DigitName -- convert to digit name                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vToDigitName(NNP_Task nnpTask)
@@ -364,6 +296,41 @@ void Task::vS256Init(NNP_Task nnpTask)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* str.clip -- returns left or right n part of a string ( length str -- str ) */
+/*----------------------------------------------------------------------------*/
+void Task::vStrClip(NNP_Task nnpTask)
+{
+  ENTRY("vStrClip");
+  
+  i8 iLength;
+  s8K sString;
+  s8K sSubStr;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(iLength,sString) )
+    THROW_INVALID_DSTACK("str.clip");
+  
+  // validate length
+  i8 iHasLength = String::iLength(sString.a());
+  
+  if ( iLength < 0 || llabs(iLength) >= iHasLength)
+    THROW("Invalid length for: str.clip");
+  
+  char* pStart;
+  
+  if (iLength > 0)
+    pStart = sString.a();
+  else
+    pStart = sString.a() + iHasLength - 1 - llabs(iLength);
+  
+  String::vCopyLen(sSubStr.a(),pStart,llabs(iLength));
+  
+  nnpTask->m_xDataStack.vPush(sSubStr);
+  
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* str.equal -- test if two strings are equal                                 */

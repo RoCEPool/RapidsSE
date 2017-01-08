@@ -828,10 +828,10 @@ namespace Tasks
     // string
     static void vSubStr(NNP_Task nnpTask);
     static void vConcat(NNP_Task nnpTask);
-    static void vClip(NNP_Task nnpTask);
     static void vPrepend(NNP_Task nnpTask);
     static void vSprint(NNP_Task nnpTask);
 
+    static void vStrClip(NNP_Task nnpTask);
     static void vStrEqual(NNP_Task nnpTask);
     static void vStrLeft(NNP_Task nnpTask);
     static void vStrLength(NNP_Task nnpTask);
