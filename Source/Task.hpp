@@ -827,7 +827,6 @@ namespace Tasks
     
     // string
     static void vStringPad(NNP_Task nnpTask);
-    static void vStrLen(NNP_Task nnpTask);
     static void vSubStr(NNP_Task nnpTask);
     static void vConcat(NNP_Task nnpTask);
     static void vClip(NNP_Task nnpTask);
@@ -836,6 +835,7 @@ namespace Tasks
     static void vSprint(NNP_Task nnpTask);
 
     static void vStrEqual(NNP_Task nnpTask);
+    static void vStrLength(NNP_Task nnpTask);
     static void vStrRight(NNP_Task nnpTask);
 
     static void vS256Init(NNP_Task nnpTask);

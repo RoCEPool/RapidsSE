@@ -114,7 +114,7 @@ tp: addColOnAll
 
     swap
 
-    dup strlen
+    dup str.length
     if " , " swap concat then    //
 
     concat                       // prepend column to ls

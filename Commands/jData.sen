@@ -12,7 +12,7 @@
   begin              ( "TBD"  "<dw>"        )
     swap             ( "<dw>" "TBD"         )
     dup              ( "<dw>" "TBD" "TBD"   )
-    strlen           ( "<dw>" "TBD" l       )
+    str.length           ( "<dw>" "TBD" l       )
     while            ( "<dw>" "TBD"         )
       dup            ( "<dw>" "TBD"  "TBD"  )
       1 0 substr     ( "<dw>" "TBD"  "<d>"  )

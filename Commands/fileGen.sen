@@ -33,7 +33,7 @@ timer: fileGenTimer
 
   begin
     reg3 rndStr "|" concat reg4 rndStr concat "|\n" concat
-    dup strlen reg5 + >reg5
+    dup str.length reg5 + >reg5
     reg0 file.write
 
     reg5 reg2 < while

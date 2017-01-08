@@ -627,7 +627,7 @@ tp: droppedTable
   ""
   0 dic.pick dic.last dup iterate
 
-    dup strlen if "\n" concat then
+    dup str.length if "\n" concat then
 
     object@ word.name 12 strpad concat
 
@@ -696,7 +696,7 @@ tp: lf
   ""
   0 dic.pick dic.last dup iterate
 
-  dup strlen if "\n" concat then
+  dup str.length if "\n" concat then
 
   object@ word.name 12 strpad concat
 

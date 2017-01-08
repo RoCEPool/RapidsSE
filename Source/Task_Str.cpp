@@ -35,7 +35,6 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Str(void)
 {
   vAddPrimitive("strpad",      &vStringPad,   false);
-  vAddPrimitive("strlen",      &vStrLen,      false);
   vAddPrimitive("subStr",      &vSubStr,      false);
   vAddPrimitive("concat",      &vConcat,      false);
   vAddPrimitive("clip",        &vClip,        false);
@@ -47,6 +46,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
   vAddPrimitive("str.equal",   &vStrEqual,    false);
+  vAddPrimitive("str.length",  &vStrLength,   false);
   vAddPrimitive("str.right",   &vStrRight,    false);
 }
 
@@ -92,27 +92,6 @@ ENTRY("vStringPad");
   xStringA.pAsStrVal()->vSize();
   
   nnpTask->m_xDataStack.vPush(xStringA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* strlen -- string length                                                    */
-/*----------------------------------------------------------------------------*/
-void Task::vStrLen(NNP_Task nnpTask)
-{
-ENTRY("vStrLen");
-  
-  i8 iLength;
-  s8K sString;
-  
-  // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(sString) )
-    THROW_INVALID_DSTACK("strlen");
-  
-  iLength = String::iLength(sString.a());
-  
-  nnpTask->m_xDataStack.vPush(iLength);
   
   EXIT();
 }
@@ -445,6 +424,27 @@ void Task::vStrEqual(NNP_Task nnpTask)
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
   nnpTask->m_xDataStack.vPush(iEqual);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.length -- string length                                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vStrLength(NNP_Task nnpTask)
+{
+  ENTRY("vStrLen");
+  
+  i8 iLength;
+  s8K sString;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(sString) )
+    THROW_INVALID_DSTACK("str.length");
+  
+  iLength = String::iLength(sString.a());
+  
+  nnpTask->m_xDataStack.vPush(iLength);
   
   EXIT();
 }
