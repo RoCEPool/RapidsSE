@@ -833,6 +833,7 @@ namespace Tasks
     static void vSprint(NNP_Task nnpTask);
 
     static void vStrEqual(NNP_Task nnpTask);
+    static void vStrLeft(NNP_Task nnpTask);
     static void vStrLength(NNP_Task nnpTask);
     static void vStrPad(NNP_Task nnpTask);
     static void vStrRandom(NNP_Task nnpTask);

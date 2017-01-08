@@ -648,8 +648,6 @@ tp: droppedTable
 
   next
 
-  // 128 clip
-
    <SUCCESS>
 ;
 
@@ -716,8 +714,6 @@ tp: lf
   object@ word.prev object!
 
   next
-
-  // 128 clip
 
   .
 

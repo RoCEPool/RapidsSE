@@ -44,6 +44,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
   vAddPrimitive("str.equal",   &vStrEqual,    false);
+  vAddPrimitive("str.left",    &vStrLeft,     false);
   vAddPrimitive("str.length",  &vStrLength,   false);
   vAddPrimitive("str.pad",     &vStrPad,      false);
   vAddPrimitive("str.random",  &vStrRandom,   false);
@@ -381,6 +382,36 @@ void Task::vStrEqual(NNP_Task nnpTask)
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
   nnpTask->m_xDataStack.vPush(iEqual);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.left -- returns left n part of a string ( length str -- str )          */
+/*----------------------------------------------------------------------------*/
+void Task::vStrLeft(NNP_Task nnpTask)
+{
+  ENTRY("vClip");
+  
+  i8 iLength;
+  s8K sString;
+  s8K sSubStr;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(iLength,sString) )
+    THROW_INVALID_DSTACK("str.left");
+  
+  // validate length
+  i8 iHasLength = String::iLength(sString.a());
+  
+  if ( iLength < 0)
+    THROW("Invalid length for: str.left");
+  
+  char* pStart = sString.a();
+  
+  String::vCopyLen(sSubStr.a(),pStart,iLength);
+  
+  nnpTask->m_xDataStack.vPush(sSubStr);
   
   EXIT();
 }
