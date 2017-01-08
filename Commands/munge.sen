@@ -6,6 +6,19 @@
 
 : munge
 
+  dir.new locals| commandDir |
+
+  "." commandDir dir.path!
+
+  commandDir dir.open
+
+  begin commandDir dir.read while
+    commandDir dir.entryName .
+  repeat
+
+  commandDir dir.close
+
+  commandDir dir.delete
 ;
 
 /*============================================================================*/
