@@ -32,7 +32,7 @@ timer: fileGenTimer
   fileGenTimer timer.start
 
   begin
-    reg3 rndStr "|" concat reg4 rndStr concat "|\n" concat
+    reg3 str.random "|" concat reg4 str.random concat "|\n" concat
     dup str.length reg5 + >reg5
     reg0 file.write
 

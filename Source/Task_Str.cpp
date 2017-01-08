@@ -40,13 +40,13 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("clip",        &vClip,        false);
   vAddPrimitive("prepend",     &vPrepend,     false);
   vAddPrimitive("toDigitName", &vToDigitName, false);
-  vAddPrimitive("rndStr",      &vRndStr,      false);
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
   vAddPrimitive("str.equal",   &vStrEqual,    false);
   vAddPrimitive("str.length",  &vStrLength,   false);
+  vAddPrimitive("str.random",  &vStrRandom,   false);
   vAddPrimitive("str.right",   &vStrRight,    false);
 }
 
@@ -345,26 +345,6 @@ void Task::vPrepend(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rndStr -- generate random string of given length                           */
-/*----------------------------------------------------------------------------*/
-void Task::vRndStr(NNP_Task nnpTask)
-{
-  ENTRY("vRndStr");
-  
-  i8 iLength;
-  if ( ! nnpTask->m_xDataStack.bPop(iLength) )
-    THROW_INVALID_DSTACK("rndStr");
-  
-  s8K sRnd;
-  
-  sRnd = Random::sRandomString(iLength).a();
-  
-  nnpTask->m_xDataStack.vPush(sRnd);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* sprint -- pop format string and use it for a sprintf                       */
 /*----------------------------------------------------------------------------*/
 void Task::vSprint(NNP_Task nnpTask)
@@ -445,6 +425,26 @@ void Task::vStrLength(NNP_Task nnpTask)
   iLength = String::iLength(sString.a());
   
   nnpTask->m_xDataStack.vPush(iLength);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.random-- generate random string of given length                        */
+/*----------------------------------------------------------------------------*/
+void Task::vStrRandom(NNP_Task nnpTask)
+{
+  ENTRY("vStrRandom");
+  
+  i8 iLength;
+  if ( ! nnpTask->m_xDataStack.bPop(iLength) )
+    THROW_INVALID_DSTACK("str.random");
+  
+  s8K sRnd;
+  
+  sRnd = Random::sRandomString(iLength).a();
+  
+  nnpTask->m_xDataStack.vPush(sRnd);
   
   EXIT();
 }

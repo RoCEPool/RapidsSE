@@ -831,11 +831,11 @@ namespace Tasks
     static void vConcat(NNP_Task nnpTask);
     static void vClip(NNP_Task nnpTask);
     static void vPrepend(NNP_Task nnpTask);
-    static void vRndStr(NNP_Task nnpTask);
     static void vSprint(NNP_Task nnpTask);
 
     static void vStrEqual(NNP_Task nnpTask);
     static void vStrLength(NNP_Task nnpTask);
+    static void vStrRandom(NNP_Task nnpTask);
     static void vStrRight(NNP_Task nnpTask);
 
     static void vS256Init(NNP_Task nnpTask);
