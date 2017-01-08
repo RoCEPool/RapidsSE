@@ -6,22 +6,33 @@
 
 : munge
 
+  // create a directory accessor
   dir.new locals| commandDir |
 
+  // set path in the directory accessor
   "." commandDir dir.path!
 
+  // open directory
   commandDir dir.open
 
+  // read thru directory
   begin commandDir dir.read while
 
-    commandDir dir.entryName "." streql continue
-    commandDir dir.entryName ".." streql continue
+    // ignore entries which aren't regular files
+    commandDir dir.entryType DE_REG == not continue
 
+    // print name of file
     commandDir dir.entryName .
+
+    // convert to C++
+    // ...
+
   repeat
 
+  // close directory
   commandDir dir.close
 
+  // delete the directory accessor
   commandDir dir.delete
 ;
 
