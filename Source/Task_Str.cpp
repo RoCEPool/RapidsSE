@@ -35,7 +35,6 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Str(void)
 {
   vAddPrimitive("subStr",      &vSubStr,      false);
-  vAddPrimitive("prepend",     &vPrepend,     false);
   vAddPrimitive("toDigitName", &vToDigitName, false);
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
@@ -47,6 +46,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("str.left",    &vStrLeft,     false);
   vAddPrimitive("str.length",  &vStrLength,   false);
   vAddPrimitive("str.pad",     &vStrPad,      false);
+  vAddPrimitive("str.prepend", &vStrPrepend,  false);
   vAddPrimitive("str.random",  &vStrRandom,   false);
   vAddPrimitive("str.right",   &vStrRight,    false);
 }
@@ -179,53 +179,6 @@ ENTRY("vToDigitName");
   }
 
   nnpTask->m_xDataStack.vPush(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* prepend -- prepend a string before the other                               */
-/*----------------------------------------------------------------------------*/
-void Task::vPrepend(NNP_Task nnpTask)
-{
-  ENTRY("vPrepend");
-  
-  ValWsp xStrR;
-  ValWsp xStrB;
-  ValWsp xStrA;
-  
-  ValWsp xValA;
-  ValWsp xValB;
-  
-  if ( ! nnpTask->m_xDataStack.bPop(xValB,xValA) )
-  THROW_INVALID_DSTACK("prepend");
-  
-  // If received INTEGER convert to STRING
-  if (xValA.eClass() == CN_INTVAL) {
-    s8K sString;
-    xValA.vToString(sString.a());
-    xStrA = sString.a();
-  }
-  else {
-   xStrA = xValA;
-  }
-  
-  // If received INTEGER convert to STRING
-  if (xValB.eClass() == CN_INTVAL) {
-    s8K sString;
-    xValB.vToString(sString.a());
-    xStrB = sString.a();
-  }
-  else {
-   xStrB = xValB;
-  }
-  
-  xStrR = xStrB;
-  
-  String::vConcat(xStrR.sStr(),xStrA.sStr());
-  xStrR.pAsStrVal()->vSize();
-  
-  nnpTask->m_xDataStack.vPush(xStrR);
   
   EXIT();
 }
@@ -423,6 +376,53 @@ void Task::vStrPad(NNP_Task nnpTask)
   xStringA.pAsStrVal()->vSize();
   
   nnpTask->m_xDataStack.vPush(xStringA);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.prepend -- prepend top string before second string                     */
+/*----------------------------------------------------------------------------*/
+void Task::vStrPrepend(NNP_Task nnpTask)
+{
+  ENTRY("vStrPrepend");
+  
+  ValWsp xStrR;
+  ValWsp xStrB;
+  ValWsp xStrA;
+  
+  ValWsp xValA;
+  ValWsp xValB;
+  
+  if ( ! nnpTask->m_xDataStack.bPop(xValB,xValA) )
+    THROW_INVALID_DSTACK("str.prepend");
+  
+  // If received INTEGER convert to STRING
+  if (xValA.eClass() == CN_INTVAL) {
+    s8K sString;
+    xValA.vToString(sString.a());
+    xStrA = sString.a();
+  }
+  else {
+    xStrA = xValA;
+  }
+  
+  // If received INTEGER convert to STRING
+  if (xValB.eClass() == CN_INTVAL) {
+    s8K sString;
+    xValB.vToString(sString.a());
+    xStrB = sString.a();
+  }
+  else {
+    xStrB = xValB;
+  }
+  
+  xStrR = xStrB;
+  
+  String::vConcat(xStrR.sStr(),xStrA.sStr());
+  xStrR.pAsStrVal()->vSize();
+  
+  nnpTask->m_xDataStack.vPush(xStrR);
   
   EXIT();
 }

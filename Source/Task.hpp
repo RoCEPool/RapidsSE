@@ -827,7 +827,6 @@ namespace Tasks
     
     // string
     static void vSubStr(NNP_Task nnpTask);
-    static void vPrepend(NNP_Task nnpTask);
     static void vSprint(NNP_Task nnpTask);
 
     static void vStrCat(NNP_Task nnpTask);
@@ -836,6 +835,7 @@ namespace Tasks
     static void vStrLeft(NNP_Task nnpTask);
     static void vStrLength(NNP_Task nnpTask);
     static void vStrPad(NNP_Task nnpTask);
+    static void vStrPrepend(NNP_Task nnpTask);
     static void vStrRandom(NNP_Task nnpTask);
     static void vStrRight(NNP_Task nnpTask);
 

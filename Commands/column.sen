@@ -115,13 +115,13 @@ tp: addColOnAll
     swap
 
     dup str.length
-    if " , " swap str.cat then    //
+    if " , " str.prepend then     //
 
-    str.cat                       // prepend column to ls
+    str.cat                       // append column to ls
 
-    object@ word.prev object!    // step backwards thru words
+    object@ word.prev object!     // step backwards thru words
 
-  next                           //
+  next                            //
 
   //"\n" str.cat
 
