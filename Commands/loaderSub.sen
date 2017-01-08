@@ -46,7 +46,7 @@ tp: loadAppendBuffer$
   //   find named table to get pointer to table
   //   then append row buffer to partition of table
 
-  task.this task.thread thread.name@ 1 0 substr "p" streql assert
+  task.this task.thread thread.name@ 1 0 substr "p" str.equal assert
 
   args.tracepoint if
     dup "APPENDING ROWBUFFER " swap concat " on NODE " concat args.node >str concat .
@@ -81,8 +81,8 @@ tp: ~loadAppendBuffer
   //   we need to have the coordinator send the loadAppendBuffer$ indirect call
   //   to the participant via a sendParticipant call
 
-  task.this task.thread thread.name@ 13 0 substr "generalThread" streql assert
-  task.parent@ task.name@ "req.task" streql assert
+  task.this task.thread thread.name@ 13 0 substr "generalThread" str.equal assert
+  task.parent@ task.name@ "req.task" str.equal assert
 
   //
   // a) form the indirect call of loadAppendBuffer

@@ -15,7 +15,7 @@
 ;
 
 : withinColumns
-    0 dic.pick dic.name "columns" streql
+    0 dic.pick dic.name "columns" str.equal
 ;
 
 : checkInColumns

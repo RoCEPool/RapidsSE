@@ -278,7 +278,7 @@ tp: droppedSchema
 /*----------------------------------------------------------------------------*/
 : use_schema ( "<schemaNm>" -- <R> )
 
-  begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
+  begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
 
   // find the boray folder
   "boray" findInCurrent
@@ -580,16 +580,16 @@ tp: droppedTable
 /*----------------------------------------------------------------------------*/
 : cf
 
-  dup ".." streql if
+  dup ".." str.equal if
     drop
-    0 dic.pick dic.name "tenants" streql not if dic.drop then
+    0 dic.pick dic.name "tenants" str.equal not if dic.drop then
   else
-    dup "~" streql if
+    dup "~" str.equal if
       drop
-      begin 0 dic.pick dic.name "tenants" streql not while dic.drop repeat
+      begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
     else
-      dup "tenants" streql if
-        begin 0 dic.pick dic.name "seitf" streql not while dic.drop repeat
+      dup "tenants" str.equal if
+        begin 0 dic.pick dic.name "seitf" str.equal not while dic.drop repeat
         checkIsWord not if <NIP+ERROR> exit then
         execute dic.push
       else
@@ -732,7 +732,7 @@ tp: lf
 : lf_ (  #folders -- true )
 
   depth 0 != if
-    "dicStack!" strEql
+    "dicStack!" str.equal
     if
   tp: settingDicStack
     !indirect drop
@@ -1045,7 +1045,7 @@ tp: printRB$
 
   drop
 
-  //dup "dicStack!" strEql
+  //dup "dicStack!" str.equal
   //if
 //tp: settingDicStack
   //  !indirect drop

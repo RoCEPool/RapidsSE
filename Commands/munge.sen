@@ -22,7 +22,7 @@
     commandDir dir.entryType DE_REG == not continue
 
     // ignore entries which aren't .sen files
-    4 commandDir dir.entryName str.right ".sen" streql not continue
+    4 commandDir dir.entryName str.right ".sen" str.equal not continue
     commandDir dir.entryName .
 
     // convert to C++

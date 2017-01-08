@@ -115,7 +115,7 @@ tp: resumedbyCoord
   then
 
   // assert we are in loader subtask
-  task.this task.name@ 2 0 substr "sl" streql assert
+  task.this task.name@ 2 0 substr "sl" str.equal assert
 
   // save the node number
   >r
@@ -156,7 +156,7 @@ tp: >>allParticipants>
      then
   then
 
-  task.this task.name@ "req.task" streql assert
+  task.this task.name@ "req.task" str.equal assert
 
   // add call to setDicPath to be same as this req.task (run by participant)
   addSetDicPath ( <<call>> )

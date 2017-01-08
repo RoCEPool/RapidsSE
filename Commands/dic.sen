@@ -116,13 +116,13 @@ tp: dicStack!
 
   0 do
 
-    dup "<main>" streql if
+    dup "<main>" str.equal if
       drop
       dic.main
       dicStack.push
     else
 
-      dup "seitf" streql if
+      dup "seitf" str.equal if
         drop
         dic.main
         dicStack.push

@@ -13,7 +13,7 @@
 ;
 
 : withinTenants
-    0 dic.pick dic.name "tenants" streql
+    0 dic.pick dic.name "tenants" str.equal
 ;
 
 : checkInTenants

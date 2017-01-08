@@ -16,7 +16,7 @@
 ;
 
 : withinSchemas
-    0 dic.pick dic.name "schemas" streql
+    0 dic.pick dic.name "schemas" str.equal
 ;
 
 : checkInSchemas

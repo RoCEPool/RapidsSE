@@ -35,7 +35,6 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Str(void)
 {
   vAddPrimitive("strpad",      &vStringPad,   false);
-  vAddPrimitive("streql",      &vStrEql,      false);
   vAddPrimitive("strlen",      &vStrLen,      false);
   vAddPrimitive("subStr",      &vSubStr,      false);
   vAddPrimitive("concat",      &vConcat,      false);
@@ -47,6 +46,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("s256.init",   &vS256Init,    false);
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
   
+  vAddPrimitive("str.equal",   &vStrEqual,    false);
   vAddPrimitive("str.right",   &vStrRight,    false);
 }
 
@@ -92,27 +92,6 @@ ENTRY("vStringPad");
   xStringA.pAsStrVal()->vSize();
   
   nnpTask->m_xDataStack.vPush(xStringA);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* streql -- test string equality                                             */
-/*----------------------------------------------------------------------------*/
-void Task::vStrEql(NNP_Task nnpTask)
-{
-ENTRY("vStrEql");
-  
-  ValWsp xStringA;
-  ValWsp xStringB;
-  
-  // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(xStringB,xStringA) )
-    THROW_INVALID_DSTACK("streql");
-  
-  i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
-  
-  nnpTask->m_xDataStack.vPush(iEqual);
   
   EXIT();
 }
@@ -443,6 +422,29 @@ void Task::vS256Init(NNP_Task nnpTask)
   ASSERT(CN_STRVAL == pStrVal->eClass());
   
   new(pStrVal) StrVal(256);
+  
+  EXIT();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* str.equal -- test if two strings are equal                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vStrEqual(NNP_Task nnpTask)
+{
+  ENTRY("vStrEql");
+  
+  ValWsp xStringA;
+  ValWsp xStringB;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(xStringB,xStringA) )
+    THROW_INVALID_DSTACK("str.equal");
+  
+  i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
+  
+  nnpTask->m_xDataStack.vPush(iEqual);
   
   EXIT();
 }
