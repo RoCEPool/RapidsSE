@@ -38,6 +38,7 @@ void Task::vAddPrimitives_Encode(void)
   vAddPrimitive("ahead",               &vEncodeAhead,         true );
   vAddPrimitive("encodeCallPrimitive", &vEncodeCallPrimitive, false);
   vAddPrimitive("encodeCallRoutine",   &vEncodeCallRoutine,   false);
+  vAddPrimitive("continue",            &vEncodeContinue,      true);
   vAddPrimitive("here",                &vEncodeHere,          false);
   vAddPrimitive("if",                  &vEncodeIf,            true );
   vAddPrimitive("loop",                &vEncodeLoop,          true );
@@ -138,6 +139,29 @@ void Task::vEncodeCallRoutine(NNP_Task nnpTask)
   }
   
   pCurrentWord->vEncode(ppCalledEntryStep);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* encode -- encode jump on true to known backward address          immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vEncodeContinue(NNP_Task nnpTask)
+{
+  ENTRY("vContinue"); // ( -- orig / flag -- )
+  
+  Word* pCurrentWord = nnpTask->pCurrentWord();
+  
+  // cstack: pop known backward address
+  Cell* pKnownBackward;
+  if ( ! nnpTask->m_xDataStack.bPop(pKnownBackward) )
+    THROW_INVALID_DSTACK("continue");
+  
+  // append : jump on true to known backward address
+  pCurrentWord->vEncode("jumpTrue",pKnownBackward);
+  
+  // cstack: push known backward address
+  nnpTask->m_xDataStack.vPush(pKnownBackward);
   
   EXIT();
 }

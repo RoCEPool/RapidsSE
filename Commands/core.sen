@@ -145,7 +145,7 @@
 /*----------------------------------------------------------------------------*/
 /* resolve a single WHILE and jump to BEGIN                                   */
 /*----------------------------------------------------------------------------*/
-: REPEAT immediate ( orig dest-- orig dest / flag -- )
+: REPEAT immediate ( orig dest -- orig dest / flag -- )
 
   POSTPONE AGAIN // unconditional backward branch to dest
   POSTPONE THEN  // resolve forward branch from orig

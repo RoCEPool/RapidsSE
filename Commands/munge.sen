@@ -13,6 +13,10 @@
   commandDir dir.open
 
   begin commandDir dir.read while
+
+    commandDir dir.entryName "." streql continue
+    commandDir dir.entryName ".." streql continue
+
     commandDir dir.entryName .
   repeat
 

@@ -498,6 +498,7 @@ namespace Tasks
     static void vEncodeAhead(NNP_Task nnpTask);
     static void vEncodeCallPrimitive(NNP_Task nnpTask);
     static void vEncodeCallRoutine(NNP_Task nnpTask);
+    static void vEncodeContinue(NNP_Task nnpTask);
     static void vEncodeHere(NNP_Task nnpTask);
     static void vEncodeIf(NNP_Task nnpTask);
     static void vEncodeLoop(NNP_Task nnpTask);
