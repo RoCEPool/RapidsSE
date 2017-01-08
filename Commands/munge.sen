@@ -21,7 +21,8 @@
     // ignore entries which aren't regular files
     commandDir dir.entryType DE_REG == not continue
 
-    // print name of file
+    // ignore entries which aren't .sen files
+    4 commandDir dir.entryName str.right ".sen" streql not continue
     commandDir dir.entryName .
 
     // convert to C++

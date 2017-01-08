@@ -835,7 +835,9 @@ namespace Tasks
     static void vPrepend(NNP_Task nnpTask);
     static void vRndStr(NNP_Task nnpTask);
     static void vSprint(NNP_Task nnpTask);
-    
+
+    static void vStrRight(NNP_Task nnpTask);
+
     static void vS256Init(NNP_Task nnpTask);
     
     // table

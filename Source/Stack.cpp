@@ -500,6 +500,29 @@ bool Stack::bPop(s8K& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop s,i8 from param stack                                                  */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(s8K& sArg1, i8& iArg2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_STRVAL,CN_INTVAL) )
+    return false;
+  
+  ValWsp xValWsp1;
+  vPopVal(&xValWsp1);
+  
+  sArg1 = xValWsp1.sStr();
+  
+  IntVal xIntVal2;
+  vPopVal(&xIntVal2);
+  
+  iArg2 = xIntVal2.iInt();
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop s,s from param stack                                                   */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(s8K& sArg1, s8K& sArg2)

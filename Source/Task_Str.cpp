@@ -46,6 +46,8 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("sprint",      &vSprint,      false);
   vAddPrimitive("s256.init",   &vS256Init,    false);
   vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+  
+  vAddPrimitive("str.right",   &vStrRight,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -441,6 +443,39 @@ void Task::vS256Init(NNP_Task nnpTask)
   ASSERT(CN_STRVAL == pStrVal->eClass());
   
   new(pStrVal) StrVal(256);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.right -- Returns the right n part of a string ( length str -- str )    */
+/*----------------------------------------------------------------------------*/
+void Task::vStrRight(NNP_Task nnpTask)
+{
+  ENTRY("vStrRight");
+  
+  i8 iLength;
+  s8K sString;
+  s8K sSubStr;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(sString,iLength) )
+    THROW_INVALID_DSTACK("str.right");
+  
+  // validate length
+  i8 iHasLength = String::iLength(sString.a());
+  
+  if ( iLength < 0)
+    THROW("Invalid length for: str.right");
+
+  if (iLength > iHasLength)
+    iLength = iHasLength;
+  
+  char* pStart = sString.a() + iHasLength - iLength;
+  
+  String::vCopyLen(sSubStr.a(),pStart,iLength);
+  
+  nnpTask->m_xDataStack.vPush(sSubStr);
   
   EXIT();
 }

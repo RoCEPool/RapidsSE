@@ -65,6 +65,7 @@ namespace Structures
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
     bool bPop(s8K& sArg1);
+    bool bPop(s8K& sArg1, i8& iArg2);
     bool bPop(s8K& sArg1, s8K& sArg2);
     bool bPopParamInt(i8& iArg1);
     
