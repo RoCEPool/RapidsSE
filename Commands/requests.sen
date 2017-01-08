@@ -629,7 +629,7 @@ tp: droppedTable
 
     dup str.length if "\n" concat then
 
-    object@ word.name 12 strpad concat
+    object@ word.name 12 str.pad concat
 
     "(" concat
 
@@ -698,7 +698,7 @@ tp: lf
 
   dup str.length if "\n" concat then
 
-  object@ word.name 12 strpad concat
+  object@ word.name 12 str.pad concat
 
   "(" concat
 

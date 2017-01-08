@@ -34,7 +34,6 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Str(void)
 {
-  vAddPrimitive("strpad",      &vStringPad,   false);
   vAddPrimitive("subStr",      &vSubStr,      false);
   vAddPrimitive("concat",      &vConcat,      false);
   vAddPrimitive("clip",        &vClip,        false);
@@ -46,6 +45,7 @@ void Task::vAddPrimitives_Str(void)
   
   vAddPrimitive("str.equal",   &vStrEqual,    false);
   vAddPrimitive("str.length",  &vStrLength,   false);
+  vAddPrimitive("str.pad",     &vStrPad,      false);
   vAddPrimitive("str.random",  &vStrRandom,   false);
   vAddPrimitive("str.right",   &vStrRight,    false);
 }
@@ -69,29 +69,6 @@ void Task::vCsvFirstValue(NNP_Task nnpTask)
     sFirstValue = "";
   
   nnpTask->m_xDataStack.vPush(sFirstValue);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* strpad -- pad string to given length                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vStringPad(NNP_Task nnpTask)
-{
-ENTRY("vStringPad");
-  
-  i8 iLength;
-
-  ValWsp xStringA;
-  
-  // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iLength,xStringA) )
-    THROW_INVALID_DSTACK("strpad");
-  
-  String::vPad(xStringA.sStr(),iLength,' ');
-  xStringA.pAsStrVal()->vSize();
-  
-  nnpTask->m_xDataStack.vPush(xStringA);
   
   EXIT();
 }
@@ -425,6 +402,29 @@ void Task::vStrLength(NNP_Task nnpTask)
   iLength = String::iLength(sString.a());
   
   nnpTask->m_xDataStack.vPush(iLength);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.pad -- pad string to given length                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vStrPad(NNP_Task nnpTask)
+{
+  ENTRY("vStringPad");
+  
+  i8 iLength;
+  
+  ValWsp xStringA;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(iLength,xStringA) )
+    THROW_INVALID_DSTACK("str.pad");
+  
+  String::vPad(xStringA.sStr(),iLength,' ');
+  xStringA.pAsStrVal()->vSize();
+  
+  nnpTask->m_xDataStack.vPush(xStringA);
   
   EXIT();
 }
