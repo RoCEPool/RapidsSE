@@ -152,7 +152,7 @@ tp: >>allParticipants>
    args.nodes 1 > if
      grid.this grid.started@ true != if
        drop ( ) // drop the valsetr
-       EC_GRID_NOT_STARTED <FAILURE_RESULT> 1 false exit
+       EC_CLUSTER_NOT_STARTED <FAILURE_RESULT> 1 false exit
      then
   then
 
