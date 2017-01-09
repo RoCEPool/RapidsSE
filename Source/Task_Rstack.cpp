@@ -44,6 +44,7 @@ void Task::vAddPrimitives_Rstack(void)
   vAddPrimitive("rreverse",        &vRstackReverse,    false);
   vAddPrimitive("rroll",           &vRstackRoll,       false);
   vAddPrimitive("-rroll",          &vRstackRollInv,    false);
+//  vAddPrimitive("rstk",            &vRstackStk,       false);
   vAddPrimitive("rswap",           &vRstackSwap,       false);
   vAddPrimitive("r>",              &vRstackToP,        false);
   vAddPrimitive(">r",              &vRstackToR,        false);
@@ -324,6 +325,20 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* rstk -- dump the return stack                                              */
+/*----------------------------------------------------------------------------*/
+/*
+void Task::vRstackStk(NNP_Task nnpTask)
+{
+  ENTRY("vRstackStk");
+  
+  nnpTask->m_pReturnStack->vDump(nnpTask->m_sName.a(),"ReturnStack:");
+  
+  EXIT();
+}
+*/
 
 /*----------------------------------------------------------------------------*/
 /* rswap -- swap top two values on return stack                               */

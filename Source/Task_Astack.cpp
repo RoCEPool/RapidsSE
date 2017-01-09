@@ -43,6 +43,7 @@ void Task::vAddPrimitives_Astack(void)
   vAddPrimitive("anip",            &vAstackNip,        false);
   vAddPrimitive("apick",           &vAstackPick,       false);
   vAddPrimitive("areverse",        &vAstackReverse,    false);
+  vAddPrimitive("astk",            &vAstackStk,        false);
   vAddPrimitive(">a",              &vAstackToA,        false);
   vAddPrimitive("a>",              &vAstackToP,        false);
   vAddPrimitive(">auxStack",       &vAstackTransfer,   false);
@@ -222,6 +223,18 @@ void Task::vAstackReverse(NNP_Task nnpTask)
   for (i8 i = 0; i < nValues; i++) {
     nnpTask->m_pAuxStack->vPush(apValWsp[i]);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* astk -- dump the aux stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vAstackStk(NNP_Task nnpTask)
+{
+  ENTRY("vAstackStk");
+  
+  nnpTask->m_pAuxStack->vDump(nnpTask->m_sName.a(),"AuxStack:");
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

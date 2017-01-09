@@ -86,6 +86,7 @@ namespace Structures
     //-------------------------------------------------------------------------
     
     void   vDiscard(void);
+    void   vDump(const char* aPrefix, const char* aTitle);
     Value* pPeek(void);
     Value* pPeek(i8 iNthValue);
     void   vPeek(i8 iNthValue, Value* pValue);

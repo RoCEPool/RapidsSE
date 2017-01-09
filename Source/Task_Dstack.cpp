@@ -49,7 +49,7 @@ void Task::vAddPrimitives_Dstack(void)
   vAddPrimitive("-roll",           &vDstackRollInv,    false);
   vAddPrimitive("rot",             &vDstackRot,        false);
   vAddPrimitive("-rot",            &vDstackRotInv,     false);
-//  vAddPrimitive("stk",             &vDstackStk,        false);
+  vAddPrimitive("stk",             &vDstackStk,        false);
   vAddPrimitive("swap",            &vDstackSwap,       false);
   vAddPrimitive("valset>",         &vDstackToValues,   false);
   vAddPrimitive(">valset",         &vDstackToValSet,   false);
@@ -174,12 +174,12 @@ void Task::vDstackDump(NNP_Task nnpTask)
 {
   ENTRY("vDstackDump");
   
-  s8K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("dump");
   
+  s8K sWorkspace;
   xValWsp.vToString(sWorkspace.a());
   char* aClass = xValWsp.aClass();
   
@@ -408,6 +408,18 @@ void Task::vDstackRotInv(NNP_Task nnpTask)
   nnpTask->m_pDataStack->vPush(&xValA);
   nnpTask->m_pDataStack->vPush(&xValC);
   nnpTask->m_pDataStack->vPush(&xValB);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* stk -- dump the data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vDstackStk(NNP_Task nnpTask)
+{
+  ENTRY("vDstackStk");
+  
+  nnpTask->m_pDataStack->vDump(nnpTask->m_sName.a(),"DataStack:");
   
   EXIT();
 }

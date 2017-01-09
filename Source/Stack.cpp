@@ -798,6 +798,47 @@ void Stack::vDiscard(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* stk -- dump the data stack                                                 */
+/*----------------------------------------------------------------------------*/
+void Stack::vDump(const char* aPrefix, const char* aTitle)
+{
+  vTrace("[%s]%s:\n",aPrefix,aTitle);
+  
+  ValWsp xValWsp;
+  
+  s8K sWorkspace;
+  
+  i8 nValues = iValues();
+  for (i8 iVal = 0; iVal < nValues; iVal++) {
+    
+    vPeek(iVal,&xValWsp);
+    
+    xValWsp.vToString(sWorkspace.a());
+    char* aClass = xValWsp.aClass();
+    
+    eCN eClass = xValWsp.eClass();
+    
+    if (CN_PTRVAL == eClass) {
+      PtrVal* pPtrVal = xValWsp.pAsPtrVal();
+      Object* pObject = pPtrVal->pObject();
+      if (pObject) {
+        eCN ePtdClass   = pObject->eClass();
+        vTrace("[%s] [%2lld] %s (%s %s)\n",
+               aPrefix,iVal,sWorkspace.a(),aClass,pCN[ePtdClass]);
+      }
+      else {
+        vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);
+      }
+    }
+    else {
+      vTrace("[%s] [%2lld] %s (%s)\n",
+             aPrefix,iVal,sWorkspace.a(),aClass);
+    }
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* peek at value on top of stack                                              */
 /*----------------------------------------------------------------------------*/
 Value* Stack::pPeek(void)

@@ -380,6 +380,7 @@ namespace Tasks
     static void vAstackNip(NNP_Task nnpTask);
     static void vAstackPick(NNP_Task nnpTask);
     static void vAstackReverse(NNP_Task nnpTask);
+    static void vAstackStk(NNP_Task nnpTask);
     static void vAstackSwap(NNP_Task nnpTask);
     static void vAstackToA(NNP_Task nnpTask);
     static void vAstackToP(NNP_Task nnpTask);
@@ -509,6 +510,7 @@ namespace Tasks
     static void vDstackRollInv(NNP_Task nnpTask);
     static void vDstackRot(NNP_Task nnpTask);
     static void vDstackRotInv(NNP_Task nnpTask);
+    static void vDstackStk(NNP_Task nnpTask);
     static void vDstackSwap(NNP_Task nnpTask);
     static void vDstackToValSet(NNP_Task nnpTask);
     static void vDstackToValues(NNP_Task nnpTask);
@@ -769,6 +771,7 @@ namespace Tasks
     static void vRstackReverse(NNP_Task nnpTask);
     static void vRstackRoll(NNP_Task nnpTask);
     static void vRstackRollInv(NNP_Task nnpTask);
+    static void vRstackStk(NNP_Task nnpTask);
     static void vRstackSwap(NNP_Task nnpTask);
     static void vRstackToP(NNP_Task nnpTask);
     static void vRstackToR(NNP_Task nnpTask);
