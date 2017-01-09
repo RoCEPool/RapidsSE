@@ -44,7 +44,7 @@ void RegFrame::operator delete(void* pRegFrameAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RegFrame::RegFrame(void)
-: Object(CN_REGFRAME)
+: Buffer(CN_REGFRAME)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
 

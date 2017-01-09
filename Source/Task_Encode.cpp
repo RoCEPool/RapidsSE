@@ -230,7 +230,7 @@ void Task::vEncodeLoop(NNP_Task nnpTask)
   }
   
   pCurrentWord->vEncode("2r@"); // copy index limit to dstack
-  pCurrentWord->vEncode(">");   // test for limit > index
+  pCurrentWord->vEncode("!=");   // test for limit > index
   
   if (iIsDo) {
     // jump on true to doHere:
@@ -278,7 +278,7 @@ void Task::vEncodeLoopPlus(NNP_Task nnpTask)
   }
   
   pCurrentWord->vEncode("2r@"); // copy index limit to dstack
-  pCurrentWord->vEncode(">");   // test for limit > index
+  pCurrentWord->vEncode("!=");   // test for limit > index
   
   if (iIsDo) {
     // jump on true to doHere:

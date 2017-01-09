@@ -34,6 +34,9 @@ BufferFree::~BufferFree(void)
 /*----------------------------------------------------------------------------*/
 bn BufferFree::nNextFree(void)
 {
+  if (CN_BUFFER != eClass())
+    int debug = 1;
+  
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
   
   return m_nNextFree;

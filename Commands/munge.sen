@@ -4,6 +4,22 @@
 
 "munge.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* munge one .sen file                                                        */
+/*----------------------------------------------------------------------------*/
+: mungeSenFile ( "<fileNm"> -- )
+
+  // ...
+
+  file.new locals| senFile |
+
+  // delete the file accessor
+  senFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* munge all .sen files                                                       */
+/*----------------------------------------------------------------------------*/
 : munge
 
   // create a directory accessor
@@ -26,7 +42,7 @@
     commandDir dir.entryName .
 
     // convert to C++
-    // ...
+    mungeSenFile
 
   repeat
 

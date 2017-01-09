@@ -10,7 +10,7 @@ namespace Tasks
 {
   static const i8 C_VALREGS = 16;
   
-  class RegFrame : public Object
+  class RegFrame : public Buffer
   {
   public:
     RegFrame* m_pNext;

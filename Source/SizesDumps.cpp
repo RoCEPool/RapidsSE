@@ -311,7 +311,7 @@ eHT geWhichHeap[]
   /* 43 */ HT_SMALL,   // CN_QUEUE
   /* 44 */ HT_LARGE,   // CN_QUEUEBUFFER
   
-  /* 45 */ HT_MEDIUM,  // CN_REGFRAME
+  /* 45 */ HT_LARGE,   // CN_REGFRAME
   /* 46 */ HT_INVALID, // CN_RING
   /* 47 */ HT_INVALID, // CN_ROW
   /* 48 */ HT_LARGE,   // CN_ROWBUFFER
