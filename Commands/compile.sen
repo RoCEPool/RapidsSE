@@ -21,6 +21,7 @@
 "dbobjects.sen" >>:
 "actors.sen" >>:
 "request.sen" >>:
+"tools.sen" >>:
 "munge.sen" >>:
 "testing.sen" >>:
 assert.stack_0

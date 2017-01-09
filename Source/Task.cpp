@@ -706,6 +706,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_TxCollection();
   vAddPrimitives_TxMap();
   vAddPrimitives_TxRef();
+  vAddPrimitives_Vector();
   vAddPrimitives_Word();
   vAddPrimitives_Zero();
 }

@@ -342,6 +342,7 @@ namespace Tasks
     void vAddPrimitives_TxCursor(void);
     void vAddPrimitives_TxMap(void);
     void vAddPrimitives_TxRef(void);
+    void vAddPrimitives_Vector(void);
     void vAddPrimitives_Word(void);
     void vAddPrimitives_Zero(void);
 
@@ -397,12 +398,13 @@ namespace Tasks
     static void vAstack9(NNP_Task nnpTask);
     
     // bp
-    static void vBpa(NNP_Task nnpTask);
+    static void vBpAnalyze(NNP_Task nnpTask);
     static void vBpdump(NNP_Task nnpTask);
     static void vFreeBuffers(NNP_Task nnpTask);
     static void vFreePercent(NNP_Task nnpTask);
     static void vFreeSpace(NNP_Task nnpTask);
     static void vInUseSpace(NNP_Task nnpTask);
+    static void vSnapshot(NNP_Task nnpTask);
     static void vTotalSpace(NNP_Task nnpTask);
     
     // cast
@@ -997,6 +999,9 @@ namespace Tasks
 
     // txRef
     static void vTxRefInit(NNP_Task nnpTask);
+    
+    // vector
+    static void vVectorDifference(NNP_Task nnpTask);
     
     // word
     static void vAllParticipants(NNP_Task nnpTask);

@@ -125,6 +125,16 @@ bool BufferPool::bValidAddress(const void* pAddress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get buffer count                                                           */
+/*----------------------------------------------------------------------------*/
+i8 BufferPool::iBufferCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  return m_iBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get buffer number of first usable buffer in pool                           */
 /*----------------------------------------------------------------------------*/
 bn BufferPool::nBufferFirst(void)

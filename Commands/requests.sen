@@ -86,7 +86,7 @@ Grid Request:
 /*----------------------------------------------------------------------------*/
 : checkEnoughBuffers
 
-  freeBuffers 100 >
+  bp.freeBuffers 100 >
   if
     true exit
   else
@@ -350,11 +350,11 @@ ddlLock.grabRead
   checkInTables not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
-  //freespace .
+  //bp.freespace .
 
   tableLoader   not if <NIP+ERROR> exit then
 
-  //freespace .
+  //bp.freespace .
 
   <OK>
 ;
@@ -369,11 +369,11 @@ ddlLock.grabRead
   checkInTables not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
-  //freespace .
+  //bp.freespace .
 
   tableLoaderStream2 not if <NIP+ERROR> exit then
 
-  //freespace .
+  //bp.freespace .
 
   <OK>
 ;
@@ -404,11 +404,11 @@ ddlLock.grabRead
   checkInTables      not if <NIP+ERROR> exit then
   checkIsTable       not if <NIP+ERROR> exit then
 
-  //freespace .
+  //bp.freespace .
 
   tableCopier
 
-  //freespace .
+  //bp.freespace .
 
   <OK>
 ;
@@ -753,9 +753,9 @@ tp: gettingSpace
     "GETTING SPACE on NODE "args.node >str str.cat .
   then
 
-  "Pool - Size(" 2 totalSpace number.magnitude str.cat ")" str.cat
-  " InUse(" 2 inUseSpace number.magnitude str.cat ")" str.cat
-  " Free(" 2 freeSpace number.magnitude str.cat ")" str.cat
+  "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat
+  " InUse(" 2 bp.inUseSpace number.magnitude str.cat ")" str.cat
+  " Free(" 2 bp.freespace number.magnitude str.cat ")" str.cat
 
   str.cat str.cat
 
@@ -800,7 +800,7 @@ tp: dpne
 /*----------------------------------------------------------------------------*/
 : getFreeSpace ( -- <R> )
 
-  freeSpace
+  bp.freespace
 
   >str
 
@@ -812,7 +812,7 @@ tp: dpne
 /*----------------------------------------------------------------------------*/
 : getInUseSpace ( -- <R> )
 
-  inUseSpace
+  bp.inUseSpace
 
   >str
 
@@ -824,7 +824,7 @@ tp: dpne
 /*----------------------------------------------------------------------------*/
 : getTotalSpace ( -- <R> )
 
-  totalSpace
+  bp.totalSpace
 
   >str
 
