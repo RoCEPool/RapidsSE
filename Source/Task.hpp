@@ -422,8 +422,6 @@ namespace Tasks
     static void vCursorFetch(NNP_Task nnpTask);
     static void vCursorStore(NNP_Task nnpTask);
     
-    // csv
-    static void vCsvFirstValue(NNP_Task nnpTask);
     
     // diclock
     static void vDicLockDropWrite(NNP_Task nnpTask);
@@ -826,11 +824,12 @@ namespace Tasks
     static void vStepsReset(NNP_Task nnpTask);
     
     // string
-    static void vSprint(NNP_Task nnpTask);
 
     static void vStrCat(NNP_Task nnpTask);
     static void vStrClip(NNP_Task nnpTask);
     static void vStrEqual(NNP_Task nnpTask);
+    static void vStrFirstCsv(NNP_Task nnpTask);
+    static void vStrFormat(NNP_Task nnpTask);
     static void vStrLeft(NNP_Task nnpTask);
     static void vStrLength(NNP_Task nnpTask);
     static void vStrPad(NNP_Task nnpTask);

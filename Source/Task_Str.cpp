@@ -34,44 +34,21 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Str(void)
 {
-  vAddPrimitive("toDigitName", &vToDigitName, false);
-  vAddPrimitive("sprint",      &vSprint,      false);
-  vAddPrimitive("s256.init",   &vS256Init,    false);
-  vAddPrimitive("csv.firstValue",  &vCsvFirstValue,    false);
+  vAddPrimitive("toDigitName",  &vToDigitName,   false);
+  vAddPrimitive("s256.init",    &vS256Init,      false);
   
-  vAddPrimitive("str.cat",     &vStrCat,      false);
-  vAddPrimitive("str.clip",    &vStrClip,     false);
-  vAddPrimitive("str.equal",   &vStrEqual,    false);
-  vAddPrimitive("str.left",    &vStrLeft,     false);
-  vAddPrimitive("str.length",  &vStrLength,   false);
-  vAddPrimitive("str.pad",     &vStrPad,      false);
-  vAddPrimitive("str.prepend", &vStrPrepend,  false);
-  vAddPrimitive("str.random",  &vStrRandom,   false);
-  vAddPrimitive("str.right",   &vStrRight,    false);
-  vAddPrimitive("str.sub",     &vStrSub,      false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* csv.firstValue -- get first value from csv string                          */
-/*----------------------------------------------------------------------------*/
-void Task::vCsvFirstValue(NNP_Task nnpTask)
-{
-  ENTRY("vCsvFirstValue");
-  
-  ValWsp xStr;
-  if ( ! nnpTask->m_xDataStack.bPop(xStr) )
-    THROW_INVALID_DSTACK("csv.firstValue");
-  
-  s256 sFirstValue;
-  
-  char* z = xStr.sStr();
-  
-  if (! String::bExtractItem(&z,sFirstValue.a()))
-    sFirstValue = "";
-  
-  nnpTask->m_xDataStack.vPush(sFirstValue);
-  
-  EXIT();
+  vAddPrimitive("str.cat",      &vStrCat,        false);
+  vAddPrimitive("str.clip",     &vStrClip,       false);
+  vAddPrimitive("str.equal",    &vStrEqual,      false);
+  vAddPrimitive("str.firstCsv", &vStrFirstCsv,   false);
+  vAddPrimitive("str.format",   &vStrFormat,     false);
+  vAddPrimitive("str.left",     &vStrLeft,       false);
+  vAddPrimitive("str.length",   &vStrLength,     false);
+  vAddPrimitive("str.pad",      &vStrPad,        false);
+  vAddPrimitive("str.prepend",  &vStrPrepend,    false);
+  vAddPrimitive("str.random",   &vStrRandom,     false);
+  vAddPrimitive("str.right",    &vStrRight,      false);
+  vAddPrimitive("str.sub",      &vStrSub,        false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -104,26 +81,6 @@ ENTRY("vToDigitName");
   }
 
   nnpTask->m_xDataStack.vPush(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* sprint -- pop format string and use it for a sprintf                       */
-/*----------------------------------------------------------------------------*/
-void Task::vSprint(NNP_Task nnpTask)
-{
-  ENTRY("vSprint");
-  
-  s8K sFormat;
-  if ( ! nnpTask->m_xDataStack.bPop(sFormat) )
-    THROW_INVALID_DSTACK("sprint");
-  
-  s8K sString;
-  
-  nnpTask->vSprint(sFormat,sString);
-  
-  nnpTask->m_xDataStack.vPush(sString);
   
   EXIT();
 }
@@ -227,6 +184,49 @@ void Task::vStrEqual(NNP_Task nnpTask)
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
   nnpTask->m_xDataStack.vPush(iEqual);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.firstCsv -- get first value from csv string                            */
+/*----------------------------------------------------------------------------*/
+void Task::vStrFirstCsv(NNP_Task nnpTask)
+{
+  ENTRY("vStrFirstCsv");
+  
+  ValWsp xStr;
+  if ( ! nnpTask->m_xDataStack.bPop(xStr) )
+    THROW_INVALID_DSTACK("str.firstCsv");
+  
+  s256 sFirstValue;
+  
+  char* z = xStr.sStr();
+  
+  if (! String::bExtractItem(&z,sFirstValue.a()))
+    sFirstValue = "";
+  
+  nnpTask->m_xDataStack.vPush(sFirstValue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.format -- pop format string and use it for a sprintf                   */
+/*----------------------------------------------------------------------------*/
+void Task::vStrFormat(NNP_Task nnpTask)
+{
+  ENTRY("vStrFormat");
+  
+  s8K sFormat;
+  if ( ! nnpTask->m_xDataStack.bPop(sFormat) )
+    THROW_INVALID_DSTACK("str.format");
+  
+  s8K sString;
+  
+  nnpTask->vSprint(sFormat,sString);
+  
+  nnpTask->m_xDataStack.vPush(sString);
   
   EXIT();
 }

@@ -35,7 +35,7 @@ tp: checkResult
       false == if  ( ... ec n# )
 
         swap error.msg swap
-        "Node%v ERROR: %v" sprint .
+        "Node%v ERROR: %v" str.format .
 
       else
 
@@ -62,7 +62,7 @@ tp: printResult
     0 do  ( s n# t | s n# f .... )
 
       assert // should be true
-      "Node%v: %v"  sprint .
+      "Node%v: %v"  str.format .
     loop
 
   else
@@ -73,7 +73,7 @@ tp: printResult
       false == if ( s n# t | ec n# )
 
         swap error.msg swap
-        "Node%v ERROR: %v" sprint .
+        "Node%v ERROR: %v" str.format .
 
       else
 
