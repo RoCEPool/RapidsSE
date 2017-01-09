@@ -630,6 +630,7 @@ namespace Tasks
     // magnitude
     static void vBytesMagnitude(NNP_Task nnpTask);
     static void vNumberMagnitude(NNP_Task nnpTask);
+    static void vToDigitName(NNP_Task nnpTask);
     
     // memory
     static void vMemoryByteDump(NNP_Task nnpTask);
@@ -957,7 +958,6 @@ namespace Tasks
     // to
     static void vToBody(NNP_Task nnpTask);
     static void vToCmd(NNP_Task nnpTask);
-    static void vToDigitName(NNP_Task nnpTask);
     static void vToInt(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
     static void vToStr(NNP_Task nnpTask);

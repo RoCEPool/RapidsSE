@@ -34,8 +34,43 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Magnitude(void)
 {
+  vAddPrimitive("toDigitName",     &vToDigitName,   false);
   vAddPrimitive("bytes.magnitude", &vBytesMagnitude,   false);
   vAddPrimitive("number.magnitude", &vNumberMagnitude, false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* >DigitName -- convert to digit name                                        */
+/*----------------------------------------------------------------------------*/
+void Task::vToDigitName(NNP_Task nnpTask)
+{
+  ENTRY("vToDigitName");
+  
+  i8 iDigit;
+  
+  // get the arguments
+  if ( ! nnpTask->m_xDataStack.bPop(iDigit) )
+    THROW_INVALID_DSTACK(">DigitName");
+  
+  s32 sName;
+  
+  switch (iDigit) {
+    case 0: sName = "zero";    break;
+    case 1: sName = "one";     break;
+    case 2: sName = "two";     break;
+    case 3: sName = "three";   break;
+    case 4: sName = "four";    break;
+    case 5: sName = "five";    break;
+    case 6: sName = "six";     break;
+    case 7: sName = "seven";   break;
+    case 8: sName = "eight";   break;
+    case 9: sName = "nine";    break;
+    default:sName = "invalid"; break;
+  }
+  
+  nnpTask->m_xDataStack.vPush(sName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
