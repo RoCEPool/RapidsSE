@@ -39,6 +39,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("str.cat",      &vStrCat,        false);
   vAddPrimitive("str.clip",     &vStrClip,       false);
   vAddPrimitive("str.equal",    &vStrEqual,      false);
+  vAddPrimitive("str.escape",   &vStrEscape,     false);
   vAddPrimitive("str.firstCsv", &vStrFirstCsv,   false);
   vAddPrimitive("str.format",   &vStrFormat,     false);
   vAddPrimitive("str.left",     &vStrLeft,       false);
@@ -149,6 +150,28 @@ void Task::vStrEqual(NNP_Task nnpTask)
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
   nnpTask->m_pDataStack->vPush(iEqual);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.escape -- put a '\\' before and '\"'                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vStrEscape(NNP_Task nnpTask)
+{
+  ENTRY("vStrEscape");
+  
+  ValWsp xArg;
+  ValWsp xEscaped;
+  
+  // get the arguments
+  if ( ! nnpTask->m_pDataStack->bPop(xArg) )
+    THROW_INVALID_DSTACK("str.escape");
+  
+  xEscaped = "";
+  String::vEscape(xArg.sStr(),xEscaped.sStr());
+  
+  nnpTask->m_pDataStack->vPush(xEscaped);
   
   EXIT();
 }

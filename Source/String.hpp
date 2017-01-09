@@ -47,6 +47,7 @@ namespace Common
     
     static bool  bEnds(const char* sArg, const char cEnd);
     static bool  bEnds(const char* sArg, const char* sEnd);
+    static void  vEscape(const char* sArg, char* sEscaped);
     static bool  bExtractArg(char** ps, char* pPath);
     static bool  bExtractI8(char** ps, i8* i);
     static bool  bExtractItem(char** ps, char* pItem);

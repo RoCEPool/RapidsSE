@@ -19,7 +19,7 @@
 
   begin senFile file.read while
 
-    to senLine
+    dup . str.escape dup . to senLine
 
     senFile file.path@ .put
       " : " .put

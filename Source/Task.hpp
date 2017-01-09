@@ -834,6 +834,7 @@ namespace Tasks
     static void vStrCat(NNP_Task nnpTask);
     static void vStrClip(NNP_Task nnpTask);
     static void vStrEqual(NNP_Task nnpTask);
+    static void vStrEscape(NNP_Task nnpTask);
     static void vStrFirstCsv(NNP_Task nnpTask);
     static void vStrFormat(NNP_Task nnpTask);
     static void vStrLeft(NNP_Task nnpTask);

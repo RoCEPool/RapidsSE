@@ -427,6 +427,23 @@ bool String::bEnds(const char* sArg, const char* sEnd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vEscape: put a '\\' before and '\"'                                        */
+/*----------------------------------------------------------------------------*/
+void String::vEscape(const char* sArg, char* sEscaped)
+{
+  const char* aSrc = sArg;
+  char* aDst = sEscaped;
+  
+  while (*aSrc) {
+    if ('\"' == *aSrc)
+      *aDst++ = '\\';
+    *aDst++ = *aSrc++;
+  }
+  
+  *aDst = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
 /* bEqualTo: test if the two args match                                       */
 /*----------------------------------------------------------------------------*/
 bool String::bEqualTo(const char* s1, const char* s2)
