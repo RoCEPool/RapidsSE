@@ -491,6 +491,27 @@ namespace Tasks
     static void vDotNewline(NNP_Task nnpTask);
     static void vDotVerbose(NNP_Task nnpTask);
     
+    // dstack
+    static void vDstackClass(NNP_Task nnpTask);                 //! DUP OF class@
+    static void vDstackDepth(NNP_Task nnpTask);
+    static void vDstackDrop(NNP_Task nnpTask);
+    static void vDstackDropTwo(NNP_Task nnpTask);
+    static void vDstackDump(NNP_Task nnpTask);
+    static void vDstackDup(NNP_Task nnpTask);
+    static void vDstackDupNonZero(NNP_Task nnpTask);
+    static void vDstackNip(NNP_Task nnpTask);
+    static void vDstackOver(NNP_Task nnpTask);
+    static void vDstackPick(NNP_Task nnpTask);
+    static void vDstackReverse(NNP_Task nnpTask);
+    static void vDstackRoll(NNP_Task nnpTask);
+    static void vDstackRollInv(NNP_Task nnpTask);
+    static void vDstackRot(NNP_Task nnpTask);
+    static void vDstackRotInv(NNP_Task nnpTask);
+    static void vDstackSwap(NNP_Task nnpTask);
+    static void vDstackToValSet(NNP_Task nnpTask);
+    static void vDstackToValues(NNP_Task nnpTask);
+    static void vDstackTuck(NNP_Task nnpTask);
+    
     // encode
     static void vEncodeAgain(NNP_Task nnpTask);
     static void vEncodeAhead(NNP_Task nnpTask);
@@ -665,27 +686,6 @@ namespace Tasks
     static void vProcessGetPid(NNP_Task nnpTask);
     static void vProcessQuit(NNP_Task nnpTask);
     static void vProcessTestPid(NNP_Task nnpTask);
-    
-    // dstack
-    static void vDstackClass(NNP_Task nnpTask);                 //! DUP OF class@
-    static void vDstackDepth(NNP_Task nnpTask);
-    static void vDstackDrop(NNP_Task nnpTask);
-    static void vDstackDropTwo(NNP_Task nnpTask);
-    static void vDstackDump(NNP_Task nnpTask);
-    static void vDstackDup(NNP_Task nnpTask);
-    static void vDstackDupNonZero(NNP_Task nnpTask);
-    static void vDstackNip(NNP_Task nnpTask);
-    static void vDstackOver(NNP_Task nnpTask);
-    static void vDstackPick(NNP_Task nnpTask);
-    static void vDstackReverse(NNP_Task nnpTask);
-    static void vDstackRoll(NNP_Task nnpTask);
-    static void vDstackRollInv(NNP_Task nnpTask);
-    static void vDstackRot(NNP_Task nnpTask);
-    static void vDstackRotInv(NNP_Task nnpTask);
-    static void vDstackSwap(NNP_Task nnpTask);
-    static void vDstackToValSet(NNP_Task nnpTask);
-    static void vDstackToValues(NNP_Task nnpTask);
-    static void vDstackTuck(NNP_Task nnpTask);
     
     // push
     static void vPushI(NNP_Task nnpTask);

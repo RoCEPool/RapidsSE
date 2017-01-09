@@ -49,6 +49,7 @@ void Task::vAddPrimitives_Dstack(void)
   vAddPrimitive("-roll",           &vDstackRollInv,    false);
   vAddPrimitive("rot",             &vDstackRot,        false);
   vAddPrimitive("-rot",            &vDstackRotInv,     false);
+//  vAddPrimitive("stk",             &vDstackStk,        false);
   vAddPrimitive("swap",            &vDstackSwap,       false);
   vAddPrimitive("valset>",         &vDstackToValues,   false);
   vAddPrimitive(">valset",         &vDstackToValSet,   false);

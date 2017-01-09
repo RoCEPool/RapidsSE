@@ -368,67 +368,120 @@ void Task::vAddConstants(void)
   
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE",         CN_NONE);
-  /*  1 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
-  /*  2 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);
-  /*  3 */ vAddConstant("CN_PTRVAL",       CN_PTRVAL);
-  /*  4 */ vAddConstant("CN_STRVAL",       CN_STRVAL);
-  /*  5 */ vAddConstant("CN_VALSET",       CN_VALSET);
-  /*  6 */ vAddConstant("CN_VALWSP",       CN_VALWSP);
+
+  /*  1 */ vAddConstant("CN_S32",          CN_S32);
+  /*  2 */ vAddConstant("CN_S256",         CN_S256);
+  /*  3 */ vAddConstant("CN_S8K",          CN_S8K);
+
+  /*  4 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
+  /*  5 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);
+  /*  6 */ vAddConstant("CN_PTRVAL",       CN_PTRVAL);
+  /*  7 */ vAddConstant("CN_STRVAL",       CN_STRVAL);
+  /*  8 */ vAddConstant("CN_VALREG",       CN_VALREG);
+  /*  9 */ vAddConstant("CN_VALSET",       CN_VALSET);
+  /* 10 */ vAddConstant("CN_VALWSP",       CN_VALWSP);
   
-  /*  7 */ vAddConstant("CN_ARGUMENTS",    CN_ARGUMENTS);
-  /*  8 */ vAddConstant("CN_ATTACHMAP",    CN_ATTACHMAP);
-  /*  9 */ vAddConstant("CN_BUFFER",       CN_BUFFER);
-  /* 10 */ vAddConstant("CN_BUFFERPOOL",   CN_BUFFERPOOL);
-  /* 11 */ vAddConstant("CN_BPA",          CN_BPA);
-  /* 13 */ vAddConstant("CN_PARSER",       CN_PARSER);
-  /* 14 */ vAddConstant("CN_DIC",          CN_DIC);
-  /* 15 */ vAddConstant("CN_DIR",          CN_DIR);
-  /* 16 */ vAddConstant("CN_FILE",         CN_FILE);
-  /* 17 */ vAddConstant("CN_FREECHUNK",    CN_FREECHUNK);
-  /* 18 */ vAddConstant("CN_GRID",         CN_GRID);
-  /* 19 */ vAddConstant("CN_HEAPBUFFER",   CN_HEAPBUFFER);
-  /* 20 */ vAddConstant("CN_INDEX",        CN_INDEX);
-  /* 21 */ vAddConstant("CN_LOADER",       CN_LOADER);
-  /* 22 */ vAddConstant("CN_LOADERSUB",    CN_LOADERSUB);
-  /* 23 */ vAddConstant("CN_LOCK",         CN_LOCK);
-  /* 24 */ vAddConstant("CN_MEDIUMHEAP",   CN_MEDIUMHEAP);
-  /* 25 */ vAddConstant("CN_NODE",         CN_NODE);
-  /* 26 */ vAddConstant("CN_NODECURSOR",   CN_NODECURSOR);
-  /* 27 */ vAddConstant("CN_PARTITION",    CN_PARTITION);
-  /* 28 */ vAddConstant("CN_PROXY",        CN_PROXY);
-  /* 29 */ vAddConstant("CN_PROXYSET",     CN_PROXYSET);
-  /* 30 */ vAddConstant("CN_QUEUE",        CN_QUEUE);
-  /* 31 */ vAddConstant("CN_QUEUEBUFFER",  CN_QUEUEBUFFER);
-  /* 32 */ vAddConstant("CN_ROW",          CN_ROW);
-  /* 33 */ vAddConstant("CN_ROWBUFFER",    CN_ROWBUFFER);
-  /* 34 */ vAddConstant("CN_ROWCURSOR",    CN_ROWCURSOR);
-  /* 35 */ vAddConstant("CN_ROWSTRAND",    CN_ROWSTRAND);
-  /* 36 */ vAddConstant("CN_ROWWSP",       CN_ROWWSP);
-  /* 37 */ vAddConstant("CN_SCANBUFFER",   CN_SCANBUFFER);
-  /* 38 */ vAddConstant("CN_SEITF",        CN_SEITF);
-  /* 39 */ vAddConstant("CN_SEITFCURSOR",  CN_SEITFCURSOR);
-  /* 40 */ vAddConstant("CN_SEITFLIST",    CN_SEITFLIST);
-  /* 41 */ vAddConstant("CN_SMALLHEAP",    CN_SMALLHEAP);
-  /* 42 */ vAddConstant("CN_SOCKET",       CN_SOCKET);
-  /* 43 */ vAddConstant("CN_STACK",        CN_STACK);
-  /* 44 */ vAddConstant("CN_SYSCALL",      CN_SYSCALL);
-  /* 45 */ vAddConstant("CN_TABLE",        CN_TABLE);
-  /* 46 */ vAddConstant("CN_TASK",         CN_TASK);
-  /* 47 */ vAddConstant("CN_TASKCURSOR",   CN_TASKCURSOR);
-  /* 48 */ vAddConstant("CN_TASKLIST",     CN_TASKLIST);
-  /* 49 */ vAddConstant("CN_TASKSET",      CN_TASKSET);
-  /* 50 */ vAddConstant("CN_THREAD",       CN_THREAD);
-  /* 51 */ vAddConstant("CN_THREADCURSOR", CN_THREADCURSOR);
-  /* 52 */ vAddConstant("CN_THREADLIST",   CN_THREADLIST);
-  /* 53 */ vAddConstant("CN_TIMER",        CN_TIMER);
-  /* 54 */ vAddConstant("CN_TX",           CN_TX);
-  /* 55 */ vAddConstant("CN_TXARRAY",      CN_TXARRAY);
-  /* 56 */ vAddConstant("CN_TXCOLLECTION", CN_TXCOLLECTION);
-  /* 57 */ vAddConstant("CN_TXCURSOR",     CN_TXCURSOR);
-  /* 58 */ vAddConstant("CN_TXMAP",        CN_TXMAP);
-  /* 59 */ vAddConstant("CN_TXREF",        CN_TXREF);
-  /* 60 */ vAddConstant("CN_WORD",         CN_WORD);
-  /* 61 */ vAddConstant("CN_ENUMS",        CN_ENUMS);
+  /* 11 */ vAddConstant("CN_ARGUMENTS",    CN_ARGUMENTS);
+  /* 12 */ vAddConstant("CN_ATOMIC",       CN_ATOMIC);
+  /* 13 */ vAddConstant("CN_ATTACHMAP",    CN_ATTACHMAP);
+  
+  /* 14 */ vAddConstant("CN_BUFFER",       CN_BUFFER);
+  /* 15 */ vAddConstant("CN_BUFFERPOOL",   CN_BUFFERPOOL);
+  /* 16 */ vAddConstant("CN_BPA",          CN_BPA);
+  
+  /* 17 */ vAddConstant("CN_DIC",          CN_DIC);
+  /* 18 */ vAddConstant("CN_DICSTACK",     CN_DICSTACK);
+  /* 19 */ vAddConstant("CN_DIR",          CN_DIR);
+  
+  /* 20 */ vAddConstant("CN_FILE",         CN_FILE);
+  /* 21 */ vAddConstant("CN_FREECHUNK",    CN_FREECHUNK);
+  
+  /* 22 */ vAddConstant("CN_GRAPH",        CN_GRAPH);
+  /* 23 */ vAddConstant("CN_GRAPHCURSOR",  CN_GRAPHCURSOR);
+  /* 24 */ vAddConstant("CN_GRAPHNODE",    CN_GRAPHNODE);
+  /* 25 */ vAddConstant("CN_GRID",         CN_GRID);
+  
+  /* 26 */ vAddConstant("CN_HEAPBUFFER",   CN_HEAPBUFFER);
+  
+  /* 27 */ vAddConstant("CN_INDEX",        CN_INDEX);
+
+  /* 28 */ vAddConstant("CN_JUMBOHEAP",    CN_JUMBOHEAP);
+
+  /* 29 */ vAddConstant("CN_KEYCPP",       CN_KEYCPP);
+  /* 30 */ vAddConstant("CN_KEYVAL",       CN_KEYVAL);
+  
+  /* 31 */ vAddConstant("CN_LOADCHUNK",    CN_LOADCHUNK);
+  /* 32 */ vAddConstant("CN_LOADER",       CN_LOADER);
+  /* 33 */ vAddConstant("CN_LOADERSUB",    CN_LOADERSUB);
+  /* 34 */ vAddConstant("CN_LOADMAP",      CN_LOADMAP);
+  /* 35 */ vAddConstant("CN_LOCK",         CN_LOCK);
+  
+  /* 36 */ vAddConstant("CN_MEDIUMHEAP",   CN_MEDIUMHEAP);
+  
+  /* 37 */ vAddConstant("CN_NODE",         CN_NODE);
+  /* 38 */ vAddConstant("CN_NODECURSOR",   CN_NODECURSOR);
+  
+  /* 39 */ vAddConstant("CN_PARSER",       CN_PARSER);
+  /* 40 */ vAddConstant("CN_PARTITION",    CN_PARTITION);
+  /* 41 */ vAddConstant("CN_PARTITIONS",   CN_PARTITIONS);
+  /* 42 */ vAddConstant("CN_PROXY",        CN_PROXY);
+  /* 43 */ vAddConstant("CN_PROXYSET",     CN_PROXYSET);
+  
+  /* 44 */ vAddConstant("CN_QUEUE",        CN_QUEUE);
+  /* 45 */ vAddConstant("CN_QUEUEBUFFER",  CN_QUEUEBUFFER);
+  
+  /* 46 */ vAddConstant("CN_REGFRAME",     CN_REGFRAME);
+  /* 47 */ vAddConstant("CN_RING",         CN_RING);
+  /* 48 */ vAddConstant("CN_ROW",          CN_ROW);
+  /* 49 */ vAddConstant("CN_ROWBUFFER",    CN_ROWBUFFER);
+  /* 50 */ vAddConstant("CN_ROWCURSOR",    CN_ROWCURSOR);
+  /* 51 */ vAddConstant("CN_ROWSTRAND",    CN_ROWSTRAND);
+  /* 52 */ vAddConstant("CN_ROWWSP",       CN_ROWWSP);
+  
+  /* 53 */ vAddConstant("CN_SCANBUFFER",   CN_SCANBUFFER);
+  /* 54 */ vAddConstant("CN_SCRATCH",      CN_SCRATCH);
+  /* 55 */ vAddConstant("CN_SEHISTORY",    CN_SEHISTORY);
+  /* 56 */ vAddConstant("CN_SEITF",        CN_SEITF);
+  /* 57 */ vAddConstant("CN_SEITFCURSOR",  CN_SEITFCURSOR);
+  /* 58 */ vAddConstant("CN_SEITFLIST",    CN_SEITFLIST);
+  /* 59 */ vAddConstant("CN_SEPROMPT",     CN_SEPROMPT);
+  /* 60 */ vAddConstant("CN_SINCE",        CN_SINCE);
+  /* 61 */ vAddConstant("CN_SKIPCURSOR",   CN_SKIPCURSOR);
+  /* 62 */ vAddConstant("CN_SKIPLIST",     CN_SKIPLIST);
+  /* 63 */ vAddConstant("CN_SKIPNODE",     CN_SKIPNODE);
+  /* 64 */ vAddConstant("CN_SMALLHEAP",    CN_SMALLHEAP);
+  /* 65 */ vAddConstant("CN_SOCKET",       CN_SOCKET);
+  /* 66 */ vAddConstant("CN_STACK",        CN_STACK);
+  /* 67 */ vAddConstant("CN_STEPACCUM",    CN_STEPACCUM);
+  /* 68 */ vAddConstant("CN_STEPARRAY",    CN_STEPARRAY);
+  /* 69 */ vAddConstant("CN_SYSCALL",      CN_SYSCALL);
+  
+  /* 70 */ vAddConstant("CN_TABLE",        CN_TABLE);
+  /* 71 */ vAddConstant("CN_TASK",         CN_TASK);
+  /* 72 */ vAddConstant("CN_TASKCURSOR",   CN_TASKCURSOR);
+  /* 73 */ vAddConstant("CN_TASKLIST",     CN_TASKLIST);
+  /* 74 */ vAddConstant("CN_TASKSET",      CN_TASKSET);
+  /* 75 */ vAddConstant("CN_THREAD",       CN_THREAD);
+  /* 76 */ vAddConstant("CN_THREADCURSOR", CN_THREADCURSOR);
+  /* 77 */ vAddConstant("CN_THREADLIST",   CN_THREADLIST);
+  /* 78 */ vAddConstant("CN_TIME",         CN_TIME);
+  /* 79 */ vAddConstant("CN_TIMER",        CN_TIMER);
+  /* 80 */ vAddConstant("CN_TOKENISER",    CN_TOKENISER);
+  /* 81 */ vAddConstant("CN_TX",           CN_TX);
+  /* 82 */ vAddConstant("CN_TXARRAY",      CN_TXARRAY);
+  /* 83 */ vAddConstant("CN_TXCOLLECTION", CN_TXCOLLECTION);
+  /* 84 */ vAddConstant("CN_TXCURSOR",     CN_TXCURSOR);
+  /* 85 */ vAddConstant("CN_TXMAP",        CN_TXMAP);
+  /* 86 */ vAddConstant("CN_TXREF",        CN_TXREF);
+  
+  /* 87 */ vAddConstant("CN_WORD",         CN_WORD);
+
+  /* 88 */ vAddConstant("CN_ZSMALL_",      CN_ZSMALL_);
+  /* 89 */ vAddConstant("CN_ZMEDIUM_",     CN_ZMEDIUM_);
+  /* 90 */ vAddConstant("CN_ZLARGE_",      CN_ZLARGE_);
+  /* 91 */ vAddConstant("CN_ZJUMBO_",      CN_ZJUMBO_);
+  
+  /* 92 */ vAddConstant("CN_ENUMS",        CN_ENUMS);
   
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO", DT_FIFO);
