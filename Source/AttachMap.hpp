@@ -18,6 +18,8 @@ namespace StorageEngine
     
     i8            m_iRegionSize;
     i8            m_iPartitions;
+    i8            m_iPartition[C_TABLE_PARTITIONS];
+    i8            m_iNodes;
     
     BufferPool*   m_pBufferPool;
     Heap*         m_pJumboHeap;

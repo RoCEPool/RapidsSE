@@ -981,7 +981,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 /*----------------------------------------------------------------------------*/
 /* get number of partitions                                                   */
 /*----------------------------------------------------------------------------*/
-eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
+eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
 {
   //vTrace("RapidsSE_GetParitions: 0x%x\n", pSEitf);
   
@@ -1009,7 +1009,8 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions)
     return EC_NULLPTR;
   }
 
-  *(i8**)(ppPartitions) = &pSEitf->m_iPartitions;
+  *ppCount = &gpAttachMap->m_iPartitions;
+  *ppPartitions = &gpAttachMap->m_iPartition;
   
   return EC_NONE;
 }

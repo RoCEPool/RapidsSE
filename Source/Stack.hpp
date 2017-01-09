@@ -98,8 +98,9 @@ namespace Structures
     
     Value* pTopValue(void);
     
-  private:
     Value* pGetValue(i8 iValue);
+    
+  private:
     void   vPushBy(i8 iBytes);
     void   vPopBy(i8 iBytes);
     void   vPopVal(Value* pValue);

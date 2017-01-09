@@ -18,7 +18,7 @@ extern "C" eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalog);
 extern "C" eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog,  char* pSchema, char* pTable, void** ppColumns);
 extern "C" eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError);
 extern "C" eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow);
-extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions);
+extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** ppCount);
 extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchema);
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables);

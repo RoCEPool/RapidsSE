@@ -52,6 +52,10 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
+  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++) {
+    m_iPartition[iPartition] = -1;
+  }
+  
   _checkInitialised_(CN_ATTACHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
@@ -97,7 +101,15 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vUTC(m_sUTC);
   
   m_iRegionSize = gpBufferPool->iRegionSize();
-  m_iPartitions = gxArguments.m_nPartitions;
+  m_iPartitions = gxArguments.m_nPartitions / gxArguments.m_nNodes;
+  m_iNodes      = gxArguments.m_nNodes;
+  
+  i8 iPartitions = 0;
+  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+    if (iPartition % m_iNodes == gxArguments.m_iNode)
+      m_iPartition[iPartitions++] = iPartition;
+  }
+  ASSERT(iPartitions == m_iPartitions);
   
   m_pBufferPool = gpBufferPool;
   
