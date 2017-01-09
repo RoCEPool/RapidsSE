@@ -115,7 +115,7 @@ tp: resumedbyCoord
   then
 
   // assert we are in loader subtask
-  task.this task.name@ 2 0 str.sub "sl" str.equal assert
+  2 task.this task.name@ str.left "sl" str.equal assert
 
   // save the node number
   >r

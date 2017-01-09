@@ -335,35 +335,6 @@ bool Stack::bPop(i8& iArg1, i8& iArg2, Value& xArg3)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop i8,i8,val from param stack                                             */
-/*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg1, i8& iArg2, s8K& sArg3)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  if ( ! bGuard(CN_INTVAL,CN_INTVAL,CN_STRVAL) )
-    return false;
-  
-  IntVal xIntVal1;
-  vPopVal(&xIntVal1);
-  
-  iArg1 = xIntVal1.iInt();
-  
-  IntVal xIntVal2;
-  vPopVal(&xIntVal2);
-  
-  iArg2 = xIntVal2.iInt();
-  
-  
-  ValWsp xValWsp3;
-  vPopVal(&xValWsp3);
-  
-  sArg3 = xValWsp3.sStr();
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
 /* pop Object* from param stack                                               */
 /*----------------------------------------------------------------------------*/
 bool Stack::bPop(Object*& pObject)
@@ -519,6 +490,31 @@ bool Stack::bPop(s8K& sArg1, i8& iArg2)
   
   iArg2 = xIntVal2.iInt();
   
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop s,i8,i8 from param stack                                               */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPop(s8K& sArg1, i8& iArg2, i8& iArg3)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_STRVAL,CN_INTVAL,CN_INTVAL) )
+    return false;
+  
+  ValWsp xValWsp1;
+  vPopVal(&xValWsp1);
+  sArg1 = xValWsp1.sStr();
+  
+  IntVal xIntVal2;
+  vPopVal(&xIntVal2);
+  iArg2 = xIntVal2.iInt();
+  
+
+  IntVal xIntVal3;
+  vPopVal(&xIntVal3);
+  iArg3 = xIntVal3.iInt();
   return true;
 }
 

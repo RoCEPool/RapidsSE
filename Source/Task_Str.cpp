@@ -243,7 +243,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iLength,sString) )
+  if ( ! nnpTask->m_xDataStack.bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.left");
   
   // validate length
@@ -418,7 +418,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iStart,iLength,sString) )
+  if ( ! nnpTask->m_xDataStack.bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub");
   
   i8 iHasLength = String::iLength(sString.a());

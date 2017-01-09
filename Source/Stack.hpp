@@ -53,7 +53,6 @@ namespace Structures
     bool bPop(i8& iArg1, Value& xArg1);
     bool bPop(i8& iArg1, s8K& sArg2);
     bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
-    bool bPop(i8& iArg1, i8& iArg2, s8K& sArg3);
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
     bool bPop(Object*& pObject1, Object*& pObject2);
@@ -66,6 +65,7 @@ namespace Structures
     bool bPop(s256& sArg1);
     bool bPop(s8K& sArg1);
     bool bPop(s8K& sArg1, i8& iArg2);
+    bool bPop(s8K& sArg1, i8& iArg2, i8& iArg3);
     bool bPop(s8K& sArg1, s8K& sArg2);
     bool bPopParamInt(i8& iArg1);
     
