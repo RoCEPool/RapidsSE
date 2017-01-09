@@ -460,11 +460,11 @@ namespace Tasks
     static void vDicStackPush(NNP_Task nnpTask);
     
     // dir
+    static void vDirChangeCurrent(NNP_Task nnpTask);
+    static void vDirGetCurrent(NNP_Task nnpTask);
     static void vDirExists(NNP_Task nnpTask);
     static void vDirMake(NNP_Task nnpTask);
     static void vDirRemove(NNP_Task nnpTask);
-    static void vGwd(NNP_Task nnpTask);
-    static void vCwd(NNP_Task nnpTask);
     
     static void vDirClose(NNP_Task nnpTask);
     static void vDirDelete(NNP_Task nnpTask);

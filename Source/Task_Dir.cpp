@@ -38,11 +38,11 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dir(void)
 {
-  vAddPrimitive("dir.exists",      &vDirExists,        false);
-  vAddPrimitive("dir.make",        &vDirMake,          false);
-  vAddPrimitive("dir.remove",      &vDirRemove,        false);
-  vAddPrimitive("cwd",             &vCwd,              false);
-  vAddPrimitive("gwd",             &vGwd,              false);
+  vAddPrimitive("dir.changeCurrent", &vDirChangeCurrent, false);
+  vAddPrimitive("dir.exists",        &vDirExists,        false);
+  vAddPrimitive("dir.getCurrent",    &vDirGetCurrent,    false);
+  vAddPrimitive("dir.make",          &vDirMake,          false);
+  vAddPrimitive("dir.remove",        &vDirRemove,        false);
   
   vAddPrimitive("dir.close",       &vDirClose,         false);
   vAddPrimitive("dir.delete",      &vDirDelete,        false);
@@ -62,6 +62,24 @@ void Task::vAddPrimitives_Dir(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dir.changetCurrent -- change working directory                             */
+/*----------------------------------------------------------------------------*/
+void Task::vDirChangeCurrent(NNP_Task nnpTask)
+{
+  ENTRY("vDirChangeCurrent");
+  
+  s256 sDir;
+  if ( ! nnpTask->m_pDataStack->bPop(sDir) )
+    THROW_INVALID_DSTACK("dir.changeCurrent");
+  
+  Dir xDir;
+  if ( ! xDir.bChangeCurrent(sDir) )
+    THROW("Unable to change current directory");
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dir.exists -- test if a directory exists                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vDirExists(NNP_Task nnpTask)
@@ -77,6 +95,29 @@ ENTRY("vDirExists");
   
   i8 iResult = xDir.bExists(sPath);
   nnpTask->m_pDataStack->vPush(iResult);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dir.getCurrent -- get working directory                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vDirGetCurrent(NNP_Task nnpTask)
+{
+  ENTRY("vDirGetCurrent");
+  
+  ValWsp xStrVal;
+  
+  Dir xDir;
+  s256 sDir;
+  
+  if (xDir.bGetCurrent(sDir)) {
+    xStrVal = sDir.a();
+    nnpTask->m_pDataStack->vPush(&xStrVal);
+  }
+  else {
+    THROW("Unable to get current directory");
+  }
   
   EXIT();
 }
@@ -117,47 +158,6 @@ ENTRY("vDirRemove");
   
   i8 iResult = xDir.bRemove(sPath);
   nnpTask->m_pDataStack->vPush(iResult);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* cwd -- change working directory                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vCwd(NNP_Task nnpTask)
-{
-ENTRY("vCwd");
-  
-  s256 sDir;
-  if ( ! nnpTask->m_pDataStack->bPop(sDir) )
-    THROW_INVALID_DSTACK("cwd");
-  
-  Dir xDir;
-  if ( ! xDir.bSetCurrent(sDir) )
-    THROW("Unable to set current directory");
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* gwd -- get working directory                                               */
-/*----------------------------------------------------------------------------*/
-void Task::vGwd(NNP_Task nnpTask)
-{
-ENTRY("vGwd");
-  
-  ValWsp xStrVal;
-  
-  Dir xDir;
-  s256 sDir;
-  
-  if (xDir.bGetCurrent(sDir)) {
-    xStrVal = sDir.a();
-    nnpTask->m_pDataStack->vPush(&xStrVal);
-  }
-  else {
-    THROW("Unable to get current directory");
-  }
   
   EXIT();
 }

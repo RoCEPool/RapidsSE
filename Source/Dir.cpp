@@ -196,9 +196,9 @@ bool Dir::bRemove(s256& rPath)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set current working directory                                              */
+/* change current working directory                                           */
 /*----------------------------------------------------------------------------*/
-bool Dir::bSetCurrent(s256& rPath)
+bool Dir::bChangeCurrent(s256& rPath)
 {
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   

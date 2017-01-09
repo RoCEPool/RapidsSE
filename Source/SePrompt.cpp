@@ -1043,7 +1043,7 @@ bool SePrompt::bChangeWorkingDir(void)
     String::vConcat(sDir.a(), m_pToken[iToken]);
   }
 
-  if ( ! xDir.bSetCurrent(sDir) ) {
+  if ( ! xDir.bChangeCurrent(sDir) ) {
     m_pSEitf->vSetLastError(EC_NO_SUCH_DIRECTORY);
     return false;
   }

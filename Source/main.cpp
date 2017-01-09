@@ -80,7 +80,7 @@ int main(int argc, const char* argv[])
     gxArguments.vPrint();
   
   // change working directory to commands dir
-  bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
+  bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
   // ignore error
 //  if (xDir.bGetCurrent(sCurrent))
 //    printf("dir: %s\n",sCurrent.a());

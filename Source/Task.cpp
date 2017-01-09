@@ -921,10 +921,6 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" .verbose"
-//  "  gwd .verbose"
-//  "  \"../../../../Commands\" cwd"
-//  "  gwd .verbose"
-//  "  traceon"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" .verbose"
   "  ::exit"
@@ -933,9 +929,6 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" .verbose"
-//  "  gwd .verbose"
-//  "  \"../../Commands\" cwd"
-//  "  gwd .verbose"
   "  \"compile.sen\" >>:"
   "  \"::dicCompile exit\" .verbose"
   "  ::exit"
