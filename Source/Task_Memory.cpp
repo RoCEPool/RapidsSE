@@ -46,11 +46,11 @@ void Task::vMemoryByteDump(NNP_Task nnpTask)
 ENTRY("vMemoryByteDump");
   
   i8 iSize;
-  if ( ! nnpTask->m_xDataStack.bPop(iSize) )
+  if ( ! nnpTask->m_pDataStack->bPop(iSize) )
     THROW_INVALID_DSTACK("memory.bytedump");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("memory.bytedump");
   Word* pWord = _pWord(pWordObject);
   
@@ -68,11 +68,11 @@ void Task::vMemoryWordDump(NNP_Task nnpTask)
 ENTRY("vMemoryWordDump");
   
   i8 iSize;
-  if ( ! nnpTask->m_xDataStack.bPop(iSize) )
+  if ( ! nnpTask->m_pDataStack->bPop(iSize) )
     THROW_INVALID_DSTACK("memory.worddump");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("memory.worddump");
   Word* pWord = _pWord(pWordObject);
   

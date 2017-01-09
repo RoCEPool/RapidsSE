@@ -46,7 +46,7 @@ ENTRY("vTxDump");
   
   Object* pPtrTx;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTx) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTx) )
     THROW_INVALID_DSTACK("tx.delete");
   
   Tx* pTx = _pTx(pPtrTx);

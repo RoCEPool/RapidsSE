@@ -45,7 +45,7 @@ void Task::vEnterObject(NNP_Task nnpTask)
 {
   ENTRY("vEnterObject");
   
-  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+  nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
   
   Word* pWord = reinterpret_cast<Word*>(
@@ -54,7 +54,7 @@ void Task::vEnterObject(NNP_Task nnpTask)
   ASSERT(WT_OBJECT == pWord->eWordType());
   
   Cell* pCell = pWord->pFirstCell();
-  nnpTask->m_xDataStack.vPush(pCell);
+  nnpTask->m_pDataStack->vPush(pCell);
   
   EXIT();
 }
@@ -66,7 +66,7 @@ void Task::vEnterRoutine(NNP_Task nnpTask)
 {
   ENTRY("vEnterRoutine");
   
-  nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+  nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
   nnpTask->IP.m_pCell = *(Cell**)nnpTask->m_pEntryCell;
  
    if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )

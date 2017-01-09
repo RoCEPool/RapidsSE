@@ -9,14 +9,27 @@
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Stack* Stack::_pStack(void* pAddr)
+{
+  Stack* pStack = reinterpret_cast<Stack*>(pAddr);
+  
+  RASSERT( !pStack || CN_STACK == pStack->eClass() );
+  
+  return pStack;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Stack::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Stack class cannot be new'd");
   
-  RASSERT(0);
+  void* pStack = Heap::pAllocate(CN_STACK);
+  
+  return pStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -25,16 +38,17 @@ void* Stack::operator new(size_t iSize)
 void Stack::operator delete(void* pBufferAddress)
 {
   RASSERT(pBufferAddress);
-  vFatal("fatal: Stack class cannot be deleted");
+  Stack* pStack = _pStack(pBufferAddress);
   
-  RASSERT(0);
+  Heap::vFree(pStack);
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stack::Stack(void)
-: Object(CN_STACK)
+: Buffer(CN_STACK)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   

@@ -67,7 +67,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
   
   xWsp.pAsStrVal()->vSize();
   
-  nnpTask->m_xDataStack.vPush(xWsp);
+  nnpTask->m_pDataStack->vPush(xWsp);
   
   EXIT();
 }
@@ -93,7 +93,7 @@ ENTRY("vInputDepth");
   
   i8 iDepth = nnpTask->m_xTokeniser.iDepth();
   
-  nnpTask->m_xDataStack.vPush(iDepth);
+  nnpTask->m_pDataStack->vPush(iDepth);
   
   EXIT();
 }
@@ -125,7 +125,7 @@ ENTRY("vInputOpen");
   
   s256 sFilePath;
   
-  if ( ! nnpTask->m_xDataStack.bPop(sFilePath) )
+  if ( ! nnpTask->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("input.open");
   
   bool bOpened = nnpTask->m_xTokeniser.bUseFile(sFilePath);
@@ -182,7 +182,7 @@ ENTRY("vInputText");
   
   s256 sInput;
   
-  if ( ! nnpTask->m_xDataStack.bPop(sInput) )
+  if ( ! nnpTask->m_pDataStack->bPop(sInput) )
     THROW_INVALID_DSTACK("input.text");
     
   nnpTask->m_xTokeniser.vUseString(sInput);
@@ -197,7 +197,7 @@ void Task::vInputToken(NNP_Task nnpTask)
 {
 ENTRY("vInputToken");
   
-  nnpTask->m_xDataStack.vPush(nnpTask->m_sToken);
+  nnpTask->m_pDataStack->vPush(nnpTask->m_sToken);
   
   EXIT();
 }
@@ -211,7 +211,7 @@ ENTRY("vInputType");
   
   eTK eTokenType = nnpTask->m_eToken;
   
-  nnpTask->m_xDataStack.vPush(eTokenType);
+  nnpTask->m_pDataStack->vPush(eTokenType);
   
   EXIT();
 }
@@ -225,7 +225,7 @@ void Task::vTokenColon(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  nnpTask->m_xDataStack.vPush(nnpTask->m_sToken);
+  nnpTask->m_pDataStack->vPush(nnpTask->m_sToken);
   
   EXIT();
 }

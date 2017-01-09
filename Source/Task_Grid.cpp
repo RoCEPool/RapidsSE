@@ -49,7 +49,7 @@ ENTRY("vGridAppendNode");
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNode) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("grid.addNode");
 
   Node* pNode = _pNode(pPtrNode);
@@ -70,7 +70,7 @@ ENTRY("vGridInit");
   
   Object* pPtrGrid;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrGrid) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrGrid) )
     THROW_INVALID_DSTACK("grid.init");
   
   Grid* pGrid = _pGrid(pPtrGrid);
@@ -91,13 +91,13 @@ void Task::vGridStartedStore(NNP_Task nnpTask)
   Object* pPtrGrid;
   i8 iStarted;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrGrid) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrGrid) )
     THROW_INVALID_DSTACK("grid.started!");
   
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
   
-  if ( ! nnpTask->m_xDataStack.bPop(iStarted) )
+  if ( ! nnpTask->m_pDataStack->bPop(iStarted) )
     THROW_INVALID_DSTACK("grid.started!");
   
   pGrid->vHasStarted(iStarted == 1 ? true : false);
@@ -114,13 +114,13 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
   
   Object* pPtrGrid;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrGrid) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrGrid) )
     THROW_INVALID_DSTACK("grid.started@");
   
   Grid* pGrid = _pGrid(pPtrGrid);
   ASSERT(CN_GRID == pGrid->eClass());
   
-  nnpTask->m_xDataStack.vPush(pGrid->bHasStarted());
+  nnpTask->m_pDataStack->vPush(pGrid->bHasStarted());
   
   EXIT();
 }

@@ -49,7 +49,7 @@ ENTRY("vNodeInit");
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNode) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.init");
   
   Node* pNode = _pNode(pPtrNode);
@@ -69,7 +69,7 @@ ENTRY("vNodeNew");
   
   i8 iNodeNo;
   
-  if ( ! nnpTask->m_xDataStack.bPop(iNodeNo) )
+  if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
     THROW_INVALID_DSTACK("node.new");
   
   Node* pNode = new Node;
@@ -77,7 +77,7 @@ ENTRY("vNodeNew");
 
   pNode->vNodeNo(iNodeNo);
   
-  nnpTask->m_xDataStack.vPush(pNode);
+  nnpTask->m_pDataStack->vPush(pNode);
   
   EXIT();
 }
@@ -91,13 +91,13 @@ ENTRY("vNodeNo");
   
   Object* pPtrNode;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNode) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
     THROW_INVALID_DSTACK("node.no");
   
   Node* pNode = _pNode(pPtrNode);
   ASSERT(CN_NODE == pNode->eClass());
   
-  nnpTask->m_xDataStack.vPush(pNode->iNodeNo());
+  nnpTask->m_pDataStack->vPush(pNode->iNodeNo());
   
   EXIT();
 }
@@ -116,7 +116,7 @@ void Task::vNodeStatus(NNP_Task nnpTask)
   else
     String::vSprint(s.a(),"RapidsSE instance %s not running",gxArguments.m_sRegionName.a());
   
-  nnpTask->m_xDataStack.vPush(s);
+  nnpTask->m_pDataStack->vPush(s);
   
   EXIT();
 }

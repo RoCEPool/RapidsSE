@@ -52,7 +52,7 @@ void Task::vSEitfCursorBegin(NNP_Task nnpTask)
 ENTRY("vSEitfCursorBegin");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.begin");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -63,7 +63,7 @@ ENTRY("vSEitfCursorBegin");
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -76,7 +76,7 @@ void Task::vSEitfCursorDelete(NNP_Task nnpTask)
 ENTRY("vSEitfCursorDelete");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.delete");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -98,7 +98,7 @@ void Task::vSEitfCursorEnd(NNP_Task nnpTask)
 ENTRY("vSEitfCursorEnd");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.end");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -117,7 +117,7 @@ void Task::vSEitfCursorFirst(NNP_Task nnpTask)
 ENTRY("vSEitfCursorFirst");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.first");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -127,7 +127,7 @@ ENTRY("vSEitfCursorFirst");
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -140,7 +140,7 @@ void Task::vSEitfCursorGet(NNP_Task nnpTask)
 ENTRY("vSEitfCursorGet");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.get");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -148,7 +148,7 @@ ENTRY("vSEitfCursorGet");
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -161,7 +161,7 @@ void Task::vSEitfCursorInit(NNP_Task nnpTask)
 ENTRY("vSEitfCursorInit");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.init");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -187,7 +187,7 @@ void Task::vSEitfCursorNew(NNP_Task nnpTask)
 ENTRY("vSEitfCursorNew");
   
   Object* pPtrSEitfList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
     THROW_INVALID_DSTACK("seitfcursor.new");
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
@@ -199,7 +199,7 @@ ENTRY("vSEitfCursorNew");
   
   Object* pPtrSEitfCursor = pSEitfCursor;
   
-  nnpTask->m_xDataStack.vPush(pPtrSEitfCursor);
+  nnpTask->m_pDataStack->vPush(pPtrSEitfCursor);
   
   EXIT();
 }
@@ -212,7 +212,7 @@ void Task::vSEitfCursorNext(NNP_Task nnpTask)
 ENTRY("vSEitfCursorNext");
   
   Object* pPtrSEitfCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfCursor) )
     THROW_INVALID_DSTACK("seitfcursor.next");
   
   SEitfCursor* pSEitfCursor = _pSEitfCursor(pPtrSEitfCursor);
@@ -222,7 +222,7 @@ ENTRY("vSEitfCursorNext");
   
   Object* pObject = pSEitfCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }

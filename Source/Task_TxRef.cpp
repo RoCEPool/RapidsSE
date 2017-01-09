@@ -49,7 +49,7 @@ void Task::vTxRefInit(NNP_Task nnpTask)
 ENTRY("vTxRefInit");
   
   Object* pPtrTxRef;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxRef) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.init");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -69,7 +69,7 @@ ENTRY("vTxRefBegin");
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxRef) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("tx.begin");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -77,7 +77,7 @@ ENTRY("vTxRefBegin");
   
   bool bBegun = pTxRef->bBeginTx();
   
-  nnpTask->m_xDataStack.vPush(bBegun);
+  nnpTask->m_pDataStack->vPush(bBegun);
   
   EXIT();
 }
@@ -91,7 +91,7 @@ ENTRY("vTxRefEnd");
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxRef) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.end");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -99,7 +99,7 @@ ENTRY("vTxRefEnd");
   
   bool bEnded = pTxRef->bEndTx();
   
-  nnpTask->m_xDataStack.vPush(bEnded);
+  nnpTask->m_pDataStack->vPush(bEnded);
   
   EXIT();
 }
@@ -113,7 +113,7 @@ ENTRY("vTxRefCommit");
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxRef) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.commit");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -121,7 +121,7 @@ ENTRY("vTxRefCommit");
   
   bool bCommitted = pTxRef->bCommitTx();
   
-  nnpTask->m_xDataStack.vPush(bCommitted);
+  nnpTask->m_pDataStack->vPush(bCommitted);
   
   EXIT();
 }
@@ -135,7 +135,7 @@ ENTRY("vTxRefRollback");
   
   Object* pPtrTxRef;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxRef) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxRef) )
     THROW_INVALID_DSTACK("txRef.rollback");
   
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
@@ -143,7 +143,7 @@ ENTRY("vTxRefRollback");
   
   bool bRolledBack = pTxRef->bRollbackTx();
   
-  nnpTask->m_xDataStack.vPush(bRolledBack);
+  nnpTask->m_pDataStack->vPush(bRolledBack);
   
   EXIT();
 }

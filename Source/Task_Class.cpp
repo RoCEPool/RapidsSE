@@ -47,14 +47,14 @@ void Task::vClassName(NNP_Task nnpTask)
   ENTRY("vClassName");
   
   i8 iClassNo;
-  if ( ! nnpTask->m_xDataStack.bPop(iClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPop(iClassNo) )
     THROW_INVALID_DSTACK("class.name");
   
   s32 sClassName;
   
   sClassName = pCN[iClassNo];
   
-  nnpTask->m_xDataStack.vPush(sClassName);
+  nnpTask->m_pDataStack->vPush(sClassName);
   
   EXIT();
 }

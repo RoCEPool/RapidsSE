@@ -53,12 +53,12 @@ void Task::vLocalFetch(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("local.fetch");
   
   i8 iLocal;
-  if ( ! nnpTask->m_xDataStack.bPop(iLocal) )
+  if ( ! nnpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("local.fetch");
   
   ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
   
-  nnpTask->m_xDataStack.vPush(pValReg);
+  nnpTask->m_pDataStack->vPush(pValReg);
   
   EXIT();
 }
@@ -74,12 +74,12 @@ void Task::vLocalStore(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("localStore");
   
   i8 iLocal;
-  if ( ! nnpTask->m_xDataStack.bPop(iLocal) )
+  if ( ! nnpTask->m_pDataStack->bPop(iLocal) )
     THROW_INVALID_DSTACK("localStore");
   
   ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
   
-  nnpTask->m_xDataStack.bPop(pValReg);
+  nnpTask->m_pDataStack->bPop(pValReg);
   
   EXIT();
 }
@@ -169,7 +169,7 @@ ENTRY("vLocalsPush");
   
   RegFrame* pLocalsFrame = new RegFrame;
   
-  pLocalsFrame->vStackPtr(nnpTask->m_xReturnStack.pTopValue());
+  pLocalsFrame->vStackPtr(nnpTask->m_pReturnStack->pTopValue());
   
   pLocalsFrame->vNext(nnpTask->m_pLocalsFrame);
   

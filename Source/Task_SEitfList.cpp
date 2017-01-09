@@ -46,7 +46,7 @@ void Task::vSEitfListDump(NNP_Task nnpTask)
 ENTRY("vSEitfListDump");
   
   Object* pPtrSEitfList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
     THROW_INVALID_DSTACK("seitflist.dump");
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);
@@ -65,7 +65,7 @@ void Task::vSEitfListInit(NNP_Task nnpTask)
 ENTRY("vSEitfListInit");
   
   Object* pPtrSEitfList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitfList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitfList) )
     THROW_INVALID_DSTACK("seitflist.init");
   
   SEitfList* pSEitfList = _pSEitfList(pPtrSEitfList);

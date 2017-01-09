@@ -69,7 +69,7 @@ ENTRY("vDicCount");
     iCount = nnpTask->m_xDicStack.iCount();
   }
   
-  nnpTask->m_xDataStack.vPush(iCount);
+  nnpTask->m_pDataStack->vPush(iCount);
   
   EXIT();
 }
@@ -100,14 +100,14 @@ ENTRY("vDicFrozenGet");
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.frozen@");
   
   Dic* pDic = _pDic(pPtrDic);
   
   bool bFrozen = pDic->bFrozen();
   
-  nnpTask->m_xDataStack.vPush(bFrozen);
+  nnpTask->m_pDataStack->vPush(bFrozen);
   
   EXIT();
 }
@@ -122,7 +122,7 @@ ENTRY("vDicFrozenSet");
   i8 iFrozen;
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(iFrozen,pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(iFrozen,pPtrDic) )
     THROW_INVALID_DSTACK("dic.frozen@");
   
   Dic* pDic = _pDic(pPtrDic);
@@ -158,7 +158,7 @@ ENTRY("vDicInit");
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.init");
   
   Dic* pDic = _pDic(pPtrDic);
@@ -182,7 +182,7 @@ void Task::vDicIsCompiled(NNP_Task nnpTask)
   
   i8 bIsCompiled = pWord ? true : false;
   
-  nnpTask->m_xDataStack.vPush(bIsCompiled);
+  nnpTask->m_pDataStack->vPush(bIsCompiled);
   
   EXIT();
 }
@@ -196,7 +196,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.kind@");
   
   Dic* pDic = _pDic(pPtrDic);
@@ -204,7 +204,7 @@ void Task::vDicKindGet(NNP_Task nnpTask)
   Object* pPtrKind;
   pPtrKind = pDic->pDicKind();
   
-  nnpTask->m_xDataStack.vPush(pPtrKind);
+  nnpTask->m_pDataStack->vPush(pPtrKind);
   
   EXIT();
 }
@@ -219,7 +219,7 @@ void Task::vDicKindSet(NNP_Task nnpTask)
   Object* pPtrKind;
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic,pPtrKind) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic,pPtrKind) )
     THROW_INVALID_DSTACK("dic.kind@");
   
   Dic* pDic = _pDic(pPtrDic);
@@ -240,14 +240,14 @@ ENTRY("vDicLast");
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.last");
   
   Dic* pDic = _pDic(pPtrDic);
   
   Word* pLastWord = pDic->pCurrentWord();
   
-  nnpTask->m_xDataStack.vPush(pLastWord);
+  nnpTask->m_pDataStack->vPush(pLastWord);
   
   EXIT();
 }
@@ -259,7 +259,7 @@ void Task::vDicMain(NNP_Task nnpTask)
 {
 ENTRY("vDicMain");
   
-  nnpTask->m_xDataStack.vPush(gpMainDic);
+  nnpTask->m_pDataStack->vPush(gpMainDic);
   
   EXIT();
 }
@@ -272,7 +272,7 @@ void Task::vDicName(NNP_Task nnpTask)
 ENTRY("vDicName");
  
   Object* pPtrDic;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.name");
   
   Dic* pDic = _pDic(pPtrDic);
@@ -280,7 +280,7 @@ ENTRY("vDicName");
   ValWsp sName;
   sName = pDic->sName().a();
   
-  nnpTask->m_xDataStack.vPush(sName);
+  nnpTask->m_pDataStack->vPush(sName);
   
   EXIT();
 }
@@ -293,7 +293,7 @@ void Task::vDicPick(NNP_Task nnpTask)
 ENTRY("vDicPick");
   
   i8 iDic;
-  if ( ! nnpTask->m_xDataStack.bPop(iDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(iDic) )
     THROW_INVALID_DSTACK("dic.pick");
   
   Object* pPtrDic;
@@ -305,7 +305,7 @@ ENTRY("vDicPick");
     pPtrDic = nnpTask->m_xDicStack.pPick(iDic);
   }
   
-  nnpTask->m_xDataStack.vPush(pPtrDic);
+  nnpTask->m_pDataStack->vPush(pPtrDic);
   
   EXIT();
 }
@@ -319,7 +319,7 @@ ENTRY("vDicPush");
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.push");
 
   Dic* pDic = _pDic(pPtrDic);
@@ -343,14 +343,14 @@ void Task::vDicRef(NNP_Task nnpTask)
   
   Object* pPtrDic;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dic.ref");
   
   Dic* pDic = _pDic(pPtrDic);
 
   bool bRef = pDic->bRefOut();
   
-  nnpTask->m_xDataStack.vPush(bRef);
+  nnpTask->m_pDataStack->vPush(bRef);
   
   EXIT();
 }

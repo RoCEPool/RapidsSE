@@ -44,18 +44,18 @@ void Task::vExit(NNP_Task nnpTask)
 {
   ENTRY("vExit");
   
-  //vTrace("Exit: return stack %lld\n", nnpTask->m_xReturnStack.iValues());
+  //vTrace("Exit: return stack %lld\n", nnpTask->m_pReturnStack->iValues());
   
   if ( (nnpTask->m_iTracing & C_TRACE_ROUTINES) )
     nnpTask->vTracePoint("<");
   
   if (nnpTask->m_pLocalsFrame &&
       nnpTask->m_pLocalsFrame->pStackPtr() ==
-      (void*)nnpTask->m_xReturnStack.pTopValue())
+      (void*)nnpTask->m_pReturnStack->pTopValue())
     nnpTask->vLocalsPop();
   
   Cell* pCell;
-  if ( ! nnpTask->m_xReturnStack.bPop(pCell) )
+  if ( ! nnpTask->m_pReturnStack->bPop(pCell) )
     THROW_INVALID_RSTACK("exit");
   
   nnpTask->IP.m_pCell = pCell;

@@ -46,7 +46,7 @@ void Task::vCpuRdtscp(NNP_Task nnpTask)
   
   i8 iTscp = Synch::iTicks();
   
-  nnpTask->m_xDataStack.vPush(iTscp);
+  nnpTask->m_pDataStack->vPush(iTscp);
   
   EXIT();
 }

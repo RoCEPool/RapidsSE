@@ -45,7 +45,7 @@ void Task::vDicStackPush(NNP_Task nnpTask)
   ENTRY("vDicStackPush");
   
   Object* pPtrDic;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrDic) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dicStack.push");
   
   Dic* pDic = _pDic(pPtrDic);

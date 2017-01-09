@@ -67,7 +67,7 @@ void Task::vFlowExecute(NNP_Task nnpTask)
   ENTRY("vFlowExecute");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("execute");
   Word* pWord = _pWord(pWordObject);
   
@@ -76,14 +76,14 @@ void Task::vFlowExecute(NNP_Task nnpTask)
     (pTaskStep)(nnpTask);
   }
   else if (WT_OBJECT == pWord->eWordType()) {
-    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+    nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
     nnpTask->IP.m_pCell = pWord->pEntryCell();
     
     Cell* pCell = pWord->pFirstCell();
-    nnpTask->m_xDataStack.vPush(pCell);
+    nnpTask->m_pDataStack->vPush(pCell);
   }
   else if (WT_ROUTINE == pWord->eWordType()){
-    nnpTask->m_xReturnStack.vPush(nnpTask->IP.m_pCell);
+    nnpTask->m_pReturnStack->vPush(nnpTask->IP.m_pCell);
     nnpTask->IP.m_pCell = pWord->pEntryCell();
   }
   else {
@@ -137,7 +137,7 @@ void Task::vFlowJumpFalse(NNP_Task nnpTask)
   ENTRY("vJumpFalse");
   
   i8 iVal;
-  if ( ! nnpTask->m_xDataStack.bPopParamInt(iVal) )
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
     THROW_INVALID_DSTACK("jumpFalse");
   
   // n.b. the IP points to the jump arg
@@ -160,7 +160,7 @@ void Task::vFlowJumpTrue(NNP_Task nnpTask)
   ENTRY("vJumpTrue");
   
   i8 iVal;
-  if ( ! nnpTask->m_xDataStack.bPopParamInt(iVal) )
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iVal) )
     THROW_INVALID_DSTACK("jumpTrue");
   
   // n.b. the IP points to the jump arg
@@ -194,9 +194,9 @@ void Task::vFlowRetryPoint(NNP_Task nnpTask)
   
   nnpTask->m_pResetIP = nnpTask->IP.m_pCell;
   
-  nnpTask->m_xDataStack.vRetryPoint();
+  nnpTask->m_pDataStack->vRetryPoint();
   
-  nnpTask->m_xReturnStack.vRetryPoint();
+  nnpTask->m_pReturnStack->vRetryPoint();
   
   EXIT();
 }

@@ -51,7 +51,7 @@ void Task::vToBody(NNP_Task nnpTask)
   ENTRY("vToBody");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK(">body");
   Word* pWord = _pWord(pWordObject);
   
@@ -59,7 +59,7 @@ void Task::vToBody(NNP_Task nnpTask)
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   
-  nnpTask->m_xDataStack.vPush(pPtrBody);
+  nnpTask->m_pDataStack->vPush(pPtrBody);
   
   EXIT();
 }
@@ -72,7 +72,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   ENTRY("vToCmd");
   
   i8 nValues;
-  if ( ! nnpTask->m_xDataStack.bPop(nValues) )
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK(">cmd");
   
   s8K sCmd;
@@ -82,7 +82,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   
   for (i8 i = 0; i < nValues; i++) {
     ValWsp xValWsp;
-    nnpTask->m_xDataStack.vPeek(i,&xValWsp);
+    nnpTask->m_pDataStack->vPeek(i,&xValWsp);
     
     if (i)
       String::vConcat(sCmd.a()," ");
@@ -92,7 +92,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   
   xStr = sCmd.a();
   
-  nnpTask->m_xDataStack.vPush(&xStr);
+  nnpTask->m_pDataStack->vPush(&xStr);
   
   EXIT();
 }
@@ -105,7 +105,7 @@ void Task::vToInt(NNP_Task nnpTask)
   ENTRY("vToInt");
   
   ValWsp xStr;
-  if ( ! nnpTask->m_xDataStack.bPop(xStr) )
+  if ( ! nnpTask->m_pDataStack->bPop(xStr) )
     THROW_INVALID_DSTACK(">int");
   
   s256 sBuff;
@@ -113,7 +113,7 @@ void Task::vToInt(NNP_Task nnpTask)
   
   i8 i = String::iToI8(sBuff.a());
   
-  nnpTask->m_xDataStack.vPush(i);
+  nnpTask->m_pDataStack->vPush(i);
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
   
   i8 iVal;
   
-  if ( ! nnpTask->m_xDataStack.bPop(iVal) )
+  if ( ! nnpTask->m_pDataStack->bPop(iVal) )
     THROW_INVALID_DSTACK(">seitf");
   
   SEitf* pSEitf = _pSEitf(iVal);
@@ -135,7 +135,7 @@ void Task::vToSEitf(NNP_Task nnpTask)
   
   Object* pPtrSEitf = pSEitf;
   
-  nnpTask->m_xDataStack.vPush(pPtrSEitf);
+  nnpTask->m_pDataStack->vPush(pPtrSEitf);
   
   EXIT();
 }
@@ -148,13 +148,13 @@ void Task::vToStr(NNP_Task nnpTask)
   ENTRY("vToStr");
   
   ValWsp xVal;
-  if ( ! nnpTask->m_xDataStack.bPop(xVal) )
+  if ( ! nnpTask->m_pDataStack->bPop(xVal) )
     THROW_INVALID_DSTACK(">str");
   
   s8K sString;
   xVal.vToString(sString.a());
   
-  nnpTask->m_xDataStack.vPush(sString);
+  nnpTask->m_pDataStack->vPush(sString);
   
   EXIT();
 }
@@ -167,12 +167,12 @@ void Task::vToTask(NNP_Task nnpTask)
   ENTRY("vToTask");
   
   i8 iVal;
-  if ( ! nnpTask->m_xDataStack.bPop(iVal) )
+  if ( ! nnpTask->m_pDataStack->bPop(iVal) )
     THROW_INVALID_DSTACK(">task");
   
   Object* pPtrTask = _pTask(iVal);
   
-  nnpTask->m_xDataStack.vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPush(pPtrTask);
   
   EXIT();
 }

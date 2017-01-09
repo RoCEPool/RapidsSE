@@ -50,7 +50,7 @@ ENTRY("vQueueAppend");
   Object* pObject;
   ValWsp xValWsp;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject,xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject,xValWsp) )
     THROW_INVALID_DSTACK("queue.append");
   
   Queue* pQueue = static_cast<Queue*>(pObject);
@@ -71,7 +71,7 @@ ENTRY("vQueueDump");
   
   Object* pObject;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("q.dump");
   
   ASSERT(CN_QUEUE == pObject->eClass());
@@ -92,7 +92,7 @@ ENTRY("vQueueInit");
   
   Object* pObject;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.init");
     
   ASSERT(CN_QUEUE == pObject->eClass());
@@ -114,7 +114,7 @@ ENTRY("vQueuePop");
   Object* pObject;
   ValWsp xValWsp;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("queue.pop");
   
   ASSERT(CN_QUEUE == pObject->eClass());
@@ -123,11 +123,11 @@ ENTRY("vQueuePop");
   ASSERT(pQueue);
   
   if (pQueue->bPop(&xValWsp)) {
-    nnpTask->m_xDataStack.vPush(&xValWsp);
-    nnpTask->m_xDataStack.vPush((i8)1);
+    nnpTask->m_pDataStack->vPush(&xValWsp);
+    nnpTask->m_pDataStack->vPush((i8)1);
   }
   else
-    nnpTask->m_xDataStack.vPush((i8)0);
+    nnpTask->m_pDataStack->vPush((i8)0);
   
   
   EXIT();

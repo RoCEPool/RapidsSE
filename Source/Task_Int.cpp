@@ -58,22 +58,22 @@ void Task::vIntAdd(NNP_Task nnpTask)
   /*
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("+");
   
   r = i + j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   */
   
   // get pointer to value on the top of the stack
-  Value* j = nnpTask->m_xDataStack.pTopValue();
+  Value* j = nnpTask->m_pDataStack->pTopValue();
   
   // discard the value
-  nnpTask->m_xDataStack.vDiscard();
+  nnpTask->m_pDataStack->vDiscard();
   
   // get pointer to value on the top of the stack
-  Value* i = nnpTask->m_xDataStack.pTopValue();
+  Value* i = nnpTask->m_pDataStack->pTopValue();
   
   // add the two values and leave the result on the stack
   *i = j->iInt() + i->iInt();
@@ -90,12 +90,12 @@ void Task::vIntDivide(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("/");
   
   r = DIV(i,j);
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -109,12 +109,12 @@ void Task::vIntEqual(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("==");
   
   r = i == j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -128,12 +128,12 @@ void Task::vIntGreater(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK(">");
   
   r = i > j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -147,12 +147,12 @@ void Task::vIntGreaterEqual(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK(">=");
   
   r = i >= j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -165,14 +165,14 @@ void Task::vIntHash(NNP_Task nnpTask)
   ENTRY("vIntHash");
   
   s8K sString;
-  if ( ! nnpTask->m_xDataStack.bPop(sString) )
+  if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("hash");
   
   i8 iLength = String::iLength(sString.a());
   
   i8 iHash = XXH32(sString.a(),iLength,0);
   
-  nnpTask->m_xDataStack.vPush(iHash);
+  nnpTask->m_pDataStack->vPush(iHash);
   
   EXIT();
 }
@@ -186,12 +186,12 @@ void Task::vIntLess(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("<");
   
   r = i < j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -205,12 +205,12 @@ void Task::vIntLessEqual(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("<=");
   
   r = i <= j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -224,12 +224,12 @@ void Task::vIntModulo(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("%");
   
   r = MOD(i,j);
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -243,12 +243,12 @@ void Task::vIntMultiply(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("*");
   
   r = i * j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -262,12 +262,12 @@ void Task::vIntNeg(NNP_Task nnpTask)
   
   i8 r, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(i) )
+  if ( ! nnpTask->m_pDataStack->bPop(i) )
     THROW_INVALID_DSTACK("neg");
   
   r = -1 * i;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -281,12 +281,12 @@ void Task::vIntNotEqual(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("!=");
   
   r = i != j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -300,12 +300,12 @@ void Task::vIntSubtract(NNP_Task nnpTask)
   
   i8 r, j, i;
   
-  if ( ! nnpTask->m_xDataStack.bPop(j,i) )
+  if ( ! nnpTask->m_pDataStack->bPop(j,i) )
     THROW_INVALID_DSTACK("-");
   
   r = i - j;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }

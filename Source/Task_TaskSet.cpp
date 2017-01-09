@@ -48,7 +48,7 @@ ENTRY("vTaskSetAppend");
   
   Object* pObject;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("taskset.append");
   
   ASSERT(CN_TASKSET == pObject->eClass());
@@ -56,7 +56,7 @@ ENTRY("vTaskSetAppend");
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pTaskObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("taskset.append");
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -74,7 +74,7 @@ ENTRY("vTaskSetDump");
   
   Object* pObject;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("taskset.dump");
   
   ASSERT(CN_TASKSET == pObject->eClass());
@@ -95,7 +95,7 @@ ENTRY("vTaskSetInit");
   
   Object* pObject;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("taskset.init");
   
   ASSERT(CN_TASKSET == pObject->eClass());

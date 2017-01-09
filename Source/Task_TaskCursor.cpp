@@ -52,7 +52,7 @@ void Task::vTaskCursorBegin(NNP_Task nnpTask)
 ENTRY("vTaskCursorBegin");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.begin");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -71,7 +71,7 @@ void Task::vTaskCursorDelete(NNP_Task nnpTask)
 ENTRY("vTaskCursorDelete");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.delete");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -93,7 +93,7 @@ void Task::vTaskCursorEnd(NNP_Task nnpTask)
 ENTRY("vTaskCursorEnd");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.end");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -112,7 +112,7 @@ void Task::vTaskCursorFirst(NNP_Task nnpTask)
 ENTRY("vTaskCursorFirst");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.first");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -122,7 +122,7 @@ ENTRY("vTaskCursorFirst");
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPush(pPtrTask);
   
   EXIT();
 }
@@ -135,7 +135,7 @@ void Task::vTaskCursorGet(NNP_Task nnpTask)
 ENTRY("vTaskCursorGet");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.get");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -145,7 +145,7 @@ ENTRY("vTaskCursorGet");
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPush(pPtrTask);
   
   EXIT();
 }
@@ -158,7 +158,7 @@ void Task::vTaskCursorInit(NNP_Task nnpTask)
 ENTRY("vTaskCursorInit");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.init");
   
 //  s32 sName;
@@ -193,7 +193,7 @@ void Task::vTaskCursorNext(NNP_Task nnpTask)
 ENTRY("vTaskCursorNext");
   
   Object* pPtrTaskCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.next");
   
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
@@ -203,7 +203,7 @@ ENTRY("vTaskCursorNext");
   
   Object* pPtrTask = pTaskCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pPtrTask);
+  nnpTask->m_pDataStack->vPush(pPtrTask);
   
   EXIT();
 }

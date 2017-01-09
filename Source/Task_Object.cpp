@@ -50,13 +50,13 @@ void Task::vObjectClassFetch(NNP_Task nnpTask)
   ENTRY("vObjectClassFetch");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("object.class@");
   
   eCN eClassNo;
   eClassNo = pObject->eClass();
   
-  nnpTask->m_xDataStack.vPush(eClassNo);
+  nnpTask->m_pDataStack->vPush(eClassNo);
   
   EXIT();
 }
@@ -69,11 +69,11 @@ void Task::vObjectClassStore(NNP_Task nnpTask)
   ENTRY("vObjectClassStore");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("object.object.class!");
   
   eCN eClassNo;
-  if ( ! nnpTask->m_xDataStack.bPop(eClassNo) )
+  if ( ! nnpTask->m_pDataStack->bPop(eClassNo) )
     THROW_INVALID_DSTACK("object.object.class!");
   
   pObject->vClass(eClassNo);
@@ -89,7 +89,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
   ENTRY("vObjectDump");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("object.dump");
   
   eCN eClass = pObject->eClass();
@@ -112,9 +112,9 @@ void Task::vObjectFetch(NNP_Task nnpTask)
   
   ValWsp xObjectWsp;
   
-  nnpTask->m_xReturnStack.vPeek(iPick,&xObjectWsp);
+  nnpTask->m_pReturnStack->vPeek(iPick,&xObjectWsp);
   
-  nnpTask->m_xDataStack.vPush(xObjectWsp);
+  nnpTask->m_pDataStack->vPush(xObjectWsp);
   
   EXIT();
 }
@@ -127,7 +127,7 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
   ENTRY("vObjectMagicMark");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_RSTACK("object.magic!!");
   
   pObject->vSetMagic();
@@ -146,10 +146,10 @@ void Task::vObjectStore(NNP_Task nnpTask)
   
   ValWsp xObjectWsp;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xObjectWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xObjectWsp) )
     THROW_INVALID_DSTACK("object!");
   
-  nnpTask->m_xReturnStack.vPoke(iPeek,&xObjectWsp);
+  nnpTask->m_pReturnStack->vPoke(iPeek,&xObjectWsp);
   
   EXIT();
 }
@@ -162,11 +162,11 @@ void Task::vObjectWordBodySet(NNP_Task nnpTask)
   ENTRY("vObjectWordBodySet");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("object.wordbody!");
   
   i8 iIsBody;
-  if ( ! nnpTask->m_xDataStack.bPop(iIsBody) )
+  if ( ! nnpTask->m_pDataStack->bPop(iIsBody) )
     THROW_INVALID_DSTACK("object.object.class!");
   
   pObject->vWordBody(iIsBody);

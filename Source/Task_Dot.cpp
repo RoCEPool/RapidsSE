@@ -50,7 +50,7 @@ void Task::vDot(NNP_Task nnpTask)
   s8K sWorkspace;
   
   ValWsp xValWsp;
-  if ( ! nnpTask->m_xDataStack.bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".");
   
   xValWsp.vToString(sWorkspace.a());
@@ -77,7 +77,7 @@ void Task::vDotPut(NNP_Task nnpTask)
   s8K sWorkspace;
   
   ValWsp xValWsp;
-  if ( ! nnpTask->m_xDataStack.bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".put");
   
   xValWsp.vToString(sWorkspace.a());
@@ -108,7 +108,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
   s8K sWorkspace;
   
   ValWsp xValWsp;
-  if ( ! nnpTask->m_xDataStack.bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".verbose");
   
   if (gxArguments.m_bVerbose) {

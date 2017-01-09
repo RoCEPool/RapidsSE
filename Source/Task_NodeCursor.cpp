@@ -51,7 +51,7 @@ void Task::vNodeCursorBegin(NNP_Task nnpTask)
 ENTRY("vNodeCursorBegin");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.begin");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -70,7 +70,7 @@ void Task::vNodeCursorDelete(NNP_Task nnpTask)
 ENTRY("vNodeCursorDelete");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.delete");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -89,7 +89,7 @@ void Task::vNodeCursorEnd(NNP_Task nnpTask)
 ENTRY("vNodeCursorEnd");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodecursor.end");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -108,7 +108,7 @@ void Task::vNodeCursorFirst(NNP_Task nnpTask)
 ENTRY("vNodeCursorFirst");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.first");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -118,7 +118,7 @@ ENTRY("vNodeCursorFirst");
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -131,7 +131,7 @@ void Task::vNodeCursorGet(NNP_Task nnpTask)
 ENTRY("vNodeCursorGet");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.get");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -139,7 +139,7 @@ ENTRY("vNodeCursorGet");
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -152,7 +152,7 @@ void Task::vNodeCursorInit(NNP_Task nnpTask)
 ENTRY("vNodeCursorInit");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.init");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -173,7 +173,7 @@ ENTRY("vNodeCursorNew");
   NodeCursor* pNodeCursor = new NodeCursor(gpGrid);
   ASSERT(CN_NODECURSOR == pNodeCursor->eClass());
   
-  nnpTask->m_xDataStack.vPush(pNodeCursor);
+  nnpTask->m_pDataStack->vPush(pNodeCursor);
   
   EXIT();
 }
@@ -186,7 +186,7 @@ void Task::vNodeCursorNext(NNP_Task nnpTask)
 ENTRY("vNodeCursorNext");
   
   Object* pPtrNodeCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrNodeCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNodeCursor) )
     THROW_INVALID_DSTACK("nodeCursor.next");
   
   NodeCursor* pNodeCursor = _pNodeCursor(pPtrNodeCursor);
@@ -196,7 +196,7 @@ ENTRY("vNodeCursorNext");
   
   Object* pObject = pNodeCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }

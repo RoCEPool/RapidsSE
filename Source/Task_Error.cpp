@@ -46,7 +46,7 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   
   
   i8 iErrorCode;
-  if ( ! nnpTask->m_xDataStack.bPop(iErrorCode) )
+  if ( ! nnpTask->m_pDataStack->bPop(iErrorCode) )
     THROW_INVALID_DSTACK("error.msg");
   
   if (iErrorCode < EC_NONE || iErrorCode > EC_ENUMS)
@@ -55,7 +55,7 @@ void Task::vErrorMsg(NNP_Task nnpTask)
   s256 sErrorMsg;
   sErrorMsg = pEC[iErrorCode];
   
-  nnpTask->m_xDataStack.vPush(sErrorMsg);
+  nnpTask->m_pDataStack->vPush(sErrorMsg);
   
   EXIT();
 }

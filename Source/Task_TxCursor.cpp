@@ -52,7 +52,7 @@ void Task::vTxCursorBegin(NNP_Task nnpTask)
 ENTRY("vTxCursorBegin");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.begin");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -71,7 +71,7 @@ void Task::vTxCursorDelete(NNP_Task nnpTask)
 ENTRY("vTxCursorDelete");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.delete");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -90,7 +90,7 @@ void Task::vTxCursorEnd(NNP_Task nnpTask)
 ENTRY("vTxCursorEnd");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txcursor.end");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -109,7 +109,7 @@ void Task::vTxCursorFirst(NNP_Task nnpTask)
 ENTRY("vTxCursorFirst");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.first");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -119,7 +119,7 @@ ENTRY("vTxCursorFirst");
   
   Object* pObject = pTxCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -132,7 +132,7 @@ void Task::vTxCursorGet(NNP_Task nnpTask)
 ENTRY("vTxCursorGet");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.get");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -140,7 +140,7 @@ ENTRY("vTxCursorGet");
   
   Object* pObject = pTxCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -153,7 +153,7 @@ void Task::vTxCursorInit(NNP_Task nnpTask)
 ENTRY("vTxCursorInit");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.init");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -182,7 +182,7 @@ void Task::vTxCursorNext(NNP_Task nnpTask)
 ENTRY("vTxCursorNext");
   
   Object* pPtrTxCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCursor) )
     THROW_INVALID_DSTACK("txCursor.next");
   
   TxCursor* pTxCursor = _pTxCursor(pPtrTxCursor);
@@ -192,7 +192,7 @@ ENTRY("vTxCursorNext");
   
   Object* pObject = pTxCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }

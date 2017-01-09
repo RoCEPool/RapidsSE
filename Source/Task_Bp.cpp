@@ -87,7 +87,7 @@ void Task::vFreeBuffers(NNP_Task nnpTask)
   
   i8 iFreeBuffers = gpBufferPool->iFreeCount();
   
-  nnpTask->m_xDataStack.vPush(iFreeBuffers);
+  nnpTask->m_pDataStack->vPush(iFreeBuffers);
   
   EXIT();
 }
@@ -101,7 +101,7 @@ void Task::vFreePercent(NNP_Task nnpTask)
   
   i8 iFreePercent = gpBufferPool->iFreePercent();
   
-  nnpTask->m_xDataStack.vPush(iFreePercent);
+  nnpTask->m_pDataStack->vPush(iFreePercent);
   
   EXIT();
 }
@@ -115,7 +115,7 @@ void Task::vFreeSpace(NNP_Task nnpTask)
   
   i8 iFreeSpace = gpBufferPool->iFreeSpace();
   
-  nnpTask->m_xDataStack.vPush(iFreeSpace);
+  nnpTask->m_pDataStack->vPush(iFreeSpace);
   
   EXIT();
 }
@@ -129,7 +129,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
   
   i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
   
-  nnpTask->m_xDataStack.vPush(iInUseSpace);
+  nnpTask->m_pDataStack->vPush(iInUseSpace);
   
   EXIT();
 }
@@ -159,10 +159,10 @@ void Task::vSnapshot(NNP_Task nnpTask)
   gpSmallHeap->vAnalyse(iCountObjects);
   gpMediumHeap->vAnalyse(iCountObjects);
   
-  for (i8 index = 10 - 1; index >= 0; index--)
-    nnpTask->m_xDataStack.vPush(iCountObjects[index]);
+  for (i8 index = CN_ENUMS - 1; index >= 0; index--)
+    nnpTask->m_pDataStack->vPush(iCountObjects[index]);
   
-  nnpTask->m_xDataStack.vPush(10);
+  nnpTask->m_pDataStack->vPush(CN_ENUMS);
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Task::vTotalSpace(NNP_Task nnpTask)
   
   i8 iTotalSpace = gpBufferPool->iRegionSize();
   
-  nnpTask->m_xDataStack.vPush(iTotalSpace);
+  nnpTask->m_pDataStack->vPush(iTotalSpace);
   
   EXIT();
 }

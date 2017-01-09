@@ -56,7 +56,7 @@ void Task::vAssert(NNP_Task nnpTask)
   ENTRY("vAssert");
   
   i8 iTrue;
-  if ( ! nnpTask->m_xDataStack.bPopParamInt(iTrue) )
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iTrue) )
     THROW_INVALID_DSTACK("assert");
   
   if ( ! iTrue )
@@ -72,7 +72,7 @@ void Task::vAssertStack_0(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_0");
 
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 == iStackValues)  )
     THROW("assert.stack_0");
@@ -87,7 +87,7 @@ void Task::vAssertStack_0more(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_0more");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack0+");
@@ -102,7 +102,7 @@ void Task::vAssertStack_1(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_1");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (1 == iStackValues)  )
     THROW("assert.stack_1");
@@ -117,7 +117,7 @@ void Task::vAssertStack_1more(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_1more");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (1 <= iStackValues) )
     THROW("assert.stack1+");
@@ -132,7 +132,7 @@ void Task::vAssertStack_2(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_2");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (2 == iStackValues)  )
     THROW("assert.stack_2");
@@ -147,7 +147,7 @@ void Task::vAssertStack_2more(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_2more");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (2 <= iStackValues) )
     THROW("assert.stack0+");
@@ -162,7 +162,7 @@ void Task::vAssertStack_3(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_3");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (3 == iStackValues)  )
     THROW("assert.stack_3");
@@ -177,7 +177,7 @@ void Task::vAssertStack_3more(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_3more");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack3+");
@@ -192,7 +192,7 @@ void Task::vAssertStack_4(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_4");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (4 == iStackValues)  )
     THROW("assert.stack_4");
@@ -207,7 +207,7 @@ void Task::vAssertStack_4more(NNP_Task nnpTask)
 {
 ENTRY("vAssertStack_4more");
   
-  i8 iStackValues = nnpTask->m_xDataStack.iValues();
+  i8 iStackValues = nnpTask->m_pDataStack->iValues();
   
   if ( ! (0 <= iStackValues) )
     THROW("assert.stack4+");

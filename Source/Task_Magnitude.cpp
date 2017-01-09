@@ -49,7 +49,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
   i8 iDigit;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iDigit) )
+  if ( ! nnpTask->m_pDataStack->bPop(iDigit) )
     THROW_INVALID_DSTACK(">DigitName");
   
   s32 sName;
@@ -68,7 +68,7 @@ void Task::vToDigitName(NNP_Task nnpTask)
     default:sName = "invalid"; break;
   }
   
-  nnpTask->m_xDataStack.vPush(sName);
+  nnpTask->m_pDataStack->vPush(sName);
   
   EXIT();
 }
@@ -81,13 +81,13 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
   ENTRY("vBytesMagnitude");
   
   i8 iBytes;
-  if ( ! nnpTask->m_xDataStack.bPop(iBytes) )
+  if ( ! nnpTask->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("bytes.magnitude");
   
   s256 sMag;
   Magnitudes::vMagnitude(iBytes, sMag.a());
   
-  nnpTask->m_xDataStack.vPush(sMag);
+  nnpTask->m_pDataStack->vPush(sMag);
   
   EXIT();
 }
@@ -102,17 +102,17 @@ void Task::vNumberMagnitude(NNP_Task nnpTask)
   i8 iNumber;
   i8 iScale;
   
-  if ( ! nnpTask->m_xDataStack.bPop(iNumber) )
+  if ( ! nnpTask->m_pDataStack->bPop(iNumber) )
     THROW_INVALID_DSTACK("number.magnitude");
   
-  if ( ! nnpTask->m_xDataStack.bPop(iScale) )
+  if ( ! nnpTask->m_pDataStack->bPop(iScale) )
     THROW_INVALID_DSTACK("number.magnitude");
   
   s256 s;
   
   Magnitudes::vMagnitude(iNumber, iScale, s.a());
   
-  nnpTask->m_xDataStack.vPush(s);
+  nnpTask->m_pDataStack->vPush(s);
   
   EXIT();
 }

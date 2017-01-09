@@ -46,7 +46,7 @@ void Task::vThreadListDump(NNP_Task nnpTask)
 ENTRY("vThreadListDump");
   
   Object* pPtrThreadList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
     THROW_INVALID_DSTACK("threadlist.dump");
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);
@@ -65,7 +65,7 @@ void Task::vThreadListInit(NNP_Task nnpTask)
 ENTRY("vThreadListInit");
   
   Object* pPtrThreadList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadList) )
     THROW_INVALID_DSTACK("threadlist.init");
   
   ThreadList* pThreadList = _pThreadList(pPtrThreadList);

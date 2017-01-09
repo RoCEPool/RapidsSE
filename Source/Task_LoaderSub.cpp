@@ -125,7 +125,7 @@ void Task::vLoaderSubFetchRecord(NNP_Task nnpTask)
   
   bool bFetched = pLoaderSub->bFetchRecord();
   
-  nnpTask->m_xDataStack.vPush(bFetched);
+  nnpTask->m_pDataStack->vPush(bFetched);
   
   EXIT();
 }
@@ -142,7 +142,7 @@ void Task::vLoaderSubHashPartition(NNP_Task nnpTask)
 
   i8 iNode = pLoaderSub->iPartition() % gxArguments.m_nNodes;
   
-  nnpTask->m_xDataStack.vPush(iNode);
+  nnpTask->m_pDataStack->vPush(iNode);
   
   EXIT();
 }
@@ -170,7 +170,7 @@ void Task::vLoaderSubInit(NNP_Task nnpTask)
   ENTRY("vLoaderInit");
   
   Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrLoaderSub) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoaderSub) )
     THROW_INVALID_DSTACK("loaderSub.init");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
@@ -193,7 +193,7 @@ void Task::vLoaderSubInsertRow(NNP_Task nnpTask)
   
   bool bInserted = pLoaderSub->bInsertRow();
   
-  nnpTask->m_xDataStack.vPush(bInserted);
+  nnpTask->m_pDataStack->vPush(bInserted);
   
   EXIT();
 }
@@ -210,7 +210,7 @@ void Task::vLoaderSubInsertRow2(NNP_Task nnpTask)
   
   bool bInserted = pLoaderSub->bInsertRow2();
   
-  nnpTask->m_xDataStack.vPush(bInserted);
+  nnpTask->m_pDataStack->vPush(bInserted);
   
   EXIT();
 }
@@ -223,14 +223,14 @@ void Task::vLoaderSubLoaderStore(NNP_Task nnpTask)
   ENTRY("vLoaderSubLoaderStore");
   
   Object* pPtrLoaderSub;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrLoaderSub) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoaderSub) )
     THROW_INVALID_DSTACK("loaderSub.loader!");
   
   LoaderSub* pLoaderSub = _pLoaderSub(pPtrLoaderSub);
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
   Object* pPtrLoader;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrLoader) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
     THROW_INVALID_DSTACK("loader.openfile");
   
   Loader* pLoader = _pLoader(pPtrLoader);
@@ -249,7 +249,7 @@ void Task::vLoaderSubNew(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = new LoaderSub;
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
   
-  nnpTask->m_xDataStack.vPush(pLoaderSub);
+  nnpTask->m_pDataStack->vPush(pLoaderSub);
   
   EXIT();
 }
@@ -266,7 +266,7 @@ void Task::vLoaderSubPartition(NNP_Task nnpTask)
   
   i8 iPartition = pLoaderSub->iPartition();
   
-  nnpTask->m_xDataStack.vPush(iPartition);
+  nnpTask->m_pDataStack->vPush(iPartition);
   
   EXIT();
 }
@@ -279,7 +279,7 @@ void Task::vLoaderSubPartitionStore(NNP_Task nnpTask)
   ENTRY("vLoaderSubPartitionStore");
   
   i8 iPartition;
-  if ( ! nnpTask->m_xDataStack.bPop(iPartition) )
+  if ( ! nnpTask->m_pDataStack->bPop(iPartition) )
     THROW_INVALID_DSTACK("loaderSub.partition!");
  
   LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
@@ -302,7 +302,7 @@ void Task::vLoaderSubRowBuffer(NNP_Task nnpTask)
   
   RowBuffer* pRowBuffer = pLoaderSub->pRowBuffer();
   
-  nnpTask->m_xDataStack.vPush(pRowBuffer);
+  nnpTask->m_pDataStack->vPush(pRowBuffer);
   
   EXIT();
 }
@@ -315,7 +315,7 @@ void Task::vLoaderSubRowBufferStore(NNP_Task nnpTask)
   ENTRY("vLoaderSubRowBufferStore");
   
   Object* pPtrRowBuffer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrRowBuffer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrRowBuffer) )
     THROW_INVALID_DSTACK("loaderSub.rowBuffer!");
   
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
@@ -341,7 +341,7 @@ void Task::vLoaderSubTable(NNP_Task nnpTask)
   
   Table* pTable = pLoaderSub->pTable();
   
-  nnpTask->m_xDataStack.vPush(pTable);
+  nnpTask->m_pDataStack->vPush(pTable);
   
   EXIT();
 }

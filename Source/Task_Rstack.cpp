@@ -71,21 +71,21 @@ void Task::vRstackCsPick(NNP_Task nnpTask)
   
   // pop which value
   i8 nThValue;
-  if ( ! nnpTask->m_xDataStack.bPopParamInt(nThValue) )
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(nThValue) )
     THROW_INVALID_DSTACK("cs-pick");
   
   // pop one return address
 //  ValWsp xRtnWsp;
-//  bool b = nnpTask->m_xReturnStack.bPop(&xRtnWsp);
+//  bool b = nnpTask->m_pReturnStack->bPop(&xRtnWsp);
 //  ASSERT(b);
   
   // copy n-th value onto top
   ValWsp xValWsp;
-  nnpTask->m_xReturnStack.vPeek(nThValue,&xValWsp);
-  nnpTask->m_xReturnStack.vPush(xValWsp);
+  nnpTask->m_pReturnStack->vPeek(nThValue,&xValWsp);
+  nnpTask->m_pReturnStack->vPush(xValWsp);
   
   // push back the one return address
-//  nnpTask->m_xReturnStack.vPush(xRtnWsp);
+//  nnpTask->m_pReturnStack->vPush(xRtnWsp);
   
   EXIT();
 }
@@ -99,29 +99,29 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
   
   // pop n values
   i8 nValues;
-  if ( ! nnpTask->m_xDataStack.bPop(nValues) )
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK("cs-roll");
   
   ValWsp xValMid;
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xDataStack.bPop(xValMid) )
+    if ( ! nnpTask->m_pDataStack->bPop(xValMid) )
       THROW_INVALID_DSTACK("cs-roll");
     
-    nnpTask->m_xReturnStack.vPush(&xValMid);
+    nnpTask->m_pReturnStack->vPush(&xValMid);
   }
   
   Cell* pCellZ;
-  if ( ! nnpTask->m_xDataStack.bPop(pCellZ) )
+  if ( ! nnpTask->m_pDataStack->bPop(pCellZ) )
     THROW_INVALID_DSTACK("cs-roll");
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(xValMid) )
+    if ( ! nnpTask->m_pReturnStack->bPop(xValMid) )
       THROW_INVALID_RSTACK("cs-roll");
     
-    nnpTask->m_xDataStack.vPush(&xValMid);
+    nnpTask->m_pDataStack->vPush(&xValMid);
   }
 
-  nnpTask->m_xDataStack.vPush(pCellZ);
+  nnpTask->m_pDataStack->vPush(pCellZ);
   
   
   EXIT();
@@ -134,9 +134,9 @@ void Task::vRstackDepth(NNP_Task nnpTask)
 {
   ENTRY("vRstackDepth");
   
-  i8 iDepth = nnpTask->m_xReturnStack.iValues();
+  i8 iDepth = nnpTask->m_pReturnStack->iValues();
   
-  nnpTask->m_xDataStack.vPush(iDepth);
+  nnpTask->m_pDataStack->vPush(iDepth);
   
   EXIT();
 }
@@ -151,7 +151,7 @@ void Task::vRstackDrop(NNP_Task nnpTask)
   // should just discard on stack
   
   ValWsp xValA;
-  if ( ! nnpTask->m_xReturnStack.bPop(xValA) )
+  if ( ! nnpTask->m_pReturnStack->bPop(xValA) )
     THROW_INVALID_RSTACK("rdrop");
   
   EXIT();
@@ -168,9 +168,9 @@ void Task::vRstackFetch(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(0,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -187,11 +187,11 @@ void Task::vRstackFetchTwo(NNP_Task nnpTask)
   ValWsp xValX0;
   ValWsp xValX1;
   
-  nnpTask->m_xReturnStack.vPeek(0,&xValX0);
-  nnpTask->m_xReturnStack.vPeek(1,&xValX1);
+  nnpTask->m_pReturnStack->vPeek(0,&xValX0);
+  nnpTask->m_pReturnStack->vPeek(1,&xValX1);
   
-  nnpTask->m_xDataStack.vPush(xValX1);
-  nnpTask->m_xDataStack.vPush(xValX0);
+  nnpTask->m_pDataStack->vPush(xValX1);
+  nnpTask->m_pDataStack->vPush(xValX0);
   
   EXIT();
 }
@@ -204,16 +204,16 @@ void Task::vRstackPick(NNP_Task nnpTask)
   ENTRY("vRstackPick");
   
   i8 iPick;
-  if ( ! nnpTask->m_xDataStack.bPopParamInt(iPick) )
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iPick) )
     THROW_INVALID_DSTACK("rpick");
   
   // could do this directly on stack
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(iPick,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(iPick,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -239,16 +239,16 @@ void Task::vRstackReverse(NNP_Task nnpTask)
   };
   
   i8 nValues;
-  if ( ! nnpTask->m_xDataStack.bPop(nValues) )
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK("areverse");
   
   for (i8 i = 0; i < nValues; i++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(apValWsp[i]) )
+    if ( ! nnpTask->m_pReturnStack->bPop(apValWsp[i]) )
       THROW_INVALID_DSTACK("areverse");
   }
   
   for (i8 i = 0; i < nValues; i++) {
-    nnpTask->m_xReturnStack.vPush(apValWsp[i]);
+    nnpTask->m_pReturnStack->vPush(apValWsp[i]);
   }
 }
 
@@ -263,26 +263,26 @@ void Task::vRstackRoll(NNP_Task nnpTask)
   ValWsp xValX;
   
   i8 nValues;
-  if ( ! nnpTask->m_xDataStack.bPop(nValues) )
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK("rroll");
   
-  if ( ! nnpTask->m_xReturnStack.bPop(xValA) )
+  if ( ! nnpTask->m_pReturnStack->bPop(xValA) )
     THROW_INVALID_RSTACK("rroll");
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+    if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_RSTACK("rroll");
     
-    nnpTask->m_xDataStack.vPush(&xValX);
+    nnpTask->m_pDataStack->vPush(&xValX);
   }
   
-  nnpTask->m_xReturnStack.vPush(&xValA);
+  nnpTask->m_pReturnStack->vPush(&xValA);
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xDataStack.bPop(xValX) )
+    if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("rroll");
     
-    nnpTask->m_xReturnStack.vPush(&xValX);
+    nnpTask->m_pReturnStack->vPush(&xValX);
   }
   
   EXIT();
@@ -299,28 +299,28 @@ void Task::vRstackRollInv(NNP_Task nnpTask)
   ValWsp xValX;
   
   i8 nValues;
-  if ( ! nnpTask->m_xDataStack.bPop(nValues) )
+  if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK("-rroll");
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xReturnStack.bPop(xValX) )
+    if ( ! nnpTask->m_pReturnStack->bPop(xValX) )
       THROW_INVALID_RSTACK("-rroll");
     
-    nnpTask->m_xDataStack.vPush(&xValX);
+    nnpTask->m_pDataStack->vPush(&xValX);
   }
   
-  if ( ! nnpTask->m_xReturnStack.bPop(xValZ) )
+  if ( ! nnpTask->m_pReturnStack->bPop(xValZ) )
     THROW_INVALID_DSTACK("-rroll");
   
   
   for (i8 iCount = 0; iCount < nValues; iCount++) {
-    if ( ! nnpTask->m_xDataStack.bPop(xValX) )
+    if ( ! nnpTask->m_pDataStack->bPop(xValX) )
       THROW_INVALID_DSTACK("-rroll");
     
-    nnpTask->m_xReturnStack.vPush(&xValX);
+    nnpTask->m_pReturnStack->vPush(&xValX);
   }
   
-  nnpTask->m_xReturnStack.vPush(&xValZ);
+  nnpTask->m_pReturnStack->vPush(&xValZ);
   
   EXIT();
 }
@@ -335,11 +335,11 @@ void Task::vRstackSwap(NNP_Task nnpTask)
   ValWsp xValA;
   ValWsp xValB;
   
-  if ( ! nnpTask->m_xReturnStack.bPop(xValA,xValB) )
+  if ( ! nnpTask->m_pReturnStack->bPop(xValA,xValB) )
     THROW_INVALID_DSTACK("swap");
   
-  nnpTask->m_xReturnStack.vPush(&xValA);
-  nnpTask->m_xReturnStack.vPush(&xValB);
+  nnpTask->m_pReturnStack->vPush(&xValA);
+  nnpTask->m_pReturnStack->vPush(&xValB);
   
   EXIT();
 }
@@ -352,10 +352,10 @@ void Task::vRstackToP(NNP_Task nnpTask)
   ENTRY("vRstackToP");
   
   ValWsp xVal;
-  if ( ! nnpTask->m_xReturnStack.bPop(xVal) )
+  if ( ! nnpTask->m_pReturnStack->bPop(xVal) )
     THROW_INVALID_DSTACK("r>");
   
-  nnpTask->m_xDataStack.vPush(xVal);
+  nnpTask->m_pDataStack->vPush(xVal);
   
   EXIT();
 }
@@ -368,10 +368,10 @@ void Task::vRstackToR(NNP_Task nnpTask)
   ENTRY("vRstackToR");
   
   ValWsp xValOpaque;
-  if ( ! nnpTask->m_xDataStack.bPop(xValOpaque) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValOpaque) )
     THROW_INVALID_DSTACK(">r");
   
-  nnpTask->m_xReturnStack.vPush(xValOpaque);
+  nnpTask->m_pReturnStack->vPush(xValOpaque);
   
   EXIT();
 }
@@ -385,11 +385,11 @@ void Task::vRstackToRTwo(NNP_Task nnpTask)
   
   ValWsp xValX0;
   ValWsp xValX1;
-  if ( ! nnpTask->m_xDataStack.bPop(xValX0,xValX1) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValX0,xValX1) )
     THROW_INVALID_DSTACK("2>r");
   
-  nnpTask->m_xReturnStack.vPush(xValX1);
-  nnpTask->m_xReturnStack.vPush(xValX0);
+  nnpTask->m_pReturnStack->vPush(xValX1);
+  nnpTask->m_pReturnStack->vPush(xValX0);
   
   EXIT();
 }
@@ -405,9 +405,9 @@ void Task::vRstack0(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(0,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(0,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -423,9 +423,9 @@ void Task::vRstack1(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(1,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(1,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -441,9 +441,9 @@ void Task::vRstack2(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(2,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(2,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -459,9 +459,9 @@ void Task::vRstack3(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(3,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(3,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -477,9 +477,9 @@ void Task::vRstack4(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(4,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(4,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -495,9 +495,9 @@ void Task::vRstack5(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(5,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(5,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -513,9 +513,9 @@ void Task::vRstack6(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(6,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(6,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -531,9 +531,9 @@ void Task::vRstack7(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(7,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(7,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -549,9 +549,9 @@ void Task::vRstack8(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(8,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(8,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }
@@ -567,9 +567,9 @@ void Task::vRstack9(NNP_Task nnpTask)
   
   ValWsp xValWsp;
   
-  nnpTask->m_xReturnStack.vPeek(9,&xValWsp);
+  nnpTask->m_pReturnStack->vPeek(9,&xValWsp);
   
-  nnpTask->m_xDataStack.vPush(xValWsp);
+  nnpTask->m_pDataStack->vPush(xValWsp);
   
   EXIT();
 }

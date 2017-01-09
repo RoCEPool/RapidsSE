@@ -73,7 +73,7 @@ void Task::vTracePoint(NNP_Task nnpTask)
   
   s256 sPointName;
   
-  if ( ! nnpTask->m_xDataStack.bPop(sPointName) )
+  if ( ! nnpTask->m_pDataStack->bPop(sPointName) )
     THROW_INVALID_DSTACK("tracePoint");
   
   if (gxArguments.m_bTracepoint)
@@ -91,7 +91,7 @@ void Task::vTraceSet(NNP_Task nnpTask)
   
   i8 iTrace;
   
-  if ( ! nnpTask->m_xDataStack.bPop(iTrace) )
+  if ( ! nnpTask->m_pDataStack->bPop(iTrace) )
     THROW_INVALID_DSTACK("trace!");
   
   nnpTask->m_iTracing = iTrace;

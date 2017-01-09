@@ -47,10 +47,10 @@ void Task::vVectorDifference(NNP_Task nnpTask)
   ValSet xValSet1;
   ValSet xValSet2;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xValSet2) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValSet2) )
     THROW_INVALID_DSTACK("vector.difference");
   
-  if ( ! nnpTask->m_xDataStack.bPop(xValSet1) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValSet1) )
     THROW_INVALID_DSTACK("vector.difference");
   
   ValWsp* pValWsp1;
@@ -64,11 +64,11 @@ void Task::vVectorDifference(NNP_Task nnpTask)
     bool bResult = xValSet1.bExtract(pCursor1,pValWsp1);
     ASSERT(bResult);
     
-    nnpTask->m_xDataStack.vPush(pValWsp2->iInt() - pValWsp1->iInt());
+    nnpTask->m_pDataStack->vPush(pValWsp2->iInt() - pValWsp1->iInt());
     nVals++;
   }
 
-  nnpTask->m_xDataStack.vPush(nVals);
+  nnpTask->m_pDataStack->vPush(nVals);
   
   EXIT();
 }

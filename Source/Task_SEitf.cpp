@@ -55,7 +55,7 @@ void Task::vSEitfCount(NNP_Task nnpTask)
   
   Object* pPtrSEitf;
   
-  nnpTask->m_xDataStack.vPush(gpSEitfList->iCount());
+  nnpTask->m_pDataStack->vPush(gpSEitfList->iCount());
   
   EXIT();
 }
@@ -69,7 +69,7 @@ ENTRY("vSEitfDelete");
   
   Object* pPtrSEitf;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.delete");
 
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -88,7 +88,7 @@ void Task::vSEitfDump(NNP_Task nnpTask)
 ENTRY("vSEitfDump");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.dump");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -107,7 +107,7 @@ void Task::vSEitfReqFetch(NNP_Task nnpTask)
 ENTRY("vSEitfReqFetch");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.req@");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -115,7 +115,7 @@ ENTRY("vSEitfReqFetch");
   
   Object* pPtrQueue = pSEitf->pRequestQueue();
   
-  nnpTask->m_xDataStack.vPush(pPtrQueue);
+  nnpTask->m_pDataStack->vPush(pPtrQueue);
   
   EXIT();
 }
@@ -128,7 +128,7 @@ void Task::vSEitfReqStore(NNP_Task nnpTask)
 ENTRY("vSEitfReqStore");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.req!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -136,7 +136,7 @@ ENTRY("vSEitfReqStore");
   
   Object* pPtrQueue;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrQueue) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrQueue) )
     THROW_INVALID_DSTACK("seitf.req!");
   
   Queue* pQueue = _pQueue(pPtrQueue);
@@ -155,7 +155,7 @@ void Task::vSEitfRspFetch(NNP_Task nnpTask)
 ENTRY("vSEitfRspFetch");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rsp@");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -163,7 +163,7 @@ ENTRY("vSEitfRspFetch");
   
   Object* pPtrQueue = pSEitf->pResponseQueue();
   
-  nnpTask->m_xDataStack.vPush(pPtrQueue);
+  nnpTask->m_pDataStack->vPush(pPtrQueue);
   
   EXIT();
 }
@@ -176,7 +176,7 @@ void Task::vSEitfRspStore(NNP_Task nnpTask)
 ENTRY("vSEitfRspStore");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rsp!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -184,7 +184,7 @@ ENTRY("vSEitfRspStore");
   
   Object* pPtrQueue;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrQueue) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrQueue) )
     THROW_INVALID_DSTACK("seitf.rsp!");
   
   Queue* pQueue = _pQueue(pPtrQueue);
@@ -203,13 +203,13 @@ void Task::vSEitfTableFetch(NNP_Task nnpTask)
   ENTRY("vSEitfTableFetch");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.rsp!");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_xDataStack.vPush(pSEitf->pCurrentTable());
+  nnpTask->m_pDataStack->vPush(pSEitf->pCurrentTable());
   
   EXIT();
 }
@@ -222,7 +222,7 @@ void Task::vSEitfTableDeref(NNP_Task nnpTask)
   ENTRY("vSEitfRspStore");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.tableDeref");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -246,7 +246,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   ENTRY("vSEitfTableRef");
   
   Object* pPtrSEitf;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrSEitf) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
     THROW_INVALID_DSTACK("seitf.tableRef");
   
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
@@ -254,7 +254,7 @@ void Task::vSEitfTableRef(NNP_Task nnpTask)
   
   Object* pPtrTable;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTable) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("seitf.tableRef");
   
   Table* pTable = _pTable(pPtrTable);

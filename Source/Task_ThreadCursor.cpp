@@ -52,7 +52,7 @@ void Task::vThreadCursorBegin(NNP_Task nnpTask)
 ENTRY("vThreadCursorBegin");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.begin");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -71,7 +71,7 @@ void Task::vThreadCursorDelete(NNP_Task nnpTask)
 ENTRY("vTheadCursorDelete");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.delete");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -90,7 +90,7 @@ void Task::vThreadCursorEnd(NNP_Task nnpTask)
 ENTRY("vThreadCursorEnd");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadcursor.end");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -109,7 +109,7 @@ void Task::vThreadCursorFirst(NNP_Task nnpTask)
 ENTRY("vThreadCursorFirst");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.first");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -119,7 +119,7 @@ ENTRY("vThreadCursorFirst");
   
   Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pThread);
+  nnpTask->m_pDataStack->vPush(pThread);
   
   EXIT();
 }
@@ -132,7 +132,7 @@ void Task::vThreadCursorGet(NNP_Task nnpTask)
 ENTRY("vThreadCursorGet");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.get");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -140,7 +140,7 @@ ENTRY("vThreadCursorGet");
   
   Object* pObject = pThreadCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pObject);
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
@@ -153,7 +153,7 @@ void Task::vThreadCursorInit(NNP_Task nnpTask)
 ENTRY("vThreadCursorInit");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.init");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -174,7 +174,7 @@ ENTRY("vThreadCursorNew");
   ThreadCursor* pThreadCursor = new ThreadCursor(gpThreadList);
   ASSERT(CN_THREADCURSOR == pThreadCursor->eClass());
   
-  nnpTask->m_xDataStack.vPush(pThreadCursor);
+  nnpTask->m_pDataStack->vPush(pThreadCursor);
   
   EXIT();
 }
@@ -187,7 +187,7 @@ void Task::vThreadCursorNext(NNP_Task nnpTask)
 ENTRY("vThreadCursorNext");
   
   Object* pPtrThreadCursor;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrThreadCursor) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrThreadCursor) )
     THROW_INVALID_DSTACK("threadCursor.next");
   
   ThreadCursor* pThreadCursor = _pThreadCursor(pPtrThreadCursor);
@@ -197,7 +197,7 @@ ENTRY("vThreadCursorNext");
   
   Object* pThread = pThreadCursor->pObject();
   
-  nnpTask->m_xDataStack.vPush(pThread);
+  nnpTask->m_pDataStack->vPush(pThread);
   
   EXIT();
 }

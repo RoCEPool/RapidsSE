@@ -47,7 +47,7 @@ void Task::vTaskList(NNP_Task nnpTask)
 {
 ENTRY("vTaskList");
   
-  nnpTask->m_xDataStack.vPush(gpTaskList);
+  nnpTask->m_pDataStack->vPush(gpTaskList);
   
   EXIT();
 }
@@ -60,14 +60,14 @@ void Task::vTaskListAppend(NNP_Task nnpTask)
 ENTRY("vTaskListAppend");
   
   Object* pPtrTaskList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
     THROW_INVALID_DSTACK("tasklist.append");
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
   
   Object* pTaskObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pTaskObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
     THROW_INVALID_DSTACK("task.dump");
   Task* pThatTask = _pTask(pTaskObject);
   
@@ -84,7 +84,7 @@ void Task::vTaskListDump(NNP_Task nnpTask)
 ENTRY("vTaskListDump");
   
   Object* pPtrTaskList;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTaskList) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskList) )
     THROW_INVALID_DSTACK("tasklist.dump");
   
   TaskList* pTaskList = _pTaskList(pPtrTaskList);

@@ -106,7 +106,7 @@ void Task::vAllot(NNP_Task nnpTask)
   
   i8 iBytes;
   
-  if ( !  nnpTask->m_xDataStack.bPop(iBytes) )
+  if ( !  nnpTask->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("allot");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
@@ -126,7 +126,7 @@ void Task::vCell(NNP_Task nnpTask)
   
   i8 nBytes = sizeof(void*);
   
-  nnpTask->m_xDataStack.vPush(nBytes);
+  nnpTask->m_pDataStack->vPush(nBytes);
   
   EXIT();
 }
@@ -159,7 +159,7 @@ void Task::vComma(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
   ValWsp xValWsp;
-  if ( ! nnpTask->m_xDataStack.bPop(xValWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("comma");
   
   pCurrentWord->vEncode("pushValue",&xValWsp);
@@ -176,7 +176,7 @@ void Task::vCompileComma(NNP_Task nnpTask)
   ENTRY("vCompileComma");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("compile,");
   Word* pCalledWord = _pWord(pWordObject);
   
@@ -219,7 +219,7 @@ void Task::vCreateFrom(NNP_Task nnpTask)
 ENTRY("vCreateFrom");
 
   s32 sName;
-  if ( ! nnpTask->m_xDataStack.bPop(sName) )
+  if ( ! nnpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">create");
   
   Dic* pDic;
@@ -275,7 +275,7 @@ void Task::vFind(NNP_Task nnpTask)
 ENTRY("vFind");
   
   s256 sName;
-  if ( ! nnpTask->m_xDataStack.bPop(sName) )
+  if ( ! nnpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("find");
  
   if (nnpTask->m_iTracing) {
@@ -284,7 +284,7 @@ ENTRY("vFind");
   
   Word* pWord = nnpTask->pFindWord(sName);
   
-  nnpTask->m_xDataStack.vPush(pWord);
+  nnpTask->m_pDataStack->vPush(pWord);
   
   EXIT();
 }
@@ -297,7 +297,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
   ENTRY("vFind");
   
   s256 sName;
-  if ( ! nnpTask->m_xDataStack.bPop(sName) )
+  if ( ! nnpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("findInCurrent");
   
   if (nnpTask->m_iTracing) {
@@ -306,7 +306,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
   
   Word* pWord = nnpTask->pFindWordInCurrent(sName);
   
-  nnpTask->m_xDataStack.vPush(pWord);
+  nnpTask->m_pDataStack->vPush(pWord);
   
   EXIT();
 }
@@ -369,7 +369,7 @@ void Task::vLocate(NNP_Task nnpTask)
   ENTRY("vLocate");
   
   i8 iAsInt;
-  if ( ! nnpTask->m_xDataStack.bPopParamInt(iAsInt) )
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAsInt) )
     THROW_INVALID_DSTACK("locate");
   
   void* pCellVoid = (void*)iAsInt;
@@ -380,11 +380,11 @@ void Task::vLocate(NNP_Task nnpTask)
   if (pLocatedWord) {
     s32 sName;
     sName = pLocatedWord->sName();
-    nnpTask->m_xDataStack.vPush(sName);
+    nnpTask->m_pDataStack->vPush(sName);
   }
   else {
     i8 iZero = 0;
-    nnpTask->m_xDataStack.vPush(iZero);
+    nnpTask->m_pDataStack->vPush(iZero);
   }
   
   EXIT();
@@ -643,7 +643,7 @@ void Task::vTick(NNP_Task nnpTask)
     pCurrentWord->vEncode("pushValue",pWord);
   }
   else {
-    nnpTask->m_xDataStack.vPush(pWord);
+    nnpTask->m_pDataStack->vPush(pWord);
   }
   
   EXIT();
@@ -666,7 +666,7 @@ void Task::vWordForget(NNP_Task nnpTask)
 ENTRY("vWordForget");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordForget");
   Word* pWord = _pWord(pWordObject);
   
@@ -684,7 +684,7 @@ void Task::vWordDump(NNP_Task nnpTask)
 ENTRY("vWordDump");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordDump");
   Word* pWord = _pWord(pWordObject);
   
@@ -701,13 +701,13 @@ void Task::vWordDic(NNP_Task nnpTask)
 ENTRY("vWordDic");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordDic");
   Word* pWord = _pWord(pWordObject);
   
   Dic* pDic = pWord->pDic();
   
-  nnpTask->m_xDataStack.vPush(pDic->sName().a());
+  nnpTask->m_pDataStack->vPush(pDic->sName().a());
   
   EXIT();
 }
@@ -720,13 +720,13 @@ void Task::vWordImmediateGet(NNP_Task nnpTask)
   ENTRY("vWordImmediateGet");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.immediate@");
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate = pWord->bImmediate();
   
-  nnpTask->m_xDataStack.vPush(iImmediate);
+  nnpTask->m_pDataStack->vPush(iImmediate);
   
   EXIT();
 }
@@ -739,12 +739,12 @@ void Task::vWordImmediateSet(NNP_Task nnpTask)
   ENTRY("vWordImmediateSet");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.immediate!");
   Word* pWord = _pWord(pWordObject);
   
   i8 iImmediate;
-  if ( ! nnpTask->m_xDataStack.bPop(iImmediate) )
+  if ( ! nnpTask->m_pDataStack->bPop(iImmediate) )
     THROW_INVALID_DSTACK("word.immediate!");
   Word* pWordKind = _pWord(pWordObject);
   
@@ -763,13 +763,13 @@ void Task::vWordIsImmediate(NNP_Task nnpTask)
   // we should just modify the pointers rather than actually pop
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("isImmediate");
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsImmediate = pWord->bImmediate() ? 1 : 0;
   
-  nnpTask->m_xDataStack.vPush(iIsImmediate);
+  nnpTask->m_pDataStack->vPush(iIsImmediate);
   
   EXIT();
 }
@@ -782,13 +782,13 @@ void Task::vWordIsPrimitive(NNP_Task nnpTask)
   ENTRY("vWordIsPrimitive");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.isPrimitive");
   Word* pWord = _pWord(pWordObject);
   
   i8 iIsPrimitive = WT_PRIMITIVE == pWord->eWordType() ? 1 : 0;
   
-  nnpTask->m_xDataStack.vPush(iIsPrimitive);
+  nnpTask->m_pDataStack->vPush(iIsPrimitive);
   
   EXIT();
 }
@@ -801,13 +801,13 @@ void Task::vWordKindGet(NNP_Task nnpTask)
 ENTRY("vWordKindGet");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordKindGet");
   Word* pWord = _pWord(pWordObject);
   
   Word* pWordKind = pWord->pKind();
   
-  nnpTask->m_xDataStack.vPush(pWordKind);
+  nnpTask->m_pDataStack->vPush(pWordKind);
   
   EXIT();
 }
@@ -820,11 +820,11 @@ void Task::vWordKindSet(NNP_Task nnpTask)
 ENTRY("vWordKindSet");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordKindSet");
   Word* pWord = _pWord(pWordObject);
   
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordKindSet");
   Word* pWordKind = _pWord(pWordObject);
   
@@ -841,13 +841,13 @@ void Task::vWordName(NNP_Task nnpTask)
 ENTRY("vWordName");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("word.name");
   Word* pWord = _pWord(pWordObject);
   
   s32 sWordName(pWord->sName().a());
   
-  nnpTask->m_xDataStack.vPush(sWordName);
+  nnpTask->m_pDataStack->vPush(sWordName);
   
   EXIT();
 }
@@ -860,13 +860,13 @@ void Task::vWordPrev(NNP_Task nnpTask)
   ENTRY("vWordPrev");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("wordPrev");
   Word* pWord = _pWord(pWordObject);
   
   Word* pPrevWord = pWord->pPrevWord();
   
-  nnpTask->m_xDataStack.vPush(pPrevWord);
+  nnpTask->m_pDataStack->vPush(pPrevWord);
   
   EXIT();
 }
@@ -880,7 +880,7 @@ ENTRY("vWordThis");
   
   Word* pWord = nnpTask->pCurrentWord();
   
-  nnpTask->m_xDataStack.vPush(pWord);
+  nnpTask->m_pDataStack->vPush(pWord);
   
   EXIT();
 }
@@ -893,13 +893,13 @@ void Task::vWordTypeGet(NNP_Task nnpTask)
   ENTRY("vWordTypeGet");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordTypeGet");
   Word* pWord = _pWord(pWordObject);
   
   eWT eWordType = pWord->eWordType();
   
-  nnpTask->m_xDataStack.vPush(eWordType);
+  nnpTask->m_pDataStack->vPush(eWordType);
   
   EXIT();
 }
@@ -912,13 +912,13 @@ void Task::vWordTypeSet(NNP_Task nnpTask)
   ENTRY("vWordTypeSet");
   
   Object* pWordObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pWordObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
     THROW_INVALID_DSTACK("vWordTypeSet");
   Word* pWord = _pWord(pWordObject);
   
   i8 iWordType;
   
-  if ( ! nnpTask->m_xDataStack.bPop(iWordType) )
+  if ( ! nnpTask->m_pDataStack->bPop(iWordType) )
     THROW_INVALID_DSTACK("vWordTypeSet");
   Word* pWordKind = _pWord(pWordObject);
   

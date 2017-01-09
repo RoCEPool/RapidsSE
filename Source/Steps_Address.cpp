@@ -55,7 +55,7 @@ void Task::vAddressEqual(NNP_Task nnpTask)
   ValWsp xAddressA;
   ValWsp xAddressB;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xAddressA,xAddressB) )
+  if ( ! nnpTask->m_pDataStack->bPop(xAddressA,xAddressB) )
     THROW_INVALID_DSTACK("eql");
   
   i8 iA = xAddressA.iAsInt();
@@ -63,7 +63,7 @@ void Task::vAddressEqual(NNP_Task nnpTask)
   
   i8 r = iA == iB;
   
-  nnpTask->m_xDataStack.vPush(r);
+  nnpTask->m_pDataStack->vPush(r);
   
   EXIT();
 }
@@ -76,7 +76,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
   ENTRY("vAddressFetch");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("@");
   
   ValWsp xValFetched;
@@ -102,7 +102,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       THROW("Invalid eClass %lld",eClass);
   }
   
-  nnpTask->m_xDataStack.vPush(xValFetched);
+  nnpTask->m_pDataStack->vPush(xValFetched);
   
   EXIT();
 }
@@ -115,11 +115,11 @@ void Task::vAddressStore(NNP_Task nnpTask)
   ENTRY("vAddressStore");
   
   Object* pObject;
-  if ( ! nnpTask->m_xDataStack.bPop(pObject) )
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
     THROW_INVALID_DSTACK("!");
   
   ValWsp xValStored;
-  if ( ! nnpTask->m_xDataStack.bPop(xValStored) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValStored) )
     THROW_INVALID_DSTACK("!");
   
   Value* pValue = reinterpret_cast<Value*>(pObject);

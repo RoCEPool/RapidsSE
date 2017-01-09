@@ -46,7 +46,7 @@ void Task::vTxCollectionDump(NNP_Task nnpTask)
 ENTRY("vTxCollectionDump");
   
   Object* pPtrTxCollection;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCollection) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
     THROW_INVALID_DSTACK("txCollection.dump");
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
@@ -65,7 +65,7 @@ void Task::vTxCollectionInit(NNP_Task nnpTask)
 ENTRY("vTxCollectionInit");
   
   Object* pPtrTxCollection;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxCollection) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxCollection) )
     THROW_INVALID_DSTACK("txCollection.init");
   
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);

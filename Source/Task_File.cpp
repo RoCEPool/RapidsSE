@@ -55,7 +55,7 @@ ENTRY("vFileClose");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.close");
   
   File* pFile = _pFile(pPtrFile);
@@ -74,7 +74,7 @@ ENTRY("vFileDelete");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.delete");
   
   File* pFile = _pFile(pPtrFile);
@@ -94,7 +94,7 @@ ENTRY("vFileInit");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.init");
   
   File* pFile = _pFile(pPtrFile);
@@ -116,7 +116,7 @@ ENTRY("vFileNew");
   Object* pPtrFile;
   pPtrFile = (Object*)pFile;
   
-  nnpTask->m_xDataStack.vPush(pPtrFile);
+  nnpTask->m_pDataStack->vPush(pPtrFile);
   
   EXIT();
 }
@@ -130,19 +130,19 @@ ENTRY("vFileOpen");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.open");
   
   File* pFile = _pFile(pPtrFile);
   
   s32 sMode;
   
-  if ( ! nnpTask->m_xDataStack.bPop(sMode) )
+  if ( ! nnpTask->m_pDataStack->bPop(sMode) )
     THROW("file.open");
   
   bool bOpened = pFile->bOpen(sMode.a());
   
-  nnpTask->m_xDataStack.vPush(bOpened);
+  nnpTask->m_pDataStack->vPush(bOpened);
   
   EXIT();
 }
@@ -156,14 +156,14 @@ ENTRY("vFilePathGet");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.path@");
   
   File* pFile = _pFile(pPtrFile);
 
   s256 sPath = pFile->sPath();
   
-  nnpTask->m_xDataStack.vPush(sPath);
+  nnpTask->m_pDataStack->vPush(sPath);
   
   EXIT();
 }
@@ -177,14 +177,14 @@ ENTRY("vFilePathSet");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.path!");
   
   File* pFile = _pFile(pPtrFile);
   
   s256 sPath;
   
-  if ( ! nnpTask->m_xDataStack.bPop(sPath) )
+  if ( ! nnpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("file.path!");
   
   pFile->vPath(sPath.a());
@@ -201,7 +201,7 @@ ENTRY("vFileRead");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.read");
   
   File* pFile = _pFile(pPtrFile);
@@ -210,11 +210,11 @@ ENTRY("vFileRead");
   s8K sLine;
 
   if (pFile->bReadLine(sLine)) {
-    nnpTask->m_xDataStack.vPush(sLine);
-    nnpTask->m_xDataStack.vPush((i8)1);
+    nnpTask->m_pDataStack->vPush(sLine);
+    nnpTask->m_pDataStack->vPush((i8)1);
   }
   else {
-    nnpTask->m_xDataStack.vPush((i8)0);
+    nnpTask->m_pDataStack->vPush((i8)0);
   }
   
   EXIT();
@@ -229,17 +229,17 @@ void Task::vFileReadRecord(NNP_Task nnpTask)
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.readRecord");
   
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
   if (pFile->bReadRecord()) {
-    nnpTask->m_xDataStack.vPush((i8)1);
+    nnpTask->m_pDataStack->vPush((i8)1);
   }
   else {
-    nnpTask->m_xDataStack.vPush((i8)0);
+    nnpTask->m_pDataStack->vPush((i8)0);
   }
   
   EXIT();
@@ -254,7 +254,7 @@ ENTRY("vFileWrite");
   
   Object* pPtrFile;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrFile) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrFile) )
     THROW_INVALID_DSTACK("file.write");
   
   File* pFile = _pFile(pPtrFile);
@@ -262,7 +262,7 @@ ENTRY("vFileWrite");
   
   ValWsp xValue;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xValue) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValue) )
     THROW_INVALID_DSTACK("file.write");
   
   char* wStr = xValue.pAsStrVal()->sStr();

@@ -48,10 +48,10 @@ void Task::vCastInt(NNP_Task nnpTask)
   ENTRY("vCastInt");
   
   Object* pPtr;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtr) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtr) )
     THROW_INVALID_DSTACK("(int)");
   
-  nnpTask->m_xDataStack.vPush((i8)pPtr);
+  nnpTask->m_pDataStack->vPush((i8)pPtr);
   
   EXIT();
 }
@@ -64,10 +64,10 @@ void Task::vCastPtr(NNP_Task nnpTask)
   ENTRY("vCastPtr");
   
   i8 iInt;
-  if ( ! nnpTask->m_xDataStack.bPop(iInt) )
+  if ( ! nnpTask->m_pDataStack->bPop(iInt) )
     THROW_INVALID_DSTACK("(ptr)");
   
-  nnpTask->m_xDataStack.vPush((Object*)iInt);
+  nnpTask->m_pDataStack->vPush((Object*)iInt);
   
   EXIT();
 }

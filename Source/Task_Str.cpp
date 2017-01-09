@@ -59,7 +59,7 @@ void Task::vS256Init(NNP_Task nnpTask)
   
   Object* pPtrStrVal;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrStrVal) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrStrVal) )
     THROW_INVALID_DSTACK("s256.init");
   
   StrVal* pStrVal = _pStrVal(pPtrStrVal);
@@ -84,7 +84,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   ValWsp xStrB;
   ValWsp xStrA;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xStrB,xStrA) )
+  if ( ! nnpTask->m_pDataStack->bPop(xStrB,xStrA) )
     THROW_INVALID_DSTACK("str.cat");
   
   xStrR = xStrA;
@@ -92,7 +92,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   String::vConcat(xStrR.sStr(),xStrB.sStr());
   xStrR.pAsStrVal()->vSize();
   
-  nnpTask->m_xDataStack.vPush(xStrR);
+  nnpTask->m_pDataStack->vPush(xStrR);
   
   EXIT();
 }
@@ -109,7 +109,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(sString,iLength) )
+  if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.clip");
   
   // validate length
@@ -127,7 +127,7 @@ void Task::vStrClip(NNP_Task nnpTask)
   
   String::vCopyLen(sSubStr.a(),pStart,llabs(iLength));
   
-  nnpTask->m_xDataStack.vPush(sSubStr);
+  nnpTask->m_pDataStack->vPush(sSubStr);
   
   EXIT();
 }
@@ -143,12 +143,12 @@ void Task::vStrEqual(NNP_Task nnpTask)
   ValWsp xStringB;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(xStringB,xStringA) )
+  if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal");
   
   i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
   
-  nnpTask->m_xDataStack.vPush(iEqual);
+  nnpTask->m_pDataStack->vPush(iEqual);
   
   EXIT();
 }
@@ -161,7 +161,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   ENTRY("vStrFirstCsv");
   
   ValWsp xStr;
-  if ( ! nnpTask->m_xDataStack.bPop(xStr) )
+  if ( ! nnpTask->m_pDataStack->bPop(xStr) )
     THROW_INVALID_DSTACK("str.firstCsv");
   
   s256 sFirstValue;
@@ -171,7 +171,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   if (! String::bExtractItem(&z,sFirstValue.a()))
     sFirstValue = "";
   
-  nnpTask->m_xDataStack.vPush(sFirstValue);
+  nnpTask->m_pDataStack->vPush(sFirstValue);
   
   EXIT();
 }
@@ -184,14 +184,14 @@ void Task::vStrFormat(NNP_Task nnpTask)
   ENTRY("vStrFormat");
   
   s8K sFormat;
-  if ( ! nnpTask->m_xDataStack.bPop(sFormat) )
+  if ( ! nnpTask->m_pDataStack->bPop(sFormat) )
     THROW_INVALID_DSTACK("str.format");
   
   s8K sString;
   
   nnpTask->vSprint(sFormat,sString);
   
-  nnpTask->m_xDataStack.vPush(sString);
+  nnpTask->m_pDataStack->vPush(sString);
   
   EXIT();
 }
@@ -208,7 +208,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(sString,iLength) )
+  if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.left");
   
   // validate length
@@ -221,7 +221,7 @@ void Task::vStrLeft(NNP_Task nnpTask)
   
   String::vCopyLen(sSubStr.a(),pStart,iLength);
   
-  nnpTask->m_xDataStack.vPush(sSubStr);
+  nnpTask->m_pDataStack->vPush(sSubStr);
   
   EXIT();
 }
@@ -237,12 +237,12 @@ void Task::vStrLength(NNP_Task nnpTask)
   s8K sString;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(sString) )
+  if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("str.length");
   
   iLength = String::iLength(sString.a());
   
-  nnpTask->m_xDataStack.vPush(iLength);
+  nnpTask->m_pDataStack->vPush(iLength);
   
   EXIT();
 }
@@ -259,13 +259,13 @@ void Task::vStrPad(NNP_Task nnpTask)
   ValWsp xStringA;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(iLength,xStringA) )
+  if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad");
   
   String::vPad(xStringA.sStr(),iLength,' ');
   xStringA.pAsStrVal()->vSize();
   
-  nnpTask->m_xDataStack.vPush(xStringA);
+  nnpTask->m_pDataStack->vPush(xStringA);
   
   EXIT();
 }
@@ -284,7 +284,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   ValWsp xValA;
   ValWsp xValB;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xValB,xValA) )
+  if ( ! nnpTask->m_pDataStack->bPop(xValB,xValA) )
     THROW_INVALID_DSTACK("str.prepend");
   
   // If received INTEGER convert to STRING
@@ -312,7 +312,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   String::vConcat(xStrR.sStr(),xStrA.sStr());
   xStrR.pAsStrVal()->vSize();
   
-  nnpTask->m_xDataStack.vPush(xStrR);
+  nnpTask->m_pDataStack->vPush(xStrR);
   
   EXIT();
 }
@@ -325,14 +325,14 @@ void Task::vStrRandom(NNP_Task nnpTask)
   ENTRY("vStrRandom");
   
   i8 iLength;
-  if ( ! nnpTask->m_xDataStack.bPop(iLength) )
+  if ( ! nnpTask->m_pDataStack->bPop(iLength) )
     THROW_INVALID_DSTACK("str.random");
   
   s8K sRnd;
   
   sRnd = Random::sRandomString(iLength).a();
   
-  nnpTask->m_xDataStack.vPush(sRnd);
+  nnpTask->m_pDataStack->vPush(sRnd);
   
   EXIT();
 }
@@ -349,7 +349,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(sString,iLength) )
+  if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
     THROW_INVALID_DSTACK("str.right");
   
   // validate length
@@ -365,7 +365,7 @@ void Task::vStrRight(NNP_Task nnpTask)
   
   String::vCopyLen(sSubStr.a(),pStart,iLength);
   
-  nnpTask->m_xDataStack.vPush(sSubStr);
+  nnpTask->m_pDataStack->vPush(sSubStr);
   
   EXIT();
 }
@@ -383,7 +383,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   s8K sSubStr;
   
   // get the arguments
-  if ( ! nnpTask->m_xDataStack.bPop(sString,iStart,iLength) )
+  if ( ! nnpTask->m_pDataStack->bPop(sString,iStart,iLength) )
     THROW_INVALID_DSTACK("str.sub");
   
   i8 iHasLength = String::iLength(sString.a());
@@ -403,7 +403,7 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   String::vCopyLen(sSubStr.a(),pStart,iLength);
   
-  nnpTask->m_xDataStack.vPush(sSubStr);
+  nnpTask->m_pDataStack->vPush(sSubStr);
   
   EXIT();
 }

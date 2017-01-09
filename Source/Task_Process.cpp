@@ -48,7 +48,7 @@ ENTRY("vProcessGetPid");
   
   i8 iPid = Process::iGetPid();
   
-  nnpTask->m_xDataStack.vPush(iPid);
+  nnpTask->m_pDataStack->vPush(iPid);
   
   EXIT();
 }
@@ -73,12 +73,12 @@ void Task::vProcessTestPid(NNP_Task nnpTask)
 ENTRY("vProcessTestPid");
 
   i8 iPid;
-  if ( ! nnpTask->m_xDataStack.bPop(iPid) )
+  if ( ! nnpTask->m_pDataStack->bPop(iPid) )
     THROW_INVALID_DSTACK("process.testpid");
   
   i8 iExists = Process::bTestPid(iPid);
   
-  nnpTask->m_xDataStack.vPush(iExists);
+  nnpTask->m_pDataStack->vPush(iExists);
   
   EXIT();
 }

@@ -162,9 +162,9 @@ namespace Tasks
     Queue* m_pQueue;         // processing queue
     Socket* m_pSocket;       // socket
     
-    Stack  m_xDataStack;     // parameter stack
-    Stack  m_xReturnStack;    // return stack
-    Stack  m_xAuxStack;       // auxiliary stack
+    Stack* m_pDataStack;     // parameter stack
+    Stack* m_pReturnStack;    // return stack
+    Stack* m_pAuxStack;       // auxiliary stack
     
     RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // register frame chain

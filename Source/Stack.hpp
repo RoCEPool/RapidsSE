@@ -13,10 +13,10 @@ namespace Dictionaries
 
 namespace Structures
 {
-  class Stack : public Object
+  class Stack : public Buffer
   {
   private:
-    static const i8 C_STACK_AREA = 4096;
+    static const i8 C_STACK_AREA = C_SIZE_POOL_BUFFER - C_1K;
     
   private:
     Value* m_pTop;    // current top of stack
@@ -38,6 +38,8 @@ namespace Structures
     
     Stack(void);
     ~Stack(void);
+    
+    static Stack* _pStack(void* pAddr);
     
     bool bGuard(i8 iCount);
     bool bGuard(eCN eClass0);
@@ -108,6 +110,7 @@ namespace Structures
     Footer* pFooter(void);
     Footer* pHazard(void);
   };
+  
 }
 
 /*============================================================================*/

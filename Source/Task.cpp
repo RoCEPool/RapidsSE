@@ -169,6 +169,11 @@ Task::~Task(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  // delete the stacks
+  delete m_pDataStack;
+  delete m_pReturnStack;
+  delete m_pAuxStack;
+  
   Task* pTask = this;
   gpTaskList->vRemove(pTask);
 //  gpTaskList->vDump();
@@ -204,9 +209,10 @@ void Task::vInit(const char* aLambda)
   m_pQueue  = nullptr;
   m_pSocket = nullptr;
   
-  //m_xDataStack
-  //m_xReturnStack
-  //m_xAuxStack
+  m_pDataStack   = new Stack;
+  m_pReturnStack = new Stack;
+  m_pAuxStack    = new Stack;
+  
   m_pRegFrame    = nullptr;
   m_pLocalsFrame = nullptr;
   
@@ -1360,8 +1366,8 @@ void Task::vPrimitive(const char* aPrimitive)
   else
     String::vCopy(aRoutine,"<unknown>");
   
-  i8 iDataValues  = m_xDataStack.iValues();
-  i8 iReturnValues = m_xReturnStack.iValues();
+  i8 iDataValues  = m_pDataStack->iValues();
+  i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("%-15s %15s : r%lld ; d%2d=",
          aRoutine,aPrimitive,iReturnValues,iDataValues);
   
@@ -1370,7 +1376,7 @@ void Task::vPrimitive(const char* aPrimitive)
 //    if (iValue != iParamValues-1)
 //      vTrace(",");
 //    
-//    ValWsp* pValWsp = static_cast<ValWsp*>(m_xDataStack.pPeek(iValue));
+//    ValWsp* pValWsp = static_cast<ValWsp*>(m_pDataStack->pPeek(iValue));
 //    
 //    eCN eClass = pValWsp->eClass();
 //    
@@ -1392,7 +1398,7 @@ void Task::vPrimitive(const char* aPrimitive)
 //  }
 
   s8K sStackContents;
-  vStackContents(&m_xDataStack, sStackContents);
+  vStackContents(m_pDataStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
 }
@@ -1409,8 +1415,8 @@ void Task::vReset(void)
   
   m_sToken = "";
   
-  m_xDataStack.vReset();
-  m_xReturnStack.vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1425,8 +1431,8 @@ void Task::vRetry(void)
   
   m_sToken = "";
   
-  m_xDataStack.vRetry();
-  m_xReturnStack.vRetry();
+  m_pDataStack->vRetry();
+  m_pReturnStack->vRetry();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1438,7 +1444,7 @@ Thread* Task::pRootThread(void)
   
   Object* pThreadEmb;
   
-  if ( ! m_xDataStack.bPop(pThreadEmb) ) {
+  if ( ! m_pDataStack->bPop(pThreadEmb) ) {
     String::vSprint(m_sException.a(),"Invalid param stack for: h.spawn");
     m_sFile = __FILE__;
     throw (i8)__LINE__;
@@ -1465,8 +1471,8 @@ void Task::vSeedDicCompileSen(void)
   
   m_eState = TS_RUNNING;
   
-  m_xDataStack.vReset();
-  m_xReturnStack.vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
   
   m_sLambda = "";
   
@@ -1486,8 +1492,8 @@ void Task::vSeedWord(const char* aLambda)
   
   m_eState = TS_YIELDED;
   
-  m_xDataStack.vReset();
-  m_xReturnStack.vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
@@ -1509,8 +1515,8 @@ void Task::vSeedDocol(void)
   
   m_eState = TS_YIELDED;
   
-  m_xDataStack.vReset();
-  m_xReturnStack.vReset();
+  m_pDataStack->vReset();
+  m_pReturnStack->vReset();
   
   m_sLambda = "";
   
@@ -1555,7 +1561,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
       pf++;
       
       s8K sValue;
-      m_xDataStack.bPop(sValue);
+      m_pDataStack->bPop(sValue);
       
       for (char* pv = sValue.a(); *pv; )
         *ps++ = *pv++;
@@ -1569,7 +1575,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
       pf++;
       
       i8 iValue;
-      m_xDataStack.bPop(iValue);
+      m_pDataStack->bPop(iValue);
       
       char aValue[32];
       String::wToString(iValue,aValue);
@@ -1609,7 +1615,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
     // should be %v
     ASSERT('v' == *pf);
     
-    Value* pValue0 = m_xDataStack.pPeek(0);
+    Value* pValue0 = m_pDataStack->pPeek(0);
     
     // test for strval
     if (CN_STRVAL == pValue0->eClass()) {
@@ -1618,7 +1624,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
       pf++;
       
       s8K sValue;
-      m_xDataStack.bPop(sValue);
+      m_pDataStack->bPop(sValue);
       
       for (char* pv = sValue.a(); *pv; )
         *ps++ = *pv++;
@@ -1633,7 +1639,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
       pf++;
       
       i8 iValue;
-      m_xDataStack.bPop(iValue);
+      m_pDataStack->bPop(iValue);
       
       char aValue[32];
       String::wToString(iValue,aValue);
@@ -1799,9 +1805,9 @@ void Task::vTracePoint(const char* aMark)
   else
     String::vCopy(aRoutine,"<unknown>");
   
-  i8 iAuxValues    = m_xAuxStack.iValues();
-  i8 iDataValues   = m_xDataStack.iValues();
-  i8 iReturnValues = m_xReturnStack.iValues();
+  i8 iAuxValues    = m_pAuxStack->iValues();
+  i8 iDataValues   = m_pDataStack->iValues();
+  i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld=",
          
          gxArguments.m_iNode,
@@ -1814,13 +1820,13 @@ void Task::vTracePoint(const char* aMark)
          iAuxValues);
          
   s8K sStackContents;
-  vStackContents(&m_xAuxStack, sStackContents);
+  vStackContents(m_pAuxStack, sStackContents);
   
   vTrace("%s",sStackContents.a());
   
   vTrace(" r%2lld  d%2lld=", iReturnValues, iDataValues);
 
-  vStackContents(&m_xDataStack, sStackContents);
+  vStackContents(m_pDataStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
 }
@@ -1852,7 +1858,7 @@ void Task::vUndirect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  //vTrace("undirect return stack: %lld\n",nnpTask->m_xReturnStack.iValues());
+  //vTrace("undirect return stack: %lld\n",nnpTask->m_pReturnStack->iValues());
   
   bool bPopped;
   

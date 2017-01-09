@@ -56,7 +56,7 @@ ENTRY("vTimeDelete");
   
   Header* pPtrTimer;
   
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.delete");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -79,7 +79,7 @@ void Task::vTimerInit(NNP_Task nnpTask)
 ENTRY("vTimerInit");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.init");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -98,7 +98,7 @@ void Task::vTimerMicrosecs(NNP_Task nnpTask)
 ENTRY("vTimerMicrosecs");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.microsecs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -106,7 +106,7 @@ ENTRY("vTimerMicrosecs");
   
   i8 iMicroseconds = pTimer->iMicroseconds();
   
-  nnpTask->m_xDataStack.vPush(iMicroseconds);
+  nnpTask->m_pDataStack->vPush(iMicroseconds);
   
   EXIT();
 }
@@ -119,7 +119,7 @@ void Task::vTimerMillisecs(NNP_Task nnpTask)
 ENTRY("vTimerMillisecs");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.millisecs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -127,7 +127,7 @@ ENTRY("vTimerMillisecs");
   
   i8 iMilliseconds = pTimer->iMilliseconds();
   
-  nnpTask->m_xDataStack.vPush(iMilliseconds);
+  nnpTask->m_pDataStack->vPush(iMilliseconds);
   
   EXIT();
 }
@@ -140,7 +140,7 @@ void Task::vTimerNanosecs(NNP_Task nnpTask)
 ENTRY("vTimerNanosecs");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.nanosecs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -148,7 +148,7 @@ ENTRY("vTimerNanosecs");
   
   i8 iNanoseconds = pTimer->iNanoseconds();
   
-  nnpTask->m_xDataStack.vPush(iNanoseconds);
+  nnpTask->m_pDataStack->vPush(iNanoseconds);
   
   EXIT();
 }
@@ -170,7 +170,7 @@ ENTRY("vTimerNew");
   
   Header* pPtrTimer = pTimer;
   
-  nnpTask->m_xDataStack.vPush(pPtrTimer);
+  nnpTask->m_pDataStack->vPush(pPtrTimer);
   
   EXIT();
 }
@@ -183,7 +183,7 @@ void Task::vTimerReset(NNP_Task nnpTask)
 ENTRY("vTimerReset");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.reset");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -202,7 +202,7 @@ void Task::vTimerSecs(NNP_Task nnpTask)
 ENTRY("vTimerSecs");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.secs");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -210,7 +210,7 @@ ENTRY("vTimerSecs");
   
   i8 iSeconds = pTimer->iSeconds();
   
-  nnpTask->m_xDataStack.vPush(iSeconds);
+  nnpTask->m_pDataStack->vPush(iSeconds);
   
   EXIT();
 }
@@ -223,7 +223,7 @@ void Task::vTimerStart(NNP_Task nnpTask)
 ENTRY("vTimerStart");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.Start");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -242,7 +242,7 @@ void Task::vTimerTicks(NNP_Task nnpTask)
 ENTRY("vTimerTicks");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.ticks");
   
   Timer* pTimer = _pTimer(pPtrTimer);
@@ -250,7 +250,7 @@ ENTRY("vTimerTicks");
   
   i8 iTicks = pTimer->iTicks();
   
-  nnpTask->m_xDataStack.vPush(iTicks);
+  nnpTask->m_pDataStack->vPush(iTicks);
   
   EXIT();
 }
@@ -263,7 +263,7 @@ void Task::vTimerUpdate(NNP_Task nnpTask)
 ENTRY("vTimerUpdate");
   
   Header* pPtrTimer;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTimer) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.update");
   
   Timer* pTimer = _pTimer(pPtrTimer);

@@ -46,14 +46,14 @@ void Task::vShellExecute(NNP_Task nnpTask)
   
   ValWsp xCommand;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xCommand) )
+  if ( ! nnpTask->m_pDataStack->bPop(xCommand) )
     THROW_INVALID_DSTACK("shell.execute");
   
   SysCall xSysCall;
   
   i8 iExitStatus = Shell::iExecute(xCommand.sStr(),xSysCall);
   
-  nnpTask->m_xDataStack.vPush(iExitStatus);
+  nnpTask->m_pDataStack->vPush(iExitStatus);
   
   EXIT();
 }

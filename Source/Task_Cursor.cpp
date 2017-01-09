@@ -49,9 +49,9 @@ void Task::vCursorFetch(NNP_Task nnpTask)
   
   ValWsp xCursorWsp;
   
-  nnpTask->m_xReturnStack.vPeek(iPick,&xCursorWsp);
+  nnpTask->m_pReturnStack->vPeek(iPick,&xCursorWsp);
   
-  nnpTask->m_xDataStack.vPush(xCursorWsp);
+  nnpTask->m_pDataStack->vPush(xCursorWsp);
   
   EXIT();
 }
@@ -67,10 +67,10 @@ void Task::vCursorStore(NNP_Task nnpTask)
   
   ValWsp xCursorWsp;
   
-  if ( ! nnpTask->m_xDataStack.bPop(xCursorWsp) )
+  if ( ! nnpTask->m_pDataStack->bPop(xCursorWsp) )
     THROW_INVALID_DSTACK("cursor!");
   
-  nnpTask->m_xReturnStack.vPoke(iPeek,&xCursorWsp);
+  nnpTask->m_pReturnStack->vPoke(iPeek,&xCursorWsp);
   
   EXIT();
 }

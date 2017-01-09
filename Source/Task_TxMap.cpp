@@ -45,7 +45,7 @@ void Task::vTxMapInit(NNP_Task nnpTask)
 ENTRY("vTxMapInit");
   
   Object* pPtrTxMap;
-  if ( ! nnpTask->m_xDataStack.bPop(pPtrTxMap) )
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTxMap) )
     THROW_INVALID_DSTACK("txMap.init");
   
   TxMap* pTxMap = _pTxMap(pPtrTxMap);
