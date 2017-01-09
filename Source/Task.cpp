@@ -503,8 +503,8 @@ void Task::vAddConstants(void)
   /*  1 */ vAddConstant("EC_ASSERT",             EC_ASSERT);
   /*  2 */ vAddConstant("EC_BEGIN_TX_FAILED",    EC_BEGIN_TX_FAILED);
   /*  3 */ vAddConstant("EC_CATALOG_EXISTS",     EC_CATALOG_EXISTS);
-  /*  4 */ vAddConstant("EC_FOLDER_IN_USE",      EC_FOLDER_IN_USE);
-  /*  5 */ vAddConstant("EC_GRID_NOT_STARTED",   EC_GRID_NOT_STARTED);
+  /*  4 */ vAddConstant("EC_CLUSTER_NOT_STARTED",EC_CLUSTER_NOT_STARTED);
+  /*  5 */ vAddConstant("EC_FOLDER_IN_USE",      EC_FOLDER_IN_USE);
   /*  6 */ vAddConstant("EC_INVALID_CLASS",      EC_INVALID_CLASS);
   /*  7 */ vAddConstant("EC_INVALID_COMMAND",    EC_INVALID_COMMAND);
   /*  8 */ vAddConstant("EC_INVALID_FILE",       EC_INVALID_FILE);

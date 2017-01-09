@@ -16,8 +16,7 @@ namespace Magic
     /*  3 */ EC_CATALOG_EXISTS,
 
     /*  4 */ EC_FOLDER_IN_USE,
-
-    /*  5 */ EC_GRID_NOT_STARTED,
+    /*  5 */ EC_CLUSTER_NOT_STARTED,
     
     /*  6 */ EC_INVALID_CLASS,
     /*  7 */ EC_INVALID_COMMAND,
@@ -76,7 +75,7 @@ namespace Magic
     /*  3 */ "catalog exists",
     /*  4 */ "folder in use",
     
-    /*  5 */ "grid not started",
+    /*  5 */ "cluster not started",
     
     /*  6 */ "invalid class",
     /*  7 */ "invalid command",
