@@ -343,6 +343,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
+/*
 : load_table ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock.grabRead
@@ -353,7 +354,7 @@ ddlLock.grabRead
   //bp.freespace .
 
   reg.push
-tp: 1
+
 snap0:
 
   tableLoader   not if <NIP+ERROR> exit then
@@ -372,6 +373,22 @@ snap1:
     then
   loop
   reg.pop
+  <OK>
+;
+*/
+: load_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  tableLoader   not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
   <OK>
 ;
 
@@ -503,6 +520,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
+/*
 : drop_table ( "<tableNm>" -- <R> )
 
 tp: dropTable
@@ -531,6 +549,23 @@ loop
   reg.pop
 
 tp: droppedTable
+
+  <OK>
+;
+*/
+: drop_table ( "<tableNm>" -- <R> )
+
+  tp: dropTable
+
+  ddlLock.grabWrite
+
+  checkRemoveTable not if <NIP+ERROR> exit then
+
+  tp ( "<tableNm>" )
+
+  removeTable ( ) assert.stack_0
+
+  tp: droppedTable
 
   <OK>
 ;
