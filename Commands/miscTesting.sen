@@ -89,7 +89,7 @@ traceon
   1 neg CN_ENUMS 1- ?do I 1 neg +loop CN_ENUMS
 
   // show the stack
-  stk
+  //stk
 
   // convert to valset
   >valset
@@ -98,12 +98,10 @@ traceon
   >reg0
 
   // copy into reg1
-  reg0
-
-  >reg1
+  reg0 >reg1
 
   // copy back to stack
-  reg1
+  reg1 //dup drop
 
   // expand valset into vector
   valset>
