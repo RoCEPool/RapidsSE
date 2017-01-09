@@ -370,7 +370,7 @@ void Task::vDstackRollInv(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rot -- rotate top 3 values ( C B A -- A C B )                              */
+/* rot -- rotate top 3 values (rotate C to top) ( C B A -- B A C )            */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRot(NNP_Task nnpTask)
 {
@@ -383,15 +383,15 @@ void Task::vDstackRot(NNP_Task nnpTask)
   if ( ! nnpTask->m_xDataStack.bPop(xValA,xValB,xValC) )
     THROW_INVALID_DSTACK("rot");
   
+  nnpTask->m_xDataStack.vPush(&xValB);
   nnpTask->m_xDataStack.vPush(&xValA);
   nnpTask->m_xDataStack.vPush(&xValC);
-  nnpTask->m_xDataStack.vPush(&xValB);
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* -rot -- inverse rotate top 3 values ( C B A -- B A C )                     */
+/* -rot -- inv rotate top 3 values (rotate A to bottom) ( C B A -- A C B )    */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRotInv(NNP_Task nnpTask)
 {
@@ -402,11 +402,11 @@ void Task::vDstackRotInv(NNP_Task nnpTask)
   ValWsp xValC;
   
   if ( ! nnpTask->m_xDataStack.bPop(xValA,xValB,xValC) )
-    THROW_INVALID_DSTACK("rot");
+    THROW_INVALID_DSTACK("-rot");
   
-  nnpTask->m_xDataStack.vPush(&xValB);
   nnpTask->m_xDataStack.vPush(&xValA);
   nnpTask->m_xDataStack.vPush(&xValC);
+  nnpTask->m_xDataStack.vPush(&xValB);
   
   EXIT();
 }
