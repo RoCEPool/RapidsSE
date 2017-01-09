@@ -352,7 +352,7 @@ tp: rmTblOnAllDone
 
   task.this task.seitf@ seitf.table@
 
-  rowcursor.new dup rot rowcursor.table!
+  rowcursor.new dup -rot rowcursor.table!
 
   >str
 ;
