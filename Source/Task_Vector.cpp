@@ -59,12 +59,11 @@ void Task::vVectorDifference(NNP_Task nnpTask)
   char* pCursor1 = nullptr;
   char* pCursor2 = nullptr;
   i8 nVals = 0;
-  while (xValSet1.bExtract(pCursor2,pValWsp2)) {
+  while (xValSet2.bExtract(pCursor2,pValWsp2)) {
     
     bool bResult = xValSet1.bExtract(pCursor1,pValWsp1);
     ASSERT(bResult);
-    
-    nnpTask->m_pDataStack->vPush(pValWsp2->iInt() - pValWsp1->iInt());
+    nnpTask->m_pDataStack->vPush(pValWsp1->iInt() - pValWsp2->iInt());
     nVals++;
   }
 

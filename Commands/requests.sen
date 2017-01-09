@@ -352,10 +352,26 @@ ddlLock.grabRead
 
   //bp.freespace .
 
+  reg.push
+tp: 1
+snap0:
+
   tableLoader   not if <NIP+ERROR> exit then
 
   //bp.freespace .
 
+snap1:
+
+  reg1 reg0 vector.diff
+
+  0 do
+    dup 0 != if
+      I class.name "%v %v" str.format .
+    else
+      drop
+    then
+  loop
+  reg.pop
   <OK>
 ;
 
@@ -491,6 +507,9 @@ ddlLock.grabRead
 
 tp: dropTable
 
+  reg.push
+snap0:
+
 ddlLock.grabWrite
 
   checkRemoveTable not if <NIP+ERROR> exit then
@@ -498,6 +517,18 @@ ddlLock.grabWrite
 tp ( "<tableNm>" )
 
   removeTable ( ) assert.stack_0
+
+snap1:
+
+  reg1 reg0 vector.diff
+  0 do
+    dup 0 != if
+      I class.name "%v %v" str.format .
+    else
+      drop
+    then
+loop
+  reg.pop
 
 tp: droppedTable
 

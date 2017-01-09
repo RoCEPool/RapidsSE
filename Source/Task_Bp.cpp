@@ -159,7 +159,7 @@ void Task::vSnapshot(NNP_Task nnpTask)
   gpSmallHeap->vAnalyse(iCountObjects);
   gpMediumHeap->vAnalyse(iCountObjects);
   
-  for (i8 index = CN_ENUMS - 1; index >= 0; index--)
+  for (i8 index = 0; index < CN_ENUMS; index++)
     nnpTask->m_pDataStack->vPush(iCountObjects[index]);
   
   nnpTask->m_pDataStack->vPush(CN_ENUMS);

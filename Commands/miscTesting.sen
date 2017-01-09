@@ -154,6 +154,50 @@ traceon
   postpone callTest
 ;
 
+/*----------------------------------------------------------------------------*/
+/* get a snapshot of the buffer pool objects                                  */
+/*----------------------------------------------------------------------------*/
+: snapshot (  )
+
+  reg.push
+
+  bp.snapshot ( int int .... #classes )
+
+  >valset
+  >reg0
+
+  "First Snapshot..." .
+  reg0
+  valset>
+  0 do
+    I class.name
+    "%v %v" str.format .
+  loop
+
+  bp.snapshot ( int int .... #classes )
+
+  >valset
+  >reg1
+
+  "Second Snapshot..." .
+  reg1
+  valset>
+  0 do
+    I class.name
+   "%v %v" str.format .
+  loop
+
+  reg1 reg0 vector.diff
+
+  "Differnce of Snapshots..." .
+  0 do
+    I class.name
+    "%v %v" str.format .
+  loop
+
+  reg.pop
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
