@@ -7,13 +7,31 @@
 /*----------------------------------------------------------------------------*/
 /* munge one .sen file                                                        */
 /*----------------------------------------------------------------------------*/
-: mungeSenFile ( "<fileNm"> -- )
+: mungeSenFile ( "<fileNm"> cppFile -- )
 
   // ...
 
-  file.new locals| senFile |
+  "" file.new locals| senFile senLine cppFile |
 
-  // delete the file accessor
+  senFile file.path!
+
+  OPEN_READ senFile file.open assert
+
+  begin senFile file.read while
+
+    to senLine
+
+    senFile file.path@ .put
+      " : " .put
+      senLine .put
+      .\n
+
+    senLine cppFile file.write "\n" cppFile file.write
+
+  repeat
+
+  // close and delete the file accessor
+  senFile file.close
   senFile file.delete
 ;
 
@@ -23,13 +41,17 @@
 : munge
 
   // create a directory accessor
-  dir.new locals| commandDir |
+  file.new dir.new locals| commandDir cppFile |
 
   // set path in the directory accessor
   "." commandDir dir.path!
 
   // open directory
   commandDir dir.open
+
+  // open cpp file
+  "../Munge/munge.cpp" cppFile file.path!
+  OPEN_WRITE cppFile file.open assert
 
   // read thru directory
   begin commandDir dir.read while
@@ -42,14 +64,16 @@
     commandDir dir.entryName .
 
     // convert to C++
-    mungeSenFile
+    commandDir dir.entryName cppFile mungeSenFile
 
   repeat
 
-  // close directory
-  commandDir dir.close
+  // close and delete file accessor
+  cppFile file.close
+  cppFile file.delete
 
-  // delete the directory accessor
+  // close and delete directory accessor
+  commandDir dir.close
   commandDir dir.delete
 ;
 

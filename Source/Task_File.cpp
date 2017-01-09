@@ -47,7 +47,7 @@ void Task::vAddPrimitives_File(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.close -- close a file                                                 */
+/* file.close -- close a file ( file -- )                                     */
 /*----------------------------------------------------------------------------*/
 void Task::vFileClose(NNP_Task nnpTask)
 {
@@ -66,7 +66,7 @@ ENTRY("vFileClose");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.delete -- delete a file                                               */
+/* file.delete -- delete a file ( file -- )                                   */
 /*----------------------------------------------------------------------------*/
 void Task::vFileDelete(NNP_Task nnpTask)
 {
@@ -86,7 +86,7 @@ ENTRY("vFileDelete");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.init -- initialise a file                                             */
+/* file.init -- initialise a file ( file -- )                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vFileInit(NNP_Task nnpTask)
 {
@@ -105,7 +105,7 @@ ENTRY("vFileInit");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.new -- new a file                                                     */
+/* file.new -- new a file ( -- file )                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vFileNew(NNP_Task nnpTask)
 {
@@ -122,7 +122,7 @@ ENTRY("vFileNew");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.open -- open a file                                                   */
+/* file.open -- open a file ( mode file -- bool )                             */
 /*----------------------------------------------------------------------------*/
 void Task::vFileOpen(NNP_Task nnpTask)
 {
@@ -148,7 +148,7 @@ ENTRY("vFileOpen");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.path@ -- get file path                                                */
+/* file.path@ -- get file path ( file -- "<path>" )                           */
 /*----------------------------------------------------------------------------*/
 void Task::vFilePathGet(NNP_Task nnpTask)
 {
@@ -169,7 +169,7 @@ ENTRY("vFilePathGet");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.path! -- set file path                                                */
+/* file.path! -- set file path ( "<path>" file -- )                           */
 /*----------------------------------------------------------------------------*/
 void Task::vFilePathSet(NNP_Task nnpTask)
 {
@@ -193,7 +193,7 @@ ENTRY("vFilePathSet");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.read -- read from a file                                              */
+/* file.read -- read line from a file ( file -- "<line>" 1 | 0 )              */
 /*----------------------------------------------------------------------------*/
 void Task::vFileRead(NNP_Task nnpTask)
 {
@@ -221,7 +221,7 @@ ENTRY("vFileRead");
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.readRecord -- read record from file                                   */
+/* file.readRecord -- read record from file  ( file -- 1 | 0 )                */
 /*----------------------------------------------------------------------------*/
 void Task::vFileReadRecord(NNP_Task nnpTask)
 {
@@ -246,7 +246,7 @@ void Task::vFileReadRecord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* file.write -- write to a file                                              */
+/* file.write -- write to a file ( "<line>" file -- )                         */
 /*----------------------------------------------------------------------------*/
 void Task::vFileWrite(NNP_Task nnpTask)
 {

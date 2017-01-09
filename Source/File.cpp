@@ -625,6 +625,7 @@ bool File::bReadLine(s& s)
   char* z = s.a();
   *z = '\0';
   
+  i8 nChars = 0;
   for (;;) {
     
     if (m_pNext == m_pLimit) {
@@ -638,6 +639,7 @@ bool File::bReadLine(s& s)
     }
     
     char c = *m_pNext++;
+    nChars++;
     
     if ('\n' == c || (char)EOF == c)
       break;
@@ -647,7 +649,7 @@ bool File::bReadLine(s& s)
   
   *z = '\0';
   
-  if (*s.a()) {
+  if (nChars) {
     m_xSysCall.vSuccess();
     return true;
   }
