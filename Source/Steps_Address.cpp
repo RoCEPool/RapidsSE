@@ -98,6 +98,10 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       xValFetched = pValue->pAsPtrVal()->pPtr();
       break;
       
+    case CN_IPVAL:
+      xValFetched = pValue->pAsIpVal()->pPtr();
+      break;
+  
     default:
       THROW("Invalid eClass %lld",eClass);
   }
@@ -139,6 +143,10 @@ void Task::vAddressStore(NNP_Task nnpTask)
       *pValue->pAsPtrVal() = xValStored.pPtr();
       break;
       
+    case CN_IPVAL:
+      *pValue->pAsIpVal() = xValStored.pPtr();
+      break;
+  
     default:
       THROW("Invalid eClass %lld",eClass);
   }
