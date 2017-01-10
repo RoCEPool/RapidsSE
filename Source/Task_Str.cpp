@@ -161,15 +161,14 @@ void Task::vStrEscape(NNP_Task nnpTask)
 {
   ENTRY("vStrEscape");
   
-  ValWsp xArg;
-  ValWsp xEscaped;
+  s8K xArg;
+  s8K xEscaped;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(xArg) )
     THROW_INVALID_DSTACK("str.escape");
   
-  xEscaped = "";
-  String::vEscape(xArg.sStr(),xEscaped.sStr());
+  String::vEscape(xArg.a(),xEscaped.a());
   
   nnpTask->m_pDataStack->vPush(xEscaped);
   

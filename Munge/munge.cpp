@@ -1,2410 +1,2410 @@
-/*======
-/* 1m.se
-/*======
+/*============================================================================*/
+/* 1m.sen -- a million loop test                                              */
+/*============================================================================*/
 
-\"1m.sen
+\"1m.sen\" .verbose
 
-: 1m 100
+: 1m 1000000 0 do loop ;
 
-/*======
-/* end  
-/*======
-/*======
-/* actor
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* actors.sen -- actors group                                                 */
+/*============================================================================*/
 
-\"actors
+\"actors.sen\" .verbose
 
-\"lister
-\"monito
-//\"recl
-\"reques
+\"listerTask.sen\"  >>:
+\"monitorTask.sen\" >>:
+//\"reclaimTask.sen\" >>:
+\"requestTask.sen\" >>:
 
-\"genera
+\"generalThreads.sen\" >>:
 
-/*------
-/* calle
-/*------
-: startA
+/*----------------------------------------------------------------------------*/
+/* called by RapidsSE::vStartActors                                           */
+/*----------------------------------------------------------------------------*/
+: startActors
 
-  \"star
+  \"startActors\" .verbose
 
-  args.b
+  args.bgtasks if
 
-    snoo
+    snooze generalThreadsStart
 
-    snoo
-    snoo
+    snooze listerStart
+    snooze monitorStart
 
-    //sn
-    snoo
+    //snooze reclaimStart
+    snooze answerStart
 
   then
 
-  //dic.
+  //dic.main true dic.frozen!
 
-  reques
+  requestStart
   ;
 
-/*======
-/* end  
-/*======
-/*======
-/* Answe
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* AnswerTask.sen -- answer task                                              */
+/*============================================================================*/
 
-\"Answer
+\"AnswerTask.sen\" .verbose
 
-/*------
-/* defin
-/*------
-actor: a
+/*----------------------------------------------------------------------------*/
+/* define the ans actor (ans.task, ans.queue, ans.taskset, ans.thread)        */
+/*----------------------------------------------------------------------------*/
+actor: ans
 
-/*------
-/* decla
-/*------
-int: con
+/*----------------------------------------------------------------------------*/
+/* declare connections variable to keep the number of connections             */
+/*----------------------------------------------------------------------------*/
+int: connections
 
-/*------
-/* start
-/*------
-: answer
+/*----------------------------------------------------------------------------*/
+/* start the answer task                                                      */
+/*----------------------------------------------------------------------------*/
+: answerStart
 
-  0 \"an
+  0 \"ans.loop\"
 
-  \"ans\
+  \"ans\" actor.spawn
 ;
 
-/*------
-/* answe
-/*------
-: ans.lo
+/*----------------------------------------------------------------------------*/
+/* answer loop                                                                */
+/*----------------------------------------------------------------------------*/
+: ans.loop
 
-  answer
+  answerTaskPrint if \"Answer running...\" . then
 
-  args.v
-    \"wa
-    args
+  args.verbose if
+    \"waiting for connections on port \"  args.port args.node + >str str.cat .
+    args.port args.node + >str \"Listening on port \" swap str.cat .
   then
 
-  args.p
+  args.port args.node + socket.listen ( socket )
 
-  locals
+  locals| listeningSocket |
 
-  0 conn
+  0 connections !
   begin
 
-tp: wait
+tp: waitingOnAccept
 
-    list
+    listeningSocket socket.accept
 
-tp: sock
+tp: socketAccepted
 
-    args
-      \"
+    args.verbose if
+      \"accepted connection on port \" args.port args.node + >str str.cat .
     then
 
-  // sta
-  //\"st
+  // start receiver
+  //\"starting receiver\" .
 
-ddlLock.
+ddlLock.grabWrite
 
-    // s
-    1 \"
+    // set up the seed
+    1 \"rcv.loop\" ( socket 1 \"rcv.loop\" )
 
-    // c
-    \"rr
-    :act
+    // create the actor
+    \"rr\" connections @ >str str.cat ( socket 1 \"rcv.loop\" \"rrI\" )
+    :actor ( socket 1 \"rcv.loop\" \"rrI\" )
 
-    // s
-    acto
+    // spawn the actors os thread
+    actor.spawn
 
-ddlLock.
+ddlLock.dropWrite
 
-    conn
-    1 + 
-    dup 
-    conn
+    connections @          ( connection# )
+    1 +                    ( connections# 1 )
+    dup                    ( connections# connections# )
+    connections !          ( connections# )
 
-    1  =
-      ar
-        
-      th
+    1  == if               ( connection# )
+      args.node 0 != if
+        connectorStart
+      then
     then
       
   again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* arith
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* arithemeticTests.sen -- arethmetic unit testing                            */
+/*============================================================================*/
 
-\"arithm
+\"arithmeticTests.sen\" .verbose
 
-: arithm
+: arithmeticTests
 
-  \"  ar
+  \"  arithmetic tests\" .put .\n
 
-  0 0 + 
+  0 0 + 0 == if else \"+ failure\" . process.quit then
 
-  1 1 + 
+  1 1 + 2 == if else \"+ failure\" . process.quit then
 
-  8 5 - 
+  8 5 - 3 == if else \"- failure\" . process.quit then
 
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* catal
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* catalog.sen -- catalog related words                                       */
+/*============================================================================*/
 
-\"catalo
+\"catalog.sen\" .verbose
 
-: catalo
+: catalog ;
 
-: :catal
+: :catalog
     :dic
-        
-        
+         //dup ' catalog swap word.kind!
+         dup ' catalog swap execute dic.kind!
 ;
 
-: within
-    0 di
+: withinCatalogs
+    0 dic.pick dic.name \"catalogs\" str.equal
 ;
 
-: checkI
-    with
-    EC_N
+: checkInCatalogs
+    withinCatalogs if true exit then
+    EC_NOT_IN_CATALOGS false
 ;
 
-: checkI
+: checkIsCatalog ( word )
 
-    dup 
-    dup 
-    EC_N
+    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ ' catalog eql if true exit then
+    EC_NOT_A_CATALOG false
 ;
 
-: checkI
-    dup 
-    EC_C
+: checkIsNotCatalog ( word )
+    dup findInCurrent not if true exit then
+    EC_CATALOG_EXISTS false
 ;
 
-/*------
-/* check
-/*------
-: checkM
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable tenant folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeCatalog ( \"<catalogNm>\" -- \"<catalogNm>\" true | \"<catalogNm>\" errorCode false )
 
-  checkI
-  checkI
+  checkInCatalogs   not if false exit then
+  checkIsNotCatalog not if false exit then
 
   true
 ;
 
-/*------
-/* check
-/*------
-: checkR
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable catalog folder                                */
+/*----------------------------------------------------------------------------*/
+: checkRemoveCatalog ( \"<catalogNm>\" -- \"<catalogNm>\" true | \"<catalogNm>\" errorCode false )
 
-  dup ( 
+  dup ( \"<catalogNm>\" \"<catalogNm>\" )
 
-  checkI
-  checkI
-  checkI
-  checkN
+  checkInCatalogs not if false exit then ( \"<catalogNm>\" word )
+  checkIsWord     not if false exit then ( \"<catalogNm>\" word )
+  checkIsCatalog  not if false exit then ( \"<catalogNm>\" word )
+  checkNotUsed    not if false exit then ( \"<catalogNm>\" word )
 
-  drop (
+  drop ( \"<catalogNm>\" )
 
-  true (
+  true ( \"<catalogNm>\" true )
 ;
 
-/*------
-/* make 
-/*------
-: makeCa
+/*----------------------------------------------------------------------------*/
+/* make a catalogs folder under given named tenant                            */
+/*----------------------------------------------------------------------------*/
+: makeCatalogs ( \"<tenantNm>\" -- )
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"MAKING CATALOGS FOR TENANT \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  find e
-  \"cata
-  swap  
-  :folde
+  find execute ( dic )
+  \"catalogs\"   ( dic \"catalogs\" )
+  swap         ( \"catalogs\" dic )
+  :folder      ( )
 ;
 
-/*------
-/* make 
-/*------
-: makeCa
+/*----------------------------------------------------------------------------*/
+/* make a named catalog folder (run by participant)                           */
+/*----------------------------------------------------------------------------*/
+: makeCatalog allParticipants 1 ( \"<catalogNm>\" -- true n# true )
 
-tp: make
+tp: makeCatalog
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"MAKING CATALOG \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  dup ( 
+  dup ( \"<catalogNm>\" \"<catalogNm>\" )
 
-  :catal
+  :catalog ( \"<catalogNm>\" ^catalog )
 
-  drop (
+  drop ( \"<catalogNm>\" )
 
-  makeSc
+  makeSchemas ( )
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeCatalog$                                        */
+/*----------------------------------------------------------------------------*/
 /*
-: ~makeC
+: ~makeCatalog ( \"<catalogNm>\" -- )
 
-tp: mkTe
+tp: mkTenOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be makeTenant
+  $$ swap \"makeCatalog$\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: mkCa
+tp: mkCatOnAllDone
 
-  checkR
+  checkResult
 ;
 */
 
-/*------
-/* remov
-/*------
-: remove
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                    */
+/*----------------------------------------------------------------------------*/
+: removeCatalog allParticipants 1 ( \"<catalogNm>\" -- true n# true )
 
-tp: remo
+tp: removeCatalog
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"REMOVING CATALOG \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  :forge
+  :forget ( )
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* remov
-/*------
+/*----------------------------------------------------------------------------*/
+/* remove a catalog folder                                                    */
+/*----------------------------------------------------------------------------*/
 /*
-: ~remov
+: ~removeCatalog ( \"<catalogNm>\" -- )
 
-tp: rmCa
+tp: rmCatOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be removeCatalog
+  $$ swap \"removeCatalog\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: rmCa
+tp: rmCatOnAllDone
 
-  checkR
+  checkResult
 ;
 */
-/*======
-/* end  
-/*======
-/*======
-/* colum
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* column.sen -- column related words                                         */
+/*============================================================================*/
 
-\"column
+\"column.sen\" .verbose
 
-: column
+: column: ;
 
-//: make
+//: makeColumns ( table --  ) table.dic {{ \"columns\" :dic drop }} ;
 
-: makeCo
+: makeColumns ( \"<tableNm>\" -- )
 
-  find e
-  table.
+  find execute ( dic )
+  table.dic {{ \"columns\" :dic drop }}
 ;
 
-: within
-    0 di
+: withinColumns
+    0 dic.pick dic.name \"columns\" str.equal
 ;
 
-: checkI
-    with
-    EC_N
+: checkInColumns
+    withinColumns if true exit then
+    EC_NOT_IN_COLUMNS false
 ;
 
-: pushCo
+: pushColumns ( -- )
 
-    \"co
+    \"columns\" checkIsWord
 
-    not 
+    not if EC_NO_COLUMNS_DIC false exit then
 
-    exec
+    execute dic.push
 
     true
 ;
 
-: popCol
-    dic.
+: popColumns
+    dic.drop
 ;
 
-: :colum
+: :column ( \"<columnType>\" \"<columnName>\" )
 
-    :con
+    :constant
 ;
 
-: checkA
+: checkAddColumn ( -- true | eEC false )
 
-  checkI
+  checkInTables not if false exit then
 
   true
 ;
 
-/*------
-/* add a
-/*------
-: addCol
+/*----------------------------------------------------------------------------*/
+/* add a column (run by participant)                                          */
+/*----------------------------------------------------------------------------*/
+: addColumn$ ( \"<columnType>\" \"<columnNm>\" \"<tableNm>\" -- <result> )
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"ADDING COLUMN \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-tp: addi
-  pushTa
+tp: addingColumn
+  pushTable   assert // not if false exit then
 
-  pushCo
+  pushColumns assert // not if false exit then
 
-  :colum
+  :column
 
-  popCol
+  popColumns
 
-  popTab
+  popTable
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
-: ~addCo
+/*----------------------------------------------------------------------------*/
+/* have participants run: addColumn$                                          */
+/*----------------------------------------------------------------------------*/
+: ~addColumn ( \"<columnType>\" \"<columnNm>\" \"<tableNm>\" -- )
 
-tp: addC
+tp: addColOnAll
 
-  // set
-  >r >r 
+  // set indirect call to be addColumn
+  >r >r >r $$ r> r> r> \"addColumn$\"
 
-  tp: th
+  tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-  tp: ad
+  tp: addColOnAllDone
 
-  checkR
+  checkResult
 ;
 
-/*------
-/* list 
-/*------
-: listCo
+/*----------------------------------------------------------------------------*/
+/* list columns of a table                                                    */
+/*----------------------------------------------------------------------------*/
+: listColumns ( -- )
 
-  pushTa
-  pushCo
+  pushTable     assert
+  pushColumns   assert
 
-  \"\"  
-  0 dic.
-  dup   
-  iterat
+  \"\"                             // initial ls string
+  0 dic.pick dic.last            // get last word of current dic
+  dup                            // setup iteration of words
+  iterate                        //
 
-    obje
+    object@ word.name            // column name
 
-    \" \
-    obje
+    \" \" str.cat
+    object@ execute str.cat       // column type
 
     swap
 
-    dup 
-    if \
+    dup str.length
+    if \" , \" str.prepend then     //
 
-    str.
+    str.cat                       // append column to ls
 
-    obje
+    object@ word.prev object!     // step backwards thru words
 
-  next  
+  next                            //
 
-  //\"\n
+  //\"\n\" str.cat
 
-  popCol
-  popTab
+  popColumns
+  popTable
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* commo
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* common.sen -- common related words                                         */
+/*============================================================================*/
 
-\"common
+\"common.sen\" .verbose
 
-\"dir.se
-\"file.s
-\"lock.s
-\"timer.
+\"dir.sen\" >>:
+\"file.sen\" >>:
+\"lock.sen\" >>:
+\"timer.sen\" >>:
 
-\"trace.
+\"trace.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* compi
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* compile.sen -- compile the dictionary                                      */
+/*============================================================================*/
 
-\"compil
-
-//
-// step 
-//
-
-
-\"core.s
-\"common
-\"struct
-\"tasks.
-\"thread
-\"transa
-\"interf
-\"system
-\"gridMo
-\"dbobje
-\"actors
-\"reques
-\"munge.
-\"testin
-assert.s
+\"compile.sen\" .verbose
 
 //
-// step 
+// step 1: compile all the words
+//
+
+
+\"core.sen\" >>:
+\"common.sen\" >>:
+\"structures.sen\" >>:
+\"tasks.sen\" >>:
+\"threads.sen\" >>:
+\"transactions.sen\" >>:
+\"interface.sen\" >>:
+\"systemObjects.sen\" >>:
+\"gridModel.sen\" >>:
+\"dbobjects.sen\" >>:
+\"actors.sen\" >>:
+\"request.sen\" >>:
+\"munge.sen\" >>:
+\"testing.sen\" >>:
+assert.stack_0
+
+//
+// step 2: runs some basic tests
 //
 
 //ut
 
-assert.s
+assert.stack_0
 
 //
-// step 
+// step 3: spawn the root thread
 //
 
-( spawn 
-rootThre
+( spawn the posix thread for the root thread )
+rootThread thread.spawn
 
-( leave 
-rootThre
+( leave root thread on stack )
+rootThread
 
-assert.s
+assert.stack_1
 
-: __comp
+: __compiled__ ;
 
-/*======
-/* end  
-/*======
-/*======
-/* conne
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* connectorTask.sen -- connector task                                        */
+/*============================================================================*/
 
-\"connec
+\"connectorTask.sen\" .verbose
 
-/*------
-/* defin
-/*------
-actor: c
+/*----------------------------------------------------------------------------*/
+/* define the con actor (con.task, con.queue, con.taskset, con.thread)        */
+/*----------------------------------------------------------------------------*/
+actor: con
 
-/*------
-/* start
-/*------
-: connec
+/*----------------------------------------------------------------------------*/
+/* start the connector task                                                   */
+/*----------------------------------------------------------------------------*/
+: connectorStart
 
-tp: conn
+tp: connectorStart
 
-  0 \"co
+  0 \"con.loop\"
 
-  \"con\
+  \"con\" actor.spawn
 ;
 
-/*------
-/* conne
-/*------
-: con.lo
+/*----------------------------------------------------------------------------*/
+/* connector loop                                                             */
+/*----------------------------------------------------------------------------*/
+: con.loop
 
-  connec
+  connectorTaskPrint if \"Connector running...\" . then
 
-  args.n
+  args.nodes 0 do
 
-    I ar
+    I args.node == if
 
-      nu
-      nu
+      nullptr I senderQueues !
+      nullptr I senderTasks  !
 
     else
 
-      ar
-      \"
-      so
+      args.port I +
+      \"127.0.0.1\"
+      socket.open  socket.connect
 
-      ar
-        
-        
-        
-        
-      th
+      args.verbose if
+        \"Node\" args.node >str str.cat
+        \" connected to node\" str.cat
+        I >str str.cat
+        .
+      then
 
-      //
-      //
+      // start sender
+      //\"starting sender\" .
 
-ddlLock.
+ddlLock.grabWrite
 
-     // 
-      1 
+     // set up the seed
+      1 \"snd.loop\" ( socket 1 \"snd.loop\" )
 
-      //
-      \"
+      // create the actor
+      \"sr\" I >str str.cat :actor ( socket 1 \"snd.loop\" \"srI\" )
 
-      //
-      du
-      du
+      // record the senderQueue
+      dup actor.queue I senderQueues ! ( socket 1 \"snd.loop\" \"srI\" )
+      dup actor.task  I senderTasks  ! ( socket 1 \"snd.loop\" \"srI\" )
 
-      //
-      ac
+      // spawn the actors os thread
+      actor.spawn
 
-ddlLock.
+ddlLock.dropWrite
 
     then
 
   loop
 
-  //1000
+  //1000000 thread.sleep_s
 
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* coord
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* coordinatorProxy.sen -- coordinator proxy task                             */
+/*============================================================================*/
 
-\"coordi
+\"coordinatorProxy.sen\" .verbose
 
-/*------
-/* coord
-/*------
-: cp.loo
+/*----------------------------------------------------------------------------*/
+/* coordinator proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: cp.loop ( actorNo forwardTask -- )
 
-  \"cp.l
+  \"cp.loop\" task.this task.comment!
 
-tp: coor
+tp: coordinator
 
-  locals
+  locals| forwardTask actorNo |
 
   begin
 
-    dept
+    depth 0 != if \"stack of task has grown\" . debug.trap then
 
-    // p
-    task
+    // pop valset off this tasks queue
+    taskQueue> ( valset )
 
-    addS
+    addSetCaller ( << <<call*>> <<caller>> >> )
 
-    forw
+    forwardTask >taskQueue;a> ( <<result>> )
 
-    // h
-    addP
+    // have receiver pass indirect result onto participant proxy
+    addPassBackToPP ( << <<result>> <<passBackToPP>> >> )
 
-    0   
-    >snd
+    0                                                              //! NOT RIGHT
+    >sndQueue
 
   again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* coord
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* coordinatorTask.sen -- coordinator task                                    */
+/*============================================================================*/
 
-\"coordi
+\"coordinatorTask.sen\" .verbose
 
-/*------
-/* coord
-/*------
+/*----------------------------------------------------------------------------*/
+/* coordinator loop                                                           */
+/*----------------------------------------------------------------------------*/
 : c.loop
 
-  \"c.lo
+  \"c.loop\" task.this task.comment!
 
-  // pus
-  reg.pu
+  // push a register frame (holds CALLER etc)
+  reg.push
 
   begin
-    dept
+    depth 0 != if \"stack of task has grown\" . debug.trap then
 
-    // p
-    task
+    // pop indirect call this tasks queue of indirect calls
+    taskQueue> ( valset )
 
-    // e
-    exeA
+    // execute indirect call
+    exeAll
 
-    // p
-    a> (
+    // pop indirect result from aux stack
+    a> ( valset )
 
-    // p
-    >cal
+    // push indirect result onto aux stack of caller and signal
+    >callerAux ( )
 
   again
 
-  // pop
-  reg.po
+  // pop register frame
+  reg.pop
 ;
 
-/*------
-/* put i
-/*------
-: enqueu
+/*----------------------------------------------------------------------------*/
+/* put indirect call into participant proxy queue                             */
+/*----------------------------------------------------------------------------*/
+: enqueuePP ( valset targetNodeNo -- )
 
-  // get
-  ppTask
+  // get ppTask
+  ppTasks @ ( valset task )
 
-  // pus
-  >taskQ
+  // push indirect call onto queue of ppTask
+  >taskQueue
 ;
 
-/*------
-/* coord
-/*------
-: sendPa
+/*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to each participant to execute             */
+/*----------------------------------------------------------------------------*/
+: sendParticipantsPARALLEL // parallel form
 
-  args.n
+  args.nodes setAcks
 
-tp: acks
+tp: acksExpected
 
-  >valse
+  >valset
 
   >r
 
-  args.n
+  args.nodes 0 do
 
-    2 rp
+    2 rpick
 
-    vals
+    valset>
 
     I
 
-    enqu
+    enqueuePP
 
   loop
 
   rdrop
 
-  // thi
-  ackWai
+  // this task waits till ack'd
+  ackWait
 
-  // mov
+  // move from aux to parameter stack
   a>
 
-  // not
-  // tha
-  // doe
+  // note that each participant will always return a valset
+  // that valset may be empty if the indirect word executed
+  // doesnt return a value
 
-//traceo
-  true >
+//traceon
+  true >r
 
   begin
-    dept
-    vals
-    not 
-      rd
+    depth while
+    valset> drop
+    not if
+      rdrop false >r
     then
   repeat
 
   r>
-//traceo
+//traceoff
 
-tp: allR
+tp: allResponded
 ;
 
-//int: f
+//int: finalResult
 
-// - - -
-: sendPa
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+: sendParticipants ( <<!>> -- true ) // serial Form
 
-  // a) 
-  // b) 
-  // c) 
-  //    
+  // a) in coordinator (on the originating node)
+  // b) the caller of the coordinator is in reg0 (would be req.task)
+  // c) valset on stack to be forwarded to all particpants
+  //    that valset contains one or more indirect calls
 
-tp: send
+tp: sendParticipants
 
-  // lay
-  addSet
+  // layer this task as caller into nested valset << <<!>> <<caller>> >>
+  addSetCaller
 
-  // mov
+  // move nested valset to rstack (this gives a reusable copy)
   >r
 
-tp: move
+tp: movedToRstack
 
-  // now
-  args.n
+  // now send nested valset to each participant
+  args.nodes 0 do
 
-    // s
-    1 se
+    // set ack of 1 (because its the serial form)
+    1 setAcks
 
-    // g
-    2 rp
+    // get copy of nested valset << <<!>> <<caller>> >> from rstack
+    2 rpick
 
-    // p
-    I en
+    // push indirect call onto queue of PP[i]
+    I enqueuePP
 
-tp: ackW
+tp: ackWait
 
-    // t
-    ackW
+    // this task waits till ack'd
+    ackWait
 
-    // n
+    // now running...
 
-tp: runn
+tp: running
 
-  loop /
+  loop // each node
 
-  // - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // eac
-  //   <
+  // each node:
+  //   << v nn t | ec nn f >>
 
-  // << 
+  // <<  v,n,t v,n,t ec,n,f v,n,t #n  t|f >>
 
-  true l
+  true locals| finalResult |
 
   $$
 tp: $$
 
-  // now
-  args.n
+  // now scan resultset from each participant
+  args.nodes 0 do
 
-    // m
+    // move from aux to parameter stack
     a>
 
-    tp: 
+    tp: haveResultSet
 
-    // n
-    vals
+    // non-nested response valset << true >> will be on stack
+    valset>
 
-    tp: 
+    tp: expandedResult
 
-    // d
+    // drop the number of values that were in valset
     drop
 
-    // c
-    dup 
-      0 
+    // check if value is t/f
+    dup false == if
+      0 to finalResult
     then
 
   loop
 
-  args.n
+  args.nodes
 
-  finalR
+  finalResult
 
-tp: alld
+tp: alldone
 
-  $$>val
+  $$>valset
 
   >a
 
-  // dro
+  // drop the << <<!>> <<caller>> >> of rstack
   rdrop
 
-  // ret
+  // return true
   //true
 
-tp: allR
+tp: allResponded
 ;
 
-/*------
-/* coord
-/*------
-: sendPa
+/*----------------------------------------------------------------------------*/
+/* coordinator sends indirect call to a given participant to execute          */
+/*----------------------------------------------------------------------------*/
+: sendParticipant ( <<!>> participantNo -- true )
 
-  // a) 
-  // b) 
-  // c) 
-  //    
+  // a) in coordinator (on the originating node)
+  // b) the caller of the coordinator is in reg0 (would be req.task)
+  // c) valset on stack to be forwarded to participant on given node
+  //    that valset contains one or more indirect calls
 
-tp: \"- 
-tp: send
+tp: \"- - - - - - - - - \"
+tp: sendParticipant
 
-  locals
+  locals| participantNo |
 
-  // lay
-  addSet
+  // layer this task as caller into nested valset << <<!>> <<caller>> >>
+  addSetCaller
 
-  // set
-  1 setA
+  // set ack of 1
+  1 setAcks
 
-  // usi
-  partic
+  // using participant# on rstack get ppTask
+  participantNo enqueuePP
 
-tp: ackW
+tp: ackWait
 
-  // thi
-  ackWai
+  // this task waits till ack'd
+  ackWait
 
-  // now
+  // now running...
 
-tp: runn
+tp: running
 
   $$
 
-  // mov
+  // move from aux to parameter stack
   a>
 
-tp: have
+tp: haveResultSet
 
-  // non
-  valset
+  // non-nested response valset << true >> will be on stack
+  valset>
 
-tp: expa
+tp: expandedResult
 
-  // dro
+  // drop the number of values that were in valset
   drop
 
-  // num
+  // number of nodes ( single participant responded )
   1
 
-  // all
+  // all passed
   true
 
 
-  $$>val
+  $$>valset
 
   >a
 
-tp: resp
+tp: responded
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* copie
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* copier.sen -- table copier                                                 */
+/*============================================================================*/
 
-\"copier
+\"copier.sen\" .verbose
 
-: copy (
+: copy ( ^fromTable ^toTable )
 
   swap
   >r >r
-  // r0 
-  // r1 
+  // r0 ^toTable
+  // r1 ^fromtable
 
-  \"__ro
-    drop
+  \"__row_cursor\" find dup if else
+    drop \"__row_cursor\" :rowCursor
   then
-  execut
+  execute
 
   >r
 
-  // r0 
-  // r1 
-  // r2 
+  // r0 ^rowCursor
+  // r1 ^toTable
+  // r2 ^fromTable
 
-  r2 r0 
+  r2 r0 rowcursor.table!
 
-  beginT
-  // r0 
-  // r1 
-  // r2 
-  // r3 
+  beginTransaction >r
+  // r0 ^txRefCursor
+  // r1 ^rowCursor
+  // r2 ^toTable
+  // r3 ^fromTable
 
-  args.p
+  args.partitions 0
   do
-    // r
-    // r
-    // r
-    // r
-    // r
-    // r
+    // r0 partition
+    // r1 partitions
+    // r2 ^txRefCursor
+    // r3 ^rowCursor
+    // r4 ^toTable
+    // r5 ^fromTable
 
-    I r3
-    r3 r
+    I r3 rowcursor.begin
+    r3 rowcursor.first
 
-    begi
-      wh
-      r0
-      r3
-    repe
+    begin
+      while
+      r0 r3 rowcursor.get r2 r4 table.insert
+      r3 rowcursor.next
+    repeat
 
-    r3 r
+    r3 rowcursor.end
   loop
 
-  commit
+  commitTransaction
 
-  // r0 
-  // r1 
-  // r2 
-  // r3 
+  // r0 ^txRefCursor
+  // r1 ^rowCursor
+  // r2 ^toTable
+  // r3 ^fromTable
 
-  rdrop 
+  rdrop rdrop rdrop rdrop
 
-  \"__ro
+  \"__row_cursor\" find >forget
 
   true
 ;
 
-: tableC
+: tableCopier
 
-  find e
+  find execute   ( \"<to-tableNm>\" ^fromTable )
 
-  swap  
+  swap           ( ^fromTable \"<to-tableNm>\" )
 
-  :table
+  :table execute ( ^fromTable ^toTable )
 
-  // swa
+  // swap        ( ^toTable ^fromTable )
 
-    copy
+    copy if \"copied!\" . else . then
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* core.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* core.sen -- additional high-level core words                               */
+/*============================================================================*/
 
-\"core.s
+\"core.sen\" .verbose
 
-/*------
-/* unnam
-/*------
-: tp imm
+/*----------------------------------------------------------------------------*/
+/* unnamed trace point                                                        */
+/*----------------------------------------------------------------------------*/
+: tp immediate
 
   \"tp\"
 
-  encode
+  encodePushValue
 
-  ' trac
+  ' tracepoint compile,
 ;
 
-/*------
-/* named
-/*------
-: tp: im
+/*----------------------------------------------------------------------------*/
+/* named trace point                                                          */
+/*----------------------------------------------------------------------------*/
+: tp: immediate
 
   token:
 
-  encode
+  encodePushValue
 
-  ' trac
+  ' tracepoint compile,
 ;
 
-/*------
-/* first
-/*------
-: snap0:
+/*----------------------------------------------------------------------------*/
+/* first snapshot                                                             */
+/*----------------------------------------------------------------------------*/
+: snap0: immediate
 
-  ' bp.s
+  ' bp.snapshot compile,
 
-  ' >val
+  ' >valset compile,
 
-  ' >reg
+  ' >reg0 compile,
 ;
 
-/*------
-/* secon
-/*------
-: snap1:
+/*----------------------------------------------------------------------------*/
+/* second snapshot                                                            */
+/*----------------------------------------------------------------------------*/
+: snap1: immediate
 
-  ' bp.s
+  ' bp.snapshot compile,
 
-  ' >val
+  ' >valset compile,
 
-  ' >reg
+  ' >reg1 compile,
 ;
 
-/*------
-/* add 1
-/*------
-: 1+ 1 +
+/*----------------------------------------------------------------------------*/
+/* add 1 to integer on stack                                                  */
+/*----------------------------------------------------------------------------*/
+: 1+ 1 + ;
 
-/*------
-/* incre
-/*------
-: ++ dup
+/*----------------------------------------------------------------------------*/
+/* increment integer variable                                                 */
+/*----------------------------------------------------------------------------*/
+: ++ dup @ 1+ swap ! ;
 
-/*------
-/* decre
-/*------
-: 1- 1 -
+/*----------------------------------------------------------------------------*/
+/* decrement integer on stack                                                 */
+/*----------------------------------------------------------------------------*/
+: 1- 1 - ;
 
-/*------
-/* decre
-/*------
-: -- dup
+/*----------------------------------------------------------------------------*/
+/* decrement integer variable                                                 */
+/*----------------------------------------------------------------------------*/
+: -- dup @ 1- swap ! ;
 
-/*------
-/* begin
-/*------
-: BEGIN 
+/*----------------------------------------------------------------------------*/
+/* begin a loop                                                               */
+/*----------------------------------------------------------------------------*/
+: BEGIN immediate
 
   here
 ;
 
-/*------
-/* do a 
-/*------
-: DO imm
+/*----------------------------------------------------------------------------*/
+/* do a loop                                                                  */
+/*----------------------------------------------------------------------------*/
+: DO immediate
 
-  POSTPO
+  POSTPONE 2>R // encode 2>r into future word
 
-  HERE t
+  HERE true   // push address of last cell & simple do
 ;
 
-/*------
-/* ?do a
-/*------
-: ?DO im
+/*----------------------------------------------------------------------------*/
+/* ?do a loop                                                                 */
+/*----------------------------------------------------------------------------*/
+: ?DO immediate
 
-  POSTPO
+  POSTPONE 2>R // encode 2>r into future word
 
-  POSTPO
+  POSTPONE AHEAD
 
-  false 
+  false   // push address of last cell & simple do
 ;
 
-/*------
-/* unloo
-/*------
-: UNLOOP
+/*----------------------------------------------------------------------------*/
+/* unloop by dropping limit and index off rstack                              */
+/*----------------------------------------------------------------------------*/
+: UNLOOP immediate
 
-  POSTPO
-  POSTPO
+  POSTPONE rdrop
+  POSTPONE rdrop
 ;
 
-/*------
-/* itera
-/*------
-: ITERAT
+/*----------------------------------------------------------------------------*/
+/* iterate a loop                                                             */
+/*----------------------------------------------------------------------------*/
+: ITERATE immediate
 
-  POSTPO
+  POSTPONE 2>R // encode 2>r into future word
 
-  POSTPO
+  POSTPONE AHEAD
 ;
 
-/*------
-/* defin
-/*------
+/*----------------------------------------------------------------------------*/
+/* define a constant                                                          */
+/*----------------------------------------------------------------------------*/
 : ,_ALT
 
-  HERE !
+  HERE ! CELL ALLOT
 ;
 
-/*------
-/* defin
-/*------
-: consta
+/*----------------------------------------------------------------------------*/
+/* define a constant                                                          */
+/*----------------------------------------------------------------------------*/
+: constant
 
   create
   ,
 ;
 
-/*------
-/* defin
-/*------
-: :const
+/*----------------------------------------------------------------------------*/
+/* define a constant (using name on stack)                                    */
+/*----------------------------------------------------------------------------*/
+: :constant
 
-  >creat
+  >create
   ,
 ;
 
-/*------
-/* resol
-/*------
-: ELSE i
+/*----------------------------------------------------------------------------*/
+/* resolve IF supplying alternate execution                                   */
+/*----------------------------------------------------------------------------*/
+: ELSE immediate ( orig1 -- orig2 / -- )
 
-  POSTPO
-  1 CS-R
-  POSTPO
+  POSTPONE AHEAD // unconditional forward branch orig2
+  1 CS-ROLL      // put orig1 back on top
+  POSTPONE THEN  // resolve forward branch from orig1
 ;
 
-/*------
-/* condi
-/*------
-: WHILE 
+/*----------------------------------------------------------------------------*/
+/* conditional exit from loops                                                */
+/*----------------------------------------------------------------------------*/
+: WHILE immediate ( dest -- orig dest / flag -- )
 
-  POSTPO
-  1 CS-R
+  POSTPONE IF // conditional forward branch
+  1 CS-ROLL   // keep dest on top
 ;
 
-/*------
-/* resol
-/*------
-: REPEAT
+/*----------------------------------------------------------------------------*/
+/* resolve a single WHILE and jump to BEGIN                                   */
+/*----------------------------------------------------------------------------*/
+: REPEAT immediate ( orig dest -- orig dest / flag -- )
 
-  POSTPO
-  POSTPO
+  POSTPONE AGAIN // unconditional backward branch to dest
+  POSTPONE THEN  // resolve forward branch from orig
 ;
 
-/*------
-/* initi
-/*------
-0 CONSTA
-true ' C
+/*----------------------------------------------------------------------------*/
+/* initialise OFs counter                                                     */
+/*----------------------------------------------------------------------------*/
+0 CONSTANT CASE
+true ' CASE word.immediate!
 
-/*------
-/* OF bl
-/*------
-: OF imm
+/*----------------------------------------------------------------------------*/
+/* OF block                                                                   */
+/*----------------------------------------------------------------------------*/
+: OF immediate
 
-  1+   /
-  >R   /
+  1+   // inc number of OFs
+  >R   // save OFs counter
 
-  POSTPO
-  POSTPO
-  POSTPO
-  POSTPO
+  POSTPONE OVER  // copy case value
+  POSTPONE ==    // test case value against of value
+  POSTPONE IF    // add conditional block (with orig on control stack)
+  POSTPONE DROP  // discard case value within conditional block
 
-  R> // 
+  R> // restore OFs counter
 ;
 
-/*------
-/* ENDOF
-/*------
-: ENDOF 
+/*----------------------------------------------------------------------------*/
+/* ENDOF block                                                                */
+/*----------------------------------------------------------------------------*/
+: ENDOF immediate
 
-  >R // 
+  >R // save OFs counter
 
-  POSTPO
+  POSTPONE ELSE // add conditional block (with orig2 on control stack)
 
-  R> // 
+  R> // restore OFs counter
 ;
 
-/*------
-/* ENDCA
-/*------
-: ENDCAS
+/*----------------------------------------------------------------------------*/
+/* ENDCASE block                                                              */
+/*----------------------------------------------------------------------------*/
+: ENDCASE immediate
 
-  POSTPO
+  POSTPONE DROP  // discard case value
 
-  0 ?DO 
-    POST
+  0 ?DO          // resolve all forward ENDOF branches
+    POSTPONE THEN
   LOOP
 ;
 
-/*------
-/* case 
-/*------
-: caseTe
+/*----------------------------------------------------------------------------*/
+/* case test                                                                  */
+/*----------------------------------------------------------------------------*/
+: caseTest
 
-  10 0 d
-    I ca
-      0 
-      1 
-      2 
-      3 
-      4 
-      5 
-      6 
-      7 
-      8 
-      9 
-    endc
+  10 0 do
+    I case
+      0 of \"zero\"  . endof
+      1 of \"one\"   . endof
+      2 of \"two\"   . endof
+      3 of \"three\" . endof
+      4 of \"four\"  . endof
+      5 of \"five\"  . endof
+      6 of \"six\"   . endof
+      7 of \"seven\" . endof
+      8 of \"eight\" . endof
+      9 of \"nine\"  . endof
+    endcase
   loop
 ;
 
-/*------
-/* list 
-/*------
+/*----------------------------------------------------------------------------*/
+/* list all words in the current dictionary                                   */
+/*----------------------------------------------------------------------------*/
 : words
-    0 di
-    iter
-      ob
-      ob
+    0 dic.pick dic.last dup
+    iterate                        // iterate word cursor
+      object@ word.name .          // print the name of the word
+      object@ word.prev object!     // advance cursor backwards thru words
     next
 ;
 
-/*------
-/* list 
-/*------
-: symbol
-    0 di
-    begi
-      du
-      wo
-    repe
+/*----------------------------------------------------------------------------*/
+/* list all words (long form) in the current dictionary                       */
+/*----------------------------------------------------------------------------*/
+: symbols
+    0 dic.pick dic.last
+    begin dup while
+      dup word.name .put \" \" .put dup word.kind@ word.name .put .\n
+      word.prev
+    repeat
     drop
 ;
 
-/*------
-/* get a
-/*------
-: listCo
+/*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string                 */
+/*----------------------------------------------------------------------------*/
+: listContents
 
-    \"\"
-// \"(\"
-    0 di
-    iter
-      ob
-        
-      \"
-      ob
-    next
-//    \"
+    \"\"                             // initial contents string
+// \"(\" str.cat                     //
+    0 dic.pick dic.last dup
+    iterate                        // setup iteration of words
+      object@ word.name str.cat     // add name of the word to contents string
+                                   // add word kind to ls string
+      \" \" str.cat                   //
+      object@ word.prev object!     // step backwards thru words
+    next                           //
+//    \")\" str.cat                     //
 
 ;
 
-/*------
-/* dump 
-/*------
+/*----------------------------------------------------------------------------*/
+/* dump the parameter stack                                                   */
+/*----------------------------------------------------------------------------*/
 /*
 : stk
 
-  \"para
+  \"parameter stack\" .
 
-  depth 
+  depth not if drop then
 
-  depth 
-    I pi
+  depth 0 do
+    I pick dump
   loop
 ;
 */
 
-/*------
-/* dump 
-/*------
+/*----------------------------------------------------------------------------*/
+/* dump the auxiliary stack                                                   */
+/*----------------------------------------------------------------------------*/
 /*
 : astk
 
-  \"auxi
+  \"auxiliary stack\" .
 
-  adepth
+  adepth not if drop exit then
 
-  adepth
-    I ap
+  adepth 0 do
+    I apick dump
   loop
 ;
 */
 
-/*------
-/* dump 
-/*------
+/*----------------------------------------------------------------------------*/
+/* dump the return stack                                                      */
+/*----------------------------------------------------------------------------*/
 : rstk
 
-  \"retu
-  rdepth
+  \"return stack\" .
+  rdepth dup not if drop exit then
   0 do
-    I 2 
-    dup 
-    \" \
-    loca
-    dup 
+    I 2 + rpick
+    dup .put
+    \" \".put
+    locate
+    dup if .put else drop then
     .\n
   loop
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* inter
-/*------
-: >: inp
+/*----------------------------------------------------------------------------*/
+/* interpret string on stack                                                  */
+/*----------------------------------------------------------------------------*/
+: >: input.push input.text docol input.pop ;
 
-/*------
-/* check
-/*------
-: checkI
+/*----------------------------------------------------------------------------*/
+/* check for known word                                                       */
+/*----------------------------------------------------------------------------*/
+: checkIsWord ( <\"wordNm\"> )
     find
-    dup 
+    dup not if drop EC_NO_SUCH_WORD false exit then
     true
 ;
 
-/*------
-/* forge
-/*------
-: :forge
+/*----------------------------------------------------------------------------*/
+/* forget named word                                                          */
+/*----------------------------------------------------------------------------*/
+: :forget ( <\"wordNm\"> )
 
-  find (
+  find ( word )
 
-  dup no
+  dup not if drop exit then ( )
 
-  >forge
+  >forget ( )
 ;
 
-/*------
-/* drop 
-/*------
-: nipAll
+/*----------------------------------------------------------------------------*/
+/* drop all values on stack except topmost                                    */
+/*----------------------------------------------------------------------------*/
+: nipAll ( ... top -- top )
 
-  // han
-  depth 
+  // handle expty stack case
+  depth not if exit then
 
-  // sav
+  // save topmost
   >r
 
-  // dro
+  // drop everything else
   begin
-    dept
-      dr
+    depth while
+      drop
   repeat
 
-  // res
+  // restore topmost
   r>
 ;
 
-/*------
-/* drop 
-/*------
-: dropN 
+/*----------------------------------------------------------------------------*/
+/* drop n values from stack                                                   */
+/*----------------------------------------------------------------------------*/
+: dropN ( ... #values -- )
 
-  // han
-  depth 
+  // handle expty stack case
+  depth not if exit then
 
-  // dro
+  // drop everything else
   0 do
     drop
   loop
 ;
 
-/*------
-/* test 
-/*------
-: isType
+/*----------------------------------------------------------------------------*/
+/* test type of top stack value                                               */
+/*----------------------------------------------------------------------------*/
+: isType ( CN_ -- bool )
 
-  // fal
-  depth 
+  // false if stack empty
+  depth 2 >= not if drop false exit then
 
-  // no 
-  1 stac
+  // no more if not indirect
+  1 stack.class ==
 ;
 
-/*------
-/* snooz
-/*------
-: snooze
+/*----------------------------------------------------------------------------*/
+/* snooze briefly                                                             */
+/*----------------------------------------------------------------------------*/
+: snooze ( -- )
 
-  C_1M t
+  C_1M thread.sleep_ns
 ;
 
-/*------
-/* an en
-/*------
+/*----------------------------------------------------------------------------*/
+/* an end marker                                                              */
+/*----------------------------------------------------------------------------*/
 : $$
   //1234
 
-  [ word
+  [ word.this encodePushValue ]
 ;
 
-/*------
-/* test 
-/*------
+/*----------------------------------------------------------------------------*/
+/* test of end marker                                                         */
+/*----------------------------------------------------------------------------*/
 : $$test
 
-  $$ $$ 
+  $$ $$ eql
   if
-    \"eq
+    \"equal\" .
   else
-    \"no
+    \"not equal\" .
   then
 
-  \"a\" 
+  \"a\" $$ eql
   if
-    \"eq
+    \"equal\" .
   else
-    \"no
+    \"not equal\" .
   then
 
-  1 $$ e
+  1 $$ eql
   if
-    \"eq
+    \"equal\" .
   else
-    \"no
+    \"not equal\" .
   then
 ;
 
-/*------
-/* get d
-/*------
-: $$dept
+/*----------------------------------------------------------------------------*/
+/* get depth of marked stack                                                  */
+/*----------------------------------------------------------------------------*/
+: $$depth
 
-  // if 
-  depth 
+  // if the stack is empty then there are 0 marked values
+  depth 0 == if 0 exit then
 
-  depth 
+  depth 0 do
 
-    // m
-    I st
+    // marked values end at a valset
+    I stack.class CN_VALSET ==
     if
-      I 
-      un
-      ex
+      I 1+
+      unloop
+      exit
     then
 
-    // m
-    I pi
+    // marked values end at $$
+    I pick $$ eql
     if
       I
-      un
-      ex
+      unloop
+      exit
     then
 
   loop
 
-  // mar
+  // marked values end at bottom of stack
   depth
 ;
 
-/*------
-/* get d
-/*------
-: $$adep
+/*----------------------------------------------------------------------------*/
+/* get depth of marked aux stack                                              */
+/*----------------------------------------------------------------------------*/
+: $$adepth
 
-  // if 
-  adepth
+  // if the stack is empty then there are 0 marked values
+  adepth 0 == if 0 exit then
 
-  adepth
+  adepth 0 do
 
-    // m
-    I as
+    // marked values end at a valset
+    I astack.class CN_VALSET ==
     if
-      I 
-      un
-      ex
+      I 1+
+      unloop
+      exit
     then
 
-    // m
-    I ap
+    // marked values end at $$
+    I apick $$ eql
     if
       I
-      un
-      ex
+      unloop
+      exit
     then
 
   loop
 
-  // mar
+  // marked values end at bottom of stack
   adepth
 ;
 
-/*------
-/* put $
-/*------
-: put$$ 
+/*----------------------------------------------------------------------------*/
+/* put $$ at given stack depth                                                */
+/*----------------------------------------------------------------------------*/
+: put$$ ( atDepth -- )
 
-  $$ swa
+  $$ swap roll
 ;
 
-/*------
-/* conve
-/*------
-: $$>val
+/*----------------------------------------------------------------------------*/
+/* convert contents of marked stack into a valset                             */
+/*----------------------------------------------------------------------------*/
+: $$>valset
 
-  $$dept
-  >valse
-  depth 
-    1 pi
+  $$depth
+  >valset
+  depth 1 > if
+    1 pick $$ eql
     if
-      ni
+      nip
     then
   then
 ;
 
-/*------
-/* conve
-/*------
-: $$>ava
+/*----------------------------------------------------------------------------*/
+/* convert contents of marked aux stack into a valset                         */
+/*----------------------------------------------------------------------------*/
+: $$>avalset
 
-  $$adep
-  >avals
-  adepth
-    1 ap
+  $$adepth
+  >avalset
+  adepth 1 > if
+    1 apick $$ eql
     if
-      an
+      anip
     then
   then
 ;
 
-/*------
-/* test 
-/*------
+/*----------------------------------------------------------------------------*/
+/* test marked valset                                                         */
+/*----------------------------------------------------------------------------*/
 : $$vs
 
   $$
   1 2 3
 tp: a
-  $$>val
+  $$>valset
 tp: b
-  \"a\" 
+  \"a\" \"b\"
 tp: c
-  $$>val
+  $$>valset
 tp: d
-  valset
+  valset>
 tp: e
-  1 - dr
-  valset
+  1 - dropN
+  valset>
 tp: f
   drop
 tp: g
 ;
 
-//traceo
-: tp:tes
+//traceon
+: tp:test 567 tp: tp-abc . ;
 
-\"dic.se
-\"var.se
-\"useful
+\"dic.sen\" >>:
+\"var.sen\" >>:
+\"useful.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* dbObj
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* dbObjects.sen -- dbObjects group                                           */
+/*============================================================================*/
 
-\"dbObje
+\"dbObjects.sen\" .verbose
 
-\"rowCur
-\"table.
-\"column
-\"schema
-\"catalo
-\"tenant
-\"user.s
+\"rowCursor.sen\" >>:
+\"table.sen\" >>:
+\"column.sen\" >>:
+\"schema.sen\" >>:
+\"catalog.sen\" >>:
+\"tenant.sen\" >>:
+\"user.sen\" >>:
 
-\"row.se
-\"rowBuf
+\"row.sen\" >>:
+\"rowBuffer.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* ddlLo
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* ddlLocking.sen -- distributed ddl locking                                  */
+/*============================================================================*/
 
-\"ddlLoc
+\"ddlLocking.sen\" .verbose
 
-/*------
-/* lock 
-/*------
-args.nod
+/*----------------------------------------------------------------------------*/
+/* lock array                                                                 */
+/*----------------------------------------------------------------------------*/
+args.nodes intArray: ddlInts
 
-/*------
-/* dump 
-/*------
-: ddlDum
+/*----------------------------------------------------------------------------*/
+/* dump the ddlInts array                                                     */
+/*----------------------------------------------------------------------------*/
+: ddlDump
 
-  \"{ \"
-  args.n
-    I dd
+  \"{ \" .put
+  args.nodes 0 do
+    I ddlInts @ .put \" \" .put
   loop
 
-  \"}\" 
+  \"}\" .put .\n
 ;
 
-/*------
-/* dispa
-/*------
-: dispat
+/*----------------------------------------------------------------------------*/
+/* dispatch indirect call to given participant (for use in coordinator)       */
+/*----------------------------------------------------------------------------*/
+: dispatch ( ... #values actorNo -- ..result.. )
 
-  addSet
+  addSetCaller ( << <<call*>> <<caller>> >> )
 
-  // det
-  dup ( 
-  args.n
-  == ( .
-  if ( .
+  // determine which queue to forward to
+  dup ( ... #values actorNo actorNo )
+  args.node ( ... #values actorNo actorNo args.node )
+  == ( ... #values actorNo true|false )
+  if ( ... #values actorNo )
 
-    // a
-    pTas
+    // actor will be the participant for this node
+    pTasks @ ( ... #values pTask )
 
   else
 
-    // a
-    ppTa
+    // actor will be participant proxy for other node
+    ppTasks @ ( ... #values ppTask )
 
   then
 
 
-  // tra
-  >taskQ
+  // transfer to another actors and wait for result
+  >taskQueue;a> ( ..result.. )
 ;
 
-/*------
-/* attem
-/*------
-: grabDD
+/*----------------------------------------------------------------------------*/
+/* attempt to grab ddl lock n                                                 */
+/*----------------------------------------------------------------------------*/
+: grabDDL_n ( n -- true|false )
 
-  // tes
+  // test state of ddlInt[n]
 
-  dup ( 
-  ddlInt
-  if ( n
+  dup ( n n )
+  ddlInts @ ( n v )
+  if ( n )
 
-   // dd
+   // ddlInt is currently locked
 
-   // dr
-   drop 
+   // drop the subscript
+   drop ( )
 
-   // re
-   false
+   // return false
+   false ( false )
    exit
 
   then
 
-  // ddl
+  // ddlInt is not  locked
 
-  // put
-  1 ( n 
-  swap (
-  ddlInt
+  // put 1 into ddlInts[n]
+  1 ( n 1 )
+  swap ( 1 n )
+  ddlInts ! ( )
 
-  // ret
-  true (
+  // return true
+  true ( true )
 ;
 
-/*------
-/* drop 
-/*------
-: dropDD
+/*----------------------------------------------------------------------------*/
+/* drop ddl lock n                                                            */
+/*----------------------------------------------------------------------------*/
+: dropDDL_n ( n -- true )
 
-  // put
-  0 ( n 
-  swap (
-  ddlInt
+  // put 0 into ddlInts[n]
+  0 ( n 0 )
+  swap ( 0 n )
+  ddlInts ! ( )
 
-  // ret
-  true (
+  // return true
+  true ( true )
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
 
-/*------
-/* grab 
-/*------
-: grabDi
+/*----------------------------------------------------------------------------*/
+/* grab distributed ddl lock                                                  */
+/*----------------------------------------------------------------------------*/
+: grabDistDDL ( -- true )
 
-  // dis
+  // dispatch grab of lock 0 to node 0
 
   begin
-    0   
-    \"gr
-    2   
-    0   
-    ( 0 
+    0            // participant is to grab lock 0
+    \"grabDDL_n\"  // the word to execute
+    2            // there are 2 indirect values
+    0            // will dispatch to node 0
+    ( 0 \"grabDDL_n\" 2 0 )
 
-    // s
-    disp
+    // send indirect call to node 0
+    dispatch ( true | false )
   until
 
-  // dis
+  // dispatch grab of lock I to all other nodes
 
-  args.n
-    I   
-    \"gr
-    2   
-    I   
-    ( I 
+  args.nodes 1 do
+    I            // participant is to grab lock I
+    \"grabDDL_n\"  // the word to execute
+    2            // there are 2 indirect values
+    I            // will dispatch to node I
+    ( I \"grabDDL_n\" 2 I )
 
-    // s
-    disp
+    // send indirect call to node I
+    dispatch ( true|false )
 
-    // j
-    . ( 
+    // just print the indirect result for the moment
+    . ( )
   loop
 
-  true (
+  true ( true )
 ;
 
-/*------
-/* drop 
-/*------
-: dropDi
+/*----------------------------------------------------------------------------*/
+/* drop distributed ddl lock                                                  */
+/*----------------------------------------------------------------------------*/
+: dropDistDDL ( -- true )
 
-  // dis
+  // dispatch drop to all other nodes
 
-  args.n
-    I   
-    \"dr
-    2   
-    I   
-    ( I 
+  args.nodes 1 do
+    I            // participant is to drop lock 0
+    \"dropDDL_n\"  // the word to execute
+    2            // there are 2 args now on stack
+    I            // dispatch to node I
+    ( I \"dropDDL_n\" 2 I )
 
-    // s
-    disp
+    // send indirect call to node I
+    dispatch ( true|false )
 
-    // j
+    // just print the indirect result
     .
   loop
 
-  // dis
+  // dispatch drop to node 0
 
-  0     
-  \"drop
-  2     
-  0     
-  ( 0 \"
+  0              // participant is to drop lock 0
+  \"dropDDL_n\"    // the word to execute
+  2              // there are 2 args now on stack
+  0              // dispatch to node 0
+  ( 0 \"dropDDL_n\" 2 0 )
 
-  // sen
-  dispat
+  // send indirect call to node 0
+  dispatch
 
-  // jus
+  // just print the indirect result for the moment
   .
 
-  true (
+  true ( true )
 ;
 
-/*------
-/* distr
-/*------
+/*----------------------------------------------------------------------------*/
+/* distributed lock test                                                      */
+/*----------------------------------------------------------------------------*/
 : dl
 
-  // put
-  args.n
-    0 I 
+  // put 0 into all ddlInts
+  args.nodes 0 do
+    0 I ddlInts !
   loop
 
-  // coo
-  \"grab
+  // coordinate grab of dist ddl lock
+  \"grabDistDDL\" 1  ( \"grabDistDdl\" 1 )
 
-  addSet
-  >coord
+  addSetCaller
+  >coordinator>     ( true|false )
   .
 
-  ddlDum
+  ddlDump
 
-  // coo
-  \"drop
-  addSet
-  >coord
+  // coordinate drop of dist ddl lock
+  \"dropDistDDL\" 1 ( \"dropDistDdl\" 1 )
+  addSetCaller
+  >coordinator>      ( true|false )
   .
 
-  ddlDum
+  ddlDump
 
 stk
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* dic.s
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* dic.sen -- dictionary related words                                        */
+/*============================================================================*/
 
-\"dic.se
+\"dic.sen\" .verbose
 
-/*------
-/* folde
-/*------
-: folder
+/*----------------------------------------------------------------------------*/
+/* folder is use as a kind of word to identify folders                        */
+/*----------------------------------------------------------------------------*/
+: folder ;
 
-: isFold
+: isFolder word.kind@ ' folder eql ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a dictionary using name from input stream (doesnt leave dic on stk) */
+/*----------------------------------------------------------------------------*/
 : dic:
-diclock.
-    crea
-    WT_O
-    size
-    word
-    CN_D
-    ' fo
-    word
-    true
-diclock.
-    does
+diclock.grabwrite
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_dic allot
+    word.this >body object.magic!!
+    CN_DIC word.this >body object.class!
+    ' folder word.this word.kind!
+    word.this >body dic.init
+    true word.this >body object.wordbody!
+diclock.dropwrite
+    does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a dictionary using name on the stack (leaves dic on stack)          */
+/*----------------------------------------------------------------------------*/
 : :dic
-diclock.
-    >cre
-    WT_O
-    size
-    word
-    CN_D
-    ' fo
-    word
-    true
-    word
-diclock.
-    does
+diclock.grabwrite
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_dic allot
+    word.this >body object.magic!!
+    CN_DIC word.this >body object.class!
+    ' folder word.this word.kind!
+    word.this >body dic.init
+    true word.this >body object.wordbody!
+    word.this
+diclock.dropwrite
+    does>
 ;
 
-: checkI
+: checkIsDic ( word )
 
-    dup 
-    dup 
+    dup not if drop EC_NO_SUCH_FOLDER false exit then
+    dup word.kind@ ' folder eql if true exit then
     drop
-    EC_N
+    EC_NOT_A_FOLDER false
 ;
 
-: dicHas
-    dup 
+: dicHasRef ( word )
+    dup execute dic.ref
 ;
 
-/*------
-/* check
-/*------
-: checkN
+/*----------------------------------------------------------------------------*/
+/* check dic not in use                                                       */
+/*----------------------------------------------------------------------------*/
+: checkNotUsed ( dic -- true | error false )
 
-  dicHas
+  dicHasRef \" dic ref \" .put .put .\n
 
-  dicHas
+  dicHasRef if EC_FOLDER_IN_USE false exit then
 
   true
 ;
 
-/*------
-/* creat
-/*------
-: :folde
-  {{ :di
+/*----------------------------------------------------------------------------*/
+/* create a subdictionary under given dic                                     */
+/*----------------------------------------------------------------------------*/
+: :folder ( \"<subDicNm>\" dic -- )
+  {{ :dic ' folder swap execute dic.kind! }}
 ;
 
-/*------
-/* get s
-/*------
-: seitf.
+/*----------------------------------------------------------------------------*/
+/* get seitif folder path                                                     */
+/*----------------------------------------------------------------------------*/
+: seitf.path@ ( -- ... #dics )
 
-  // thi
-  // ( .
+  // this word puts the dictionary path onto the stack as a series of names
+  // ( ... \"<subFolderC>\"  \"<subFolderB>\"  \"<subFolderA>\" \"main\" 4 )
 
-  dic.co
-    // c
-    //di
+  dic.count 0 do
+    // calculate dic subscript
+    //dic.count I - 1- ( d )
 
     I
-    // g
-    dic.
+    // get dictionary[d]
+    dic.pick  ( dic )
 
-    // p
-    dic.
+    // push dictionary name
+    dic.name ( ... dicNm )
   loop
 
-  // pus
-  dic.co
+  // push number of dictionary names
+  dic.count ( ... #dics )
 ;
 
-/*------
-/* set t
-/*------
-: dicSta
+/*----------------------------------------------------------------------------*/
+/* set task dictionary stack                                                  */
+/*----------------------------------------------------------------------------*/
+: dicStack! ( ... #dics -- )
 
-  // thi
-  // ( .
+  // this word puts the folder path on the stack into task dictionary stack
+  // ( ... \"<subFolderC>\"  \"<subFolderB>\"  \"<subFolderA>\" \"main\" 4 )
 
-tp: dicS
-  dic.co
-    dic.
+tp: dicStack!
+  dic.count 0 do
+    dic.drop
   loop
 
   0 do
 
-    dup 
-      dr
-      di
-      di
+    dup \"<main>\" str.equal if
+      drop
+      dic.main
+      dicStack.push
     else
 
-      du
-        
-        
-        
-      el
+      dup \"seitf\" str.equal if
+        drop
+        dic.main
+        dicStack.push
+      else
 
-        
-        
-        
-      th
+        find
+        execute
+        dicStack.push
+      then
 
     then
 
   loop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* dir.s
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* dir.sen -- directory related words                                         */
+/*============================================================================*/
 
-\"dir.se
+\"dir.sen\" .verbose
 
-/*------
-/* dir i
-/*------
+/*----------------------------------------------------------------------------*/
+/* dir is use as a kind of word to identify directories                       */
+/*----------------------------------------------------------------------------*/
 : dir ;
 
-: isDir 
+: isDir word.kind@ ' dir eql ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a dir using name from input stream                                  */
+/*----------------------------------------------------------------------------*/
 : dir:
-    crea
-    WT_O
-    size
-    word
-    CN_D
-    ' di
-    word
-    true
-    does
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_dir allot
+    word.this >body object.magic!!
+    CN_DIR word.this >body object.class!
+    ' dir word.this word.kind!
+    word.this >body dir.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a dir using name on stack                    (leaves file on stack) */
+/*----------------------------------------------------------------------------*/
 : :dir
-    >cre
-    WT_O
-    size
-    word
-    CN_D
-    ' di
-    word
-    true
-    word
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_dir allot
+    word.this >body object.magic!!
+    CN_DIR word.this >body object.class!
+    ' dir word.this word.kind!
+    word.this >body dir.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
 
-: dirtes
+: dirtest
 
-//traceo
+//traceon
 
-    \"__
+    \"__dir\" :dir execute >r
 
-    \"/t
+    \"/tmp\" r0 dir.path!
 
-    r0 d
+    r0 dir.open if \"opened\" . else \"not opened\" . rdrop exit then
 
-    begi
-      r0
-      wh
-        
-    repe
+    begin
+      r0 dir.read
+      while
+        r0 dir.entryName .
+    repeat
 
-    r0 d
+    r0 dir.close
 
-    rdro
+    rdrop
 
-    \"__
+    \"__dir\" find >forget
 
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* expor
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* exporter.sen -- table exporter                                              */
+/*============================================================================*/
 
-\"export
+\"exporter.sen\" .verbose
 
-: export
+: export ( \"<fileNm>\" ^table )
 
-  swap f
+  swap file.new
 
   >r
-  // r0 
+  // r0 ^file
 
-  r0 fil
-  if \"f
+  r0 file.path! OPEN_WRITE r0 file.open
+  if \"file open!\" . else \"file not opened!\" . rdrop drop EC_INVALID_FILE false exit then
 
-  \"__ro
-    drop
+  \"__row_cursor\" find dup if else
+    drop \"__row_cursor\" :rowCursor
   then
-  execut
+  execute
 
   >r
-  // r0 
-  // r1 
+  // r0 ^rowCursor
+  // r1 ^file
 
-  r0 row
+  r0 rowcursor.table!
 
-  args.p
+  args.partitions 0
   do
-    // r
-    // r
+    // r2 ^rowCursor
+    // r3 ^file
 
-    I r2
-    r2 r
-    begi
-      wh
-      r2
+    I r2 rowcursor.begin
+    r2 rowcursor.first
+    begin
+      while
+      r2 rowcursor.get
 //dup .
-      r3
-      \"
-      r2
-    repe
+      r3 file.write
+      \"\n\" r3 file.write
+      r2 rowcursor.next
+    repeat
 
-    r2 r
+    r2 rowcursor.end
   loop
 
-  r1 fil
+  r1 file.close
 
-  rdrop 
+  rdrop rdrop
 
-  \"__ro
+  \"__row_cursor\" find >forget
 
   true
 ;
 
-: export
+: exportTest
 
-//traceo
+//traceon
 
-    \"/t
+    \"/tmp/nation.txt\" \"nation\" find execute
 
-    expo
+    export
 
 traceoff
 ;
 
-: tableE
+: tableExporter ( \"<fileNm>\" \"<tableNm>\" )
 
-  find e
+  find execute ( \"<fileNm>\" table )
 
   export
   if
-    \"ex
+    \"exported!\" . true
   else
-    fals
+    false
   then
 ;
 
 
-/*======
-/* end  
-/*======
-/*======
-/* file.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* file.sen -- file related words                                             */
+/*============================================================================*/
 
-\"file.s
+\"file.sen\" .verbose
 
-/*------
-/* file 
-/*------
+/*----------------------------------------------------------------------------*/
+/* file is use as a kind of word to identify files                            */
+/*----------------------------------------------------------------------------*/
 : file ;
 
-: isFile
+: isFile word.kind@ ' file eql ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a file using name from input stream (doesnt leave file on stk)      */
+/*----------------------------------------------------------------------------*/
 : file:
   create
-  WT_OBJ
-  sizeof
-  word.t
-  CN_FIL
-  ' file
-  word.t
-  true w
+  WT_OBJECT word.this word.type!
+  sizeof_file allot
+  word.this >body object.magic!!
+  CN_FILE word.this >body object.class!
+  ' file word.this word.kind!
+  word.this >body file.init
+  true word.this >body object.wordbody!
   does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a file using name on stack (leaves file on stack)                   */
+/*----------------------------------------------------------------------------*/
 : :file
-  >creat
-  WT_OBJ
-  sizeof
-  word.t
-  CN_FIL
-  ' file
-  word.t
-  true w
-  word.t
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_file allot
+  word.this >body object.magic!!
+  CN_FILE word.this >body object.class!
+  ' file word.this word.kind!
+  word.this >body file.init
+  true word.this >body object.wordbody!
+  word.this
   does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* fileG
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* fileGen.sen -- Data File Generator                                         */
+/*============================================================================*/
 
-\"fileGe
+\"fileGen.sen\" .verbose
 
-timer: f
+timer: fileGenTimer
 
-: fileGe
-//traceo
+: fileGen ( \"<path>\" fileSize field1Size field0Size field1Size )
+//traceon
 
-  reg.pu
+  reg.push
 
-  // cre
-  \"__fi
+  // create a file
+  \"__file_gen\" find dup if else
     drop
-    \"__
+    \"__file_gen\" :file
   then
-  execut
+  execute
 
-  >reg0 
-  >reg4 
-  >reg3 
-  >reg2 
-  >reg1 
+  >reg0 // file
+  >reg4 // field 1 size
+  >reg3 // field 0 size
+  >reg2 // file size
+  >reg1 // path
 
-  0 >reg
+  0 >reg5 // running size
 
-  reg1 r
-  open_w
+  reg1 reg0 file.path!
+  open_write reg0 file.open
 
-  fileGe
+  fileGenTimer timer.start
 
   begin
-    reg3
-    dup 
-    reg0
+    reg3 str.random \"|\" str.cat reg4 str.random str.cat \"|\n\" str.cat
+    dup str.length reg5 + >reg5
+    reg0 file.write
 
-    reg5
+    reg5 reg2 < while
   repeat
 
-  fileGe
+  fileGenTimer timer.update
 
-  \"file
-  fileGe
+  \"file gen time \" .put
+  fileGenTimer timer.millisecs .put \"ms\" .put .\n
 
-  reg0 f
+  reg0 file.close
 
-  // des
-  \"__fi
+  // destroy file
+  \"__file_gen\" find >forget
 
-  reg.po
+  reg.pop
 
-//traceo
+//traceoff
 ;
 
 : gli
 
-  \"/tmp
+  \"/tmp/lineitem.tbl\" C_1MB 100 * 8 120 fileGen
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* flowT
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* flowTests.sen -- flow control unit testing                                 */
+/*============================================================================*/
 
-\"flowTe
+\"flowTests.sen\" .verbose
 
-: flowTe
+: flowTests
 
-  \"  fl
+  \"  flow control tests\" .put .\n
 
-  assert
+  assert.stack_0
   0
-  assert
+  assert.stack_1
   begin
-    asse
+    assert.stack_1
     1
-    asse
+    assert.stack_2
     +
-    asse
+    assert.stack_1
     dup
-    asse
+    assert.stack_2
     10
-    asse
+    assert.stack_3
     ==
-    asse
+    assert.stack_2
   until
-  assert
+  assert.stack_1
   drop
-  assert
+  assert.stack_0
 
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* gener
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* generalThreads.sen -- General Processing Threads                           */
+/*============================================================================*/
 
-\"genera
+\"generalThreads.sen\" .verbose
 
-/*------
-/* compu
-/*------
-: noGene
+/*----------------------------------------------------------------------------*/
+/* compute the number of general processing threads to be created             */
+/*----------------------------------------------------------------------------*/
+: noGeneralThreads ( memorySize -- noThreads )
 
-  // the
-  // siz
+  // the number of general threads is computed based on the
+  // size of the region
 
-  // the
-  // the
+  // there will be 1 general thread per GB
+  // the number of threads will be limited to 80% of the number of cores
 
-  C_1GB 
+  C_1GB / locals| noThreads |
 
-  noThre
+  noThreads 0 <= if
     1
   else
-    noTh
-      CO
+    noThreads CORE_COUNT 8 * 10 / > if
+      CORE_COUNT 8 * 10 / to noThreads
     then
   then
 
-  noThre
+  noThreads
 ;
 
-/*------
-/* defin
-/*------
-args.reg
+/*----------------------------------------------------------------------------*/
+/* define the N_GENERAL_THREADS constant                                      */
+/*----------------------------------------------------------------------------*/
+args.regionSize noGeneralThreads constant N_GENERAL_THREADS
 
-N_GENERA
+N_GENERAL_THREADS \"General threads: %v\" str.format .
 
-/*------
-/* creat
-/*------
-: >genTa
-: >genTh
+/*----------------------------------------------------------------------------*/
+/* create and spawn the general processing threads                            */
+/*----------------------------------------------------------------------------*/
+: >genTaskSetNm ( i -- s ) \"generalTaskSet\" swap >str str.cat ;
+: >genThreadNm  ( i -- s ) \"generalThread\"  swap >str str.cat ;
 
-: :genTa
-: :genTh
+: :genTaskSet ( i -- w ) >genTaskSetNm :taskSet ;
+: :genThread  ( i -- w ) >genThreadNm  :thread  ;
 
-: >genTa
-: >genTh
+: >genTaskSet ( i -- w ) >genTaskSetNm find execute ;
+: >genThread  ( i -- w ) >genThreadNm  find execute ;
 
-: genera
+: generalThreadsStart
 
-  args.v
+  args.verbose if \"N_GENERAL_THREADS \" .put N_GENERAL_THREADS .put .\n then
 
-  N_GENE
+  N_GENERAL_THREADS 0 do
 
-    I :g
-    I :g
+    I :genTaskSet  drop ( create a taskSet called generalTaskSetI )
+    I :genThread   drop ( create a thread called generalThreadI )
 
-    I >g
-    I >g
-    I >g
+    I >genTaskSet  I >genThread thread.taskSet! ( set the threads taskset )
+    I >genThreadNm I >genThread thread.name!    ( set the threads name )
+    I >genThread   thread.spawn                 ( spawn os thread )
 
   loop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* grid.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* grid.sen -- grid routines                                                  */
+/*============================================================================*/
 
-\"grid.s
+\"grid.sen\" .verbose
 
-/*------
-/* grid 
-/*------
+/*----------------------------------------------------------------------------*/
+/* grid is use as a kind of word to identify grids                            */
+/*----------------------------------------------------------------------------*/
 : grid ;
 
-: isGrid
+: isGrid word.kind@ ' grid eql ;
 
-: <SUCCE
+: <SUCCESS_RESULT> args.node true ( v n# true ) ;
 
-: <FAILU
+: <FAILURE_RESULT> args.node false ( ec n# false ) ;
 
-/*------
-/* check
-/*------
-: checkR
+/*----------------------------------------------------------------------------*/
+/* check grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: checkResult ( b n# t | ec n# f .... nn t/f )
 
-tp: chec
+tp: checkResult
 
-  // was
-  true =
+  // was the final result true ?
+  true == if  ( b n# t | ec n# f .... nn )
 
-    // d
-    dept
+    // drop the rest of the result
+    depth dropN ( )
 
   else
-    // l
+    // lets see which node failed
     0 do
 
-      fa
+      false == if  ( ... ec n# )
 
-        
-        
+        swap error.msg swap
+        \"Node%v ERROR: %v\" str.format .
 
-      el
+      else
 
-        
+        drop drop  ( ... )
 
-      th
+      then
 
     loop
 
   then
 ;
 
-/*------
-/* print
-/*------
-: printR
+/*----------------------------------------------------------------------------*/
+/* print grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: printResult ( s n# t | ec n# f .... nn t/f )
 
-tp: prin
+tp: printResult
 
-  // was
-  true =
+  // was the final result true ?
+  true == if ( s n# t | ec n# f .... nn )
 
-    // p
-    0 do
+    // pretty print the results resturned
+    0 do  ( s n# t | s n# f .... )
 
-      as
-      \"
+      assert // should be true
+      \"Node%v: %v\"  str.format .
     loop
 
   else
 
-    // l
-    0 do
+    // lets see which node failed
+    0 do  ( s n# t | ec n# f .... )
 
-      fa
+      false == if ( s n# t | ec n# )
 
-        
-        
+        swap error.msg swap
+        \"Node%v ERROR: %v\" str.format .
 
-      el
+      else
 
-        
+        drop drop
 
-      th
+      then
 
     loop
 
@@ -2413,3101 +2413,3102 @@ tp: prin
 ;
 
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a grid using name from input stream                                 */
+/*----------------------------------------------------------------------------*/
 : grid:
-    crea
-    WT_O
-    size
-    word
-    CN_G
-    word
-    ' gr
-    true
-    does
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_grid allot
+    word.this >body object.magic!!
+    CN_GRID word.this >body object.class!
+    word.this >body grid.init
+    ' grid word.this word.kind!
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a grid using name on the stack (leaves grid word on stack)          */
+/*----------------------------------------------------------------------------*/
 : :grid
-    >cre
-    WT_O
-    size
-    word
-    CN_G
-    word
-    ' gr
-    true
-    word
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_grid allot
+    word.this >body object.magic!!
+    CN_GRID word.this >body object.class!
+    word.this >body grid.init
+    ' grid word.this word.kind!
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-grid: gr
+grid: grid.this
 
-0 node.n
+0 node.new grid.appendNode
 
-/*======
-/* end  
-/*======
-/*======
-/* gridC
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* gridCalls -- grid calls                                                    */
+/*============================================================================*/
 
-\"gridCa
+\"gridCalls\" .verbose
 
-/*------
-/* creat
-/*------
-: create
+/*----------------------------------------------------------------------------*/
+/* create the grid actors C, PP, CP and P                                     */
+/*----------------------------------------------------------------------------*/
+: createGridActors
 
   /*
 
-    r->C
+    r->C->PP-> (snd ... rcv) ->CP->P
        |
-       +
+       +->P
 
   */
 
-  args.n
+  args.nodes 0 do
 
     //
-    // p
+    // participant for node I
     //
 
-    0 \"
+    0 \"p.loop\"
 
-    \"p\
-    dup 
-    dup 
-    acto
-
-    //
-    // c
-    //
-
-    I I 
-    \"cp
-    dup 
-    dup 
-    acto
+    \"p\" I >str str.cat :actor
+    dup actor.queue I pQueues !
+    dup actor.task  I pTasks  !
+    actor.spawn
 
     //
-    // p
+    // coordinator proxy for node I
     //
 
-    I ar
-      I 
+    I I pTasks @ 2 \"cp.loop\"
+    \"cp\" I >str str.cat :actor
+    dup actor.queue I cpQueues !
+    dup actor.task  I cpTasks  !
+    actor.spawn
+
+    //
+    // partitipant proxy for node I
+    //
+
+    I args.node == if
+      I I pTasks  @ 2 \"pp.loop\"
     else
-      I 
+      I I cpTasks @ 2 \"pp.loop\"
     then
 
-    \"pp
-    dup 
-    dup 
-    acto
+    \"pp\" I >str str.cat :actor
+    dup actor.queue I ppQueues !
+    dup actor.Task  I ppTasks  !
+    actor.spawn
 
   loop
 
   //
-  // coo
+  // coordinator for this node
   //
-  0 \"c.
-  \"c\" 
+  0 \"c.loop\"
+  \"c\" :actor  ( 0 \"c.loop\" \"c\" )
 
-  actor.
+  actor.spawn
 
-  args.v
-    cpQu
+  args.verbose if
+    cpQueuesDump
   then
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-createGr
+createGridActors
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* queue
-/*------
-: >coord
+/*----------------------------------------------------------------------------*/
+/* queue an indirect call set to the coordinator and wait for indirect result */
+/*----------------------------------------------------------------------------*/
+: >coordinator> ( <<call*>> -- <<result>> )
 
-tp: >coo
+tp: >coordinator>
 
 /*
-  // cou
+  // could be task such as req.task or ld#.task
 
-  addSet
+  addSetCaller ( << <<call*>> <<caller>> >> )
 */
 
-  // tar
-  c.task
+  // target actor is coordinator
+  c.task >taskQueue;a> ( <<result>> )
 
-tp: resu
+tp: resumedbyCoord
 
-  // we 
+  // we expect an indirect result
 ;
 
-/*------
-/* get c
-/*------
-: >>oneP
+/*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to participant on a node to execute  */
+/*----------------------------------------------------------------------------*/
+: >>oneParticipant> ( <<call>> nodeNo -- bool )
 
-  // a) 
-  // b) 
+  // a) we are in loader sub task
+  // b) indirect call on stack is to be executed by participant on given nodeNo
 
-  tp: >>
+  tp: >>oneParticipant>
 
-  // che
-  args.n
-    grid
-      \"
+  // check if grid has been started if number of nodes > 1
+  args.nodes 1 > if
+    grid.this grid.started@ true != if
+      \"GRID NOT STARTED ...\" . false
     then
   then
 
-  // ass
-  2 task
+  // assert we are in loader subtask
+  2 task.this task.name@ str.left \"sl\" str.equal assert
 
-  // sav
+  // save the node number
   >r
 
-  // add
-  addSet
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
 
-  // add
-  r> add
+  // add indirect call to participant on given node
+  r> addSendParticipant ( <<call>> )
 
-  // add
-  addSet
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
 
-  // que
-  >coord
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
 
-  valset
+  valset>
 
-  // dro
+  // drop number of values
   drop
 ;
 
-/*------
-/* get c
-/*------
-: >>allP
+/*----------------------------------------------------------------------------*/
+/* get coordinator to send indirect call to all participant to execute        */
+/*----------------------------------------------------------------------------*/
+: >>allParticipants> ( <<$$>> -- bool )
 
-  // a) 
-  // b) 
+  // a) we are in request task (req.task)
+  // b) indirect call on stack is to be executed by all participants
 
-tp: >>al
+tp: >>allParticipants>
 
-   // ch
-   args.
-     gri
-       d
-       E
-     the
+   // check if grid has been started if number of nodes > 1
+   args.nodes 1 > if
+     grid.this grid.started@ true != if
+       drop ( ) // drop the valsetr
+       EC_CLUSTER_NOT_STARTED <FAILURE_RESULT> 1 false exit
+     then
   then
 
-  task.t
+  task.this task.name@ \"req.task\" str.equal assert
 
-  // add
-  addSet
+  // add call to setDicPath to be same as this req.task (run by participant)
+  addSetDicPath ( <<call>> )
 
-  // add
-  addSen
+  // add indirect call to participants
+  addSendParticipants ( <<call>> )
 
-  // add
-  addSet
+  // add call to setCaller (to be run by coordinator)
+  addSetCaller ( <<call>> )
 
-  // que
-  >coord
+  // queue on coordinator (which waits for a indirect result)
+  >coordinator> ( bool )
 
-  valset
+  valset>
 
-  // dro
+  // drop number of values
   drop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* gridM
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* gridModel.sen -- grid model group                                          */
+/*============================================================================*/
 
-\"gridMo
+\"gridModel.sen\" .verbose
 
-\"node.s
-\"grid.s
-\"nodeCu
+\"node.sen\" >>:
+\"grid.sen\" >>:
+\"nodeCursor.sen\" >>:
 
-\"gridPr
+\"gridPrimitives.sen\" >>:
 
-\"coordi
-\"partic
-\"coordi
-\"partic
-\"receiv
-\"sender
+\"coordinatorTask.sen\" >>:
+\"participantProxy.sen\" >>:
+\"coordinatorProxy.sen\" >>:
+\"participantTask.sen\" >>:
+\"receiverTask.sen\" >>:
+\"senderTask.sen\" >>:
 
-\"connec
-\"answer
+\"connectorTask.sen\" >>:
+\"answerTask.sen\" >>:
 
-\"gridCa
-\"ddlLoc
+\"gridCalls.sen\" >>:
+\"ddlLocking.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* gridP
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* gridPrimitives.sen -- grid primitives                                      */
+/*============================================================================*/
 
-\"gridPr
+\"gridPrimitives.sen\" .verbose
 
-////////
-////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* task 
-/*------
-args.nod
-args.nod
-args.nod
-args.nod
+/*----------------------------------------------------------------------------*/
+/* task and queue arrays                                                      */
+/*----------------------------------------------------------------------------*/
+args.nodes ptrArray: ppTasks
+args.nodes ptrArray: cpTasks
+args.nodes ptrArray: pTasks
+args.nodes ptrArray: senderTasks
 
-args.nod
-args.nod
-args.nod
-args.nod
+args.nodes ptrArray: ppQueues
+args.nodes ptrArray: cpQueues
+args.nodes ptrArray: pQueues
+args.nodes ptrArray: senderQueues
 
-/*------
-: to_CAL
-: to_QUE
-: to_TAS
-: to_THR
+/*----------------------------------------------------------------------------*/
+: to_CALLER  >reg0 ;
+: to_QUEUE   >reg1 ;
+: to_TASKSET >reg2 ;
+: to_THREAD  >reg3 ;
 
-: _CALLE
-: _QUEUE
-: _TASKS
-: _THREA
+: _CALLER    reg0 ;
+: _QUEUE     reg1 ;
+: _TASKSET   reg2 ;
+: _THREAD    reg3 ;
 
-/*------
-/* dump 
-/*------
-: ppQueu
+/*----------------------------------------------------------------------------*/
+/* dump the ppQueues array                                                    */
+/*----------------------------------------------------------------------------*/
+: ppQueuesDump
 
-  \"{ \"
-  args.n
-    I pp
+  \"{ \" .put
+  args.nodes 0 do
+    I ppQueues @ .put \" \" .put
   loop
 
-  \"}\" 
+  \"}\" .put .\n
 ;
 
-/*------
-/* dump 
-/*------
-: cpQueu
+/*----------------------------------------------------------------------------*/
+/* dump the cpQueues array                                                    */
+/*----------------------------------------------------------------------------*/
+: cpQueuesDump
 
-  \"{ \"
-  args.n
-    I cp
+  \"{ \" .put
+  args.nodes 0 do
+    I cpQueues @ .put \" \" .put
   loop
 
-  \"}\" 
+  \"}\" .put .\n
 ;
 
-/*------
-/* dump 
-/*------
-: pQueue
+/*----------------------------------------------------------------------------*/
+/* dump the pQueues array                                                     */
+/*----------------------------------------------------------------------------*/
+: pQueuesDump
 
-  \"{ \"
-  args.n
-    I pQ
+  \"{ \" .put
+  args.nodes 0 do
+    I pQueues @ .put \" \" .put
   loop
 
-  \"}\" 
+  \"}\" .put .\n
 ;
 
-/*------
-/* dump 
-/*------
-: sender
+/*----------------------------------------------------------------------------*/
+/* dump the senderQueues array                                                */
+/*----------------------------------------------------------------------------*/
+: senderQDump
 
-  \"{ \"
-  args.n
-    I se
+  \"{ \" .put
+  args.nodes 0 do
+    I senderQueues tp: @ .put \" \" .put
   loop
 
-  \"}\" 
+  \"}\" .put .\n
 ;
 
-////////
-////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* appen
-/*------
-: >taskQ
+/*----------------------------------------------------------------------------*/
+/* append valset onto queue of given task and signal if its waiting           */
+/*----------------------------------------------------------------------------*/
+: >taskQueue ( valset task -- )
 
-tp: >tas
+tp: >taskQueue
 
-  locals
+  locals| targetTask | ( valset )
 
-  // gra
-  target
+  // grab mutex of target task
+  targetTask grabMutex ( valset )
 
-  // app
-  target
+  // append valset onto queue of target task
+  targetTask appendQueue ( )
 
-  // sig
-  target
-    targ
+  // signal the target task if it is waiting for a valset to be queued
+  targetTask isSignalWaiting if
+    targetTask signal ( )
   then
 
-  // dro
-  target
+  // drop mutex of target task
+  targetTask dropMutex ( )
 ;
 
-/*------
-/* appen
-/*------
-: >taskQ
+/*----------------------------------------------------------------------------*/
+/* append indirect call onto queue of given task, wait for ack, move a to p   */
+/*----------------------------------------------------------------------------*/
+: >taskQueue;a> ( <<call>> task -- <<result>> )
 
-  // set
-  1 setA
+  // set this task to wait for 1 ack
+  1 setAcks ( <<call>> task )
 
-  // app
-  >taskQ
+  // append indirect call onto queue of given task
+  >taskQueue ( )
 
-  tp: ac
+  tp: ackWait
 
-  // thi
-  ackWai
+  // this task waits till ack'd
+  ackWait ( )
 
-  tp: ru
+  tp: running
 
-  // mov
-  a> ( <
+  // move indirect result from aux to data stack
+  a> ( <<result>> )
 
-tp: have
+tp: haveResultSet
 ;
 
-/*------
-/* put i
-/*------
-: >sndQu
+/*----------------------------------------------------------------------------*/
+/* put indirect call onto queue of sender task                                */
+/*----------------------------------------------------------------------------*/
+: >sndQueue ( <<call>> nodeNo -- )
 
-  // get
-  sender
+  // get sender task
+  senderTasks @ ( <<call>> task )
 
-  tp: se
+  tp: sendingViaTask
 
-  // enq
-  >taskQ
+  // enqueue valset onto queue of task
+  >taskQueue ( )
 ;
 
-/*------
-/* put i
-/*------
-: >sndQu
+/*----------------------------------------------------------------------------*/
+/* put indirect call onto queue of sender task, suspend, move from a to p     */
+/*----------------------------------------------------------------------------*/
+: >sndQueue;a> ( <<call>> nodeNo -- )
 
-  // thi
-  1 setA
+  // this task to wait for 1 ack
+  1 setAcks ( ... wordName #values queue )
 
-  // get
-  sender
+  // get sender task
+  senderTasks @ ( <<call>> task )
 
-tp: send
+tp: sendingViaTask
 
-  // enq
-  >taskQ
+  // enqueue valset onto queue of task
+  >taskQueue
 
-  // thi
-  ackWai
+  // this task waits till ack'd
+  ackWait ( )
 
-tp: runn
+tp: running
 
-  // mov
-  a> ( <
+  // move indirect result from aux to parameter stack
+  a> ( <<result>> )
 
-tp: have
+tp: haveResultSet
 ;
 
-/*------
-/* pop v
-/*------
-: taskQu
+/*----------------------------------------------------------------------------*/
+/* pop value from this tasks queue (this is a blocking call)                  */
+/*----------------------------------------------------------------------------*/
+: taskQueue> ( -- valset )
 
-  tp: ta
+  tp: taskQueue>
 
-  // gra
-  task.t
+  // grab mutex of this task
+  task.this grabMutex
 
-  // att
-  popQue
+  // attempt to pop from this task's queue
+  popQueue ( value true | false )
   not if
-    // q
-    sign
-    // p
-    popQ
+    // queue empty; wait till signalled
+    signalWait
+    // pop from this tasks queue
+    popQueue assert
   then
 
-  // gra
-  task.t
+  // grab mutex of this task
+  task.this dropMutex
 
-  tp: ha
+  tp: haveValset
 ;
 
-/*------
-/* push 
-/*------
-: >calle
+/*----------------------------------------------------------------------------*/
+/* push indirect result onto callers aux stack and ack caller                 */
+/*----------------------------------------------------------------------------*/
+: >callerAux ( <<result>> -- )
 
-tp: >cal
+tp: >callerAux
 
-  // tra
-  _CALLE
+  // transfer to callers stack
+  _CALLER ( <<result>> callingTask )
 
-  tp: ca
+  tp: callingTask
 
-  >auxSt
+  >auxStack ( )
 
-  // ack
-  _CALLE
+  // ack caller
+  _CALLER ack ( )
 ;
 
-////////
-////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* set t
-/*------
-: setCal
+/*----------------------------------------------------------------------------*/
+/* set the calling task                                                       */
+/*----------------------------------------------------------------------------*/
+: setCaller ( caller -- ; reg0 == caller )
 
-  to_CAL
+  to_CALLER ( )
 
-  tp: re
+  tp: reg0HasCaller
 ;
 
-/*------
-/* set s
-/*------
-: setSen
+/*----------------------------------------------------------------------------*/
+/* set sending node                                                           */
+/*----------------------------------------------------------------------------*/
+: setSender ( sender -- ; reg1 == sender )
 
-  to_QUE
+  to_QUEUE ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
 
-  tp: re
+  tp: reg1HasSender
 ;
 
-/*------
-/* pass 
-/*------
-: passOn
+/*----------------------------------------------------------------------------*/
+/* pass indirect call onto coordinator proxy                                  */
+/*----------------------------------------------------------------------------*/
+: passOnToCP ( valset nodeNo -- )
 
-  cpTask
+  cpTasks @ ( valset task )
 
-  >taskQ
+  >taskQueue ( )
 ;
 
-/*------
-/* pass 
-/*------
-: passBa
+/*----------------------------------------------------------------------------*/
+/* pass indirect result back to participant proxy                             */
+/*----------------------------------------------------------------------------*/
+: passBackToPP ( <<result>> nodeNo -- )
 
-  reg.pu
+  reg.push
 
-  ppTask
+  ppTasks @ to_CALLER
 
-  >calle
+  >callerAux
 
-  reg.po
+  reg.pop
 ;
 
-////////
-////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* execu
-/*------
-: !indir
+/*----------------------------------------------------------------------------*/
+/* execute indirect call on the stack                                         */
+/*----------------------------------------------------------------------------*/
+: !indirect ( ... wordName -- ... )
 
-tp: exec
+tp: executing...
 
-  // fin
-  find (
-        
+  // find the word in dic stack
+  find ( word )
+                                                          //! WHAT IF NOT FOUND?
 
-  // exe
-  execut
+  // execute it
+  execute ( ... )
 ;
 
-/*------
-/* conve
-/*------
-: >resul
+/*----------------------------------------------------------------------------*/
+/* convert all values on stack into a result valset                           */
+/*----------------------------------------------------------------------------*/
+: >result ( ... -- valset )
 
-tp: resu
+tp: resultIs
 
-  // put
-  depth 
+  // put number of values onto stack
+  depth ( ... #values )
 
-  // con
-  >valse
+  // convert to valset
+  >valset ( valset )
 
-tp: resu
+tp: resultAsValset
 ;
 
-/*------
-/* expan
-/*------
-: exeOne
+/*----------------------------------------------------------------------------*/
+/* expand valset and execute indirect call                                    */
+/*----------------------------------------------------------------------------*/
+: exeOne ( <<call*>> )
 
-  valset
+  valset> ( ... wordName nValues )
 
-  drop (
+  drop ( ... wordName )
 
-  tp: ca
+  tp: callSetUp
 
-  !indir
+  !indirect ( bool )
 ;
 
-/*------
-/* execu
-/*------
-: exeAll
+/*----------------------------------------------------------------------------*/
+/* execute all nested valsets                                                 */
+/*----------------------------------------------------------------------------*/
+: exeAll ( ... valset -- x )
 
-tp: exeA
+tp: exeAll
 
-  // we 
-  CN_VAL
+  // we exect at least one indirect
+  CN_VALSET isType not if assert then
 
-  // exe
+  // execute first indirect
   exeOne
 
-  // exe
+  // execute all other indirects
   begin
 
-    // n
-    CN_V
+    // no more to execute?
+    CN_VALSET isType not
     if
-      ex
+      exit
     then
 
-  // exe
+  // execute next indirect
   exeOne
 
   again
 ;
 
-////////
-////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* add c
-/*------
-: addSen
+/*----------------------------------------------------------------------------*/
+/* add call to send to one participant                                        */
+/*----------------------------------------------------------------------------*/
+: addSendParticipant ( valset node -- valset )
 
-  \"send
+  \"sendParticipant\" ( valset node \"sendParticipant\" )
 
-tp: addi
+tp: addingSendP
 
-  $$>val
+  $$>valset ( valset )
 ;
 
-/*------
-/* add c
-/*------
-: addSen
+/*----------------------------------------------------------------------------*/
+/* add call to send to all participants                                       */
+/*----------------------------------------------------------------------------*/
+: addSendParticipants ( valset -- valset )
 
-  \"send
+  \"sendParticipants\" ( valset \"sendParticipants\" )
 
-tp: addi
+tp: addingSendPs
 
-  $$>val
+  $$>valset ( valset )
 ;
 
-/*------
-/* add c
-/*------
-: addSet
+/*----------------------------------------------------------------------------*/
+/* add call to set caller                                                     */
+/*----------------------------------------------------------------------------*/
+: addSetCaller ( valset -- valset )
 
-  task.t
+  task.this \"setCaller\"
 
-tp: addi
+tp: addingSetCaller
 
-  $$>val
+  $$>valset
 ;
 
-/*------
-/* add c
-/*------
-: addSet
+/*----------------------------------------------------------------------------*/
+/* add call to set dic path                                                   */
+/*----------------------------------------------------------------------------*/
+: addSetDicPath ( valset -- valset )
 
-  // add
-  seitf.
-  \"dicS
+  // add dicStack! indirect
+  seitf.path@ ( valset path... #folders )
+  \"dicStack!\" ( valset path... #folders \"dicStack!\" )
 
-tp: addi
+tp: addingSetDicPath
 
-  $$>val
+  $$>valset ( valset )
 ;
 
-/*------
-/* add c
-/*------
-: addSet
+/*----------------------------------------------------------------------------*/
+/* add call to set sender                                                     */
+/*----------------------------------------------------------------------------*/
+: addSetSender ( valset -- valset )
 
-  args.n
+  args.node \"setSender\"
 
-tp: addi
+tp: addingSetSender
 
-  $$>val
+  $$>valset
 ;
 
-/*------
-/* add c
-/*------
-: addPas
+/*----------------------------------------------------------------------------*/
+/* add call to bass result back to participant proxy                          */
+/*----------------------------------------------------------------------------*/
+: addPassBackToPP ( valset -- valset )
 
-  args.n
+  args.node \"passBackToPP\"
 
-  tp: ad
+  tp: addingPassBackToPP
 
-  $$>val
+  $$>valset
 ;
 
-/*------
-/* add c
-/*------
-: addPas
+/*----------------------------------------------------------------------------*/
+/* add call to pass call onto coordinator proxy                               */
+/*----------------------------------------------------------------------------*/
+: addPassOnToCP ( valset -- valset )
 
-  \"pass
+  \"passOnToCP\"
 
-tp: addi
+tp: addingPassOnToCP
 
-  $$>val
+  $$>valset
 ;
 
-/*------
-/* inter
-/*------
-: interl
+/*----------------------------------------------------------------------------*/
+/* interlinkParts                                                             */
+/*----------------------------------------------------------------------------*/
+: interlinkParts ( -- )
 
-  // att
-  _QUEUE
-  _CALLE
-  task.q
+  // attach queue to task
+  _QUEUE ( queue )
+  _CALLER ( queue task )
+  task.queue! ( )
 
-  // put
-  _CALLE
-  _TASKS
-  taskse
+  // put task in taskset
+  _CALLER ( task )
+  _TASKSET ( task taskset )
+  taskset.append ( )
 
-  // att
-  _TASKS
-  _THREA
-  thread
+  // attach taskset to thread
+  _TASKSET ( taskset )
+  _THREAD ( taskset thread )
+  thread.taskset! ( )
 
-  // rec
-  _TASKS
-  _CALLE
-  task.t
+  // record taskset in task
+  _TASKSET ( taskset )
+  _CALLER ( task )
+  task.taskset! ( )
 ;
 
-/*------
-/* get t
-/*------
-: actor.
+/*----------------------------------------------------------------------------*/
+/* get task of an actor                                                       */
+/*----------------------------------------------------------------------------*/
+: actor.task ( \"<actorNm>\" -- task )
 
-  \".tas
+  \".task\" str.cat find execute
 ;
 
-/*------
-/* get q
-/*------
-: actor.
+/*----------------------------------------------------------------------------*/
+/* get queue of an actor                                                      */
+/*----------------------------------------------------------------------------*/
+: actor.queue ( \"<actorNm>\" -- queue )
 
-  \".que
+  \".queue\" str.cat find execute
 ;
 
-/*------
-/* get t
-/*------
-: actor.
+/*----------------------------------------------------------------------------*/
+/* get taskset of an actor                                                    */
+/*----------------------------------------------------------------------------*/
+: actor.taskset ( \"<actorNm>\" -- taskset )
 
-  \".tas
+  \".taskset\" str.cat find execute
 ;
 
-/*------
-/* get t
-/*------
-: actor.
+/*----------------------------------------------------------------------------*/
+/* get thread of an actor                                                     */
+/*----------------------------------------------------------------------------*/
+: actor.thread ( \"<actorNm>\" -- taskset )
 
-  \".thr
+  \".thread\" str.cat find execute
 ;
 
-/*------
-/* spawn
-/*------
-: actor.
+/*----------------------------------------------------------------------------*/
+/* spawn an actor by seeding its task and spawning the os thread for it       */
+/*----------------------------------------------------------------------------*/
+: actor.spawn ( ... nArgs \"<loopNm>\" \"<actorNm>\" -- )
 
-  locals
+  locals| actorNm | ( ... nArgs \"<loopNm>\" )
 
-  // see
-  actorN
+  // seed the task
+  actorNm actor.task task.seed ( )
 
-  // spa
-  actorN
+  // spawn the os thread
+  actorNm actor.thread thread.spawn ( )
 ;
 
-/*------
-/* creat
-/*------
-: actor:
+/*----------------------------------------------------------------------------*/
+/* create an actor (but don't spawn thread)                                   */
+/*----------------------------------------------------------------------------*/
+: actor: ( -- )
 
-  // get
-  token:
+  // get token from compile stream
+  token: ( s )
 
-  locals
+  locals| actorNm |
 
-  reg.pu
+  reg.push
 
-  actorN
-  actorN
-  actorN
-  actorN
+  actorNm \".task\"    str.cat :task    execute to_CALLER  // reg0 has task
+  actorNm \".queue\"   str.cat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm \".taskset\" str.cat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm \".thread\"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
-  interl
+  interlinkParts
 
-  reg.po
+  reg.pop
 ;
 
-/*------
-/* creat
-/*------
-: :actor
+/*----------------------------------------------------------------------------*/
+/* create an actor (but don't spawn thread)                                   */
+/*----------------------------------------------------------------------------*/
+: :actor ( \"<actorNm>\" -- \"<actorNm>\" )
 
-  locals
+  locals| actorNm |
 
-  reg.pu
+  reg.push
 
-  actorN
-  actorN
-  actorN
-  actorN
+  actorNm \".task\"    str.cat :task    execute to_CALLER  // reg0 has task
+  actorNm \".queue\"   str.cat :queue   execute to_QUEUE   // reg1 has queue
+  actorNm \".taskset\" str.cat :taskset execute to_TASKSET // reg2 has taskset
+  actorNm \".thread\"  str.cat :thread  execute to_THREAD  // reg3 has thread
 
-  interl
+  interlinkParts
 
-  reg.po
+  reg.pop
 
-  actorN
+  actorNm
 ;
 
-////////
-////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* path 
-/*------
-: SE_PAT
+/*----------------------------------------------------------------------------*/
+/* path for SE                                                                */
+/*----------------------------------------------------------------------------*/
+: SE_PATH \"../OS\ X/Build/Products/Debug/SE\" ;
 
-/*------
-/* form 
-/*------
-: se_com
+/*----------------------------------------------------------------------------*/
+/* form the shell command for spawning a node                                 */
+/*----------------------------------------------------------------------------*/
+: se_command ( nodeNo -- \"<command>\" )
 
   dup
   dup
 
-  //  \"
+  //  \"nohup \"
   \"\"
-  SE_PAT
-  \" --s
-  \" --s
-  //  \"
-  \" --c
-  \" --r
-  \" --n
-  \" --n
-  \" --p
-  \" --p
-  \" --s
-  args.t
-  args.v
+  SE_PATH str.cat
+  \" --start \" str.cat
+  \" --size \" str.cat args.regionSize >str str.cat
+  //  \" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands\" str.cat
+  \" --commands /Users/ray/Desktop/rapidsse/Commands\" str.cat
+  \" --region /SE_\" str.cat  swap >str str.cat
+  \" --node  \" str.cat swap >str str.cat
+  \" --nodes \" str.cat args.nodes >str str.cat
+  \" --partitions \" str.cat args.partitions >str str.cat
+  \" --port  \" str.cat args.port  >str str.cat
+  \" --sleep \" str.cat args.sleep >str str.cat
+  args.tracepoint if \" --tracepoint \" str.cat then
+  args.verbose if \" --verbose \" str.cat then
 
-  \" &\"
+  \" &\" str.cat
 ;
 
-/*------
-/* spawn
-/*------
-: spawnN
+/*----------------------------------------------------------------------------*/
+/* spawn all other nodes for a grid on this machine                           */
+/*----------------------------------------------------------------------------*/
+: spawnNodes ( -- )
 
-  // tes
-  args.n
+  // test for single node
+  args.nodes 1 == if exit then
 
-  // spa
-  args.n
+  // spawn all other nodes
+  args.nodes 1 do
 
-    // f
-    I se
+    // form the shell command to spawn node I
+    I se_command
 
-    // p
-    dup 
+    // print the shell command
+    dup .
 
-    // e
-    shel
+    // execute the shell command
+    shell.execute
 
-    // c
-    not 
+    // check result
+    not assert
 
   loop
 
-  // set
-  true g
+  // set grid as started
+  true grid.this grid.started!
 
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* inter
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* interface.sen -- interface group                                           */
+/*============================================================================*/
 
-\"interf
+\"interface.sen\" .verbose
 
-\"seitfL
-\"seitfC
+\"seitfList.sen\" >>:
+\"seitfCursor.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* ipc.s
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* ipc.sen -- ipc primitives                                                  */
+/*============================================================================*/
 
-\"ipc.se
+\"ipc.sen\" .verbose
 
-: isRunn
+: isRunning   ( task -- ) task.state@ TS_RUNNING == ;
 
-: getSta
-: setSta
+: getState    ( -- ) task.this task.state@ ;
+: setState    ( -- ) task.this task.state! ;
 
-: setAck
-: ackWai
-: isAckW
-: ack   
+: setAcks     ( -- ) task.this task.acks! ;
+: ackWait     ( -- ) TS_WAITING_ACK setState ;
+: isAckWaiting ( task -- ) task.state@ task.acks! ;
+: ack         ( task -- ) task.ack ;
 
-: append
-: popQue
+: appendQueue ( task -- ) task.queue@ queue.append ;
+: popQueue    ( -- ) task.this task.queue@ queue.pop ;
 
-: grabMu
-: waitSi
-: dropMu
-: isSign
-: signal
+: grabMutex    ( task -- ) task.thread thread.mutexLock ;
+: waitSignal   ( -- ) task.this task.thread thread.condWait ;
+: dropMutex    ( task -- ) task.thread thread.mutexUnlock ;
+: isSignalWaiting ( task -- ) task.state@ TS_WAITING_SIGNAL == ;
+: signal       ( task -- ) task.thread thread.condSignal ;
 
-: signal
+: signalWait    ( -- )
 
-  TS_WAI
+  TS_WAITING_SIGNAL setState
 
-tp: nowW
+tp: nowWaiting
 
-  waitSi
+  waitSignal
 
-TS_RUNNI
+TS_RUNNING setState
 
-  tp: no
+  tp: nowRunning
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* jData
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* jData.sen -- generate jTest data                                           */
+/*============================================================================*/
 
-\"jData.
+\"jData.sen\" .verbose
 
-: >Digit
+: >DigitWords
 
-  >str \
+  >str \"\"            ( \"TBD\"  \"<dw>\"        )
 
   0 >r
-  begin 
-    swap
-    dup 
-    str.
-    whil
-      du
-      0 
-      sw
-      1 
-      -r
-      >i
-      >d
+  begin                ( \"TBD\"  \"<dw>\"        )
+    swap               ( \"<dw>\" \"TBD\"         )
+    dup                ( \"<dw>\" \"TBD\" \"TBD\"   )
+    str.length         ( \"<dw>\" \"TBD\" l       )
+    while              ( \"<dw>\" \"TBD\"         )
+      dup              ( \"<dw>\" \"TBD\"  \"TBD\"  )
+      0 1 -rot str.sub ( \"<dw>\" \"TBD\"  \"<d>\"  )
+      swap             ( \"<dw>\" \"<d>\"  \"TBD\"  )
+      1 neg 1 -rot str.sub ( \"<dw>\" \"<d>\"  \"BD\"   )
+      -rot            ( \"BD\"   \"<dw>\" \"<d>\"  )
+      >int            ( \"BD\"   \"<dw>\" d      )
+      >digitName      ( \"BD\"   \"<dw>\" \"name\" )
 
-      r>
-      if
+      r> dup 1+ >r
+      if swap \" \" str.cat swap then
 
-      st
+      str.cat         ( \"BD\"   \"<dw>\"        )
   repeat
-  drop  
+  drop                ( \"<dw>\"               )
   rdrop
 ;
 
-: jData1
+: jData1000
 
-  file.n
+  file.new >r
 
-  \"../J
+  \"../JTEST/j1000.csv\" r0 file.path!
 
-  OPEN_W
+  OPEN_WRITE r0 file.open not if \"file not opened\" . exit then
 
   1000 0
   do
-    I >s
-    \"|\
-    I >D
-    \"|\
-    I 10
-    \"|\
-    I 10
-    \"\n
+    I >str          r2 file.write
+    \"|\"             r2 file.write
+    I >DigitWords   r2 file.write
+    \"|\"             r2 file.write
+    I 100 % >str    r2 file.write
+    \"|\"             r2 file.write
+    I 10 % >str     r2 file.write
+    \"\n\"            r2 file.write
   loop
 
-  r0 fil
+  r0 file.close
 
   rdrop
 ;
 
-: jData1
+: jData100
 
-  file.n
+  file.new >r
 
-  \"../J
+  \"../JTEST/j100.csv\" r0 file.path!
 
-  OPEN_W
+  OPEN_WRITE r0 file.open not if \"file not opened\" . exit then
 
   100 0
   do
-    I >s
-    \"|\
-    I >D
-    \"|\
-    I 10
-    \"\n
+    I >str          r2 file.write
+    \"|\"             r2 file.write
+    I >DigitWords   r2 file.write
+    \"|\"             r2 file.write
+    I 10 % >str     r2 file.write
+    \"\n\"            r2 file.write
   loop
 
-  r0 fil
+  r0 file.close
 
   rdrop
 ;
 
-: jData1
+: jData10
 
-  file.n
+  file.new >r
 
-  \"../J
+  \"../JTEST/j10.csv\" r0 file.path!
 
-  OPEN_W
+  OPEN_WRITE r0 file.open not if \"file not opened\" . exit then
 
   10 0
   do
-    I >s
-    \"|\
-    I >D
-    \"\n
+    I >str          r2 file.write
+    \"|\"             r2 file.write
+    I >DigitWords   r2 file.write
+    \"\n\"            r2 file.write
   loop
 
-  r0 fil
+  r0 file.close
 
   rdrop
 ;
 
 : jData
 
-  jData1
-  jData1
-  jData1
+  jData1000
+  jData100
+  jData10
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* liste
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* listerTask.sen -- task lister                                              */
+/*============================================================================*/
 
-\"lister
+\"listerTask.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
 
-taskset:
+taskset: listerTaskSet
 
-thread: 
+thread:  listerThread
 
-taskCurs
+taskCursor: taskCrs
 
-/*------
-/* start
-/*------
-: lister
+/*----------------------------------------------------------------------------*/
+/* start the lister task                                                      */
+/*----------------------------------------------------------------------------*/
+: listerStart
 
-   0 \"l
+   0 \"lis.loop\" nullPtr task.new listerTaskSet taskSet.Append
 
-   liste
-   \"lis
-        
+   listerTaskSet  listerThread thread.taskset!
+   \"listerThread\" listerThread thread.name!
+                  listerThread thread.spawn
 ;
 
-/*------
-/* liste
-/*------
-: iterat
+/*----------------------------------------------------------------------------*/
+/* lister iteration                                                           */
+/*----------------------------------------------------------------------------*/
+: iterateTaskList
 
-    list
-      \"
+    listerTaskPrint if
+      \"task list...\" .
     then
 
-  taskcr
-        
-  iterat
+  taskcrs taskcrs taskcursor.begin
+          taskcrs taskcursor.first
+  iterate
 
-    list
-      ob
+    listerTaskPrint if
+      object@ task.dump
     then
 
-    curs
+    cursor@ taskcursor.next object!
 
   next
 
-  taskcr
+  taskcrs taskcursor.end
 
 ;
 
-/*------
-/* liste
-/*------
-: lis.lo
+/*----------------------------------------------------------------------------*/
+/* lister task loop                                                           */
+/*----------------------------------------------------------------------------*/
+: lis.loop
 
-    \"li
+    \"listerTask\" task.this task.name!
 
-    list
+    listerTaskPrint if \"lister Task running...\" . then
 
-    begi
+    begin
 
-      it
+      iterateTaskList
 
-      3 
+      3 thread.sleep_s
 
-    agai
+    again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* loade
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* loader.sen -- Parallel Table Loader                                        */
+/*============================================================================*/
 
-\"loader
+\"loader.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: :loade
+/*----------------------------------------------------------------------------*/
+/* create a loader using name on the stack (leaves loader on stack)           */
+/*----------------------------------------------------------------------------*/
+: :loader
 
-  >creat
-  WT_OBJ
-  sizeof
-  word.t
-  CN_LOA
-  word.t
-  true w
-  word.t
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_loader allot
+  word.this >body object.magic!!
+  CN_LOADER word.this >body object.class!
+  word.this >body loader.init
+  true word.this >body object.wordbody!
+  word.this
   does>
 ;
 
-timer: l
+timer: loadTimer
 
-/*------
-/* paral
-/*------
-: tableL
+/*----------------------------------------------------------------------------*/
+/* parallel loading of file into table                                        */
+/*----------------------------------------------------------------------------*/
+: tableLoader ( \"<path>\" \"<tableNm>\" -- t|f )
 
-  find e
+  find execute ( \"filename\" table )
 
-  // che
-  swap f
-  dup r0
-  OPEN_R
-  if r0 
+  // check if path file exists
+  swap file.new >r
+  dup r0 file.path!
+  OPEN_READ r0 file.open
+  if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
-  loadTi
+  loadTimer timer.start
 
-  // cre
-  \"__ta
+  // create a Loader
+  \"__table_loader\" find dup if else
     drop
-    \"__
+    \"__table_loader\" :loader
   then
-  execut
+  execute
 
-  // put
+  // put Loader into register 0
   >r
-  // r0 
+  // r0 ^Loader
 
-  // ini
-  r0 loa
-  r0 loa
+  // initialise r0:Loader
+  r0 loader.table!
+  r0 loader.path!
 
-  //- - 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // beg
-  beginT
+  // begin a new transaction
+  beginTransaction r0 loader.txref!
 
-  //- - 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  task.t
+  task.this grabMutex
 
-  N_GENE
+  N_GENERAL_THREADS setAcks
 
-  N_GENE
+  N_GENERAL_THREADS 0 do
 
-    $$ r
+    $$ r2 loader.newSub $$>valset
 
-    seit
+    seitf.path@ $$>valset
 
-    1 \"
+    1 \"loadSub\" task.this task.new
 
-    dup 
+    dup I >loadSubNm swap task.name!
 
-    I >g
+    I >genTaskSet taskSet.append
   loop
 
-  //- - 
-  begin 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  begin r0 loader.findChunk while repeat
 
 
-  ackWai
+  ackWait
 
-  task.t
+  task.this dropMutex
 
-  //- - 
+  //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // com
-  commit
+  // commit the transaction
+  commitTransaction
 
-  // dis
+  // discard r0:Loader
   rdrop
 
-  // des
-  \"__ta
+  // destroy Loader
+  \"__table_loader\" find >forget
 
-  loadTi
+  loadTimer timer.update
 
-  \"Load
-  loadTi
+  \"Load time \" .put
+  loadTimer timer.millisecs .put \"ms\" .put .\n
 
   true
 ;
 
-/*------
-/* loadi
-/*------
-: tableL
+/*----------------------------------------------------------------------------*/
+/* loading of stream into table                                               */
+/*----------------------------------------------------------------------------*/
+: tableLoaderStream ( \"<path>\" ^table -- t|f )
 
-  // che
-  swap f
-  dup r0
-  OPEN_R
-  if r0 
+  // check if path file exists
+  swap file.new >r
+  dup r0 file.path!
+  OPEN_READ r0 file.open
+  if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
 stk
 
-  reg.pu
+  reg.push
 
-  file.n
-  >reg1 
-  >reg2 
-  rowBuf
-  beginT
-  0 >reg
+  file.new >reg0         // reg0 - file
+  >reg1                  // reg1 - table
+  >reg2                  // reg2 - path
+  rowBuffer.new >reg3    // reg3 - rowbuffer
+  beginTransaction >reg4 // reg4 - txref
+  0 >regF                // regF - counter
 
-  reg2 r
-  OPEN_R
+  reg2 reg0 file.path!
+  OPEN_READ reg0 file.open drop
 
-  loadTi
+  loadTimer timer.start
 
   begin
-    reg0
-    whil
-      re
-      no
-        
-        
-        
-        
-      th
+    reg0 file.read
+    while
+      reg4 reg3 rowbuffer.append
+      not if
+        reg3 0 reg1 table.appendBuffer
+        rowBuffer.new >reg3
+        reg4 reg3 rowbuffer.append
+        drop
+      then
 
-      re
-      10
+      regF 1+ dup >regF
+      100000 % not if regF . then
   repeat
 
-  reg3 0
+  reg3 0 reg1 table.appendBuffer
 
-  loadTi
+  loadTimer timer.update
 
-  \"Load
-  loadTi
+  \"Load time \" .put
+  loadTimer timer.millisecs .put \"ms\" .put .\n
 
-  reg0 f
+  reg0 file.close
 
-  reg0 f
+  reg0 file.delete
 
-  reg.po
+  reg.pop
 
   true
 
 stk
 ;
 
-/*------
-/* loadi
-/*------
-: tableL
+/*----------------------------------------------------------------------------*/
+/* loading of stream into table                                               */
+/*----------------------------------------------------------------------------*/
+: tableLoaderStream2 ( \"<path>\" ^table -- t|f )
 
-  find e
+  find execute ( \"filename\" table )
 
-  // che
-  swap f
-  dup r0
-  OPEN_R
-  if r0 
+  // check if path file exists
+  swap file.new >r
+  dup r0 file.path!
+  OPEN_READ r0 file.open
+  if r0 file.close rdrop swap else rdrop drop drop EC_INVALID_FILE false exit then
 
   stk
 
-  reg.pu
+  reg.push
 
-  file.n
-  >reg1 
-  >reg2 
-  rowBuf
-  beginT
-  0 >reg
+  file.new >reg0         // reg0 - file
+  >reg1                  // reg1 - table
+  >reg2                  // reg2 - path
+  rowBuffer.new >reg3    // reg3 - rowbuffer
+  beginTransaction >reg4 // reg4 - txref
+  0 >regF                // regF - counter
 
-  reg2 r
-  OPEN_R
+  reg2 reg0 file.path!
+  OPEN_READ reg0 file.open drop
 
-  loadTi
+  loadTimer timer.start
 
   begin
-    reg0
-    whil
-      re
-      no
-        
-        
-        
-        
-      th
+    reg0 file.readRecord
+    while
+      reg0 reg4 reg3 rowbuffer.appendRecord
+      not if
+        reg3 0 reg1 table.appendBuffer
+        rowBuffer.new >reg3
+        reg0 reg4 reg3 rowbuffer.appendRecord
+        drop
+      then
 
-      re
-      10
+      regF 1+ dup >regF
+      100000 % not if task.yield then
   repeat
 
-  reg3 0
+  reg3 0 reg1 table.appendBuffer
 
-  loadTi
+  loadTimer timer.update
 
-  \"Load
-  loadTi
+  \"Load time \" .put
+  loadTimer timer.millisecs .put \"ms\" .put .\n
 
-  reg0 f
+  reg0 file.close
 
-  reg0 f
+  reg0 file.delete
 
-  reg.po
+  reg.pop
 
   true
 
   stk
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* loade
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* loaderSub.sen -- Parallel Table Loader Sub                                 */
+/*============================================================================*/
 
-\"loader
+\"loaderSub.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: :loade
+/*----------------------------------------------------------------------------*/
+/* create a sub loader using name on the stack (leaves loader on stack)       */
+/*----------------------------------------------------------------------------*/
+: :loaderSub
 
-  >creat
-  WT_OBJ
-  sizeof
-  word.t
-  CN_LOA
-  word.t
-  true w
-  word.t
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_loader allot
+  word.this >body object.magic!!
+  CN_LOADERSUB word.this >body object.class!
+  word.this >body loaderSub.init
+  true word.this >body object.wordbody!
+  word.this
   does>
 ;
 
-/*------
-/* form 
-/*------
-: >loadS
+/*----------------------------------------------------------------------------*/
+/* form loader sub name                                                       */
+/*----------------------------------------------------------------------------*/
+: >loadSubNm ( i -- s )
 
-  \"sl\"
+  \"sl\" swap >str str.cat \".task\" str.cat
 ;
 
-/*------
-/* appen
-/*------
-: loadAp
+/*----------------------------------------------------------------------------*/
+/* append row buffer to partition of given named table                        */
+/*----------------------------------------------------------------------------*/
+: loadAppendBuffer$ ( rowBuffer partitionNo \"<tableNm>\" -- true )
 
-tp: load
+tp: loadAppendBuffer$
 
-  // why
-  //   l
-  //   a
+  // why:
+  //   loaderSub has forwarded a full rowBuffer which needs to be
+  //   appended to partition of table
 
-  // whe
-  //   i
+  // where:
+  //   in participant task running p.loop on participant thread;
 
-  // wha
-  //   f
-  //   t
+  // what:
+  //   find named table to get pointer to table
+  //   then append row buffer to partition of table
 
-  1 task
+  1 task.this task.thread thread.name@ str.left \"p\" str.equal assert
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"APPENDING ROWBUFFER \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  // get
-  find e
+  // get ^table
+  find execute ( rb ptn table )
 
-  // app
-  table.
+  // append row buffer to partition of table
+  table.appendBuffer ( )
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* forwa
-/*------
-: ~loadA
+/*----------------------------------------------------------------------------*/
+/* forward append of rowbuffer to participant for partition                   */
+/*----------------------------------------------------------------------------*/
+: ~loadAppendBuffer ( -- )
 
-tp: ~loa
+tp: ~loadAppendBuffer
 
-  // why
-  //   l
-  //   t
+  // why:
+  //   loaderSub has a full rowBuffer which needs to be sent to participant
+  //   to be appended to partition of table
 
-  // whe
-  //   i
-  //   p
-  //   r
+  // where:
+  //   in loadSub task running loadSub on general thread;
+  //   parent task is req.task running tableLoader;
+  //   reg0 has ^loaderSub
 
-  // wha
-  //   w
-  //   t
+  // what:
+  //   we need to have the coordinator send the loadAppendBuffer$ indirect call
+  //   to the participant via a sendParticipant call
 
-  13 tas
-  task.p
+  13 task.this task.thread thread.name@ str.left \"generalThread\" str.equal assert
+  task.parent@ task.name@ \"req.task\" str.equal assert
 
   //
-  // a) 
+  // a) form the indirect call of loadAppendBuffer
   //
 
   $$
-    load
-    null
-    load
-    load
-    \"lo
+    loaderSub.rowBuffer           ( $$ rb )
+    nullPtr loaderSub.rowBuffer!  // set working row buffer to null
+    loaderSub.partition           ( $$ rb ptn )
+    loaderSub.table table.name    ( $$ rb ptn \"<tableNm>\" )
+    \"loadAppendBuffer$\"           ( $$ rb ptn \"<tableNm>\" \"loadAppendBuffer$\" )
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset                       ( <<loadAppendBuffer$>> )
 
   //
-  // b) 
-  //    
+  // b) <<loadAppendBuffer$>> to be forwarded to one participant
+  //    via sendParticipant in the coordinatoor
   //
 
-  // to 
-  loader
+  // to which node/participant
+  loaderSub.hashPartition  ( <<loadAppendBuffer$>> node )
 
-  // for
-  >>oneP
+  // forward to coordinator and wait
+  >>oneParticipant> ( bool )
 
-tp: theI
+tp: theIndirectResult
 
-  // we 
-  //asse
+  // we expect loadAppendBuffer$ to return true
+  //assert
 
-  checkR
+  checkResult
 ;
 
-/*------
-/* paral
-/*------
-: loadSu
+/*----------------------------------------------------------------------------*/
+/* parallel sub-loading of file into table                                    */
+/*----------------------------------------------------------------------------*/
+: loadSub ( ^loaderSub -- )
 
-  // thi
+  // this is being run by a general thread on the originator node
 
-  // fir
-  // nee
+  // first set the taskset in this task
+  // needed when being resumed by coordinator
 
-  task.t
-  task.t
+  task.this task.thread thread.taskset@
+  task.this task.taskset!
 
-  // exp
-  valset
+  // expand dic stack valset and set
+  valset> drop dicStack!
 
-  // exp
-  valset
+  // expand args valset
+  valset> drop
 
-  reg.pu
+  reg.push
 
-  // the
+  // the c++ code assumes ^loaderSub is in reg0
   >reg0
 
-  // get
-  //   o
-  //   r
-  loader
+  // get table, tx and load map from parent loader
+  //   open the chunked file
+  //   read first chunk
+  loaderSub.begin
 
-  // loa
+  // load each record
   begin
 
-    // a
-    load
+    // attempt to fetch next record from file
+    loaderSub.fetchRecord
 
-    // p
-    whil
+    // process record
+    while
 
-      //
-      lo
+      // hash the record to get partition
+      loaderSub.hashRecord
 
-      //
-      lo
+      // attempt to insert record as row into working buffer for partition
+      loaderSub.insertRow?
 
-      //
-      no
+      // was buffer full?
+      not if
 
-tp: buff
+tp: bufferFull
 
-        
-        
+        // append row buffer to table/partition/strand
+        ~loadAppendBuffer
 
-        
-        
-      th
-  repeat
+        // insert row into new working buffer
+        loaderSub.insertRow? assert
+      then
+  repeat // for all records in chunked file
 
 
-  // che
-  args.p
+  // check for dangling buffers
+  args.partitions 0 do
 
-    // s
-    I lo
+    // set the partition we are using
+    I loaderSub.partition!
 
-    // t
-    load
+    // test for a dangling row buffer for parition I
+    loaderSub.rowBuffer
     if
-      //
-      ~l
+      // append row buffer to table/partition/strand
+      ~loadAppendBuffer
     then
 
   loop
 
-  // clo
-  loader
+  // close the file
+  loaderSub.end
 
-  // thi
-  task.p
+  // this sub has completed, ack the parent loader
+  task.parent@ ack
 
-  reg.po
+  reg.pop
 
-//traceO
+//traceOff
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* lock.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* lock.sen -- lock related words                                             */
+/*============================================================================*/
 
-\"lock.s
+\"lock.sen\" .verbose
 
-/*------
-/* lock 
-/*------
+/*----------------------------------------------------------------------------*/
+/* lock is used as a kind of word to identify locks                           */
+/*----------------------------------------------------------------------------*/
 : lock ;
 
-: isLock
+: isLock word.kind@ ' lock eql ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a lock using name from input stream (doesnt leave lock on stk)      */
+/*----------------------------------------------------------------------------*/
 : lock:
   create
-  WT_OBJ
-  sizeof
-  word.t
-  CN_LOC
-  ' lock
-  word.t
-  true w
+  WT_OBJECT word.this word.type!
+  sizeof_lock allot
+  word.this >body object.magic!!
+  CN_LOCK word.this >body object.class!
+  ' lock word.this word.kind!
+  word.this >body lock.init
+  true word.this >body object.wordbody!
   does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a lock using name on stack (leaves lock on stack)                   */
+/*----------------------------------------------------------------------------*/
 : :lock
-  >creat
-  WT_OBJ
-  sizeof
-  word.t
-  CN_LOC
-  ' lock
-  word.t
-  true w
-  word.t
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_lock allot
+  word.this >body object.magic!!
+  CN_LOCK word.this >body object.class!
+  ' lock word.this word.kind!
+  word.this >body lock.init
+  true word.this >body object.wordbody!
+  word.this
   does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* logic
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* logicTests.sen -- logic unit testing                                       */
+/*============================================================================*/
 
-\"logicT
+\"logicTests.sen\" .verbose
 
-: logicT
+: logicTests
 
-  \"  lo
+  \"  logic tests\" .put .\n
 
-  0 if \
+  0 if \"if failure\" . process.quit then
 
-  1 if e
+  1 if else \"else failure\" . process.quit then
 
-  0 not 
+  0 not if else \"not failure\" . process.quit then
 
-  0 0 ==
+  0 0 == if else \"== failure\" . process.quit then
 
-  1 1 ==
+  1 1 == if else \"== failure\" . process.quit then
 
-  0 1 no
+  0 1 not == if else \"not failure\" . process.quit then
 
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* miscT
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* miscTesting.sen -- miscellaneous testing                                   */
+/*============================================================================*/
 
-\"miscTe
+\"miscTesting.sen\" .verbose
 
-: iftest
+: iftest if \"yes\" . then ;
 
-: ifelse
+: ifelsetest if \"yes\" . else \"no\" . then ;
 
-: untilt
+: untiltest 0 begin 1 + dup . dup 10 == until ;
 
-: whilet
+: whiletest 0 begin 1 + dup 10 < while dup . repeat ;
 
-: dotest
-: ?dotes
+: dotest 10 0 do I . loop ;
+: ?dotest 10 0 ?do I . loop 10 10 ?do I . loop ;
 
-: +loopt
+: +looptest 10 0 do I . 2 +loop ;
 
-: iterat
-    word
-      ob
-      ob
-    next
+: iterateTest
+    word.this word.this iterate // iterate word cursor
+      object@ word.name .       // print the name of the word
+      object@ word.prev object! // step backwards thru words
+    next                        // next iteration
 ;
 
-: string
+: string_blowup
 
 traceon
-    \"ab
-    1000
-      \"
-      st
+    \"abcdefghijklmnopqrstuvwxyz\"
+    1000000 0 do
+      \"abcdefghijklmnopqrstuvwxyz\"
+      str.cat
     loop
 ;
 
-str: str
+str: strvar
 
-: strvar
+: strvar_blowup
 
 
 traceon
 
-  \"a\" 
-  100000
-    strv
+  \"a\" strvar !
+  1000000 0 do
+    strvar @ \"a\" str.cat strvar !
   loop
 
 ;
 
-: rottes
+: rottest
 
-  2 1 0 
+  2 1 0 rot . . .
 ;
 
-: invrot
+: invrottest
 
-  2 1 0 
+  2 1 0 -rot . . .
 ;
 
-/*------
-/* globa
-/*------
-: global
+/*----------------------------------------------------------------------------*/
+/* globals testing                                                            */
+/*----------------------------------------------------------------------------*/
+: globalsTest
 
-  reg.pu
+  reg.push
 
-  2048 s
+  2048 str.random 1 >valset
 
   >reg0
 
   reg0
 
-  valset
+  valset>
 
   . .
 
-  reg.po
+  reg.pop
 ;
 
-: global
+: globalsTest2
 
-//traceo
+//traceon
 
-  reg.pu
+  reg.push
 
-  // cre
-  // cur
-  1 neg 
+  // create a vector of the CN_ enums
+  // currently thats ( -- 91 .. 0 92 )
+  1 neg CN_ENUMS 1- ?do I 1 neg +loop CN_ENUMS
 
-  // sho
+  // show the stack
   //stk
 
-  // con
-  >valse
+  // convert to valset
+  >valset
 
-  // put
+  // put into reg0
   >reg0
 
-  // cop
-  reg0 >
+  // copy into reg1
+  reg0 >reg1
 
-  // cop
-  reg1 /
+  // copy back to stack
+  reg1 //dup drop
 
-  // exp
-  valset
+  // expand valset into vector
+  valset>
 
-  // sho
+  // show the stack
   stk
 
-  reg.po
+  reg.pop
 ;
 
-/*------
-/* str.f
-/*------
-: strFor
+/*----------------------------------------------------------------------------*/
+/* str.format testing                                                         */
+/*----------------------------------------------------------------------------*/
+: strFormatTest
 
-  1 \"ab
+  1 \"abc%v\" str.format .
 
-  \"def\
+  \"def\" \"abc%v\" str.format .
 
-  \"gh\"
-  \"%v %
+  \"gh\" 456 \"def\" 23 \"abc\" 1
+  \"%v %v %v %v %v %v\" str.format .
 ;
 
-/*------
-/* local
-/*------
+/*----------------------------------------------------------------------------*/
+/* locals testing                                                             */
+/*----------------------------------------------------------------------------*/
 : lt
 
-  789 45
+  789 456 123 locals| a b c |
 
-  a . b 
+  a . b . c .
 
-  321 to
-  654 to
-  789 to
+  321 to a
+  654 to b
+  789 to c 
 
-  a . b 
+  a . b . c .
 ;
 
-/*------
-/* postp
-/*------
-: callTe
+/*----------------------------------------------------------------------------*/
+/* postpone testing                                                           */
+/*----------------------------------------------------------------------------*/
+: callTest immediate
 
   test
 ;
 
-: postpo
+: postponeTest
 
-  postpo
+  postpone callTest
 ;
 
-/*------
-/* get a
-/*------
-: snapsh
+/*----------------------------------------------------------------------------*/
+/* get a snapshot of the buffer pool objects                                  */
+/*----------------------------------------------------------------------------*/
+: snapshot (  )
 
-  reg.pu
+  reg.push
 
-  bp.sna
+  bp.snapshot ( int int .... #classes )
 
-  >valse
+  >valset
   >reg0
 
-  \"Firs
+  \"First Snapshot...\" .
   reg0
-  valset
+  valset>
   0 do
-    I cl
-    \"%v
+    I class.name
+    \"%v %v\" str.format .
   loop
 
-  bp.sna
+  bp.snapshot ( int int .... #classes )
 
-  >valse
+  >valset
   >reg1
 
-  \"Seco
+  \"Second Snapshot...\" .
   reg1
-  valset
+  valset>
   0 do
-    I cl
-   \"%v 
+    I class.name
+   \"%v %v\" str.format .
   loop
 
-  reg1 r
+  reg1 reg0 vector.diff
 
-  \"Diff
+  \"Differnce of Snapshots...\" .
   0 do
-    I cl
-    \"%v
+    I class.name
+    \"%v %v\" str.format .
   loop
 
-  reg.po
+  reg.pop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* monit
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* monitorTask.sen -- monitor task                                            */
+/*============================================================================*/
 
-\"monito
+\"monitorTask.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
 
-lock:   
+lock:    monitorLock
 
-str:    
+str:     monitorString
 
-taskset:
+taskset: monitorTaskSet
 
-thread: 
+thread:  monitorThread
 
-/*------
-/* start
-/*------
-: monito
+/*----------------------------------------------------------------------------*/
+/* start the monitor task                                                     */
+/*----------------------------------------------------------------------------*/
+: monitorStart
 
-   0 \"m
+   0 \"mon.loop\" nullPtr task.new monitorTaskSet taskSet.Append
 
-   monit
-   \"mon
-        
+   monitorTaskSet  monitorThread thread.taskset!
+   \"monitorThread\" monitorThread thread.name!
+                   monitorThread thread.spawn
 ;
 
-/*------
-/* monit
-/*------
-: mon.lo
+/*----------------------------------------------------------------------------*/
+/* monitor task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: mon.loop
 
-  \"moni
+  \"monitorTask\" task.this task.name!
 
-  \"\" m
+  \"\" monitorString !
 
-  monito
+  monitorTaskPrint if \"Monitor Task running...\" . then
 
   begin
 
-    moni
+    monitorLock lock.grabWrite
 
-      \"
+      \"freespace \" bp.freespace >str str.cat
 
-      \"
+      \" queries \" str.cat
 
-      qu
+      queryCount @ >str str.cat
 
-      mo
+      monitorString !
 
-    moni
+    monitorLock lock.dropWrite
 
-    // m
+    // monitorString @ .
 
-    moni
+    monitorTaskPrint if bp.analyze then
 
-  10 thr
+  10 thread.sleep_s
 
 
   again
 ;
 
-/*------
-/* get m
-/*------
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
 
-: monito
+: monitorString@
 
-    moni
+    monitorLock lock.grabRead
 
-      mo
+      monitorString @
 
-    moni
+    monitorLock lock.dropRead
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* munge
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* munge.sen -- create the .cpp from .sen                                     */
+/*============================================================================*/
 
-\"munge.
+\"munge.sen\" .verbose
 
-/*------
-/* munge
-/*------
-: mungeS
+/*----------------------------------------------------------------------------*/
+/* munge one .sen file                                                        */
+/*----------------------------------------------------------------------------*/
+: mungeSenFile ( \"<fileNm\"> cppFile -- )
 
   // ...
 
-  \"\" f
+  \"\" file.new locals| senFile senLine cppFile |
 
-  senFil
+  senFile file.path!
 
-  OPEN_R
+  OPEN_READ senFile file.open assert
 
-  begin 
+  begin senFile file.read while
 
-    dup 
+    str.escape to senLine
 
-    senF
-      \"
-      se
-      .\
-
-    senL
+/*
+    senFile file.path@ .put
+      \" : \" .put
+      senLine .put
+      .\n
+*/
+    senLine cppFile file.write \"\n\" cppFile file.write
 
   repeat
 
-  // clo
-  senFil
-  senFil
+  // close and delete the file accessor
+  senFile file.close
+  senFile file.delete
 ;
 
-/*------
-/* munge
-/*------
+/*----------------------------------------------------------------------------*/
+/* munge all .sen files                                                       */
+/*----------------------------------------------------------------------------*/
 : munge
 
-  // cre
-  file.n
+  // create a directory accessor
+  file.new dir.new locals| commandDir cppFile |
 
-  // set
-  \".\" 
+  // set path in the directory accessor
+  \".\" commandDir dir.path!
 
-  // ope
-  comman
+  // open directory
+  commandDir dir.open
 
-  // ope
-  \"../M
-  OPEN_W
+  // open cpp file
+  \"../Munge/munge.cpp\" cppFile file.path!
+  OPEN_WRITE cppFile file.open assert
 
-  // rea
-  begin 
+  // read thru directory
+  begin commandDir dir.read while
 
-    // i
-    comm
+    // ignore entries which aren't regular files
+    commandDir dir.entryType DE_REG == not continue
 
-    // i
-    4 co
-    comm
+    // ignore entries which aren't .sen files
+    4 commandDir dir.entryName str.right \".sen\" str.equal not continue
+    commandDir dir.entryName .
 
-    // c
-    comm
+    // convert to C++
+    commandDir dir.entryName cppFile mungeSenFile
 
   repeat
 
-  // clo
-  cppFil
-  cppFil
+  // close and delete file accessor
+  cppFile file.close
+  cppFile file.delete
 
-  // clo
-  comman
-  comman
+  // close and delete directory accessor
+  commandDir dir.close
+  commandDir dir.delete
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* node.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* node.sen -- node routines                                                  */
+/*============================================================================*/
 
-\"node.s
+\"node.sen\" .verbose
 
-/*------
-/* node 
-/*------
+/*----------------------------------------------------------------------------*/
+/* node is use as a kind of word to identify nodes (of a grid)                */
+/*----------------------------------------------------------------------------*/
 : node ;
 
-: isNode
+: isNode word.kind@ ' node eql ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a node using name from input stream                                 */
+/*----------------------------------------------------------------------------*/
 : node:
-    crea
-    WT_O
-    size
-    word
-    CN_N
-    word
-    ' no
-    true
-    does
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_node allot
+    word.this >body object.magic!!
+    CN_NODE word.this >body object.class!
+    word.this >body node.init
+    ' node word.this word.kind!
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a node using name on the stack (leaves node word on stack)          */
+/*----------------------------------------------------------------------------*/
 : :node
-    >cre
-    WT_O
-    size
-    word
-    CN_N
-    word
-    ' no
-    true
-    word
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_node allot
+    word.this >body object.magic!!
+    CN_NODE word.this >body object.class!
+    word.this >body node.init
+    ' node word.this word.kind!
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* nodeC
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* nodeCursor.sen -- Node Cursor                                              */
+/*============================================================================*/
 
-\"nodeCu
+\"nodeCursor.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: nodeCu
-    crea
-    WT_O
-    size
-    word
-    CN_N
-    word
-    true
-    does
+/*----------------------------------------------------------------------------*/
+/* create a nodeCursor using name from input stream                           */
+/*----------------------------------------------------------------------------*/
+: nodeCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_nodeCursor allot
+    word.this >body object.magic!!
+    CN_NODECURSOR word.this >body object.class!
+    word.this >body nodeCursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
-: :nodeC
-    >cre
-    WT_O
-    size
-    word
-    CN_N
-    word
-    true
-    word
-    does
+/*----------------------------------------------------------------------------*/
+/* create a nodeCursor using name on the stack              (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :nodeCursor
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_nodeCursor allot
+    word.this >body object.magic!!
+    CN_NODECURSOR word.this >body object.class!
+    word.this >body nodeCursor.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: ::node
+: ::nodeCursor ( create a temporary nodeCursor )
 
-    \"__
-    not 
-      dr
-      \"
+    \"__nodeCursor__\" find dup
+    not if
+      drop
+      \"__nodeCursor__\" :nodeCursor
     then
-    exec
+    execute
 ;
 
-: ~nodeC
+: ~nodeCursor ( forget temporary nodeCursor )
 
-    \"__
+    \"__nodeCursor__\" find >forget
 ;
 
-: listNo
+: listNodes ( list all nodes in grid )
 
-    ::no
+    ::nodeCursor >r // r0 ^nodeCursor
 
-    r0 n
-    r0 n
-    begi
-      wh
-      r0
-      no
-      r0
-    repe
+    r0 nodeCursor.begin
+    r0 nodeCursor.first
+    begin
+      while
+      r0 nodeCursor.get
+      node.no .
+      r0 nodeCursor.next
+    repeat
 
-    rdro
+    rdrop
 
-    ~nod
+    ~nodeCursor
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* parti
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* participantProxy.sen -- participant proxy                                  */
+/*============================================================================*/
 
-\"partic
+\"participantProxy.sen\" .verbose
 
-/*------
-/* parti
-/*------
-: pp.loo
+/*----------------------------------------------------------------------------*/
+/* participant proxy processing loop                                          */
+/*----------------------------------------------------------------------------*/
+: pp.loop ( actorNo forwardTask -- )
 
-  \"pp.l
+  \"pp.loop\" task.this task.comment!
 
-tp: part
+tp: participantProxy
 
-  // pus
-  reg.pu
+  // push a register frame (holds CALLER etc)
+  reg.push
 
-  locals
+  locals| forwardTask actorNo |
 
-  //>r (
-  //>r (
-  // r0 
-  // r1 
+  //>r ( actorNo )
+  //>r ( )
+  // r0 has actorNo (nodeNo)
+  // r1 has forwardTask
 
-  task.t
+  task.this actorNo ppTasks !
 
   begin
 
-    dept
+    depth 0 != if \"stack of task has grown\" . debug.trap then
 
-    // p
-    task
+    // pop valset off this tasks queue
+    taskQueue> ( valset )
 
-    // s
-    exeO
+    // set caller into reg0
+    exeOne 
 
-    acto
+    actorNo args.node ==
     if
-      //
+      // forward to participant on local node
 
-      ad
+      addSetCaller
 
-      fo
+      forwardTask >taskQueue;a>
 
     else
-      //
+      // forward to participant on other node (via CP)
 
-      ad
+      addSetSender
 
-      ac
+      actorNo addPassOnToCp
 
-      ac
+      actorNo >sndQueue;a>
 
     then
 
-tp: resu
+tp: resumed
 
-    >cal
+    >callerAux ( )
 
   again
 
-  // rdr
-  // rdr
+  // rdrop
+  // rdrop
 
-  // pop
-  reg.po
+  // pop a register frame
+  reg.pop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* parti
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* participantTask.sen -- participant task                                    */
+/*============================================================================*/
 
-\"partic
+\"participantTask.sen\" .verbose
 
-/*------
-/* execu
-/*------
+/*----------------------------------------------------------------------------*/
+/* execute all indirect call processing loop                                  */
+/*----------------------------------------------------------------------------*/
 : p.loop
 
-  \"p.lo
+  \"p.loop\" task.this task.comment!
 
-  // pus
-  reg.pu
+  // push a register frame
+  reg.push
 
   begin
 
-    dept
+    depth 0 != if \"stack of task has grown\" . debug.trap then
 
-    // p
-    task
+    // pop valset off queue and push onto this stack
+    taskQueue> ( valset )
 
-    exeA
+    exeAll
 
-    // c
-    >res
+    // convert indirect result into valset
+    >result ( valset )
 
-    // p
-    >cal
+    // put indirect result onto stack of caller and signal
+    >callerAux ( )
 
   again
 
-  // pop
-  reg.po
+  // pop a register frame
+  reg.pop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* queue
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* queue.sen -- a generic queue                                               */
+/*============================================================================*/
 
-\"queue.
+\"queue.sen\" .verbose
 
-: queue 
+: queue ;
 
 : queue:
-    crea
-    WT_O
-    size
-    word
-    CN_Q
-    ' qu
-    word
-    true
-    does
+    create 
+    WT_OBJECT word.this word.type!
+    sizeof_queue allot
+    word.this >body object.magic!!
+    CN_QUEUE word.this >body object.class!
+    ' queue word.this word.kind!
+    word.this >body queue.init
+    true word.this >body object.wordbody!
+    does> 
 ;
 
 : :queue
-    >cre
-    WT_O
-    size
-    word
-    CN_Q
-    ' qu
-    word
-    true
-    word
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_queue allot
+    word.this >body object.magic!!
+    CN_QUEUE word.this >body object.class!
+    ' queue word.this word.kind!
+    word.this >body queue.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* Recei
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* ReceiverTask.sen -- receiver task                                          */
+/*============================================================================*/
 
-\"Receiv
+\"ReceiverTask.sen\" .verbose
 
-/*------
-/* recv 
-/*------
-: recv> 
+/*----------------------------------------------------------------------------*/
+/* recv valset from the socket                                                */
+/*----------------------------------------------------------------------------*/
+: recv> ( -- valset )
 
-  task.t
+  task.this task.socket@
 
-  tp: re
+  tp: receiving
 
-  socket
+  socket.recv
 
-tp: rece
+tp: received
 ;
 
-/*------
-/* recei
-/*------
-: rcv.lo
+/*----------------------------------------------------------------------------*/
+/* receiver task processing loop                                              */
+/*----------------------------------------------------------------------------*/
+: rcv.loop ( socket -- )
 
-tp: snd.
+tp: snd.loop
 
-  task.t
+  task.this task.socket!
 
-  \"rcv.
+  \"rcv.loop\" task.this task.comment!
 
-  receiv
+  receiverTaskPrint if \"Receiver running on node\" args.node >str str.cat . then
 
   begin
-    dept
+    depth 0 != if stk \"stack of task has grown\" . debug.trap then
 
-    recv
+    recv>
 
-    exeO
+    exeOne
 
   again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* recla
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* reclaimTask.sen -- reclaim task                                            */
+/*============================================================================*/
 
-\"reclai
+\"reclaimTask.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
 
-lock:   
+lock:    reclaimLock
 
-str:    
+str:     reclaimString
 
-taskset:
+taskset: reclaimTaskSet
 
-thread: 
+thread:  reclaimThread
 
-seitfCur
+seitfCursor: seitfCrs
 
-/*------
-/* start
-/*------
-: reclai
+/*----------------------------------------------------------------------------*/
+/* start the reclaim task                                                     */
+/*----------------------------------------------------------------------------*/
+: reclaimStart
 
-   0 \"r
+   0 \"rec.loop\" nullPtr task.new reclaimTaskSet taskSet.Append
 
-   recla
-   \"rec
-        
+   reclaimTaskSet  reclaimThread thread.taskset!
+   \"reclaimThread\" reclaimThread thread.name!
+                   reclaimThread thread.spawn
 ;
 
-/*------
-/* recla
-/*------
-: iterat
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: iterateSEitfList
 
-    seit
+    seitfcrs seitfcrs seitfcursor.begin
 
-    iter
+    iterate
 
-      re
-        
-      th
+      reclaimTaskPrint if
+        object@ seitf.dump
+      then
 
-      ob
-        
-        
+      object@ task.this task.seitf!
+        \"pid\" find execute
+        0 task.this task.seitf!
 
-      re
-        
-      th
+      reclaimTaskPrint if
+        dup .put \" \" .put dup process.testpid .put .\n
+      then
 
-      pr
-        
-        
-        
-        
-        
-        
-      el
-        
-        
-        
-        
-      th
+      process.testpid not if
+        reclaimTaskPrint if
+          \"deleting...\" .
+        then
+        object@
+        cursor@ seitfcursor.end 0 object!
+        seitf.delete
+      else
+        reclaimTaskPrint if
+          \"not deleteing\" .
+        then
+        cursor@ seitfcursor.next object!
+      then
 
     next
 
-    seit
+    seitfcrs seitfcursor.end
 ;
 
-/*------
-/* recla
-/*------
-: rec.lo
+/*----------------------------------------------------------------------------*/
+/* reclaim task loop                                                          */
+/*----------------------------------------------------------------------------*/
+: rec.loop
 
-    \"re
+    \"reclaimTask\" task.this task.name!
 
-    \"\"
+    \"\" reclaimString !
 
-    recl
+    reclaimTaskPrint if \"reclaim Task running...\" . then
 
-    begi
+    begin
 
-      re
+      reclaimLock lock.grabWrite
 
-      it
+      iterateSEitfList
 
-      re
+      reclaimLock lock.dropWrite
 
-      //
+      // reclaimString @ .
 
-      3 
+      3 thread.sleep_s
 
-    agai
+    again
 ;
 
-/*------
-/* get r
-/*------
+/*----------------------------------------------------------------------------*/
+/* get reclaim string                                                         */
+/*----------------------------------------------------------------------------*/
 
-: reclai
+: reclaimString@
 
-    recl
+    reclaimLock lock.grabRead
 
-      re
+      reclaimString @
 
-    recl
+    reclaimLock lock.dropRead
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* reque
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* requestSet.sen -- request set group                                        */
+/*============================================================================*/
 
-\"reques
+\"requestSet.sen\" .verbose
 
-\"copier
-\"export
-\"fileGe
-\"loader
-\"loader
+\"copier.sen\" >>:
+\"exporter.sen\" >>:
+\"fileGen.sen\" >>:
+\"loaderSub.sen\" >>:
+\"loader.sen\" >>:
 
-\"reques
+\"requests.sen\" >>:
 
-\"stream
+\"streamLoader.sen\" >>:
 
-// creat
-createDe
+// create /tenants/boray/catalogs/rapidsse
+createDefaultFolders
 
-/*======
-/* end  
-/*======
-/*======
-/* reque
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* requests.sen -- the set of requests supported by requestTask               */
+/*============================================================================*/
 
-\"reques
+\"requests.sen\" .verbose
 
-/* * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-Connecti
+Connection Requests:
 
-  con   
-  dis   
+  con     connect
+  dis     disconnect
 
-Tenant R
+Tenant Requests:
 
-  mkten 
-  lsten 
-  rmten 
+  mkten   create_tenant
+  lsten   list_tenants
+  rmten   drop_tenant
 
-Catalog 
+Catalog Requests:
 
-  mkcat 
-  lscat 
-  rmcat 
+  mkcat   create_catalog
+  lscat   list_catalogs
+  rmcat   drop_catalog
 
-Schema R
+Schema Requests:
 
-  mksch 
-  lssch 
-  rmsch 
-  usesch
+  mksch   create_schema
+  lssch   list_schemas
+  rmsch   drop_schema
+  usesch  use_schema
 
-Table Re
+Table Requests:
 
-  gettbl
-  mktbl 
-  lstbl 
-  add   
-  lscol 
-  ld    
-  tblInU
-  sel   
-  dump  
-  cp    
-  ex    
-  sz    
-  tr    
-  rettbl
-  rmtbl 
+  gettbl  get_table
+  mktbl   create_table
+  lstbl   list_tables
+  add     add_column
+  lscol   list_columns
+  ld      load_table
+  tblInUse  table_inuse
+  sel     select_table
+  dump    dump_table
+  cp      copy_table
+  ex      export_table
+  sz      size_table
+  tr      truncate_table
+  rettbl  return_table
+  rmtbl   drop_table
 
-Dictiona
+Dictionary Requests:
 
-  cf    
-        
-        
-  pwf   
-  lf    
+  cf      cf ..
+          cf ~
+          cf
+  pwf     pwf
+  lf      lf
 
-Misc Req
+Misc Requests:
 
-  seitf 
-  mon   
-  ping  
-  x     
+  seitf   seitf_count
+  mon     get_monitor
+  ping    ping
+  x       x
 
-Grid Req
-  lfG   
-  pRB   
+Grid Request:
+  lfG     lf on grid
+  pRB     print a row buffer on each node
 
-* * * * 
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-//: <ERR
+//: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
 
-: <NIP+E
+: <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock.testDrop ;
 
-: <SUCCE
+: <SUCCESS> 0 2 ddlLock.testDrop ;
 
-: <OK> \
+: <OK> \"<ok>\" 0 2 ddlLock.testDrop ;
 
-/*------
-/* check
-/*------
-: checkE
+/*----------------------------------------------------------------------------*/
+/* check system has enough buffers                                            */
+/*----------------------------------------------------------------------------*/
+: checkEnoughBuffers
 
-  bp.fre
+  bp.freeBuffers 100 >
   if
-    true
+    true exit
   else
-    EC_L
+    EC_LOW_BUFFERS false
   then
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*------
-/* conne
-/*------
-: connec
+/*----------------------------------------------------------------------------*/
+/* connect to SE                                                              */
+/*----------------------------------------------------------------------------*/
+: connect
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* disco
-/*------
-: discon
+/*----------------------------------------------------------------------------*/
+/* disconnect from SE                                                         */
+/*----------------------------------------------------------------------------*/
+: disconnect
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*------
-/* creat
-/*------
-: create
+/*----------------------------------------------------------------------------*/
+/* create a tenant                                                            */
+/*----------------------------------------------------------------------------*/
+: create_tenant ( \"<tenantNm>\" -- <R> )
 
-tp: crea
+tp: createTenant
 
-ddlLock.
+ddlLock.grabWrite
 
-  checkE
-  checkM
+  checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
+  checkMakeTenant    not if <NIP+ERROR> exit then
 
-//traceo
-  makeTe
-//traceo
+//traceon
+  makeTenant ( ) assert.stack_0
+//traceoff
 
-tp: crea
+tp: createdTenant
 
   <OK>
 ;
 
-/*------
-/* get l
-/*------
-: list_t
+/*----------------------------------------------------------------------------*/
+/* get list of tenants                                                        */
+/*----------------------------------------------------------------------------*/
+: list_tenants ( -- <R> )
 
-ddlLock.
+ddlLock.grabRead
 
-  checkI
+  checkInTenants not if <NIP+ERROR> exit then
 
-  listCo
+  listContents
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* drop 
-/*------
-: drop_t
+/*----------------------------------------------------------------------------*/
+/* drop a tenant                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_tenant ( \"<tenantNm>\" -- <R> )
 
-tp: drop
+tp: dropTenant
 
-ddlLock.
+ddlLock.grabWrite
 
-  checkR
+  checkRemoveTenant not if <NIP+ERROR> exit then
 
-  remove
+  removeTenant ( ) assert.stack_0
 
-tp: remo
+tp: removedTenant
 
   <OK>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*------
-/* creat
-/*------
-: create
+/*----------------------------------------------------------------------------*/
+/* create a catalog                                                           */
+/*----------------------------------------------------------------------------*/
+: create_catalog ( \"<catalogNm>\" -- <R> )
 
-ddlLock.
+ddlLock.grabWrite
 
-  checkE
-  checkM
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeCatalog   not if <NIP+ERROR> exit then
 
-  makeCa
-
-  <OK>
-;
-
-/*------
-/* get l
-/*------
-: list_c
-
-ddlLock.
-
-  checkI
-
-  listCo
-
-  <SUCCE
-;
-
-/*------
-/* drop 
-/*------
-: drop_c
-
-tp: drop
-
-ddlLock.
-
-  checkR
-
-  remove
-
-tp: remo
+  makeCatalog ( ) assert.stack_0
 
   <OK>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/* get list of catalogs                                                       */
+/*----------------------------------------------------------------------------*/
+: list_catalogs ( -- <R> )
 
-/*------
-/* creat
-/*------
-: create
+ddlLock.grabRead
 
-ddlLock.
+  checkInCatalogs not if <NIP+ERROR> exit then
 
-  checkE
-  checkM
+  listContents
 
-  makeSc
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a catalog                                                             */
+/*----------------------------------------------------------------------------*/
+: drop_catalog ( \"<catalogNm>\" -- <R> )
+
+tp: dropCatalog
+
+ddlLock.grabWrite
+
+  checkRemoveCatalog not if <NIP+ERROR> exit then
+
+  removeCatalog ( ) assert.stack_0
+
+tp: removedCatalog
 
   <OK>
 ;
 
-/*------
-/* get l
-/*------
-: list_s
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-ddlLock.
+/*----------------------------------------------------------------------------*/
+/* create a schema                                                            */
+/*----------------------------------------------------------------------------*/
+: create_schema ( \"<schemaNm>\" -- <R> )
 
-  checkI
+ddlLock.grabWrite
 
-  listCo
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeSchema    not if <NIP+ERROR> exit then
 
-  <SUCCE
-;
-
-/*------
-/* drop 
-/*------
-: drop_s
-
-tp: drop
-
-ddlLock.
-
-  checkR
-
-  remove
-
-tp: drop
+  makeSchema ( ) assert.stack_0
 
   <OK>
 ;
 
-/*------
-/* use a
-/*------
-: use_sc
+/*----------------------------------------------------------------------------*/
+/* get list of schemas                                                        */
+/*----------------------------------------------------------------------------*/
+: list_schemas ( -- <R> )
 
-  begin 
+ddlLock.grabRead
 
-  // fin
-  \"bora
-  execut
+  checkInSchemas not if <NIP+ERROR> exit then
 
-  // fin
-  \"cata
-  execut
+  listContents
 
-  // fin
-  \"rapi
-  execut
+  <SUCCESS>
+;
 
-  // fin
-  \"sche
-  execut
+/*----------------------------------------------------------------------------*/
+/* drop a schema                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_schema ( \"<schemaNm>\" -- <R> )
 
-  checkI
-  checkI
-  execut
+tp: dropSchema
 
-  // fin
-  \"tabl
-  execut
+ddlLock.grabWrite
+
+  checkRemoveSchema not if <NIP+ERROR> exit then
+
+  removeSchema ( ) assert.stack_0
+
+tp: droppedSchema
 
   <OK>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/* use a schema                                                               */
+/*----------------------------------------------------------------------------*/
+: use_schema ( \"<schemaNm>\" -- <R> )
 
-/*------
-/* creat
-/*------
-: create
+  begin 0 dic.pick dic.name \"tenants\" str.equal not while dic.drop repeat
 
-ddlLock.
+  // find the boray folder
+  \"boray\" findInCurrent
+  execute dic.push
 
-  checkE
-  checkM
+  // find the catalogs folder
+  \"catalogs\" findInCurrent
+  execute dic.push
 
-  makeTa
+  // find the rapidssecatalogs folder
+  \"rapidsse\" findInCurrent
+  execute dic.push
+
+  // find the schemas folder
+  \"schemas\" findInCurrent
+  execute dic.push
+
+  checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
+  checkIsSchema not if <NIP+ERROR> exit then
+  execute dic.push
+
+  // find the tables folder
+  \"tables\" findInCurrent
+  execute dic.push
 
   <OK>
 ;
 
-/*------
-/* get l
-/*------
-: list_t
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-ddlLock.
+/*----------------------------------------------------------------------------*/
+/* create a table                                                             */
+/*----------------------------------------------------------------------------*/
+: create_table ( \"<tableNm>\" -- <R> )
 
-  checkI
+ddlLock.grabWrite
 
-  listCo
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeTable     not if <NIP+ERROR> exit then
 
-  <SUCCE
+  makeTable ( ) assert.stack_0
+
+  <OK>
 ;
 
-/*------
-/* load 
-/*------
+/*----------------------------------------------------------------------------*/
+/* get list of tables                                                         */
+/*----------------------------------------------------------------------------*/
+: list_tables ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* load a table                                                               */
+/*----------------------------------------------------------------------------*/
 /*
-: load_t
+: load_table ( \"<fileNm>\" \"<tableNm>\" -- <R> )
 
-ddlLock.
+ddlLock.grabRead
 
-  checkI
-  checkI
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-  //bp.f
+  //bp.freespace .
 
-  reg.pu
+  reg.push
 
 snap0:
 
-  tableL
+  tableLoader   not if <NIP+ERROR> exit then
 
-  //bp.f
+  //bp.freespace .
 
 snap1:
 
-  reg1 r
+  reg1 reg0 vector.diff
 
   0 do
-    dup 
-      I 
+    dup 0 != if
+      I class.name \"%v %v\" str.format .
     else
-      dr
+      drop
     then
   loop
-  reg.po
+  reg.pop
   <OK>
 ;
 */
-: load_t
+: load_table ( \"<fileNm>\" \"<tableNm>\" -- <R> )
 
-  ddlLoc
+  ddlLock.grabRead
 
-  checkI
-  checkI
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-  //bp.f
+  //bp.freespace .
 
-  tableL
+  tableLoader   not if <NIP+ERROR> exit then
 
-  //bp.f
-
-  <OK>
-;
-
-/*------
-/* load 
-/*------
-: load_t
-
-  ddlLoc
-
-  checkI
-  checkI
-
-  //bp.f
-
-  tableL
-
-  //bp.f
+  //bp.freespace .
 
   <OK>
 ;
 
-/*------
-/* expor
-/*------
-: export
+/*----------------------------------------------------------------------------*/
+/* load a table from a stream                                                 */
+/*----------------------------------------------------------------------------*/
+: load_table_stream ( \"<fileNm>\" \"<tableNm>\" -- <R> )
 
-ddlLock.
+  ddlLock.grabRead
 
-  checkI
-  checkI
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-  tableE
+  //bp.freespace .
 
-  <OK>
-;
+  tableLoaderStream2 not if <NIP+ERROR> exit then
 
-/*------
-/* copy 
-/*------
-: copy_t
-
-ddlLock.
-
-  checkE
-  checkI
-  checkI
-
-  //bp.f
-
-  tableC
-
-  //bp.f
+  //bp.freespace .
 
   <OK>
 ;
 
-/*------
-/* dump 
-/*------
-: dump_t
+/*----------------------------------------------------------------------------*/
+/* export a table                                                             */
+/*----------------------------------------------------------------------------*/
+: export_table ( \"<fileNm>\" \"<tableNm>\" -- <R> )
 
-ddlLock.
+ddlLock.grabRead
 
-  checkI
-  checkI
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-  dumpTa
-
-  <OK>
-;
-
-/*------
-/* appen
-/*------
-: table_
-
-ddlLock.
-
-  table.
+  tableExporter not if <NIP+ERROR> exit then
 
   <OK>
 ;
 
-/*------
-/* get s
-/*------
-: size_t
+/*----------------------------------------------------------------------------*/
+/* copy a table. from-table must exist & to-table is created                  */
+/*----------------------------------------------------------------------------*/
+: copy_table ( \"<to-tableNm>\" \"<from-tableNm>\" -- <R> )
 
-ddlLock.
+ddlLock.grabRead
 
-  checkI
-  checkI
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkInTables      not if <NIP+ERROR> exit then
+  checkIsTable       not if <NIP+ERROR> exit then
 
-  sizeTa
+  //bp.freespace .
 
-  <SUCCE
-;
+  tableCopier
 
-/*------
-/* get r
-/*------
-: select
-
-ddlLock.
-
-  getTab
-
-  select
-
-  <SUCCE
-;
-
-/*------
-/* trunc
-/*------
-: trunca
-
-ddlLock.
-
-  checkI
-  checkI
-
-  trunca
+  //bp.freespace .
 
   <OK>
 ;
 
-/*------
-/* drop 
-/*------
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+: dump_table ( \"<tableNm>\" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  dumpTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* append row buffer into table                                               */
+/*----------------------------------------------------------------------------*/
+: table_append ( \"table\", \"buffer\", \"partition\" -- <R> )        //! append_table
+
+ddlLock.grabRead
+
+  table.append
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: size_table ( \"<tableNm>\" -- <R> )
+
+ddlLock.grabWrite
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  sizeTable ( \"<size>\" )
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get row cursor for table                                                   */
+/*----------------------------------------------------------------------------*/
+: select_table ( \"<tableNm>\" -- <R> )
+
+ddlLock.grabRead
+
+  getTableRef not if <NIP+ERROR> exit then
+
+  selectTable
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncate_table ( \"<tableNm>\" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  truncateTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a table                                                               */
+/*----------------------------------------------------------------------------*/
 /*
-: drop_t
+: drop_table ( \"<tableNm>\" -- <R> )
 
-tp: drop
+tp: dropTable
 
-  reg.pu
+  reg.push
 snap0:
 
-ddlLock.
+ddlLock.grabWrite
 
-  checkR
+  checkRemoveTable not if <NIP+ERROR> exit then
 
-tp ( \"<
+tp ( \"<tableNm>\" )
 
-  remove
+  removeTable ( ) assert.stack_0
 
 snap1:
 
-  reg1 r
+  reg1 reg0 vector.diff
   0 do
-    dup 
-      I 
+    dup 0 != if
+      I class.name \"%v %v\" str.format .
     else
-      dr
+      drop
     then
 loop
-  reg.po
+  reg.pop
 
-tp: drop
+tp: droppedTable
 
   <OK>
 ;
 */
-: drop_t
+: drop_table ( \"<tableNm>\" -- <R> )
 
-  tp: dr
+  tp: dropTable
 
-  ddlLoc
+  ddlLock.grabWrite
 
-  checkR
+  checkRemoveTable not if <NIP+ERROR> exit then
 
-  tp ( \
+  tp ( \"<tableNm>\" )
 
-  remove
+  removeTable ( ) assert.stack_0
 
-  tp: dr
+  tp: droppedTable
 
   <OK>
 ;
 
-/*------
-/* any o
-/*------
-: table_
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: table_inuse ( \"<tableNm>\" -- <R> )
 
-  checkI
-  checkI
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
 
-  tableI
+  tableInUse
   if
-    \"ta
+    \"table in use\" .
   else
-    \"ta
+    \"table not in use\" .
   then
 
    <OK>
 ;
 
-/*------
-/* get a
-/*------
-: get_ta
+/*----------------------------------------------------------------------------*/
+/* get a table ref                                                            */
+/*----------------------------------------------------------------------------*/
+: get_table ( \"<tableNm>\" -- <R> )
 
-  getTab
-
-  <OK>
-;
-
-/*------
-/* retur
-/*------
-: return
-
-  return
+  getTableRef not if <NIP+ERROR> exit then
 
   <OK>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/* return a table ref                                                         */
+/*----------------------------------------------------------------------------*/
+: return_table ( )
 
-/*------
-/* add a
-/*------
-: add_co
-
-  checkA
-
-  ~addCo
+  returnTableRef not if <NIP+ERROR> exit then
 
   <OK>
 ;
 
-/*------
-/* get l
-/*------
-: list_c
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-  checkI
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+: add_column ( \"<columnTy>\" \"<columnNm>\" \"<tableNm>\" -- <R> )
 
-  listCo
+  checkAddColumn not if <NIP+ERROR> exit then
 
-  <SUCCE
+  ~addColumn ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of columns                                                        */
+/*----------------------------------------------------------------------------*/
+: list_columns ( \"<tableNm>\" -- <R> )
+
+  checkInTables not if <NIP+ERROR> exit then
+
+  listColumns
+
+  <SUCCESS>
 ;
 
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*------
-/* chang
-/*------
+/*----------------------------------------------------------------------------*/
+/* change folder                                                              */
+/*----------------------------------------------------------------------------*/
 : cf
 
-  dup \"
+  dup \"..\" str.equal if
     drop
-    0 di
+    0 dic.pick dic.name \"tenants\" str.equal not if dic.drop then
   else
-    dup 
-      dr
-      be
+    dup \"~\" str.equal if
+      drop
+      begin 0 dic.pick dic.name \"tenants\" str.equal not while dic.drop repeat
     else
-      du
-        
-        
-        
-      el
-        
-        
-        
-      th
+      dup \"tenants\" str.equal if
+        begin 0 dic.pick dic.name \"seitf\" str.equal not while dic.drop repeat
+        checkIsWord not if <NIP+ERROR> exit then
+        execute dic.push
+      else
+        find
+        checkIsDic not if <NIP+ERROR> exit then
+        execute dic.push
+      then
     then
   then
 
@@ -5515,77 +5516,77 @@ tp: drop
 ;
 
 
-/*------
-/* print
-/*------
+/*----------------------------------------------------------------------------*/
+/* print working folder                                                       */
+/*----------------------------------------------------------------------------*/
 : pwf
 
   \"/\"
-  dic.co
-    dic.
-    dic.
-    \"/\
+  dic.count 2 do
+    dic.count 1 - I -
+    dic.pick dic.name str.cat
+    \"/\" str.cat
   loop
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* list 
-/*------
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
 : lf
 
   \"\"
-  0 dic.
+  0 dic.pick dic.last dup iterate
 
-    dup 
+    dup str.length if \"\n\" str.cat then
 
-    obje
+    object@ word.name 12 str.pad str.cat
 
-    \"(\
+    \"(\" str.cat
 
-    obje
-      \"
-      ob
+    object@ isTable if
+      \"table \" str.cat
+      object@ execute table.space bytes.magnitude str.cat
     then
 
-    obje
-      ob
+    object@ isFolder if
+      object@ execute dic.kind@ word.name str.cat
     then
 
-    \")\
+    \")\" str.cat
 
-    obje
+    object@ word.prev object!
 
   next
 
-   <SUCC
+   <SUCCESS>
 ;
 
-/*------
-/* list 
-/*------
-: ~lf ( 
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: ~lf ( )
 
-tp: lfOn
+tp: lfOnAll
 
-  // set
-  $$ \"l
+  // set indirect call to be lf_
+  $$ \"lf_\"
 
-  tp: th
+  tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: lfOn
+tp: lfOnAllDone
 
-  checkR
+  checkResult
 ;
 
-/*------
-/* list 
-/*------
+/*----------------------------------------------------------------------------*/
+/* list folder contents across the grid                                       */
+/*----------------------------------------------------------------------------*/
 : lfG
 
   ~lf
@@ -5593,537 +5594,537 @@ tp: lfOn
   <OK>
 ;
 
-/*------
-/* list 
-/*------
-: lf$ ( 
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf$ ( )
 
 tp: lf
 
-  \"LIST
+  \"LISTING FOLDER on NODE \" args.node >str str.cat .
 
   \"\"
-  0 dic.
+  0 dic.pick dic.last dup iterate
 
-  dup st
+  dup str.length if \"\n\" str.cat then
 
-  object
+  object@ word.name 12 str.pad str.cat
 
-  \"(\" 
+  \"(\" str.cat
 
-  object
-  \"tabl
-  object
+  object@ isTable if
+  \"table \" str.cat
+  object@ execute table.space bytes.magnitude str.cat
   then
 
-  object
-  object
+  object@ isFolder if
+  object@ execute dic.kind@ word.name str.cat
   then
 
-  \")\" 
+  \")\" str.cat
 
-  object
+  object@ word.prev object!
 
   next
 
   .
 
-  //drop
+  //drop ( \"<tenantNm>\" )
 
-  true (
+  true ( true )
 ;
 
-/*------
-/* list 
-/*------
-: lf_ ( 
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf_ (  #folders -- true )
 
-  depth 
-    \"di
+  depth 0 != if
+    \"dicStack!\" str.equal
     if
-  tp: se
-    !ind
+  tp: settingDicStack
+    !indirect drop
     then
   then
 
   lf$
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*------
-/* get s
-/*------
-: space$
+/*----------------------------------------------------------------------------*/
+/* get space in the pool (run by participant)                                 */
+/*----------------------------------------------------------------------------*/
+: space$ ( -- <R> )
 
-tp: gett
+tp: gettingSpace
 
-  args.t
-    \"GE
+  args.tracepoint if
+    \"GETTING SPACE on NODE \"args.node >str str.cat .
   then
 
-  \"Pool
-  \" InU
-  \" Fre
+  \"Pool - Size(\" 2 bp.totalSpace number.magnitude str.cat \")\" str.cat
+  \" InUse(\" 2 bp.inUseSpace number.magnitude str.cat \")\" str.cat
+  \" Free(\" 2 bp.freespace number.magnitude str.cat \")\" str.cat
 
-  str.ca
+  str.cat str.cat
 
-  <SUCCE
+  <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
-: ~space
+/*----------------------------------------------------------------------------*/
+/* have participants run: space$                                              */
+/*----------------------------------------------------------------------------*/
+: ~space (  )
 
-tp: spac
+tp: spaceOnAll
 
-  // the
-  \"spac
+  // the indirect word to be called
+  \"space$\"
 
-  tp: th
+  tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  // spa
-  >>allP
+  // space$ to be executed by all participants
+  >>allParticipants> ( bool )
 
-  tp: sp
+  tp: spaceOnAllDone
 
-  printR
+  printResult
 tp: dpne
 ;
 
-/*------
-/* get s
-/*------
-: space 
+/*----------------------------------------------------------------------------*/
+/* get space in the pool                                                      */
+/*----------------------------------------------------------------------------*/
+: space ( -- <R> )
 
-  ~space
+  ~space ( ) assert.stack_0
 
   <OK>
 ;
 
-/*------
-/* get f
-/*------
-: getFre
+/*----------------------------------------------------------------------------*/
+/* get free space in the pool                                                 */
+/*----------------------------------------------------------------------------*/
+: getFreeSpace ( -- <R> )
 
-  bp.fre
-
-  >str
-
-  <SUCCE
-;
-
-/*------
-/* get i
-/*------
-: getInU
-
-  bp.inU
+  bp.freespace
 
   >str
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* get t
-/*------
-: getTot
+/*----------------------------------------------------------------------------*/
+/* get inUse space in the pool                                                */
+/*----------------------------------------------------------------------------*/
+: getInUseSpace ( -- <R> )
 
-  bp.tot
+  bp.inUseSpace
 
   >str
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* get s
-/*------
-: seitf_
+/*----------------------------------------------------------------------------*/
+/* get total space in the pool                                                */
+/*----------------------------------------------------------------------------*/
+: getTotalSpace ( -- <R> )
 
-  seitf.
+  bp.totalSpace
 
   >str
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/* get seif count                                                             */
+/*----------------------------------------------------------------------------*/
+: seitf_count
 
-/*------
-/* get s
-/*------
-: status
+  seitf.count
 
-tp: gett
+  >str
 
-  args.t
-  \"GETT
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get status of nodes in the grid (run by participant)                       */
+/*----------------------------------------------------------------------------*/
+: status$ ( -- <R> )
+
+tp: gettingStatus
+
+  args.tracepoint if
+  \"GETTING STATUS on NODE \"args.node >str str.cat .
   then
 
-  node.s
+  node.status
 
-  <SUCCE
+  <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
-: ~statu
+/*----------------------------------------------------------------------------*/
+/* have participants run: status$                                             */
+/*----------------------------------------------------------------------------*/
+: ~status (  )
 
-tp: stat
+tp: statusOnAll
 
-  // the
-  \"stat
+  // the indirect word to be called
+  \"status$\"
 
-  tp: th
+  tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  // sta
-  >>allP
+  // status$ to be executed by all participants
+  >>allParticipants> ( bool )
 
-  tp: st
+  tp: statusOnAllDone
 
-  printR
+  printResult
 ;
 
-/*------
-/* get s
-/*------
-: status
+/*----------------------------------------------------------------------------*/
+/* get status of the nodes                                                    */
+/*----------------------------------------------------------------------------*/
+: status ( -- <R> )
 
-  ~statu
+  ~status ( ) assert.stack_0
 
   <OK>
 ;
 
-/*------
-/*------
-/*------
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
-/*------
-/* get m
-/*------
-: get_mo
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+: get_monitor ( -- <R> )
 
-  monito
+  monitorString@
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* ping 
-/*------
-: ping (
+/*----------------------------------------------------------------------------*/
+/* ping test                                                                  */
+/*----------------------------------------------------------------------------*/
+: ping ( -- <R> )
 
-  \"pong
+  \"pong\"
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* docol
-/*------
-: docol_
+/*----------------------------------------------------------------------------*/
+/* docol_command                                                              */
+/*----------------------------------------------------------------------------*/
+: docol_command ( \"command\" -- <R> )
 
-  checkI
-  execut
+  checkIsWord not if <NIP+ERROR> exit then
+  execute
 
   begin
-   depth
+   depth while drop
   repeat
 
  <OK>
 ;
 
-/*------
-/* get_v
-/*------
-: get_ve
+/*----------------------------------------------------------------------------*/
+/* get_version                                                                */
+/*----------------------------------------------------------------------------*/
+: get_version ( -- <R> )
 
-  versio
+  version
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-/*------
-/* print
-/*------
-: ~print
+/*----------------------------------------------------------------------------*/
+/* print contents of a row buffer on each node                                */
+/*----------------------------------------------------------------------------*/
+: ~printRB ( )
 
-tp: prin
+tp: printRBOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be printRB
+  $$ swap \"printRB\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: prin
+tp: printRBOnAllDone
 
-  checkR
+  checkResult
 ;
 
-int: cou
+int: countRows
 
-/*------
-/* print
-/*------
-: pRB ( 
+/*----------------------------------------------------------------------------*/
+/* print contents of a string sent via a row buffer on each node              */
+/*----------------------------------------------------------------------------*/
+: pRB ( \"filename\" )
 
 tp: pRB
 
-  reg.pu
+  reg.push
 
-  rowBuf
-  beginT
+  rowBuffer.new >reg0    // reg0 - rowbuffer
+  beginTransaction >reg1 // reg1 - txref
 
 /*
-  0 coun
+  0 countRows !
   begin
   while
-    coun
-    \"He
-    coun
+    countRows @ >str
+    \"Hello there \" swap str.cat reg1 reg0 rowbuffer.append
+    countRows @
     1 +
-    coun
+    countRows !
   repeat
 */
 
-  10 cou
-  countR
-    \"He
+  10 countRows !
+  countRows @ 0 do
+    \"Hello there \" I >str str.cat reg1 reg0 rowbuffer.append
   loop
 
-  // com
-  commit
+  // commit the transaction
+  commitTransaction
 
   drop
 
-  //reg0
+  //reg0 rowbuffer.dump
 
   reg0
 
-tp: mark
+tp: marker
 
-$$>valse
+$$>valset
 
-tp: vals
+tp: valset
 
-  ~print
+  ~printRB  ( rowbuffer )
 
-  reg.po
+  reg.pop
 
   <OK>
 ;
 
-/*------
-/* print
-/*------
-: printR
+/*----------------------------------------------------------------------------*/
+/* print contents of a string sent via a row buffer on each node              */
+/*----------------------------------------------------------------------------*/
+: printRB$ ( rowbuffer )
 
-tp: prin
+tp: printRB$
 
-  \"PRIN
+  \"PRINTING ROWBUFFER on NODE \" args.node >str str.cat .
 
-  rowbuf
+  rowbuffer.dump
 
-  true (
+  true ( true )
 ;
 
-/*------
-/* print
-/*------
-: printR
+/*----------------------------------------------------------------------------*/
+/* print contents of a string sent via a row buffer on each node              */
+/*----------------------------------------------------------------------------*/
+: printRB (  rowBuffer ... #folders -- true )
 
-  valset
+  valset>
 
   drop
 
-  //dup 
+  //dup \"dicStack!\" str.equal
   //if
-//tp: se
-  //  !i
-  //  th
+//tp: settingDicStack
+  //  !indirect drop
+  //  then
 
-  printR
+  printRB$
 ;
 
-/*------
-/* x tes
-/*------
-: x     
+/*----------------------------------------------------------------------------*/
+/* x test                                                                     */
+/*----------------------------------------------------------------------------*/
+: x                                                     //! GET RID OF THIS WORD
 
   words
 
   \"x\"
 
-  <SUCCE
+  <SUCCESS>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* creat
-/*------
-: create
+/*----------------------------------------------------------------------------*/
+/* create /tenants/boray/catalogs/rapidsse                                    */
+/*----------------------------------------------------------------------------*/
+: createDefaultFolders localCalls ( )
 
-  assert
+  assert.stack_0
 
-  // pus
-  \"tena
-  execut
+  // push tenants folder
+  \"tenants\" findInCurrent
+  execute dic.push
 
-  // cre
-  \"bora
+  // create tenant boray (and catalogs sub-folder)
+  \"boray\" makeTenant drop drop drop
 
-  // pus
-  \"bora
-  execut
+  // push boray folder
+  \"boray\" findInCurrent
+  execute dic.push
 
-  // pus
-  \"cata
-  execut
+  // push catalogs folder
+  \"catalogs\" findInCurrent
+  execute dic.push
 
-  // cre
-  \"rapi
+  // create catalog rapidsse (and schemas sub-folder)
+  \"rapidsse\" makeCatalog drop drop drop
 
-  // go 
-  dic.dr
-  dic.dr
-  dic.dr
+  // go back to main dictionary
+  dic.drop
+  dic.drop
+  dic.drop
 
-  assert
+  assert.stack_0
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* reque
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* requestTask.sen -- request processing task                                 */
+/*============================================================================*/
 
-\"reques
+\"requestTask.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create the parts                                                           */
+/*----------------------------------------------------------------------------*/
 
-queue:  
+queue:   requestQueue
 
-dic:    
+dic:     tenants
 
-taskset:
+taskset: requestTaskSet
 
-thread: 
+thread:  requestThread
 
-/*------
-/* start
-/*------
-: reques
+/*----------------------------------------------------------------------------*/
+/* start the request task                                                     */
+/*----------------------------------------------------------------------------*/
+: requestStart
 
-  // set
-  0 \"re
+  // set up first request processing task
+  0 \"req.loop\" nullPtr task.new requestTaskSet taskSet.append
 
-  // set
-  0 \"re
+  // set up second request processing task
+  0 \"req.loop\" nullPtr task.new requestTaskSet taskSet.append
 
-  // set
-  reques
-  \"requ
-        
+  // set up the request thread
+  requestTaskSet  requestThread thread.taskset!
+  \"requestThread\" requestThread thread.name!
+                  requestThread thread.spawn
 ;
 
-/*------
-/* pop v
-/*------
-: req> (
+/*----------------------------------------------------------------------------*/
+/* pop value from this tasks queue (this is a blocking call)                  */
+/*----------------------------------------------------------------------------*/
+: req> ( -- value )
 
-tp: wait
+tp: waitNextValset
 
   begin
 
-    // a
-    task
+    // attempt to pop value off the tasks queue
+    task.this task.queue@ queue.pop ( value true | false )
 
-    // t
-    not 
-      ta
-      ar
+    // try again of no value
+    not while
+      task.yield
+      args.sleep thread.sleep_ms
 
   repeat
 
-tp: popp
+tp: poppedValset
 ;
 
-/*------
-/* proce
-/*------
+/*----------------------------------------------------------------------------*/
+/* process request                                                            */
+/*----------------------------------------------------------------------------*/
 : !req
 
-  valset
+  valset>
 
-  // che
-  depth 
-  0 stac
-  1 stac
-  2 stac
+  // check stack
+  depth 3 != if \"incorrect request stack depth\" . process.quit then
+  0 stack.class CN_INTVAL != if \"incorrect request value 0\" . process.quit then
+  1 stack.class CN_STRVAL != if \"incorrect request value 1\" . process.quit then
+  2 stack.class CN_STRVAL != if \"incorrect request value 2\" . process.quit then
 
-  drop /
-  >:   /
-  >:   /
+  drop // the count
+  >:   // execute the response return address
+  >:   // decode/push the request
 ;
 
-/*------
-/* send 
-/*------
-: >rsp (
+/*----------------------------------------------------------------------------*/
+/* send response                                                              */
+/*----------------------------------------------------------------------------*/
+: >rsp ( send response    )
 
-  // che
-  depth 
+  // check stack
+  depth 3 != if \"incorrect response stack depth\" . process.quit then
 
-  0 stac
-  1 stac
-  2 stac
+  0 stack.class CN_INTVAL != if \"incorrect response value 0\" . process.quit then
+  1 stack.class CN_INTVAL != if \"incorrect response value 1\" . process.quit then
+  2 stack.class CN_STRVAL != if \"incorrect response value 2\" . process.quit then
 
-  >valse
+  >valset
 
-  \"rspq
+  \"rspque\" find execute queue.append
 
-  0 task
+  0 task.this task.seitf!
 ;
 
-/*------
-/* reque
-/*------
-: req.lo
+/*----------------------------------------------------------------------------*/
+/* request processing loop                                                    */
+/*----------------------------------------------------------------------------*/
+: req.loop
 
-  reques
+  requestTaskSet task.this task.taskset!
 
-  \"rena
+  \"renaming to Request Task\" .verbose
 
-  \"req.
+  \"req.task\" task.this task.name!
 
-  \"req.
+  \"req.loop\" task.this task.comment!
 
-  reques
+  requestQueue  task.this task.queue!
 
-  reques
+  requestTaskPrint if \"Request Server running...\" . then
 
   begin
-    dept
+    depth 0 != if \"request task has grown\" . debug.trap then
 
     req>
 
@@ -6134,1837 +6135,1837 @@ tp: popp
   again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* row.s
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* row.sen -- row related words                                               */
+/*============================================================================*/
 
-\"row.se
+\"row.sen\" .verbose
 
-/*======
-/* end  
-/*======
-/*======
-/* rowBu
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* rowBuffer.sen -- row buffer related words                                  */
+/*============================================================================*/
 
-\"rowBuf
+\"rowBuffer.sen\" .verbose
 
-/*======
-/* end  
-/*======
-/*======
-/* rowCu
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* rowCursor.sen -- Row Cursor                                                */
+/*============================================================================*/
 
-\"rowCur
+\"rowCursor.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: rowCur
-    crea
-    WT_O
-    size
-    word
-    CN_R
-    word
-    true
-    does
+/*----------------------------------------------------------------------------*/
+/* create a rowCursor using name from input stream                            */
+/*----------------------------------------------------------------------------*/
+: rowCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_rowCursor allot
+    word.this >body object.magic!!
+    CN_ROWCURSOR word.this >body object.class!
+    word.this >body rowCursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
-: :rowCu
-    >cre
-    WT_O
-    size
-    word
-    CN_R
-    word
-    true
-    word
-    does
+/*----------------------------------------------------------------------------*/
+/* create a rowCursor using name on the stack (leaves on stack)               */
+/*----------------------------------------------------------------------------*/
+: :rowCursor
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_rowCursor allot
+    word.this >body object.magic!!
+    CN_ROWCURSOR word.this >body object.class!
+    word.this >body rowCursor.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* schem
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* schema.sen -- schema related words                                         */
+/*============================================================================*/
 
-\"schema
+\"schema.sen\" .verbose
 
-: schema
+: schema ;
 
-//: make
+//: makeSchemas {{ \"schemas\" :dic ' folder swap execute dic.kind! }} ;
 
 
-: :schem
+: :schema
     :dic
-        
-        
+         //dup ' schema swap word.kind!
+         dup ' schema swap execute dic.kind!
 ;
 
-: within
-    0 di
+: withinSchemas
+    0 dic.pick dic.name \"schemas\" str.equal
 ;
 
-: checkI
-    with
-    EC_N
+: checkInSchemas
+    withinSchemas if true exit then
+    EC_NOT_IN_SCHEMAS false
 ;
 
-: checkI
+: checkIsSchema ( word )
 
-    dup 
-    dup 
-    EC_N
+    dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
+    dup execute dic.kind@ ' schema eql if true exit then
+    EC_NOT_A_SCHEMA false
 ;
 
-: checkI
-  dup fi
-  EC_SCH
+: checkIsNotSchema ( word )
+  dup findInCurrent not if true exit then
+  EC_SCHEMA_EXISTS false
 ;
 
-/*------
-/* check
-/*------
-: checkM
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable schema folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeSchema ( \"<schemaNm>\" -- \"<schemaNm>\" true | \"<schemaNm>\" errorCode false )
 
-  checkI
-  checkI
+  checkInSchemas   not if false exit then
+  checkIsNotSchema not if false exit then
 
   true
 ;
 
-/*------
-/* make 
-/*------
-: makeSc
+/*----------------------------------------------------------------------------*/
+/* make a schemas folder under given named catalog                            */
+/*----------------------------------------------------------------------------*/
+: makeSchemas ( \"<catalogNm>\" -- )
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"MAKING SCHEMAS FOR CATALOG \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  find e
-  \"sche
-  swap  
-  :folde
+  find execute ( dic )
+  \"schemas\"    ( dic \"schemas\" )
+  swap         ( \"schemas\" dic )
+  :folder      ( )
 ;
 
-/*------
-/* make 
-/*------
-: makeSc
+/*----------------------------------------------------------------------------*/
+/* make a schema folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeSchema allParticipants 1 ( \"<schemaNm>\" -- true n# true )
 
-tp: maki
+tp: makingSchema
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"MAKING SCHEMA \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-    dup 
+    dup ( \"<schemaNm>\" )
 
-    :sch
+    :schema ( \"<schemaNm>\" ^schema )
 
-    drop
+    drop ( \"<schemaNm>\" )
 
-    make
+    makeTables ( )
 
-    true
+    true <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeSchema$                                         */
+/*----------------------------------------------------------------------------*/
 /*
-: ~makeS
+: ~makeSchema ( \"<schemaNm>\" -- )
 
-tp: mkSc
+tp: mkSchOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be makeSchema
+  $$ swap \"makeSchema$\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: mkSc
+tp: mkSchOnAllDone
 
-  checkR
+  checkResult
 ;
 */
 
-/*------
-/* check
-/*------
-: checkR
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable schema folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkRemoveSchema ( \"<schemaNm>\" -- \"<schemaNm>\" true | \"<schemaNm>\" errorCode false )
 
-  dup ( 
+  dup ( \"<schemaNm>\" \"<schemaNm>\" )
 
-  checkI
-  checkI
-  checkI
-  checkN
+  checkInSchemas not if false exit then ( \"<schemaNm>\" word )
+  checkIsWord    not if false exit then ( \"<schemaNm>\" word )
+  checkIsSchema  not if false exit then ( \"<schemaNm>\" word )
+  checkNotUsed   not if false exit then ( \"<schemaNm>\" word )
 
-  drop (
+  drop ( \"<schemaNm>\" )
 
-  true (
+  true ( \"<schemaNm>\" true )
 ;
 
-/*------
-/* remov
-/*------
-: remove
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeSchema allParticipants 1 ( \"<schemaNm>\" -- true n# true )
 
-tp: remo
+tp: removeSchema
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"REMOVING TENANT \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  :forge
+  :forget ( )
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* remov
-/*------
+/*----------------------------------------------------------------------------*/
+/* remove a schema folder                                                     */
+/*----------------------------------------------------------------------------*/
 /*
-: ~remov
+: ~removeSchema ( \"<schemaNm>\" -- )
 
-tp: rmSc
+tp: rmSchOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be dropCatalog
+  $$ swap \"removeSchema\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: rmSc
+tp: rmSchOnAllDone
 
-  checkR
+  checkResult
 ;
 */
-/*======
-/* end  
-/*======
-/*======
-/* seitf
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* seitfCursor.sen -- SEitf Cursor                                            */
+/*============================================================================*/
 
-\"seitfC
+\"seitfCursor.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: seitfC
-    crea
-    WT_O
-    size
-    word
-    CN_S
-    word
-    true
-    does
+/*----------------------------------------------------------------------------*/
+/* create a seitfCursor using name from input stream                          */
+/*----------------------------------------------------------------------------*/
+: seitfCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_seitfCursor allot
+    word.this >body object.magic!!
+    CN_SEITFCURSOR word.this >body object.class!
+    word.this >body seitfCursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
-: :seitf
-    >cre
-    WT_O
-    size
-    word
-    CN_S
-    word
-    true
-    word
-    does
+/*----------------------------------------------------------------------------*/
+/* create a seitfCursor using name on the stack             (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :seitfCursor
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_seitfCursor allot
+    word.this >body object.magic!!
+    CN_SEITFCURSOR word.this >body object.class!
+    word.this >body seitfCursor.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: ::seit
+: ::seitfCursor ( create a temporary seitfCursor )
 
-    \"__
-    not 
-      dr
-      \"
+    \"__seitfCursor__\" find dup
+    not if
+      drop
+      \"__seitfCursor__\" :seitfCursor
     then
-    exec
+    execute
 ;
 
-: ~seitf
+: ~seitfCursor ( forget temporary seitfCursor )
 
-    \"__
+    \"__seitfCursor__\" find >forget
 ;
 
-: listSe
+: listSeitf ( list all seitfs )
 
-    ::se
+    ::seitfCursor >r // r0 ^seitfCursor
 
-    r0 s
-    r0 s
-    begi
-      wh
-      r0
-      se
-      r0
-    repe
+    r0 seitfCursor.begin
+    r0 seitfCursor.first
+    begin
+      while
+      r0 seitfCursor.get
+      seitf.dump
+      r0 seitfCursor.next
+    repeat
 
-    rdro
+    rdrop
 
-    ~sei
+    ~seitfCursor
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* seitf
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* seitfList.sen -- list of se interfaces                                     */
+/*============================================================================*/
 
-\"seitfL
+\"seitfList.sen\" .verbose
 
-: seitfL
-    crea
-    WT_O
-    size
-    word
-    CN_S
-    word
-    true
-    does
+: seitfList:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_seitflist allot
+    word.this >body object.magic!!
+    CN_SEITFLIST word.this >body object.class!
+    word.this >body seitflist.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-: seitfC
-    crea
-    WT_O
-    size
-    word
-    CN_S
-    word
-    true
-    does
+: seitfCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_seitfcursor allot
+    word.this >body object.magic!!
+    CN_SEITFCURSOR word.this >body object.class!
+    word.this >body seitfcursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* Sende
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* SenderTask.sen -- sender task                                              */
+/*============================================================================*/
 
-\"Sender
+\"SenderTask.sen\" .verbose
 
-/*------
-/* send 
-/*------
-: >send 
+/*----------------------------------------------------------------------------*/
+/* send valset across the socket                                              */
+/*----------------------------------------------------------------------------*/
+: >send ( valset -- )
 
-  task.t
+  task.this task.socket@
 
-  tp: se
+  tp: sending
 
-  socket
+  socket.send ( bool )
 
   not if
-    \"se
+    \"send failure\" . ( 0/1 )
   then
 
-  //\"No
+  //\"Node \" args.node >str str.cat \" sent word to another node \" str.cat .
 ;
 
-/*------
-/* sende
-/*------
-: snd.lo
+/*----------------------------------------------------------------------------*/
+/* sender task processing loop                                                */
+/*----------------------------------------------------------------------------*/
+: snd.loop ( socket -- )
 
-tp: snd.
+tp: snd.loop
 
-  task.t
+  task.this task.socket!
 
-  \"snd.
+  \"snd.loop\" task.this task.comment!
 
-  sender
+  senderTaskPrint if \"Sender running on node\" args.node >str str.cat . then
 
   begin
-    dept
+    depth 0 != if \"sender task has grown\" . debug.trap then
 
-    // p
-    task
+    // pop valset off this tasks queue and push onto this stack
+    taskQueue>
 
-tp: popp
+tp: poppedValset
 
-    // s
-    >sen
+    // send the valset across the connection
+    >send
 
   again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* socke
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* socket.sen -- socket related words                                         */
+/*============================================================================*/
 
-\"socket
+\"socket.sen\" .verbose
 
-\"socket
-\"socket
+\"socket_server.sen\" >>:
+\"socket_client.sen\" >>:
 
-/*======
-/* end  
-/*======
-\"client
-: client
-    \"cl
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+\"client.sen\" .verbose
+: client_code:
+    \"client running\" .
     4334
-    Sock
-    Sock
-    \"he
-    \"cl
+    SocketOpen
+    SocketConnect
+    \"hello there\" SocketSend
+    \"client sent : hello there\" .
 ;
-\"server
-: server
-    \"se
-    4334
-    \"se
-    Sock
-    \"se
-    Sock
-    \"se
+\"server.sen\" .verbose
+: server_code:
+    \"server running\" .
+    4334 SocketListen
+    \"server: waiting for connections on port 4334\" .
+    SocketAccept
+    \"server: accepting connections\" .
+    SocketRecv
+    \"server: received...\" .
     .
 ; 
-/*======
-/* stree
-/*======
+/*============================================================================*/
+/* streeamLoader.sen -- stream loader                                         */
+/*============================================================================*/
 
-\"stream
+\"streamLoader.sen\" .verbose
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-/*------
-/* initi
-/*------
+/*----------------------------------------------------------------------------*/
+/* initial test                                                               */
+/*----------------------------------------------------------------------------*/
 : sld
 
-  reg.pu
+  reg.push
 
-  0 >reg
+  0 >reg7
 
-  file.n
+  file.new >reg0
 
-  \"/tpc
-  //\"/t
+  \"/tpch/lineitem.tbl\" reg0 file.path!
+  //\"/tpch/p\" reg0 file.path!
 
-  OPEN_R
+  OPEN_READ reg0 file.open
 
-  loadTi
+  loadTimer timer.start
 
   begin
-    reg0
-    whil
-      dr
-      re
-      10
+    reg0 file.read
+    while
+      drop
+      reg7 1+ dup >reg7
+      100000 % not if reg7 . then
   repeat
 
-  loadTi
+  loadTimer timer.update
 
-  \"Load
-  loadTi
+  \"Load time \" .put
+  loadTimer timer.millisecs .put \"ms\" .put .\n
 
-  reg7 l
+  reg7 loadTimer timer.secs / .put \" r/s\" .put .\n
 
-  reg0 f
+  reg0 file.close
 
-  reg0 f
+  reg0 file.delete
 
-  reg.po
+  reg.pop
 ;
 
-/*------
-/* loop 
-/*------
+/*----------------------------------------------------------------------------*/
+/* loop test                                                                  */
+/*----------------------------------------------------------------------------*/
 : sld2
 
-  100000
+  10000000 0
   do
-    I 10
+    I 1000000 % not if I . then
   loop
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* struc
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* structures.sen -- structures group                                         */
+/*============================================================================*/
 
-\"struct
+\"structures.sen\" .verbose
 
-\"queue.
+\"queue.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* syste
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* systemObjects.sen -- create \"the system\" objects                           */
+/*============================================================================*/
 
-\"system
-
-
-( taskli
-
-( thread
-threadLi
-
-( txMap 
-txMap: t
-
-( txColl
-txCollec
-
-( seitfL
-seitfLis
-
-( task s
-taskSet:
-
-//traceo
-( root t
-thread: 
-//traceo
-
-( give r
-rootTask
+\"systemObjects.sen\" .verbose
 
 
-/*======
-/* end  
-/*======
-/*======
-/* table
-/*======
+( tasklist will already exist )
 
-\"table.
+( threadList holds all thread's )
+threadList: threadList
 
-int: que
+( txMap map tx id's to tx's )
+txMap: txMap
 
-/*------
-/* table
-/*------
-: table 
+( txCollection hold all tx's )
+txCollection: txCollection
 
-//: make
+( seitfList holds all seitf's )
+seitfList: seitfList
 
-/*------
-/* make 
-/*------
-: makeTa
+( task set for root thread )
+taskSet: rootTaskSet
 
-  args.t
-    dup 
+//traceon
+( root thread and name it )
+thread: rootThread \"rootThread\" rootThread thread.name!
+//traceoff
+
+( give root task set to root thread )
+rootTaskSet rootThread thread.taskSet!
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* table.sen -- table related words                                           */
+/*============================================================================*/
+
+\"table.sen\" .verbose
+
+int: queryCount
+
+/*----------------------------------------------------------------------------*/
+/* table is use as a kind of word to identify tables                          */
+/*----------------------------------------------------------------------------*/
+: table ;
+
+//: makeTables {{ \"tables\" :dic ' folder swap execute dic.kind! }} ;
+
+/*----------------------------------------------------------------------------*/
+/* make a tables folder under given named schema                              */
+/*----------------------------------------------------------------------------*/
+: makeTables ( \"<schemaNm>\" -- )
+
+  args.tracepoint if
+    dup \"MAKING TABLES FOR SCHEMA \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  find e
-  \"tabl
-  swap  
-  :folde
+  find execute ( dic )
+  \"tables\"     ( dic \"tables\" )
+  swap         ( \"tables\" dic )
+  :folder      ( )
 ;
 
-: isTabl
+: isTable word.kind@ ' table eql ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a table using name from input stream (doesnt leave table on stk)    */
+/*----------------------------------------------------------------------------*/
 : table:
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    ' ta
-    does
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_table allot
+    word.this >body object.magic!!
+    CN_TABLE word.this >body object.class!
+    word.this >body table.init
+    true word.this >body object.wordbody!
+    ' table word.this word.kind!
+    does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a table using name on the stack (leaves table on stack)             */
+/*----------------------------------------------------------------------------*/
 : :table
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    ' ta
-    word
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_table allot
+    word.this >body object.magic!!
+    CN_TABLE word.this >body object.class!
+    word.this >body table.init
+    true word.this >body object.wordbody!
+    ' table word.this word.kind!
+    word.this
+    does>
 ;
 
-/*------
-/* se> c
-/*------
+/*----------------------------------------------------------------------------*/
+/* se> checking                                                               */
+/*----------------------------------------------------------------------------*/
 
-: within
-    0 di
+: withinTables
+    0 dic.pick dic.name \"tables\" str.equal
 ;
 
-: checkI
-    with
+: checkInTables
+    withinTables if true exit then
 
-    EC_N
+    EC_NOT_IN_TABLES false
 ;
 
-/*------
-/* check
-/*------
+/*----------------------------------------------------------------------------*/
+/* check word is a table                                                      */
+/*----------------------------------------------------------------------------*/
 /*
-: checkI
+: checkIsTableOld ( \"<tableNm>\" -- ^w:table true | errorCode false )
 
-  find (
+  find ( ^w:table )
 
-  dup no
+  dup not ( ^w:table bool )
   if
-    drop
+    drop EC_NO_SUCH_TABLE false ( errorCode false )
     exit
   then
 
-  dup ( 
-  word.k
-  ' tabl
-  eql ( 
+  dup ( ^w:table ^w:table )
+  word.kind@ ( ^w:table ^word )
+  ' table ( ^w:table ^word ^word )
+  eql ( ^w:table bool )
   if
-    true
+    true ( ^w:table true )
     exit
   then
 
-  drop (
-  EC_NOT
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
 ;
 */
-//------
-: checkI
+//------------------------------------------------------------------------------
+: checkIsTable ( \"<tableNm>\" -- \"<tableNm>\" true | errorCode false )
 
-  dup ( 
+  dup ( \"<tableNm>\" \"<tableNm>\" )
 
-  find (
+  find ( \"<tableNm>\" ^w:table )
 
-  dup ( 
-  not ( 
+  dup ( \"<tableNm>\" ^w:table ^w:table )
+  not ( \"<tableNm>\" ^w:table bool )
   if
-    drop
-    drop
-    EC_N
+    drop ( \"<tableNm>\" )
+    drop ( )
+    EC_NO_SUCH_TABLE false ( errorCode false )
   exit
   then
 
-  dup ( 
+  dup ( \"<tableNm>\" ^w:table ^w:table )
 
-  word.k
-  ' tabl
-  eql ( 
+  word.kind@ ( \"<tableNm>\" ^w:table ^word )
+  ' table ( \"<tableNm>\" ^w:table ^word ^word )
+  eql ( \"<tableNm>\" ^w:table bool )
   if
-    drop
-    true
+    drop ( \"<tableNm>\" )
+    true ( \"<tableNm>\" true )
     exit
   then
 
-  drop (
-  drop (
-  EC_NOT
+  drop ( \"<tableNm>\" )
+  drop ( )
+  EC_NOT_A_TABLE false ( errorCode false )
 ;
 
-: checkI
-  dup fi
-  EC_TAB
+: checkIsNotTable ( word )
+  dup findInCurrent not if true exit then
+  EC_TABLE_EXISTS false
 ;
 
-/*------
-: pushTa
+/*----------------------------------------------------------------------------*/
+: pushTable ( \"<tableName>\" -- )
 
-    chec
+    checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find
+    find execute table.dic dic.push
 
     true
 ;
 
-: popTab
-    dic.
+: popTable
+    dic.drop
 ;
 
-/*------
-: getTab
+/*----------------------------------------------------------------------------*/
+: getTableRef ( \"<tableNm>\" -- <R> )
 
-    chec
+    checkInTables not if false exit then
 
-    chec
+    checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find
+    find execute ( table )
 
-    task
+    task.this task.seitf@ seitf.tableRef
 
     true
 ;
 
-/*------
-: return
+/*----------------------------------------------------------------------------*/
+: returnTableRef ( )
 
-    task
+    task.this task.seitf@ seitf.tableDeref
 
     true
 ;
 
-/*------
-/* any o
-/*------
-: tableI
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: tableInUse ( \"<tableNm>\" -- <R> )
 
-  find e
+  find execute
 
-  table.
-  if tru
+  table.ref
+  if true else false then
 ;
 
-/*------
-/* check
-/*------
-: checkM
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable table                                          */
+/*----------------------------------------------------------------------------*/
+: checkMakeTable ( \"<tableNm>\" -- \"<tableNm>\" true | \"<tableNm>\" errorCode false )
 
-  checkI
-  checkI
+  checkInTables   not if false exit then
+  checkIsNotTable not if false exit then
 
   true
 ;
 
-/*------
-/* check
-/*------
-: checkR
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable table folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkRemoveTable ( \"<tableNm>\" -- \"<tableNm>\" true | \"<tableNm>\" errorCode false )
 
-  checkI
-  checkI
-  dup ta
+  checkInTables not if false exit then ( \"<tableNm>\" )
+  checkIsTable not if false exit then ( \"<tableNm>\" )
+  dup tableInUse if EC_TABLE_IN_USE false exit then ( \"<tableNm>\" )
 
-  true (
+  true ( \"<tableNm>\" true )
 ;
 
-/*------
-/* make 
-/*------
-: makeTa
+/*----------------------------------------------------------------------------*/
+/* make a tenant (run by participant)                                         */
+/*----------------------------------------------------------------------------*/
+: makeTable allParticipants 1 ( \"<tableNm>\" -- true n# true )
 
-tp: maki
+tp: makingTable
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"MAKING TABLE \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  dup ( 
+  dup ( \"<tableNm>\" \"<tableNm>\" )
 
-  :table
+  :table ( \"<tableNm>\" ^table )
 
-  drop (
+  drop ( \"<tableNm>\" )
 
-  // for
-  \"make
+  // forward reference :-(
+  \"makeColumns\" find execute
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeTable$                                          */
+/*----------------------------------------------------------------------------*/
 /*
-: ~makeT
+: ~makeTable ( \"<tableNm>\" -- )
 
-tp: mkTb
+tp: mkTblOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be makeTable
+  $$ swap \"makeTable$\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: mkTb
+tp: mkTblOnAllDone
 
-  checkR
+  checkResult
 ;
 */
-/*------
-/* remov
-/*------
-: remove
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable allParticipants 1 ( \"<tableNm>\" -- true n# true )
 
-tp: remo
+tp: removeTable
 
   dup
 
-  find e
-  table.
+  find execute
+  table.truncate
 
-  :forge
+  :forget
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* remov
-/*------
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
 /*
-: ~remov
+: ~removeTable ( \"<tableNm>\" -- )
 
-tp: rmTb
+tp: rmTblOnAll
 
-  // set
-  //\"re
-  $$ swa
+  // set indirect call to be dropTable
+  //\"removeTable\" 2 ( \"<tableNm>\" \"dropTable\" 2 )
+  $$ swap \"removeTable\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: rmTb
+tp: rmTblOnAllDone
 
-  checkR
+  checkResult
 
 ;
 */
-/*------
-/* get s
-/*------
-: sizeTa
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: sizeTable ( \"<tableNm>\" -- \"<size>\" )
 
-  find e
+  find execute ( table )
 
-  table.
+  table.space >str
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: dumpTa
+: dumpTable ( \"<tableNm>\" )
 
-  find e
+  find execute ( table )
 
-  \"__ro
+  \"__row_cursor\" find dup
   if
   else
     drop
-    \"__
+    \"__row_cursor\" :rowCursor
   then
-  execut
+  execute
 
   >r
-  // r0 
+  // r0 ^rowCursor
 
-  r0 row
-  args.p
+  r0 rowcursor.table!
+  args.partitions 0
   do
-    // r
-    I r2
-    r2 r
-    begi
-      wh
-      r2
+    // r2 ^rowCursor
+    I r2 rowcursor.begin
+    r2 rowcursor.first
+    begin
+      while
+      r2 rowcursor.get
       .
-      r2
-      re
+      r2 rowcursor.next
+      repeat
 
-      r2
+      r2 rowCursor.end
   loop
 
   rdrop
 
-  \"__ro
+  \"__row_cursor\" find >forget
 ;
 
-/*------
-/* get r
-/*------
-: select
+/*----------------------------------------------------------------------------*/
+/* get row cursor for table                                                   */
+/*----------------------------------------------------------------------------*/
+: selecttable ( \"<tableNm>\" -- <rowCursor> )
 
-  queryC
+  queryCount ++
 
-  task.t
+  task.this task.seitf@ seitf.table@
 
-  rowcur
+  rowcursor.new dup -rot rowcursor.table!
 
   >str
 ;
 
-/*------
-/* trunc
-/*------
-: trunca
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncateTable ( \"<tableNm>\" -- )
 
-  find e
+  find execute ( table )
 
-  table.
+  table.truncate
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* task.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* task.sen -- task related words                                             */
+/*============================================================================*/
 
-\"task.s
+\"task.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a task using string from input stream as name                       */
+/*----------------------------------------------------------------------------*/
 
 : task:
 
   create
-  WT_OBJ
-  sizeof
-  word.t
-  CN_TAS
-  word.t
-  true w
+  WT_OBJECT word.this word.type!
+  sizeof_task allot
+  word.this >body object.magic!!
+  CN_TASK word.this >body object.class!
+  word.this >body task.init
+  true word.this >body object.wordbody!
   does>
 ;
 
 : :task
 
-  >creat
-  WT_OBJ
-  sizeof
-  word.t
-  CN_TAS
-  word.t
-  true w
-  word.t
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_task allot
+  word.this >body object.magic!!
+  CN_TASK word.this >body object.class!
+  word.this >body task.init
+  true word.this >body object.wordbody!
+  word.this
   does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* taskC
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* taskCursor.sen -- Task Cursor                                              */
+/*============================================================================*/
 
-\"taskCu
+\"taskCursor.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: taskCu
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+/*----------------------------------------------------------------------------*/
+/* create a taskCursor using name from input stream                           */
+/*----------------------------------------------------------------------------*/
+: taskCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_taskCursor allot
+    word.this >body object.magic!!
+    CN_TASKCURSOR word.this >body object.class!
+    word.this >body taskCursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
-: :taskC
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    word
-    does
+/*----------------------------------------------------------------------------*/
+/* create a taskCursor using name on the stack              (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :taskCursor
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_taskCursor allot
+    word.this >body object.magic!!
+    CN_TASKCURSOR word.this >body object.class!
+    word.this >body taskCursor.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: ::task
+: ::taskCursor ( create a temporary taskCursor )
 
-    \"__
-    not 
-      dr
-      \"
+    \"__taskCursor__\" find dup
+    not if
+      drop
+      \"__taskCursor__\" :taskCursor
     then
-    exec
+    execute
 ;
 
-: ~taskC
+: ~taskCursor ( forget temporary taskCursor )
 
-    \"__
+    \"__taskCursor__\" find >forget
 ;
 
-: listTa
+: listTasks ( list all tasks )
 
-    ::ta
+    ::taskCursor >r // r0 ^taskCursor
 
-    r0 t
-    r0 t
-    begi
-      wh
-      r0
-      ta
-      r0
-    repe
+    r0 taskCursor.begin
+    r0 taskCursor.first
+    begin
+      while
+      r0 taskCursor.get
+      task.name@ .
+      r0 taskCursor.next
+    repeat
 
-    rdro
+    rdrop
 
-    ~tas
+    ~taskCursor
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* taskL
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* taskList.sen -- task list related words                                    */
+/*============================================================================*/
 
-\"taskLi
+\"taskList.sen\" .verbose
 
-: taskLi
-    crea
-    WT_O
-    ( th
-    size
-    word
-    CN_T
-    word
-    true
-    does
+: taskList:
+    create
+    WT_OBJECT word.this word.type!
+    ( this should be a @ to gpTaskList )
+    sizeof_tasklist allot
+    word.this >body object.magic!!
+    CN_TASKLIST word.this >body object.class!
+    word.this >body tasklist.init
+    true word.this >body object.wordbody!
+    does> 
 ;
 
-: taskCu
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+: taskCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_taskcursor allot
+    word.this >body object.magic!!
+    CN_TASKCURSOR word.this >body object.class!
+    word.this >body taskcursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* tasks
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* tasks.sen -- tasks group                                                   */
+/*============================================================================*/
 
-\"tasks.
+\"tasks.sen\" .verbose
 
-\"task.s
-\"taskLi
-\"taskCu
-\"taskSe
-\"ipc.se
+\"task.sen\" >>:
+\"taskList.sen\" >>:
+\"taskCursor.sen\" >>:
+\"taskSet.sen\" >>:
+\"ipc.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* taskS
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* taskSet.sen -- task set related words                                      */
+/*============================================================================*/
 
-\"taskSe
+\"taskSet.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a task set using string from input stream as name                   */
+/*----------------------------------------------------------------------------*/
 
-: taskSe
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+: taskSet:
+    create 
+    WT_OBJECT word.this word.type!
+    sizeof_taskset allot
+    word.this >body object.magic!!
+    CN_TASKSET word.this >body object.class!
+    word.this >body taskset.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-: :taskS
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    word
-    does
+: :taskSet
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_taskset allot
+    word.this >body object.magic!!
+    CN_TASKSET word.this >body object.class!
+    word.this >body taskset.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* tenan
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* tenant.sen -- tenant related words                                         */
+/*============================================================================*/
 
-\"tenant
+\"tenant.sen\" .verbose
 
-: tenant
+: tenant ;
 
-: :tenan
+: :tenant
     :dic
-        
-        
+         //dup ' tenant swap word.kind!
+         dup ' tenant swap execute dic.kind!
 ;
 
-: within
-    0 di
+: withinTenants
+    0 dic.pick dic.name \"tenants\" str.equal
 ;
 
-: checkI
-    with
-    EC_N
+: checkInTenants
+    withinTenants if true exit then
+    EC_NOT_IN_TENANTS false
 ;
 /*
-: checkI
+: checkIsTenant ( word )
 
-    dup 
-    dup 
+    dup word.kind@ ' folder eql if true exit then
+    dup execute dic.kind@ ' tenant eql if true exit then
     drop
-    EC_N
+    EC_NOT_A_TENANT false
 ;
 */
 
-/*------
-/* check
-/*------
-: checkI
+/*----------------------------------------------------------------------------*/
+/* check if word is a tenant folder                                            */
+/*----------------------------------------------------------------------------*/
+: checkIsTenant ( word )
 
-  dup wo
-  dup ex
-  EC_NOT
+  dup word.kind@ ' folder eql not if EC_NOT_A_FOLDER false exit then
+  dup execute dic.kind@ ' tenant eql if true exit then
+  EC_NOT_A_TENANT false
 ;
 
-/*------
-/* check
-/*------
-: checkI
-  dup fi
-  EC_TEN
+/*----------------------------------------------------------------------------*/
+/* check word is not already a tenant folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkIsNotTenant ( word )
+  dup findInCurrent not if true exit then
+  EC_TENANT_EXISTS false
 ;
 
-/*------
-/* check
-/*------
-: checkM
+/*----------------------------------------------------------------------------*/
+/* check if word is a makeable tenant folder                                  */
+/*----------------------------------------------------------------------------*/
+: checkMakeTenant ( \"<tenantNm>\" -- \"<tenantNm>\" true | \"<tenantNm>\" errorCode false )
 
-  checkI
-  checkI
+  checkInTenants    not if false exit then
+  checkIsNotTenant  not if false exit then
 
   true
 ;
 
-/*------
-/* check
-/*------
-: checkR
+/*----------------------------------------------------------------------------*/
+/* check if word is a removable tenant folder                                 */
+/*----------------------------------------------------------------------------*/
+: checkRemoveTenant ( \"<tenantNm>\" -- \"<tenantNm>\" true | \"<tenantNm>\" errorCode false )
 
-  dup ( 
+  dup ( \"<tenantNm>\" \"<tenantNm>\" )
 
-  checkI
-  checkI
-  checkI
-  checkN
+  checkInTenants  not if false exit then ( \"<tenantNm>\" word )
+  checkIsWord     not if false exit then ( \"<tenantNm>\" word )
+  checkIsTenant   not if false exit then ( \"<tenantNm>\" word )
+  checkNotUsed    not if false exit then ( \"<tenantNm>\" word )
 
-  drop (
+  drop ( \"<tenantNm>\" )
 
-  true (
+  true ( \"<tenantNm>\" true )
 ;
 
-/*------
-/* make 
-/*------
-: makeTe
+/*----------------------------------------------------------------------------*/
+/* make a tenant folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeTenant allParticipants 1 ( \"<tenantNm>\" -- true n# true )
 
-tp: maki
+tp: makingTenant
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"MAKING TENANT \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-    dup 
+    dup ( \"<tenantNm>\" \"<tenantNm>\" )
 
-    :ten
+    :tenant ( \"<tenantNm>\" ^tenant )
 
-    drop
+    drop ( \"<tenantNm>\" )
 
-    make
+    makeCatalogs ( )
 
-    true
+    true <SUCCESS_RESULT>
 ;
 
-/*------
-/* have 
-/*------
+/*----------------------------------------------------------------------------*/
+/* have participants run: makeTenant$                                         */
+/*----------------------------------------------------------------------------*/
 /*
-: ~makeT
+: ~makeTenant ( \"<tenantNm>\" -- )
 
-tp: mkTe
+tp: mkTenOnAll
 
-  // put
-  1 put$
+  // put $$ before parameters
+  1 put$$
 
-  // the
-  \"make
+  // the indirect word to be called
+  \"makeTenant\"
 
-tp: theI
+tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  // mak
-  >>allP
+  // makeTenant$ to be executed by all participants
+  >>allParticipants> ( bool )
 
-tp: mkTe
+tp: mkTenOnAllDone
 
-  checkR
+  checkResult
 ;
 */
 
-/*------
-/* remov
-/*------
-: remove
+/*----------------------------------------------------------------------------*/
+/* remove a tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
+: removeTenant allParticipants 1 ( \"<tenantNm>\" -- true n# true )
 
-tp: remo
+tp: removetenant
 
-  args.t
-    dup 
+  args.tracepoint if
+    dup \"REMOVING TENANT \" swap str.cat \" on NODE \" str.cat args.node >str str.cat .
   then
 
-  :forge
+  :forget ( )
 
-  true <
+  true <SUCCESS_RESULT>
 ;
 
-/*------
-/* remov
-/*------
+/*----------------------------------------------------------------------------*/
+/* remove a tenant folder                                                     */
+/*----------------------------------------------------------------------------*/
 /*
-: ~remov
+: ~removeTenant ( \"<tenantNm>\" -- )
 
-tp: rmTe
+tp: rmTenOnAll
 
-  // set
-  $$ swa
+  // set indirect call to be removeTenant
+  $$ swap \"removeTenant\"
 
-  tp: th
+  tp: theIndirectCall
 
-  $$>val
+  $$>valset ( valset )
 
-  >>allP
+  >>allParticipants> ( bool )
 
-tp: rmTe
+tp: rmTenOnAllDone
 
-  checkR
+  checkResult
 ;
 */
-/*======
-/* end  
-/*======
-/*======
-/* testi
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* testing.sen -- testing related words                                       */
+/*============================================================================*/
 
-\"testin
+\"testing.sen\" .verbose
 
-\"jData.
+\"jData.sen\" >>:
 
-\"miscTe
+\"miscTesting.sen\" >>:
 
-\"unitTe
+\"unitTests.sen\" >>:
 
-\"1m.sen
+\"1m.sen\" >>:
 
 
-/*======
-/* end  
-/*======
-/*======
-/* threa
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* thread.sen -- thread related words                                         */
+/*============================================================================*/
 
-\"thread
+\"thread.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a thread using string from input stream as name                     */
+/*----------------------------------------------------------------------------*/
 
-: thread
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+: thread:
+    create 
+    WT_OBJECT word.this word.type!
+    sizeof_thread allot
+    word.this >body object.magic!!
+    CN_THREAD word.this >body object.class!
+    word.this >body thread.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-: :threa
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    word
-    does
+: :thread
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_thread allot
+    word.this >body object.magic!!
+    CN_THREAD word.this >body object.class!
+    word.this >body thread.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* threa
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* threadCursor.sen -- Thread Cursor                                          */
+/*============================================================================*/
 
-\"thread
+\"threadCursor.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: thread
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+/*----------------------------------------------------------------------------*/
+/* create a threadCursor using name from input stream                         */
+/*----------------------------------------------------------------------------*/
+: threadCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_threadCursor allot
+    word.this >body object.magic!!
+    CN_THREADCURSOR word.this >body object.class!
+    word.this >body threadCursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
-: :threa
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    word
-    does
+/*----------------------------------------------------------------------------*/
+/* create a threadCursor using name on the stack            (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :threadCursor
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_threadCursor allot
+    word.this >body object.magic!!
+    CN_THREADCURSOR word.this >body object.class!
+    word.this >body threadCursor.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: ::thre
+: ::threadCursor ( create a temporary threadCursor )
 
-    \"__
-    not 
-      dr
-      \"
+    \"__threadCursor__\" find dup
+    not if
+      drop
+      \"__threadCursor__\" :threadCursor
     then
-    exec
+    execute
 ;
 
-: ~threa
+: ~threadCursor ( forget temporary threadCursor )
 
-    \"__
+    \"__threadCursor__\" find >forget
 ;
 
-: listTh
+: listThreads ( list all threads )
 
-    ::th
+    ::threadCursor >r // r0 ^threadCursor
 
-    r0 t
-    r0 t
-    begi
-      wh
-      r0
-      th
-      r0
-    repe
+    r0 threadCursor.begin
+    r0 threadCursor.first
+    begin
+      while
+      r0 threadCursor.get dup
+      thread.name@ .put \" (\" .put thread.id .put \")\" .put .\n
+      r0 threadCursor.next
+    repeat
 
-    rdro
+    rdrop
 
-    ~thr
+    ~threadCursor
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* threa
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* threadList.sen -- thread list related words                                */
+/*============================================================================*/
 
-\"thread
+\"threadList.sen\" .verbose
 
-: thread
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+: threadList:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_threadlist allot
+    word.this >body object.magic!!
+    CN_THREADLIST word.this >body object.class!
+    word.this >body threadlist.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* threa
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* threads.sen -- threads group                                               */
+/*============================================================================*/
 
-\"thread
+\"threads.sen\" .verbose
 
-\"thread
-\"thread
-\"thread
+\"thread.sen\" >>:
+\"threadList.sen\" >>:
+\"threadCursor.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* timer
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* timer.sen -- timer                                                         */
+/*============================================================================*/
 
-\"timer.
+\"timer.sen\" .verbose
 
-: timer 
+: timer ;
 
 : timer:
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    ' ti
-    word
-    true
-    does
+    create 
+    WT_OBJECT word.this word.type!
+    sizeof_timer allot
+    word.this >body object.magic!!
+    CN_TIMER word.this >body object.class!
+    ' timer word.this word.kind!
+    word.this >body timer.init
+    true word.this >body object.wordbody!
+    does> 
 ;
 
 : :timer
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    ' ti
-    word
-    true
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_timer allot
+    word.this >body object.magic!!
+    CN_TIMER word.this >body object.class!
+    ' timer word.this word.kind!
+    word.this >body timer.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-timer: t
+timer: testTimer
 
-: timerT
+: timerTest
 
-    test
-    1 th
-    test
-    test
-    test
-    test
-    test
+    testTimer timer.start
+    1 thread.sleep_s
+    testTimer timer.update
+    testTimer timer.millisecs .
+    testTimer timer.microsecs .
+    testTimer timer.nanosecs .
+    testTimer timer.ticks .
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* trace
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* trace.sen -- trace file related words                                      */
+/*============================================================================*/
 
-\"trace.
+\"trace.sen\" .verbose
 
-/*------
-/* defin
-/*------
+/*----------------------------------------------------------------------------*/
+/* define the trace file                                                      */
+/*----------------------------------------------------------------------------*/
 
-file: tr
+file: trace_file
 
-/*------
-/* attem
-/*------
-: open_t
-  \"/tmp
-  open_a
-  if \"t
+/*----------------------------------------------------------------------------*/
+/* attempt to open the trace file                                             */
+/*----------------------------------------------------------------------------*/
+: open_trace
+  \"/tmp/se_trace.txt\" trace_file file.path!
+  open_append trace_file file.open
+  if \"trace file opened\" .verbose else \"trace file not opened\" . then
 ;
 
-open_tra
+open_trace
 
-/*======
-/* end  
-/*======
-/*======
-/* trans
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* transactions.sen -- transactions group                                     */
+/*============================================================================*/
 
-\"transa
+\"transactions.sen\" .verbose
 
-\"txColl
-\"txCurs
-\"txMap.
-\"txRef.
+\"txCollection.sen\" >>:
+\"txCursor.sen\" >>:
+\"txMap.sen\" >>:
+\"txRef.sen\" >>:
 
-/*======
-/* end  
-/*======
-/*======
-/* txCol
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* txCollection.sen -- Transaction Collection                                 */
+/*============================================================================*/
 
-\"txColl
+\"txCollection.sen\" .verbose
 
-: txColl
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+: txCollection:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_txcollection allot
+    word.this >body object.magic!!
+    CN_TXCOLLECTION word.this >body object.class!
+    word.this >body txCollection.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* txCur
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* txCursor.sen -- Tx Cursor                                                  */
+/*============================================================================*/
 
-\"txCurs
+\"txCursor.sen\" .verbose
 
-/*------
-/* creat
-/*------
-: txCurs
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+/*----------------------------------------------------------------------------*/
+/* create a txCursor using name from input stream                             */
+/*----------------------------------------------------------------------------*/
+: txCursor:
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_txCursor allot
+    word.this >body object.magic!!
+    CN_TXCURSOR word.this >body object.class!
+    word.this >body txCursor.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*------
-/* creat
-/*------
-: :txCur
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    word
-    does
+/*----------------------------------------------------------------------------*/
+/* create a txCursor using name on the stack                (leaves on stack) */
+/*----------------------------------------------------------------------------*/
+: :txCursor
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_txCursor allot
+    word.this >body object.magic!!
+    CN_TXCURSOR word.this >body object.class!
+    word.this >body txCursor.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: ::txCu
+: ::txCursor ( create a temporary txCursor )
 
-    \"__
-    not 
-      dr
-      \"
+    \"__txCursor__\" find dup
+    not if
+      drop
+      \"__txCursor__\" :txCursor
     then
-    exec
+    execute
 ;
 
-: ~txCur
+: ~txCursor ( forget temporary txCursor )
 
-    \"__
+    \"__txCursor__\" find >forget
 ;
 
-: listTh
+: listThreads ( list all txs )
 
-    ::tx
+    ::txCursor >r // r0 ^txCursor
 
-    r0 t
-    r0 t
-    begi
-      wh
-      r0
-      tx
-      r0
-    repe
+    r0 txCursor.begin
+    r0 txCursor.first
+    begin
+      while
+      r0 txCursor.get dup
+      tx.dump .
+      r0 txCursor.next
+    repeat
 
-    rdro
+    rdrop
 
-    ~txC
+    ~txCursor
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* txMap
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* txMap.sen -- transaction map related words                                 */
+/*============================================================================*/
 
-\"txmap.
+\"txmap.sen\" .verbose
 
 : txMap:
-    crea
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    does
+    create
+    WT_OBJECT word.this word.type!
+    sizeof_txmap allot
+    word.this >body object.magic!!
+    CN_TXMAP word.this >body object.class!
+    word.this >body txmap.init
+    true word.this >body object.wordbody!
+    does>
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* txRef
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* txRef.sen -- Tx Reference                                                  */
+/*============================================================================*/
 
-\"txref.
+\"txref.sen\" .verbose
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create a txRef using name on the stack                   (leaves on stack) */
+/*----------------------------------------------------------------------------*/
 : :txRef
-    >cre
-    WT_O
-    size
-    word
-    CN_T
-    word
-    true
-    word
-    does
+    >create
+    WT_OBJECT word.this word.type!
+    sizeof_txRef allot
+    word.this >body object.magic!!
+    CN_TXREF word.this >body object.class!
+    word.this >body txRef.init
+    true word.this >body object.wordbody!
+    word.this
+    does>
 ;
 
-////////
+////////////////////////////////////////////////////////////////////////////////
 
-: ::txRe
+: ::txRef ( create a txRef )
 
-  \"txRe
+  \"txRef\" find dup
   not if
     drop
-    \"tx
+    \"txRef\" :txRef
   then
-  execut
+  execute
 ;
 
-: beginT
-  ::txRe
-  txRef.
-  ::txre
+: beginTransaction  ( -- txref )
+  ::txRef
+  txRef.begin drop
+  ::txref
 ;
 
-: commit
-  ::txRe
+: commitTransaction
+  ::txRef
   dup
-  txRef.
-  txRef.
-  \"txRe
+  txRef.commit drop
+  txRef.end drop
+  \"txRef\" find >forget
 ;
 
-: rollba
-  ::txRe
+: rollbackTransaction
+  ::txRef
   dup
-  txRef.
-  txRef.
-  \"txRe
+  txRef.rollback drop
+  txRef.end drop
+  \"txRef\" find >forget
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* unitT
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* unitTests.sen -- unit testing                                              */
+/*============================================================================*/
 
-\"unitTe
+\"unitTests.sen\" .verbose
 
-\"arithm
+\"arithmeticTests.sen\" >>:
 
-\"flowTe
+\"flowTests.sen\" >>:
 
-\"logicT
+\"logicTests.sen\" >>:
 
 : ut
 
-  \"unit
+  \"unit testing...\" .put .\n
 
-  logicT
+  logicTests
 
-  arithm
+  arithmeticTests
 
-  flowTe
+  flowTests
 
-  \"unit
+  \"unit tests passed\" .put .\n
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* usefu
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* useful.sen -- misc useful stuff                                            */
+/*============================================================================*/
 
-\"useful
+\"useful.sen\" .verbose
 
-/*------
-/* put t
-/*------
-: snooze
-    begi
-      \"
-    agai
+/*----------------------------------------------------------------------------*/
+/* put task into infinite snooze loop                                         */
+/*----------------------------------------------------------------------------*/
+: snoozeLoop
+    begin
+      \"snoozing...\" . snooze task.yield
+    again
 ;
 
-/*======
-/* end  
-/*======
-/*======
-/* user.
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* user.sen -- user related words                                             */
+/*============================================================================*/
 
-\"user.s
+\"user.sen\" .verbose
 
-/*======
-/* end  
-/*======
-/*======
-/* var.s
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+/*============================================================================*/
+/* var.sen -- variable related words                                          */
+/*============================================================================*/
 
-\"var.se
+\"var.sen\" .verbose
 
-: emptyD
+: emptyDoes:
 
   does>
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create int variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
 : int:
 
   create
-  WT_OBJ
-  sizeof
-  word.t
-  CN_INT
-  true w
+  WT_OBJECT word.this word.type!
+  sizeof_intval allot
+  word.this >body object.magic!!
+  CN_INTVAL word.this >body object.class!
+  true word.this >body object.wordbody!
   does>
 ;
 
-/*------
-/* creat
-/*------
-: intArr
+/*----------------------------------------------------------------------------*/
+/* create int array in current dictionary using name from input stream        */
+/*----------------------------------------------------------------------------*/
+: intArray:
 
   create
-  WT_OBJ
-  dup >r
-  sizeof
-  word.t
-  true w
+  WT_OBJECT word.this word.type!
+  dup >r // r0 - number of cells
+  sizeof_intval * allot
+  word.this >body object.magic!!
+  true word.this >body object.wordbody!
 
-  r> 0 d
-    I si
+  r> 0 do
+    I sizeof_intval * word.this >body (int) + (ptr)
     dup
-    obje
-    CN_I
+    object.magic!!
+    CN_INTVAL swap object.class!
   loop
 
-  does> 
+  does> (int) swap sizeof_intval * + (ptr)
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create ptr variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
 : ptr:
 
   create
-  WT_OBJ
-  sizeof
-  word.t
-  CN_PTR
-  true w
+  WT_OBJECT word.this word.type!
+  sizeof_ptrval allot
+  word.this >body object.magic!!
+  CN_PTRVAL word.this >body object.class!
+  true word.this >body object.wordbody!
   does>
 ;
 
-/*------
-/* creat
-/*------
-: ptrArr
+/*----------------------------------------------------------------------------*/
+/* create ptr array in current dictionary using name from input stream        */
+/*----------------------------------------------------------------------------*/
+: ptrArray:
 
   create
-  WT_OBJ
-  dup >r
-  sizeof
-  word.t
-  true w
+  WT_OBJECT word.this word.type!
+  dup >r // r0 - number of cells
+  sizeof_ptrval * allot
+  word.this >body object.magic!!
+  true word.this >body object.wordbody!
 
-  r> 0 d
-    I si
+  r> 0 do
+    I sizeof_ptrval * word.this >body (int) + (ptr)
     dup
-    obje
-    CN_P
+    object.magic!!
+    CN_PTRVAL swap object.class!
   loop
 
-  does> 
+  does> (int) swap sizeof_ptrval * + (ptr)
 ;
 
-/*------
-/* creat
-/*------
+/*----------------------------------------------------------------------------*/
+/* create str variable in current dictionary using name from input stream     */
+/*----------------------------------------------------------------------------*/
 : str:
 
   create
-  WT_OBJ
-  sizeof
-  word.t
-  CN_STR
-  word.t
-  true w
+  WT_OBJECT word.this word.type!
+  sizeof_strval sizeof_s256 + allot
+  word.this >body object.magic!!
+  CN_STRVAL word.this >body object.class!
+  word.this >body s256.init
+  true word.this >body object.wordbody!
   does>
 ;
 
-/*======
-/* end  
-/*======
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

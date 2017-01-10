@@ -260,12 +260,12 @@ ENTRY("vFileWrite");
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
-  ValWsp xValue;
+  s8K sLine;
   
-  if ( ! nnpTask->m_pDataStack->bPop(xValue) )
+  if ( ! nnpTask->m_pDataStack->bPop(sLine) )
     THROW_INVALID_DSTACK("file.write");
   
-  char* wStr = xValue.pAsStrVal()->sStr();
+  char* wStr = sLine.a();
   
   pFile->vPrint("%s",wStr);
   

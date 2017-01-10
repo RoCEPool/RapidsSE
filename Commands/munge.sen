@@ -19,13 +19,14 @@
 
   begin senFile file.read while
 
-    dup . str.escape dup . to senLine
+    str.escape to senLine
 
+/*
     senFile file.path@ .put
       " : " .put
       senLine .put
       .\n
-
+*/
     senLine cppFile file.write "\n" cppFile file.write
 
   repeat
