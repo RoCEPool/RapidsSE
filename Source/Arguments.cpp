@@ -151,7 +151,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--partitions",argv[iArg],C_NO_CASE)) {
+    if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       ASSERT(m_nPartitions <= C_TABLE_PARTITIONS);
       continue;
@@ -395,7 +395,7 @@ void Arguments::vPrint(void)
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
-  vTrace("  --partitions %lld\n",m_nPartitions);
+  vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
   vTrace("  --port %lld\n",m_iPort);
   vTrace("  --commands %s\n",m_sCommands.a());
 }
@@ -418,7 +418,7 @@ void Arguments::vPrintHelp(void)
   printf("--stop            (stop system)\n");
   
   printf("\n");
-  printf("--partitions <i>  (number of partitions)\n");
+  printf("--partitionsPerNode <i>  (number of partitions per node)\n");
   printf("--region <name>   (name of shm region)\n");
   printf("--size <i>        (size in bytes of shm region)\n");
 

@@ -571,7 +571,7 @@ tp: addingPassOnToCP
   " --region /SE_" str.cat  swap >str str.cat
   " --node  " str.cat swap >str str.cat
   " --nodes " str.cat args.nodes >str str.cat
-  " --partitions " str.cat args.partitions >str str.cat
+  " --partitionsPerNode " str.cat args.partitions >str str.cat
   " --port  " str.cat args.port  >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
   args.tracepoint if " --tracepoint " str.cat then

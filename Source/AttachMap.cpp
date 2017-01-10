@@ -101,11 +101,12 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vUTC(m_sUTC);
   
   m_iRegionSize = gpBufferPool->iRegionSize();
-  m_iPartitions = gxArguments.m_nPartitions / gxArguments.m_nNodes;
+  m_iPartitions = gxArguments.m_nPartitions;
   m_iNodes      = gxArguments.m_nNodes;
   
   i8 iPartitions = 0;
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+  i8 iTotalPartitions = m_iPartitions * m_iNodes;
+  for (i8 iPartition = 0; iPartition < iTotalPartitions; iPartition++) {
     if (iPartition % m_iNodes == gxArguments.m_iNode)
       m_iPartition[iPartitions++] = iPartition;
   }
