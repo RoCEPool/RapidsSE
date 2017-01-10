@@ -176,6 +176,8 @@ Task::~Task(void)
   delete m_pReturnStack;
   delete m_pAuxStack;
   
+  delete m_pTokeniser;
+  
   Task* pTask = this;
   gpTaskList->vRemove(pTask);
 //  gpTaskList->vDump();
@@ -233,10 +235,11 @@ void Task::vInit(const char* aLambda)
   if (m_sLambda.iLength())
     String::vConcat(m_sLambda.a()," exit");
   
+  m_pTokeniser = new Tokeniser;
   m_sToken     = "";
   m_eToken     = TK_NONE;
-  m_xTokeniser.vPush();
-  m_xTokeniser.vUseString(m_sLambda);
+  m_pTokeniser->vPush();
+  m_pTokeniser->vUseString(m_sLambda);
   
   m_pSEitf   = nullptr;
   
@@ -968,7 +971,7 @@ Word* Task::pCompileColon(s& sDefinition)
   Word* pCalledWord;
   ValWsp xValWsp;
   
-  m_xTokeniser.vUseString(sDefinition);
+  m_pTokeniser->vUseString(sDefinition);
   
   // get :
   vTokenNext();
@@ -1034,7 +1037,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
-  m_xTokeniser.vUseEnd();
+  m_pTokeniser->vUseEnd();
   
   return pNewWord;
 }
@@ -1051,7 +1054,7 @@ Word* Task::pCompileConstant(s& sDefinition)
   Word*    pCalledWord;
   ValWsp   xValWsp;
   
-  m_xTokeniser.vUseString(sDefinition);
+  m_pTokeniser->vUseString(sDefinition);
   
   // get string
   vTokenNext();
@@ -1078,7 +1081,7 @@ Word* Task::pCompileConstant(s& sDefinition)
   
   vTokenNext();
   
-  m_xTokeniser.vUseEnd();
+  m_pTokeniser->vUseEnd();
   
   return pNewWord;
 }
@@ -1522,7 +1525,7 @@ void Task::vSeedDicCompileSen(void)
   
   m_sLambda = "";
   
-  m_xTokeniser.vUseString(m_sLambda);
+  m_pTokeniser->vUseString(m_sLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1545,7 +1548,7 @@ void Task::vSeedWord(const char* aLambda)
   if (m_sLambda.iLength())
     String::vConcat(m_sLambda.a()," ::exit");
   
-  m_xTokeniser.vUseString(m_sLambda);
+  m_pTokeniser->vUseString(m_sLambda);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1567,10 +1570,10 @@ void Task::vSeedDocol(void)
   m_sLambda = "";
   
   s32 sPrompt("docol> ");
-  m_xTokeniser.vPrompt(sPrompt);
+  m_pTokeniser->vPrompt(sPrompt);
   
-  m_xTokeniser.vUseString(m_sLambda);
-  m_xTokeniser.vLineMode(false);
+  m_pTokeniser->vUseString(m_sLambda);
+  m_pTokeniser->vLineMode(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1828,7 +1831,7 @@ void Task::vTokenNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eToken = m_xTokeniser.eNextToken(m_sToken.a());
+  m_eToken = m_pTokeniser->eNextToken(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1908,7 +1911,7 @@ void Task::vUndirect(void)
   
   bool bPopped;
   
-  bPopped = m_xTokeniser.bPop();
+  bPopped = m_pTokeniser->bPop();
   ASSERT(bPopped);
 }
 

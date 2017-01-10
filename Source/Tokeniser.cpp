@@ -5,24 +5,38 @@
 #include "Tasks.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Tokeniser* Tokeniser::_pTokeniser(void* pAddr)
+{
+  Tokeniser* pTokeniser = reinterpret_cast<Tokeniser*>(pAddr);
+  
+  RASSERT( !pTokeniser || CN_TOKENISER == pTokeniser->eClass() );
+  
+  return pTokeniser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Tokeniser::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: Tokeniser class cannot be new'd");
   
-  RASSERT(0);
+  void* pTokeniser = Heap::pAllocate(CN_TOKENISER);
+  
+  return pTokeniser;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Tokeniser::operator delete(void*)
+void Tokeniser::operator delete(void* pTokeniserAddress)
 {
-  vFatal("fatal: Tokeniser class cannot be deleted");
+  RASSERT(pTokeniserAddress);
+  Tokeniser* pTokeniser = _pTokeniser(pTokeniserAddress);
   
-  RASSERT(0);
+  Heap::vFree(pTokeniser);
 }
 
 /*----------------------------------------------------------------------------*/

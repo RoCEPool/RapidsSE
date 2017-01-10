@@ -41,7 +41,6 @@ void Stack::operator delete(void* pBufferAddress)
   Stack* pStack = _pStack(pBufferAddress);
   
   Heap::vFree(pStack);
-
 }
 
 /*----------------------------------------------------------------------------*/

@@ -352,7 +352,7 @@ eHT geWhichHeap[]
   /* 78 */ HT_INVALID, // CN_THREADLIST
   /* 79 */ HT_INVALID, // CN_TIME
   /* 80 */ HT_SMALL,   // CN_TIMER
-  /* 81 */ HT_INVALID, // CN_TOKENISER
+  /* 81 */ HT_MEDIUM,  // CN_TOKENISER
   /* 82 */ HT_SMALL,   // CN_TX
   /* 83 */ HT_LARGE,   // CN_TXARRAY
   /* 84 */ HT_INVALID, // CN_TXCOLLECTION

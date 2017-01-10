@@ -79,7 +79,7 @@ void Task::vInputClose(NNP_Task nnpTask)
 {
 ENTRY("vInputClose");
   
-  nnpTask->m_xTokeniser.vUseEnd();
+  nnpTask->m_pTokeniser->vUseEnd();
   
   EXIT();
 }
@@ -91,7 +91,7 @@ void Task::vInputDepth(NNP_Task nnpTask)
 {
 ENTRY("vInputDepth");
   
-  i8 iDepth = nnpTask->m_xTokeniser.iDepth();
+  i8 iDepth = nnpTask->m_pTokeniser->iDepth();
   
   nnpTask->m_pDataStack->vPush(iDepth);
   
@@ -111,7 +111,7 @@ ENTRY("vInputNext");
   
   char* aToken = nnpTask->m_sToken.a();
   
-  nnpTask->m_eToken = nnpTask->m_xTokeniser.eNextToken(aToken);
+  nnpTask->m_eToken = nnpTask->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -128,7 +128,7 @@ ENTRY("vInputOpen");
   if ( ! nnpTask->m_pDataStack->bPop(sFilePath) )
     THROW_INVALID_DSTACK("input.open");
   
-  bool bOpened = nnpTask->m_xTokeniser.bUseFile(sFilePath);
+  bool bOpened = nnpTask->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
     THROW("No such file: %s",sFilePath.a());
@@ -143,7 +143,7 @@ void Task::vInputPop(NNP_Task nnpTask)
 {
 ENTRY("vInputPop");
   
-  bool bPopped = nnpTask->m_xTokeniser.bPop();
+  bool bPopped = nnpTask->m_pTokeniser->bPop();
   ASSERT(bPopped);
   
   EXIT();
@@ -156,7 +156,7 @@ void Task::vInputPush(NNP_Task nnpTask)
 {
 ENTRY("vInputPush");
   
-  nnpTask->m_xTokeniser.vPush();
+  nnpTask->m_pTokeniser->vPush();
   
   EXIT();
 }
@@ -168,7 +168,7 @@ void Task::vInputStdin(NNP_Task nnpTask)
 {
 ENTRY("vInputStdin");
   
-  nnpTask->m_xTokeniser.vUseStdin();
+  nnpTask->m_pTokeniser->vUseStdin();
   
   EXIT();
 }
@@ -185,7 +185,7 @@ ENTRY("vInputText");
   if ( ! nnpTask->m_pDataStack->bPop(sInput) )
     THROW_INVALID_DSTACK("input.text");
     
-  nnpTask->m_xTokeniser.vUseString(sInput);
+  nnpTask->m_pTokeniser->vUseString(sInput);
   
   EXIT();
 }

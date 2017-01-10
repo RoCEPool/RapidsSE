@@ -169,10 +169,10 @@ namespace Tasks
     RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // register frame chain
 
-    s256      m_sLambda;    // lambda input
-    Tokeniser m_xTokeniser; // input stream tokenizer
-    s256      m_sToken;     // current token
-    eTK       m_eToken;     // token type
+    s256       m_sLambda;    // lambda input
+    Tokeniser* m_pTokeniser; // input stream tokenizer
+    s256       m_sToken;     // current token
+    eTK        m_eToken;     // token type
     
     union {
       Cell*   m_pCell;    // points to cell inside a word

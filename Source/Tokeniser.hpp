@@ -46,6 +46,8 @@ namespace Common
     Tokeniser(void);
     ~Tokeniser(void);
     
+    static Tokeniser* _pTokeniser(void* pAddr);
+    
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     void vPush(void);
