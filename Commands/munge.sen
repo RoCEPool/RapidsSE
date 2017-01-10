@@ -20,6 +20,8 @@
   "/*============================================================================*/"
   cppFile file.write "\n" cppFile file.write
 
+  "#include \"StorageEngine.h\"\n" cppFile file.write
+  "\n" cppFile file.write
   "void Task::vAddMunged(void)\n" cppFile file.write
   "{\n" cppFile file.write
   "  s8K sDefinition;\n" cppFile file.write
@@ -68,7 +70,7 @@
 
     "    \""   cppFile file.write
     senLine cppFile file.write
-    "\""     cppFile file.write
+    "\""    cppFile file.write
     "\n"    cppFile file.write
 
   repeat

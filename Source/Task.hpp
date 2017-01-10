@@ -223,7 +223,7 @@ namespace Tasks
     void vAddConstant(const char* aName, i8 iVal);
     void vAddConstant(const char* aName, const char* aValue);
     void vAddConstants(void);
-    void vAddMunged(void);
+    void vAddMunged(NNP_Task nnpTask);
     void vAddPrimitive(const char* aName, TaskStep pStep, bool bImmediate);
     void vAddRoutines(void);
     Object* pArgObject(void);

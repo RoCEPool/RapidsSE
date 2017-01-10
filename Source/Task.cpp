@@ -254,7 +254,9 @@ void Task::vInitialiseDictionary(void)
   
   vAddRoutines();
 
-  vAddMunged();
+  NNP_Task nnpTask(this);
+  
+  vAddMunged(nnpTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -697,7 +699,7 @@ void Task::vAddConstants(void)
 #ifdef MUNGED
 
 #else
-void Task::vAddMunged(void)
+void Task::vAddMunged(NNP_Task nnpTask)
 {
 }
 #endif

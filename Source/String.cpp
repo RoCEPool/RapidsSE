@@ -427,7 +427,7 @@ bool String::bEnds(const char* sArg, const char* sEnd)
 }
 
 /*----------------------------------------------------------------------------*/
-/* vEscape: put a '\\' before and '\"'                                        */
+/* vEscape: put a '\' before and '"'                                          */
 /*----------------------------------------------------------------------------*/
 void String::vEscape(const char* sArg, char* sEscaped)
 {
@@ -437,6 +437,10 @@ void String::vEscape(const char* sArg, char* sEscaped)
   while (*aSrc) {
     if ('\"' == *aSrc)
       *aDst++ = '\\';
+    else
+    if ('\\' == *aSrc)
+      *aDst++ = '\\';
+
     *aDst++ = *aSrc++;
   }
   
