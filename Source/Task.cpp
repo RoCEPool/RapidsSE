@@ -3821,7 +3821,7 @@ void Task::vRdtscp(NNP_Task nnpTask)
 {
 ENTRY("vRdtscp");
   
-  i8 iTscp = iRdtscp();
+  i8 iTscp = System::iRdtscp();
 
   nnpTask->m_xParamStack.vPush(iTscp);
   

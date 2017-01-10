@@ -22,6 +22,7 @@ namespace Platform
     static i8 iCoreCount(void);
     static i8 iCpuCount(void);
     static i8 iPhysicalMemory(void);
+    static i8 iRdtscp(void);
     
   };
 }

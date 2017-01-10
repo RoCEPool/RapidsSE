@@ -8,7 +8,7 @@
 
 namespace Platform
 {
-  extern "C" u8 iRdtscp(void);
+  //extern "C" u8 iRdtscp(void);
   extern "C" u8 iAtomicDec(i8*);
   extern "C" u8 iAtomicInc(i8*);
   extern "C" u8 iCpuid(u8 iEax, u8 iReg);
