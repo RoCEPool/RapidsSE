@@ -51,11 +51,6 @@ Tokeniser::~Tokeniser(void)
   
 }
 
-Parser* m_pParser; // parser
-bool    m_bMalloc; // malloc or pool heap?
-bool    m_bNormal; // normal tokens?
-char    m_cStrippedChar; // character from parser, stripped of comments
-
 /*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
@@ -409,7 +404,7 @@ eTK Tokeniser::eParseNormalInteger(char* wToken)
   
   // collect initial digits
   while (bIsDigit()) {
-    *z++ = m_cStrippedChar;
+    *z++ = m_cParsedChar;
     iNoDigits++;
     vGetNextStripped();
   }
@@ -418,11 +413,11 @@ eTK Tokeniser::eParseNormalInteger(char* wToken)
   if (1 == iNoDigits && bIsX()) {
     
     // add the 'x'
-    *z++ = m_cStrippedChar;
+    *z++ = m_cParsedChar;
     
     // collect the hex digits
     while (bIsHex()) {
-      *z++ = m_cStrippedChar;
+      *z++ = m_cParsedChar;
       vGetNextStripped();
     }
   }
@@ -448,8 +443,8 @@ eTK Tokeniser::eParseNormalName(char* wToken)
   ASSERT(bStartNormalName());
   
   // collect the characters of the name
-  while ( String::bIsAlphaDigitUnder(m_cStrippedChar) ) {
-    *z++ = m_cStrippedChar;
+  while ( String::bIsAlphaDigitUnder(m_cParsedChar) ) {
+    *z++ = m_cParsedChar;
     vGetNextStripped();
   }
   
@@ -494,7 +489,7 @@ eTK Tokeniser::eParseNormalOther(char* wToken)
   }
   
   // collect a single character
-  *z++ = m_cStrippedChar;
+  *z++ = m_cParsedChar;
   
   // terminate the other token
   *z = '\0';
@@ -521,24 +516,24 @@ eTK Tokeniser::eParseNormalString(char* wToken)
     
 /*
     // test for \n
-    if ('\\' == m_cStrippedChar) {
+    if ('\\' == m_cParsedChar) {
       vGetNextStripped();
-      if ('n' == m_cStrippedChar)
-        m_cStrippedChar = '\n';
+      if ('n' == m_cParsedChar)
+        m_cParsedChar = '\n';
       else {
         vUngetStrippedChar();
-        m_cStrippedChar = '\\';
+        m_cParsedChar = '\\';
       }
     }
 */
-    if ('\\' == m_cStrippedChar) {
+    if ('\\' == m_cParsedChar) {
       vGetNextStripped();
       // translate \n into new line
-      if ('n' == m_cStrippedChar)
-        m_cStrippedChar = '\n';
+      if ('n' == m_cParsedChar)
+        m_cParsedChar = '\n';
     }
     
-    *z++ = m_cStrippedChar;
+    *z++ = m_cParsedChar;
     vGetNextStripped();
   }
   
@@ -599,7 +594,7 @@ eTK Tokeniser::eParseSpecialInteger(char* wToken)
   
   // collect initial digits
   while (bIsDigit()) {
-    *z++ = m_cStrippedChar;
+    *z++ = m_cParsedChar;
     iNoDigits++;
     vGetNextStripped();
   }
@@ -608,11 +603,11 @@ eTK Tokeniser::eParseSpecialInteger(char* wToken)
   if (1 == iNoDigits && bIsX()) {
 
     // add the 'x'
-    *z++ = m_cStrippedChar;
+    *z++ = m_cParsedChar;
     
     // collect the hex digits
     while (bIsHex()) {
-      *z++ = m_cStrippedChar;
+      *z++ = m_cParsedChar;
       vGetNextStripped();
     }
   }
@@ -647,8 +642,8 @@ eTK Tokeniser::eParseSpecialName(char* wToken)
   ASSERT(bStartSpecialName());
   
   // collect the characters of the name
-  while ( m_cStrippedChar && !bIsWhite() && !bStartSpecialString() ) {
-    *z++ = m_cStrippedChar;
+  while ( m_cParsedChar && !bIsWhite() && !bStartSpecialString() ) {
+    *z++ = m_cParsedChar;
     vGetNextStripped();
   }
   
@@ -680,25 +675,25 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
     
 /*
     // test for \n
-    if ('\\' == m_cStrippedChar) {
+    if ('\\' == m_cParsedChar) {
       vGetNextStripped();
-      if ('n' == m_cStrippedChar)
-        m_cStrippedChar = '\n';
+      if ('n' == m_cParsedChar)
+        m_cParsedChar = '\n';
       else {
         vUngetStrippedChar();
-        m_cStrippedChar = '\\';
+        m_cParsedChar = '\\';
       }
     }
 */
     
-    if ('\\' == m_cStrippedChar) {
+    if ('\\' == m_cParsedChar) {
       vGetNext();
       // translate \n into new line
-      if ('n' == m_cStrippedChar)
-        m_cStrippedChar = '\n';
+      if ('n' == m_cParsedChar)
+        m_cParsedChar = '\n';
     }    
     
-    *z++ = m_cStrippedChar;
+    *z++ = m_cParsedChar;
     vGetNext();
   }
  
@@ -732,8 +727,8 @@ bool Tokeniser::bHaveWhitespace(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
   // do we have a current parsed character, which is a white char?
-  if (m_cStrippedChar) {
-    if (String::bIsWhite(m_cStrippedChar))
+  if (m_cParsedChar) {
+    if (String::bIsWhite(m_cParsedChar))
       return true;
     else
       return false;
@@ -760,7 +755,7 @@ bool Tokeniser::bStartNormalInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsDigit(m_cStrippedChar))
+  if (String::bIsDigit(m_cParsedChar))
     return true;
   
   return false;
@@ -773,7 +768,7 @@ bool Tokeniser::bStartNormalName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsAlphaUnder(m_cStrippedChar))
+  if (String::bIsAlphaUnder(m_cParsedChar))
     return true;
   
   return false;
@@ -786,7 +781,7 @@ bool Tokeniser::bStartNormalOther(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (! String::bIsAlphaDigitUnder(m_cStrippedChar))
+  if (! String::bIsAlphaDigitUnder(m_cParsedChar))
     return true;
   
   return false;
@@ -799,7 +794,7 @@ bool Tokeniser::bStartNormalString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_cStrippedChar)
+  if ('"' == m_cParsedChar)
     return true;
   
   return false;
@@ -812,7 +807,7 @@ bool Tokeniser::bEndNormalString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_cStrippedChar)
+  if ('"' == m_cParsedChar)
     return true;
   
   return false;
@@ -825,7 +820,7 @@ bool Tokeniser::bStartSpecialInteger(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsDigit(m_cStrippedChar))
+  if (String::bIsDigit(m_cParsedChar))
     return true;
   
   return false;
@@ -851,7 +846,7 @@ bool Tokeniser::bStartSpecialString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_cStrippedChar)
+  if ('"' == m_cParsedChar)
     return true;
   
   return false;
@@ -864,7 +859,7 @@ bool Tokeniser::bEndSpecialString(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('"' == m_cStrippedChar)
+  if ('"' == m_cParsedChar)
     return true;
   
   return false;
@@ -877,7 +872,7 @@ bool Tokeniser::bIsDigit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsDigit(m_cStrippedChar))
+  if (String::bIsDigit(m_cParsedChar))
     return true;
   
   return false;
@@ -890,7 +885,7 @@ bool Tokeniser::bIsDot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('.' == m_cStrippedChar)
+  if ('.' == m_cParsedChar)
     return true;
   
   return false;
@@ -903,7 +898,7 @@ bool Tokeniser::bIsHex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsHex(m_cStrippedChar))
+  if (String::bIsHex(m_cParsedChar))
     return true;
   
   return false;
@@ -916,7 +911,7 @@ bool Tokeniser::bIsX(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('x' == m_cStrippedChar || 'X' == m_cStrippedChar)
+  if ('x' == m_cParsedChar || 'X' == m_cParsedChar)
     return true;
   
   return false;
@@ -929,7 +924,7 @@ bool Tokeniser::bIsWhite(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if (String::bIsWhite(m_cStrippedChar))
+  if (String::bIsWhite(m_cParsedChar))
     return true;
   
   return false;
@@ -942,7 +937,7 @@ void Tokeniser::vGetNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cStrippedChar = m_pParser->cGet(false);
+  m_cParsedChar = m_pParser->cGet(false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -952,7 +947,7 @@ void Tokeniser::vGetNextStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cStrippedChar = m_pParser->cGet(true);
+  m_cParsedChar = m_pParser->cGet(true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -962,7 +957,7 @@ void Tokeniser::vUngetStrippedChar(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_pParser->vUnget(m_cStrippedChar);
+  m_pParser->vUnget(m_cParsedChar);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -972,7 +967,7 @@ bool Tokeniser::bEndInput(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  if ('\0' == m_cStrippedChar)
+  if ('\0' == m_cParsedChar)
     return true;
   
   return false;

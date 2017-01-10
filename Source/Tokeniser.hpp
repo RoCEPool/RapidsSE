@@ -34,7 +34,7 @@ namespace Common
     Parser* m_pParser; // parser
     bool    m_bMalloc; // malloc or pool heap?
     bool    m_bNormal; // normal tokens?
-    char    m_cStrippedChar; // character from parser, stripped of comments
+    char    m_cParsedChar;   // character from parser
     
     // must be last
     Footer m_xFooter;    
