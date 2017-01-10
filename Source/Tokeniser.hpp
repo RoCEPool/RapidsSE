@@ -107,6 +107,7 @@ namespace Common
     bool bIsX(void);
     bool bIsWhite(void);
 
+    void vGetNext(void);
     void vGetNextStripped(void);
     void vUngetStrippedChar(void);
     

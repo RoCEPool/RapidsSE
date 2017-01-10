@@ -673,7 +673,7 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
   ASSERT(bStartSpecialString());
   
   // skip the leading '"'
-  vGetNextStripped();
+  vGetNext();
   
   // collect the chars in the string
   while ( ! bEndSpecialString() ) {
@@ -692,14 +692,14 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
 */
     
     if ('\\' == m_cStrippedChar) {
-      vGetNextStripped();
+      vGetNext();
       // translate \n into new line
       if ('n' == m_cStrippedChar)
         m_cStrippedChar = '\n';
     }    
     
     *z++ = m_cStrippedChar;
-    vGetNextStripped();
+    vGetNext();
   }
  
   // terminate the strlit
@@ -938,11 +938,21 @@ bool Tokeniser::bIsWhite(void)
 /*----------------------------------------------------------------------------*/
 /* get next input character                                                   */
 /*----------------------------------------------------------------------------*/
+void Tokeniser::vGetNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  m_cStrippedChar = m_pParser->cGet(false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next input character (stripped of comments)                            */
+/*----------------------------------------------------------------------------*/
 void Tokeniser::vGetNextStripped(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  m_cStrippedChar = m_pParser->cGet();
+  m_cStrippedChar = m_pParser->cGet(true);
 }
 
 /*----------------------------------------------------------------------------*/

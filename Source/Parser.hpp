@@ -61,7 +61,7 @@ namespace Common
     i8   iDepth(void);
     
     // Parsing
-    char cGet(void);
+    char cGet(bool bStripComments);
     void vUnget(char c);
     bool bEOF(void);
     bool bLineMode(void);
@@ -77,7 +77,7 @@ namespace Common
     void vDiscardFirst(void);
     void vLoadBoth(void);
     void vLoadFirst(void);
-    void vLoadRegisters(void);
+    void vLoadRegisters(bool bStripComments);
     void vLoadSecond(void);
     void vRewindRegisters(char c);
     

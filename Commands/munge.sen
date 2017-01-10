@@ -106,6 +106,46 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* write the .cpp header portion of the file                                  */
+/*----------------------------------------------------------------------------*/
+: mungeCppHeader
+
+  locals| cppFile |
+
+  "/*============================================================================*/"
+  cppFile file.write
+  "\n" cppFile file.write
+
+  "/* MungeSen.cpp - munged sen files                                            */"
+  cppFile file.write
+  "\n" cppFile file.write
+
+  "/*============================================================================*/"
+  cppFile file.write
+  "\n" cppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
+/* write the .cpp footer portion of the file                                  */
+/*----------------------------------------------------------------------------*/
+: mungeCppFooter
+
+  locals| cppFile |
+
+  "/*============================================================================*/"
+  cppFile file.write
+  "\n" cppFile file.write
+
+  "/* end                                                                        */"
+  cppFile file.write
+  "\n" cppFile file.write
+
+  "/*============================================================================*/"
+  cppFile file.write
+  "\n" cppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
 /* munge all .sen files                                                       */
 /*----------------------------------------------------------------------------*/
 : munge
@@ -117,14 +157,18 @@
   "." commandDir dir.path!
 
   // open directory
-  commandDir dir.open
+  commandDir dir.open assert
 
   // open cpp file
-  "../Munge/munge.cpp" cppFile file.path!
+  "../Munge/MungedSen.cpp" cppFile file.path!
   OPEN_WRITE cppFile file.open assert
+
+  cppFile mungeCppHeader
 
   // munge the command dir
   cppFile commandDir mungeDir
+
+  cppFile mungeCppFooter
 
   // close and delete file accessor
   cppFile file.close

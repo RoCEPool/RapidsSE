@@ -248,13 +248,13 @@ i8 Parser::iDepth(void)
 /*----------------------------------------------------------------------------*/
 /* get next parsed char                                                       */
 /*----------------------------------------------------------------------------*/
-char Parser::cGet(void)
+char Parser::cGet(bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   // do we have any chars in the regs?
   if (! m_nLoaded)
-    vLoadRegisters();
+    vLoadRegisters(bStripComments);
   
   if (! m_nLoaded)
     return '\0';
@@ -431,7 +431,7 @@ void Parser::vLoadFirst(void)
 /*----------------------------------------------------------------------------*/
 /* load first (and maybe) second register from input stream, strip comments   */
 /*----------------------------------------------------------------------------*/
-void Parser::vLoadRegisters(void)
+void Parser::vLoadRegisters(bool bStripComments)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
@@ -444,8 +444,8 @@ void Parser::vLoadRegisters(void)
     if (! m_nLoaded)
       break;
     
-    if (! bPossibleComment())  // this may leave a char in second register
-      continue;                // e.g. /t
+    if (! bStripComments || ! bPossibleComment())
+      continue;               // this may leave a char in second register e.g. /t
     
     vStripComment();
   }
