@@ -55,7 +55,7 @@ thread:  monitorThread
 
     // monitorString @ .
 
-    monitorTaskPrint if bp.analyze then
+    monitorTaskPrint if _bp_analyze then
 
   10 thread.sleep_s
 

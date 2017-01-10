@@ -36,8 +36,8 @@ void Task::vAddPrimitives_Bp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("bp.analyze",      &vBpAnalyze,        false);
-  vAddPrimitive("bp.dump",         &vBpdump,           false);
+  vAddPrimitive("_bp_analyze",      &vBpAnalyze,        false);
+  vAddPrimitive("_bp_dump",         &vBpdump,           false);
   vAddPrimitive("bp.freeBuffers",  &vFreeBuffers,      false);
   vAddPrimitive("bp.freePercent",  &vFreePercent,      false);
   vAddPrimitive("bp.freeSpace",    &vFreeSpace,        false);
