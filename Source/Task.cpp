@@ -378,116 +378,117 @@ void Task::vAddConstants(void)
   /*  1 */ vAddConstant("CN_S32",          CN_S32);
   /*  2 */ vAddConstant("CN_S256",         CN_S256);
   /*  3 */ vAddConstant("CN_S8K",          CN_S8K);
-
+  
   /*  4 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
-  /*  5 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);
-  /*  6 */ vAddConstant("CN_PTRVAL",       CN_PTRVAL);
-  /*  7 */ vAddConstant("CN_STRVAL",       CN_STRVAL);
-  /*  8 */ vAddConstant("CN_VALREG",       CN_VALREG);
-  /*  9 */ vAddConstant("CN_VALSET",       CN_VALSET);
-  /* 10 */ vAddConstant("CN_VALWSP",       CN_VALWSP);
+  /*  5 */ vAddConstant("CN_IPVAL",       CN_INTVAL);
+  /*  6 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);
+  /*  7 */ vAddConstant("CN_PTRVAL",       CN_PTRVAL);
+  /*  8 */ vAddConstant("CN_STRVAL",       CN_STRVAL);
+  /*  9 */ vAddConstant("CN_VALREG",       CN_VALREG);
+  /* 10 */ vAddConstant("CN_VALSET",       CN_VALSET);
+  /* 11 */ vAddConstant("CN_VALWSP",       CN_VALWSP);
   
-  /* 11 */ vAddConstant("CN_ARGUMENTS",    CN_ARGUMENTS);
-  /* 12 */ vAddConstant("CN_ATOMIC",       CN_ATOMIC);
-  /* 13 */ vAddConstant("CN_ATTACHMAP",    CN_ATTACHMAP);
+  /* 12 */ vAddConstant("CN_ARGUMENTS",    CN_ARGUMENTS);
+  /* 13 */ vAddConstant("CN_ATOMIC",       CN_ATOMIC);
+  /* 14 */ vAddConstant("CN_ATTACHMAP",    CN_ATTACHMAP);
   
-  /* 14 */ vAddConstant("CN_BUFFER",       CN_BUFFER);
-  /* 15 */ vAddConstant("CN_BUFFERPOOL",   CN_BUFFERPOOL);
-  /* 16 */ vAddConstant("CN_BPA",          CN_BPA);
+  /* 15 */ vAddConstant("CN_BUFFER",       CN_BUFFER);
+  /* 16 */ vAddConstant("CN_BUFFERPOOL",   CN_BUFFERPOOL);
+  /* 17 */ vAddConstant("CN_BPA",          CN_BPA);
   
-  /* 17 */ vAddConstant("CN_DIC",          CN_DIC);
-  /* 18 */ vAddConstant("CN_DICSTACK",     CN_DICSTACK);
-  /* 19 */ vAddConstant("CN_DIR",          CN_DIR);
+  /* 18 */ vAddConstant("CN_DIC",          CN_DIC);
+  /* 19 */ vAddConstant("CN_DICSTACK",     CN_DICSTACK);
+  /* 20 */ vAddConstant("CN_DIR",          CN_DIR);
   
-  /* 20 */ vAddConstant("CN_FILE",         CN_FILE);
-  /* 21 */ vAddConstant("CN_FREECHUNK",    CN_FREECHUNK);
+  /* 21 */ vAddConstant("CN_FILE",         CN_FILE);
+  /* 22 */ vAddConstant("CN_FREECHUNK",    CN_FREECHUNK);
   
-  /* 22 */ vAddConstant("CN_GRAPH",        CN_GRAPH);
-  /* 23 */ vAddConstant("CN_GRAPHCURSOR",  CN_GRAPHCURSOR);
-  /* 24 */ vAddConstant("CN_GRAPHNODE",    CN_GRAPHNODE);
-  /* 25 */ vAddConstant("CN_GRID",         CN_GRID);
+  /* 23 */ vAddConstant("CN_GRAPH",        CN_GRAPH);
+  /* 24 */ vAddConstant("CN_GRAPHCURSOR",  CN_GRAPHCURSOR);
+  /* 25 */ vAddConstant("CN_GRAPHNODE",    CN_GRAPHNODE);
+  /* 26 */ vAddConstant("CN_GRID",         CN_GRID);
   
-  /* 26 */ vAddConstant("CN_HEAPBUFFER",   CN_HEAPBUFFER);
+  /* 27 */ vAddConstant("CN_HEAPBUFFER",   CN_HEAPBUFFER);
   
-  /* 27 */ vAddConstant("CN_INDEX",        CN_INDEX);
+  /* 28 */ vAddConstant("CN_INDEX",        CN_INDEX);
 
-  /* 28 */ vAddConstant("CN_JUMBOHEAP",    CN_JUMBOHEAP);
+  /* 29 */ vAddConstant("CN_JUMBOHEAP",    CN_JUMBOHEAP);
 
-  /* 29 */ vAddConstant("CN_KEYCPP",       CN_KEYCPP);
-  /* 30 */ vAddConstant("CN_KEYVAL",       CN_KEYVAL);
+  /* 30 */ vAddConstant("CN_KEYCPP",       CN_KEYCPP);
+  /* 31 */ vAddConstant("CN_KEYVAL",       CN_KEYVAL);
   
-  /* 31 */ vAddConstant("CN_LOADCHUNK",    CN_LOADCHUNK);
-  /* 32 */ vAddConstant("CN_LOADER",       CN_LOADER);
-  /* 33 */ vAddConstant("CN_LOADERSUB",    CN_LOADERSUB);
-  /* 34 */ vAddConstant("CN_LOADMAP",      CN_LOADMAP);
-  /* 35 */ vAddConstant("CN_LOCK",         CN_LOCK);
+  /* 32 */ vAddConstant("CN_LOADCHUNK",    CN_LOADCHUNK);
+  /* 33 */ vAddConstant("CN_LOADER",       CN_LOADER);
+  /* 34 */ vAddConstant("CN_LOADERSUB",    CN_LOADERSUB);
+  /* 35 */ vAddConstant("CN_LOADMAP",      CN_LOADMAP);
+  /* 36 */ vAddConstant("CN_LOCK",         CN_LOCK);
   
-  /* 36 */ vAddConstant("CN_MEDIUMHEAP",   CN_MEDIUMHEAP);
+  /* 37 */ vAddConstant("CN_MEDIUMHEAP",   CN_MEDIUMHEAP);
   
-  /* 37 */ vAddConstant("CN_NODE",         CN_NODE);
-  /* 38 */ vAddConstant("CN_NODECURSOR",   CN_NODECURSOR);
+  /* 38 */ vAddConstant("CN_NODE",         CN_NODE);
+  /* 39 */ vAddConstant("CN_NODECURSOR",   CN_NODECURSOR);
   
-  /* 39 */ vAddConstant("CN_PARSER",       CN_PARSER);
-  /* 40 */ vAddConstant("CN_PARTITION",    CN_PARTITION);
-  /* 41 */ vAddConstant("CN_PARTITIONS",   CN_PARTITIONS);
-  /* 42 */ vAddConstant("CN_PROXY",        CN_PROXY);
-  /* 43 */ vAddConstant("CN_PROXYSET",     CN_PROXYSET);
+  /* 40 */ vAddConstant("CN_PARSER",       CN_PARSER);
+  /* 41 */ vAddConstant("CN_PARTITION",    CN_PARTITION);
+  /* 42 */ vAddConstant("CN_PARTITIONS",   CN_PARTITIONS);
+  /* 43 */ vAddConstant("CN_PROXY",        CN_PROXY);
+  /* 44 */ vAddConstant("CN_PROXYSET",     CN_PROXYSET);
   
-  /* 44 */ vAddConstant("CN_QUEUE",        CN_QUEUE);
-  /* 45 */ vAddConstant("CN_QUEUEBUFFER",  CN_QUEUEBUFFER);
+  /* 45 */ vAddConstant("CN_QUEUE",        CN_QUEUE);
+  /* 46 */ vAddConstant("CN_QUEUEBUFFER",  CN_QUEUEBUFFER);
   
-  /* 46 */ vAddConstant("CN_REGFRAME",     CN_REGFRAME);
-  /* 47 */ vAddConstant("CN_RING",         CN_RING);
-  /* 48 */ vAddConstant("CN_ROW",          CN_ROW);
-  /* 49 */ vAddConstant("CN_ROWBUFFER",    CN_ROWBUFFER);
-  /* 50 */ vAddConstant("CN_ROWCURSOR",    CN_ROWCURSOR);
-  /* 51 */ vAddConstant("CN_ROWSTRAND",    CN_ROWSTRAND);
-  /* 52 */ vAddConstant("CN_ROWWSP",       CN_ROWWSP);
+  /* 47 */ vAddConstant("CN_REGFRAME",     CN_REGFRAME);
+  /* 48 */ vAddConstant("CN_RING",         CN_RING);
+  /* 49 */ vAddConstant("CN_ROW",          CN_ROW);
+  /* 50 */ vAddConstant("CN_ROWBUFFER",    CN_ROWBUFFER);
+  /* 51 */ vAddConstant("CN_ROWCURSOR",    CN_ROWCURSOR);
+  /* 52 */ vAddConstant("CN_ROWSTRAND",    CN_ROWSTRAND);
+  /* 53 */ vAddConstant("CN_ROWWSP",       CN_ROWWSP);
   
-  /* 53 */ vAddConstant("CN_SCANBUFFER",   CN_SCANBUFFER);
-  /* 54 */ vAddConstant("CN_SCRATCH",      CN_SCRATCH);
-  /* 55 */ vAddConstant("CN_SEHISTORY",    CN_SEHISTORY);
-  /* 56 */ vAddConstant("CN_SEITF",        CN_SEITF);
-  /* 57 */ vAddConstant("CN_SEITFCURSOR",  CN_SEITFCURSOR);
-  /* 58 */ vAddConstant("CN_SEITFLIST",    CN_SEITFLIST);
-  /* 59 */ vAddConstant("CN_SEPROMPT",     CN_SEPROMPT);
-  /* 60 */ vAddConstant("CN_SINCE",        CN_SINCE);
-  /* 61 */ vAddConstant("CN_SKIPCURSOR",   CN_SKIPCURSOR);
-  /* 62 */ vAddConstant("CN_SKIPLIST",     CN_SKIPLIST);
-  /* 63 */ vAddConstant("CN_SKIPNODE",     CN_SKIPNODE);
-  /* 64 */ vAddConstant("CN_SMALLHEAP",    CN_SMALLHEAP);
-  /* 65 */ vAddConstant("CN_SOCKET",       CN_SOCKET);
-  /* 66 */ vAddConstant("CN_STACK",        CN_STACK);
-  /* 67 */ vAddConstant("CN_STEPACCUM",    CN_STEPACCUM);
-  /* 68 */ vAddConstant("CN_STEPARRAY",    CN_STEPARRAY);
-  /* 69 */ vAddConstant("CN_SYSCALL",      CN_SYSCALL);
+  /* 54 */ vAddConstant("CN_SCANBUFFER",   CN_SCANBUFFER);
+  /* 55 */ vAddConstant("CN_SCRATCH",      CN_SCRATCH);
+  /* 56 */ vAddConstant("CN_SEHISTORY",    CN_SEHISTORY);
+  /* 57 */ vAddConstant("CN_SEITF",        CN_SEITF);
+  /* 58 */ vAddConstant("CN_SEITFCURSOR",  CN_SEITFCURSOR);
+  /* 59 */ vAddConstant("CN_SEITFLIST",    CN_SEITFLIST);
+  /* 60 */ vAddConstant("CN_SEPROMPT",     CN_SEPROMPT);
+  /* 61 */ vAddConstant("CN_SINCE",        CN_SINCE);
+  /* 62 */ vAddConstant("CN_SKIPCURSOR",   CN_SKIPCURSOR);
+  /* 63 */ vAddConstant("CN_SKIPLIST",     CN_SKIPLIST);
+  /* 64 */ vAddConstant("CN_SKIPNODE",     CN_SKIPNODE);
+  /* 65 */ vAddConstant("CN_SMALLHEAP",    CN_SMALLHEAP);
+  /* 66 */ vAddConstant("CN_SOCKET",       CN_SOCKET);
+  /* 67 */ vAddConstant("CN_STACK",        CN_STACK);
+  /* 68 */ vAddConstant("CN_STEPACCUM",    CN_STEPACCUM);
+  /* 69 */ vAddConstant("CN_STEPARRAY",    CN_STEPARRAY);
+  /* 70 */ vAddConstant("CN_SYSCALL",      CN_SYSCALL);
   
-  /* 70 */ vAddConstant("CN_TABLE",        CN_TABLE);
-  /* 71 */ vAddConstant("CN_TASK",         CN_TASK);
-  /* 72 */ vAddConstant("CN_TASKCURSOR",   CN_TASKCURSOR);
-  /* 73 */ vAddConstant("CN_TASKLIST",     CN_TASKLIST);
-  /* 74 */ vAddConstant("CN_TASKSET",      CN_TASKSET);
-  /* 75 */ vAddConstant("CN_THREAD",       CN_THREAD);
-  /* 76 */ vAddConstant("CN_THREADCURSOR", CN_THREADCURSOR);
-  /* 77 */ vAddConstant("CN_THREADLIST",   CN_THREADLIST);
-  /* 78 */ vAddConstant("CN_TIME",         CN_TIME);
-  /* 79 */ vAddConstant("CN_TIMER",        CN_TIMER);
-  /* 80 */ vAddConstant("CN_TOKENISER",    CN_TOKENISER);
-  /* 81 */ vAddConstant("CN_TX",           CN_TX);
-  /* 82 */ vAddConstant("CN_TXARRAY",      CN_TXARRAY);
-  /* 83 */ vAddConstant("CN_TXCOLLECTION", CN_TXCOLLECTION);
-  /* 84 */ vAddConstant("CN_TXCURSOR",     CN_TXCURSOR);
-  /* 85 */ vAddConstant("CN_TXMAP",        CN_TXMAP);
-  /* 86 */ vAddConstant("CN_TXREF",        CN_TXREF);
+  /* 71 */ vAddConstant("CN_TABLE",        CN_TABLE);
+  /* 72 */ vAddConstant("CN_TASK",         CN_TASK);
+  /* 73 */ vAddConstant("CN_TASKCURSOR",   CN_TASKCURSOR);
+  /* 74 */ vAddConstant("CN_TASKLIST",     CN_TASKLIST);
+  /* 75 */ vAddConstant("CN_TASKSET",      CN_TASKSET);
+  /* 76 */ vAddConstant("CN_THREAD",       CN_THREAD);
+  /* 77 */ vAddConstant("CN_THREADCURSOR", CN_THREADCURSOR);
+  /* 78 */ vAddConstant("CN_THREADLIST",   CN_THREADLIST);
+  /* 79 */ vAddConstant("CN_TIME",         CN_TIME);
+  /* 80 */ vAddConstant("CN_TIMER",        CN_TIMER);
+  /* 81 */ vAddConstant("CN_TOKENISER",    CN_TOKENISER);
+  /* 82 */ vAddConstant("CN_TX",           CN_TX);
+  /* 83 */ vAddConstant("CN_TXARRAY",      CN_TXARRAY);
+  /* 84 */ vAddConstant("CN_TXCOLLECTION", CN_TXCOLLECTION);
+  /* 85 */ vAddConstant("CN_TXCURSOR",     CN_TXCURSOR);
+  /* 86 */ vAddConstant("CN_TXMAP",        CN_TXMAP);
+  /* 87 */ vAddConstant("CN_TXREF",        CN_TXREF);
   
-  /* 87 */ vAddConstant("CN_WORD",         CN_WORD);
+  /* 88 */ vAddConstant("CN_WORD",         CN_WORD);
 
-  /* 88 */ vAddConstant("CN_ZSMALL_",      CN_ZSMALL_);
-  /* 89 */ vAddConstant("CN_ZMEDIUM_",     CN_ZMEDIUM_);
-  /* 90 */ vAddConstant("CN_ZLARGE_",      CN_ZLARGE_);
-  /* 91 */ vAddConstant("CN_ZJUMBO_",      CN_ZJUMBO_);
+  /* 89 */ vAddConstant("CN_ZSMALL_",      CN_ZSMALL_);
+  /* 90 */ vAddConstant("CN_ZMEDIUM_",     CN_ZMEDIUM_);
+  /* 91 */ vAddConstant("CN_ZLARGE_",      CN_ZLARGE_);
+  /* 92 */ vAddConstant("CN_ZJUMBO_",      CN_ZJUMBO_);
   
-  /* 92 */ vAddConstant("CN_ENUMS",        CN_ENUMS);
+  /* 93 */ vAddConstant("CN_ENUMS",        CN_ENUMS);
   
   // DE_ : directory entry type -- n.b. the DT_FIFO etc are from dirent.h
   /*  1 */ vAddConstant("DE_FIFO", DT_FIFO);
