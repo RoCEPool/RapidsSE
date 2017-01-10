@@ -380,7 +380,7 @@ void Task::vAddConstants(void)
   /*  3 */ vAddConstant("CN_S8K",          CN_S8K);
   
   /*  4 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
-  /*  5 */ vAddConstant("CN_IPVAL",       CN_INTVAL);
+  /*  5 */ vAddConstant("CN_IPVAL",        CN_IPVAL);
   /*  6 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);
   /*  7 */ vAddConstant("CN_PTRVAL",       CN_PTRVAL);
   /*  8 */ vAddConstant("CN_STRVAL",       CN_STRVAL);
