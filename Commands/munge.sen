@@ -5,20 +5,54 @@
 "munge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* write the .cpp header portion of the file                                  */
+/*----------------------------------------------------------------------------*/
+: mungeCppHeader
+
+  locals| cppFile |
+
+  "/*============================================================================*/"
+  cppFile file.write "\n" cppFile file.write
+
+  "/* MungedSen.cpp - munged sen files                                           */"
+  cppFile file.write "\n" cppFile file.write
+
+  "/*============================================================================*/"
+  cppFile file.write "\n" cppFile file.write
+
+  "void Task::vAddMunged(void)\n" cppFile file.write
+  "{\n" cppFile file.write
+  "  s8K sDefinition;\n" cppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
 /* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
 : mungeCppVariable ( cppFile senFile -- )
 
   locals| senFile cppFile |
 
-  "const char* SEN_" cppFile file.write
-
-  senFile file.path@ str.length 4 - 0 senFile file.path@ str.sub
-
-  cppFile file.write
-
-  " = " cppFile file.write
   "\n" cppFile file.write
+
+  "  // munge of " cppFile file.write
+    senFile file.path@ cppFile file.write
+    "\n" cppFile file.write
+
+  "  sDefinition =\n" cppFile file.write
+
+//  senFile file.path@ str.length 4 -
+//    0
+//    senFile file.path@ str.sub
+//    cppFile file.write
+
+//  " = " cppFile file.write
+//  "\n" cppFile file.write
+
+    "  \": " cppFile file.write
+      senFile file.path@ cppFile file.write
+      "\"" cppFile file.write
+      "\n" cppFile file.write
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +66,7 @@
 
     str.escape to senLine
 
-    "  \""   cppFile file.write
+    "    \""   cppFile file.write
     senLine cppFile file.write
     "\""     cppFile file.write
     "\n"    cppFile file.write
@@ -47,8 +81,38 @@
 
   locals| senFile cppFile |
 
-  ";\n" cppFile file.write
+  "  ;\n" cppFile file.write
+
+  "\n" cppFile file.write
+
+  "  pCompileColon(sDefinition);\n" cppFile file.write
+
 ;
+
+/*----------------------------------------------------------------------------*/
+/* write the .cpp footer portion of the file                                  */
+/*----------------------------------------------------------------------------*/
+: mungeCppFooter
+
+  locals| cppFile |
+
+  "}\n" cppFile file.write
+  "\n" cppFile file.write
+
+  "/*============================================================================*/"
+  cppFile file.write
+  "\n" cppFile file.write
+
+  "/* end                                                                        */"
+  cppFile file.write
+  "\n" cppFile file.write
+
+  "/*============================================================================*/"
+  cppFile file.write
+  "\n" cppFile file.write
+;
+
+////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /* produce a c++ statement for the sen file                                   */
@@ -106,46 +170,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* write the .cpp header portion of the file                                  */
-/*----------------------------------------------------------------------------*/
-: mungeCppHeader
-
-  locals| cppFile |
-
-  "/*============================================================================*/"
-  cppFile file.write
-  "\n" cppFile file.write
-
-  "/* MungeSen.cpp - munged sen files                                            */"
-  cppFile file.write
-  "\n" cppFile file.write
-
-  "/*============================================================================*/"
-  cppFile file.write
-  "\n" cppFile file.write
-;
-
-/*----------------------------------------------------------------------------*/
-/* write the .cpp footer portion of the file                                  */
-/*----------------------------------------------------------------------------*/
-: mungeCppFooter
-
-  locals| cppFile |
-
-  "/*============================================================================*/"
-  cppFile file.write
-  "\n" cppFile file.write
-
-  "/* end                                                                        */"
-  cppFile file.write
-  "\n" cppFile file.write
-
-  "/*============================================================================*/"
-  cppFile file.write
-  "\n" cppFile file.write
-;
-
-/*----------------------------------------------------------------------------*/
 /* munge all .sen files                                                       */
 /*----------------------------------------------------------------------------*/
 : munge
@@ -160,7 +184,7 @@
   commandDir dir.open assert
 
   // open cpp file
-  "../Munge/MungedSen.cpp" cppFile file.path!
+  "../Munge/Task_AddMunged.cpp" cppFile file.path!
   OPEN_WRITE cppFile file.open assert
 
   cppFile mungeCppHeader
