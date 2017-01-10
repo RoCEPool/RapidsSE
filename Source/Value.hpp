@@ -20,6 +20,7 @@ namespace Dictionaries {
 namespace Values
 {
   class IntVal;
+  class IpVal;
   class PtrVal;
   class StrVal;
   class ValAcc;
@@ -45,6 +46,7 @@ namespace Values
     Dictionaries::Word* pWord(void);
     
     IntVal* pAsIntVal(void);
+    IpVal*  pAsIpVal(void);
     PtrVal* pAsPtrVal(void);
     StrVal* pAsStrVal(void);
     ValSet* pAsValSet(void);
