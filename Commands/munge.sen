@@ -5,35 +5,104 @@
 "munge.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* munge one .sen file                                                        */
+/* put the variable for the sen file into c++ file                            */
 /*----------------------------------------------------------------------------*/
-: mungeSenFile ( "<fileNm"> cppFile -- )
+: mungeCppVariable ( cppFile senFile -- )
 
-  // ...
+  locals| senFile cppFile |
 
-  "" file.new locals| senFile senLine cppFile |
+  "const char* SEN_" cppFile file.write
 
-  senFile file.path!
+  senFile file.path@ str.length 4 - 0 senFile file.path@ str.sub
 
-  OPEN_READ senFile file.open assert
+  cppFile file.write
+
+  " = " cppFile file.write
+  "\n" cppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
+/* put the variable initialise into c++ file                                  */
+/*----------------------------------------------------------------------------*/
+: mungeCppInitialise ( cppFile senFile -- )
+
+  "" locals| senLine senFile cppFile |
 
   begin senFile file.read while
 
     str.escape to senLine
 
-/*
-    senFile file.path@ .put
-      " : " .put
-      senLine .put
-      .\n
-*/
-    senLine cppFile file.write "\n" cppFile file.write
+    "  '"   cppFile file.write
+    senLine cppFile file.write
+    "'"     cppFile file.write
+    "\n"    cppFile file.write
 
   repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* put a ; terminator for statement into c++ file                             */
+/*----------------------------------------------------------------------------*/
+: mungeCppTerm ( cppFile senFile -- )
+
+  locals| senFile cppFile |
+
+  ";\n" cppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
+/* produce a c++ statement for the sen file                                   */
+/*----------------------------------------------------------------------------*/
+: mungeCppStatement ( cppFile senFile -- )
+
+  locals| senFile cppFile |
+
+  cppFile senFile mungeCppVariable
+
+  cppFile senFile mungeCppInitialise
+
+  cppFile senFile mungeCppTerm
+;
+
+/*----------------------------------------------------------------------------*/
+/* munge one .sen file                                                        */
+/*----------------------------------------------------------------------------*/
+: mungeSenFile ( "<fileNm"> cppFile -- )
+
+  file.new locals| senFile cppFile |
+
+  senFile file.path!
+
+  OPEN_READ senFile file.open assert
+
+  cppFile senFile mungeCppStatement
 
   // close and delete the file accessor
   senFile file.close
   senFile file.delete
+;
+
+/*----------------------------------------------------------------------------*/
+/* munge all .sen files in the command dir                                    */
+/*----------------------------------------------------------------------------*/
+: mungeDir ( cppFile commandDir -- )
+
+  locals| commandDir cppFile |
+
+  // read thru directory
+  begin commandDir dir.read while
+
+    // ignore entries which aren't regular files
+    commandDir dir.entryType DE_REG == not continue
+
+    // ignore entries which aren't .sen files
+    4 commandDir dir.entryName str.right ".sen" str.equal not continue
+    commandDir dir.entryName .
+
+    // convert to C++
+    commandDir dir.entryName cppFile mungeSenFile
+
+  repeat
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -54,20 +123,8 @@
   "../Munge/munge.cpp" cppFile file.path!
   OPEN_WRITE cppFile file.open assert
 
-  // read thru directory
-  begin commandDir dir.read while
-
-    // ignore entries which aren't regular files
-    commandDir dir.entryType DE_REG == not continue
-
-    // ignore entries which aren't .sen files
-    4 commandDir dir.entryName str.right ".sen" str.equal not continue
-    commandDir dir.entryName .
-
-    // convert to C++
-    commandDir dir.entryName cppFile mungeSenFile
-
-  repeat
+  // munge the command dir
+  cppFile commandDir mungeDir
 
   // close and delete file accessor
   cppFile file.close
