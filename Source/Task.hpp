@@ -229,6 +229,7 @@ namespace Tasks
     Object* pArgObject(void);
     void vCheckLocked(void);
     Word* pCompileColon(s& sDefinition);
+    Word* pCompileConstant(s& sDefinition);
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
     static void vDebug(void);

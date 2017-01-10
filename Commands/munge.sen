@@ -22,7 +22,7 @@
 
   "#include \"StorageEngine.h\"\n" cppFile file.write
   "\n" cppFile file.write
-  "void Task::vAddMunged(void)\n" cppFile file.write
+  "void Task::vAddMunged(NNP_Task nnpTask)\n" cppFile file.write
   "{\n" cppFile file.write
   "  s8K sDefinition;\n" cppFile file.write
 ;
@@ -42,31 +42,20 @@
 
   "  sDefinition =\n" cppFile file.write
 
-//  senFile file.path@ str.length 4 -
-//    0
-//    senFile file.path@ str.sub
-//    cppFile file.write
-
-//  " = " cppFile file.write
-//  "\n" cppFile file.write
-
-    "  \": " cppFile file.write
-      senFile file.path@ cppFile file.write
-      "\"" cppFile file.write
-      "\n" cppFile file.write
-
 ;
 
 /*----------------------------------------------------------------------------*/
 /* put the variable initialise into c++ file                                  */
 /*----------------------------------------------------------------------------*/
-: mungeCppInitialise ( cppFile senFile -- )
+: mungeSenText ( cppFile senFile -- )
 
   "" locals| senLine senFile cppFile |
 
+  "    \"\\\"\"\n"   cppFile file.write
+
   begin senFile file.read while
 
-    str.escape to senLine
+    str.escape str.escape to senLine
 
     "    \""   cppFile file.write
     senLine cppFile file.write
@@ -74,6 +63,20 @@
     "\n"    cppFile file.write
 
   repeat
+
+  "    \"\\\"\"\n"   cppFile file.write
+;
+
+/*----------------------------------------------------------------------------*/
+/* put the variable for the sen file into c++ file                            */
+/*----------------------------------------------------------------------------*/
+: mungeSenConstant ( cppFile senFile -- )
+
+locals| senFile cppFile |
+
+"  \" CONSTANT " cppFile file.write
+senFile file.path@ cppFile file.write
+"\"\n" cppFile file.write
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +90,7 @@
 
   "\n" cppFile file.write
 
-  "  pCompileColon(sDefinition);\n" cppFile file.write
+  "  pCompileConstant(sDefinition);\n" cppFile file.write
 
 ;
 
@@ -125,7 +128,9 @@
 
   cppFile senFile mungeCppVariable
 
-  cppFile senFile mungeCppInitialise
+  cppFile senFile mungeSenText
+
+  cppFile senFile mungeSenConstant
 
   cppFile senFile mungeCppTerm
 ;

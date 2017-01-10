@@ -2,6 +2,8 @@
 /* Task.cpp - task                                                            */
 /*============================================================================*/
 
+//#define MUNGED
+
 #define USE_INPUTSTREAM
 
 #define USE_LOADER2
@@ -256,7 +258,9 @@ void Task::vInitialiseDictionary(void)
 
   NNP_Task nnpTask(this);
   
+#ifdef MUNGED
   vAddMunged(nnpTask);
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -692,19 +696,6 @@ void Task::vAddConstants(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add munged                                                                 */
-/*----------------------------------------------------------------------------*/
-//#define MUNGED
-
-#ifdef MUNGED
-
-#else
-void Task::vAddMunged(NNP_Task nnpTask)
-{
-}
-#endif
-
-/*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives(void)
@@ -1043,6 +1034,50 @@ Word* Task::pCompileColon(s& sDefinition)
   
 
   // reset scanning
+  m_xTokeniser.vUseEnd();
+  
+  return pNewWord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compile a constant definition                                              */
+/*----------------------------------------------------------------------------*/
+Word* Task::pCompileConstant(s& sDefinition)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  Word*    pNewWord;
+  TaskStep pStep;
+  Word*    pCalledWord;
+  ValWsp   xValWsp;
+  
+  m_xTokeniser.vUseString(sDefinition);
+  
+  // get string
+  vTokenNext();
+  vTrace("CompileConstant: %s\n",m_sToken.a());
+  xValWsp = m_sToken.a();
+  
+  // get CONSTANT
+  vTokenNext();
+  vTrace("CompileConstant: %s\n",m_sToken.a());
+  
+  // get name of word
+  vTokenNext();
+  vTrace("CompileConstant: %s\n",m_sToken.a());
+
+  /*
+  pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
+  
+  vCurrentWord(pNewWord);
+  
+  pNewWord->vEncode("pushValue",&xValWsp);
+  pNewWord->vEncode("exit");
+  */
+  vAddConstant(m_sToken.a(),xValWsp.sStr());
+  
+  vTokenNext();
+  
   m_xTokeniser.vUseEnd();
   
   return pNewWord;
