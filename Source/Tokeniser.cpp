@@ -519,6 +519,7 @@ eTK Tokeniser::eParseNormalString(char* wToken)
   // collect the characters within the string
   while ( ! bEndNormalString() ) {
     
+/*
     // test for \n
     if ('\\' == m_cStrippedChar) {
       vGetNextStripped();
@@ -528,6 +529,13 @@ eTK Tokeniser::eParseNormalString(char* wToken)
         vUngetStrippedChar();
         m_cStrippedChar = '\\';
       }
+    }
+*/
+    if ('\\' == m_cStrippedChar) {
+      vGetNextStripped();
+      // translate \n into new line
+      if ('n' == m_cStrippedChar)
+        m_cStrippedChar = '\n';
     }
     
     *z++ = m_cStrippedChar;
@@ -670,6 +678,7 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
   // collect the chars in the string
   while ( ! bEndSpecialString() ) {
     
+/*
     // test for \n
     if ('\\' == m_cStrippedChar) {
       vGetNextStripped();
@@ -680,11 +689,19 @@ eTK Tokeniser::eParseSpecialString(char* wToken)
         m_cStrippedChar = '\\';
       }
     }
+*/
+    
+    if ('\\' == m_cStrippedChar) {
+      vGetNextStripped();
+      // translate \n into new line
+      if ('n' == m_cStrippedChar)
+        m_cStrippedChar = '\n';
+    }    
     
     *z++ = m_cStrippedChar;
     vGetNextStripped();
   }
-  
+ 
   // terminate the strlit
   *z = '\0';
 
