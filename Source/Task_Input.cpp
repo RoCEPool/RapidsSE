@@ -111,7 +111,7 @@ ENTRY("vInputNext");
   
   char* aToken = nnpTask->m_sToken.a();
   
-  nnpTask->m_eToken = nnpTask->m_pTokeniser->eNextToken(aToken);
+  eTK eToken = nnpTask->m_pTokeniser->eNextToken(aToken);
   
   EXIT();
 }
@@ -209,7 +209,7 @@ void Task::vInputType(NNP_Task nnpTask)
 {
 ENTRY("vInputType");
   
-  eTK eTokenType = nnpTask->m_eToken;
+  eTK eTokenType = nnpTask->m_pTokeniser->eToken();
   
   nnpTask->m_pDataStack->vPush(eTokenType);
   

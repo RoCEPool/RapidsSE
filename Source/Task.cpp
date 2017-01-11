@@ -237,7 +237,6 @@ void Task::vInit(const char* aLambda)
   
   m_pTokeniser = new Tokeniser;
   m_sToken     = "";
-  m_eToken     = TK_NONE;
   m_pTokeniser->vPush();
   m_pTokeniser->vUseString(m_sLambda);
   
@@ -987,14 +986,14 @@ Word* Task::pCompileColon(s& sDefinition)
 
   vTokenNext();
   
-  while (TK_NONE != m_eToken) {
+  while (TK_NONE != m_pTokeniser->eToken()) {
     
     //vTrace("CompileColon: %s\n",m_sToken.a());
     
     if (String::bEqualTo(";",m_sToken.a()))
       break;
     
-    switch (m_eToken) {
+    switch (m_pTokeniser->eToken()) {
         
       case TK_INTEGER:
         xValWsp = String::iToI8(m_sToken.a());
@@ -1027,7 +1026,7 @@ Word* Task::pCompileColon(s& sDefinition)
       }
         
       default:
-        THROW("Invalid m_eToken %lld",m_eToken);
+        THROW("Invalid m_eToken %lld",m_pTokeniser->eToken());
     }
     
     vTokenNext();
@@ -1831,7 +1830,7 @@ void Task::vTokenNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  m_eToken = m_pTokeniser->eNextToken(m_sToken.a());
+  eTK eToken = m_pTokeniser->eNextToken(m_sToken.a());
 }
 
 /*----------------------------------------------------------------------------*/

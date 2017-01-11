@@ -222,14 +222,12 @@ eTK Tokeniser::eNextToken(char* wToken)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
-  eTK eToken;
-  
   if (m_bNormal)
-    eToken = eNextNormal(wToken);
+    m_eToken = eNextNormal(wToken);
   else
-    eToken = eNextSpecial(wToken);
+    m_eToken = eNextSpecial(wToken);
   
-  return eToken;
+  return m_eToken;
 }
 
 /*----------------------------------------------------------------------------*/
