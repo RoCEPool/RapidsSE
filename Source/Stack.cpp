@@ -828,7 +828,8 @@ void Stack::vDump(const char* aPrefix, const char* aTitle)
     else if (CN_IPVAL == eClass) {                                       //RAY??
       IpVal* pIpVal = xValWsp.pAsIpVal();
       Cell* pCell = pIpVal->pIpPtr();
-      vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);
+      vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);  //RAY: should trace pIpVal
+//    vTrace("[%s] [%2lld] %p\n",aPrefix,iVal,pIpVal);
     }
     else {
       vTrace("[%s] [%2lld] %s (%s)\n",

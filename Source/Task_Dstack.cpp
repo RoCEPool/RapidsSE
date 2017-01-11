@@ -195,7 +195,8 @@ void Task::vDstackDump(NNP_Task nnpTask)
   else if (CN_IPVAL == eClass) {                                         //RAY??
     IpVal* pIpVal = xValWsp.pAsIpVal();
     Cell* pCell = pIpVal->pIpPtr();
-    vTrace("[%s] nullptr\n",nnpTask->m_sName.a());
+    vTrace("[%s] nullptr\n",nnpTask->m_sName.a());    //RAY: should trace pIpVal
+//  vTrace("[%s] %p\n",nnpTask->m_sName.a(),pIpVal);
   }
   else {
     vTrace("[%s] %s (%s)\n",
