@@ -329,7 +329,7 @@ bool Tokeniser::bStdin(void)
 /*----------------------------------------------------------------------------*/
 /* get toke type                                                              */
 /*----------------------------------------------------------------------------*/
-s256& Tokeniser::sToken(void)
+s8K& Tokeniser::sToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   

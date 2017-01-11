@@ -36,7 +36,7 @@ namespace Common
     bool    m_bNormal; // normal tokens?
     char    m_cParsedChar;   // character from parser
     
-    s256    m_sToken;  // current token
+    s8K     m_sToken;  // current token
     eTK     m_eToken;  // token type
     
     // must be last
@@ -77,8 +77,8 @@ namespace Common
     bool bLineMode(void);
     bool bStdin(void);
     
-    s256& sToken(void);
-    eTK   eToken(void);
+    s8K& sToken(void);
+    eTK  eToken(void);
     
   private:
     eTK  eNextNormal(char* wToken);
