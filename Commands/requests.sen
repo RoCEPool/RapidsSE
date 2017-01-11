@@ -380,7 +380,7 @@ snap0:
   //bp.freespace .
 
 snap1:
-
+  printClassCounts
   <OK>
 ;
 
