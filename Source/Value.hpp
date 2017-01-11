@@ -13,6 +13,7 @@ namespace Tasks {
 }
 
 namespace Dictionaries {
+  class Cell;
   class Word;
   class WrdVal;
 }
@@ -41,7 +42,8 @@ namespace Values
     
     i8    iAsInt(void);
     i8    iInt(void);
-    void* pPtr(void);
+    Dictionaries::Cell* pIpPtr(void);
+    Object* pPtr(void);
     char* sStr(void);
     Dictionaries::Word* pWord(void);
     

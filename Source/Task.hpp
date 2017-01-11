@@ -1030,7 +1030,6 @@ namespace Tasks
     static void vSemicolon(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);
     static void vWord(NNP_Task nnpTask);
-    static void vWordDic(NNP_Task nnpTask);
     static void vWordDump(NNP_Task nnpTask);
     static void vWordForget(NNP_Task nnpTask);
     static void vWordImmediateGet(NNP_Task nnpTask);

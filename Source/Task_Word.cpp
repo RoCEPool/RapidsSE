@@ -56,7 +56,6 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive("word.dump",       &vWordDump,         false);
-  vAddPrimitive("word.dic",        &vWordDic,          false);
   vAddPrimitive(">forget",         &vWordForget,       false);
   vAddPrimitive("word.immediate@", &vWordImmediateGet, false);
   vAddPrimitive("word.immediate!", &vWordImmediateSet, false);
@@ -690,25 +689,6 @@ ENTRY("vWordDump");
   Word* pWord = _pWord(pWordObject);
   
   pWord->vDump();
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* word.dic -- push word's dictionary                                         */
-/*----------------------------------------------------------------------------*/
-void Task::vWordDic(NNP_Task nnpTask)
-{
-ENTRY("vWordDic");
-  
-  Object* pWordObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pWordObject) )
-    THROW_INVALID_DSTACK("vWordDic");
-  Word* pWord = _pWord(pWordObject);
-  
-  Dic* pDic = pWord->pDic();
-  
-  nnpTask->m_pDataStack->vPush(pDic->sName().a());
   
   EXIT();
 }

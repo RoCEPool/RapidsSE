@@ -563,79 +563,80 @@ void Task::vAddConstants(void)
   
   // SIZEOF_ : C++ class sizes
   /*  1 */ vAddConstant("SIZEOF_INTVAL", sizeof(IntVal));
-  /*  2 */ vAddConstant("SIZEOF_OBJVAL", sizeof(ObjVal));
-  /*  3 */ vAddConstant("SIZEOF_PTRVAL", sizeof(PtrVal));
-  /*  4 */ vAddConstant("SIZEOF_STRVAL", sizeof(StrVal));
-  /*  5 */ vAddConstant("SIZEOF_VALSET", sizeof(ValWsp)); // correct
-  /*  6 */ vAddConstant("SIZEOF_VALWSP", sizeof(ValWsp)); // correct
+  /*  2 */ vAddConstant("SIZEOF_IPVAL",  sizeof(IpVal));
+  /*  3 */ vAddConstant("SIZEOF_OBJVAL", sizeof(ObjVal));
+  /*  4 */ vAddConstant("SIZEOF_PTRVAL", sizeof(PtrVal));
+  /*  5 */ vAddConstant("SIZEOF_STRVAL", sizeof(StrVal));
+  /*  6 */ vAddConstant("SIZEOF_VALSET", sizeof(ValWsp)); // correct
+  /*  7 */ vAddConstant("SIZEOF_VALWSP", sizeof(ValWsp)); // correct
   
-  /*  7 */ vAddConstant("SIZEOF_ARGUMENTS",    sizeof(Arguments));
-  /*  8 */ vAddConstant("SIZEOF_ATOMIC",       sizeof(Atomic));
-  /*  9 */ vAddConstant("SIZEOF_ATTACHMAP",    sizeof(AttachMap));
-  /* 10 */ vAddConstant("SIZEOF_BUFFER",       sizeof(Buffer));
-  /* 11 */ vAddConstant("SIZEOF_BUFFERPOOL",   sizeof(BufferPool));
-  /* 12 */ vAddConstant("SIZEOF_BPA",          sizeof(BPA));
-  /* 13 */ vAddConstant("SIZEOF_DIC",          sizeof(Dic));
-  /* 14 */ vAddConstant("SIZEOF_DICSTACK",     sizeof(DicStack));
-  /* 15 */ vAddConstant("SIZEOF_DIR",          sizeof(Dir));
-  /* 16 */ vAddConstant("SIZEOF_FILE",         sizeof(File));
-  /* 17 */ vAddConstant("SIZEOF_FREECHUNK",    sizeof(FreeChunk));
-  /* 18 */ vAddConstant("SIZEOF_GRID",         sizeof(Grid));
-  /* 19 */ vAddConstant("SIZEOF_HEAPBUFFER",   sizeof(HeapBuffer));
-  /* 20 */ vAddConstant("SIZEOF_INDEX",        sizeof(Index));
-  /* 21 */ vAddConstant("SIZEOF_LOADER",       sizeof(Loader));
-  /* 22 */ vAddConstant("SIZEOF_LOADERSUB",    sizeof(LoaderSub));
-  /* 23 */ vAddConstant("SIZEOF_LOCK",         sizeof(Lock));
-  /* 24 */ vAddConstant("SIZEOF_MEDIUMHEAP",   sizeof(Heap));
-  /* 25 */ vAddConstant("SIZEOF_NODE",         sizeof(Node));
-  /* 26 */ vAddConstant("SIZEOF_NODECURSOR",   sizeof(NodeCursor));
-  /* 27 */ vAddConstant("SIZEOF_PARSER",       sizeof(Parser));
-  /* 28 */ vAddConstant("SIZEOF_PARTITION",    sizeof(Partition));
-  /* 29 */ vAddConstant("SIZEOF_PARTITIONS",   sizeof(Partitions));
-  /* 30 */ vAddConstant("SIZEOF_PROXY",        sizeof(Proxy));
-  /* 31 */ vAddConstant("SIZEOF_PROXYSET",     sizeof(ProxySet));
-  /* 32 */ vAddConstant("SIZEOF_QUEUE",        sizeof(Queue));
-  /* 33 */ vAddConstant("SIZEOF_QUEUEBUFFER",  sizeof(QueueBuffer));
-  /* 34 */ vAddConstant("SIZEOF_RING",         sizeof(Ring));
-  /* 35 */ vAddConstant("SIZEOF_ROW",          sizeof(Row));
-  /* 36 */ vAddConstant("SIZEOF_ROWBUFFER",    sizeof(RowBuffer));
-  /* 37 */ vAddConstant("SIZEOF_ROWCURSOR",    sizeof(RowCursor));
-  /* 38 */ vAddConstant("SIZEOF_ROWSTRAND",    sizeof(RowStrand));
-  /* 39 */ vAddConstant("SIZEOF_ROWWSP",       sizeof(RowWsp));
-  /* 40 */ vAddConstant("SIZEOF_SCANBUFFER",   sizeof(ScanBuffer));
-  /* 41 */ vAddConstant("SIZEOF_SEHISTORY",    sizeof(SeHistory));
-  /* 42 */ vAddConstant("SIZEOF_SEITF",        sizeof(SEitf));
-  /* 43 */ vAddConstant("SIZEOF_SEITFCURSOR",  sizeof(SEitfCursor));
-  /* 44 */ vAddConstant("SIZEOF_SEITFLIST",    sizeof(SEitfList));
-  /* 45 */ vAddConstant("SIZEOF_SEPROMPT",     sizeof(SePrompt));
-  /* 46 */ vAddConstant("SIZEOF_SINCE",        sizeof(Since));
-  /* 47 */ vAddConstant("SIZEOF_SKIPCURSOR",   sizeof(SkipCursor));
-  /* 48 */ vAddConstant("SIZEOF_SKIPLIST",     sizeof(SkipList));
-  /* 49 */ vAddConstant("SIZEOF_SKIPNODE",     sizeof(SkipNode));
-  /* 50 */ vAddConstant("SIZEOF_SMALLHEAP",    sizeof(Heap));
-  /* 51 */ vAddConstant("SIZEOF_SOCKET",       sizeof(Socket));
-  /* 52 */ vAddConstant("SIZEOF_STACK",        sizeof(Stack));
-  /* 53 */ vAddConstant("SIZEOF_STEPACCUM",    sizeof(StepAccum));
-  /* 54 */ vAddConstant("SIZEOF_STEPARRAY",    sizeof(StepArray));
-  /* 55 */ vAddConstant("SIZEOF_SYSCALL",      sizeof(SysCall));
-  /* 56 */ vAddConstant("SIZEOF_TABLE",        sizeof(Table));
-  /* 57 */ vAddConstant("SIZEOF_TASK",         sizeof(Task));
-  /* 58 */ vAddConstant("SIZEOF_TASKCURSOR",   sizeof(TaskCursor));
-  /* 59 */ vAddConstant("SIZEOF_TASKLIST",     sizeof(TaskList));
-  /* 60 */ vAddConstant("SIZEOF_TASKSET",      sizeof(TaskSet));
-  /* 61 */ vAddConstant("SIZEOF_THREAD",       sizeof(Thread));
-  /* 62 */ vAddConstant("SIZEOF_THREADCURSOR", sizeof(ThreadCursor));
-  /* 63 */ vAddConstant("SIZEOF_THREADLIST",   sizeof(ThreadList));
-  /* 64 */ vAddConstant("SIZEOF_TIME",         sizeof(Time));
-  /* 65 */ vAddConstant("SIZEOF_TIMER",        sizeof(Timer));
-  /* 66 */ vAddConstant("SIZEOF_TOKENISER",    sizeof(Tokeniser));
-  /* 67 */ vAddConstant("SIZEOF_TX",           sizeof(Tx));
-  /* 68 */ vAddConstant("SIZEOF_TXARRAY",      sizeof(TxArray));
-  /* 69 */ vAddConstant("SIZEOF_TXCOLLECTION", sizeof(TxCollection));
-  /* 70 */ vAddConstant("SIZEOF_TXCURSOR",     sizeof(TxCursor));
-  /* 71 */ vAddConstant("SIZEOF_TXMAP",        sizeof(TxMap));
-  /* 72 */ vAddConstant("SIZEOF_TXREF",        sizeof(TxRef));
-  /* 73 */ vAddConstant("SIZEOF_WORD",         sizeof(Word));
+  /*  8 */ vAddConstant("SIZEOF_ARGUMENTS",    sizeof(Arguments));
+  /*  9 */ vAddConstant("SIZEOF_ATOMIC",       sizeof(Atomic));
+  /* 10 */ vAddConstant("SIZEOF_ATTACHMAP",    sizeof(AttachMap));
+  /* 11 */ vAddConstant("SIZEOF_BUFFER",       sizeof(Buffer));
+  /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL",   sizeof(BufferPool));
+  /* 13 */ vAddConstant("SIZEOF_BPA",          sizeof(BPA));
+  /* 14 */ vAddConstant("SIZEOF_DIC",          sizeof(Dic));
+  /* 15 */ vAddConstant("SIZEOF_DICSTACK",     sizeof(DicStack));
+  /* 16 */ vAddConstant("SIZEOF_DIR",          sizeof(Dir));
+  /* 17 */ vAddConstant("SIZEOF_FILE",         sizeof(File));
+  /* 18 */ vAddConstant("SIZEOF_FREECHUNK",    sizeof(FreeChunk));
+  /* 19 */ vAddConstant("SIZEOF_GRID",         sizeof(Grid));
+  /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER",   sizeof(HeapBuffer));
+  /* 21 */ vAddConstant("SIZEOF_INDEX",        sizeof(Index));
+  /* 22 */ vAddConstant("SIZEOF_LOADER",       sizeof(Loader));
+  /* 23 */ vAddConstant("SIZEOF_LOADERSUB",    sizeof(LoaderSub));
+  /* 24 */ vAddConstant("SIZEOF_LOCK",         sizeof(Lock));
+  /* 25 */ vAddConstant("SIZEOF_MEDIUMHEAP",   sizeof(Heap));
+  /* 26 */ vAddConstant("SIZEOF_NODE",         sizeof(Node));
+  /* 27 */ vAddConstant("SIZEOF_NODECURSOR",   sizeof(NodeCursor));
+  /* 28 */ vAddConstant("SIZEOF_PARSER",       sizeof(Parser));
+  /* 29 */ vAddConstant("SIZEOF_PARTITION",    sizeof(Partition));
+  /* 30 */ vAddConstant("SIZEOF_PARTITIONS",   sizeof(Partitions));
+  /* 31 */ vAddConstant("SIZEOF_PROXY",        sizeof(Proxy));
+  /* 32 */ vAddConstant("SIZEOF_PROXYSET",     sizeof(ProxySet));
+  /* 33 */ vAddConstant("SIZEOF_QUEUE",        sizeof(Queue));
+  /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER",  sizeof(QueueBuffer));
+  /* 35 */ vAddConstant("SIZEOF_RING",         sizeof(Ring));
+  /* 36 */ vAddConstant("SIZEOF_ROW",          sizeof(Row));
+  /* 37 */ vAddConstant("SIZEOF_ROWBUFFER",    sizeof(RowBuffer));
+  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR",    sizeof(RowCursor));
+  /* 39 */ vAddConstant("SIZEOF_ROWSTRAND",    sizeof(RowStrand));
+  /* 40 */ vAddConstant("SIZEOF_ROWWSP",       sizeof(RowWsp));
+  /* 41 */ vAddConstant("SIZEOF_SCANBUFFER",   sizeof(ScanBuffer));
+  /* 42 */ vAddConstant("SIZEOF_SEHISTORY",    sizeof(SeHistory));
+  /* 43 */ vAddConstant("SIZEOF_SEITF",        sizeof(SEitf));
+  /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR",  sizeof(SEitfCursor));
+  /* 45 */ vAddConstant("SIZEOF_SEITFLIST",    sizeof(SEitfList));
+  /* 46 */ vAddConstant("SIZEOF_SEPROMPT",     sizeof(SePrompt));
+  /* 47 */ vAddConstant("SIZEOF_SINCE",        sizeof(Since));
+  /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR",   sizeof(SkipCursor));
+  /* 49 */ vAddConstant("SIZEOF_SKIPLIST",     sizeof(SkipList));
+  /* 50 */ vAddConstant("SIZEOF_SKIPNODE",     sizeof(SkipNode));
+  /* 51 */ vAddConstant("SIZEOF_SMALLHEAP",    sizeof(Heap));
+  /* 52 */ vAddConstant("SIZEOF_SOCKET",       sizeof(Socket));
+  /* 53 */ vAddConstant("SIZEOF_STACK",        sizeof(Stack));
+  /* 54 */ vAddConstant("SIZEOF_STEPACCUM",    sizeof(StepAccum));
+  /* 55 */ vAddConstant("SIZEOF_STEPARRAY",    sizeof(StepArray));
+  /* 56 */ vAddConstant("SIZEOF_SYSCALL",      sizeof(SysCall));
+  /* 57 */ vAddConstant("SIZEOF_TABLE",        sizeof(Table));
+  /* 58 */ vAddConstant("SIZEOF_TASK",         sizeof(Task));
+  /* 69 */ vAddConstant("SIZEOF_TASKCURSOR",   sizeof(TaskCursor));
+  /* 60 */ vAddConstant("SIZEOF_TASKLIST",     sizeof(TaskList));
+  /* 61 */ vAddConstant("SIZEOF_TASKSET",      sizeof(TaskSet));
+  /* 62 */ vAddConstant("SIZEOF_THREAD",       sizeof(Thread));
+  /* 63 */ vAddConstant("SIZEOF_THREADCURSOR", sizeof(ThreadCursor));
+  /* 64 */ vAddConstant("SIZEOF_THREADLIST",   sizeof(ThreadList));
+  /* 65 */ vAddConstant("SIZEOF_TIME",         sizeof(Time));
+  /* 66 */ vAddConstant("SIZEOF_TIMER",        sizeof(Timer));
+  /* 67 */ vAddConstant("SIZEOF_TOKENISER",    sizeof(Tokeniser));
+  /* 68 */ vAddConstant("SIZEOF_TX",           sizeof(Tx));
+  /* 69 */ vAddConstant("SIZEOF_TXARRAY",      sizeof(TxArray));
+  /* 70 */ vAddConstant("SIZEOF_TXCOLLECTION", sizeof(TxCollection));
+  /* 71 */ vAddConstant("SIZEOF_TXCURSOR",     sizeof(TxCursor));
+  /* 72 */ vAddConstant("SIZEOF_TXMAP",        sizeof(TxMap));
+  /* 73 */ vAddConstant("SIZEOF_TXREF",        sizeof(TxRef));
+  /* 74 */ vAddConstant("SIZEOF_WORD",         sizeof(Word));
 
   /*  0 */ vAddConstant("SIZEOF_S32",          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",         sizeof(s256));
@@ -1758,13 +1759,17 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
             String::vSprintCat(a,"^%s=%p",
                                pCN[pObject->eClass()],
                                pValWsp->pPtr());
-          else
-            String::vSprintCat(a,"%p",
-                               pValWsp->pPtr());
+          //else
+          //  String::vSprintCat(a,"%p",
+          //                     pValWsp->pPtr());
         }
       }
       else
         String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),pValWsp->pPtr());
+    }
+    else if (CN_IPVAL == eClass) {                                      //RAY??
+      String::vSprintCat(a,"%p",
+                         pValWsp->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
       String::vSprintCat(a,"\"%lls\"",pValWsp->sStr());

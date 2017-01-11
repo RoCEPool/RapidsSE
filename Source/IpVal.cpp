@@ -43,7 +43,7 @@ IpVal::IpVal(void)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void IpVal::operator =(void* pPtr)
+void IpVal::operator =(Cell* pPtr)
 {
   m_pPtr = pPtr;
 }
@@ -59,25 +59,9 @@ i8 IpVal::iSize(void) const
 /*----------------------------------------------------------------------------*/
 /* get pVal                                                                   */
 /*----------------------------------------------------------------------------*/
-void* IpVal::pPtr(void) const
+Cell* IpVal::pIpPtr(void) const
 {
-  return pPoolCheck<void*>(m_pPtr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* as pointer to in memory pool header                                        */
-/*----------------------------------------------------------------------------*/
-Header* IpVal::pHeader(void) const
-{
-  return pPoolCheck<Header*>(m_pPtr);
-}
-
-/*----------------------------------------------------------------------------*/
-/* as pointer to in memory pool object                                        */
-/*----------------------------------------------------------------------------*/
-Object* IpVal::pObject(void) const
-{
-  return pPoolCheck<Object*>(m_pPtr);
+  return pPoolCheck<Cell*>(m_pPtr);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,17 +13,17 @@ namespace Values
   class PtrVal : public Value
   {
   private:
-    void* m_pPtr;
+    Object* m_pPtr;
         
   public:
     void* operator new(size_t);
     
     PtrVal(void);
     
-    void operator =(void* pPtr);
+    void operator =(Object* pObject);
+    void operator =(Header* pHeader);
     
     i8      iSize(void) const;
-    void*   pPtr(void) const;
     Header* pHeader(void) const;
     Object* pObject(void) const;
     

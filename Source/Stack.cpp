@@ -167,14 +167,14 @@ bool Stack::bPop(Dictionaries::Cell*& pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  if ( ! bGuard(CN_PTRVAL) )
+  if ( ! bGuard(CN_IPVAL) )
     return false;
   
-  PtrVal xPtrVoid;
+  IpVal xIpVal;
   
-  vPopVal(&xPtrVoid);
+  vPopVal(&xIpVal);
   
-  pCell = (Dictionaries::Cell*)xPtrVoid.pPtr();
+  pCell = xIpVal.pIpPtr();
   
   return true;
 }
@@ -661,17 +661,31 @@ i8 Stack::iPop(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* push void* onto param stack                                                */
+/* push Object* onto param stack                                                */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(void* pVoid)
+void Stack::vPush(Object* pObject)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  PtrVal xPtrVoid;
+  PtrVal xPtrObject;
   
-  xPtrVoid = pVoid;
+  xPtrObject = pObject;
   
-  vPush(xPtrVoid);
+  vPush(xPtrObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push Cell* onto param stack                                                */
+/*----------------------------------------------------------------------------*/
+void Stack::vPush(Cell* pCell)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  IpVal xIpVal;
+  
+  xIpVal = pCell;
+  
+  vPush(xIpVal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -685,19 +699,6 @@ void Stack::vPush(Header* pHeader1)
   xPtrHeader = pHeader1;
   
   vPush(&xPtrHeader);
-}
-
-/*----------------------------------------------------------------------------*/
-/* push Object* onto param stack                                              */
-/*----------------------------------------------------------------------------*/
-void Stack::vPush(Object* pObject1)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
-  
-  PtrVal xPtrObject;
-  xPtrObject = pObject1;
-  
-  vPush(&xPtrObject);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -820,14 +821,14 @@ void Stack::vDump(const char* aPrefix, const char* aTitle)
     if (CN_PTRVAL == eClass) {
       PtrVal* pPtrVal = xValWsp.pAsPtrVal();
       Object* pObject = pPtrVal->pObject();
-      if (pObject) {
-        eCN ePtdClass   = pObject->eClass();
-        vTrace("[%s] [%2lld] %s (%s %s)\n",
-               aPrefix,iVal,sWorkspace.a(),aClass,pCN[ePtdClass]);
-      }
-      else {
-        vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);
-      }
+      eCN ePtdClass   = pObject->eClass();
+      vTrace("[%s] [%2lld] %s (%s %s)\n",
+        aPrefix,iVal,sWorkspace.a(),aClass,pCN[ePtdClass]);
+    }
+    else if (CN_IPVAL == eClass) {                                       //RAY??
+      IpVal* pIpVal = xValWsp.pAsIpVal();
+      Cell* pCell = pIpVal->pIpPtr();
+      vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);
     }
     else {
       vTrace("[%s] [%2lld] %s (%s)\n",

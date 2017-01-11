@@ -44,7 +44,7 @@ void ValWsp::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void ValWsp::operator =(void* pPtr)
+void ValWsp::operator =(Object* pPtr)
 {
   vClass(CN_PTRVAL);
   

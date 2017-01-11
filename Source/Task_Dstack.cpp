@@ -188,14 +188,14 @@ void Task::vDstackDump(NNP_Task nnpTask)
   if (CN_PTRVAL == eClass) {
     PtrVal* pPtrVal = xValWsp.pAsPtrVal();
     Object* pObject = pPtrVal->pObject();
-    if (pObject) {
-      eCN ePtdClass   = pObject->eClass();
-      vTrace("[%s] %s (%s %s)\n",
-             nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
-    }
-    else {
-      vTrace("[%s] nullptr\n",nnpTask->m_sName.a());
-    }
+    eCN ePtdClass   = pObject->eClass();
+    vTrace("[%s] %s (%s %s)\n",
+          nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
+  }
+  else if (CN_IPVAL == eClass) {                                         //RAY??
+    IpVal* pIpVal = xValWsp.pAsIpVal();
+    Cell* pCell = pIpVal->pIpPtr();
+    vTrace("[%s] nullptr\n",nnpTask->m_sName.a());
   }
   else {
     vTrace("[%s] %s (%s)\n",

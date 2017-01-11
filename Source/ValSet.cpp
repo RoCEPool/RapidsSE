@@ -60,7 +60,7 @@ void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
       m_pRowBuffer = (RowBuffer*)pPtrVal->pPtr();
       m_iRowBufferBytes = m_pRowBuffer->iBytesUsed();
       
-      xVal = (void*)C_ROWBUFFER_MARKER;
+      xVal = (Object*)C_ROWBUFFER_MARKER;
     }
   }
   

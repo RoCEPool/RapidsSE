@@ -6,26 +6,27 @@
 
 #include "Values.h"
 
-#include "Object.hpp"
+namespace Dictionaries
+{
+  class Cell;
+}
 
 namespace Values
 {
   class IpVal : public Value
   {
   private:
-    void* m_pPtr;
+    Dictionaries::Cell* m_pPtr;
         
   public:
     void* operator new(size_t);
     
     IpVal(void);
     
-    void operator =(void* pPtr);
+    void operator =(Dictionaries::Cell* pPtr);
     
     i8      iSize(void) const;
-    void*   pPtr(void) const;
-    Header* pHeader(void) const;
-    Object* pObject(void) const;
+    Dictionaries::Cell* pIpPtr(void) const;
     
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);

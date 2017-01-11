@@ -20,7 +20,7 @@ namespace Values
     ValReg(void);
     
     void operator =(i8 iInt);
-    void operator =(void* pPtr);
+    void operator =(Object* pPtr);
     void operator =(char* pStr);
     void operator =(const char* pStr);
   };

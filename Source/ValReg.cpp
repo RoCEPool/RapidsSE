@@ -45,7 +45,7 @@ void ValReg::operator =(i8 iInt)
 /*----------------------------------------------------------------------------*/
 /* assign/copy a pointer into workspace                                       */
 /*----------------------------------------------------------------------------*/
-void ValReg::operator =(void* pPtr)
+void ValReg::operator =(Object* pPtr)
 {
   vClass(CN_PTRVAL);
   

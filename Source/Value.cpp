@@ -125,13 +125,27 @@ i8 Value::iInt(void)
 /*----------------------------------------------------------------------------*/
 /* get pointer                                                                */
 /*----------------------------------------------------------------------------*/
-void* Value::pPtr(void)
+Object* Value::pPtr(void)
 {
   ASSERT(CN_PTRVAL == eClass());
   
   PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
   
-  void* p = pPtrVal->pPtr();
+  Object* p = pPtrVal->pObject();
+  
+  return p;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get instruction pointer                                                    */
+/*----------------------------------------------------------------------------*/
+Cell* Value::pIpPtr(void)
+{
+  ASSERT(CN_IPVAL == eClass());
+  
+  IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
+  
+  Cell* p = pIpVal->pIpPtr();
   
   return p;
 }
@@ -177,6 +191,12 @@ i8 Value::iSize(void)
     case CN_INTVAL: {
       IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
       iSize = pIntVal->iSize();
+      break;
+    }
+      
+    case CN_IPVAL: {
+      IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
+      iSize = pIpVal->iSize();
       break;
     }
       
@@ -226,6 +246,12 @@ void Value::vToCommand(char* aWorkspace)
       break;
     }
       
+    case CN_IPVAL: {
+      IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
+      pIpVal->vToCommand(aWorkspace);
+      break;
+    }
+      
     case CN_PTRVAL: {
       PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
       pPtrVal->vToCommand(aWorkspace);
@@ -258,7 +284,13 @@ void Value::vToString(char* aWorkspace)
       pIntVal->vToString(aWorkspace);
       break;
     }
-            
+    
+    case CN_IPVAL: {
+      IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
+      pIpVal->vToString(aWorkspace);
+      break;
+    }
+      
     case CN_PTRVAL: {
       PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
       pPtrVal->vToString(aWorkspace);
