@@ -293,8 +293,8 @@ eHT geWhichHeap[]
   
   /* 29 */ HT_INVALID, // CN_JUMBOHEAP
   
-  /* 30 */ HT_MEDIUM,  // CN_KEYCPP
-  /* 31 */ HT_MEDIUM,  // CN_KEYVAL
+  /* 30 */ HT_LARGE,   // CN_KEYCPP
+  /* 31 */ HT_LARGE,   // CN_KEYVAL
   
   /* 32 */ HT_LARGE,   // CN_LOADCHUNK
   /* 33 */ HT_MEDIUM,  // CN_LOADER

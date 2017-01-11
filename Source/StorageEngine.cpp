@@ -4,6 +4,8 @@
 
 #include "StorageEngine.h"
 
+extern eHT geWhichHeap[];
+
 /*----------------------------------------------------------------------------*/
 /* check assumptions                                                          */
 /*----------------------------------------------------------------------------*/
@@ -90,7 +92,39 @@ void StorageEngine::vCheckAssumptions(void)
     vFatal("\n!!!ALERT!!! No of entries in giClassSize (%lld) do not match the no in eCN (%lld)\n\n",
            iEntriesGCLASSSIZE, iEntriesECN);
   }
-
+  
+  
+  // check sizes are less than pool block size
+  for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {
+  
+    eCN eClass = (eCN)iClass;
+    
+    switch (geWhichHeap[eClass]) {
+        
+      case HT_INVALID:
+        continue;
+        
+      case HT_SMALL:
+        assert(giClassSize[eClass] < C_SIZE_SMALL_OBJECT);
+        continue;
+        
+      case HT_MEDIUM:
+        assert(giClassSize[eClass] < C_SIZE_MEDIUM_OBJECT);
+        continue;
+        
+      case HT_LARGE:
+        assert(giClassSize[eClass] < C_SIZE_LARGE_OBJECT);
+        continue;
+        
+      case HT_JUMBO:
+        assert(giClassSize[eClass] < C_SIZE_JUMBO_OBJECT);
+        continue;
+        
+      default:
+        assert(0);
+    }
+  }
+  
 }
 
 /*============================================================================*/
