@@ -167,10 +167,14 @@ void Partition::vTruncate(void)
   
   m_zLock.vGrabWrite();
   
+  RowStrand* pNextRowStrand;
   RowStrand* pRowStrand = m_pHeadStrand;
+  
   while (pRowStrand) {
     pRowStrand->vTruncate();
-    pRowStrand = pRowStrand->pNextStrand();
+    pNextRowStrand = pRowStrand->pNextStrand();
+    delete pRowStrand;
+    pRowStrand = pNextRowStrand;
   }
   
   m_iRowStrands = 0;
