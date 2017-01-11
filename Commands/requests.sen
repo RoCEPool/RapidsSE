@@ -177,6 +177,7 @@ ddlLock.grabRead
 : drop_tenant ( "<tenantNm>" -- <R> )
 
 tp: dropTenant
+snap0:
 
 ddlLock.grabWrite
 
@@ -185,6 +186,8 @@ ddlLock.grabWrite
   removeTenant ( ) assert.stack_0
 
 tp: removedTenant
+snap1:
+  printClassCounts
 
   <OK>
 ;
@@ -370,8 +373,6 @@ ddlLock.grabRead
   checkIsTable  not if <NIP+ERROR> exit then
 
   //bp.freespace .
-
-  reg.push
 
 snap0:
 
