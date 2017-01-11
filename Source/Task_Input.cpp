@@ -109,7 +109,7 @@ ENTRY("vInputNext");
     ASSERT(nnpTask->m_iTracing);
   }
   
-  char* aToken = nnpTask->m_sToken.a();
+  char* aToken = nnpTask->m_pTokeniser->sToken().a();
   
   eTK eToken = nnpTask->m_pTokeniser->eNextToken(aToken);
   
@@ -197,7 +197,7 @@ void Task::vInputToken(NNP_Task nnpTask)
 {
 ENTRY("vInputToken");
   
-  nnpTask->m_pDataStack->vPush(nnpTask->m_sToken);
+  nnpTask->m_pDataStack->vPush(nnpTask->m_pTokeniser->sToken());
   
   EXIT();
 }
@@ -225,7 +225,7 @@ void Task::vTokenColon(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  nnpTask->m_pDataStack->vPush(nnpTask->m_sToken);
+  nnpTask->m_pDataStack->vPush(nnpTask->m_pTokeniser->sToken());
   
   EXIT();
 }

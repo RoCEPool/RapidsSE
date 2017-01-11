@@ -103,7 +103,7 @@ ENTRY("vLocalsBar");
     nnpTask->vTokenNext();
     
     // end of locals declaration?
-    if (String::bEqualTo("|",nnpTask->m_sToken.a()))
+    if (String::bEqualTo("|",nnpTask->m_pTokeniser->sToken().a()))
       break;
 
     // test for first use of locals|
@@ -118,7 +118,7 @@ ENTRY("vLocalsBar");
     }
     
     // create new word for local in current dictionary
-    Word* pWordLocal = new(pDic) Word(nnpTask->m_sToken.a());
+    Word* pWordLocal = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
     // ** do not set as current word **
     
     // set word as local variable
@@ -190,7 +190,7 @@ ENTRY("vLocalsTo");
   // get name of local
   nnpTask->vTokenNext();
 
-  Word* pWordLocal = nnpTask->pFindWord(nnpTask->m_sToken.a());
+  Word* pWordLocal = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken().a());
   ASSERT(pWordLocal);
  
   ValWsp xValWsp;

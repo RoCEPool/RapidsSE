@@ -171,7 +171,6 @@ namespace Tasks
 
     s256       m_sLambda;    // lambda input
     Tokeniser* m_pTokeniser; // input stream tokenizer
-    s256       m_sToken;     // current token
     
     union {
       Cell*   m_pCell;    // points to cell inside a word

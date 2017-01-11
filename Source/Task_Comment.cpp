@@ -46,7 +46,7 @@ void Task::vComment(NNP_Task nnpTask)
   
   for (;;) {
     nnpTask->vTokenNext();
-    if (String::bEqualTo(")",nnpTask->m_sToken.a()))
+    if (String::bEqualTo(")",nnpTask->m_pTokeniser->sToken().a()))
       break;
   }
   

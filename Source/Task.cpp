@@ -236,7 +236,6 @@ void Task::vInit(const char* aLambda)
     String::vConcat(m_sLambda.a()," exit");
   
   m_pTokeniser = new Tokeniser;
-  m_sToken     = "";
   m_pTokeniser->vPush();
   m_pTokeniser->vUseString(m_sLambda);
   
@@ -980,7 +979,7 @@ Word* Task::pCompileColon(s& sDefinition)
   vTokenNext();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
-  pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
+  pNewWord = new(m_xDicStack.pTop()) Word(m_pTokeniser->sToken().a());
   
   vCurrentWord(pNewWord);
 
@@ -990,18 +989,18 @@ Word* Task::pCompileColon(s& sDefinition)
     
     //vTrace("CompileColon: %s\n",m_sToken.a());
     
-    if (String::bEqualTo(";",m_sToken.a()))
+    if (String::bEqualTo(";",m_pTokeniser->sToken().a()))
       break;
     
     switch (m_pTokeniser->eToken()) {
         
       case TK_INTEGER:
-        xValWsp = String::iToI8(m_sToken.a());
+        xValWsp = String::iToI8(m_pTokeniser->sToken().a());
         pNewWord->vEncode("pushValue",&xValWsp);
         break;
         
       case TK_NAME:
-        pCalledWord = pFindWord(m_sToken);
+        pCalledWord = pFindWord(m_pTokeniser->sToken());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())
@@ -1020,7 +1019,7 @@ Word* Task::pCompileColon(s& sDefinition)
         break;
         
       case TK_STRING: {
-        xValWsp = m_sToken.a();
+        xValWsp = m_pTokeniser->sToken().a();
         pNewWord->vEncode("pushValue",&xValWsp);
         break;
       }
@@ -1057,16 +1056,16 @@ Word* Task::pCompileConstant(s& sDefinition)
   
   // get string
   vTokenNext();
-  vTrace("CompileConstant: %s\n",m_sToken.a());
-  xValWsp = m_sToken.a();
+  vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
+  xValWsp = m_pTokeniser->sToken().a();
   
   // get CONSTANT
   vTokenNext();
-  vTrace("CompileConstant: %s\n",m_sToken.a());
+  vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
   
   // get name of word
   vTokenNext();
-  vTrace("CompileConstant: %s\n",m_sToken.a());
+  vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
   /*
   pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
@@ -1076,7 +1075,7 @@ Word* Task::pCompileConstant(s& sDefinition)
   pNewWord->vEncode("pushValue",&xValWsp);
   pNewWord->vEncode("exit");
   */
-  vAddConstant(m_sToken.a(),xValWsp.sStr());
+  vAddConstant(m_pTokeniser->sToken().a(),xValWsp.sStr());
   
   vTokenNext();
   
@@ -1461,7 +1460,7 @@ void Task::vReset(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_sToken = "";
+  m_pTokeniser->sToken() = "";
   
   m_pDataStack->vReset();
   m_pReturnStack->vReset();
@@ -1477,7 +1476,7 @@ void Task::vRetry(void)
   IP.m_pCell    = m_pResetIP;
   m_pBeginIP = nullptr;
   
-  m_sToken = "";
+  m_pTokeniser->sToken() = "";
   
   m_pDataStack->vRetry();
   m_pReturnStack->vRetry();
@@ -1830,7 +1829,7 @@ void Task::vTokenNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  eTK eToken = m_pTokeniser->eNextToken(m_sToken.a());
+  eTK eToken = m_pTokeniser->eNextToken(m_pTokeniser->sToken().a());
 }
 
 /*----------------------------------------------------------------------------*/

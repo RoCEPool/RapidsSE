@@ -88,7 +88,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   nnpTask->vTokenNext();
   
   // convert string to integer
-  char* aToken = nnpTask->m_sToken.a();
+  char* aToken = nnpTask->m_pTokeniser->sToken().a();
   i8 iParams = String::iToI8(aToken);
   
   // set the number of parameters in the current word
@@ -142,7 +142,8 @@ void Task::vColon(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  Word* pNewWord = new(nnpTask->m_xDicStack.pTop()) Word(nnpTask->m_sToken.a());
+  Word* pNewWord = new(nnpTask->m_xDicStack.pTop())
+                     Word(nnpTask->m_pTokeniser->sToken().a());
   
   nnpTask->vCurrentWord(pNewWord);
   
@@ -204,7 +205,7 @@ ENTRY("vCreate");
   else
     pDic = nnpTask->m_xDicStack.pTop();
   
-  Word* pNewWord = new(pDic) Word(nnpTask->m_sToken.a());
+  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
   
   nnpTask->vCurrentWord(pNewWord);
   
@@ -320,12 +321,12 @@ ENTRY("vForget");
   
   nnpTask->vTokenNext();
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No such word: %s",nnpTask->m_sToken.a());
+    THROW("No such word: %s",nnpTask->m_pTokeniser->sToken().a());
   
-  bool bResult = nnpTask->bForgetWord(nnpTask->m_sToken);
+  bool bResult = nnpTask->bForgetWord(nnpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
   
   EXIT();
@@ -407,7 +408,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   nnpTask->vTokenNext();
   
   // convert token to integer
-  i8 iParams = String::iToI8(nnpTask->m_sToken.a());
+  i8 iParams = String::iToI8(nnpTask->m_pTokeniser->sToken().a());
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
@@ -428,9 +429,9 @@ void Task::vPostpone(NNP_Task nnpTask)
   nnpTask->vTokenNext();
   
   // find the word in dic stack
-  Word* pCalledWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  Word* pCalledWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
   if ( ! pCalledWord )
-    THROW("No word: %s ",nnpTask->m_sToken.a());
+    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
   
   if (pCalledWord->bImmediate()) {
     
@@ -468,9 +469,9 @@ void Task::vSee(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n",nnpTask->m_sToken.a());
+    vTrace("See: %s unknown\n",nnpTask->m_pTokeniser->sToken().a());
     return;
   }
   
@@ -633,10 +634,10 @@ void Task::vTick(NNP_Task nnpTask)
   //    throw (i8)__LINE__;
   //  }
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_sToken);
+  Word* pWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s ",nnpTask->m_sToken.a());
+    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
   
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->pCurrentWord();
