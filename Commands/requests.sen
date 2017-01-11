@@ -82,6 +82,19 @@ Grid Request:
 : <OK> "<ok>" 0 2 ddlLock.testDrop ;
 
 /*----------------------------------------------------------------------------*/
+/* print class counts (helper for snapshot)                                   */
+/*----------------------------------------------------------------------------*/
+: printClassCounts
+  0 do
+    dup 0 != if
+      I class.name "%v %v" str.format .
+    else
+     drop
+    then
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* check system has enough buffers                                            */
 /*----------------------------------------------------------------------------*/
 : checkEnoughBuffers
@@ -125,6 +138,8 @@ Grid Request:
 
 tp: createTenant
 
+snap0:
+
 ddlLock.grabWrite
 
   checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
@@ -133,6 +148,9 @@ ddlLock.grabWrite
 //traceon
   makeTenant ( ) assert.stack_0
 //traceoff
+
+snap1:
+ printClassCounts
 
 tp: createdTenant
 
@@ -343,7 +361,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 : load_table ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock.grabRead
@@ -363,19 +381,10 @@ snap0:
 
 snap1:
 
-  reg1 reg0 vector.diff
-
-  0 do
-    dup 0 != if
-      I class.name "%v %v" str.format .
-    else
-      drop
-    then
-  loop
-  reg.pop
   <OK>
 ;
-*/
+
+/*
 : load_table ( "<fileNm>" "<tableNm>" -- <R> )
 
   ddlLock.grabRead
@@ -391,7 +400,7 @@ snap1:
 
   <OK>
 ;
-
+*/
 /*----------------------------------------------------------------------------*/
 /* load a table from a stream                                                 */
 /*----------------------------------------------------------------------------*/
@@ -520,13 +529,10 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
-/*
+
 : drop_table ( "<tableNm>" -- <R> )
 
 tp: dropTable
-
-  reg.push
-snap0:
 
 ddlLock.grabWrite
 
@@ -536,23 +542,11 @@ tp ( "<tableNm>" )
 
   removeTable ( ) assert.stack_0
 
-snap1:
-
-  reg1 reg0 vector.diff
-  0 do
-    dup 0 != if
-      I class.name "%v %v" str.format .
-    else
-      drop
-    then
-loop
-  reg.pop
-
 tp: droppedTable
 
   <OK>
 ;
-*/
+/*
 : drop_table ( "<tableNm>" -- <R> )
 
   tp: dropTable
@@ -569,6 +563,7 @@ tp: droppedTable
 
   <OK>
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* any outstanding table references                                           */
