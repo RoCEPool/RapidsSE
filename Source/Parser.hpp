@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "Parsing.h"
 
-namespace Common
+namespace Parsing
 {
   class Parser : public Object
   {

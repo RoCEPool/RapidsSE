@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Parsing.h"
 
-namespace Common
+namespace Parsing
 {
   enum eTK // token type
   {
