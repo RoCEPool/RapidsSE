@@ -51,6 +51,9 @@ Tokeniser::Tokeniser(void)
   m_bMalloc = false;
   m_bNormal = false;
   
+  m_sToken  = "";
+  m_eToken  = TK_NONE;
+  
   _checkInitialised_(CN_TOKENISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
@@ -324,6 +327,26 @@ bool Tokeniser::bStdin(void)
   return bStdin;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get toke type                                                              */
+/*----------------------------------------------------------------------------*/
+s256& Tokeniser::sToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_sToken;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get toke type                                                              */
+/*----------------------------------------------------------------------------*/
+eTK Tokeniser::eToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+  
+  return m_eToken;
+}
 
 
 // private: ////////////////////////////////////////////////////////////////////

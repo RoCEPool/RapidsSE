@@ -36,6 +36,9 @@ namespace Common
     bool    m_bNormal; // normal tokens?
     char    m_cParsedChar;   // character from parser
     
+    s256    m_sToken;  // current token
+    eTK     m_eToken;  // token type
+    
     // must be last
     Footer m_xFooter;    
     
@@ -73,6 +76,9 @@ namespace Common
     bool bEOF(void);
     bool bLineMode(void);
     bool bStdin(void);
+    
+    s256& sToken(void);
+    eTK   eToken(void);
     
   private:
     eTK  eNextNormal(char* wToken);
