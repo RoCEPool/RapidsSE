@@ -30,6 +30,7 @@ const i8 C_1008KB = C_1KB * 1008; // 1008 kilobytes (1MB - 16KB)
 
 // the 1000^n magnitudes
 const i8 C_1K  = 1000LL;          // 1 thousand
+const i8 C_32K = C_1K * 32;       // 32 thousand
 const i8 C_1M  = C_1K * C_1K;     // 1 million
 const i8 C_1Bn = C_1M * C_1K;     // 1 billion
 

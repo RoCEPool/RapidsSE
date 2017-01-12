@@ -18,6 +18,7 @@ namespace Magic
     /*  1 */ CN_S32,
     /*  2 */ CN_S256,
     /*  3 */ CN_S8K,
+    /*    */ CN_S1M,
     
     /*  4 */ CN_INTVAL,
     /*  5 */ CN_IPVAL,
@@ -138,6 +139,8 @@ namespace Magic
     /*  1 */ "S32",
     /*  2 */ "S256",
     /*  3 */ "S8K",
+    /*    */ "S1M",
+    
     /*  4 */ "INTVAL",
     /*  5 */ "IPVAL",
     /*  6 */ "OBJVAL",
@@ -265,7 +268,6 @@ namespace Magic
     bool operator ==(eCN eClassNo) const;
     eCN  eClass(void) const;
     void vClass(eCN eClassNo);
-    
   };
   
 }
