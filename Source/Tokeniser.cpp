@@ -66,6 +66,7 @@ Tokeniser::~Tokeniser(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  delete m_pParser;
 }
 
 /*----------------------------------------------------------------------------*/
