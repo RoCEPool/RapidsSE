@@ -830,6 +830,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitive("input.type",      &vInputType,        false);
   
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.finalize",    &vLoaderFinalize,    false);
   vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
@@ -6353,6 +6354,25 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   delete pLoader;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.finalize -- finalize a table loader                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderFinalize(NNP_Task nnpTask)
+{
+  ENTRY("vLoaderFinalize");
+  
+  Object* pPtrLoader;
+  if ( ! nnpTask->m_xParamStack.bPop(pPtrLoader) )
+    THROW_INVALID_PARAM("loader.finalize");
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  pLoader->vFinalize();
   
   EXIT();
 }

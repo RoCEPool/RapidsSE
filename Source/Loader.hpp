@@ -30,6 +30,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void     vFinalize(void);
     bool     bFindChunk(void);
     LoadMap* pLoadMap(void);
     s&       sPath(void);
