@@ -454,9 +454,9 @@ void PosixThread::vSleepNano(i8 nNanoSeconds)
   struct timespec xReq;
   struct timespec xRem;
   
-  if (nNanoSeconds >= C_1Bn) {
-    xReq.tv_nsec = nNanoSeconds % C_1Bn;
-    xReq.tv_sec  = DIV(nNanoSeconds,C_1Bn);
+  if (nNanoSeconds >= C_1B) {
+    xReq.tv_nsec = nNanoSeconds % C_1B;
+    xReq.tv_sec  = DIV(nNanoSeconds,C_1B);
   }
   else {
     xReq.tv_nsec = nNanoSeconds;

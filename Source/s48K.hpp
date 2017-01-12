@@ -10,7 +10,7 @@ namespace Magic
   class s8K : public s
   {
   private:
-    static const i8 C_S_SIZE = C_8KB;
+    static const i8 C_S_SIZE = C_48K;
     
     char m_mWorkspace[C_S_SIZE]; // string workspace
     

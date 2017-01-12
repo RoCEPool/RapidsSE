@@ -11,7 +11,7 @@ namespace Structures
   class ScanBuffer : public Buffer
   {
   private:
-    static const i8 C_WORKAREA = C_1008KB;
+    static const i8 C_WORKAREA = C_1M;
     
     char* m_pNextMsg;  // area where next message starts
     char* m_pEndData;  // area where data ends

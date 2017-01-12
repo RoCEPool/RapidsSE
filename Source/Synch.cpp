@@ -73,7 +73,7 @@ i8 Synch::iTicks(void)
   struct timespec tp;
   int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
 
-  i8 iTicks = tp.tv_sec * C_1Bn;
+  i8 iTicks = tp.tv_sec * C_1B;
   iTicks += tp.tv_nsec;
   
 #elif __LINUX__
@@ -97,7 +97,7 @@ i8 Synch::iTicks(void)
 i8 Synch::iTickFrequency(void)
 {
 #if defined(__APPLE__) || defined(__LINUX__)
-  i8 iFrequency = C_1Bn;
+  i8 iFrequency = C_1B;
 #else
   i8 iFrequency = System::iClockFrequency();
 #endif

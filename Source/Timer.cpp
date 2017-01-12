@@ -119,7 +119,7 @@ i8 Timer::iNanoseconds(void)
   i8 iTicks = (m_iUpdate - m_iStart);
   i8 iTicksPerSecond = Synch::iTickFrequency();
   
-  i8 iNano = iTicks * C_1Bn / iTicksPerSecond;
+  i8 iNano = iTicks * C_1B / iTicksPerSecond;
   
   return iNano;
 }

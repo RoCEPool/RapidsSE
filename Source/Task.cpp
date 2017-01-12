@@ -374,7 +374,7 @@ void Task::vAddConstants(void)
   
   vAddConstant("C_1K",    C_1K);
   vAddConstant("C_1M",    C_1M);
-  vAddConstant("C_1Bn",   C_1Bn);
+  vAddConstant("C_1B",    C_1B);
   
   vAddConstant("C_4KB",   C_4KB);
   vAddConstant("C_16KB",  C_16KB);
