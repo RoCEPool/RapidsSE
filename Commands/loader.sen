@@ -59,6 +59,8 @@
 
   loaderSub.completed if signalParentThread then
 
+  loaderSub.delete
+
   reg.pop
 
 //traceOff
