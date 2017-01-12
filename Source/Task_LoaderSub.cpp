@@ -110,6 +110,8 @@ void Task::vLoaderSubEnd(NNP_Task nnpTask)
   
   pLoaderSub->vEnd();
   
+  delete pLoaderSub;
+  
   EXIT();
 }
 

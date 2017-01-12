@@ -35,6 +35,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Loader(void)
 {
   vAddPrimitive("loader.delete",      &vLoaderDelete,      false);
+  vAddPrimitive("loader.finalize",    &vLoaderFinalize,    false);
   vAddPrimitive("loader.findChunk",   &vLoaderFindChunk,   false);
   vAddPrimitive("loader.init",        &vLoaderInit,        false);
   vAddPrimitive("loader.new",         &vLoaderNew,         false);
@@ -49,7 +50,7 @@ void Task::vAddPrimitives_Loader(void)
 /*----------------------------------------------------------------------------*/
 void Task::vLoaderDelete(NNP_Task nnpTask)
 {
-  ENTRY("vLoade3Delete");
+  ENTRY("vLoaderDelete");
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
@@ -59,6 +60,25 @@ void Task::vLoaderDelete(NNP_Task nnpTask)
   ASSERT(CN_LOADER == pLoader->eClass());
   
   delete pLoader;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* loader.finalize -- finalize a table loader                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vLoaderFinalize(NNP_Task nnpTask)
+{
+  ENTRY("loader.finalize");
+  
+  Object* pPtrLoader;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
+    THROW_INVALID_DSTACK("loader.finalize");
+  
+  Loader* pLoader = _pLoader(pPtrLoader);
+  ASSERT(CN_LOADER == pLoader->eClass());
+  
+  pLoader->vFinalize();
   
   EXIT();
 }
@@ -127,7 +147,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.init");
+    THROW_INVALID_DSTACK("loader.newSub");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
