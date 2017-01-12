@@ -122,6 +122,32 @@ i8 System::iPhysicalMemory(void)
   return iMemQty;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get ticks                                                                  */
+/*----------------------------------------------------------------------------*/
+i8 System::iRdtscp(void)
+{
+#ifdef __APPLE__
+  struct timespec tp;
+  int iResult = clock_gettime(CLOCK_MONOTONIC_RAW_APPROX,&tp);
+  
+  i8 iTicks = tp.tv_sec * C_1Bn;
+  iTicks += tp.tv_nsec;
+  
+#else
+  struct timeval iTimeval;
+  
+  if (gettimeofday(&iTimeval, NULL) < 0) {
+    return 0;
+  }
+  i8 iTicks = iTimeval.tv_sec;
+  iTicks *= C_1M;  // convert to micros
+  iTicks += iTimeval.tv_usec;
+  iTicks *= C_1K;  // convert to nanos
+#endif
+  
+  return iTicks;
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

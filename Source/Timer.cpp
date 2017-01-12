@@ -89,7 +89,7 @@ void Timer::vStart(void)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
-  m_iStart  = iRdtscp();
+  m_iStart  = System::iRdtscp();
   m_iUpdate = 0;
 }
 
@@ -101,7 +101,7 @@ void Timer::vUpdate(void)
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   
   ASSERT(m_iStart);
-  m_iUpdate = iRdtscp();
+  m_iUpdate = System::iRdtscp();
 }
 
 /*----------------------------------------------------------------------------*/
