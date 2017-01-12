@@ -90,10 +90,14 @@ void Tokeniser::vPush(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  /*
   if (m_pParser)
     m_pParser->vPush();
   else
     m_pParser = new(m_bMalloc) Parser;
+   */
+  
+  m_pParser = new(m_bMalloc) Parser(m_pParser);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -103,6 +107,7 @@ bool Tokeniser::bPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
+  /*
   if (m_pParser) {
     if (0 == m_pParser->iDepth()) {
       delete m_pParser;
@@ -114,8 +119,15 @@ bool Tokeniser::bPop(void)
       return bPopped;
     }
   }
+  */
   
-  return false;
+  if ( ! m_pParser )
+    return false;
+  
+  Parser* pToBeDelete = m_pParser;
+  m_pParser = m_pParser->pChain();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

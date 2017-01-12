@@ -38,19 +38,19 @@ void Parser::operator delete(void* pParserAddress)
   if (pParser->m_bMalloc)
     free(pParser);
   else
-    Heap::vFree((Object*)pParser);
+    Heap::vFree(pParser);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Parser::Parser(void)
-: Object(CN_PARSER)
+Parser::Parser(Parser* pNext)
+: Buffer(CN_PARSER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   //m_bMalloc set in new
-  m_pChain  = nullptr;
+  m_pChain  = pNext;
   m_iDepth  = 0;
   m_sPrompt = "Parser> ";
   
@@ -177,6 +177,26 @@ void Parser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get next parser in stack                                                   */
+/*----------------------------------------------------------------------------*/
+Parser* Parser::pChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  
+  return m_pChain;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set next parser in stack                                                   */
+/*----------------------------------------------------------------------------*/
+void Parser::vChain(Parser* pChain)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
+  
+  m_pChain = pChain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop parsing stack                                                          */
 /*----------------------------------------------------------------------------*/
 bool Parser::bPop(void)
@@ -207,7 +227,7 @@ void Parser::vPush(void)
   // n.b. don't call vReset.  File may be open
   
   // create a copy of this parser
-  Parser* pCopy = new(m_bMalloc) Parser;
+  Parser* pCopy = new(m_bMalloc) Parser(nullptr);
   Memory::vCopy(pCopy,this,sizeof(Parser));
   
   // push it onto stack

@@ -307,7 +307,7 @@ eHT geWhichHeap[]
   /* 38 */ HT_SMALL,   // CN_NODE
   /* 39 */ HT_SMALL,   // CN_NODECURSOR
   
-  /* 40 */ HT_MEDIUM,  // CN_PARSER
+  /* 40 */ HT_LARGE,   // CN_PARSER
   /* 41 */ HT_INVALID, // CN_PARTITION
   /* 42 */ HT_INVALID, // CN_PARTITIONS
   /* 43 */ HT_INVALID, // CN_PROXY

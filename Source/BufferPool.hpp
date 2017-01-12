@@ -26,17 +26,17 @@ namespace Pool
     i8   m_nBuffersTaken; // number of pool buffers taken by jumbo buffers
     
     s256 m_sShmName;      // shared memory region name
-    int  m_iShmFD; // shared memory file descriptor
+    int  m_iShmFD;        // shared memory file descriptor
 
-    Buffer* m_pBase;     // starting address of pool (large section)
-    Buffer* m_pJumbo;    // starting address of jumbo section
-    Buffer* m_pLimit;    // address after pool
+    Buffer* m_pBase;      // starting address of pool (large section)
+    Buffer* m_pJumbo;     // starting address of jumbo section
+    Buffer* m_pLimit;     // address after pool
     
     // free chain
-    Lock m_zFreeLock;    // lock over free chain
-    i8   m_iAllocCount;  // number of buffers currently in use
-    i8   m_iFreeCount;   // number of buffers in free chain
-    bn   m_nFreeHead;    // head of free chain
+    Lock m_zFreeLock;     // lock over free chain
+    i8   m_iAllocCount;   // number of buffers currently in use
+    i8   m_iFreeCount;    // number of buffers in free chain
+    bn   m_nFreeHead;     // head of free chain
     
     // must be last
     Footer m_xFooter;
@@ -70,6 +70,7 @@ namespace Pool
     BufferFree* pToBufferFree(bn nBuffer);
     BufferFree* pToBufferFree(Buffer* pBuffer);
     bool bValidAddress(const void* pAddress);
+    void vVerifyPool(void);
     
     Footer* pFooter(void);
    };

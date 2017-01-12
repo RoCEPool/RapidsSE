@@ -7,7 +7,7 @@
 
 namespace Parsing
 {
-  class Parser : public Object
+  class Parser : public Buffer
   {
   private:
     enum eIS { IS_NONE=0, IS_FILE,  IS_STDIN, IS_STRING };
@@ -42,7 +42,7 @@ namespace Parsing
     void* operator new(size_t, bool bMalloc);
     void operator delete(void* pDirAddress);
     
-    Parser(void);
+    Parser(Parser* pNext);
     ~Parser(void);
     
     // Options
@@ -56,6 +56,8 @@ namespace Parsing
     void vUseEnd(void);
 
     // Parsing Stack
+    Parser* pChain(void);
+    void   vChain(Parser* pParser);
     bool bPop(void);
     void vPush(void);
     i8   iDepth(void);

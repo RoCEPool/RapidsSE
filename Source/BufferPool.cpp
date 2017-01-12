@@ -84,6 +84,8 @@ Buffer* BufferPool::pAllocBuffer(void)
   
   m_zFreeLock.vGrabWrite();
   
+  //vVerifyPool();
+  
   // test for empty free chain
   if (bn::nNil() == m_nFreeHead) {
     ASSERT( ! m_iFreeCount );
@@ -99,29 +101,11 @@ Buffer* BufferPool::pAllocBuffer(void)
   m_iFreeCount--;
   m_iAllocCount++;
   
+  //vVerifyPool();
+ 
   m_zFreeLock.vDropWrite();
   
   return pPoolCheck<BufferFree*>(pAllocatedBuffer);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check address is in pool                                                   */
-/*----------------------------------------------------------------------------*/
-void BufferPool::vCheckAddress(const void* pAddress)
-{
-  ASSERT(pAddress >= m_pBase);
-  ASSERT(pAddress <  m_pLimit);
-}
-
-/*----------------------------------------------------------------------------*/
-/* check address is in pool                                                   */
-/*----------------------------------------------------------------------------*/
-bool BufferPool::bValidAddress(const void* pAddress)
-{
-  if ((pAddress >= m_pBase) && (pAddress <  m_pLimit))
-    return true;
-  else
-    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,6 +179,15 @@ i8 BufferPool::iBufferSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check address is in pool                                                   */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vCheckAddress(const void* pAddress)
+{
+  ASSERT(pAddress >= m_pBase);
+  ASSERT(pAddress <  m_pLimit);
+}
+
+/*----------------------------------------------------------------------------*/
 /* detach from buffer pool                                                    */
 /*----------------------------------------------------------------------------*/
 bool BufferPool::bDetachPool(void)
@@ -259,6 +252,8 @@ void BufferPool::vFree(Buffer* pBuffer)
   
   m_zFreeLock.vGrabWrite();
   
+  //vVerifyPool();
+  
   // test for existing free list
   if (bn::nNil() != m_nFreeHead) {
     ASSERT( m_iFreeCount > 0 );
@@ -275,6 +270,8 @@ void BufferPool::vFree(Buffer* pBuffer)
   // adjust counts
   m_iFreeCount++;
   m_iAllocCount--;
+  
+  //vVerifyPool();
   
   m_zFreeLock.vDropWrite();
 }
@@ -461,6 +458,36 @@ BufferFree* BufferPool::pToBufferFree(Buffer* pBuffer)
   BufferFree* pBufferFree = static_cast<BufferFree*>(pBuffer);
   
   return pPoolCheck<BufferFree*>(pBufferFree);
+}
+
+/*----------------------------------------------------------------------------*/
+/* is address in pool?                                                        */
+/*----------------------------------------------------------------------------*/
+bool BufferPool::bValidAddress(const void* pAddress)
+{
+  if ((pAddress >= m_pBase) && (pAddress <  m_pLimit))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* assert buffer pool is valid                                                */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vVerifyPool(void)
+{
+  bn nBuffer = m_nFreeHead;
+  
+  while (bn::nNil() != nBuffer) {
+    
+    BufferFree* pBufferVerify = pToBufferFree(nBuffer);
+    
+    RASSERT(MAGIC == pBufferVerify->iMagic());
+    RASSERT(CN_BUFFER == pBufferVerify->eClass());
+    
+    nBuffer = pBufferVerify->nNextFree();
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
