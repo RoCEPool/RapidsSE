@@ -100,7 +100,12 @@ SEitf::~SEitf(void)
 
   SEitf* pSEitf = this;
   
+  m_pResponseQueue->vFinalize();
+  Word* pRspQueWord = m_xDic.pFind("rspque");
+  delete pRspQueWord;
+  
   gpSEitfList->vRemove(pSEitf);
+  
 }
 
 /*----------------------------------------------------------------------------*/

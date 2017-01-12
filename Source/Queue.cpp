@@ -153,6 +153,20 @@ void Queue::vInitialize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* finalize this queue                                                        */
+/*----------------------------------------------------------------------------*/
+void Queue::vFinalize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  while (m_pTopBuffer)
+    vDiscard();
+  
+  ASSERT(!m_pTopBuffer);
+  ASSERT(!m_pEndBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop value from this queue (there may not be any)                           */
 /*----------------------------------------------------------------------------*/
 bool Queue::bPop(ValWsp* pValWsp)

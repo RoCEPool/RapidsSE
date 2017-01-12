@@ -35,6 +35,7 @@ namespace Structures
     i8    iCount(void);
     void  vDump(const char* pTab);
     void  vInitialize(void);
+    void  vFinalize(void);
     bool  bPop(ValWsp* pValWsp);
     bool  bPop(ValSet* pValSet);
     
