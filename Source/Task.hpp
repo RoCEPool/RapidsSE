@@ -605,6 +605,7 @@ namespace Tasks
     
     // loader
     static void vLoaderDelete(NNP_Task nnpTask);
+    static void vLoaderFinalize(NNP_Task nnpTask);
     static void vLoaderFindChunk(NNP_Task nnpTask);
     static void vLoaderInit(NNP_Task nnpTask);
     static void vLoaderNew(NNP_Task nnpTask);

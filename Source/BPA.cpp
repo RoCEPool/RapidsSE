@@ -6,6 +6,7 @@
 
 extern Heap* gpMediumHeap;
 extern Heap* gpSmallHeap;
+extern Heap* gpJumboHeap;
 extern Arguments gxArguments;
 
 extern Atomic gzDirOpenCount;
@@ -87,6 +88,11 @@ void BPA::vAnalyze(void)
          gpMediumHeap->iAllocCount(),
          gpMediumHeap->iFreeCount());
   
+  vTrace("   JumboHeap buffers %-6lld alloc %-6lld free %-6lld\n",
+         gpJumboHeap->iBufferCount(),
+         gpJumboHeap->iAllocCount(),
+         gpJumboHeap->iFreeCount());
+  
   vTrace("\n");
   vTrace("  BufferPool Objects:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
@@ -130,6 +136,22 @@ void BPA::vAnalyze(void)
     vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
   }
   
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    iCountObjects[index] = 0;
+  
+  gpJumboHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n");
+  vTrace("  JumboHeap Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+
   vTrace("**************************************************************\n");
   vTrace(" dir %lld file %lld shm %lld socket %lld thread %lld\n",
          *gzDirOpenCount,

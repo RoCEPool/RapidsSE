@@ -93,6 +93,8 @@ timer: loadTimer
   // commit the transaction
   commitTransaction
 
+  r0 loader.finalize
+
   // discard r0:Loader
   rdrop
 

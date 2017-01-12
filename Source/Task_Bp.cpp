@@ -11,6 +11,8 @@ extern Arguments       gxArguments;
 extern AttachMap*      gpAttachMap;
 extern BufferPool*     gpBufferPool;
 extern Heap*           gpMediumHeap;
+extern Heap*           gpJumboHeap;
+
 extern BPA*            gpBPA;
 extern Dic*            gpMainDic;
 extern Word*           gpWord;
@@ -158,7 +160,8 @@ void Task::vSnapshot(NNP_Task nnpTask)
   
   gpSmallHeap->vAnalyse(iCountObjects);
   gpMediumHeap->vAnalyse(iCountObjects);
-  
+  gpJumboHeap->vAnalyse(iCountObjects);
+
   for (i8 index = 0; index < CN_ENUMS; index++)
     nnpTask->m_pDataStack->vPush(iCountObjects[index]);
   
