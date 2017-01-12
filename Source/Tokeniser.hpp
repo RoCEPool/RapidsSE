@@ -28,7 +28,7 @@ namespace Parsing
     /*  5 */ "ENUMS",
   };
   
-  class Tokeniser : public Buffer
+  class Tokeniser : public Object
   {
   private:
     Parser* m_pParser; // parser

@@ -310,7 +310,7 @@ eHT geWhichHeap[]
   /* 38 */ HT_SMALL,   // CN_NODE
   /* 39 */ HT_SMALL,   // CN_NODECURSOR
   
-  /* 40 */ HT_LARGE,   // CN_PARSER
+  /* 40 */ HT_MEDIUM,  // CN_PARSER
   /* 41 */ HT_INVALID, // CN_PARTITION
   /* 42 */ HT_INVALID, // CN_PARTITIONS
   /* 43 */ HT_INVALID, // CN_PROXY
@@ -330,7 +330,7 @@ eHT geWhichHeap[]
   /* 54 */ HT_LARGE,   // CN_SCANBUFFER
   /* 55 */ HT_LARGE,   // CN_SCRATCH
   /* 56 */ HT_INVALID, // CN_SEHISTORY
-  /* 57 */ HT_LARGE,   // CN_SEITF
+  /* 57 */ HT_MEDIUM,  // CN_SEITF
   /* 58 */ HT_SMALL,   // CN_SEITFCURSOR
   /* 59 */ HT_INVALID, // CN_SEITFLIST
   /* 60 */ HT_LARGE,   // CN_SEPROMPT
@@ -355,7 +355,7 @@ eHT geWhichHeap[]
   /* 78 */ HT_INVALID, // CN_THREADLIST
   /* 79 */ HT_INVALID, // CN_TIME
   /* 80 */ HT_SMALL,   // CN_TIMER
-  /* 81 */ HT_LARGE,   // CN_TOKENISER
+  /* 81 */ HT_MEDIUM,  // CN_TOKENISER
   /* 82 */ HT_SMALL,   // CN_TX
   /* 83 */ HT_LARGE,   // CN_TXARRAY
   /* 84 */ HT_INVALID, // CN_TXCOLLECTION

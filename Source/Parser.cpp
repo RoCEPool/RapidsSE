@@ -45,7 +45,7 @@ void Parser::operator delete(void* pParserAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parser::Parser(Parser* pNext)
-: Buffer(CN_PARSER)
+: Object(CN_PARSER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   

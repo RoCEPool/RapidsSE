@@ -9,7 +9,7 @@
 namespace Interface
 {
   
-  class SEitf : public Buffer,
+  class SEitf : public Object,
                 public ListNode_t<SEitf>
   {
     static const i8 C_INPUT_ARRAY = 4;
