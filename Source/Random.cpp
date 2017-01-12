@@ -81,12 +81,12 @@ u8 Random::uRandom(u8 uLow, u8 uHigh)
 /*---------------------------------------------------------------------------*/
 /* sRandomString: generate a random string of given length                   */
 /*---------------------------------------------------------------------------*/
-s8K Random::sRandomString(i8 iLength) {
+s48K Random::sRandomString(i8 iLength) {
   
   char sCharSet[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
-  s8K sRandomString;
+  s48K sRandomString;
   
-  ASSERT(iLength < static_cast<i8>(sizeof(s8K)));
+  ASSERT(iLength < static_cast<i8>(sizeof(s48K)));
   
   i8 iCharSetSize = String::iSize(sCharSet);
   

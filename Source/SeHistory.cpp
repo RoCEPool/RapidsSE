@@ -137,7 +137,7 @@ bool SeHistory::bGet(i8 iCommand, char* pToken[], i8 nTokens)
   
   char wCommand[C_4KB];
   
-  s8K sCommand;
+  s48K sCommand;
   
   i8 i = 0;
   while (bRead(wCommand)) {

@@ -75,7 +75,7 @@ void Task::vToCmd(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(nValues) )
     THROW_INVALID_DSTACK(">cmd");
   
-  s8K sCmd;
+  s48K sCmd;
   
   ValWsp xStr;
   xStr = "<cmd>";
@@ -151,7 +151,7 @@ void Task::vToStr(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xVal) )
     THROW_INVALID_DSTACK(">str");
   
-  s8K sString;
+  s48K sString;
   xVal.vToString(sString.a());
   
   nnpTask->m_pDataStack->vPush(sString);

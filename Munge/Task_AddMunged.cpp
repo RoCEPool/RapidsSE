@@ -5,7 +5,7 @@
 
 void Task::vAddMunged(NNP_Task nnpTask)
 {
-  s8K sDefinition;
+  s48K sDefinition;
 
   // munge of 1m.sen
   sDefinition =
@@ -4673,7 +4673,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  \\\"\\\\n\\\" cppFile file.write"
     "  \\\"void Task::vAddMunged(NNP_Task nnpTask)\\\\n\\\" cppFile file.write"
     "  \\\"{\\\\n\\\" cppFile file.write"
-    "  \\\"  s8K sDefinition;\\\\n\\\" cppFile file.write"
+    "  \\\"  s48K sDefinition;\\\\n\\\" cppFile file.write"
     ";"
     ""
     "/*----------------------------------------------------------------------------*/"

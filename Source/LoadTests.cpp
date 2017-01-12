@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 void LoadTests::vRun(RunTests* pRunTests)
 {
-  s8K sCommand;
+  s48K sCommand;
   char* pRowPtr;
   
   // start with /tenants folder

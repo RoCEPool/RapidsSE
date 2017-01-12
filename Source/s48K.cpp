@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* s8K.cpp -- a 8KB-byte s-string                                             */
+/* s48K.cpp -- a 8KB-byte s-string                                             */
 /*============================================================================*/
 
 #include "Magic.h"
@@ -11,71 +11,61 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-s8K::s8K(void)
-: s(CN_S8K,C_S_SIZE)
+s48K::s48K(void)
+: s(CN_S48K,C_S_SIZE)
 {
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
-  _checkInitialised_(CN_S8K);
+  _checkInitialised_(CN_S48K);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-s8K::s8K(s8K& rArg)
-: s(CN_S8K,C_S_SIZE)
+s48K::s48K(s48K& rArg)
+: s(CN_S48K,C_S_SIZE)
 {
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
 
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(rArg.a());
   
-  _checkInitialised_(CN_S8K);
+  _checkInitialised_(CN_S48K);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-s8K::s8K(const char* aArg)
-: s(CN_S8K,C_S_SIZE)
+s48K::s48K(const char* aArg)
+: s(CN_S48K,C_S_SIZE)
 {
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
   Memory::vZero(m_mWorkspace, C_S_SIZE);
   
   s::vCopy(aArg);
   
-  _checkInitialised_(CN_S8K);
+  _checkInitialised_(CN_S48K);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-s8K::~s8K(void)
+s48K::~s48K(void)
 {
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s8K::operator = (const char* aArg)
+void s48K::operator = (const char* aArg)
 {
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
-  
-  s::vCopy(aArg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-void s8K::operator = (char* aArg)
-{
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
   s::vCopy(aArg);
 }
@@ -83,9 +73,19 @@ void s8K::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s8K::operator = (s& rArg)
+void s48K::operator = (char* aArg)
 {
-  _precondition_(_MAGIC_,CN_S8K,_FOOTER_);
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
+  
+  s::vCopy(aArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void s48K::operator = (s& rArg)
+{
+  _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
   vCopy(rArg.a());
 }
@@ -97,9 +97,9 @@ void s8K::operator = (s& rArg)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* s8K::pFooter(void)
+Footer* s48K::pFooter(void)
 {
-  _precondition_(_MAGIC_,CN_S8K);
+  _precondition_(_MAGIC_,CN_S48K);
   
   return &m_xFooter;
 }

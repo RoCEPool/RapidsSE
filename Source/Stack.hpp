@@ -53,7 +53,7 @@ namespace Structures
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
     bool bPop(i8& iArg1, Value& xArg1);
-    bool bPop(i8& iArg1, s8K& sArg2);
+    bool bPop(i8& iArg1, s48K& sArg2);
     bool bPop(i8& iArg1, i8& iArg2, Value& xArg3);
     bool bPop(Object*& pObject);
     bool bPop(Object*& pObject, i8& iArg);
@@ -65,10 +65,10 @@ namespace Structures
     bool bPop(Value& xArg1, Value& xArg2, Value& xArg3);
     bool bPop(s32&  sArg1);
     bool bPop(s256& sArg1);
-    bool bPop(s8K& sArg1);
-    bool bPop(s8K& sArg1, i8& iArg2);
-    bool bPop(s8K& sArg1, i8& iArg2, i8& iArg3);
-    bool bPop(s8K& sArg1, s8K& sArg2);
+    bool bPop(s48K& sArg1);
+    bool bPop(s48K& sArg1, i8& iArg2);
+    bool bPop(s48K& sArg1, i8& iArg2, i8& iArg3);
+    bool bPop(s48K& sArg1, s48K& sArg2);
     bool bPopParamInt(i8& iArg1);
     
     void vPush(Header* pHeader);
@@ -76,7 +76,7 @@ namespace Structures
     void vPush(Object* pObject);
     void vPush(s32& s32);
     void vPush(s256& s256);
-    void vPush(s8K& s8K);
+    void vPush(s48K& s48K);
     void vPush(Value* pValue);
     void vPush(Value& xValue);
     void vPush(Dictionaries::Cell* pCell);

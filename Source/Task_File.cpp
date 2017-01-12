@@ -207,7 +207,7 @@ ENTRY("vFileRead");
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
-  s8K sLine;
+  s48K sLine;
 
   if (pFile->bReadLine(sLine)) {
     nnpTask->m_pDataStack->vPush(sLine);
@@ -260,7 +260,7 @@ ENTRY("vFileWrite");
   File* pFile = _pFile(pPtrFile);
   ASSERT(pFile);
   
-  s8K sLine;
+  s48K sLine;
   
   if ( ! nnpTask->m_pDataStack->bPop(sLine) )
     THROW_INVALID_DSTACK("file.write");

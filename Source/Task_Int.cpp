@@ -164,7 +164,7 @@ void Task::vIntHash(NNP_Task nnpTask)
 {
   ENTRY("vIntHash");
   
-  s8K sString;
+  s48K sString;
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("hash");
   

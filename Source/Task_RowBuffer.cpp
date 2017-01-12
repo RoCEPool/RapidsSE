@@ -59,7 +59,7 @@ ENTRY("vRowBufferAppend");
   TxRef* pTxRef = _pTxRef(pPtrTxRef);
   ASSERT(CN_TXREF == pTxRef->eClass());
   
-  s8K sRecord;
+  s48K sRecord;
   if ( ! nnpTask->m_pDataStack->bPop(sRecord) )
     THROW_INVALID_DSTACK("rowbuffer.append");
 

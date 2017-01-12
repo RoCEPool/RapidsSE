@@ -36,7 +36,7 @@ namespace Parsing
     bool    m_bNormal; // normal tokens?
     char    m_cParsedChar;   // character from parser
     
-    s8K     m_sToken;  // current token
+    s48K     m_sToken;  // current token
     eTK     m_eToken;  // token type
     
     // must be last
@@ -77,7 +77,7 @@ namespace Parsing
     bool bLineMode(void);
     bool bStdin(void);
     
-    s8K& sToken(void);
+    s48K& sToken(void);
     eTK  eToken(void);
     
   private:

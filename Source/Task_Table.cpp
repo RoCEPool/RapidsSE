@@ -53,7 +53,7 @@ void Task::vTableAppend(NNP_Task nnpTask)
 {
   ENTRY("vTableAppend");
   i8 iPartition;
-  s8K sString;
+  s48K sString;
   
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("table.append");

@@ -464,7 +464,7 @@ void Task::vSee(NNP_Task nnpTask)
 {
   ENTRY("vSee");
   
-  s8K sWorkspace;
+  s48K sWorkspace;
   
   nnpTask->vTokenNext();
   

@@ -386,7 +386,7 @@ void Task::vAddConstants(void)
 
   /*  1 */ vAddConstant("CN_S32",          CN_S32);
   /*  2 */ vAddConstant("CN_S256",         CN_S256);
-  /*  3 */ vAddConstant("CN_S8K",          CN_S8K);
+  /*  3 */ vAddConstant("CN_S48K",          CN_S48K);
   
   /*  4 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
   /*  5 */ vAddConstant("CN_IPVAL",        CN_IPVAL);
@@ -640,7 +640,7 @@ void Task::vAddConstants(void)
 
   /*  0 */ vAddConstant("SIZEOF_S32",          sizeof(s32));
   /*  1 */ vAddConstant("SIZEOF_S256",         sizeof(s256));
-  /*  2 */ vAddConstant("SIZEOF_S16K",         sizeof(s8K));
+  /*  2 */ vAddConstant("SIZEOF_S16K",         sizeof(s48K));
 
   // TS_ : task state
   /*  0 */ vAddConstant("TS_NONE",           TS_NONE);
@@ -788,7 +788,7 @@ void Task::vAddRoutines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  s8K sDefinition;
+  s48K sDefinition;
 
   sDefinition =
   ": __nil ;";
@@ -1445,7 +1445,7 @@ void Task::vPrimitive(const char* aPrimitive)
 //    }
 //  }
 
-  s8K sStackContents;
+  s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
   
   vTrace("%s\n",sStackContents.a());
@@ -1578,7 +1578,7 @@ void Task::vSeedDocol(void)
 /*----------------------------------------------------------------------------*/
 /* sprint of stack using given format string                                  */
 /*----------------------------------------------------------------------------*/
-void Task::vSprint(s8K& sFormat, s8K& sString)
+void Task::vSprint(s48K& sFormat, s48K& sString)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1608,7 +1608,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
       
       pf++;
       
-      s8K sValue;
+      s48K sValue;
       m_pDataStack->bPop(sValue);
       
       for (char* pv = sValue.a(); *pv; )
@@ -1671,7 +1671,7 @@ void Task::vSprint(s8K& sFormat, s8K& sString)
       *pf = 's';
       pf++;
       
-      s8K sValue;
+      s48K sValue;
       m_pDataStack->bPop(sValue);
       
       for (char* pv = sValue.a(); *pv; )
@@ -1870,7 +1870,7 @@ void Task::vTracePoint(const char* aMark)
          aMark,
          iAuxValues);
          
-  s8K sStackContents;
+  s48K sStackContents;
   vStackContents(m_pAuxStack, sStackContents);
   
   vTrace("%s",sStackContents.a());

@@ -26,9 +26,9 @@ private:
   bool      m_bEcho;      // echo response?
   
   bool      m_bExpect;    // is there an expected response?
-  s8K       m_sExpect;    // the expected response;
+  s48K       m_sExpect;    // the expected response;
   
-  s8K       m_sResponse;  // response from seitf
+  s48K       m_sResponse;  // response from seitf
   SeHistory m_xHistory;   // command history
   
   char*     m_pToken[C_TOKENS];

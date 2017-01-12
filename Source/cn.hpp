@@ -17,7 +17,7 @@ namespace Magic
     
     /*  1 */ CN_S32,
     /*  2 */ CN_S256,
-    /*  3 */ CN_S8K,
+    /*  3 */ CN_S48K,
     /*    */ CN_S1M,
     
     /*  4 */ CN_INTVAL,

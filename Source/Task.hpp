@@ -259,7 +259,7 @@ namespace Tasks
     void vSeedDicCompileSen(void);
     void vSeedDocol(void);
     void vSeedWord(const char *aWord);
-    void vSprint(s8K& sFormat, s8K& sString);
+    void vSprint(s48K& sFormat, s48K& sString);
     void vStackContents(Stack* pStack, s& sStackContents);
     eTS  eState(void);
     void vState(eTS eState);

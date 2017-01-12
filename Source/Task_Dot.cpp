@@ -47,7 +47,7 @@ void Task::vDot(NNP_Task nnpTask)
 {
   ENTRY("vDot");
   
-  s8K sWorkspace;
+  s48K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
@@ -74,7 +74,7 @@ void Task::vDotPut(NNP_Task nnpTask)
 {
   ENTRY("vDotPut");
   
-  s8K sWorkspace;
+  s48K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
@@ -105,7 +105,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
 {
   ENTRY("vDotVerbose");
   
-  s8K sWorkspace;
+  s48K sWorkspace;
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )

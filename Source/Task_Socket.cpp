@@ -313,7 +313,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
   SysCall xSysCall;
   Socket* pSocket;
   ValSet xValSet;
-  //s8K   sWorkspace;
+  //s48K   sWorkspace;
   Object* pObject;
   i8 iBytes;
   

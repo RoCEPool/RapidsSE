@@ -148,7 +148,7 @@ ENTRY("vRowCursorGet");
   RowCursor* pRowCursor = _pRowCursor(pPtrRowCursor);
   ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
   
-  s8K xRow;
+  s48K xRow;
   xRow = pRowCursor->pRowAsStr();
   
   nnpTask->m_pDataStack->vPush(xRow);

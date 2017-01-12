@@ -302,7 +302,7 @@ bool Stack::bPop(i8& iArg1, Value& xArg2)
 /*----------------------------------------------------------------------------*/
 /* pop i8,s from param stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(i8& iArg1, s8K& sArg2)
+bool Stack::bPop(i8& iArg1, s48K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -468,7 +468,7 @@ bool Stack::bPop(s256& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s from param stack                                                     */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s8K& sArg1)
+bool Stack::bPop(s48K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -486,7 +486,7 @@ bool Stack::bPop(s8K& sArg1)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8 from param stack                                                  */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s8K& sArg1, i8& iArg2)
+bool Stack::bPop(s48K& sArg1, i8& iArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -509,7 +509,7 @@ bool Stack::bPop(s8K& sArg1, i8& iArg2)
 /*----------------------------------------------------------------------------*/
 /* pop s,i8,i8 from param stack                                               */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s8K& sArg1, i8& iArg2, i8& iArg3)
+bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -534,7 +534,7 @@ bool Stack::bPop(s8K& sArg1, i8& iArg2, i8& iArg3)
 /*----------------------------------------------------------------------------*/
 /* pop s,s from param stack                                                   */
 /*----------------------------------------------------------------------------*/
-bool Stack::bPop(s8K& sArg1, s8K& sArg2)
+bool Stack::bPop(s48K& sArg1, s48K& sArg2)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -741,9 +741,9 @@ void Stack::vPush(s256& sArg1)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push s8K onto param stack                                                 */
+/* push s48K onto param stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vPush(s8K& sArg1)
+void Stack::vPush(s48K& sArg1)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
@@ -806,7 +806,7 @@ void Stack::vDump(const char* aPrefix, const char* aTitle)
   
   ValWsp xValWsp;
   
-  s8K sWorkspace;
+  s48K sWorkspace;
   
   i8 nValues = iValues();
   for (i8 iVal = 0; iVal < nValues; iVal++) {

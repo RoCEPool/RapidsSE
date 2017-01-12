@@ -23,7 +23,7 @@ namespace Parsing
     eIS     m_eSource;   // what source are we parsing? given file or given string?
     File    m_xFile;     // given file
     bool    m_bLineMode; // line mode?
-    s8K     m_sRawLine;  // either raw line read from file or given string
+    s48K     m_sRawLine;  // either raw line read from file or given string
     char*   m_aRawLine;  // ptr into m_sLine.a() -- debug help
     char*   m_pRawChar;  // next raw char in raw line
 

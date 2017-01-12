@@ -106,8 +106,8 @@ void Task::vStrClip(NNP_Task nnpTask)
   ENTRY("vStrClip");
   
   i8 iLength;
-  s8K sString;
-  s8K sSubStr;
+  s48K sString;
+  s48K sSubStr;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
@@ -161,8 +161,8 @@ void Task::vStrEscape(NNP_Task nnpTask)
 {
   ENTRY("vStrEscape");
   
-  s8K xArg;
-  s8K xEscaped;
+  s48K xArg;
+  s48K xEscaped;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(xArg) )
@@ -205,11 +205,11 @@ void Task::vStrFormat(NNP_Task nnpTask)
 {
   ENTRY("vStrFormat");
   
-  s8K sFormat;
+  s48K sFormat;
   if ( ! nnpTask->m_pDataStack->bPop(sFormat) )
     THROW_INVALID_DSTACK("str.format");
   
-  s8K sString;
+  s48K sString;
   
   nnpTask->vSprint(sFormat,sString);
   
@@ -226,8 +226,8 @@ void Task::vStrLeft(NNP_Task nnpTask)
   ENTRY("vClip");
   
   i8 iLength;
-  s8K sString;
-  s8K sSubStr;
+  s48K sString;
+  s48K sSubStr;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
@@ -256,7 +256,7 @@ void Task::vStrLength(NNP_Task nnpTask)
   ENTRY("vStrLen");
   
   i8 iLength;
-  s8K sString;
+  s48K sString;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
@@ -311,7 +311,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   // If received INTEGER convert to STRING
   if (xValA.eClass() == CN_INTVAL) {
-    s8K sString;
+    s48K sString;
     xValA.vToString(sString.a());
     xStrA = sString.a();
   }
@@ -321,7 +321,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   // If received INTEGER convert to STRING
   if (xValB.eClass() == CN_INTVAL) {
-    s8K sString;
+    s48K sString;
     xValB.vToString(sString.a());
     xStrB = sString.a();
   }
@@ -350,7 +350,7 @@ void Task::vStrRandom(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength) )
     THROW_INVALID_DSTACK("str.random");
   
-  s8K sRnd;
+  s48K sRnd;
   
   sRnd = Random::sRandomString(iLength).a();
   
@@ -367,8 +367,8 @@ void Task::vStrRight(NNP_Task nnpTask)
   ENTRY("vStrRight");
   
   i8 iLength;
-  s8K sString;
-  s8K sSubStr;
+  s48K sString;
+  s48K sSubStr;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iLength) )
@@ -401,8 +401,8 @@ void Task::vStrSub(NNP_Task nnpTask)
   
   i8 iLength;
   i8 iStart;
-  s8K sString;
-  s8K sSubStr;
+  s48K sString;
+  s48K sSubStr;
   
   // get the arguments
   if ( ! nnpTask->m_pDataStack->bPop(sString,iStart,iLength) )

@@ -179,7 +179,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK("dump");
   
-  s8K sWorkspace;
+  s48K sWorkspace;
   xValWsp.vToString(sWorkspace.a());
   char* aClass = xValWsp.aClass();
   

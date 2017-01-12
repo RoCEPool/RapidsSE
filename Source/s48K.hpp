@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* s8K.hpp -- an 8K-byte string                                               */
+/* s48K.hpp -- an 8K-byte string                                               */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace Magic
 {
-  class s8K : public s
+  class s48K : public s
   {
   private:
     static const i8 C_S_SIZE = C_48K;
@@ -18,11 +18,11 @@ namespace Magic
     Footer m_xFooter;
     
   public:
-    s8K(void);
-    s8K(s8K& rArg);
-    s8K(const char* aArg);
-    s8K(const char* aArg, i8 nChars);
-   ~s8K(void);
+    s48K(void);
+    s48K(s48K& rArg);
+    s48K(const char* aArg);
+    s48K(const char* aArg, i8 nChars);
+   ~s48K(void);
 
     void operator = (const char* aArg);
     void operator = (char* aArg);
