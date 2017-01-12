@@ -15,7 +15,7 @@ namespace Parsing
     
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
-    Parser* m_pChain;    // next parser in push chain
+    Parser* m_pNext;     // next parser in stack
     i8      m_iDepth;    // depth of this parser
     s256    m_sPrompt;   // user prompt when reading from stdin
     
@@ -28,7 +28,9 @@ namespace Parsing
     char*   m_pRawChar;  // next raw char in raw line
 
     // registers
-    i8      m_nLoaded;   // 0: neither has char, 1: m_cOne has char, 2: m_cOne & m_cTwo
+    i8      m_nLoaded;   // 0: neither has char
+                         // 1: m_cFirst has char
+                         // 2: m_cFirst and m_cSecond each have a char
     char    m_cFirst;    // first single char
     char    m_cSecond;   // second single char
     eCT     m_eComment;  // comment type currently being processed
@@ -56,11 +58,9 @@ namespace Parsing
     void vUseEnd(void);
 
     // Parsing Stack
-    Parser* pChain(void);
-    void   vChain(Parser* pParser);
-    bool bPop(void);
-    void vPush(void);
-    i8   iDepth(void);
+    Parser* pNext(void);
+    void    vNext(Parser* pNext);
+    i8      iDepth(void);
     
     // Parsing
     char cGet(bool bStripComments);

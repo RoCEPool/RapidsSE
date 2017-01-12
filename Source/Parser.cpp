@@ -50,7 +50,7 @@ Parser::Parser(Parser* pNext)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
   //m_bMalloc set in new
-  m_pChain  = pNext;
+  m_pNext   = pNext;
   m_iDepth  = 0;
   m_sPrompt = "Parser> ";
   
@@ -179,76 +179,21 @@ void Parser::vUseEnd(void)
 /*----------------------------------------------------------------------------*/
 /* get next parser in stack                                                   */
 /*----------------------------------------------------------------------------*/
-Parser* Parser::pChain(void)
+Parser* Parser::pNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  return m_pChain;
+  return m_pNext;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set next parser in stack                                                   */
 /*----------------------------------------------------------------------------*/
-void Parser::vChain(Parser* pChain)
+void Parser::vNext(Parser* pNext)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
   
-  m_pChain = pChain;
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop parsing stack                                                          */
-/*----------------------------------------------------------------------------*/
-bool Parser::bPop(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
-  
-  if (! m_pChain)
-    return false;
-  
-  Parser* pCopy = m_pChain;
-  
-  Memory::vCopy(this,pCopy,sizeof(Parser));
-  
-  pCopy->m_xFile.vZero();
-  
-  delete pCopy;
-  
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push copy of this parser onto stack, reset this parser                     */
-/*----------------------------------------------------------------------------*/
-void Parser::vPush(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARSER,_FOOTER_);
-  
-  // n.b. don't call vReset.  File may be open
-  
-  // create a copy of this parser
-  Parser* pCopy = new(m_bMalloc) Parser(nullptr);
-  Memory::vCopy(pCopy,this,sizeof(Parser));
-  
-  // push it onto stack
-  m_pChain = pCopy;
-  m_iDepth++;
-  // m_sPrompt we leave as is
-  
-  // reset input sources
-  m_eSource   = IS_NONE;
-  m_xFile.vZero();
-  m_bLineMode = false;
-  m_sRawLine  = "";
-  m_pRawChar  = m_sRawLine.a();
-  
-  // reset registers
-  m_nLoaded   = 0;
-  m_cFirst    = 0;
-  m_cSecond   = 0;
-  m_eComment  = CT_NONE;
-  m_bRead     = false;
-  m_bEOF      = false;
+  m_pNext = pNext;
 }
 
 /*----------------------------------------------------------------------------*/
