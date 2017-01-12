@@ -14,7 +14,7 @@ namespace Values
 {
   class ValSet : public Value
   {
-    static const i8 C_VALSET_WORKSPACE = C_1K * 63; // has to fit inside valwsp //C_1KB * 14;
+    static const i8 C_VALSET_WORKSPACE = C_1K * 63; // has to fit inside valwsp
     
   private:
     i8  m_iBytes; // bytes used in work space

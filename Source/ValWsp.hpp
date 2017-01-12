@@ -10,7 +10,7 @@ namespace Values
 {
   class ValWsp : public Value
   {
-    static const i8 C_VALWSP_WORKSPACE = C_64K; //C_1KB * 15;
+    static const i8 C_VALWSP_WORKSPACE = C_64K; // less than medium block
     
   private:
     char m_wWorkspace[C_VALWSP_WORKSPACE];

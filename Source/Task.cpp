@@ -4,12 +4,7 @@
 
 //#define MUNGED
 
-#define USE_INPUTSTREAM
-
-#define USE_LOADER2
-
 #include "StorageEngine.h"
-//#include "Tasks.h"
 #include "SePrompt.hpp"
 
 extern Arguments       gxArguments;
