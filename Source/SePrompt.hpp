@@ -10,7 +10,7 @@
 
 using namespace Magic;
 
-class SePrompt : public Object
+class SePrompt : public Buffer
 {
   static const i8 C_TOKENS      = 1024;
   static const i8 C_TOKEN_SPACE = 256;
@@ -33,7 +33,7 @@ private:
   
   char*     m_pToken[C_TOKENS];
   char*     m_pToken2[C_TOKENS];
-  Tokeniser m_xTokeniser; // input stream tokeniser
+  Tokeniser* m_pTokeniser; // input stream tokeniser
 
   char      m_wTokenArea[C_TOKEN_AREA];
   char      m_wTokenArea2[C_TOKEN_AREA];

@@ -34,7 +34,7 @@ void SePrompt::operator delete(void* pSePromptAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SePrompt::SePrompt(void)
-: Object(CN_SEPROMPT)
+: Buffer(CN_SEPROMPT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -78,19 +78,20 @@ SePrompt::SePrompt(void)
   //m_wWorkarea
   
   //----
-  m_xTokeniser.vMalloc(false);
-  m_xTokeniser.vPush();
+  m_pTokeniser = new Tokeniser;
+  m_pTokeniser->vMalloc(false);
+  m_pTokeniser->vPush();
   
   if (gxArguments.m_bCommand) {
-    m_xTokeniser.vUseString(gxArguments.m_sCommand);
+    m_pTokeniser->vUseString(gxArguments.m_sCommand);
   }
   else if (gxArguments.m_bPrompt) {
-    m_xTokeniser.vPrompt(m_sPrompt);
-    m_xTokeniser.vUseStdin();
+    m_pTokeniser->vPrompt(m_sPrompt);
+    m_pTokeniser->vUseStdin();
   }
   
-  m_xTokeniser.vLineMode(true);
-  m_xTokeniser.vNormal(true);
+  m_pTokeniser->vLineMode(true);
+  m_pTokeniser->vNormal(true);
   
   // open the command history file
   m_xHistory.vOpen();
@@ -111,6 +112,8 @@ SePrompt::~SePrompt(void)
   // SHOULD REMOVE HISTORY FILE?
   
   RapidsSE_SEitfDelete(gpAttachMap, m_pSEitf);
+  
+  delete m_pTokeniser;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,9 +203,9 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_xTokeniser.vUseString(sRequest);
+  m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
     
     //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
     
@@ -223,9 +226,9 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, s& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_xTokeniser.vUseString(sRequest);
+  m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
     
     //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
     
@@ -247,9 +250,9 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, char** ppRowPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  m_xTokeniser.vUseString(sRequest);
+  m_pTokeniser->vUseString(sRequest);
   i8 iToken = 0;
-  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
     
     //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
     
@@ -288,7 +291,7 @@ void SePrompt::vGetCommandArgument(void)
   //String::vCopy(m_pToken[1],"");
 
   i8 iToken = 0;
-  while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+  while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
     
     //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
     
@@ -308,10 +311,10 @@ void SePrompt::vGetCommandInput(void)
   
   while (true) {
     
-    m_xTokeniser.vResetTokens(m_pToken,C_TOKENS);
+    m_pTokeniser->vResetTokens(m_pToken,C_TOKENS);
     
     i8 iToken = 0;
-    while (TK_NONE != m_xTokeniser.eNextToken(m_pToken[iToken])) {
+    while (TK_NONE != m_pTokeniser->eNextToken(m_pToken[iToken])) {
       
       //vTrace("vGetCommand : [%lld] %s\n",iToken,m_pToken[iToken]);
       
@@ -320,8 +323,8 @@ void SePrompt::vGetCommandInput(void)
     }
     
     // end of file? if so, pop and retry
-    if (! iToken && m_xTokeniser.bEOF()) {
-      bool b = m_xTokeniser.bPop();
+    if (! iToken && m_pTokeniser->bEOF()) {
+      bool b = m_pTokeniser->bPop();
       ASSERT(b);
       continue;
     }
@@ -458,7 +461,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
-    m_xTokeniser.vLineMode(true);
+    m_pTokeniser->vLineMode(true);
     return true;
   }
   
@@ -607,7 +610,7 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   
   if (bTestFile(m_pToken[0])) {
     vPushFile(m_pToken[0]);
-    m_xTokeniser.vLineMode(true);
+    m_pTokeniser->vLineMode(true);
     m_sResponse = "<ok>";
     return true;
   }
@@ -864,9 +867,9 @@ void SePrompt::vPushFile(char* pPath)
   
   s256 sPath(pPath);
   
-  m_xTokeniser.vPush();
+  m_pTokeniser->vPush();
   
-  bool b = m_xTokeniser.bUseFile(sPath);
+  bool b = m_pTokeniser->bUseFile(sPath);
   ASSERT(b);
 }
 
@@ -1457,25 +1460,25 @@ void SePrompt::vCollectStatement(void)
   ASSERT(! String::bEqualTo(m_pToken[0],""));
 
   // have we already seen the ';'
-  i8 iToken = m_xTokeniser.iFindToken(";",m_pToken,C_TOKENS);
+  i8 iToken = m_pTokeniser->iFindToken(";",m_pToken,C_TOKENS);
   
   if (iToken >= 0) {
-    //m_xTokeniser.vDumpTokens("\nCommand : ",m_pToken,C_TOKENS);
+    //m_pTokeniser->vDumpTokens("\nCommand : ",m_pToken,C_TOKENS);
     return;
   }
   
-  iToken = m_xTokeniser.iCountTokens(m_pToken,C_TOKENS);
+  iToken = m_pTokeniser->iCountTokens(m_pToken,C_TOKENS);
   
   // switch to terminal mode
-  m_xTokeniser.vLineMode(false);
+  m_pTokeniser->vLineMode(false);
   
   s32 sContinuation("  > ");
-  m_xTokeniser.vPrompt(sContinuation);
+  m_pTokeniser->vPrompt(sContinuation);
   
   // get tokens delimited by ';'
   for ( ; iToken < C_TOKENS; iToken++) {
     
-    eTK eToken = m_xTokeniser.eNextToken(m_pToken[iToken]);
+    eTK eToken = m_pTokeniser->eNextToken(m_pToken[iToken]);
     ASSERT(TK_NONE != eToken);
     
     // look for terminal
@@ -1484,10 +1487,10 @@ void SePrompt::vCollectStatement(void)
   }
   
   // switch back to line mode
-  m_xTokeniser.vLineMode(true);
-  m_xTokeniser.vPrompt(m_sPrompt);
+  m_pTokeniser->vLineMode(true);
+  m_pTokeniser->vPrompt(m_sPrompt);
   
-  //m_xTokeniser.vDumpTokens("Command : ",m_pToken,C_TOKENS);
+  //m_pTokeniser->vDumpTokens("Command : ",m_pToken,C_TOKENS);
 }
 
 /*----------------------------------------------------------------------------*/

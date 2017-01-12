@@ -60,7 +60,7 @@ void SEitf::operator delete(void* pSEinterfaceAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SEitf::SEitf(i8 iPartition)
-: Object(CN_SEITF)
+: Buffer(CN_SEITF)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   

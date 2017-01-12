@@ -43,7 +43,7 @@ void Tokeniser::operator delete(void* pTokeniserAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Tokeniser::Tokeniser(void)
-: Object(CN_TOKENISER)
+: Buffer(CN_TOKENISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
   
