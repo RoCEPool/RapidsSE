@@ -553,10 +553,6 @@ void Task::vSemicolon(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  pCurrentWord->vEncode("exit");
-  
-  nnpTask->m_bCompiling = false;
-  
   if (nnpTask->m_nLocals) {
     
     // reset the number of local variables
@@ -564,8 +560,14 @@ void Task::vSemicolon(NNP_Task nnpTask)
     
     // pop top dictionary
     nnpTask->vDicDrop();
+    
+    // enocde locals frame pop
+    pCurrentWord->vEncode("locals.pop");
   }
   
+  pCurrentWord->vEncode("exit");
+  
+  nnpTask->m_bCompiling = false;
   
   if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed() ||
       DT_ONEPARTICIPANT  == pCurrentWord->eDistributed()) {
