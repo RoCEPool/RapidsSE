@@ -147,7 +147,7 @@ void Task::vLoaderNewSub(NNP_Task nnpTask)
   
   Object* pPtrLoader;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrLoader) )
-    THROW_INVALID_DSTACK("loader.init");
+    THROW_INVALID_DSTACK("loader.newSub");
   
   Loader* pLoader = _pLoader(pPtrLoader);
   ASSERT(CN_LOADER == pLoader->eClass());
