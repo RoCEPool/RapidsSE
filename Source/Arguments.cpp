@@ -53,6 +53,7 @@ Arguments::Arguments(void)
   m_bVerbose    = false;
   m_bWelcome    = true;
   m_iSleep      = 1;
+  m_bMunged     = false;
   
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -353,6 +354,12 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_iSleep = String::iToI8(argv[++iArg]);
       continue;
     }
+    
+    if (String::bEqualTo("--munged",argv[iArg],C_NO_CASE)) {
+      m_bMunged = true;
+      continue;
+    }
+    
     
   /*
     if (String::iLength(m_sCommand.a()))

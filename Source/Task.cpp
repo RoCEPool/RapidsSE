@@ -342,12 +342,14 @@ void Task::vAddConstants(void)
   
   vAddConstant("version",          RAPIDSSE_VERSION_STRING);
   
+  vAddConstant("jumbobuffersize",  C_SIZE_JUMBO_OBJECT);
   vAddConstant("largebuffersize",  C_SIZE_POOL_BUFFER);
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic",            MAGIC);
   vAddConstant("args.bgtasks",     gxArguments.m_bBgTasks);
   vAddConstant("args.config",      gxArguments.m_bConfig);
+  vAddConstant("args.munged",      gxArguments.m_bMunged);
   vAddConstant("args.node",        gxArguments.m_iNode);
   vAddConstant("args.nodes",       gxArguments.m_nNodes);
   vAddConstant("args.partitions",  gxArguments.m_nPartitions);
