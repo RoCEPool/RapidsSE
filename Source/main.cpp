@@ -29,7 +29,7 @@ int main(int argc, const char* argv[])
   if ( ! gxArguments.bParse(argc,argv) )
     exit(EXIT_FAILURE);
   
-  if (gxArguments.m_bWelcome)
+  if (gxArguments.m_bWelcome && ! gxArguments.m_bStatus)
     printf("RapidsSE v%s (%s %s -- %s) pid %lld\n",
            RAPIDSSE_VERSION_STRING,
            __DATE__,

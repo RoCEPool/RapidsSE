@@ -380,10 +380,18 @@ void RapidsSE::vStartActors(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStatus(void)
 {
-  if (Region::bTest())
-    vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
-  else
-    vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
+  if (Region::bTest()) {
+    
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName);
+    ASSERT(bResult);
+    vAttachObjects();
+    if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
+      vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
+      return;
+    }
+  }
+  
+  vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
 }
 
 /*----------------------------------------------------------------------------*/
