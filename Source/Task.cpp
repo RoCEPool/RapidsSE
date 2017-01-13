@@ -937,6 +937,13 @@ void Task::vAddRoutines(void)
   //-----------------------------------------------------
   sDefinition =
   ": include"
+  "  args.munged if"
+  "    dup find if"
+  "      find execute include-string"
+  "      exit"
+  "    then"
+  "    . debug.trap"
+  "  then"
   "  include-file"
   "  ;";
   
