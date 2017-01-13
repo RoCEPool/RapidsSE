@@ -70,6 +70,9 @@ Queue::Queue(void)
 Queue::~Queue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  ASSERT( ! m_pEndBuffer );
+  ASSERT( ! m_pTopBuffer );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +143,21 @@ void Queue::vDump(eCN eClass, Object* pObject, const char* pTab)
   Queue* pQueue = reinterpret_cast<Queue*>(pObject);
   
   pQueue->vDump(pTab);
+}
+
+/*----------------------------------------------------------------------------*/
+/* finalize this queue                                                        */
+/*----------------------------------------------------------------------------*/
+void Queue::vFinalize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
+  
+  while (m_pTopBuffer)
+    vDiscard();
+  
+  ASSERT(!m_pTopBuffer);
+  ASSERT(!m_pEndBuffer);
+
 }
 
 /*----------------------------------------------------------------------------*/
