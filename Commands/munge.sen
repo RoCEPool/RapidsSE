@@ -59,7 +59,7 @@
 
     "    \""   cppFile file.write
     senLine cppFile file.write
-    "\""    cppFile file.write
+    " \""    cppFile file.write
     "\n"    cppFile file.write
 
   repeat
