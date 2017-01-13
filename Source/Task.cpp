@@ -911,7 +911,7 @@ void Task::vAddRoutines(void)
   
   //-----------------------------------------------------
   sDefinition =
-  ": >>:"
+  ": include"
   "  input.push"
   "  input.open"
   "  docol"
@@ -927,7 +927,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" .verbose"
-  "  \"compile.sen\" >>:"
+  "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::exit"
   "  ;";
@@ -935,7 +935,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" .verbose"
-  "  \"compile.sen\" >>:"
+  "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::exit"
   "  ;";

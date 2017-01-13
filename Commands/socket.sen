@@ -4,8 +4,8 @@
 
 "socket.sen" .verbose
 
-"socket_server.sen" >>:
-"socket_client.sen" >>:
+"socket_server.sen" include
+"socket_client.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

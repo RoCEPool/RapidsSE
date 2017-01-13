@@ -9,20 +9,20 @@
 //
 
 
-"core.sen" >>:
-"common.sen" >>:
-"structures.sen" >>:
-"tasks.sen" >>:
-"threads.sen" >>:
-"transactions.sen" >>:
-"interface.sen" >>:
-"systemObjects.sen" >>:
-"gridModel.sen" >>:
-"dbobjects.sen" >>:
-"actors.sen" >>:
-"request.sen" >>:
-"munge.sen" >>:
-"testing.sen" >>:
+"core.sen" include
+"common.sen" include
+"structures.sen" include
+"tasks.sen" include
+"threads.sen" include
+"transactions.sen" include
+"interface.sen" include
+"systemObjects.sen" include
+"gridModel.sen" include
+"dbobjects.sen" include
+"actors.sen" include
+"request.sen" include
+"munge.sen" include
+"testing.sen" include
 assert.stack_0
 
 //

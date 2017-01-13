@@ -4,11 +4,11 @@
 
 "unitTests.sen" .verbose
 
-"arithmeticTests.sen" >>:
+"arithmeticTests.sen" include
 
-"flowTests.sen" >>:
+"flowTests.sen" include
 
-"logicTests.sen" >>:
+"logicTests.sen" include
 
 : ut
 

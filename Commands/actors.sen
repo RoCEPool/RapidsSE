@@ -4,12 +4,12 @@
 
 "actors.sen" .verbose
 
-"listerTask.sen"  >>:
-"monitorTask.sen" >>:
-//"reclaimTask.sen" >>:
-"requestTask.sen" >>:
+"listerTask.sen"  include
+"monitorTask.sen" include
+//"reclaimTask.sen" include
+"requestTask.sen" include
 
-"generalThreads.sen" >>:
+"generalThreads.sen" include
 
 /*----------------------------------------------------------------------------*/
 /* called by RapidsSE::vStartActors                                           */

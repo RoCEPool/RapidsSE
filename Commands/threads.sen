@@ -4,9 +4,9 @@
 
 "threads.sen" .verbose
 
-"thread.sen" >>:
-"threadList.sen" >>:
-"threadCursor.sen" >>:
+"thread.sen" include
+"threadList.sen" include
+"threadCursor.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

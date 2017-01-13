@@ -4,16 +4,16 @@
 
 "dbObjects.sen" .verbose
 
-"rowCursor.sen" >>:
-"table.sen" >>:
-"column.sen" >>:
-"schema.sen" >>:
-"catalog.sen" >>:
-"tenant.sen" >>:
-"user.sen" >>:
+"rowCursor.sen" include
+"table.sen" include
+"column.sen" include
+"schema.sen" include
+"catalog.sen" include
+"tenant.sen" include
+"user.sen" include
 
-"row.sen" >>:
-"rowBuffer.sen" >>:
+"row.sen" include
+"rowBuffer.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

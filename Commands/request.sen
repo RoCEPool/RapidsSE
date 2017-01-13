@@ -4,15 +4,15 @@
 
 "requestSet.sen" .verbose
 
-"copier.sen" >>:
-"exporter.sen" >>:
-"fileGen.sen" >>:
-"loaderSub.sen" >>:
-"loader.sen" >>:
+"copier.sen" include
+"exporter.sen" include
+"fileGen.sen" include
+"loaderSub.sen" include
+"loader.sen" include
 
-"requests.sen" >>:
+"requests.sen" include
 
-"streamLoader.sen" >>:
+"streamLoader.sen" include
 
 // create /tenants/boray/catalogs/rapidsse
 createDefaultFolders

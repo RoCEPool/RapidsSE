@@ -4,13 +4,13 @@
 
 "testing.sen" .verbose
 
-"jData.sen" >>:
+"jData.sen" include
 
-"miscTesting.sen" >>:
+"miscTesting.sen" include
 
-"unitTests.sen" >>:
+"unitTests.sen" include
 
-"1m.sen" >>:
+"1m.sen" include
 
 
 /*============================================================================*/

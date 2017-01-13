@@ -4,12 +4,12 @@
 
 "common.sen" .verbose
 
-"dir.sen" >>:
-"file.sen" >>:
-"lock.sen" >>:
-"timer.sen" >>:
+"dir.sen" include
+"file.sen" include
+"lock.sen" include
+"timer.sen" include
 
-"trace.sen" >>:
+"trace.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

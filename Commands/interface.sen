@@ -4,8 +4,8 @@
 
 "interface.sen" .verbose
 
-"seitfList.sen" >>:
-"seitfCursor.sen" >>:
+"seitfList.sen" include
+"seitfCursor.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

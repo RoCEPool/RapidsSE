@@ -4,10 +4,10 @@
 
 "transactions.sen" .verbose
 
-"txCollection.sen" >>:
-"txCursor.sen" >>:
-"txMap.sen" >>:
-"txRef.sen" >>:
+"txCollection.sen" include
+"txCursor.sen" include
+"txMap.sen" include
+"txRef.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

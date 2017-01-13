@@ -584,9 +584,9 @@ tp: g
 //traceon
 : tp:test 567 tp: tp-abc . ;
 
-"dic.sen" >>:
-"var.sen" >>:
-"useful.sen" >>:
+"dic.sen" include
+"var.sen" include
+"useful.sen" include
 
 /*============================================================================*/
 /* end                                                                        */

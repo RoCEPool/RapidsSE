@@ -4,24 +4,24 @@
 
 "gridModel.sen" .verbose
 
-"node.sen" >>:
-"grid.sen" >>:
-"nodeCursor.sen" >>:
+"node.sen" include
+"grid.sen" include
+"nodeCursor.sen" include
 
-"gridPrimitives.sen" >>:
+"gridPrimitives.sen" include
 
-"coordinatorTask.sen" >>:
-"participantProxy.sen" >>:
-"coordinatorProxy.sen" >>:
-"participantTask.sen" >>:
-"receiverTask.sen" >>:
-"senderTask.sen" >>:
+"coordinatorTask.sen" include
+"participantProxy.sen" include
+"coordinatorProxy.sen" include
+"participantTask.sen" include
+"receiverTask.sen" include
+"senderTask.sen" include
 
-"connectorTask.sen" >>:
-"answerTask.sen" >>:
+"connectorTask.sen" include
+"answerTask.sen" include
 
-"gridCalls.sen" >>:
-"ddlLocking.sen" >>:
+"gridCalls.sen" include
+"ddlLocking.sen" include
 
 /*============================================================================*/
 /* end                                                                        */
