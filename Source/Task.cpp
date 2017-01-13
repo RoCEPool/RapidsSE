@@ -777,7 +777,7 @@ void Task::vAddPrimitives(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add initial set of routines into dictionary (min set to boot)              */
+/* add initial set of axiomatic routines into dictionary (min set to boot)    */
 /*----------------------------------------------------------------------------*/
 void Task::vAddRoutines(void)
 {
@@ -911,12 +911,31 @@ void Task::vAddRoutines(void)
   
   //-----------------------------------------------------
   sDefinition =
-  ": include"
+  ": include-file"
   "  input.push"
   "  input.open"
   "  docol"
   "  input.close"
   "  input.pop"
+  "  ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
+  ": include-string"
+  "  input.push"
+  "  input.text"
+  "  docol"
+  "  input.pop"
+  "  ;";
+  
+  pCompileColon(sDefinition);
+  
+  //-----------------------------------------------------
+  sDefinition =
+  ": include"
+  "  include-file"
   "  ;";
   
   pCompileColon(sDefinition);
