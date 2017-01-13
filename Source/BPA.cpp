@@ -4,6 +4,7 @@
 
 #include "StorageEngine.h"
 
+extern AttachMap* gpAttachMap;
 extern Heap* gpMediumHeap;
 extern Heap* gpSmallHeap;
 extern Heap* gpJumboHeap;
@@ -46,6 +47,9 @@ void BPA::vAnalyze(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
+  // increment the epoch
+  gpAttachMap->m_iEpoch++;
+  
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
     iCountObjects[index] = 0;
@@ -71,6 +75,8 @@ void BPA::vAnalyze(void)
          gpBufferPool->m_iBufferSize);
   
   vTrace("\n");
+  
+  vTrace("Epoch: %lld\n", gpAttachMap->m_iEpoch);
   
   vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
          gpBufferPool->m_iBufferCount,

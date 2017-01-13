@@ -6,6 +6,11 @@
 
 #include "Dictionaries.h"
 
+namespace StorageEngine
+{
+  class AttachMap;
+}
+
 namespace Dictionaries
 {
   enum eWT // word type
@@ -56,6 +61,7 @@ namespace Dictionaries
     s32      m_sName;        // the name of this word
     eWT      m_eWordType;    // type of word
     eDT      m_eDistributed; // distributed
+    i8       m_iEpoch;       // epoch no. used by bp analyzer
     Dic*     m_pDic;         // which dictionary this word in
     Word*    m_pKind;        // kind of word
     Word*    m_pParticipant; // allParticipant/oneParticipant word

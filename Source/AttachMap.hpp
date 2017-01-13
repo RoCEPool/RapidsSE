@@ -21,6 +21,8 @@ namespace StorageEngine
     i8            m_iPartition[C_TABLE_PARTITIONS];
     i8            m_iNodes;
     
+    i8            m_iEpoch;
+    
     BufferPool*   m_pBufferPool;
     Heap*         m_pJumboHeap;
     Heap*         m_pMediumHeap;

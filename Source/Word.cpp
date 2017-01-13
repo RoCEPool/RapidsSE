@@ -3,10 +3,13 @@
 /*============================================================================*/
 
 #include "Tasks.h" // needed for Task::vEnter
+#include "AttachMap.hpp"
 
 extern BufferPool* gpBufferPool;
 extern Dic*        gpMainDic;
 extern Word*       gpWord;
+
+extern AttachMap* gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -59,6 +62,7 @@ Word::Word(const char* sName)
   m_eDistributed = DT_NOPARTICIPANT;
   //m_pDic       = pDic;
   m_pKind        = gpWord ? gpWord : this;
+  m_iEpoch       = gpAttachMap->m_iEpoch;
   m_pParticipant = nullptr;
   m_bImmediate   = false;
   m_iParams      = 0;
@@ -352,10 +356,11 @@ void Word::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("%sWord %p: %s (%s) %s %s DataBytes %lld "
+  vTrace("%sWord %p: epoch:%lld %s (%s) %s %s DataBytes %lld "
          "Step %p ..Data.. %p\n",
          pTab,
          this,
+         m_iEpoch,
          m_sName.a(),
          m_pDic->sName().a(),
          pWT[m_eWordType],

@@ -103,6 +103,7 @@ void AttachMap::vRecordGlobals(void)
   m_iRegionSize = gpBufferPool->iRegionSize();
   m_iPartitions = gxArguments.m_nPartitions;
   m_iNodes      = gxArguments.m_nNodes;
+  m_iEpoch      = 0;
   
   i8 iPartitions = 0;
   i8 iTotalPartitions = m_iPartitions * m_iNodes;
