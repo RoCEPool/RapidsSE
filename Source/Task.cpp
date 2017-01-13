@@ -884,7 +884,7 @@ void Task::vAddRoutines(void)
   
   //-----------------------------------------------------
   sDefinition =
-  ": ::exit"
+  ": ::task_exit"
   "  TS_EXITED task.this task.state!"
   "  ;";
   
@@ -895,7 +895,7 @@ void Task::vAddRoutines(void)
   ": ::docmd"
   //  "  input.text"
   "  docol"
-  "  ::exit"
+  "  ::task_exit"
   "  ;";
   
   pCompileColon(sDefinition);
@@ -906,7 +906,7 @@ void Task::vAddRoutines(void)
   ": ::enter"
   "  input.stdin"
   "  docol"
-  "  ::exit"
+  "  ::task_exit"
   "  ;";
   
   pCompileColon(sDefinition);
@@ -950,7 +950,7 @@ void Task::vAddRoutines(void)
   "  \"::dicCompile\" .verbose"
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
-  "  ::exit"
+  "  ::task_exit"
   "  ;";
 #else
   sDefinition =
@@ -958,7 +958,7 @@ void Task::vAddRoutines(void)
   "  \"::dicCompile\" .verbose"
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
-  "  ::exit"
+  "  ::task_exit"
   "  ;";
 #endif
   pCompileColon(sDefinition);
@@ -1561,7 +1561,7 @@ void Task::vSeedWord(const char* aLambda)
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    String::vConcat(m_sLambda.a()," ::exit");
+    String::vConcat(m_sLambda.a()," ::task_exit");
   
   m_pTokeniser->vUseString(m_sLambda);
 }
