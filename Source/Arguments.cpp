@@ -405,6 +405,9 @@ void Arguments::vPrint(void)
   vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
   vTrace("  --port %lld\n",m_iPort);
   vTrace("  --commands %s\n",m_sCommands.a());
+
+  if (m_bMunged) vTrace("  --munged\n");
+
 }
 
 /*----------------------------------------------------------------------------*/

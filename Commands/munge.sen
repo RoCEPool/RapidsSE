@@ -53,14 +53,18 @@
 
   "    \"\\\"\"\n"   cppFile file.write
 
+  "    \"\\\\\\\"munged " cppFile file.write
+  senFile file.path@ cppFile file.write
+  "\\\\\\\" .verbose \\n\"\n" cppFile file.write    // change this to verbose
+
   begin senFile file.read while
 
     str.escape str.escape to senLine
 
-    "    \""   cppFile file.write
-    senLine cppFile file.write
-    " \""    cppFile file.write
-    "\n"    cppFile file.write
+    "    \""  cppFile file.write
+    senLine   cppFile file.write
+    "\\n\""   cppFile file.write
+    "\n"      cppFile file.write
 
   repeat
 

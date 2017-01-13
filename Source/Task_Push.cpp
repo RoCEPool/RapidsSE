@@ -90,6 +90,10 @@ void Task::vPushValue(NNP_Task nnpTask)
 {
   ENTRY("vPushValue");
   
+  if (nnpTask->m_iTracing) {
+    ASSERT(nnpTask->m_iTracing);
+  }
+  
   Value* pValue = nnpTask->IP.m_pValue;
   
   nnpTask->m_pDataStack->vPush(pValue);

@@ -927,6 +927,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": include-string"
   "  input.push"
+//  "  dup ."
   "  input.text"
   "  docol"
   "  input.pop"
@@ -937,6 +938,7 @@ void Task::vAddRoutines(void)
   //-----------------------------------------------------
   sDefinition =
   ": include"
+//  "  traceon"
   "  args.munged if"
   "    dup find if"
   "      find execute include-string"
@@ -955,6 +957,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": ::dicCompile"
   "  \"::dicCompile\" .verbose"
+  "  args.munged if \"compiling munged dictionary...\" . then"
   "  \"compile.sen\" include"
   "  \"::dicCompile exit\" .verbose"
   "  ::task_exit"
@@ -1080,16 +1083,16 @@ Word* Task::pCompileConstant(s& sDefinition)
   
   // get string
   vTokenNext();
-  vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
+  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
   xValWsp = m_pTokeniser->sToken().a();
   
   // get CONSTANT
   vTokenNext();
-  vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
+  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
   
   // get name of word
   vTokenNext();
-  vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
+  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
   /*
   pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());

@@ -771,6 +771,8 @@ void Stack::vPush(Value* pValue)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   vPushVal(pValue);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 }
 
 

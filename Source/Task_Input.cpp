@@ -180,7 +180,11 @@ void Task::vInputText(NNP_Task nnpTask)
 {
 ENTRY("vInputText");
   
-  s256 sInput;
+  if (nnpTask->m_iTracing) {
+    ASSERT(nnpTask->m_iTracing);
+  }
+  
+  s48K sInput;                                             //! NEED STACK CHECKS
   
   if ( ! nnpTask->m_pDataStack->bPop(sInput) )
     THROW_INVALID_DSTACK("input.text");

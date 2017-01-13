@@ -132,6 +132,10 @@ void Task::vDstackDup(NNP_Task nnpTask)
 {
   ENTRY("vDstackDup");
   
+  if (nnpTask->m_iTracing) {
+    ASSERT(nnpTask->m_iTracing);
+  }
+
   // could just copy from stack back into stack
   
   ValWsp xValA;
