@@ -381,7 +381,9 @@ void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Word* pWord = reinterpret_cast<Word*>(pObject);
   
-  pWord->vDump(pTab);
+  // dump only the objects
+  if (WT_OBJECT == pWord->m_eWordType)
+    pWord->vDump(pTab);
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
