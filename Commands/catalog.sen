@@ -100,29 +100,6 @@ tp: makeCatalog
 ;
 
 /*----------------------------------------------------------------------------*/
-/* have participants run: makeCatalog$                                        */
-/*----------------------------------------------------------------------------*/
-/*
-: ~makeCatalog ( "<catalogNm>" -- )
-
-tp: mkTenOnAll
-
-  // set indirect call to be makeTenant
-  $$ swap "makeCatalog$"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: mkCatOnAllDone
-
-  checkResult
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* remove a catalog folder                                                    */
 /*----------------------------------------------------------------------------*/
 : removeCatalog allParticipants 1 ( "<catalogNm>" -- true n# true )
@@ -138,28 +115,6 @@ tp: removeCatalog
   true <SUCCESS_RESULT>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* remove a catalog folder                                                    */
-/*----------------------------------------------------------------------------*/
-/*
-: ~removeCatalog ( "<catalogNm>" -- )
-
-tp: rmCatOnAll
-
-  // set indirect call to be removeCatalog
-  $$ swap "removeCatalog"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: rmCatOnAllDone
-
-  checkResult
-;
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

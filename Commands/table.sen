@@ -78,31 +78,6 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* check word is a table                                                      */
 /*----------------------------------------------------------------------------*/
-/*
-: checkIsTableOld ( "<tableNm>" -- ^w:table true | errorCode false )
-
-  find ( ^w:table )
-
-  dup not ( ^w:table bool )
-  if
-    drop EC_NO_SUCH_TABLE false ( errorCode false )
-    exit
-  then
-
-  dup ( ^w:table ^w:table )
-  word.kind@ ( ^w:table ^word )
-  ' table ( ^w:table ^word ^word )
-  eql ( ^w:table bool )
-  if
-    true ( ^w:table true )
-    exit
-  then
-
-  drop ( )
-  EC_NOT_A_TABLE false ( errorCode false )
-;
-*/
-//------------------------------------------------------------------------------
 : checkIsTable ( "<tableNm>" -- "<tableNm>" true | errorCode false )
 
   dup ( "<tableNm>" "<tableNm>" )
@@ -233,28 +208,6 @@ tp: makingTable
 ;
 
 /*----------------------------------------------------------------------------*/
-/* have participants run: makeTable$                                          */
-/*----------------------------------------------------------------------------*/
-/*
-: ~makeTable ( "<tableNm>" -- )
-
-tp: mkTblOnAll
-
-  // set indirect call to be makeTable
-  $$ swap "makeTable$"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: mkTblOnAllDone
-
-  checkResult
-;
-*/
-/*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
 : removeTable allParticipants 1 ( "<tableNm>" -- true n# true )
@@ -271,30 +224,6 @@ tp: removeTable
   true <SUCCESS_RESULT>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* remove a table folder                                                      */
-/*----------------------------------------------------------------------------*/
-/*
-: ~removeTable ( "<tableNm>" -- )
-
-tp: rmTblOnAll
-
-  // set indirect call to be dropTable
-  //"removeTable" 2 ( "<tableNm>" "dropTable" 2 )
-  $$ swap "removeTable"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: rmTblOnAllDone
-
-  checkResult
-
-;
-*/
 /*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/

@@ -85,29 +85,6 @@ tp: makingSchema
 ;
 
 /*----------------------------------------------------------------------------*/
-/* have participants run: makeSchema$                                         */
-/*----------------------------------------------------------------------------*/
-/*
-: ~makeSchema ( "<schemaNm>" -- )
-
-tp: mkSchOnAll
-
-  // set indirect call to be makeSchema
-  $$ swap "makeSchema$"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: mkSchOnAllDone
-
-  checkResult
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a removable schema folder                                 */
 /*----------------------------------------------------------------------------*/
 : checkRemoveSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
@@ -141,28 +118,6 @@ tp: removeSchema
   true <SUCCESS_RESULT>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* remove a schema folder                                                     */
-/*----------------------------------------------------------------------------*/
-/*
-: ~removeSchema ( "<schemaNm>" -- )
-
-tp: rmSchOnAll
-
-  // set indirect call to be dropCatalog
-  $$ swap "removeSchema"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: rmSchOnAllDone
-
-  checkResult
-;
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

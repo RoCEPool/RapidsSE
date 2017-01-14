@@ -100,33 +100,6 @@ tp: makingTenant
 ;
 
 /*----------------------------------------------------------------------------*/
-/* have participants run: makeTenant$                                         */
-/*----------------------------------------------------------------------------*/
-/*
-: ~makeTenant ( "<tenantNm>" -- )
-
-tp: mkTenOnAll
-
-  // put $$ before parameters
-  1 put$$
-
-  // the indirect word to be called
-  "makeTenant"
-
-tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  // makeTenant$ to be executed by all participants
-  >>allParticipants> ( bool )
-
-tp: mkTenOnAllDone
-
-  checkResult
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
 : removeTenant allParticipants 1 ( "<tenantNm>" -- true n# true )
@@ -142,28 +115,6 @@ tp: removetenant
   true <SUCCESS_RESULT>
 ;
 
-/*----------------------------------------------------------------------------*/
-/* remove a tenant folder                                                     */
-/*----------------------------------------------------------------------------*/
-/*
-: ~removeTenant ( "<tenantNm>" -- )
-
-tp: rmTenOnAll
-
-  // set indirect call to be removeTenant
-  $$ swap "removeTenant"
-
-  tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-tp: rmTenOnAllDone
-
-  checkResult
-;
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
