@@ -151,9 +151,16 @@ Word* Dic::pFind(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
-    if (String::bEqualTo(aName,pWord->sName().a(),C_NO_CASE))
+  m_xLock.vGrabRead();
+  
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
+    if (String::bEqualTo(aName,pWord->sName().a(),C_NO_CASE)) {
+      m_xLock.vDropRead();
       return pWord;
+    }
+  }
+  
+  m_xLock.vDropRead();
   
   return nullptr;
 }
@@ -165,9 +172,16 @@ Word* Dic::pFindStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
-    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
+  m_xLock.vGrabRead();
+  
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
+    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep()) {
+      m_xLock.vDropRead();
       return pWord;
+    }
+  }
+  
+  m_xLock.vDropRead();
   
   return nullptr;
 }
@@ -220,16 +234,6 @@ bool Dic::bForget(s& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* free a word                                                                */
-/*----------------------------------------------------------------------------*/
-void Dic::vFreeWord(Word* pWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  Heap::vFree(pWord);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is dictionary frozen?                                                      */
 /*----------------------------------------------------------------------------*/
 bool Dic::bFrozen(void)
@@ -246,7 +250,11 @@ void Dic::vFrozen(bool bFrozen)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
+  m_xLock.vGrabWrite();
+  
   m_bFrozen = bFrozen;
+  
+  m_xLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -43,10 +43,8 @@ void* Word::operator new(size_t iSize, Dic* pDic)
 void Word::operator delete(void* pWordAddress)
 {
   Word* pWord = reinterpret_cast<Word*>(pWordAddress);
-  
-  Dic* pDic = pWord->m_pDic;
-  
-  pDic->vFreeWord(pWord);
+ 
+  Heap::vFree(pWord);
 }
 
 /*----------------------------------------------------------------------------*/

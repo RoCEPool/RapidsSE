@@ -40,7 +40,6 @@ namespace Dictionaries
     Word* pFind(const char* aName);
     Word* pFindStep(TaskStep pStep);
     bool  bForget(s& sName);
-    void  vFreeWord(Word* pWord);
     bool  bFrozen(void);
     void  vFrozen(bool bFrozen);
     bool  bHasWords(void);
