@@ -1,0 +1,1164 @@
+/*============================================================================*/
+/* requests.sen -- the set of requests supported by requestTask               */
+/*============================================================================*/
+
+"requests.sen" .verbose
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+Connection Requests:
+
+  con     connect
+  dis     disconnect
+
+Tenant Requests:
+
+  mkten   create_tenant
+  lsten   list_tenants
+  rmten   drop_tenant
+
+Catalog Requests:
+
+  mkcat   create_catalog
+  lscat   list_catalogs
+  rmcat   drop_catalog
+
+Schema Requests:
+
+  mksch   create_schema
+  lssch   list_schemas
+  rmsch   drop_schema
+  usesch  use_schema
+
+Table Requests:
+
+  gettbl  get_table
+  mktbl   create_table
+  lstbl   list_tables
+  add     add_column
+  lscol   list_columns
+  ld      load_table
+  tblInUse  table_inuse
+  sel     select_table
+  dump    dump_table
+  cp      copy_table
+  ex      export_table
+  sz      size_table
+  tr      truncate_table
+  rettbl  return_table
+  rmtbl   drop_table
+
+Dictionary Requests:
+
+  cf      cf ..
+          cf ~
+          cf
+  pwf     pwf
+  lf      lf
+
+Misc Requests:
+
+  seitf   seitf_count
+  mon     get_monitor
+  ping    ping
+  x       x
+
+Grid Request:
+  lfG     lf on grid
+  pRB     print a row buffer on each node
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+//: <ERROR> dup error.msg swap 2 ddlLock.testDrop ;
+
+: <NIP+ERROR> nipAll dup error.msg swap 2 ddlLock.testDrop ;
+
+: <SUCCESS> 0 2 ddlLock.testDrop ;
+
+: <OK> "<ok>" 0 2 ddlLock.testDrop ;
+
+/*----------------------------------------------------------------------------*/
+/* print class counts (helper for snapshot)                                   */
+/*----------------------------------------------------------------------------*/
+: printClassCounts
+  0 do
+    dup 0 != if
+      I class.name "%v %v" str.format .
+    else
+     drop
+    then
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* check system has enough buffers                                            */
+/*----------------------------------------------------------------------------*/
+: checkEnoughBuffers
+
+  bp.freeBuffers 100 >
+  if
+    true exit
+  else
+    EC_LOW_BUFFERS false
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* connect to SE                                                              */
+/*----------------------------------------------------------------------------*/
+: connect
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* disconnect from SE                                                         */
+/*----------------------------------------------------------------------------*/
+: disconnect
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a tenant                                                            */
+/*----------------------------------------------------------------------------*/
+: create_tenant ( "<tenantNm>" -- <R> )
+
+tp: createTenant
+
+snap0:
+
+ddlLock.grabWrite
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
+  checkMakeTenant    not if <NIP+ERROR> exit then
+
+//traceon
+  makeTenant ( ) assert.stack_0
+//traceoff
+
+snap1:
+ printClassCounts
+
+tp: createdTenant
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of tenants                                                        */
+/*----------------------------------------------------------------------------*/
+: list_tenants ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInTenants not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a tenant                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_tenant ( "<tenantNm>" -- <R> )
+
+tp: dropTenant
+snap0:
+
+ddlLock.grabWrite
+
+  checkRemoveTenant not if <NIP+ERROR> exit then
+
+  removeTenant ( ) assert.stack_0
+
+tp: removedTenant
+snap1:
+  printClassCounts
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a catalog                                                           */
+/*----------------------------------------------------------------------------*/
+: create_catalog ( "<catalogNm>" -- <R> )
+
+ddlLock.grabWrite
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeCatalog   not if <NIP+ERROR> exit then
+
+  makeCatalog ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of catalogs                                                       */
+/*----------------------------------------------------------------------------*/
+: list_catalogs ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInCatalogs not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a catalog                                                             */
+/*----------------------------------------------------------------------------*/
+: drop_catalog ( "<catalogNm>" -- <R> )
+
+tp: dropCatalog
+
+ddlLock.grabWrite
+
+  checkRemoveCatalog not if <NIP+ERROR> exit then
+
+  removeCatalog ( ) assert.stack_0
+
+tp: removedCatalog
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a schema                                                            */
+/*----------------------------------------------------------------------------*/
+: create_schema ( "<schemaNm>" -- <R> )
+
+ddlLock.grabWrite
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeSchema    not if <NIP+ERROR> exit then
+
+  makeSchema ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of schemas                                                        */
+/*----------------------------------------------------------------------------*/
+: list_schemas ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInSchemas not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a schema                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_schema ( "<schemaNm>" -- <R> )
+
+tp: dropSchema
+
+ddlLock.grabWrite
+
+  checkRemoveSchema not if <NIP+ERROR> exit then
+
+  removeSchema ( ) assert.stack_0
+
+tp: droppedSchema
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* use a schema                                                               */
+/*----------------------------------------------------------------------------*/
+: use_schema ( "<schemaNm>" -- <R> )
+
+  begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
+
+  // find the boray folder
+  "boray" findInCurrent
+  execute dic.push
+
+  // find the catalogs folder
+  "catalogs" findInCurrent
+  execute dic.push
+
+  // find the rapidssecatalogs folder
+  "rapidsse" findInCurrent
+  execute dic.push
+
+  // find the schemas folder
+  "schemas" findInCurrent
+  execute dic.push
+
+  checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
+  checkIsSchema not if <NIP+ERROR> exit then
+  execute dic.push
+
+  // find the tables folder
+  "tables" findInCurrent
+  execute dic.push
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create a table                                                             */
+/*----------------------------------------------------------------------------*/
+: create_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabWrite
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeTable     not if <NIP+ERROR> exit then
+
+  makeTable ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of tables                                                         */
+/*----------------------------------------------------------------------------*/
+: list_tables ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* load a table                                                               */
+/*----------------------------------------------------------------------------*/
+
+: load_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+snap0:
+
+  tableLoader   not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+snap1:
+  printClassCounts
+  <OK>
+;
+
+/*
+: load_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  tableLoader   not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  <OK>
+;
+*/
+/*----------------------------------------------------------------------------*/
+/* load a table from a stream                                                 */
+/*----------------------------------------------------------------------------*/
+: load_table_stream ( "<fileNm>" "<tableNm>" -- <R> )
+
+  ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  tableLoaderStream2 not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* export a table                                                             */
+/*----------------------------------------------------------------------------*/
+: export_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  tableExporter not if <NIP+ERROR> exit then
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* copy a table. from-table must exist & to-table is created                  */
+/*----------------------------------------------------------------------------*/
+: copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkInTables      not if <NIP+ERROR> exit then
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  tableCopier
+
+  //bp.freespace .
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+: dump_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  dumpTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* append row buffer into table                                               */
+/*----------------------------------------------------------------------------*/
+: table_append ( "table", "buffer", "partition" -- <R> )        //! append_table
+
+ddlLock.grabRead
+
+  table.append
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get size of table                                                          */
+/*----------------------------------------------------------------------------*/
+: size_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabWrite
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  sizeTable ( "<size>" )
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get row cursor for table                                                   */
+/*----------------------------------------------------------------------------*/
+: select_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  getTableRef not if <NIP+ERROR> exit then
+
+  selectTable
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* truncate table                                                             */
+/*----------------------------------------------------------------------------*/
+: truncate_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  truncateTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a table                                                               */
+/*----------------------------------------------------------------------------*/
+
+: drop_table ( "<tableNm>" -- <R> )
+
+tp: dropTable
+
+ddlLock.grabWrite
+
+  checkRemoveTable not if <NIP+ERROR> exit then
+
+tp ( "<tableNm>" )
+
+  removeTable ( ) assert.stack_0
+
+tp: droppedTable
+
+  <OK>
+;
+/*
+: drop_table ( "<tableNm>" -- <R> )
+
+  tp: dropTable
+
+  ddlLock.grabWrite
+
+  checkRemoveTable not if <NIP+ERROR> exit then
+
+  tp ( "<tableNm>" )
+
+  removeTable ( ) assert.stack_0
+
+  tp: droppedTable
+
+  <OK>
+;
+*/
+
+/*----------------------------------------------------------------------------*/
+/* any outstanding table references                                           */
+/*----------------------------------------------------------------------------*/
+: table_inuse ( "<tableNm>" -- <R> )
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  tableInUse
+  if
+    "table in use" .
+  else
+    "table not in use" .
+  then
+
+   <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get a table ref                                                            */
+/*----------------------------------------------------------------------------*/
+: get_table ( "<tableNm>" -- <R> )
+
+  getTableRef not if <NIP+ERROR> exit then
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* return a table ref                                                         */
+/*----------------------------------------------------------------------------*/
+: return_table ( )
+
+  returnTableRef not if <NIP+ERROR> exit then
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add a column                                                               */
+/*----------------------------------------------------------------------------*/
+: add_column ( "<columnTy>" "<columnNm>" "<tableNm>" -- <R> )
+
+  checkAddColumn not if <NIP+ERROR> exit then
+
+  ~addColumn ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of columns                                                        */
+/*----------------------------------------------------------------------------*/
+: list_columns ( "<tableNm>" -- <R> )
+
+  checkInTables not if <NIP+ERROR> exit then
+
+  listColumns
+
+  <SUCCESS>
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* change folder                                                              */
+/*----------------------------------------------------------------------------*/
+: cf
+
+  dup ".." str.equal if
+    drop
+    0 dic.pick dic.name "tenants" str.equal not if dic.drop then
+  else
+    dup "~" str.equal if
+      drop
+      begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
+    else
+      dup "tenants" str.equal if
+        begin 0 dic.pick dic.name "seitf" str.equal not while dic.drop repeat
+        checkIsWord not if <NIP+ERROR> exit then
+        execute dic.push
+      else
+        find
+        checkIsDic not if <NIP+ERROR> exit then
+        execute dic.push
+      then
+    then
+  then
+
+  <OK>
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* print working folder                                                       */
+/*----------------------------------------------------------------------------*/
+: pwf
+
+  "/"
+  dic.count 2 do
+    dic.count 1 - I -
+    dic.pick dic.name str.cat
+    "/" str.cat
+  loop
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf
+
+  ""
+  0 dic.pick dic.last dup iterate
+
+    dup str.length if "\n" str.cat then
+
+    object@ word.name 12 str.pad str.cat
+
+    "(" str.cat
+
+    object@ isTable if
+      "table " str.cat
+      object@ execute table.space bytes.magnitude str.cat
+    then
+
+    object@ isFolder if
+      object@ execute dic.kind@ word.name str.cat
+    then
+
+    ")" str.cat
+
+    object@ word.prev object!
+
+  next
+
+   <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: ~lf ( )
+
+tp: lfOnAll
+
+  // set indirect call to be lf_
+  $$ "lf_"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>allParticipants> ( bool )
+
+tp: lfOnAllDone
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents across the grid                                       */
+/*----------------------------------------------------------------------------*/
+: lfG
+
+  ~lf
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf$ ( )
+
+tp: lf
+
+  "LISTING FOLDER on NODE " args.node >str str.cat .
+
+  ""
+  0 dic.pick dic.last dup iterate
+
+  dup str.length if "\n" str.cat then
+
+  object@ word.name 12 str.pad str.cat
+
+  "(" str.cat
+
+  object@ isTable if
+  "table " str.cat
+  object@ execute table.space bytes.magnitude str.cat
+  then
+
+  object@ isFolder if
+  object@ execute dic.kind@ word.name str.cat
+  then
+
+  ")" str.cat
+
+  object@ word.prev object!
+
+  next
+
+  .
+
+  //drop ( "<tenantNm>" )
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf_ (  #folders -- true )
+
+  depth 0 != if
+    "dicStack!" str.equal
+    if
+  tp: settingDicStack
+    !indirect drop
+    then
+  then
+
+  lf$
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get space in the pool (run by participant)                                 */
+/*----------------------------------------------------------------------------*/
+: space$ ( -- <R> )
+
+tp: gettingSpace
+
+  args.tracepoint if
+    "GETTING SPACE on NODE "args.node >str str.cat .
+  then
+
+  "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat
+  " InUse(" 2 bp.inUseSpace number.magnitude str.cat ")" str.cat
+  " Free(" 2 bp.freespace number.magnitude str.cat ")" str.cat
+
+  str.cat str.cat
+
+  <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: space$                                              */
+/*----------------------------------------------------------------------------*/
+: ~space (  )
+
+tp: spaceOnAll
+
+  // the indirect word to be called
+  "space$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  // space$ to be executed by all participants
+  >>allParticipants> ( bool )
+
+  tp: spaceOnAllDone
+
+  printResult
+tp: dpne
+;
+
+/*----------------------------------------------------------------------------*/
+/* get space in the pool                                                      */
+/*----------------------------------------------------------------------------*/
+: space ( -- <R> )
+
+  ~space ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get free space in the pool                                                 */
+/*----------------------------------------------------------------------------*/
+: getFreeSpace ( -- <R> )
+
+  bp.freespace
+
+  >str
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get inUse space in the pool                                                */
+/*----------------------------------------------------------------------------*/
+: getInUseSpace ( -- <R> )
+
+  bp.inUseSpace
+
+  >str
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get total space in the pool                                                */
+/*----------------------------------------------------------------------------*/
+: getTotalSpace ( -- <R> )
+
+  bp.totalSpace
+
+  >str
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get seif count                                                             */
+/*----------------------------------------------------------------------------*/
+: seitf_count
+
+  seitf.count
+
+  >str
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get status of nodes in the grid (run by participant)                       */
+/*----------------------------------------------------------------------------*/
+: status$ ( -- <R> )
+
+tp: gettingStatus
+
+  args.tracepoint if
+  "GETTING STATUS on NODE "args.node >str str.cat .
+  then
+
+  node.status
+
+  <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: status$                                             */
+/*----------------------------------------------------------------------------*/
+: ~status (  )
+
+tp: statusOnAll
+
+  // the indirect word to be called
+  "status$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  // status$ to be executed by all participants
+  >>allParticipants> ( bool )
+
+  tp: statusOnAllDone
+
+  printResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* get status of the nodes                                                    */
+/*----------------------------------------------------------------------------*/
+: status ( -- <R> )
+
+  ~status ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get monitor string                                                         */
+/*----------------------------------------------------------------------------*/
+: get_monitor ( -- <R> )
+
+  monitorString@
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* ping test                                                                  */
+/*----------------------------------------------------------------------------*/
+: ping ( -- <R> )
+
+  "pong"
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* docol_command                                                              */
+/*----------------------------------------------------------------------------*/
+: docol_command ( "command" -- <R> )
+
+  checkIsWord not if <NIP+ERROR> exit then
+  execute
+
+  begin
+   depth while drop
+  repeat
+
+ <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get_version                                                                */
+/*----------------------------------------------------------------------------*/
+: get_version ( -- <R> )
+
+  version
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* print contents of a row buffer on each node                                */
+/*----------------------------------------------------------------------------*/
+: ~printRB ( )
+
+tp: printRBOnAll
+
+  // set indirect call to be printRB
+  $$ swap "printRB"
+
+tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>allParticipants> ( bool )
+
+tp: printRBOnAllDone
+
+  checkResult
+;
+
+int: countRows
+
+/*----------------------------------------------------------------------------*/
+/* print contents of a string sent via a row buffer on each node              */
+/*----------------------------------------------------------------------------*/
+: pRB ( "filename" )
+
+tp: pRB
+
+  reg.push
+
+  rowBuffer.new >reg0    // reg0 - rowbuffer
+  beginTransaction >reg1 // reg1 - txref
+
+/*
+  0 countRows !
+  begin
+  while
+    countRows @ >str
+    "Hello there " swap str.cat reg1 reg0 rowbuffer.append
+    countRows @
+    1 +
+    countRows !
+  repeat
+*/
+
+  10 countRows !
+  countRows @ 0 do
+    "Hello there " I >str str.cat reg1 reg0 rowbuffer.append
+  loop
+
+  // commit the transaction
+  commitTransaction
+
+  drop
+
+  //reg0 rowbuffer.dump
+
+  reg0
+
+tp: marker
+
+$$>valset
+
+tp: valset
+
+  ~printRB  ( rowbuffer )
+
+  reg.pop
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* print contents of a string sent via a row buffer on each node              */
+/*----------------------------------------------------------------------------*/
+: printRB$ ( rowbuffer )
+
+tp: printRB$
+
+  "PRINTING ROWBUFFER on NODE " args.node >str str.cat .
+
+  rowbuffer.dump
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* print contents of a string sent via a row buffer on each node              */
+/*----------------------------------------------------------------------------*/
+: printRB (  rowBuffer ... #folders -- true )
+
+  valset>
+
+  drop
+
+  //dup "dicStack!" str.equal
+  //if
+//tp: settingDicStack
+  //  !indirect drop
+  //  then
+
+  printRB$
+;
+
+/*----------------------------------------------------------------------------*/
+/* x test                                                                     */
+/*----------------------------------------------------------------------------*/
+: x                                                     //! GET RID OF THIS WORD
+
+  words
+
+  "x"
+
+  <SUCCESS>
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* create /tenants/boray/catalogs/rapidsse                                    */
+/*----------------------------------------------------------------------------*/
+: createDefaultFolders localCalls ( )
+
+  assert.stack_0
+
+  // push tenants folder
+  "tenants" findInCurrent
+  execute dic.push
+
+  // create tenant boray (and catalogs sub-folder)
+  "boray" makeTenant drop drop drop
+
+  // push boray folder
+  "boray" findInCurrent
+  execute dic.push
+
+  // push catalogs folder
+  "catalogs" findInCurrent
+  execute dic.push
+
+  // create catalog rapidsse (and schemas sub-folder)
+  "rapidsse" makeCatalog drop drop drop
+
+  // go back to main dictionary
+  dic.drop
+  dic.drop
+  dic.drop
+
+  assert.stack_0
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

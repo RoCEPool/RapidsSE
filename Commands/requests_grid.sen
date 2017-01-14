@@ -1,0 +1,57 @@
+/*============================================================================*/
+/* requests_grid.sen -- the set of grid related requests                      */
+/*============================================================================*/
+
+"requests_grid.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* get status of nodes in the grid (run by participant)                       */
+/*----------------------------------------------------------------------------*/
+: status$ ( -- <R> )
+
+tp: gettingStatus
+
+  args.tracepoint if
+  "GETTING STATUS on NODE "args.node >str str.cat .
+  then
+
+  node.status
+
+  <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: status$                                             */
+/*----------------------------------------------------------------------------*/
+: ~status (  )
+
+tp: statusOnAll
+
+  // the indirect word to be called
+  "status$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  // status$ to be executed by all participants
+  >>allParticipants> ( bool )
+
+  tp: statusOnAllDone
+
+  printResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* get status of the nodes                                                    */
+/*----------------------------------------------------------------------------*/
+: status ( -- <R> )
+
+  ~status ( ) assert.stack_0
+
+  <OK>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

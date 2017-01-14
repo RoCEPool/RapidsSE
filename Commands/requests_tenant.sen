@@ -1,0 +1,70 @@
+/*============================================================================*/
+/* requests_tenant.sen -- the set of tenant related requests                  */
+/*============================================================================*/
+
+"requests_tenant.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create a tenant                                                            */
+/*----------------------------------------------------------------------------*/
+: create_tenant ( "<tenantNm>" -- <R> )
+
+tp: createTenant
+
+snap0:
+
+ddlLock.grabWrite
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then              //! NEEDS TO BE ~
+  checkMakeTenant    not if <NIP+ERROR> exit then
+
+//traceon
+  makeTenant ( ) assert.stack_0
+//traceoff
+
+snap1:
+ printClassCounts
+
+tp: createdTenant
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of tenants                                                        */
+/*----------------------------------------------------------------------------*/
+: list_tenants ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInTenants not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a tenant                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_tenant ( "<tenantNm>" -- <R> )
+
+tp: dropTenant
+snap0:
+
+ddlLock.grabWrite
+
+  checkRemoveTenant not if <NIP+ERROR> exit then
+
+  removeTenant ( ) assert.stack_0
+
+tp: removedTenant
+snap1:
+  printClassCounts
+
+  <OK>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

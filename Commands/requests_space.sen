@@ -1,0 +1,98 @@
+/*============================================================================*/
+/* requests_space.sen -- the set of space related requests                    */
+/*============================================================================*/
+
+"requests_space.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* get space in the pool (run by participant)                                 */
+/*----------------------------------------------------------------------------*/
+: space$ ( -- <R> )
+
+tp: gettingSpace
+
+  args.tracepoint if
+    "GETTING SPACE on NODE "args.node >str str.cat .
+  then
+
+  "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat
+  " InUse(" 2 bp.inUseSpace number.magnitude str.cat ")" str.cat
+  " Free(" 2 bp.freespace number.magnitude str.cat ")" str.cat
+
+  str.cat str.cat
+
+  <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: space$                                              */
+/*----------------------------------------------------------------------------*/
+: ~space (  )
+
+tp: spaceOnAll
+
+  // the indirect word to be called
+  "space$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  // space$ to be executed by all participants
+  >>allParticipants> ( bool )
+
+  tp: spaceOnAllDone
+
+  printResult
+tp: dpne
+;
+
+/*----------------------------------------------------------------------------*/
+/* get space in the pool                                                      */
+/*----------------------------------------------------------------------------*/
+: space ( -- <R> )
+
+  ~space ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get free space in the pool                                                 */
+/*----------------------------------------------------------------------------*/
+: getFreeSpace ( -- <R> )
+
+  bp.freespace
+
+  >str
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get inUse space in the pool                                                */
+/*----------------------------------------------------------------------------*/
+: getInUseSpace ( -- <R> )
+
+  bp.inUseSpace
+
+  >str
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get total space in the pool                                                */
+/*----------------------------------------------------------------------------*/
+: getTotalSpace ( -- <R> )
+
+  bp.totalSpace
+
+  >str
+
+  <SUCCESS>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

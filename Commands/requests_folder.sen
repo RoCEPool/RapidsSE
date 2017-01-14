@@ -1,0 +1,207 @@
+/*============================================================================*/
+/* requests_folder.sen -- the set of folder related requests                  */
+/*============================================================================*/
+
+"requests_folder.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* change folder                                                              */
+/*----------------------------------------------------------------------------*/
+: cf
+
+  dup ".." str.equal if
+    drop
+    0 dic.pick dic.name "tenants" str.equal not if dic.drop then
+  else
+    dup "~" str.equal if
+      drop
+      begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
+    else
+      dup "tenants" str.equal if
+        begin 0 dic.pick dic.name "seitf" str.equal not while dic.drop repeat
+        checkIsWord not if <NIP+ERROR> exit then
+        execute dic.push
+      else
+        find
+        checkIsDic not if <NIP+ERROR> exit then
+        execute dic.push
+      then
+    then
+  then
+
+  <OK>
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* print working folder                                                       */
+/*----------------------------------------------------------------------------*/
+: pwf
+
+  "/"
+  dic.count 2 do
+    dic.count 1 - I -
+    dic.pick dic.name str.cat
+    "/" str.cat
+  loop
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf
+
+  ""
+  0 dic.pick dic.last dup iterate
+
+    dup str.length if "\n" str.cat then
+
+    object@ word.name 12 str.pad str.cat
+
+    "(" str.cat
+
+    object@ isTable if
+      "table " str.cat
+      object@ execute table.space bytes.magnitude str.cat
+    then
+
+    object@ isFolder if
+      object@ execute dic.kind@ word.name str.cat
+    then
+
+    ")" str.cat
+
+    object@ word.prev object!
+
+  next
+
+   <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: ~lf ( )
+
+tp: lfOnAll
+
+  // set indirect call to be lf_
+  $$ "lf_"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>allParticipants> ( bool )
+
+tp: lfOnAllDone
+
+  checkResult
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents across the grid                                       */
+/*----------------------------------------------------------------------------*/
+: lfG
+
+  ~lf
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf$ ( )
+
+tp: lf
+
+  "LISTING FOLDER on NODE " args.node >str str.cat .
+
+  ""
+  0 dic.pick dic.last dup iterate
+
+  dup str.length if "\n" str.cat then
+
+  object@ word.name 12 str.pad str.cat
+
+  "(" str.cat
+
+  object@ isTable if
+  "table " str.cat
+  object@ execute table.space bytes.magnitude str.cat
+  then
+
+  object@ isFolder if
+  object@ execute dic.kind@ word.name str.cat
+  then
+
+  ")" str.cat
+
+  object@ word.prev object!
+
+  next
+
+  .
+
+  //drop ( "<tenantNm>" )
+
+  true ( true )
+;
+
+/*----------------------------------------------------------------------------*/
+/* list folder contents                                                       */
+/*----------------------------------------------------------------------------*/
+: lf_ (  #folders -- true )
+
+  depth 0 != if
+    "dicStack!" str.equal
+    if
+  tp: settingDicStack
+    !indirect drop
+    then
+  then
+
+  lf$
+;
+
+/////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* create /tenants/boray/catalogs/rapidsse                                    */
+/*----------------------------------------------------------------------------*/
+: createDefaultFolders localCalls ( )
+
+  assert.stack_0
+
+  // push tenants folder
+  "tenants" findInCurrent
+  execute dic.push
+
+  // create tenant boray (and catalogs sub-folder)
+  "boray" makeTenant drop drop drop
+
+  // push boray folder
+  "boray" findInCurrent
+  execute dic.push
+
+  // push catalogs folder
+  "catalogs" findInCurrent
+  execute dic.push
+
+  // create catalog rapidsse (and schemas sub-folder)
+  "rapidsse" makeCatalog drop drop drop
+
+  // go back to main dictionary
+  dic.drop
+  dic.drop
+  dic.drop
+
+  assert.stack_0
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

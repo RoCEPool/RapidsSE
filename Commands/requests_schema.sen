@@ -1,0 +1,90 @@
+/*============================================================================*/
+/* requests_schema.sen -- the set of schema related requests                  */
+/*============================================================================*/
+
+"requests_schema.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create a schema                                                            */
+/*----------------------------------------------------------------------------*/
+: create_schema ( "<schemaNm>" -- <R> )
+
+ddlLock.grabWrite
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkMakeSchema    not if <NIP+ERROR> exit then
+
+  makeSchema ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get list of schemas                                                        */
+/*----------------------------------------------------------------------------*/
+: list_schemas ( -- <R> )
+
+ddlLock.grabRead
+
+  checkInSchemas not if <NIP+ERROR> exit then
+
+  listContents
+
+  <SUCCESS>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a schema                                                              */
+/*----------------------------------------------------------------------------*/
+: drop_schema ( "<schemaNm>" -- <R> )
+
+tp: dropSchema
+
+ddlLock.grabWrite
+
+  checkRemoveSchema not if <NIP+ERROR> exit then
+
+  removeSchema ( ) assert.stack_0
+
+tp: droppedSchema
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* use a schema                                                               */
+/*----------------------------------------------------------------------------*/
+: use_schema ( "<schemaNm>" -- <R> )
+
+  begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
+
+  // find the boray folder
+  "boray" findInCurrent
+  execute dic.push
+
+  // find the catalogs folder
+  "catalogs" findInCurrent
+  execute dic.push
+
+  // find the rapidssecatalogs folder
+  "rapidsse" findInCurrent
+  execute dic.push
+
+  // find the schemas folder
+  "schemas" findInCurrent
+  execute dic.push
+
+  checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
+  checkIsSchema not if <NIP+ERROR> exit then
+  execute dic.push
+
+  // find the tables folder
+  "tables" findInCurrent
+  execute dic.push
+
+  <OK>
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
