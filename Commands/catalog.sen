@@ -54,6 +54,7 @@
   checkInCatalogs not if false exit then ( "<catalogNm>" word )
   checkIsWord     not if false exit then ( "<catalogNm>" word )
   checkIsCatalog  not if false exit then ( "<catalogNm>" word )
+  checkIsEmpty    not if false exit then ( "<catalogNm>" word )
   checkNotUsed    not if false exit then ( "<catalogNm>" word )
 
   drop ( "<catalogNm>" )

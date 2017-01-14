@@ -71,6 +71,16 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check dic is empty                                                         */
+/*----------------------------------------------------------------------------*/
+: checkIsEmpty ( dic -- true | error false )
+
+  dup execute dic.wordCount if EC_FOLDER_NOT_EMPTY false exit then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* create a subdictionary under given dic                                     */
 /*----------------------------------------------------------------------------*/
 : :folder ( "<subDicNm>" dic -- )

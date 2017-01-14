@@ -69,6 +69,7 @@
   checkInTenants  not if false exit then ( "<tenantNm>" word )
   checkIsWord     not if false exit then ( "<tenantNm>" word )
   checkIsTenant   not if false exit then ( "<tenantNm>" word )
+  checkIsEmpty    not if false exit then ( "<tenantNm>" word )
   checkNotUsed    not if false exit then ( "<tenantNm>" word )
 
   drop ( "<tenantNm>" )

@@ -117,6 +117,7 @@ tp: mkSchOnAllDone
   checkInSchemas not if false exit then ( "<schemaNm>" word )
   checkIsWord    not if false exit then ( "<schemaNm>" word )
   checkIsSchema  not if false exit then ( "<schemaNm>" word )
+  checkIsEmpty   not if false exit then ( "<schemaNm>" word )
   checkNotUsed   not if false exit then ( "<schemaNm>" word )
 
   drop ( "<schemaNm>" )
