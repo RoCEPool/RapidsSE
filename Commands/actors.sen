@@ -6,7 +6,7 @@
 
 "listerTask.sen"  include
 "monitorTask.sen" include
-//"reclaimTask.sen" include
+"reclaimTask.sen" include
 "requestTask.sen" include
 
 "generalThreads.sen" include
@@ -25,7 +25,7 @@
     snooze listerStart
     snooze monitorStart
 
-    //snooze reclaimStart
+    snooze reclaimStart
     snooze answerStart
 
   then

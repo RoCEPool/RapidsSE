@@ -792,6 +792,7 @@ namespace Tasks
     static void vSEitfCount(NNP_Task nnpTask);
     static void vSEitfDelete(NNP_Task nnpTask);
     static void vSEitfDump(NNP_Task nnpTask);
+    static void vSEitfPid(NNP_Task nnpTask);
     static void vSEitfReqFetch(NNP_Task nnpTask);
     static void vSEitfReqStore(NNP_Task nnpTask);
     static void vSEitfRspFetch(NNP_Task nnpTask);

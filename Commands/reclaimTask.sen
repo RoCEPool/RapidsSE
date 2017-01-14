@@ -44,7 +44,7 @@ seitfCursor: seitfCrs
       then
 
       object@ task.this task.seitf!
-        "pid" find execute
+        object@ seitf.pid
         0 task.this task.seitf!
 
       reclaimTaskPrint if

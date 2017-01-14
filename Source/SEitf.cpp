@@ -66,7 +66,6 @@ SEitf::SEitf(i8 iPartition)
   
   // pid
   m_iPid = Process::iGetPid();
-  m_xDic.vAddConstant("pid",m_iPid);
 
   m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;

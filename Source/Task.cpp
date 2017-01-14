@@ -272,7 +272,13 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 
   Dic* pDic = m_xDicStack.pTop();
   
-  pDic->vAddConstant(aName,iVal);
+  Word* pNewWord = new(pDic) Word(aName);
+  
+  IntVal xIntVal;
+  xIntVal = iVal;
+  
+  pNewWord->vEncode("pushValue",&xIntVal);
+  pNewWord->vEncode("exit");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -284,7 +290,13 @@ void Task::vAddConstant(const char* aName, const char* aValue)
   
   Dic* pDic = m_xDicStack.pTop();
   
-  pDic->vAddConstant(aName,aValue);
+  Word* pNewWord = new(pDic) Word(aName);
+  
+  ValWsp xWspStr;
+  xWspStr = aValue;
+  
+  pNewWord->vEncode("pushValue",&xWspStr);
+  pNewWord->vEncode("exit");
 }
 
 /*----------------------------------------------------------------------------*/

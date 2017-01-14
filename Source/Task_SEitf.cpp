@@ -37,6 +37,7 @@ void Task::vAddPrimitives_SEitf(void)
   vAddPrimitive("seitf.count",     &vSEitfCount,       false);
   vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
   vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
+  vAddPrimitive("seitf.pid",       &vSEitfPid,         false);
   vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
   vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
   vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
@@ -95,6 +96,25 @@ ENTRY("vSEitfDump");
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   pSEitf->vDump();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.pid -- get pid of SE interface                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfPid(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfPid");
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.pid");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pSEitf->m_iPid);
   
   EXIT();
 }
