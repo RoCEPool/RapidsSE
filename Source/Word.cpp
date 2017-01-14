@@ -30,7 +30,7 @@ void* Word::operator new(size_t iSize, Dic* pDic)
 {
   RASSERT(iSize);
 
-  Word* pWord = pDic->pAllocWord(CN_WORD);
+  Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
   
   pWord->m_pDic = pDic;
   

@@ -87,79 +87,23 @@ Dic::~Dic(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add constant                                                               */
-/*----------------------------------------------------------------------------*/
-void Dic::vAddConstant(const char* aName, i8 iVal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  Word* pNewWord = new(this) Word(aName);
-  
-  IntVal xIntVal;
-  xIntVal = iVal;
-  
-  pNewWord->vEncode("pushValue",&xIntVal);
-  pNewWord->vEncode("exit");
-}
-
-/*----------------------------------------------------------------------------*/
-/* add constant                                                               */
-/*----------------------------------------------------------------------------*/
-void Dic::vAddConstant(const char* aName, const char* aValue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  Word* pNewWord = new(this) Word(aName);
-  
-  ValWsp xWspStr;
-  xWspStr = aValue;
-  
-  pNewWord->vEncode("pushValue",&xWspStr);
-  pNewWord->vEncode("exit");
-}
-
-/*----------------------------------------------------------------------------*/
 /* add word to this dictionary                                                */
 /*----------------------------------------------------------------------------*/
 void Dic::vAddWord(Word* pWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  ASSERT(!m_bFrozen);
-  
   ASSERT(pWord->eClass() == CN_WORD);
   
   m_xLock.vGrabWrite();
+  
+  ASSERT(!m_bFrozen);
   
   pWord->m_pPrevWord = m_pLastWord;
   
   m_pLastWord = pWord;
   
   m_xLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* allocate a word                                                            */
-/*----------------------------------------------------------------------------*/
-Word* Dic::pAllocWord(eCN eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  ASSERT(!m_bFrozen);
-  
-  ASSERT(eClassNo == CN_WORD);
-  
-  Word* pWord = (Word*)(Heap::pAllocate(CN_WORD));
-  
-//  m_xLock.vGrabWrite();
-//  
-//  pWord->m_pPrevWord = m_pLastWord;
-//  
-//  m_pLastWord = pWord;
-//
-//  m_xLock.vDropWrite();
-  
-  return pPoolCheck<Word*>(pWord);
 }
 
 /*----------------------------------------------------------------------------*/

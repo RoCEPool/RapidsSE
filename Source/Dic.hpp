@@ -34,10 +34,7 @@ namespace Dictionaries
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
-    void  vAddConstant(const char* aName, i8 iVal);
-    void  vAddConstant(const char* aName, const char* aValue);
     void  vAddWord(Word* pWord);
-    Word* pAllocWord(eCN eClassNo);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
     Word* pFind(const char* aName);
