@@ -2,17 +2,7 @@
 /* requestSet.sen -- request set group                                        */
 /*============================================================================*/
 
-"requestSet.sen" .verbose
-
-"copier.sen" include
-"exporter.sen" include
-"fileGen.sen" include
-"loaderSub.sen" include
-"loader.sen" include
-
 "requests.sen" include
-
-"streamLoader.sen" include
 
 // create /tenants/boray/catalogs/rapidsse
 createDefaultFolders

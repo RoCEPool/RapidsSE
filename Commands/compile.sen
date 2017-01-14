@@ -8,7 +8,6 @@
 // step 1: compile all the words
 //
 
-
 "core.sen" include
 "common.sen" include
 "structures.sen" include
@@ -20,6 +19,7 @@
 "gridModel.sen" include
 "dbobjects.sen" include
 "actors.sen" include
+"utilities.sen" include
 "request.sen" include
 "munge.sen" include
 "testing.sen" include
