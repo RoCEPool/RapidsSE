@@ -245,7 +245,7 @@ ENTRY("vDicLast");
   
   Dic* pDic = _pDic(pPtrDic);
   
-  Word* pLastWord = pDic->pCurrentWord();
+  Word* pLastWord = pDic->pLastWord();
   
   nnpTask->m_pDataStack->vPush(pLastWord);
   

@@ -16,9 +16,10 @@ namespace Dictionaries
     s32    m_sName;        // name of this dictionary
     Word*  m_pDicKind;     // kind of dictionary
     bool   m_bFrozen;      // no more words can be added?
-    Word*  m_pCurrentWord; // last word
     Atomic m_zRefCount;    // reference count
-    Lock   m_xLock;        // lock
+
+    Lock   m_xLock;        // lock over:
+    Word*  m_pLastWord;    //   last word in dictionary
     
     // must be last
     Footer m_xFooter;
@@ -37,7 +38,6 @@ namespace Dictionaries
     void  vAddConstant(const char* aName, const char* aValue);
     void  vAddWord(Word* pWord);
     Word* pAllocWord(eCN eClassNo);
-    Word* pCurrentWord(void);
     Word* pDicKind(void);
     void  vDicKind(Word* pDicKind);
     Word* pFind(const char* aName);
@@ -49,7 +49,7 @@ namespace Dictionaries
     bool  bHasWords(void);
     void  vInit(void);
     bool  bIsName(s& sName);
-    Word* pLocate(Cell* pCell);
+    Word* pLastWord(void);
     s&    sName(void);
     void  vName(const char* aName);
     

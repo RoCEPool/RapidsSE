@@ -65,9 +65,10 @@ Dic::Dic(void)
   m_sName    = "<main>";
   m_pDicKind = nullptr;
   m_bFrozen  = false;
-  m_pCurrentWord = nullptr;
   m_zRefCount.vCheckInit();
+
   m_xLock.vCheckInit();
+  m_pLastWord = nullptr;
   
   // this is because of GlobalDictionary (ugh)
   //vInit();
@@ -130,9 +131,9 @@ void Dic::vAddWord(Word* pWord)
   
   m_xLock.vGrabWrite();
   
-  pWord->m_pPrevWord = m_pCurrentWord;
+  pWord->m_pPrevWord = m_pLastWord;
   
-  m_pCurrentWord = pWord;
+  m_pLastWord = pWord;
   
   m_xLock.vDropWrite();
 }
@@ -152,23 +153,13 @@ Word* Dic::pAllocWord(eCN eClassNo)
   
 //  m_xLock.vGrabWrite();
 //  
-//  pWord->m_pPrevWord = m_pCurrentWord;
+//  pWord->m_pPrevWord = m_pLastWord;
 //  
-//  m_pCurrentWord = pWord;
+//  m_pLastWord = pWord;
 //
 //  m_xLock.vDropWrite();
   
   return pPoolCheck<Word*>(pWord);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current word                                                           */
-/*----------------------------------------------------------------------------*/
-Word* Dic::pCurrentWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
-  
-  return m_pCurrentWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -203,9 +194,9 @@ void Dic::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   vTrace("%sDictionary %p:\n", pTab, pDic);
   vTrace("%s  name %s \n", pTab, pDic->m_sName.a());
-  vTrace("%s  lastWord %p\n\n", pTab, pDic->m_pCurrentWord);
+  vTrace("%s  lastWord %p\n\n", pTab, pDic->m_pLastWord);
   
-  //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
 }
 
@@ -216,7 +207,7 @@ Word* Dic::pFind(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
     if (String::bEqualTo(aName,pWord->sName().a(),C_NO_CASE))
       return pWord;
   
@@ -230,7 +221,7 @@ Word* Dic::pFindStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
     if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
       return pWord;
   
@@ -246,14 +237,14 @@ bool Dic::bForget(s& sName)
 
   Word* pWordDelete = nullptr;
   
-  if (m_pCurrentWord->bIsName(sName)) {
-    pWordDelete = m_pCurrentWord;
-    m_pCurrentWord = m_pCurrentWord->pPrevWord();
+  if (m_pLastWord->bIsName(sName)) {
+    pWordDelete = m_pLastWord;
+    m_pLastWord = m_pLastWord->pPrevWord();
     delete pWordDelete;
     return true;
   }
   
-  for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord()) {
+  for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
     
     Word* pPrevWord = pWord->pPrevWord();
     
@@ -312,7 +303,7 @@ bool Dic::bHasWords(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
 
-  if (m_pCurrentWord)
+  if (m_pLastWord)
     return true;
   else
     return false;
@@ -325,7 +316,7 @@ void Dic::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_pCurrentWord = nullptr;
+  m_pLastWord = nullptr;
   
   Word* pWord = Word::pToWord(this);
   
@@ -343,6 +334,16 @@ bool Dic::bIsName(s& sName)
   bool b = m_sName.bIsEqual(sName,C_NO_CASE);
   
   return b;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get last word                                                              */
+/*----------------------------------------------------------------------------*/
+Word* Dic::pLastWord(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  return m_pLastWord;
 }
 
 /*----------------------------------------------------------------------------*/

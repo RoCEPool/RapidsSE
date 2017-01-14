@@ -181,7 +181,7 @@ Word* DicStack::pFindStep(TaskStep pStep)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
   
   for (i8 i = m_iTop; i >= 0; i--) {
-    for (Word* pWord = m_pDic[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
+    for (Word* pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
         return pWord;
   }
@@ -214,7 +214,7 @@ Word* DicStack::pLocate(Cell* pCell)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
 
   for (i8 i = m_iTop; i >= 0; i--) {
-    for (Word* pWord = m_pDic[i]->pCurrentWord(); pWord; pWord = pWord->pPrevWord())
+    for (Word* pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (pWord->bHasCell(pCell))
         return pWord;
   }
