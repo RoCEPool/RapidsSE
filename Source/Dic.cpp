@@ -237,10 +237,13 @@ bool Dic::bForget(s& sName)
 
   Word* pWordDelete = nullptr;
   
+  m_xLock.vGrabWrite();
+  
   if (m_pLastWord->bIsName(sName)) {
     pWordDelete = m_pLastWord;
     m_pLastWord = m_pLastWord->pPrevWord();
     delete pWordDelete;
+    m_xLock.vDropWrite();
     return true;
   }
   
@@ -248,8 +251,10 @@ bool Dic::bForget(s& sName)
     
     Word* pPrevWord = pWord->pPrevWord();
     
-    if (!pPrevWord)
+    if (!pPrevWord) {
+      m_xLock.vDropWrite();
       return false;
+    }
     
     if (!pPrevWord->bIsName(sName))
       continue;
@@ -259,10 +264,14 @@ bool Dic::bForget(s& sName)
     pWord->vPrevWord(pPrevWord->pPrevWord());
 
     delete pWordDelete;
+
+    m_xLock.vDropWrite();
     
     return true;
   }
   
+  m_xLock.vDropWrite();
+
   return false;
 }
 
