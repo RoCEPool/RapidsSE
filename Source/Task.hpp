@@ -455,8 +455,9 @@ namespace Tasks
     static void vDicPick(NNP_Task nnpTask);
     static void vDicPush(NNP_Task nnpTask);       
     static void vDicRef(NNP_Task nnpTask);
-    static void vDicStack(NNP_Task nnpTask);
+    static void vDicWordCount(NNP_Task nnpTask);
     
+    static void vDicStackDump(NNP_Task nnpTask);
     static void vDicStackPush(NNP_Task nnpTask);
     
     // dir

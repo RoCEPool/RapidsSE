@@ -20,6 +20,7 @@ namespace Dictionaries
 
     Lock   m_xLock;        // lock over:
     Word*  m_pLastWord;    //   last word in dictionary
+    i8     m_nWords;       //   number of words in dictionary
     
     // must be last
     Footer m_xFooter;
@@ -48,11 +49,10 @@ namespace Dictionaries
     Word* pLastWord(void);
     s&    sName(void);
     void  vName(const char* aName);
-    
     void  vRefDec(void);
     void  vRefInc(void);
     bool  bRefOut(void);
-    
+    i8    nWords(void);
     
     Footer* pFooter(void);
   };

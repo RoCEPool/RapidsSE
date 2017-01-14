@@ -50,7 +50,7 @@ void Task::vAddPrimitives_Dic(void)
   vAddPrimitive("dic.push",        &vDicPush,          false);
   vAddPrimitive("{{",              &vDicPush,          false);
   vAddPrimitive("dic.ref",         &vDicRef,           false);
-  vAddPrimitive("dic.stack",       &vDicStack,         false);
+  vAddPrimitive("dic.wordCount",   &vDicWordCount,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,23 +128,6 @@ ENTRY("vDicFrozenSet");
   Dic* pDic = _pDic(pPtrDic);
   
   pDic->vFrozen(iFrozen);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.dump -- dump dictionary stack                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vDicStack(NNP_Task nnpTask)
-{
-ENTRY("vDicDump");
-  
-  if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->pDicStack()->vDump();
-  }
-  else {
-    nnpTask->m_xDicStack.vDump();
-  }
   
   EXIT();
 }
@@ -351,6 +334,27 @@ void Task::vDicRef(NNP_Task nnpTask)
   bool bRef = pDic->bRefOut();
   
   nnpTask->m_pDataStack->vPush(bRef);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic.wordCount -- get number of words in dictionary                         */
+/*----------------------------------------------------------------------------*/
+void Task::vDicWordCount(NNP_Task nnpTask)
+{
+  ENTRY("vDicWordCount");
+  
+  Object* pPtrDic;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+    THROW_INVALID_DSTACK("dic.ref");
+  
+  Dic* pDic = _pDic(pPtrDic);
+  
+  i8 nWords = pDic->nWords();
+  
+  nnpTask->m_pDataStack->vPush(nWords);
   
   EXIT();
 }

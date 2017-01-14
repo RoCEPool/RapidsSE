@@ -69,6 +69,7 @@ Dic::Dic(void)
 
   m_xLock.vCheckInit();
   m_pLastWord = nullptr;
+  m_nWords = 0;
   
   // this is because of GlobalDictionary (ugh)
   //vInit();
@@ -102,6 +103,8 @@ void Dic::vAddWord(Word* pWord)
   pWord->m_pPrevWord = m_pLastWord;
   
   m_pLastWord = pWord;
+  
+  m_nWords++;
   
   m_xLock.vDropWrite();
 }
@@ -201,6 +204,7 @@ bool Dic::bForget(s& sName)
     pWordDelete = m_pLastWord;
     m_pLastWord = m_pLastWord->pPrevWord();
     delete pWordDelete;
+    m_nWords--;
     m_xLock.vDropWrite();
     return true;
   }
@@ -222,6 +226,7 @@ bool Dic::bForget(s& sName)
     pWord->vPrevWord(pPrevWord->pPrevWord());
 
     delete pWordDelete;
+    m_nWords--;
 
     m_xLock.vDropWrite();
     
@@ -283,6 +288,8 @@ void Dic::vInit(void)
   
   m_sName.vInit();
   m_sName = pWord->sName();
+  
+  m_nWords = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -361,6 +368,16 @@ bool Dic::bRefOut(void)
   u8 iRef = *m_zRefCount;
   
   return iRef ? true : false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of words                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Dic::nWords(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
+  
+  return m_nWords;
 }
 
 /*----------------------------------------------------------------------------*/

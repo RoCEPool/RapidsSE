@@ -34,7 +34,25 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicStack(void)
 {
+  vAddPrimitive("dicStack.dump",   &vDicStackDump,     false);
   vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.dump -- dump dictionary stack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackDump(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackDump");
+  
+  if (nnpTask->m_pSEitf) {
+    nnpTask->m_pSEitf->pDicStack()->vDump();
+  }
+  else {
+    nnpTask->m_xDicStack.vDump();
+  }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
