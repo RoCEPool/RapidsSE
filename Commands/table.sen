@@ -259,6 +259,22 @@ int: queryCount
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
+/* analyze a table                                                            */
+/*----------------------------------------------------------------------------*/
+: analyzeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+
+tp: analyzeTable
+
+  dup
+
+  find execute
+
+  table.analyze
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
 /* make a table (run by participant)                                          */
 /*----------------------------------------------------------------------------*/
 : makeTable allParticipants 1 ( "<tableNm>" -- true n# true )
@@ -294,22 +310,6 @@ tp: removeTable
   table.truncate
 
   :forget
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* analyze a table                                                            */
-/*----------------------------------------------------------------------------*/
-: analyzeTable allParticipants 1 ( "<tableNm>" -- true n# true )
-
-tp: analyzeTable
-
-  dup
-
-  find execute
-
-  table.name .
 
   true <SUCCESS_RESULT>
 ;

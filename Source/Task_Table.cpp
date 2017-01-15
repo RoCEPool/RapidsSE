@@ -34,6 +34,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Table(void)
 {
+  vAddPrimitive("table.analyze",      &vTableAnalyze,      false);
   vAddPrimitive("table.append",       &vTableAppend,       false);
   vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
   vAddPrimitive("table.dic",          &vTableDic,          false);
@@ -44,6 +45,24 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.ref",          &vTableRef,          false);
   vAddPrimitive("table.space",        &vTableSpace,        false);
   vAddPrimitive("table.truncate",     &vTableTruncate,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.analyze -- analyze table                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTableAnalyze(NNP_Task nnpTask)
+{
+  ENTRY("vTableAnalyze");
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.appendBuffer");
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vAnalyze();
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
