@@ -112,17 +112,29 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
+/* clear task dictionary stack                                                */
+/*----------------------------------------------------------------------------*/
+: dicStack.clear
+
+  dic.count 0 do
+    dic.drop
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* set task dictionary stack                                                  */
 /*----------------------------------------------------------------------------*/
-: dicStack! ( ... #dics -- )
+: dicStack.set ( ... #dics -- )
 
   // this word puts the folder path on the stack into task dictionary stack
   // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
 
-tp: dicStack!
-  dic.count 0 do
-    dic.drop
-  loop
+tp: dicStack.set
+
+  //dic.count 0 do
+  //  dic.drop
+  //loop
+  dicStack.clear
 
   0 do
 

@@ -446,6 +446,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   if (String::bEqualTo("pwf",m_pToken[0],C_NO_CASE)) {
     return bExecuteRequest();
   }
+
+  if (String::bEqualTo("rf",m_pToken[0],C_NO_CASE)) {
+    return bExecuteRequest();
+  }
   
   if (String::bEqualTo("use",m_pToken[0],C_NO_CASE)) {
     if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {

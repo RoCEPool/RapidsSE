@@ -157,7 +157,7 @@ tp: lf
 : lf_ (  #folders -- true )
 
   depth 0 != if
-    "dicStack!" str.equal
+    "dicStack.set" str.equal
     if
   tp: settingDicStack
     !indirect drop
@@ -165,6 +165,34 @@ tp: lf
   then
 
   lf$
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a folder                                                            */
+/*----------------------------------------------------------------------------*/
+: rf allParticipants 1 ( "<folderNm>" -- true n# true )
+
+  tp: removeFolder
+
+  :forget
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a folder                                                            */
+/*----------------------------------------------------------------------------*/
+: drop_dictionary ( "<folderNm>" -- <R> )
+
+  tp: dropDic
+
+ddlLock.grabWrite
+
+  rf ( ) assert.stack_0
+
+  tp: droppedDic
+
+  <OK>
 ;
 
 /////////////////////////////////////////////////////////////////////////////////

@@ -508,12 +508,13 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bEqualTo("rettbl",pWords[0],C_NO_CASE)) {
     return bRetTable(pWords, iWords);
   }
-
+  
   if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
     return bDropCatalog(pWords, iWords);
   }
   
-  if (String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
+  if (String::bEqualTo("rf",pWords[0],C_NO_CASE) ||
+      String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
     return bDropDictionary(pWords, iWords);
   }
   
