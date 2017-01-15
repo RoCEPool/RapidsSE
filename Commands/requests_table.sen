@@ -146,7 +146,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* append row buffer into table                                               */
 /*----------------------------------------------------------------------------*/
-: table_append ( "table", "buffer", "partition" -- <R> )        //! append_table
+: append_table ( "table", "buffer", "partition" -- <R> )        //! append_table
 
 ddlLock.grabRead
 

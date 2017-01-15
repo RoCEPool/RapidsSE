@@ -5930,7 +5930,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*----------------------------------------------------------------------------*/\n"
     "/* append row buffer into table                                               */\n"
     "/*----------------------------------------------------------------------------*/\n"
-    ": table_append ( \\\"table\\\", \\\"buffer\\\", \\\"partition\\\" -- <R> )        //! append_table\n"
+    ": append_table ( \\\"table\\\", \\\"buffer\\\", \\\"partition\\\" -- <R> )        //! append_table\n"
     "\n"
     "ddlLock.grabRead\n"
     "\n"

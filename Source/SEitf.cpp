@@ -1456,7 +1456,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   String::vConcat(a,sBuffer.a());
   String::vConcat(a,"\"");
   
-  String::vConcat(a," table_append");
+  String::vConcat(a," append_table");
   
   //vTrace("%s\n",a);
   
