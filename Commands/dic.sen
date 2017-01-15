@@ -5,7 +5,7 @@
 "dic.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* folder is use as a kind of word to identify folders                        */
+/* folder is used as a kind of word to identify folders                       */
 /*----------------------------------------------------------------------------*/
 : folder ;
 
@@ -88,27 +88,26 @@ diclock.dropwrite
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get seitif folder path                                                     */
+/* get seitif dictionary path                                                 */
 /*----------------------------------------------------------------------------*/
-: seitf.path@ ( -- ... #dics )
+: seitf.dicPath ( -- ... #dics )
 
   // this word puts the dictionary path onto the stack as a series of names
-  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
+  //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
+  // note: it should not push "<main>"
 
-  dic.count 0 do
-    // calculate dic subscript
-    //dic.count I - 1- ( d )
+  dic.count 1 - 0 ?do
 
-    I
-    // get dictionary[d]
-    dic.pick  ( dic )
+    // get dictionary[I]
+    I dic.pick  ( dic )
 
     // push dictionary name
     dic.name ( ... dicNm )
+
   loop
 
   // push number of dictionary names
-  dic.count ( ... #dics )
+  dic.count 1 - ( ... #dics )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -116,7 +115,7 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : dicStack.clear
 
-  dic.count 0 do
+  dic.count 1 - 0 ?do
     dic.drop
   loop
 ;
@@ -146,8 +145,8 @@ tp: dicStack.set
 
       dup "seitf" str.equal if
         drop
-        dic.main
-        dicStack.push
+        //dic.main
+        //dicStack.push
       else
 
         find
