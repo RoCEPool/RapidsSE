@@ -5,6 +5,20 @@
 "requests_folder.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* remove a folder                                                            */
+/*----------------------------------------------------------------------------*/
+: rf allParticipants 1 ( "<folderNm>" -- true n# true )
+
+tp: removeFolder
+
+  :forget
+
+  true <SUCCESS_RESULT>
+;
+
+/////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
 /* change folder                                                              */
 /*----------------------------------------------------------------------------*/
 : cf
@@ -32,20 +46,20 @@
   <OK>
 ;
 
-
 /*----------------------------------------------------------------------------*/
-/* print working folder                                                       */
+/* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-: pwf
+: drop_dictionary ( "<folderNm>" -- <R> )
 
-  "/"
-  dicStack.depth 2 do
-    dicStack.depth 1 - I -
-    dicStack.pick dic.name str.cat
-    "/" str.cat
-  loop
+tp: dropDic
 
-  <SUCCESS>
+ddlLock.grabWrite
+
+  rf ( ) assert.stack_0
+
+  tp: droppedDic
+
+  <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -168,31 +182,18 @@ tp: lf
 ;
 
 /*----------------------------------------------------------------------------*/
-/* remove a folder                                                            */
+/* print working folder                                                       */
 /*----------------------------------------------------------------------------*/
-: rf allParticipants 1 ( "<folderNm>" -- true n# true )
+: pwf
 
-  tp: removeFolder
+  "/"
+  dicStack.depth 2 do
+  dicStack.depth 1 - I -
+  dicStack.pick dic.name str.cat
+  "/" str.cat
+  loop
 
-  :forget
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a folder                                                            */
-/*----------------------------------------------------------------------------*/
-: drop_dictionary ( "<folderNm>" -- <R> )
-
-  tp: dropDic
-
-ddlLock.grabWrite
-
-  rf ( ) assert.stack_0
-
-  tp: droppedDic
-
-  <OK>
+  <SUCCESS>
 ;
 
 /////////////////////////////////////////////////////////////////////////////////
