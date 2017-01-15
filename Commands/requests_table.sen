@@ -5,6 +5,38 @@
 "requests.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* append row buffer into table                                               */
+/*----------------------------------------------------------------------------*/
+: append_table ( "table", "buffer", "partition" -- <R> )
+
+ddlLock.grabRead
+
+  table.append
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* copy a table. from-table must exist & to-table is created                  */
+/*----------------------------------------------------------------------------*/
+: copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkEnoughBuffers not if <NIP+ERROR> exit then
+  checkInTables      not if <NIP+ERROR> exit then
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  //bp.freespace .
+
+  tableCopier
+
+  //bp.freespace .
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* create a table                                                             */
 /*----------------------------------------------------------------------------*/
 : create_table ( "<tableNm>" -- <R> )
@@ -15,6 +47,84 @@ ddlLock.grabWrite
   checkMakeTable     not if <NIP+ERROR> exit then
 
   makeTable ( ) assert.stack_0
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop a table                                                               */
+/*----------------------------------------------------------------------------*/
+: drop_table ( "<tableNm>" -- <R> )
+
+tp: dropTable
+
+ddlLock.grabWrite
+
+  checkRemoveTable not if <NIP+ERROR> exit then
+
+  tp ( "<tableNm>" )
+
+  removeTable ( ) assert.stack_0
+
+  tp: droppedTable
+
+  <OK>
+;
+/*
+: drop_table ( "<tableNm>" -- <R> )
+
+tp: dropTable
+
+ddlLock.grabWrite
+
+  checkRemoveTable not if <NIP+ERROR> exit then
+
+  tp ( "<tableNm>" )
+
+  removeTable ( ) assert.stack_0
+
+  tp: droppedTable
+
+  <OK>
+;
+*/
+
+/*----------------------------------------------------------------------------*/
+/* dump table                                                                 */
+/*----------------------------------------------------------------------------*/
+: dump_table ( "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  dumpTable
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* export a table                                                             */
+/*----------------------------------------------------------------------------*/
+: export_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  tableExporter not if <NIP+ERROR> exit then
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
+/* get a table ref                                                            */
+/*----------------------------------------------------------------------------*/
+: get_table ( "<tableNm>" -- <R> )
+
+  getTableRef not if <NIP+ERROR> exit then
 
   <OK>
 ;
@@ -36,7 +146,6 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 /* load a table                                                               */
 /*----------------------------------------------------------------------------*/
-
 : load_table ( "<fileNm>" "<tableNm>" -- <R> )
 
 ddlLock.grabRead
@@ -74,6 +183,7 @@ snap1:
   <OK>
 ;
 */
+
 /*----------------------------------------------------------------------------*/
 /* load a table from a stream                                                 */
 /*----------------------------------------------------------------------------*/
@@ -94,65 +204,27 @@ snap1:
 ;
 
 /*----------------------------------------------------------------------------*/
-/* export a table                                                             */
+/* return a table ref                                                         */
 /*----------------------------------------------------------------------------*/
-: export_table ( "<fileNm>" "<tableNm>" -- <R> )
+: return_table ( )
 
-ddlLock.grabRead
-
-  checkInTables not if <NIP+ERROR> exit then
-  checkIsTable  not if <NIP+ERROR> exit then
-
-  tableExporter not if <NIP+ERROR> exit then
+  returnTableRef not if <NIP+ERROR> exit then
 
   <OK>
 ;
 
 /*----------------------------------------------------------------------------*/
-/* copy a table. from-table must exist & to-table is created                  */
+/* get row cursor for table                                                   */
 /*----------------------------------------------------------------------------*/
-: copy_table ( "<to-tableNm>" "<from-tableNm>" -- <R> )
+: select_table ( "<tableNm>" -- <R> )
 
 ddlLock.grabRead
 
-  checkEnoughBuffers not if <NIP+ERROR> exit then
-  checkInTables      not if <NIP+ERROR> exit then
-  checkIsTable       not if <NIP+ERROR> exit then
+  getTableRef not if <NIP+ERROR> exit then
 
-  //bp.freespace .
+  selectTable
 
-  tableCopier
-
-  //bp.freespace .
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
-/* dump table                                                                 */
-/*----------------------------------------------------------------------------*/
-: dump_table ( "<tableNm>" -- <R> )
-
-ddlLock.grabRead
-
-  checkInTables not if <NIP+ERROR> exit then
-  checkIsTable  not if <NIP+ERROR> exit then
-
-  dumpTable
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
-/* append row buffer into table                                               */
-/*----------------------------------------------------------------------------*/
-: append_table ( "table", "buffer", "partition" -- <R> )        //! append_table
-
-ddlLock.grabRead
-
-  table.append
-
-  <OK>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -166,20 +238,6 @@ ddlLock.grabWrite
   checkIsTable  not if <NIP+ERROR> exit then
 
   sizeTable ( "<size>" )
-
-  <SUCCESS>
-;
-
-/*----------------------------------------------------------------------------*/
-/* get row cursor for table                                                   */
-/*----------------------------------------------------------------------------*/
-: select_table ( "<tableNm>" -- <R> )
-
-ddlLock.grabRead
-
-  getTableRef not if <NIP+ERROR> exit then
-
-  selectTable
 
   <SUCCESS>
 ;
@@ -200,45 +258,6 @@ ddlLock.grabRead
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop a table                                                               */
-/*----------------------------------------------------------------------------*/
-
-: drop_table ( "<tableNm>" -- <R> )
-
-tp: dropTable
-
-ddlLock.grabWrite
-
-  checkRemoveTable not if <NIP+ERROR> exit then
-
-tp ( "<tableNm>" )
-
-  removeTable ( ) assert.stack_0
-
-tp: droppedTable
-
-  <OK>
-;
-/*
-: drop_table ( "<tableNm>" -- <R> )
-
-  tp: dropTable
-
-  ddlLock.grabWrite
-
-  checkRemoveTable not if <NIP+ERROR> exit then
-
-  tp ( "<tableNm>" )
-
-  removeTable ( ) assert.stack_0
-
-  tp: droppedTable
-
-  <OK>
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* any outstanding table references                                           */
 /*----------------------------------------------------------------------------*/
 : table_inuse ( "<tableNm>" -- <R> )
@@ -254,26 +273,6 @@ tp: droppedTable
   then
 
    <OK>
-;
-
-/*----------------------------------------------------------------------------*/
-/* get a table ref                                                            */
-/*----------------------------------------------------------------------------*/
-: get_table ( "<tableNm>" -- <R> )
-
-  getTableRef not if <NIP+ERROR> exit then
-
-  <OK>
-;
-
-/*----------------------------------------------------------------------------*/
-/* return a table ref                                                         */
-/*----------------------------------------------------------------------------*/
-: return_table ( )
-
-  returnTableRef not if <NIP+ERROR> exit then
-
-  <OK>
 ;
 
 /*============================================================================*/
