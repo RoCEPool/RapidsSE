@@ -393,6 +393,10 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
     return false;
   }
   
+  if (String::bEqualTo("antbl",pWords[0],C_NO_CASE)) {
+    return bAnalyzeTable(pWords, iWords);
+  }
+  
   if (String::bEqualTo("add",pWords[0],C_NO_CASE)) {
     return bAddColumn(pWords, iWords);
   }
@@ -1033,6 +1037,31 @@ bool SEitf::bListColumns(char* pWords[], i8 iWords)
   String::vConcat(a,"\"");
   
   String::vConcat(a," list_columns");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze a table                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bAnalyzeTable(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," analyze_table");
   
   return bAppendRequest(sRequest);
 }

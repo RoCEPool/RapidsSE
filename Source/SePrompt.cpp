@@ -578,6 +578,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     }
   }
   
+  if (String::bEqualTo("antbl",m_pToken[0],C_NO_CASE)) {
+    return bAnalyzeTable();
+  }
+  
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
     return bPrintWorkingDir();
   }
@@ -1055,6 +1059,21 @@ bool SePrompt::bChangeWorkingDir(void)
     return false;
   }
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze table                                                              */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bAnalyzeTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  s256 sDir;
+  Dir xDir;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"antbl"));
+  
+  return bExecuteRequest();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -105,6 +105,7 @@ namespace Interface
     bool bAddColumn(char* pWords[], i8 iWords);
     bool bListColumns(char* pWords[], i8 iWords);
     
+    bool bAnalyzeTable(char* pWords[], i8 iWords);
     bool bCopyTable(char* pWords[], i8 iWords);
     bool bExportTable(char* pWords[], i8 iWords);
     bool bLoadTable(char* pWords[], i8 iWords);
