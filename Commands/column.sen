@@ -51,50 +51,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add a column (run by participant)                                          */
-/*----------------------------------------------------------------------------*/
-: addColumn$ ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
-
-  args.tracepoint if
-    dup "ADDING COLUMN " swap str.cat " on NODE " str.cat args.node >str str.cat .
-  then
-
-tp: addingColumn
-  pushTable   assert // not if false exit then
-
-  pushColumns assert // not if false exit then
-
-  :column
-
-  popColumns
-
-  popTable
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* have participants run: addColumn$                                          */
-/*----------------------------------------------------------------------------*/
-: ~addColumn ( "<columnType>" "<columnNm>" "<tableNm>" -- )
-
-tp: addColOnAll
-
-  // set indirect call to be addColumn
-  >r >r >r $$ r> r> r> "addColumn$"
-
-  tp: theIndirectCall
-
-  $$>valset ( valset )
-
-  >>allParticipants> ( bool )
-
-  tp: addColOnAllDone
-
-  checkResult
-;
-
-/*----------------------------------------------------------------------------*/
 /* list columns of a table                                                    */
 /*----------------------------------------------------------------------------*/
 : listColumns ( -- )
@@ -127,6 +83,52 @@ tp: addColOnAll
 
   popColumns
   popTable
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add a column (run by participant)                                          */
+/*----------------------------------------------------------------------------*/
+: addColumn$ ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
+
+  args.tracepoint if
+    dup "ADDING COLUMN " swap str.cat " on NODE " str.cat args.node >str str.cat .
+  then
+
+  tp: addingColumn
+  pushTable   assert // not if false exit then
+
+  pushColumns assert // not if false exit then
+
+  :column
+
+  popColumns
+
+  popTable
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* have participants run: addColumn$                                          */
+/*----------------------------------------------------------------------------*/
+: ~addColumn ( "<columnType>" "<columnNm>" "<tableNm>" -- )
+
+tp: addColOnAll
+
+  // set indirect call to be addColumn
+  >r >r >r $$ r> r> r> "addColumn$"
+
+  tp: theIndirectCall
+
+  $$>valset ( valset )
+
+  >>allParticipants> ( bool )
+
+  tp: addColOnAllDone
+
+  checkResult
 ;
 
 /*============================================================================*/

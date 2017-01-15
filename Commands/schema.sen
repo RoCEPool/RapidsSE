@@ -63,28 +63,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a schema folder (run by participant)                                  */
-/*----------------------------------------------------------------------------*/
-: makeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
-
-tp: makingSchema
-
-  args.tracepoint if
-    dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat args.node >str str.cat .
-  then
-
-    dup ( "<schemaNm>" )
-
-    :schema ( "<schemaNm>" ^schema )
-
-    drop ( "<schemaNm>" )
-
-    makeTables ( )
-
-    true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
 /* check if word is a removable schema folder                                 */
 /*----------------------------------------------------------------------------*/
 : checkRemoveSchema ( "<schemaNm>" -- "<schemaNm>" true | "<schemaNm>" errorCode false )
@@ -102,6 +80,30 @@ tp: makingSchema
   true ( "<schemaNm>" true )
 ;
 
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* make a schema folder (run by participant)                                  */
+/*----------------------------------------------------------------------------*/
+: makeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
+
+tp: makingSchema
+
+  args.tracepoint if
+  dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat args.node >str str.cat .
+  then
+
+  dup ( "<schemaNm>" )
+
+  :schema ( "<schemaNm>" ^schema )
+
+  drop ( "<schemaNm>" )
+
+  makeTables ( )
+
+  true <SUCCESS_RESULT>
+;
+
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
@@ -110,7 +112,7 @@ tp: makingSchema
 tp: removeSchema
 
   args.tracepoint if
-    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
+  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
   then
 
   :forget ( )

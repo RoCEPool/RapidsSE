@@ -185,62 +185,6 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* make a tenant (run by participant)                                         */
-/*----------------------------------------------------------------------------*/
-: makeTable allParticipants 1 ( "<tableNm>" -- true n# true )
-
-tp: makingTable
-
-  args.tracepoint if
-    dup "MAKING TABLE " swap str.cat " on NODE " str.cat args.node >str str.cat .
-  then
-
-  dup ( "<tableNm>" "<tableNm>" )
-
-  :table ( "<tableNm>" ^table )
-
-  drop ( "<tableNm>" )
-
-  // forward reference :-(
-  "makeColumns" find execute
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* remove a table folder                                                      */
-/*----------------------------------------------------------------------------*/
-: removeTable allParticipants 1 ( "<tableNm>" -- true n# true )
-
-tp: removeTable
-
-  dup
-
-  find execute
-  table.truncate
-
-  :forget
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
-/* analyze a table                                                            */
-/*----------------------------------------------------------------------------*/
-: analyzeTable allParticipants 1 ( "<tableNm>" -- true n# true )
-
-tp: analyzeTable
-
-  dup
-
-  find execute
-
-  table.name .
-
-  true <SUCCESS_RESULT>
-;
-
-/*----------------------------------------------------------------------------*/
 /* get size of table                                                          */
 /*----------------------------------------------------------------------------*/
 : sizeTable ( "<tableNm>" -- "<size>" )
@@ -310,6 +254,64 @@ tp: analyzeTable
   find execute ( table )
 
   table.truncate
+;
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* make a table (run by participant)                                          */
+/*----------------------------------------------------------------------------*/
+: makeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+
+tp: makingTable
+
+  args.tracepoint if
+  dup "MAKING TABLE " swap str.cat " on NODE " str.cat args.node >str str.cat .
+  then
+
+  dup ( "<tableNm>" "<tableNm>" )
+
+  :table ( "<tableNm>" ^table )
+
+  drop ( "<tableNm>" )
+
+  // forward reference :-(
+  "makeColumns" find execute
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* remove a table folder                                                      */
+/*----------------------------------------------------------------------------*/
+: removeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+
+tp: removeTable
+
+  dup
+
+  find execute
+  table.truncate
+
+  :forget
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* analyze a table                                                            */
+/*----------------------------------------------------------------------------*/
+: analyzeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+
+tp: analyzeTable
+
+  dup
+
+  find execute
+
+  table.name .
+
+  true <SUCCESS_RESULT>
 ;
 
 /*============================================================================*/
