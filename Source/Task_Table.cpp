@@ -126,7 +126,7 @@ ENTRY("vTableDic");
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.drop -- drop of table on param stack                                 */
+/* table.drop -- drop of table on data stack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vTableDrop(NNP_Task nnpTask)
 {
@@ -164,7 +164,7 @@ ENTRY("vTableDump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.init -- init of table on param stack                                 */
+/* table.init -- init of table on data stack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vTableInit(NNP_Task nnpTask)
 {
@@ -183,7 +183,7 @@ ENTRY("vTableInit");
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.insert -- insert row into table on param stack                       */
+/* table.insert -- insert row into table on data stack                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTableInsert(NNP_Task nnpTask)
 {
@@ -263,7 +263,7 @@ void Task::vTableRef(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.truncate -- release all rows/buffers in table on param stack         */
+/* table.truncate -- release all rows/buffers in table on data stack          */
 /*----------------------------------------------------------------------------*/
 void Task::vTableTruncate(NNP_Task nnpTask)
 {
@@ -282,7 +282,7 @@ ENTRY("vTableTruncate");
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.space -- push the buffer space used bytable on param stack           */
+/* table.space -- push the buffer space used bytable on data stack            */
 /*----------------------------------------------------------------------------*/
 void Task::vTableSpace(NNP_Task nnpTask)
 {

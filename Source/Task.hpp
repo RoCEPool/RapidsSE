@@ -86,7 +86,7 @@ namespace Tasks
     THROW("Invalid aux stack for: %s",primitive); \
     }
         
-    // throw invalid parameter stack
+    // throw invalid data stack 
     #define THROW_INVALID_DSTACK(primitive) \
     { \
       THROW("Invalid data stack for: %s",primitive); \
@@ -162,7 +162,7 @@ namespace Tasks
     Queue* m_pQueue;         // processing queue
     Socket* m_pSocket;       // socket
     
-    Stack* m_pDataStack;     // parameter stack
+    Stack* m_pDataStack;      // data stack 
     Stack* m_pReturnStack;    // return stack
     Stack* m_pAuxStack;       // auxiliary stack
     
@@ -441,8 +441,6 @@ namespace Tasks
     static void vDebugTrap(NNP_Task nnpTask);
     
     // dic
-    static void vDicCount(NNP_Task nnpTask);
-    static void vDicDrop(NNP_Task nnpTask);       
     static void vDicFrozenGet(NNP_Task nnpTask);
     static void vDicFrozenSet(NNP_Task nnpTask);
     static void vDicInit(NNP_Task nnpTask);
@@ -452,14 +450,16 @@ namespace Tasks
     static void vDicLast(NNP_Task nnpTask);
     static void vDicMain(NNP_Task nnpTask);
     static void vDicName(NNP_Task nnpTask);
-    static void vDicPick(NNP_Task nnpTask);
-    static void vDicPush(NNP_Task nnpTask);       
     static void vDicRef(NNP_Task nnpTask);
     static void vDicWordCount(NNP_Task nnpTask);
     
+    // dicStack
+    static void vDicStackDepth(NNP_Task nnpTask);
+    static void vDicStackDrop(NNP_Task nnpTask);
     static void vDicStackDump(NNP_Task nnpTask);
-    static void vDicStackPush(NNP_Task nnpTask);
-    
+    static void vDicStackPick(NNP_Task nnpTask);
+    static void vDicStackPush(NNP_Task nnpTask);    
+   
     // dir
     static void vDirChangeCurrent(NNP_Task nnpTask);
     static void vDirGetCurrent(NNP_Task nnpTask);

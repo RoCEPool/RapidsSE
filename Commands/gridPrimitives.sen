@@ -169,7 +169,7 @@ tp: sendingViaTask
 
 tp: running
 
-  // move indirect result from aux to parameter stack
+  // move indirect result from aux to data stack 
   a> ( <<result>> )
 
 tp: haveResultSet

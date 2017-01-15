@@ -6,16 +6,16 @@
 
 : column: ;
 
-//: makeColumns ( table --  ) table.dic {{ "columns" :dic drop }} ;
+//: makeColumns ( table --  ) table.dic dicStack.push "columns" :dic drop dicStack.drop ;
 
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.dic {{ "columns" :dic drop }}
+  table.dic dicStack.push "columns" :dic drop dicStack.drop
 ;
 
 : withinColumns
-    0 dic.pick dic.name "columns" str.equal
+    0 dicStack.pick dic.name "columns" str.equal
 ;
 
 : checkInColumns
@@ -29,13 +29,13 @@
 
     not if EC_NO_COLUMNS_DIC false exit then
 
-    execute dic.push
+    execute dicStack.push
 
     true
 ;
 
 : popColumns
-    dic.drop
+    dicStack.drop
 ;
 
 : :column ( "<columnType>" "<columnName>" )
@@ -103,7 +103,7 @@ tp: addColOnAll
   pushColumns   assert
 
   ""                             // initial ls string
-  0 dic.pick dic.last            // get last word of current dic
+  0 dicStack.pick dic.last            // get last word of current dic
   dup                            // setup iteration of words
   iterate                        //
 

@@ -328,7 +328,7 @@ ENTRY("vThreadNameStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.taskset@ -- fetch taskset from the thread which is on param stack   */
+/* thread.taskset@ -- fetch taskset from the thread which is on data stack    */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSfetch(NNP_Task nnpTask)
 {
@@ -353,7 +353,7 @@ ENTRY("vThreadSfetch");
 }
 
 /*----------------------------------------------------------------------------*/
-/* thread.taskset! -- store taskset into the thread which is on param stack   */
+/* thread.taskset! -- store taskset into the thread which is on data stack    */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadSstore(NNP_Task nnpTask)
 {

@@ -13,7 +13,7 @@
 ;
 
 : withinCatalogs
-    0 dic.pick dic.name "catalogs" str.equal
+    0 dicStack.pick dic.name "catalogs" str.equal
 ;
 
 : checkInCatalogs

@@ -56,31 +56,31 @@ tp: droppedSchema
 /*----------------------------------------------------------------------------*/
 : use_schema ( "<schemaNm>" -- <R> )
 
-  begin 0 dic.pick dic.name "tenants" str.equal not while dic.drop repeat
+  begin 0 dicStack.pick dic.name "tenants" str.equal not while dicStack.drop repeat
 
   // find the boray folder
   "boray" findInCurrent
-  execute dic.push
+  execute dicStack.push
 
   // find the catalogs folder
   "catalogs" findInCurrent
-  execute dic.push
+  execute dicStack.push
 
   // find the rapidssecatalogs folder
   "rapidsse" findInCurrent
-  execute dic.push
+  execute dicStack.push
 
   // find the schemas folder
   "schemas" findInCurrent
-  execute dic.push
+  execute dicStack.push
 
   checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
   checkIsSchema not if <NIP+ERROR> exit then
-  execute dic.push
+  execute dicStack.push
 
   // find the tables folder
   "tables" findInCurrent
-  execute dic.push
+  execute dicStack.push
 
   <OK>
 ;

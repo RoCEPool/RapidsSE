@@ -1523,7 +1523,7 @@ void Task::vRetry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get root thread from root tasks param stack                                */
+/* get root thread from root tasks data stack                                 */
 /*----------------------------------------------------------------------------*/
 Thread* Task::pRootThread(void)
 {
@@ -1532,7 +1532,7 @@ Thread* Task::pRootThread(void)
   Object* pThreadEmb;
   
   if ( ! m_pDataStack->bPop(pThreadEmb) ) {
-    String::vSprint(m_sException.a(),"Invalid param stack for: h.spawn");
+    String::vSprint(m_sException.a(),"Invalid data stack  for: h.spawn");
     m_sFile = __FILE__;
     throw (i8)__LINE__;
   }

@@ -77,7 +77,7 @@ tp: acksExpected
   // this task waits till ack'd
   ackWait
 
-  // move from aux to parameter stack
+  // move from aux to data stack 
   a>
 
   // note that each participant will always return a valset
@@ -159,7 +159,7 @@ tp: $$
   // now scan resultset from each participant
   args.nodes 0 do
 
-    // move from aux to parameter stack
+    // move from aux to data stack 
     a>
 
     tp: haveResultSet
@@ -233,7 +233,7 @@ tp: running
 
   $$
 
-  // move from aux to parameter stack
+  // move from aux to data stack 
   a>
 
 tp: haveResultSet

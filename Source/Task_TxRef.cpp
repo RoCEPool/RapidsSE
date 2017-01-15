@@ -42,7 +42,7 @@ void Task::vAddPrimitives_TxRef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* txRef.init -- init of txref on param stack                                 */
+/* txRef.init -- init of txref on data stack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vTxRefInit(NNP_Task nnpTask)
 {

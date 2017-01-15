@@ -102,7 +102,7 @@ void Task::vObjectDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object@ -- fetch object from return stack onto param stack                 */
+/* object@ -- fetch object from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectFetch(NNP_Task nnpTask)
 {
@@ -136,7 +136,7 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object! -- replace object on return stack from param stack                 */
+/* object! -- replace object on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectStore(NNP_Task nnpTask)
 {

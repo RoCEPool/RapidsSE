@@ -85,7 +85,7 @@ void Task::vAstackClass(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* adepth -- put number of values in aux stack onto param stack               */
+/* adepth -- put number of values in aux stack onto data stack                */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackDepth(NNP_Task nnpTask)
 {
@@ -134,7 +134,7 @@ void Task::vAstackDup(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* a@ -- place copy of top value in aux stack onto param stack                */
+/* a@ -- place copy of top value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackFetch(NNP_Task nnpTask)
 {
@@ -170,7 +170,7 @@ void Task::vAstackNip(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* apick -- place copy of nth value in aux stack onto param stack             */
+/* apick -- place copy of nth value in aux stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vAstackPick(NNP_Task nnpTask)
 {
@@ -373,7 +373,7 @@ void Task::vAstackTransfer(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* a0 -- place copy of 0th value in aux stack onto param stack                */
+/* a0 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack0(NNP_Task nnpTask)
 {
@@ -391,7 +391,7 @@ void Task::vAstack0(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* a1 -- place copy of 1st value in aux stack onto param stack                */
+/* a1 -- place copy of 1st value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack1(NNP_Task nnpTask)
 {
@@ -409,7 +409,7 @@ void Task::vAstack1(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r2 -- place copy of 2nd value in aux stack onto param stack                */
+/* r2 -- place copy of 2nd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack2(NNP_Task nnpTask)
 {
@@ -427,7 +427,7 @@ void Task::vAstack2(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r3 -- place copy of 3rd value in aux stack onto param stack                */
+/* r3 -- place copy of 3rd value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack3(NNP_Task nnpTask)
 {
@@ -445,7 +445,7 @@ void Task::vAstack3(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r4 -- place copy of 4th value in aux stack onto param stack                */
+/* r4 -- place copy of 4th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack4(NNP_Task nnpTask)
 {
@@ -463,7 +463,7 @@ void Task::vAstack4(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r5 -- place copy of 0th value in aux stack onto param stack                */
+/* r5 -- place copy of 0th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack5(NNP_Task nnpTask)
 {
@@ -481,7 +481,7 @@ void Task::vAstack5(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r6 -- place copy of 6th value in aux stack onto param stack                */
+/* r6 -- place copy of 6th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack6(NNP_Task nnpTask)
 {
@@ -499,7 +499,7 @@ void Task::vAstack6(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r7 -- place copy of 7th value in aux stack onto param stack                */
+/* r7 -- place copy of 7th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack7(NNP_Task nnpTask)
 {
@@ -517,7 +517,7 @@ void Task::vAstack7(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r8 -- place copy of 8th value in aux stack onto param stack                */
+/* r8 -- place copy of 8th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack8(NNP_Task nnpTask)
 {
@@ -535,7 +535,7 @@ void Task::vAstack8(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r9 -- place copy of 9th value in aux stack onto param stack                */
+/* r9 -- place copy of 9th value in aux stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vAstack9(NNP_Task nnpTask)
 {

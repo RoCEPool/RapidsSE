@@ -34,8 +34,49 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicStack(void)
 {
+  vAddPrimitive("dicStack.depth",  &vDicStackDepth,    false);
+  vAddPrimitive("dicStack.drop",   &vDicStackDrop,     false);
   vAddPrimitive("dicStack.dump",   &vDicStackDump,     false);
+  vAddPrimitive("dicStack.pick",   &vDicStackPick,     false);
   vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.depth -- get number of dictionaries on dictionary stack           */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackDepth(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackDepth");
+  
+  i8 iCount;
+  
+  if (nnpTask->m_pSEitf) {
+    iCount = nnpTask->m_pSEitf->pDicStack()->iCount();
+  }
+  else {
+    iCount = nnpTask->m_xDicStack.iCount();
+  }
+  
+  nnpTask->m_pDataStack->vPush(iCount);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.drop -- discard top of dictionary stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackDrop(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackDrop");
+  
+  if (nnpTask->m_pSEitf) {
+    nnpTask->m_pSEitf->vPopDic();
+  }
+  else {
+    nnpTask->m_xDicStack.vDiscard();
+  }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,22 +97,54 @@ void Task::vDicStackDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.push -- push a dictionary from stack onto task dictionary stack   */
+/* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackPick(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackPick");
+  
+  i8 iDic;
+  if ( ! nnpTask->m_pDataStack->bPop(iDic) )
+    THROW_INVALID_DSTACK("dicStack.pick");
+  
+  Object* pPtrDic;
+  
+  if (nnpTask->m_pSEitf) {
+    pPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
+  }
+  else {
+    pPtrDic = nnpTask->m_xDicStack.pPick(iDic);
+  }
+  
+  nnpTask->m_pDataStack->vPush(pPtrDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.push -- push a dictionary from data stack  onto dictionary stack  */
 /*----------------------------------------------------------------------------*/
 void Task::vDicStackPush(NNP_Task nnpTask)
 {
   ENTRY("vDicStackPush");
   
   Object* pPtrDic;
+  
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
     THROW_INVALID_DSTACK("dicStack.push");
   
   Dic* pDic = _pDic(pPtrDic);
   
-  nnpTask->m_xDicStack.vPush(pDic);
+  if (nnpTask->m_pSEitf) {
+    nnpTask->m_pSEitf->vPushDic(pDic);
+  }
+  else {
+    nnpTask->m_xDicStack.vPush(pDic);
+  }
   
   EXIT();
 }
+
 
 /*============================================================================*/
 /* end                                                                        */

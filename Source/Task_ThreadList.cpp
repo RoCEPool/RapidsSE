@@ -39,7 +39,7 @@ void Task::vAddPrimitives_ThreadList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* threadlist.dump -- dump the threadList on param stack                      */
+/* threadlist.dump -- dump the threadList on data stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListDump(NNP_Task nnpTask)
 {
@@ -58,7 +58,7 @@ ENTRY("vThreadListDump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* threadlist.init -- init of threadList on param stack                       */
+/* threadlist.init -- init of threadList on data stack                        */
 /*----------------------------------------------------------------------------*/
 void Task::vThreadListInit(NNP_Task nnpTask)
 {

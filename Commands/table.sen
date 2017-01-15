@@ -11,7 +11,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables {{ "tables" :dic ' folder swap execute dic.kind! }} ;
+//: makeTables dicStack.push "tables" :dic ' folder swap execute dic.kind! dicStack.drop ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
@@ -66,7 +66,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 
 : withinTables
-    0 dic.pick dic.name "tables" str.equal
+    0 dicStack.pick dic.name "tables" str.equal
 ;
 
 : checkInTables
@@ -119,13 +119,13 @@ int: queryCount
 
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find execute table.dic dic.push
+    find execute table.dic dicStack.push
 
     true
 ;
 
 : popTable
-    dic.drop
+    dicStack.drop
 ;
 
 /*----------------------------------------------------------------------------*/

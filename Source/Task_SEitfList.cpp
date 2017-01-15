@@ -39,7 +39,7 @@ void Task::vAddPrimitives_SEitfList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitflist.dump -- dump of seitfList on param stack                         */
+/* seitflist.dump -- dump of seitfList on data stack                          */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListDump(NNP_Task nnpTask)
 {
@@ -58,7 +58,7 @@ ENTRY("vSEitfListDump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* seitflist.init -- init of seitfList on param stack                         */
+/* seitflist.init -- init of seitfList on data stack                          */
 /*----------------------------------------------------------------------------*/
 void Task::vSEitfListInit(NNP_Task nnpTask)
 {

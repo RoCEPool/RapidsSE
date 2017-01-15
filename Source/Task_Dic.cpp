@@ -34,9 +34,6 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Dic(void)
 {
-  vAddPrimitive("dic.count",       &vDicCount,         false);
-  vAddPrimitive("dic.drop",        &vDicDrop,          false);
-  vAddPrimitive("}}",              &vDicDrop,          false);
   vAddPrimitive("dic.frozen@",     &vDicFrozenGet,     false);
   vAddPrimitive("dic.frozen!",     &vDicFrozenSet,     false);
   vAddPrimitive("dic.init",        &vDicInit,          false);
@@ -46,49 +43,8 @@ void Task::vAddPrimitives_Dic(void)
   vAddPrimitive("dic.last",        &vDicLast,          false);
   vAddPrimitive("dic.main",        &vDicMain,          false);
   vAddPrimitive("dic.name",        &vDicName,          false);
-  vAddPrimitive("dic.pick",        &vDicPick,          false);
-  vAddPrimitive("dic.push",        &vDicPush,          false);
-  vAddPrimitive("{{",              &vDicPush,          false);
   vAddPrimitive("dic.ref",         &vDicRef,           false);
   vAddPrimitive("dic.wordCount",   &vDicWordCount,     false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.count -- get number of dictionaries on dictionary stack                */
-/*----------------------------------------------------------------------------*/
-void Task::vDicCount(NNP_Task nnpTask)
-{
-ENTRY("vDicCount");
-  
-  i8 iCount;
-  
-  if (nnpTask->m_pSEitf) {
-    iCount = nnpTask->m_pSEitf->pDicStack()->iCount();
-  }
-  else {
-    iCount = nnpTask->m_xDicStack.iCount();
-  }
-  
-  nnpTask->m_pDataStack->vPush(iCount);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.drop -- discard top of dictionary stack                                */
-/*----------------------------------------------------------------------------*/
-void Task::vDicDrop(NNP_Task nnpTask)
-{
-ENTRY("vDicDrop");
-  
-  if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->vPopDic();
-  }
-  else {
-    nnpTask->m_xDicStack.vDiscard();
-  }
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -264,55 +220,6 @@ ENTRY("vDicName");
   sName = pDic->sName().a();
   
   nnpTask->m_pDataStack->vPush(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.pick -- put a dictionary from dictionary stack onto param stack        */
-/*----------------------------------------------------------------------------*/
-void Task::vDicPick(NNP_Task nnpTask)
-{
-ENTRY("vDicPick");
-  
-  i8 iDic;
-  if ( ! nnpTask->m_pDataStack->bPop(iDic) )
-    THROW_INVALID_DSTACK("dic.pick");
-  
-  Object* pPtrDic;
-
-  if (nnpTask->m_pSEitf) {
-    pPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
-  }
-  else {
-    pPtrDic = nnpTask->m_xDicStack.pPick(iDic);
-  }
-  
-  nnpTask->m_pDataStack->vPush(pPtrDic);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dic.push -- push a dictionary from param stack onto dictionary stack       */
-/*----------------------------------------------------------------------------*/
-void Task::vDicPush(NNP_Task nnpTask)
-{
-ENTRY("vDicPush");
-  
-  Object* pPtrDic;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.push");
-
-  Dic* pDic = _pDic(pPtrDic);
-  
-  if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->vPushDic(pDic);
-  }
-  else {
-    nnpTask->m_xDicStack.vPush(pDic);
-  }
   
   EXIT();
 }

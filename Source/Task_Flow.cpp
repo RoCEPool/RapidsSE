@@ -60,7 +60,7 @@ void Task::vFlowBegin_(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* execute -- execute word on param stack                                     */
+/* execute -- execute word on data stack                                      */
 /*----------------------------------------------------------------------------*/
 void Task::vFlowExecute(NNP_Task nnpTask)
 {

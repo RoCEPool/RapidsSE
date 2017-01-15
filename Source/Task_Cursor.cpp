@@ -39,7 +39,7 @@ void Task::vAddPrimitives_Cursor(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cursor@ -- fetch cursor from return stack onto param stack                 */
+/* cursor@ -- fetch cursor from return stack onto data stack                  */
 /*----------------------------------------------------------------------------*/
 void Task::vCursorFetch(NNP_Task nnpTask)
 {
@@ -57,7 +57,7 @@ void Task::vCursorFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* cursor! -- replace cursor on return stack from param stack                 */
+/* cursor! -- replace cursor on return stack from data stack                  */
 /*----------------------------------------------------------------------------*/
 void Task::vCursorStore(NNP_Task nnpTask)
 {

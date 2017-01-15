@@ -197,7 +197,7 @@ void Task::vTaskCommentStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.dic -- push task dictionary onto param stack                          */
+/* task.dic -- push task dictionary onto data stack                           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDic(NNP_Task nnpTask)
 {
@@ -211,7 +211,7 @@ ENTRY("vTaskDic");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.dump -- dump of task on param stack                                   */
+/* task.dump -- dump of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskDump(NNP_Task nnpTask)
 {
@@ -228,7 +228,7 @@ ENTRY("vTaskDump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.init -- init of task on param stack                                   */
+/* task.init -- init of task on data stack                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskInit(NNP_Task nnpTask)
 {
@@ -348,7 +348,7 @@ ENTRY("vTaskNew");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.parent@ -- fetch parent of task on param stack                        */
+/* task.parent@ -- fetch parent of task on data stack                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskParentFetch(NNP_Task nnpTask)
 {
@@ -378,7 +378,7 @@ void Task::vTaskParentStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.queue@ -- fetch queue of task on param stack                          */
+/* task.queue@ -- fetch queue of task on data stack                           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQfetch(NNP_Task nnpTask)
 {
@@ -399,7 +399,7 @@ ENTRY("vTaskQfetch");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.queue! -- store queue on param stack into task on param stack         */
+/* task.queue! -- store queue on data stack into task on data stack           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskQstore(NNP_Task nnpTask)
 {
@@ -468,7 +468,7 @@ ENTRY("vTaskSeed");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.seitf@ -- fetch SEitf of task on param stack                          */
+/* task.seitf@ -- fetch SEitf of task on data stack                           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 {
@@ -489,7 +489,7 @@ void Task::vTaskSeitfFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.seitf! -- store SEitf on param stack into task on param stack         */
+/* task.seitf! -- store SEitf on data stack into task on data stack           */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSeitfStore(NNP_Task nnpTask)
 {
@@ -514,7 +514,7 @@ void Task::vTaskSeitfStore(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.socket@ -- fetch socket of task on param stack                        */
+/* task.socket@ -- fetch socket of task on data stack                         */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketFetch(NNP_Task nnpTask)
 {
@@ -535,7 +535,7 @@ void Task::vTaskSocketFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.socket! -- store socket on param stack into task                      */
+/* task.socket! -- store socket on data stack into task                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskSocketStore(NNP_Task nnpTask)
 {
@@ -600,7 +600,7 @@ ENTRY("vTaskStateStore");
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.taskset@ -- fetch taskset of task on param stack                      */
+/* task.taskset@ -- fetch taskset of task on data stack                       */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
 {
@@ -621,7 +621,7 @@ void Task::vTaskTaskSetFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* task.taskset! -- store taskset on param stack into task                    */
+/* task.taskset! -- store taskset on data stack into task                     */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskTaskSetStore(NNP_Task nnpTask)
 {

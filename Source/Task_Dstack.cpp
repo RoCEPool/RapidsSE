@@ -126,7 +126,7 @@ void Task::vDstackDropTwo(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dup -- dup top of param stack                                              */
+/* dup -- dup top of data stack                                               */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDup(NNP_Task nnpTask)
 {
@@ -149,7 +149,7 @@ void Task::vDstackDup(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* ?dup -- dup top of param stack if non zero                                 */
+/* ?dup -- dup top of data stack  if non zero                                 */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDupNonZero(NNP_Task nnpTask)
 {
@@ -172,7 +172,7 @@ void Task::vDstackDupNonZero(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump -- dump top of param stack                                            */
+/* dump -- dump top of data stack                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackDump(NNP_Task nnpTask)
 {
@@ -430,7 +430,7 @@ void Task::vDstackStk(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* swap -- swap top two values on param stack                                 */
+/* swap -- swap top two values on data stack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackSwap(NNP_Task nnpTask)
 {

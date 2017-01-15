@@ -129,7 +129,7 @@ void Task::vRstackCsRoll(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rdepth -- put number of values in return stack onto param stack            */
+/* rdepth -- put number of values in return stack onto data stack             */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackDepth(NNP_Task nnpTask)
 {
@@ -159,7 +159,7 @@ void Task::vRstackDrop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r@ -- place copy of top value in return stack onto param stack             */
+/* r@ -- place copy of top value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetch(NNP_Task nnpTask)
 {
@@ -177,7 +177,7 @@ void Task::vRstackFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* 2r@ -- place copy of two top values in return stack onto param stack       */
+/* 2r@ -- place copy of two top values in return stack onto data stack        */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackFetchTwo(NNP_Task nnpTask)
 {
@@ -198,7 +198,7 @@ void Task::vRstackFetchTwo(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rpick -- place copy of nth value in return stack onto param stack          */
+/* rpick -- place copy of nth value in return stack onto data stack           */
 /*----------------------------------------------------------------------------*/
 void Task::vRstackPick(NNP_Task nnpTask)
 {
@@ -410,7 +410,7 @@ void Task::vRstackToRTwo(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r0 -- place copy of 0th value in return stack onto param stack             */
+/* r0 -- place copy of 0th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack0(NNP_Task nnpTask)
 {
@@ -428,7 +428,7 @@ void Task::vRstack0(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r1 -- place copy of 1st value in return stack onto param stack             */
+/* r1 -- place copy of 1st value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack1(NNP_Task nnpTask)
 {
@@ -446,7 +446,7 @@ void Task::vRstack1(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r2 -- place copy of 2nd value in return stack onto param stack             */
+/* r2 -- place copy of 2nd value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack2(NNP_Task nnpTask)
 {
@@ -464,7 +464,7 @@ void Task::vRstack2(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r3 -- place copy of 3rd value in return stack onto param stack             */
+/* r3 -- place copy of 3rd value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack3(NNP_Task nnpTask)
 {
@@ -482,7 +482,7 @@ void Task::vRstack3(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r4 -- place copy of 4th value in return stack onto param stack             */
+/* r4 -- place copy of 4th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack4(NNP_Task nnpTask)
 {
@@ -500,7 +500,7 @@ void Task::vRstack4(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r5 -- place copy of 0th value in return stack onto param stack             */
+/* r5 -- place copy of 0th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack5(NNP_Task nnpTask)
 {
@@ -518,7 +518,7 @@ void Task::vRstack5(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r6 -- place copy of 6th value in return stack onto param stack             */
+/* r6 -- place copy of 6th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack6(NNP_Task nnpTask)
 {
@@ -536,7 +536,7 @@ void Task::vRstack6(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r7 -- place copy of 7th value in return stack onto param stack             */
+/* r7 -- place copy of 7th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack7(NNP_Task nnpTask)
 {
@@ -554,7 +554,7 @@ void Task::vRstack7(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r8 -- place copy of 8th value in return stack onto param stack             */
+/* r8 -- place copy of 8th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack8(NNP_Task nnpTask)
 {
@@ -572,7 +572,7 @@ void Task::vRstack8(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* r9 -- place copy of 9th value in return stack onto param stack             */
+/* r9 -- place copy of 9th value in return stack onto data stack              */
 /*----------------------------------------------------------------------------*/
 void Task::vRstack9(NNP_Task nnpTask)
 {

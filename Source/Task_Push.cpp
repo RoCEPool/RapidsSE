@@ -41,7 +41,7 @@ void Task::vAddPrimitives_Push(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* i -- copy loop index from return stack onto param stack                    */
+/* i -- copy loop index from return stack onto data stack                     */
 /*----------------------------------------------------------------------------*/
 void Task::vPushI(NNP_Task nnpTask)
 {
@@ -55,7 +55,7 @@ void Task::vPushI(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* j -- copy 2nd loop index from return stack onto param stack                */
+/* j -- copy 2nd loop index from return stack onto data stack                 */
 /*----------------------------------------------------------------------------*/
 void Task::vPushJ(NNP_Task nnpTask)
 {

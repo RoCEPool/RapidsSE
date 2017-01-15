@@ -85,7 +85,7 @@ ENTRY("vInputClose");
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.depth -- push current depth of input stream onto param stack        */
+/* input.depth -- push current depth of input stream onto data stack         */
 /*----------------------------------------------------------------------------*/
 void Task::vInputDepth(NNP_Task nnpTask)
 {
@@ -117,7 +117,7 @@ ENTRY("vInputNext");
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.open -- open new input using filepath on param stack                 */
+/* input.open -- open new input using filepath on data stack                  */
 /*----------------------------------------------------------------------------*/
 void Task::vInputOpen(NNP_Task nnpTask)
 {
@@ -195,7 +195,7 @@ ENTRY("vInputText");
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.token -- push current token of input stream onto param stack         */
+/* input.token -- push current token of input stream onto data stack          */
 /*----------------------------------------------------------------------------*/
 void Task::vInputToken(NNP_Task nnpTask)
 {
@@ -207,7 +207,7 @@ ENTRY("vInputToken");
 }
 
 /*----------------------------------------------------------------------------*/
-/* input.type -- push current token type onto param stack                     */
+/* input.type -- push current token type onto data stack                      */
 /*----------------------------------------------------------------------------*/
 void Task::vInputType(NNP_Task nnpTask)
 {

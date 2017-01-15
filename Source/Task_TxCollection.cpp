@@ -39,7 +39,7 @@ void Task::vAddPrimitives_TxCollection(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* txCollection.dump -- dump of txCollection on param stack                  */
+/* txCollection.dump -- dump of txCollection on data stack                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionDump(NNP_Task nnpTask)
 {
@@ -58,7 +58,7 @@ ENTRY("vTxCollectionDump");
 }
 
 /*----------------------------------------------------------------------------*/
-/* txCollection.init -- init of txCollection on param stack                   */
+/* txCollection.init -- init of txCollection on data stack                    */
 /*----------------------------------------------------------------------------*/
 void Task::vTxCollectionInit(NNP_Task nnpTask)
 {

@@ -38,7 +38,7 @@ void Task::vAddPrimitives_TxMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* txMap.init -- init of txmap on param stack                                 */
+/* txMap.init -- init of txmap on data stack                                  */
 /*----------------------------------------------------------------------------*/
 void Task::vTxMapInit(NNP_Task nnpTask)
 {
