@@ -25,10 +25,10 @@ Arguments::Arguments(void)
   
 #ifdef __APPLE__
   m_sCommands   = "../../../../Commands";
-  m_sSen        = "../Commands/";
+  m_sSen        = "../Sen/";
 #else
   m_sCommands   = "../../Commands";
-  m_sSen        = "../Commands/";
+  m_sSen        = "../Sen/";
 #endif
   
   
