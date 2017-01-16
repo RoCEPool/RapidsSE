@@ -40,7 +40,7 @@ void Task::vAddPrimitives_Dic(void)
   vAddPrimitive("dic.isCompiled",  &vDicIsCompiled,    false);
   vAddPrimitive("dic.kind@",       &vDicKindGet,       false);
   vAddPrimitive("dic.kind!",       &vDicKindSet,       false);
-  vAddPrimitive("dic.last",        &vDicLast,          false);
+  vAddPrimitive("dic.lastWord",    &vDicLastWord,      false);
   vAddPrimitive("dic.main",        &vDicMain,          false);
   vAddPrimitive("dic.name",        &vDicName,          false);
   vAddPrimitive("dic.ref",         &vDicRef,           false);
@@ -171,16 +171,16 @@ void Task::vDicKindSet(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dic.last -- get last word of dictionary                                    */
+/* dic.lastWord -- get last word of dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Task::vDicLast(NNP_Task nnpTask)
+void Task::vDicLastWord(NNP_Task nnpTask)
 {
-ENTRY("vDicLast");
+ENTRY("vDicLastWord");
   
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dic.last");
+    THROW_INVALID_DSTACK("dic.lastWord");
   
   Dic* pDic = _pDic(pPtrDic);
   

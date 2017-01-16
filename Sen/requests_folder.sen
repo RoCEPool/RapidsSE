@@ -68,7 +68,7 @@ ddlLock.grabWrite
 : lf
 
   ""
-  0 dicStack.pick dic.last dup iterate
+  0 dicStack.pick dic.lastWord dup iterate
 
     dup str.length if "\n" str.cat then
 
@@ -135,7 +135,7 @@ tp: lf
   "LISTING FOLDER on NODE " args.node >str str.cat .
 
   ""
-  0 dicStack.pick dic.last dup iterate
+  0 dicStack.pick dic.lastWord dup iterate
 
   dup str.length if "\n" str.cat then
 

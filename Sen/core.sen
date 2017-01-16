@@ -251,7 +251,7 @@ true ' CASE word.immediate!
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
 : words
-    0 dicStack.pick dic.last dup
+    0 dicStack.pick dic.lastWord dup
     iterate                        // iterate word cursor
       object@ word.name .          // print the name of the word
       object@ word.prev object!     // advance cursor backwards thru words
@@ -262,7 +262,7 @@ true ' CASE word.immediate!
 /* list all words (long form) in the current dictionary                       */
 /*----------------------------------------------------------------------------*/
 : symbols
-    0 dicStack.pick dic.last
+    0 dicStack.pick dic.lastWord
     begin dup while
       dup word.name .put " " .put dup word.kind@ word.name .put .\n
       word.prev
@@ -277,7 +277,7 @@ true ' CASE word.immediate!
 
     ""                             // initial contents string
 // "(" str.cat                     //
-    0 dicStack.pick dic.last dup
+    0 dicStack.pick dic.lastWord dup
     iterate                        // setup iteration of words
       object@ word.name str.cat     // add name of the word to contents string
                                    // add word kind to ls string

@@ -447,7 +447,7 @@ namespace Tasks
     static void vDicIsCompiled(NNP_Task nnpTask);
     static void vDicKindGet(NNP_Task nnpTask);
     static void vDicKindSet(NNP_Task nnpTask);
-    static void vDicLast(NNP_Task nnpTask);
+    static void vDicLastWord(NNP_Task nnpTask);
     static void vDicMain(NNP_Task nnpTask);
     static void vDicName(NNP_Task nnpTask);
     static void vDicRef(NNP_Task nnpTask);
