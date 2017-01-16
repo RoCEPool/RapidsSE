@@ -47,6 +47,12 @@ void BPA::vAnalyze(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
+  // get magnitudes of the various buffer pools
+  s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall.a());
+  s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium.a());
+  s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge.a());
+  s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.a());
+  
   // increment the epoch
   gpAttachMap->m_iEpoch++;
   
@@ -78,23 +84,27 @@ void BPA::vAnalyze(void)
   
   vTrace("Epoch: %lld\n", gpAttachMap->m_iEpoch);
   
-  vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
+  vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n",
+         sMagLarge.a(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
   
-  vTrace("   SmallHeap buffers %-6lld alloc %-6lld free %-6lld\n",
+  vTrace("   SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
+         sMagSmall.a(),
          gpSmallHeap->iBufferCount(),
          gpSmallHeap->iAllocCount(),
          gpSmallHeap->iFreeCount());
   
-  vTrace("  MediumHeap buffers %-6lld alloc %-6lld free %-6lld\n",
+  vTrace("  MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
+         sMagMedium.a(),
          gpMediumHeap->iBufferCount(),
          gpMediumHeap->iAllocCount(),
          gpMediumHeap->iFreeCount());
   
-  vTrace("   JumboHeap buffers %-6lld alloc %-6lld free %-6lld\n",
+  vTrace("   JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
+         sMagJumbo.a(),
          gpJumboHeap->iBufferCount(),
          gpJumboHeap->iAllocCount(),
          gpJumboHeap->iFreeCount());
