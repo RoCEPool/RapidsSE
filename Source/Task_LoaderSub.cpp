@@ -142,7 +142,9 @@ void Task::vLoaderSubHashPartition(NNP_Task nnpTask)
   LoaderSub* pLoaderSub = _pLoaderSub(nnpTask->m_pRegFrame->pValReg(0)->pPtr());
   ASSERT(CN_LOADERSUB == pLoaderSub->eClass());
 
-  i8 iNode = pLoaderSub->iPartition() % gxArguments.m_nNodes;
+  i8 iPartition = pLoaderSub->iPartition();
+
+  i8 iNode = Partition::iPartitionToNode(iPartition);
   
   nnpTask->m_pDataStack->vPush(iNode);
   

@@ -105,13 +105,18 @@ void Table::vAnalyze(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("Analysis of Table %s\n",m_sTableName.a());
+  vTrace("N%lld: Analysis of Table %s\n",gxArguments.m_iNode,m_sTableName.a());
 
   i8 nRowsTotal = 0;
   i8 nBuffersTotal = 0;
   i8 nStrandsTotal = 0;
   
   for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+    
+    i8 iNode = Partition::iPartitionToNode(iPartition);
+    if (iNode != gxArguments.m_iNode)
+      continue;
+    
     RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
     i8 nRows = 0;
     i8 nBuffers = 0;

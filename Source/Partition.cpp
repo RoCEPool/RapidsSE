@@ -2,7 +2,10 @@
 /* Partition.cpp - table partition                                            */
 /*============================================================================*/
 
+#include "StorageEngine.h"
 #include "DBobjects.h"
+
+extern Arguments       gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -67,6 +70,16 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
   vTrace("%s  row strands %s \n", pTab, pPartition->m_iRowStrands);
   vTrace("%s  head strand %p\n\n", pTab, pPartition->m_pHeadStrand);
   vTrace("%s  tail strand %p\n\n", pTab, pPartition->m_pTailStrand);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert partition number to node number                                    */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iPartitionToNode(i8 iPartition)
+{
+  i8 iNode = iPartition % gxArguments.m_nNodes;
+
+  return iNode;
 }
 
 /*----------------------------------------------------------------------------*/
