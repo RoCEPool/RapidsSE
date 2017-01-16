@@ -33,7 +33,7 @@ namespace Magic
     /* 13 */ CN_ATOMIC,
     /* 14 */ CN_ATTACHMAP,
     
-    /* 15 */ CN_BUFFER,
+    /* 15 */ CN_FREEBUFFER,
     /* 16 */ CN_BUFFERPOOL,
     /* 17 */ CN_BPA,
   
@@ -154,7 +154,7 @@ namespace Magic
     /* 13 */ "ATOMIC",
     /* 14 */ "ATTACHMAP",
     
-    /* 15 */ "BUFFER",
+    /* 15 */ "FREEBUFFER",
     /* 16 */ "BUFFERPOOL",
     /* 17 */ "BPA",
     

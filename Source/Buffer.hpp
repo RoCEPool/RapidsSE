@@ -35,7 +35,6 @@ namespace Pool
     Footer* pFooter(void);
   };
   
-  Buffer* _pBuffer(void* pAddr);
 }
 
 /*============================================================================*/

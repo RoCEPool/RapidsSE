@@ -18,7 +18,7 @@ static const u8 C_SIZE_JUMBO_OBJECT  = C_SIZE_POOL_BUFFER * C_JUMBO_RATIO;
 
 #include "bn.hpp"
 #include "Buffer.hpp"
-#include "BufferFree.hpp"
+#include "FreeBuffer.hpp"
 #include "BufferPool.hpp"
 #include "BPA.hpp"
 

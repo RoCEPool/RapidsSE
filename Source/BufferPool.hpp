@@ -59,8 +59,8 @@ namespace Pool
     void vInitialise(void);
     Buffer* pNextJumbo(Buffer* pPrev);
     Buffer* pToBuffer(bn nBuffer);
-    BufferFree* pToBufferFree(bn nBuffer);
-    BufferFree* pToBufferFree(Buffer* pBuffer);
+    FreeBuffer* pToFreeBuffer(bn nBuffer);
+    FreeBuffer* pToFreeBuffer(Buffer* pBuffer);
     bool bValidAddress(const void* pAddress);
     void vVerifyPool(void);
     

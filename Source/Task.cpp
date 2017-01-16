@@ -412,7 +412,7 @@ void Task::vAddConstants(void)
   /* 13 */ vAddConstant("CN_ATOMIC",       CN_ATOMIC);
   /* 14 */ vAddConstant("CN_ATTACHMAP",    CN_ATTACHMAP);
   
-  /* 15 */ vAddConstant("CN_BUFFER",       CN_BUFFER);
+  /* 15 */ vAddConstant("CN_FREEBUFFER",   CN_FREEBUFFER);
   /* 16 */ vAddConstant("CN_BUFFERPOOL",   CN_BUFFERPOOL);
   /* 17 */ vAddConstant("CN_BPA",          CN_BPA);
   

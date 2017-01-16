@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* BufferFree.cpp -- buffer when its in the buffer pool free chain            */
+/* FreeBuffer.cpp -- buffer when its in the buffer pool free chain            */
 /*============================================================================*/
 
 #include "Pool.h"
@@ -7,14 +7,26 @@
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Buffer* FreeBuffer::_pFreeBuffer(void* pAddr)
+{
+  Buffer* pBuffer = reinterpret_cast<Buffer*>(pAddr);
+  
+  RASSERT( !pBuffer || CN_FREEBUFFER == pBuffer->eClass() );
+  
+  return pBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor -- never called                                                */
 /*----------------------------------------------------------------------------*/
-BufferFree::BufferFree(void)
-: Buffer(CN_BUFFER) // correct
+FreeBuffer::FreeBuffer(void)
+: Buffer(CN_FREEBUFFER) // correct
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
-  _checkInitialised_(CN_BUFFER);
+  _checkInitialised_(CN_FREEBUFFER);
   
   ASSERT("Should never be reached");
 }
@@ -22,9 +34,9 @@ BufferFree::BufferFree(void)
 /*----------------------------------------------------------------------------*/
 /* destructor -- never called                                                 */
 /*----------------------------------------------------------------------------*/
-BufferFree::~BufferFree(void)
+FreeBuffer::~FreeBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
   ASSERT("Should never be reached");
 }
@@ -32,12 +44,12 @@ BufferFree::~BufferFree(void)
 /*----------------------------------------------------------------------------*/
 /* get next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
-bn BufferFree::nNextFree(void)
+bn FreeBuffer::nNextFree(void)
 {
-  if (CN_BUFFER != eClass())
+  if (CN_FREEBUFFER != eClass())
     int debug = 1;
   
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
   return m_nNextFree;
 }
@@ -45,9 +57,9 @@ bn BufferFree::nNextFree(void)
 /*----------------------------------------------------------------------------*/
 /* set next free buffer                                                       */
 /*----------------------------------------------------------------------------*/
-void BufferFree::vNextFree(bn nBuffer)
+void FreeBuffer::vNextFree(bn nBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_FREEBUFFER,_FOOTER_);
   
   m_nNextFree = nBuffer;
 }
@@ -55,7 +67,7 @@ void BufferFree::vNextFree(bn nBuffer)
 /*----------------------------------------------------------------------------*/
 /* set footer                                                                 */
 /*----------------------------------------------------------------------------*/
-void BufferFree::vSetFooter(void)
+void FreeBuffer::vSetFooter(void)
 {
   _setFooter_();
 }
@@ -63,10 +75,10 @@ void BufferFree::vSetFooter(void)
 /*----------------------------------------------------------------------------*/
 /* zero data                                                                  */
 /*----------------------------------------------------------------------------*/
-void BufferFree::vZeroData(void)
+void FreeBuffer::vZeroData(void)
 {
-  char* pData  = pcAdd(this,sizeof(BufferFree));
-  i8    nBytes = C_SIZE_POOL_BUFFER - sizeof(BufferFree) - sizeof(Footer);
+  char* pData  = pcAdd(this,sizeof(FreeBuffer));
+  i8    nBytes = C_SIZE_POOL_BUFFER - sizeof(FreeBuffer) - sizeof(Footer);
   
   Memory::vSet(pData,0xEF,nBytes);
 }

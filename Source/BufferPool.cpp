@@ -92,7 +92,7 @@ Buffer* BufferPool::pAllocBuffer(void)
   }
   
   // allocate buffer by popping head off free chain
-  BufferFree* pAllocatedBuffer = pToBufferFree(m_nFreeHead);
+  FreeBuffer* pAllocatedBuffer = pToFreeBuffer(m_nFreeHead);
   m_nFreeHead = pAllocatedBuffer->nNextFree();
   
   // adjust counts
@@ -103,7 +103,7 @@ Buffer* BufferPool::pAllocBuffer(void)
  
   m_zFreeLock.vDropWrite();
   
-  return pPoolCheck<BufferFree*>(pAllocatedBuffer);
+  return pPoolCheck<FreeBuffer*>(pAllocatedBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -220,7 +220,7 @@ void BufferPool::vDump(void)
          *m_nFreeHead
          );
   
-//  for (BufferFree* pFreeBuffer : *this)
+//  for (FreeBuffer* pFreeBuffer : *this)
 //    vTrace("%p: BufferNo %lld NextFree %lld\n",
 //           pFreeBuffer,
 //           *pFreeBuffer->nBufferNo(),
@@ -228,12 +228,12 @@ void BufferPool::vDump(void)
 
   bn nBuffer = m_nFreeHead;
   while (bn::nNil() != nBuffer) {
-    BufferFree* pFreeBuffer = pToBufferFree(nBuffer);
+    FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
     vTrace("%p: BufferNo %lld NextFree %lld\n",
            pFreeBuffer,
            *pFreeBuffer->nBufferNo(),
            *pFreeBuffer->nNextFree());
-    //nBuffer = pToBufferFree((nBuffer);
+    //nBuffer = pToFreeBuffer((nBuffer);
     nBuffer = pFreeBuffer->nNextFree();
   }
   
@@ -246,7 +246,7 @@ void BufferPool::vFree(Buffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  BufferFree* pFreeBuffer = pToBufferFree(pBuffer);
+  FreeBuffer* pFreeBuffer = pToFreeBuffer(pBuffer);
   
   m_zFreeLock.vGrabWrite();
   
@@ -261,7 +261,7 @@ void BufferPool::vFree(Buffer* pBuffer)
   }
   
   // free buffer by pushing onto free chain
-  pFreeBuffer->vClass(CN_BUFFER);
+  pFreeBuffer->vClass(CN_FREEBUFFER);
   pFreeBuffer->vNextFree(m_nFreeHead);
   m_nFreeHead = pBuffer->nBufferNo();
   
@@ -337,7 +337,7 @@ void BufferPool::vInitialise(void)
   //vTrace("FirstBuffer %lld LastBuffer %lld\n",*nBufferFirst(),*nBufferLast());
   
 //  bn nBuffer = nBufferFirst();
-//  for (BufferFree* pFreeBuffer : *this) {
+//  for (FreeBuffer* pFreeBuffer : *this) {
 //    pFreeBuffer->vBufferNo(nBuffer);
 //    nBuffer++;
 //    pFreeBuffer->vNextFree(nBuffer);
@@ -356,10 +356,10 @@ void BufferPool::vInitialise(void)
       }
     }
     
-    BufferFree* pFreeBuffer = pToBufferFree(nBuffer);
+    FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
     
     pFreeBuffer->vSetMagic();
-    pFreeBuffer->vClass(CN_BUFFER);
+    pFreeBuffer->vClass(CN_FREEBUFFER);
     //pFreeBuffer->pFooter()->vSetFooter();
     if (gxArguments.m_bTouch)
       pFreeBuffer->vZeroData();
@@ -371,9 +371,9 @@ void BufferPool::vInitialise(void)
     m_iFreeCount++;
 }
   
-  BufferFree* pLastBuffer = pToBufferFree(nBufferLast());
+  FreeBuffer* pLastBuffer = pToFreeBuffer(nBufferLast());
   pLastBuffer->vSetMagic();
-  pLastBuffer->vClass(CN_BUFFER);
+  pLastBuffer->vClass(CN_FREEBUFFER);
   //pLastBuffer->pFooter()->vSetFooter();
   if (gxArguments.m_bTouch)
     pLastBuffer->vZeroData();
@@ -427,25 +427,25 @@ Buffer* BufferPool::pToBuffer(bn nBuffer)
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
 /*----------------------------------------------------------------------------*/
-BufferFree* BufferPool::pToBufferFree(bn nBuffer)
+FreeBuffer* BufferPool::pToFreeBuffer(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  BufferFree* pBufferFree = static_cast<BufferFree*>(pToBuffer(nBuffer));
+  FreeBuffer* pBufferFree = static_cast<FreeBuffer*>(pToBuffer(nBuffer));
   
-  return pPoolCheck<BufferFree*>(pBufferFree);
+  return pPoolCheck<FreeBuffer*>(pBufferFree);
 }
 
 /*----------------------------------------------------------------------------*/
 /* transalate buffer number to free buffer                                    */
 /*----------------------------------------------------------------------------*/
-BufferFree* BufferPool::pToBufferFree(Buffer* pBuffer)
+FreeBuffer* BufferPool::pToFreeBuffer(Buffer* pBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  BufferFree* pBufferFree = static_cast<BufferFree*>(pBuffer);
+  FreeBuffer* pBufferFree = static_cast<FreeBuffer*>(pBuffer);
   
-  return pPoolCheck<BufferFree*>(pBufferFree);
+  return pPoolCheck<FreeBuffer*>(pBufferFree);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -468,10 +468,10 @@ void BufferPool::vVerifyPool(void)
   
   while (bn::nNil() != nBuffer) {
     
-    BufferFree* pBufferVerify = pToBufferFree(nBuffer);
+    FreeBuffer* pBufferVerify = pToFreeBuffer(nBuffer);
     
     RASSERT(MAGIC == pBufferVerify->iMagic());
-    RASSERT(CN_BUFFER == pBufferVerify->eClass());
+    RASSERT(CN_FREEBUFFER == pBufferVerify->eClass());
     
     nBuffer = pBufferVerify->nNextFree();
   }

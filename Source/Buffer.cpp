@@ -7,18 +7,6 @@
 extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
-Buffer* Pool::_pBuffer(void* pAddr)
-{
-  Buffer* pBuffer = reinterpret_cast<Buffer*>(pAddr);
-  
-  RASSERT( !pBuffer || CN_BUFFER == pBuffer->eClass() );
-  
-  return pBuffer;
-}
-
-/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Buffer::operator new(size_t iSize)
@@ -54,7 +42,7 @@ Buffer::Buffer(eCN eClassNo)
   ASSERT(m_nBufferNo >= gpBufferPool->nBufferFirst());
   ASSERT(m_nBufferNo <= gpBufferPool->nBufferLast());
   
-  _checkInitialised_(CN_BUFFER);
+  _checkInitialised_(CN_FREEBUFFER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
 }

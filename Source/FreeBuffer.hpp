@@ -1,5 +1,5 @@
 /*============================================================================*/
-/*  BufferFree.hpp - a buffer when its in the buffer pool free chain          */
+/* FreeBuffer.hpp - a buffer when its in the buffer pool free chain           */
 /*============================================================================*/
 
 #pragma once
@@ -10,15 +10,15 @@ using namespace Common;
 
 namespace Pool
 {
-  class BufferFree : public Buffer
+  class FreeBuffer : public Buffer
   {
   private:
     bn m_nNextFree;  // next buffer in free chain
     
     
   public:
-    BufferFree(void);
-    ~BufferFree(void);
+    FreeBuffer(void);
+    ~FreeBuffer(void);
     
     bn   nNextFree(void);
     void vNextFree(bn nBuffer);
@@ -26,6 +26,7 @@ namespace Pool
     void vZeroData(void);
     void vSetFooter(void);
     
+    Buffer* _pFreeBuffer(void* pAddr);
   };
 }
 
