@@ -47,7 +47,7 @@
 
 : ~nodeCursor ( forget temporary nodeCursor )
 
-    "__nodeCursor__" find >forget
+    "__nodeCursor__" find word.forget
 ;
 
 : listNodes ( list all nodes in grid )

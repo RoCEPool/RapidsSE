@@ -56,7 +56,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive(";",               &vSemicolon,        true );
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive("word.dump",       &vWordDump,         false);
-  vAddPrimitive(">forget",         &vWordForget,       false);
+  vAddPrimitive("word.forget",     &vWordForget,       false);
   vAddPrimitive("word.immediate@", &vWordImmediateGet, false);
   vAddPrimitive("word.immediate!", &vWordImmediateSet, false);
   vAddPrimitive("word.isImmediate",&vWordIsImmediate,  false);
@@ -661,7 +661,7 @@ void Task::vWord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >forget -- forget word on stack                                            */
+/* word.forget -- forget word on stack                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vWordForget(NNP_Task nnpTask)
 {

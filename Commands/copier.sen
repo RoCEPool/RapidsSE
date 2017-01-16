@@ -60,7 +60,7 @@
 
   rdrop rdrop rdrop rdrop
 
-  "__row_cursor" find >forget
+  "__row_cursor" find word.forget
 
   true
 ;

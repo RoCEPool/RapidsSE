@@ -362,7 +362,7 @@ true ' CASE word.immediate!
 
   dup not if drop exit then ( )
 
-  >forget ( )
+  word.forget ( )
 ;
 
 /*----------------------------------------------------------------------------*/

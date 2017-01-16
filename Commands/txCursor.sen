@@ -47,7 +47,7 @@
 
 : ~txCursor ( forget temporary txCursor )
 
-    "__txCursor__" find >forget
+    "__txCursor__" find word.forget
 ;
 
 : listThreads ( list all txs )

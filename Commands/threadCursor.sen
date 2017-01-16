@@ -47,7 +47,7 @@
 
 : ~threadCursor ( forget temporary threadCursor )
 
-    "__threadCursor__" find >forget
+    "__threadCursor__" find word.forget
 ;
 
 : listThreads ( list all threads )

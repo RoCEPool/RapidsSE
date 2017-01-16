@@ -47,7 +47,7 @@
 
 : ~seitfCursor ( forget temporary seitfCursor )
 
-    "__seitfCursor__" find >forget
+    "__seitfCursor__" find word.forget
 ;
 
 : listSeitf ( list all seitfs )

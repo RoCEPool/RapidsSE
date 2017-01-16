@@ -47,7 +47,7 @@ timer: fileGenTimer
   reg0 file.close
 
   // destroy file
-  "__file_gen" find >forget
+  "__file_gen" find word.forget
 
   reg.pop
 

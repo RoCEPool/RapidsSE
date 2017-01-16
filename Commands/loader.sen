@@ -99,7 +99,7 @@ timer: loadTimer
   rdrop
 
   // destroy Loader
-  "__table_loader" find >forget
+  "__table_loader" find word.forget
 
   loadTimer timer.update
 

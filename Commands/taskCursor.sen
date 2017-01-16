@@ -47,7 +47,7 @@
 
 : ~taskCursor ( forget temporary taskCursor )
 
-    "__taskCursor__" find >forget
+    "__taskCursor__" find word.forget
 ;
 
 : listTasks ( list all tasks )

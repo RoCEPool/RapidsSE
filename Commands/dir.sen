@@ -63,7 +63,7 @@
 
     rdrop
 
-    "__dir" find >forget
+    "__dir" find word.forget
 
 ;
 

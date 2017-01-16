@@ -229,7 +229,7 @@ int: queryCount
 
   rdrop
 
-  "__row_cursor" find >forget
+  "__row_cursor" find word.forget
 ;
 
 /*----------------------------------------------------------------------------*/
