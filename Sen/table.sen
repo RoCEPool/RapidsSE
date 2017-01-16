@@ -119,7 +119,7 @@ int: queryCount
 
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find execute table.columnDic dicStack.push
+    find execute table.subDic dicStack.push
 
     true
 ;
@@ -312,13 +312,13 @@ tp: removeTable
   dup table.truncate ( "<tableNm>" table )
 
   // forget all words in the columns sub-dictionary of table
-  dup table.columnDic
+  dup table.subDic
   dicStack.push
     "columns" find execute forgetAll
   dicStack.drop
 
   // forget all words in the table sub-dictionary
-  table.columnDic forgetAll
+  table.subDic forgetAll
 
   :forget
 

@@ -6,12 +6,12 @@
 
 : column: ;
 
-//: makeColumns ( table --  ) table.columnDic dicStack.push "columns" :dic drop dicStack.drop ;
+//: makeColumns ( table --  ) table.subDic dicStack.push "columns" :dic drop dicStack.drop ;
 
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.columnDic dicStack.push "columns" :dic drop dicStack.drop
+  table.subDic dicStack.push "columns" :dic drop dicStack.drop
 ;
 
 : withinColumns

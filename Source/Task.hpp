@@ -854,7 +854,6 @@ namespace Tasks
     static void vTableAnalyze(NNP_Task nnpTask);
     static void vTableAppend(NNP_Task nnpTask);
     static void vTableAppendBuffer(NNP_Task nnpTask);
-    static void vTableColumnDic(NNP_Task nnpTask);
     static void vTableDrop(NNP_Task nnpTask);
     static void vTableDump(NNP_Task nnpTask);
     static void vTableFirstBuffer(NNP_Task nnpTask);
@@ -864,6 +863,7 @@ namespace Tasks
     static void vTableName(NNP_Task nnpTask);
     static void vTableRef(NNP_Task nnpTask);
     static void vTableSpace(NNP_Task nnpTask);
+    static void vTableSubDic(NNP_Task nnpTask);
     static void vTableTruncate(NNP_Task nnpTask);
     
     // task

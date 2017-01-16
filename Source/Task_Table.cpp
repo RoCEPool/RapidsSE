@@ -37,13 +37,13 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.analyze",      &vTableAnalyze,      false);
   vAddPrimitive("table.append",       &vTableAppend,       false);
   vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
-  vAddPrimitive("table.columnDic",    &vTableColumnDic,    false);
   vAddPrimitive("table.drop",         &vTableDrop,         false);
   vAddPrimitive("table.init",         &vTableInit,         false);
   vAddPrimitive("table.insert",       &vTableInsert,       false);
   vAddPrimitive("table.name",         &vTableName,         false);
   vAddPrimitive("table.ref",          &vTableRef,          false);
   vAddPrimitive("table.space",        &vTableSpace,        false);
+  vAddPrimitive("table.subDic",       &vTableSubDic,       false);
   vAddPrimitive("table.truncate",     &vTableTruncate,     false);
 }
 
@@ -119,27 +119,6 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
     
   pTable->vAppendBuffer(iPartition,pRowBuffer);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* table.columnDic -- get table dictionary                                          */
-/*----------------------------------------------------------------------------*/
-void Task::vTableColumnDic(NNP_Task nnpTask)
-{
-ENTRY("vTableColumnDic");
-  
-  Object* pPtrTable;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.columnDic");
-  
-  Table* pTable = _pTable(pPtrTable);
-  ASSERT(CN_TABLE == pTable->eClass());
-  
-  Dic* pDic = pTable->pColumnDic();
-  
-  nnpTask->m_pDataStack->vPush(pDic);
   
   EXIT();
 }
@@ -282,20 +261,22 @@ void Task::vTableRef(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.truncate -- release all rows/buffers in table on data stack          */
+/* table.subDic -- get table sub dictionary                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vTableTruncate(NNP_Task nnpTask)
+void Task::vTableSubDic(NNP_Task nnpTask)
 {
-ENTRY("vTableTruncate");
+  ENTRY("vTableSubDic");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.truncate");
+    THROW_INVALID_DSTACK("table.subDic");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vTruncate();
+  Dic* pDic = pTable->pSubDic();
+  
+  nnpTask->m_pDataStack->vPush(pDic);
   
   EXIT();
 }
@@ -319,6 +300,25 @@ ENTRY("vTableSpace");
   s256 sMag;
   
   nnpTask->m_pDataStack->vPush(iSpace);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table.truncate -- release all rows/buffers in table on data stack          */
+/*----------------------------------------------------------------------------*/
+void Task::vTableTruncate(NNP_Task nnpTask)
+{
+  ENTRY("vTableTruncate");
+  
+  Object* pPtrTable;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
+    THROW_INVALID_DSTACK("table.truncate");
+  
+  Table* pTable = _pTable(pPtrTable);
+  ASSERT(CN_TABLE == pTable->eClass());
+  
+  pTable->vTruncate();
   
   EXIT();
 }

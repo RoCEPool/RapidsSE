@@ -173,13 +173,13 @@ i8 Table::nRowBuffers(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get column dictionary                                                      */
+/* get table sub dictionary                                                   */
 /*----------------------------------------------------------------------------*/
-Dic* Table::pColumnDic(void)
+Dic* Table::pSubDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return &m_xColumnDic;
+  return &m_xSubDic;
 }
 
 /*----------------------------------------------------------------------------*/
