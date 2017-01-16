@@ -307,6 +307,8 @@ tp: removeTable
   dup
 
   find execute
+
+  // truncate all orws
   table.truncate
 
   :forget
