@@ -371,10 +371,24 @@ void RapidsSE::vStartActors(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vSystemStatus(void)
 {
-  if (Region::bTest(gxArguments.m_sRegionName))
-    vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
-  else
-    vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
+  if (Region::bTest(gxArguments.m_sRegionName)) {
+    
+    // attach to teh region
+    bool bResult = Region::bAttach(gxArguments.m_sRegionName);
+    ASSERT(bResult);
+    
+    // get globals
+    vAttachObjects();
+    
+    // check if the Pid in the shm is still alive
+    if ( Process::bTestPid(gpAttachMap->m_iPid) ) {
+      vTrace("RapidsSE instance %s running\n",gxArguments.m_sRegionName.a());
+      return;
+    }
+  }
+  
+  vTrace("RapidsSE instance %s not running\n",gxArguments.m_sRegionName.a());
+
 }
 
 /*----------------------------------------------------------------------------*/
