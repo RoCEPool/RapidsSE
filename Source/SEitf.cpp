@@ -99,10 +99,19 @@ SEitf::~SEitf(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
   SEitf* pSEitf = this;
+  s256 a;
   
-  m_pResponseQueue->vFinalize();
-  Word* pRspQueWord = m_xDic.pFind("rspque");
-  delete pRspQueWord;
+  a = "pid";
+  bool bResult = m_xDic.bForget(a);
+
+  ASSERT(bResult);
+  
+  if (m_pResponseQueue) {
+    m_pResponseQueue->vFinalize();
+    a = "rspque";
+    bool bResult = m_xDic.bForget(a);
+    ASSERT(bResult);    
+  }
   
   gpSEitfList->vRemove(pSEitf);
   

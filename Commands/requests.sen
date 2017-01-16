@@ -541,7 +541,20 @@ ddlLock.grabWrite
 
     checkIsTable not if <ERROR> exit then
 
-    dup execute table.truncate
+    dup execute dup table.truncate
+
+    // forget all words in the columns sub-dictionary of table
+    dup table.Dic
+
+    dic.push
+    "columns" find execute
+
+    forgetAll
+
+    dic.drop
+
+    // forget all words in the table sub-dictionary
+    table.Dic forgetAll
 
     >forget
 

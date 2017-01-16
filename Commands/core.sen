@@ -67,6 +67,25 @@ create
 //    ")" concat                     //
 
 ;
+/*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+: forgetAll ( dic -- )
+
+  dup dic.last not if drop exit then
+
+  dup dic.push
+
+  begin
+
+    dup dic.last word.name find >forget
+
+  dup dic.last not until
+
+   dic.drop
+
+ drop
+;
 
 /*----------------------------------------------------------------------------*/
 /* dump the parameter stack                                                   */
