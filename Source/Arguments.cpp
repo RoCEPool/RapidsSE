@@ -14,9 +14,14 @@ Arguments::Arguments(void)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
+  // calc the number of pool buffers taken by jumbo buffers
+  m_nJumboBuffers = C_JUMBO_COEFFICIENT * System::iCoreCount();
+  m_nJumboTook    = C_JUMBO_RATIO * m_nJumboBuffers;
+  m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
+  
   m_pRegionAddr = C_ADDR_POOL;
   m_sRegionName = "/SE_0";
-  m_iRegionSize = 1_GB * 4 ;
+  m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nPartitions = 1;
   m_iNode       = 0;
   m_nNodes      = 1;
@@ -218,6 +223,9 @@ bool Arguments::bParse(int argc, const char* argv[])
         vTrace("Invalid size argument: --size %s\n",argv[iArg]);
         return false;
       }
+      
+      m_iRegionSize += m_iJumboSize;
+      
       continue;
     }
     

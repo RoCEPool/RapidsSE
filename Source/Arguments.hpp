@@ -50,6 +50,11 @@ namespace StorageEngine
     i8   m_iSleep;      // sleep period for yield (temporary)
     bool  m_bMunged;     // load munged words
     
+    // working
+    i8   m_nJumboBuffers; // number of jumbo buffers
+    i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers
+    i8   m_iJumboSize;    // size of the jumbo heap
+    
     // must be last
     Footer m_xFooter;
     

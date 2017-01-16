@@ -33,26 +33,23 @@ void BufferPool::operator delete(void* pRegion)
 BufferPool::BufferPool(void)
 : Header(CN_BUFFERPOOL)
 {
-  // calc the number of pool buffers taken by jumbo buffers
-  m_nJumboBuffers = C_JUMBO_COEFFICIENT * System::iCoreCount();
-  m_nBuffersTaken = C_JUMBO_RATIO * m_nJumboBuffers;
- 
-  gpBufferPool    = this;
-  m_iRegionSize   = gxArguments.m_iRegionSize;
-  m_iBufferSize   = C_SIZE_POOL_BUFFER;
-  m_iBufferCount  = DIV(m_iRegionSize,C_SIZE_POOL_BUFFER) - m_nBuffersTaken;
+  gpBufferPool = this;
   
-  m_sShmName      = gxArguments.m_sRegionName;
-  m_iShmFD        = 0;
+  m_iRegionSize  = gxArguments.m_iRegionSize;
+  m_iBufferCount = DIV(m_iRegionSize,C_SIZE_POOL_BUFFER) - gxArguments.m_nJumboTook;
+  
+  m_sShmName = gxArguments.m_sRegionName;
+  m_iShmFD   = 0;
+
+  m_pBase  = reinterpret_cast<Buffer*>(this);
+  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
+  m_pJumbo = reinterpret_cast<Buffer*>(
+                                       pvAdd(m_pLimit,-(gxArguments.m_nJumboTook * C_SIZE_POOL_BUFFER)));
+  
   //m_zFreeLock
   m_iAllocCount   = 0;
   m_iFreeCount    = 0;
-  
   m_nFreeHead     = bn::nNil();
-  m_pBase         = reinterpret_cast<Buffer*>(this);
-  m_pLimit        = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
-  m_pJumbo        = reinterpret_cast<Buffer*>(
-                      pvAdd(m_pLimit,-(m_nBuffersTaken * C_SIZE_POOL_BUFFER)));
   
   vInitialise();
   
@@ -175,7 +172,7 @@ i8 BufferPool::iBufferSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return m_iBufferSize;
+  return C_SIZE_POOL_BUFFER;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -213,7 +210,7 @@ void BufferPool::vDump(void)
   vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
          "InUse %lld FreeCount %lld FreeHead %lld\n",
          m_iRegionSize,
-         m_iBufferSize,
+         C_SIZE_POOL_BUFFER,
          m_iBufferCount,
          m_pBase,
          m_pLimit,
@@ -305,7 +302,7 @@ i8 BufferPool::iFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iFreeSpace = m_iFreeCount * m_iBufferSize;
+  i8 iFreeSpace = m_iFreeCount * C_SIZE_POOL_BUFFER;
   
   return iFreeSpace;
 }
@@ -429,7 +426,7 @@ Buffer* BufferPool::pToBuffer(bn nBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iOffset = m_iBufferSize * *nBuffer;
+  i8 iOffset = C_SIZE_POOL_BUFFER * *nBuffer;
   
   Buffer* pBuffer = static_cast<Buffer*>(Memory::pAddBytes(m_pBase,iOffset));
   

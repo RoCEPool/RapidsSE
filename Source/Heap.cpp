@@ -192,6 +192,8 @@ void Heap::vAddFree(FreeChunk* pFreeChunk)
 
   ASSERT(m_bFixedHeap);
   
+  m_iBufferCount++;
+  
   vPushFree(pFreeChunk);
 }
 

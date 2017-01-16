@@ -20,10 +20,7 @@ namespace Pool
     
     // buffer pool characteristics
     i8   m_iRegionSize;   // size of the pool (e.g. 1_TB)
-    i8   m_iBufferSize;   // size of each buffer (e.g. 1_MB)
     i8   m_iBufferCount;  // number of buffers in pool
-    i8   m_nJumboBuffers; // number of jumbo buffers
-    i8   m_nBuffersTaken; // number of pool buffers taken by jumbo buffers
     
     s256 m_sShmName;      // shared memory region name
     int  m_iShmFD;        // shared memory file descriptor

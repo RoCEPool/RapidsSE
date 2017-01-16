@@ -129,7 +129,9 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 {
   ENTRY("vInUseSpace");
   
-  i8 iInUseSpace = gpBufferPool->iRegionSize() - gpBufferPool->iFreeSpace();
+  i8 iInUseSpace = gpBufferPool->iRegionSize()
+                     - gxArguments.m_iJumboSize
+                     - gpBufferPool->iFreeSpace();
   
   nnpTask->m_pDataStack->vPush(iInUseSpace);
   
@@ -177,7 +179,7 @@ void Task::vTotalSpace(NNP_Task nnpTask)
 {
   ENTRY("vTotalSpace");
   
-  i8 iTotalSpace = gpBufferPool->iRegionSize();
+  i8 iTotalSpace = gpBufferPool->iRegionSize() - gxArguments.m_iJumboSize;
   
   nnpTask->m_pDataStack->vPush(iTotalSpace);
   

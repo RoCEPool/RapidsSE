@@ -72,7 +72,7 @@ void BPA::vAnalyze(void)
   vTrace("  Region %s %p\n",gxArguments.m_sRegionName.a(),gpBufferPool);
   vTrace("  RegionSize %lld BufferSize %lld \n",
          gpBufferPool->m_iRegionSize,
-         gpBufferPool->m_iBufferSize);
+         C_SIZE_POOL_BUFFER);
   
   vTrace("\n");
   
@@ -197,7 +197,7 @@ void BPA::vDump(void)
   vTrace("  Region %s %p\n",gxArguments.m_sRegionName.a(),gpBufferPool);
   vTrace("  RegionSize %lld BufferSize %lld \n",
          gpBufferPool->m_iRegionSize,
-         gpBufferPool->m_iBufferSize);
+         C_SIZE_POOL_BUFFER);
   
   vTrace("\n");
   

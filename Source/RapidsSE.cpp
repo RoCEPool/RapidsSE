@@ -223,7 +223,7 @@ void RapidsSE::vCreateObjects(void)
   gpJumboHeap  = new Heap(CN_JUMBOHEAP,  C_SIZE_JUMBO_OBJECT);
   gpMediumHeap = new Heap(CN_MEDIUMHEAP, C_SIZE_MEDIUM_OBJECT);
   gpSmallHeap  = new Heap(CN_SMALLHEAP,  C_SIZE_SMALL_OBJECT);
-  gpMainDic = &gpAttachMap->m_xMainDic;
+  gpMainDic    = &gpAttachMap->m_xMainDic;
   
   vInitJumboHeap();
 }
