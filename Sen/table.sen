@@ -119,7 +119,7 @@ int: queryCount
 
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find execute table.dic dicStack.push
+    find execute table.columnDic dicStack.push
 
     true
 ;

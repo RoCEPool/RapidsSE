@@ -26,8 +26,8 @@ namespace DBobjects
     s32 m_sTableName;
     eTT m_eTableType;
     
-    Dic        m_xDic;
-    //Ring       m_xRing;
+    Dic        m_xColumnDic;
+  //Ring       m_xRing;
     Partitions m_xPartitions;
     
     Atomic m_zRefCount;    // reference count
@@ -48,7 +48,7 @@ namespace DBobjects
     
     void vAnalyze(void);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
-    Dic* pDic(void);
+    Dic* pColumnDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength);
     i8   nRowBuffers(void);
     void vTruncate(void);

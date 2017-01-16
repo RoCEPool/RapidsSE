@@ -37,7 +37,7 @@ void Task::vAddPrimitives_Table(void)
   vAddPrimitive("table.analyze",      &vTableAnalyze,      false);
   vAddPrimitive("table.append",       &vTableAppend,       false);
   vAddPrimitive("table.appendBuffer", &vTableAppendBuffer, false);
-  vAddPrimitive("table.dic",          &vTableDic,          false);
+  vAddPrimitive("table.columnDic",    &vTableColumnDic,    false);
   vAddPrimitive("table.drop",         &vTableDrop,         false);
   vAddPrimitive("table.init",         &vTableInit,         false);
   vAddPrimitive("table.insert",       &vTableInsert,       false);
@@ -124,20 +124,20 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* table.dic -- get table dictionary                                          */
+/* table.columnDic -- get table dictionary                                          */
 /*----------------------------------------------------------------------------*/
-void Task::vTableDic(NNP_Task nnpTask)
+void Task::vTableColumnDic(NNP_Task nnpTask)
 {
-ENTRY("vTableDic");
+ENTRY("vTableColumnDic");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.dic");
+    THROW_INVALID_DSTACK("table.columnDic");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  Dic* pDic = pTable->pDic();
+  Dic* pDic = pTable->pColumnDic();
   
   nnpTask->m_pDataStack->vPush(pDic);
   
