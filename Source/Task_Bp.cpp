@@ -38,14 +38,17 @@ void Task::vAddPrimitives_Bp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  vAddPrimitive("_bp_analyze",      &vBpAnalyze,        false);
-  vAddPrimitive("_bp_dump",         &vBpdump,           false);
+  vAddPrimitive("_bp_analyze",     &vBpAnalyze,        false);
+  vAddPrimitive("_bp_dump",        &vBpDump,           false);
   vAddPrimitive("bp.freeBuffers",  &vFreeBuffers,      false);
   vAddPrimitive("bp.freePercent",  &vFreePercent,      false);
   vAddPrimitive("bp.freeSpace",    &vFreeSpace,        false);
   vAddPrimitive("bp.inUseSpace",   &vInUseSpace,       false);
   vAddPrimitive("bp.snapshot",     &vSnapshot,         false);
   vAddPrimitive("bp.totalSpace",   &vTotalSpace,       false);
+
+  vAddPrimitive("bpa",             &vBpAnalyze,        false);
+  vAddPrimitive("bpd",             &vBpDump,           false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -67,9 +70,9 @@ void Task::vBpAnalyze(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* bp.dump -- dump of objects in the buffer pool                              */
 /*----------------------------------------------------------------------------*/
-void Task::vBpdump(NNP_Task nnpTask)
+void Task::vBpDump(NNP_Task nnpTask)
 {
-  ENTRY("vBpdump");
+  ENTRY("vBpDump");
   
   BPA* pBPA = new BPA;
   
