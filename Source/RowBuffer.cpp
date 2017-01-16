@@ -159,6 +159,24 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append rows of arg buffer into this buffer                                 */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vAppendBuffer(RowBuffer* pArgBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  // copy arg rows into this buffer
+  void* pDst = pvAdd(pDataArea(),iBytesUsed());
+  void* pSrc = pArgBuffer->pDataArea();
+  i8 nBytes  = pArgBuffer->iBytesUsed();
+  Memory::vCopy(pDst,pSrc,nBytes);
+  
+  // inc the number of rows in this buffer
+  i8 nArgRows = pArgBuffer->nRows();
+  m_nRows += nArgRows;
+}
+
+/*----------------------------------------------------------------------------*/
 /* first row                                                                  */
 /*----------------------------------------------------------------------------*/
 Row* RowBuffer::pFirstRow(void)

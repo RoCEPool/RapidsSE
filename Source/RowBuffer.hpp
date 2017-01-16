@@ -34,6 +34,8 @@ namespace DBobjects
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     Row*       pAllocRow(i8 iDataBytes);
+
+    void       vAppendBuffer(RowBuffer* pArgBuffer);
     
     Row*       pFirstRow(void);
     Row*       pNextRow(Row* pCurr);
@@ -51,9 +53,9 @@ namespace DBobjects
     
     bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
-    Object* pDataArea(void);
+    Object*    pDataArea(void);
     
-  private:
+  //private:
     
     i8      iFreeSpace(void);
   };

@@ -266,33 +266,50 @@ bool RowStrand::bExtendStrand(void)
 /*----------------------------------------------------------------------------*/
 /* extend this strand                                                         */
 /*----------------------------------------------------------------------------*/
-bool RowStrand::bExtendStrand(RowBuffer* pRowBuffer)
+bool RowStrand::bExtendStrand(RowBuffer* pNewRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
+  // reached strand length?
   if (m_nRowBuffers >= C_STRAND_LENGTH)
     return false;
-  
+
+  // first buffer in strand?
   if (! m_pFirstBuffer) {
+    
     ASSERT(! m_nRowBuffers);
     ASSERT(! m_pLastBuffer);
     
-    m_pFirstBuffer = pRowBuffer;
-    m_pLastBuffer  = pRowBuffer;
+    m_pFirstBuffer = pNewRowBuffer;
+    m_pLastBuffer  = pNewRowBuffer;
     
     m_nRowBuffers = 1;
+    
+    return true;
   }
-  else {
-    ASSERT(m_nRowBuffers);
-    ASSERT(m_pLastBuffer);
+
+  ASSERT(m_nRowBuffers);
+  ASSERT(m_pLastBuffer);
+
+  // can new buffer be copied into last buffer of this strand?
+  i8 iSrcBytesUsed = pNewRowBuffer->iBytesUsed();
+  i8 iDstBytesFree = m_pLastBuffer->iFreeSpace();
+  if (iSrcBytesUsed <= iDstBytesFree) {
+
+    m_pLastBuffer->vAppendBuffer(pNewRowBuffer);
     
-    m_pLastBuffer->vNextBuffer(pRowBuffer);
-    pRowBuffer->vPrevBuffer(m_pLastBuffer);
+    delete pNewRowBuffer;
     
-    m_pLastBuffer = pRowBuffer;
-    
-    m_nRowBuffers++;
+    return true;
   }
+  
+  // add buffer to end of strand
+  m_pLastBuffer->vNextBuffer(pNewRowBuffer);
+  pNewRowBuffer->vPrevBuffer(m_pLastBuffer);
+  
+  m_pLastBuffer = pNewRowBuffer;
+  
+  m_nRowBuffers++;
   
   return true;
 }
