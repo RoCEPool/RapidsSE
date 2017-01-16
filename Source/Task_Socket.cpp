@@ -275,6 +275,10 @@ void Task::vSocketSend(NNP_Task nnpTask)
     bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
     
     if ( ! bResult ) {
+      
+      // delete the rowbuffer
+      delete pRowBuffer;
+      
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       nnpTask->m_pDataStack->vPush((i8)0);
       
@@ -288,12 +292,19 @@ void Task::vSocketSend(NNP_Task nnpTask)
     bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
     
     if ( ! bResult ) {
+      
+      // delete the rowbuffer
+      delete pRowBuffer;
+      
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       nnpTask->m_pDataStack->vPush((i8)0);
       
       //goto exit;
       EXIT();
     }
+    
+    // delete the rowbuffer
+    delete pRowBuffer;
     
   }
   
