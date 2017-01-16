@@ -359,6 +359,7 @@ void Task::vAddConstants(void)
   vAddConstant("mediumbuffersize", C_SIZE_MEDIUM_OBJECT);
   vAddConstant("smallbuffersize",  C_SIZE_SMALL_OBJECT);
   vAddConstant("magic",            MAGIC);
+  
   vAddConstant("args.bgtasks",     gxArguments.m_bBgTasks);
   vAddConstant("args.config",      gxArguments.m_bConfig);
   vAddConstant("args.munged",      gxArguments.m_bMunged);
@@ -370,6 +371,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.sleep",       gxArguments.m_iSleep);
   vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose",     gxArguments.m_bVerbose);
+  vAddConstant("args.sen",         gxArguments.m_sSen.a());
   
   vAddConstant("true",    (i8)1);
   vAddConstant("false",   (i8)0);
@@ -928,6 +930,7 @@ void Task::vAddRoutines(void)
   sDefinition =
   ": include-file"
   "  input.push"
+  "  args.sen str.prepend"
   "  input.open"
   "  docol"
   "  input.close"

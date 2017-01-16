@@ -25,8 +25,10 @@ Arguments::Arguments(void)
   
 #ifdef __APPLE__
   m_sCommands   = "../../../../Commands";
+  m_sSen        = "../Commands/";
 #else
   m_sCommands   = "../../Commands";
+  m_sSen        = "../Commands/";
 #endif
   
   
@@ -117,6 +119,12 @@ bool Arguments::bParse(int argc, const char* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--commands",argv[iArg],C_NO_CASE)) {
       m_sCommands = argv[++iArg];
+      continue;
+    }
+    
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--sen",argv[iArg],C_NO_CASE)) {
+      m_sSen = argv[++iArg];
       continue;
     }
     
@@ -405,8 +413,11 @@ void Arguments::vPrint(void)
   vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
   vTrace("  --port %lld\n",m_iPort);
   vTrace("  --commands %s\n",m_sCommands.a());
-
+//#ifdef _DEBUG
+  vTrace("  --sen %s\n",m_sSen.a());
+//#endif
   if (m_bMunged) vTrace("  --munged\n");
+  
 
 }
 

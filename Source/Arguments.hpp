@@ -21,6 +21,7 @@ namespace StorageEngine
     i8    m_iPort;       // port number
     bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
+    s256  m_sSen;        // sen dir
     
     // commands
     s256 m_sCommand;    // command to run
