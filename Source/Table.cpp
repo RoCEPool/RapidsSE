@@ -119,14 +119,16 @@ void Table::vAnalyze(void)
     while (pStrand) {
       nStrands++;
       nBuffers += pStrand->nRowBuffers();
+      nRows += pStrand->nRows();
       pStrand = pStrand->pNextStrand();
     }
-    vTrace("  partition %2lld: %lld strands; %lld buffers; %lld rows\n",
+    vTrace("  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
            iPartition,nStrands,nBuffers,nRows);
+    nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
     nStrandsTotal += nStrands;
   }
-  vTrace("              total: %lld strands; %lld buffers; %lld rows\n",
+  vTrace("        total: %3lld strands; %5lld buffers; %lld rows\n",
          nStrandsTotal,nBuffersTotal,nRowsTotal);
 }
 

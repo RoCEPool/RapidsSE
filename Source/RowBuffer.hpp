@@ -15,6 +15,7 @@ namespace DBobjects
   {
   private:
     Object*    m_pFreeSpace;  // ptr to free space within this buffer
+    i8         m_nRows;       // number of rows in this buffer
     RowBuffer* m_pPrevBuffer; // prev buffer
     RowBuffer* m_pNextBuffer; // next buffer
     // ..data..
@@ -44,6 +45,8 @@ namespace DBobjects
     void       vPrevBuffer(RowBuffer* pPrevBuffer);
     
     i8         iBytesUsed(void);
+    i8         nRows(void);
+    void       vRowCount(void);
     void       vCopyBuffer(RowBuffer* pFromBuffer);
     
     bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);

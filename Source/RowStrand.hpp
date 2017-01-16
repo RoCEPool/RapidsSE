@@ -35,6 +35,7 @@ namespace DBobjects
     
     bool bAppendBuffer(RowBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
+    i8   nRows(void);
     i8   nRowBuffers(void);
     
     RowBuffer* pFirstBuffer(void);

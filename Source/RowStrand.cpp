@@ -128,7 +128,23 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row buffers                                                            */
+/* get number of rows in strand                                               */
+/*----------------------------------------------------------------------------*/
+i8 RowStrand::nRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
+  
+  i8 nRows = 0;
+  for (RowBuffer* pRowBuffer = m_pFirstBuffer;
+       pRowBuffer;
+       pRowBuffer = pRowBuffer->pNextBuffer())
+    nRows += pRowBuffer->nRows();
+  
+  return nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of row buffers                                                  */
 /*----------------------------------------------------------------------------*/
 i8 RowStrand::nRowBuffers(void)
 {

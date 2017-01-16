@@ -371,6 +371,7 @@ void Task::vSocketRecv(NNP_Task nnpTask)
     if ( ! bResult )
       THROW("Unable to recvFrom socket: Errno %d!", xSysCall.iError());
     
+    pRowBuffer->vRowCount();
     
     //******************************************************************
     // set rowBuffer in valset

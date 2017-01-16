@@ -58,6 +58,7 @@ RowBuffer::RowBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
   m_pFreeSpace  = pDataArea();
+  m_nRows       = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
@@ -75,6 +76,7 @@ RowBuffer::RowBuffer(i8 iDataBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   m_pFreeSpace  = static_cast<Object*>(pvAdd(pDataArea(),iDataBytes));
+  m_nRows       = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
@@ -148,6 +150,8 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
   m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,iBytes));
   
   new(pRow) Row(iDataBytes);
+  
+  m_nRows++;
     
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   
@@ -239,6 +243,30 @@ i8 RowBuffer::iBytesUsed(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of rows in buffer                                               */
+/*----------------------------------------------------------------------------*/
+i8 RowBuffer::nRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return m_nRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row count                                                              */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vRowCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_nRows = 0;
+  for (Row* pRow = pFirstRow(); pRow; pRow = pNextRow(pRow))
+    m_nRows++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy given buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
@@ -252,6 +280,8 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
   char* pRevised = pcAdd(pDataArea(),iBytes);
   
   m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
+
+  vRowCount();
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
 }
