@@ -11,7 +11,7 @@
 
   checkAddColumn not if <NIP+ERROR> exit then
 
-  ~addColumn ( ) assert.stack_0
+  addColumn ( ) assert.stack_0
 
   <OK>
 ;
