@@ -401,6 +401,26 @@ true ' CASE word.immediate!
 ;
 
 /*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+: forgetAll ( dic -- )
+
+  dup dic.lastWord not if drop exit then
+
+  dup dicStack.push
+
+  begin
+
+    dup dic.lastWord word.name :forget
+
+  dup dic.lastWord not until
+
+  dicStack.drop
+
+  drop
+;
+
+/*----------------------------------------------------------------------------*/
 /* test type of top stack value                                               */
 /*----------------------------------------------------------------------------*/
 : isType ( CN_ -- bool )

@@ -304,14 +304,25 @@ tp: makingTable
 
 tp: removeTable
 
-  dup
+//traceon
 
-  find execute
+  dup find execute ( "<tableNm>" table )
 
-  // truncate all orws
-  table.truncate
+  // drop all rows
+  dup table.truncate ( "<tableNm>" table )
+
+  // forget all words in the columns sub-dictionary of table
+  dup table.columnDic
+  dicStack.push
+    "columns" find execute forgetAll
+  dicStack.drop
+
+  // forget all words in the table sub-dictionary
+  table.columnDic forgetAll
 
   :forget
+
+//traceoff
 
   true <SUCCESS_RESULT>
 ;
