@@ -106,6 +106,28 @@ void Table::vAnalyze(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   vTrace("Analysis of Table %s\n",m_sTableName.a());
+
+  i8 nRowsTotal = 0;
+  i8 nBuffersTotal = 0;
+  i8 nStrandsTotal = 0;
+  
+  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+    RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
+    i8 nRows = 0;
+    i8 nBuffers = 0;
+    i8 nStrands = 0;
+    while (pStrand) {
+      nStrands++;
+      nBuffers += pStrand->nRowBuffers();
+      pStrand = pStrand->pNextStrand();
+    }
+    vTrace("  partition %2lld: %lld strands; %lld buffers; %lld rows\n",
+           iPartition,nStrands,nBuffers,nRows);
+    nBuffersTotal += nBuffers;
+    nStrandsTotal += nStrands;
+  }
+  vTrace("              total: %lld strands; %lld buffers; %lld rows\n",
+         nStrandsTotal,nBuffersTotal,nRowsTotal);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +148,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get number of row buffers in this table                                    */
 /*----------------------------------------------------------------------------*/
-i8 Table::iRowBuffers(void)
+i8 Table::nRowBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -135,7 +157,7 @@ i8 Table::iRowBuffers(void)
   for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
     RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
     while (pStrand) {
-      iBuffers += pStrand->iRowBuffers();
+      iBuffers += pStrand->nRowBuffers();
       pStrand = pStrand->pNextStrand();
     }
   }

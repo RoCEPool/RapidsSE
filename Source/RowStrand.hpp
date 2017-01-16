@@ -14,7 +14,7 @@ namespace DBobjects
     static const i8 C_STRAND_LENGTH = 16;
     
     Lock       m_zLock;        // lock on this strand (all buffers)
-    i8         m_iRowBuffers;  // number of row buffers
+    i8         m_nRowBuffers;  // number of row buffers
     RowBuffer* m_pFirstBuffer; // first buffer in list
     RowBuffer* m_pLastBuffer;  // last buffer in list
     
@@ -35,7 +35,7 @@ namespace DBobjects
     
     bool bAppendBuffer(RowBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
-    i8   iRowBuffers(void);
+    i8   nRowBuffers(void);
     
     RowBuffer* pFirstBuffer(void);
     RowBuffer* pLastBuffer(void);

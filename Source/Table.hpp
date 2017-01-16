@@ -50,7 +50,7 @@ namespace DBobjects
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     Dic* pDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength);
-    i8   iRowBuffers(void);
+    i8   nRowBuffers(void);
     void vTruncate(void);
         
     char* pTableName(void);

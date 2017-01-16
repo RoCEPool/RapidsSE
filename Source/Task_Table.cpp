@@ -314,8 +314,8 @@ ENTRY("vTableSpace");
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  i8 iBuffers = pTable->iRowBuffers();
-  i8 iSpace   = iBuffers * C_SIZE_POOL_BUFFER;
+  i8 nBuffers = pTable->nRowBuffers();
+  i8 iSpace   = nBuffers * C_SIZE_POOL_BUFFER;
   s256 sMag;
   
   nnpTask->m_pDataStack->vPush(iSpace);

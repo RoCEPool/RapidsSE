@@ -35,7 +35,7 @@ RowStrand::RowStrand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
   m_zLock.vCheckInit();
-  m_iRowBuffers  = 0;
+  m_nRowBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
   
@@ -66,7 +66,7 @@ void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
   RowStrand* pRowStrand = reinterpret_cast<RowStrand*>(pObject);
   
   vTrace("%sRowStrand %p:\n", pTab, pRowStrand);
-  vTrace("%s  rowBuffers %lld\n", pTab, pRowStrand->m_iRowBuffers);
+  vTrace("%s  rowBuffers %lld\n", pTab, pRowStrand->m_nRowBuffers);
   vTrace("%s  firstBuffer %p\n", pTab, pRowStrand->m_pFirstBuffer);
   vTrace("%s  nextBuffer %p\n", pTab, pRowStrand->m_pLastBuffer);
   vTrace("%s  prevStrand %p\n", pTab, pRowStrand->m_pPrevStrand);
@@ -130,11 +130,11 @@ bool RowStrand::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* get row buffers                                                            */
 /*----------------------------------------------------------------------------*/
-i8 RowStrand::iRowBuffers(void)
+i8 RowStrand::nRowBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
 
-  return m_iRowBuffers;
+  return m_nRowBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -214,7 +214,7 @@ void RowStrand::vTruncate(void)
     delete pRowBufferTBD;
   }
   
-  m_iRowBuffers  = 0;
+  m_nRowBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;
   
@@ -234,7 +234,7 @@ bool RowStrand::bExtendStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
-  if (m_iRowBuffers >= C_STRAND_LENGTH)
+  if (m_nRowBuffers >= C_STRAND_LENGTH)
     return false;
 
   RowBuffer* pNewBuffer = RowBuffer::pNewRowBuffer();
@@ -254,20 +254,20 @@ bool RowStrand::bExtendStrand(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
-  if (m_iRowBuffers >= C_STRAND_LENGTH)
+  if (m_nRowBuffers >= C_STRAND_LENGTH)
     return false;
   
   if (! m_pFirstBuffer) {
-    ASSERT(! m_iRowBuffers);
+    ASSERT(! m_nRowBuffers);
     ASSERT(! m_pLastBuffer);
     
     m_pFirstBuffer = pRowBuffer;
     m_pLastBuffer  = pRowBuffer;
     
-    m_iRowBuffers = 1;
+    m_nRowBuffers = 1;
   }
   else {
-    ASSERT(m_iRowBuffers);
+    ASSERT(m_nRowBuffers);
     ASSERT(m_pLastBuffer);
     
     m_pLastBuffer->vNextBuffer(pRowBuffer);
@@ -275,7 +275,7 @@ bool RowStrand::bExtendStrand(RowBuffer* pRowBuffer)
     
     m_pLastBuffer = pRowBuffer;
     
-    m_iRowBuffers++;
+    m_nRowBuffers++;
   }
   
   return true;
