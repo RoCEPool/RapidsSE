@@ -55,7 +55,7 @@ void BPA::vAnalyze(void)
     iCountObjects[index] = 0;
   
   bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->m_iBufferCount - 1;
+  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
@@ -71,7 +71,7 @@ void BPA::vAnalyze(void)
   
   vTrace("  Region %s %p\n",gxArguments.m_sRegionName.a(),gpBufferPool);
   vTrace("  RegionSize %lld BufferSize %lld \n",
-         gpBufferPool->m_iRegionSize,
+         gxArguments.m_iRegionSize,
          C_SIZE_POOL_BUFFER);
   
   vTrace("\n");
@@ -79,7 +79,7 @@ void BPA::vAnalyze(void)
   vTrace("Epoch: %lld\n", gpAttachMap->m_iEpoch);
   
   vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
-         gpBufferPool->m_iBufferCount,
+         gpBufferPool->m_nBuffers,
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
@@ -183,7 +183,7 @@ void BPA::vDump(void)
     iCountObjects[index] = 0;
   
   bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->m_iBufferCount - 1;
+  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
   
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
@@ -196,13 +196,13 @@ void BPA::vDump(void)
   
   vTrace("  Region %s %p\n",gxArguments.m_sRegionName.a(),gpBufferPool);
   vTrace("  RegionSize %lld BufferSize %lld \n",
-         gpBufferPool->m_iRegionSize,
+         gxArguments.m_iRegionSize,
          C_SIZE_POOL_BUFFER);
   
   vTrace("\n");
   
   vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
-         gpBufferPool->m_iBufferCount,
+         gpBufferPool->m_nBuffers,
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );

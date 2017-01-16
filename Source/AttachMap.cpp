@@ -100,7 +100,7 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vSet(&m_xSince);
   m_xTime.vUTC(m_sUTC);
   
-  m_iRegionSize = gpBufferPool->iRegionSize();
+  m_iRegionSize = gxArguments.m_iRegionSize;
   m_iPartitions = gxArguments.m_nPartitions;
   m_iNodes      = gxArguments.m_nNodes;
   m_iEpoch      = 0;

@@ -129,7 +129,7 @@ void Task::vInUseSpace(NNP_Task nnpTask)
 {
   ENTRY("vInUseSpace");
   
-  i8 iInUseSpace = gpBufferPool->iRegionSize()
+  i8 iInUseSpace = gxArguments.m_iRegionSize
                      - gxArguments.m_iJumboSize
                      - gpBufferPool->iFreeSpace();
   
@@ -150,7 +150,7 @@ void Task::vSnapshot(NNP_Task nnpTask)
     iCountObjects[index] = 0;
   
   bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->iBufferCount() - 1;
+  bn nBufferCount = gpBufferPool->nBuffers() - 1;
   
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
@@ -179,7 +179,7 @@ void Task::vTotalSpace(NNP_Task nnpTask)
 {
   ENTRY("vTotalSpace");
   
-  i8 iTotalSpace = gpBufferPool->iRegionSize() - gxArguments.m_iJumboSize;
+  i8 iTotalSpace = gxArguments.m_iRegionSize - gxArguments.m_iJumboSize;
   
   nnpTask->m_pDataStack->vPush(iTotalSpace);
   

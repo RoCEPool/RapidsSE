@@ -17,23 +17,19 @@ namespace Pool
     friend class BPA;
     
   private:
-    
-    // buffer pool characteristics
-    i8   m_iRegionSize;   // size of the pool (e.g. 1_TB)
-    i8   m_iBufferCount;  // number of buffers in pool
-    
-    s256 m_sShmName;      // shared memory region name
-    int  m_iShmFD;        // shared memory file descriptor
+    i8      m_nBuffers; // number of buffers in pool
+    Buffer* m_pBase;    // starting address of pool (large section)
+    Buffer* m_pJumbo;   // starting address of jumbo section
+    Buffer* m_pLimit;   // address after pool
 
-    Buffer* m_pBase;      // starting address of pool (large section)
-    Buffer* m_pJumbo;     // starting address of jumbo section
-    Buffer* m_pLimit;     // address after pool
+    s256 m_sShmName;    // shared memory region name
+    int  m_iShmFD;      // shared memory file descriptor
     
     // free chain
-    Lock m_zFreeLock;     // lock over free chain
-    i8   m_iAllocCount;   // number of buffers currently in use
-    i8   m_iFreeCount;    // number of buffers in free chain
-    bn   m_nFreeHead;     // head of free chain
+    Lock m_zFreeLock;   // lock over free chain
+    i8   m_iAllocCount; //   number of buffers currently in use
+    i8   m_iFreeCount;  //   number of buffers in free chain
+    bn   m_nFreeHead;   //   head of free chain
     
     // must be last
     Footer m_xFooter;
@@ -46,7 +42,7 @@ namespace Pool
     ~BufferPool(void);
     
     Buffer* pAllocBuffer(void);
-    i8   iBufferCount(void);
+    i8   nBuffers(void);
     bn   nBufferFirst(void);
     bn   nBufferLast(void);
     bn   nBufferNext(bn nBuffer);
@@ -62,7 +58,6 @@ namespace Pool
     bool bHasDataSpace(void);
     void vInitialise(void);
     Buffer* pNextJumbo(Buffer* pPrev);
-    i8   iRegionSize(void);
     Buffer* pToBuffer(bn nBuffer);
     BufferFree* pToBufferFree(bn nBuffer);
     BufferFree* pToBufferFree(Buffer* pBuffer);

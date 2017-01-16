@@ -35,16 +35,17 @@ BufferPool::BufferPool(void)
 {
   gpBufferPool = this;
   
-  m_iRegionSize  = gxArguments.m_iRegionSize;
-  m_iBufferCount = DIV(m_iRegionSize,C_SIZE_POOL_BUFFER) - gxArguments.m_nJumboTook;
+  m_nBuffers = DIV(gxArguments.m_iRegionSize,C_SIZE_POOL_BUFFER)
+                 - gxArguments.m_nJumboTook;
+  
+
+  m_pBase  = reinterpret_cast<Buffer*>(this);
+  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,gxArguments.m_iRegionSize));
+  m_pJumbo = reinterpret_cast<Buffer*>(
+                                       pvAdd(m_pLimit,-(gxArguments.m_nJumboTook * C_SIZE_POOL_BUFFER)));
   
   m_sShmName = gxArguments.m_sRegionName;
   m_iShmFD   = 0;
-
-  m_pBase  = reinterpret_cast<Buffer*>(this);
-  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,m_iRegionSize));
-  m_pJumbo = reinterpret_cast<Buffer*>(
-                                       pvAdd(m_pLimit,-(gxArguments.m_nJumboTook * C_SIZE_POOL_BUFFER)));
   
   //m_zFreeLock
   m_iAllocCount   = 0;
@@ -108,11 +109,11 @@ Buffer* BufferPool::pAllocBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer count                                                           */
 /*----------------------------------------------------------------------------*/
-i8 BufferPool::iBufferCount(void)
+i8 BufferPool::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return m_iBufferCount;
+  return m_nBuffers;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +133,7 @@ bn BufferPool::nBufferLast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  return m_iBufferCount - 1;
+  return m_nBuffers - 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +196,7 @@ bool BufferPool::bDetachPool(void)
   
   bool bResult = Shm::bClose(m_iShmFD,xSysCall);
   
-  bResult = Shm::bUnmap(m_pBase,m_iRegionSize,xSysCall);
+  bResult = Shm::bUnmap(m_pBase,gxArguments.m_iRegionSize,xSysCall);
   
   return bResult;
 }
@@ -209,9 +210,9 @@ void BufferPool::vDump(void)
   
   vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
          "InUse %lld FreeCount %lld FreeHead %lld\n",
-         m_iRegionSize,
+         gxArguments.m_iRegionSize,
          C_SIZE_POOL_BUFFER,
-         m_iBufferCount,
+         m_nBuffers,
          m_pBase,
          m_pLimit,
          m_iAllocCount,
@@ -290,7 +291,7 @@ i8 BufferPool::iFreePercent(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
-  i8 iFreePercent = DIV(iFreeSpace() * 100,iRegionSize());
+  i8 iFreePercent = DIV(iFreeSpace() * 100,gxArguments.m_iRegionSize);
   
   return iFreePercent;
 }
@@ -329,7 +330,7 @@ void BufferPool::vInitialise(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
   m_iAllocCount = 0;
-  //m_iFreeCount  = m_iBufferCount;
+  //m_iFreeCount  = m_nBuffers;
   m_iFreeCount  = 0;
   m_nFreeHead   = nBufferFirst();
   
@@ -407,16 +408,6 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
   
   //vTrace("Jumbo %p %lld\n",pJumbo,iSub(pJumbo,pPrev));
   return pJumbo;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size in bytes of pool                                                  */
-/*----------------------------------------------------------------------------*/
-i8 BufferPool::iRegionSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  return m_iRegionSize;
 }
 
 /*----------------------------------------------------------------------------*/
