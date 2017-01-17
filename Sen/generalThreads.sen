@@ -33,8 +33,6 @@
 /*----------------------------------------------------------------------------*/
 args.regionSize noGeneralThreads constant N_GENERAL_THREADS
 
-N_GENERAL_THREADS "General threads: %v" str.format .
-
 /*----------------------------------------------------------------------------*/
 /* create and spawn the general processing threads                            */
 /*----------------------------------------------------------------------------*/
@@ -48,6 +46,10 @@ N_GENERAL_THREADS "General threads: %v" str.format .
 : >genThread  ( i -- w ) >genThreadNm  find execute ;
 
 : generalThreadsStart
+
+  args.progress if
+    N_GENERAL_THREADS "General threads: %v" str.format .
+  then
 
   args.verbose if "N_GENERAL_THREADS " .put N_GENERAL_THREADS .put .\n then
 

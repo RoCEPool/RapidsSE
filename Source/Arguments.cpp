@@ -52,7 +52,7 @@ Arguments::Arguments(void)
   m_bConfig     = true;
   m_sFolder     = "";
   m_bHugePages  = false;
-  m_bProgress   = true;
+  m_bProgress   = false;
   m_bRestart    = true;
   m_bTouch      = false;
   m_bTracing    = false;
