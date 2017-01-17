@@ -81,7 +81,7 @@ ENTRY("vTaskSetDump");
   
   TaskSet* pTaskSet = static_cast<TaskSet*>(pObject);
   
-  pTaskSet->vDump();
+  pTaskSet->vContentDump();
   
   EXIT();
 }

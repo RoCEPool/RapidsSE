@@ -26,7 +26,7 @@ namespace Tasks
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void vDump(void);
+    void vContentDump(void);
     
     Footer* pFooter(void);
   };

@@ -79,7 +79,7 @@ TaskList::~TaskList(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void TaskList::vDump(void)
+void TaskList::vContentDump(void)
 {
   vDump(CN_TASKLIST, this, pSingleTab());
 }
@@ -94,7 +94,7 @@ void TaskList::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   TaskList* pTaskList = reinterpret_cast<TaskList*>(pObject);
   
-  pTaskList->List_t<Task>::vDump("TaskList::", pTab);
+  pTaskList->List_t<Task>::vContentDump("TaskList::", pTab);
 }
 
 /*----------------------------------------------------------------------------*/

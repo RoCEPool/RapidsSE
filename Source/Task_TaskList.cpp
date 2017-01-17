@@ -90,7 +90,7 @@ ENTRY("vTaskListDump");
   TaskList* pTaskList = _pTaskList(pPtrTaskList);
   ASSERT(CN_TASKLIST == pTaskList->eClass());
  
-  pTaskList->vDump();
+  pTaskList->vContentDump();
   
   EXIT();
 }

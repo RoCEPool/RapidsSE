@@ -88,9 +88,9 @@ void TaskSet::vAppend(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump this sequence                                                         */
+/* dump this task set                                                         */
 /*----------------------------------------------------------------------------*/
-void TaskSet::vDump(void)
+void TaskSet::vContentDump(void)
 {
   _poolAddress_(this);
   

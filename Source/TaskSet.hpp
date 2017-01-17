@@ -28,7 +28,7 @@ namespace Tasks
     ~TaskSet(void);
     
     void  vAppend(NNP_Task nnpTask);
-    void  vDump(void);
+    void  vContentDump(void);
     NP_Task npPop(void);
     void  vRemove(NNP_Task nnpTask);
     

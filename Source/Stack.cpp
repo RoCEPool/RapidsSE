@@ -802,7 +802,7 @@ void Stack::vDiscard(void)
 /*----------------------------------------------------------------------------*/
 /* stk -- dump the data stack                                                 */
 /*----------------------------------------------------------------------------*/
-void Stack::vDump(const char* aPrefix, const char* aTitle)
+void Stack::vContentDump(const char* aPrefix, const char* aTitle)
 {
   vTrace("[%s]%s:\n",aPrefix,aTitle);
   
