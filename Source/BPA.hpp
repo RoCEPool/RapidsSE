@@ -25,8 +25,12 @@ namespace Pool
     
     void vBufferDump(Buffer* pBuffer);
     void vHeapDump(Heap* pBuffer);
+    void vObjectList(void);
+    void vObjectSummary(void);
     void vPoolAnalyze(void);
     void vPoolDump(void);
+    void vRegionSummary(void);
+    void vResourceSummary(void);
     
     Footer* pFooter(void);
   };

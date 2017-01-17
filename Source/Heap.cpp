@@ -264,15 +264,18 @@ Object* Heap::pAllocObject(eCN eAllocClass, i8 iMaxSize)
 /*----------------------------------------------------------------------------*/
 /* analyse the objects in the heap                                            */
 /*----------------------------------------------------------------------------*/
-void Heap::vAnalyse(i8 xCounts[])
+void Heap::vAnalyse(i8 iCounts[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    iCounts[index] = 0;
   
   m_zLock.vGrabWrite();
   
   HeapBuffer* pHeapBuffer = m_pFirstBuffer;
   while (pHeapBuffer) {
-    pHeapBuffer->vAnalyse(m_iObjectSize,xCounts);
+    pHeapBuffer->vAnalyse(m_iObjectSize,iCounts);
     pHeapBuffer = pHeapBuffer->pNextBuffer();
   }
   

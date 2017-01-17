@@ -66,7 +66,7 @@ void BPA::vBufferDump(Buffer* pBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump this heap buffer                                                      */
+/* dump all objects in given heap                                             */
 /*----------------------------------------------------------------------------*/
 void BPA::vHeapDump(Heap* pHeap)
 {
@@ -76,7 +76,7 @@ void BPA::vHeapDump(Heap* pHeap)
   
   vTrace("\n");
   vTrace("%s%s Heap:\n",
-         pTab(),
+         pSingleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
   pHeap->vGrabLock();
@@ -103,7 +103,7 @@ void BPA::vHeapDump(Heap* pHeap)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-16s: ",pDoubleTab(),pHeap,pCN[eClass]);
+      vTrace("%s%p %-12s: ",pDoubleTab(),pHeap,pCN[eClass]);
 
       (pDumpFun)(eClass, pChunk, pDoubleTab());
     }
@@ -113,20 +113,46 @@ void BPA::vHeapDump(Heap* pHeap)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyze the buffer pool                                                    */
+/* list all objects                                                           */
 /*----------------------------------------------------------------------------*/
-void BPA::vPoolAnalyze(void)
+void BPA::vObjectList(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
-  // get magnitudes of the various buffer pools
-  s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall.a());
-  s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium.a());
-  s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge.a());
-  s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.a());
+  Buffer* pMediumHeap = nullptr;
+  Buffer* pSmallHeap  = nullptr;
   
-  // increment the epoch
-  gpAttachMap->m_iEpoch++;
+  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
+  for (bn nBuffer = gpBufferPool->nBufferFirst();
+       nBuffer <= nBufferCount;
+       nBuffer++) {
+    
+    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    
+    if (CN_MEDIUMHEAP == pBuffer->eClass())
+      pMediumHeap = pBuffer;
+    
+    if (CN_SMALLHEAP == pBuffer->eClass())
+      pSmallHeap = pBuffer;
+    
+    vBufferDump(pBuffer);
+  }
+  
+  if (pMediumHeap)
+    vHeapDump(reinterpret_cast<Heap*>(pMediumHeap));
+  
+  if (pSmallHeap)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallHeap));
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* summary report on objects in the pool and heaps                            */
+/*----------------------------------------------------------------------------*/
+void BPA::vObjectSummary(void)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++)
@@ -144,19 +170,131 @@ void BPA::vPoolAnalyze(void)
   }
   
   vTrace("\n");
+  vTrace("  BufferPool Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+  
+  gpSmallHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n");
+  vTrace("  SmallHeap Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+  
+  gpMediumHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n");
+  vTrace("  MediumHeap Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+  
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    iCountObjects[index] = 0;
+  
+  gpJumboHeap->vAnalyse(iCountObjects);
+  
+  vTrace("\n");
+  vTrace("  JumboHeap Objects:\n");
+  for (i8 index = 0; index < CN_ENUMS; index++) {
+    eCN eClass = (eCN)index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+  }
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze the buffer pool                                                    */
+/*----------------------------------------------------------------------------*/
+void BPA::vPoolAnalyze(void)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  // increment the epoch
+  gpAttachMap->m_iEpoch++;
+  
+  vTrace("\n");
   vTrace("****************************************************************\n");
   vTrace("* Buffer Pool Analysis                                         *\n");
   vTrace("****************************************************************\n");
+  
+  vRegionSummary();
+  vObjectSummary();
+  vResourceSummary();
+  
   vTrace("\n");
   
-  vTrace("  Region %s %p regionSize %lld\n",
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the buffer pool objects                                               */
+/*----------------------------------------------------------------------------*/
+void BPA::vPoolDump(void)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  // increment the epoch
+  gpAttachMap->m_iEpoch++;
+  
+  vTrace("\n");
+  vTrace("****************************************************************\n");
+  vTrace("* Buffer Pool Dump                                             *\n");
+  vTrace("****************************************************************\n");
+  
+  vRegionSummary();
+  vObjectSummary();
+  vObjectList();
+  vResourceSummary();
+  
+  vTrace("\n");
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* report on shm region                                                       */
+/*----------------------------------------------------------------------------*/
+void BPA::vRegionSummary(void)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  // get magnitudes of the various buffer pools
+  s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall.a());
+  s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium.a());
+  s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge.a());
+  s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.a());
+  
+  vTrace("\n");
+  vTrace("  Region %s %p size %lldB epoch %lld\n",
          gxArguments.m_sRegionName.a(),
          gpBufferPool,
-         gxArguments.m_iRegionSize);
+         gxArguments.m_iRegionSize,
+         gpAttachMap->m_iEpoch);
   
   vTrace("\n");
-  
-  vTrace("Epoch: %lld\n", gpAttachMap->m_iEpoch);
   
   vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n",
          sMagLarge.a(),
@@ -183,169 +321,25 @@ void BPA::vPoolAnalyze(void)
          gpJumboHeap->iAllocCount(),
          gpJumboHeap->iFreeCount());
   
-  vTrace("\n");
-  vTrace("  BufferPool Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
-  }
-  
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
-  
-  gpSmallHeap->vAnalyse(iCountObjects);
-  
-  vTrace("\n");
-  vTrace("  SmallHeap Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
-  }
-  
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
-  
-  gpMediumHeap->vAnalyse(iCountObjects);
-  
-  vTrace("\n");
-  vTrace("  MediumHeap Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
-  }
-  
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
-  
-  gpJumboHeap->vAnalyse(iCountObjects);
-  
-  vTrace("\n");
-  vTrace("  JumboHeap Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %16s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
-  }
-  
-  vTrace("\n");
-  vTrace("****************************************************************\n");
-  vTrace(" dir %lld file %lld shm %lld socket %lld thread %lld\n",
-         *gzDirOpenCount,
-         *gzFileOpenCount,
-         *gzShmOpenCount,
-         *gzSocketOpenCount,
-         *gzThreadOpenCount);
-  vTrace("****************************************************************\n");
-  vTrace("\n");
-  
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump the buffer pool objects                                               */
+/* summarize resource usage                                                   */
 /*----------------------------------------------------------------------------*/
-void BPA::vPoolDump(void)
+void BPA::vResourceSummary(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   vTrace("\n");
   vTrace("****************************************************************\n");
-  vTrace("* Buffer Pool Dump                                             *\n");
-  vTrace("****************************************************************\n");
-  vTrace("\n");
-  
-  i8 iCountObjects[CN_ENUMS];
-  for (i8 index = 0; index < CN_ENUMS; index++)
-    iCountObjects[index] = 0;
-  
-  bn nBuffer = 0;
-  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
-  
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
-    
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-    
-    iCountObjects[pBuffer->eClass()]++;
-  }
-  
-  vTrace("  Region %s %p regionSize %lld \n",
-         gxArguments.m_sRegionName.a(),
-         gpBufferPool,
-         gxArguments.m_iRegionSize);
-  
-  vTrace("\n");
-  
-  vTrace("  BufferPool buffers %-6lld alloc %-6lld free %-6lld \n",
-         gpBufferPool->m_nBuffers,
-         gpBufferPool->m_iAllocCount,
-         gpBufferPool->m_iFreeCount
-         );
-  
-  vTrace("\n");
-  vTrace("  BufferPool Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("%s %s %-6lld \n", pSingleTab(), pCN[eClass], iCountObjects[eClass]);
-  }
-  vTrace("\n");
-  
-  Buffer* pMediumHeap = nullptr;
-  Buffer* pSmallHeap  = nullptr;
-  
-  for (bn nBuffer = gpBufferPool->nBufferFirst();
-       nBuffer <= nBufferCount;
-       nBuffer++) {
-
-    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-    
-    if (CN_MEDIUMHEAP == pBuffer->eClass())
-      pMediumHeap = pBuffer;
-
-    if (CN_SMALLHEAP == pBuffer->eClass())
-      pSmallHeap = pBuffer;
-    
-    vBufferDump(pBuffer);
-    iCountObjects[pBuffer->eClass()]++;
-  }
-  
-  if (pMediumHeap)
-    vHeapDump(reinterpret_cast<Heap*>(pMediumHeap));
-
-  if (pSmallHeap)
-    vHeapDump(reinterpret_cast<Heap*>(pSmallHeap));
-
-
-  vTrace("\n");
-  vTrace("****************************************************************\n");
-  vTrace(" dir %lld file %lld shm %lld socket %lld thread %lld\n",
+  vTrace(" Resources: dir %lld file %lld shm %lld socket %lld thread %lld\n",
          *gzDirOpenCount,
          *gzFileOpenCount,
          *gzShmOpenCount,
          *gzSocketOpenCount,
          *gzThreadOpenCount);
   vTrace("****************************************************************\n");
-  vTrace("\n");
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
