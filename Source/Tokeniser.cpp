@@ -70,7 +70,7 @@ Tokeniser::~Tokeniser(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump dictionary                                                            */
+/* dump tokeniser                                                             */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vDump(eCN eClass, Object* pObject, const char* pTab)
 {

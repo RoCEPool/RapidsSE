@@ -76,9 +76,9 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Heap* pHeap = reinterpret_cast<Heap*>(pObject);
   
-  vTrace("%s%s %p:\n", pTab, eClass == CN_SMALLHEAP ? "SmallHeap" : "MediumHeap", pHeap);
-  vTrace("%s  BufferCount %lld\n", pTab, pHeap->m_iBufferCount);
-  vTrace("%s  FreeCount %lld\n\n",  pTab, pHeap->m_iFreeCount);
+  vTrace("BufferCount %lld FreeCount %lld\n",
+         pHeap->m_iBufferCount,
+         pHeap->m_iFreeCount);
   
   i8 iCountObjects[CN_ENUMS];
   for (i8 index = 0; index < CN_ENUMS; index++) {

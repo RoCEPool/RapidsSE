@@ -52,7 +52,7 @@ pDUMPFUN *gpDump[]
   
   /* 29 */ &Index::vDump,           // CN_INDEX
   
-  /* 30 */ &Dump::vInvalid,         // CN_JUMBOHEAP
+  /* 30 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
   /* 31 */ &KeyCpp::vDump,          // CN_KEYCPP
   /* 32 */ &KeyVal::vDump,          // CN_KEYVAL
@@ -68,7 +68,7 @@ pDUMPFUN *gpDump[]
   /* 39 */ &Node::vDump,            // CN_NODE
   /* 40 */ &NodeCursor::vDump,      // CN_NODECURSOR
   
-  /* 41 */ &Dump::vDummy,           // CN_PARSER
+  /* 41 */ &Parser::vDump,          // CN_PARSER
   /* 42 */ &Partition::vDump,       // CN_PARTITION
   /* 43 */ &Dump::vUndefined,       // CN_PARTITIONS
   /* 44 */ &Dump::vUndefined,       // CN_PROXY
@@ -91,14 +91,14 @@ pDUMPFUN *gpDump[]
   /* 58 */ &SEitf::vDump,           // CN_SEITF
   /* 59 */ &Dump::vUndefined,       // CN_SEITFCURSOR
   /* 60 */ &Dump::vUndefined,       // CN_SEITFLIST
-  /* 61 */ &Dump::vDummy,           // CN_SEPROMPT
+  /* 61 */ &SePrompt::vDump,        // CN_SEPROMPT
   /* 62 */ &Dump::vUndefined,       // CN_SINCE
   /* 63 */ &Dump::vUndefined,       // CN_SKIPCURSOR
   /* 64 */ &Dump::vUndefined,       // CN_SKIPLIST
   /* 65 */ &Dump::vUndefined,       // CN_SKIPNODE
   /* 66 */ &Heap::vDump,            // CN_SMALLHEAP
   /* 67 */ &Dump::vUndefined,       // CN_SOCKET
-  /* 68 */ &Dump::vUndefined,       // CN_STACK
+  /* 68 */ &Stack::vDump,           // CN_STACK
   /* 69 */ &Dump::vInvalid,         // CN_STEPACCUM
   /* 70 */ &StepArray::vDump,       // CN_STEPARRAY
   /* 71 */ &Dump::vInvalid,         // CN_SYSCALL

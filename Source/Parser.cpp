@@ -11,6 +11,18 @@ extern Heap* gpMediumHeap;
 extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+Parser* Parser::_pParser(void* pAddr)
+{
+  Parser* pParser = reinterpret_cast<Parser*>(pAddr);
+  
+  RASSERT( !pParser || CN_PARSER == pParser->eClass() );
+  
+  return pParser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new operator                                                               */
 /*----------------------------------------------------------------------------*/
 void* Parser::operator new(size_t iSize, bool bMalloc)
@@ -70,6 +82,22 @@ Parser::~Parser(void)
   
   if (m_xFile.bIsOpen())
     m_xFile.vClose();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump parser                                                                */
+/*----------------------------------------------------------------------------*/
+void Parser::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_PARSER);
+  ASSERT(pObject->eClass() == CN_PARSER);
+  
+  Parser* pParser = _pParser(pObject);
+  
+  vTrace("%s depth %lld next %p\n",
+         pParser->m_bMalloc == true ? "malloc" : "pool",
+         pParser->m_iDepth,
+         pParser->m_pNext);
 }
 
 /*----------------------------------------------------------------------------*/

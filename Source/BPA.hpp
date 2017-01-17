@@ -23,9 +23,9 @@ namespace Pool
     BPA(void);
     ~BPA(void);
     
-    void vAnalyze(void);
     void vBufferDump(Buffer* pBuffer);
     void vHeapDump(Heap* pBuffer);
+    void vPoolAnalyze(void);
     void vPoolDump(void);
     
     Footer* pFooter(void);

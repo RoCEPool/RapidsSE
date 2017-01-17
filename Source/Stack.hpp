@@ -19,8 +19,8 @@ namespace Structures
     static const i8 C_STACK_AREA = C_SIZE_POOL_BUFFER - C_1K;
     
   private:
-    Value* m_pTop;    // current top of stack
     i8     m_iValues; // number of values currently on stack
+    Value* m_pTop;    // current top of stack
 
     Value* m_pRetryTop;    // reset to this top of stack
     i8     m_iRetryValues; // reset with this many values on stack
@@ -40,6 +40,7 @@ namespace Structures
     ~Stack(void);
     
     static Stack* _pStack(void* pAddr);
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     bool bGuard(i8 iCount);
     bool bGuard(eCN eClass0);

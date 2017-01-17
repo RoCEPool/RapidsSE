@@ -15,12 +15,12 @@ namespace Parsing
     
   private:
     bool    m_bMalloc;   // is this object in malloc heap (or small heap)?
-    Parser* m_pNext;     // next parser in stack
     i8      m_iDepth;    // depth of this parser
-    s256    m_sPrompt;   // user prompt when reading from stdin
+    Parser* m_pNext;     // next parser in stack
     
     // input sources
     eIS     m_eSource;   // what source are we parsing? given file or given string?
+    s256    m_sPrompt;   // user prompt when reading from stdin
     File    m_xFile;     // given file
     bool    m_bLineMode; // line mode?
     s48K     m_sRawLine;  // either raw line read from file or given string
@@ -46,6 +46,10 @@ namespace Parsing
     
     Parser(Parser* pNext);
     ~Parser(void);
+    
+    static Parser* _pParser(void* pAddr);
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+   
     
     // Options
     void vPrompt(s& sPrompt);

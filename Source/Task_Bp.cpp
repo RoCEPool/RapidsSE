@@ -60,7 +60,7 @@ void Task::vBpAnalyze(NNP_Task nnpTask)
   
   BPA* pBPA = new BPA;
   
-  pBPA->vAnalyze();
+  pBPA->vPoolAnalyze();
   
   delete pBPA;
   

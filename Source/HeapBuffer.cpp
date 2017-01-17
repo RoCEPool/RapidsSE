@@ -86,9 +86,7 @@ void HeapBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   HeapBuffer* pHeapBuffer = reinterpret_cast<HeapBuffer*>(pObject);
   
-  vTrace("%sHeapBuffer: %p NextBuffer %p PrevBuffer %p\n",
-         pTab,
-         pHeapBuffer,
+  vTrace("nextBuffer %p prevBuffer %p\n",
          pHeapBuffer->m_pNextBuffer,
          pHeapBuffer->m_pPrevBuffer);
 }
