@@ -83,7 +83,7 @@ void Grid::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Grid* pGrid = reinterpret_cast<Grid*>(pObject);
   
-  vTrace("%sGrid %p:\n", pTab, pGrid);
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

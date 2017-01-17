@@ -106,17 +106,18 @@ void DicStack::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   DicStack* pDicStack = reinterpret_cast<DicStack*>(pObject);
   
-  vTrace("%sDictionary Stack %p:\n", pTab, pDicStack);
-  vTrace("%s  Top %p:\n", pTab, pDicStack->m_iTop);
+  vTrace("top %p:",pDicStack->m_iTop);
   //for (i8 i = pDicStack->m_iTop; i >= 0; i--)
     //vTrace("%s  Dic %p %lld %s\n",pTab, pDicStack->m_pDic[i],i,
            //pDicStack->m_pDic[i]->sName().a());
   
   for (i8 i = pDicStack->m_iTop; i >= 0; i--) {
-  vTrace("%s  Dic %p %lld %s\n",pTab, pDicStack->m_pDic[i],i,
+  vTrace(" dic %p %lld %s",pTab, pDicStack->m_pDic[i],i,
          pDicStack->m_pDic[i]->sName().a());
-    Dic::vDump(CN_DIC, pDicStack->m_pDic[i], pTab);
+    //Dic::vDump(CN_DIC, pDicStack->m_pDic[i], pTab);
   }
+
+  vTrace("\n");
 
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();

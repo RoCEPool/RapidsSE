@@ -64,10 +64,10 @@ void Index::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Index* pIndex = reinterpret_cast<Index*>(pObject);
   
-  vTrace("%sIndex %p:\n", pTab, pIndex);
-  vTrace("%s  number %lld\n", pTab, pIndex->m_iIndexNo);
-  vTrace("%s  name %s\n", pTab, pIndex->m_sIndexName.a());
-  vTrace("%s  type %p\n\n", pTab, pIT[pIndex->m_eIndexType]);
+  vTrace("no %lld name %s type %p\n",
+         pIndex->m_iIndexNo,
+         pIndex->m_sIndexName.a(),
+         pIT[pIndex->m_eIndexType]);
 }
 
 /*----------------------------------------------------------------------------*/
