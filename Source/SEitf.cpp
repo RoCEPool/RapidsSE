@@ -206,14 +206,17 @@ void SEitf::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
-  vTrace("%sSEitf %p:\n", pTab, pSEitf);
-  vTrace("%s  pid %lld\n", pTab, pSEitf->m_iPid);
-  vTrace("%s  pid %s\n", pTab, Process::bTestPid(pSEitf->m_iPid) ? "exists" : "non-existant");
-  vTrace("%s  partitions %lld\n", pTab, pSEitf->m_iPartitions);
-  vTrace("%s  partition  %lld\n", pTab, pSEitf->m_iPartition);
-  vTrace("%s  requestQ   %p\n", pTab, pSEitf->m_pRequestQueue);
-  vTrace("%s  responseQ  %p\n", pTab, pSEitf->m_pResponseQueue);
-  vTrace("%s  response   '%s'\n\n", pTab, pSEitf->m_sResponse.a());
+  vTrace("%sSEitf %p:pid %lld %s partitions %lld partition %lld"
+         " requestQ %p responseQ %p response '%s'\n",
+         pTab,
+         pSEitf,
+         pSEitf->m_iPid,
+         Process::bTestPid(pSEitf->m_iPid) ? "exists" : "non-existant",
+         pSEitf->m_iPartitions,
+         pSEitf->m_iPartition,
+         pSEitf->m_pRequestQueue,
+         pSEitf->m_pResponseQueue,
+         pSEitf->m_sResponse.a());
 }
 
 /*----------------------------------------------------------------------------*/

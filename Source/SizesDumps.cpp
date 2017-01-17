@@ -414,7 +414,7 @@ void Dump::vUndefined(eCN eClass, Object* pObject, const char* pTab)
   ASSERT(eClass != CN_NONE);
   ASSERT(pObject != nullptr);
   ASSERT(pTab != nullptr);
-  vTrace("%sDump function not defined for class %s\n", pTab, pCN[eClass]);
+  vTrace("%s%s: **dump function not defined for class**\n", pTab, pCN[eClass]);
 }
 
 /*============================================================================*/

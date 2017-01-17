@@ -88,10 +88,12 @@ void Node::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Node* pNode = reinterpret_cast<Node*>(pObject);
 
-  vTrace("%sNode %p: \n", pTab, pNode);
-  vTrace("%s  NodeNo: %lld \n", pTab, pNode->m_iNodeNo);
-  vTrace("%s  Prev Node %p\n", pTab, pNode->pPrevNode());
-  vTrace("%s  Next Node %p\n\n", pTab, pNode->pNextNode());
+  vTrace("%sNode %p: NodeNo: %lld Prev Node %p Next Node %p\n",
+         pTab,
+         pNode,
+         pNode->m_iNodeNo,
+         pNode->pPrevNode(),
+         pNode->pNextNode());
 }
 
 /*----------------------------------------------------------------------------*/

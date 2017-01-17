@@ -65,11 +65,14 @@ void TxArray::vDump(eCN eClass, Object* pObject, const char* pTab)
 
   i8 iTxCount = 0;
   
-  vTrace("%sTxArray %p: \n", pTab, pTxArray);
   for (i8 iTx = 0; iTx < C_TX_ARRAY; iTx++)
     if (pTxArray->m_pTx[iTx] != nullptr)
       iTxCount++;
-  vTrace("%s  txs: %lld\n\n", pTab, iTxCount);
+  
+  vTrace("%sTxArray: %p txs: %lld\n",
+         pTab,
+         pTxArray,
+         iTxCount);
 }
 
 /*----------------------------------------------------------------------------*/

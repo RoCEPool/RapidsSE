@@ -147,9 +147,11 @@ void Tx::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Tx* pTx = reinterpret_cast<Tx*>(pObject);
   
-  vTrace("%sTx %p:\n", pTab, pTx);
-  vTrace("%s  id %lld\n", pTab, pTx->m_iTxId);
-  vTrace("%s  phase %s\n\n", pTab, pTP[pTx->m_ePhase]);
+  vTrace("%sTx %p: id %lld phase %s\n",
+         pTab,
+         pTx,
+         pTx->m_iTxId,
+         pTP[pTx->m_ePhase]);
 }
 
 /*----------------------------------------------------------------------------*/

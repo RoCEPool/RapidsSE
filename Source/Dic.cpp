@@ -139,9 +139,11 @@ void Dic::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   
-  vTrace("%sDictionary %p:\n", pTab, pDic);
-  vTrace("%s  name %s \n", pTab, pDic->m_sName.a());
-  vTrace("%s  lastWord %p\n\n", pTab, pDic->m_pLastWord);
+  vTrace("%sDictionary %p: name %s lastWord %p\n",
+         pTab,
+         pDic,
+         pDic->m_sName.a(),
+         pDic->m_pLastWord);
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();

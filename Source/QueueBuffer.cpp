@@ -93,10 +93,12 @@ void QueueBuffer::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  vTrace("%sQueueBuffer: %p\n", pTab, this);
-  vTrace("%s  Count %lld\n", pTab, m_nValues);
-  vTrace("%s  TopValue %p \n", pTab, m_pTopValue);
-  vTrace("%s  NextFree %p\n\n", pTab, m_pNextFree);
+  vTrace("%sQueueBuffer: %p Count %lld TopValue %p NextFree %p\n",
+         pTab,
+         this,
+         m_nValues,
+         m_pTopValue,
+         m_pNextFree);
 }
 
 /*----------------------------------------------------------------------------*/
