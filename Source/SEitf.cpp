@@ -86,7 +86,7 @@ SEitf::SEitf(i8 iPartition)
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
   
-  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
+  for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS_PER_NODE; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
 
   _checkInitialised_(CN_SEITF);

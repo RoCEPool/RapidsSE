@@ -167,7 +167,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
-      ASSERT(m_nPartitions <= C_TABLE_PARTITIONS);
+      ASSERT(m_nPartitions <= C_MAX_PARTITIONS_PER_NODE);
       continue;
     }
     

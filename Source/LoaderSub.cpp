@@ -72,7 +72,7 @@ LoaderSub::LoaderSub(void)
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
   
-  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++)
+  for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS_PER_NODE; iPartition++)
     m_pRowBuffer[iPartition] = nullptr;
   
   _checkInitialised_(CN_LOADERSUB);
@@ -154,7 +154,7 @@ void LoaderSub::vEnd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADERSUB,_FOOTER_);
   
   // append any dangling buffers
-  for (i8 iPartition = 0; iPartition < C_TABLE_PARTITIONS; iPartition++) {
+  for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS_PER_NODE; iPartition++) {
     /*
     if (m_pRowBuffer[iPartition]) {
       RowBuffer* pRowBuffer = m_pRowBuffer[iPartition];
