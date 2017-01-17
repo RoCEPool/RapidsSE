@@ -168,7 +168,7 @@ i8 Thread::iCpu(void)
 /*----------------------------------------------------------------------------*/
 /* thread dump                                                                */
 /*----------------------------------------------------------------------------*/
-void Thread::vDump(void) const
+void Thread::vContentDump(void) const
 {
   vTrace("Thread %p: OpSysThreadId %lld PosixThreadId %llx\n",
          this,

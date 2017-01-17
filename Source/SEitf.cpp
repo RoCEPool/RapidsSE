@@ -183,7 +183,7 @@ Table* SEitf::pCurrentTable(void)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void SEitf::vDump(void)
+void SEitf::vContentDump(void)
 {
   vTrace("SEitf %p: pid %lld (%s)\n",
          this,

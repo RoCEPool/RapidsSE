@@ -36,7 +36,7 @@ namespace Threads
     void vAppend(NNP_Task nnpTask);
     void vBind(i8 iCpu);
     i8   iCpu(void);
-    void vDump(void) const;
+    void vContentDump(void) const;
     void vLoop(void);
     s&   sName(void);
     void vName(s& sName);

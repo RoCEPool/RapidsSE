@@ -183,7 +183,7 @@ ENTRY("vThreadDump");
   
   Thread* pThread = static_cast<Thread*>(pObject);
   
-  pThread->vDump();
+  pThread->vContentDump();
   
   EXIT();
 }

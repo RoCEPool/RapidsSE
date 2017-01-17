@@ -125,7 +125,7 @@ void List_t<OBJECT>::vDump(const char* aTitle, const char* pTab)
   
   for (xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
     OBJECT* pObject = xCursor.pObject();
-    pObject->vDump();
+    pObject->vContentDump();
   }
   xCursor.vEnd();
   vTrace("\n");

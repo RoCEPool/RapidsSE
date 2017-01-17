@@ -1228,7 +1228,7 @@ void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Task::vDump()
+void Task::vContentDump(void)
 {
   _poolAddress_(this);
   

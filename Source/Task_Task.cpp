@@ -222,7 +222,7 @@ ENTRY("vTaskDump");
     THROW_INVALID_DSTACK("task.dump");
   Task* pThatTask = _pTask(pObject);
   
-  pThatTask->vDump();
+  pThatTask->vContentDump();
   
   EXIT();
 }

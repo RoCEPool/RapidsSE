@@ -59,7 +59,7 @@ namespace Interface
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);
     
-    void   vDump(void);
+    void   vContentDump(void);
     
     void   vInit(void);
     i8     iPartition(void);

@@ -95,7 +95,7 @@ ENTRY("vSEitfDump");
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  pSEitf->vDump();
+  pSEitf->vContentDump();
   
   EXIT();
 }
