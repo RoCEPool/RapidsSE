@@ -106,7 +106,7 @@ void Collection_t<OBJECT>::vContentDump(const char* aTitle)
   vTrace("%s\n",aTitle);
   for(xCursor.vFirst(); xCursor.pObject(); xCursor.vNext()) {
     OBJECT* pObject = xCursor.pObject();
-    pObject->vDump();
+    pObject->vContentDump();
   }
   
   vReadUnlock();

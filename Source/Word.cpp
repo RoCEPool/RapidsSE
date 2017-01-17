@@ -211,6 +211,29 @@ void* Word::pAppend(TaskStep* ppCalledWord)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Word::vContentDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
+  
+  vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
+         "Step %p %s ..Data.. %p\n",
+         this,
+         m_sName.a(),
+         pWT[m_eWordType],
+         m_pKind->m_sName.a(),
+         m_bImmediate,
+         m_iDataBytes,
+         m_pEntryStep,
+         pStepWord ? pStepWord->sName().a() : "<not-found>",
+         pFirstCell()
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which dictionary                                                       */
 /*----------------------------------------------------------------------------*/
 Dic* Word::pDic(void)
@@ -325,51 +348,6 @@ void Word::vDistributed(eDT eDistributed)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void Word::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
-  
-  vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
-         "Step %p %s ..Data.. %p\n",
-         this,
-         m_sName.a(),
-         pWT[m_eWordType],
-         m_pKind->m_sName.a(),
-         m_bImmediate,
-         m_iDataBytes,
-         m_pEntryStep,
-         pStepWord ? pStepWord->sName().a() : "<not-found>",
-         pFirstCell()
-         );
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void Word::vDump(const char* pTab)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  vTrace("%sWord %p: epoch %lld %s (%s) %s %s DataBytes %lld "
-         "Step %p ..Data.. %p\n",
-         pTab,
-         this,
-         m_iEpoch,
-         m_sName.a(),
-         m_pDic->sName().a(),
-         pWT[m_eWordType],
-         m_bImmediate ? "Immediate" : "Not Immediate",
-         m_iDataBytes,
-         m_pEntryStep,
-         pFirstCell()
-         );
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump dictionary                                                            */
 /*----------------------------------------------------------------------------*/
 void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
@@ -381,7 +359,7 @@ void Word::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   // dump only the objects
   if (WT_OBJECT == pWord->m_eWordType)
-    pWord->vDump(pTab);
+    pWord->vObjectDump(pTab);
   
   //for (Word* pWord = m_pCurrentWord; pWord; pWord = pWord->pPrevWord())
   //  pWord->vDump();
@@ -569,6 +547,28 @@ s& Word::sName(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump object word                                                           */
+/*----------------------------------------------------------------------------*/
+void Word::vObjectDump(const char* pTab)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  vTrace("%sWord %p: epoch %lld %s (%s) %s %s DataBytes %lld "
+         "Step %p ..Data.. %p\n",
+         pTab,
+         this,
+         m_iEpoch,
+         m_sName.a(),
+         m_pDic->sName().a(),
+         pWT[m_eWordType],
+         m_bImmediate ? "Immediate" : "Not Immediate",
+         m_iDataBytes,
+         m_pEntryStep,
+         pFirstCell()
+         );
 }
 
 /*----------------------------------------------------------------------------*/

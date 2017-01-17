@@ -52,7 +52,7 @@ ENTRY("vTxDump");
   Tx* pTx = _pTx(pPtrTx);
   ASSERT(CN_TX == pTx->eClass());
 
-  pTx->vDump();
+  pTx->vContentDump();
   
   EXIT();
 }

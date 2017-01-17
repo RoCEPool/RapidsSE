@@ -85,7 +85,7 @@ void Row::vDataBytes(i8 iDataBytes)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Row::vDump(void) 
+void Row::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   

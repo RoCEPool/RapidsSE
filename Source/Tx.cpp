@@ -130,7 +130,7 @@ void Tx::vPhase(eTP ePhase)
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void Tx::vDump(void)
+void Tx::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TX,_FOOTER_);
   

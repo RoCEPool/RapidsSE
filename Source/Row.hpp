@@ -22,10 +22,10 @@ namespace DBobjects
     Row(i8 iDataBytes);
     ~Row(void);
     
+    void  vContentDump(void);
     char* pData(void);
     i8    iDataBytes(void);
     void  vDataBytes(i8 iDataBytes);
-    void  vDump(void);
     i8    iSize(void);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);

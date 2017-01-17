@@ -136,7 +136,7 @@ void Task::vRowBufferDump(NNP_Task nnpTask)
   Row* pRow = pRowBuffer->pFirstRow();
   
   while (pRow) {
-    pRow->vDump();
+    pRow->vContentDump();
     pRow = pRowBuffer->pNextRow(pRow);
   }
   

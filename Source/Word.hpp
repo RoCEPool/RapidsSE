@@ -97,6 +97,7 @@ namespace Dictionaries
     void  vAppend(TaskStep* ppStep);
     void* pAppend(Value* pValue);
     void  vAppend(Value* pValue);
+    void  vContentDump(void);
     char* pDataArea(void);
     i8    iDataBytes(void);
     char* pDataEnd(void);
@@ -108,8 +109,6 @@ namespace Dictionaries
     TaskStep* ppEntryStep(void);
     void  vDistributed(eDT eDistributed);
     eDT   eDistributed(void);
-    void  vDump(void);
-    void  vDump(const char* pTab);
     void  vEncode(const char* aWord);
     void  vEncode(const char* aWord, Cell* pCell);
     void  vEncode(const char* aWord, Word* pWord);
@@ -126,6 +125,7 @@ namespace Dictionaries
     i8    iLocal(void);
     void  vLocal(i8 iLocal);
     s&    sName(void);
+    void  vObjectDump(const char* pTab);
     void  vParams(i8 iParams);
     i8    iParams(void);
     Word* pPrevWord(void);

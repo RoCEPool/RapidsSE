@@ -690,7 +690,7 @@ ENTRY("vWordDump");
     THROW_INVALID_DSTACK("vWordDump");
   Word* pWord = _pWord(pWordObject);
   
-  pWord->vDump();
+  pWord->vContentDump();
   
   EXIT();
 }
