@@ -80,7 +80,7 @@ void KeyVal::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   KeyVal* pKeyVal = _pKeyVal(pObject);
   
-  vTrace("%sKeyVal %p:\n", pTab, pKeyVal);
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

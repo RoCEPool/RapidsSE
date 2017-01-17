@@ -85,7 +85,7 @@ void LoadMap::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   LoadMap* pSeekMap = reinterpret_cast<LoadMap*>(pObject);
   
-  vTrace("%sSeekMap %p:\n", pTab, pSeekMap);
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

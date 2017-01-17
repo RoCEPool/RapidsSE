@@ -101,7 +101,7 @@ void LoaderSub::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   LoaderSub* pLoader = reinterpret_cast<LoaderSub*>(pObject);
   
-  vTrace("%LoaderSub %p:\n", pTab, pLoader);
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

@@ -79,7 +79,7 @@ void KeyCpp::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   KeyCpp* pKeyCpp = _pKeyCpp(pObject);
   
-  vTrace("%sKeyCpp %p:\n", pTab, pKeyCpp);
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/
