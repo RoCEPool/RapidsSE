@@ -44,7 +44,7 @@ namespace Structures
     // iteration functions
     void* pFindFirst   (void*    pObject);
     
-    void   vDump(void (*fvDump)(void* pObject));
+    void   vItemDump(void (*fvDump)(void* pObject));
     void   vCheck();
     void*  pEach   (SkipCursor* pCursor);
     

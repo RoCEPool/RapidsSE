@@ -37,7 +37,7 @@ void* StepBoard::operator new(size_t iSize)
     StepBoard* pStepBoard =
       reinterpret_cast<StepBoard*>(pRegion);
     
-    pStepBoard->vDump();
+    pStepBoard->vContentDump();
     
     return pStepBoard;
   }
@@ -103,7 +103,7 @@ StepBoard::~StepBoard(void)
 /*----------------------------------------------------------------------------*/
 /* dump the step board                                                        */
 /*----------------------------------------------------------------------------*/
-void StepBoard::vDump(void)
+void StepBoard::vContentDump(void)
 {
   printf("Thread Step Board:\n");
   for (i8 iThread = 0; iThread < m_iThreads; iThread++)

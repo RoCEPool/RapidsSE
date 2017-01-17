@@ -25,7 +25,7 @@ namespace Tasks
     StepBoard(i8 iThreads);
     ~StepBoard(void);
     
-    void vDump(void);
+    void vContentDump(void);
     void vName(i8 iThread, const char* aName);
     void vPoint(i8 iThread, i8 iPoint);
     void vReset(void);

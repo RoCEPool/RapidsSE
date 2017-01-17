@@ -55,7 +55,7 @@ namespace DBobjects
         
     char* pTableName(void);
     void  vTableName(s& sName);
-    void  vDump(void);
+    void  vContentDump(void);
     
     void  vRefDec(void);
     void  vRefInc(void);

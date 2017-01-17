@@ -156,7 +156,7 @@ ENTRY("vTableDump");
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vDump();
+  pTable->vContentDump();
   
   EXIT();
 }

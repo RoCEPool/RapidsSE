@@ -185,7 +185,7 @@ Dic* Table::pSubDic(void)
 /*----------------------------------------------------------------------------*/
 /* vDump                                                                      */
 /*----------------------------------------------------------------------------*/
-void Table::vDump(void)
+void Table::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   

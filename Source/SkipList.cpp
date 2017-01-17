@@ -239,7 +239,7 @@ void* SkipList::pFindFirst(void* pObject)
 /*----------------------------------------------------------------------------*/
 /* dump the list                                                              */
 /*----------------------------------------------------------------------------*/
-void SkipList::vDump(void (*fvDump)(void* pObject))
+void SkipList::vItemDump(void (*fvDump)(void* pObject))
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SKIPLIST,_FOOTER_);
 
