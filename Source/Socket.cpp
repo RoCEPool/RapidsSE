@@ -76,6 +76,21 @@ Socket::~Socket()
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump                                                                       */
+/*----------------------------------------------------------------------------*/
+void Socket::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_SOCKET);
+  ASSERT(pObject->eClass() == CN_SOCKET);
+  
+  Socket* pSocket = reinterpret_cast<Socket*>(pObject);
+
+  vTrace("id %lld %s\n",
+         pSocket->m_iSocketId,
+         pSocket->m_bBlocking ? "blocking" : "non-blocking");
+}
+
+/*----------------------------------------------------------------------------*/
 /* initialize a sockaddr_in structure                                         */
 /*----------------------------------------------------------------------------*/
 void Socket::vAddrInit(sockaddr_in* pAddr, int iPort)

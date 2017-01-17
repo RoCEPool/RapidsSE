@@ -55,7 +55,7 @@ void BPA::vBufferDump(Buffer* pBuffer)
   
   pDUMPFUN* pDumpFun = gpDump[eClass];
   
-  vTrace("%s%p %-12s: ",pSingleTab(),pBuffer,pCN[eClass]);
+  vTrace("%s%p %-12s: ",pDoubleTab(),pBuffer,pCN[eClass]);
 
   (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
   
@@ -75,7 +75,7 @@ void BPA::vHeapDump(Heap* pHeap)
   HeapBuffer* pHeapBuffer;
   
   vTrace("\n");
-  vTrace("%s%s Heap:\n",
+  vTrace("%sObjects in %s Heap:\n",
          pSingleTab(),
          pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
@@ -118,6 +118,9 @@ void BPA::vHeapDump(Heap* pHeap)
 void BPA::vObjectList(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  vTrace("\n");
+  vTrace("%sObjects in Buffer Pool:\n",pSingleTab());
   
   Buffer* pMediumHeap = nullptr;
   Buffer* pSmallHeap  = nullptr;
@@ -170,7 +173,7 @@ void BPA::vObjectSummary(void)
   }
   
   vTrace("\n");
-  vTrace("  BufferPool Objects:\n");
+  vTrace("  BufferPool Object Summary:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
@@ -183,7 +186,7 @@ void BPA::vObjectSummary(void)
   gpSmallHeap->vAnalyse(iCountObjects);
   
   vTrace("\n");
-  vTrace("  SmallHeap Objects:\n");
+  vTrace("  SmallHeap Object Summary:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
@@ -196,7 +199,7 @@ void BPA::vObjectSummary(void)
   gpMediumHeap->vAnalyse(iCountObjects);
   
   vTrace("\n");
-  vTrace("  MediumHeap Objects:\n");
+  vTrace("  MediumHeap Object Summary:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
     eCN eClass = (eCN)index;
     
@@ -209,18 +212,18 @@ void BPA::vObjectSummary(void)
   for (i8 index = 0; index < CN_ENUMS; index++)
     iCountObjects[index] = 0;
   
-  gpJumboHeap->vAnalyse(iCountObjects);
-  
-  vTrace("\n");
-  vTrace("  JumboHeap Objects:\n");
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
-  }
+//  gpJumboHeap->vAnalyse(iCountObjects);
+//  
+//  vTrace("\n");
+//  vTrace("  JumboHeap Object s:\n");
+//  for (i8 index = 0; index < CN_ENUMS; index++) {
+//    eCN eClass = (eCN)index;
+//    
+//    if (iCountObjects[eClass] == 0)
+//      continue;
+//    
+//    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
+//  }
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }

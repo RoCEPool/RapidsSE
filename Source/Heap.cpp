@@ -85,19 +85,18 @@ void Heap::vDump(eCN eClass, Object* pObject, const char* pTab)
     iCountObjects[index] = 0;
   }
   
-  pHeap->vAnalyse(iCountObjects);
-  
-  vTrace("%s  Objects:\n", pTab);
-  for (i8 index = 0; index < CN_ENUMS; index++) {
-    eCN eClass = (eCN)index;
-    
-    if (iCountObjects[eClass] == 0)
-      continue;
-    
-    vTrace("%s    %s %lld \n", pTab, pCN[eClass], iCountObjects[eClass]);
-  }
-  vTrace("\n");
-  
+//  pHeap->vAnalyse(iCountObjects);
+//  
+//  vTrace("%s  Objects:\n", pTab);
+//  for (i8 index = 0; index < CN_ENUMS; index++) {
+//    eCN eClass = (eCN)index;
+//    
+//    if (iCountObjects[eClass] == 0)
+//      continue;
+//    
+//    vTrace("%s    %s %lld \n", pTab, pCN[eClass], iCountObjects[eClass]);
+//  }
+//  vTrace("\n");  
 }
 
 /*----------------------------------------------------------------------------*/

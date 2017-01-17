@@ -28,6 +28,8 @@ namespace Common
     Socket(int iSocketId);
     ~Socket();
     
+    static void vDump(eCN eClass, Object* pObject, const char* pTab);
+
     void vAddrInit(sockaddr_in* pAddr, int iPort);
     void vAddrInit(sockaddr_in* pAddr, const char* sAddr, int iPort);
     

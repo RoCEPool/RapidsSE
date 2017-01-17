@@ -97,7 +97,7 @@ pDUMPFUN *gpDump[]
   /* 64 */ &Dump::vUndefined,       // CN_SKIPLIST
   /* 65 */ &Dump::vUndefined,       // CN_SKIPNODE
   /* 66 */ &Heap::vDump,            // CN_SMALLHEAP
-  /* 67 */ &Dump::vUndefined,       // CN_SOCKET
+  /* 67 */ &Socket::vDump,          // CN_SOCKET
   /* 68 */ &Stack::vDump,           // CN_STACK
   /* 69 */ &Dump::vInvalid,         // CN_STEPACCUM
   /* 70 */ &StepArray::vDump,       // CN_STEPARRAY
