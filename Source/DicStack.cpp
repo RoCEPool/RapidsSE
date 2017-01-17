@@ -66,6 +66,17 @@ i8 DicStack::iCount(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump stack of dictionaries                                                 */
+/*----------------------------------------------------------------------------*/
+void DicStack::vContentDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+  
+  for (i8 i = m_iTop; i >= 0; i--)
+    vTrace("Dic %p %lld %s\n",m_pDic[i],i,m_pDic[i]->sName().a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* discard top dictionary                                                     */
 /*----------------------------------------------------------------------------*/
 void DicStack::vDiscard(void)
@@ -83,17 +94,6 @@ void DicStack::vDiscard(void)
   m_pDic[m_iTop] = nullptr;
   
   m_iTop--;
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump stack of dictionaries                                                 */
-/*----------------------------------------------------------------------------*/
-void DicStack::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
-  
-  for (i8 i = m_iTop; i >= 0; i--)
-    vTrace("Dic %p %lld %s\n",m_pDic[i],i,m_pDic[i]->sName().a());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -76,7 +76,7 @@ void Task::vBpDump(NNP_Task nnpTask)
   
   BPA* pBPA = new BPA;
   
-  pBPA->vDump();
+  pBPA->vPoolDump();
   
   delete pBPA;
   

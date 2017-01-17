@@ -30,7 +30,7 @@ namespace Structures
 
     bool     bAppend(Value* pValue);
     i8       iCount(void);
-    void     vDump(const char* pTab);
+    void     vContentDump(const char* pTab);
     QueueBuffer* pNext(void);
     void     vNext(QueueBuffer* pQbuffer);
     bool     bPop(ValWsp* pValWsp, bool& bDiscard);

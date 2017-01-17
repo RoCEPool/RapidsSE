@@ -182,9 +182,55 @@ void BPA::vAnalyze(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump the buffer                                                            */
+/*----------------------------------------------------------------------------*/
+void BPA::vBufferDump(Buffer* pBuffer)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  pDUMPFUN* pDumpFun = gpDump[pBuffer->eClass()];
+  (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
+  
+  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
+      pBuffer->eClass() == CN_SMALLHEAP ) {
+    vHeapDump(reinterpret_cast<Heap*>(pBuffer));
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump this heap buffer                                                      */
+/*----------------------------------------------------------------------------*/
+void BPA::vHeapDump(Heap* pBuffer)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  HeapBuffer* pHeapBuffer;
+  
+  pBuffer->vGrabLock();
+  
+  for (pHeapBuffer = pBuffer->pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    for (FreeChunk* pChunk = pHeapBuffer->pFirstChunk();
+         pChunk;
+         pChunk = pHeapBuffer->pNextChunk(pChunk,pBuffer->iObjectSize())) {
+      
+      eCN eClass = pChunk->eClass();
+      
+      if (CN_FREECHUNK == eClass)
+        continue;
+      
+      pDUMPFUN* pDumpFun =gpDump[eClass];
+      (pDumpFun)(eClass, pChunk, pDoubleTab());
+    }
+  }
+  pBuffer->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump the buffer pool objects                                               */
 /*----------------------------------------------------------------------------*/
-void BPA::vDump(void)
+void BPA::vPoolDump(void)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
@@ -216,7 +262,7 @@ void BPA::vDump(void)
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
-
+  
   vTrace("\n");
   vTrace("  BufferPool Objects:\n");
   for (i8 index = 0; index < CN_ENUMS; index++) {
@@ -234,59 +280,13 @@ void BPA::vDump(void)
        nBuffer++) {
     
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
-  
-    vDump(pBuffer);
+    
+    vBufferDump(pBuffer);
     iCountObjects[pBuffer->eClass()]++;
   }
   vTrace("**************************************************************\n");
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump the buffer                                                            */
-/*----------------------------------------------------------------------------*/
-void BPA::vDump(Buffer* pBuffer)
-{
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
-  pDUMPFUN* pDumpFun =gpDump[pBuffer->eClass()];
-  (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
-  
-  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
-      pBuffer->eClass() == CN_SMALLHEAP ) {
-    vDumpHeap(reinterpret_cast<Heap*>(pBuffer));
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* dump this heap buffer                                                      */
-/*----------------------------------------------------------------------------*/
-void BPA::vDumpHeap(Heap* pBuffer)
-{
-  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
-  
-  HeapBuffer* pHeapBuffer;
-  
-  pBuffer->vGrabLock();
-  
-  for (pHeapBuffer = pBuffer->pFirstBuffer();
-       pHeapBuffer;
-       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
-    for (FreeChunk* pChunk = pHeapBuffer->pFirstChunk();
-         pChunk;
-         pChunk = pHeapBuffer->pNextChunk(pChunk,pBuffer->iObjectSize())) {
-      
-      eCN eClass = pChunk->eClass();
-      
-      if (CN_FREECHUNK == eClass)
-        continue;
-      
-      pDUMPFUN* pDumpFun =gpDump[eClass];
-      (pDumpFun)(eClass, pChunk, pDoubleTab());
-    }
-  }
-  pBuffer->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

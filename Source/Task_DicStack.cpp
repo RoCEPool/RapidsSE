@@ -87,10 +87,10 @@ void Task::vDicStackDump(NNP_Task nnpTask)
   ENTRY("vDicStackDump");
   
   if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->pDicStack()->vDump();
+    nnpTask->m_pSEitf->pDicStack()->vContentDump();
   }
   else {
-    nnpTask->m_xDicStack.vDump();
+    nnpTask->m_xDicStack.vContentDump();
   }
   
   EXIT();

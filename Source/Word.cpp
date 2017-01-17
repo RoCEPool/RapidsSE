@@ -354,7 +354,7 @@ void Word::vDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("%sWord %p: epoch:%lld %s (%s) %s %s DataBytes %lld "
+  vTrace("%sWord %p: epoch %lld %s (%s) %s %s DataBytes %lld "
          "Step %p ..Data.. %p\n",
          pTab,
          this,

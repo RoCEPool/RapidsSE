@@ -202,44 +202,6 @@ bool BufferPool::bDetachPool(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump buffer pool                                                           */
-/*----------------------------------------------------------------------------*/
-void BufferPool::vDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
-  
-  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
-         "InUse %lld FreeCount %lld FreeHead %lld\n",
-         gxArguments.m_iRegionSize,
-         C_SIZE_POOL_BUFFER,
-         m_nBuffers,
-         m_pBase,
-         m_pLimit,
-         m_iAllocCount,
-         m_iFreeCount,
-         *m_nFreeHead
-         );
-  
-//  for (FreeBuffer* pFreeBuffer : *this)
-//    vTrace("%p: BufferNo %lld NextFree %lld\n",
-//           pFreeBuffer,
-//           *pFreeBuffer->nBufferNo(),
-//           *pFreeBuffer->nNextFree());
-
-  bn nBuffer = m_nFreeHead;
-  while (bn::nNil() != nBuffer) {
-    FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
-    vTrace("%p: BufferNo %lld NextFree %lld\n",
-           pFreeBuffer,
-           *pFreeBuffer->nBufferNo(),
-           *pFreeBuffer->nNextFree());
-    //nBuffer = pToFreeBuffer((nBuffer);
-    nBuffer = pFreeBuffer->nNextFree();
-  }
-  
-}
-
-/*----------------------------------------------------------------------------*/
 /* free buffer back into free chain                                           */
 /*----------------------------------------------------------------------------*/
 void BufferPool::vFree(Buffer* pBuffer)
@@ -408,6 +370,44 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
   
   //vTrace("Jumbo %p %lld\n",pJumbo,iSub(pJumbo,pPrev));
   return pJumbo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump buffer pool                                                           */
+/*----------------------------------------------------------------------------*/
+void BufferPool::vPoolDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
+  
+  vTrace("RegionSize %lld BufferSize %lld BufferCount %lld Base %p Limit %p\n"
+         "InUse %lld FreeCount %lld FreeHead %lld\n",
+         gxArguments.m_iRegionSize,
+         C_SIZE_POOL_BUFFER,
+         m_nBuffers,
+         m_pBase,
+         m_pLimit,
+         m_iAllocCount,
+         m_iFreeCount,
+         *m_nFreeHead
+         );
+  
+  //  for (FreeBuffer* pFreeBuffer : *this)
+  //    vTrace("%p: BufferNo %lld NextFree %lld\n",
+  //           pFreeBuffer,
+  //           *pFreeBuffer->nBufferNo(),
+  //           *pFreeBuffer->nNextFree());
+  
+  bn nBuffer = m_nFreeHead;
+  while (bn::nNil() != nBuffer) {
+    FreeBuffer* pFreeBuffer = pToFreeBuffer(nBuffer);
+    vTrace("%p: BufferNo %lld NextFree %lld\n",
+           pFreeBuffer,
+           *pFreeBuffer->nBufferNo(),
+           *pFreeBuffer->nNextFree());
+    //nBuffer = pToFreeBuffer((nBuffer);
+    nBuffer = pFreeBuffer->nNextFree();
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/

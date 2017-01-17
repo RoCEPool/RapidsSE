@@ -50,7 +50,6 @@ namespace Pool
     i8   iBufferSize(void);
     void vCheckAddress(const void* pAddress);
     bool bDetachPool(void);
-    void vDump(void);
     void vFree(Buffer* pBuffer);
     i8   iFreeCount(void);
     i8   iFreePercent(void);
@@ -58,6 +57,7 @@ namespace Pool
     bool bHasDataSpace(void);
     void vInitialise(void);
     Buffer* pNextJumbo(Buffer* pPrev);
+    void vPoolDump(void);
     Buffer* pToBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(bn nBuffer);
     FreeBuffer* pToFreeBuffer(Buffer* pBuffer);

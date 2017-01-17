@@ -31,8 +31,8 @@ namespace Dictionaries
 
     i8   iCount(void);
 
+    void vContentDump(void);
     void vDiscard(void);
-    void vDump(void);
     Word* pFind(s& sName);
     Word* pFind(const char* aName);
     Word* pFindInCurrent(const char* aName);

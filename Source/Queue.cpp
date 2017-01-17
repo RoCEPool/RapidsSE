@@ -119,7 +119,7 @@ i8 Queue::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump the queue                                                             */
 /*----------------------------------------------------------------------------*/
-void Queue::vDump(const char* pTab)
+void Queue::vContentDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUE,_FOOTER_);
   
@@ -129,7 +129,7 @@ void Queue::vDump(const char* pTab)
   vTrace("%s  EndBuffer %p\n", pTab, m_pEndBuffer);
   
   for (QueueBuffer* pQbuffer = m_pTopBuffer; pQbuffer; pQbuffer = pQbuffer->pNext())
-    pQbuffer->vDump(pTab);
+    pQbuffer->vContentDump(pTab);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ void Queue::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Queue* pQueue = reinterpret_cast<Queue*>(pObject);
   
-  pQueue->vDump(pTab);
+  pQueue->vContentDump(pTab);
 }
 
 /*----------------------------------------------------------------------------*/

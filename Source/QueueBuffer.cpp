@@ -89,7 +89,7 @@ i8 QueueBuffer::iCount(void)
 /*----------------------------------------------------------------------------*/
 /* dump this queue buffer                                                     */
 /*----------------------------------------------------------------------------*/
-void QueueBuffer::vDump(const char* pTab)
+void QueueBuffer::vContentDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
@@ -111,7 +111,7 @@ void QueueBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(pObject);
   
-  pQueueBuffer->vDump(pTab);
+  pQueueBuffer->vContentDump(pTab);
 }
 
 /*----------------------------------------------------------------------------*/

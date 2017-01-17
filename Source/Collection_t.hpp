@@ -27,8 +27,8 @@ namespace Structures
     Collection_t(void);
         
     OBJECT* pAllocObject(void);
+    void    vContentDump(const char* aTitle);
     void    vFreeObject(OBJECT* pObject);
-    void    vDump(const char* aTitle);
     
     void    vAppendList(OBJECT*& pNode);
     OBJECT* pPopFree(void);
@@ -94,21 +94,10 @@ OBJECT* Collection_t<OBJECT>::pAllocObject(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove object from collection and push onto free chain                     */
-/*----------------------------------------------------------------------------*/
-template <class OBJECT>
-void Collection_t<OBJECT>::vFreeObject(OBJECT* pObject)
-{
-  vRemoveList(pObject);
-
-  vPushFree(pObject);
-}
-
-/*----------------------------------------------------------------------------*/
 /* dump each object in collection                                             */
 /*----------------------------------------------------------------------------*/
 template <class OBJECT>
-void Collection_t<OBJECT>::vDump(const char* aTitle)
+void Collection_t<OBJECT>::vContentDump(const char* aTitle)
 {
   vReadLock();
   
@@ -121,6 +110,17 @@ void Collection_t<OBJECT>::vDump(const char* aTitle)
   }
   
   vReadUnlock();
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove object from collection and push onto free chain                     */
+/*----------------------------------------------------------------------------*/
+template <class OBJECT>
+void Collection_t<OBJECT>::vFreeObject(OBJECT* pObject)
+{
+  vRemoveList(pObject);
+
+  vPushFree(pObject);
 }
 
 /*----------------------------------------------------------------------------*/

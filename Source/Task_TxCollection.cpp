@@ -52,7 +52,7 @@ ENTRY("vTxCollectionDump");
   TxCollection* pTxCollection = _pTxCollection(pPtrTxCollection);
   ASSERT(CN_TXCOLLECTION == pTxCollection->eClass());
   
-  pTxCollection->vDump("gpTxCollection:");
+  pTxCollection->vContentDump("gpTxCollection:");
   
   EXIT();
 }
