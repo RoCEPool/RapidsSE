@@ -175,9 +175,14 @@ tp: bufferFull
       then
   repeat // for all records in chunked file
 
+  locals| totalPartitions |
+
+  // calculate total partitions in teh cluster
+  args.partitions args.nodes *
+  to totalPartitions
 
   // check for dangling buffers
-  args.partitions 0 do
+  totalPartitions 0 do
 
     // set the partition we are using
     I loaderSub.partition!

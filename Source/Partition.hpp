@@ -28,6 +28,8 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     static i8   iPartitionToNode(i8 iPartition);
+    static i8   iPartitionToSlot(i8 iPartition);
+    static i8   iSlotToPartition(i8 iSlot);
 
     void vAppendBuffer(RowBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);

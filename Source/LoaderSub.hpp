@@ -8,6 +8,9 @@
 
 namespace DBobjects
 {
+  // allow for maximum 8 partitions per node with maximum of 64 nodes
+  static const i8 C_MAX_PARTITIONS = 512;
+  
   class LoaderSub : public Object
   {
   private:
@@ -23,7 +26,7 @@ namespace DBobjects
     
     bool     m_bMoreChunks;  // continue while there are more chunks
     LoadChunk* m_pLoadChunk; // chunk loading buffer
-    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS_PER_NODE]; // working row buffers
+    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS]; // working row buffers
     
     // must be last
     Footer m_xFooter;

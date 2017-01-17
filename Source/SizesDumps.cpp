@@ -301,7 +301,7 @@ eHT geWhichHeap[]
 
   /* 33 */ HT_LARGE,   // CN_LOADCHUNK
   /* 33 */ HT_MEDIUM,  // CN_LOADER
-  /* 35 */ HT_SMALL,   // CN_LOADERSUB
+  /* 35 */ HT_MEDIUM,  // CN_LOADERSUB
   /* 36 */ HT_JUMBO,   // CN_LOADMAP
   /* 37 */ HT_INVALID, // CN_LOCK
   

@@ -8,6 +8,7 @@
 
 namespace DBobjects
 {
+  // allow for maximum 8 partitions per node
   static const i8 C_MAX_PARTITIONS_PER_NODE = 8;
   
   class Partitions : public Object

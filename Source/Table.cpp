@@ -111,13 +111,15 @@ void Table::vAnalyze(void)
   i8 nBuffersTotal = 0;
   i8 nStrandsTotal = 0;
   
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+  for (i8 iSlot = 0; iSlot < gxArguments.m_nPartitions; iSlot++) {
     
-    i8 iNode = Partition::iPartitionToNode(iPartition);
-    if (iNode != gxArguments.m_iNode)
-      continue;
+    i8 iPartition = Partition::iSlotToPartition(iSlot);
     
-    RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
+    //i8 iNode = Partition::iPartitionToNode(iPartition);
+    //if (iNode != gxArguments.m_iNode)
+    //  continue;
+    
+    RowStrand *pStrand = pPartition(iSlot)->pHeadStrand();
     i8 nRows = 0;
     i8 nBuffers = 0;
     i8 nStrands = 0;
@@ -127,6 +129,7 @@ void Table::vAnalyze(void)
       nRows += pStrand->nRows();
       pStrand = pStrand->pNextStrand();
     }
+    
     vTrace("  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
            iPartition,nStrands,nBuffers,nRows);
     nRowsTotal += nRows;

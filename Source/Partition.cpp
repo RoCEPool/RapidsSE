@@ -83,6 +83,26 @@ i8 Partition::iPartitionToNode(i8 iPartition)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert partition number to slot number                                    */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iPartitionToSlot(i8 iPartition)
+{
+  i8 iSlot = iPartition / gxArguments.m_nNodes;
+  
+  return iSlot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert slot number to partition number                                    */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iSlotToPartition(i8 iSlot)
+{
+  i8 iPartition = (iSlot * gxArguments.m_nNodes) + gxArguments.m_iNode;
+  
+  return iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -117,8 +117,10 @@ void Task::vTableAppendBuffer(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("table.appendBuffer");
   RowBuffer* pRowBuffer = _pRowBuffer(pPtrRowBuffer);
   ASSERT(CN_ROWBUFFER == pRowBuffer->eClass());
-    
-  pTable->vAppendBuffer(iPartition,pRowBuffer);
+  
+  i8 iSlot = Partition::iPartitionToSlot(iPartition);
+  
+  pTable->vAppendBuffer(iSlot,pRowBuffer);
   
   EXIT();
 }
