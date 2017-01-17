@@ -111,7 +111,10 @@ void QueueBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   QueueBuffer* pQueueBuffer = reinterpret_cast<QueueBuffer*>(pObject);
   
-  pQueueBuffer->vContentDump(pTab);
+  vTrace("%p count %lld top %p next %p\n",
+         pQueueBuffer->m_nValues,
+         pQueueBuffer->m_pTopValue,
+         pQueueBuffer->m_pNextFree);
 }
 
 /*----------------------------------------------------------------------------*/

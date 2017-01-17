@@ -75,7 +75,7 @@ void RegFrame::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   RegFrame* pRegFrame = _pRegFrame(pObject);
   
-  vTrace("%sRegFrame %p:\n", pTab, pRegFrame);
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

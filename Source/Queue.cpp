@@ -142,7 +142,10 @@ void Queue::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Queue* pQueue = reinterpret_cast<Queue*>(pObject);
   
-  pQueue->vContentDump(pTab);
+  vTrace("count %lld top %p end %p\n",
+         pQueue->m_iCount,
+         pQueue->m_pTopBuffer,
+         pQueue->m_pEndBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

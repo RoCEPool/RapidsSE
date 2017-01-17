@@ -66,10 +66,10 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   
-  vTrace("%sPartition %p:\n", pTab, pPartition);
-  vTrace("%s  row strands %s \n", pTab, pPartition->m_iRowStrands);
-  vTrace("%s  head strand %p\n\n", pTab, pPartition->m_pHeadStrand);
-  vTrace("%s  tail strand %p\n\n", pTab, pPartition->m_pTailStrand);
+  vTrace("strands %lld head %p tail %p\n",
+         pPartition->m_iRowStrands,
+         pPartition->m_pHeadStrand,
+         pPartition->m_pTailStrand);
 }
 
 /*----------------------------------------------------------------------------*/

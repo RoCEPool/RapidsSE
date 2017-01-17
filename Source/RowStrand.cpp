@@ -65,9 +65,7 @@ void RowStrand::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   RowStrand* pRowStrand = reinterpret_cast<RowStrand*>(pObject);
   
-  vTrace("%sRowStrand %p: rowBuffers %lld firstBuffer %p nextBuffer %p prevStrand %p nextStrand %p\n",
-         pTab,
-         pRowStrand,
+  vTrace("rowBuffers %lld first %p next %p prevStrand %p nextStrand %p\n",
          pRowStrand->m_nRowBuffers,
          pRowStrand->m_pFirstBuffer,
          pRowStrand->m_pLastBuffer,
