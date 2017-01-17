@@ -8,8 +8,8 @@
 
 namespace DBobjects
 {
-  // allow for maximum 8 partitions per node with maximum of 64 nodes
-  static const i8 C_MAX_PARTITIONS = 512;
+  static const i8 C_MAX_NODES = 64;
+  static const i8 C_MAX_PARTITIONS = C_MAX_PARTITIONS_PER_NODE * C_MAX_NODES;
   
   class LoaderSub : public Object
   {

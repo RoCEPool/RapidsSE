@@ -161,14 +161,22 @@ bool Arguments::bParse(int argc, const char* argv[])
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--nodes",argv[iArg],C_NO_CASE)) {
       m_nNodes = String::iToI8(argv[++iArg]);
+      if (m_nNodes > C_MAX_NODES) {
+        vTrace("Maximum number of nodes allowed in the cluster is %lld\n",C_MAX_NODES);
+        return false;
+      }
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
-      ASSERT(m_nPartitions <= C_MAX_PARTITIONS_PER_NODE);
-      ASSERT(m_nPartitions*m_nNodes <= C_MAX_PARTITIONS);
+      if (m_nPartitions > C_MAX_PARTITIONS_PER_NODE) {
+        vTrace("Maximum number of partitions allowed per node is %lld\n",
+          C_MAX_PARTITIONS_PER_NODE);
+        return false;
+      }
+      
       continue;
     }
     
