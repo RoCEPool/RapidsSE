@@ -126,12 +126,10 @@ void SePrompt::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   SePrompt* pSePrompt = reinterpret_cast<SePrompt*>(pObject);
   
-  vTrace("%sSePrompt %p:\n", pTab, pSePrompt);
-  vTrace("%s  partition %lld\n", pTab, pSePrompt->m_iPartition);
-  vTrace("%s  seitf %p\n", pTab, pSePrompt->m_pSEitf);
-  vTrace("%s  continue %s\n", pTab, pSePrompt->m_bContinue ? "true" : "false");
-  vTrace("%s  prompt '%s'\n", pTab, pSePrompt->m_sResponse.a());
-  vTrace("%s  response '%s'\n\n", pTab, pSePrompt->m_sResponse.a());
+  vTrace("partition %lld seitf %p continue %s\n",
+         pSePrompt->m_iPartition,
+         pSePrompt->m_pSEitf,
+         pSePrompt->m_bContinue ? "true" : "false");
 }
 
 /*----------------------------------------------------------------------------*/

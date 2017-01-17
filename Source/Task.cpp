@@ -1216,9 +1216,7 @@ void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
-  vTrace("%sTask %p: %s TaskNo %lld state %s txId %lld\n",
-         pTab,
-         pTask,
+  vTrace("%s TaskNo %lld state %s txId %lld\n",
          pTask->m_sName.a(),
          pTask->m_iTaskNo,
          pTS[pTask->m_eState],

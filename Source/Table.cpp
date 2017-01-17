@@ -205,9 +205,9 @@ void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Table* pTable = reinterpret_cast<Table*>(pObject);
   
-  vTrace("%sTable %p:\n", pTab, pTable);
-  vTrace("%s  name %s \n", pTab, pTable->m_sTableName.a());
-  vTrace("%s  type %s \n", pTab, pTT[pTable->m_eTableType]);
+  vTrace("name %s type %s\n",
+         pTable->m_sTableName.a(),
+         pTT[pTable->m_eTableType]);
 }
 
 /*----------------------------------------------------------------------------*/

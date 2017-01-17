@@ -206,10 +206,8 @@ void SEitf::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   SEitf* pSEitf = reinterpret_cast<SEitf*>(pObject);
   
-  vTrace("%sSEitf %p:pid %lld %s partitions %lld partition %lld"
+  vTrace("pid %lld %s partitions %lld partition %lld"
          " requestQ %p responseQ %p response '%s'\n",
-         pTab,
-         pSEitf,
          pSEitf->m_iPid,
          Process::bTestPid(pSEitf->m_iPid) ? "exists" : "non-existant",
          pSEitf->m_iPartitions,
