@@ -59,29 +59,34 @@ void BPA::vBufferDump(Buffer* pBuffer)
 
   (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
   
-  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
-      pBuffer->eClass() == CN_SMALLHEAP ) {
-    vHeapDump(reinterpret_cast<Heap*>(pBuffer));
-  }
+//  if (pBuffer->eClass() == CN_MEDIUMHEAP ||
+//      pBuffer->eClass() == CN_SMALLHEAP ) {
+//    vHeapDump(reinterpret_cast<Heap*>(pBuffer));
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump this heap buffer                                                      */
 /*----------------------------------------------------------------------------*/
-void BPA::vHeapDump(Heap* pBuffer)
+void BPA::vHeapDump(Heap* pHeap)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   HeapBuffer* pHeapBuffer;
   
-  pBuffer->vGrabLock();
+  vTrace("\n");
+  vTrace("%s%s Heap:\n",
+         pTab(),
+         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
   
-  for (pHeapBuffer = pBuffer->pFirstBuffer();
+  pHeap->vGrabLock();
+  
+  for (pHeapBuffer = pHeap->pFirstBuffer();
        pHeapBuffer;
        pHeapBuffer = pHeapBuffer->pNextBuffer()) {
     for (FreeChunk* pChunk = pHeapBuffer->pFirstChunk();
          pChunk;
-         pChunk = pHeapBuffer->pNextChunk(pChunk,pBuffer->iObjectSize())) {
+         pChunk = pHeapBuffer->pNextChunk(pChunk,pHeap->iObjectSize())) {
       
       eCN eClass = pChunk->eClass();
       
@@ -98,12 +103,13 @@ void BPA::vHeapDump(Heap* pBuffer)
       
       pDUMPFUN* pDumpFun = gpDump[eClass];
       
-      vTrace("%s%p %-16s: ",pDoubleTab(),pBuffer,pCN[eClass]);
+      vTrace("%s%p %-16s: ",pDoubleTab(),pHeap,pCN[eClass]);
 
       (pDumpFun)(eClass, pChunk, pDoubleTab());
     }
   }
-  pBuffer->vDropLock();
+  
+  pHeap->vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -304,16 +310,32 @@ void BPA::vPoolDump(void)
   }
   vTrace("\n");
   
+  Buffer* pMediumHeap = nullptr;
+  Buffer* pSmallHeap  = nullptr;
+  
   for (bn nBuffer = gpBufferPool->nBufferFirst();
        nBuffer <= nBufferCount;
        nBuffer++) {
-    
+
     Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    
+    if (CN_MEDIUMHEAP == pBuffer->eClass())
+      pMediumHeap = pBuffer;
+
+    if (CN_SMALLHEAP == pBuffer->eClass())
+      pSmallHeap = pBuffer;
     
     vBufferDump(pBuffer);
     iCountObjects[pBuffer->eClass()]++;
   }
   
+  if (pMediumHeap)
+    vHeapDump(reinterpret_cast<Heap*>(pMediumHeap));
+
+  if (pSmallHeap)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallHeap));
+
+
   vTrace("\n");
   vTrace("****************************************************************\n");
   vTrace(" dir %lld file %lld shm %lld socket %lld thread %lld\n",
