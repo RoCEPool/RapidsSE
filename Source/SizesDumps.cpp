@@ -382,6 +382,8 @@ void Dump::vDummy(eCN eClass, Object* pObject, const char* pTab)
   ASSERT(pObject != nullptr);
   ASSERT(pTab != nullptr);
   // do nothing
+  
+  vTrace("\n");
 }
 
 /*----------------------------------------------------------------------------*/

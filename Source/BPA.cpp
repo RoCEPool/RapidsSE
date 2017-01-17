@@ -187,8 +187,17 @@ void BPA::vAnalyze(void)
 void BPA::vBufferDump(Buffer* pBuffer)
 {
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+ 
+  eCN eClass = pBuffer->eClass();
   
-  pDUMPFUN* pDumpFun = gpDump[pBuffer->eClass()];
+  // dont dump FreeBuffer's
+  if (CN_FREEBUFFER == eClass)
+    return;
+  
+  pDUMPFUN* pDumpFun = gpDump[eClass];
+  
+  vTrace("%s%p %-16s: ",pSingleTab(),pBuffer,pCN[eClass]);
+
   (pDumpFun)(pBuffer->eClass(), pBuffer, pSingleTab());
   
   if (pBuffer->eClass() == CN_MEDIUMHEAP ||
@@ -220,7 +229,18 @@ void BPA::vHeapDump(Heap* pBuffer)
       if (CN_FREECHUNK == eClass)
         continue;
       
-      pDUMPFUN* pDumpFun =gpDump[eClass];
+      if (CN_WORD == eClass) {
+        Word* pWord = _pWord(pChunk);
+      
+        // dump only the objects
+        if (WT_OBJECT != pWord->eWordType())
+          continue;
+      }
+      
+      pDUMPFUN* pDumpFun = gpDump[eClass];
+      
+      vTrace("%s%p %-16s: ",pDoubleTab(),pBuffer,pCN[eClass]);
+
       (pDumpFun)(eClass, pChunk, pDoubleTab());
     }
   }

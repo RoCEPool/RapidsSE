@@ -143,8 +143,6 @@ void AttachMap::vDump(eCN eClass, Object* pObject, const char* pTab)
   AttachMap* pAttachMap = reinterpret_cast<AttachMap*>(pObject);
   ASSERT(pAttachMap->eClass() == eClass);
   
-  vTrace("%s%p %-16s: ",pTab,pObject,pCN[eClass]);
-         
   vTrace("pid %lld utc %s regionSize %lld partitions %lld\n",
          pAttachMap->m_iPid,
          pAttachMap->m_sUTC.a(),
