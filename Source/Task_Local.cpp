@@ -111,6 +111,7 @@ ENTRY("vLocalsBar");
       
       // create a locals dictionary
       pDic = new Dic;
+      pDic->vName("<localsDic>");
       nnpTask->vDicPush(pDic);
       
       // enocde locals frame push

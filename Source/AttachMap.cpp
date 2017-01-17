@@ -56,6 +56,8 @@ AttachMap::AttachMap(void)
     m_iPartition[iPartition] = -1;
   }
   
+  m_xMainDic.vName("<main>");
+  
   _checkInitialised_(CN_ATTACHMAP);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);

@@ -62,7 +62,7 @@ Dic::Dic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   
-  m_sName    = "<main>";
+  m_sName    = "<no-name>";
   m_pDicKind = nullptr;
   m_bFrozen  = false;
   m_zRefCount.vCheckInit();
