@@ -18,7 +18,6 @@ namespace GridModel
     Footer m_xFooter;
     
   public:
-    void* operator new(size_t);
     void* operator new(size_t, Grid* pGrid);
     void  operator delete(void*);
     
