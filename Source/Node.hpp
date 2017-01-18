@@ -13,6 +13,9 @@ namespace GridModel
   {
   private:
     i8    m_iNodeNo;
+    s256  m_sNodeName;
+    i8    m_iPortNo;
+    s256  m_sIpAddress;
     
     // must be last
     Footer m_xFooter;

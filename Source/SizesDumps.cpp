@@ -288,7 +288,7 @@ eHT geWhichHeap[]
   /* 24 */ HT_SMALL,   // CN_GRAPH
   /* 25 */ HT_SMALL,   // CN_GRAPHCURSOR
   /* 26 */ HT_SMALL,   // CN_GRAPHNODE
-  /* 27 */ HT_INVALID, // CN_GRID
+  /* 27 */ HT_SMALL,   // CN_GRID
 
   /* 28 */ HT_LARGE,   // CN_HEAPBUFFER
   

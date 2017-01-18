@@ -38,6 +38,8 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid.started!",   &vGridStartedStore, false);
   vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
+  vAddPrimitive("grid.this",       &vGridThis,         false);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +123,20 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
   ASSERT(CN_GRID == pGrid->eClass());
   
   nnpTask->m_pDataStack->vPush(pGrid->bHasStarted());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.this -- get grid pointer                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vGridThis(NNP_Task nnpTask)
+{
+  ENTRY("vGridThis");
+  
+  Object* pPtrGrid;
+  
+  nnpTask->m_pDataStack->vPush(gpGrid);
   
   EXIT();
 }
