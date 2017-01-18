@@ -57,6 +57,7 @@ tblInUse  table_inuse
 sel     select_table
 dump    dump_table
 cp      copy_table
+dex     dist_export_table
 ex      export_table
 sz      size_table
 tr      truncate_table

@@ -73,6 +73,21 @@ ddlLock.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
+/* distributed export of a table                                              */
+/*----------------------------------------------------------------------------*/
+: dist_export_table ( "<fileNm>" "<tableNm>" -- <R> )
+
+ddlLock.grabRead
+
+  checkInTables not if <NIP+ERROR> exit then
+  checkIsTable  not if <NIP+ERROR> exit then
+
+  tableExporter not if <NIP+ERROR> exit then
+
+  <OK>
+;
+
+/*----------------------------------------------------------------------------*/
 /* drop a table                                                               */
 /*----------------------------------------------------------------------------*/
 : drop_table ( "<tableNm>" -- <R> )
