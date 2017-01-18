@@ -1084,6 +1084,19 @@ bool String::bReplace(char *pString, const char *pThis, const char *pThat)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bSame: are two arguments equal (no case)                                   */
+/*----------------------------------------------------------------------------*/
+bool String::bSame(const char* pArg1, const char* pArg2)
+{
+  i8 iDiff = strcasecmp(pArg1,pArg2);
+  
+  if (0 == iDiff)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* iSize: get size in bytes of arg                                            */
 /*----------------------------------------------------------------------------*/
 i8 String::iSize(const char* s)

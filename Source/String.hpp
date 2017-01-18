@@ -87,6 +87,7 @@ namespace Common
     static void  vRemove(char* w, const char cLeading);
     static bool  bReplace(char* pString, const char* pThis, const char* pThat);
 
+    static bool  bSame(const char* s1, const char* s2);
     static i8    iSize(const char* s);
     static bool  bSkipEOL(char** ps);
     static bool  bSkipNonAlnum(char** ps);

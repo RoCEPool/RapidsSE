@@ -390,201 +390,59 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  if (0 == String::iLength(pWords[0])) {
+  if (0 == String::iLength(pWords[0]))
     return false;
-  }
   
-  if (String::bEqualTo("antbl",pWords[0],C_NO_CASE)) {
-    return bAnalyzeTable(pWords, iWords);
-  }
+  if (String::bSame("antbl",pWords[0])) return bAnalyzeTable(pWords, iWords);
+  if (String::bSame("add",pWords[0])) return bAddColumn(pWords, iWords);
+  if (String::bSame("cf",pWords[0])) return bPushDic(pWords);
+  if (String::bSame("con",pWords[0])) return bConnect(pWords);
+  if (String::bSame("cp",pWords[0])) return bCopyTable(pWords, iWords);
+  if (String::bSame("dex",pWords[0])) return bDistExportTable(pWords, iWords);
+  if (String::bSame("dis",pWords[0])) return bDisconnect(pWords);
+  if (String::bSame("docol",pWords[0])) return bDocol(pWords);
+  if (String::bSame("dump",pWords[0])) return bDumpTable(pWords, iWords);
+  if (String::bSame("ex",pWords[0])) return bExportTable(pWords, iWords);
+  if (String::bSame("getFreeSpace",pWords[0])) return bGetFreeSpace(pWords);
+  if (String::bSame("getInUseSpace",pWords[0])) return bGetInUseSpace(pWords);
+  if (String::bSame("gettbl",pWords[0])) return bGetTable(pWords, iWords);
+  if (String::bSame("getTotalSpace",pWords[0])) return bGetTotalSpace(pWords);
+  if (String::bSame("TblInUse",pWords[0])) return bInUseTable(pWords, iWords);
+  if (String::bSame("ld",pWords[0])) return bLoadTable(pWords, iWords);
+  if (String::bSame("lds",pWords[0])) return bLoadTableStream(pWords, iWords);
+  if (String::bSame("lf",pWords[0])) return bGetDicContents(pWords);
+  if (String::bSame("lfG",pWords[0])) return bGetDicContentsG(pWords);
+  if (String::bSame("lscat",pWords[0])) return bListCatalogs(pWords, iWords);
+  if (String::bSame("lscol",pWords[0])) return bListColumns(pWords, iWords);
+  if (String::bSame("lssch",pWords[0])) return bListSchemas(pWords, iWords);
+  if (String::bSame("lstbl",pWords[0])) return bListTables(pWords, iWords);
+  if (String::bSame("lsten",pWords[0])) return bListTenants(pWords, iWords);
+  if (String::bSame("mkcat",pWords[0])) return bCreateCatalog(pWords, iWords);
+  if (String::bSame("mksch",pWords[0])) return bCreateSchema(pWords, iWords);
+  if (String::bSame("mktbl",pWords[0])) return bCreateTable(pWords, iWords);
+  if (String::bSame("mkten",pWords[0])) return bCreateTenant(pWords, iWords);
+  if (String::bSame("pRB",pWords[0])) return bPrintRowBuffer(pWords);
+  if (String::bSame("pwf",pWords[0])) return bGetDicPath(pWords);
+  if (String::bSame("rettbl",pWords[0])) return bRetTable(pWords, iWords);
+  if (String::bSame("rf",pWords[0])) return bDropDictionary(pWords, iWords);
+  if (String::bSame("rmcat",pWords[0])) return bDropCatalog(pWords, iWords);
+  if (String::bSame("rmdic",pWords[0])) return bDropDictionary(pWords, iWords);
+  if (String::bSame("rmsch",pWords[0])) return bDropSchema(pWords, iWords);
+  if (String::bSame("rmtbl",pWords[0])) return bDropTable(pWords, iWords);
+  if (String::bSame("rmten",pWords[0])) return bDropTenant(pWords, iWords);
+  if (String::bSame("sel",pWords[0])) return bSelectTable(pWords, iWords);
+  if (String::bSame("space",pWords[0])) return bPoolSpace(pWords, iWords);
+  if (String::bSame("status",pWords[0])) return bNodeStatus(pWords, iWords);
+  if (String::bSame("sz",pWords[0])) return bSizeTable(pWords, iWords);
+  if (String::bSame("tr",pWords[0])) return bTruncateTable(pWords, iWords);
+  if (String::bSame("usesch",pWords[0])) return bUseSchema(pWords, iWords);
+  if (String::bSame("__x",pWords[0])) return bX(pWords);
+  if (String::bSame("ping",pWords[0])) return bPing(pWords);
+  if (String::bSame("mon",pWords[0])) return bGetMonitor(pWords);
+  if (String::bSame("print",pWords[0])) return ! bPrint(pWords);
+  if (String::bSame("seitf",pWords[0])) return bSeitfCount(pWords);
+  if (String::bSame("version",pWords[0])) return bGetVersion(pWords);
   
-  if (String::bEqualTo("add",pWords[0],C_NO_CASE)) {
-    return bAddColumn(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("cf",pWords[0],C_NO_CASE)) {
-    return bPushDic(pWords);
-  }
-  
-  if (String::bEqualTo("con",pWords[0],C_NO_CASE)) {
-    return bConnect(pWords);
-  }
-  
-  if (String::bEqualTo("cp",pWords[0],C_NO_CASE)) {
-    return bCopyTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("dis",pWords[0],C_NO_CASE)) {
-    return bDisconnect(pWords);
-  }
-  
-  if (String::bEqualTo("docol",pWords[0],C_NO_CASE)) {
-    return bDocol(pWords);
-  }
-  
-  if (String::bEqualTo("dump",pWords[0],C_NO_CASE)) {
-    return bDumpTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("ex",pWords[0],C_NO_CASE)) {
-    return bExportTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("getFreeSpace",pWords[0],C_NO_CASE)) {
-    return bGetFreeSpace(pWords);
-  }
-  
-  if (String::bEqualTo("getInUseSpace",pWords[0],C_NO_CASE)) {
-    return bGetInUseSpace(pWords);
-  }
-  
-  if (String::bEqualTo("gettbl",pWords[0],C_NO_CASE)) {
-    return bGetTable(pWords, iWords);
-  }
-
-  if (String::bEqualTo("getTotalSpace",pWords[0],C_NO_CASE)) {
-    return bGetTotalSpace(pWords);
-  }
-  
-  if (String::bEqualTo("TblInUse",pWords[0],C_NO_CASE)) {
-    return bInUseTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("ld",pWords[0],C_NO_CASE)) {
-    return bLoadTable(pWords, iWords);
-  }
-
-  if (String::bEqualTo("lds",pWords[0],C_NO_CASE)) {
-    return bLoadTableStream(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("lf",pWords[0],C_NO_CASE)) {
-    return bGetDicContents(pWords);
-  }
-  
-  if (String::bEqualTo("lfG",pWords[0],C_NO_CASE)) {
-    return bGetDicContentsG(pWords);
-  }
-  
-  if (String::bEqualTo("lscat",pWords[0],C_NO_CASE)) {
-    return bListCatalogs(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("lscol",pWords[0],C_NO_CASE)) {
-    return bListColumns(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("lssch",pWords[0],C_NO_CASE)) {
-    return bListSchemas(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("lstbl",pWords[0],C_NO_CASE)) {
-    return bListTables(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("lsten",pWords[0],C_NO_CASE)) {
-    return bListTenants(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("mkcat",pWords[0],C_NO_CASE)) {
-    return bCreateCatalog(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("mksch",pWords[0],C_NO_CASE)) {
-    return bCreateSchema(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("mktbl",pWords[0],C_NO_CASE)) {
-    return bCreateTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("mkten",pWords[0],C_NO_CASE)) {
-    return bCreateTenant(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("pRB",pWords[0],C_NO_CASE)) {
-    return bPrintRowBuffer(pWords);
-  }
-  
-  if (String::bEqualTo("pwf",pWords[0],C_NO_CASE)) {
-    return bGetDicPath(pWords);
-  }
-  
-  if (String::bEqualTo("rettbl",pWords[0],C_NO_CASE)) {
-    return bRetTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("rmcat",pWords[0],C_NO_CASE)) {
-    return bDropCatalog(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("rf",pWords[0],C_NO_CASE) ||
-      String::bEqualTo("rmdic",pWords[0],C_NO_CASE)) {
-    return bDropDictionary(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("rmsch",pWords[0],C_NO_CASE)) {
-    return bDropSchema(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("rmtbl",pWords[0],C_NO_CASE)) {
-    return bDropTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("rmten",pWords[0],C_NO_CASE)) {
-    return bDropTenant(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("sel",pWords[0],C_NO_CASE)) {
-    return bSelectTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("space",pWords[0],C_NO_CASE)) {
-    return bPoolSpace(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("status",pWords[0],C_NO_CASE)) {
-    return bNodeStatus(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("sz",pWords[0],C_NO_CASE)) {
-    return bSizeTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("tr",pWords[0],C_NO_CASE)) {
-    return bTruncateTable(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("usesch",pWords[0],C_NO_CASE)) {
-    return bUseSchema(pWords, iWords);
-  }
-  
-  if (String::bEqualTo("__x",pWords[0],C_NO_CASE)) {
-    return bX(pWords);
-  }
-  
-  if (String::bEqualTo("ping",pWords[0],C_NO_CASE)) {
-    return bPing(pWords);
-  }
-  
-  if (String::bEqualTo("mon",pWords[0],C_NO_CASE)) {
-    return bGetMonitor(pWords);
-  }
-  
-  if (String::bEqualTo("print",pWords[0],C_NO_CASE)) {
-    vPrint(pWords);
-    return false;
-  }
-  
-  if (String::bEqualTo("seitf",pWords[0],C_NO_CASE)) {
-    return bSeitfCount(pWords);
-  }
-  
-  if (String::bEqualTo("version",pWords[0],C_NO_CASE)) {
-    return bGetVersion(pWords);
-  }
-  
-  //vTrace("Unknown command: %s\n",pWords[0]);
   vSetLastError(EC_INVALID_COMMAND);
   return false;
 }
@@ -1097,6 +955,35 @@ bool SEitf::bCopyTable(char* pWords[], i8 iWords)
 }
 
 /*----------------------------------------------------------------------------*/
+/* distributed export of a table                                              */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDistExportTable(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char*  a = sRequest.a();
+  
+  if (iWords != 3) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[2]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," \"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," dist_export_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
 /* export a table                                                             */
 /*----------------------------------------------------------------------------*/
 bool SEitf::bExportTable(char* pWords[], i8 iWords)
@@ -1516,11 +1403,13 @@ bool SEitf::bPushDic(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void SEitf::vPrint(char* pWords[])
+bool SEitf::bPrint(char* pWords[])
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   printf("%s\n",pWords[1]);
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

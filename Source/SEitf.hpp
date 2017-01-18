@@ -108,6 +108,7 @@ namespace Interface
     bool bAnalyzeTable(char* pWords[], i8 iWords);
     bool bCopyTable(char* pWords[], i8 iWords);
     bool bExportTable(char* pWords[], i8 iWords);
+    bool bDistExportTable(char* pWords[], i8 iWords);
     bool bLoadTable(char* pWords[], i8 iWords);
     bool bLoadTableStream(char* pWords[], i8 iWords);
     bool bSelectTable(char* pWords[], i8 iWords);
@@ -139,7 +140,7 @@ namespace Interface
     bool bPrintRowBuffer(char* pWords[]);
     
     bool bX(char* pWords[]);
-    void vPrint(char* pWords[]);
+    bool bPrint(char* pWords[]);
     
     //--------------------------------------------------------------------------
     bool bAppendRequest(s& sRequest);
