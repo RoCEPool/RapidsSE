@@ -110,6 +110,8 @@ bool Arguments::bParse(int argc, const char* argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
+  i8 iNode = 0;
+  
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -158,6 +160,15 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--cluster",argv[iArg],C_NO_CASE)) {
+      Nodes[iNode].m_sNodeName = argv[++iArg];;
+      Nodes[iNode].m_sIpAddress = argv[++iArg];
+      Nodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
+      iNode++;
+      continue;
+    }
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--nodes",argv[iArg],C_NO_CASE)) {
       m_nNodes = String::iToI8(argv[++iArg]);

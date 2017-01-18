@@ -55,6 +55,12 @@ namespace StorageEngine
     i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers
     i8   m_iJumboSize;    // size of the jumbo heap
     
+    struct {
+      s256 m_sNodeName;
+      s256 m_sIpAddress;
+      i8   m_iPortNo;
+    } Nodes[C_MAX_NODES];
+    
     // must be last
     Footer m_xFooter;
     
