@@ -5,6 +5,7 @@
 "utilities.sen" .verbose
 
 "copier.sen" include
+"distExporter.sen" include
 "exporter.sen" include
 "fileGen.sen" include
 "loaderSub.sen" include

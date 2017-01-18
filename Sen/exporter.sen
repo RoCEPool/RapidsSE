@@ -1,81 +1,31 @@
 /*============================================================================*/
-/* exporter.sen -- table exporter                                              */
+/* distExporter.sen -- distributed table exporter                             */
 /*============================================================================*/
 
-"exporter.sen" .verbose
+"distExporter.sen" .verbose
 
-: export ( "<fileNm>" ^table )
-
-  swap file.new
-
-  >r
-  // r0 ^file
-
-  r0 file.path! OPEN_WRITE r0 file.open
-  if "file open!" . else "file not opened!" . rdrop drop EC_INVALID_FILE false exit then
-
-  "__row_cursor" find dup if else
-    drop "__row_cursor" :rowCursor
-  then
-  execute
-
-  >r
-  // r0 ^rowCursor
-  // r1 ^file
-
-  r0 rowcursor.table!
-
-  args.partitions 0
-  do
-    // r2 ^rowCursor
-    // r3 ^file
-
-    I r2 rowcursor.begin
-    r2 rowcursor.first
-    begin
-      while
-      r2 rowcursor.get
-//dup .
-      r3 file.write
-      "\n" r3 file.write
-      r2 rowcursor.next
-    repeat
-
-    r2 rowcursor.end
-  loop
-
-  r1 file.close
-
-  rdrop rdrop
-
-  "__row_cursor" find word.forget
+/*----------------------------------------------------------------------------*/
+/* distributed export                                                         */
+/*----------------------------------------------------------------------------*/
+: distExport ( "<fileNm>" ^table )
 
   true
 ;
 
-: exportTest
-
-//traceon
-
-    "/tmp/nation.txt" "nation" find execute
-
-    export
-
-traceoff
-;
-
-: tableExporter ( "<fileNm>" "<tableNm>" )
+/*----------------------------------------------------------------------------*/
+/* distributed export                                                         */
+/*----------------------------------------------------------------------------*/
+: distTableExporter ( "<fileNm>" "<tableNm>" )
 
   find execute ( "<fileNm>" table )
 
-  export
+  distExport
   if
     "exported!" . true
   else
     false
   then
 ;
-
 
 /*============================================================================*/
 /* end                                                                        */
