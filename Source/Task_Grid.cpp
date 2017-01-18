@@ -35,6 +35,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Grid(void)
 {
   vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
+  vAddPrimitive("grid.appendNodes",&vGridAppendNodes,   false);
   vAddPrimitive("grid.started!",   &vGridStartedStore, false);
   vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
@@ -46,7 +47,7 @@ void Task::vAddPrimitives_Grid(void)
 void Task::vGridAppendNode(NNP_Task nnpTask)
 {
 ENTRY("vGridAppendNode");
-  
+ 
   Object* pPtrNode;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
@@ -58,6 +59,24 @@ ENTRY("vGridAppendNode");
   
   gpGrid->vAppend(pNode);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.appendNodes -- append grid nodes into grid                            */
+/*----------------------------------------------------------------------------*/
+void Task::vGridAppendNodes(NNP_Task nnpTask)
+{
+  ENTRY("vGridAppendNodes");
+  
+  for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
+    Node* pNode = new Node(iNode,
+                           gxArguments.Nodes[iNode].m_sNodeName.a(),
+                           gxArguments.Nodes[iNode].m_sIpAddress.a(),
+                           gxArguments.Nodes[iNode].m_iPortNo);
+    ASSERT(CN_NODE == pNode->eClass());
+    gpGrid->vAppend(pNode);
+  }
   EXIT();
 }
 

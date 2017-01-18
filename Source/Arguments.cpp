@@ -24,7 +24,7 @@ Arguments::Arguments(void)
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nPartitions = 1;
   m_iNode       = 0;
-  m_nNodes      = 1;
+  m_nNodes      = 0;
   m_iPort       = 5000;
   m_bTracepoint = false;
   
@@ -166,10 +166,16 @@ bool Arguments::bParse(int argc, const char* argv[])
       Nodes[iNode].m_sIpAddress = argv[++iArg];
       Nodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
       iNode++;
+      
+      if (m_nNodes > C_MAX_NODES) {
+        vTrace("Maximum number of nodes allowed in the cluster is %lld\n",C_MAX_NODES);
+        return false;
+      }
       continue;
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    /*
     if (String::bEqualTo("--nodes",argv[iArg],C_NO_CASE)) {
       m_nNodes = String::iToI8(argv[++iArg]);
       if (m_nNodes > C_MAX_NODES) {
@@ -178,7 +184,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       }
       continue;
     }
-    
+    */
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
@@ -412,7 +418,9 @@ bool Arguments::bParse(int argc, const char* argv[])
     vTrace("Unrecognized command argument: %s\n",argv[iArg]);
     return false;
   }
-
+  
+  m_nNodes = iNode;
+  
   return true;
 }
 
@@ -434,7 +442,7 @@ void Arguments::vPrint(void)
   if (m_bStop)     vTrace("  --stop\n");
 
   vTrace("  --node %lld\n",m_iNode);
-  vTrace("  --nodes %lld\n",m_nNodes);
+  //vTrace("  --nodes %lld\n",m_nNodes);
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);

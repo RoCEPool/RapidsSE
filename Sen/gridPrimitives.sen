@@ -569,8 +569,8 @@ tp: addingPassOnToCP
   //  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
   " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
   " --region /SE_" str.cat  swap >str str.cat
+  " --cluster node1 192.168.1.8 5000 --cluster node3 127.0.0.1 5001" str.cat 
   " --node  " str.cat swap >str str.cat
-  " --nodes " str.cat args.nodes >str str.cat
   " --partitionsPerNode " str.cat args.partitions >str str.cat
   " --port  " str.cat args.port  >str str.cat
   " --sleep " str.cat args.sleep >str str.cat

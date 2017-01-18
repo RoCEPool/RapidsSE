@@ -123,7 +123,13 @@ tp: printResult
 
 grid: grid.this
 
-//0 node.new grid.appendNode
+//0 node.new grid.append
+
+//args.nodes 0 do
+//  I node.new grid.appendNode
+//loop
+
+grid.appendNodes
 
 /*============================================================================*/
 /* end                                                                        */

@@ -13,9 +13,9 @@ namespace GridModel
   {
   private:
     i8    m_iNodeNo;
-    s256  m_sNodeName;
-    i8    m_iPortNo;
+    s256  m_sName;
     s256  m_sIpAddress;
+    i8    m_iPortNo;
     
     // must be last
     Footer m_xFooter;
@@ -26,6 +26,7 @@ namespace GridModel
     void  operator delete(void*);
     
     Node(void);
+    Node(i8 iNodeNo, char* pName, char* pIpAddress, i8 iPort);
     ~Node(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);

@@ -72,11 +72,12 @@ ENTRY("vNodeNew");
   if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
     THROW_INVALID_DSTACK("node.new");
   
-  Node* pNode = new Node;
+  Node* pNode = new Node(iNodeNo,
+                         gxArguments.Nodes[iNodeNo].m_sNodeName.a(),
+                         gxArguments.Nodes[iNodeNo].m_sIpAddress.a(),
+                         gxArguments.Nodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
-  pNode->vNodeNo(iNodeNo);
-  
   nnpTask->m_pDataStack->vPush(pNode);
   
   EXIT();
