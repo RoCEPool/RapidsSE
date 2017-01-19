@@ -18,7 +18,6 @@ namespace StorageEngine
     i8    m_nPartitions; // partitions per node
     s256  m_sNode;       // this node name
     i8    m_nNodes;      // out of this number of nodes
-    i8    m_iPort;       // port number
     bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
     s256  m_sSen;        // sen dir

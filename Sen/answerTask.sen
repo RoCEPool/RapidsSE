@@ -29,14 +29,21 @@ int: connections
 /*----------------------------------------------------------------------------*/
 : ans.loop
 
+  locals| port |
+
+  // get the listening port of this node
+  grid.thisNode@ grid.node
+  node.port
+  to port
+
   answerTaskPrint if "Answer running..." . then
 
   args.verbose if
-    "waiting for connections on port "  args.port grid.thisNode@ + >str str.cat .
-    args.port grid.thisNode@ + >str "Listening on port " swap str.cat .
+    "waiting for connections on port "  port >str str.cat .
+    port >str "Listening on port " swap str.cat .
   then
 
-  args.port grid.thisNode@ + socket.listen ( socket )
+  port socket.listen ( socket )
 
   locals| listeningSocket |
 
@@ -50,7 +57,7 @@ tp: waitingOnAccept
 tp: socketAccepted
 
     args.verbose if
-      "accepted connection on port " args.port grid.thisNode@ + >str str.cat .
+      "accepted connection on port " port >str str.cat .
     then
 
   // start receiver

@@ -25,7 +25,6 @@ Arguments::Arguments(void)
   m_nPartitions = 4;
   m_sNode       = "";
   m_nNodes      = 0;
-  m_iPort       = 5000;
   m_bTracepoint = false;
   
 #ifdef __APPLE__
@@ -188,13 +187,6 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     */
-    
-   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   if (String::bEqualTo("--port",argv[iArg],C_NO_CASE)) {
-     m_iPort = String::iToI8(argv[++iArg]);
-     continue;
-   }
-
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
