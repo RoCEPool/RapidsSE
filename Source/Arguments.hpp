@@ -56,9 +56,9 @@ namespace StorageEngine
     
     struct {
       s256 m_sNodeName;
-      s256 m_sIpAddress;
+      s256 m_sIPAddress;
       i8   m_iPortNo;
-    } Nodes[C_MAX_NODES];
+    } m_xNodes[C_MAX_NODES];
     
     // must be last
     Footer m_xFooter;

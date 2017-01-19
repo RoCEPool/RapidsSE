@@ -161,9 +161,9 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--cluster",argv[iArg],C_NO_CASE)) {
-      Nodes[iNode].m_sNodeName = argv[++iArg];;
-      Nodes[iNode].m_sIpAddress = argv[++iArg];
-      Nodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
+      m_xNodes[iNode].m_sNodeName = argv[++iArg];;
+      m_xNodes[iNode].m_sIPAddress = argv[++iArg];
+      m_xNodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
       iNode++;
       
       if (m_nNodes > C_MAX_NODES) {
@@ -431,6 +431,14 @@ void Arguments::vPrint(void)
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
+  
+  for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
+    vTrace("  --cluster %s %s %lld\n",
+      m_xNodes[iIndex].m_sNodeName.a(),
+      m_xNodes[iIndex].m_sIPAddress.a(),
+      m_xNodes[iIndex].m_iPortNo);
+  }
+  
   //vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
   vTrace("  --commands %s\n",m_sCommands.a());
 //#ifdef _DEBUG
@@ -460,8 +468,9 @@ void Arguments::vPrintHelp(void)
   
   printf("\n");
   //printf("--partitionsPerNode <i>  (number of partitions per node)\n");
-  printf("--region <name>   (name of shm region)\n");
-  printf("--size <i>        (size in bytes of shm region)\n");
+  printf("--cluster <name> IP port (node information in the cluster)\n");
+  printf("--region <name>          (name of shm region)\n");
+  printf("--size <i>               (size in bytes of shm region)\n");
 
   printf("\n");
 }

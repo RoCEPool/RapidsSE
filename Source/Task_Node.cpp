@@ -98,9 +98,9 @@ ENTRY("vNodeNew");
     THROW_INVALID_DSTACK("node.new");
   
   Node* pNode = new Node(iNodeNo,
-                         gxArguments.Nodes[iNodeNo].m_sNodeName.a(),
-                         gxArguments.Nodes[iNodeNo].m_sIpAddress.a(),
-                         gxArguments.Nodes[iNodeNo].m_iPortNo);
+                         gxArguments.m_xNodes[iNodeNo].m_sNodeName.a(),
+                         gxArguments.m_xNodes[iNodeNo].m_sIPAddress.a(),
+                         gxArguments.m_xNodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
   nnpTask->m_pDataStack->vPush(pNode);

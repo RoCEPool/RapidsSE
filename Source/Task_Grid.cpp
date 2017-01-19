@@ -54,9 +54,9 @@ void Task::vGridAppendNodes(NNP_Task nnpTask)
   
   for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
     Node* pNode = new Node(iNode,
-                           gxArguments.Nodes[iNode].m_sNodeName.a(),
-                           gxArguments.Nodes[iNode].m_sIpAddress.a(),
-                           gxArguments.Nodes[iNode].m_iPortNo);
+                           gxArguments.m_xNodes[iNode].m_sNodeName.a(),
+                           gxArguments.m_xNodes[iNode].m_sIPAddress.a(),
+                           gxArguments.m_xNodes[iNode].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
     gpGrid->vAppend(pNode);
   }
