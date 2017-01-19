@@ -49,7 +49,7 @@ tp: loadAppendBuffer$
   1 task.this task.thread thread.name@ str.left "p" str.equal assert
 
   args.tracepoint if
-    dup "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.node@ >str str.cat .
+    dup "APPENDING ROWBUFFER " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   // get ^table

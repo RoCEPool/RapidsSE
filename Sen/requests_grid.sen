@@ -12,7 +12,7 @@
 tp: gettingStatus
 
   args.tracepoint if
-  "GETTING STATUS on NODE "grid.node@ >str str.cat .
+  "GETTING STATUS on NODE "grid.thisNode@ >str str.cat .
   then
 
   node.status

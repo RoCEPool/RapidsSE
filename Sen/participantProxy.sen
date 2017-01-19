@@ -35,7 +35,7 @@ tp: participantProxy
     // set caller into reg0
     exeOne 
 
-    actorNo grid.node@ ==
+    actorNo grid.thisNode@ ==
     if
       // forward to participant on local node
 

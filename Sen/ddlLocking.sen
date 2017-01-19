@@ -31,7 +31,7 @@ args.nodes intArray: ddlInts
 
   // determine which queue to forward to
   dup ( ... #values actorNo actorNo )
-  grid.node@ ( ... #values actorNo actorNo grid.node@ )
+  grid.thisNode@ ( ... #values actorNo actorNo grid.thisNode@ )
   == ( ... #values actorNo true|false )
   if ( ... #values actorNo )
 

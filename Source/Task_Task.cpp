@@ -84,7 +84,7 @@ void Task::vTaskAck(NNP_Task nnpTask)
     //           pThatTask,pThatTask->m_sName.a());
     if (gxArguments.m_bTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n",
-             gpGrid->iNode(),
+             gpGrid->iThisNode(),
              nnpTask->m_sName.a(),
              *nnpTask->m_zAcks,
              nnpTask->m_sComment.a(),
@@ -105,7 +105,7 @@ void Task::vTaskAck(NNP_Task nnpTask)
     //           *nnpTask,nnpTask->m_sName.a(),
     //           pThatTask,iMore,pThatTask->m_sName.a());
     vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n",
-           gpGrid->iNode(),
+           gpGrid->iThisNode(),
            nnpTask->m_sName.a(),
            *nnpTask->m_zAcks,
            nnpTask->m_sComment.a(),

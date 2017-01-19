@@ -32,11 +32,11 @@ int: connections
   answerTaskPrint if "Answer running..." . then
 
   args.verbose if
-    "waiting for connections on port "  args.port grid.node@ + >str str.cat .
-    args.port grid.node@ + >str "Listening on port " swap str.cat .
+    "waiting for connections on port "  args.port grid.thisNode@ + >str str.cat .
+    args.port grid.thisNode@ + >str "Listening on port " swap str.cat .
   then
 
-  args.port grid.node@ + socket.listen ( socket )
+  args.port grid.thisNode@ + socket.listen ( socket )
 
   locals| listeningSocket |
 
@@ -50,7 +50,7 @@ tp: waitingOnAccept
 tp: socketAccepted
 
     args.verbose if
-      "accepted connection on port " args.port grid.node@ + >str str.cat .
+      "accepted connection on port " args.port grid.thisNode@ + >str str.cat .
     then
 
   // start receiver
@@ -76,7 +76,7 @@ ddlLock.dropWrite
     connections !          ( connections# )
 
     1  == if               ( connection# )
-      grid.node@ 0 != if
+      grid.thisNode@ 0 != if
         connectorStart
       then
     then

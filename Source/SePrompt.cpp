@@ -52,7 +52,7 @@ SePrompt::SePrompt(void)
   
   String::vSprint(m_sPrompt.a(),
                   "[N%lld %lld] se %s%c> ",
-                  gpGrid->iNode(),
+                  gpGrid->iThisNode(),
                   Process::iGetPid(),
                   RAPIDSSE_VERSION_STRING,
 #ifdef _DEBUG

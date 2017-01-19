@@ -22,7 +22,7 @@ Arguments::Arguments(void)
   m_pRegionAddr = C_ADDR_POOL;
   m_sRegionName = "/SE_0";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
-  m_nPartitions = 1;
+  m_nPartitions = 4;
   m_sNode       = "";
   m_nNodes      = 0;
   m_iPort       = 5000;
@@ -175,17 +175,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    /*
-    if (String::bEqualTo("--nodes",argv[iArg],C_NO_CASE)) {
-      m_nNodes = String::iToI8(argv[++iArg]);
-      if (m_nNodes > C_MAX_NODES) {
-        vTrace("Maximum number of nodes allowed in the cluster is %lld\n",C_MAX_NODES);
-        return false;
-      }
-      continue;
-    }
-    */
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Disabled partitionsPerNode for version 0.2.1
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       if (m_nPartitions > C_MAX_PARTITIONS_PER_NODE) {
@@ -197,11 +187,12 @@ bool Arguments::bParse(int argc, const char* argv[])
       continue;
     }
     
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--port",argv[iArg],C_NO_CASE)) {
-      m_iPort = String::iToI8(argv[++iArg]);
-      continue;
-    }
+   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   if (String::bEqualTo("--port",argv[iArg],C_NO_CASE)) {
+     m_iPort = String::iToI8(argv[++iArg]);
+     continue;
+   }
+
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
@@ -443,12 +434,10 @@ void Arguments::vPrint(void)
   if (m_bStop)     vTrace("  --stop\n");
 
   vTrace("  --node %s\n",m_sNode.a());
-  //vTrace("  --nodes %lld\n",m_nNodes);
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
-  vTrace("  --port %lld\n",m_iPort);
+  //vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
   vTrace("  --commands %s\n",m_sCommands.a());
 //#ifdef _DEBUG
   vTrace("  --sen %s\n",m_sSen.a());
@@ -476,7 +465,7 @@ void Arguments::vPrintHelp(void)
   printf("--stop            (stop system)\n");
   
   printf("\n");
-  printf("--partitionsPerNode <i>  (number of partitions per node)\n");
+  //printf("--partitionsPerNode <i>  (number of partitions per node)\n");
   printf("--region <name>   (name of shm region)\n");
   printf("--size <i>        (size in bytes of shm region)\n");
 

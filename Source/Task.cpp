@@ -1903,7 +1903,7 @@ void Task::vTracePoint(const char* aMark)
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld=",
          
-         gpGrid->iNode(),
+         gpGrid->iThisNode(),
          m_sName.a(),
          *m_zAcks,
          m_sComment.a(),

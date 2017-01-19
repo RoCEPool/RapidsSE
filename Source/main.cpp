@@ -134,7 +134,7 @@ int main(int argc, const char* argv[])
 void vKillPrev(void)
 {
   // only node0 does this when starting
-  if ( ! (0 == gpGrid->iNode() && gxArguments.m_bStart) )
+  if ( ! (0 == gpGrid->iThisNode() && gxArguments.m_bStart) )
     return;
   
   // an assumption is that regions will be /SE_<node>

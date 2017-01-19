@@ -85,7 +85,7 @@ tp: valset
 
 tp: printRB$
 
-  "PRINTING ROWBUFFER on NODE " grid.node@ >str str.cat .
+  "PRINTING ROWBUFFER on NODE " grid.thisNode@ >str str.cat .
 
   rowbuffer.dump
 

@@ -12,7 +12,7 @@ namespace GridModel
                public List_t<Node>
   {
   private:
-    i8     m_iNode;  // this node
+    i8     m_iThisNode;  // this node number
     bool   m_bHasStarted;
     
     // must be last
@@ -30,8 +30,8 @@ namespace GridModel
     bool bHasStarted(void);
     Node* pFindNode(char* pName);
     Node* pFindNode(i8 iNode);
-    void vNode(i8 iNode);
-    i8   iNode(void);
+    void vThisNode(i8 iNode);
+    i8   iThisNode(void);
     void vInit(void);
     
     Footer* pFooter(void);

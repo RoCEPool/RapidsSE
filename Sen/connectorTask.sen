@@ -30,7 +30,7 @@ tp: connectorStart
 
   args.nodes 0 do
 
-    I grid.node@ == if
+    I grid.thisNode@ == if
 
       nullptr I senderQueues !
       nullptr I senderTasks  !
@@ -42,7 +42,7 @@ tp: connectorStart
       socket.open  socket.connect
 
       args.verbose if
-        "Node" grid.node@ >str str.cat
+        "Node" grid.thisNode@ >str str.cat
         " connected to node" str.cat
         I >str str.cat
         .
@@ -74,7 +74,7 @@ ddlLock.dropWrite
 
   // set grid as started
   true grid.this grid.started!
-  grid.node@  "Node%v : SE cluster started" str.format .
+  grid.thisNode@  "Node%v : SE cluster started" str.format .
 
   //1000000 thread.sleep_s
 

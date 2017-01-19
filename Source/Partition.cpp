@@ -98,7 +98,7 @@ i8 Partition::iPartitionToSlot(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iSlotToPartition(i8 iSlot)
 {
-  i8 iPartition = (iSlot * gxArguments.m_nNodes) + gpGrid->iNode();
+  i8 iPartition = (iSlot * gxArguments.m_nNodes) + gpGrid->iThisNode();
   
   return iPartition;
 }
