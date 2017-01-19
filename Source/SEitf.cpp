@@ -104,9 +104,8 @@ SEitf::~SEitf(void)
   SEitf* pSEitf = this;
   
   m_pResponseQueue->vFinalize();
-  Word* pRspQueWord = m_xDic.pFind("rspque");
-  delete pRspQueWord;
-
+  delete m_pResponseQueue;
+  
   gpSEitfList->vRemove(pSEitf);
 }
 
@@ -224,31 +223,13 @@ void SEitf::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  // response queue
-  Word* pQueueWord = gpMainDic->pFind("queue");
-  Word* pRspQueWord = new(&m_xDic) Word("rspque");
-  pRspQueWord->vWordType(WT_OBJECT);
-  pRspQueWord->vKind(pQueueWord);
-
-  //pRspQueWord->vEntryStep(nullptr);
-  
-  Word* pEmptyDoesWord = gpMainDic->pFind("emptyDoes:");
-  pRspQueWord->vEntryStep(pEmptyDoesWord->pEntryStep());
-  pRspQueWord->vEntryCell(pEmptyDoesWord->pEntryCell() + 2);
- 
-  
-  pRspQueWord->pAllot(sizeof(Queue));
-  
-  m_pResponseQueue = reinterpret_cast<Queue*>(pRspQueWord->pDataArea());
-  m_pResponseQueue->vSetMagic();
-  m_pResponseQueue->vClass(CN_QUEUE);
-  new(m_pResponseQueue) Queue;
-  
   // request queue
   Word* pReqQueWord = gpMainDic->pFind("requestQueue");
   ASSERT(pReqQueWord);
   
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pDataArea());
+  // response queue
+  m_pResponseQueue = new Queue;
   
   // dictionary stack
   m_xDicStack.vPush(gpMainDic);
@@ -288,7 +269,6 @@ void SEitf::vInit(void)
   
   pCell = pSchema->pFirstCell();
   m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
-  
 }
 
 /*----------------------------------------------------------------------------*/

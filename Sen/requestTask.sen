@@ -77,7 +77,7 @@ tp: poppedValset
 /* send response                                                              */
 /*----------------------------------------------------------------------------*/
 : >rsp ( send response    )
-
+//traceon
   // check stack
   depth 3 != if "incorrect response stack depth" . process.quit then
 
@@ -87,9 +87,11 @@ tp: poppedValset
 
   >valset
 
-  "rspque" find execute queue.append
+  //"rspque" find execute queue.append
+  task.this task.seitf@ seitf.responseQueue queue.append
 
   0 task.this task.seitf!
+//traceoff
 ;
 
 /*----------------------------------------------------------------------------*/

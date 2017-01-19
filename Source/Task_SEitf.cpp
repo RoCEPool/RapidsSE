@@ -34,17 +34,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_SEitf(void)
 {
-  vAddPrimitive("seitf.count",     &vSEitfCount,       false);
-  vAddPrimitive("seitf.delete",    &vSEitfDelete,      false);
-  vAddPrimitive("seitf.dump",      &vSEitfDump,        false);
-  vAddPrimitive("seitf.pid",       &vSEitfPid,         false);
-  vAddPrimitive("seitf.req@",      &vSEitfReqFetch,    false);
-  vAddPrimitive("seitf.req!",      &vSEitfReqStore,    false);
-  vAddPrimitive("seitf.rsp@",      &vSEitfRspFetch,    false);
-  vAddPrimitive("seitf.rsp!",      &vSEitfRspStore,    false);
-  vAddPrimitive("seitf.table@",    &vSEitfTableFetch,  false);
-  vAddPrimitive("seitf.tableRef",  &vSEitfTableRef,    false);
-  vAddPrimitive("seitf.tableDeref",&vSEitfTableDeref,  false);
+  vAddPrimitive("seitf.count",         &vSEitfCount,         false);
+  vAddPrimitive("seitf.delete",        &vSEitfDelete,        false);
+  vAddPrimitive("seitf.dump",          &vSEitfDump,          false);
+  vAddPrimitive("seitf.pid",           &vSEitfPid,           false);
+  vAddPrimitive("seitf.req@",          &vSEitfReqFetch,      false);
+  vAddPrimitive("seitf.req!",          &vSEitfReqStore,      false);
+  vAddPrimitive("seitf.rsp@",          &vSEitfRspFetch,      false);
+  vAddPrimitive("seitf.rsp!",          &vSEitfRspStore,      false);
+  vAddPrimitive("seitf.responseQueue", &vSEitfResponseQueue, false);
+  vAddPrimitive("seitf.table@",        &vSEitfTableFetch,    false);
+  vAddPrimitive("seitf.tableRef",      &vSEitfTableRef,      false);
+  vAddPrimitive("seitf.tableDeref",    &vSEitfTableDeref,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -211,6 +212,25 @@ ENTRY("vSEitfRspStore");
   ASSERT(CN_QUEUE == pQueue->eClass());
   
   pSEitf->vResponseQueue(pQueue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.responseQueue -- get SEitf response queue                            */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfResponseQueue(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfeResponseQueue");
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.responseQueue");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pSEitf->pResponseQueue());
   
   EXIT();
 }

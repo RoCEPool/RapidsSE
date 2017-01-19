@@ -798,6 +798,7 @@ namespace Tasks
     static void vSEitfReqStore(NNP_Task nnpTask);
     static void vSEitfRspFetch(NNP_Task nnpTask);
     static void vSEitfRspStore(NNP_Task nnpTask);
+    static void vSEitfResponseQueue(NNP_Task nnpTask);
     static void vSEitfTableFetch(NNP_Task nnpTask);
     static void vSEitfTableRef(NNP_Task nnpTask);
     static void vSEitfTableDeref(NNP_Task nnpTask);
