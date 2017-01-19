@@ -34,35 +34,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Grid(void)
 {
-  vAddPrimitive("grid.appendNode", &vGridAppendNode,   false);
   vAddPrimitive("grid.appendNodes",&vGridAppendNodes,  false);
+  vAddPrimitive("grid.init",       &vGridInit,         false);
+  vAddPrimitive("grid.node",       &vGridNode,         false);
   vAddPrimitive("grid.thisNode!",  &vGridThisNodeStore,false);
   vAddPrimitive("grid.thisNode@",  &vGridThisNodeFetch,false);
-  vAddPrimitive("grid.thisNodeName",   &vGridNodeName,     false);
+  vAddPrimitive("grid.thisNodeName",&vGridNodeName,    false);
   vAddPrimitive("grid.started!",   &vGridStartedStore, false);
   vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
-  vAddPrimitive("grid.init",       &vGridInit,         false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* grid.appendNode -- append grid node into grid                              */
-/*----------------------------------------------------------------------------*/
-void Task::vGridAppendNode(NNP_Task nnpTask)
-{
-ENTRY("vGridAppendNode");
- 
-  Object* pPtrNode;
   
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
-    THROW_INVALID_DSTACK("grid.addNode");
-
-  Node* pNode = _pNode(pPtrNode);
-  ASSERT(pNode);
-  ASSERT(CN_NODE == pNode->eClass());
-  
-  gpGrid->vAppend(pNode);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,6 +82,24 @@ ENTRY("vGridInit");
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* grid.node -- get node from grid                                            */
+/*----------------------------------------------------------------------------*/
+void Task::vGridNode(NNP_Task nnpTask)
+{
+  ENTRY("vGridNode");
+  
+  i8 iNode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(iNode) )
+    THROW_INVALID_DSTACK("grid.node");
+  
+  nnpTask->m_pDataStack->vPush(gpGrid->pFindNode(iNode));
+  
+  EXIT();
+}
+
 /*----------------------------------------------------------------------------*/
 /* grid.thisNode! -- set this node  in the grid                               */
 /*----------------------------------------------------------------------------*/
@@ -137,7 +135,7 @@ void Task::vGridThisNodeFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.thisNodename -- get grid node name                                        */
+/* grid.thisNodename -- get this node name from the grid                      */
 /*----------------------------------------------------------------------------*/
 void Task::vGridNodeName(NNP_Task nnpTask)
 {
@@ -152,7 +150,7 @@ void Task::vGridNodeName(NNP_Task nnpTask)
   //ASSERT(CN_GRID == pGrid->eClass());
   
   s256 sName;
-  sName = gpGrid->pFindNode(iNode)->pName();
+  sName = gpGrid->pFindNode(iNode)->pNodeName();
   
   nnpTask->m_pDataStack->vPush(sName);
   

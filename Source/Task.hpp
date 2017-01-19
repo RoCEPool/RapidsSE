@@ -570,10 +570,10 @@ namespace Tasks
     static void vFlowTest(NNP_Task nnpTask);
     static void vFlowThrow(NNP_Task nnpTask);
     
-    // grid
-    static void vGridAppendNode(NNP_Task nnpTask);
+    // grid    
     static void vGridAppendNodes(NNP_Task nnpTask);
     static void vGridInit(NNP_Task nnpTask);
+    static void vGridNode(NNP_Task nnpTask);
     static void vGridThisNodeStore(NNP_Task nnpTask);
     static void vGridThisNodeFetch(NNP_Task nnpTask);
     static void vGridNodeName(NNP_Task nnpTask);
@@ -669,8 +669,11 @@ namespace Tasks
     
     // node (of grid)
     static void vNodeInit(NNP_Task nnpTask);
+    static void vNodeIP(NNP_Task nnpTask);
+    static void vNodeName(NNP_Task nnpTask);
     static void vNodeNew(NNP_Task nnpTask);
     static void vNodeNo(NNP_Task nnpTask);
+    static void vNodePort(NNP_Task nnpTask);
     static void vNodeStatus(NNP_Task nnpTask);
     
     // nodeCursor

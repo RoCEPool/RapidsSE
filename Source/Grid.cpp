@@ -120,7 +120,7 @@ Node* Grid::pFindNode(char* pName)
   pNodeCursor->vFirst();
   Node* pNode = pNodeCursor->pObject();
   while (pNode) {
-    if (String::bEqualTo(pNode->pName(), pName)) {
+    if (String::bEqualTo(pNode->pNodeName(), pName, C_NO_CASE)) {
       break;
     }
     pNodeCursor->vNext();

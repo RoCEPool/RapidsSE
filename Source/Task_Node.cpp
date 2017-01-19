@@ -61,6 +61,28 @@ ENTRY("vNodeInit");
 }
 
 /*----------------------------------------------------------------------------*/
+/* node.IP -- push IP of node                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeIP(NNP_Task nnpTask)
+{
+  ENTRY("vNodeIP");
+  
+  Object* pPtrNode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.IP");
+  
+  Node* pNode = _pNode(pPtrNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  s256 sIP;
+  sIP = pNode->pNodeIP();
+  nnpTask->m_pDataStack->vPush(sIP);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* node.new -- new a node (of a grid)                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNew(NNP_Task nnpTask)
@@ -84,6 +106,28 @@ ENTRY("vNodeNew");
 }
 
 /*----------------------------------------------------------------------------*/
+/* node.name -- push name of node                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vNodeName(NNP_Task nnpTask)
+{
+  ENTRY("vNodeName");
+  
+  Object* pPtrNode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.name");
+  
+  Node* pNode = _pNode(pPtrNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  s256 sName;
+  sName = pNode->pNodeName();
+  nnpTask->m_pDataStack->vPush(sName);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* node.no -- push node number of node (of a grid)                            */
 /*----------------------------------------------------------------------------*/
 void Task::vNodeNo(NNP_Task nnpTask)
@@ -99,6 +143,26 @@ ENTRY("vNodeNo");
   ASSERT(CN_NODE == pNode->eClass());
   
   nnpTask->m_pDataStack->vPush(pNode->iNodeNo());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* node.port -- push port number of node (of a grid)                          */
+/*----------------------------------------------------------------------------*/
+void Task::vNodePort(NNP_Task nnpTask)
+{
+  ENTRY("vNodeNo");
+  
+  Object* pPtrNode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrNode) )
+    THROW_INVALID_DSTACK("node.port");
+  
+  Node* pNode = _pNode(pPtrNode);
+  ASSERT(CN_NODE == pNode->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pNode->iNodePortNo());
   
   EXIT();
 }

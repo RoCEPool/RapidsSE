@@ -55,10 +55,10 @@ Node::Node(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_iNodeNo = -1;
-  m_sName = "";
-  m_sIpAddress = "";
-  m_iPortNo = -1;
+  m_iNodeNo   = -1;
+  m_sNodeName = "";
+  m_sNodeIP   = "";
+  m_iPortNo   = -1;
   
   _checkInitialised_(CN_NODE);
   
@@ -73,10 +73,10 @@ Node::Node(i8 iNodeNo, char* pName, char* pIpAddress, i8 iPortNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   
-  m_iNodeNo = iNodeNo;
-  m_sName = pName;
-  m_sIpAddress = pIpAddress;
-  m_iPortNo = iPortNo;
+  m_iNodeNo   = iNodeNo;
+  m_sNodeName = pName;
+  m_sNodeIP   = pIpAddress;
+  m_iPortNo   = iPortNo;
   
   _checkInitialised_(CN_NODE);
   
@@ -116,12 +116,21 @@ void Node::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get node name                                                            */
+/* get node IP                                                                */
 /*----------------------------------------------------------------------------*/
-char* Node::pName(void)
+char* Node::pNodeIP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_sName.a();
+  return m_sNodeIP.a();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node name                                                              */
+/*----------------------------------------------------------------------------*/
+char* Node::pNodeName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_sNodeName.a();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -140,6 +149,15 @@ void Node::vNodeNo(i8 iNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
   m_iNodeNo = iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node port                                                              */
+/*----------------------------------------------------------------------------*/
+i8 Node::iNodePortNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
+  return m_iPortNo;
 }
 
 /*----------------------------------------------------------------------------*/
