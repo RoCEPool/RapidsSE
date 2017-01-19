@@ -420,7 +420,8 @@ bool Arguments::bParse(int argc, const char* argv[])
   }
   
   m_nNodes = iNode;
-  
+  m_sRegionName = "SE_";
+  String::vConcat( m_sRegionName.a(), m_sNode.a());
   return true;
 }
 
