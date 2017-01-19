@@ -176,6 +176,7 @@ bool Arguments::bParse(int argc, const char* argv[])
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Disabled partitionsPerNode for version 0.2.1
+    /*
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       if (m_nPartitions > C_MAX_PARTITIONS_PER_NODE) {
@@ -186,6 +187,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       
       continue;
     }
+    */
     
    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    if (String::bEqualTo("--port",argv[iArg],C_NO_CASE)) {
