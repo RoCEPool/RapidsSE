@@ -60,7 +60,11 @@ tp: poppedValset
 /*----------------------------------------------------------------------------*/
 : !req
 
+tp: !req
+
   valset>
+
+tp: valset
 
   // check stack
   depth 3 != if "incorrect request stack depth" . process.quit then
@@ -70,7 +74,11 @@ tp: poppedValset
 
   drop // the count
   >:   // execute the response return address
+tp: returnAddressSet
+
   >:   // decode/push the request
+
+tp: !req_exit
 ;
 
 /*----------------------------------------------------------------------------*/

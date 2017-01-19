@@ -70,7 +70,6 @@ SEitf::SEitf(i8 iPartition)
   m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;
   
-  m_xDic.vName("seitf");
   //m_xDicStack;
   m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
@@ -233,7 +232,7 @@ void SEitf::vInit(void)
   
   // dictionary stack
   m_xDicStack.vPush(gpMainDic);
-  m_xDicStack.vPush(&m_xDic);
+//  m_xDicStack.vPush(&m_xDic);
   
   // find tenants
   Word* pTenants = gpMainDic->pFind("tenants");

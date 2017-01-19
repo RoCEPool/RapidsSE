@@ -32,7 +32,7 @@ tp: removeFolder
       begin 0 dicStack.pick dic.name "tenants" str.equal not while dicStack.drop repeat
     else
       dup "tenants" str.equal if
-        begin 0 dicStack.pick dic.name "seitf" str.equal not while dicStack.drop repeat
+        begin 0 dicStack.pick dic.name "<main>" str.equal not while dicStack.drop repeat
         checkIsWord not if <NIP+ERROR> exit then
         execute dicStack.push
       else
