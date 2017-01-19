@@ -35,8 +35,11 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Node(void)
 {
   vAddPrimitive("node.init",       &vNodeInit,         false);
+  vAddPrimitive("node.IP",         &vNodeIP,           false);
+  vAddPrimitive("node.name",       &vNodeName,         false);
   vAddPrimitive("node.new",        &vNodeNew,          false);
   vAddPrimitive("node.no",         &vNodeNo,           false);
+  vAddPrimitive("node.port",       &vNodePort,         false);
   vAddPrimitive("node.status",     &vNodeStatus,       false);
 }
 
