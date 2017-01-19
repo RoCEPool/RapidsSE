@@ -36,6 +36,7 @@ void Task::vAddPrimitives_SEitf(void)
 {
   vAddPrimitive("seitf.count",         &vSEitfCount,         false);
   vAddPrimitive("seitf.delete",        &vSEitfDelete,        false);
+  vAddPrimitive("seitf.dicStack",      &vSEitfDicStack,      false);
   vAddPrimitive("seitf.dump",          &vSEitfDump,          false);
   vAddPrimitive("seitf.pid",           &vSEitfPid,           false);
   vAddPrimitive("seitf.req@",          &vSEitfReqFetch,      false);
@@ -78,6 +79,25 @@ ENTRY("vSEitfDelete");
   ASSERT(CN_SEITF == pSEitf->eClass());
   
   delete pSEitf;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* seitf.dicStack -- get SEitf dic stack                                      */
+/*----------------------------------------------------------------------------*/
+void Task::vSEitfDicStack(NNP_Task nnpTask)
+{
+  ENTRY("vSEitfDicStack");
+  
+  Object* pPtrSEitf;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrSEitf) )
+    THROW_INVALID_DSTACK("seitf.dicStack");
+  
+  SEitf* pSEitf = _pSEitf(pPtrSEitf);
+  ASSERT(CN_SEITF == pSEitf->eClass());
+  
+  nnpTask->m_pDataStack->vPush(pSEitf->pDicStack());
   
   EXIT();
 }
