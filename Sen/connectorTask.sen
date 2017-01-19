@@ -30,7 +30,7 @@ tp: connectorStart
 
   args.nodes 0 do
 
-    I args.node == if
+    I grid.node@ == if
 
       nullptr I senderQueues !
       nullptr I senderTasks  !
@@ -42,7 +42,7 @@ tp: connectorStart
       socket.open  socket.connect
 
       args.verbose if
-        "Node" args.node >str str.cat
+        "Node" grid.node@ >str str.cat
         " connected to node" str.cat
         I >str str.cat
         .

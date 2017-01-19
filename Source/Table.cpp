@@ -8,6 +8,7 @@
 
 extern BufferPool*  gpBufferPool;
 extern Arguments    gxArguments;
+extern Grid* gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -105,7 +106,7 @@ void Table::vAnalyze(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("N%lld: Analysis of Table %s\n",gxArguments.m_iNode,m_sTableName.a());
+  vTrace("N%lld: Analysis of Table %s\n",gpGrid->iNode(),m_sTableName.a());
 
   i8 nRowsTotal = 0;
   i8 nBuffersTotal = 0;

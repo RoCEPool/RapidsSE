@@ -32,8 +32,10 @@ namespace GridModel
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     void vInit(void);
+    char* pName(void);
     i8   iNodeNo(void);
     void vNodeNo(i8 iNodeNo);
+    
     
     Footer* pFooter(void);
   };

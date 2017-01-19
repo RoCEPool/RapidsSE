@@ -23,7 +23,7 @@ Arguments::Arguments(void)
   m_sRegionName = "/SE_0";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nPartitions = 1;
-  m_iNode       = 0;
+  m_sNode       = "";
   m_nNodes      = 0;
   m_iPort       = 5000;
   m_bTracepoint = false;
@@ -156,7 +156,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
-      m_iNode = String::iToI8(argv[++iArg]);
+      m_sNode = argv[++iArg];
       continue;
     }
     
@@ -441,7 +441,7 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
-  vTrace("  --node %lld\n",m_iNode);
+  vTrace("  --node %s\n",m_sNode.a());
   //vTrace("  --nodes %lld\n",m_nNodes);
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);

@@ -364,7 +364,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.bgtasks",     gxArguments.m_bBgTasks);
   vAddConstant("args.config",      gxArguments.m_bConfig);
   vAddConstant("args.munged",      gxArguments.m_bMunged);
-  vAddConstant("args.node",        gxArguments.m_iNode);
+  
   vAddConstant("args.nodes",       gxArguments.m_nNodes);
   vAddConstant("args.partitions",  gxArguments.m_nPartitions);
   vAddConstant("args.port",        gxArguments.m_iPort);
@@ -1903,7 +1903,7 @@ void Task::vTracePoint(const char* aMark)
   i8 iReturnValues = m_pReturnStack->iValues();
   vTrace("[N%lld:%8s\\%lld %-11s] %-16s %-16s : a%2lld=",
          
-         gxArguments.m_iNode,
+         gpGrid->iNode(),
          m_sName.a(),
          *m_zAcks,
          m_sComment.a(),

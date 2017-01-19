@@ -399,7 +399,7 @@ tp: addingSetDicPath
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
 
-  args.node "setSender"
+  grid.node@ "setSender"
 
 tp: addingSetSender
 
@@ -411,7 +411,7 @@ tp: addingSetSender
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
 
-  args.node "passBackToPP"
+  grid.node@ "passBackToPP"
 
   tp: addingPassBackToPP
 
@@ -556,7 +556,7 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning a node                                 */
 /*----------------------------------------------------------------------------*/
-: se_command ( nodeNo -- "<command>" )
+: se_command ( nodeName -- "<command>" )
 
   dup
   dup
@@ -569,8 +569,8 @@ tp: addingPassOnToCP
   //  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
   " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
   " --region /SE_" str.cat  swap >str str.cat
-  " --cluster node1 192.168.1.8 5000 --cluster node3 127.0.0.1 5001" str.cat 
-  " --node  " str.cat swap >str str.cat
+  " --cluster node1 192.168.1.8 5000 --cluster node3 127.0.0.1 5001" str.cat
+  " --node  " str.cat swap str.cat
   " --partitionsPerNode " str.cat args.partitions >str str.cat
   " --port  " str.cat args.port  >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
@@ -592,7 +592,7 @@ tp: addingPassOnToCP
   args.nodes 1 do
 
     // form the shell command to spawn node I
-    I se_command
+    I grid.nodeName se_command
 
     // print the shell command
     dup .

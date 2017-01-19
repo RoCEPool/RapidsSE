@@ -16,7 +16,7 @@ namespace StorageEngine
     s256  m_sRegionName; // name of shared memory region
     i8    m_iRegionSize; // size of region in bytes
     i8    m_nPartitions; // partitions per node
-    i8    m_iNode;       // this node number
+    s256  m_sNode;       // this node name
     i8    m_nNodes;      // out of this number of nodes
     i8    m_iPort;       // port number
     bool  m_bTracepoint; // print tracepoint
