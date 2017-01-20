@@ -88,7 +88,7 @@ int main(int argc, const char* argv[])
   
   
   // kill previous
-  //vKillPrev();
+  vKillPrev();
   
   // either create new shm region
   // or attach to an existing one
@@ -134,7 +134,10 @@ int main(int argc, const char* argv[])
 void vKillPrev(void)
 {
   // only node0 does this when starting
-  if ( ! (0 == gpGrid->iThisNode() && gxArguments.m_bStart) )
+  //if ( ! (0 == gpGrid->iThisNode() && gxArguments.m_bStart) )
+  //  return;
+  
+  if ( ! gxArguments.m_bKillPrev)
     return;
   
   // an assumption is that regions will be /SE_<node>

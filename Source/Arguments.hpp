@@ -47,7 +47,8 @@ namespace StorageEngine
     bool m_bVerbose;    // print extra stuff
     bool m_bWelcome;    // print banner
     i8   m_iSleep;      // sleep period for yield (temporary)
-    bool  m_bMunged;     // load munged words
+    bool  m_bMunged;    // load munged words
+    bool  m_bKillPrev;  // kill previous se's (temporary)
     
     // working
     i8   m_nJumboBuffers; // number of jumbo buffers

@@ -60,6 +60,7 @@ Arguments::Arguments(void)
   m_bWelcome    = true;
   m_iSleep      = 1;
   m_bMunged     = false;
+  m_bKillPrev   = false;
   
   _checkInitialised_(CN_ARGUMENTS);
   
@@ -386,7 +387,11 @@ bool Arguments::bParse(int argc, const char* argv[])
       m_bMunged = true;
       continue;
     }
-    
+  
+    if (String::bEqualTo("--killPrev",argv[iArg],C_NO_CASE)) {
+      m_bKillPrev = true;
+      continue;
+    }
     
   /*
     if (String::iLength(m_sCommand.a()))
@@ -405,7 +410,7 @@ bool Arguments::bParse(int argc, const char* argv[])
   }
   
   m_nNodes = iNode;
-  m_sRegionName = "SE_";
+  m_sRegionName = "/SE_";
   String::vConcat( m_sRegionName.a(), m_sNode.a());
   return true;
 }
