@@ -39,10 +39,8 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid.node",       &vGridNode,         false);
   vAddPrimitive("grid.thisNode!",  &vGridThisNodeStore,false);
   vAddPrimitive("grid.thisNode@",  &vGridThisNodeFetch,false);
-  vAddPrimitive("grid.thisNodeName",&vGridNodeName,    false);
   vAddPrimitive("grid.started!",   &vGridStartedStore, false);
   vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,48 +133,18 @@ void Task::vGridThisNodeFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grid.thisNodename -- get this node name from the grid                      */
-/*----------------------------------------------------------------------------*/
-void Task::vGridNodeName(NNP_Task nnpTask)
-{
-  ENTRY("vGridNodeName");
-  
-  i8 iNode;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(iNode) )
-    THROW_INVALID_DSTACK("grid.thisNodename");
-  
-  //Grid* pGrid = _pGrid(pPtrGrid);
-  //ASSERT(CN_GRID == pGrid->eClass());
-  
-  s256 sName;
-  sName = gpGrid->pFindNode(iNode)->pNodeName();
-  
-  nnpTask->m_pDataStack->vPush(sName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* grid.started! -- set grid started                                          */
 /*----------------------------------------------------------------------------*/
 void Task::vGridStartedStore(NNP_Task nnpTask)
 {
   ENTRY("vGridSetStarted");
   
-  Object* pPtrGrid;
   i8 iStarted;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrGrid) )
-    THROW_INVALID_DSTACK("grid.started!");
-  
-  Grid* pGrid = _pGrid(pPtrGrid);
-  ASSERT(CN_GRID == pGrid->eClass());
   
   if ( ! nnpTask->m_pDataStack->bPop(iStarted) )
     THROW_INVALID_DSTACK("grid.started!");
   
-  pGrid->vHasStarted(iStarted == 1 ? true : false);
+  gpGrid->vHasStarted(iStarted == 1 ? true : false);
   
   EXIT();
 }
@@ -188,15 +156,7 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
 {
   ENTRY("vGridGetStarted");
   
-  Object* pPtrGrid;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrGrid) )
-    THROW_INVALID_DSTACK("grid.started@");
-  
-  Grid* pGrid = _pGrid(pPtrGrid);
-  ASSERT(CN_GRID == pGrid->eClass());
-  
-  nnpTask->m_pDataStack->vPush(pGrid->bHasStarted());
+  nnpTask->m_pDataStack->vPush(gpGrid->bHasStarted());
   
   EXIT();
 }

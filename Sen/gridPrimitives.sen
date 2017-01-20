@@ -611,7 +611,7 @@ tp: addingPassOnToCP
   args.nodes 1 do
 
     // form the shell command to spawn node I
-    clusterString I grid.thisNodeName se_command
+    clusterString I grid.node node.name se_command
 
     // print the shell command
     dup .
@@ -625,7 +625,7 @@ tp: addingPassOnToCP
   loop
 
   // set grid as started
-  true grid.this grid.started!
+  true grid.started!
 
 ;
 
