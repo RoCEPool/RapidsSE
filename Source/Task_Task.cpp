@@ -40,6 +40,7 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
   vAddPrimitive("task.comment!",   &vTaskCommentStore, false);
   vAddPrimitive("task.dic",        &vTaskDic,          false);
+  vAddPrimitive("task.dicStack",   &vTaskDicStack,     false);
   vAddPrimitive("task.dump",       &vTaskDump,         false);
   vAddPrimitive("task.init",       &vTaskInit,         false);
   vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
@@ -206,6 +207,20 @@ ENTRY("vTaskDic");
   Object* pPtrDic = &nnpTask->m_xTaskDic;
   
   nnpTask->m_pDataStack->vPush(pPtrDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.dicStack -- push task dictionary onto data stack                      */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskDicStack(NNP_Task nnpTask)
+{
+  ENTRY("vTaskDicStack");
+  
+  Object* pPtrDicStack = &nnpTask->m_xDicStack;
+  
+  nnpTask->m_pDataStack->vPush(pPtrDicStack);
   
   EXIT();
 }

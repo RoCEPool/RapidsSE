@@ -601,8 +601,24 @@ tp: f
 tp: g
 ;
 
-//traceon
-: tp:test 567 tp: tp-abc . ;
+/*----------------------------------------------------------------------------*/
+/* pick a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathPick ( i -- dic )
+
+  // does this task have a seitf?
+  task.this task.seitf@
+  if
+    // push the dic stack of the seitf
+    task.this task.seitf@ seitf.dicStack
+  else
+    // push the dic stack of this task
+    task.this task.dicStack
+  then
+
+  // pick the dictionary
+  dicStack.pickNew
+;
 
 "dic.sen" include
 "var.sen" include

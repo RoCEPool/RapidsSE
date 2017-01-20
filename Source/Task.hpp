@@ -883,6 +883,7 @@ namespace Tasks
     static void vTaskCommentFetch(NNP_Task nnpTask);
     static void vTaskCommentStore(NNP_Task nnpTask);
     static void vTaskDic(NNP_Task nnpTask);
+    static void vTaskDicStack(NNP_Task nnpTask);
     static void vTaskDump(NNP_Task nnpTask);
     static void vTaskInit(NNP_Task nnpTask);
     static void vTaskNameFetch(NNP_Task nnpTask);
