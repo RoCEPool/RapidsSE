@@ -149,7 +149,8 @@ void vKillPrev(void)
   
   for (i8 iIndex=0; iIndex < gxArguments.m_nNodes; iIndex++) {
     
-    String::vSprint(sRegionName.a(),"/SE_%s",
+    String::vSprint(sRegionName.a(),"/%s%s",
+      gxArguments.m_sRegionPrefix.a(),
       gxArguments.m_xNodes[iIndex].m_sNodeName.a());
     
     if ( ! Region::bTest(sRegionName) )
