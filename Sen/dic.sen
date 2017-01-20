@@ -84,7 +84,7 @@ diclock.dropwrite
 /* create a subdictionary under given dic                                     */
 /*----------------------------------------------------------------------------*/
 : :folder ( "<subDicNm>" dic -- )
-  dicStack.push :dic ' folder swap execute dic.kind! dicStack.drop
+  dicStack.pushOld :dic ' folder swap execute dic.kind! dicStack.drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -140,18 +140,18 @@ tp: dicStack.set
     dup "<main>" str.equal if
       drop
       dic.main
-      dicStack.push
+      dicStack.pushOld
     else
 
       dup "seitf" str.equal if
         drop
         //dic.main
-        //dicStack.push
+        //dicStack.pushOld
       else
 
         find
         execute
-        dicStack.push
+        dicStack.pushOld
       then
 
     then

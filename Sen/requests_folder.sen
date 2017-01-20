@@ -34,11 +34,11 @@ tp: removeFolder
       dup "tenants" str.equal if
         begin 0 pathPick dic.name "<main>" str.equal not while dicStack.drop repeat
         checkIsWord not if <NIP+ERROR> exit then
-        execute dicStack.push
+        execute dicStack.pushOld
       else
         find
         checkIsDic not if <NIP+ERROR> exit then
-        execute dicStack.push
+        execute dicStack.pushOld
       then
     then
   then
@@ -207,18 +207,18 @@ tp: lf
 
   // push tenants folder
   "tenants" findInCurrent
-  execute dicStack.push
+  execute dicStack.pushOld
 
   // create tenant boray (and catalogs sub-folder)
   "boray" makeTenant drop drop drop
 
   // push boray folder
   "boray" findInCurrent
-  execute dicStack.push
+  execute dicStack.pushOld
 
   // push catalogs folder
   "catalogs" findInCurrent
-  execute dicStack.push
+  execute dicStack.pushOld
 
   // create catalog rapidsse (and schemas sub-folder)
   "rapidsse" makeCatalog drop drop drop

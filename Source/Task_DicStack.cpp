@@ -38,7 +38,8 @@ void Task::vAddPrimitives_DicStack(void)
   vAddPrimitive("dicStack.drop",   &vDicStackDrop,     false);
   vAddPrimitive("dicStack.dump",   &vDicStackDump,     false);
   vAddPrimitive("dicStack.pick",   &vDicStackPick,     false);
-  vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
+  vAddPrimitive("dicStack.pushOld",   &vDicStackPush,     false);
+  vAddPrimitive("dicStack.pushNew", &vDicStackPushNew,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +123,7 @@ void Task::vDicStackPick(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.push -- push a dictionary from data stack  onto dictionary stack  */
+/* dicStack.pushOld -- push a dictionary from data stack  onto dictionary stack  */
 /*----------------------------------------------------------------------------*/
 void Task::vDicStackPush(NNP_Task nnpTask)
 {
@@ -131,7 +132,7 @@ void Task::vDicStackPush(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dicStack.push");
+    THROW_INVALID_DSTACK("dicStack.pushOld");
   
   Dic* pDic = _pDic(pPtrDic);
   
@@ -145,6 +146,31 @@ void Task::vDicStackPush(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* dicStack.pushOld -- push a dictionary onto given dictionary stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackPushNew(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackPushNew");
+  
+  Object* pPtrDicStack;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
+    THROW_INVALID_DSTACK("dicStack.pushNew");
+  
+  DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
+  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  
+  Object* pPtrDic;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
+    THROW_INVALID_DSTACK("dicStack.pushNew");
+  
+  Dic* pDic = _pDic(pPtrDic);
+  
+  pDicStack->vPush(pDic);
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

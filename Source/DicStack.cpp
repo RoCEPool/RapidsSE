@@ -2,7 +2,19 @@
 /* DicStack.cpp - dictionary stack                                            */
 /*============================================================================*/
 
-#include "Tasks.h"
+#include "Dictionaries.h"
+
+/*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+DicStack* DicStack::_pDicStack(void* pAddr)
+{
+  DicStack* pDicStack = reinterpret_cast<DicStack*>(pAddr);
+  
+  RASSERT( !pDicStack || CN_DICSTACK == pDicStack->eClass() );
+  
+  return pDicStack;
+}
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */

@@ -6,12 +6,12 @@
 
 : column: ;
 
-//: makeColumns ( table --  ) table.subDic dicStack.push "columns" :dic drop dicStack.drop ;
+//: makeColumns ( table --  ) table.subDic dicStack.pushOld "columns" :dic drop dicStack.drop ;
 
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.subDic dicStack.push "columns" :dic drop dicStack.drop
+  table.subDic dicStack.pushOld "columns" :dic drop dicStack.drop
 ;
 
 : withinColumns
@@ -29,7 +29,7 @@
 
     not if EC_NO_COLUMNS_DIC false exit then
 
-    execute dicStack.push
+    execute dicStack.pushOld
 
     true
 ;

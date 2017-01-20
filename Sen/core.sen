@@ -426,7 +426,7 @@ true ' CASE word.immediate!
 
   dup dic.lastWord not if drop exit then
 
-  dup dicStack.push
+  dup dicStack.pushOld
 
   begin
 

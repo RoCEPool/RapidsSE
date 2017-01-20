@@ -17,6 +17,35 @@ taskset: requestTaskSet
 thread:  requestThread
 
 /*----------------------------------------------------------------------------*/
+/* copy dictionary path from seitf to this request task                       */
+/*----------------------------------------------------------------------------*/
+: copySEitfPath
+
+/*
+  task.this task.seitf@ seitf.dicStack
+  locals| dicStackSEitf |
+
+  dicStackSEitf dicStack.depth 1- ?do
+
+    I dicStackSEitf dicStack.pick
+
+  loop
+
+  dicStackSEitf dicStack.depth 1- ?do
+
+    task.this task.dicStack dicStack.pushNew
+
+  loop
+*/
+;
+
+/*----------------------------------------------------------------------------*/
+/* save dictionary path of this request task back into seitf                  */
+/*----------------------------------------------------------------------------*/
+: saveSEitfPath
+;
+
+/*----------------------------------------------------------------------------*/
 /* start the request task                                                     */
 /*----------------------------------------------------------------------------*/
 : requestStart
@@ -73,8 +102,11 @@ tp: valset
   2 stack.class CN_STRVAL != if "incorrect request value 2" . process.quit then
 
   drop // the count
+  task.this task.seitf@ not assert
   >:   // execute the response return address
-tp: returnAddressSet
+  task.this task.seitf@ assert
+
+  copySEitfPath
 
   >:   // decode/push the request
 
@@ -94,6 +126,8 @@ tp: !req_exit
   2 stack.class CN_STRVAL != if "incorrect response value 2" . process.quit then
 
   >valset
+
+  saveSEitfPath
 
   //"rspque" find execute queue.append
   task.this task.seitf@ seitf.responseQueue queue.append
