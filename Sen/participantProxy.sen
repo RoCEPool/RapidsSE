@@ -50,7 +50,7 @@ tp: participantProxy
 
       actorNo addPassOnToCp
 
-      actorNo >sndQueue;a>
+      actorNo >sendQueue;a>
 
     then
 

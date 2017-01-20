@@ -30,7 +30,7 @@ tp: coordinator
     addPassBackToPP ( << <<result>> <<passBackToPP>> >> )
 
     0                                                              //! NOT RIGHT
-    >sndQueue
+    >sendQueue
 
   again
 ;
