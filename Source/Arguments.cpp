@@ -20,10 +20,11 @@ Arguments::Arguments(void)
   m_iJumboSize    = m_nJumboTook * C_SIZE_POOL_BUFFER;
   
   m_pRegionAddr = C_ADDR_POOL;
-  m_sRegionName = "/SE_0";
+  m_sRegionName = "";
+  m_sRegionPrefix = "SE_";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nPartitions = 4;
-  m_sNode       = "";
+  m_sNode       = "node";
   m_nNodes      = 0;
   m_bTracepoint = false;
   
@@ -190,8 +191,15 @@ bool Arguments::bParse(int argc, const char* argv[])
     */
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    /*
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
       m_sRegionName = argv[++iArg];
+      continue;
+    }
+    */
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (String::bEqualTo("--regionPrefix",argv[iArg],C_NO_CASE)) {
+      m_sRegionPrefix = argv[++iArg];
       continue;
     }
     
@@ -409,9 +417,23 @@ bool Arguments::bParse(int argc, const char* argv[])
     return false;
   }
   
-  m_nNodes = iNode;
-  m_sRegionName = "/SE_";
+  // if --cluster was defined just set the m_nNodes
+  if (iNode) {
+    
+    m_nNodes = iNode;
+    
+  } else {
+    // add a single node
+    m_nNodes = 1;
+    m_xNodes[0].m_sNodeName = m_sNode;
+    m_xNodes[0].m_sIPAddress = "";
+    m_xNodes[0].m_iPortNo =  -1;
+  }
+
+  String::vConcat( m_sRegionName.a(), "/");
+  String::vConcat( m_sRegionName.a(), m_sRegionPrefix.a());
   String::vConcat( m_sRegionName.a(), m_sNode.a());
+  
   return true;
 }
 
@@ -433,7 +455,7 @@ void Arguments::vPrint(void)
   if (m_bStop)     vTrace("  --stop\n");
 
   vTrace("  --node %s\n",m_sNode.a());
-  vTrace("  --region %s\n",m_sRegionName.a());
+  vTrace("  --regionPrefix %s\n",m_sRegionPrefix.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
   
@@ -474,7 +496,7 @@ void Arguments::vPrintHelp(void)
   printf("\n");
   //printf("--partitionsPerNode <i>  (number of partitions per node)\n");
   printf("--cluster <name> IP port (node information in the cluster)\n");
-  printf("--region <name>          (name of shm region)\n");
+  printf("--regionPrefix <name>    (prefix of shm region name)\n");
   printf("--size <i>               (size in bytes of shm region)\n");
 
   printf("\n");
