@@ -132,7 +132,7 @@ tp: lfOnAllDone
 
 tp: lf
 
-  "LISTING FOLDER on NODE " args.node >str str.cat .
+  "LISTING FOLDER on NODE " grid.thisNode@ >str str.cat .
 
   ""
   0 dicStack.pick dic.lastWord dup iterate

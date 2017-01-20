@@ -5,9 +5,9 @@
 docol spawnNodes
 docol connectorStart
 
-sleep 5
+//sleep 5
 
-print "SE cluster started"
+//print "SE cluster started"
 
 /*============================================================================*/
 /* end                                                                        */

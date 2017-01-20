@@ -22,10 +22,9 @@ Arguments::Arguments(void)
   m_pRegionAddr = C_ADDR_POOL;
   m_sRegionName = "/SE_0";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
-  m_nPartitions = 1;
-  m_iNode       = 0;
-  m_nNodes      = 1;
-  m_iPort       = 5000;
+  m_nPartitions = 4;
+  m_sNode       = "";
+  m_nNodes      = 0;
   m_bTracepoint = false;
   
 #ifdef __APPLE__
@@ -110,6 +109,8 @@ bool Arguments::bParse(int argc, const char* argv[])
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   
+  i8 iNode = 0;
+  
   for (i8 iArg = 1; iArg < argc; iArg++) {
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -154,21 +155,27 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
-      m_iNode = String::iToI8(argv[++iArg]);
+      m_sNode = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--nodes",argv[iArg],C_NO_CASE)) {
-      m_nNodes = String::iToI8(argv[++iArg]);
+    if (String::bEqualTo("--cluster",argv[iArg],C_NO_CASE)) {
+      m_xNodes[iNode].m_sNodeName = argv[++iArg];;
+      m_xNodes[iNode].m_sIPAddress = argv[++iArg];
+      m_xNodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
+      iNode++;
+      
       if (m_nNodes > C_MAX_NODES) {
         vTrace("Maximum number of nodes allowed in the cluster is %lld\n",C_MAX_NODES);
         return false;
       }
       continue;
     }
-    
+
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // Disabled partitionsPerNode for version 0.2.1
+    /*
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nPartitions = String::iToI8(argv[++iArg]);
       if (m_nPartitions > C_MAX_PARTITIONS_PER_NODE) {
@@ -179,12 +186,7 @@ bool Arguments::bParse(int argc, const char* argv[])
       
       continue;
     }
-    
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--port",argv[iArg],C_NO_CASE)) {
-      m_iPort = String::iToI8(argv[++iArg]);
-      continue;
-    }
+    */
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
@@ -401,7 +403,10 @@ bool Arguments::bParse(int argc, const char* argv[])
     vTrace("Unrecognized command argument: %s\n",argv[iArg]);
     return false;
   }
-
+  
+  m_nNodes = iNode;
+  m_sRegionName = "SE_";
+  String::vConcat( m_sRegionName.a(), m_sNode.a());
   return true;
 }
 
@@ -422,13 +427,19 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
-  vTrace("  --node %lld\n",m_iNode);
-  vTrace("  --nodes %lld\n",m_nNodes);
+  vTrace("  --node %s\n",m_sNode.a());
   vTrace("  --region %s\n",m_sRegionName.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
-  vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
-  vTrace("  --port %lld\n",m_iPort);
+  
+  for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
+    vTrace("  --cluster %s %s %lld\n",
+      m_xNodes[iIndex].m_sNodeName.a(),
+      m_xNodes[iIndex].m_sIPAddress.a(),
+      m_xNodes[iIndex].m_iPortNo);
+  }
+  
+  //vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
   vTrace("  --commands %s\n",m_sCommands.a());
 //#ifdef _DEBUG
   vTrace("  --sen %s\n",m_sSen.a());
@@ -456,9 +467,10 @@ void Arguments::vPrintHelp(void)
   printf("--stop            (stop system)\n");
   
   printf("\n");
-  printf("--partitionsPerNode <i>  (number of partitions per node)\n");
-  printf("--region <name>   (name of shm region)\n");
-  printf("--size <i>        (size in bytes of shm region)\n");
+  //printf("--partitionsPerNode <i>  (number of partitions per node)\n");
+  printf("--cluster <name> IP port (node information in the cluster)\n");
+  printf("--region <name>          (name of shm region)\n");
+  printf("--size <i>               (size in bytes of shm region)\n");
 
   printf("\n");
 }

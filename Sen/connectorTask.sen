@@ -30,19 +30,22 @@ tp: connectorStart
 
   args.nodes 0 do
 
-    I args.node == if
+    I grid.thisNode@ == if
 
       nullptr I senderQueues !
       nullptr I senderTasks  !
 
     else
 
-      args.port I +
-      "127.0.0.1"
+      I grid.node     ( ^node )
+      dup             ( ^node ^node )
+      node.port swap  ( port ^node )
+      node.IP         ( port IP )
+
       socket.open  socket.connect
 
       args.verbose if
-        "Node" args.node >str str.cat
+        "Node" grid.thisNode@ >str str.cat
         " connected to node" str.cat
         I >str str.cat
         .
@@ -71,6 +74,10 @@ ddlLock.dropWrite
     then
 
   loop
+
+  // set grid as started
+  true grid.this grid.started!
+  grid.thisNode@ grid.node node.name "Node %v : SE cluster started" str.format .
 
   //1000000 thread.sleep_s
 

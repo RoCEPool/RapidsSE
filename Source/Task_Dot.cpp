@@ -54,15 +54,26 @@ void Task::vDot(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(".");
   
   xValWsp.vToString(sWorkspace.a());
+  /*
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
          
-         gxArguments.m_iNode,
+         gpGrid->iNode(),
          nnpTask->m_sName.a(),
          *nnpTask->m_zAcks,
          nnpTask->m_sComment.a(),
          
          sWorkspace.a()
          );
+  */
+  vTrace("[%8s\\%lld %-11s] %s\n",
+         
+         nnpTask->m_sName.a(),
+         *nnpTask->m_zAcks,
+         nnpTask->m_sComment.a(),
+         
+         sWorkspace.a()
+         );
+
   
   EXIT();
 }

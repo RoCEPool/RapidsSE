@@ -16,9 +16,8 @@ namespace StorageEngine
     s256  m_sRegionName; // name of shared memory region
     i8    m_iRegionSize; // size of region in bytes
     i8    m_nPartitions; // partitions per node
-    i8    m_iNode;       // this node number
+    s256  m_sNode;       // this node name
     i8    m_nNodes;      // out of this number of nodes
-    i8    m_iPort;       // port number
     bool  m_bTracepoint; // print tracepoint
     s256  m_sCommands;   // commands dir
     s256  m_sSen;        // sen dir
@@ -54,6 +53,12 @@ namespace StorageEngine
     i8   m_nJumboBuffers; // number of jumbo buffers
     i8   m_nJumboTook;    // number of pool buffers taken by jumbo buffers
     i8   m_iJumboSize;    // size of the jumbo heap
+    
+    struct {
+      s256 m_sNodeName;
+      s256 m_sIPAddress;
+      i8   m_iPortNo;
+    } m_xNodes[C_MAX_NODES];
     
     // must be last
     Footer m_xFooter;

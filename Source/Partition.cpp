@@ -6,6 +6,7 @@
 #include "DBobjects.h"
 
 extern Arguments       gxArguments;
+extern Grid*           gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -97,7 +98,7 @@ i8 Partition::iPartitionToSlot(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iSlotToPartition(i8 iSlot)
 {
-  i8 iPartition = (iSlot * gxArguments.m_nNodes) + gxArguments.m_iNode;
+  i8 iPartition = (iSlot * gxArguments.m_nNodes) + gpGrid->iThisNode();
   
   return iPartition;
 }

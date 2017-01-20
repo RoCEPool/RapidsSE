@@ -87,7 +87,7 @@
 tp: makingTenant
 
   args.tracepoint if
-    dup "MAKING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
+    dup "MAKING TENANT " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
     dup ( "<tenantNm>" "<tenantNm>" )
@@ -109,7 +109,7 @@ tp: makingTenant
 tp: removetenant
 
   args.tracepoint if
-    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
+    dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   :forget ( )

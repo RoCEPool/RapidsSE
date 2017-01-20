@@ -399,7 +399,7 @@ tp: addingSetDicPath
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
 
-  args.node "setSender"
+  grid.thisNode@ "setSender"
 
 tp: addingSetSender
 
@@ -411,7 +411,7 @@ tp: addingSetSender
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
 
-  args.node "passBackToPP"
+  grid.thisNode@ "passBackToPP"
 
   tp: addingPassBackToPP
 
@@ -556,23 +556,25 @@ tp: addingPassOnToCP
 /*----------------------------------------------------------------------------*/
 /* form the shell command for spawning a node                                 */
 /*----------------------------------------------------------------------------*/
-: se_command ( nodeNo -- "<command>" )
+: se_command ( nodeName clusterString -- "<command>" )
 
-  dup
-  dup
+  locals| nodeName |
+  locals| clusterString |
+
+  to clusterString
+  to nodeName
 
   //  "nohup "
   ""
   SE_PATH str.cat
   " --start " str.cat
   " --size " str.cat args.regionSize >str str.cat
-  //  " --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
+  //" --commands /Users/alkayamarti/rapidsSE/rapidsse/Commands" str.cat
   " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
-  " --region /SE_" str.cat  swap >str str.cat
-  " --node  " str.cat swap >str str.cat
-  " --nodes " str.cat args.nodes >str str.cat
-  " --partitionsPerNode " str.cat args.partitions >str str.cat
-  " --port  " str.cat args.port  >str str.cat
+  clusterString str.cat
+  " --region /SE_" str.cat nodeName str.cat
+  " --node  " str.cat nodeName str.cat
+  //" --partitionsPerNode " str.cat args.partitions >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
   args.tracepoint if " --tracepoint " str.cat then
   args.verbose if " --verbose " str.cat then
@@ -588,11 +590,28 @@ tp: addingPassOnToCP
   // test for single node
   args.nodes 1 == if exit then
 
+  // form the --cluster parameter string
+  locals| clusterString |
+  locals| node |
+
+  ""
+  args.nodes 0 do
+    I grid.node   ( node )
+    to node
+    node node.port
+    node node.IP
+    node node.name
+    " --cluster %v %v %v " str.format
+    str.cat
+  loop
+
+  to clusterString
+
   // spawn all other nodes
   args.nodes 1 do
 
     // form the shell command to spawn node I
-    I se_command
+    clusterString I grid.thisNodeName se_command
 
     // print the shell command
     dup .

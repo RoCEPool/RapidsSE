@@ -48,7 +48,7 @@
 tp: gettingSpace
 
   args.tracepoint if
-    "GETTING SPACE on NODE "args.node >str str.cat .
+    "GETTING SPACE on NODE "grid.thisNode@ >str str.cat .
   then
 
   "Pool - Size(" 2 bp.totalSpace number.magnitude str.cat ")" str.cat

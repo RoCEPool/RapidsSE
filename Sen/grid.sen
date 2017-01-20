@@ -11,9 +11,9 @@
 
 : isGrid word.kind@ ' grid eql ;
 
-: <SUCCESS_RESULT> args.node true ( v n# true ) ;
+: <SUCCESS_RESULT> grid.thisNode@ true ( v n# true ) ;
 
-: <FAILURE_RESULT> args.node false ( ec n# false ) ;
+: <FAILURE_RESULT> grid.thisNode@ false ( ec n# false ) ;
 
 /*----------------------------------------------------------------------------*/
 /* check grid result                                                          */
@@ -123,7 +123,14 @@ tp: printResult
 
 grid: grid.this
 
-0 node.new grid.appendNode
+//0 node.new grid.append
+
+//args.nodes 0 do
+//  I node.new grid.appendNode
+//loop
+
+grid.appendNodes
+grid.thisNode!
 
 /*============================================================================*/
 /* end                                                                        */

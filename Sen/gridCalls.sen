@@ -44,7 +44,7 @@
     // partitipant proxy for node I
     //
 
-    I args.node == if
+    I grid.thisNode@ == if
       I I pTasks  @ 2 "pp.loop"
     else
       I I cpTasks @ 2 "pp.loop"

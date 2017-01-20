@@ -29,7 +29,7 @@ tp: snd.loop
 
   "rcv.loop" task.this task.comment!
 
-  receiverTaskPrint if "Receiver running on node" args.node >str str.cat . then
+  receiverTaskPrint if "Receiver running on node" grid.thisNode@ >str str.cat . then
 
   begin
     depth 0 != if stk "stack of task has grown" . debug.trap then

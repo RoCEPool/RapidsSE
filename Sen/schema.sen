@@ -53,7 +53,7 @@
 : makeSchemas ( "<catalogNm>" -- )
 
   args.tracepoint if
-    dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat args.node >str str.cat .
+    dup "MAKING SCHEMAS FOR CATALOG " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   find execute ( dic )
@@ -90,7 +90,7 @@
 tp: makingSchema
 
   args.tracepoint if
-  dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat args.node >str str.cat .
+  dup "MAKING SCHEMA " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   dup ( "<schemaNm>" )
@@ -112,7 +112,7 @@ tp: makingSchema
 tp: removeSchema
 
   args.tracepoint if
-  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat args.node >str str.cat .
+  dup "REMOVING TENANT " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
   then
 
   :forget ( )

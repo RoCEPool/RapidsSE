@@ -8,6 +8,7 @@ extern BufferPool*  gpBufferPool;
 extern Heap*        gpMediumHeap;
 extern Arguments    gxArguments;
 extern AttachMap*   gpAttachMap;
+extern Grid*        gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -51,7 +52,7 @@ SePrompt::SePrompt(void)
   
   String::vSprint(m_sPrompt.a(),
                   "[N%lld %lld] se %s%c> ",
-                  gxArguments.m_iNode,
+                  gpGrid->iThisNode(),
                   Process::iGetPid(),
                   RAPIDSSE_VERSION_STRING,
 #ifdef _DEBUG

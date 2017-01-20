@@ -7,6 +7,7 @@
 #include "UnitTests.h"
 
 extern Arguments gxArguments;
+extern Grid*     gpGrid;
 
 void vTest1(void);
 
@@ -87,7 +88,7 @@ int main(int argc, const char* argv[])
   
   
   // kill previous
-  vKillPrev();
+  //vKillPrev();
   
   // either create new shm region
   // or attach to an existing one
@@ -133,7 +134,7 @@ int main(int argc, const char* argv[])
 void vKillPrev(void)
 {
   // only node0 does this when starting
-  if ( ! (0 == gxArguments.m_iNode && gxArguments.m_bStart) )
+  if ( ! (0 == gpGrid->iThisNode() && gxArguments.m_bStart) )
     return;
   
   // an assumption is that regions will be /SE_<node>
@@ -143,9 +144,10 @@ void vKillPrev(void)
   int iFD;
   bool b;
   
-  for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
-  
-    String::vSprint(sRegionName.a(),"/SE_%lld",iNode);
+  for (i8 iIndex=0; iIndex < gxArguments.m_nNodes; iIndex++) {
+    
+    String::vSprint(sRegionName.a(),"/SE_%s",
+      gxArguments.m_xNodes[iIndex].m_sNodeName.a());
     
     if ( ! Region::bTest(sRegionName) )
       continue;
