@@ -420,7 +420,30 @@ bool Arguments::bParse(int argc, const char* argv[])
   // if --cluster was defined just set the m_nNodes
   if (iNode) {
     
+    // set no. of nodes
     m_nNodes = iNode;
+    
+    // some basic cluster validations
+    
+    // there should be at aleast 2 nodes ina cluster
+    if (m_nNodes < 2) {
+      vTrace("Minimum two nodes should be there in a cluster\n");
+      return false;
+    }
+    
+    // the current node should have been specfied in the --cluster
+    bool bFound = false;
+    for (i8 iIndex = 0; iIndex < m_nNodes; iIndex++) {
+      if (String::bEqualTo(m_xNodes[iIndex].m_sNodeName.a(), m_sNode.a(), C_NO_CASE)) {
+        bFound = true;
+        break;
+      }
+    }
+    
+    if ( ! bFound ) {
+      vTrace("Add argument --node name with name of this node from the --cluster definitions\n");
+      return false;
+    }
     
   } else {
     // add a single node
