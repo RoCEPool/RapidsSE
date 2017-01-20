@@ -35,8 +35,11 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_DicStack(void)
 {
   vAddPrimitive("dicStack.depthOld", &vDicStackDepthOld, false);
+  vAddPrimitive("dicStack.depthNew", &vDicStackDepthNew, false);
   vAddPrimitive("dicStack.dropOld",  &vDicStackDropOld,  false);
+  vAddPrimitive("dicStack.dropNew",  &vDicStackDropNew,  false);
   vAddPrimitive("dicStack.dumpOld",  &vDicStackDumpOld,  false);
+  vAddPrimitive("dicStack.dumpNew",  &vDicStackDumpNew,  false);
   vAddPrimitive("dicStack.pick",     &vDicStackPick,     false);
   vAddPrimitive("dicStack.pushOld",  &vDicStackPushOld,  false);
   vAddPrimitive("dicStack.pushNew",  &vDicStackPushNew,  false);
@@ -64,7 +67,28 @@ void Task::vDicStackDepthOld(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.dropOld -- discard top of dictionary stack                           */
+/* dicStack.depth -- get number of dictionaries on dictionary stack           */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackDepthNew(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackDepth");
+  
+  Object* pPtrDicStack;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
+    THROW_INVALID_DSTACK("dicStack.pick");
+  
+  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
+  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  
+  i8 iDepth = pDicStack->iCount();
+  
+  nnpTask->m_pDataStack->vPush(iDepth);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.dropOld -- discard top of dictionary stack                        */
 /*----------------------------------------------------------------------------*/
 void Task::vDicStackDropOld(NNP_Task nnpTask)
 {
@@ -76,6 +100,25 @@ void Task::vDicStackDropOld(NNP_Task nnpTask)
   else {
     nnpTask->m_xDicStack.vDiscard();
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.drop -- discard top of dictionary stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackDropNew(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackDrop");
+  
+  Object* pPtrDicStack;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
+    THROW_INVALID_DSTACK("dicStack.pick");
+  
+  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
+  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  
+  pDicStack->vDiscard();
   
   EXIT();
 }
@@ -93,6 +136,25 @@ void Task::vDicStackDumpOld(NNP_Task nnpTask)
   else {
     nnpTask->m_xDicStack.vContentDump();
   }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dicStack.dump -- dump dictionary stack                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vDicStackDumpNew(NNP_Task nnpTask)
+{
+  ENTRY("vDicStackDump");
+  
+  Object* pPtrDicStack;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
+    THROW_INVALID_DSTACK("dicStack.pick");
+  
+  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
+  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  
+  pDicStack->vContentDump();
   
   EXIT();
 }
