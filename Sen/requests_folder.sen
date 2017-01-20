@@ -25,14 +25,14 @@ tp: removeFolder
 
   dup ".." str.equal if
     drop
-    0 pathPick dic.name "tenants" str.equal not if dicStack.drop then
+    0 pathPick dic.name "tenants" str.equal not if dicStack.dropOld then
   else
     dup "~" str.equal if
       drop
-      begin 0 pathPick dic.name "tenants" str.equal not while dicStack.drop repeat
+      begin 0 pathPick dic.name "tenants" str.equal not while dicStack.dropOld repeat
     else
       dup "tenants" str.equal if
-        begin 0 pathPick dic.name "<main>" str.equal not while dicStack.drop repeat
+        begin 0 pathPick dic.name "<main>" str.equal not while dicStack.dropOld repeat
         checkIsWord not if <NIP+ERROR> exit then
         execute dicStack.pushOld
       else
@@ -187,8 +187,8 @@ tp: lf
 : pwf
 
   "/"
-  dicStack.depth 2 do
-  dicStack.depth 1 - I -
+  dicStack.depthOld 2 do
+  dicStack.depthOld 1 - I -
   pathPick dic.name str.cat
   "/" str.cat
   loop
@@ -224,9 +224,9 @@ tp: lf
   "rapidsse" makeCatalog drop drop drop
 
   // go back to main dictionary
-  dicStack.drop
-  dicStack.drop
-  dicStack.drop
+  dicStack.dropOld
+  dicStack.dropOld
+  dicStack.dropOld
 
   assert.stack_0
 ;

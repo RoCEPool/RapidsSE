@@ -34,18 +34,18 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_DicStack(void)
 {
-  vAddPrimitive("dicStack.depth",  &vDicStackDepth,    false);
-  vAddPrimitive("dicStack.drop",   &vDicStackDrop,     false);
-  vAddPrimitive("dicStack.dump",   &vDicStackDump,     false);
-  vAddPrimitive("dicStack.pick",   &vDicStackPick,     false);
-  vAddPrimitive("dicStack.pushOld",   &vDicStackPush,     false);
-  vAddPrimitive("dicStack.pushNew", &vDicStackPushNew,     false);
+  vAddPrimitive("dicStack.depthOld", &vDicStackDepthOld, false);
+  vAddPrimitive("dicStack.dropOld",  &vDicStackDropOld,  false);
+  vAddPrimitive("dicStack.dumpOld",  &vDicStackDumpOld,  false);
+  vAddPrimitive("dicStack.pick",     &vDicStackPick,     false);
+  vAddPrimitive("dicStack.pushOld",  &vDicStackPushOld,  false);
+  vAddPrimitive("dicStack.pushNew",  &vDicStackPushNew,  false);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.depth -- get number of dictionaries on dictionary stack           */
+/* dicStack.depthOld -- get number of dictionaries on dictionary stack           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDepth(NNP_Task nnpTask)
+void Task::vDicStackDepthOld(NNP_Task nnpTask)
 {
   ENTRY("vDicStackDepth");
   
@@ -64,9 +64,9 @@ void Task::vDicStackDepth(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.drop -- discard top of dictionary stack                           */
+/* dicStack.dropOld -- discard top of dictionary stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDrop(NNP_Task nnpTask)
+void Task::vDicStackDropOld(NNP_Task nnpTask)
 {
   ENTRY("vDicStackDrop");
   
@@ -81,9 +81,9 @@ void Task::vDicStackDrop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.dump -- dump dictionary stack                                     */
+/* dicStack.dumpOld -- dump dictionary stack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDump(NNP_Task nnpTask)
+void Task::vDicStackDumpOld(NNP_Task nnpTask)
 {
   ENTRY("vDicStackDump");
   
@@ -125,7 +125,7 @@ void Task::vDicStackPick(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.pushOld -- push a dictionary from data stack  onto dictionary stack  */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackPush(NNP_Task nnpTask)
+void Task::vDicStackPushOld(NNP_Task nnpTask)
 {
   ENTRY("vDicStackPush");
   

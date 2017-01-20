@@ -434,7 +434,7 @@ true ' CASE word.immediate!
 
   dup dic.lastWord not until
 
-  dicStack.drop
+  dicStack.dropOld
 
   drop
 ;

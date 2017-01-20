@@ -84,7 +84,7 @@ diclock.dropwrite
 /* create a subdictionary under given dic                                     */
 /*----------------------------------------------------------------------------*/
 : :folder ( "<subDicNm>" dic -- )
-  dicStack.pushOld :dic ' folder swap execute dic.kind! dicStack.drop
+  dicStack.pushOld :dic ' folder swap execute dic.kind! dicStack.dropOld
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ diclock.dropwrite
   //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
   // note: it should not push "<main>"
 
-  dicStack.depth 1 - 0 ?do
+  dicStack.depthOld 1 - 0 ?do
 
     // get dictionary[I]
     I pathPick  ( dic )
@@ -107,7 +107,7 @@ diclock.dropwrite
   loop
 
   // push number of dictionary names
-  dicStack.depth 1 - ( ... #dics )
+  dicStack.depthOld 1 - ( ... #dics )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -115,8 +115,8 @@ diclock.dropwrite
 /*----------------------------------------------------------------------------*/
 : dicStack.clear
 
-  dicStack.depth 1 - 0 ?do
-    dicStack.drop
+  dicStack.depthOld 1 - 0 ?do
+    dicStack.dropOld
   loop
 ;
 
@@ -130,8 +130,8 @@ diclock.dropwrite
 
 tp: dicStack.set
 
-  //dicStack.depth 0 do
-  //  dicStack.drop
+  //dicStack.depthOld 0 do
+  //  dicStack.dropOld
   //loop
   dicStack.clear
 

@@ -6,12 +6,10 @@
 
 : column: ;
 
-//: makeColumns ( table --  ) table.subDic dicStack.pushOld "columns" :dic drop dicStack.drop ;
-
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.subDic dicStack.pushOld "columns" :dic drop dicStack.drop
+  table.subDic dicStack.pushOld "columns" :dic drop dicStack.dropOld
 ;
 
 : withinColumns
@@ -35,7 +33,7 @@
 ;
 
 : popColumns
-    dicStack.drop
+    dicStack.dropOld
 ;
 
 : :column ( "<columnType>" "<columnName>" )

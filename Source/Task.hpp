@@ -454,11 +454,14 @@ namespace Tasks
     static void vDicWordCount(NNP_Task nnpTask);
     
     // dicStack
-    static void vDicStackDepth(NNP_Task nnpTask);
-    static void vDicStackDrop(NNP_Task nnpTask);
-    static void vDicStackDump(NNP_Task nnpTask);
-    static void vDicStackPick(NNP_Task nnpTask);    
-    static void vDicStackPush(NNP_Task nnpTask);
+    static void vDicStackDepthOld(NNP_Task nnpTask);
+    static void vDicStackDepthNew(NNP_Task nnpTask);
+    static void vDicStackDropOld(NNP_Task nnpTask);
+    static void vDicStackDropNew(NNP_Task nnpTask);
+    static void vDicStackDumpOld(NNP_Task nnpTask);
+    static void vDicStackDumpNew(NNP_Task nnpTask);
+    static void vDicStackPick(NNP_Task nnpTask);
+    static void vDicStackPushOld(NNP_Task nnpTask);
     static void vDicStackPushNew(NNP_Task nnpTask);
 
     // dir
