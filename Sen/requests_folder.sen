@@ -25,14 +25,14 @@ tp: removeFolder
 
   dup ".." str.equal if
     drop
-    0 dicStack.pick dic.name "tenants" str.equal not if dicStack.drop then
+    0 pathPick dic.name "tenants" str.equal not if dicStack.drop then
   else
     dup "~" str.equal if
       drop
-      begin 0 dicStack.pick dic.name "tenants" str.equal not while dicStack.drop repeat
+      begin 0 pathPick dic.name "tenants" str.equal not while dicStack.drop repeat
     else
       dup "tenants" str.equal if
-        begin 0 dicStack.pick dic.name "<main>" str.equal not while dicStack.drop repeat
+        begin 0 pathPick dic.name "<main>" str.equal not while dicStack.drop repeat
         checkIsWord not if <NIP+ERROR> exit then
         execute dicStack.push
       else
@@ -68,7 +68,7 @@ ddlLock.grabWrite
 : lf
 
   ""
-  0 dicStack.pick dic.lastWord dup iterate
+  0 pathPick dic.lastWord dup iterate
 
     dup str.length if "\n" str.cat then
 
@@ -135,7 +135,7 @@ tp: lf
   "LISTING FOLDER on NODE " grid.thisNode@ >str str.cat .
 
   ""
-  0 dicStack.pick dic.lastWord dup iterate
+  0 pathPick dic.lastWord dup iterate
 
   dup str.length if "\n" str.cat then
 
@@ -189,7 +189,7 @@ tp: lf
   "/"
   dicStack.depth 2 do
   dicStack.depth 1 - I -
-  dicStack.pick dic.name str.cat
+  pathPick dic.name str.cat
   "/" str.cat
   loop
 

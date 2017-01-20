@@ -39,8 +39,6 @@ void Task::vAddPrimitives_DicStack(void)
   vAddPrimitive("dicStack.dump",   &vDicStackDump,     false);
   vAddPrimitive("dicStack.pick",   &vDicStackPick,     false);
   vAddPrimitive("dicStack.push",   &vDicStackPush,     false);
-  
-  vAddPrimitive("dicStack.pickNew", &vDicStackPickNew, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,47 +97,22 @@ void Task::vDicStackDump(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
+/* pathPick -- pick a dic from dic stack and push onto data stack        */
 /*----------------------------------------------------------------------------*/
 void Task::vDicStackPick(NNP_Task nnpTask)
 {
   ENTRY("vDicStackPick");
   
-  i8 iDic;
-  if ( ! nnpTask->m_pDataStack->bPop(iDic) )
-    THROW_INVALID_DSTACK("dicStack.pick");
-  
-  Object* pPtrDic;
-  
-  if (nnpTask->m_pSEitf) {
-    pPtrDic = nnpTask->m_pSEitf->pDicStack()->pPick(iDic);
-  }
-  else {
-    pPtrDic = nnpTask->m_xDicStack.pPick(iDic);
-  }
-  
-  nnpTask->m_pDataStack->vPush(pPtrDic);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dicStack.pick -- pick a dic from dic stack and push onto data stack        */
-/*----------------------------------------------------------------------------*/
-void Task::vDicStackPickNew(NNP_Task nnpTask)
-{
-  ENTRY("vDicStackPickNew");
-  
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("seitf.dicStack");
+    THROW_INVALID_DSTACK("dicStack.pick");
   
   DicStack* pDicStack = (DicStack*)(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
   
   i8 iDic;
   if ( ! nnpTask->m_pDataStack->bPop(iDic) )
-    THROW_INVALID_DSTACK("dicStack.pickNew");
+    THROW_INVALID_DSTACK("dicStack.pick");
   
   Object* pPtrDic = pDicStack->pPick(iDic);
 

@@ -99,7 +99,7 @@ diclock.dropwrite
   dicStack.depth 1 - 0 ?do
 
     // get dictionary[I]
-    I dicStack.pick  ( dic )
+    I pathPick  ( dic )
 
     // push dictionary name
     dic.name ( ... dicNm )

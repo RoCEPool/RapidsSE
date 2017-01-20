@@ -218,7 +218,14 @@ void Task::vTaskDicStack(NNP_Task nnpTask)
 {
   ENTRY("vTaskDicStack");
   
-  Object* pPtrDicStack = &nnpTask->m_xDicStack;
+  Object* pPtrTask;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("task.init");
+  
+  Task* pThatTask = _pTask(pPtrTask);
+  ASSERT(CN_TASK == pThatTask->eClass());
+  
+  Object* pPtrDicStack = &pThatTask->m_xDicStack;
   
   nnpTask->m_pDataStack->vPush(pPtrDicStack);
   

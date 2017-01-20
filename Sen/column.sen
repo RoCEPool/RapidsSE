@@ -15,7 +15,7 @@
 ;
 
 : withinColumns
-    0 dicStack.pick dic.name "columns" str.equal
+    0 pathPick dic.name "columns" str.equal
 ;
 
 : checkInColumns
@@ -59,7 +59,7 @@
   pushColumns   assert
 
   ""                             // initial ls string
-  0 dicStack.pick dic.lastWord            // get last word of current dic
+  0 pathPick dic.lastWord            // get last word of current dic
   dup                            // setup iteration of words
   iterate                        //
 
