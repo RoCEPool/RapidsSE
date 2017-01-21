@@ -155,7 +155,7 @@ tp: !req_exit
 
   >valset
 
-  //saveSEitfPath
+  saveSEitfPath
 
   //"rspque" find execute queue.append
   task.this task.seitf@ seitf.responseQueue queue.append
