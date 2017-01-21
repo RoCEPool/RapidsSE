@@ -265,6 +265,17 @@ true ' CASE word.immediate!
   // pick the dictionary
   dicStack.pick
 ;
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+: pathPick ( i -- dic )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // pick the dictionary
+  dicStack.pick
+;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* drop a path                                                                */

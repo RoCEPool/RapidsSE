@@ -33,8 +33,8 @@ tp: removeFolder
   dup ".." str.equal if
     drop
     0 pathPick dic.name "tenants" str.equal not if dicStack.dropOld then
-    //0 pathPick dic.name "tenants" str.equal not if pathDrop then
     copySEitfPath
+    //0 pathPick dic.name "tenants" str.equal not if pathDrop then
     <OK>
     exit
   then
@@ -43,8 +43,8 @@ tp: removeFolder
   dup "~" str.equal if
     drop
     begin 0 pathPick dic.name "tenants" str.equal not while dicStack.dropOld repeat
-    //begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
     copySEitfPath
+    //begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
     <OK>
     exit
   then
@@ -55,8 +55,8 @@ tp: removeFolder
     //begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
     checkIsWord not if <NIP+ERROR> exit then
     execute dicStack.pushOld
-    //execute pathPush
     copySEitfPath
+    //execute pathPush
     <OK>
     exit
   then
@@ -65,8 +65,8 @@ tp: removeFolder
   find
   checkIsDic not if <NIP+ERROR> exit then
   execute dicStack.pushOld
-  //execute pathPush
   copySEitfPath
+  //execute pathPush
 
   <OK>
 ;
