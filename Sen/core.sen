@@ -267,6 +267,30 @@ true ' CASE word.immediate!
 ;
 
 /*----------------------------------------------------------------------------*/
+/* drop a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathDrop ( -- )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // drop the dictionary
+  dicStack.dropNew
+;
+
+/*----------------------------------------------------------------------------*/
+/* push a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathPush ( dic -- )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // drop the dictionary
+  dicStack.pushNew
+;
+
+/*----------------------------------------------------------------------------*/
 /* list all words in the current dictionary                                   */
 /*----------------------------------------------------------------------------*/
 : words
