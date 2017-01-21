@@ -21,20 +21,29 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : copySEitfPath
 
+  // local for task::this.seitf.dicStack
   task.this task.seitf@ seitf.dicStack
   locals| dicStackSEitf |
 
-  dicStackSEitf dicStack.depthOld 1- ?do
+  // local for task::this.dicStack
+  task.this task.dicStack
+  locals| dicStackTask |
 
+  // copy the path from seitf dic stack onto data stack
+  dicStackSEitf dicStack.depthNew 1- 0 ?do
     I dicStackSEitf dicStack.pick
-
   loop
 
-  dicStackSEitf dicStack.depthOld 1- ?do
+  // clear this tasks dic stack
+  dicStackTask dicStack.dropAll
+  //dicStackTask dicStack.dumpNew
 
-    task.this task.dicStack dicStack.pushNew
-
+  // copy the path from data stack onto this task dic stack
+  dicStackSEitf dicStack.depthNew 1- 0 ?do
+    dicStackTask dicStack.pushNew
   loop
+
+  //dicStackTask dicStack.dumpNew
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -42,6 +51,26 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 : saveSEitfPath
 
+  // local for task::this.seitf.dicStack
+  task.this task.seitf@ seitf.dicStack
+  locals| dicStackSEitf |
+
+  // local for task::this.dicStack
+  task.this task.dicStack
+  locals| dicStackTask |
+
+  // copy the path from task dic stack onto data stack
+  dicStackTask dicStack.depthNew 1- 0 ?do
+    I dicStackTask dicStack.pick
+  loop
+
+  // clear seitf dic stack
+  dicStackSEitf dicStack.dropAll
+
+  // copy the path from data stack onto seitf dic stack
+  dicStackTask dicStack.depthNew 1- 0 ?do
+    dicStackSEitf dicStack.pushNew
+  loop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -105,7 +134,7 @@ tp: valset
   >:   // execute the response return address
   task.this task.seitf@ assert
 
-  //copySEitfPath
+  copySEitfPath
 
   >:   // decode/push the request
 

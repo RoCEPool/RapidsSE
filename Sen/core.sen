@@ -458,7 +458,7 @@ true ' CASE word.immediate!
 
   locals| dicStack |
 
-  dicStack.depthNew 1- ?do
+  dicStack dicStack.depthNew 1- 0 ?do
     dicStack dicStack.dropNew
   loop
 ;
