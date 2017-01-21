@@ -55,6 +55,7 @@ tp: removeFolder
     //begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
     checkIsWord not if <NIP+ERROR> exit then
     execute dicStack.pushOld
+    //execute pathPush
     copySEitfPath
     <OK>
     exit
@@ -64,6 +65,7 @@ tp: removeFolder
   find
   checkIsDic not if <NIP+ERROR> exit then
   execute dicStack.pushOld
+  //execute pathPush
   copySEitfPath
 
   <OK>
