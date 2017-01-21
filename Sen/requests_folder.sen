@@ -23,25 +23,35 @@ tp: removeFolder
 /*----------------------------------------------------------------------------*/
 : cf
 
+  // pop up one folder
   dup ".." str.equal if
     drop
     0 pathPick dic.name "tenants" str.equal not if dicStack.dropOld then
-  else
-    dup "~" str.equal if
-      drop
-      begin 0 pathPick dic.name "tenants" str.equal not while dicStack.dropOld repeat
-    else
-      dup "tenants" str.equal if
-        begin 0 pathPick dic.name "<main>" str.equal not while dicStack.dropOld repeat
-        checkIsWord not if <NIP+ERROR> exit then
-        execute dicStack.pushOld
-      else
-        find
-        checkIsDic not if <NIP+ERROR> exit then
-        execute dicStack.pushOld
-      then
-    then
+    <OK>
+    exit
   then
+
+  // pop up to tenants
+  dup "~" str.equal if
+    drop
+    begin 0 pathPick dic.name "tenants" str.equal not while dicStack.dropOld repeat
+    <OK>
+    exit
+  then
+
+  // pop up to main and push tenants
+  dup "tenants" str.equal if
+    begin 0 pathPick dic.name "<main>" str.equal not while dicStack.dropOld repeat
+    checkIsWord not if <NIP+ERROR> exit then
+    execute dicStack.pushOld
+    <OK>
+    exit
+  then
+
+  // push sub-folder
+  find
+  checkIsDic not if <NIP+ERROR> exit then
+  execute dicStack.pushOld
 
   <OK>
 ;
