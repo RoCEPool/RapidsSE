@@ -30,7 +30,7 @@ thread:  requestThread
   locals| dicStackTask |
 
   // copy the path from seitf dic stack onto data stack
-  dicStackSEitf dicStack.depthNew 1- 0 ?do
+  dicStackSEitf dicStack.depth 1- 0 ?do
     I dicStackSEitf dicStack.pick
   loop
 
@@ -39,7 +39,7 @@ thread:  requestThread
   //dicStackTask dicStack.dumpNew
 
   // copy the path from data stack onto this task dic stack
-  dicStackSEitf dicStack.depthNew 1- 0 ?do
+  dicStackSEitf dicStack.depth 1- 0 ?do
     dicStackTask dicStack.push
   loop
 
@@ -60,7 +60,7 @@ thread:  requestThread
   locals| dicStackTask |
 
   // copy the path from task dic stack onto data stack
-  dicStackTask dicStack.depthNew 1- 0 ?do
+  dicStackTask dicStack.depth 1- 0 ?do
     I dicStackTask dicStack.pick
   loop
 
@@ -68,7 +68,7 @@ thread:  requestThread
   dicStackSEitf dicStack.dropAll
 
   // copy the path from data stack onto seitf dic stack
-  dicStackTask dicStack.depthNew 1- 0 ?do
+  dicStackTask dicStack.depth 1- 0 ?do
     dicStackSEitf dicStack.push
   loop
 ;

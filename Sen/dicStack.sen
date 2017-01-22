@@ -13,7 +13,7 @@
   //   ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" 3 )
   // note: it should not push "<main>"
 
-  dicStack.depthOld 1 - 0 ?do
+  pathDepth 1 - 0 ?do
 
     // get dictionary[I]
     I pathPick  ( dic )
@@ -24,7 +24,7 @@
   loop
 
   // push number of dictionary names
-  dicStack.depthOld 1 - ( ... #dics )
+  pathDepth 1 - ( ... #dics )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@
 /*----------------------------------------------------------------------------*/
 : dicStack.clear
 
-  dicStack.depthOld 1 - 0 ?do
+  pathDepth 1 - 0 ?do
     pathDrop
   loop
 ;
@@ -47,7 +47,7 @@
 
 tp: dicStack.set
 
-  //dicStack.depthOld 0 do
+  //pathDepth 0 do
   //  pathDrop
   //loop
   dicStack.clear

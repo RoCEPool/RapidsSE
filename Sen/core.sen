@@ -256,7 +256,7 @@ true ' CASE word.immediate!
   task.this task.dicStack
 
   // get depth
-  dicStack.depthNew
+  dicStack.depth
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -499,7 +499,7 @@ true ' CASE word.immediate!
 
   locals| dicStack |
 
-  dicStack dicStack.depthNew 1- 0 ?do
+  dicStack dicStack.depth 1- 0 ?do
     dicStack dicStack.drop
   loop
 ;

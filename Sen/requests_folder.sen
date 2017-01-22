@@ -272,8 +272,8 @@ tp: lf
 : pwf
 
   "/"
-  dicStack.depthOld 2 do
-  dicStack.depthOld 1 - I -
+  pathDepth 2 do
+  pathDepth 1 - I -
   pathPick dic.name str.cat
   "/" str.cat
   loop
