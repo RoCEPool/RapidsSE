@@ -248,36 +248,16 @@ true ' CASE word.immediate!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pick a path                                                                */
+/* get depth of path                                                          */
 /*----------------------------------------------------------------------------*/
-/*
-: pathPick ( i -- dic )
-
-  // does this task have a seitf?
-  task.this task.seitf@
-  if
-    // push the dic stack of the seitf
-    task.this task.seitf@ seitf.dicStack
-  else
-    // push the dic stack of this task
-    task.this task.dicStack
-  then
-
-  // pick the dictionary
-  dicStack.pick
-;
-*/
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-: pathPick ( i -- dic )
+: pathDepth ( -- )
 
   // push the dic stack of this task
   task.this task.dicStack
 
-  // pick the dictionary
-  dicStack.pick
+  // get depth
+  dicStack.depthNew
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /* drop a path                                                                */
@@ -294,18 +274,6 @@ true ' CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 /* push a path                                                                */
 /*----------------------------------------------------------------------------*/
-: pathPush ( dic -- )
-
-  // push the dic stack of this task
-  task.this task.dicStack
-
-  // drop the dictionary
-  dicStack.push
-;
-
-/*----------------------------------------------------------------------------*/
-/* push a path                                                                */
-/*----------------------------------------------------------------------------*/
 : pathDump ( dic -- )
 
   // push the dic stack of this task
@@ -313,6 +281,30 @@ true ' CASE word.immediate!
 
   // dump the stack
   dicStack.dumpNew
+;
+
+/*----------------------------------------------------------------------------*/
+/* pick a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathPick ( i -- dic )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // pick the dictionary
+  dicStack.pick
+;
+
+/*----------------------------------------------------------------------------*/
+/* push a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathPush ( dic -- )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // drop the dictionary
+  dicStack.push
 ;
 
 /*----------------------------------------------------------------------------*/
