@@ -260,95 +260,6 @@ true ' CASE word.immediate!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* drop a path                                                                */
-/*----------------------------------------------------------------------------*/
-: pathDrop ( -- )
-
-  // push the dic stack of this task
-  task.this task.dicStack
-
-  // drop the dictionary
-  dicStack.drop
-;
-
-/*----------------------------------------------------------------------------*/
-/* push a path                                                                */
-/*----------------------------------------------------------------------------*/
-: pathDump ( dic -- )
-
-  // push the dic stack of this task
-  task.this task.dicStack
-
-  // dump the stack
-  dicStack.dump
-;
-
-/*----------------------------------------------------------------------------*/
-/* pick a path                                                                */
-/*----------------------------------------------------------------------------*/
-: pathPick ( i -- dic )
-
-  // push the dic stack of this task
-  task.this task.dicStack
-
-  // pick the dictionary
-  dicStack.pick
-;
-
-/*----------------------------------------------------------------------------*/
-/* push a path                                                                */
-/*----------------------------------------------------------------------------*/
-: pathPush ( dic -- )
-
-  // push the dic stack of this task
-  task.this task.dicStack
-
-  // drop the dictionary
-  dicStack.push
-;
-
-/*----------------------------------------------------------------------------*/
-/* list all words in the current dictionary                                   */
-/*----------------------------------------------------------------------------*/
-: words
-    0 pathPick dic.lastWord dup
-    iterate                        // iterate word cursor
-      object@ word.name .          // print the name of the word
-      object@ word.prev object!     // advance cursor backwards thru words
-    next
-;
-
-/*----------------------------------------------------------------------------*/
-/* list all words (long form) in the current dictionary                       */
-/*----------------------------------------------------------------------------*/
-: symbols
-    0 pathPick dic.lastWord
-    begin dup while
-      dup word.name .put " " .put dup word.kind@ word.name .put .\n
-      word.prev
-    repeat
-    drop
-;
-
-/*----------------------------------------------------------------------------*/
-/* get all words in the current dictionary as a single string                 */
-/*----------------------------------------------------------------------------*/
-: listContents
-
-    ""                             // initial contents string
-// "(" str.cat                     //
-    0 pathPick dic.lastWord dup
-    iterate                        // setup iteration of words
-      object@ word.name str.cat     // add name of the word to contents string
-                                   // add word kind to ls string
-      " " str.cat                   //
-      object@ word.prev object!     // step backwards thru words
-    next                           //
-//    ")" str.cat                     //
-
-;
-
-/*----------------------------------------------------------------------------*/
 /* dump the data stack                                                        */
 /*----------------------------------------------------------------------------*/
 /*
@@ -461,26 +372,6 @@ true ' CASE word.immediate!
 ;
 
 /*----------------------------------------------------------------------------*/
-/* forget all words in given dictionary                                       */
-/*----------------------------------------------------------------------------*/
-: forgetAll ( dic -- )
-
-  dup dic.lastWord not if drop exit then
-
-  dup pathPush
-
-  begin
-
-    dup dic.lastWord word.name :forget
-
-  dup dic.lastWord not until
-
-  pathDrop
-
-  drop
-;
-
-/*----------------------------------------------------------------------------*/
 /* test type of top stack value                                               */
 /*----------------------------------------------------------------------------*/
 : isType ( CN_ -- bool )
@@ -490,18 +381,6 @@ true ' CASE word.immediate!
 
   // no more if not indirect
   1 stack.class ==
-;
-
-/*----------------------------------------------------------------------------*/
-/* drop all dictionaries from given stack                                     */
-/*----------------------------------------------------------------------------*/
-: dicStack.dropAll ( dicStack -- )
-
-  locals| dicStack |
-
-  dicStack dicStack.depth 1- 0 ?do
-    dicStack dicStack.drop
-  loop
 ;
 
 /*----------------------------------------------------------------------------*/

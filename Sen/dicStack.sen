@@ -5,6 +5,180 @@
 "dicStack.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* drop a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathDrop ( -- )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // drop the dictionary
+  dicStack.drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* push a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathDump ( dic -- )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // dump the stack
+  dicStack.dump
+;
+
+/*----------------------------------------------------------------------------*/
+/* pick a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathPick ( i -- dic )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // pick the dictionary
+  dicStack.pick
+;
+
+/*----------------------------------------------------------------------------*/
+/* push a path                                                                */
+/*----------------------------------------------------------------------------*/
+: pathPush ( dic -- )
+
+  // push the dic stack of this task
+  task.this task.dicStack
+
+  // drop the dictionary
+  dicStack.push
+;
+
+/*----------------------------------------------------------------------------*/
+/* list all words in the current dictionary                                   */
+/*----------------------------------------------------------------------------*/
+: words
+  0 pathPick dic.lastWord dup
+  iterate                        // iterate word cursor
+    object@ word.name .          // print the name of the word
+    object@ word.prev object!     // advance cursor backwards thru words
+  next
+;
+
+/*----------------------------------------------------------------------------*/
+/* list all words (long form) in the current dictionary                       */
+/*----------------------------------------------------------------------------*/
+: symbols
+  0 pathPick dic.lastWord
+  begin dup while
+    dup word.name .put " " .put dup word.kind@ word.name .put .\n
+    word.prev
+  repeat
+  drop
+;
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get all words in the current dictionary as a single string                 */
+/*----------------------------------------------------------------------------*/
+: listContents
+
+  ""                             // initial contents string
+  // "(" str.cat                     //
+  0 pathPick dic.lastWord dup
+  iterate                        // setup iteration of words
+    object@ word.name str.cat     // add name of the word to contents string
+    // add word kind to ls string
+    " " str.cat                   //
+    object@ word.prev object!     // step backwards thru words
+  next                           //
+  //    ")" str.cat                     //
+;
+
+/*----------------------------------------------------------------------------*/
+/* forget all words in given dictionary                                       */
+/*----------------------------------------------------------------------------*/
+: forgetAll ( dic -- )
+
+  dup dic.lastWord not if drop exit then
+
+  dup pathPush
+
+  begin
+
+    dup dic.lastWord word.name :forget
+
+    dup dic.lastWord not until
+
+  pathDrop
+
+  drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* create a subdictionary under given dic                                     */
+/*----------------------------------------------------------------------------*/
+: :folder ( "<subDicNm>" dic -- )
+
+  pathPush :dic ' folder swap execute dic.kind! pathDrop
+;
+
+/*----------------------------------------------------------------------------*/
+/* clear task dictionary stack                                                */
+/*----------------------------------------------------------------------------*/
+: dicStack.clear
+
+  pathDepth 1 - 0 ?do
+    pathDrop
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* drop all dictionaries from given stack                                     */
+/*----------------------------------------------------------------------------*/
+: dicStack.dropAll ( dicStack -- )
+
+  locals| dicStack |
+
+  dicStack dicStack.depth 1- 0 ?do
+    dicStack dicStack.drop
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* set task dictionary stack                                                  */
+/*----------------------------------------------------------------------------*/
+: dicStack.set ( ... #dics -- )
+
+  // this word puts the folder path on the stack into task dictionary stack
+  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
+
+  tp: dicStack.set
+
+  dicStack.clear
+
+  0 do
+
+    dup "<main>" str.equal if
+      drop
+      dic.main
+      pathPush
+    else
+
+      dup "seitf" str.equal if
+        drop
+      else
+
+        find
+        execute
+        pathPush
+      then
+
+    then
+
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
 /* get seitif dictionary path                                                 */
 /*----------------------------------------------------------------------------*/
 : seitf.dicPath ( -- ... #dics )
@@ -25,55 +199,6 @@
 
   // push number of dictionary names
   pathDepth 1 - ( ... #dics )
-;
-
-/*----------------------------------------------------------------------------*/
-/* clear task dictionary stack                                                */
-/*----------------------------------------------------------------------------*/
-: dicStack.clear
-
-  pathDepth 1 - 0 ?do
-    pathDrop
-  loop
-;
-
-/*----------------------------------------------------------------------------*/
-/* set task dictionary stack                                                  */
-/*----------------------------------------------------------------------------*/
-: dicStack.set ( ... #dics -- )
-
-  // this word puts the folder path on the stack into task dictionary stack
-  // ( ... "<subFolderC>"  "<subFolderB>"  "<subFolderA>" "main" 4 )
-
-tp: dicStack.set
-
-  //pathDepth 0 do
-  //  pathDrop
-  //loop
-  dicStack.clear
-
-  0 do
-
-    dup "<main>" str.equal if
-      drop
-      dic.main
-      pathPush
-    else
-
-      dup "seitf" str.equal if
-        drop
-        //dic.main
-        //pathPush
-      else
-
-        find
-        execute
-        pathPush
-      then
-
-    then
-
-  loop
 ;
 
 /*============================================================================*/
