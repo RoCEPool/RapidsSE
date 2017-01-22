@@ -19,7 +19,7 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 /* copy dictionary path from seitf to this request task                       */
 /*----------------------------------------------------------------------------*/
-: copySEitfPath
+: getPath
 
   // local for task::this.seitf.dicStack
   task.this task.seitf@ seitf.dicStack
@@ -49,7 +49,7 @@ thread:  requestThread
 /*----------------------------------------------------------------------------*/
 /* save dictionary path of this request task back into seitf                  */
 /*----------------------------------------------------------------------------*/
-: saveSEitfPath
+: savePath
 
   // local for task::this.seitf.dicStack
   task.this task.seitf@ seitf.dicStack
@@ -134,7 +134,7 @@ tp: valset
   >:   // execute the response return address
   task.this task.seitf@ assert
 
-  copySEitfPath
+  getPath
 
   >:   // decode/push the request
 
@@ -155,7 +155,7 @@ tp: !req_exit
 
   >valset
 
-  saveSEitfPath
+  savePath
 
   //"rspque" find execute queue.append
   task.this task.seitf@ seitf.responseQueue queue.append

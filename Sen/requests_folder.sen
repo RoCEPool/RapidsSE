@@ -34,7 +34,7 @@ tp: removeFolder
     drop
     0 pathPick dic.name "tenants" str.equal not if pathDrop then
 
-    "After cf .." . PATHDUMP
+    //"After cf .." . PATHDUMP
 
     <OK>
     exit
@@ -45,7 +45,7 @@ tp: removeFolder
     drop
     begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
 
-    "After cf ~" . PATHDUMP
+    //"After cf ~" . PATHDUMP
 
     <OK>
     exit
@@ -57,7 +57,7 @@ tp: removeFolder
     checkIsWord not if <NIP+ERROR> exit then
     execute pathPush
 
-    "After cf tenants" . PATHDUMP
+    //"After cf tenants" . PATHDUMP
 
    <OK>
     exit
@@ -68,7 +68,7 @@ tp: removeFolder
   checkIsDic not if <NIP+ERROR> exit then
   execute pathPush
 
-  "After cf <dicNm>" . PATHDUMP
+  //"After cf <dicNm>" . PATHDUMP
 
   <OK>
 ;
