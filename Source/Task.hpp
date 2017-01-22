@@ -460,8 +460,7 @@ namespace Tasks
     static void vDicStackDumpOld(NNP_Task nnpTask);
     static void vDicStackDumpNew(NNP_Task nnpTask);
     static void vDicStackPick(NNP_Task nnpTask);
-    static void vDicStackPushOld(NNP_Task nnpTask);
-    static void vDicStackPushNew(NNP_Task nnpTask);
+    static void vDicStackPush(NNP_Task nnpTask);
 
     // dir
     static void vDirChangeCurrent(NNP_Task nnpTask);

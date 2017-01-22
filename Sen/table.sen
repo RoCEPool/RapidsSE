@@ -11,7 +11,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables dicStack.pushOld "tables" :dic ' folder swap execute dic.kind! pathDrop ;
+//: makeTables pathPush "tables" :dic ' folder swap execute dic.kind! pathDrop ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
@@ -119,7 +119,7 @@ int: queryCount
 
     checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find execute table.subDic dicStack.pushOld
+    find execute table.subDic pathPush
 
     true
 ;
@@ -313,7 +313,7 @@ tp: removeTable
 
   // forget all column names in the columns dictionary of table sub-dictionary
   dup table.subDic
-  dicStack.pushOld
+  pathPush
     "columns" find execute forgetAll
   pathDrop
 

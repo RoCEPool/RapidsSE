@@ -40,7 +40,7 @@ thread:  requestThread
 
   // copy the path from data stack onto this task dic stack
   dicStackSEitf dicStack.depthNew 1- 0 ?do
-    dicStackTask dicStack.pushNew
+    dicStackTask dicStack.push
   loop
 
   //dicStackTask dicStack.dumpNew
@@ -69,7 +69,7 @@ thread:  requestThread
 
   // copy the path from data stack onto seitf dic stack
   dicStackTask dicStack.depthNew 1- 0 ?do
-    dicStackSEitf dicStack.pushNew
+    dicStackSEitf dicStack.push
   loop
 ;
 

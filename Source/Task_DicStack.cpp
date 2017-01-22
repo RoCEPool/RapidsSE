@@ -40,8 +40,7 @@ void Task::vAddPrimitives_DicStack(void)
   vAddPrimitive("dicStack.dumpOld",  &vDicStackDumpOld,  false);
   vAddPrimitive("dicStack.dumpNew",  &vDicStackDumpNew,  false);
   vAddPrimitive("dicStack.pick",     &vDicStackPick,     false);
-  vAddPrimitive("dicStack.pushOld",  &vDicStackPushOld,  false);
-  vAddPrimitive("dicStack.pushNew",  &vDicStackPushNew,  false);
+  vAddPrimitive("dicStack.push",     &vDicStackPush,     false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,39 +166,15 @@ void Task::vDicStackPick(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.pushOld -- push a dictionary from data stack  onto dictionary stack  */
+/* dicStack.push -- push a dictionary onto given dictionary stack             */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackPushOld(NNP_Task nnpTask)
+void Task::vDicStackPush(NNP_Task nnpTask)
 {
   ENTRY("vDicStackPush");
   
-  Object* pPtrDic;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dicStack.pushOld");
-  
-  Dic* pDic = _pDic(pPtrDic);
-  
-  if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->vPushDic(pDic);
-  }
-  else {
-    nnpTask->m_xDicStack.vPush(pDic);
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* dicStack.pushOld -- push a dictionary onto given dictionary stack             */
-/*----------------------------------------------------------------------------*/
-void Task::vDicStackPushNew(NNP_Task nnpTask)
-{
-  ENTRY("vDicStackPushNew");
-  
   Object* pPtrDicStack;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
-    THROW_INVALID_DSTACK("dicStack.pushNew");
+    THROW_INVALID_DSTACK("dicStack.push");
   
   DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
   ASSERT(CN_DICSTACK == pDicStack->eClass());
@@ -207,7 +182,7 @@ void Task::vDicStackPushNew(NNP_Task nnpTask)
   Object* pPtrDic;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDic) )
-    THROW_INVALID_DSTACK("dicStack.pushNew");
+    THROW_INVALID_DSTACK("dicStack.push");
   
   Dic* pDic = _pDic(pPtrDic);
   

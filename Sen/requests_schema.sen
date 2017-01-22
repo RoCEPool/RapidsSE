@@ -60,27 +60,27 @@ ddlLock.grabRead
 
   // find the boray folder
   "boray" findInCurrent
-  execute dicStack.pushOld
+  execute pathPush
 
   // find the catalogs folder
   "catalogs" findInCurrent
-  execute dicStack.pushOld
+  execute pathPush
 
   // find the rapidssecatalogs folder
   "rapidsse" findInCurrent
-  execute dicStack.pushOld
+  execute pathPush
 
   // find the schemas folder
   "schemas" findInCurrent
-  execute dicStack.pushOld
+  execute pathPush
 
   checkIsWord   not if EC_NO_SUCH_SCHEMA <NIP+ERROR> exit then
   checkIsSchema not if <NIP+ERROR> exit then
-  execute dicStack.pushOld
+  execute pathPush
 
   // find the tables folder
   "tables" findInCurrent
-  execute dicStack.pushOld
+  execute pathPush
 
   <OK>
 ;

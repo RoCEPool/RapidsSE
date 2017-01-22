@@ -9,7 +9,7 @@
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.subDic dicStack.pushOld "columns" :dic drop pathDrop
+  table.subDic pathPush "columns" :dic drop pathDrop
 ;
 
 : withinColumns
@@ -27,7 +27,7 @@
 
     not if EC_NO_COLUMNS_DIC false exit then
 
-    execute dicStack.pushOld
+    execute pathPush
 
     true
 ;

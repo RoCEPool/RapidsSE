@@ -300,7 +300,7 @@ true ' CASE word.immediate!
   task.this task.dicStack
 
   // drop the dictionary
-  dicStack.pushNew
+  dicStack.push
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -475,7 +475,7 @@ true ' CASE word.immediate!
 
   dup dic.lastWord not if drop exit then
 
-  dup dicStack.pushOld
+  dup pathPush
 
   begin
 

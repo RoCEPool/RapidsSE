@@ -57,18 +57,18 @@ tp: dicStack.set
     dup "<main>" str.equal if
       drop
       dic.main
-      dicStack.pushOld
+      pathPush
     else
 
       dup "seitf" str.equal if
         drop
         //dic.main
-        //dicStack.pushOld
+        //pathPush
       else
 
         find
         execute
-        dicStack.pushOld
+        pathPush
       then
 
     then

@@ -6,7 +6,7 @@
 
 : schema ;
 
-//: makeSchemas dicStack.pushOld "schemas" :dic ' folder swap execute dic.kind! pathDrop ;
+//: makeSchemas pathPush "schemas" :dic ' folder swap execute dic.kind! pathDrop ;
 
 
 : :schema
