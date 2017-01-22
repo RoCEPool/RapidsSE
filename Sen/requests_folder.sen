@@ -33,64 +33,6 @@ tp: removeFolder
   dup ".." str.equal if
     drop
     0 pathPick dic.name "tenants" str.equal not if pathDrop then
-    copySEitfPath
-
-    "After cf .." . dicStack.dumpOld
-
-    <OK>
-    exit
-  then
-
-  // pop up to tenants
-  dup "~" str.equal if
-    drop
-    begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
-    copySEitfPath
-
-    "After cf ~" . dicStack.dumpOld
-
-    <OK>
-    exit
-  then
-
-  // pop up to main and push tenants
-  dup "tenants" str.equal if
-    begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
-    checkIsWord not if <NIP+ERROR> exit then
-    execute pathPush
-    copySEitfPath
-
-    "After cf tenants" . dicStack.dumpOld
-
-    <OK>
-    exit
-  then
-
-  // push sub-folder
-  find
-  checkIsDic not if <NIP+ERROR> exit then
-  execute pathPush
-  copySEitfPath
-
-  "After cf <dicNm>" . dicStack.dumpOld
-
-  <OK>
-;
-
-//------------------------------------------------------------------------------
-
-: cf
-
-  // will be in request task, with an seitf
-  task.this task.name@ "req.task" str.equal assert
-  task.this task.seitf@ assert
-
-  // therefore after we change the seitf path, copy into task
-
-  // pop up one folder
-  dup ".." str.equal if
-    drop
-    0 pathPick dic.name "tenants" str.equal not if pathDrop then
 
     "After cf .." . PATHDUMP
 

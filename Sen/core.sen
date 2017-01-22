@@ -280,7 +280,7 @@ true ' CASE word.immediate!
   task.this task.dicStack
 
   // dump the stack
-  dicStack.dumpNew
+  dicStack.dump
 ;
 
 /*----------------------------------------------------------------------------*/

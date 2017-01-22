@@ -456,8 +456,7 @@ namespace Tasks
     // dicStack
     static void vDicStackDepth(NNP_Task nnpTask);
     static void vDicStackDrop(NNP_Task nnpTask);
-    static void vDicStackDumpOld(NNP_Task nnpTask);
-    static void vDicStackDumpNew(NNP_Task nnpTask);
+    static void vDicStackDump(NNP_Task nnpTask);
     static void vDicStackPick(NNP_Task nnpTask);
     static void vDicStackPush(NNP_Task nnpTask);
 

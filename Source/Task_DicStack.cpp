@@ -36,8 +36,7 @@ void Task::vAddPrimitives_DicStack(void)
 {
   vAddPrimitive("dicStack.depth",    &vDicStackDepth,    false);
   vAddPrimitive("dicStack.drop",     &vDicStackDrop,     false);
-  vAddPrimitive("dicStack.dumpOld",  &vDicStackDumpOld,  false);
-  vAddPrimitive("dicStack.dumpNew",  &vDicStackDumpNew,  false);
+  vAddPrimitive("dicStack.dump",     &vDicStackDump,     false);
   vAddPrimitive("dicStack.pick",     &vDicStackPick,     false);
   vAddPrimitive("dicStack.push",     &vDicStackPush,     false);
 }
@@ -83,26 +82,9 @@ void Task::vDicStackDrop(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dicStack.dumpOld -- dump dictionary stack                                  */
-/*----------------------------------------------------------------------------*/
-void Task::vDicStackDumpOld(NNP_Task nnpTask)
-{
-  ENTRY("vDicStackDump");
-  
-  if (nnpTask->m_pSEitf) {
-    nnpTask->m_pSEitf->pDicStack()->vContentDump();
-  }
-  else {
-    nnpTask->m_xDicStack.vContentDump();
-  }
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* dicStack.dump -- dump dictionary stack                                     */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDumpNew(NNP_Task nnpTask)
+void Task::vDicStackDump(NNP_Task nnpTask)
 {
   ENTRY("vDicStackDump");
   
