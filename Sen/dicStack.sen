@@ -33,7 +33,7 @@
 : dicStack.clear
 
   dicStack.depthOld 1 - 0 ?do
-    dicStack.dropOld
+    pathDrop
   loop
 ;
 
@@ -48,7 +48,7 @@
 tp: dicStack.set
 
   //dicStack.depthOld 0 do
-  //  dicStack.dropOld
+  //  pathDrop
   //loop
   dicStack.clear
 

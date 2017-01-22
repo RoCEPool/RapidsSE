@@ -84,7 +84,7 @@ diclock.dropwrite
 /* create a subdictionary under given dic                                     */
 /*----------------------------------------------------------------------------*/
 : :folder ( "<subDicNm>" dic -- )
-  dicStack.pushOld :dic ' folder swap execute dic.kind! dicStack.dropOld
+  dicStack.pushOld :dic ' folder swap execute dic.kind! pathDrop
 ;
 
 /*============================================================================*/

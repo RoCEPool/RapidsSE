@@ -32,7 +32,7 @@ tp: removeFolder
   // pop up one folder
   dup ".." str.equal if
     drop
-    0 pathPick dic.name "tenants" str.equal not if dicStack.dropOld then
+    0 pathPick dic.name "tenants" str.equal not if pathDrop then
     copySEitfPath
 
     "After cf .." . dicStack.dumpOld
@@ -44,7 +44,7 @@ tp: removeFolder
   // pop up to tenants
   dup "~" str.equal if
     drop
-    begin 0 pathPick dic.name "tenants" str.equal not while dicStack.dropOld repeat
+    begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
     copySEitfPath
 
     "After cf ~" . dicStack.dumpOld
@@ -55,7 +55,7 @@ tp: removeFolder
 
   // pop up to main and push tenants
   dup "tenants" str.equal if
-    begin 0 pathPick dic.name "<main>" str.equal not while dicStack.dropOld repeat
+    begin 0 pathPick dic.name "<main>" str.equal not while pathDrop repeat
     checkIsWord not if <NIP+ERROR> exit then
     execute dicStack.pushOld
     copySEitfPath
@@ -309,9 +309,9 @@ tp: lf
   "rapidsse" makeCatalog drop drop drop
 
   // go back to main dictionary
-  dicStack.dropOld
-  dicStack.dropOld
-  dicStack.dropOld
+  pathDrop
+  pathDrop
+  pathDrop
 
   assert.stack_0
 ;

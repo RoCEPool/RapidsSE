@@ -56,7 +56,7 @@ ddlLock.grabRead
 /*----------------------------------------------------------------------------*/
 : use_schema ( "<schemaNm>" -- <R> )
 
-  begin 0 pathPick dic.name "tenants" str.equal not while dicStack.dropOld repeat
+  begin 0 pathPick dic.name "tenants" str.equal not while pathDrop repeat
 
   // find the boray folder
   "boray" findInCurrent

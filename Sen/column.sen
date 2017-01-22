@@ -9,7 +9,7 @@
 : makeColumns ( "<tableNm>" -- )
 
   find execute ( dic )
-  table.subDic dicStack.pushOld "columns" :dic drop dicStack.dropOld
+  table.subDic dicStack.pushOld "columns" :dic drop pathDrop
 ;
 
 : withinColumns
@@ -33,7 +33,7 @@
 ;
 
 : popColumns
-    dicStack.dropOld
+    pathDrop
 ;
 
 : :column ( "<columnType>" "<columnName>" )

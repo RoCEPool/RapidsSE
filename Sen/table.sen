@@ -11,7 +11,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : table ;
 
-//: makeTables dicStack.pushOld "tables" :dic ' folder swap execute dic.kind! dicStack.dropOld ;
+//: makeTables dicStack.pushOld "tables" :dic ' folder swap execute dic.kind! pathDrop ;
 
 /*----------------------------------------------------------------------------*/
 /* make a tables folder under given named schema                              */
@@ -125,7 +125,7 @@ int: queryCount
 ;
 
 : popTable
-    dicStack.dropOld
+    pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -315,7 +315,7 @@ tp: removeTable
   dup table.subDic
   dicStack.pushOld
     "columns" find execute forgetAll
-  dicStack.dropOld
+  pathDrop
 
   // forget the columns dictionary in the table sub-dictionary
   table.subDic forgetAll

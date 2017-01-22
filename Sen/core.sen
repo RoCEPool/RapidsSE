@@ -288,7 +288,7 @@ true ' CASE word.immediate!
   task.this task.dicStack
 
   // drop the dictionary
-  dicStack.dropNew
+  dicStack.drop
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -483,7 +483,7 @@ true ' CASE word.immediate!
 
   dup dic.lastWord not until
 
-  dicStack.dropOld
+  pathDrop
 
   drop
 ;
@@ -508,7 +508,7 @@ true ' CASE word.immediate!
   locals| dicStack |
 
   dicStack dicStack.depthNew 1- 0 ?do
-    dicStack dicStack.dropNew
+    dicStack dicStack.drop
   loop
 ;
 
