@@ -136,6 +136,10 @@ tp: valset
 
   copySEitfPath
 
+  "Prior to !req" .
+
+  dicStack.dumpOld
+
   >:   // decode/push the request
 
 tp: !req_exit
@@ -156,6 +160,9 @@ tp: !req_exit
   >valset
 
   saveSEitfPath
+
+  "Prior to >req" .
+  dicStack.dumpOld
 
   //"rspque" find execute queue.append
   task.this task.seitf@ seitf.responseQueue queue.append

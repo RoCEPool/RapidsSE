@@ -250,6 +250,7 @@ true ' CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 /* pick a path                                                                */
 /*----------------------------------------------------------------------------*/
+/*
 : pathPick ( i -- dic )
 
   // does this task have a seitf?
@@ -265,8 +266,9 @@ true ' CASE word.immediate!
   // pick the dictionary
   dicStack.pick
 ;
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-/*
+
 : pathPick ( i -- dic )
 
   // push the dic stack of this task
@@ -275,7 +277,7 @@ true ' CASE word.immediate!
   // pick the dictionary
   dicStack.pick
 ;
-*/
+
 
 /*----------------------------------------------------------------------------*/
 /* drop a path                                                                */
