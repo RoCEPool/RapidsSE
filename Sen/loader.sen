@@ -71,7 +71,7 @@ timer: loadTimer
 
     $$ r2 loader.newSub $$>valset
 
-    seitf.dicPath $$>valset
+    pathGet $$>valset
 
     1 "loadSub" task.this task.new
 

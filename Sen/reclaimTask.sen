@@ -23,11 +23,11 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : reclaimStart
 
-   0 "rec.loop" nullPtr task.new reclaimTaskSet taskSet.Append
+  0 "rec.loop" nullPtr task.new reclaimTaskSet taskSet.Append
 
-   reclaimTaskSet  reclaimThread thread.taskset!
-   "reclaimThread" reclaimThread thread.name!
-                   reclaimThread thread.spawn
+  reclaimTaskSet  reclaimThread thread.taskset!
+  "reclaimThread" reclaimThread thread.name!
+                 reclaimThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -35,39 +35,39 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : iterateSEitfList
 
-    seitfcrs seitfcrs seitfcursor.begin
+  seitfcrs seitfcrs seitfcursor.begin
 
-    iterate
+  iterate
 
+    reclaimTaskPrint if
+      object@ seitf.dump
+    then
+
+    object@ task.this task.seitf!
+      object@ seitf.pid
+      0 task.this task.seitf!
+
+    reclaimTaskPrint if
+      dup .put " " .put dup process.testpid .put .\n
+    then
+
+    process.testpid not if
       reclaimTaskPrint if
-        object@ seitf.dump
+        "deleting..." .
       then
-
-      object@ task.this task.seitf!
-        object@ seitf.pid
-        0 task.this task.seitf!
-
+      object@
+      cursor@ seitfcursor.end 0 object!
+      seitf.delete
+    else
       reclaimTaskPrint if
-        dup .put " " .put dup process.testpid .put .\n
+        "not deleteing" .
       then
+      cursor@ seitfcursor.next object!
+    then
 
-      process.testpid not if
-        reclaimTaskPrint if
-          "deleting..." .
-        then
-        object@
-        cursor@ seitfcursor.end 0 object!
-        seitf.delete
-      else
-        reclaimTaskPrint if
-          "not deleteing" .
-        then
-        cursor@ seitfcursor.next object!
-      then
+  next
 
-    next
-
-    seitfcrs seitfcursor.end
+  seitfcrs seitfcursor.end
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -75,38 +75,37 @@ seitfCursor: seitfCrs
 /*----------------------------------------------------------------------------*/
 : rec.loop
 
-    "reclaimTask" task.this task.name!
+  "reclaimTask" task.this task.name!
 
-    "" reclaimString !
+  "" reclaimString !
 
-    reclaimTaskPrint if "reclaim Task running..." . then
+  reclaimTaskPrint if "reclaim Task running..." . then
 
-    begin
+  begin
 
-      reclaimLock lock.grabWrite
+    reclaimLock lock.grabWrite
 
-      iterateSEitfList
+    iterateSEitfList
 
-      reclaimLock lock.dropWrite
+    reclaimLock lock.dropWrite
 
-      // reclaimString @ .
+    // reclaimString @ .
 
-      3 thread.sleep_s
+    3 thread.sleep_s
 
-    again
+  again
 ;
 
 /*----------------------------------------------------------------------------*/
 /* get reclaim string                                                         */
 /*----------------------------------------------------------------------------*/
-
 : reclaimString@
 
-    reclaimLock lock.grabRead
+  reclaimLock lock.grabRead
 
-      reclaimString @
+    reclaimString @
 
-    reclaimLock lock.dropRead
+  reclaimLock lock.dropRead
 ;
 
 /*============================================================================*/

@@ -21,11 +21,11 @@ thread:  monitorThread
 /*----------------------------------------------------------------------------*/
 : monitorStart
 
-   0 "mon.loop" nullPtr task.new monitorTaskSet taskSet.Append
+  0 "mon.loop" nullPtr task.new monitorTaskSet taskSet.Append
 
-   monitorTaskSet  monitorThread thread.taskset!
-   "monitorThread" monitorThread thread.name!
-                   monitorThread thread.spawn
+  monitorTaskSet  monitorThread thread.taskset!
+  "monitorThread" monitorThread thread.name!
+                 monitorThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -69,11 +69,11 @@ thread:  monitorThread
 
 : monitorString@
 
-    monitorLock lock.grabRead
+  monitorLock lock.grabRead
 
-      monitorString @
+    monitorString @
 
-    monitorLock lock.dropRead
+  monitorLock lock.dropRead
 ;
 
 /*============================================================================*/

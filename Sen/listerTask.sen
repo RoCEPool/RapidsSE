@@ -19,11 +19,11 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 : listerStart
 
-   0 "lis.loop" nullPtr task.new listerTaskSet taskSet.Append
+  0 "lis.loop" nullPtr task.new listerTaskSet taskSet.Append
 
-   listerTaskSet  listerThread thread.taskset!
-   "listerThread" listerThread thread.name!
-                  listerThread thread.spawn
+  listerTaskSet  listerThread thread.taskset!
+  "listerThread" listerThread thread.name!
+                listerThread thread.spawn
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -31,9 +31,9 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 : iterateTaskList
 
-    listerTaskPrint if
-      "task list..." .
-    then
+  listerTaskPrint if
+    "task list..." .
+  then
 
   taskcrs taskcrs taskcursor.begin
           taskcrs taskcursor.first
@@ -56,17 +56,17 @@ taskCursor: taskCrs
 /*----------------------------------------------------------------------------*/
 : lis.loop
 
-    "listerTask" task.this task.name!
+  "listerTask" task.this task.name!
 
-    listerTaskPrint if "lister Task running..." . then
+  listerTaskPrint if "lister Task running..." . then
 
-    begin
+  begin
 
-      iterateTaskList
+    iterateTaskList
 
-      3 thread.sleep_s
+    3 thread.sleep_s
 
-    again
+  again
 ;
 
 /*============================================================================*/
