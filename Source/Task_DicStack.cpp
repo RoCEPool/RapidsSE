@@ -36,7 +36,7 @@ void Task::vAddPrimitives_DicStack(void)
 {
   vAddPrimitive("dicStack.depthOld", &vDicStackDepthOld, false);
   vAddPrimitive("dicStack.depthNew", &vDicStackDepthNew, false);
-  vAddPrimitive("dicStack.drop",     &vDicStackDropNew,  false);
+  vAddPrimitive("dicStack.drop",     &vDicStackDrop,     false);
   vAddPrimitive("dicStack.dumpOld",  &vDicStackDumpOld,  false);
   vAddPrimitive("dicStack.dumpNew",  &vDicStackDumpNew,  false);
   vAddPrimitive("dicStack.pick",     &vDicStackPick,     false);
@@ -89,7 +89,7 @@ void Task::vDicStackDepthNew(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* dicStack.drop -- discard top of dictionary stack                           */
 /*----------------------------------------------------------------------------*/
-void Task::vDicStackDropNew(NNP_Task nnpTask)
+void Task::vDicStackDrop(NNP_Task nnpTask)
 {
   ENTRY("vDicStackDrop");
   
