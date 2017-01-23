@@ -16,6 +16,7 @@ extern TxMap*        gpTxMap;
 extern Grid*         gpGrid;
 
 extern TaskList*    gpTaskList;
+extern PlanList*    gpPlanList;
 extern SEitfList*   gpSEitfList;
 extern Arguments    gxArguments;
 
@@ -86,6 +87,7 @@ void AttachMap::vGetGlobals(void)
   gpTxMap        = m_pTxMap;
   gpGrid         = m_pGrid;
   gpTaskList     = m_pTaskList;
+  gpPlanList     = m_pPlanList;
   gpSEitfList    = m_pSEitfList;
 }
 
@@ -130,6 +132,7 @@ void AttachMap::vRecordGlobals(void)
   m_pTxMap        = gpTxMap;
   m_pGrid         = gpGrid;
   m_pTaskList     = gpTaskList;
+  m_pPlanList     = gpPlanList;
   m_pSEitfList    = gpSEitfList;
   
   m_iStop       = 0;

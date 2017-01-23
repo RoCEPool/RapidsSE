@@ -32,6 +32,7 @@ namespace StorageEngine
     TxMap*        m_pTxMap;
     Grid*         m_pGrid;
     TaskList*     m_pTaskList;
+    Plans::PlanList*     m_pPlanList;
     SEitfList*    m_pSEitfList;
    
     i8            m_iQuit;

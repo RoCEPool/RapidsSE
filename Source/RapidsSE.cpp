@@ -17,6 +17,7 @@ Word*               gpWord             = nullptr;
 Grid*               gpGrid             = nullptr;
 StepArray*          gpStepArray        = nullptr;
 TaskList*           gpTaskList         = nullptr;
+PlanList*           gpPlanList         = nullptr;
 ThreadList*         gpThreadList       = nullptr;
 TxCollection*       gpTxCollection     = nullptr;
 TxMap*              gpTxMap            = nullptr;
@@ -35,6 +36,8 @@ void*               mpRegion           = nullptr;
 
 Lock                gxDdlLock;
 Lock                gxDicLock;
+
+Atomic              gzPlanNumber;
 
 
 /*----------------------------------------------------------------------------*/
@@ -319,6 +322,9 @@ void RapidsSE::vSystemInit(void)
   
   new StepArray;
   
+  // create the plan list here
+  gpPlanList = new PlanList;
+  
   // tasklist is new'd here as the exception-to-the-rule
   // so as to be boot the system
   gpTaskList = new TaskList;
@@ -331,6 +337,9 @@ void RapidsSE::vSystemInit(void)
   vDicCompile(gnpRootTask);
   
   gpAttachMap->vRecordGlobals();
+  
+  // initialize the plan number
+  gzPlanNumber =  gpGrid->iThisNode() << 48;
   
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFind("trace_file");

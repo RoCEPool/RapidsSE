@@ -72,6 +72,8 @@ namespace Magic
     /* 41 */ CN_PARSER,
     /* 42 */ CN_PARTITION,
     /* 43 */ CN_PARTITIONS,
+    /*    */ CN_PLAN,
+    /*    */ CN_PLANLIST,
     /* 44 */ CN_PROXY,
     /* 45 */ CN_PROXYSET,
     
@@ -193,6 +195,8 @@ namespace Magic
     /* 41 */ "PARSER",
     /* 42 */ "PARTITION",
     /* 43 */ "PARTITIONS",
+    /*    */ "PLAN",
+    /*    */ "PLANLIST",
     /* 44 */ "PROXY",
     /* 45 */ "PROXYSET",
     
