@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 DicPath* DicPath::_pDicStack(void* pAddr)
 {
-  DicPath* pDicStack = reinterpret_cast<DicPath*>(pAddr);
+  DicPath* pDicPath = reinterpret_cast<DicPath*>(pAddr);
   
-  RASSERT( !pDicStack || CN_DICPATH == pDicStack->eClass() );
+  RASSERT( !pDicPath || CN_DICPATH == pDicPath->eClass() );
   
-  return pDicStack;
+  return pDicPath;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,17 +116,17 @@ void DicPath::vDump(eCN eClass, Object* pObject, const char* pTab)
   ASSERT(eClass == CN_DICPATH);
   ASSERT(pObject->eClass() == CN_DICPATH);
   
-  DicPath* pDicStack = reinterpret_cast<DicPath*>(pObject);
+  DicPath* pDicPath = reinterpret_cast<DicPath*>(pObject);
   
-  vTrace("top %p:",pDicStack->m_iTop);
-  //for (i8 i = pDicStack->m_iTop; i >= 0; i--)
-    //vTrace("%s  Dic %p %lld %s\n",pTab, pDicStack->m_pDic[i],i,
-           //pDicStack->m_pDic[i]->sName().a());
+  vTrace("top %p:",pDicPath->m_iTop);
+  //for (i8 i = pDicPath->m_iTop; i >= 0; i--)
+    //vTrace("%s  Dic %p %lld %s\n",pTab, pDicPath->m_pDic[i],i,
+           //pDicPath->m_pDic[i]->sName().a());
   
-  for (i8 i = pDicStack->m_iTop; i >= 0; i--) {
-  vTrace(" dic %p %lld %s",pTab, pDicStack->m_pDic[i],i,
-         pDicStack->m_pDic[i]->sName().a());
-    //Dic::vDump(CN_DIC, pDicStack->m_pDic[i], pTab);
+  for (i8 i = pDicPath->m_iTop; i >= 0; i--) {
+  vTrace(" dic %p %lld %s",pTab, pDicPath->m_pDic[i],i,
+         pDicPath->m_pDic[i]->sName().a());
+    //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], pTab);
   }
 
   vTrace("\n");

@@ -356,12 +356,12 @@ namespace Tasks
     static void vDicRef(NNP_Task nnpTask);
     static void vDicWordCount(NNP_Task nnpTask);
     
-    // dicStack
-    static void vDicStackDepth(NNP_Task nnpTask);
-    static void vDicStackDrop(NNP_Task nnpTask);
-    static void vDicStackDump(NNP_Task nnpTask);
-    static void vDicStackPick(NNP_Task nnpTask);
-    static void vDicStackPush(NNP_Task nnpTask);
+    // dicPath
+    static void vDicPathDepth(NNP_Task nnpTask);
+    static void vDicPathDrop(NNP_Task nnpTask);
+    static void vDicPathDump(NNP_Task nnpTask);
+    static void vDicPathPick(NNP_Task nnpTask);
+    static void vDicPathPush(NNP_Task nnpTask);
 
     // dir
     static void vDirChangeCurrent(NNP_Task nnpTask);
