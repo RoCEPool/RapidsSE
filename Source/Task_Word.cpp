@@ -375,7 +375,7 @@ void Task::vLocate(NNP_Task nnpTask)
   void* pCellVoid = (void*)iAsInt;
   Cell* pCell = _pCell(pCellVoid);
   
-  Word* pLocatedWord = nnpTask->pLocateWord(pCell);
+  Word* pLocatedWord = nnpTask->m_xPathStack.pLocate(pCell);
   
   if (pLocatedWord) {
     s32 sName;

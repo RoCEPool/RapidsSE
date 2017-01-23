@@ -1219,18 +1219,6 @@ void Task::vLocalsPush(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locate word based on cell                                                  */
-/*----------------------------------------------------------------------------*/
-Word* Task::pLocateWord(Cell* pCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = m_xPathStack.pLocate(pCell);
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get name of this task                                                      */
 /*----------------------------------------------------------------------------*/
 s& Task::sName(void)
@@ -1304,7 +1292,7 @@ void Task::vPrimitive(const char* aPrimitive)
   char aRoutine[128];
   
   Cell* pCell = IP.m_pCell;
-  Word* pLocatedWord = pLocateWord(pCell);
+  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
     String::vCopy(aRoutine,pLocatedWord->sName().a());
   else
@@ -1733,7 +1721,7 @@ void Task::vTokenNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*trace current point                                                         */
+/* trace current point                                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(const char* aMark)
 {
@@ -1746,7 +1734,7 @@ void Task::vTracePoint(const char* aMark)
   
   Cell* pCell = IP.m_pCell;
   
-  Word* pLocatedWord = pLocateWord(pCell);
+  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
     String::vCopy(aRoutine,pLocatedWord->sName().a());
   else

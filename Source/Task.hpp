@@ -234,7 +234,6 @@ namespace Tasks
     bool  bIsName(s& sName);
     void  vLocalsPop(void);
     void  vLocalsPush(void);
-    Word* pLocateWord(Cell* pCell);
     void vLoop(void);
     NP_Task npNextInSet(void);
     s&   sName(void);
