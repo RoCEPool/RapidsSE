@@ -1045,7 +1045,7 @@ Word* Task::pCompileColon(s& sDefinition)
         break;
         
       case TK_NAME:
-        pCalledWord = pFindWord(m_pTokeniser->sToken());
+        pCalledWord = m_xPathStack.pFind(m_pTokeniser->sToken().a());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())
@@ -1178,28 +1178,6 @@ void Task::vException(s& sFile, s& eException)
   
   m_sFile = sFile;
   m_sException = eException;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find word given name                                                       */
-/*----------------------------------------------------------------------------*/
-Word* Task::pFindWord(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = nullptr;
-  
-  // attempt to find word in seitf dic stack
-//  if (m_pSEitf) {
-//    pWord = m_pSEitf->pFindWord(sName);
-//    if (pWord)
-//      return pWord;
-//  }
-  
-  // attempt to find word in this tasks dic stack
-  pWord = m_xPathStack.pFind(sName.a());
-  
-  return pWord;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -160,13 +160,7 @@ ENTRY("vTaskCursorInit");
   Object* pPtrTaskCursor;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTaskCursor) )
     THROW_INVALID_DSTACK("taskCursor.init");
-  
-//  s32 sName;
-//  sName = "tasklist";
-//  Word* pWord = nnpTask->pFindWord(sName);
-//  ASSERT(pWord);
-//  TaskList* pTaskList = reinterpret_cast<TaskList*>(pWord->pBodyArea());
-  
+    
   TaskCursor* pTaskCursor = _pTaskCursor(pPtrTaskCursor);
   ASSERT(CN_TASKCURSOR == pTaskCursor->eClass());
   

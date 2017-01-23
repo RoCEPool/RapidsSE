@@ -230,7 +230,6 @@ namespace Tasks
     static void vDebug(void);
     void vContentDump(void);
     void vException(s& sFile, s& eException);
-    Word* pFindWord(s& sName);
     void vInitialiseDictionary(void);
     bool  bIsName(s& sName);
     void  vLocalsPop(void);

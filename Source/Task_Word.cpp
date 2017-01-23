@@ -282,7 +282,7 @@ ENTRY("vFind");
     i8 i = 0; i++;
   }
   
-  Word* pWord = nnpTask->pFindWord(sName);
+  Word* pWord = nnpTask->m_xPathStack.pFind(sName.a());
   
   nnpTask->m_pDataStack->vPush(pWord);
   
@@ -320,7 +320,7 @@ ENTRY("vForget");
   
   nnpTask->vTokenNext();
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
+  Word* pWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   
   if ( ! pWord )
     THROW("No such word: %s",nnpTask->m_pTokeniser->sToken().a());
@@ -428,7 +428,7 @@ void Task::vPostpone(NNP_Task nnpTask)
   nnpTask->vTokenNext();
   
   // find the word in dic stack
-  Word* pCalledWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
+  Word* pCalledWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   if ( ! pCalledWord )
     THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
   
@@ -468,7 +468,7 @@ void Task::vSee(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
+  Word* pWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   if ( ! pWord ) {
     vTrace("See: %s unknown\n",nnpTask->m_pTokeniser->sToken().a());
     return;
@@ -635,7 +635,7 @@ void Task::vTick(NNP_Task nnpTask)
   //    throw (i8)__LINE__;
   //  }
   
-  Word* pWord = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken());
+  Word* pWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
     THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
