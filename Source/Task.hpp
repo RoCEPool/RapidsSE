@@ -227,8 +227,6 @@ namespace Tasks
     void vCheckLocked(void);
     Word* pCompileColon(s& sDefinition);
     Word* pCompileConstant(s& sDefinition);
-    Word* pCurrentWord(void);
-    void  vCurrentWord(Word* pWord);
     static void vDebug(void);
     void vContentDump(void);
     void vException(s& sFile, s& eException);

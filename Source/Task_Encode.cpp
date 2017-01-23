@@ -56,7 +56,7 @@ void Task::vEncodeAgain(NNP_Task nnpTask)
 {
   ENTRY("vAgain"); // ( dest -- / -- )
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // cstack: pop known backward address
   Cell* pKnownDestination;
@@ -76,7 +76,7 @@ void Task::vEncodeAhead(NNP_Task nnpTask)
 {
   ENTRY("vAhead");// ( -- orig / -- )
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // append : jump to unknown forward address
   pCurrentWord->vEncode("jump");
@@ -100,7 +100,7 @@ void Task::vEncodeCallPrimitive(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("vEncodeCallPrimitive");
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
   
@@ -122,7 +122,7 @@ void Task::vEncodeCallRoutine(NNP_Task nnpTask)
   
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   TaskStep* ppCalledEntryStep;
   if (DT_NOPARTICIPANT == pCalledWord->eDistributed() ||
@@ -150,7 +150,7 @@ void Task::vEncodeContinue(NNP_Task nnpTask)
 {
   ENTRY("vContinue"); // ( -- orig / flag -- )
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // cstack: pop known backward address
   Cell* pKnownBackward;
@@ -173,7 +173,7 @@ void Task::vEncodeHere(NNP_Task nnpTask)
 {
   ENTRY("vFlowHere");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   Cell* pLastCell = pCurrentWord->pLastCell();
   
@@ -190,7 +190,7 @@ void Task::vEncodeIf(NNP_Task nnpTask)
 {
   ENTRY("vIf"); // ( -- orig / flag -- )
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // append : jumpFalse to unknown forward address
   pCurrentWord->vEncode("jumpFalse");
@@ -209,7 +209,7 @@ void Task::vEncodeLoop(NNP_Task nnpTask)
 {
   ENTRY("vLoop");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // increment index:
   pCurrentWord->vEncode("r>");
@@ -257,7 +257,7 @@ void Task::vEncodeLoopPlus(NNP_Task nnpTask)
 {
   ENTRY("vLoopPlus");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // increment index:
   pCurrentWord->vEncode("r>");
@@ -305,7 +305,7 @@ void Task::vEncodeNext(NNP_Task nnpTask)
 {
   ENTRY("vLoop");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   Cell* pDoLimitTest = nullptr;
   // cstack: pop destination address of backward jump
@@ -334,7 +334,7 @@ void Task::vEncodePushValue(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValA) )
     THROW_INVALID_DSTACK("encodePushValue");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   pCurrentWord->vEncode("pushValue",&xValA);
   
@@ -348,7 +348,7 @@ void Task::vEncodeThen(NNP_Task nnpTask)
 {
   ENTRY("vThen");  // ( orig -- / -- )
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // cstack: pop unknown forward address
   Cell* pUnknownOrigin;
@@ -368,7 +368,7 @@ void Task::vEncodeUntil(NNP_Task nnpTask)
 {
   ENTRY("vUntil"); // ( dest -- / flag -- )
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // cstack: pop known backward address
   Cell* pKnownDestination;

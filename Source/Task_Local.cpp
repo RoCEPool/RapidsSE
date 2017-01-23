@@ -91,7 +91,7 @@ void Task::vLocalsBar(NNP_Task nnpTask)
 {
 ENTRY("vLocalsBar");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   Dic* pDic = nnpTask->m_xPathStack.pPick(0);
 
@@ -186,7 +186,7 @@ void Task::vLocalsTo(NNP_Task nnpTask)
 {
 ENTRY("vLocalsTo");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // get name of local
   nnpTask->vTokenNext();

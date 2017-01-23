@@ -311,7 +311,7 @@ void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
   
   Word* pNewWord = new(pDic) Word(pName);
   
-  vCurrentWord(pNewWord);
+  m_pCurrentWord = pNewWord;
   
   pNewWord->vWordType(WT_PRIMITIVE);
   pNewWord->vEntryStep(pStep);
@@ -1026,7 +1026,7 @@ Word* Task::pCompileColon(s& sDefinition)
   
   pNewWord = new(m_xPathStack.pTop()) Word(m_pTokeniser->sToken().a());
   
-  vCurrentWord(pNewWord);
+  m_pCurrentWord = pNewWord;
 
   vTokenNext();
   
@@ -1127,37 +1127,6 @@ Word* Task::pCompileConstant(s& sDefinition)
   m_pTokeniser->vUseEnd();
   
   return pNewWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get current word                                                           */
-/*----------------------------------------------------------------------------*/
-Word* Task::pCurrentWord(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-//  Dic* pDic;
-//  
-//  if (m_pSEitf)
-//    pDic = m_pSEitf->pDicStack()->pTop();
-//  else
-//    pDic = m_xPathStack.pTop();
-//
-//  Word* pWord = pDic->pCurrentWord();
-//  
-//  return pWord;
-
-  return m_pCurrentWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set current word                                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vCurrentWord(Word* pWord)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_pCurrentWord = pWord;
 }
 
 /*----------------------------------------------------------------------------*/

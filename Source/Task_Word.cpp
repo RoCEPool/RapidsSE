@@ -77,7 +77,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
 {
   ENTRY("vAllParticipants");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
@@ -108,7 +108,7 @@ void Task::vAllot(NNP_Task nnpTask)
   if ( !  nnpTask->m_pDataStack->bPop(iBytes) )
     THROW_INVALID_DSTACK("allot");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   char* pAddress = pCurrentWord->pAllot(iBytes);
   ASSERT(pAddress);
@@ -144,7 +144,7 @@ void Task::vColon(NNP_Task nnpTask)
   Word* pNewWord = new(nnpTask->m_xPathStack.pTop())
                      Word(nnpTask->m_pTokeniser->sToken().a());
   
-  nnpTask->vCurrentWord(pNewWord);
+  nnpTask->m_pCurrentWord = pNewWord;
   
   EXIT();
 }
@@ -156,7 +156,7 @@ void Task::vComma(NNP_Task nnpTask)
 {
   ENTRY("vComma");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   ValWsp xValWsp;
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
@@ -180,7 +180,7 @@ void Task::vCompileComma(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("compile,");
   Word* pCalledWord = _pWord(pWordObject);
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   TaskStep* ppCalledEntryStep = pCalledWord->ppEntryStep();
   
@@ -206,7 +206,7 @@ ENTRY("vCreate");
   
   Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
   
-  nnpTask->vCurrentWord(pNewWord);
+  nnpTask->m_pCurrentWord = pNewWord;
   
   EXIT();
 }
@@ -230,7 +230,7 @@ ENTRY("vCreateFrom");
   
   Word* pNewWord = new(pDic) Word(sName.a());
   
-  nnpTask->vCurrentWord(pNewWord);
+  nnpTask->m_pCurrentWord = pNewWord;
   
   EXIT();
 }
@@ -242,7 +242,7 @@ void Task::vDoes(NNP_Task nnpTask)
 {
 ENTRY("vDoes");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   pCurrentWord->vEncode("does_rt");
   pCurrentWord->vEncode("exit");
@@ -259,7 +259,7 @@ void Task::vDoes_RT(NNP_Task nnpTask)
 {
   ENTRY("vDoes_RT");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   pCurrentWord->vEntryStep(&Task::vEnterObject);
   pCurrentWord->vEntryCell(nnpTask->IP.m_pCell+1);
@@ -338,7 +338,7 @@ void Task::vImmediate(NNP_Task nnpTask)
 {
   ENTRY("vImmediate");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
@@ -354,7 +354,7 @@ void Task::vLocalCalls(NNP_Task nnpTask)
 {
   ENTRY("vLocalCalls");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   pCurrentWord->vDistributed(DT_LOCALCALLS);
   
@@ -397,7 +397,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
 {
   ENTRY("vAllParticipants");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
   
@@ -422,7 +422,7 @@ void Task::vPostpone(NNP_Task nnpTask)
 {
   ENTRY("vPostpone");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // get name of word to be called
   nnpTask->vTokenNext();
@@ -551,7 +551,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
 {
   ENTRY("vSemicolon");
   
-  Word* pCurrentWord = nnpTask->pCurrentWord();
+  Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   if (nnpTask->m_nLocals) {
     
@@ -615,7 +615,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     pWordTilde->vEncode("exit");
   }
   
-  nnpTask->vCurrentWord(nullptr);
+  nnpTask->m_pCurrentWord = nullptr;
   
   EXIT();
 }
@@ -641,7 +641,7 @@ void Task::vTick(NNP_Task nnpTask)
     THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
   
   if (nnpTask->m_bCompiling) {
-    Word* pCurrentWord = nnpTask->pCurrentWord();
+    Word* pCurrentWord = nnpTask->m_pCurrentWord;
     pCurrentWord->vEncode("pushValue",pWord);
   }
   else {
@@ -861,7 +861,7 @@ void Task::vWordThis(NNP_Task nnpTask)
 {
 ENTRY("vWordThis");
   
-  Word* pWord = nnpTask->pCurrentWord();
+  Word* pWord = nnpTask->m_pCurrentWord;
   
   nnpTask->m_pDataStack->vPush(pWord);
   
