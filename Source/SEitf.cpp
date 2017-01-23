@@ -151,18 +151,6 @@ Word* SEitf::pFindWord(s& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find word given name                                                       */
-/*----------------------------------------------------------------------------*/
-Word* SEitf::pFindWordInCurrent(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
-  Word* pWord = m_xPathStack.pFindInCurrent(sName.a());
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* set the current table                                                      */
 /*----------------------------------------------------------------------------*/
 void SEitf::vCurrentTable(Table* pTable)

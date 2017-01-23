@@ -53,7 +53,6 @@ namespace Interface
     void   vPushDic(Dic* pDic);
     void   vPopDic(void);
     Word*  pFindWord(s& sName);
-    Word*  pFindWordInCurrent(s& sName);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);
