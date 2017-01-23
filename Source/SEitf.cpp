@@ -70,7 +70,7 @@ SEitf::SEitf(i8 iPartition)
   m_iPartitions = gpAttachMap->m_iPartitions;
   m_iPartition  = iPartition;
   
-  //m_xDicStack;
+  //m_xPathStack;
   m_pRequestQueue   = nullptr;
   m_pResponseQueue  = nullptr;
   m_eErrorCode      = EC_NONE;
@@ -115,7 +115,7 @@ DicStack* SEitf::pDicStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
-  return &m_xDicStack;
+  return &m_xPathStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -125,7 +125,7 @@ void SEitf::vPushDic(Dic* pDic)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
-  m_xDicStack.vPush(pDic);
+  m_xPathStack.vPush(pDic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,7 +135,7 @@ void SEitf::vPopDic(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
-  m_xDicStack.vDiscard();
+  m_xPathStack.vDiscard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,7 +145,7 @@ Word* SEitf::pFindWord(s& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  Word* pWord = m_xDicStack.pFind(sName.a());
+  Word* pWord = m_xPathStack.pFind(sName.a());
   
   return pWord;
 }
@@ -157,7 +157,7 @@ Word* SEitf::pFindWordInCurrent(s& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  Word* pWord = m_xDicStack.pFindInCurrent(sName.a());
+  Word* pWord = m_xPathStack.pFindInCurrent(sName.a());
   
   return pWord;
 }
@@ -231,43 +231,43 @@ void SEitf::vInit(void)
   m_pResponseQueue = new Queue;
   
   // dictionary stack
-  m_xDicStack.vPush(gpMainDic);
-//  m_xDicStack.vPush(&m_xDic);
+  m_xPathStack.vPush(gpMainDic);
+//  m_xPathStack.vPush(&m_xDic);
   
   // find tenants
   Word* pTenants = gpMainDic->pFind("tenants");
   ASSERT(pTenants);
   
   Cell* pCell = pTenants->pFirstCell();
-  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // find tenant boray
-  Word* pTenant = m_xDicStack.pFindInCurrent("boray");
+  Word* pTenant = m_xPathStack.pFindInCurrent("boray");
   ASSERT(pTenant);
   
   pCell = pTenant->pFirstCell();
-  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // find catalogs
-  Word* pCatalogs = m_xDicStack.pFindInCurrent("catalogs");
+  Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs");
   ASSERT(pCatalogs);
   
   pCell = pCatalogs->pFirstCell();
-  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
  
   // find catalog rapidsse
-  Word* pCatalog = m_xDicStack.pFindInCurrent("rapidsse");
+  Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse");
   ASSERT(pCatalog);
   
   pCell = pCatalog->pFirstCell();
-  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
   // find schemas
-  Word* pSchema = m_xDicStack.pFindInCurrent("schemas");
+  Word* pSchema = m_xPathStack.pFindInCurrent("schemas");
   ASSERT(pSchema);
   
   pCell = pSchema->pFirstCell();
-  m_xDicStack.vPush(reinterpret_cast<Dic*>(pCell));
+  m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 }
 
 /*----------------------------------------------------------------------------*/

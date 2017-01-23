@@ -141,7 +141,7 @@ void Task::vColon(NNP_Task nnpTask)
   
   nnpTask->vTokenNext();
   
-  Word* pNewWord = new(nnpTask->m_xDicStack.pTop())
+  Word* pNewWord = new(nnpTask->m_xPathStack.pTop())
                      Word(nnpTask->m_pTokeniser->sToken().a());
   
   nnpTask->vCurrentWord(pNewWord);
@@ -202,7 +202,7 @@ ENTRY("vCreate");
   if (nnpTask->m_pSEitf)
     pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
   else
-    pDic = nnpTask->m_xDicStack.pTop();
+    pDic = nnpTask->m_xPathStack.pTop();
   
   Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
   
@@ -226,7 +226,7 @@ ENTRY("vCreateFrom");
   if (nnpTask->m_pSEitf)
     pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
   else
-    pDic = nnpTask->m_xDicStack.pTop();
+    pDic = nnpTask->m_xPathStack.pTop();
   
   Word* pNewWord = new(pDic) Word(sName.a());
   
@@ -483,7 +483,7 @@ void Task::vSee(NNP_Task nnpTask)
   
   while (pDoesCell < pDoesWord->pLastCell()) {
     
-    Word* pCallsWord = nnpTask->m_xDicStack.pFindStep(*pDoesCell->m_ppEntryStep);
+    Word* pCallsWord = nnpTask->m_xPathStack.pFindStep(*pDoesCell->m_ppEntryStep);
     
     // jumps
     if ( *pDoesCell->m_ppEntryStep == Task::vFlowJump ||

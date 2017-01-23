@@ -203,7 +203,7 @@ void Task::vInit(const char* aLambda)
   
   m_sComment    = "";
   
-  m_xDicStack.vPush(gpMainDic);
+  m_xPathStack.vPush(gpMainDic);
   
   m_pQueue  = nullptr;
   m_pSocket = nullptr;
@@ -271,7 +271,7 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Dic* pDic = m_xDicStack.pTop();
+  Dic* pDic = m_xPathStack.pTop();
   
   Word* pNewWord = new(pDic) Word(aName);
   
@@ -289,7 +289,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic = m_xDicStack.pTop();
+  Dic* pDic = m_xPathStack.pTop();
   
   Word* pNewWord = new(pDic) Word(aName);
   
@@ -307,7 +307,7 @@ void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic = m_xDicStack.pTop();
+  Dic* pDic = m_xPathStack.pTop();
   
   Word* pNewWord = new(pDic) Word(pName);
   
@@ -1024,7 +1024,7 @@ Word* Task::pCompileColon(s& sDefinition)
   vTokenNext();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
-  pNewWord = new(m_xDicStack.pTop()) Word(m_pTokeniser->sToken().a());
+  pNewWord = new(m_xPathStack.pTop()) Word(m_pTokeniser->sToken().a());
   
   vCurrentWord(pNewWord);
 
@@ -1113,7 +1113,7 @@ Word* Task::pCompileConstant(s& sDefinition)
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
   /*
-  pNewWord = new(m_xDicStack.pTop()) Word(m_sToken.a());
+  pNewWord = new(m_xPathStack.pTop()) Word(m_sToken.a());
   
   vCurrentWord(pNewWord);
   
@@ -1141,7 +1141,7 @@ Word* Task::pCurrentWord(void)
 //  if (m_pSEitf)
 //    pDic = m_pSEitf->pDicStack()->pTop();
 //  else
-//    pDic = m_xDicStack.pTop();
+//    pDic = m_xPathStack.pTop();
 //
 //  Word* pWord = pDic->pCurrentWord();
 //  
@@ -1177,7 +1177,7 @@ void Task::vDicDrop(void)
   if (m_pSEitf)
     m_pSEitf->vPopDic();
   else
-    m_xDicStack.vDiscard();
+    m_xPathStack.vDiscard();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1192,7 +1192,7 @@ Dic* Task::pDicPeek(void)
   if (m_pSEitf)
     pDic = m_pSEitf->pDicStack()->pPick(0);
   else
-    pDic = m_xDicStack.pPick(0);
+    pDic = m_xPathStack.pPick(0);
   
   return pDic;
 }
@@ -1205,7 +1205,7 @@ void Task::vDicPush(Dic* pDic)
   if (m_pSEitf)
     m_pSEitf->vPushDic(pDic);
   else
-    m_xDicStack.vPush(pDic);
+    m_xPathStack.vPush(pDic);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1269,7 +1269,7 @@ Word* Task::pFindWord(s& sName)
   }
   
   // attempt to find word in this tasks dic stack
-  pWord = m_xDicStack.pFind(sName.a());
+  pWord = m_xPathStack.pFind(sName.a());
   
   return pWord;
 }
@@ -1293,7 +1293,7 @@ Word* Task::pFindWordInCurrent(s& sName)
   }
   
   // attempt to find word in this tasks current dic
-  pWord = m_xDicStack.pFindInCurrent(sName.a());
+  pWord = m_xPathStack.pFindInCurrent(sName.a());
   
   return pWord;
 }
@@ -1305,7 +1305,7 @@ Word* Task::pFindWord(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pWord = m_xDicStack.pFind(aName);
+  Word* pWord = m_xPathStack.pFind(aName);
   
   return pWord;
 }
@@ -1321,7 +1321,7 @@ bool Task::bForgetWord(s& sName)
   if (m_pSEitf)
     bResult = m_pSEitf->pDicStack()->bForget(sName);
   else
-    bResult = m_xDicStack.bForget(sName);
+    bResult = m_xPathStack.bForget(sName);
   
   return bResult;
 }
@@ -1371,7 +1371,7 @@ Word* Task::pLocateWord(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pWord = m_xDicStack.pLocate(pCell);
+  Word* pWord = m_xPathStack.pLocate(pCell);
   
   return pWord;
 }

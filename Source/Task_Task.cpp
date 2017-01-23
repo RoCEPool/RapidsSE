@@ -225,7 +225,7 @@ void Task::vTaskDicStack(NNP_Task nnpTask)
   Task* pThatTask = _pTask(pPtrTask);
   ASSERT(CN_TASK == pThatTask->eClass());
   
-  Object* pPtrDicStack = &pThatTask->m_xDicStack;
+  Object* pPtrDicStack = &pThatTask->m_xPathStack;
   
   nnpTask->m_pDataStack->vPush(pPtrDicStack);
   

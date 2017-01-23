@@ -19,7 +19,7 @@ namespace Interface
     i8     m_iPartitions;      // number of partitions in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
-    DicStack m_xDicStack;      // dictionary stack
+    DicStack m_xPathStack;     // path stack
     
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // response queue

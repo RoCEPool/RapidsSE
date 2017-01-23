@@ -157,14 +157,13 @@ namespace Tasks
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
     
-    DicStack m_xDicStack;
+    Stack* m_pDataStack;     // data stack
+    Stack* m_pReturnStack;   // return stack
+    Stack* m_pAuxStack;      // auxiliary stack
+    DicStack m_xPathStack;   // path stack
     
     Queue* m_pQueue;         // processing queue
     Socket* m_pSocket;       // socket
-    
-    Stack* m_pDataStack;      // data stack 
-    Stack* m_pReturnStack;    // return stack
-    Stack* m_pAuxStack;       // auxiliary stack
     
     RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // register frame chain
