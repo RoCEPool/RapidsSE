@@ -52,7 +52,6 @@ namespace Interface
     DicStack* pDicStack(void);
     void   vPushDic(Dic* pDic);
     void   vPopDic(void);
-    Word*  pFindWord(s& sName);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);
