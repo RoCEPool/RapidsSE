@@ -1203,30 +1203,6 @@ Word* Task::pFindWord(s& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find word given name in current dictionary                                 */
-/*----------------------------------------------------------------------------*/
-Word* Task::pFindWordInCurrent(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = nullptr;
-  
-  // attempt to find word in seitf current dic
-//  if (m_pSEitf) {
-//    pWord = m_pSEitf->pFindWordInCurrent(sName);
-//    if (pWord)
-//      return pWord;
-//    else
-//      return nullptr;
-//  }
-  
-  // attempt to find word in this tasks current dic
-  pWord = m_xPathStack.pFindInCurrent(sName.a());
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsName(s& sName)
