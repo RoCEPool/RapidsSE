@@ -41,6 +41,8 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid.thisNode@",  &vGridThisNodeFetch,false);
   vAddPrimitive("grid.started!",   &vGridStartedStore, false);
   vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
+  vAddPrimitive("grid.startNode!", &vGridStartNodeStore, false);
+  vAddPrimitive("grid.startNode@", &vGridStartNodeFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,6 +147,35 @@ void Task::vGridStartedStore(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("grid.started!");
   
   gpGrid->vHasStarted(iStarted == 1 ? true : false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.startNode@ -- get grid start node                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartNodeFetch(NNP_Task nnpTask)
+{
+  ENTRY("vGridGetStarted");
+  
+  nnpTask->m_pDataStack->vPush(gpGrid->iStartNode());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.startNode! -- set grid start node                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vGridStartNodeStore(NNP_Task nnpTask)
+{
+  ENTRY("vGridSetStarted");
+  
+  i8 iStartNode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(iStartNode) )
+    THROW_INVALID_DSTACK("grid.startNode!");
+  
+  gpGrid->vStartNode(iStartNode);
   
   EXIT();
 }

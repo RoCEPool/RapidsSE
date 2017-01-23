@@ -567,6 +567,8 @@ namespace Tasks
     static void vGridThisNodeFetch(NNP_Task nnpTask);
     static void vGridStartedStore(NNP_Task nnpTask);
     static void vGridStartedFetch(NNP_Task nnpTask);
+    static void vGridStartNodeStore(NNP_Task nnpTask);
+    static void vGridStartNodeFetch(NNP_Task nnpTask);
     
     // input
     static void vInputAccept(NNP_Task nnpTask);
