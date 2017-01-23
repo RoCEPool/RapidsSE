@@ -234,7 +234,6 @@ void Task::vInit(const char* aLambda)
   m_pTokeniser->vPush();
   m_pTokeniser->vUseString(m_sLambda);
   
-  m_xTaskDic.vName("<taskDic>");
   m_pSEitf   = nullptr;
   
   m_iDdlLocked = 0;

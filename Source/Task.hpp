@@ -111,10 +111,7 @@ namespace Tasks
     s256  m_sException;
 
     Interface::SEitf* m_pSEitf;
-    
-    // test
-    Dic m_xTaskDic;
-    
+        
     i8  m_iDdlLocked;
     
     // always last
