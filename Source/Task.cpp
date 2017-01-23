@@ -1235,7 +1235,7 @@ bool Task::bForgetWord(s& sName)
   
   bool bResult;
   if (m_pSEitf)
-    bResult = m_pSEitf->pDicStack()->bForget(sName);
+    bResult = m_pSEitf->pPathStack()->bForget(sName);
   else
     bResult = m_xPathStack.bForget(sName);
   

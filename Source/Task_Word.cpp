@@ -200,7 +200,7 @@ ENTRY("vCreate");
   
   Dic* pDic;
   if (nnpTask->m_pSEitf)
-    pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
+    pDic = nnpTask->m_pSEitf->pPathStack()->pTop();
   else
     pDic = nnpTask->m_xPathStack.pTop();
   
@@ -224,7 +224,7 @@ ENTRY("vCreateFrom");
   
   Dic* pDic;
   if (nnpTask->m_pSEitf)
-    pDic = nnpTask->m_pSEitf->pDicStack()->pTop();
+    pDic = nnpTask->m_pSEitf->pPathStack()->pTop();
   else
     pDic = nnpTask->m_xPathStack.pTop();
   

@@ -109,33 +109,13 @@ SEitf::~SEitf(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop dictionary from dictionary stack                                       */
+/* get path stack                                                             */
 /*----------------------------------------------------------------------------*/
-DicStack* SEitf::pDicStack(void)
+DicStack* SEitf::pPathStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 
   return &m_xPathStack;
-}
-
-/*----------------------------------------------------------------------------*/
-/* push dictionary onto dictionary stack                                      */
-/*----------------------------------------------------------------------------*/
-void SEitf::vPushDic(Dic* pDic)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-
-  m_xPathStack.vPush(pDic);
-}
-
-/*----------------------------------------------------------------------------*/
-/* pop dictionary from dictionary stack                                       */
-/*----------------------------------------------------------------------------*/
-void SEitf::vPopDic(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-
-  m_xPathStack.vDiscard();
 }
 
 /*----------------------------------------------------------------------------*/

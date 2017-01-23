@@ -97,7 +97,7 @@ void Task::vSEitfDicStack(NNP_Task nnpTask)
   SEitf* pSEitf = _pSEitf(pPtrSEitf);
   ASSERT(CN_SEITF == pSEitf->eClass());
   
-  nnpTask->m_pDataStack->vPush(pSEitf->pDicStack());
+  nnpTask->m_pDataStack->vPush(pSEitf->pPathStack());
   
   EXIT();
 }

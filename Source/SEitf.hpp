@@ -49,9 +49,7 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    DicStack* pDicStack(void);
-    void   vPushDic(Dic* pDic);
-    void   vPopDic(void);
+    DicStack* pPathStack(void);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);
