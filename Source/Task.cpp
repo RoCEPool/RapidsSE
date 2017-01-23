@@ -1227,22 +1227,6 @@ Word* Task::pFindWordInCurrent(s& sName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forget word given name                                                     */
-/*----------------------------------------------------------------------------*/
-bool Task::bForgetWord(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  bool bResult;
-  if (m_pSEitf)
-    bResult = m_pSEitf->pPathStack()->bForget(sName);
-  else
-    bResult = m_xPathStack.bForget(sName);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsName(s& sName)

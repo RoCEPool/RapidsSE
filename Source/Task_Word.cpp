@@ -325,7 +325,7 @@ ENTRY("vForget");
   if ( ! pWord )
     THROW("No such word: %s",nnpTask->m_pTokeniser->sToken().a());
   
-  bool bResult = nnpTask->bForgetWord(nnpTask->m_pTokeniser->sToken());
+  bool bResult = nnpTask->m_xPathStack.bForget(nnpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
   
   EXIT();
@@ -672,7 +672,7 @@ ENTRY("vWordForget");
     THROW_INVALID_DSTACK("vWordForget");
   Word* pWord = _pWord(pWordObject);
   
-  bool bResult = nnpTask->bForgetWord(pWord->sName());
+  bool bResult = nnpTask->m_xPathStack.bForget(pWord->sName());
   ASSERT(bResult);
   
   EXIT();
