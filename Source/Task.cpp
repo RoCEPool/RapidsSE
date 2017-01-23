@@ -241,9 +241,9 @@ void Task::vInit(const char* aLambda)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add initial set of words into dictionary                                   */
+/* add initial set of words in main dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Task::vInitialiseDictionary(void)
+void Task::vInitialiseMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1045,7 +1045,7 @@ Word* Task::pCompileColon(s& sDefinition)
         break;
         
       case TK_NAME:
-        pCalledWord = pFindWord(m_pTokeniser->sToken());
+        pCalledWord = m_xPathStack.pFind(m_pTokeniser->sToken().a());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())
@@ -1181,68 +1181,6 @@ void Task::vException(s& sFile, s& eException)
 }
 
 /*----------------------------------------------------------------------------*/
-/* find word given name                                                       */
-/*----------------------------------------------------------------------------*/
-Word* Task::pFindWord(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = nullptr;
-  
-  // attempt to find word in seitf dic stack
-//  if (m_pSEitf) {
-//    pWord = m_pSEitf->pFindWord(sName);
-//    if (pWord)
-//      return pWord;
-//  }
-  
-  // attempt to find word in this tasks dic stack
-  pWord = m_xPathStack.pFind(sName.a());
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find word given name in current dictionary                                 */
-/*----------------------------------------------------------------------------*/
-Word* Task::pFindWordInCurrent(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = nullptr;
-  
-  // attempt to find word in seitf current dic
-//  if (m_pSEitf) {
-//    pWord = m_pSEitf->pFindWordInCurrent(sName);
-//    if (pWord)
-//      return pWord;
-//    else
-//      return nullptr;
-//  }
-  
-  // attempt to find word in this tasks current dic
-  pWord = m_xPathStack.pFindInCurrent(sName.a());
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* forget word given name                                                     */
-/*----------------------------------------------------------------------------*/
-bool Task::bForgetWord(s& sName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  bool bResult;
-  if (m_pSEitf)
-    bResult = m_pSEitf->pDicStack()->bForget(sName);
-  else
-    bResult = m_xPathStack.bForget(sName);
-  
-  return bResult;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
 bool Task::bIsName(s& sName)
@@ -1278,18 +1216,6 @@ void Task::vLocalsPush(void)
   pLocalsframe->vNext(m_pLocalsFrame);
   
   m_pLocalsFrame = pLocalsframe;
-}
-
-/*----------------------------------------------------------------------------*/
-/* locate word based on cell                                                  */
-/*----------------------------------------------------------------------------*/
-Word* Task::pLocateWord(Cell* pCell)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = m_xPathStack.pLocate(pCell);
-  
-  return pWord;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1366,7 +1292,7 @@ void Task::vPrimitive(const char* aPrimitive)
   char aRoutine[128];
   
   Cell* pCell = IP.m_pCell;
-  Word* pLocatedWord = pLocateWord(pCell);
+  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
     String::vCopy(aRoutine,pLocatedWord->sName().a());
   else
@@ -1795,7 +1721,7 @@ void Task::vTokenNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*trace current point                                                         */
+/* trace current point                                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vTracePoint(const char* aMark)
 {
@@ -1808,7 +1734,7 @@ void Task::vTracePoint(const char* aMark)
   
   Cell* pCell = IP.m_pCell;
   
-  Word* pLocatedWord = pLocateWord(pCell);
+  Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
     String::vCopy(aRoutine,pLocatedWord->sName().a());
   else

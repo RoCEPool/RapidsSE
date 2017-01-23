@@ -23,15 +23,15 @@ namespace Interface
     
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // response queue
+    s48K   m_sResponse;        // response
     
     eEC    m_eErrorCode;       //
     s256   m_sErrorMsg;
     
     Table* m_pCurrentTable;
-    s48K   m_sResponse;        // response
     char*  m_pRowPtr;
-    
     TxRef* m_pTxRef;
+    
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;
     
@@ -49,10 +49,7 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    DicStack* pDicStack(void);
-    void   vPushDic(Dic* pDic);
-    void   vPopDic(void);
-    Word*  pFindWord(s& sName);
+    DicStack* pPathStack(void);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);

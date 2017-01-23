@@ -230,14 +230,10 @@ namespace Tasks
     static void vDebug(void);
     void vContentDump(void);
     void vException(s& sFile, s& eException);
-    Word* pFindWord(s& sName);
-    Word* pFindWordInCurrent(s& sName);
-    bool  bForgetWord(s& sName);
-    void vInitialiseDictionary(void);
+    void vInitialiseMain(void);
     bool  bIsName(s& sName);
     void  vLocalsPop(void);
     void  vLocalsPush(void);
-    Word* pLocateWord(Cell* pCell);
     void vLoop(void);
     NP_Task npNextInSet(void);
     s&   sName(void);
