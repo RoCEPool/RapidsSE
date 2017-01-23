@@ -191,7 +191,7 @@ ENTRY("vLocalsTo");
   // get name of local
   nnpTask->vTokenNext();
 
-  Word* pWordLocal = nnpTask->pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  Word* pWordLocal = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   ASSERT(pWordLocal);
  
   ValWsp xValWsp;

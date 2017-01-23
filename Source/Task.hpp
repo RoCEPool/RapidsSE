@@ -232,7 +232,6 @@ namespace Tasks
     void vException(s& sFile, s& eException);
     Word* pFindWord(s& sName);
     Word* pFindWordInCurrent(s& sName);
-    Word* pFindWord(const char* aName);
     bool  bForgetWord(s& sName);
     void vInitialiseDictionary(void);
     bool  bIsName(s& sName);

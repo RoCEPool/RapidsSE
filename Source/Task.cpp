@@ -719,7 +719,7 @@ void Task::vAddPrimitives(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vAddPrimitive("word",            &vWord,             false);
-  gpWord = pFindWord("word");
+  gpWord = m_xPathStack.pFind("word");
 
   vAddPrimitives_Address();
   vAddPrimitives_Args();
@@ -1190,11 +1190,11 @@ Word* Task::pFindWord(s& sName)
   Word* pWord = nullptr;
   
   // attempt to find word in seitf dic stack
-  if (m_pSEitf) {
-    pWord = m_pSEitf->pFindWord(sName);
-    if (pWord)
-      return pWord;
-  }
+//  if (m_pSEitf) {
+//    pWord = m_pSEitf->pFindWord(sName);
+//    if (pWord)
+//      return pWord;
+//  }
   
   // attempt to find word in this tasks dic stack
   pWord = m_xPathStack.pFind(sName.a());
@@ -1212,28 +1212,16 @@ Word* Task::pFindWordInCurrent(s& sName)
   Word* pWord = nullptr;
   
   // attempt to find word in seitf current dic
-  if (m_pSEitf) {
-    pWord = m_pSEitf->pFindWordInCurrent(sName);
-    if (pWord)
-      return pWord;
-    else
-      return nullptr;
-  }
+//  if (m_pSEitf) {
+//    pWord = m_pSEitf->pFindWordInCurrent(sName);
+//    if (pWord)
+//      return pWord;
+//    else
+//      return nullptr;
+//  }
   
   // attempt to find word in this tasks current dic
   pWord = m_xPathStack.pFindInCurrent(sName.a());
-  
-  return pWord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find word given name                                                       */
-/*----------------------------------------------------------------------------*/
-Word* Task::pFindWord(const char* aName)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Word* pWord = m_xPathStack.pFind(aName);
   
   return pWord;
 }
@@ -1482,7 +1470,7 @@ void Task::vSeedDicCompileSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pBootSen = pFindWord("::dicCompile");
+  Word* pBootSen = m_xPathStack.pFind("::dicCompile");
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();
@@ -1504,7 +1492,7 @@ void Task::vSeedWord(const char* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = pFindWord("::docmd");
+  Word* pShellEnter = m_xPathStack.pFind("::docmd");
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
@@ -1527,7 +1515,7 @@ void Task::vSeedDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = pFindWord("::enter");
+  Word* pShellEnter = m_xPathStack.pFind("::enter");
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
