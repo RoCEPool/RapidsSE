@@ -198,7 +198,7 @@ tp: lf
 : lf_ (  #folders -- true )
 
   depth 0 != if
-    "dicStack.set" str.equal
+    "dicPath.set" str.equal
     if
   tp: settingDicStack
     !indirect drop

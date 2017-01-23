@@ -24,7 +24,7 @@
     exeAll
 
     // clear the participants dictionary stack
-    dicStack.clear
+    dicPath.clear
 
     // convert indirect result into valset
     >result ( valset )

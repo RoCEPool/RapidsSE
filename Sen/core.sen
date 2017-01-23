@@ -256,7 +256,7 @@ true ' CASE word.immediate!
   task.this task.dicStack
 
   // get depth
-  dicStack.depth
+  dicPath.depth
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -553,7 +553,7 @@ tp: g
 ;
 
 "dic.sen" include
-"dicStack.sen" include
+"dicPath.sen" include
 "var.sen" include
 "useful.sen" include
 
