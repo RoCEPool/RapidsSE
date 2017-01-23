@@ -1778,20 +1778,6 @@ void Task::vTxId(i8 iTxId)
   m_iTxId = iTxId;
 }
 
-/*----------------------------------------------------------------------------*/
-/* pop input direction                                                        */
-/*----------------------------------------------------------------------------*/
-void Task::vUndirect(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  //vTrace("undirect return stack: %lld\n",nnpTask->m_pReturnStack->iValues());
-  
-  bool bPopped;
-  
-  bPopped = m_pTokeniser->bPop();
-  ASSERT(bPopped);
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

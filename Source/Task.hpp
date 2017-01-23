@@ -257,7 +257,6 @@ namespace Tasks
     void vTracePoint(const char* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);
-    void vUndirect(void);
     
     
     void vAddPrimitives(void);
