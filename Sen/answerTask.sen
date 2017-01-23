@@ -83,7 +83,7 @@ ddlLock.dropWrite
     connections !          ( connections# )
 
     1  == if               ( connection# )
-      grid.thisNode@ 0 != if
+      grid.thisNode@ grid.startNode@ != if
         connectorStart
       then
     then
