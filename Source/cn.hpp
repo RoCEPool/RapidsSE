@@ -37,7 +37,7 @@ namespace Magic
     /* 17 */ CN_BPA,
   
     /* 18 */ CN_DIC,
-    /* 19 */ CN_DICSTACK,
+    /* 19 */ CN_DICPATH,
     /* 20 */ CN_DIR,
     
     /* 21 */ CN_FILE,
@@ -160,7 +160,7 @@ namespace Magic
     /* 17 */ "BPA",
     
     /* 18 */ "DIC",
-    /* 19 */ "DICSTACK",
+    /* 19 */ "DICPATH",
     /* 20 */ "DIR",
     
     /* 21 */ "FILE",

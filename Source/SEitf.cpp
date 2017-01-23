@@ -111,7 +111,7 @@ SEitf::~SEitf(void)
 /*----------------------------------------------------------------------------*/
 /* get path stack                                                             */
 /*----------------------------------------------------------------------------*/
-DicStack* SEitf::pPathStack(void)
+DicPath* SEitf::pPathStack(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
 

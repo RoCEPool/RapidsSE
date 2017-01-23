@@ -52,8 +52,8 @@ void Task::vDicStackDepth(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
     THROW_INVALID_DSTACK("dicStack.depth");
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  DicPath* pDicStack = (DicPath*)(pPtrDicStack);
+  ASSERT(CN_DICPATH == pDicStack->eClass());
   
   i8 iDepth = pDicStack->iCount();
   
@@ -73,8 +73,8 @@ void Task::vDicStackDrop(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
     THROW_INVALID_DSTACK("dicStack.drop");
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  DicPath* pDicStack = (DicPath*)(pPtrDicStack);
+  ASSERT(CN_DICPATH == pDicStack->eClass());
   
   pDicStack->vDiscard();
   
@@ -92,8 +92,8 @@ void Task::vDicStackDump(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
     THROW_INVALID_DSTACK("dicStack.dump");
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  DicPath* pDicStack = (DicPath*)(pPtrDicStack);
+  ASSERT(CN_DICPATH == pDicStack->eClass());
   
   pDicStack->vContentDump();
   
@@ -111,8 +111,8 @@ void Task::vDicStackPick(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
     THROW_INVALID_DSTACK("dicStack.pick");
   
-  DicStack* pDicStack = (DicStack*)(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  DicPath* pDicStack = (DicPath*)(pPtrDicStack);
+  ASSERT(CN_DICPATH == pDicStack->eClass());
   
   i8 iDic;
   if ( ! nnpTask->m_pDataStack->bPop(iDic) )
@@ -136,8 +136,8 @@ void Task::vDicStackPush(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrDicStack) )
     THROW_INVALID_DSTACK("dicStack.push");
   
-  DicStack* pDicStack = DicStack::_pDicStack(pPtrDicStack);
-  ASSERT(CN_DICSTACK == pDicStack->eClass());
+  DicPath* pDicStack = DicPath::_pDicStack(pPtrDicStack);
+  ASSERT(CN_DICPATH == pDicStack->eClass());
   
   Object* pPtrDic;
   

@@ -160,7 +160,7 @@ namespace Tasks
     Stack* m_pDataStack;     // data stack
     Stack* m_pReturnStack;   // return stack
     Stack* m_pAuxStack;      // auxiliary stack
-    DicStack m_xPathStack;   // path stack
+    DicPath m_xPathStack;   // path stack
     
     Queue* m_pQueue;         // processing queue
     Socket* m_pSocket;       // socket

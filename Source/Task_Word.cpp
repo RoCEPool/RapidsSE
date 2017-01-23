@@ -486,7 +486,7 @@ void Task::vSee(NNP_Task nnpTask)
     Word* pCallsWord = nnpTask->m_xPathStack.pFindStep(*pDoesCell->m_ppEntryStep);
     
     // jumps
-    if ( *pDoesCell->m_ppEntryStep == Task::vFlowJump ||
+    if (*pDoesCell->m_ppEntryStep == Task::vFlowJump ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
       

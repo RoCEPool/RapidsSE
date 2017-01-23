@@ -418,7 +418,7 @@ void Task::vAddConstants(void)
   /* 17 */ vAddConstant("CN_BPA",          CN_BPA);
   
   /* 18 */ vAddConstant("CN_DIC",          CN_DIC);
-  /* 19 */ vAddConstant("CN_DICSTACK",     CN_DICSTACK);
+  /* 19 */ vAddConstant("CN_DICPATH",     CN_DICPATH);
   /* 20 */ vAddConstant("CN_DIR",          CN_DIR);
   
   /* 21 */ vAddConstant("CN_FILE",         CN_FILE);
@@ -593,7 +593,7 @@ void Task::vAddConstants(void)
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL",   sizeof(BufferPool));
   /* 13 */ vAddConstant("SIZEOF_BPA",          sizeof(BPA));
   /* 14 */ vAddConstant("SIZEOF_DIC",          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICSTACK",     sizeof(DicStack));
+  /* 15 */ vAddConstant("SIZEOF_DICPATH",     sizeof(DicPath));
   /* 16 */ vAddConstant("SIZEOF_DIR",          sizeof(Dir));
   /* 17 */ vAddConstant("SIZEOF_FILE",         sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK",    sizeof(FreeChunk));

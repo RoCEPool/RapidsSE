@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DicStack.hpp - dictionary stack                                            */
+/* DicPath.hpp - dictionary stack                                            */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace Dictionaries
 {
-  class DicStack : public Object
+  class DicPath : public Object
   {
   private:
     static const i8 C_DICTIONARY_STACK = 32;
@@ -24,10 +24,10 @@ namespace Dictionaries
     void* operator new(size_t);
     void  operator delete(void*);
     
-    DicStack(void);
-    ~DicStack(void);
+    DicPath(void);
+    ~DicPath(void);
     
-    static DicStack* _pDicStack(void* pAddr);
+    static DicPath* _pDicStack(void* pAddr);
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
 
     i8   iCount(void);

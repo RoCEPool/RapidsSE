@@ -19,7 +19,7 @@ namespace Interface
     i8     m_iPartitions;      // number of partitions in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
-    DicStack m_xPathStack;     // path stack
+    DicPath m_xPathStack;     // path stack
     
     Queue* m_pRequestQueue;    // request queue
     Queue* m_pResponseQueue;   // response queue
@@ -49,7 +49,7 @@ namespace Interface
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    DicStack* pPathStack(void);
+    DicPath* pPathStack(void);
     
     void   vCurrentTable(Table* pTable);
     Table* pCurrentTable(void);

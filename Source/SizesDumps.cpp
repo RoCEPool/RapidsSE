@@ -36,7 +36,7 @@ pDUMPFUN *gpDump[]
   /* 17 */ &Dump::vInvalid,         // CN_BPA
 
   /* 18 */ &Dic::vDump,             // CN_DIC
-  /* 19 */ &DicStack::vDump,        // CN_DICSTACK
+  /* 19 */ &DicPath::vDump,        // CN_DICPATH
   /* 20 */ &Dump::vInvalid,         // CN_DIR
   
   /* 21 */ &Dump::vInvalid,         // CN_FILE
@@ -159,7 +159,7 @@ i8 giClassSize[]
   /* 17 */ sizeof(BPA),                // CN_BPA
   
   /* 18 */ sizeof(Dic),                // CN_DIC
-  /* 19 */ sizeof(DicStack),           // CN_DICSTACK
+  /* 19 */ sizeof(DicPath),           // CN_DICPATH
   /* 20 */ sizeof(Dir),                // CN_DIR
   
   /* 21 */ sizeof(File),               // CN_FILE
@@ -282,7 +282,7 @@ eHT geWhichHeap[]
   /* 17 */ HT_INVALID, // CN_BPA
   
   /* 18 */ HT_MEDIUM,  // CN_DIC
-  /* 19 */ HT_INVALID, // CN_DICSTACK
+  /* 19 */ HT_INVALID, // CN_DICPATH
   /* 20 */ HT_SMALL,   // CN_DIR
   
   /* 21 */ HT_SMALL,   // CN_FILE
