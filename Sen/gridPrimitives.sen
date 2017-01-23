@@ -608,19 +608,24 @@ tp: addingPassOnToCP
   to clusterString
 
   // spawn all other nodes
-  args.nodes 1 do
+  args.nodes 0 do
 
-    // form the shell command to spawn node I
-    clusterString I grid.node node.name se_command
+    // skip this node
+    I grid.thisNode@ != if
+      
+      // form the shell command to spawn node I
+      clusterString I grid.node node.name se_command
 
-    // print the shell command
-    dup .
+      // print the shell command
+      dup .
 
-    // execute the shell command
-    shell.execute
+      // execute the shell command
+      shell.execute
 
-    // check result
-    not assert
+      // check result
+      not assert
+
+   then
 
   loop
 
