@@ -36,7 +36,7 @@ namespace Parsing
     bool    m_bNormal; // normal tokens?
     char    m_cParsedChar;   // character from parser
     
-    s48K     m_sToken;  // current token
+    s48K    m_sToken;  // current token
     eTK     m_eToken;  // token type
     
     // must be last

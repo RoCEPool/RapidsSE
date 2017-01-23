@@ -224,7 +224,6 @@ namespace Tasks
     void vAddPrimitive(const char* aName, TaskStep pStep, bool bImmediate);
     void vAddRoutines(void);
     Object* pArgObject(void);
-    void vCheckLocked(void);
     Word* pCompileColon(s& sDefinition);
     Word* pCompileConstant(s& sDefinition);
     static void vDebug(void);

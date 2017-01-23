@@ -995,16 +995,6 @@ void Task::vAddRoutines(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* checked this tx locked                                                     */
-/*----------------------------------------------------------------------------*/
-void Task::vCheckLocked(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  m_xLock.vCheckWrite();
-}
-
-/*----------------------------------------------------------------------------*/
 /* compile given : routine                                                    */
 /*----------------------------------------------------------------------------*/
 Word* Task::pCompileColon(s& sDefinition)
