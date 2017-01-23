@@ -13,6 +13,7 @@ namespace GridModel
   {
   private:
     i8     m_iThisNode;  // this node number
+    i8     m_iStartNode; // node that started the cluster
     bool   m_bHasStarted;
     
     // must be last
@@ -30,6 +31,8 @@ namespace GridModel
     bool bHasStarted(void);
     Node* pFindNode(char* pName);
     Node* pFindNode(i8 iNode);
+    void vStartNode(i8 iStartNode);
+    i8   iStartNode(void);
     void vThisNode(i8 iNode);
     i8   iThisNode(void);
     void vInit(void);

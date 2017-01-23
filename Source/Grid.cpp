@@ -71,6 +71,7 @@ void Grid::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iThisNode = -1;
+  m_iStartNode = -1;
   m_bHasStarted = false;
 }
 
@@ -152,6 +153,27 @@ Node* Grid::pFindNode(i8 iNodeNo)
   pNodeCursor->vEnd();
   
   return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set grid node wher ecluster was started                                    */
+/*----------------------------------------------------------------------------*/
+void Grid::vStartNode(i8 iStartNode)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  m_iStartNode = iStartNode;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get grid node where cluster was started                                    */
+/*----------------------------------------------------------------------------*/
+i8 Grid::iStartNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_iStartNode;
 }
 
 /*----------------------------------------------------------------------------*/
