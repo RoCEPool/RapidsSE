@@ -113,7 +113,7 @@ tp: poppedValset
 ;
 
 /*----------------------------------------------------------------------------*/
-/* process request                                                            */
+/* process request from SEitf                                                           */
 /*----------------------------------------------------------------------------*/
 : !req
 
@@ -131,7 +131,7 @@ tp: valset
 
   drop // the count
   task.this task.seitf@ not assert
-  >:   // execute the response return address
+  >:   // execute the response return address (set SEitf in request task)
   task.this task.seitf@ assert
 
   getPath
@@ -160,6 +160,7 @@ tp: !req_exit
   //"rspque" find execute queue.append
   task.this task.seitf@ seitf.responseQueue queue.append
 
+  // forget the seitf
   0 task.this task.seitf!
 //traceoff
 ;
