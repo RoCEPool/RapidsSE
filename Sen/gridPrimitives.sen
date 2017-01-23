@@ -625,7 +625,7 @@ tp: addingPassOnToCP
   loop
 
   // set grid as started
-  true grid.started!
+  //true grid.started!
 
 ;
 
