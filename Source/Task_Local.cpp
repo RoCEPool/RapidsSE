@@ -93,7 +93,7 @@ ENTRY("vLocalsBar");
   
   Word* pCurrentWord = nnpTask->pCurrentWord();
   
-  Dic* pDic = nnpTask->pDicPeek();
+  Dic* pDic = nnpTask->m_xPathStack.pPick(0);
 
   ValWsp xValWsp;
   
@@ -112,7 +112,7 @@ ENTRY("vLocalsBar");
       // create a locals dictionary
       pDic = new Dic;
       pDic->vName("<localsDic>");
-      nnpTask->vDicPush(pDic);
+      nnpTask->m_xPathStack.vPush(pDic);
       
       // enocde locals frame push
       pCurrentWord->vEncode("locals.push");

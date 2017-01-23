@@ -230,9 +230,6 @@ namespace Tasks
     Word* pCurrentWord(void);
     void  vCurrentWord(Word* pWord);
     static void vDebug(void);
-    void vDicDrop(void);
-    Dic* pDicPeek(void);
-    void vDicPush(Dic* pDic);
     void vContentDump(void);
     void vException(s& sFile, s& eException);
     Word* pFindWord(s& sName);

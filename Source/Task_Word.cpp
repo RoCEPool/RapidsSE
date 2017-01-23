@@ -559,7 +559,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     nnpTask->m_nLocals = 0;
     
     // pop top dictionary
-    nnpTask->vDicDrop();
+    nnpTask->m_xPathStack.vDiscard();
     
     // enocde locals frame pop
     pCurrentWord->vEncode("locals.pop");
@@ -577,7 +577,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     String::vConcat(sTildeName.a(),pCurrentWord->sName().a());
     
     // create new word for tilde of current word
-    Dic* pDic = nnpTask->pDicPeek();
+    Dic* pDic = nnpTask->m_xPathStack.pPick(0);
     Word* pWordTilde = new(pDic) Word(sTildeName.a());
     // ** do not set as current word **
     
