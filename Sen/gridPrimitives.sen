@@ -624,8 +624,9 @@ tp: addingPassOnToCP
 
   loop
 
-  // set grid as started
-  //true grid.started!
+  // set this npde as the grid start node
+  grid.thisNode@ grid.startNode!
+  grid.startNode@ "Cluster Start node: %v" str.format .
 
 ;
 
