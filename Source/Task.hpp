@@ -253,7 +253,6 @@ namespace Tasks
     void vState(eTS eState);
     Threads::Thread* pThread(void);
     void vThread(Threads::Thread* pThread);
-    void vTokenNext(void);
     void vTracePoint(const char* aMark);
     i8   iTxId(void);
     void vTxId(i8 iTxId);

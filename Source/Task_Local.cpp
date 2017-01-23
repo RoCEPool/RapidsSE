@@ -100,7 +100,7 @@ ENTRY("vLocalsBar");
   for (;;) {
     
     // get name of local
-    nnpTask->vTokenNext();
+    nnpTask->m_pTokeniser->vNextToken();
     
     // end of locals declaration?
     if (String::bEqualTo("|",nnpTask->m_pTokeniser->sToken().a()))
@@ -189,7 +189,7 @@ ENTRY("vLocalsTo");
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // get name of local
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
 
   Word* pWordLocal = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   ASSERT(pWordLocal);

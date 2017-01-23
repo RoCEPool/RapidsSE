@@ -84,7 +84,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
   
   // get number of parameters
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   // convert string to integer
   char* aToken = nnpTask->m_pTokeniser->sToken().a();
@@ -139,7 +139,7 @@ void Task::vColon(NNP_Task nnpTask)
   
   nnpTask->m_bCompiling = true;
   
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   Word* pNewWord = new(nnpTask->m_xPathStack.pTop())
                      Word(nnpTask->m_pTokeniser->sToken().a());
@@ -196,7 +196,7 @@ void Task::vCreate(NNP_Task nnpTask)
 {
 ENTRY("vCreate");
   
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   Dic* pDic;
   if (nnpTask->m_pSEitf)
@@ -318,7 +318,7 @@ void Task::vForget(NNP_Task nnpTask)
 {
 ENTRY("vForget");
   
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   Word* pWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   
@@ -404,7 +404,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
   
   // get number of parameters
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   // convert token to integer
   i8 iParams = String::iToI8(nnpTask->m_pTokeniser->sToken().a());
@@ -425,7 +425,7 @@ void Task::vPostpone(NNP_Task nnpTask)
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
   // get name of word to be called
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   // find the word in dic stack
   Word* pCalledWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
@@ -466,7 +466,7 @@ void Task::vSee(NNP_Task nnpTask)
   
   s48K sWorkspace;
   
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   Word* pWord = nnpTask->m_xPathStack.pFind(nnpTask->m_pTokeniser->sToken().a());
   if ( ! pWord ) {
@@ -627,7 +627,7 @@ void Task::vTick(NNP_Task nnpTask)
 {
   ENTRY("vTick");
   
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   //  if ( ! bExtracted ) {
   //    String::vSprint(nnpTask->m_sException,"No name: ' ");

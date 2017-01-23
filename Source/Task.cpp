@@ -1009,18 +1009,18 @@ Word* Task::pCompileColon(s& sDefinition)
   m_pTokeniser->vUseString(sDefinition);
   
   // get :
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
   // get name of word
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
   pNewWord = new(m_xPathStack.pTop()) Word(m_pTokeniser->sToken().a());
   
   m_pCurrentWord = pNewWord;
 
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   
   while (TK_NONE != m_pTokeniser->eToken()) {
     
@@ -1065,7 +1065,7 @@ Word* Task::pCompileColon(s& sDefinition)
         THROW("Invalid m_eToken %lld",m_pTokeniser->eToken());
     }
     
-    vTokenNext();
+    m_pTokeniser->vNextToken();
   }
   
   pNewWord->vEncode("exit");
@@ -1092,16 +1092,16 @@ Word* Task::pCompileConstant(s& sDefinition)
   m_pTokeniser->vUseString(sDefinition);
   
   // get string
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
   xValWsp = m_pTokeniser->sToken().a();
   
   // get CONSTANT
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
   
   // get name of word
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
   /*
@@ -1114,7 +1114,7 @@ Word* Task::pCompileConstant(s& sDefinition)
   */
   vAddConstant(m_pTokeniser->sToken().a(),xValWsp.sStr());
   
-  vTokenNext();
+  m_pTokeniser->vNextToken();
   
   m_pTokeniser->vUseEnd();
   
@@ -1461,64 +1461,6 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
   char* pf = sFormat.a();
   char* ps = sString.a();
   
-  /*
-  while (*pf) {
-    
-    // test for ordinary character
-    if ('%' != *pf) {
-      *ps++ = *pf++;
-      continue;
-    }
-    
-    // we have a '%'
-    pf++;
-    
-    // test for %%
-    if ('%' == *pf) {
-      *ps++ = *pf++;
-      continue;
-    }
-    
-    // test for %s
-    if ('s' == *pf) {
-      
-      pf++;
-      
-      s48K sValue;
-      m_pDataStack->bPop(sValue);
-      
-      for (char* pv = sValue.a(); *pv; )
-        *ps++ = *pv++;
-      
-      continue;
-    }
-
-    // test for %i
-    if ('i' == *pf) {
-      
-      pf++;
-      
-      i8 iValue;
-      m_pDataStack->bPop(iValue);
-      
-      char aValue[32];
-      String::wToString(iValue,aValue);
-      
-      for (char* pv = aValue; *pv; )
-        *ps++ = *pv++;
-      
-      continue;
-    }
-    
-    // just copy %?
-    *ps++ = '%';
-    *ps++ = *pf++;
-  }
-  
-  *pf = '\0';
-   
-  */
-  
   while (*pf) {
     
     // test for ordinary character
@@ -1544,7 +1486,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // test for strval
     if (CN_STRVAL == pValue0->eClass()) {
 
-      *pf = 's';
+      *pf = 's';                                                    //! Defect??
       pf++;
       
       s48K sValue;
@@ -1559,7 +1501,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     // test for intval
     if (CN_INTVAL == pValue0->eClass()) {
     
-      *pf = 'i';
+      *pf = 'i';                                                    //! Defect??
       pf++;
       
       i8 iValue;
@@ -1579,7 +1521,7 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
     *ps++ = *pf++;
   }
   
-  *pf = '\0';
+  *pf = '\0';                                                       //! Defect??
 
 }
 
@@ -1661,7 +1603,7 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get transaction state                                                      */
+/* get task state                                                             */
 /*----------------------------------------------------------------------------*/
 eTS Task::eState(void)
 {
@@ -1671,7 +1613,7 @@ eTS Task::eState(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set transaction state                                                      */
+/* set task state                                                             */
 /*----------------------------------------------------------------------------*/
 void Task::vState(eTS eState)
 {
@@ -1700,16 +1642,6 @@ void Task::vThread(Threads::Thread* pThread)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   m_pThread = pThread;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next input token                                                       */
-/*----------------------------------------------------------------------------*/
-void Task::vTokenNext(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  eTK eToken = m_pTokeniser->eNextToken(m_pTokeniser->sToken().a());
 }
 
 /*----------------------------------------------------------------------------*/

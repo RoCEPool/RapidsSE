@@ -225,6 +225,16 @@ eTK Tokeniser::eNextToken(char* wToken)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse next token                                                           */
+/*----------------------------------------------------------------------------*/
+void Tokeniser::vNextToken(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
+
+  eTK eToken = eNextToken(m_sToken.a());
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset token array                                                          */
 /*----------------------------------------------------------------------------*/
 void Tokeniser::vResetTokens(char* pToken[], i8 nTokens)

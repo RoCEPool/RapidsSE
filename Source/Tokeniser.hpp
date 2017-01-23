@@ -67,6 +67,8 @@ namespace Parsing
     void vUseEnd(void);
 
     eTK  eNextToken(char* wToken);
+    void vNextToken(void);
+    
     void vResetTokens(char* pToken[], i8 nTokens);
     i8   iFindToken(const char* pLookFor, char* pToken[], i8 nTokens);
     i8   iCountTokens(char* pToken[], i8 nTokens);

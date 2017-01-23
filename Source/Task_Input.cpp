@@ -227,7 +227,7 @@ void Task::vTokenColon(NNP_Task nnpTask)
 {
   ENTRY("vTokenColon");
   
-  nnpTask->vTokenNext();
+  nnpTask->m_pTokeniser->vNextToken();
   
   nnpTask->m_pDataStack->vPush(nnpTask->m_pTokeniser->sToken());
   
