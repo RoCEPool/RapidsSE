@@ -233,7 +233,7 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
-  npRootTask->vInitialiseDictionary();
+  npRootTask->vInitialiseMain();
   
   npRootTask->vSeedDicCompileSen();
   

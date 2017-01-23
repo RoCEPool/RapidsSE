@@ -230,7 +230,7 @@ namespace Tasks
     static void vDebug(void);
     void vContentDump(void);
     void vException(s& sFile, s& eException);
-    void vInitialiseDictionary(void);
+    void vInitialiseMain(void);
     bool  bIsName(s& sName);
     void  vLocalsPop(void);
     void  vLocalsPush(void);

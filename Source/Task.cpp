@@ -241,9 +241,9 @@ void Task::vInit(const char* aLambda)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add initial set of words into dictionary                                   */
+/* add initial set of words in main dictionary                                */
 /*----------------------------------------------------------------------------*/
-void Task::vInitialiseDictionary(void)
+void Task::vInitialiseMain(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
