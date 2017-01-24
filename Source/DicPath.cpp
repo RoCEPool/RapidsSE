@@ -4,6 +4,8 @@
 
 #include "Dictionaries.h"
 
+extern Dic* gpMainDic;
+
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
@@ -138,13 +140,13 @@ void DicPath::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFind(s& sName)
+Word* DicPath::pFindWord(s& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
   ASSERT(m_iTop >= 0);
 
-  Word* pWord = pFind(sName.a());
+  Word* pWord = pFindWord(sName.a());
   
   return pWord;
 }
@@ -152,7 +154,7 @@ Word* DicPath::pFind(s& sName)
 /*----------------------------------------------------------------------------*/
 /* find word in stack of dictionaries                                         */
 /*----------------------------------------------------------------------------*/
-Word* DicPath::pFind(const char* aName)
+Word* DicPath::pFindWord(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
@@ -160,10 +162,12 @@ Word* DicPath::pFind(const char* aName)
   
   Word* pWord;
   
-  for (i8 i = m_iTop; i >= 0; i--) {
-    if ( (pWord = m_pDic[i]->pFind(aName)) )
+  for (i8 iDic = m_iTop; iDic >= 0; iDic--)
+    if ( (pWord = m_pDic[iDic]->pFindWord(aName)) )
       return pWord;
-  }
+  
+  if ( (pWord = gpMainDic->pFindWord(aName)) )
+    return pWord;
   
   return nullptr;
 }
@@ -179,7 +183,7 @@ Word* DicPath::pFindInCurrent(const char* aName)
   
   Word* pWord;
   
-  if ( (pWord = m_pDic[m_iTop]->pFind(aName)) ) {
+  if ( (pWord = m_pDic[m_iTop]->pFindWord(aName)) ) {
     return pWord;
   }
   

@@ -372,7 +372,7 @@ void Word::vEncode(const char* aWord)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Word* pCalledWord = gpMainDic->pFind(aWord);
+  Word* pCalledWord = gpMainDic->pFindWord(aWord);
   ASSERT(pCalledWord);
   
   

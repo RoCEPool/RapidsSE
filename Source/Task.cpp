@@ -720,7 +720,7 @@ void Task::vAddPrimitives(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
   vAddPrimitive("word",            &vWord,             false);
-  gpWord = m_xPathStack.pFind("word");
+  gpWord = gpMainDic->pFindWord("word");
 
   vAddPrimitives_Address();
   vAddPrimitives_Args();
@@ -1036,7 +1036,7 @@ Word* Task::pCompileColon(s& sDefinition)
         break;
         
       case TK_NAME:
-        pCalledWord = m_xPathStack.pFind(m_pTokeniser->sToken().a());
+        pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken().a());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())
@@ -1387,7 +1387,7 @@ void Task::vSeedDicCompileSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pBootSen = m_xPathStack.pFind("::dicCompile");
+  Word* pBootSen = gpMainDic->pFindWord("::dicCompile");
   ASSERT(pBootSen);
   
   IP.m_pCell = pBootSen->pFirstCell();
@@ -1409,7 +1409,7 @@ void Task::vSeedWord(const char* aLambda)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = m_xPathStack.pFind("::docmd");
+  Word* pShellEnter = gpMainDic->pFindWord("::docmd");
   
   IP.m_pCell = pShellEnter->pFirstCell();
   
@@ -1432,7 +1432,7 @@ void Task::vSeedDocol(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Word* pShellEnter = m_xPathStack.pFind("::enter");
+  Word* pShellEnter = gpMainDic->pFindWord("::enter");
   
   IP.m_pCell = pShellEnter->pFirstCell();
   

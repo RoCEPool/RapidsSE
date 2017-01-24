@@ -134,7 +134,7 @@ void Task::vEncodeCallRoutine(NNP_Task nnpTask)
     sTildeName = "~";
     String::vConcat(sTildeName.a(),pCalledWord->sName().a());
     
-    Word* pWordTilde = nnpTask->m_xPathStack.pFind(sTildeName.a());
+    Word* pWordTilde = nnpTask->m_xPathStack.pFindWord(sTildeName.a());
     ppCalledEntryStep = pWordTilde->ppEntryStep();
   }
   

@@ -150,7 +150,7 @@ void Dic::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /* find a word given name                                                     */
 /*----------------------------------------------------------------------------*/
-Word* Dic::pFind(const char* aName)
+Word* Dic::pFindWord(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DIC,_FOOTER_);
   

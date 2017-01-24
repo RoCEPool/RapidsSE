@@ -179,7 +179,7 @@ void SEitf::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
   // request queue
-  Word* pReqQueWord = gpMainDic->pFind("requestQueue");
+  Word* pReqQueWord = gpMainDic->pFindWord("requestQueue");
   ASSERT(pReqQueWord);
   
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pDataArea());
@@ -191,7 +191,7 @@ void SEitf::vInit(void)
 //  m_xPathStack.vPush(&m_xDic);
   
   // find tenants
-  Word* pTenants = gpMainDic->pFind("tenants");
+  Word* pTenants = gpMainDic->pFindWord("tenants");
   ASSERT(pTenants);
   
   Cell* pCell = pTenants->pFirstCell();
