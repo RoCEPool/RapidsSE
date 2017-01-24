@@ -1548,7 +1548,13 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
     
     eCN eClass = pValWsp->eClass();
     
-    if (CN_INTVAL == eClass) {
+    if (CN_BINVAL == eClass) {
+      Object* pObject = pValWsp->pObject();
+      String::vSprintCat(a,"(BINVAL)^%s=%p",
+                         pCN[pObject->eClass()],
+                         pObject);
+    }
+    else if (CN_INTVAL == eClass) {
       String::vSprintCat(a,"%lld",pValWsp->iInt());
     }
     else if (CN_PTRVAL == eClass) {
