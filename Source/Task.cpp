@@ -270,9 +270,7 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
 
-  Dic* pDic = m_xPathStack.pTop();
-  
-  Word* pNewWord = new(pDic) Word(aName);
+  Word* pNewWord = new(gpMainDic) Word(aName);
   
   IntVal xIntVal;
   xIntVal = iVal;
@@ -288,9 +286,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  Dic* pDic = m_xPathStack.pTop();
-  
-  Word* pNewWord = new(pDic) Word(aName);
+  Word* pNewWord = new(gpMainDic) Word(aName);
   
   ValWsp xWspStr;
   xWspStr = aValue;
@@ -305,10 +301,8 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
-  
-  Dic* pDic = m_xPathStack.pTop();
-  
-  Word* pNewWord = new(pDic) Word(pName);
+    
+  Word* pNewWord = new(gpMainDic) Word(pName);
   
   m_pCurrentWord = pNewWord;
   
