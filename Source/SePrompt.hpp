@@ -98,6 +98,7 @@ private:
   bool bAnalyzeTable(void);
   bool bListDir(void);
   bool bNodeStatus(void);
+  bool bObject(void);
   bool bPoolSpace(void);
   bool bPrintWorkingDir(void);
   bool bReturnTable(void);

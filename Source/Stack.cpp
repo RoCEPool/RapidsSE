@@ -669,14 +669,44 @@ i8 Stack::iPop(void)
   return iArg;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop binary from data stack                                                 */
+/*----------------------------------------------------------------------------*/
+bool Stack::bPopBinary(Object*& pObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_BINVAL) )
+    return false;
+
+  ValWsp xBinVal;
+  vPopVal(&xBinVal);
+  
+  pObject = xBinVal.pObject();
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* push binary Object onto data stack                                         */
+/*----------------------------------------------------------------------------*/
+void Stack::vPushBinary(Object* pObject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  ValWsp xBinVal;
+  xBinVal.vAssignBinary(pObject);
+
+  vPush(xBinVal);
+  
+}
 
 /*----------------------------------------------------------------------------*/
-/* push Object* onto data stack                                                 */
+/* push Object* onto data stack                                               */
 /*----------------------------------------------------------------------------*/
 void Stack::vPush(Object* pObject)
 {

@@ -1,8 +1,10 @@
 /*============================================================================*/
-/* StrVal.cpp - string value                                                  */
+/* BinVal.cpp - string value                                                  */
 /*============================================================================*/
 
 #include "Values.h"
+
+extern i8 giClassSize[];
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -22,7 +24,7 @@ BinVal* Values::_pBinVal(void* pAddr)
 void* BinVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: StrVal class cannot be new'd\n");
+  vFatal("fatal: BinVal class cannot be new'd\n");
   
   RASSERT(0);
 }
@@ -41,7 +43,7 @@ void* BinVal::operator new(size_t iSize, BinVal* pBinVal)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BinVal::BinVal(void)
-: Value(CN_STRVAL)
+: Value(CN_BINVAL)
 {
   m_iBytes = 0;
   
@@ -52,7 +54,7 @@ BinVal::BinVal(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BinVal::BinVal(i8 iChars)
-: Value(CN_STRVAL)
+: Value(CN_BINVAL)
 {
   m_iBytes = iChars;
   
@@ -66,7 +68,7 @@ BinVal::BinVal(i8 iChars)
 /*----------------------------------------------------------------------------*/
 void BinVal::operator =(const Object* pObject)
 {
-  ASSERT(m_iBytes);
+  m_iBytes = giClassSize[pObject->eClass()];
   
   Memory::vCopy(m_cArray, pObject, m_iBytes);
 }
@@ -117,11 +119,13 @@ void BinVal::vSize(i8 iSize)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pObject                                                                */
+/* get pObject class                                                          */
 /*----------------------------------------------------------------------------*/
-Object* BinVal::pObject(void)
+eCN BinVal::eObjectClass(void)
 {
-  return (Object*)&m_cArray[0];
+  Object* pBinaryObject = (Object*)pData();
+  
+  return pBinaryObject->eClass();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,18 +134,6 @@ Object* BinVal::pObject(void)
 char* BinVal::pData(void)
 {
   return &m_cArray[0];
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy an object into workspace                                              */
-/*----------------------------------------------------------------------------*/
-void BinVal::vCopyObject(Object* pObject, i8 iLength)
-{
-  vClass(CN_BINVAL);
-  
-  //String::vCopyLen(m_sStr,aStr,iLength);
-  
-  m_iBytes = iLength;
 }
 
 /*----------------------------------------------------------------------------*/

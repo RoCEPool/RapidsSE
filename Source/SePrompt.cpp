@@ -603,6 +603,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bGetNextRow();
   }
 
+  if (String::bEqualTo("object",m_pToken[0],C_NO_CASE)) {
+    return bObject();
+  }
+  
   if (String::bEqualTo("space",m_pToken[0],C_NO_CASE)) {
     return bPoolSpace();
   }
@@ -1895,6 +1899,22 @@ bool SePrompt::bListDir(void)
   
   // clear the response
   m_sResponse = "";
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* send object (temp)                                                         */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bObject(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"object"));
+  
+  if (!bExecuteRequest()) {
+    return false;
+  }
   
   return true;
 }

@@ -588,12 +588,14 @@ namespace Tasks
     static void vNodeCursorNext(NNP_Task nnpTask);
     
     // object
+    static void vObjectBinary(NNP_Task nnpTask);
     static void vObjectClassFetch(NNP_Task nnpTask);
     static void vObjectClassStore(NNP_Task nnpTask);
     static void vObjectDump(NNP_Task nnpTask);
     static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMagicMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
+    static void vObjectToObject(NNP_Task nnpTask);
     static void vObjectWordBodySet(NNP_Task nnpTask);
     
     // process

@@ -14,6 +14,7 @@
 "requests_grid.sen"       include
 "requests_rowBuffer.sen"  include
 "requests_misc.sen"       include
+"requests_object.sen"     include
 
 // create /tenants/boray/catalogs/rapidsse
 createDefaultFolders
@@ -76,6 +77,7 @@ Misc Requests:
 
 seitf   seitf_count
 mon     get_monitor
+object  object
 ping    ping
 x       x
 

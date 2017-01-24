@@ -28,11 +28,9 @@ namespace Values
     i8   iSize(void) const;
     void vSize(void);
     void vSize(i8 iSize);
-    Object* pObject(void);
+    eCN  eObjectClass(void);
     
     char* pData(void);
-    
-    void vCopyObject(Object* pObject, i8 iLength);
     
     static i8 nBytesRequired(i8 iLength);
   };

@@ -87,6 +87,45 @@ tp: printResult
 
 ;
 
+/*----------------------------------------------------------------------------*/
+/* print grid result                                                          */
+/*----------------------------------------------------------------------------*/
+: printFile ( NodeObject n# t | ec n# f .... nn t/f )
+
+  tp: printFile
+
+  // was the final result true ?
+  true == if ( s n# t | ec n# f .... nn )
+
+    // pretty print the results resturned
+    0 do  ( s n# t | s n# f .... )
+
+      assert // should be true
+      swap object.toObject file.path@ swap
+      "Node%v: %v"  str.format .
+    loop
+
+  else
+
+    // lets see which node failed
+    0 do  ( s n# t | ec n# f .... )
+
+      false == if ( s n# t | ec n# )
+
+        swap error.msg swap
+        "Node%v ERROR: %v" str.format .
+
+      else
+
+        drop drop
+
+      then
+
+    loop
+
+  then
+
+;
 
 /*----------------------------------------------------------------------------*/
 /* create a grid using name from input stream                                 */

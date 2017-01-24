@@ -70,8 +70,10 @@ namespace Structures
     bool bPop(s48K& sArg1, i8& iArg2);
     bool bPop(s48K& sArg1, i8& iArg2, i8& iArg3);
     bool bPop(s48K& sArg1, s48K& sArg2);
+    bool bPopBinary(Object*& pObject);
     bool bPopParamInt(i8& iArg1);
     
+    void vPushBinary(Object* pObject);
     void vPush(Header* pHeader);
     void vPush(i8 iInt);
     void vPush(Object* pObject);

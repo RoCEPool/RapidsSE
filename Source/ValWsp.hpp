@@ -23,6 +23,8 @@ namespace Values
     void operator =(Object* pObject);
     void operator =(char* pStr);
     void operator =(const char* pStr);
+    
+    void vAssignBinary(Object* pObject);
   };
 }
 

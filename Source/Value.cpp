@@ -39,6 +39,16 @@ void Value::operator =(i8 iInt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* overlap this as a binval                                                   */
+/*----------------------------------------------------------------------------*/
+BinVal* Value::pAsBinVal(void)
+{
+  BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
+  
+  return pBinVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* overlap this as a intval                                                   */
 /*----------------------------------------------------------------------------*/
 IntVal* Value::pAsIntVal(void)
@@ -94,6 +104,22 @@ ValSet* Value::pAsValSet(void)
 char* Value::aClass(void)
 {
   return (char*)pCN[eClass()];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get binary object                                                          */
+/*----------------------------------------------------------------------------*/
+Object* Value::pObject(void)
+{
+  ASSERT(CN_BINVAL == eClass());
+  
+  BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
+  
+  i8 iSize = pBinVal->iSize();
+  Object* pObject = Heap::pAllocate(pBinVal->eObjectClass());
+  Memory::vCopy(pObject, pBinVal->pData(), iSize);
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -187,6 +213,12 @@ i8 Value::iSize(void)
   
   eCN eClass = this->eClass();
   switch(eClass) {
+    
+    case CN_BINVAL: {
+      BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
+      iSize = pBinVal->iSize();
+      break;
+    }
       
     case CN_INTVAL: {
       IntVal* pIntVal = reinterpret_cast<IntVal*>(this);

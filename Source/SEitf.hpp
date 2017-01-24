@@ -131,6 +131,7 @@ namespace Interface
     bool bGetVersion(char* pWords[]);
     bool bSeitfCount(char* pWords[]);
     
+    bool bObject(char* pWords[]);
     bool bPing(char* pWords[]);
     bool bPrintRowBuffer(char* pWords[]);
     

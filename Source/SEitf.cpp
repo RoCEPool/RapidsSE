@@ -356,6 +356,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bSame("mksch",pWords[0])) return bCreateSchema(pWords, iWords);
   if (String::bSame("mktbl",pWords[0])) return bCreateTable(pWords, iWords);
   if (String::bSame("mkten",pWords[0])) return bCreateTenant(pWords, iWords);
+  if (String::bSame("object",pWords[0])) return bObject(pWords);
   if (String::bSame("pRB",pWords[0])) return bPrintRowBuffer(pWords);
   if (String::bSame("pwf",pWords[0])) return bGetDicPath(pWords);
   if (String::bSame("rettbl",pWords[0])) return bRetTable(pWords, iWords);
@@ -1470,6 +1471,21 @@ bool SEitf::bPing(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"ping"));
   sRequest = "ping";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* send object                                                                */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bObject(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  char* a = sRequest.a();
+  
+  String::vConcat(a,"object");
+  
   return bAppendRequest(sRequest);
 }
 
