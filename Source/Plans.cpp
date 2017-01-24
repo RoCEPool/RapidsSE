@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 void Plans::vCheckAssumptions(void)
 {
-  ASSERT(sizeof(Plan)           < C_SIZE_SMALL_OBJECT);
-  ASSERT(sizeof(PlanList)       < C_SIZE_SMALL_OBJECT);
+  ASSERT(sizeof(Plan)      < C_SIZE_MEDIUM_OBJECT);
+  ASSERT(sizeof(PlanList)  < C_SIZE_SMALL_OBJECT);
 }
 
 /*============================================================================*/

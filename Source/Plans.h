@@ -9,7 +9,6 @@
 #include "Plan.hpp"
 #include "PlanList.hpp"
 
-
 //-----------------------------------------------------------------------------
 namespace Plans
 {

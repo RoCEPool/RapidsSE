@@ -11,10 +11,14 @@ namespace Plans
   class Plan : public Object,
                public ListNode_t<Plan>
   {
-    
   private:
-    i8      m_iPlanNo;     // plan number
-    s32     m_sName;       // plan name
+    u8     m_uPlanId;  // plan identifier       //# its an id because its unique
+    s32    m_sName;    // plan name
+    
+    Dic    m_xDic;     // private dictionary of this plan
+    s48K   m_sLambda;  // generated text of words
+    
+    //RegList* m_pRegList; // set of register frames for use by operators
     
     // always last
     Footer m_xFooter;
@@ -25,13 +29,19 @@ namespace Plans
     void  operator delete(void*);
     
     Plan(void);
-    Plan(const char* aLambda);
-    void vInit(void);
+    void vInit(void);                     //# I like the position of this -- ray
     ~Plan(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
-    static i8   iNextPlanId(void);
     
+    u8   uPlanId(void);
+    s32& sName(void);
+
+    Dic* pDic(void);
+
+    s48K& sLambda(void);
+    void vLambda(s48K& sLambda);
+
     Footer* pFooter(void);
   };
   

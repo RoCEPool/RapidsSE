@@ -320,7 +320,7 @@ eHT geWhichHeap[]
   /* 41 */ HT_MEDIUM,  // CN_PARSER
   /* 42 */ HT_INVALID, // CN_PARTITION
   /* 43 */ HT_INVALID, // CN_PARTITIONS
-  /*    */ HT_SMALL,   // CN_PLAN
+  /*    */ HT_MEDIUM,  // CN_PLAN
   /*    */ HT_SMALL,   // CN_PLANLIST
   /* 44 */ HT_INVALID, // CN_PROXY
   /* 45 */ HT_INVALID, // CN_PROXYSET

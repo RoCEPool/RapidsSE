@@ -15,13 +15,17 @@ void StorageEngine::vCheckAllAssumptions(void)
   Platform::vCheckAssumptions();
   Magic::vCheckAssumptions();
   Common::vCheckAssumptions();
-  Pool::vCheckAssumptions();
   Values::vCheckAssumptions();
+  Pool::vCheckAssumptions();
   Structures::vCheckAssumptions();
+  Parsing::vCheckAssumptions();
+  Transactions::vCheckAssumptions();
   Dictionaries::vCheckAssumptions();
   DBobjects::vCheckAssumptions();
+  Plans::vCheckAssumptions();
   Tasks::vCheckAssumptions();
   Threads::vCheckAssumptions();
+  GridModel::vCheckAssumptions();
   Interface::vCheckAssumptions();
   GridModel::vCheckAssumptions();
   StorageEngine::vCheckAssumptions();

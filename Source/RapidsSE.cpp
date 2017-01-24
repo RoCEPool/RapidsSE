@@ -37,7 +37,7 @@ void*               mpRegion           = nullptr;
 Lock                gxDdlLock;
 Lock                gxDicLock;
 
-Atomic              gzPlanNumber;
+Atomic              gzPlanId;
 
 
 /*----------------------------------------------------------------------------*/
@@ -342,7 +342,7 @@ void RapidsSE::vSystemInit(void)
   gpAttachMap->vRecordGlobals();
   
   // initialize the plan number
-  gzPlanNumber =  gpGrid->iThisNode() << 48;
+  gzPlanId =  gpGrid->iThisNode() << 48;
   
   // get the trace file
   Word* pTraceFileWord = gpMainDic->pFindWord("trace_file");
