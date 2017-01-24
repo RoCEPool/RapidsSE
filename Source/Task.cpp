@@ -397,6 +397,7 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("CN_S256",         CN_S256);
   /*  3 */ vAddConstant("CN_S48K",          CN_S48K);
   
+  /*    */ vAddConstant("CN_BINVAL",       CN_BINVAL);
   /*  4 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
   /*  5 */ vAddConstant("CN_IPVAL",        CN_IPVAL);
   /*  6 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);

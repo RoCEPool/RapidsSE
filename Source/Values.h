@@ -10,6 +10,7 @@
 #include "ValWsp.hpp"
 #include "ValReg.hpp"
 
+#include "BinVal.hpp"
 #include "IntVal.hpp"
 #include "IpVal.hpp"
 #include "ObjVal.hpp"
