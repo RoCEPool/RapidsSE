@@ -233,26 +233,25 @@ tp: lf
   assert.stack_0
 
   // push tenants folder
-  "tenants" findInCurrent
-  execute pathPush
+  "tenants" find execute
+  pathPush
 
-  // create tenant boray (and catalogs sub-folder)
-  "boray" makeTenant drop drop drop
+    // create tenant boray (and catalogs sub-folder)
+    "boray" makeTenant drop drop drop
 
-  // push boray folder
-  "boray" findInCurrent
-  execute pathPush
+    // push boray folder
+    "boray" findInCurrent execute
+    pathPush
 
-  // push catalogs folder
-  "catalogs" findInCurrent
-  execute pathPush
+      // push catalogs folder
+      "catalogs" findInCurrent execute
+      pathPush
 
-  // create catalog rapidsse (and schemas sub-folder)
-  "rapidsse" makeCatalog drop drop drop
+        // create catalog rapidsse (and schemas sub-folder)
+        "rapidsse" makeCatalog drop drop drop
 
-  // go back to main dictionary
-  pathDrop
-  pathDrop
+      pathDrop
+    pathDrop
   pathDrop
 
   assert.stack_0
