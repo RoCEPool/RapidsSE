@@ -141,8 +141,12 @@ void Task::vColon(NNP_Task nnpTask)
   
   nnpTask->m_pTokeniser->vNextToken();
   
-  Word* pNewWord = new(nnpTask->m_xPathStack.pTop())
-                     Word(nnpTask->m_pTokeniser->sToken().a());
+  Dic* pDic;
+  if (nnpTask->m_xPathStack.iCount())
+    pDic = nnpTask->m_xPathStack.pTop();
+  else
+    pDic = gpMainDic;
+  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -198,8 +202,10 @@ ENTRY("vCreate");
   
   nnpTask->m_pTokeniser->vNextToken();
   
-  Dic* pDic = nnpTask->m_xPathStack.pTop();
-  if (!pDic)
+  Dic* pDic;
+  if (nnpTask->m_xPathStack.iCount())
+    pDic = nnpTask->m_xPathStack.pTop();
+  else
     pDic = gpMainDic;
   
   Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
@@ -220,8 +226,10 @@ ENTRY("vCreateFrom");
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK(">create");
   
-  Dic* pDic = nnpTask->m_xPathStack.pTop();
-  if (!pDic)
+  Dic* pDic;
+  if (nnpTask->m_xPathStack.iCount())
+    pDic = nnpTask->m_xPathStack.pTop();
+  else
     pDic = gpMainDic;
   
   Word* pNewWord = new(pDic) Word(sName.a());
@@ -573,8 +581,10 @@ void Task::vSemicolon(NNP_Task nnpTask)
     String::vConcat(sTildeName.a(),pCurrentWord->sName().a());
     
     // create new word for tilde of current word
-    Dic* pDic = nnpTask->m_xPathStack.pTop();
-    if (!pDic)
+    Dic* pDic;
+    if (nnpTask->m_xPathStack.iCount())
+      pDic = nnpTask->m_xPathStack.pTop();
+    else
       pDic = gpMainDic;
     Word* pWordTilde = new(pDic) Word(sTildeName.a());
     // ** do not set as current word **

@@ -181,47 +181,40 @@ void SEitf::vInit(void)
   // request queue
   Word* pReqQueWord = gpMainDic->pFindWord("requestQueue");
   ASSERT(pReqQueWord);
-  
   m_pRequestQueue = reinterpret_cast<Queue*>(pReqQueWord->pDataArea());
+  
   // response queue
   m_pResponseQueue = new Queue;
   
-  // dictionary stack
-  m_xPathStack.vPush(gpMainDic);
-//  m_xPathStack.vPush(&m_xDic);
+  // set up initial default path
   
-  // find tenants
+  // /tenants
   Word* pTenants = gpMainDic->pFindWord("tenants");
   ASSERT(pTenants);
-  
   Cell* pCell = pTenants->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
-  // find tenant boray
+  // /tenants/boray
   Word* pTenant = m_xPathStack.pFindInCurrent("boray");
   ASSERT(pTenant);
-  
   pCell = pTenant->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
-  // find catalogs
+  // /tenants/boray/catalogs
   Word* pCatalogs = m_xPathStack.pFindInCurrent("catalogs");
   ASSERT(pCatalogs);
-  
   pCell = pCatalogs->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
  
-  // find catalog rapidsse
+  // /tenants/boray/catalogs/rapidsse
   Word* pCatalog = m_xPathStack.pFindInCurrent("rapidsse");
   ASSERT(pCatalog);
-  
   pCell = pCatalog->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
   
-  // find schemas
+  // /tenants/boray/catalogs/rapidsse/schemas
   Word* pSchema = m_xPathStack.pFindInCurrent("schemas");
   ASSERT(pSchema);
-  
   pCell = pSchema->pFirstCell();
   m_xPathStack.vPush(reinterpret_cast<Dic*>(pCell));
 }

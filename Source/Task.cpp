@@ -203,8 +203,6 @@ void Task::vInit(const char* aLambda)
   
   m_sComment    = "";
   
-  m_xPathStack.vPush(gpMainDic);
-  
   m_pQueue  = nullptr;
   m_pSocket = nullptr;
   
@@ -264,7 +262,7 @@ void Task::vInitialiseMain(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add constant                                                               */
+/* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstant(const char* aName, i8 iVal)
 {
@@ -280,7 +278,7 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add constant                                                               */
+/* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstant(const char* aName, const char* aValue)
 {
@@ -296,7 +294,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add primitive word into dictionary                                         */
+/* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
@@ -1019,7 +1017,13 @@ Word* Task::pCompileColon(s& sDefinition)
   m_pTokeniser->vNextToken();
   //vTrace("CompileColon: %s\n",m_sToken.a());
   
-  pNewWord = new(m_xPathStack.pTop()) Word(m_pTokeniser->sToken().a());
+  Dic* pDic;
+  if (m_xPathStack.iCount())
+    pDic = m_xPathStack.pTop();
+  else
+    pDic = gpMainDic;
+
+  pNewWord = new(pDic) Word(m_pTokeniser->sToken().a());
   
   m_pCurrentWord = pNewWord;
 
@@ -1107,14 +1111,6 @@ Word* Task::pCompileConstant(s& sDefinition)
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
-  /*
-  pNewWord = new(m_xPathStack.pTop()) Word(m_sToken.a());
-  
-  vCurrentWord(pNewWord);
-  
-  pNewWord->vEncode("pushValue",&xValWsp);
-  pNewWord->vEncode("exit");
-  */
   vAddConstant(m_pTokeniser->sToken().a(),xValWsp.sStr());
   
   m_pTokeniser->vNextToken();
