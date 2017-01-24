@@ -42,6 +42,32 @@
   does>
 ;
 
+/*----------------------------------------------------------------------------*/
+/* load contents of named file onto stack                                     */
+/*----------------------------------------------------------------------------*/
+: fileLoad ( "<fileNm>" -- s true | false )
+
+  file.new locals| loadFile |
+
+  loadFile file.path!
+
+  OPEN_READ loadFile file.open
+  not if
+    loadFile file.path@ "No such file %v" str.format .
+    loadFile file.delete
+    false
+    exit
+  then
+
+  ""
+  begin loadFile file.read while
+    str.cat " " str.cat
+  repeat
+
+  loadFile file.delete
+  true
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
