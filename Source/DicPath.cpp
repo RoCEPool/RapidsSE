@@ -126,8 +126,8 @@ void DicPath::vDump(eCN eClass, Object* pObject, const char* pTab)
            //pDicPath->m_pDic[i]->sName().a());
   
   for (i8 i = pDicPath->m_iTop; i >= 0; i--) {
-  vTrace(" dic %p %lld %s",pTab, pDicPath->m_pDic[i],i,
-         pDicPath->m_pDic[i]->sName().a());
+    vTrace(" dic %p %lld %s",pTab, pDicPath->m_pDic[i],i,
+           pDicPath->m_pDic[i]->sName().a());
     //Dic::vDump(CN_DIC, pDicPath->m_pDic[i], pTab);
   }
 
@@ -144,8 +144,6 @@ Word* DicPath::pFindWord(s& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  ASSERT(m_iTop >= 0);
-
   Word* pWord = pFindWord(sName.a());
   
   return pWord;
@@ -157,8 +155,6 @@ Word* DicPath::pFindWord(s& sName)
 Word* DicPath::pFindWord(const char* aName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
-  
-  ASSERT(m_iTop >= 0);
   
   Word* pWord;
   
@@ -183,9 +179,8 @@ Word* DicPath::pFindInCurrent(const char* aName)
   
   Word* pWord;
   
-  if ( (pWord = m_pDic[m_iTop]->pFindWord(aName)) ) {
+  if ( (pWord = m_pDic[m_iTop]->pFindWord(aName)) )
     return pWord;
-  }
   
   return nullptr;
 }
@@ -197,11 +192,16 @@ Word* DicPath::pFindStep(TaskStep pStep)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  for (i8 i = m_iTop; i >= 0; i--) {
-    for (Word* pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  Word* pWord;
+  
+  for (i8 i = m_iTop; i >= 0; i--)
+    for (pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
         return pWord;
-  }
+
+  for (pWord = gpMainDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
+    if (WT_PRIMITIVE == pWord->eWordType() && pStep == pWord->pEntryStep())
+      return pWord;
   
   return nullptr;
 }
@@ -213,12 +213,12 @@ bool DicPath::bForget(s& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
   
-  ASSERT(m_iTop >= 0);
-    
-  for (i8 i = m_iTop; i >= 0; i--) {
-    if ( m_pDic[i]->bForget(sName) )
+  for (i8 i = m_iTop; i >= 0; i--)
+    if (m_pDic[i]->bForget(sName))
       return true;
-  }
+
+  if (gpMainDic->bForget(sName))
+    return true;
   
   return false;
 }
@@ -230,11 +230,16 @@ Word* DicPath::pLocate(Cell* pCell)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
 
-  for (i8 i = m_iTop; i >= 0; i--) {
-    for (Word* pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
+  Word* pWord;
+  
+  for (i8 i = m_iTop; i >= 0; i--)
+    for (pWord = m_pDic[i]->pLastWord(); pWord; pWord = pWord->pPrevWord())
       if (pWord->bHasCell(pCell))
         return pWord;
-  }
+
+  for (pWord = gpMainDic->pLastWord(); pWord; pWord = pWord->pPrevWord())
+    if (pWord->bHasCell(pCell))
+      return pWord;
   
   return nullptr;
   
@@ -278,6 +283,9 @@ Dic* DicPath::pTop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DICPATH,_FOOTER_);
 
+  ASSERT(m_iTop >= 0);
+  ASSERT(m_iTop <  C_DICTIONARY_STACK);
+  
   Dic* pTop = m_pDic[m_iTop];
   
   return pTop;
