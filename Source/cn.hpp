@@ -20,6 +20,7 @@ namespace Magic
     /*  3 */ CN_S48K,
     /*  4 */ CN_S1M,
     
+    /*     */ CN_BINVAL,
     /*  5 */ CN_INTVAL,
     /*  6 */ CN_IPVAL,
     /*  7 */ CN_OBJVAL,
@@ -143,6 +144,7 @@ namespace Magic
     /*  3 */ "S8K",
     /*  4 */ "S1M",
     
+    /*    */ "BINVAL",
     /*  5 */ "INTVAL",
     /*  6 */ "IPVAL",
     /*  7 */ "OBJVAL",
