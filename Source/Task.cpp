@@ -203,8 +203,6 @@ void Task::vInit(const char* aLambda)
   
   m_sComment    = "";
   
-  m_xPathStack.vPush(gpMainDic);
-  
   m_pQueue  = nullptr;
   m_pSocket = nullptr;
   
@@ -264,7 +262,7 @@ void Task::vInitialiseMain(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add constant                                                               */
+/* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstant(const char* aName, i8 iVal)
 {
@@ -280,7 +278,7 @@ void Task::vAddConstant(const char* aName, i8 iVal)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add constant                                                               */
+/* add constant to main dictionary                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vAddConstant(const char* aName, const char* aValue)
 {
@@ -296,7 +294,7 @@ void Task::vAddConstant(const char* aName, const char* aValue)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add primitive word into dictionary                                         */
+/* add primitive word into main dictionary                                    */
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitive(const char* pName, TaskStep pStep, bool bImmediate)
 {
