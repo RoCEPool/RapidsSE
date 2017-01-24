@@ -98,6 +98,9 @@ void AttachMap::vRecordGlobals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
 
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] Recording globals...\n");
+  
   m_iPid = Process::iGetPid();
   
   m_xSince.vSet();

@@ -236,6 +236,9 @@ void RapidsSE::vCreateObjects(void)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vDicCompile(NP_Task npRootTask)
 {
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] DicCompile...\n");
+  
   npRootTask->vInitialiseMain();
   
   npRootTask->vSeedDicCompileSen();
@@ -357,6 +360,10 @@ void RapidsSE::vStartActors(void)
   if (gxArguments.m_bVerbose)
     vTrace("Shm region initialised at: %s\n",gpAttachMap->m_sUTC.a());
 
+  if (gxArguments.m_bVerbose)
+    vTrace("Starting actors\n");
+
+  
   // seed root task to start the system
   gnpRootTask->vSeedWord("startActors");
   

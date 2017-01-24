@@ -346,6 +346,9 @@ void Task::vAddConstants(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] Adding constants...\n");
+  
 #ifdef _DEBUG
   vAddConstant("_DEBUG",1);
 #else
@@ -719,6 +722,9 @@ void Task::vAddPrimitives(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] Adding primitives...\n");
+  
   vAddPrimitive("word",            &vWord,             false);
   gpWord = gpMainDic->pFindWord("word");
 
@@ -802,6 +808,9 @@ void Task::vAddPrimitives(void)
 void Task::vAddRoutines(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] Adding routines...\n");
   
   s48K sDefinition;
 
@@ -1386,6 +1395,9 @@ Thread* Task::pRootThread(void)
 void Task::vSeedDicCompileSen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  if (gxArguments.m_bVerbose)
+    vTrace("[[mainThread]] Seeding Dic Compile...\n");
   
   Word* pBootSen = gpMainDic->pFindWord("::dicCompile");
   ASSERT(pBootSen);
