@@ -1084,6 +1084,58 @@ bool String::bReplace(char *pString, const char *pThis, const char *pThat)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bReplace: replace sub-string                                               */
+/*----------------------------------------------------------------------------*/
+bool String::bReplace(char *pDst, const char* pSrc,
+                      const char *pThis, const char *pThat)
+{
+  bool bReplaced = false;
+  
+NextIteration:
+  
+  // scan source string looking for matches
+  while (*pSrc) {
+  
+    // non-matching case
+    if (*pSrc != *pThis) {
+      // just copy one src char to dst
+      *pDst++ = *pSrc++;
+      continue;
+    }
+    
+    // mark start of possible match & replace
+    const char* pMatch   = pSrc;
+    const char* pReplace = pThis;
+    
+    // attempt to collect matching chars from src
+    while (*pReplace) {
+      
+      // false match?
+      if (*pSrc != *pReplace) {
+        // false match, therefore copy the unmatching chars
+        do {
+          *pDst++ = *pMatch++;
+        } while (pMatch < pSrc);
+        goto NextIteration;
+      }
+      
+      // matching so far...
+      pSrc++;
+      pReplace++;
+    }
+    
+    // copy the replacement substring
+    for (const char* pCopy = pThat; *pCopy; )
+      *pDst++ = *pCopy++;
+    
+    // a replacement has been made
+    bReplaced = true;
+  }
+  
+  return bReplaced;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bSame: are two arguments equal (no case)                                   */
 /*----------------------------------------------------------------------------*/
 bool String::bSame(const char* pArg1, const char* pArg2)

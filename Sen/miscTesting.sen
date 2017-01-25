@@ -205,6 +205,20 @@ traceon
 
 EmbeddedFile .
 
+/*----------------------------------------------------------------------------*/
+/* string replacement                                                         */
+/*----------------------------------------------------------------------------*/
+: srepl
+
+  "this" "that" "abcthisdef" str.replace .
+
+  "this" "that" "abcthidef" str.replace .
+
+  "this" "that" "abcthisdefthis" str.replace .
+  "this" "that" "abcthisthisdefthis" str.replace .
+  "this" "that" "thisthiabcthisthisdefthis" str.replace .
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

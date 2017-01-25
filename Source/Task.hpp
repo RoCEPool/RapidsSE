@@ -757,6 +757,7 @@ namespace Tasks
     static void vStrPad(NNP_Task nnpTask);
     static void vStrPrepend(NNP_Task nnpTask);
     static void vStrRandom(NNP_Task nnpTask);
+    static void vStrReplace(NNP_Task nnpTask);
     static void vStrRight(NNP_Task nnpTask);
     static void vStrSub(NNP_Task nnpTask);
 

@@ -47,6 +47,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("str.pad",      &vStrPad,        false);
   vAddPrimitive("str.prepend",  &vStrPrepend,    false);
   vAddPrimitive("str.random",   &vStrRandom,     false);
+  vAddPrimitive("str.replace",  &vStrReplace,    false);
   vAddPrimitive("str.right",    &vStrRight,      false);
   vAddPrimitive("str.sub",      &vStrSub,        false);
 }
@@ -355,6 +356,35 @@ void Task::vStrRandom(NNP_Task nnpTask)
   sRnd = Random::sRandomString(iLength).a();
   
   nnpTask->m_pDataStack->vPush(sRnd);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.replace-- replace this with that within string                         */
+/*----------------------------------------------------------------------------*/
+void Task::vStrReplace(NNP_Task nnpTask)
+{
+  ENTRY("vStrReplace");
+  
+  s48K sString;
+  s48K sThat;
+  s48K sThis;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("str.replace");
+
+  if ( ! nnpTask->m_pDataStack->bPop(sThat) )
+    THROW_INVALID_DSTACK("str.replace");
+  
+  if ( ! nnpTask->m_pDataStack->bPop(sThis) )
+    THROW_INVALID_DSTACK("str.replace");
+  
+  s48K sReplaced;
+  
+  String::bReplace(sReplaced.a(),sString.a(),sThis.a(),sThat.a());
+  
+  nnpTask->m_pDataStack->vPush(sReplaced);
   
   EXIT();
 }
