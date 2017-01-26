@@ -29,8 +29,8 @@ tp: participantProxy
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
-    // pop valset off this tasks queue
-    taskQueue> ( valset )
+    // pop valset off this tasks job queue
+    jobQueue> ( valset )
 
     // set caller into reg0
     exeOne 
@@ -41,7 +41,7 @@ tp: participantProxy
 
       addSetCaller
 
-      forwardTask >taskQueue;a>
+      forwardTask >jobQueue;a>
 
     else
       // forward to participant on other node (via CP)

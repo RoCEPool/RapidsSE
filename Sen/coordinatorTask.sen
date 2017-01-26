@@ -18,7 +18,7 @@
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop indirect call this tasks queue of indirect calls
-    taskQueue> ( valset )
+    jobQueue> ( valset )
 
     // execute indirect call
     exeAll
@@ -44,7 +44,7 @@
   ppTasks @ ( valset task )
 
   // push indirect call onto queue of ppTask
-  >taskQueue
+  >jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/

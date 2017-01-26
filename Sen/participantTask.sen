@@ -18,8 +18,8 @@
 
     depth 0 != if "stack of task has grown" . debug.trap then
 
-    // pop valset off queue and push onto this stack
-    taskQueue> ( valset )
+    // pop valset off job queue and push onto this stack
+    jobQueue> ( valset )
 
     exeAll
 

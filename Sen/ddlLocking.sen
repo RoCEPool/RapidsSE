@@ -47,7 +47,7 @@ args.nodes intArray: ddlInts
 
 
   // transfer to another actors and wait for result
-  >taskQueue;a> ( ..result.. )
+  >jobQueue;a> ( ..result.. )
 ;
 
 /*----------------------------------------------------------------------------*/

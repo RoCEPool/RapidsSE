@@ -89,9 +89,9 @@ args.nodes ptrArray: senderQueues
 /*----------------------------------------------------------------------------*/
 /* append valset onto queue of given task and signal if its waiting           */
 /*----------------------------------------------------------------------------*/
-: >taskQueue ( valset task -- )
+: >jobQueue ( valset task -- )
 
-tp: >taskQueue
+tp: >jobQueue
 
   locals| targetTask | ( valset )
 
@@ -113,13 +113,13 @@ tp: >taskQueue
 /*----------------------------------------------------------------------------*/
 /* append indirect call onto queue of given task, wait for ack, move a to p   */
 /*----------------------------------------------------------------------------*/
-: >taskQueue;a> ( <<call>> task -- <<result>> )
+: >jobQueue;a> ( <<call>> task -- <<result>> )
 
   // set this task to wait for 1 ack
   1 setAcks ( <<call>> task )
 
   // append indirect call onto queue of given task
-  >taskQueue ( )
+  >jobQueue ( )
 
   tp: ackWait
 
@@ -145,7 +145,7 @@ tp: haveResultSet
   tp: sendingViaTask
 
   // enqueue valset onto queue of task
-  >taskQueue ( )
+  >jobQueue ( )
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -162,7 +162,7 @@ tp: haveResultSet
 tp: sendingViaTask
 
   // enqueue valset onto queue of task
-  >taskQueue
+  >jobQueue
 
   // this task waits till ack'd
   ackWait ( )
@@ -176,16 +176,16 @@ tp: haveResultSet
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop value from this tasks queue (this is a blocking call)                  */
+/* pop valset from this tasks job queue (this is a blocking call)             */
 /*----------------------------------------------------------------------------*/
-: taskQueue> ( -- valset )
+: jobQueue> ( -- valset )
 
-  tp: taskQueue>
+  tp: jobQueue>
 
   // grab mutex of this task
   task.this grabMutex
 
-  // attempt to pop from this task's queue
+  // attempt to pop from this task's job queue
   popQueue ( value true | false )
   not if
     // queue empty; wait till signalled
@@ -248,7 +248,7 @@ tp: >callerAux
 
   cpTasks @ ( valset task )
 
-  >taskQueue ( )
+  >jobQueue ( )
 ;
 
 /*----------------------------------------------------------------------------*/

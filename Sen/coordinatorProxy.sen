@@ -20,11 +20,11 @@ tp: coordinator
     depth 0 != if "stack of task has grown" . debug.trap then
 
     // pop valset off this tasks queue
-    taskQueue> ( valset )
+    jobQueue> ( valset )
 
     addSetCaller ( << <<call*>> <<caller>> >> )
 
-    forwardTask >taskQueue;a> ( <<result>> )
+    forwardTask >jobQueue;a> ( <<result>> )
 
     // have receiver pass indirect result onto participant proxy
     addPassBackToPP ( << <<result>> <<passBackToPP>> >> )

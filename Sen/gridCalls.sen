@@ -90,7 +90,7 @@ tp: >coordinator>
 */
 
   // target actor is coordinator
-  c.task >taskQueue;a> ( <<result>> )
+  c.task >jobQueue;a> ( <<result>> )
 
 tp: resumedbyCoord
 
