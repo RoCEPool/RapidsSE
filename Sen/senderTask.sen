@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* send valset across the socket                                              */
 /*----------------------------------------------------------------------------*/
-: >send ( valset -- )
+: >socket ( valset -- )
 
   task.this task.socket@
 
@@ -44,7 +44,7 @@ tp: snd.loop
 tp: poppedValset
 
     // send the valset across the connection
-    >send
+    >socket
 
   again
 ;

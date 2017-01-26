@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* recv valset from the socket                                                */
 /*----------------------------------------------------------------------------*/
-: recv> ( -- valset )
+: socket> ( -- valset )
 
   task.this task.socket@
 
@@ -34,7 +34,7 @@ tp: snd.loop
   begin
     depth 0 != if stk "stack of task has grown" . debug.trap then
 
-    recv>
+    socket>
 
     exeOne
 
