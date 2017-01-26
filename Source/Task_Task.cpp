@@ -34,34 +34,34 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Task(void)
 {
-  vAddPrimitive("task.ack",        &vTaskAck,          false);
-  vAddPrimitive("task.acks@",      &vTaskAcksFetch,    false);
-  vAddPrimitive("task.acks!",      &vTaskAcksStore,    false);
-  vAddPrimitive("task.comment@",   &vTaskCommentFetch, false);
-  vAddPrimitive("task.comment!",   &vTaskCommentStore, false);
-  vAddPrimitive("task.dicStack",   &vTaskDicStack,     false);
-  vAddPrimitive("task.dump",       &vTaskDump,         false);
-  vAddPrimitive("task.init",       &vTaskInit,         false);
-  vAddPrimitive("task.name@",      &vTaskNameFetch,    false);
-  vAddPrimitive("task.name!",      &vTaskNameStore,    false);
-  vAddPrimitive("task.new",        &vTaskNew,          false);
-  vAddPrimitive("task.parent@",    &vTaskParentFetch,  false);
-  vAddPrimitive("task.parent!",    &vTaskParentStore,  false);
-  vAddPrimitive("task.queue@",     &vTaskQfetch,       false);
-  vAddPrimitive("task.queue!",     &vTaskQstore,       false);
-  vAddPrimitive("task.seed",       &vTaskSeed,         false);
-  vAddPrimitive("task.seitf@",     &vTaskSeitfFetch,   false);
-  vAddPrimitive("task.seitf!",     &vTaskSeitfStore,   false);
-  vAddPrimitive("task.socket@",    &vTaskSocketFetch,  false);
-  vAddPrimitive("task.socket!",    &vTaskSocketStore,  false);
-  vAddPrimitive("task.state@",     &vTaskStateFetch,   false);
-  vAddPrimitive("task.state!",     &vTaskStateStore,   false);
-  vAddPrimitive("task.taskset@",   &vTaskTaskSetFetch, false);
-  vAddPrimitive("task.taskset!",   &vTaskTaskSetStore, false);
-  vAddPrimitive("task.this",       &vTaskThis,         false);
-  vAddPrimitive("task.thread",     &vTaskThread,       false);
-  vAddPrimitive("task.wait",       &vTaskWait,         false);
-  vAddPrimitive("task.yield",      &vTaskYield,        false);
+  vAddPrimitive("task.ack",       &vTaskAck,           false);
+  vAddPrimitive("task.acks@",     &vTaskAcksFetch,     false);
+  vAddPrimitive("task.acks!",     &vTaskAcksStore,     false);
+  vAddPrimitive("task.comment@",  &vTaskCommentFetch,  false);
+  vAddPrimitive("task.comment!",  &vTaskCommentStore,  false);
+  vAddPrimitive("task.dicStack",  &vTaskDicStack,      false);
+  vAddPrimitive("task.dump",      &vTaskDump,          false);
+  vAddPrimitive("task.init",      &vTaskInit,          false);
+  vAddPrimitive("task.jobQueue@", &vTaskJobQueueFetch, false);
+  vAddPrimitive("task.jobQueue!", &vTaskJobQueueStore, false);
+  vAddPrimitive("task.name@",     &vTaskNameFetch,     false);
+  vAddPrimitive("task.name!",     &vTaskNameStore,     false);
+  vAddPrimitive("task.new",       &vTaskNew,           false);
+  vAddPrimitive("task.parent@",   &vTaskParentFetch,   false);
+  vAddPrimitive("task.parent!",   &vTaskParentStore,   false);
+  vAddPrimitive("task.seed",      &vTaskSeed,          false);
+  vAddPrimitive("task.seitf@",    &vTaskSeitfFetch,    false);
+  vAddPrimitive("task.seitf!",    &vTaskSeitfStore,    false);
+  vAddPrimitive("task.socket@",   &vTaskSocketFetch,   false);
+  vAddPrimitive("task.socket!",   &vTaskSocketStore,   false);
+  vAddPrimitive("task.state@",    &vTaskStateFetch,    false);
+  vAddPrimitive("task.state!",    &vTaskStateStore,    false);
+  vAddPrimitive("task.taskset@",  &vTaskTaskSetFetch,  false);
+  vAddPrimitive("task.taskset!",  &vTaskTaskSetStore,  false);
+  vAddPrimitive("task.this",      &vTaskThis,          false);
+  vAddPrimitive("task.thread",    &vTaskThread,        false);
+  vAddPrimitive("task.wait",      &vTaskWait,          false);
+  vAddPrimitive("task.yield",     &vTaskYield,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -261,6 +261,51 @@ ENTRY("vTaskInit");
 }
 
 /*----------------------------------------------------------------------------*/
+/* task.jobQueue@ -- push job queue of given task                             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskJobQueueFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskJobQueueFetch");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.jobQueue@");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Queue* pQueue = pThatTask->m_pJobQueue;
+  
+  Object* pQueueEmb = static_cast<Object*>(pQueue);
+  
+  nnpTask->m_pDataStack->vPush(pQueueEmb);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.jobQueue! -- store job quueue into given task                         */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskJobQueueStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskJobQueueStore");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.jobQueue!");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* pQueueEmb;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pQueueEmb) )
+    THROW_INVALID_DSTACK("task.jobQueue!");
+  
+  Queue* pQueue = static_cast<Queue*>(pQueueEmb);
+  
+  pThatTask->m_pJobQueue = pQueue;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* task.name@ -- fetch task name                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vTaskNameFetch(NNP_Task nnpTask)
@@ -380,51 +425,6 @@ void Task::vTaskParentStore(NNP_Task nnpTask)
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   nnpTask->m_pParentTask = pParentTask;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.queue@ -- fetch queue of task on data stack                           */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskQfetch(NNP_Task nnpTask)
-{
-ENTRY("vTaskQfetch");
-  
-  Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.queue@");
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Queue* pQueue = pThatTask->m_pQueue;
-  
-  Object* pQueueEmb = static_cast<Object*>(pQueue);
-  
-  nnpTask->m_pDataStack->vPush(pQueueEmb);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* task.queue! -- store queue on data stack into task on data stack           */
-/*----------------------------------------------------------------------------*/
-void Task::vTaskQstore(NNP_Task nnpTask)
-{
-ENTRY("vTaskQstore");
-  
-  Object* pTaskObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
-    THROW_INVALID_DSTACK("task.queue!");
-  Task* pThatTask = _pTask(pTaskObject);
-  
-  Object* pQueueEmb;
-  
-  if ( ! nnpTask->m_pDataStack->bPop(pQueueEmb) )
-    THROW_INVALID_DSTACK("task.queue!");
-  
-  Queue* pQueue = static_cast<Queue*>(pQueueEmb);
-  
-  pThatTask->m_pQueue = pQueue;
   
   EXIT();
 }

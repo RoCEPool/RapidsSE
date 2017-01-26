@@ -74,13 +74,10 @@ namespace Tasks
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
     
-    Stack*  m_pDataStack;     // data stack
-    Stack*  m_pReturnStack;   // return stack
-    Stack*  m_pAuxStack;      // auxiliary stack
+    Stack*  m_pDataStack;   // data stack
+    Stack*  m_pReturnStack; // return stack
+    Stack*  m_pAuxStack;    // auxiliary stack
     DicPath m_xPathStack;   // path stack
-    
-    Queue* m_pQueue;         // processing queue
-    Socket* m_pSocket;       // socket
     
     RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // register frame chain
@@ -110,8 +107,11 @@ namespace Tasks
     s256  m_sFile;
     s256  m_sException;
 
-    Interface::SEitf* m_pSEitf;
-        
+    Interface::SEitf* m_pSEitf; // the seitf for this task
+    Queue*  m_pJobQueue;        // job queue that this task serves
+                                //   may or may not be shared
+    Socket* m_pSocket;          // socket associated with task
+    
     i8  m_iDdlLocked;
     
     // always last
@@ -788,14 +788,14 @@ namespace Tasks
     static void vTaskDicStack(NNP_Task nnpTask);
     static void vTaskDump(NNP_Task nnpTask);
     static void vTaskInit(NNP_Task nnpTask);
+    static void vTaskJobQueueFetch(NNP_Task nnpTask);
+    static void vTaskJobQueueStore(NNP_Task nnpTask);
     static void vTaskNameFetch(NNP_Task nnpTask);
     static void vTaskNameStore(NNP_Task nnpTask);
     static void vTaskNew(NNP_Task nnpTask);
     static void vTaskThis(NNP_Task nnpTask);
     static void vTaskParentFetch(NNP_Task nnpTask);
     static void vTaskParentStore(NNP_Task nnpTask);
-    static void vTaskQfetch(NNP_Task nnpTask);
-    static void vTaskQstore(NNP_Task nnpTask);
     static void vTaskSeed(NNP_Task nnpTask);
     static void vTaskSeitfFetch(NNP_Task nnpTask);
     static void vTaskSeitfStore(NNP_Task nnpTask);

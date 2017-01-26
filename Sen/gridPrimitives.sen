@@ -438,7 +438,7 @@ tp: addingPassOnToCP
   // attach queue to task
   _QUEUE ( queue )
   _CALLER ( queue task )
-  task.queue! ( )
+  task.jobQueue! ( )
 
   // put task in taskset
   _CALLER ( task )

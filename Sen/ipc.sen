@@ -14,8 +14,8 @@
 : isAckWaiting ( task -- ) task.state@ task.acks! ;
 : ack         ( task -- ) task.ack ;
 
-: appendQueue ( task -- ) task.queue@ queue.append ;
-: popQueue    ( -- ) task.this task.queue@ queue.pop ;
+: appendQueue ( task -- ) task.jobQueue@ queue.append ;
+: popQueue    ( -- ) task.this task.jobQueue@ queue.pop ;
 
 : grabMutex    ( task -- ) task.thread thread.mutexLock ;
 : waitSignal   ( -- ) task.this task.thread thread.condWait ;

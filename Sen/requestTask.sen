@@ -91,7 +91,7 @@ thread:  requestThread
 ;
 
 /*----------------------------------------------------------------------------*/
-/* pop value from this tasks queue (this is a blocking call)                  */
+/* pop value from this tasks job queue (this is a blocking call)              */
 /*----------------------------------------------------------------------------*/
 : req> ( -- value )
 
@@ -99,8 +99,8 @@ tp: waitNextValset
 
   begin
 
-    // attempt to pop value off the tasks queue
-    task.this task.queue@ queue.pop ( value true | false )
+    // attempt to pop value off the tasks job queue
+    task.this task.jobQueue@ queue.pop ( value true | false )
 
     // try again of no value
     not while
@@ -178,7 +178,7 @@ tp: !req_exit
 
   "req.loop" task.this task.comment!
 
-  requestQueue  task.this task.queue!
+  requestQueue  task.this task.jobQueue!
 
   requestTaskPrint if "Request Server running..." . then
 
