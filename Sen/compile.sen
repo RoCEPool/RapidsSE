@@ -21,6 +21,7 @@
 "actors.sen" include
 "utilities.sen" include
 "requests.sen" include
+"operators.sen" include
 "munge.sen" include
 "testing.sen" include
 assert.stack_0

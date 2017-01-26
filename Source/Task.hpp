@@ -62,15 +62,15 @@ namespace Tasks
     Lock    m_xLock;
     i8      m_iTaskNo;     // task
     s32     m_sName;       // task name
+    s32     m_sComment;    // comment
     eTS     m_eState;      // state (running, sleeping, ...)
     i8      m_iTxId;       // transaction id
     i8      m_iWakeAt;     // time at which to wake this tx
     Task*   m_pParentTask; // parent of this task
-    Atomic  m_zAcks;       // number of acks still waaiting for
+    Atomic  m_zAcks;       // number of acks still waiting for
     Threads::Thread* m_pThread; // current thread
-    TaskSet* m_pTaskSet;
-    s32     m_sComment;    // comment
-    
+
+    TaskSet* m_pTaskSet;   // which set this task belongs to
     NP_Task m_npNextInSet; // next task in set
     NP_Task m_npPrevInSet; // prev task in set
     
@@ -86,15 +86,14 @@ namespace Tasks
     Tokeniser* m_pTokeniser; // input stream tokenizer
     
     union {
-      Cell*   m_pCell;    // points to cell inside a word
-      Value*  m_pValue;   // points to an embedded value within a word
-      Object* m_pObject;  // points to an embedded object within a word
-      Header* m_pHeader;  // points to an embbeded header within a word
+      Cell*   m_pCell;      // points to cell inside a word
+      Value*  m_pValue;     // points to an embedded value within a word
+      Object* m_pObject;    // points to an embedded object within a word
+      Header* m_pHeader;    // points to an embbeded header within a word
     } IP;
-    TaskStep* m_pEntryCell; //s point to does arg 
+    TaskStep* m_pEntryCell; // points to does arg (entry cell of word)
     
     
-//  u8    m_uMarker1;
     Cell* m_pResetIP;
     Cell* m_pBeginIP;
     Word* m_pWord;

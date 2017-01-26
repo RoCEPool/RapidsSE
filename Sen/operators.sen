@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* operators.sen -- the operators                                             */
+/*============================================================================*/
+
+"operators.sen" .verbose
+
+"operator.sen" include
+
+"aggregateOp.sen" include
+"distinctOp.sen" include
+"emitOp.sen" include
+"fanOp.sen" include
+"fetchOp.sen" include
+"filterOp.sen" include
+"joinOp.sen" include
+"limitOp.sen" include
+"mergeOp.sen" include
+"projectOp.sen" include
+"rangeOp.sen" include
+"scanOp.sen" include
+"sortOp.sen" include
+"teeOp.sen" include
+"writeOp.sen" include
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
