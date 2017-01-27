@@ -48,6 +48,7 @@ RegFrame::RegFrame(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
 
+  //m_sName
   m_pNext     = nullptr;
   m_pStackPtr = nullptr;
   //m_xValReg
@@ -81,6 +82,26 @@ void RegFrame::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get register frame name                                                    */
+/*----------------------------------------------------------------------------*/
+s32& RegFrame::sName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  return m_sName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set register frame name                                                    */
+/*----------------------------------------------------------------------------*/
+void RegFrame::vName(s32& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  m_sName = sName;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next register frame                                                    */
