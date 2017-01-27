@@ -15,7 +15,7 @@ namespace Plans
     u8     m_uPlanId;  // plan identifier       //# its an id because its unique
     s32    m_sName;    // plan name
     
-    Dic    m_xDic;     // private dictionary of this plan
+    Dic    m_xDic;     // private dictionary of this plan       //# may not need
     s48K   m_sLambda;  // generated text of words
     
     RegFrame* m_pRegList; // set of register frames for use by operators
@@ -35,7 +35,9 @@ namespace Plans
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
     u8   uPlanId(void);
+    
     s32& sName(void);
+    void vName(s32& sName);
 
     Dic* pDic(void);
 
