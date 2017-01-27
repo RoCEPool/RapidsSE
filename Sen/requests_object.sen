@@ -17,7 +17,7 @@ tp: gettingObject
 
   file.new dup
   "pathXYZ" grid.thisNode@ grid.node node.name str.cat swap file.path!
-  object.binary
+  >binval
 
   <SUCCESS_RESULT>
 ;

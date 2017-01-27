@@ -34,13 +34,31 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_To(void)
 {
-  vAddPrimitive(">body",           &vToBody,           false);
-  vAddPrimitive(">cmd",            &vToCmd,            false);
-  vAddPrimitive(">digitName",      &vToDigitName,      false);
-  vAddPrimitive(">int",            &vToInt,            false);
-  vAddPrimitive(">seitf",          &vToSEitf,          false);
-  vAddPrimitive(">str",            &vToStr,            false);
-  vAddPrimitive(">task",           &vToTask,           false);
+  vAddPrimitive(">binval",     &vToBinVal,     false);
+  vAddPrimitive(">body",       &vToBody,       false);
+  vAddPrimitive(">cmd",        &vToCmd,        false);
+  vAddPrimitive(">digitName",  &vToDigitName,  false);
+  vAddPrimitive(">int",        &vToInt,        false);
+  vAddPrimitive(">object",     &vToObject,     false);
+  vAddPrimitive(">seitf",      &vToSEitf,      false);
+  vAddPrimitive(">str",        &vToStr,        false);
+  vAddPrimitive(">task",       &vToTask,       false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* >toBinVal -- change object to binval                                       */
+/*----------------------------------------------------------------------------*/
+void Task::vToBinVal(NNP_Task nnpTask)
+{
+  ENTRY("vToBinVal");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_RSTACK(">BinVal");
+  
+  nnpTask->m_pDataStack->vPushBinary(pObject);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,6 +132,22 @@ void Task::vToInt(NNP_Task nnpTask)
   i8 i = String::iToI8(sBuff.a());
   
   nnpTask->m_pDataStack->vPush(i);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >object -- change binval to object                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vToObject(NNP_Task nnpTask)
+{
+  ENTRY("vToObject");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_pDataStack->bPopBinary(pObject) )
+    THROW_INVALID_RSTACK(">Object");
+  
+  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }

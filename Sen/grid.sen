@@ -101,7 +101,7 @@ tp: printResult
     0 do  ( s n# t | s n# f .... )
 
       assert // should be true
-      swap object.toObject file.path@ swap
+      swap >object file.path@ swap
       "Node%v: %v"  str.format .
     loop
 

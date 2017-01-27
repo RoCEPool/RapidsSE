@@ -589,14 +589,12 @@ namespace Tasks
     static void vNodeCursorNext(NNP_Task nnpTask);
     
     // object
-    static void vObjectBinary(NNP_Task nnpTask);
     static void vObjectClassFetch(NNP_Task nnpTask);
     static void vObjectClassStore(NNP_Task nnpTask);
     static void vObjectDump(NNP_Task nnpTask);
     static void vObjectFetch(NNP_Task nnpTask);
     static void vObjectMagicMark(NNP_Task nnpTask);
     static void vObjectStore(NNP_Task nnpTask);
-    static void vObjectToObject(NNP_Task nnpTask);
     static void vObjectWordBodySet(NNP_Task nnpTask);
     
     // plan
@@ -891,9 +889,11 @@ namespace Tasks
     static void vTimerUpdate(NNP_Task nnpTask);
     
     // to
+    static void vToBinVal(NNP_Task nnpTask);
     static void vToBody(NNP_Task nnpTask);
     static void vToCmd(NNP_Task nnpTask);
     static void vToInt(NNP_Task nnpTask);
+    static void vToObject(NNP_Task nnpTask);
     static void vToSEitf(NNP_Task nnpTask);
     static void vToStr(NNP_Task nnpTask);
     static void vToTask(NNP_Task nnpTask);

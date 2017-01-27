@@ -34,30 +34,12 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Object(void)
 {
-  vAddPrimitive("object.binary",     &vObjectBinary,     false);
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
   vAddPrimitive("object@",           &vObjectFetch,      false);
   vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
   vAddPrimitive("object!",           &vObjectStore,      false);
-  vAddPrimitive("object.toObject",   &vObjectToObject,   false);
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.binary -- change object to binary                                   */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectBinary(NNP_Task nnpTask)
-{
-  ENTRY("vObjectBinary");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK("object.binary!!");
-  
-  nnpTask->m_pDataStack->vPushBinary(pObject);
-  
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,22 +150,6 @@ void Task::vObjectStore(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("object!");
   
   nnpTask->m_pReturnStack->vPoke(iPeek,&xObjectWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* object.toObject -- change binary to object                                 */
-/*----------------------------------------------------------------------------*/
-void Task::vObjectToObject(NNP_Task nnpTask)
-{
-  ENTRY("vObjectToObject");
-  
-  Object* pObject;
-  if ( ! nnpTask->m_pDataStack->bPopBinary(pObject) )
-    THROW_INVALID_RSTACK("object.toObject!!");
-  
-  nnpTask->m_pDataStack->vPush(pObject);
   
   EXIT();
 }
