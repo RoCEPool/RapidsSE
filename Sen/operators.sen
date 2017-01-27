@@ -23,6 +23,7 @@
 "recvOp.sen" include
 "scanOp.sen" include
 "sendOp.sen" include
+"sinkOp.sen" include
 "sortOp.sen" include
 "teeOp.sen" include
 "triggerOp.sen" include
