@@ -9,7 +9,7 @@ extern Heap* gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RegFrame* Tasks::_pRegFrame(void* pAddr)
+RegFrame* Structures::_pRegFrame(void* pAddr)
 {
   RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(pAddr);
   

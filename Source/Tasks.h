@@ -10,8 +10,6 @@
 #include "StepArray.hpp"
 #include "StepBoard.hpp"
 
-#include "RegFrame.hpp"
-
 #include "Socket.hpp"
 
 #include "Task.hpp"

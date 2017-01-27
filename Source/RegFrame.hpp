@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Tasks.h"
+#include "Structures.h"
 
-namespace Tasks
+namespace Structures
 {
   static const i8 C_VALREGS = 16;
   

@@ -31,6 +31,8 @@
 #include "Graph.hpp"
 #include "GraphCursor.hpp"
 
+#include "RegFrame.hpp"
+
 
 //-----------------------------------------------------------------------------
 namespace Structures
