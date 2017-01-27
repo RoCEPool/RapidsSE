@@ -18,7 +18,7 @@ namespace Plans
     Dic    m_xDic;     // private dictionary of this plan
     s48K   m_sLambda;  // generated text of words
     
-    //RegList* m_pRegList; // set of register frames for use by operators
+    RegFrame* m_pRegList; // set of register frames for use by operators
     
     // always last
     Footer m_xFooter;

@@ -99,6 +99,8 @@ void Plan::vInit(void)
   //m_sName
   //m_xDic
   //m_sLambda
+  
+  m_pRegList = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
