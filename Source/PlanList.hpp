@@ -28,6 +28,8 @@ namespace Plans
     
     void vContentDump(void);
     
+    Plan* pFind(u8 uPlanId);
+    
     Footer* pFooter(void);
   };
   

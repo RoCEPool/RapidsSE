@@ -212,6 +212,7 @@ namespace Tasks
     void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
     void vAddPrimitives_Plan(void);
+    void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Process(void);
     void vAddPrimitives_Push(void);
     void vAddPrimitives_Queue(void);
@@ -603,6 +604,11 @@ namespace Tasks
     static void vPlanNew(NNP_Task nnpTask);
     static void vPlanNameFetch(NNP_Task nnpTask);
     static void vPlanNameStore(NNP_Task nnpTask);
+    
+    // plan list
+    static void vPlanListAddPlan(NNP_Task nnpTask);
+    static void vPlanListFindPlan(NNP_Task nnpTask);
+    static void vPlanListRemovePlan(NNP_Task nnpTask);
     
     // process
     static void vProcessGetPid(NNP_Task nnpTask);

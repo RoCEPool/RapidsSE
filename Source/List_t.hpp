@@ -11,7 +11,7 @@ namespace Structures
   template <class OBJECT> 
   class List_t
   {
-  private:
+  protected:
     Lock    m_zLock;   // lock
     i8      m_iCount;  // number of objects
     OBJECT* m_pHead;   // head node
@@ -146,7 +146,7 @@ void List_t<OBJECT>::vInsert(OBJECT* pNode)
   m_zLock.vGrabWrite();
   
   if (m_pHead)
-    m_pTail->vHead(pNode);
+    m_pTail->vNextNode(pNode);
   
   pNode->vPrevNode(nullptr);
   pNode->vNextNode(m_pHead);
