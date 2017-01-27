@@ -7,6 +7,7 @@
 "operator.sen" include
 
 "aggregateOp.sen" include
+"deciderOp.sen" include
 "distinctOp.sen" include
 "emitOp.sen" include
 "fanOp.sen" include
@@ -15,11 +16,16 @@
 "joinOp.sen" include
 "limitOp.sen" include
 "mergeOp.sen" include
+"nextOp.sen" include
 "projectOp.sen" include
 "rangeOp.sen" include
+"readOp.sen" include
+"recvOp.sen" include
 "scanOp.sen" include
+"sendOp.sen" include
 "sortOp.sen" include
 "teeOp.sen" include
+"triggerOp.sen" include
 "writeOp.sen" include
 
 /*============================================================================*/
