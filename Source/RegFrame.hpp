@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Structures.h"
+#include "Dictionaries.h"
 
-namespace Structures
+namespace Dictionaries
 {
   static const i8 C_VALREGS = 16;
   
@@ -16,6 +16,7 @@ namespace Structures
     s32       m_sName;              // name of the reg frame
     RegFrame* m_pNext;              // nest frame in stack / list
     void*     m_pStackPtr;          // discard point (when in call stack)
+    Dic*      m_pDic;               // dictionary associated with this frame
     ValReg    m_xValReg[C_VALREGS]; // set of registers
     
     // must be last

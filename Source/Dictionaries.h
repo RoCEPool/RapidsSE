@@ -21,6 +21,8 @@ namespace Dictionaries
 #include "DicPath.hpp"
 #include "Word.hpp"
 
+#include "RegFrame.hpp"
+
 //-----------------------------------------------------------------------------
 namespace Dictionaries
 {

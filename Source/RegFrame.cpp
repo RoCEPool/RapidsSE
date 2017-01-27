@@ -9,7 +9,7 @@ extern Heap* gpMediumHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RegFrame* Structures::_pRegFrame(void* pAddr)
+RegFrame* Dictionaries::_pRegFrame(void* pAddr)
 {
   RegFrame* pRegFrame = reinterpret_cast<RegFrame*>(pAddr);
   
@@ -51,6 +51,7 @@ RegFrame::RegFrame(void)
   //m_sName
   m_pNext     = nullptr;
   m_pStackPtr = nullptr;
+  m_pDic      = nullptr;
   //m_xValReg
   
   _checkInitialised_(CN_REGFRAME);
