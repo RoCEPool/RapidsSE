@@ -117,7 +117,26 @@ Plan* PlanList::pFind(u8 uPlanId)
   return pPlan;
 }
 
+/*----------------------------------------------------------------------------*/
+/* display contents of plan list                                              */
+/*----------------------------------------------------------------------------*/
+void PlanList::vShow(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLANLIST,_FOOTER_);
 
+  Plan* pPlan = nullptr;
+  
+  m_zLock.vGrabRead();
+  
+  vTrace("  planList %p count %lld\n",
+         this,
+         iCount());
+  
+  for (pPlan = m_pHead; pPlan; pPlan = pPlan->pNextNode())
+    pPlan->vShow();
+  
+  m_zLock.vDropRead();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/

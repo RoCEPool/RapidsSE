@@ -35,9 +35,10 @@ extern PlanList*       gpPlanList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_PlanList(void)
 {
-  vAddPrimitive("planList::addPlan",    &vPlanListAddPlan,           false);
-  vAddPrimitive("planList::findPlan",   &vPlanListFindPlan,          false);
-  vAddPrimitive("planList::removePlan", &vPlanListRemovePlan,        false);
+  vAddPrimitive("planList::addPlan",    &vPlanListAddPlan,    false);
+  vAddPrimitive("planList::findPlan",   &vPlanListFindPlan,   false);
+  vAddPrimitive("planList::removePlan", &vPlanListRemovePlan, false);
+  vAddPrimitive("planList::show",       &vPlanListShow,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +100,18 @@ void Task::vPlanListRemovePlan(NNP_Task nnpTask)
   Plan* pPlan = _pPlan(pPtrPlan);
   
   gpPlanList->vRemove(pPlan);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planList.show -- show plan list ( plan -- )                                */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanListShow(NNP_Task nnpTask)
+{
+  ENTRY("vPlanListShow");
+  
+  gpPlanList->vShow();
   
   EXIT();
 }

@@ -43,6 +43,8 @@ namespace Plans
 
     s48K& sLambda(void);
     void vLambda(s48K& sLambda);
+    
+    void vShow(void);
 
     Footer* pFooter(void);
   };

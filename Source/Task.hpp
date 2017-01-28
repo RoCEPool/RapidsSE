@@ -607,6 +607,7 @@ namespace Tasks
     static void vPlanListAddPlan(NNP_Task nnpTask);
     static void vPlanListFindPlan(NNP_Task nnpTask);
     static void vPlanListRemovePlan(NNP_Task nnpTask);
+    static void vPlanListShow(NNP_Task nnpTask);
     
     // process
     static void vProcessGetPid(NNP_Task nnpTask);
