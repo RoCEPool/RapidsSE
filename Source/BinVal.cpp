@@ -82,6 +82,24 @@ i8 BinVal::iBytes(void) const
 }
 
 /*----------------------------------------------------------------------------*/
+/* get data area                                                              */
+/*----------------------------------------------------------------------------*/
+char* BinVal::pData(void)
+{
+  return &m_cArray[0];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pObject class                                                          */
+/*----------------------------------------------------------------------------*/
+eCN BinVal::eObjectClass(void)
+{
+  Object* pBinaryObject = (Object*)pData();
+  
+  return pBinaryObject->eClass();
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset string value                                                         */
 /*----------------------------------------------------------------------------*/
 void BinVal::vReset(void)
@@ -119,21 +137,16 @@ void BinVal::vSize(i8 iSize)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pObject class                                                          */
+/* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-eCN BinVal::eObjectClass(void)
+void BinVal::vToString(char* aWorkspace)
 {
-  Object* pBinaryObject = (Object*)pData();
+  Object* pEmbedded = (Object*)pData();
   
-  return pBinaryObject->eClass();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data area                                                              */
-/*----------------------------------------------------------------------------*/
-char* BinVal::pData(void)
-{
-  return &m_cArray[0];
+  String::vSprint(aWorkspace,"%p BinVal [%s of %lld bytes]",
+                  this,
+                  pCN[pEmbedded->eClass()],
+                  m_iBytes);
 }
 
 /*----------------------------------------------------------------------------*/

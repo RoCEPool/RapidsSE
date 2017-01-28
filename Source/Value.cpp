@@ -311,6 +311,12 @@ void Value::vToString(char* aWorkspace)
   
   switch(eClass) {
       
+    case CN_BINVAL: {
+      BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
+      pBinVal->vToString(aWorkspace);
+      break;
+    }
+      
     case CN_INTVAL: {
       IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
       pIntVal->vToString(aWorkspace);

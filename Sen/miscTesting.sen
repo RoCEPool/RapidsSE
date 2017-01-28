@@ -230,7 +230,13 @@ EmbeddedFile .
 
   plan plan.show
 
+  plan stk >binval stk >object stk drop
+
   plan planList::addPlan
+
+  planList::show
+
+  plan planList::removePlan
 
   planList::show
 ;

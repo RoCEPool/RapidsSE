@@ -24,14 +24,14 @@ namespace Values
     void operator =(const Object* pObject);
     
     i8   iBytes(void) const;
+    char* pData(void);
+    eCN  eObjectClass(void);
     void vReset(void);
     i8   iSize(void) const;
     void vSize(void);
     void vSize(i8 iSize);
-    eCN  eObjectClass(void);
-    
-    char* pData(void);
-    
+    void vToString(char* aWorkspace);
+        
     static i8 nBytesRequired(i8 iLength);
   };
   
