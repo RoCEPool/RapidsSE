@@ -126,7 +126,7 @@ void Plan::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   vTrace("planId %lld.%lld name %s\n",
          pPlan->m_uPlanId >> 48,
-         pPlan->m_uPlanId & 0xFF00000000000000,
+         pPlan->m_uPlanId & 0x00FFFFFFFFFFFFFF,
          pPlan->m_sName.a());
 }
 
@@ -204,7 +204,7 @@ void Plan::vShow(void)
   vTrace("  plan %p id %lld.%lld %s\n",
          this,
          m_uPlanId >> 48,
-         m_uPlanId & 0xFF00000000000000,
+         m_uPlanId & 0x00FFFFFFFFFFFFFF,
          m_sName.a());
 }
 

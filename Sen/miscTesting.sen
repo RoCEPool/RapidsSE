@@ -226,7 +226,7 @@ EmbeddedFile .
 
   plan::new locals| plan |
 
-  "plan#0" plan plan.name!
+  "plan#1" plan plan.name!
 
   plan plan.show
 
@@ -239,6 +239,19 @@ EmbeddedFile .
   plan planList::removePlan
 
   planList::show
+
+  plan::new planList::addPlan
+  plan::new planList::addPlan
+  plan::new planList::addPlan
+
+  planList::show
+
+  1 planList::findPlan .
+
+  3 planList::findPlan . .
+
+3 planList::findPlan if planList::removePlan then planList::show
+
 ;
 
 /*============================================================================*/
