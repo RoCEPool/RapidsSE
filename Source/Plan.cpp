@@ -79,8 +79,8 @@ Plan::Plan(void)
     
   _checkInitialised_(CN_PLAN);
   
-  Plan* pPlan = this;
-  gpPlanList->vAppend(pPlan);
+//  Plan* pPlan = this;
+//  gpPlanList->vAppend(pPlan);
 
   //gpPlanList->vDump();
   
