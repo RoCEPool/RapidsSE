@@ -38,6 +38,7 @@ void Task::vAddPrimitives_Plan(void)
   vAddPrimitive("plan.name@",     &vPlanNameFetch,    false);
   vAddPrimitive("plan.name!",     &vPlanNameStore,    false);
   vAddPrimitive("plan::new",      &vPlanNew,          false);
+  vAddPrimitive("plan.show",      &vPlanShow,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -114,6 +115,25 @@ void Task::vPlanNew(NNP_Task nnpTask)
   Plan* pPlan = new Plan;
     
   nnpTask->m_pDataStack->vPush(pPlan);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.show -- show plan ( -- plan )                                         */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanShow(NNP_Task nnpTask)
+{
+  ENTRY("vPlanShow");
+  
+  Object* pPtrPlan;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.show");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  pPlan->vShow();
   
   EXIT();
 }
