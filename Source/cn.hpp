@@ -20,7 +20,7 @@ namespace Magic
     /*  3 */ CN_S48K,
     /*  4 */ CN_S1M,
     
-    /*     */ CN_BINVAL,
+    /*    */ CN_BINVAL,
     /*  5 */ CN_INTVAL,
     /*  6 */ CN_IPVAL,
     /*  7 */ CN_OBJVAL,
@@ -81,6 +81,7 @@ namespace Magic
     /* 46 */ CN_QUEUE,
     /* 47 */ CN_QUEUEBUFFER,
     
+    /*    */ CN_RBCURSOR,
     /* 48 */ CN_REGFRAME,
     /* 49 */ CN_RING,
     /* 50 */ CN_ROW,
@@ -205,6 +206,7 @@ namespace Magic
     /* 46 */ "QUEUE",
     /* 47 */ "QUEUEBUFFER",
   
+    /*    */ "RBCURSOR",
     /* 48 */ "REGFRAME",
     /* 49 */ "RING",
     /* 50 */ "ROW",

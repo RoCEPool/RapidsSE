@@ -14,6 +14,15 @@
 
   // dump path
   pathDump
+
+  rowCursor.new locals| rowCrs |
+
+  "part" rowCrs rowCursor.table!
+
+  0 rowCrs rowCursor.begin
+
+
+  rowCrs rowCursor.end
 ;
 
 /*============================================================================*/

@@ -9,6 +9,23 @@
 /*----------------------------------------------------------------------------*/
 : writeOp operator
 
+/*
+  // set path
+  "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
+
+  // dump path
+  pathDump
+
+  rowCursor.new locals| rowCrs |
+
+  "part" rowCrs rowCursor.table!
+
+  0 rowCrs rowCursor.begin
+
+
+  rowCrs rowCursor.end
+*/
+
 ;
 
 /*============================================================================*/
