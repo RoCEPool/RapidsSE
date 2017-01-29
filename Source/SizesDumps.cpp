@@ -37,7 +37,7 @@ pDUMPFUN *gpDump[]
   /* 17 */ &Dump::vInvalid,         // CN_BPA
 
   /* 18 */ &Dic::vDump,             // CN_DIC
-  /* 19 */ &DicPath::vDump,        // CN_DICPATH
+  /* 19 */ &DicPath::vDump,         // CN_DICPATH
   /* 20 */ &Dump::vInvalid,         // CN_DIR
   
   /* 21 */ &Dump::vInvalid,         // CN_FILE
@@ -95,6 +95,7 @@ pDUMPFUN *gpDump[]
   /* 58 */ &SEitf::vDump,           // CN_SEITF
   /* 59 */ &Dump::vUndefined,       // CN_SEITFCURSOR
   /* 60 */ &Dump::vUndefined,       // CN_SEITFLIST
+  /*    */ &Dump::vUndefined,       // CN_SELCURSOR
   /* 61 */ &SePrompt::vDump,        // CN_SEPROMPT
   /* 62 */ &Dump::vUndefined,       // CN_SINCE
   /* 63 */ &Dump::vUndefined,       // CN_SKIPCURSOR
@@ -220,6 +221,7 @@ i8 giClassSize[]
   /* 58 */ sizeof(SEitf),              // CN_SEITF
   /* 59 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
   /* 60 */ sizeof(SEitfList),          // CN_SEITFLIST
+  /*    */ 0,                          // CN_SELCURSOR
   /* 61 */ sizeof(SePrompt),           // CN_SEPROMPT
   /* 62 */ sizeof(Since),              // CN_SINCE
   /* 63 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
@@ -345,6 +347,7 @@ eHT geWhichHeap[]
   /* 58 */ HT_MEDIUM,  // CN_SEITF
   /* 59 */ HT_SMALL,   // CN_SEITFCURSOR
   /* 60 */ HT_INVALID, // CN_SEITFLIST
+  /*    */ HT_SMALL,   // CN_SELCURSOR
   /* 61 */ HT_LARGE,   // CN_SEPROMPT
   /* 62 */ HT_INVALID, // CN_SINCE
   /* 63 */ HT_INVALID, // CN_SKIPCURSOR
