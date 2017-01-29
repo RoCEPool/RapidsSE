@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCursor.cpp - row cursor                                                 */
+/* SelCursor.cpp - row cursor                                                 */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -9,23 +9,23 @@ extern Heap* gpSmallHeap;
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-RowCursor* DBobjects::_pRowCursor(void* pAddr)
+SelCursor* DBobjects::_pSelCursor(void* pAddr)
 {
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(pAddr);
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(pAddr);
   
-  RASSERT( !pRowCursor || CN_ROWCURSOR == pRowCursor->eClass() );
+  RASSERT( !pSelCursor || CN_SELCURSOR == pSelCursor->eClass() );
   
-  return pRowCursor;
+  return pSelCursor;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowCursor::operator new(size_t iSize)
+void* SelCursor::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_ROWCURSOR);
+  void* pObject = Heap::pAllocate(CN_SELCURSOR);
   
   return pObject;
 }
@@ -33,18 +33,18 @@ void* RowCursor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowCursor::operator new(size_t iSize, RowCursor* pRowCursor)
+void* SelCursor::operator new(size_t iSize, SelCursor* pSelCursor)
 {
   RASSERT(iSize);
-  return pRowCursor;
+  return pSelCursor;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCursor::operator delete(void* pRowCursorAddress)
+void SelCursor::operator delete(void* pSelCursorAddress)
 {
-  Object* pObject = reinterpret_cast<Object*>(pRowCursorAddress);
+  Object* pObject = reinterpret_cast<Object*>(pSelCursorAddress);
   
   Heap::vFree(pObject);
 }
@@ -52,10 +52,10 @@ void RowCursor::operator delete(void* pRowCursorAddress)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowCursor::RowCursor(void)
-: Object(CN_ROWCURSOR)
+SelCursor::SelCursor(void)
+: Object(CN_SELCURSOR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pTable     = nullptr;
   m_iPartition = 0;
@@ -65,25 +65,25 @@ RowCursor::RowCursor(void)
   m_pRowBuffer = nullptr;
   m_pRow       = nullptr;
   
-  _checkInitialised_(CN_ROWCURSOR);
+  _checkInitialised_(CN_SELCURSOR);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowCursor::~RowCursor(void)
+SelCursor::~SelCursor(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* begin iteration                                                            */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vBegin(i8 iPartition)
+void SelCursor::vBegin(i8 iPartition)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
 
   m_iPartition = iPartition;
   
@@ -96,9 +96,9 @@ void RowCursor::vBegin(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 /* end iteration                                                              */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vEnd(void)
+void SelCursor::vEnd(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = nullptr;
   m_pRowStrand = nullptr;
@@ -109,9 +109,9 @@ void RowCursor::vEnd(void)
 /*----------------------------------------------------------------------------*/
 /* set to first row                                                           */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vFirst(void)
+void SelCursor::vFirst(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = m_pTable->pPartition(m_iPartition);
   m_pRowStrand = m_pPartition->pHeadStrand();
@@ -131,9 +131,9 @@ void RowCursor::vFirst(void)
 /*----------------------------------------------------------------------------*/
 /* advance to next row                                                        */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vNext(void)
+void SelCursor::vNext(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   ASSERT(m_pRow);
   
@@ -164,9 +164,9 @@ void RowCursor::vNext(void)
 /*----------------------------------------------------------------------------*/
 /* get current row                                                            */
 /*----------------------------------------------------------------------------*/
-Row* RowCursor::pRow(void)
+Row* SelCursor::pRow(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   return m_pRow;
 }
@@ -174,9 +174,9 @@ Row* RowCursor::pRow(void)
 /*----------------------------------------------------------------------------*/
 /* get current row (as a char*)                                               */
 /*----------------------------------------------------------------------------*/
-char* RowCursor::pRowAsStr(void)
+char* SelCursor::pRowAsStr(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   if (! m_pRow)
     return nullptr;
@@ -192,9 +192,9 @@ char* RowCursor::pRowAsStr(void)
 /*----------------------------------------------------------------------------*/
 /* get current row buffer                                                     */
 /*----------------------------------------------------------------------------*/
-RowBuffer* RowCursor::pRowBuffer(void)
+RowBuffer* SelCursor::pRowBuffer(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   return m_pRowBuffer;
 }
@@ -202,9 +202,9 @@ RowBuffer* RowCursor::pRowBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
-Table* RowCursor::pTable(void)
+Table* SelCursor::pTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   return m_pTable;
 }
@@ -212,9 +212,9 @@ Table* RowCursor::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* set table                                                                  */
 /*----------------------------------------------------------------------------*/
-void RowCursor::vTable(Table* pTable)
+void SelCursor::vTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pTable = pTable;
   m_pRow   = nullptr;
@@ -227,9 +227,9 @@ void RowCursor::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* RowCursor::pFooter(void)
+Footer* SelCursor::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR);
   
   return &m_xFooter;
 }

@@ -756,26 +756,26 @@ void SePrompt::vIterateRows(void)
   
   i8 iAddress = String::iToI8(m_sResponse.a());
   
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
   i8 iRowCount = 0;
   
   for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
     vTrace("Partition %lld: \n", Partition::iSlotToPartition(iPartition));
-    pRowCursor->vBegin(iPartition);
-    pRowCursor->vFirst();
-    char* pStr = pRowCursor->pRowAsStr();
+    pSelCursor->vBegin(iPartition);
+    pSelCursor->vFirst();
+    char* pStr = pSelCursor->pRowAsStr();
     while (pStr) {
       iRowCount++;
       vTrace("Row: %s\n",pStr);
-      pRowCursor->vNext();
-      pStr = pRowCursor->pRowAsStr();
+      pSelCursor->vNext();
+      pStr = pSelCursor->pRowAsStr();
     }
   }
   
-  pRowCursor->vEnd();
-  delete pRowCursor;
+  pSelCursor->vEnd();
+  delete pSelCursor;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -804,16 +804,16 @@ bool SePrompt::bGetFirstRow(void)
   
   i8 iAddress = String::iToI8(m_sResponse.a());
   
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  pRowCursor->vBegin(m_iPartition);
-  pRowCursor->vFirst();
-  char* pStr = pRowCursor->pRowAsStr();
+  pSelCursor->vBegin(m_iPartition);
+  pSelCursor->vFirst();
+  char* pStr = pSelCursor->pRowAsStr();
   
   if (pStr == nullptr) {
-    pRowCursor->vEnd();
-    delete pRowCursor;
+    pSelCursor->vEnd();
+    delete pSelCursor;
     m_pSEitf->m_pRowPtr = nullptr;
     return false;
   }
@@ -832,15 +832,15 @@ bool SePrompt::bGetNextRow(void)
   
   i8 iAddress = String::iToI8(m_sResponse.a());
   
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  pRowCursor->vNext();
-  char* pStr = pRowCursor->pRowAsStr();
+  pSelCursor->vNext();
+  char* pStr = pSelCursor->pRowAsStr();
   
   if (pStr == nullptr) {
-    pRowCursor->vEnd();
-    delete pRowCursor;
+    pSelCursor->vEnd();
+    delete pSelCursor;
     m_pSEitf->m_pRowPtr = nullptr;
     
     // now return the table

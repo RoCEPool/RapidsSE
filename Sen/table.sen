@@ -204,27 +204,27 @@ int: queryCount
   if
   else
     drop
-    "__row_cursor" :rowCursor
+    "__row_cursor" :selCursor
   then
   execute
 
   >r
-  // r0 ^rowCursor
+  // r0 ^selCursor
 
-  r0 rowcursor.table!
+  r0 selCursor.table!
   args.partitions 0
   do
-    // r2 ^rowCursor
-    I r2 rowcursor.begin
-    r2 rowcursor.first
+    // r2 ^selCursor
+    I r2 selCursor.begin
+    r2 selCursor.first
     begin
       while
-      r2 rowcursor.get
+      r2 selCursor.get
       .
-      r2 rowcursor.next
+      r2 selCursor.next
       repeat
 
-      r2 rowCursor.end
+      r2 selCursor.end
   loop
 
   rdrop
@@ -233,15 +233,15 @@ int: queryCount
 ;
 
 /*----------------------------------------------------------------------------*/
-/* get row cursor for table                                                   */
+/* get select cursor for table                                                */
 /*----------------------------------------------------------------------------*/
-: selecttable ( "<tableNm>" -- <rowCursor> )
+: selecttable ( "<tableNm>" -- <selCursor> )
 
   queryCount ++
 
   task.this task.seitf@ seitf.table@
 
-  rowcursor.new dup -rot rowcursor.table!
+  selCursor.new dup -rot selCursor.table!
 
   >str
 ;

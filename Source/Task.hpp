@@ -219,11 +219,11 @@ namespace Tasks
     void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
     void vAddPrimitives_RowBuffer(void);
-    void vAddPrimitives_RowCursor(void);
     void vAddPrimitives_Rstack(void);
     void vAddPrimitives_SEitf(void);
     void vAddPrimitives_SEitfCursor(void);
     void vAddPrimitives_SEitfList(void);
+    void vAddPrimitives_SelCursor(void);
     void vAddPrimitives_Shell(void);
     void vAddPrimitives_Socket(void);
     void vAddPrimitives_Steps(void);
@@ -685,19 +685,6 @@ namespace Tasks
     static void vRowBufferDump(NNP_Task nnpTask);
     static void vRowBufferNew(NNP_Task nnpTask);
     
-    // rowCursor
-    static void vRowCursorBegin(NNP_Task nnpTask);
-    static void vRowCursorDelete(NNP_Task nnpTask);
-    static void vRowCursorEnd(NNP_Task nnpTask);
-    static void vRowCursorFirst(NNP_Task nnpTask);
-    static void vRowCursorGet(NNP_Task nnpTask);
-    static void vRowCursorInit(NNP_Task nnpTask);
-    static void vRowCursorNew(NNP_Task nnpTask);
-    static void vRowCursorNext(NNP_Task nnpTask);
-    static void vRowCursorRowBuffer(NNP_Task nnpTask);
-    static void vRowCursorTableFetch(NNP_Task nnpTask);
-    static void vRowCursorTableStore(NNP_Task nnpTask);
-    
     // rstack
     static void vRstackCsPick(NNP_Task nnpTask);
     static void vRstackCsRoll(NNP_Task nnpTask);
@@ -753,6 +740,19 @@ namespace Tasks
     // seitfList
     static void vSEitfListDump(NNP_Task nnpTask);
     static void vSEitfListInit(NNP_Task nnpTask);
+    
+    // selCursor
+    static void vSelCursorBegin(NNP_Task nnpTask);
+    static void vSelCursorDelete(NNP_Task nnpTask);
+    static void vSelCursorEnd(NNP_Task nnpTask);
+    static void vSelCursorFirst(NNP_Task nnpTask);
+    static void vSelCursorGet(NNP_Task nnpTask);
+    static void vSelCursorInit(NNP_Task nnpTask);
+    static void vSelCursorNew(NNP_Task nnpTask);
+    static void vSelCursorNext(NNP_Task nnpTask);
+    static void vSelCursorRowBuffer(NNP_Task nnpTask);
+    static void vSelCursorTableFetch(NNP_Task nnpTask);
+    static void vSelCursorTableStore(NNP_Task nnpTask);
     
     // shell
     static void vShellExecute(NNP_Task nnpTask);

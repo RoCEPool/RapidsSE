@@ -11,22 +11,22 @@
   // r0 ^toTable
   // r1 ^fromtable
 
-  "__row_cursor" find dup if else
-    drop "__row_cursor" :rowCursor
+  "__sel_cursor" find dup if else
+    drop "__sel_cursor" :selCursor
   then
   execute
 
   >r
 
-  // r0 ^rowCursor
+  // r0 ^selCursor
   // r1 ^toTable
   // r2 ^fromTable
 
-  r2 r0 rowcursor.table!
+  r2 r0 selCursor.table!
 
   beginTransaction >r
   // r0 ^txRefCursor
-  // r1 ^rowCursor
+  // r1 ^selCursor
   // r2 ^toTable
   // r3 ^fromTable
 
@@ -35,32 +35,32 @@
     // r0 partition
     // r1 partitions
     // r2 ^txRefCursor
-    // r3 ^rowCursor
+    // r3 ^selCursor
     // r4 ^toTable
     // r5 ^fromTable
 
-    I r3 rowcursor.begin
-    r3 rowcursor.first
+    I r3 selCursor.begin
+    r3 selCursor.first
 
     begin
       while
-      r0 r3 rowcursor.get r2 r4 table.insert
-      r3 rowcursor.next
+      r0 r3 selCursor.get r2 r4 table.insert
+      r3 selCursor.next
     repeat
 
-    r3 rowcursor.end
+    r3 selCursor.end
   loop
 
   commitTransaction
 
   // r0 ^txRefCursor
-  // r1 ^rowCursor
+  // r1 ^selCursor
   // r2 ^toTable
   // r3 ^fromTable
 
   rdrop rdrop rdrop rdrop
 
-  "__row_cursor" find word.forget
+  "__sel_cursor" find word.forget
 
   true
 ;

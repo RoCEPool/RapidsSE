@@ -16,14 +16,14 @@
   // dump path
   pathDump
 
-  rowCursor.new locals| rowCrs |
+  selCursor.new locals| rowCrs |
 
-  "part" rowCrs rowCursor.table!
+  "part" rowCrs selCursor.table!
 
-  0 rowCrs rowCursor.begin
+  0 rowCrs selCursor.begin
 
 
-  rowCrs rowCursor.end
+  rowCrs selCursor.end
 */
 
 ;

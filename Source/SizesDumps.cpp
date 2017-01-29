@@ -206,12 +206,12 @@ i8 giClassSize[]
   /* 46 */ sizeof(Queue),              // CN_QUEUE
   /* 47 */ sizeof(QueueBuffer),        // CN_QUEUEBUFFER
   
-  /*    */ 0,                          // CN_RBCURSOR
+  /*    */ sizeof(RbCursor),           // CN_RBCURSOR
   /* 48 */ sizeof(RegFrame),           // CN_REGFRAME
   /* 49 */ sizeof(Ring),               // CN_RING
   /* 50 */ sizeof(Row),                // CN_ROW
   /* 51 */ sizeof(RowBuffer),          // CN_ROWBUFFER
-  /* 52 */ sizeof(RowCursor),          // CN_ROWCURSOR
+  /* 52 */ 0,                          // CN_ROWCURSOR
   /* 53 */ sizeof(RowStrand),          // CN_ROWSTRAND
   /* 54 */ sizeof(RowWsp),             // CN_ROWWSP
   
@@ -221,7 +221,7 @@ i8 giClassSize[]
   /* 58 */ sizeof(SEitf),              // CN_SEITF
   /* 59 */ sizeof(SEitfCursor),        // CN_SEITFCURSOR
   /* 60 */ sizeof(SEitfList),          // CN_SEITFLIST
-  /*    */ 0,                          // CN_SELCURSOR
+  /*    */ sizeof(SelCursor),          // CN_SELCURSOR
   /* 61 */ sizeof(SePrompt),           // CN_SEPROMPT
   /* 62 */ sizeof(Since),              // CN_SINCE
   /* 63 */ sizeof(SkipCursor),         // CN_SKIPCURSOR

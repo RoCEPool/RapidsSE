@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowCursor.hpp - row cursor                                                 */
+/* SelCursor.hpp - select all cursor                                          */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class RowCursor : public Object
+  class SelCursor : public Object
   {
   private:
     Table*     m_pTable;
@@ -24,11 +24,11 @@ namespace DBobjects
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, RowCursor* pRowCursor);
+    void* operator new(size_t, SelCursor* pSelCursor);
     void  operator delete(void*);
     
-    RowCursor(void);
-    ~RowCursor(void);
+    SelCursor(void);
+    ~SelCursor(void);
     
     void    vBegin(i8 iPartition);
     void    vEnd(void);
@@ -43,7 +43,7 @@ namespace DBobjects
     Footer* pFooter(void);
   };
   
-  RowCursor* _pRowCursor(void* pAddr);
+  SelCursor* _pSelCursor(void* pAddr);
 }
 
 /*============================================================================*/

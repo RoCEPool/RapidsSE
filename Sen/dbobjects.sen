@@ -4,7 +4,7 @@
 
 "dbObjects.sen" .verbose
 
-"rowCursor.sen" include
+"selCursor.sen" include
 "table.sen" include
 "column.sen" include
 "schema.sen" include

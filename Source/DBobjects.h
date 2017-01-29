@@ -20,7 +20,7 @@
 #include "Table.hpp"
 
 #include "RbCursor.hpp"
-#include "RowCursor.hpp"
+#include "SelCursor.hpp"
 
 #include "LoadMap.hpp"
 

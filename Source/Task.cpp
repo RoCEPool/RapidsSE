@@ -456,6 +456,7 @@ void Task::vAddConstants(void)
   /* 45 */ vAddConstant("CN_QUEUE",        CN_QUEUE);
   /* 46 */ vAddConstant("CN_QUEUEBUFFER",  CN_QUEUEBUFFER);
   
+  /*    */ vAddConstant("CN_RBCURSOR",     CN_RBCURSOR);
   /* 47 */ vAddConstant("CN_REGFRAME",     CN_REGFRAME);
   /* 48 */ vAddConstant("CN_RING",         CN_RING);
   /* 49 */ vAddConstant("CN_ROW",          CN_ROW);
@@ -470,6 +471,7 @@ void Task::vAddConstants(void)
   /* 57 */ vAddConstant("CN_SEITF",        CN_SEITF);
   /* 58 */ vAddConstant("CN_SEITFCURSOR",  CN_SEITFCURSOR);
   /* 59 */ vAddConstant("CN_SEITFLIST",    CN_SEITFLIST);
+  /*    */ vAddConstant("CN_SELCURSOR",    CN_SELCURSOR);
   /* 60 */ vAddConstant("CN_SEPROMPT",     CN_SEPROMPT);
   /* 61 */ vAddConstant("CN_SINCE",        CN_SINCE);
   /* 62 */ vAddConstant("CN_SKIPCURSOR",   CN_SKIPCURSOR);
@@ -608,10 +610,11 @@ void Task::vAddConstants(void)
   /* 32 */ vAddConstant("SIZEOF_PROXYSET",     sizeof(ProxySet));
   /* 33 */ vAddConstant("SIZEOF_QUEUE",        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER",  sizeof(QueueBuffer));
+  /*    */ vAddConstant("SIZEOF_RBCURSOR",     sizeof(RbCursor));
   /* 35 */ vAddConstant("SIZEOF_RING",         sizeof(Ring));
   /* 36 */ vAddConstant("SIZEOF_ROW",          sizeof(Row));
   /* 37 */ vAddConstant("SIZEOF_ROWBUFFER",    sizeof(RowBuffer));
-  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR",    sizeof(RowCursor));
+  /* 38 */ vAddConstant("SIZEOF_ROWCURSOR",    (i8)0);
   /* 39 */ vAddConstant("SIZEOF_ROWSTRAND",    sizeof(RowStrand));
   /* 40 */ vAddConstant("SIZEOF_ROWWSP",       sizeof(RowWsp));
   /* 41 */ vAddConstant("SIZEOF_SCANBUFFER",   sizeof(ScanBuffer));
@@ -619,6 +622,7 @@ void Task::vAddConstants(void)
   /* 43 */ vAddConstant("SIZEOF_SEITF",        sizeof(SEitf));
   /* 44 */ vAddConstant("SIZEOF_SEITFCURSOR",  sizeof(SEitfCursor));
   /* 45 */ vAddConstant("SIZEOF_SEITFLIST",    sizeof(SEitfList));
+  /*    */ vAddConstant("SIZEOF_SELCURSOR",    sizeof(SelCursor));
   /* 46 */ vAddConstant("SIZEOF_SEPROMPT",     sizeof(SePrompt));
   /* 47 */ vAddConstant("SIZEOF_SINCE",        sizeof(Since));
   /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR",   sizeof(SkipCursor));
@@ -767,12 +771,12 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Queue();
   vAddPrimitives_RbCursor();
   vAddPrimitives_RowBuffer();
-  vAddPrimitives_RowCursor();
   vAddPrimitives_Reg();
   vAddPrimitives_Rstack();
   vAddPrimitives_SEitf();
   vAddPrimitives_SEitfCursor();
   vAddPrimitives_SEitfList();
+  vAddPrimitives_SelCursor();
   vAddPrimitives_Shell();
   vAddPrimitives_Socket();
   vAddPrimitives_Steps();

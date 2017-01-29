@@ -945,14 +945,14 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   }
 
   i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
-  //vTrace("pRapidsSE_GetNextRow rowCursor: 0x%x\n", iAddress);
+  //vTrace("pRapidsSE_GetNextRow selCursor: 0x%x\n", iAddress);
   
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
   
-  *ppRow = pRowCursor->pRowAsStr();
+  *ppRow = pSelCursor->pRowAsStr();
   if (!*ppRow) {
-    delete pRowCursor;
+    delete pSelCursor;
     
     // return the table
     eEC eResult = eExecuteRequest(pSEitf, "rettbl");
@@ -973,7 +973,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   }
   
   // move cursor to next row
-  pRowCursor->vNext();
+  pSelCursor->vNext();
   
   return EC_NONE;
 }
@@ -1527,13 +1527,13 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   
   i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
   
-  RowCursor* pRowCursor = reinterpret_cast<RowCursor*>(iAddress);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
+  ASSERT(CN_SELCURSOR == pSelCursor->eClass());
 
-  //vTrace("pRowCursor: 0x%x\n", pRowCursor);
-  pRowCursor->vBegin(pSEitf->iPartition());
+  //vTrace("pSelCursor: 0x%x\n", pSelCursor);
+  pSelCursor->vBegin(pSEitf->iPartition());
   
-  pRowCursor->vFirst();
+  pSelCursor->vFirst();
 
   return EC_NONE;
 }

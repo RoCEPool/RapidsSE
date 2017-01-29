@@ -14,34 +14,34 @@
   r0 file.path! OPEN_WRITE r0 file.open
   if "file open!" . else "file not opened!" . rdrop drop EC_INVALID_FILE false exit then
 
-  "__row_cursor" find dup if else
-    drop "__row_cursor" :rowCursor
+  "__sel_cursor" find dup if else
+    drop "__sel_cursor" :selCursor
   then
   execute
 
   >r
-  // r0 ^rowCursor
+  // r0 ^selCursor
   // r1 ^file
 
-  r0 rowcursor.table!
+  r0 selCursor.table!
 
   args.partitions 0
   do
-    // r2 ^rowCursor
+    // r2 ^selCursor
     // r3 ^file
 
-    I r2 rowcursor.begin
-    r2 rowcursor.first
+    I r2 selCursor.begin
+    r2 selCursor.first
     begin
       while
-      r2 rowcursor.get
+      r2 selCursor.get
 //dup .
       r3 file.write
       "\n" r3 file.write
-      r2 rowcursor.next
+      r2 selCursor.next
     repeat
 
-    r2 rowcursor.end
+    r2 selCursor.end
   loop
 
   r1 file.close
