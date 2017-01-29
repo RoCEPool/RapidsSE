@@ -1,0 +1,48 @@
+/*============================================================================*/
+/* RbCursor.hpp - row buffer cursor                                           */
+/*============================================================================*/
+
+#pragma once
+
+#include "DBobjects.h"
+
+namespace DBobjects
+{
+  class RbCursor : public Object
+  {
+  private:
+    Table*     m_pTable;
+    i8         m_iPartition;
+    
+    Partition* m_pPartition;
+    RowStrand* m_pRowStrand;
+    RowBuffer* m_pRowBuffer;
+    
+    // must be last
+    Footer m_xFooter;
+    
+  public:
+    void* operator new(size_t);
+    void* operator new(size_t, RbCursor* pRbCursor);
+    void  operator delete(void*);
+    
+    RbCursor(void);
+    ~RbCursor(void);
+    
+    void    vBegin(i8 iPartition);
+    void    vEnd(void);
+    void    vFirst(void);
+    void    vNext(void);
+    RowBuffer* pRowBuffer(void);
+    Table*  pTable(void);
+    void    vTable(Table* pTable);
+    
+    Footer* pFooter(void);
+  };
+  
+  RbCursor* _pRbCursor(void* pAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

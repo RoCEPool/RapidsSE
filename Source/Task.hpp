@@ -216,6 +216,7 @@ namespace Tasks
     void vAddPrimitives_Process(void);
     void vAddPrimitives_Push(void);
     void vAddPrimitives_Queue(void);
+    void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
     void vAddPrimitives_RowBuffer(void);
     void vAddPrimitives_RowCursor(void);
@@ -627,6 +628,19 @@ namespace Tasks
     static void vQueueInit(NNP_Task nnpTask);     
     static void vQueuePop(NNP_Task nnpTask);      
 
+    // rbCursor
+    static void vRbCursorBegin(NNP_Task nnpTask);
+    static void vRbCursorDelete(NNP_Task nnpTask);
+    static void vRbCursorEnd(NNP_Task nnpTask);
+    static void vRbCursorFirst(NNP_Task nnpTask);
+    static void vRbCursorGet(NNP_Task nnpTask);
+    static void vRbCursorInit(NNP_Task nnpTask);
+    static void vRbCursorNew(NNP_Task nnpTask);
+    static void vRbCursorNext(NNP_Task nnpTask);
+    static void vRbCursorRowBuffer(NNP_Task nnpTask);
+    static void vRbCursorTableFetch(NNP_Task nnpTask);
+    static void vRbCursorTableStore(NNP_Task nnpTask);
+    
     // registers
     static void vRegPop(NNP_Task nnpTask);
     static void vRegPush(NNP_Task nnpTask);

@@ -765,6 +765,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Process();
   vAddPrimitives_Push();
   vAddPrimitives_Queue();
+  vAddPrimitives_RbCursor();
   vAddPrimitives_RowBuffer();
   vAddPrimitives_RowCursor();
   vAddPrimitives_Reg();
