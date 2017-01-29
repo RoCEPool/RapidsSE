@@ -15,14 +15,22 @@
   // dump path
   pathDump
 
-  rowCursor.new locals| rowCrs |
+  rbCursor.new locals| rbCrs |
 
-  "part" rowCrs rowCursor.table!
+  "part" find execute rbCrs rbCursor.table!
 
-  0 rowCrs rowCursor.begin
+  0 rbCrs rbCursor.begin
 
+  rbCrs rbCursor.first
 
-  rowCrs rowCursor.end
+  begin while
+
+    rbCrs rbCursor.get stk drop
+
+    rbCrs rbCursor.next
+  repeat
+
+  rbCrs rbCursor.end
 ;
 
 /*============================================================================*/
