@@ -21,6 +21,7 @@
 
 #include "RbCursor.hpp"
 #include "SelCursor.hpp"
+#include "RowCursor.hpp"
 
 #include "LoadMap.hpp"
 

@@ -219,6 +219,7 @@ namespace Tasks
     void vAddPrimitives_RbCursor(void);
     void vAddPrimitives_Reg(void);
     void vAddPrimitives_RowBuffer(void);
+    void vAddPrimitives_RowCursor(void);
     void vAddPrimitives_Rstack(void);
     void vAddPrimitives_SEitf(void);
     void vAddPrimitives_SEitfCursor(void);
@@ -684,6 +685,19 @@ namespace Tasks
     static void vRowBufferAppendRecord(NNP_Task nnpTask);
     static void vRowBufferDump(NNP_Task nnpTask);
     static void vRowBufferNew(NNP_Task nnpTask);
+    
+    // rowCursor
+    static void vRowCursorBegin(NNP_Task nnpTask);
+    static void vRowCursorDelete(NNP_Task nnpTask);
+    static void vRowCursorEnd(NNP_Task nnpTask);
+    static void vRowCursorFirst(NNP_Task nnpTask);
+    static void vRowCursorGet(NNP_Task nnpTask);
+    static void vRowCursorInit(NNP_Task nnpTask);
+    static void vRowCursorNew(NNP_Task nnpTask);
+    static void vRowCursorNext(NNP_Task nnpTask);
+    static void vRowCursorRowBuffer(NNP_Task nnpTask);
+    static void vRowCursorTableFetch(NNP_Task nnpTask);
+    static void vRowCursorTableStore(NNP_Task nnpTask);
     
     // rstack
     static void vRstackCsPick(NNP_Task nnpTask);
