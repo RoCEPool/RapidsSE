@@ -9,6 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : scanOp operator
 
+  // set path
+  "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
+
+  // dump path
+  pathDump
 ;
 
 /*============================================================================*/
