@@ -9,23 +9,21 @@
 /*----------------------------------------------------------------------------*/
 : writeOp operator
 
-/*
-  // set path
-  "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
+  "writeOp" .
 
-  // dump path
-  pathDump
+  999999 thread.sleep_s
 
-  selCursor.new locals| rowCrs |
+  begin
 
-  "part" rowCrs selCursor.table!
+    jobQueue> ( valset )
 
-  0 rowCrs selCursor.begin
+    valset> ( rowBuffer nValues )
 
+    drop ( rowBuffer )
 
-  rowCrs selCursor.end
-*/
+    stk drop
 
+  again
 ;
 
 /*============================================================================*/
