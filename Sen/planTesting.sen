@@ -6,7 +6,17 @@
 
 : pt
 
+  plan::new locals| thePlan |
+
+  thePlan planList::addPlan
+  planList::show
+
   scanOp
+
+  thePlan planList::removePlan
+  planList::show
+
+  thePlan plan.delete
 ;
 
 /*============================================================================*/
