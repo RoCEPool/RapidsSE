@@ -25,9 +25,12 @@
 
   begin while
 
-    rbCrs rbCursor.get stk drop
+    $$ rbCrs rbCursor.get $$>valset
+
+    "writeOp.task" find execute >jobqueue
 
     rbCrs rbCursor.next
+
   repeat
 
   rbCrs rbCursor.end

@@ -458,10 +458,10 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
   i8 nVal;
   
   if ( ! nnpTask->m_pDataStack->bPop(nVal) )
-  THROW_INVALID_DSTACK(">valset");
+    THROW_INVALID_DSTACK(">valset");
   
   if ( ! nnpTask->m_pDataStack->bGuard(nVal) )
-  THROW_INVALID_DSTACK(">valset");
+    THROW_INVALID_DSTACK(">valset");
   
   char* pCursor = nullptr;
   ValSet xValSet;

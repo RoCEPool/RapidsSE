@@ -11,7 +11,7 @@
 
   "writeOp" .
 
-  999999 thread.sleep_s
+  //999999 thread.sleep_s
 
   begin
 
