@@ -7,28 +7,30 @@
 : queue ;
 
 : queue:
-    create 
-    WT_OBJECT word.this word.type!
-    sizeof_queue allot
-    word.this >body object.magic!!
-    CN_QUEUE word.this >body object.class!
-    ' queue word.this word.kind!
-    word.this >body queue.init
-    true word.this >body object.wordbody!
-    does> 
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_queue allot
+  word.this >body object.magic!!
+  CN_QUEUE word.this >body object.class!
+  ' queue word.this word.kind!
+  word.this >body queue.init
+  true word.this >body object.wordbody!
+  does> 
 ;
 
 : :queue
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_queue allot
-    word.this >body object.magic!!
-    CN_QUEUE word.this >body object.class!
-    ' queue word.this word.kind!
-    word.this >body queue.init
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_queue allot
+  word.this >body object.magic!!
+  CN_QUEUE word.this >body object.class!
+  ' queue word.this word.kind!
+  word.this >body queue.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 /*============================================================================*/
