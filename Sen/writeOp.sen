@@ -5,13 +5,56 @@
 "writeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* open file for writing                                                      */
+/*----------------------------------------------------------------------------*/
+: writeOpenFile ( -- )
+
+  ": writeOpenFile" .
+;
+
+/*----------------------------------------------------------------------------*/
+/* close file for writing                                                     */
+/*----------------------------------------------------------------------------*/
+: writeCloseFile ( -- )
+
+  ": writeCloseFile" .
+
+  // drop dummy plan
+  drop ( rb )
+;
+
+/*----------------------------------------------------------------------------*/
+/* write row buffer to file                                                   */
+/*----------------------------------------------------------------------------*/
+: writeToFile ( rb plan -- )
+
+  ": writeToFile" .
+
+  // drop dummy plan
+  drop ( rb )
+
+  // declare rowCrs variable
+  rowCursor.new locals| rowCrs |
+
+  // set row bufferin cursor
+  rowCrs rowCursor.rowBuffer!
+
+  // iterate the row buffer
+  rowCrs rowCursor.first
+  begin while
+    rowCrs rowCursor.row .
+    rowCrs rowCursor.next
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
 /* file write                                                                 */
 /*----------------------------------------------------------------------------*/
-: writeOp operator
+: writeOp operator ( -- NEVER )
 
-  "writeOp" .
+  ": writeOp" .
 
-  rowCursor.new locals| rowCrs |
+  false locals| fileOpen |
 
   begin
 
@@ -21,15 +64,17 @@
 
     drop ( rowBuffer )
 
-    stk
+    fileOpen not if
+      writeOpenFile
+      true to fileOpen
+    then
 
-    rowCrs rowCursor.rowBuffer!
-
-    rowCrs rowCursor.first
-    begin while
-      rowCrs rowCursor.row .
-      rowCrs rowCursor.next
-    repeat
+    if
+      writeToFile
+    else
+      writeCloseFile
+      false to fileOpen
+    then
 
   again
 ;

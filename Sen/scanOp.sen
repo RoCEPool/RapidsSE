@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* scanOp.sen -- table scan seelct operator                                   */
+/* scanOp.sen -- table scan select operator                                   */
 /*============================================================================*/
 
 "scanOp.sen" .verbose
@@ -23,9 +23,12 @@
 
   rbCrs rbCursor.first
 
+  // pipe rb's
+
   begin while
 
-    $$ rbCrs rbCursor.get $$>valset
+    // << rb plan true >>
+    $$ rbCrs rbCursor.get 0 true $$>valset
 
     "writeOp.task" find execute >jobqueue
 
@@ -36,6 +39,13 @@
   rbCrs rbCursor.end
 
   rbCrs rbCursor.delete
+
+  // pipe EOD
+
+  // << plan false >>
+  $$ 0 false $$>valset
+
+  "writeOp.task" find execute >jobqueue
 ;
 
 /*============================================================================*/
