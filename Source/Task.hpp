@@ -691,10 +691,10 @@ namespace Tasks
     static void vRowCursorDelete(NNP_Task nnpTask);
     static void vRowCursorEnd(NNP_Task nnpTask);
     static void vRowCursorFirst(NNP_Task nnpTask);
-    static void vRowCursorGet(NNP_Task nnpTask);
     static void vRowCursorInit(NNP_Task nnpTask);
     static void vRowCursorNew(NNP_Task nnpTask);
     static void vRowCursorNext(NNP_Task nnpTask);
+    static void vRowCursorRow(NNP_Task nnpTask);
     static void vRowCursorRowBufferFetch(NNP_Task nnpTask);
     static void vRowCursorRowBufferStore(NNP_Task nnpTask);
     static void vRowCursorTableFetch(NNP_Task nnpTask);

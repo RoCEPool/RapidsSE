@@ -113,19 +113,10 @@ void RowCursor::vFirst(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
   
-  m_pPartition = m_pTable->pPartition(m_iPartition);
-  m_pRowStrand = m_pPartition->pHeadStrand();
-  if (m_pRowStrand) {
-    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
-    if (m_pRowBuffer)
-      m_pRow = m_pRowBuffer->pFirstRow();
-    else
-      m_pRow = nullptr;
-  }
-  else {
-    m_pRowBuffer = nullptr;
+  if (m_pRowBuffer)
+    m_pRow = m_pRowBuffer->pFirstRow();
+  else
     m_pRow = nullptr;
-  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,28 +128,10 @@ void RowCursor::vNext(void)
   
   ASSERT(m_pRow);
   
-  m_pRow = m_pRowBuffer->pNextRow(m_pRow);
-  if (m_pRow)
-    return;
-  
-  m_pRowBuffer = m_pRowBuffer->pNextBuffer();
-  if (m_pRowBuffer) {
-    m_pRow = m_pRowBuffer->pFirstRow();
-    if (m_pRow)
-      return;
-  }
-  
-  m_pRowStrand = m_pRowStrand->pNextStrand();
-  if (m_pRowStrand) {
-    m_pRowBuffer = m_pRowStrand->pFirstBuffer();
-    if (m_pRowBuffer) {
-      m_pRow = m_pRowBuffer->pFirstRow();
-      if (m_pRow)
-        return;
-    }
-  }
-  
-  m_pRow = nullptr;
+  if (m_pRowBuffer)
+    m_pRow = m_pRowBuffer->pNextRow(m_pRow);
+  else
+    m_pRow = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

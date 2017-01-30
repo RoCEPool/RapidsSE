@@ -11,7 +11,7 @@
 
   "writeOp" .
 
-  //999999 thread.sleep_s
+  rowCursor.new locals| rowCrs |
 
   begin
 
@@ -21,7 +21,15 @@
 
     drop ( rowBuffer )
 
-    stk drop
+    stk
+
+    rowCrs rowCursor.rowBuffer!
+
+    rowCrs rowCursor.first
+    begin while
+      rowCrs rowCursor.row .
+      rowCrs rowCursor.next
+    repeat
 
   again
 ;

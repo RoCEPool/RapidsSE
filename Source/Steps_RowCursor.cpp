@@ -38,10 +38,10 @@ void Task::vAddPrimitives_RowCursor(void)
   vAddPrimitive("rowCursor.delete",     &vRowCursorDelete,          false);
   vAddPrimitive("rowCursor.end",        &vRowCursorEnd,             false);
   vAddPrimitive("rowCursor.first",      &vRowCursorFirst,           false);
-  vAddPrimitive("rowCursor.get",        &vRowCursorGet,             false);
   vAddPrimitive("rowCursor.init",       &vRowCursorInit,            false);
   vAddPrimitive("rowCursor.new",        &vRowCursorNew,             false);
   vAddPrimitive("rowCursor.next",       &vRowCursorNext,            false);
+  vAddPrimitive("rowCursor.row",        &vRowCursorRow,             false);
   vAddPrimitive("rowCursor.rowBuffer@", &vRowCursorRowBufferFetch,  false);
   vAddPrimitive("rowCursor.rowBuffer!", &vRowCursorRowBufferStore,  false);
   vAddPrimitive("rowCursor.table@",     &vRowCursorTableFetch,      false);
@@ -136,28 +136,6 @@ ENTRY("vRowCursorFirst");
 }
 
 /*----------------------------------------------------------------------------*/
-/* rowCursor.get -- get current row                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vRowCursorGet(NNP_Task nnpTask)
-{
-ENTRY("vRowCursorGet");
-  
-  Object* pPtrRpwCursor;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
-    THROW_INVALID_DSTACK("rowCursor.get");
-  
-  RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
-  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
-  
-  s48K xRow;
-  xRow = pRowCursor->pRowAsStr();
-  
-  nnpTask->m_pDataStack->vPush(xRow);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* rowCursor.init -- init a row cursor                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vRowCursorInit(NNP_Task nnpTask)
@@ -210,6 +188,28 @@ ENTRY("vRowCursorNext");
   i8 bRow = pRowCursor->pRowAsStr() ? 1 : 0;
   
   nnpTask->m_pDataStack->vPush(bRow);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* rowCursor.get -- get current row                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vRowCursorRow(NNP_Task nnpTask)
+{
+  ENTRY("vRowCursorRow");
+  
+  Object* pPtrRpwCursor;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrRpwCursor) )
+    THROW_INVALID_DSTACK("rowCursor.row");
+  
+  RowCursor* pRowCursor = _pRowCursor(pPtrRpwCursor);
+  ASSERT(CN_ROWCURSOR == pRowCursor->eClass());
+  
+  s48K xRow;
+  xRow = pRowCursor->pRowAsStr();
+  
+  nnpTask->m_pDataStack->vPush(xRow);
   
   EXIT();
 }
