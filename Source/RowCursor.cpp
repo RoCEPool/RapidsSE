@@ -200,6 +200,16 @@ RowBuffer* RowCursor::pRowBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set current row buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void RowCursor::vRowBuffer(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWCURSOR,_FOOTER_);
+  
+  m_pRowBuffer = pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get table                                                                  */
 /*----------------------------------------------------------------------------*/
 Table* RowCursor::pTable(void)
