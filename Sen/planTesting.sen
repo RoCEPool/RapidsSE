@@ -6,17 +6,19 @@
 
 : pt
 
+  // create a plan, add it to plan list
   plan::new locals| thePlan |
-
   thePlan planList::addPlan
   planList::show
 
-  scanOp
+  // trigger scanOp by piping the plan to it
+  $$ thePlan $$>valset
+  "scanOp.task" find execute >jobqueue
 
+  // delete the plan (not correct place)
   thePlan planList::removePlan
   planList::show
-
-  thePlan plan.delete
+  //thePlan plan.delete
 ;
 
 /*============================================================================*/

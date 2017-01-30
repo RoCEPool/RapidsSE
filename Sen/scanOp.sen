@@ -5,9 +5,12 @@
 "scanOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* table scan select                                                          */
+/* scan partition of table                                                    */
 /*----------------------------------------------------------------------------*/
-: scanOp operator
+: scanPartition ( plan -- )
+
+  // intiially just drop the plan
+  drop
 
   // set path
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
@@ -46,6 +49,24 @@
   $$ 0 false $$>valset
 
   "writeOp.task" find execute >jobqueue
+;
+
+/*----------------------------------------------------------------------------*/
+/* table scan select                                                          */
+/*----------------------------------------------------------------------------*/
+: scanOp operator
+
+  begin
+
+    jobQueue> ( valset )
+
+    valset> ( plan nValues )
+
+    drop ( plan )
+
+    scanPartition ( )
+
+  again
 ;
 
 /*============================================================================*/

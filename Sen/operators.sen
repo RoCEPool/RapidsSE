@@ -36,6 +36,7 @@
 
   "createOpActors" .
 
+  0 "scanOp"  dup :actor actor.spawn
   0 "writeOp" dup :actor actor.spawn
 ;
 
