@@ -17,14 +17,13 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare plan
 
-  // set path (hardcoded for the moment)
-  //"tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
-
   thePlan plan.dic task.this task.dicStack dicPath.push
-
   ": arg$tableNm \"part\" ; " >:
-
   task.this task.dicStack dicPath.drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compile plan
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
