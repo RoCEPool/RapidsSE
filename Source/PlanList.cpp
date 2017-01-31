@@ -27,7 +27,7 @@ void* PlanList::operator new(size_t iSize)
 {
   RASSERT(iSize);
 
-  void* pObject = Heap::pAllocate(CN_TASKLIST);
+  void* pObject = Heap::pAllocate(CN_PLANLIST);
   
   return pObject;
 }
