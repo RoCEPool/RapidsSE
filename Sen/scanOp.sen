@@ -28,7 +28,7 @@
   //thePlan tableName@@ rbCrs rbCursor.table!
 
 //SECOND VARIATION:
-  thePlan tableName2@@ rbCrs rbCursor.table!
+  thePlan tableName2@@ find execute rbCrs rbCursor.table!
 
   task.this task.dicStack dicPath.drop
 

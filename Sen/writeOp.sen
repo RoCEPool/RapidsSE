@@ -76,6 +76,11 @@
 
     // open new file?
     fileOpen not if ( [ rowBuffer ] flag )
+
+      thePlan plan.dic task.this task.dicStack dicPath.push
+      fileName2@@ .
+      task.this task.dicStack dicPath.drop
+
       writeOpenFile
       true to fileOpen
     then

@@ -688,8 +688,8 @@ void Task::vSemicolon(NNP_Task nnpTask)
     Word* pWordArgSet = new(pDic) Word(sName.a());
     TaskStep* ppCalledEntryStep = pWordArg->ppEntryStep();
     pWordArgSet->vEncode(ppCalledEntryStep);
-    pWordArgSet->vEncode("find");
-    pWordArgSet->vEncode("execute");
+//    pWordArgSet->vEncode("find");
+//    pWordArgSet->vEncode("execute");
     pWordArgSet->vEncode("exit");
     
   }
