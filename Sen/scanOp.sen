@@ -9,45 +9,47 @@
 /*----------------------------------------------------------------------------*/
 : scanPartition ( plan -- )
 
-  // intiially just drop the plan
-  drop
+  // record the plan
+  locals| thePlan |
 
-  // set path
+  // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
-
-  // dump path
   pathDump
 
+  // create a new rowCursor
   rbCursor.new locals| rbCrs |
 
+  // set up table in rowCursor
   "part" find execute rbCrs rbCursor.table!
 
+  // begin scan of partition 0 (hardcoded for the moment)
   0 rbCrs rbCursor.begin
 
+  // get first rowBuffer of partition
   rbCrs rbCursor.first
 
-  // pipe rb's
-
+  // pipe all rb's of partition
   begin while
 
     // << rb plan true >>
-    $$ rbCrs rbCursor.get 0 true $$>valset
-
+    $$ rbCrs rbCursor.get true thePlan $$>valset
     "writeOp.task" find execute >jobqueue
 
+    // next rowBuffer in partition
     rbCrs rbCursor.next
 
   repeat
 
+  // end cursored iteration
   rbCrs rbCursor.end
 
+  // delete cursor
   rbCrs rbCursor.delete
 
-  // pipe EOD
+  // pipe EOD to writeOp
 
-  // << plan false >>
-  $$ 0 false $$>valset
-
+  // << false plan >>
+  $$ false thePlan $$>valset
   "writeOp.task" find execute >jobqueue
 ;
 
@@ -58,12 +60,14 @@
 
   begin
 
+    // wait for next job
     jobQueue> ( valset )
 
+    // unpack it
     valset> ( plan nValues )
-
     drop ( plan )
 
+    // scan the table partition and pipe to write
     scanPartition ( )
 
   again

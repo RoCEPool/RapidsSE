@@ -18,20 +18,25 @@
 : writeCloseFile ( -- )
 
   ": writeCloseFile" .
+;
 
-  // drop dummy plan
-  drop ( rb )
+/*----------------------------------------------------------------------------*/
+/* sink plan                                                                  */
+/*----------------------------------------------------------------------------*/
+: writePipeSink ( plan -- )
+
+  ": writePipeSink" .
+
+  $$ swap $$>valset
+  "sinkOp.task" find execute >jobqueue
 ;
 
 /*----------------------------------------------------------------------------*/
 /* write row buffer to file                                                   */
 /*----------------------------------------------------------------------------*/
-: writeToFile ( rb plan -- )
+: writeToFile ( rowBuffer -- )
 
   ": writeToFile" .
-
-  // drop dummy plan
-  drop ( rb )
 
   // declare rowCrs variable
   rowCursor.new locals| rowCrs |
@@ -55,25 +60,34 @@
   ": writeOp" .
 
   false locals| fileOpen |
+  0     locals| thePlan  |
 
   begin
 
+    // get next job
     jobQueue> ( valset )
 
-    valset> ( rowBuffer nValues )
+    // unpack it
+    valset> ( [ rowBuffer ] flag plan nValues )
+    drop    ( [ rowBuffer ] flag plan )
 
-    drop ( rowBuffer )
+    // save the plan
+    to thePlan ( rowBuffer flag )
 
-    fileOpen not if
+    // open new file?
+    fileOpen not if ( [ rowBuffer ] flag )
       writeOpenFile
       true to fileOpen
     then
 
-    if
+    // write or close file & sink plan?
+    if ( [ rowBuffer ] )
       writeToFile
     else
       writeCloseFile
       false to fileOpen
+
+      thePlan writePipeSink
     then
 
   again

@@ -1,14 +1,36 @@
 /*============================================================================*/
-/* sendOp.sen -- send records to socket operator                              */
+/* sinkOp.sen -- sink operator                                                */
 /*============================================================================*/
 
-"sendOp.sen" .verbose
+"sinkOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* socket send                                                                */
+/* sink                                                                       */
 /*----------------------------------------------------------------------------*/
-: sendOp operator
+: sinkOp operator ( -- NEVER )
 
+  ": sinkOp" .
+
+  0 locals| planTBD |
+
+  begin
+
+    jobQueue> ( valset )
+
+    valset> ( plan nValues )
+
+    drop ( plan )
+
+    to planTBD
+
+    planTBD planList::removePlan
+
+    planTBD plan.delete
+
+    "removed & deleted plan" .
+    planList::show
+
+  again
 ;
 
 /*============================================================================*/

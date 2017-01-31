@@ -14,11 +14,6 @@
   // trigger scanOp by piping the plan to it
   $$ thePlan $$>valset
   "scanOp.task" find execute >jobqueue
-
-  // delete the plan (not correct place)
-  thePlan planList::removePlan
-  planList::show
-  //thePlan plan.delete
 ;
 
 /*============================================================================*/
