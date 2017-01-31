@@ -733,6 +733,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Cast();
   vAddPrimitives_Class();
   vAddPrimitives_Comment();
+  vAddPrimitives_Common();
   vAddPrimitives_Cpu();
   vAddPrimitives_Cursor();
   vAddPrimitives_DdlLock();
@@ -756,7 +757,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Int();
   vAddPrimitives_Loader();
   vAddPrimitives_LoaderSub();
-  vAddPrimitives_Local();
+  vAddPrimitives_Locals();
   vAddPrimitives_Lock();
   vAddPrimitives_Logic();
   vAddPrimitives_Magnitude();

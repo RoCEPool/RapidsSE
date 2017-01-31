@@ -180,6 +180,7 @@ namespace Tasks
     void vAddPrimitives_Cast(void);
     void vAddPrimitives_Class(void);
     void vAddPrimitives_Comment(void);
+    void vAddPrimitives_Common(void);
     void vAddPrimitives_Cpu(void);
     void vAddPrimitives_Cursor(void);
     void vAddPrimitives_DdlLock(void);
@@ -203,7 +204,7 @@ namespace Tasks
     void vAddPrimitives_Int(void);
     void vAddPrimitives_Loader(void);
     void vAddPrimitives_LoaderSub(void);
-    void vAddPrimitives_Local(void);
+    void vAddPrimitives_Locals(void);
     void vAddPrimitives_Lock(void);
     void vAddPrimitives_Logic(void);
     void vAddPrimitives_Magnitude(void);
@@ -321,6 +322,13 @@ namespace Tasks
     // comment
     static void vComment(NNP_Task nnpTask);
     
+    // common
+    static void vCommonFetch(NNP_Task nnpTask);
+    static void vCommonStore(NNP_Task nnpTask);
+    static void vCommonBar(NNP_Task nnpTask);
+    static void vCommonPop(NNP_Task nnpTask);
+    static void vCommonPush(NNP_Task nnpTask);
+    static void vCommonToCommon(NNP_Task nnpTask);
     // cpu
     static void vCpuRdtscp(NNP_Task nnpTask);
     

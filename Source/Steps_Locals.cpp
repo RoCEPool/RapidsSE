@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Local.cpp - local step group                                         */
+/* Steps_Locals.cpp - locals step group                                       */
 /*============================================================================*/
 
 #include "StorageEngine.h"
@@ -32,7 +32,7 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vAddPrimitives_Local(void)
+void Task::vAddPrimitives_Locals(void)
 {
   vAddPrimitive("local.fetch",     &vLocalFetch,       false);
   vAddPrimitive("local.store",     &vLocalStore,       false);
