@@ -11,6 +11,18 @@
   thePlan planList::addPlan
   planList::show
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepare plan
+
+  // set path (hardcoded for the moment)
+  //"tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
+
+  thePlan plan.dic task.this task.dicStack dicPath.push
+
+  task.this task.dicStack dicPath.drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // trigger scanOp by piping the plan to it
   $$ thePlan $$>valset
   "scanOp.task" find execute >jobqueue

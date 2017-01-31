@@ -5,7 +5,7 @@
 "scanOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* scan partition of table                                                    */
+/* scan partition of a table                                                  */
 /*----------------------------------------------------------------------------*/
 : scanPartition ( plan -- )
 
@@ -31,7 +31,7 @@
   // pipe all rb's of partition
   begin while
 
-    // << rb plan true >>
+    // << rb true plan >>
     $$ rbCrs rbCursor.get true thePlan $$>valset
     "writeOp.task" find execute >jobqueue
 

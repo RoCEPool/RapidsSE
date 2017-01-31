@@ -27,7 +27,7 @@
 
   ": writePipeSink" .
 
-  $$ swap $$>valset
+  $$ swap $$>valset // << plan >>
   "sinkOp.task" find execute >jobqueue
 ;
 

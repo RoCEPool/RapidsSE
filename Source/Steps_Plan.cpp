@@ -35,6 +35,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Plan(void)
 {
   vAddPrimitive("plan.delete",    &vPlanDelete,       false);
+  vAddPrimitive("plan.dic",       &vPlanDic,          false);
   vAddPrimitive("plan.name@",     &vPlanNameFetch,    false);
   vAddPrimitive("plan.name!",     &vPlanNameStore,    false);
   vAddPrimitive("plan::new",      &vPlanNew,          false);
@@ -56,6 +57,27 @@ void Task::vPlanDelete(NNP_Task nnpTask)
   Plan* pPlan = _pPlan(pPtrPlan);
   
   delete pPlan;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.dic -- get plan dic ( plan -- dic )                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanDic(NNP_Task nnpTask)
+{
+  ENTRY("vPlanDic");
+  
+  Object* pPtrPlan;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.delete");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  Dic* pPlanDic = pPlan->pDic();
+  
+  nnpTask->m_pDataStack->vPush(pPlanDic);
   
   EXIT();
 }

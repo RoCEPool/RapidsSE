@@ -601,6 +601,7 @@ namespace Tasks
     
     // plan
     static void vPlanDelete(NNP_Task nnpTask);
+    static void vPlanDic(NNP_Task nnpTask);
     static void vPlanNew(NNP_Task nnpTask);
     static void vPlanNameFetch(NNP_Task nnpTask);
     static void vPlanNameStore(NNP_Task nnpTask);
