@@ -17,20 +17,27 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare plan
 
-  thePlan plan.dic task.this task.dicStack dicPath.push
-  ": arg$tableNm \"part\" ; " >:
-  task.this task.dicStack dicPath.drop
+  //thePlan plan.dic task.this task.dicStack dicPath.push
+  //": arg$tableNm \"part\" ; " >:
+  //task.this task.dicStack dicPath.drop
+
+  // add code to lambda of the plan to set the tablename
+  //thePlan "part" "arg$tableNm" appendLambda
+
+  // set the tablename in the plan
+  thePlan "part" tableName!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile plan
-
+  // compile the plan
+  thePlan compilePlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // trigger scanOp by piping the plan to it
   $$ thePlan $$>valset
   "scanOp.task" find execute >jobqueue
-;
+
+  ;
 
 /*============================================================================*/
 /* end                                                                        */

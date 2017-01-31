@@ -34,12 +34,15 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Plan(void)
 {
-  vAddPrimitive("plan.delete",    &vPlanDelete,       false);
-  vAddPrimitive("plan.dic",       &vPlanDic,          false);
-  vAddPrimitive("plan.name@",     &vPlanNameFetch,    false);
-  vAddPrimitive("plan.name!",     &vPlanNameStore,    false);
-  vAddPrimitive("plan::new",      &vPlanNew,          false);
-  vAddPrimitive("plan.show",      &vPlanShow,         false);
+  vAddPrimitive("plan.delete",       &vPlanDelete,       false);
+  vAddPrimitive("plan.dic",          &vPlanDic,          false);
+  vAddPrimitive("plan.lambda+",      &vPlanLambdaAppend, false);
+  vAddPrimitive("plan.lambda@",      &vPlanLambdaFetch,  false);
+  vAddPrimitive("plan.lambda!",      &vPlanLambdaStore,  false);
+  vAddPrimitive("plan.name@",        &vPlanNameFetch,    false);
+  vAddPrimitive("plan.name!",        &vPlanNameStore,    false);
+  vAddPrimitive("plan::new",         &vPlanNew,          false);
+  vAddPrimitive("plan.show",         &vPlanShow,         false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -82,6 +85,70 @@ void Task::vPlanDic(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* plan.lambda+ -- append to the lambda of the plan                           */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanLambdaAppend(NNP_Task nnpTask)
+{
+  ENTRY("vPlanLambdaAppend");
+  
+  Object* pPtrPlan;
+  s48K sCode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.lambda+");
+  
+  if ( ! nnpTask->m_pDataStack->bPop(sCode) )
+    THROW_INVALID_DSTACK("plan.lambda+");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  pPlan->vAppendToLambda(sCode);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.lambda@ -- fetch lambda from the plan                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanLambdaFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlanLambdaFetch");
+  
+  Object* pPtrPlan;
+  s48K sCode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.lambda!");
+
+  Plan* pPlan = _pPlan(pPtrPlan);
+  s48K sLambda = pPlan->sLambda();
+  
+  nnpTask->m_pDataStack->vPush(sLambda);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.lambda! -- store lambda of the plan                                   */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanLambdaStore(NNP_Task nnpTask)
+{
+  ENTRY("vPlanLambdaStore");
+  
+  Object* pPtrPlan;
+  s48K sCode;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.lambda!");
+  
+  if ( ! nnpTask->m_pDataStack->bPop(sCode) )
+    THROW_INVALID_DSTACK("plan.lambda!");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  pPlan->vLambda(sCode);
+  
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* plan.name@ -- fetch plan name ( plan-- "<planNm>" )                        */
 /*----------------------------------------------------------------------------*/

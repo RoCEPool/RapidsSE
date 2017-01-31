@@ -22,7 +22,8 @@
   thePlan plan.dic task.this task.dicStack dicPath.push
 
   // set up table in rowCursor
-  arg$tableNm find execute rbCrs rbCursor.table!
+  //arg$tableNm find execute rbCrs rbCursor.table!
+  thePlan tableName@ rbCrs rbCursor.table!
 
   task.this task.dicStack dicPath.drop
 
@@ -55,6 +56,7 @@
   // << false plan >>
   $$ false thePlan $$>valset
   "writeOp.task" find execute >jobqueue
+
 ;
 
 /*----------------------------------------------------------------------------*/

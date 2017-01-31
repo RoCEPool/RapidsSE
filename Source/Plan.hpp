@@ -34,6 +34,8 @@ namespace Plans
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    void vAppendToLambda(s48K& sText);
+    
     u8   uPlanId(void);
     
     s32& sName(void);

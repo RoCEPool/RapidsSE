@@ -600,8 +600,12 @@ namespace Tasks
     static void vObjectWordBodySet(NNP_Task nnpTask);
     
     // plan
+    static void vPlanCompile(NNP_Task nnpTask);
     static void vPlanDelete(NNP_Task nnpTask);
     static void vPlanDic(NNP_Task nnpTask);
+    static void vPlanLambdaAppend(NNP_Task nnpTask);
+    static void vPlanLambdaFetch(NNP_Task nnpTask);
+    static void vPlanLambdaStore(NNP_Task nnpTask);
     static void vPlanNew(NNP_Task nnpTask);
     static void vPlanNameFetch(NNP_Task nnpTask);
     static void vPlanNameStore(NNP_Task nnpTask);
