@@ -32,6 +32,7 @@
 
 //SECOND VARIATION:
   thePlan "part" tableName2!!
+  thePlan "/tmp/part.csv" fileName2!!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the plan

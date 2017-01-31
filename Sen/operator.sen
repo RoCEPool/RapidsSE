@@ -88,8 +88,8 @@ queue: writeOp_Queue
 */
 
 //SECOND VARIATION:
-: tableName2 indirect ( plan -- )
-;
+: tableName2 indirect ( plan -- ) ;
+: fileName2  indirect ( plan -- ) ;
 
 
 /*============================================================================*/

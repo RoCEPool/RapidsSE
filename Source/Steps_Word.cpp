@@ -674,7 +674,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     s32 sFormat;
     sFormat = ": ";
     String::vConcat(sFormat.a(), sArgName.a());
-    String::vConcat(sFormat.a()," \"%v\";");
+    String::vConcat(sFormat.a()," \"%v\" ; ");
     xValWsp = sFormat.a();
     pWordArgGet->vEncode("pushValue",&xValWsp);
     pWordArgGet->vEncode("str.format");
