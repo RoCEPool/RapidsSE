@@ -24,7 +24,7 @@ Arguments::Arguments(void)
   m_sRegionPrefix = "SE_";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nPartitions = 4;
-  m_sNode       = "node";
+  m_sNodeName   = "node";
   m_nNodes      = 0;
   m_bTracepoint = false;
   
@@ -156,13 +156,13 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
-      m_sNode = argv[++iArg];
+    if (String::bEqualTo("--name",argv[iArg],C_NO_CASE)) {
+      m_sNodeName = argv[++iArg];
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (String::bEqualTo("--cluster",argv[iArg],C_NO_CASE)) {
+    if (String::bEqualTo("--node",argv[iArg],C_NO_CASE)) {
       m_xNodes[iNode].m_sNodeName = argv[++iArg];;
       m_xNodes[iNode].m_sIPAddress = argv[++iArg];
       m_xNodes[iNode].m_iPortNo =  String::iToI8(argv[++iArg]);
@@ -417,7 +417,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     return false;
   }
   
-  // if --cluster was defined just set the m_nNodes
+  // if --node was defined just set the m_nNodes
   if (iNode) {
     
     // set no. of nodes
@@ -431,31 +431,31 @@ bool Arguments::bParse(int argc, const char* argv[])
       return false;
     }
     
-    // the current node should have been specfied in the --cluster
+    // the current node should have been specfied in the --node
     bool bFound = false;
     for (i8 iIndex = 0; iIndex < m_nNodes; iIndex++) {
-      if (String::bEqualTo(m_xNodes[iIndex].m_sNodeName.a(), m_sNode.a(), C_NO_CASE)) {
+      if (String::bEqualTo(m_xNodes[iIndex].m_sNodeName.a(), m_sNodeName.a(), C_NO_CASE)) {
         bFound = true;
         break;
       }
     }
     
     if ( ! bFound ) {
-      vTrace("Add argument --node name with name of this node from the --cluster definitions\n");
+      vTrace("Add argument --name with name of this node from the --node definitions\n");
       return false;
     }
     
   } else {
     // add a single node
     m_nNodes = 1;
-    m_xNodes[0].m_sNodeName = m_sNode;
+    m_xNodes[0].m_sNodeName = m_sNodeName;
     m_xNodes[0].m_sIPAddress = "";
     m_xNodes[0].m_iPortNo =  -1;
   }
 
   String::vConcat( m_sRegionName.a(), "/");
   String::vConcat( m_sRegionName.a(), m_sRegionPrefix.a());
-  String::vConcat( m_sRegionName.a(), m_sNode.a());
+  String::vConcat( m_sRegionName.a(), m_sNodeName.a());
   
   return true;
 }
@@ -477,13 +477,13 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
-  vTrace("  --node %s\n",m_sNode.a());
+  vTrace("  --name %s\n",m_sNodeName.a());
   vTrace("  --regionPrefix %s\n",m_sRegionPrefix.a());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
   
   for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
-    vTrace("  --cluster %s %s %lld\n",
+    vTrace("  --node %s %s %lld\n",
       m_xNodes[iIndex].m_sNodeName.a(),
       m_xNodes[iIndex].m_sIPAddress.a(),
       m_xNodes[iIndex].m_iPortNo);
@@ -518,7 +518,7 @@ void Arguments::vPrintHelp(void)
   
   printf("\n");
   //printf("--partitionsPerNode <i>  (number of partitions per node)\n");
-  printf("--cluster <name> IP port (node information in the cluster)\n");
+  printf("--node <name> IP port (node information in the cluster)\n");
   printf("--regionPrefix <name>    (prefix of shm region name)\n");
   printf("--size <i>               (size in bytes of shm region)\n");
 

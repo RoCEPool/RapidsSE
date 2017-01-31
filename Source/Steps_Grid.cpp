@@ -110,9 +110,9 @@ void Task::vGridThisNodeStore(NNP_Task nnpTask)
   s256 sPtrNodeName;
   i8 iNode;
   
-  Node* pThisNode = gpGrid->pFindNode(gxArguments.m_sNode.a());
+  Node* pThisNode = gpGrid->pFindNode(gxArguments.m_sNodeName.a());
   if ( ! pThisNode ) {
-    THROW("Cannot fine Node %s in the cluster", gxArguments.m_sNode.a());
+    THROW("Cannot fine Node %s in the cluster", gxArguments.m_sNodeName.a());
   }
   
   gpGrid->vThisNode(pThisNode->iNodeNo());

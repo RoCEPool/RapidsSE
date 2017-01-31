@@ -573,7 +573,7 @@ tp: addingPassOnToCP
   " --commands /Users/ray/Desktop/rapidsse/Commands" str.cat
   clusterString str.cat
   " --regionPrefix " str.cat args.regionPrefix str.cat
-  " --node  " str.cat nodeName str.cat
+  " --name  " str.cat nodeName str.cat
   //" --partitionsPerNode " str.cat args.partitions >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
   args.tracepoint if " --tracepoint " str.cat then
@@ -590,7 +590,7 @@ tp: addingPassOnToCP
   // test for single node
   args.nodes 1 == if exit then
 
-  // form the --cluster parameter string
+  // form the --node parameter string
   locals| clusterString |
   locals| node |
 
@@ -601,7 +601,7 @@ tp: addingPassOnToCP
     node node.port
     node node.IP
     node node.name
-    " --cluster %v %v %v " str.format
+    " --node %v %v %v " str.format
     str.cat
   loop
 
