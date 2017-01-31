@@ -1,10 +1,13 @@
 /*============================================================================*/
-/* planTesting.sen -- plan tests                                              */
+/* planTest.sen -- plan tests                                                 */
 /*============================================================================*/
 
-"planTesting.sen" .verbose
+"planTest.sen" .verbose
 
-: pt
+/*----------------------------------------------------------------------------*/
+/* plan test                                                                  */
+/*----------------------------------------------------------------------------*/
+: planTest
 
   // create a plan, add it to plan list
   plan::new locals| thePlan |
@@ -18,6 +21,8 @@
   //"tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
 
   thePlan plan.dic task.this task.dicStack dicPath.push
+
+  ": arg$tableNm \"part\" ; " >:
 
   task.this task.dicStack dicPath.drop
 
