@@ -211,6 +211,7 @@ void Task::vInit(const char* aLambda)
   
   m_pRegFrame    = nullptr;
   m_pLocalsFrame = nullptr;
+  m_pCommonFrame = nullptr;
   
   IP.m_pCell   = nullptr;
   m_pEntryCell   = nullptr;

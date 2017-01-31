@@ -80,7 +80,8 @@ namespace Tasks
     DicPath m_xPathStack;   // path stack
     
     RegFrame* m_pRegFrame;    // register frame chain
-    RegFrame* m_pLocalsFrame; // register frame chain
+    RegFrame* m_pLocalsFrame; // local register frame chain
+    RegFrame* m_pCommonFrame; // common register frame chain
 
     s256       m_sLambda;    // lambda input
     Tokeniser* m_pTokeniser; // input stream tokenizer
