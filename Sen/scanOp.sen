@@ -23,7 +23,12 @@
 
   // set up table in rowCursor
   //arg$tableNm find execute rbCrs rbCursor.table!
-  thePlan tableName@ rbCrs rbCursor.table!
+
+//FIRST VARIATION:
+  //thePlan tableName@@ rbCrs rbCursor.table!
+
+//SECOND VARIATION:
+  thePlan tableName2@@ rbCrs rbCursor.table!
 
   task.this task.dicStack dicPath.drop
 

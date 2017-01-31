@@ -62,6 +62,7 @@ Word::Word(const char* sName)
   m_pKind        = gpWord ? gpWord : this;
   m_iEpoch       = gpAttachMap->m_iEpoch;
   m_pParticipant = nullptr;
+  m_bIndirect    = false;
   m_bImmediate   = false;
   m_iParams      = 0;
   m_iDataBytes   = 0;
@@ -219,12 +220,13 @@ void Word::vContentDump(void)
   
   Word* pStepWord = gpMainDic->pFindStep(m_pEntryStep);
   
-  vTrace("Word %p: %s %s Kind %s Immediate %d DataBytes %lld "
+  vTrace("Word %p: %s %s Kind %s Indirect %d Immediate %d DataBytes %lld "
          "Step %p %s ..Data.. %p\n",
          this,
          m_sName.a(),
          pWT[m_eWordType],
          m_pKind->m_sName.a(),
+         m_bIndirect,
          m_bImmediate,
          m_iDataBytes,
          m_pEntryStep,
@@ -456,6 +458,26 @@ bool Word::bHasCell(Cell* pCell)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set word as indirect type                                                  */
+/*----------------------------------------------------------------------------*/
+void Word::vIndirect(bool bIndirect)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_bIndirect = bIndirect;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set distributed type                                                       */
+/*----------------------------------------------------------------------------*/
+bool Word::bIndirect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_bIndirect;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get immediate flag                                                         */
 /*----------------------------------------------------------------------------*/
 bool Word::bImmediate(void)
@@ -556,12 +578,13 @@ void Word::vObjectDump(const char* pTab)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  vTrace("epoch %lld %s (%s) %s %s DataBytes %lld "
+  vTrace("epoch %lld %s (%s) %s %s %s DataBytes %lld "
          "Step %p ..Data.. %p\n",
          m_iEpoch,
          m_sName.a(),
          m_pDic->sName().a(),
          pWT[m_eWordType],
+         m_bIndirect ? "Indirect" : "Not Indirect",
          m_bImmediate ? "Immediate" : "Not Immediate",
          m_iDataBytes,
          m_pEntryStep,

@@ -24,8 +24,14 @@
   // add code to lambda of the plan to set the tablename
   //thePlan "part" "arg$tableNm" appendLambda
 
+
   // set the tablename in the plan
-  thePlan "part" tableName!
+//FIRST VARIATION:
+  //thePlan "part" tableName!!
+
+
+//SECOND VARIATION:
+  thePlan "part" tableName2!!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the plan

@@ -65,6 +65,7 @@ namespace Dictionaries
     Dic*     m_pDic;         // which dictionary this word in
     Word*    m_pKind;        // kind of word
     Word*    m_pParticipant; // allParticipant/oneParticipant word
+    bool     m_bIndirect;    // word is an indirect type
     bool     m_bImmediate;   // immediate execution during compile?
     i8       m_iParams;      // number of parameters
     Word*    m_pPrevWord;    // previous word in dictionary
@@ -119,6 +120,8 @@ namespace Dictionaries
     bool  bImmediate(void);
     bool  bIsName(s& sName);
     void  vImmediate(bool bImmediate);
+    bool  bIndirect(void);
+    void  vIndirect(bool bIndirect);
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
