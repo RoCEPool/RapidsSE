@@ -36,7 +36,7 @@ void Task::vAddPrimitives_Common(void)
 {
   vAddPrimitive("common.fetch",    &vCommonFetch,      false);
   vAddPrimitive("common.store",    &vCommonStore,      false);
-  vAddPrimitive("common/",         &vCommonBar,        true);
+  vAddPrimitive("common/",         &vCommonSlash,      true);
   vAddPrimitive("common.pop",      &vCommonPop,        false);
   vAddPrimitive("common.push",     &vCommonPush,       false);
   vAddPrimitive("to",              &vCommonToCommon,   true);
@@ -49,14 +49,14 @@ void Task::vCommonFetch(NNP_Task nnpTask)
 {
   ENTRY("vCommonFetch");
   
-  if ( ! nnpTask->m_pLocalsFrame )
+  if ( ! nnpTask->m_pCommonFrame )
     THROW_INVALID_DSTACK("common.fetch");
   
-  i8 iLocal;
-  if ( ! nnpTask->m_pDataStack->bPop(iLocal) )
+  i8 iCommon;
+  if ( ! nnpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("common.fetch");
   
-  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  ValReg* pValReg = nnpTask->m_pCommonFrame->pValReg(iCommon);
   
   nnpTask->m_pDataStack->vPush(pValReg);
   
@@ -70,14 +70,14 @@ void Task::vCommonStore(NNP_Task nnpTask)
 {
   ENTRY("vCommonStore");
   
-  if ( ! nnpTask->m_pLocalsFrame )
+  if ( ! nnpTask->m_pCommonFrame )
     THROW_INVALID_DSTACK("commonStore");
   
-  i8 iLocal;
-  if ( ! nnpTask->m_pDataStack->bPop(iLocal) )
+  i8 iCommon;
+  if ( ! nnpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("commonStore");
   
-  ValReg* pValReg = nnpTask->m_pLocalsFrame->pValReg(iLocal);
+  ValReg* pValReg = nnpTask->m_pCommonFrame->pValReg(iCommon);
   
   nnpTask->m_pDataStack->bPop(pValReg);
   
@@ -87,57 +87,61 @@ void Task::vCommonStore(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 /* common/ -- declare set of common variables                      immediate  */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonBar(NNP_Task nnpTask)
+void Task::vCommonSlash(NNP_Task nnpTask)
 {
-ENTRY("vCommonBar");
-  
-  Word* pCurrentWord = nnpTask->m_pCurrentWord;
-  
-  Dic* pDic = nnpTask->m_xPathStack.pPick(0);
+ENTRY("vCommonSlash");
 
+  Dic* pDic;
+  
+  s32 sDicName;
+  s32 sVarName;
+  
+  //Word* pCurrentWord = nnpTask->m_pCurrentWord;
+  
   ValWsp xValWsp;
   
-  for (;;) {
+//  for (;;) {
     
-    // get name of local
+    // get name of common dictionary
     nnpTask->m_pTokeniser->vNextToken();
+    sDicName = nnpTask->m_pTokeniser->sToken();
     
-    // end of locals declaration?
-    if (String::bEqualTo("/",nnpTask->m_pTokeniser->sToken().a()))
-      break;
-
-    // test for first use of locals|
-    if ( ! nnpTask->m_nLocals ) {
+    // test for that dictionary
+    Word* pWordDic = nnpTask->m_xPathStack.pFindWord(sDicName);
+    if (pWordDic) {
+      // use that dictionary
+      pDic = _pDic(pWordDic->pDataArea());
+    }
+    else {
+      // create a common dictionary      
+      pWordDic = new(gpMainDic) Word(sDicName.a());
+      pWordDic->vWordType(WT_OBJECT);
+      pWordDic->pAllot(sizeof(Dic));
       
-      // create a locals dictionary
-      pDic = new Dic;
-      pDic->vName("<localsDic>");
-      nnpTask->m_xPathStack.vPush(pDic);
-      
-      // enocde locals frame push
-      pCurrentWord->vEncode("locals.push");
+      pDic = new((Dic*)pWordDic->pDataArea()) Dic;
     }
     
-    // create new word for local in current dictionary
-    Word* pWordLocal = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
+    // get name of common variable
+    nnpTask->m_pTokeniser->vNextToken();
+    sVarName = nnpTask->m_pTokeniser->sToken();
+    
+    // create new word for common in current dictionary
+    Word* pWordCommon = new(pDic) Word(sVarName.a());
     // ** do not set as current word **
     
-    // set word as local variable
-    pWordLocal->vWordType(WT_LOCAL);
-    pWordLocal->vLocal(nnpTask->m_nLocals);
+    // set word as variable
+    pWordCommon->vWordType(WT_LOCAL);
+    pWordCommon->vLocal(nnpTask->m_nLocals);
     
     // encode the word
     xValWsp = nnpTask->m_nLocals;
-    pWordLocal->vEncode("pushValue",&xValWsp);
-    pWordLocal->vEncode("local.fetch");
-    pWordLocal->vEncode("exit");
-
-    // initialise the local from dstack
-    pCurrentWord->vEncode("pushValue",&xValWsp);
-    pCurrentWord->vEncode("local.store");
+    pWordCommon->vEncode("pushValue",&xValWsp);
+    pWordCommon->vEncode("common.fetch");
+    pWordCommon->vEncode("exit");
     
-    nnpTask->m_nLocals++;
-  }
+    // accept /
+    nnpTask->m_pTokeniser->vNextToken();
+//  }
   
   EXIT();
 }
@@ -149,12 +153,12 @@ void Task::vCommonPop(NNP_Task nnpTask)
 {
 ENTRY("vCommonPop");
   
-  RegFrame* pLocalsFrame = nnpTask->m_pLocalsFrame;
+  RegFrame* pLocalsFrame = nnpTask->m_pCommonFrame;
   
   if ( ! pLocalsFrame )
     THROW_INVALID_DSTACK("common.pop");
   
-  nnpTask->m_pLocalsFrame = nnpTask->m_pLocalsFrame->pNext();
+  nnpTask->m_pCommonFrame = nnpTask->m_pCommonFrame->pNext();
   
   delete pLocalsFrame;
   
@@ -172,9 +176,9 @@ ENTRY("vCommonPush");
   
   pLocalsFrame->vStackPtr(nnpTask->m_pReturnStack->pTopValue());
   
-  pLocalsFrame->vNext(nnpTask->m_pLocalsFrame);
+  pLocalsFrame->vNext(nnpTask->m_pCommonFrame);
   
-  nnpTask->m_pLocalsFrame = pLocalsFrame;
+  nnpTask->m_pCommonFrame = pLocalsFrame;
   
   EXIT();
 }
@@ -188,17 +192,17 @@ ENTRY("vCommonToCommon");
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  // get name of local
+  // get name of common
   nnpTask->m_pTokeniser->vNextToken();
 
-  Word* pWordLocal = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
-  ASSERT(pWordLocal);
+  Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  ASSERT(pWordCommon);
  
   ValWsp xValWsp;
-  xValWsp = pWordLocal->iLocal();
+  xValWsp = pWordCommon->iLocal();
   
   pCurrentWord->vEncode("pushValue",&xValWsp);
-  pCurrentWord->vEncode("local.store");
+  pCurrentWord->vEncode("common.store");
 
   EXIT();
 }

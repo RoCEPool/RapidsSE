@@ -326,7 +326,7 @@ namespace Tasks
     // common
     static void vCommonFetch(NNP_Task nnpTask);
     static void vCommonStore(NNP_Task nnpTask);
-    static void vCommonBar(NNP_Task nnpTask);
+    static void vCommonSlash(NNP_Task nnpTask);
     static void vCommonPop(NNP_Task nnpTask);
     static void vCommonPush(NNP_Task nnpTask);
     static void vCommonToCommon(NNP_Task nnpTask);
