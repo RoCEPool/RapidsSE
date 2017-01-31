@@ -15,6 +15,7 @@
 "filterOp.sen" include
 "joinOp.sen" include
 "limitOp.sen" include
+"markOp.sen" include
 "mergeOp.sen" include
 "nextOp.sen" include
 "projectOp.sen" include
