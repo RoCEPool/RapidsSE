@@ -4,7 +4,7 @@
 
 "scanOp.sen" .verbose
 
-common/ scan _rbCrs /
+common/ scan rbCrs /
 
 /*----------------------------------------------------------------------------*/
 /* scan partition of a table                                                  */
@@ -14,28 +14,19 @@ common/ scan _rbCrs /
   // record the plan
   locals| thePlan |
 
-traceon
-  "scan" thePlan plan.regFrame? stk drop
-traceoff
+  // find/create the reg frame for this scanOp
+  "scan" thePlan plan.regFrame? common.push
 
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
   pathDump
 
   // create a new rowCursor
-  rbCursor.new locals| rbCrs |
+  rbCursor.new toCommon rbCrs
 
   thePlan plan.dic task.this task.dicStack dicPath.push
-
   // set up table in rowCursor
-  //arg$tableNm find execute rbCrs rbCursor.table!
-
-//FIRST VARIATION:
-  //thePlan tableName@@ rbCrs rbCursor.table!
-
-//SECOND VARIATION:
   thePlan tableName2@@ find execute rbCrs rbCursor.table!
-
   task.this task.dicStack dicPath.drop
 
   // begin scan of partition 0 (hardcoded for the moment)
@@ -68,6 +59,8 @@ traceoff
   $$ false thePlan $$>valset
   "writeOp.task" find execute >jobqueue
 
+  // discard this op's reg frame
+  common.drop
 ;
 
 /*----------------------------------------------------------------------------*/

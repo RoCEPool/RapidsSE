@@ -37,9 +37,9 @@ void Task::vAddPrimitives_Common(void)
   vAddPrimitive("common.fetch",    &vCommonFetch,      false);
   vAddPrimitive("common.store",    &vCommonStore,      false);
   vAddPrimitive("common/",         &vCommonSlash,      true);
-  vAddPrimitive("common.pop",      &vCommonPop,        false);
+  vAddPrimitive("common.drop",     &vCommonDrop,       false);
   vAddPrimitive("common.push",     &vCommonPush,       false);
-  vAddPrimitive("to",              &vCommonToCommon,   true);
+  vAddPrimitive("toCommon",        &vCommonToCommon,   true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,20 +147,20 @@ ENTRY("vCommonSlash");
 }
 
 /*----------------------------------------------------------------------------*/
-/* common.pop -- pop common frame                                             */
+/* common.drop -- pop common frame                                             */
 /*----------------------------------------------------------------------------*/
-void Task::vCommonPop(NNP_Task nnpTask)
+void Task::vCommonDrop(NNP_Task nnpTask)
 {
-ENTRY("vCommonPop");
+ENTRY("vCommonDrop");
   
-  RegFrame* pLocalsFrame = nnpTask->m_pCommonFrame;
+  RegFrame* pCommonFrame = nnpTask->m_pCommonFrame;
   
-  if ( ! pLocalsFrame )
-    THROW_INVALID_DSTACK("common.pop");
+  if ( ! pCommonFrame )
+    THROW_INVALID_DSTACK("common.drop");
   
   nnpTask->m_pCommonFrame = nnpTask->m_pCommonFrame->pNext();
   
-  delete pLocalsFrame;
+  delete pCommonFrame;
   
   EXIT();
 }
@@ -172,13 +172,13 @@ void Task::vCommonPush(NNP_Task nnpTask)
 {
 ENTRY("vCommonPush");
   
-  RegFrame* pLocalsFrame = new RegFrame;
+  RegFrame* pCommonFrame = new RegFrame;
   
-  pLocalsFrame->vStackPtr(nnpTask->m_pReturnStack->pTopValue());
+  //pCommonFrame->vStackPtr(nnpTask->m_pReturnStack->pTopValue());
   
-  pLocalsFrame->vNext(nnpTask->m_pCommonFrame);
+  pCommonFrame->vNext(nnpTask->m_pCommonFrame);
   
-  nnpTask->m_pCommonFrame = pLocalsFrame;
+  nnpTask->m_pCommonFrame = pCommonFrame;
   
   EXIT();
 }
