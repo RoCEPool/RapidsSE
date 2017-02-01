@@ -5,19 +5,62 @@
 "writeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* plan common variables for write                                            */
+/*----------------------------------------------------------------------------*/
+common/ write filePointer /
+
+/*----------------------------------------------------------------------------*/
 /* open file for writing                                                      */
 /*----------------------------------------------------------------------------*/
-: writeOpenFile ( -- )
+: writeOpenFile subDic write ( plan -- )
 
   ": writeOpenFile" .
+
+  locals| thePlan  |
+
+  // open new file?
+  filePointer not if
+
+    // get file name
+    thePlan plan.dic task.this task.dicStack dicPath.push
+    fileName2@@ dup .
+    task.this task.dicStack dicPath.drop
+
+    // create a file pointer
+    file.new toCommon filePointer
+
+    // set file path
+    filePointer file.path!
+
+    // open file for writing
+    OPEN_READ_WRITE_CREATE filePointer file.open
+    false == if
+      0 toCommon filePointer
+      filePointer file.delete EC_INVALID_FILE
+    else
+      ": writeOpenFile opened file" .
+      EC_NONE
+    then
+
+  else
+    // nothing to do, file already open
+    EC_NONE
+
+  then
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* close file for writing                                                     */
 /*----------------------------------------------------------------------------*/
-: writeCloseFile ( -- )
+: writeCloseFile subDic write ( -- )
 
   ": writeCloseFile" .
+
+  filePointer file.close
+  filePointer file.delete
+
+  0 toCommon filePointer
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -34,33 +77,34 @@
 /*----------------------------------------------------------------------------*/
 /* write row buffer to file                                                   */
 /*----------------------------------------------------------------------------*/
-: writeToFile ( rowBuffer -- )
+: writeToFile subDic write ( rowBuffer -- )
 
   ": writeToFile" .
 
   // declare rowCrs variable
   rowCursor.new locals| rowCrs |
 
-  // set row bufferin cursor
+  // set row buffer in cursor
   rowCrs rowCursor.rowBuffer!
 
   // iterate the row buffer
   rowCrs rowCursor.first
   begin while
-    rowCrs rowCursor.row .
+    rowCrs rowCursor.row
+    filePointer file.write
     rowCrs rowCursor.next
   repeat
+
 ;
 
 /*----------------------------------------------------------------------------*/
 /* file write                                                                 */
 /*----------------------------------------------------------------------------*/
-: writeOp operator ( -- NEVER )
+: writeOp operator subDic write ( -- NEVER )
 
   ": writeOp" .
 
-  false locals| fileOpen |
-  0     locals| thePlan  |
+  0  locals| thePlan  |
 
   begin
 
@@ -74,25 +118,35 @@
     // save the plan
     to thePlan ( rowBuffer flag )
 
-    // open new file?
-    fileOpen not if ( [ rowBuffer ] flag )
+   // find/create the reg frame for this writeOp
+   "write" thePlan plan.regFrame? common.push
 
-      thePlan plan.dic task.this task.dicStack dicPath.push
-      fileName2@@ .
-      task.this task.dicStack dicPath.drop
+    // open the file
+    thePlan writeOpenFile ( plan [ rowBuffer ] )
 
-      writeOpenFile
-      true to fileOpen
-    then
+    // did we manage to open the file ?
+    dup EC_NONE != if ( [ rowBuffer ] EC )
 
-    // write or close file & sink plan?
-    if ( [ rowBuffer ] )
-      writeToFile
+      // got an error
+      error.msg .
+      if ( [ rowBuffer ] )
+        drop
+      else
+        thePlan writePipeSink
+      then
+
     else
-      writeCloseFile
-      false to fileOpen
 
-      thePlan writePipeSink
+      drop ( [ rowBuffer ] )
+
+      // write or close file & sink plan?
+      if ( [ rowBuffer ] )
+        writeToFile
+      else
+        writeCloseFile
+        thePlan writePipeSink
+      then
+
     then
 
   again

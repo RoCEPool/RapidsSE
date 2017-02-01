@@ -75,7 +75,7 @@ void Task::vPlanDic(NNP_Task nnpTask)
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.delete");
+    THROW_INVALID_DSTACK("plan.dic");
   
   Plan* pPlan = _pPlan(pPtrPlan);
   
