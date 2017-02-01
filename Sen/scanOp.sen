@@ -9,7 +9,7 @@ common/ scan _rbCrs /
 /*----------------------------------------------------------------------------*/
 /* scan partition of a table                                                  */
 /*----------------------------------------------------------------------------*/
-: scanPartition ( plan -- )
+: scanPartition subDic scan ( plan -- )
 
   // record the plan
   locals| thePlan |

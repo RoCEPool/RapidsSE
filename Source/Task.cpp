@@ -223,6 +223,7 @@ void Task::vInit(const char* aLambda)
   m_iTracing   = 0;
   m_nLocals    = 0;
   m_pCurrentWord = nullptr;
+  m_nSubDic    = 0;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())

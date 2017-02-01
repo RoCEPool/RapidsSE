@@ -102,6 +102,7 @@ namespace Tasks
     i8    m_iTracing;
     i8    m_nLocals;      // number of locals
     Word* m_pCurrentWord;
+    i8    m_nSubDic;
     
     // exception
     s256  m_sFile;
@@ -1004,6 +1005,7 @@ namespace Tasks
     static void vPostpone(NNP_Task nnpTask);
     static void vSee(NNP_Task nnpTask);
     static void vSemicolon(NNP_Task nnpTask);
+    static void vSubDic(NNP_Task nnpTask);
     static void vTick(NNP_Task nnpTask);
     static void vWord(NNP_Task nnpTask);
     static void vWordDump(NNP_Task nnpTask);

@@ -55,6 +55,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("postpone",        &vPostpone,         true );
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
+  vAddPrimitive("subDic",          &vSubDic,           true );
   vAddPrimitive("'",               &vTick,             true );
   vAddPrimitive("word.dump",       &vWordDump,         false);
   vAddPrimitive("word.forget",     &vWordForget,       false);
@@ -693,8 +694,37 @@ void Task::vSemicolon(NNP_Task nnpTask)
     pWordArgSet->vEncode("exit");
     
   }
+  
+  // discard subDic use
+  for ( ; nnpTask->m_nSubDic; nnpTask->m_nSubDic--)
+    nnpTask->m_xPathStack.vDiscard();
 
   nnpTask->m_pCurrentWord = nullptr;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* subDic -- push sub dictionary                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vSubDic(NNP_Task nnpTask)
+{
+  ENTRY("vSubDic");
+  
+  nnpTask->m_pTokeniser->vNextToken();
+  
+  s32 sNameSubDic;
+  sNameSubDic = nnpTask->m_pTokeniser->sToken();
+  
+  Word* pWordSubDic = nnpTask->m_xPathStack.pFindWord(sNameSubDic);
+  if ( ! pWordSubDic )
+    THROW("No such subDic: %s",sNameSubDic.a());
+  
+  Dic* pDic = _pDic(pWordSubDic->pDataArea());
+  
+  nnpTask->m_xPathStack.vPush(pDic);
+
+  nnpTask->m_nSubDic++;
   
   EXIT();
 }
@@ -740,7 +770,7 @@ void Task::vWord(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* word.forget -- forget word on stack                                            */
+/* word.forget -- forget word on stack                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vWordForget(NNP_Task nnpTask)
 {
