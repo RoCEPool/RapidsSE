@@ -4,6 +4,9 @@
 
 "scanOp.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* plan common variables for scan                                             */
+/*----------------------------------------------------------------------------*/
 common/ scan rbCrs /
 
 /*----------------------------------------------------------------------------*/
@@ -24,8 +27,8 @@ common/ scan rbCrs /
   // create a new rowCursor
   rbCursor.new toCommon rbCrs
 
-  thePlan plan.dic task.this task.dicStack dicPath.push
   // set up table in rowCursor
+  thePlan plan.dic task.this task.dicStack dicPath.push
   thePlan tableName2@@ find execute rbCrs rbCursor.table!
   task.this task.dicStack dicPath.drop
 
@@ -52,6 +55,7 @@ common/ scan rbCrs /
 
   // delete cursor
   rbCrs rbCursor.delete
+  0 toCommon rbCrs
 
   // pipe EOD to writeOp
 
