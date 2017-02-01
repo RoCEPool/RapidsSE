@@ -51,7 +51,7 @@ RegFrame::RegFrame(void)
   //m_sName
   m_pNext     = nullptr;
   m_pStackPtr = nullptr;
-  m_pDic      = nullptr;
+  m_pOpDic    = nullptr;
   //m_xValReg
   
   _checkInitialised_(CN_REGFRAME);
@@ -142,6 +142,26 @@ void RegFrame::vStackPtr(void* pStackPtr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
   
   m_pStackPtr = pStackPtr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get operator dictionary                                                    */
+/*----------------------------------------------------------------------------*/
+Dic* RegFrame::pOpDic(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  return m_pOpDic;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set operator dictionary                                                    */
+/*----------------------------------------------------------------------------*/
+void RegFrame::vOpDic(Dic* pOpDic)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_REGFRAME,_FOOTER_);
+  
+  m_pOpDic = pOpDic;
 }
 
 /*----------------------------------------------------------------------------*/
