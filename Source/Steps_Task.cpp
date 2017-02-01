@@ -49,6 +49,8 @@ void Task::vAddPrimitives_Task(void)
   vAddPrimitive("task.new",       &vTaskNew,           false);
   vAddPrimitive("task.parent@",   &vTaskParentFetch,   false);
   vAddPrimitive("task.parent!",   &vTaskParentStore,   false);
+  vAddPrimitive("task.plan@",     &vTaskPlanFetch,     false);
+  vAddPrimitive("task.plan!",     &vTaskPlanStore,     false);
   vAddPrimitive("task.seed",      &vTaskSeed,          false);
   vAddPrimitive("task.seitf@",    &vTaskSeitfFetch,    false);
   vAddPrimitive("task.seitf!",    &vTaskSeitfStore,    false);
@@ -425,6 +427,51 @@ void Task::vTaskParentStore(NNP_Task nnpTask)
   ASSERT( ! pParentTask || CN_TASK == pParentTask->eClass());
   
   nnpTask->m_pParentTask = pParentTask;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.plan@ -- fetch plan of task onto data stack                           */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskPlanFetch(NNP_Task nnpTask)
+{
+  ENTRY("vTaskPlanFetch");
+  
+  Object* pObject;
+  if ( ! nnpTask->m_pDataStack->bPop(pObject) )
+    THROW_INVALID_DSTACK("task.plan@");
+  Task* pThatTask = _pTask(pObject);
+  
+  Plan* pPlan = pThatTask->m_pPlan;
+  
+  Object* pPtrPlan= pPlan;
+  
+  nnpTask->m_pDataStack->vPush(pPtrPlan);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* task.plan! -- store plan on data stack into task on data stack             */
+/*----------------------------------------------------------------------------*/
+void Task::vTaskPlanStore(NNP_Task nnpTask)
+{
+  ENTRY("vTaskPlanStore");
+  
+  Object* pTaskObject;
+  if ( ! nnpTask->m_pDataStack->bPop(pTaskObject) )
+    THROW_INVALID_DSTACK("task.plan!");
+  Task* pThatTask = _pTask(pTaskObject);
+  
+  Object* pPtrPlan;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("task.plan!");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  pThatTask->m_pPlan = pPlan;
   
   EXIT();
 }

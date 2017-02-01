@@ -112,6 +112,7 @@ namespace Tasks
     Queue*  m_pJobQueue;        // job queue that this task serves
                                 //   may or may not be shared
     Socket* m_pSocket;          // socket associated with task
+    Plan*   m_pPlan;            // the plan associated with task
     
     i8  m_iDdlLocked;
     
@@ -853,6 +854,8 @@ namespace Tasks
     static void vTaskThis(NNP_Task nnpTask);
     static void vTaskParentFetch(NNP_Task nnpTask);
     static void vTaskParentStore(NNP_Task nnpTask);
+    static void vTaskPlanFetch(NNP_Task nnpTask);
+    static void vTaskPlanStore(NNP_Task nnpTask);
     static void vTaskSeed(NNP_Task nnpTask);
     static void vTaskSeitfFetch(NNP_Task nnpTask);
     static void vTaskSeitfStore(NNP_Task nnpTask);
