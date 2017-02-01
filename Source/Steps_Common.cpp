@@ -91,7 +91,7 @@ void Task::vCommonSlash(NNP_Task nnpTask)
 {
 ENTRY("vCommonSlash");
 
-  Dic* pDic;
+  Dic* pSubDic;
   
   s32 sDicName;
   s32 sVarName;
@@ -110,7 +110,7 @@ ENTRY("vCommonSlash");
     Word* pWordDic = nnpTask->m_xPathStack.pFindWord(sDicName);
     if (pWordDic) {
       // use that dictionary
-      pDic = _pDic(pWordDic->pDataArea());
+      pSubDic = _pDic(pWordDic->pDataArea());
     }
     else {
       // create a common dictionary      
@@ -118,7 +118,7 @@ ENTRY("vCommonSlash");
       pWordDic->vWordType(WT_OBJECT);
       pWordDic->pAllot(sizeof(Dic));
       
-      pDic = new((Dic*)pWordDic->pDataArea()) Dic;
+      pSubDic = new((Dic*)pWordDic->pDataArea()) Dic;
     }
     
     // get name of common variable
@@ -126,7 +126,7 @@ ENTRY("vCommonSlash");
     sVarName = nnpTask->m_pTokeniser->sToken();
     
     // create new word for common in current dictionary
-    Word* pWordCommon = new(pDic) Word(sVarName.a());
+    Word* pWordCommon = new(pSubDic) Word(sVarName.a());
     // ** do not set as current word **
     
     // set word as variable
@@ -147,7 +147,7 @@ ENTRY("vCommonSlash");
 }
 
 /*----------------------------------------------------------------------------*/
-/* common.drop -- pop common frame                                             */
+/* common.drop -- pop common frame                                            */
 /*----------------------------------------------------------------------------*/
 void Task::vCommonDrop(NNP_Task nnpTask)
 {
@@ -172,9 +172,11 @@ void Task::vCommonPush(NNP_Task nnpTask)
 {
 ENTRY("vCommonPush");
   
-  RegFrame* pCommonFrame = new RegFrame;
+  Object* pObjectRegFrame;
+  if ( ! nnpTask->m_pDataStack->bPop(pObjectRegFrame) )
+    THROW_INVALID_DSTACK("common.push");
   
-  //pCommonFrame->vStackPtr(nnpTask->m_pReturnStack->pTopValue());
+  RegFrame* pCommonFrame = _pRegFrame(pObjectRegFrame);
   
   pCommonFrame->vNext(nnpTask->m_pCommonFrame);
   

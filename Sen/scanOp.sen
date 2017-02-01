@@ -18,7 +18,7 @@ common/ scan rbCrs /
   locals| thePlan |
 
   // find/create the reg frame for this scanOp
-  "scan" thePlan plan.regFrame? common.push
+  "xyzFrame" thePlan plan.regFrame? common.push
 
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
