@@ -205,6 +205,34 @@ void Plan::vLambda(s48K& sLambda)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find register frame                                                        */
+/*----------------------------------------------------------------------------*/
+RegFrame* Plan::pRegFrameFind(s32& sName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
+ 
+  RegFrame* pRegFrame = nullptr;
+  
+  for (pRegFrame = m_pRegList; pRegFrame; pRegFrame = pRegFrame->pNext())
+    if (String::bSame(pRegFrame->sName().a(), sName.a()))
+      break;
+  
+  return pRegFrame;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push register frame                                                        */
+/*----------------------------------------------------------------------------*/
+void Plan::vRegFramePush(RegFrame* pRegFrame)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
+  
+  pRegFrame->vNext(m_pRegList);
+  
+  m_pRegList = pRegFrame;
+}
+
+/*----------------------------------------------------------------------------*/
 /* show this plan                                                             */
 /*----------------------------------------------------------------------------*/
 void Plan::vShow(void)

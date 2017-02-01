@@ -46,8 +46,11 @@ namespace Plans
     s48K& sLambda(void);
     void vLambda(s48K& sLambda);
     
+    RegFrame* pRegFrameFind(s32& sName);
+    void      vRegFramePush(RegFrame* pRegFrame);
+    
     void vShow(void);
-
+    
     Footer* pFooter(void);
   };
   

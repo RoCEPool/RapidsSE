@@ -42,6 +42,7 @@ void Task::vAddPrimitives_Plan(void)
   vAddPrimitive("plan.name@",        &vPlanNameFetch,    false);
   vAddPrimitive("plan.name!",        &vPlanNameStore,    false);
   vAddPrimitive("plan::new",         &vPlanNew,          false);
+  vAddPrimitive("plan.regFrame?",    &vPlanRegFrameTest, false);
   vAddPrimitive("plan.show",         &vPlanShow,         false);
 }
 
@@ -205,6 +206,34 @@ void Task::vPlanNew(NNP_Task nnpTask)
     
   nnpTask->m_pDataStack->vPush(pPlan);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.frame? -- find/create reg frame in plan ( plan -- regFrame )          */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanRegFrameTest(NNP_Task nnpTask)
+{
+  ENTRY("vPlanRegFrameTest");
+  
+  Object* pPtrPlan;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.regFrame?");
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  s32 sName;
+  if ( ! nnpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("plan.regFrame?");
+  
+  RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
+  if ( ! pRegFrame ) {
+    pRegFrame = new RegFrame;
+    pRegFrame->vName(sName);
+    pPlan->vRegFramePush(pRegFrame);
+  }
+
+  nnpTask->m_pDataStack->vPush(pRegFrame);
+ 
   EXIT();
 }
 
