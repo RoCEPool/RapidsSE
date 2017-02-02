@@ -236,12 +236,15 @@ tp: >callerAux
 /*----------------------------------------------------------------------------*/
 /* set sending node                                                           */
 /*----------------------------------------------------------------------------*/
-: setSender ( sender -- ; reg1 == sender )
+: setSender ( sender -- ; reg4 == sender )
 
-  //dup "SENDER IS %v" str.format .
+tp: setSender_name
+
   grid.find
   node.no
-  //dup "SENDER IS NODE%v" str.format .
+
+tp: setSender_nodeNo
+
   to_SENDER ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
 
   tp: reg4HasSender

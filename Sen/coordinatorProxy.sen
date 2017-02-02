@@ -14,6 +14,7 @@
 tp: coordinator
 
   locals| forwardTask actorNo |
+  locals| sender |
 
   begin
 
@@ -24,15 +25,16 @@ tp: coordinator
 
     addSetCaller ( << <<call*>> <<caller>> >> )
 
-    forwardTask >jobQueue;a> ( <<sender>> <<result>> )
+    forwardTask >jobQueue;a> ( sender <<result>> )
 
-    swap >r
+    swap  ( <<result>> sender )
+    to sender  ( <<result>> )
 
     // have receiver pass indirect result onto participant proxy
     addPassBackToPP ( << <<result>> <<passBackToPP>> >> )
 
-    r0                                                        //! NOT RIGHT
-    >sendQueue
+    sender                                                        //! NOT RIGHT
+    >sendQueue                                         //! MAYBE RIGHT NOW -alka
 
   again
 ;
