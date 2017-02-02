@@ -34,16 +34,17 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Grid(void)
 {
-  vAddPrimitive("grid.appendNodes",&vGridAppendNodes,  false);
-  vAddPrimitive("grid.find",       &vGridFindNode,     false);
-  vAddPrimitive("grid.init",       &vGridInit,         false);
-  vAddPrimitive("grid.node",       &vGridNode,         false);
-  vAddPrimitive("grid.thisNode!",  &vGridThisNodeStore,false);
-  vAddPrimitive("grid.thisNode@",  &vGridThisNodeFetch,false);
-  vAddPrimitive("grid.started!",   &vGridStartedStore, false);
-  vAddPrimitive("grid.started@",   &vGridStartedFetch, false);
-  vAddPrimitive("grid.startNode!", &vGridStartNodeStore, false);
-  vAddPrimitive("grid.startNode@", &vGridStartNodeFetch, false);
+  vAddPrimitive("grid.appendNodes",   &vGridAppendNodes,  false);
+  vAddPrimitive("grid.find",          &vGridFindNode,     false);
+  vAddPrimitive("grid.init",          &vGridInit,         false);
+  vAddPrimitive("grid.node",          &vGridNode,         false);
+  vAddPrimitive("grid.thisNode!",     &vGridThisNodeStore,false);
+  vAddPrimitive("grid.thisNode@",     &vGridThisNodeFetch,false);
+  vAddPrimitive("grid.thisNodeName@", &vGridThisNodeNameFetch,false);
+  vAddPrimitive("grid.started!",      &vGridStartedStore, false);
+  vAddPrimitive("grid.started@",      &vGridStartedFetch, false);
+  vAddPrimitive("grid.startNode!",    &vGridStartNodeStore, false);
+  vAddPrimitive("grid.startNode@",    &vGridStartNodeFetch, false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,6 +151,21 @@ void Task::vGridThisNodeFetch(NNP_Task nnpTask)
   Object* pPtrGrid;
   
   nnpTask->m_pDataStack->vPush(gpGrid->iThisNode());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.thisNodeName@ -- get this node name from the grid                     */
+/*----------------------------------------------------------------------------*/
+void Task::vGridThisNodeNameFetch(NNP_Task nnpTask)
+{
+  ENTRY("vGridThisNodeNameFetch");
+  
+  s256 sName;
+  sName = gpGrid->pThisNode()->pNodeName();
+  
+  nnpTask->m_pDataStack->vPush(sName);
   
   EXIT();
 }

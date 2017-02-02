@@ -415,7 +415,7 @@ tp: addingSetDicPath
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
 
-  grid.thisNode@ grid.node node.name "setSender"
+  grid.thisNodeName@ "setSender"
 
 tp: addingSetSender
 
@@ -427,7 +427,7 @@ tp: addingSetSender
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
 
-  grid.thisNode@ grid.node node.name "passBackToPP"
+  grid.thisNodeName@ "passBackToPP"
 
   tp: addingPassBackToPP
 

@@ -77,7 +77,7 @@ ddlLock.dropWrite
 
   // set grid as started
   true grid.started!
-  grid.thisNode@ grid.node node.name "Node %v : SE cluster started" str.format .
+  grid.thisNodeName@ "Node %v : SE cluster started" str.format .
 
   //1000000 thread.sleep_s
 

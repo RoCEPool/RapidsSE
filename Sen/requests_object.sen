@@ -16,7 +16,7 @@ tp: gettingObject
   then
 
   file.new dup
-  "pathXYZ" grid.thisNode@ grid.node node.name str.cat swap file.path!
+  "pathXYZ" grid.thisNodeName@ str.cat swap file.path!
   >binval
 
   <SUCCESS_RESULT>
