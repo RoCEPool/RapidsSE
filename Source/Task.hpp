@@ -623,7 +623,8 @@ namespace Tasks
     static void vPlanNew(NNP_Task nnpTask);
     static void vPlanNameFetch(NNP_Task nnpTask);
     static void vPlanNameStore(NNP_Task nnpTask);
-    static void vPlanRegFrameTest(NNP_Task nnpTask);
+    static void vPlanRegFrameAdd(NNP_Task nnpTask);
+    static void vPlanRegFrameFind(NNP_Task nnpTask);
     static void vPlanShow(NNP_Task nnpTask);
     
     // plan list
