@@ -18,6 +18,10 @@
   dexPlan tableNm $$tableNm!!
   dexPlan fileNm  $$fileNm!!
 
+  "scanOp#"  dexPlan plan.regFrame? drop
+  "writeOp#" dexPlan plan.regFrame? drop
+  "sinkOp#"  dexPlan plan.regFrame? drop
+
    // add it to plan list
   dexPlan planList::addPlan
   planList::show

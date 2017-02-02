@@ -24,6 +24,12 @@
     to planTBD
     to profile
 
+    // push the reg frame for this sinkOp
+    profile planTBD plan.regFrame? common.push
+
+    // discard this op's reg frame
+    common.drop
+
     planTBD planList::removePlan
 
     planTBD plan.delete

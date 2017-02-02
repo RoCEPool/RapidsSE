@@ -17,7 +17,7 @@ common/ scan rbCrs /
   // record the plan
   locals| thePlan profile |
 
-  // find/create the reg frame for this scanOp
+  // push the reg frame for this scanOp
   profile thePlan plan.regFrame? common.push
 
   // set path (hardcoded for the moment)
