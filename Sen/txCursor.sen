@@ -8,64 +8,66 @@
 /* create a txCursor using name from input stream                             */
 /*----------------------------------------------------------------------------*/
 : txCursor:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_txCursor allot
-    word.this >body object.magic!!
-    CN_TXCURSOR word.this >body object.class!
-    word.this >body txCursor.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_txCursor allot
+  word.this >body object.magic!
+  CN_TXCURSOR word.this >body object.class!
+  word.this >body txCursor.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a txCursor using name on the stack                (leaves on stack) */
 /*----------------------------------------------------------------------------*/
 : :txCursor
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_txCursor allot
-    word.this >body object.magic!!
-    CN_TXCURSOR word.this >body object.class!
-    word.this >body txCursor.init
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_txCursor allot
+  word.this >body object.magic!
+  CN_TXCURSOR word.this >body object.class!
+  word.this >body txCursor.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 : ::txCursor ( create a temporary txCursor )
 
-    "__txCursor__" find dup
-    not if
-      drop
-      "__txCursor__" :txCursor
-    then
-    execute
+  "__txCursor__" find dup
+  not if
+    drop
+    "__txCursor__" :txCursor
+  then
+  execute
 ;
 
 : ~txCursor ( forget temporary txCursor )
 
-    "__txCursor__" find word.forget
+  "__txCursor__" find word.forget
 ;
 
 : listThreads ( list all txs )
 
-    ::txCursor >r // r0 ^txCursor
+  ::txCursor >r // r0 ^txCursor
 
-    r0 txCursor.begin
-    r0 txCursor.first
-    begin
-      while
-      r0 txCursor.get dup
-      tx.dump .
-      r0 txCursor.next
-    repeat
+  r0 txCursor.begin
+  r0 txCursor.first
+  begin
+    while
+    r0 txCursor.get dup
+    tx.dump .
+    r0 txCursor.next
+  repeat
 
-    rdrop
+  rdrop
 
-    ~txCursor
+  ~txCursor
 ;
 
 /*============================================================================*/

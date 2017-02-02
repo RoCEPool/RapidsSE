@@ -15,31 +15,33 @@
 /* create a dir using name from input stream                                  */
 /*----------------------------------------------------------------------------*/
 : dir:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_dir allot
-    word.this >body object.magic!!
-    CN_DIR word.this >body object.class!
-    ' dir word.this word.kind!
-    word.this >body dir.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_dir allot
+  word.this >body object.magic!
+  CN_DIR word.this >body object.class!
+  ' dir word.this word.kind!
+  word.this >body dir.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a dir using name on stack                    (leaves file on stack) */
 /*----------------------------------------------------------------------------*/
 : :dir
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_dir allot
-    word.this >body object.magic!!
-    CN_DIR word.this >body object.class!
-    ' dir word.this word.kind!
-    word.this >body dir.init
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_dir allot
+  word.this >body object.magic!
+  CN_DIR word.this >body object.class!
+  ' dir word.this word.kind!
+  word.this >body dir.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 
@@ -47,24 +49,23 @@
 
 //traceon
 
-    "__dir" :dir execute >r
+  "__dir" :dir execute >r
 
-    "/tmp" r0 dir.path!
+  "/tmp" r0 dir.path!
 
-    r0 dir.open if "opened" . else "not opened" . rdrop exit then
+  r0 dir.open if "opened" . else "not opened" . rdrop exit then
 
-    begin
-      r0 dir.read
-      while
-        r0 dir.entryName .
-    repeat
+  begin
+    r0 dir.read
+    while
+      r0 dir.entryName .
+  repeat
 
-    r0 dir.close
+  r0 dir.close
 
-    rdrop
+  rdrop
 
-    "__dir" find word.forget
-
+  "__dir" find word.forget
 ;
 
 /*============================================================================*/

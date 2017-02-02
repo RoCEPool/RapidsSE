@@ -12,7 +12,7 @@
   >create
   WT_OBJECT word.this word.type!
   sizeof_loader allot
-  word.this >body object.magic!!
+  word.this >body object.magic!
   CN_LOADER word.this >body object.class!
   word.this >body loader.init
   true word.this >body object.wordbody!

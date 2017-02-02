@@ -15,10 +15,11 @@
 /* create a file using name from input stream (doesnt leave file on stk)      */
 /*----------------------------------------------------------------------------*/
 : file:
+
   create
   WT_OBJECT word.this word.type!
   sizeof_file allot
-  word.this >body object.magic!!
+  word.this >body object.magic!
   CN_FILE word.this >body object.class!
   ' file word.this word.kind!
   word.this >body file.init
@@ -30,10 +31,11 @@
 /* create a file using name on stack (leaves file on stack)                   */
 /*----------------------------------------------------------------------------*/
 : :file
+
   >create
   WT_OBJECT word.this word.type!
   sizeof_file allot
-  word.this >body object.magic!!
+  word.this >body object.magic!
   CN_FILE word.this >body object.class!
   ' file word.this word.kind!
   word.this >body file.init

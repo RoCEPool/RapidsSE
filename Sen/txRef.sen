@@ -8,15 +8,16 @@
 /* create a txRef using name on the stack                   (leaves on stack) */
 /*----------------------------------------------------------------------------*/
 : :txRef
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_txRef allot
-    word.this >body object.magic!!
-    CN_TXREF word.this >body object.class!
-    word.this >body txRef.init
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_txRef allot
+  word.this >body object.magic!
+  CN_TXREF word.this >body object.class!
+  word.this >body txRef.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

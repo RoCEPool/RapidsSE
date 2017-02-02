@@ -133,31 +133,33 @@ tp: printResult
 /* create a grid using name from input stream                                 */
 /*----------------------------------------------------------------------------*/
 : grid:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_grid allot
-    word.this >body object.magic!!
-    CN_GRID word.this >body object.class!
-    word.this >body grid.init
-    ' grid word.this word.kind!
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_grid allot
+  word.this >body object.magic!
+  CN_GRID word.this >body object.class!
+  word.this >body grid.init
+  ' grid word.this word.kind!
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a grid using name on the stack (leaves grid word on stack)          */
 /*----------------------------------------------------------------------------*/
 : :grid
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_grid allot
-    word.this >body object.magic!!
-    CN_GRID word.this >body object.class!
-    word.this >body grid.init
-    ' grid word.this word.kind!
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_grid allot
+  word.this >body object.magic!
+  CN_GRID word.this >body object.class!
+  word.this >body grid.init
+  ' grid word.this word.kind!
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////

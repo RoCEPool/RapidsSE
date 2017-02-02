@@ -37,7 +37,7 @@ void Task::vAddPrimitives_Object(void)
   vAddPrimitive("object.class@",     &vObjectClassFetch, false);
   vAddPrimitive("object.class!",     &vObjectClassStore, false);
   vAddPrimitive("object@",           &vObjectFetch,      false);
-  vAddPrimitive("object.magic!!",    &vObjectMagicMark,  false);
+  vAddPrimitive("object.magic!",    &vObjectMagicMark,  false);
   vAddPrimitive("object!",           &vObjectStore,      false);
   vAddPrimitive("object.wordbody!",  &vObjectWordBodySet,false);
 }
@@ -120,7 +120,7 @@ void Task::vObjectFetch(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* object.magic!! -- put magic number into object                             */
+/* object.magic! -- put magic number into object                             */
 /*----------------------------------------------------------------------------*/
 void Task::vObjectMagicMark(NNP_Task nnpTask)
 {
@@ -128,7 +128,7 @@ void Task::vObjectMagicMark(NNP_Task nnpTask)
   
   Object* pObject;
   if ( ! nnpTask->m_pDataStack->bPop(pObject) )
-    THROW_INVALID_RSTACK("object.magic!!");
+    THROW_INVALID_RSTACK("object.magic!");
   
   pObject->vSetMagic();
   

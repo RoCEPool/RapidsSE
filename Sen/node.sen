@@ -15,31 +15,33 @@
 /* create a node using name from input stream                                 */
 /*----------------------------------------------------------------------------*/
 : node:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_node allot
-    word.this >body object.magic!!
-    CN_NODE word.this >body object.class!
-    word.this >body node.init
-    ' node word.this word.kind!
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_node allot
+  word.this >body object.magic!
+  CN_NODE word.this >body object.class!
+  word.this >body node.init
+  ' node word.this word.kind!
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a node using name on the stack (leaves node word on stack)          */
 /*----------------------------------------------------------------------------*/
 : :node
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_node allot
-    word.this >body object.magic!!
-    CN_NODE word.this >body object.class!
-    word.this >body node.init
-    ' node word.this word.kind!
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_node allot
+  word.this >body object.magic!
+  CN_NODE word.this >body object.class!
+  word.this >body node.init
+  ' node word.this word.kind!
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 /*============================================================================*/

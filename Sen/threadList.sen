@@ -5,14 +5,15 @@
 "threadList.sen" .verbose
 
 : threadList:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_threadlist allot
-    word.this >body object.magic!!
-    CN_THREADLIST word.this >body object.class!
-    word.this >body threadlist.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_threadlist allot
+  word.this >body object.magic!
+  CN_THREADLIST word.this >body object.class!
+  word.this >body threadlist.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*============================================================================*/

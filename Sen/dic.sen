@@ -15,47 +15,50 @@
 /* create a dictionary using name from input stream (doesnt leave dic on stk) */
 /*----------------------------------------------------------------------------*/
 : dic:
+
 diclock.grabwrite
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_dic allot
-    word.this >body object.magic!!
-    CN_DIC word.this >body object.class!
-    ' folder word.this word.kind!
-    word.this >body dic.init
-    true word.this >body object.wordbody!
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_dic allot
+  word.this >body object.magic!
+  CN_DIC word.this >body object.class!
+  ' folder word.this word.kind!
+  word.this >body dic.init
+  true word.this >body object.wordbody!
 diclock.dropwrite
-    does>
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a dictionary using name on the stack (leaves dic on stack)          */
 /*----------------------------------------------------------------------------*/
 : :dic
+
 diclock.grabwrite
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_dic allot
-    word.this >body object.magic!!
-    CN_DIC word.this >body object.class!
-    ' folder word.this word.kind!
-    word.this >body dic.init
-    true word.this >body object.wordbody!
-    word.this
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_dic allot
+  word.this >body object.magic!
+  CN_DIC word.this >body object.class!
+  ' folder word.this word.kind!
+  word.this >body dic.init
+  true word.this >body object.wordbody!
+  word.this
 diclock.dropwrite
-    does>
+  does>
 ;
 
 : checkIsDic ( word )
 
-    dup not if drop EC_NO_SUCH_FOLDER false exit then
-    dup word.kind@ ' folder eql if true exit then
-    drop
-    EC_NOT_A_FOLDER false
+  dup not if drop EC_NO_SUCH_FOLDER false exit then
+  dup word.kind@ ' folder eql if true exit then
+  drop
+  EC_NOT_A_FOLDER false
 ;
 
 : dicHasRef ( word )
-    dup execute dic.ref
+
+  dup execute dic.ref
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -8,64 +8,66 @@
 /* create a taskCursor using name from input stream                           */
 /*----------------------------------------------------------------------------*/
 : taskCursor:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_taskCursor allot
-    word.this >body object.magic!!
-    CN_TASKCURSOR word.this >body object.class!
-    word.this >body taskCursor.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_taskCursor allot
+  word.this >body object.magic!
+  CN_TASKCURSOR word.this >body object.class!
+  word.this >body taskCursor.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a taskCursor using name on the stack              (leaves on stack) */
 /*----------------------------------------------------------------------------*/
 : :taskCursor
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_taskCursor allot
-    word.this >body object.magic!!
-    CN_TASKCURSOR word.this >body object.class!
-    word.this >body taskCursor.init
-    true word.this >body object.wordbody!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_taskCursor allot
+  word.this >body object.magic!
+  CN_TASKCURSOR word.this >body object.class!
+  word.this >body taskCursor.init
+  true word.this >body object.wordbody!
+  word.this
+  does>
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 : ::taskCursor ( create a temporary taskCursor )
 
-    "__taskCursor__" find dup
-    not if
-      drop
-      "__taskCursor__" :taskCursor
-    then
-    execute
+  "__taskCursor__" find dup
+  not if
+    drop
+    "__taskCursor__" :taskCursor
+  then
+  execute
 ;
 
 : ~taskCursor ( forget temporary taskCursor )
 
-    "__taskCursor__" find word.forget
+  "__taskCursor__" find word.forget
 ;
 
 : listTasks ( list all tasks )
 
-    ::taskCursor >r // r0 ^taskCursor
+  ::taskCursor >r // r0 ^taskCursor
 
-    r0 taskCursor.begin
-    r0 taskCursor.first
-    begin
-      while
-      r0 taskCursor.get
-      task.name@ .
-      r0 taskCursor.next
-    repeat
+  r0 taskCursor.begin
+  r0 taskCursor.first
+  begin
+    while
+    r0 taskCursor.get
+    task.name@ .
+    r0 taskCursor.next
+  repeat
 
-    rdrop
+  rdrop
 
-    ~taskCursor
+  ~taskCursor
 ;
 
 /*============================================================================*/

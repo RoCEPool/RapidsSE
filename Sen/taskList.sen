@@ -5,26 +5,28 @@
 "taskList.sen" .verbose
 
 : taskList:
-    create
-    WT_OBJECT word.this word.type!
-    ( this should be a @ to gpTaskList )
-    sizeof_tasklist allot
-    word.this >body object.magic!!
-    CN_TASKLIST word.this >body object.class!
-    word.this >body tasklist.init
-    true word.this >body object.wordbody!
-    does> 
+
+  create
+  WT_OBJECT word.this word.type!
+  ( this should be a @ to gpTaskList )
+  sizeof_tasklist allot
+  word.this >body object.magic!
+  CN_TASKLIST word.this >body object.class!
+  word.this >body tasklist.init
+  true word.this >body object.wordbody!
+  does> 
 ;
 
 : taskCursor:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_taskcursor allot
-    word.this >body object.magic!!
-    CN_TASKCURSOR word.this >body object.class!
-    word.this >body taskcursor.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_taskcursor allot
+  word.this >body object.magic!
+  CN_TASKCURSOR word.this >body object.class!
+  word.this >body taskcursor.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*============================================================================*/

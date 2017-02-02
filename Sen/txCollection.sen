@@ -5,14 +5,15 @@
 "txCollection.sen" .verbose
 
 : txCollection:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_txcollection allot
-    word.this >body object.magic!!
-    CN_TXCOLLECTION word.this >body object.class!
-    word.this >body txCollection.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_txcollection allot
+  word.this >body object.magic!
+  CN_TXCOLLECTION word.this >body object.class!
+  word.this >body txCollection.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*============================================================================*/

@@ -5,25 +5,27 @@
 "seitfList.sen" .verbose
 
 : seitfList:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_seitflist allot
-    word.this >body object.magic!!
-    CN_SEITFLIST word.this >body object.class!
-    word.this >body seitflist.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_seitflist allot
+  word.this >body object.magic!
+  CN_SEITFLIST word.this >body object.class!
+  word.this >body seitflist.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 : seitfCursor:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_seitfcursor allot
-    word.this >body object.magic!!
-    CN_SEITFCURSOR word.this >body object.class!
-    word.this >body seitfcursor.init
-    true word.this >body object.wordbody!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_seitfcursor allot
+  word.this >body object.magic!
+  CN_SEITFCURSOR word.this >body object.class!
+  word.this >body seitfcursor.init
+  true word.this >body object.wordbody!
+  does>
 ;
 
 /*============================================================================*/

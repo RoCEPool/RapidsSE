@@ -34,31 +34,33 @@ int: queryCount
 /* create a table using name from input stream (doesnt leave table on stk)    */
 /*----------------------------------------------------------------------------*/
 : table:
-    create
-    WT_OBJECT word.this word.type!
-    sizeof_table allot
-    word.this >body object.magic!!
-    CN_TABLE word.this >body object.class!
-    word.this >body table.init
-    true word.this >body object.wordbody!
-    ' table word.this word.kind!
-    does>
+
+  create
+  WT_OBJECT word.this word.type!
+  sizeof_table allot
+  word.this >body object.magic!
+  CN_TABLE word.this >body object.class!
+  word.this >body table.init
+  true word.this >body object.wordbody!
+  ' table word.this word.kind!
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* create a table using name on the stack (leaves table on stack)             */
 /*----------------------------------------------------------------------------*/
 : :table
-    >create
-    WT_OBJECT word.this word.type!
-    sizeof_table allot
-    word.this >body object.magic!!
-    CN_TABLE word.this >body object.class!
-    word.this >body table.init
-    true word.this >body object.wordbody!
-    ' table word.this word.kind!
-    word.this
-    does>
+
+  >create
+  WT_OBJECT word.this word.type!
+  sizeof_table allot
+  word.this >body object.magic!
+  CN_TABLE word.this >body object.class!
+  word.this >body table.init
+  true word.this >body object.wordbody!
+  ' table word.this word.kind!
+  word.this
+  does>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -66,13 +68,15 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 
 : withinTables
-    0 pathPick dic.name "tables" str.equal
+
+  0 pathPick dic.name "tables" str.equal
 ;
 
 : checkInTables
-    withinTables if true exit then
 
-    EC_NOT_IN_TABLES false
+  withinTables if true exit then
+
+  EC_NOT_IN_TABLES false
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -117,11 +121,11 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : pushTable ( "<tableName>" -- )
 
-    checkIsTable not if EC_NO_SUCH_TABLE false exit then
+  checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find execute table.subDic pathPush
+  find execute table.subDic pathPush
 
-    true
+  true
 ;
 
 : popTable
@@ -131,13 +135,13 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : getTableRef ( "<tableNm>" -- <R> )
 
-    checkInTables not if false exit then
+  checkInTables not if false exit then
 
-    checkIsTable not if EC_NO_SUCH_TABLE false exit then
+  checkIsTable not if EC_NO_SUCH_TABLE false exit then
 
-    find execute ( table )
+  find execute ( table )
 
-    task.this task.seitf@ seitf.tableRef
+  task.this task.seitf@ seitf.tableRef
 
     true
 ;
@@ -145,9 +149,9 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 : returnTableRef ( )
 
-    task.this task.seitf@ seitf.tableDeref
+  task.this task.seitf@ seitf.tableDeref
 
-    true
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
