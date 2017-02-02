@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* get space in the pool (run by participant)                                 */
 /*----------------------------------------------------------------------------*/
-: space$ ( -- <R> )
+: get_space allParticipants 0 printResult ( -- str n# true )
 
 tp: gettingSpace
 
@@ -61,34 +61,11 @@ tp: gettingSpace
 ;
 
 /*----------------------------------------------------------------------------*/
-/* have participants run: space$                                              */
-/*----------------------------------------------------------------------------*/
-: ~space (  )
-
-tp: spaceOnAll
-
-  // the indirect word to be called
-  "space$"
-
-  tp: theIndirectCall
-
-  >> ( valset )
-
-  // space$ to be executed by all participants
-  >>allParticipants> ( bool )
-
-  tp: spaceOnAllDone
-
-  printResult
-tp: dpne
-;
-
-/*----------------------------------------------------------------------------*/
 /* get space in the pool                                                      */
 /*----------------------------------------------------------------------------*/
 : space ( -- <R> )
 
-  ~space ( ) assert.stack_0
+  get_space ( ) assert.stack_0
 
   <OK>
 ;
