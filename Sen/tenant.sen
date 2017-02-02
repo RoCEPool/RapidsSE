@@ -82,7 +82,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a tenant folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeTenant allParticipants 1 ( "<tenantNm>" -- true n# true )
+: makeTenant allParticipants 1 checkResult ( "<tenantNm>" -- true n# true )
 
 tp: makingTenant
 
@@ -104,7 +104,7 @@ tp: makingTenant
 /*----------------------------------------------------------------------------*/
 /* remove a tenant folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeTenant allParticipants 1 ( "<tenantNm>" -- true n# true )
+: removeTenant allParticipants 1 checkResult ( "<tenantNm>" -- true n# true )
 
 tp: removetenant
 

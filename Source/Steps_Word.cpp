@@ -96,6 +96,13 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
   
+  // get result routine name to be called after all participants have responded
+  nnpTask->m_pTokeniser->vNextToken();
+  aToken = nnpTask->m_pTokeniser->sToken().a();
+  
+  // set the distributed result routine name in the word
+  pCurrentWord->vFinalRoutine(aToken);
+
   EXIT();
 }
 
@@ -662,7 +669,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
     
-    pWordTilde->vEncode("checkResult");
+    pWordTilde->vEncode(pCurrentWord->pFinalRoutine());
     
     pWordTilde->vEncode("exit");
   }

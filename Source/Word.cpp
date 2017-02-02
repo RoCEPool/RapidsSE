@@ -65,9 +65,10 @@ Word::Word(const char* sName)
   m_bIndirect    = false;
   m_bImmediate   = false;
   m_iParams      = 0;
-  m_iDataBytes   = 0;
-  m_pPrevWord    = nullptr;
-  m_iLocal       = 0;
+  m_sFinalRoutine = "";
+  m_iDataBytes    = 0;
+  m_pPrevWord     = nullptr;
+  m_iLocal        = 0;
 
   _setFooter_();
   
@@ -427,6 +428,26 @@ void Word::vEncode(TaskStep* ppEntryStep)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
   vAppend(ppEntryStep);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the final routine (invoked after all participants have responded)      */
+/*----------------------------------------------------------------------------*/
+void Word::vFinalRoutine(const char* pRoutine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_sFinalRoutine = pRoutine;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the final routine (invoked after all participants have responded)      */
+/*----------------------------------------------------------------------------*/
+char* Word::pFinalRoutine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_sFinalRoutine.a();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -261,7 +261,7 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-: analyzeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+: analyzeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: analyzeTable
 
@@ -277,7 +277,7 @@ tp: analyzeTable
 /*----------------------------------------------------------------------------*/
 /* make a table (run by participant)                                          */
 /*----------------------------------------------------------------------------*/
-: makeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+: makeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: makingTable
 
@@ -300,7 +300,7 @@ tp: makingTable
 /*----------------------------------------------------------------------------*/
 /* remove a table folder                                                      */
 /*----------------------------------------------------------------------------*/
-: removeTable allParticipants 1 ( "<tableNm>" -- true n# true )
+: removeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
 
 tp: removeTable
 

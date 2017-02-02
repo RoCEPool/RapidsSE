@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-: rf allParticipants 1 ( "<folderNm>" -- true n# true )
+: rf allParticipants 1 checkResult ( "<folderNm>" -- true n# true )
 
 tp: removeFolder
 

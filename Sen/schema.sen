@@ -85,7 +85,7 @@
 /*----------------------------------------------------------------------------*/
 /* make a schema folder (run by participant)                                  */
 /*----------------------------------------------------------------------------*/
-: makeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
+: makeSchema allParticipants 1 checkResult ( "<schemaNm>" -- true n# true )
 
 tp: makingSchema
 
@@ -107,7 +107,7 @@ tp: makingSchema
 /*----------------------------------------------------------------------------*/
 /* remove a schema folder                                                     */
 /*----------------------------------------------------------------------------*/
-: removeSchema allParticipants 1 ( "<schemaNm>" -- true n# true )
+: removeSchema allParticipants 1 checkResult ( "<schemaNm>" -- true n# true )
 
 tp: removeSchema
 

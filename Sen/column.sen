@@ -88,7 +88,7 @@
 /*----------------------------------------------------------------------------*/
 /* add a column (run by all participants)                                     */
 /*----------------------------------------------------------------------------*/
-: addColumn allParticipants 3 ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
+: addColumn allParticipants 3 checkResult ( "<columnType>" "<columnNm>" "<tableNm>" -- <result> )
 
   args.tracepoint if
     dup "ADDING COLUMN " swap str.cat " on NODE " str.cat grid.thisNode@ >str str.cat .
