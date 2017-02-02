@@ -97,7 +97,7 @@ tp: ~loadAppendBuffer
 
 tp: theIndirectCall
 
-  $$>valset                       ( <<loadAppendBuffer$>> )
+  >>                       ( <<loadAppendBuffer$>> )
 
   //
   // b) <<loadAppendBuffer$>> to be forwarded to one participant

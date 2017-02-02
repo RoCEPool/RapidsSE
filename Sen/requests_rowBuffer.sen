@@ -16,7 +16,7 @@ tp: printRBOnAll
 
 tp: theIndirectCall
 
-  $$>valset ( valset )
+  >> ( valset )
 
   >>allParticipants> ( bool )
 
@@ -67,7 +67,7 @@ tp: pRB
 
 tp: marker
 
-$$>valset
+  >>
 
 tp: valset
 

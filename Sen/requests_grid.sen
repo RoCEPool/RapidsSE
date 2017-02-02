@@ -32,7 +32,7 @@ tp: statusOnAll
 
   tp: theIndirectCall
 
-  $$>valset ( valset )
+  >> ( valset )
 
   // status$ to be executed by all participants
   >>allParticipants> ( bool )

@@ -128,7 +128,7 @@ tp: lfOnAll
 
   tp: theIndirectCall
 
-  $$>valset ( valset )
+  >> ( valset )
 
   >>allParticipants> ( bool )
 

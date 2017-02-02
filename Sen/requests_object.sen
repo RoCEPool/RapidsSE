@@ -34,7 +34,7 @@ tp: objectOnAll
 
   tp: theIndirectCall
 
-  $$>valset ( valset )
+  >> ( valset )
 
   // object$ to be executed by all participants
   >>allParticipants> ( bool )

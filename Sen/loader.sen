@@ -69,9 +69,9 @@ timer: loadTimer
 
   N_GENERAL_THREADS 0 do
 
-    << r2 loader.newSub $$>valset
+    << r2 loader.newSub >>
 
-    pathGet $$>valset
+    pathGet >>
 
     1 "loadSub" task.this task.new
 

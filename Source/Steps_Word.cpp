@@ -651,7 +651,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
     
-    pWordTilde->vEncode("$$>valset");
+    pWordTilde->vEncode(">>");
     
     if (DT_ALLPARTICIPANTS == pCurrentWord->eDistributed())
       pWordTilde->vEncode(">>allParticipants>");

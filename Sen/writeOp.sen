@@ -70,7 +70,7 @@ common/ write filePointer /
 
   ": writePipeSink" .
 
-  << swap $$>valset // << plan >>
+  << swap >> // << plan >>
   "sinkOp.task" find execute >jobqueue
 ;
 

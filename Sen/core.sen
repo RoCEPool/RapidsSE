@@ -502,7 +502,7 @@ true ' CASE word.immediate!
 /*----------------------------------------------------------------------------*/
 /* convert contents of marked stack into a valset                             */
 /*----------------------------------------------------------------------------*/
-: $$>valset
+: >>
 
   $$depth
   >valset
@@ -537,11 +537,11 @@ true ' CASE word.immediate!
   <<
   1 2 3
 tp: a
-  $$>valset
+  >>
 tp: b
   "a" "b"
 tp: c
-  $$>valset
+  >>
 tp: d
   valset>
 tp: e

@@ -185,7 +185,7 @@ tp: <<
 
 tp: alldone
 
-  $$>valset
+  >>
 
   >a
 
@@ -253,7 +253,7 @@ tp: expandedResult
   true
 
 
-  $$>valset
+  >>
 
   >a
 
