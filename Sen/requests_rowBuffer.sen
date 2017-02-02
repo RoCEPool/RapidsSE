@@ -12,7 +12,7 @@
 tp: printRBOnAll
 
   // set indirect call to be printRB
-  $$ swap "printRB"
+  << swap "printRB"
 
 tp: theIndirectCall
 

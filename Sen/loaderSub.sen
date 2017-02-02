@@ -88,12 +88,12 @@ tp: ~loadAppendBuffer
   // a) form the indirect call of loadAppendBuffer
   //
 
-  $$
-    loaderSub.rowBuffer           ( $$ rb )
+  <<
+    loaderSub.rowBuffer           ( << rb )
     nullPtr loaderSub.rowBuffer!  // set working row buffer to null
-    loaderSub.partition           ( $$ rb ptn )
-    loaderSub.table table.name    ( $$ rb ptn "<tableNm>" )
-    "loadAppendBuffer$"           ( $$ rb ptn "<tableNm>" "loadAppendBuffer$" )
+    loaderSub.partition           ( << rb ptn )
+    loaderSub.table table.name    ( << rb ptn "<tableNm>" )
+    "loadAppendBuffer$"           ( << rb ptn "<tableNm>" "loadAppendBuffer$" )
 
 tp: theIndirectCall
 

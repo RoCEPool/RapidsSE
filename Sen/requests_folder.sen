@@ -124,7 +124,7 @@ ddlLock.grabWrite
 tp: lfOnAll
 
   // set indirect call to be lf_
-  $$ "lf_"
+  << "lf_"
 
   tp: theIndirectCall
 

@@ -42,7 +42,7 @@ common/ scan rbCrs /
   begin while
 
     // << rb true plan >>
-    $$ rbCrs rbCursor.get true thePlan $$>valset
+    << rbCrs rbCursor.get true thePlan $$>valset
     "writeOp.task" find execute >jobqueue
 
     // next rowBuffer in partition
@@ -60,7 +60,7 @@ common/ scan rbCrs /
   // pipe EOD to writeOp
 
   // << false plan >>
-  $$ false thePlan $$>valset
+  << false thePlan $$>valset
   "writeOp.task" find execute >jobqueue
 
   // discard this op's reg frame

@@ -153,8 +153,8 @@ tp: running
 
   true locals| finalResult |
 
-  $$
-tp: $$
+  <<
+tp: <<
 
   // now scan resultset from each participant
   args.nodes 0 do
@@ -231,7 +231,7 @@ tp: ackWait
 
 tp: running
 
-  $$
+  <<
 
   // move from aux to data stack 
   a>

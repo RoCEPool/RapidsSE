@@ -41,7 +41,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // trigger scanOp by piping the plan to it
-  $$ thePlan $$>valset
+  << thePlan $$>valset
   "scanOp.task" find execute >jobqueue
 
   ;
