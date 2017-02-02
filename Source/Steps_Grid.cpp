@@ -35,6 +35,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Grid(void)
 {
   vAddPrimitive("grid.appendNodes",&vGridAppendNodes,  false);
+  vAddPrimitive("grid.find",       &vGridFindNode,     false);
   vAddPrimitive("grid.init",       &vGridInit,         false);
   vAddPrimitive("grid.node",       &vGridNode,         false);
   vAddPrimitive("grid.thisNode!",  &vGridThisNodeStore,false);
@@ -60,6 +61,25 @@ void Task::vGridAppendNodes(NNP_Task nnpTask)
     ASSERT(CN_NODE == pNode->eClass());
     gpGrid->vAppend(pNode);
   }
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.find -- find node from grid                                           */
+/*----------------------------------------------------------------------------*/
+void Task::vGridFindNode(NNP_Task nnpTask)
+{
+  ENTRY("vGridNode");
+  
+  s256 sPtrNodeName;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(sPtrNodeName) )
+    THROW_INVALID_DSTACK("grid.find");
+  
+  Node* pNode = gpGrid->pFindNode(sPtrNodeName.a());
+  
+  nnpTask->m_pDataStack->vPush(pNode);
+  
   EXIT();
 }
 

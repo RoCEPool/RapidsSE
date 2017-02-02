@@ -71,6 +71,7 @@ void Grid::vInit(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iThisNode = -1;
+  m_pThisNode = nullptr;
   m_iStartNode = -1;
   m_bHasStarted = false;
 }
@@ -184,6 +185,7 @@ void Grid::vThisNode(i8 iNode)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   m_iThisNode = iNode;
+  m_pThisNode = pFindNode(iNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -194,6 +196,16 @@ i8 Grid::iThisNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   return m_iThisNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get this node                                                              */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pThisNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_pThisNode;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -38,14 +38,13 @@ tp: participantProxy
     actorNo grid.thisNode@ ==
     if
       // forward to participant on local node
-
+      addSetSender
       addSetCaller
 
       forwardTask >jobQueue;a>
 
     else
       // forward to participant on other node (via CP)
-
       addSetSender
 
       actorNo addPassOnToCp

@@ -25,11 +25,13 @@ args.nodes ptrArray: senderQueues
 : to_QUEUE   >reg1 ;
 : to_TASKSET >reg2 ;
 : to_THREAD  >reg3 ;
+: to_SENDER  >reg4 ;
 
 : _CALLER    reg0 ;
 : _QUEUE     reg1 ;
 : _TASKSET   reg2 ;
 : _THREAD    reg3 ;
+: _SENDER    reg4 ;
 
 /*----------------------------------------------------------------------------*/
 /* dump the ppQueues array                                                    */
@@ -236,9 +238,13 @@ tp: >callerAux
 /*----------------------------------------------------------------------------*/
 : setSender ( sender -- ; reg1 == sender )
 
-  to_QUEUE ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
+  //dup "SENDER IS %v" str.format .
+  grid.find
+  node.no
+  //dup "SENDER IS NODE%v" str.format .
+  to_SENDER ( )                                   //! THIS DOESNT LOOK RIGHT -RAY
 
-  tp: reg1HasSender
+  tp: reg4HasSender
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -399,7 +405,7 @@ tp: addingSetDicPath
 /*----------------------------------------------------------------------------*/
 : addSetSender ( valset -- valset )
 
-  grid.thisNode@ "setSender"
+  grid.thisNode@ grid.node node.name "setSender"
 
 tp: addingSetSender
 
@@ -595,6 +601,7 @@ tp: addingPassOnToCP
   locals| node |
 
   ""
+
   args.nodes 0 do
     I grid.node   ( node )
     to node
@@ -605,6 +612,23 @@ tp: addingPassOnToCP
     str.cat
   loop
 
+/* TEMPORARY CODE FOR TESTING
+  1 grid.node   ( node )
+  to node
+  node node.port
+  node node.IP
+  node node.name
+  " --node %v %v %v " str.format
+  str.cat
+
+  0 grid.node   ( node )
+  to node
+  node node.port
+  node node.IP
+  node node.name
+  " --node %v %v %v " str.format
+  str.cat
+*/
   to clusterString
 
   // spawn all other nodes

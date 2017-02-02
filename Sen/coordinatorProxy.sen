@@ -24,12 +24,14 @@ tp: coordinator
 
     addSetCaller ( << <<call*>> <<caller>> >> )
 
-    forwardTask >jobQueue;a> ( <<result>> )
+    forwardTask >jobQueue;a> ( <<sender>> <<result>> )
+
+    swap >r
 
     // have receiver pass indirect result onto participant proxy
     addPassBackToPP ( << <<result>> <<passBackToPP>> >> )
 
-    0                                                              //! NOT RIGHT
+    r0                                                        //! NOT RIGHT
     >sendQueue
 
   again

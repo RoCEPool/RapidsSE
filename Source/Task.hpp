@@ -303,6 +303,7 @@ namespace Tasks
     static void vAstack7(NNP_Task nnpTask);
     static void vAstack8(NNP_Task nnpTask);
     static void vAstack9(NNP_Task nnpTask);
+    static void vDstackTransfer(NNP_Task nnpTask);
     
     // bp
     static void vBpAnalyze(NNP_Task nnpTask);
@@ -485,6 +486,7 @@ namespace Tasks
     
     // grid    
     static void vGridAppendNodes(NNP_Task nnpTask);
+    static void vGridFindNode(NNP_Task nnpTask);
     static void vGridInit(NNP_Task nnpTask);
     static void vGridNode(NNP_Task nnpTask);
     static void vGridThisNodeStore(NNP_Task nnpTask);
