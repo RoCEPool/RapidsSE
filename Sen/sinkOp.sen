@@ -11,17 +11,18 @@
 
   ": sinkOp" .
 
-  0 locals| planTBD |
+  0 0 locals| planTBD profile |
 
   begin
 
     jobQueue> ( valset )
 
-    valset> ( plan nValues )
+    valset> ( profile plan nValues )
 
-    drop ( plan )
+    drop ( profile plan )
 
     to planTBD
+    to profile
 
     planTBD planList::removePlan
 

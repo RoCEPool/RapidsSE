@@ -9,9 +9,9 @@
 /*----------------------------------------------------------------------------*/
 : planTest
 
-  // create a plan, add it to plan list
-  plan::new locals| thePlan |
-  thePlan planList::addPlan
+  // create a distributed export plan, add it to plan list
+  plan::new locals| dexPlan |
+  dexPlan planList::addPlan
   planList::show
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,20 +31,20 @@
 
 
 //SECOND VARIATION:
-  thePlan "part" tableName2!!
-  thePlan "/tmp/part.csv" fileName2!!
+  dexPlan "part" tableName2!!
+  dexPlan "/tmp/part.csv" fileName2!!
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the plan
-  thePlan compilePlan
+  dexPlan compilePlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // trigger scanOp by piping the plan to it
-  << thePlan >>
-  "scanOp.task" find execute >jobqueue
+  << "scanOp#" dexPlan >>
+  "scanOp.task" find execute >jobQueue
 
-  ;
+;
 
 /*============================================================================*/
 /* end                                                                        */

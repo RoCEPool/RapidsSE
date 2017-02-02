@@ -66,11 +66,10 @@ common/ write filePointer /
 /*----------------------------------------------------------------------------*/
 /* sink plan                                                                  */
 /*----------------------------------------------------------------------------*/
-: writePipeSink ( plan -- )
+: writePipeSink ( <<job>> -- )
 
   ": writePipeSink" .
 
-  << swap >> // << plan >>
   "sinkOp.task" find execute >jobqueue
 ;
 
@@ -104,7 +103,7 @@ common/ write filePointer /
 
   ": writeOp" .
 
-  0  locals| thePlan  |
+  0 0 locals| thePlan profile |
 
   begin
 
@@ -112,14 +111,15 @@ common/ write filePointer /
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( [ rowBuffer ] flag plan nValues )
-    drop    ( [ rowBuffer ] flag plan )
+    valset> ( [ rowBuffer ] flag profile plan nValues )
+    drop    ( [ rowBuffer ] flag profile plan )
 
-    // save the plan
-    to thePlan ( rowBuffer flag )
+    // save the plan and profile
+    to thePlan ( rowBuffer flag profile )
+    to profile ( rowBuffer flag )
 
    // find/create the reg frame for this writeOp
-   "write" thePlan plan.regFrame? common.push
+   profile thePlan plan.regFrame? common.push
 
     // open the file
     thePlan writeOpenFile ( plan [ rowBuffer ] )
@@ -144,7 +144,7 @@ common/ write filePointer /
         writeToFile
       else
         writeCloseFile
-        thePlan writePipeSink
+        << profile thePlan >> writePipeSink
       then
 
     then

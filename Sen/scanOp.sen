@@ -12,13 +12,13 @@ common/ scan rbCrs /
 /*----------------------------------------------------------------------------*/
 /* scan partition of a table                                                  */
 /*----------------------------------------------------------------------------*/
-: scanPartition subDic scan ( plan -- )
+: scanPartition subDic scan ( profile plan -- )
 
   // record the plan
-  locals| thePlan |
+  locals| thePlan profile |
 
   // find/create the reg frame for this scanOp
-  "xyzFrame" thePlan plan.regFrame? common.push
+  profile thePlan plan.regFrame? common.push
 
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
@@ -41,8 +41,8 @@ common/ scan rbCrs /
   // pipe all rb's of partition
   begin while
 
-    // << rb true plan >>
-    << rbCrs rbCursor.get true thePlan >>
+    // << rb true profile plan >>
+    << rbCrs rbCursor.get true "writeOp#" thePlan >>
     "writeOp.task" find execute >jobqueue
 
     // next rowBuffer in partition
@@ -60,7 +60,7 @@ common/ scan rbCrs /
   // pipe EOD to writeOp
 
   // << false plan >>
-  << false thePlan >>
+  << false "writeOp#" thePlan >>
   "writeOp.task" find execute >jobqueue
 
   // discard this op's reg frame
@@ -78,8 +78,8 @@ common/ scan rbCrs /
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( plan nValues )
-    drop ( plan )
+    valset> ( profile plan nValues )
+    drop ( profile plan )
 
     // scan the table partition and pipe to write
     scanPartition ( )
