@@ -60,7 +60,6 @@ void Task::vAddPrimitives_Astack(void)
   vAddPrimitive("a7",              &vAstack7,          false);
   vAddPrimitive("a8",              &vAstack8,          false);
   vAddPrimitive("a9",              &vAstack9,          false);
-  vAddPrimitive(">DStack",         &vDstackTransfer,   false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -405,29 +404,6 @@ void Task::vAstack1(NNP_Task nnpTask)
   nnpTask->m_pAuxStack->vPeek(1,&xValWsp);
   
   nnpTask->m_pDataStack->vPush(xValWsp);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* >DStack -- pop stack of this task and push onto aux stack of that task   */
-/*----------------------------------------------------------------------------*/
-void Task::vDstackTransfer(NNP_Task nnpTask)
-{
-  ENTRY("vAstackTransfer");
-  
-  Object* pPtrTask;
-  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
-    THROW_INVALID_DSTACK(">DStack");
-  Task* pThatTask = _pTask(pPtrTask);
-  
-  i8 iVal;
-  if ( ! nnpTask->m_pDataStack->bPop(iVal) )
-    THROW_INVALID_DSTACK(">DStack");
-  
-  pThatTask->m_xLock.vGrabWrite();
-  pThatTask->m_pDataStack->vPush(iVal);
-  pThatTask->m_xLock.vDropWrite();
   
   EXIT();
 }

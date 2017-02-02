@@ -304,7 +304,6 @@ namespace Tasks
     static void vAstack7(NNP_Task nnpTask);
     static void vAstack8(NNP_Task nnpTask);
     static void vAstack9(NNP_Task nnpTask);
-    static void vDstackTransfer(NNP_Task nnpTask);
     
     // bp
     static void vBpAnalyze(NNP_Task nnpTask);
@@ -430,6 +429,7 @@ namespace Tasks
     static void vDstackSwap(NNP_Task nnpTask);
     static void vDstackToValSet(NNP_Task nnpTask);
     static void vDstackToValues(NNP_Task nnpTask);
+    static void vDstackTransfer(NNP_Task nnpTask);
     static void vDstackTuck(NNP_Task nnpTask);
     
     // encode

@@ -53,8 +53,34 @@ void Task::vAddPrimitives_Dstack(void)
   vAddPrimitive("swap",            &vDstackSwap,       false);
   vAddPrimitive("valset>",         &vDstackToValues,   false);
   vAddPrimitive(">valset",         &vDstackToValSet,   false);
+  vAddPrimitive(">DStack",         &vDstackTransfer,   false);
   vAddPrimitive("tuck",            &vDstackTuck,       false);
+  
 }
+
+/*----------------------------------------------------------------------------*/
+/* >DStack -- pop stack of this task and push onto aux stack of that task     */
+/*----------------------------------------------------------------------------*/
+void Task::vDstackTransfer(NNP_Task nnpTask)
+{
+  ENTRY("vDstackTransfer");
+  
+  Object* pPtrTask;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+  THROW_INVALID_DSTACK(">DStack");
+  Task* pThatTask = _pTask(pPtrTask);
+  
+  i8 iVal;
+  if ( ! nnpTask->m_pDataStack->bPop(iVal) )
+  THROW_INVALID_DSTACK(">DStack");
+  
+  pThatTask->m_xLock.vGrabWrite();
+  pThatTask->m_pDataStack->vPush(iVal);
+  pThatTask->m_xLock.vDropWrite();
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* stack.class -- get class of nth value on stack                             */
