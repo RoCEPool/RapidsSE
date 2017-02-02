@@ -453,8 +453,9 @@ bool Arguments::bParse(int argc, const char* argv[])
     m_xNodes[0].m_iPortNo =  -1;
   }
 
-  String::vConcat( m_sRegionName.a(), "/");
+  //String::vConcat( m_sRegionName.a(), "/");
   String::vConcat( m_sRegionName.a(), m_sRegionPrefix.a());
+  String::vConcat( m_sRegionName.a(), "_");
   String::vConcat( m_sRegionName.a(), m_sNodeName.a());
   
   return true;
