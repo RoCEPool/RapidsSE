@@ -16,7 +16,7 @@ namespace Dictionaries
     s32       m_sName;              // name of the reg frame
     RegFrame* m_pNext;              // nest frame in stack / list
     void*     m_pStackPtr;          // discard point (when in call stack)
-    Dic*      m_pDic;               // dictionary associated with this frame
+    Dic*      m_pOpDic;             // operator dic associated with this frame
     ValReg    m_xValReg[C_VALREGS]; // set of registers
     
     // must be last
@@ -39,6 +39,9 @@ namespace Dictionaries
 
     void*     pStackPtr(void);
     void      vStackPtr(void* pStackPtr);
+
+    Dic*      pOpDic(void);
+    void      vOpDic(Dic* pOpDic);
     
     ValReg* pValReg(i8 iReg);
     

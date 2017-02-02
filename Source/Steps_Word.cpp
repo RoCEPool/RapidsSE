@@ -52,6 +52,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
+  vAddPrimitive("opDic",           &vOpDic,            true );
   vAddPrimitive("postpone",        &vPostpone,         true );
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
@@ -433,6 +434,31 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* opDic -- push op dictionary                                                */
+/*----------------------------------------------------------------------------*/
+void Task::vOpDic(NNP_Task nnpTask)
+{
+  ENTRY("vOpDic");
+  
+  nnpTask->m_pTokeniser->vNextToken();
+  
+  s32 sNameSubDic;
+  sNameSubDic = nnpTask->m_pTokeniser->sToken();
+  
+  Word* pWordSubDic = nnpTask->m_xPathStack.pFindWord(sNameSubDic);
+  if ( ! pWordSubDic )
+    THROW("No such opDic: %s",sNameSubDic.a());
+  
+  Dic* pDic = _pDic(pWordSubDic->pDataArea());
+  
+  nnpTask->m_xPathStack.vPush(pDic);
+  
+  nnpTask->m_nSubDic++;
   
   EXIT();
 }

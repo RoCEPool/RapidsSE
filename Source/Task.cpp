@@ -203,7 +203,7 @@ void Task::vInit(const char* aLambda)
   
   m_sComment    = "";
   
-  m_pJobQueue  = nullptr;
+  m_pJobQueue   = nullptr;
   
   m_pDataStack   = new Stack;
   m_pReturnStack = new Stack;
@@ -213,7 +213,7 @@ void Task::vInit(const char* aLambda)
   m_pLocalsFrame = nullptr;
   m_pCommonFrame = nullptr;
   
-  IP.m_pCell   = nullptr;
+  IP.m_pCell     = nullptr;
   m_pEntryCell   = nullptr;
   
   m_pResetIP   = nullptr;
@@ -234,7 +234,8 @@ void Task::vInit(const char* aLambda)
   m_pTokeniser->vUseString(m_sLambda);
   
   m_pSEitf   = nullptr;
-  m_pSocket = nullptr;
+  m_pSocket  = nullptr;
+  m_pPlan    = nullptr;
   
   m_iDdlLocked = 0;
 }
