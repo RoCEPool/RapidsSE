@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* dexPlanner.sen -- distributed export planner                               */
+/*============================================================================*/
+
+"dexPlanner.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* distributed export planner                                                 */
+/*----------------------------------------------------------------------------*/
+: dexPlanner ( tableNm fileNm -- dexPlan )
+
+  locals| fileNm tableNm |
+
+  // create a distributed export plan
+  plan::new locals| dexPlan |
+
+  // add the two symbolic arguments
+  dexPlan tableNm tableName2!!
+  dexPlan fileNm  fileName2!!
+
+   // add it to plan list
+  dexPlan planList::addPlan
+  planList::show
+
+  // return dexPlan
+  dexPlan
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

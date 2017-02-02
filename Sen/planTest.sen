@@ -9,41 +9,20 @@
 /*----------------------------------------------------------------------------*/
 : planTest
 
-  // create a distributed export plan, add it to plan list
-  plan::new locals| dexPlan |
-  dexPlan planList::addPlan
-  planList::show
+  0 locals| dexPlan |
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare plan
-
-  //thePlan plan.dic task.this task.dicStack dicPath.push
-  //": arg$tableNm \"part\" ; " >:
-  //task.this task.dicStack dicPath.drop
-
-  // add code to lambda of the plan to set the tablename
-  //thePlan "part" "arg$tableNm" appendLambda
-
-
-  // set the tablename in the plan
-//FIRST VARIATION:
-  //thePlan "part" tableName!!
-
-
-//SECOND VARIATION:
-  dexPlan "part" tableName2!!
-  dexPlan "/tmp/part.csv" fileName2!!
+  "part" "/tmp/part.csv" dexPlanner to dexPlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the plan
   dexPlan compilePlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   // trigger scanOp by piping the plan to it
   << "scanOp#" dexPlan >>
   "scanOp.task" find execute >jobQueue
-
 ;
 
 /*============================================================================*/
