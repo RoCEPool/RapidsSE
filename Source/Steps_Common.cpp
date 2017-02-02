@@ -131,10 +131,10 @@ ENTRY("vCommonSlash");
     
     // set word as variable
     pWordCommon->vWordType(WT_VARIABLE);
-    pWordCommon->vVariable(nnpTask->m_nLocals);
+    pWordCommon->vVariable(nnpTask->m_nVariables);
     
     // encode the word
-    xValWsp = nnpTask->m_nLocals;
+    xValWsp = nnpTask->m_nVariables;
     pWordCommon->vEncode("pushValue",&xValWsp);
     pWordCommon->vEncode("common.fetch");
     pWordCommon->vEncode("exit");

@@ -608,10 +608,10 @@ void Task::vSemicolon(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  if (nnpTask->m_nLocals) {
+  if (nnpTask->m_nVariables) {
     
     // reset the number of local variables
-    nnpTask->m_nLocals = 0;
+    nnpTask->m_nVariables = 0;
     
     // pop top dictionary
     nnpTask->m_xPathStack.vDiscard();

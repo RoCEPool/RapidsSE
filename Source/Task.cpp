@@ -216,14 +216,14 @@ void Task::vInit(const char* aLambda)
   IP.m_pCell     = nullptr;
   m_pEntryCell   = nullptr;
   
-  m_pResetIP   = nullptr;
-  m_pBeginIP   = nullptr;
-  m_pWord      = nullptr;
-  m_bCompiling = false;
-  m_iTracing   = 0;
-  m_nLocals    = 0;
+  m_pResetIP     = nullptr;
+  m_pBeginIP     = nullptr;
+  m_pWord        = nullptr;
+  m_bCompiling   = false;
+  m_iTracing     = 0;
+  m_nVariables   = 0;
   m_pCurrentWord = nullptr;
-  m_nSubDic    = 0;
+  m_nSubDic      = 0;
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())

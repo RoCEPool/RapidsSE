@@ -100,7 +100,7 @@ namespace Tasks
     Word* m_pWord;
     bool  m_bCompiling;
     i8    m_iTracing;
-    i8    m_nLocals;      // number of locals
+    i8    m_nVariables;      // number of variables 
     Word* m_pCurrentWord;
     i8    m_nSubDic;
     
