@@ -263,9 +263,16 @@ tp: setSender_nodeNo
 /*----------------------------------------------------------------------------*/
 /* pass indirect result back to participant proxy                             */
 /*----------------------------------------------------------------------------*/
-: passBackToPP ( <<result>> nodeNo -- )
+: passBackToPP ( <<result>> nodeName -- )
 
   reg.push
+
+tp: passBackToPP_name
+
+  grid.find
+  node.no
+
+tp: passBackToPP_nodeNo
 
   ppTasks @ to_CALLER
 
@@ -416,11 +423,11 @@ tp: addingSetSender
 ;
 
 /*----------------------------------------------------------------------------*/
-/* add call to bass result back to participant proxy                          */
+/* add call to pass result back to participant proxy                          */
 /*----------------------------------------------------------------------------*/
 : addPassBackToPP ( valset -- valset )
 
-  grid.thisNode@ "passBackToPP"
+  grid.thisNode@ grid.node node.name "passBackToPP"
 
   tp: addingPassBackToPP
 
@@ -615,23 +622,6 @@ tp: addingPassOnToCP
     str.cat
   loop
 
-/* TEMPORARY CODE FOR TESTING
-  1 grid.node   ( node )
-  to node
-  node node.port
-  node node.IP
-  node node.name
-  " --node %v %v %v " str.format
-  str.cat
-
-  0 grid.node   ( node )
-  to node
-  node node.port
-  node node.IP
-  node node.name
-  " --node %v %v %v " str.format
-  str.cat
-*/
   to clusterString
 
   // spawn all other nodes
