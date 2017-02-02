@@ -55,20 +55,20 @@ Word::Word(const char* sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  m_sName        = sName;
-  m_eWordType    = WT_ROUTINE;
-  m_eDistributed = DT_NOPARTICIPANT;
-  //m_pDic       = pDic;
-  m_pKind        = gpWord ? gpWord : this;
-  m_iEpoch       = gpAttachMap->m_iEpoch;
-  m_pParticipant = nullptr;
-  m_bIndirect    = false;
-  m_bImmediate   = false;
-  m_iParams      = 0;
+  m_sName         = sName;
+  m_eWordType     = WT_ROUTINE;
+  m_eDistributed  = DT_NOPARTICIPANT;
+  //m_pDic        = pDic;
+  m_pKind         = gpWord ? gpWord : this;
+  m_iEpoch        = gpAttachMap->m_iEpoch;
+  m_pParticipant  = nullptr;
+  m_bIndirect     = false;
+  m_bImmediate    = false;
+  m_iParams       = 0;
   m_sFinalRoutine = "";
   m_iDataBytes    = 0;
   m_pPrevWord     = nullptr;
-  m_iLocal        = 0;
+  m_iVariable     = 0;
 
   _setFooter_();
   
@@ -563,26 +563,6 @@ Cell* Word::pLastCell(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set local variable number                                                  */
-/*----------------------------------------------------------------------------*/
-void Word::vLocal(i8 iLocal)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  m_iLocal = iLocal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get local variable number                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Word::iLocal(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
-  
-  return m_iLocal;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
 s& Word::sName(void)
@@ -663,6 +643,26 @@ i8 Word::iSize(void)
   i8 nBytes = sizeof(Word) - 1 + m_iDataBytes;
 
   return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get variable number                                                        */
+/*----------------------------------------------------------------------------*/
+i8 Word::iVariable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  return m_iVariable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set variable number                                                        */
+/*----------------------------------------------------------------------------*/
+void Word::vVariable(i8 iVariable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
+  
+  m_iVariable = iVariable;
 }
 
 /*----------------------------------------------------------------------------*/

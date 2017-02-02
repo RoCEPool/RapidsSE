@@ -124,7 +124,7 @@ ENTRY("vLocalsBar");
     
     // set word as local variable
     pWordLocal->vWordType(WT_VARIABLE);
-    pWordLocal->vLocal(nnpTask->m_nLocals);
+    pWordLocal->vVariable(nnpTask->m_nLocals);
     
     // encode the word
     xValWsp = nnpTask->m_nLocals;
@@ -191,11 +191,11 @@ ENTRY("vLocalsTo");
   // get name of local
   nnpTask->m_pTokeniser->vNextToken();
 
-  Word* pWordLocal = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
-  ASSERT(pWordLocal);
+  Word* pWordVariable = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  ASSERT(pWordVariable);
  
   ValWsp xValWsp;
-  xValWsp = pWordLocal->iLocal();
+  xValWsp = pWordVariable->iVariable();
   
   pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("local.store");

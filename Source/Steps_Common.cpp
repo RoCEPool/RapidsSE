@@ -131,7 +131,7 @@ ENTRY("vCommonSlash");
     
     // set word as variable
     pWordCommon->vWordType(WT_VARIABLE);
-    pWordCommon->vLocal(nnpTask->m_nLocals);
+    pWordCommon->vVariable(nnpTask->m_nLocals);
     
     // encode the word
     xValWsp = nnpTask->m_nLocals;
@@ -201,7 +201,7 @@ ENTRY("vCommonToCommon");
   ASSERT(pWordCommon);
  
   ValWsp xValWsp;
-  xValWsp = pWordCommon->iLocal();
+  xValWsp = pWordCommon->iVariable();
   
   pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("common.store");

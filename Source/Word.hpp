@@ -70,7 +70,7 @@ namespace Dictionaries
     i8       m_iParams;      // number of parameters
     s32      m_sFinalRoutine; // final routine to be called after all participants repond
     Word*    m_pPrevWord;    // previous word in dictionary
-    i8       m_iLocal;       // local variable number
+    i8       m_iVariable;    // variable number
     i8       m_iDataBytes;   // number of data bytes
     TaskStep m_pEntryStep;   // entry step for this word
     Cell*    m_pEntryCell;   // the cell to start executing from
@@ -128,8 +128,6 @@ namespace Dictionaries
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
-    i8    iLocal(void);
-    void  vLocal(i8 iLocal);
     s&    sName(void);
     void  vObjectDump(const char* pTab);
     void  vParams(i8 iParams);
@@ -138,6 +136,8 @@ namespace Dictionaries
     void  vPrevWord(Word* pPrevWord);
     void  vReset(void);
     i8    iSize(void);
+    i8    iVariable(void);
+    void  vVariable(i8 iVariable);
     eWT   eWordType(void);
     void  vWordType(eWT eWordType);
     
