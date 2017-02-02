@@ -123,7 +123,7 @@ ENTRY("vLocalsBar");
     // ** do not set as current word **
     
     // set word as local variable
-    pWordLocal->vWordType(WT_LOCAL);
+    pWordLocal->vWordType(WT_VARIABLE);
     pWordLocal->vLocal(nnpTask->m_nLocals);
     
     // encode the word

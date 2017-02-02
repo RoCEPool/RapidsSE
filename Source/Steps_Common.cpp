@@ -130,7 +130,7 @@ ENTRY("vCommonSlash");
     // ** do not set as current word **
     
     // set word as variable
-    pWordCommon->vWordType(WT_LOCAL);
+    pWordCommon->vWordType(WT_VARIABLE);
     pWordCommon->vLocal(nnpTask->m_nLocals);
     
     // encode the word

@@ -19,7 +19,7 @@ namespace Dictionaries
     /*  1 */ WT_OBJECT,     // word is an object
     /*  2 */ WT_PRIMITIVE,  // word is a primitive (eg +, return)
     /*  3 */ WT_ROUTINE,    // word is a subroutine
-    /*  4 */ WT_LOCAL,      // word ia a local
+    /*  4 */ WT_VARIABLE,      // word ia a local
     /*  5 */ WT_ENUMS
   };
   

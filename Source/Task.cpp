@@ -688,7 +688,7 @@ void Task::vAddConstants(void)
   /*  0 */ vAddConstant("WT_OBJECT",    WT_OBJECT);
   /*  0 */ vAddConstant("WT_PRIMITIVE", WT_PRIMITIVE);
   /*  0 */ vAddConstant("WT_ROUTINE",   WT_ROUTINE);
-  /*  0 */ vAddConstant("WT_LOCAL",     WT_LOCAL);
+  /*  0 */ vAddConstant("WT_VARIABLE",  WT_VARIABLE);
   /*  0 */ vAddConstant("WT_ENUMS",     WT_ENUMS);
   
   // OPEN_ : file open argument
