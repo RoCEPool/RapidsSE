@@ -42,8 +42,8 @@ void Task::vAddPrimitives_Plan(void)
   vAddPrimitive("plan.name@",        &vPlanNameFetch,    false);
   vAddPrimitive("plan.name!",        &vPlanNameStore,    false);
   vAddPrimitive("plan::new",         &vPlanNew,          false);
-  vAddPrimitive("plan.regFrame++",   &vPlanRegFrameAdd,  false);
-  vAddPrimitive("plan.regFrame?",    &vPlanRegFrameFind, false);
+  vAddPrimitive("plan.opFrame++",    &vPlanOpFrameAdd,   false);
+  vAddPrimitive("plan.opFrame?",     &vPlanOpFrameFind,  false);
   vAddPrimitive("plan.show",         &vPlanShow,         false);
 }
 
@@ -211,24 +211,24 @@ void Task::vPlanNew(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* plan.frame++ -- find/create reg frame in plan ( plan -- regFrame )         */
+/* plan.opFrame++ -- add named op frame into plan ( plan -- opFrame )         */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanRegFrameAdd(NNP_Task nnpTask)
+void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
 {
-  ENTRY("vPlanRegFrameAdd");
+  ENTRY("vPlanOpFrameAdd");
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-    THROW_INVALID_DSTACK("plan.regFrame++");
+    THROW_INVALID_DSTACK("plan.opFrame++");
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("plan.regFrame++");
+    THROW_INVALID_DSTACK("plan.opFrame++");
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   if ( pRegFrame )
-  THROW("plan.regFrame++: op frame %s already exists",sName.a());
+  THROW("plan.opFrame++: op frame %s already exists",sName.a());
 
   pRegFrame = new RegFrame;
   pRegFrame->vName(sName);
@@ -240,20 +240,20 @@ void Task::vPlanRegFrameAdd(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* plan.regFrame -- find reg frame in plan ( plan -- regFrame )               */
+/* plan.opFrame -- find named op frame in plan ( plan -- opFrame )            */
 /*----------------------------------------------------------------------------*/
-void Task::vPlanRegFrameFind(NNP_Task nnpTask)
+void Task::vPlanOpFrameFind(NNP_Task nnpTask)
 {
-  ENTRY("vPlanRegFrameFind");
+  ENTRY("vPlanOpFrameFind");
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-  THROW_INVALID_DSTACK("plan.regFrame?");
+  THROW_INVALID_DSTACK("plan.opFrame?");
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
-  THROW_INVALID_DSTACK("plan.regFrame?");
+  THROW_INVALID_DSTACK("plan.opFrame?");
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   

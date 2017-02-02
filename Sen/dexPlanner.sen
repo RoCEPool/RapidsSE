@@ -19,9 +19,9 @@
   dexPlan fileNm  $$fileNm!!
 
   // create the named op frames in plan
-  "scanOp#"  dexPlan plan.regFrame++ drop
-  "writeOp#" dexPlan plan.regFrame++ drop
-  "sinkOp#"  dexPlan plan.regFrame++ drop
+  "scanOp#"  dexPlan plan.opFrame++ drop
+  "writeOp#" dexPlan plan.opFrame++ drop
+  "sinkOp#"  dexPlan plan.opFrame++ drop
 
   // add plan to plan list
   dexPlan planList::addPlan

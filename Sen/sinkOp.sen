@@ -24,8 +24,8 @@
     to planTBD
     to profile
 
-    // push the reg frame for this sinkOp
-    profile planTBD plan.regFrame? common.push
+    // push the op frame for this sinkOp
+    profile planTBD plan.opFrame? common.push
 
     // discard this op's reg frame
     common.drop

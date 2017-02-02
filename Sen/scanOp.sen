@@ -17,8 +17,8 @@ common/ scan rbCrs /
   // record the plan
   locals| thePlan profile |
 
-  // push the reg frame for this scanOp
-  profile thePlan plan.regFrame? common.push
+  // push the op frame for this scanOp
+  profile thePlan plan.opFrame? common.push
 
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set

@@ -118,8 +118,8 @@ common/ write filePointer /
     to thePlan ( rowBuffer flag profile )
     to profile ( rowBuffer flag )
 
-    // push the reg frame for this writeOp
-    profile thePlan plan.regFrame? common.push
+    // push the op frame for this writeOp
+    profile thePlan plan.opFrame? common.push
 
     // open the file
     thePlan writeOpenFile ( plan [ rowBuffer ] )
