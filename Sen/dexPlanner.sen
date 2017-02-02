@@ -15,8 +15,8 @@
   plan::new locals| dexPlan |
 
   // add the two symbolic arguments
-  dexPlan tableNm tableName2!!
-  dexPlan fileNm  fileName2!!
+  dexPlan tableNm $$tableNm!!
+  dexPlan fileNm  $$fileNm!!
 
    // add it to plan list
   dexPlan planList::addPlan

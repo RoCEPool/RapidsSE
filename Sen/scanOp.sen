@@ -29,7 +29,7 @@ common/ scan rbCrs /
 
   // set up table in rowCursor
   thePlan plan.dic task.this task.dicStack dicPath.push
-  thePlan tableName2@@ find execute rbCrs rbCursor.table!
+  thePlan $$tableNm@@ find execute rbCrs rbCursor.table!
   task.this task.dicStack dicPath.drop
 
   // begin scan of partition 0 (hardcoded for the moment)

@@ -224,8 +224,8 @@ void Thread::vLoop(void)
       m_npTask = m_pTaskSet->npPop();
       
       if ( ! m_npTask ) {
-        if (bWarn && gxArguments.m_bVerbose)
-          vTrace("[[%s]] Thread::vLoop no task\n",m_sName.a());
+        //if (bWarn && gxArguments.m_bVerbose)
+        //  vTrace("[[%s]] Thread::vLoop no task\n",m_sName.a());
         bWarn = false;
         //m_xPosixThread.vNanoSleep(10_MB);
         //m_xPosixThread.vSecSleep(1);

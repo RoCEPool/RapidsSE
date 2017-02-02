@@ -4,10 +4,11 @@
 
 "symbolicArgs.sen" .verbose
 
-: tableName2 indirect ( plan -- ) ;
-: fileName2  indirect ( plan -- ) ;
-: nextQueue2 indirect ( plan -- ) ;
-: nextOp2    indirect ( plan -- ) ;
+: $$tableNm   indirect ( plan -- ) ;
+: $$fileNm    indirect ( plan -- ) ;
+: $$nextQueue indirect ( plan -- ) ;
+: $$nextOp    indirect ( plan -- ) ;
+// : ◆nameTest   indirect ( plan -- ) ;
 
 /*============================================================================*/
 /* end                                                                        */
