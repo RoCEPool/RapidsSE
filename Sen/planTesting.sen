@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* planTest.sen -- plan tests                                                 */
+/* planTesting.sen -- plan tests                                              */
 /*============================================================================*/
 
 "planTest.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* plan test                                                                  */
+/* distributed export plan test                                               */
 /*----------------------------------------------------------------------------*/
-: planTest
+: dexPlanTest
 
   0 locals| dexPlan |
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // prepare plan
   "part" "/tmp/part.csv" dexPlanner to dexPlan
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the plan
   dexPlan compilePlan
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trigger scanOp by piping the plan to it
   << "scanOp#" dexPlan >>
   "scanOp.task" find execute >jobQueue

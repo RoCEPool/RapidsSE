@@ -460,6 +460,93 @@ void Task::vStrSub(NNP_Task nnpTask)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* sprint of stack using given format string                                  */
+/*----------------------------------------------------------------------------*/
+void Task::vSprint(s48K& sFormat, s48K& sString)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
+  
+  char* pf = sFormat.a();
+  char* ps = sString.a();
+  
+  while (*pf) {
+    
+    // test for ordinary character
+    if ('%' != *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // we have a '%'
+    pf++;
+    
+    // test for %%
+    if ('%' == *pf) {
+      *ps++ = *pf++;
+      continue;
+    }
+    
+    // should be %v or %V
+    ASSERT('v' == *pf || 'V' == *pf);
+    
+    Value* pValue0 = m_pDataStack->pPeek(0);
+    
+    // test for strval
+    if (CN_STRVAL == pValue0->eClass()) {
+      
+      //*pf = 's';                                                    //! Defect??
+      
+      s48K sValue;
+      m_pDataStack->bPop(sValue);
+      
+      if ('V' == *pf)
+      *ps++ = '"';
+      
+      for (char* pv = sValue.a(); *pv; )
+      *ps++ = *pv++;
+      
+      if ('V' == *pf)
+      *ps++ = '"';
+      
+      pf++;
+      
+      continue;
+    }
+    
+    // test for intval
+    if (CN_INTVAL == pValue0->eClass()) {
+      
+      //*pf = 'i';                                                    //! Defect??
+      
+      i8 iValue;
+      m_pDataStack->bPop(iValue);
+      
+      char aValue[32];
+      String::wToString(iValue,aValue);
+      
+      for (char* pv = aValue; *pv; )
+      *ps++ = *pv++;
+      
+      pf++;
+      
+      continue;
+    }
+    
+    // just copy %?
+    *ps++ = '%';
+    *ps++ = *pf++;
+  }
+  
+  //*pf = '\0';                                                       //! Defect??
+  *ps = '\0';
+  
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
