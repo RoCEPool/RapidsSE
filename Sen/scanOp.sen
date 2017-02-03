@@ -18,7 +18,7 @@ common/ scan rbCrs /
   locals| thePlan profile |
 
   // push the op frame for this scanOp
-  profile thePlan plan.opFrame? common.push
+  profile thePlan plan.opFrame? opFrame.push
 
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
@@ -66,7 +66,7 @@ task.this task.dicStack dicPath.drop
   "writeOp.task" find execute >jobqueue
 
   // discard this op's reg frame
-  common.drop
+  opFrame.drop
 ;
 
 /*----------------------------------------------------------------------------*/

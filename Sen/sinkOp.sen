@@ -25,10 +25,10 @@
     to profile
 
     // push the op frame for this sinkOp
-    profile planTBD plan.opFrame? common.push
+    profile planTBD plan.opFrame? opFrame.push
 
     // discard this op's reg frame
-    common.drop
+    opFrame.drop
 
     planTBD planList::removePlan
 

@@ -81,7 +81,7 @@ namespace Tasks
     
     RegFrame* m_pRegFrame;    // register frame chain
     RegFrame* m_pLocalsFrame; // local register frame chain
-    RegFrame* m_pCommonFrame; // common register frame chain
+    RegFrame* m_pOpFrame;     // op frame chain
 
     s256       m_sLambda;    // lambda input
     Tokeniser* m_pTokeniser; // input stream tokenizer
@@ -329,9 +329,12 @@ namespace Tasks
     static void vCommonFetch(NNP_Task nnpTask);
     static void vCommonStore(NNP_Task nnpTask);
     static void vCommonSlash(NNP_Task nnpTask);
-    static void vCommonDrop(NNP_Task nnpTask);
-    static void vCommonPush(NNP_Task nnpTask);
     static void vCommonToCommon(NNP_Task nnpTask);
+    
+    static void vOpFrameDrop(NNP_Task nnpTask);
+    static void vOpFramePush(NNP_Task nnpTask);
+    
+    
     // cpu
     static void vCpuRdtscp(NNP_Task nnpTask);
     

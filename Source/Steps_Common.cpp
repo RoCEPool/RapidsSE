@@ -37,9 +37,10 @@ void Task::vAddPrimitives_Common(void)
   vAddPrimitive("common.fetch",    &vCommonFetch,      false);
   vAddPrimitive("common.store",    &vCommonStore,      false);
   vAddPrimitive("common/",         &vCommonSlash,      true);
-  vAddPrimitive("common.drop",     &vCommonDrop,       false);
-  vAddPrimitive("common.push",     &vCommonPush,       false);
   vAddPrimitive("toCommon",        &vCommonToCommon,   true);
+
+  vAddPrimitive("opFrame.drop",    &vOpFrameDrop,      false);
+  vAddPrimitive("opFrame.push",    &vOpFramePush,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,14 +50,14 @@ void Task::vCommonFetch(NNP_Task nnpTask)
 {
   ENTRY("vCommonFetch");
   
-  if ( ! nnpTask->m_pCommonFrame )
+  if ( ! nnpTask->m_pOpFrame )
     THROW_INVALID_DSTACK("common.fetch");
   
   i8 iCommon;
   if ( ! nnpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("common.fetch");
   
-  ValReg* pValReg = nnpTask->m_pCommonFrame->pValReg(iCommon);
+  ValReg* pValReg = nnpTask->m_pOpFrame->pValReg(iCommon);
   
   nnpTask->m_pDataStack->vPush(pValReg);
   
@@ -70,14 +71,14 @@ void Task::vCommonStore(NNP_Task nnpTask)
 {
   ENTRY("vCommonStore");
   
-  if ( ! nnpTask->m_pCommonFrame )
+  if ( ! nnpTask->m_pOpFrame )
     THROW_INVALID_DSTACK("commonStore");
   
   i8 iCommon;
   if ( ! nnpTask->m_pDataStack->bPop(iCommon) )
     THROW_INVALID_DSTACK("commonStore");
   
-  ValReg* pValReg = nnpTask->m_pCommonFrame->pValReg(iCommon);
+  ValReg* pValReg = nnpTask->m_pOpFrame->pValReg(iCommon);
   
   nnpTask->m_pDataStack->bPop(pValReg);
   
@@ -147,45 +148,6 @@ ENTRY("vCommonSlash");
 }
 
 /*----------------------------------------------------------------------------*/
-/* common.drop -- pop common frame                                            */
-/*----------------------------------------------------------------------------*/
-void Task::vCommonDrop(NNP_Task nnpTask)
-{
-ENTRY("vCommonDrop");
-  
-  RegFrame* pCommonFrame = nnpTask->m_pCommonFrame;
-  
-  if ( ! pCommonFrame )
-    THROW_INVALID_DSTACK("common.drop");
-  
-  nnpTask->m_pCommonFrame = nnpTask->m_pCommonFrame->pNext();
-  
-  delete pCommonFrame;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* common.push -- push common frame                                           */
-/*----------------------------------------------------------------------------*/
-void Task::vCommonPush(NNP_Task nnpTask)
-{
-ENTRY("vCommonPush");
-  
-  Object* pObjectRegFrame;
-  if ( ! nnpTask->m_pDataStack->bPop(pObjectRegFrame) )
-    THROW_INVALID_DSTACK("common.push");
-  
-  RegFrame* pCommonFrame = _pRegFrame(pObjectRegFrame);
-  
-  pCommonFrame->vNext(nnpTask->m_pCommonFrame);
-  
-  nnpTask->m_pCommonFrame = pCommonFrame;
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* toCommon -- compile store value into common variable             immediate */
 /*----------------------------------------------------------------------------*/
 void Task::vCommonToCommon(NNP_Task nnpTask)
@@ -206,6 +168,45 @@ ENTRY("vCommonToCommon");
   pCurrentWord->vEncode("pushValue",&xValWsp);
   pCurrentWord->vEncode("common.store");
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* opFrame.drop -- pop op frame                                               */
+/*----------------------------------------------------------------------------*/
+void Task::vOpFrameDrop(NNP_Task nnpTask)
+{
+  ENTRY("vOpFrameDrop");
+  
+  RegFrame* pOpFrame = nnpTask->m_pOpFrame;
+  
+  if ( ! pOpFrame )
+  THROW_INVALID_DSTACK("opFrame.drop");
+  
+  nnpTask->m_pOpFrame = nnpTask->m_pOpFrame->pNext();
+  
+  //delete pCommonFrame;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* opFrame.push -- push op frame                                              */
+/*----------------------------------------------------------------------------*/
+void Task::vOpFramePush(NNP_Task nnpTask)
+{
+  ENTRY("vOpFramePush");
+  
+  Object* pObjectRegFrame;
+  if ( ! nnpTask->m_pDataStack->bPop(pObjectRegFrame) )
+  THROW_INVALID_DSTACK("opFrame.push");
+  
+  RegFrame* pCommonFrame = _pRegFrame(pObjectRegFrame);
+  
+  pCommonFrame->vNext(nnpTask->m_pOpFrame);
+  
+  nnpTask->m_pOpFrame = pCommonFrame;
+  
   EXIT();
 }
 

@@ -119,7 +119,7 @@ common/ write filePointer /
     to profile ( rowBuffer flag )
 
     // push the op frame for this writeOp
-    profile thePlan plan.opFrame? common.push
+    profile thePlan plan.opFrame? opFrame.push
 
     // open the file
     thePlan writeOpenFile ( plan [ rowBuffer ] )
@@ -148,6 +148,8 @@ common/ write filePointer /
       then
 
     then
+
+    opFrame.drop
 
   again
 ;

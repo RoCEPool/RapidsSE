@@ -704,6 +704,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     sName = pCurrentWord->sName();
     String::vConcat(sName.a(),"##");
     Word* pWordArgGet = new(pDic) Word(sName.a());
+    // ** do not set as current word **
     
     s32 sFormat;
     sFormat = ": ";
@@ -720,6 +721,8 @@ void Task::vSemicolon(NNP_Task nnpTask)
     sName = pCurrentWord->sName();
     String::vConcat(sName.a(),"@@");
     Word* pWordArgSet = new(pDic) Word(sName.a());
+    // ** do not set as current word **
+    
     TaskStep* ppCalledEntryStep = pWordArg->ppEntryStep();
     pWordArgSet->vEncode(ppCalledEntryStep);
 //    pWordArgSet->vEncode("find");
