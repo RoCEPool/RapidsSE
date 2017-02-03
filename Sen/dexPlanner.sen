@@ -19,12 +19,12 @@ traceon
   dexPlan tableNm $$tableNm##
   dexPlan fileNm  $$fileNm##
   dexPlan 0       $$partition##  // needs to go into opFrame dic
-  dexplan 0       ##: $$ptn
+//  dexplan 0       ##: $$ptn
 traceoff
 
   // create the named op frames in plan
   "scanOp#"  dexPlan plan.opFrame++ drop
-//  dexPlan 0  $$partition##  // needs to go into opFrame dic
+    dexPlan 0  ##: $$ptn  // into opFrame dic
 
   "writeOp#" dexPlan plan.opFrame++ drop
   "sinkOp#"  dexPlan plan.opFrame++ drop

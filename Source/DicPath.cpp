@@ -158,9 +158,13 @@ Word* DicPath::pFindWord(const char* aName)
   
   Word* pWord;
   
-  for (i8 iDic = m_iTop; iDic >= 0; iDic--)
-    if ( (pWord = m_pDic[iDic]->pFindWord(aName)) )
+  for (i8 iDic = m_iTop; iDic >= 0; iDic--) {
+    
+    Dic* pDic = m_pDic[iDic];
+    
+    if ( (pWord = pDic->pFindWord(aName)) )
       return pWord;
+  }
   
   if ( (pWord = gpMainDic->pFindWord(aName)) )
     return pWord;

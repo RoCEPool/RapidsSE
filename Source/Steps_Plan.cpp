@@ -222,21 +222,24 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("plan.opFrame++");
   Plan* pPlan = _pPlan(pPtrPlan);
   
-  s32 sName;
-  if ( ! nnpTask->m_pDataStack->bPop(sName) )
+  s32 sNameFrame;
+  if ( ! nnpTask->m_pDataStack->bPop(sNameFrame) )
     THROW_INVALID_DSTACK("plan.opFrame++");
   
-  RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
+  RegFrame* pRegFrame = pPlan->pRegFrameFind(sNameFrame);
   if ( pRegFrame )
-    THROW("plan.opFrame++: op frame %s already exists",sName.a());
+    THROW("plan.opFrame++: op frame %s already exists",sNameFrame.a());
 
   pRegFrame = new RegFrame;
-  pRegFrame->vName(sName);
+  pRegFrame->vName(sNameFrame);
   pPlan->vRegFramePush(pRegFrame);
   
   // create a op dictionary
+  s32 sNameDic;
+  String::vSprint(sNameDic.a(),"<%s>",sNameFrame.a());
+  
   Dic* pOpDic = new Dic;
-  pOpDic->vName("<opDic>");
+  pOpDic->vName(sNameDic.a());
   pRegFrame->vOpDic(pOpDic);
 
   // push regFrame onto dstack

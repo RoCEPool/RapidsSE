@@ -34,7 +34,8 @@ queue: writeOp_Queue
   dup ( plan plan )
 
   plan.dic task.this task.dicStack dicPath.push ( plan )
-  plan.lambda@ >:
+  pathDump
+  plan.lambda@ dup . >:
   task.this task.dicStack dicPath.drop
 
   0 task.this task.plan!

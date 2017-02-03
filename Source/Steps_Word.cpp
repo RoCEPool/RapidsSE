@@ -149,16 +149,19 @@ void Task::vColon(NNP_Task nnpTask)
 {
   ENTRY("vColon");
   
+  s32 sName;
+  
   nnpTask->m_bCompiling = true;
   
   nnpTask->m_pTokeniser->vNextToken();
+  sName = nnpTask->m_pTokeniser->sToken();
   
   Dic* pDic;
   if (nnpTask->m_xPathStack.iCount())
     pDic = nnpTask->m_xPathStack.pTop();
   else
     pDic = gpMainDic;
-  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
+  Word* pNewWord = new(pDic) Word(sName.a());
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -325,7 +328,7 @@ ENTRY("vFind");
     THROW_INVALID_DSTACK("find");
  
   if (nnpTask->m_iTracing) {
-    i8 i = 0; i++;
+    i8 i = 0;
   }
   
   Word* pWord = nnpTask->m_xPathStack.pFindWord(sName.a());
