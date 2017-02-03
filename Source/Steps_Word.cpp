@@ -47,6 +47,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("find",            &vFind,             false);
   vAddPrimitive("findInCurrent",   &vFindInCurrent,    false);
   vAddPrimitive("forget",          &vForget,           false);
+  vAddPrimitive("##:",             &vHashHashColon,    true );
   vAddPrimitive("indirect",        &vIndirect,         true );
   vAddPrimitive("immediate",       &vImmediate,        true );
   vAddPrimitive("localCalls",      &vLocalCalls,       true );
@@ -342,6 +343,38 @@ ENTRY("vForget");
   bool bResult = nnpTask->m_xPathStack.bForget(nnpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* ##: -- encode paste of abstract colon defn into plan lambda text immediate */
+/*----------------------------------------------------------------------------*/
+void Task::vHashHashColon(NNP_Task nnpTask)
+{
+  ENTRY("vHashHashColon");
+  
+  s32 sSymbolicArg;
+  s32 sAbtractCode;
+  ValWsp xValWsp;
+
+  Word* pCurrWord = nnpTask->m_pCurrentWord;
+
+  // get the name of the symbolic argument
+  nnpTask->m_pTokeniser->vNextToken();
+  sSymbolicArg = nnpTask->m_pTokeniser->sToken();
+  
+  // form the abstract code string -- "dic? : <SymNm> %V ; "
+  sAbtractCode = "dic? : ";
+  String::vConcat(sAbtractCode.a(), sSymbolicArg.a());
+  String::vConcat(sAbtractCode.a()," %V ; ");
+  xValWsp = sAbtractCode.a();
+  
+  // encode what to execute at runtime      // runtime we synthesise by:
+  pCurrWord->vEncode("pushValue",&xValWsp); //   push the abs code string
+  pCurrWord->vEncode("str.format");         //   replace %V to yield concrete defn
+  pCurrWord->vEncode("swap");               //   dstack is ( codeStr plan )
+  pCurrWord->vEncode("plan.lambda+");       //   append to lambda text
+
   EXIT();
 }
 

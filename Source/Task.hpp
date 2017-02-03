@@ -1007,6 +1007,7 @@ namespace Tasks
     static void vFind(NNP_Task nnpTask);
     static void vFindInCurrent(NNP_Task nnpTask);
     static void vForget(NNP_Task nnpTask);
+    static void vHashHashColon(NNP_Task nnpTask);
     static void vIndirect(NNP_Task nnpTask);
     static void vImmediate(NNP_Task nnpTask);
     static void vLocalCalls(NNP_Task nnpTask);
