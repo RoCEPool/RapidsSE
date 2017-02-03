@@ -42,6 +42,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("compile,",        &vCompileComma,     false);
   vAddPrimitive("create",          &vCreate,           false);
   vAddPrimitive(">create",         &vCreateFrom,       false);
+  vAddPrimitive("dic?",            &vDicWhich,         false);
   vAddPrimitive("does>",           &vDoes,             true );
   vAddPrimitive("does_rt",         &vDoes_RT,          false);
   vAddPrimitive("find",            &vFind,             false);
@@ -246,6 +247,36 @@ ENTRY("vCreateFrom");
   Word* pNewWord = new(pDic) Word(sName.a());
   
   nnpTask->m_pCurrentWord = pNewWord;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* dic? -- test & push which sub dic a colon defn is to be compiled into      */
+/*----------------------------------------------------------------------------*/
+void Task::vDicWhich(NNP_Task nnpTask)
+{
+  ENTRY("vDicWhich");
+  
+  // get current plan
+  Plan* pPlan = nnpTask->m_pPlan;
+  if ( ! pPlan )
+    THROW("dic?: no current plan in task");
+  
+  // sub dic is either latest op dic (if there is one), or the plan dic
+  Dic* pSubDic;
+  if (pPlan->pRegFrameTop())
+    pSubDic = pPlan->pRegFrameTop()->pOpDic();
+  else
+    pSubDic = pPlan->pDic();
+  
+  // push the sub dic onto the path stack
+  nnpTask->m_xPathStack.vPush(pSubDic);
+  
+  // by incrementing m_nSubDic we are indicating to the ; word that
+  // there is another temporary sub dic on the path stack
+  // which needs to be discarded
+  nnpTask->m_nSubDic++;
   
   EXIT();
 }

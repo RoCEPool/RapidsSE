@@ -1002,6 +1002,7 @@ namespace Tasks
     static void vCompileComma(NNP_Task nnpTask);
     static void vCreate(NNP_Task nnpTask);
     static void vCreateFrom(NNP_Task nnpTask);
+    static void vDicWhich(NNP_Task nnpTask);
     static void vDoes(NNP_Task nnpTask);
     static void vDoes_RT(NNP_Task nnpTask);
     static void vFind(NNP_Task nnpTask);
