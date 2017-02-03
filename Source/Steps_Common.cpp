@@ -172,7 +172,7 @@ ENTRY("vCommonToCommon");
 }
 
 /*----------------------------------------------------------------------------*/
-/* opFrame.drop -- pop op frame                                               */
+/* opFrame.drop -- discard op frame, discard op dictionary                    */
 /*----------------------------------------------------------------------------*/
 void Task::vOpFrameDrop(NNP_Task nnpTask)
 {
@@ -181,17 +181,20 @@ void Task::vOpFrameDrop(NNP_Task nnpTask)
   RegFrame* pOpFrame = nnpTask->m_pOpFrame;
   
   if ( ! pOpFrame )
-  THROW_INVALID_DSTACK("opFrame.drop");
+    THROW_INVALID_DSTACK("opFrame.drop");
   
+  // discard op frame
   nnpTask->m_pOpFrame = nnpTask->m_pOpFrame->pNext();
-  
   //delete pCommonFrame;
   
+  // discard op dic
+  nnpTask->m_xPathStack.vDiscard();
+
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* opFrame.push -- push op frame                                              */
+/* opFrame.push -- push op frame, push op dictionary                          */
 /*----------------------------------------------------------------------------*/
 void Task::vOpFramePush(NNP_Task nnpTask)
 {
@@ -199,14 +202,17 @@ void Task::vOpFramePush(NNP_Task nnpTask)
   
   Object* pObjectRegFrame;
   if ( ! nnpTask->m_pDataStack->bPop(pObjectRegFrame) )
-  THROW_INVALID_DSTACK("opFrame.push");
+    THROW_INVALID_DSTACK("opFrame.push");
   
+  // push op frame
   RegFrame* pCommonFrame = _pRegFrame(pObjectRegFrame);
-  
   pCommonFrame->vNext(nnpTask->m_pOpFrame);
-  
   nnpTask->m_pOpFrame = pCommonFrame;
-  
+
+  // push op dictionary
+  Dic* pOpDic = pCommonFrame->pOpDic();
+  nnpTask->m_xPathStack.vPush(pOpDic);
+
   EXIT();
 }
 
