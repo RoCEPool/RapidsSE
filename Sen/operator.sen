@@ -29,11 +29,15 @@ queue: writeOp_Queue
 /*----------------------------------------------------------------------------*/
 : compilePlan ( plan -- )
 
+  dup task.this task.plan!
+
   dup ( plan plan )
 
   plan.dic task.this task.dicStack dicPath.push ( plan )
   plan.lambda@ >:
   task.this task.dicStack dicPath.drop
+
+  0 task.this task.plan!
 ;
 
 /*============================================================================*/

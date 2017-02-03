@@ -10,6 +10,8 @@
 : $$nextOp    indirect ;
 : $$partition indirect ;
 
+: $$ptn "$$ptn" find execute ;
+
 // : ◆nameTest   indirect ( plan -- ) ;
 
 /*============================================================================*/

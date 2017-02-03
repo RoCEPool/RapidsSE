@@ -228,12 +228,18 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   if ( pRegFrame )
-  THROW("plan.opFrame++: op frame %s already exists",sName.a());
+    THROW("plan.opFrame++: op frame %s already exists",sName.a());
 
   pRegFrame = new RegFrame;
   pRegFrame->vName(sName);
   pPlan->vRegFramePush(pRegFrame);
+  
+  // create a op dictionary
+  Dic* pOpDic = new Dic;
+  pOpDic->vName("<opDic>");
+  pRegFrame->vOpDic(pOpDic);
 
+  // push regFrame onto dstack
   nnpTask->m_pDataStack->vPush(pRegFrame);
  
   EXIT();

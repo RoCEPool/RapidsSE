@@ -19,6 +19,7 @@ traceon
   dexPlan tableNm $$tableNm##
   dexPlan fileNm  $$fileNm##
   dexPlan 0       $$partition##  // needs to go into opFrame dic
+  dexplan 0       ##: $$ptn
 traceoff
 
   // create the named op frames in plan

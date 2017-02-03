@@ -33,7 +33,11 @@ common/ scan rbCrs /
   $$tableNm@@ find execute rbCrs rbCursor.table!
 
   // begin scan of partition
-  $$partition@@ rbCrs rbCursor.begin
+  $$partition@@
+//traceon
+//  $$ptn
+//traceoff
+  rbCrs rbCursor.begin
 
 task.this task.dicStack dicPath.drop
 
