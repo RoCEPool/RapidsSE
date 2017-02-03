@@ -14,13 +14,17 @@
   // create a distributed export plan
   plan::new locals| dexPlan |
 
-  // synthesise the two symbolic arguments into the lambda text of plan
-  dexPlan tableNm $$tableNm##   // $$ $$TableNm
+  // synthesise the symbolic arguments into the lambda text of plan
+traceon
+  dexPlan tableNm $$tableNm##
   dexPlan fileNm  $$fileNm##
-  dexPlan 0       $$partition##
+  dexPlan 0       $$partition##  // needs to go into opFrame dic
+traceoff
 
   // create the named op frames in plan
   "scanOp#"  dexPlan plan.opFrame++ drop
+//  dexPlan 0  $$partition##  // needs to go into opFrame dic
+
   "writeOp#" dexPlan plan.opFrame++ drop
   "sinkOp#"  dexPlan plan.opFrame++ drop
 

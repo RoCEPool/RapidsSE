@@ -505,13 +505,13 @@ void Task::vSprint(s48K& sFormat, s48K& sString)
       m_pDataStack->bPop(sValue);
       
       if ('V' == *pf)
-      *ps++ = '"';
+        *ps++ = '"';
       
       for (char* pv = sValue.a(); *pv; )
       *ps++ = *pv++;
       
       if ('V' == *pf)
-      *ps++ = '"';
+        *ps++ = '"';
       
       pf++;
       

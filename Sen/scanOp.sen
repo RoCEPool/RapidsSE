@@ -27,13 +27,15 @@ common/ scan rbCrs /
   // create a new rowCursor
   rbCursor.new toCommon rbCrs
 
-  // set up table in rowCursor
   thePlan plan.dic task.this task.dicStack dicPath.push
-  thePlan $$tableNm@@ find execute rbCrs rbCursor.table!
-  task.this task.dicStack dicPath.drop
 
-  // begin scan of partition 0 (hardcoded for the moment)
-  0 rbCrs rbCursor.begin
+  // set up table in rowCursor
+  $$tableNm@@ find execute rbCrs rbCursor.table!
+
+  // begin scan of partition
+  $$partition@@ rbCrs rbCursor.begin
+
+task.this task.dicStack dicPath.drop
 
   // get first rowBuffer of partition
   rbCrs rbCursor.first
