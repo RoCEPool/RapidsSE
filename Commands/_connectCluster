@@ -2,6 +2,7 @@
 /* _connectCluster -- connect cluster                                         */
 /*============================================================================*/
 
+docol setStartNode
 docol connectorStart
 
 sleep 5
