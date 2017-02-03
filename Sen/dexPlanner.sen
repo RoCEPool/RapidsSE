@@ -15,8 +15,8 @@
   plan::new locals| dexPlan |
 
   // synthesise the two symbolic arguments into the lambda text of plan
-  dexPlan tableNm $$tableNm!!   // $$ $$TableNm
-  dexPlan fileNm  $$fileNm!!
+  dexPlan tableNm $$tableNm##   // $$ $$TableNm
+  dexPlan fileNm  $$fileNm##
 
   // create the named op frames in plan
   "scanOp#"  dexPlan plan.opFrame++ drop

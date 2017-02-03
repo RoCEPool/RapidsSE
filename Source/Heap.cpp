@@ -224,7 +224,7 @@ Object* Heap::pAllocObject(eCN eAllocClass)
   // check for free chunks in the heap and extend if none
   if (! m_pFreeHead ) {
     if (! bExtendHeap()) {
-      // we have run out of space!!
+      // error: we have run out of space
       vWarn("Heap::pAllocObject: unable to extend heap\n");
       m_zLock.vDropWrite();
       return nullptr;

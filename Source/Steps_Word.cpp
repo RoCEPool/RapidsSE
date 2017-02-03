@@ -702,7 +702,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     // encode the get
     s32 sName;
     sName = pCurrentWord->sName();
-    String::vConcat(sName.a(),"!!");
+    String::vConcat(sName.a(),"##");
     Word* pWordArgGet = new(pDic) Word(sName.a());
     
     s32 sFormat;
