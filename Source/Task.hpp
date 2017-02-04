@@ -215,6 +215,7 @@ namespace Tasks
     void vAddPrimitives_Node(void);
     void vAddPrimitives_NodeCursor(void);
     void vAddPrimitives_Object(void);
+    void vAddPrimitives_OpFrame(void);
     void vAddPrimitives_Plan(void);
     void vAddPrimitives_PlanList(void);
     void vAddPrimitives_Process(void);
@@ -616,6 +617,10 @@ namespace Tasks
     static void vObjectStore(NNP_Task nnpTask);
     static void vObjectWordBodySet(NNP_Task nnpTask);
     
+    // opFrame
+    static void vOpFrameDic(NNP_Task nnpTask);
+    static void vOpFrameName(NNP_Task nnpTask);
+  
     // plan
     static void vPlanCompile(NNP_Task nnpTask);
     static void vPlanDelete(NNP_Task nnpTask);

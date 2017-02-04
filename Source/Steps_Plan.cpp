@@ -54,7 +54,7 @@ void Task::vAddPrimitives_Plan(void)
 void Task::vPlanDelete(NNP_Task nnpTask)
 {
   ENTRY("vPlanDelete");
-
+  
   Object* pPtrPlan;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
@@ -122,7 +122,7 @@ void Task::vPlanLambdaFetch(NNP_Task nnpTask)
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
     THROW_INVALID_DSTACK("plan.lambda!");
-
+  
   Plan* pPlan = _pPlan(pPtrPlan);
   s48K sLambda = pPlan->sLambda();
   
@@ -205,7 +205,7 @@ void Task::vPlanNew(NNP_Task nnpTask)
   ENTRY("vPlanNew");
   
   Plan* pPlan = new Plan;
-    
+  
   nnpTask->m_pDataStack->vPush(pPlan);
   
   EXIT();
@@ -230,7 +230,7 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sNameFrame);
   if ( pRegFrame )
     THROW("plan.opFrame++: op frame %s already exists",sNameFrame.a());
-
+  
   pRegFrame = new RegFrame;
   pRegFrame->vName(sNameFrame);
   pPlan->vRegFramePush(pRegFrame);
@@ -242,10 +242,10 @@ void Task::vPlanOpFrameAdd(NNP_Task nnpTask)
   Dic* pOpDic = new Dic;
   pOpDic->vName(sNameDic.a());
   pRegFrame->vOpDic(pOpDic);
-
+  
   // push regFrame onto dstack
   nnpTask->m_pDataStack->vPush(pRegFrame);
- 
+  
   EXIT();
 }
 
@@ -258,12 +258,12 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
   
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
-  THROW_INVALID_DSTACK("plan.opFrame?");
+    THROW_INVALID_DSTACK("plan.opFrame?");
   Plan* pPlan = _pPlan(pPtrPlan);
   
   s32 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
-  THROW_INVALID_DSTACK("plan.opFrame?");
+    THROW_INVALID_DSTACK("plan.opFrame?");
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   

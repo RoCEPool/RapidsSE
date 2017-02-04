@@ -1,0 +1,87 @@
+/*============================================================================*/
+/* Steps_OpFrame.cpp - operator frame step group                              */
+/*============================================================================*/
+
+#include "StorageEngine.h"
+//#include "Tasks.h"
+#include "SePrompt.hpp"
+
+extern Arguments       gxArguments;
+
+extern AttachMap*      gpAttachMap;
+extern BufferPool*     gpBufferPool;
+extern Heap*           gpMediumHeap;
+extern BPA*            gpBPA;
+extern Dic*            gpMainDic;
+extern Word*           gpWord;
+
+extern Grid*           gpGrid;
+extern StepArray*      gpStepArray;
+extern ThreadList*     gpThreadList;
+extern TaskList*       gpTaskList;
+extern TxCollection*   gpTxCollection;
+
+extern NP_Task         gnpRootTask;
+extern StepBoard*      gpStepBoard;
+extern Lock            gxDdlLock;
+extern Lock            gxDicLock;
+extern SEitfList*      gpSEitfList;
+
+// opFrame: ////////////////////////////////////////////////////////////////////
+
+/*----------------------------------------------------------------------------*/
+/* add primitives                                                             */
+/*----------------------------------------------------------------------------*/
+void Task::vAddPrimitives_OpFrame(void)
+{
+  vAddPrimitive("opFrame.dic",       &vOpFrameDic,       false);
+  vAddPrimitive("opFrame.name",      &vOpFrameName,      false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* opFrame.dic -- push dic of given op frame ( opFrame -- opDic)              */
+/*----------------------------------------------------------------------------*/
+void Task::vOpFrameDic(NNP_Task nnpTask)
+{
+  ENTRY("vOpFrameDic");
+  
+  Object* pPtrOpFrame;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrOpFrame) )
+    THROW_INVALID_DSTACK("opFrame.dic");
+  
+  RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
+  
+  Dic* pOpDic = pOpFrame->pOpDic();
+  
+  nnpTask->m_pDataStack->vPush(pOpDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* opFrame.name -- get name of given op frame ( opFrame -- string )           */
+/*----------------------------------------------------------------------------*/
+void Task::vOpFrameName(NNP_Task nnpTask)
+{
+  ENTRY("vOpFrameName");
+  
+  Object* pPtrOpFrame;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrOpFrame) )
+    THROW_INVALID_DSTACK("opFrame.dic");
+  
+  RegFrame* pOpFrame = _pRegFrame(pPtrOpFrame);
+  
+  s32 sName;
+  sName = pOpFrame->sName();
+  
+  nnpTask->m_pDataStack->vPush(sName);
+  
+  EXIT();
+}
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

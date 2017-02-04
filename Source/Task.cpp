@@ -768,6 +768,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_Node();
   vAddPrimitives_NodeCursor();
   vAddPrimitives_Object();
+  vAddPrimitives_OpFrame();
   vAddPrimitives_Plan();
   vAddPrimitives_PlanList();
   vAddPrimitives_Process();
