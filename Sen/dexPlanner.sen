@@ -22,6 +22,8 @@ traceon
 //  dexplan 0       ##: $$ptn
 traceoff
 
+  dexPlan task.this task.plan!
+
   // create the named op frames in plan
   "scanOp#"  dexPlan plan.opFrame++ drop
     dexPlan 0  ##: $$ptn  // into opFrame dic

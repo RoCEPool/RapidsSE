@@ -44,6 +44,7 @@ void Task::vAddPrimitives_Plan(void)
   vAddPrimitive("plan::new",         &vPlanNew,          false);
   vAddPrimitive("plan.opFrame++",    &vPlanOpFrameAdd,   false);
   vAddPrimitive("plan.opFrame?",     &vPlanOpFrameFind,  false);
+  vAddPrimitive("plan.opFrame0",     &vPlanOpFrameTop,   false);
   vAddPrimitive("plan.show",         &vPlanShow,         false);
 }
 
@@ -265,6 +266,29 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
   THROW_INVALID_DSTACK("plan.opFrame?");
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
+  
+  nnpTask->m_pDataStack->vPush(pRegFrame);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.opFrame0 -- push top op frame in plan ( plan -- opFrame )             */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanOpFrameTop(NNP_Task nnpTask)
+{
+  ENTRY("vPlanOpFrameTop");
+  
+  Object* pPtrPlan;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.opFrame0");
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  s32 sName;
+  if ( ! nnpTask->m_pDataStack->bPop(sName) )
+    THROW_INVALID_DSTACK("plan.opFrame0");
+  
+  RegFrame* pRegFrame = pPlan->pRegFrameTop();
   
   nnpTask->m_pDataStack->vPush(pRegFrame);
   

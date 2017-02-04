@@ -628,6 +628,7 @@ namespace Tasks
     static void vPlanNameStore(NNP_Task nnpTask);
     static void vPlanOpFrameAdd(NNP_Task nnpTask);
     static void vPlanOpFrameFind(NNP_Task nnpTask);
+    static void vPlanOpFrameTop(NNP_Task nnpTask);
     static void vPlanShow(NNP_Task nnpTask);
     
     // plan list
