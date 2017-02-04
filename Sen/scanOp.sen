@@ -32,7 +32,11 @@ common/ scan rbCrs /
 //pathDump
 
   // set up table in rowCursor
-  $$tableNm@@ find execute rbCrs rbCursor.table!
+  //$$tableNm@@
+//traceon
+  $$tblNm
+//traceoff
+  find execute rbCrs rbCursor.table!
 
   // begin scan of partition
 //$$partition@@

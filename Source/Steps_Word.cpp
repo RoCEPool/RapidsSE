@@ -475,7 +475,9 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   ENTRY("vHashHashColon");
   
   ValWsp xWsp;
-  
+  Cell* pOpFrameJumpArg = nullptr;
+  Cell* pToColonJumpArg = nullptr;
+
   // get word currently being compiled
   Word* pW = nnpTask->m_pCurrentWord;
   
@@ -488,16 +490,33 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   
   // at runtime the dstack will be ( plan value )
   
-  xWsp = "opDic ";                // at runtime we synthesise by:
-  pW->vEncode("pushValue",&xWsp); //   push "opDic "
-  
+                                  // at runtime we synthesise by:
   pW->vEncode("task.this");       //   get runtime task
   pW->vEncode("task.plan@");      //   get its plan
   
   pW->vEncode("plan.opFrame0");   //   get top opframe of plan
+  pW->vEncode("dup");             //   dup
+  pW->vEncode("jumpTrue");        //   forward jump if we have an opFrame
+  pOpFrameJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
+  
+  // we dont have an opFrame, only a plan
+  pW->vEncode("drop");            //   drop the null opFrame pointer
+  xWsp = "planDic ";
+  pW->vEncode("pushValue",&xWsp); //   push "planDic "
+
+  pW->vEncode("jump");            //   forward jump to colon etc
+  pToColonJumpArg = (Cell*)pW->pAppend((Cell*)nullptr);
+
+  // we have an opFrame
+  pOpFrameJumpArg->m_pJumpTo = pW->pLastCell();
   
   pW->vEncode("opFrame.name");    //   get name of opframe
-  pW->vEncode("str.cat");         //   form "opDic <opDicNm>"
+  xWsp = "opDic ";
+  pW->vEncode("pushValue",&xWsp); //   push "opDic "
+  pW->vEncode("str.prepend");     //   form "opDic <opDicNm>"
+  
+  // we have an opFrame
+  pToColonJumpArg->m_pJumpTo = pW->pLastCell();
   
   xWsp = " : ";
   pW->vEncode("pushValue",&xWsp); //   push " : "
@@ -514,7 +533,9 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   pW->vEncode("str.format");      //   replace %V to yield concrete defn
   
   // at runtime this should produce a code text of the form:
-  // "opDic <opDicNm> : <symNm> <value> ; "
+  //      "planDic : <symNm> <value> ; "
+  //   or
+  //      "opDic <opDicNm> : <symNm> <value> ; "
   
   pW->vEncode("swap");               //   dstack is ( codeText plan )
   pW->vEncode("plan.lambda+");       //   append to lambda text

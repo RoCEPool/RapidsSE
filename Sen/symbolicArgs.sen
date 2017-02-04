@@ -11,6 +11,7 @@
 : $$partition indirect ;
 
 : $$ptn "$$ptn" find execute ;
+: $$tblNm "$$tblNm" find execute ;
 
 // : ◆nameTest   indirect ( plan -- ) ;
 
