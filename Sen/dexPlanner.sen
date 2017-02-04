@@ -21,7 +21,7 @@
 traceon
   dexPlan tableNm ##: $$tblNm
 traceoff
-  dexPlan fileNm  $$fileNm##
+//  dexPlan fileNm  $$fileNm##
   dexPlan 0       $$partition##  // needs to go into opFrame dic
 //  dexplan 0       ##: $$ptn
 
@@ -31,6 +31,8 @@ traceoff
     dexPlan 0  ##: $$ptn  // into opFrame dic
 
   "writeOp#" dexPlan plan.opFrame++ drop
+    dexPlan fileNm ##: $$filNm  // into opFrame dic
+
   "sinkOp#"  dexPlan plan.opFrame++ drop
 
   // add plan to plan list
