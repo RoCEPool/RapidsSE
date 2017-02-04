@@ -55,6 +55,7 @@ void Task::vAddPrimitives_Word(void)
   vAddPrimitive("locate",          &vLocate,           false);
   vAddPrimitive("oneParticipant",  &vOneParticipant,   true );
   vAddPrimitive("opDic",           &vOpDic,            true );
+  vAddPrimitive("planDic",         &vPlanDicTask,      true );
   vAddPrimitive("postpone",        &vPostpone,         true );
   vAddPrimitive("see",             &vSee,              false);
   vAddPrimitive(";",               &vSemicolon,        true );
@@ -414,6 +415,7 @@ void Task::vHashHashColon(NNP_Task nnpTask)
 }
 */
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
 void Task::vHashHashColon(NNP_Task nnpTask)
 {
   ENTRY("vHashHashColon");
@@ -466,6 +468,62 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   
   EXIT();
 }
+ */
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Task::vHashHashColon(NNP_Task nnpTask)
+{
+  ENTRY("vHashHashColon");
+  
+  ValWsp xWsp;
+  
+  // get word currently being compiled
+  Word* pW = nnpTask->m_pCurrentWord;
+  
+  // get the name of the symbolic argument
+  s32 sSymbolicArg;
+  nnpTask->m_pTokeniser->vNextToken();
+  sSymbolicArg = nnpTask->m_pTokeniser->sToken();
+  
+  // encode what to execute at runtime
+  
+  // at runtime the dstack will be ( plan value )
+  
+  xWsp = "opDic ";                // at runtime we synthesise by:
+  pW->vEncode("pushValue",&xWsp); //   push "opDic "
+  
+  pW->vEncode("task.this");       //   get runtime task
+  pW->vEncode("task.plan@");      //   get its plan
+  
+  pW->vEncode("plan.opFrame0");   //   get top opframe of plan
+  
+  pW->vEncode("opFrame.name");    //   get name of opframe
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm>"
+  
+  xWsp = " : ";
+  pW->vEncode("pushValue",&xWsp); //   push " : "
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : "
+  
+  xWsp = sSymbolicArg.a();
+  pW->vEncode("pushValue",&xWsp); //   push "<symNm>"
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm>"
+  
+  xWsp = " %V ; ";
+  pW->vEncode("pushValue",&xWsp); //   push " %V ; "
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm> %V ; "
+  
+  pW->vEncode("str.format");      //   replace %V to yield concrete defn
+  
+  // at runtime this should produce a code text of the form:
+  // "opDic <opDicNm> : <symNm> <value> ; "
+  
+  pW->vEncode("swap");               //   dstack is ( codeText plan )
+  pW->vEncode("plan.lambda+");       //   append to lambda text
+  
+  // at runtime the dstack will be ( )
+  
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* indirect -- create an indirect word                              immediate */
@@ -586,6 +644,22 @@ void Task::vOpDic(NNP_Task nnpTask)
   Dic* pOpDic = pOpFrame->pOpDic();
   
   nnpTask->m_xPathStack.vPush(pOpDic);
+  
+  nnpTask->m_nSubDic++;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* planDic -- push plan dictionary onto path stack                            */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanDicTask(NNP_Task nnpTask)
+{
+  ENTRY("vPlanDicTask");
+  
+  Dic* pPlanDic = nnpTask->m_pPlan->pDic();
+  
+  nnpTask->m_xPathStack.vPush(pPlanDic);
   
   nnpTask->m_nSubDic++;
   
