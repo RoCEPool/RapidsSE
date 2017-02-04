@@ -918,7 +918,7 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 {
-  //vTrace("pRapidsSE_GetNextRow: 0x%x\n", pSEitf);
+  //vTrace("pRapidsSE_GetNextRow(%lld:0x%x)\n", pSEitf->iPartition(), pSEitf);
   
   // pSEitf cannot be null
   if (pSEitf == nullptr) {
@@ -945,7 +945,6 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
   }
 
   i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
-  //vTrace("pRapidsSE_GetNextRow selCursor: 0x%x\n", iAddress);
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -971,7 +970,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
 
     return EC_NONE;
   }
-  
+  //vTrace("pRapidsSE_GetNextRow(%lld:0x%x) %s\n", pSEitf->iPartition(), pSEitf, *ppRow);
   // move cursor to next row
   pSelCursor->vNext();
   
@@ -1390,7 +1389,8 @@ eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance)
 /*----------------------------------------------------------------------------*/
 eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable)
 {
-  //vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s\n", pSEitf, pCatalog, pSchema, pTable);
+  //vTrace("pRapidsSE_ScanTable: 0x%x %s %s %s %lld\n",
+  //       pSEitf, pCatalog, pSchema, pTable, pSEitf->iPartition());
   
   eEC eResult;
   
@@ -1530,8 +1530,10 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
 
-  //vTrace("pSelCursor: 0x%x\n", pSelCursor);
-  pSelCursor->vBegin(pSEitf->iPartition());
+  //vTrace("pSEitf: 0x%x pSelCursor: 0x%x Slot: %lld\n", pSEitf, pSelCursor,
+  //       Partition::iPartitionToSlot(pSEitf->iPartition()));
+  
+  pSelCursor->vBegin(Partition::iPartitionToSlot(pSEitf->iPartition()));
   
   pSelCursor->vFirst();
 
@@ -1572,7 +1574,7 @@ bool RapidsSE_SEitfInvalid(int iError)
 eEC RapidsSE_SEitfNew(void* pAttachMap, void** ppSEitf, i8 iPartition)
 {
   //if (gxArguments.m_bVerbose)
-  //  vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
+    vTrace("RapidsSE_SEitfNew: Partition %lld\n", iPartition);
   
   SEitf* pSEitf = new SEitf(iPartition);
   pSEitf->vInit();
