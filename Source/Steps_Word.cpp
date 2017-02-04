@@ -513,24 +513,24 @@ void Task::vOneParticipant(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* opDic -- push op dictionary                                                */
+/* opDic -- search for named op frame and push op dictionary onto path stack  */
 /*----------------------------------------------------------------------------*/
 void Task::vOpDic(NNP_Task nnpTask)
 {
   ENTRY("vOpDic");
+
+  s32 sNameOpFrame;
   
   nnpTask->m_pTokeniser->vNextToken();
+  sNameOpFrame = nnpTask->m_pTokeniser->sToken();
   
-  s32 sNameSubDic;
-  sNameSubDic = nnpTask->m_pTokeniser->sToken();
+  RegFrame* pOpFrame = nnpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
+  if ( ! pOpFrame )
+    THROW("No such op frame: %s",sNameOpFrame.a());
   
-  Word* pWordSubDic = nnpTask->m_xPathStack.pFindWord(sNameSubDic);
-  if ( ! pWordSubDic )
-    THROW("No such opDic: %s",sNameSubDic.a());
+  Dic* pOpDic = pOpFrame->pOpDic();
   
-  Dic* pDic = _pDic(pWordSubDic->pDataArea());
-  
-  nnpTask->m_xPathStack.vPush(pDic);
+  nnpTask->m_xPathStack.vPush(pOpDic);
   
   nnpTask->m_nSubDic++;
   
