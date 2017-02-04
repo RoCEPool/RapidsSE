@@ -23,21 +23,21 @@ common/ scan rbCrs /
 
   // push the op frame for this scanOp
   profile thePlan plan.opFrame? opFrame.push
-  pathDump
+//pathDump
 
   // create a new rowCursor
   rbCursor.new toCommon rbCrs
 
   thePlan plan.dic task.this task.dicStack dicPath.push
-  pathDump
+//pathDump
 
   // set up table in rowCursor
   $$tableNm@@ find execute rbCrs rbCursor.table!
 
   // begin scan of partition
-  $$partition@@
+//$$partition@@
 //traceon
-//  $$ptn
+  $$ptn
 //traceoff
   rbCrs rbCursor.begin
 

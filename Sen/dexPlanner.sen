@@ -15,12 +15,10 @@
   plan::new locals| dexPlan |
 
   // synthesise the symbolic arguments into the lambda text of plan
-traceon
   dexPlan tableNm $$tableNm##
   dexPlan fileNm  $$fileNm##
   dexPlan 0       $$partition##  // needs to go into opFrame dic
 //  dexplan 0       ##: $$ptn
-traceoff
 
   dexPlan task.this task.plan!
 

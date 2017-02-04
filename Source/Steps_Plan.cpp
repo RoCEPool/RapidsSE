@@ -283,11 +283,7 @@ void Task::vPlanOpFrameTop(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
     THROW_INVALID_DSTACK("plan.opFrame0");
   Plan* pPlan = _pPlan(pPtrPlan);
-  
-  s32 sName;
-  if ( ! nnpTask->m_pDataStack->bPop(sName) )
-    THROW_INVALID_DSTACK("plan.opFrame0");
-  
+    
   RegFrame* pRegFrame = pPlan->pRegFrameTop();
   
   nnpTask->m_pDataStack->vPush(pRegFrame);

@@ -383,6 +383,7 @@ ENTRY("vForget");
 /*----------------------------------------------------------------------------*/
 /* ##: -- encode paste of abstract colon defn into plan lambda text immediate */
 /*----------------------------------------------------------------------------*/
+/*
 void Task::vHashHashColon(NNP_Task nnpTask)
 {
   ENTRY("vHashHashColon");
@@ -409,6 +410,60 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   pCurrWord->vEncode("swap");               //   dstack is ( codeStr plan )
   pCurrWord->vEncode("plan.lambda+");       //   append to lambda text
 
+  EXIT();
+}
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Task::vHashHashColon(NNP_Task nnpTask)
+{
+  ENTRY("vHashHashColon");
+  
+  ValWsp xWsp;
+  
+  // get word currently being compiled
+  Word* pW = nnpTask->m_pCurrentWord;
+ 
+  // get the name of the symbolic argument
+  s32 sSymbolicArg;
+  nnpTask->m_pTokeniser->vNextToken();
+  sSymbolicArg = nnpTask->m_pTokeniser->sToken();
+  
+  // encode what to execute at runtime
+
+  // at runtime the dstack will be ( plan value )
+  
+  xWsp = "opDic ";                // at runtime we synthesise by:
+  pW->vEncode("pushValue",&xWsp); //   push "opDic "
+  
+  pW->vEncode("task.this");       //   get runtime task
+  pW->vEncode("task.plan@");      //   get its plan
+  
+  pW->vEncode("plan.opFrame0");   //   get top opframe of plan
+  pW->vEncode("opFrame.name");    //   get name of opframe
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm>"
+  
+  xWsp = " : ";
+  pW->vEncode("pushValue",&xWsp); //   push " : "
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : "
+
+  xWsp = sSymbolicArg.a();
+  pW->vEncode("pushValue",&xWsp); //   push "<symNm>"
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm>"
+  
+  xWsp = " %V ; ";
+  pW->vEncode("pushValue",&xWsp); //   push " %V ; "
+  pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm> %V ; "
+  
+  pW->vEncode("str.format");      //   replace %V to yield concrete defn
+  
+  // at runtime this should produce a code text of the form:
+  // "opDic <opDicNm> : <symNm> <value> ; "
+  
+  pW->vEncode("swap");               //   dstack is ( codeText plan )
+  pW->vEncode("plan.lambda+");       //   append to lambda text
+ 
+  // at runtime the dstack will be ( )
+  
   EXIT();
 }
 
