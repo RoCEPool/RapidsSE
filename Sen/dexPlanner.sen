@@ -25,9 +25,11 @@
     "writeOp#"     dexPlan ##: $$nextProfile // frame-level
 
   "writeOp#" dexPlan plan.opFrame++ drop
-    fileNm         dexPlan ##: $$fileNm      // frame-level
-    "sinkOp.task"  dexPlan ##: $$nextOp      // frame-level
-    "sinkOp#"      dexPlan ##: $$nextProfile // frame-level
+    // frame-level symbolic arguments
+    fileNm         dexPlan ##: $$fileNm      // file to be exported to
+    1              dexPlan ##: $$nStreams    // number of streams in pipeline
+    "sinkOp.task"  dexPlan ##: $$nextOp      // pipe to next operator
+    "sinkOp#"      dexPlan ##: $$nextProfile // pipe to next profile
 
   "sinkOp#" dexPlan plan.opFrame++ drop
 

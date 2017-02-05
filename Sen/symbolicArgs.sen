@@ -7,6 +7,7 @@
 //: $$tableNm "$$tableNm" find execute ;
 
 symArg: $$fileNm  
+symArg: $$nStreams
 symArg: $$partition
 symArg: $$tableNm
 

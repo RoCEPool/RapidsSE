@@ -8,6 +8,7 @@
 /* plan common variables for write                                            */
 /*----------------------------------------------------------------------------*/
 common/ write filePointer /
+common/ write nStreams    /
 
 /*----------------------------------------------------------------------------*/
 /* open file for writing                                                      */
@@ -19,35 +20,34 @@ common/ write filePointer /
   locals| thePlan  |
 
   // open new file?
-  filePointer not if
-
-    // get file name
-    thePlan plan.dic task.this task.dicStack dicPath.push
-    $$fileNm dup .
-    task.this task.dicStack dicPath.drop
-
-    // create a file pointer
-    file.new toCommon filePointer
-
-    // set file path
-    filePointer file.path!
-
-    // open file for writing
-    OPEN_READ_WRITE_CREATE filePointer file.open
-    false == if
-      0 toCommon filePointer
-      filePointer file.delete EC_INVALID_FILE
-    else
-      ": writeOpenFile opened file" .
-      EC_NONE
-    then
-
-  else
+  filePointer if
     // nothing to do, file already open
     EC_NONE
-
+    exit
   then
 
+  // get file name
+  thePlan plan.dic task.this task.dicStack dicPath.push
+  $$fileNm dup .
+  task.this task.dicStack dicPath.drop
+
+  // create a file pointer
+  file.new toCommon filePointer
+
+  // set file path
+  filePointer file.path!
+
+  // open file for writing
+  OPEN_READ_WRITE_CREATE filePointer file.open
+  if
+    ": writeOpenFile opened file" .
+      
+    $$nStreams to nStreams
+    EC_NONE
+  else
+    0 toCommon filePointer
+    filePointer file.delete EC_INVALID_FILE
+  then
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +66,7 @@ common/ write filePointer /
 /*----------------------------------------------------------------------------*/
 /* sink plan                                                                  */
 /*----------------------------------------------------------------------------*/
-: writePipeSink ( <<job>> -- )
+: writePipeSink subDic write ( <<job>> -- )
 
   ": writePipeSink" .
 
@@ -93,63 +93,66 @@ common/ write filePointer /
     filePointer file.write
     rowCrs rowCursor.next
   repeat
+;
 
+/*----------------------------------------------------------------------------*/
+/* write contents of row buffer to file                                       */
+/*----------------------------------------------------------------------------*/
+: writeRb subDic write
+
+  // record the plan and profile
+  locals| thePlan profile |
+
+  // push the op frame for this writeOp
+  profile thePlan plan.opFrame? opFrame.push
+
+  // open the file
+  thePlan writeOpenFile ( plan [ rowBuffer ] )
+
+  // did we manage to open the file ?
+  dup EC_NONE != if ( [ rowBuffer ] EC )
+
+    // got an error
+    error.msg .
+    if ( [ rowBuffer ] )
+      drop
+    else
+      thePlan writePipeSink
+    then
+
+  else
+
+    drop ( [ rowBuffer ] )
+
+    // write or close file & sink plan?
+    if ( [ rowBuffer ] )
+      writeToFile
+    else
+      writeCloseFile
+      << $$nextProfile thePlan >> writePipeSink
+    then
+
+  then
+
+  opFrame.drop
 ;
 
 /*----------------------------------------------------------------------------*/
 /* file write                                                                 */
 /*----------------------------------------------------------------------------*/
-: writeOp operator subDic write ( -- NEVER )
-
-  ": writeOp" .
-
-  0 0 locals| thePlan profile |
+: writeOp operator ( -- NEVER )
 
   begin
 
-    // get next job
+    // wait for next job
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( [ rowBuffer ] flag profile plan nValues )
-    drop    ( [ rowBuffer ] flag profile plan )
+    valset> ( profile plan nValues )
+    drop ( profile plan )
 
-    // save the plan and profile
-    to thePlan ( rowBuffer flag profile )
-    to profile ( rowBuffer flag )
-
-    // push the op frame for this writeOp
-    profile thePlan plan.opFrame? opFrame.push
-
-    // open the file
-    thePlan writeOpenFile ( plan [ rowBuffer ] )
-
-    // did we manage to open the file ?
-    dup EC_NONE != if ( [ rowBuffer ] EC )
-
-      // got an error
-      error.msg .
-      if ( [ rowBuffer ] )
-        drop
-      else
-        thePlan writePipeSink
-      then
-
-    else
-
-      drop ( [ rowBuffer ] )
-
-      // write or close file & sink plan?
-      if ( [ rowBuffer ] )
-        writeToFile
-      else
-        writeCloseFile
-        << $$nextProfile thePlan >> writePipeSink
-      then
-
-    then
-
-    opFrame.drop
+    // write row buffer to file
+    writeRb ( )
 
   again
 ;
