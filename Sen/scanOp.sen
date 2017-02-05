@@ -5,7 +5,7 @@
 "scanOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* plan opFrame variables for scan                                            */
+/* frame-level variables for scan                                             */
 /*----------------------------------------------------------------------------*/
 common/ scan rbCrs /
 
@@ -17,19 +17,21 @@ common/ scan rbCrs /
   // record the plan and profile
   locals| thePlan profile |
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
 
-  // push thePlan's dictionary onto path stack
+  // [0] push thePlan's dictionary onto path stack
   thePlan plan.dic pathPush
 
-  // push the opFrame for this scanOp (and its dictionary onto path stack)
-  profile thePlan plan.opFrame? opFrame.push
+  // [1] find and push opFrame (along with its dictionary onto path stack)
+  profile thePlan plan.opFrame? opFrame.push // [1]
   //pathDump
 
-  // create a new rowCursor and record in opFrame.rbCrs
+  // [2] create a new rowCursor and record in opFrame.rbCrs
   rbCursor.new toCommon rbCrs
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set up table in rowCursor
   $$tableNm find execute rbCrs rbCursor.table!
 
@@ -43,8 +45,8 @@ common/ scan rbCrs /
   begin while
 
     // << rb true profile plan >>
-    << rbCrs rbCursor.get true "writeOp#" thePlan >>
-    "writeOp.task" find execute >jobqueue
+    << rbCrs rbCursor.get true $$nextProfile thePlan >>
+    $$$nextOp find execute >jobqueue
 
     // next rowBuffer in partition
     rbCrs rbCursor.next
@@ -54,20 +56,20 @@ common/ scan rbCrs /
   // end cursored iteration
   rbCrs rbCursor.end
 
-  // delete cursor
+  // pipe EOD to writeOp
+  // << false plan >>
+  << false $$nextProfile thePlan >>
+  $$$nextOp find execute >jobqueue
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // [2] delete cursor
   rbCrs rbCursor.delete
   0 toCommon rbCrs
 
-  // pipe EOD to writeOp
-
-  // << false plan >>
-  << false "writeOp#" thePlan >>
-  "writeOp.task" find execute >jobqueue
-
-  // discard this op's reg frame
+  // [1] discard opFrame (and dictionary)
   opFrame.drop
 
-  // discard thePlan's dictionary from path stack
+  // [0] discard thePlan's dictionary from path stack
   pathDrop
 ;
 

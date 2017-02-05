@@ -10,8 +10,8 @@ symArg: $$fileNm
 symArg: $$partition
 symArg: $$tableNm
 
-symArg: $$nextQueue
-symArg: $$nextOp
+symArg: $$$nextOp
+symArg: $$nextProfile
 
 /*============================================================================*/
 /* end                                                                        */

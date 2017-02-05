@@ -18,9 +18,11 @@
   tableNm dexPlan ##: $$tableNm
   // nb: the above could have been a frame level, but left it as an example
 
-  // create the named op frames in plan and any fame-level symbolic arguments
+  // create the named opFrames in plan and any fame-level symbolic arguments
   "scanOp#"  dexPlan plan.opFrame++ drop
-    0 dexPlan ##: $$partition  // frame-level
+    0              dexPlan ##: $$partition   // frame-level
+    "writeOp.task" dexPlan ##: $$$nextOp     // frame-level
+    "writeOp#"     dexPlan ##: $$nextProfile // frame-level
 
   "writeOp#" dexPlan plan.opFrame++ drop
     fileNm dexPlan ##: $$fileNm  // frame-level
