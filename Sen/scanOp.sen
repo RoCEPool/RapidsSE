@@ -5,7 +5,7 @@
 "scanOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* plan common variables for scan                                             */
+/* plan opFrame variables for scan                                            */
 /*----------------------------------------------------------------------------*/
 common/ scan rbCrs /
 
@@ -14,30 +14,27 @@ common/ scan rbCrs /
 /*----------------------------------------------------------------------------*/
 : scanPartition subDic scan ( profile plan -- )
 
-  // record the plan
+  // record the plan and profile
   locals| thePlan profile |
-
 
   // set path (hardcoded for the moment)
   "tables" "tpchSchema" "schemas" "rapidsse" "catalogs" "boray" "tenants" 7 dicPath.set
 
-  // push the op frame for this scanOp
+  // push thePlan's dictionary onto path stack
+  thePlan plan.dic pathPush
+
+  // push the opFrame for this scanOp (and its dictionary onto path stack)
   profile thePlan plan.opFrame? opFrame.push
-//pathDump
+  //pathDump
 
-  // create a new rowCursor
+  // create a new rowCursor and record in opFrame.rbCrs
   rbCursor.new toCommon rbCrs
-
-  thePlan plan.dic task.this task.dicStack dicPath.push
-//pathDump
 
   // set up table in rowCursor
   $$tableNm find execute rbCrs rbCursor.table!
 
   // begin scan of partition
   $$partition rbCrs rbCursor.begin
-
-task.this task.dicStack dicPath.drop
 
   // get first rowBuffer of partition
   rbCrs rbCursor.first
@@ -69,6 +66,9 @@ task.this task.dicStack dicPath.drop
 
   // discard this op's reg frame
   opFrame.drop
+
+  // discard thePlan's dictionary from path stack
+  pathDrop
 ;
 
 /*----------------------------------------------------------------------------*/
