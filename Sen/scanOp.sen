@@ -46,7 +46,7 @@ common/ scan rbCrs /
 
     // << rb true profile plan >>
     << rbCrs rbCursor.get true $$nextProfile thePlan >>
-    $$$nextOp find execute >jobqueue
+    $$nextOp find execute >jobqueue
 
     // next rowBuffer in partition
     rbCrs rbCursor.next
@@ -59,7 +59,7 @@ common/ scan rbCrs /
   // pipe EOD to writeOp
   // << false plan >>
   << false $$nextProfile thePlan >>
-  $$$nextOp find execute >jobqueue
+  $$nextOp find execute >jobqueue
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [2] delete cursor

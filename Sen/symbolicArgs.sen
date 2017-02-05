@@ -10,7 +10,7 @@ symArg: $$fileNm
 symArg: $$partition
 symArg: $$tableNm
 
-symArg: $$$nextOp
+symArg: $$nextOp
 symArg: $$nextProfile
 
 /*============================================================================*/

@@ -21,11 +21,13 @@
   // create the named opFrames in plan and any fame-level symbolic arguments
   "scanOp#"  dexPlan plan.opFrame++ drop
     0              dexPlan ##: $$partition   // frame-level
-    "writeOp.task" dexPlan ##: $$$nextOp     // frame-level
+    "writeOp.task" dexPlan ##: $$nextOp      // frame-level
     "writeOp#"     dexPlan ##: $$nextProfile // frame-level
 
   "writeOp#" dexPlan plan.opFrame++ drop
-    fileNm dexPlan ##: $$fileNm  // frame-level
+    fileNm         dexPlan ##: $$fileNm      // frame-level
+    "sinkOp.task"  dexPlan ##: $$nextOp      // frame-level
+    "sinkOp#"      dexPlan ##: $$nextProfile // frame-level
 
   "sinkOp#" dexPlan plan.opFrame++ drop
 

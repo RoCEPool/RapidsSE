@@ -70,7 +70,7 @@ common/ write filePointer /
 
   ": writePipeSink" .
 
-  "sinkOp.task" find execute >jobqueue
+  $$nextOp find execute >jobqueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -144,7 +144,7 @@ common/ write filePointer /
         writeToFile
       else
         writeCloseFile
-        << profile thePlan >> writePipeSink
+        << $$nextProfile thePlan >> writePipeSink
       then
 
     then
