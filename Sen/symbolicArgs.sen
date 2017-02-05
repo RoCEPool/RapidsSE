@@ -4,14 +4,14 @@
 
 "symbolicArgs.sen" .verbose
 
-: $$ptn   "$$ptn"   find execute ;
-: $$tblNm "$$tblNm" find execute ;
-: $$filNm "$$filNm" find execute ;
+//: $$tblNm "$$tblNm" find execute ;
 
-: $$nextQueue " $$nextQueue" find execute ;
-: $$nextOp    "$$nextOp"     find execute ;
+symArg: $$filNm  
+symArg: $$ptn
+symArg: $$tblNm
 
-// : ◆nameTest   indirect ( plan -- ) ;
+symArg: $$nextQueue
+symArg: $$nextOp
 
 /*============================================================================*/
 /* end                                                                        */

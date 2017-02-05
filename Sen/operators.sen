@@ -4,9 +4,9 @@
 
 "operators.sen" .verbose
 
-"symbolicArgs.sen" include
-
 "operator.sen" include
+
+"symbolicArgs.sen" include
 
 "aggregateOp.sen" include
 "deciderOp.sen" include

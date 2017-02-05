@@ -890,64 +890,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     
     pWordTilde->vEncode("exit");
   }
-  
-  // generate code for indirect word
-  if (pCurrentWord->bIndirect()) {
     
-    s32 sArgName;
-    sArgName = "arg$";
-    String::vConcat(sArgName.a(),pCurrentWord->sName().a());
-    
-    // create new word for arg of current word
-    Dic* pDic;
-    if (nnpTask->m_xPathStack.iCount())
-      pDic = nnpTask->m_xPathStack.pTop();
-    else
-      pDic = gpMainDic;
-    
-    Word* pWordArg = new(pDic) Word(sArgName.a());
-    // ** do not set as current word **
-    
-    // encode the argument word
-    ValWsp xValWsp;
-    xValWsp = sArgName.a();
-    pWordArg->vEncode("pushValue",&xValWsp);
-    pWordArg->vEncode("find");
-    pWordArg->vEncode("execute");
-    pWordArg->vEncode("exit");
-    
-    // encode the get
-    s32 sName;
-    sName = pCurrentWord->sName();
-    String::vConcat(sName.a(),"##");
-    Word* pWordArgGet = new(pDic) Word(sName.a());
-    // ** do not set as current word **
-    
-    s32 sFormat;
-    sFormat = ": ";
-    String::vConcat(sFormat.a(), sArgName.a());
-    String::vConcat(sFormat.a()," %V ; ");
-    xValWsp = sFormat.a();
-    pWordArgGet->vEncode("pushValue",&xValWsp);
-    pWordArgGet->vEncode("str.format");
-    pWordArgGet->vEncode("swap");
-    pWordArgGet->vEncode("plan.lambda+");
-    pWordArgGet->vEncode("exit");
-    
-    // encode the set
-    sName = pCurrentWord->sName();
-    String::vConcat(sName.a(),"@@");
-    Word* pWordArgSet = new(pDic) Word(sName.a());
-    // ** do not set as current word **
-    
-    TaskStep* ppCalledEntryStep = pWordArg->ppEntryStep();
-    pWordArgSet->vEncode(ppCalledEntryStep);
-//    pWordArgSet->vEncode("find");
-//    pWordArgSet->vEncode("execute");
-    pWordArgSet->vEncode("exit");
-    
-  }
-  
   // discard subDic use
   for ( ; nnpTask->m_nSubDic; nnpTask->m_nSubDic--)
     nnpTask->m_xPathStack.vDiscard();
