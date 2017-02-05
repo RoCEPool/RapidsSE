@@ -4,11 +4,11 @@
 
 "symbolicArgs.sen" .verbose
 
-//: $$tblNm "$$tblNm" find execute ;
+//: $$tableNm "$$tableNm" find execute ;
 
-symArg: $$filNm  
-symArg: $$ptn
-symArg: $$tblNm
+symArg: $$fileNm  
+symArg: $$partition
+symArg: $$tableNm
 
 symArg: $$nextQueue
 symArg: $$nextOp

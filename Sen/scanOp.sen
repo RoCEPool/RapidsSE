@@ -32,10 +32,10 @@ common/ scan rbCrs /
 //pathDump
 
   // set up table in rowCursor
-  $$tblNm find execute rbCrs rbCursor.table!
+  $$tableNm find execute rbCrs rbCursor.table!
 
   // begin scan of partition
-  $$ptn rbCrs rbCursor.begin
+  $$partition rbCrs rbCursor.begin
 
 task.this task.dicStack dicPath.drop
 

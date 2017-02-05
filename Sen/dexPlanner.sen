@@ -17,14 +17,14 @@
   dexPlan task.this task.plan!
 
   // synthesise the symbolic arguments into the lambda text of plan
-  dexPlan tableNm ##: $$tblNm
+  dexPlan tableNm ##: $$tableNm
 
   // create the named op frames in plan
   "scanOp#"  dexPlan plan.opFrame++ drop
-    dexPlan 0  ##: $$ptn  // into opFrame dic
+    dexPlan 0  ##: $$partition  // into opFrame dic
 
   "writeOp#" dexPlan plan.opFrame++ drop
-    dexPlan fileNm ##: $$filNm  // into opFrame dic
+    dexPlan fileNm ##: $$fileNm  // into opFrame dic
 
   "sinkOp#"  dexPlan plan.opFrame++ drop
 

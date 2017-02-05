@@ -23,7 +23,7 @@ common/ write filePointer /
 
     // get file name
     thePlan plan.dic task.this task.dicStack dicPath.push
-    $$filNm dup .
+    $$fileNm dup .
     task.this task.dicStack dicPath.drop
 
     // create a file pointer
