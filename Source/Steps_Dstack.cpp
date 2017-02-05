@@ -402,7 +402,7 @@ void Task::vDstackRollInv(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rot -- rotate top 3 values (rotate C to top) ( C B A -- B A C )            */
+/* rot -- rotate top 3 values clockwise (rotate C to top) ( C B A -- B A C )  */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRot(NNP_Task nnpTask)
 {
@@ -423,7 +423,7 @@ void Task::vDstackRot(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* -rot -- inv rotate top 3 values (rotate A to bottom) ( C B A -- A C B )    */
+/* -rot -- rotate top 3 values anticlockwise (A to bottom) ( C B A -- A C B ) */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackRotInv(NNP_Task nnpTask)
 {

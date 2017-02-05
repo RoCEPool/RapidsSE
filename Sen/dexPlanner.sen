@@ -14,21 +14,18 @@
   // create a distributed export plan
   plan::new locals| dexPlan |
 
-  // set the plan in this task
-  dexPlan task.this task.plan!
-
   // synthesise any plan-level symbolic arguments into the lambda text of plan
-  dexPlan tableNm ##: $$tableNm
+  tableNm dexPlan ##: $$tableNm
   // nb: the above could have been a frame level, but left it as an example
 
-  // create the named op frames in plan
+  // create the named op frames in plan and any fame-level symbolic arguments
   "scanOp#"  dexPlan plan.opFrame++ drop
-    dexPlan 0  ##: $$partition  // frame-level
+    0 dexPlan ##: $$partition  // frame-level
 
   "writeOp#" dexPlan plan.opFrame++ drop
-    dexPlan fileNm ##: $$fileNm  // frame-level
+    fileNm dexPlan ##: $$fileNm  // frame-level
 
-  "sinkOp#"  dexPlan plan.opFrame++ drop
+  "sinkOp#" dexPlan plan.opFrame++ drop
 
   // add plan to plan list
   dexPlan planList::addPlan
