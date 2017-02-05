@@ -112,6 +112,7 @@ ENTRY("vCommonSlash");
     if (pWordDic) {
       // use that dictionary
       pSubDic = _pDic(pWordDic->pDataArea());
+      nnpTask->m_nVariables = pSubDic->nWords();
     }
     else {
       // create a common dictionary      
@@ -120,6 +121,7 @@ ENTRY("vCommonSlash");
       pWordDic->pAllot(sizeof(Dic));
       
       pSubDic = new((Dic*)pWordDic->pDataArea()) Dic;
+      nnpTask->m_nVariables = 0;
     }
     
     // get name of common variable
@@ -142,6 +144,9 @@ ENTRY("vCommonSlash");
     
     // accept /
     nnpTask->m_pTokeniser->vNextToken();
+  
+    nnpTask->m_nVariables = 0;
+
 //  }
   
   EXIT();

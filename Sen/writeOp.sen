@@ -19,6 +19,8 @@ common/ write nStreams    /
 
   locals| thePlan  |
 
+  stk
+
   // open new file?
   filePointer if
     // nothing to do, file already open
@@ -42,7 +44,8 @@ common/ write nStreams    /
   if
     ": writeOpenFile opened file" .
       
-    $$nStreams to nStreams
+    $$nStreams toCommon nStreams
+    nStreams .
     EC_NONE
   else
     0 toCommon filePointer
@@ -53,14 +56,25 @@ common/ write nStreams    /
 /*----------------------------------------------------------------------------*/
 /* close file for writing                                                     */
 /*----------------------------------------------------------------------------*/
-: writeCloseFile subDic write ( -- )
+: writeCloseFile subDic write ( -- true )
 
   ": writeCloseFile" .
+  nStreams 1- toCommon nStreams
+  nStreams .
+
+  nStreams
+  if
+    "not closing" .
+    false
+    exit
+  then
 
   filePointer file.close
   filePointer file.delete
 
   0 toCommon filePointer
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +143,9 @@ common/ write nStreams    /
       writeToFile
     else
       writeCloseFile
-      << $$nextProfile thePlan >> writePipeSink
+      if
+        << $$nextProfile thePlan >> writePipeSink
+      then
     then
 
   then
