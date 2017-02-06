@@ -13,6 +13,7 @@ TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.1.4.so
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
+SOURCES += $(wildcard MUNGE/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 #S_SOURCES = $(wildcard *.s)
 
