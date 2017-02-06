@@ -256,6 +256,7 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
 {
   ENTRY("vPlanOpFrameFind");
   
+  
   Object* pPtrPlan;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
     THROW_INVALID_DSTACK("plan.opFrame?");
@@ -264,6 +265,11 @@ void Task::vPlanOpFrameFind(NNP_Task nnpTask)
   s32 sName;
   if ( ! nnpTask->m_pDataStack->bPop(sName) )
     THROW_INVALID_DSTACK("plan.opFrame?");
+  
+  if (nnpTask->m_iTracing) {
+    vTrace("Find frame %s\n",sName.a());
+    i8 i = 0;
+  }
   
   RegFrame* pRegFrame = pPlan->pRegFrameFind(sName);
   

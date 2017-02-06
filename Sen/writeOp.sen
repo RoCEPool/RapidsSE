@@ -19,8 +19,6 @@ common/ write nStreams    /
 
   locals| thePlan  |
 
-  stk
-
   // open new file?
   filePointer if
     // nothing to do, file already open
@@ -69,6 +67,7 @@ common/ write nStreams    /
     exit
   then
 
+  "closing" .
   filePointer file.close
   filePointer file.delete
 

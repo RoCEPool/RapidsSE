@@ -21,8 +21,10 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // trigger scanOp by piping the plan to it
-  << "scanOp#" dexPlan >>
-  "scanOp.task" find execute >jobQueue
+  args.partitions 0 do
+    << I "scanOp#%v" str.format dexPlan >>
+    "scanOp.task" find execute >jobQueue
+  loop
 ;
 
 /*============================================================================*/

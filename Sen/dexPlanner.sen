@@ -19,17 +19,20 @@
   // nb: the above could have been a frame level, but left it as an example
 
   // create the named opFrames in plan and any fame-level symbolic arguments
-  "scanOp#"  dexPlan plan.opFrame++ drop
-    0              dexPlan ##: $$partition   // frame-level
-    "writeOp.task" dexPlan ##: $$nextOp      // frame-level
-    "writeOp#"     dexPlan ##: $$nextProfile // frame-level
+  args.partitions 0 do
+    // frame-level symbolic arguments for scanOp#I
+    I "scanOp#%v" str.format dexPlan plan.opFrame++ drop
+      I              dexPlan ##: $$partition   // partition
+      "writeOp.task" dexPlan ##: $$nextOp      // next op is writeOp
+      "writeOp#"     dexPlan ##: $$nextProfile // next profile is writeOp#
+  loop
 
   "writeOp#" dexPlan plan.opFrame++ drop
     // frame-level symbolic arguments
-    fileNm         dexPlan ##: $$fileNm      // file to be exported to
-    1              dexPlan ##: $$nStreams    // number of streams in pipeline
-    "sinkOp.task"  dexPlan ##: $$nextOp      // pipe to next operator
-    "sinkOp#"      dexPlan ##: $$nextProfile // pipe to next profile
+    fileNm          dexPlan ##: $$fileNm      // file to be exported to
+    args.partitions dexPlan ##: $$nStreams    // number of streams in pipeline
+    "sinkOp.task"   dexPlan ##: $$nextOp      // pipe to next operator
+    "sinkOp#"       dexPlan ##: $$nextProfile // pipe to next profile
 
   "sinkOp#" dexPlan plan.opFrame++ drop
 
