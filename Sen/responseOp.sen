@@ -1,0 +1,60 @@
+/*============================================================================*/
+/* responseOp.sen -- response operator                                        */
+/*============================================================================*/
+
+"responseOp.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* sink plan                                                                  */
+/*----------------------------------------------------------------------------*/
+: responsePipeSink ( <<profile plan>> -- )
+
+  ": responsePipeSink" .
+
+  $$nextOp find execute >jobqueue
+;
+
+/*----------------------------------------------------------------------------*/
+/* respond                                                                    */
+/*----------------------------------------------------------------------------*/
+: respond ( )
+
+  // record the plan and profile
+  locals| thePlan profile |
+
+  // push the op frame for this writeOp
+  profile thePlan plan.opFrame? opFrame.push
+
+  "DONE" .
+
+  << $$nextProfile thePlan >> responsePipeSink
+
+  opFrame.drop
+;
+
+/*----------------------------------------------------------------------------*/
+/* response                                                                   */
+/*----------------------------------------------------------------------------*/
+: responseOp operator ( -- NEVER )
+
+  ": responseOp" .
+
+  begin
+
+    // wait for next job
+    jobQueue> ( valset )
+
+    // unpack it
+    valset> ( profile plan nValues )
+    drop ( profile plan )
+
+    // respond to seitf
+    respond ( )
+
+  again
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -24,6 +24,7 @@
 "rangeOp.sen" include
 "readOp.sen" include
 "recvOp.sen" include
+"responseOp.sen" include
 "scanOp.sen" include
 "sendOp.sen" include
 "sinkOp.sen" include
@@ -39,9 +40,10 @@
 
   "createOpActors" .
 
-  0 "scanOp"  dup :actor actor.spawn
-  0 "sinkOp"  dup :actor actor.spawn
-  0 "writeOp" dup :actor actor.spawn
+  0 "responseOp" dup :actor actor.spawn
+  0 "scanOp"     dup :actor actor.spawn
+  0 "sinkOp"     dup :actor actor.spawn
+  0 "writeOp"    dup :actor actor.spawn
 ;
 
 ////////////////////////////////////////////////////////////////////////////////
