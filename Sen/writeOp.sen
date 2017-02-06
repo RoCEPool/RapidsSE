@@ -5,7 +5,7 @@
 "writeOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* plan common variables for write                                            */
+/* frame common variables for write                                           */
 /*----------------------------------------------------------------------------*/
 common/ write filePointer /
 common/ write nStreams    /
