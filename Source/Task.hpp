@@ -494,14 +494,16 @@ namespace Tasks
     static void vGridFindNode(NNP_Task nnpTask);
     static void vGridInit(NNP_Task nnpTask);
     static void vGridNode(NNP_Task nnpTask);
-    static void vGridThisNodeStore(NNP_Task nnpTask);
-    static void vGridThisNodeFetch(NNP_Task nnpTask);
-    static void vGridThisNodeNameFetch(NNP_Task nnpTask);
     static void vGridStartedStore(NNP_Task nnpTask);
     static void vGridStartedFetch(NNP_Task nnpTask);
     static void vGridStartNodeStore(NNP_Task nnpTask);
     static void vGridStartNodeFetch(NNP_Task nnpTask);
-    
+    static void vGridThisNodeStore(NNP_Task nnpTask);
+    static void vGridThisNodeFetch(NNP_Task nnpTask);
+    static void vGridThisNodeNameFetch(NNP_Task nnpTask);
+    static void vGridToNode(NNP_Task nnpTask);
+    static void vGridToPartition(NNP_Task nnpTask);
+  
     // input
     static void vInputAccept(NNP_Task nnpTask);
     static void vInputClose(NNP_Task nnpTask);

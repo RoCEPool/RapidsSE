@@ -34,17 +34,19 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Grid(void)
 {
-  vAddPrimitive("grid.appendNodes",   &vGridAppendNodes,  false);
-  vAddPrimitive("grid.find",          &vGridFindNode,     false);
-  vAddPrimitive("grid.init",          &vGridInit,         false);
-  vAddPrimitive("grid.node",          &vGridNode,         false);
-  vAddPrimitive("grid.thisNode!",     &vGridThisNodeStore,false);
-  vAddPrimitive("grid.thisNode@",     &vGridThisNodeFetch,false);
-  vAddPrimitive("grid.thisNodeName@", &vGridThisNodeNameFetch,false);
-  vAddPrimitive("grid.started!",      &vGridStartedStore, false);
-  vAddPrimitive("grid.started@",      &vGridStartedFetch, false);
-  vAddPrimitive("grid.startNode!",    &vGridStartNodeStore, false);
-  vAddPrimitive("grid.startNode@",    &vGridStartNodeFetch, false);
+  vAddPrimitive("grid.appendNodes",   &vGridAppendNodes,       false);
+  vAddPrimitive("grid.find",          &vGridFindNode,          false);
+  vAddPrimitive("grid.init",          &vGridInit,              false);
+  vAddPrimitive("grid.node",          &vGridNode,              false);
+  vAddPrimitive("grid.started!",      &vGridStartedStore,      false);
+  vAddPrimitive("grid.started@",      &vGridStartedFetch,      false);
+  vAddPrimitive("grid.startNode!",    &vGridStartNodeStore,    false);
+  vAddPrimitive("grid.startNode@",    &vGridStartNodeFetch,    false);
+  vAddPrimitive("grid.thisNode!",     &vGridThisNodeStore,     false);
+  vAddPrimitive("grid.thisNode@",     &vGridThisNodeFetch,     false);
+  vAddPrimitive("grid.thisNodeName@", &vGridThisNodeNameFetch, false);
+  vAddPrimitive("grid::toNode",       &vGridToNode,            false);
+  vAddPrimitive("grid::toPartition",  &vGridToPartition,       false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,6 +226,39 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
   ENTRY("vGridGetStarted");
   
   nnpTask->m_pDataStack->vPush(gpGrid->bHasStarted());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::toNode -- convert partition id to node no                            */
+/*----------------------------------------------------------------------------*/
+void Task::vGridToNode(NNP_Task nnpTask)
+{
+  ENTRY("vGridToPartition");
+  
+  i8 iNodeNo;
+  if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
+    THROW_INVALID_DSTACK("grid::toNode");
+  
+  // for the moment its always node 0                      //! DISCUSS WITH ALKA
+  nnpTask->m_pDataStack->vPush((i8)0);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::toPartition -- convert partition id to partition no                  */
+/*----------------------------------------------------------------------------*/
+void Task::vGridToPartition(NNP_Task nnpTask)
+{
+  ENTRY("vGridToPartition");
+  
+  i8 iPartitionId;
+  if ( ! nnpTask->m_pDataStack->bPop(iPartitionId) )
+    THROW_INVALID_DSTACK("grid::toPartition");
+  
+  nnpTask->m_pDataStack->vPush(iPartitionId);              //! DISCUSS WITH ALKA
   
   EXIT();
 }
