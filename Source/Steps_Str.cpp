@@ -50,6 +50,7 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("str.replace",  &vStrReplace,    false);
   vAddPrimitive("str.right",    &vStrRight,      false);
   vAddPrimitive("str.sub",      &vStrSub,        false);
+  vAddPrimitive("str.tailInt",  &vStrTailInt,    false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -456,6 +457,45 @@ void Task::vStrSub(NNP_Task nnpTask)
   String::vCopyLen(sSubStr.a(),pStart,iLength);
   
   nnpTask->m_pDataStack->vPush(sSubStr);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* tailInt -- extract (possible) int at end of string                         */
+/*----------------------------------------------------------------------------*/
+void Task::vStrTailInt(NNP_Task nnpTask)
+{
+  ENTRY("vStrTailInt");
+  
+  // get the string
+  s48K sString;
+  if ( ! nnpTask->m_pDataStack->bPop(sString) )
+    THROW_INVALID_DSTACK("str.tailInt");
+  
+  // get last char in string
+  char* aLast = String::sLast(sString.a());
+  
+  // return false if not a digit
+  if ( ! String::bIsDigit(*aLast) ) {
+    nnpTask->m_pDataStack->vPush((i8)0);
+    return;
+  }
+  
+  // move backward to start of digit sequence
+  char* aDigit = aLast;
+  while (String::bIsDigit(*aDigit))
+    aDigit--;
+  aDigit++;
+  
+  // step forward through each digit, computing int
+  i8 iInt = 0;
+  while (String::bIsDigit(*aDigit))
+    iInt = (iInt * 10) + (*aDigit++ - '0');
+  
+  // return ( int true )
+  nnpTask->m_pDataStack->vPush(iInt);
+  nnpTask->m_pDataStack->vPush((i8)1);
   
   EXIT();
 }

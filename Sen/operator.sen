@@ -46,12 +46,24 @@
   // << false profile plan op.task
 
   // record the op.task
-  locals| op.task |
+  locals| op.task | ( << [ rb true | false ] profile plan )
 
-  // collapse values into one valset
-  >>
-
-  op.task find execute >jobqueue
+  // the profile contains partition information
+  over "Profile: " .put .put
+  over str.tailInt
+  if
+    " partition " .put .put .\n
+    // collapse values into one valset
+    >>
+    // find and put onto jobqueue
+    op.task find execute >jobqueue
+  else
+    " originating " .put .\n
+    // collapse values into one valset
+    >>
+    // find and put onto jobqueue
+    op.task find execute >jobqueue
+  then
 ;
 
 /*----------------------------------------------------------------------------*/

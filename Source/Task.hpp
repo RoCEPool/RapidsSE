@@ -831,6 +831,7 @@ namespace Tasks
     static void vStrReplace(NNP_Task nnpTask);
     static void vStrRight(NNP_Task nnpTask);
     static void vStrSub(NNP_Task nnpTask);
+    static void vStrTailInt(NNP_Task nnpTask);
 
     static void vS256Init(NNP_Task nnpTask);
     

@@ -73,7 +73,7 @@ namespace Common
     static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);
    
-    static const char* sLast(const char* s);
+    static char* sLast(const char* s);
     static i8    iLength(const char* s);
     static i8    iLength(const char* s, const char cTerm, i8 iMax);
     

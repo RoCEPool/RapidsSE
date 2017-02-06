@@ -929,13 +929,13 @@ bool String::bIsWhite(const char c)
 /*----------------------------------------------------------------------------*/
 /* sLast: return pointer to last char in s                                    */
 /*----------------------------------------------------------------------------*/
-const char* String::sLast(const char* s)
+char* String::sLast(const char* s)
 {
   i8 nLen  = iLength(s);
   
   const char* z = s + nLen - 1;
   
-  return z;
+  return (char*)z;
 }
 
 /*----------------------------------------------------------------------------*/
