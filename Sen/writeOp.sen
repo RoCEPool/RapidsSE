@@ -15,8 +15,6 @@ common/ write nStreams    /
 /*----------------------------------------------------------------------------*/
 : writeOpenFile subDic write ( plan -- )
 
-  ": writeOpenFile" .
-
   locals| thePlan  |
 
   // open new file?
@@ -56,22 +54,24 @@ common/ write nStreams    /
 /*----------------------------------------------------------------------------*/
 : writeCloseFile subDic write ( -- true )
 
-  ": writeCloseFile" .
   nStreams 1- toCommon nStreams
-  nStreams .
+
+  ": writeCloseFile " .put
+  nStreams .put
+  " streams still open" .put .\n
 
   nStreams
   if
-    "not closing" .
     false
     exit
   then
 
-  "closing" .
   filePointer file.close
   filePointer file.delete
 
   0 toCommon filePointer
+
+  ": writeCloseFile closed file" .
 
   true
 ;
@@ -80,8 +80,6 @@ common/ write nStreams    /
 /* write row buffer to file                                                   */
 /*----------------------------------------------------------------------------*/
 : writeToFile subDic write ( rowBuffer -- )
-
-  ": writeToFile" .
 
   // declare rowCrs variable
   rowCursor.new locals| rowCrs |
