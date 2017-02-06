@@ -77,18 +77,6 @@ common/ write nStreams    /
 ;
 
 /*----------------------------------------------------------------------------*/
-/* sink plan                                                                  */
-/*----------------------------------------------------------------------------*/
-/*
-: writePipeSink subDic write ( <<job>> -- )
-
-  ": writePipeSink" .
-
-  $$nextOp find execute >jobqueue
-;
-*/
-
-/*----------------------------------------------------------------------------*/
 /* write row buffer to file                                                   */
 /*----------------------------------------------------------------------------*/
 : writeToFile subDic write ( rowBuffer -- )
@@ -146,8 +134,7 @@ common/ write nStreams    /
     else
       writeCloseFile
       if
-        // << $$nextProfile thePlan >> writePipeSink
-        // $$nextOp find execute >jobqueue
+        // << $$nextProfile thePlan >> -->> $$nextOp
         << $$nextProfile thePlan $$nextOp >>jobqueue
       then
     then

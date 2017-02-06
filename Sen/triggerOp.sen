@@ -14,8 +14,7 @@
 
   // trigger scanOp by piping the plan to it
   args.partitions 0 do
-    // << I "scanOp#%v" str.format thePlan >>
-    // "scanOp.task" find execute >jobQueue
+    // << profile plan >> -->> nextOp
     << I "scanOp#%v" str.format thePlan "scanOp.task" >>jobQueue
   loop
 ;

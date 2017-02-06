@@ -4,19 +4,6 @@
 
 "responseOp.sen" .verbose
 
-
-/*----------------------------------------------------------------------------*/
-/* sink plan                                                                  */
-/*----------------------------------------------------------------------------*/
-/*
-: responsePipeSink ( <<profile plan>> -- )
-
-  ": responsePipeSink" .
-
-  $$nextOp find execute >jobqueue
-;
-*/
-
 /*----------------------------------------------------------------------------*/
 /* respond                                                                    */
 /*----------------------------------------------------------------------------*/
@@ -30,8 +17,7 @@
 
   "DONE" .
 
-  // << $$nextProfile thePlan >> responsePipeSink
-  // $$nextOp find execute >jobqueue
+  // << profile plan >> -->> nextOp
   << $$nextProfile thePlan $$nextOp >>jobqueue
 
   opFrame.drop

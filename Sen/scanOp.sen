@@ -44,9 +44,7 @@ common/ scan rbCrs /
   // pipe all rb's of partition
   begin while
 
-    // << rb true profile plan >>
-    // << rbCrs rbCursor.get true $$nextProfile thePlan >>
-    // $$nextOp find execute >jobqueue
+    // << rb true profile plan profile >> -->> nextOp
     << rbCrs rbCursor.get true $$nextProfile thePlan $$nextOp >>jobQueue
 
     // next rowBuffer in partition
@@ -58,9 +56,7 @@ common/ scan rbCrs /
   rbCrs rbCursor.end
 
   // pipe EOD to writeOp
-  // << false plan >>
-//<< false $$nextProfile thePlan >> 
-//$$nextOp find execute >jobqueue
+  // << false plan >> -->> nextOp
   << false $$nextProfile thePlan $$nextOp >>jobQueue
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
