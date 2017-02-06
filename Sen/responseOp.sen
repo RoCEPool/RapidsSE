@@ -8,12 +8,14 @@
 /*----------------------------------------------------------------------------*/
 /* sink plan                                                                  */
 /*----------------------------------------------------------------------------*/
+/*
 : responsePipeSink ( <<profile plan>> -- )
 
   ": responsePipeSink" .
 
   $$nextOp find execute >jobqueue
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* respond                                                                    */
@@ -28,7 +30,9 @@
 
   "DONE" .
 
-  << $$nextProfile thePlan >> responsePipeSink
+  // << $$nextProfile thePlan >> responsePipeSink
+  // $$nextOp find execute >jobqueue
+  << $$nextProfile thePlan $$nextOp >>jobqueue
 
   opFrame.drop
 ;

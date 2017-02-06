@@ -39,6 +39,22 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* network aware pipe                                                         */
+/*----------------------------------------------------------------------------*/
+: >>jobQueue ( << [ rb true | false ] profile plan op.task -- )
+
+  // << false profile plan op.task
+
+  // record the op.task
+  locals| op.task |
+
+  // collapse values into one valset
+  >>
+
+  op.task find execute >jobqueue
+;
+
+/*----------------------------------------------------------------------------*/
 /* the op queues                                                              */
 /*----------------------------------------------------------------------------*/
 queue: scanOp_Queue
@@ -71,8 +87,10 @@ queue: writeOp_Queue
   locals| thePlan profile |
 
   // trigger triggerOp by piping the plan to it
-  << "triggerOp" thePlan >>
-  "triggerOp.task" find execute >jobQueue
+  //<< "triggerOp" thePlan >>
+  //"triggerOp.task" find execute >jobQueue
+
+  << "triggerOp" thePlan "triggerOp.task" >>jobQueue
 ;
 
 /*============================================================================*/
