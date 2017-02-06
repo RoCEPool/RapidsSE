@@ -18,6 +18,8 @@
   tableNm dexPlan ##: $$tableNm
   // nb: the above could have been a frame level, but left it as an example
 
+  "triggerOp" str.format dexPlan plan.opFrame++ drop
+
   // create the named opFrames in plan and any fame-level symbolic arguments
   args.partitions 0 do
     // frame-level symbolic arguments for scanOp#I

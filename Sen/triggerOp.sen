@@ -2,13 +2,42 @@
 /* triggerOp.sen -- flow trigger operator                                     */
 /*============================================================================*/
 
-"nextOp.sen" .verbose
+"triggerOp.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* trigger                                                                    */
+/*----------------------------------------------------------------------------*/
+: trigger ( )
+
+  // record the plan and profile
+  locals| thePlan profile |
+
+  // trigger scanOp by piping the plan to it
+  args.partitions 0 do
+    << I "scanOp#%v" str.format thePlan >>
+    "scanOp.task" find execute >jobQueue
+  loop
+;
 
 /*----------------------------------------------------------------------------*/
 /* flow trigger operator                                                      */
 /*----------------------------------------------------------------------------*/
-: triggerOp operator
+: triggerOp operator ( -- NEVER )
 
+": triggerOp" .
+
+  begin
+
+    // wait for next job
+    jobQueue> ( valset )
+
+    // unpack it
+    valset> ( profile plan nValues )
+    drop ( profile plan )
+
+    trigger
+
+  again
 ;
 
 /*============================================================================*/

@@ -62,6 +62,19 @@ queue: writeOp_Queue
   0 task.this task.plan!
 ;
 
+/*----------------------------------------------------------------------------*/
+/* execute the plan                                                           */
+/*----------------------------------------------------------------------------*/
+: executePlan ( plan -- )
+
+  // record the plan and profile
+  locals| thePlan profile |
+
+  // trigger triggerOp by piping the plan to it
+  << "triggerOp" thePlan >>
+  "triggerOp.task" find execute >jobQueue
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
