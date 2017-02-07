@@ -39,6 +39,7 @@ Partition::Partition(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
+  m_iPartitionId = -1;
   m_zLock.vCheckInit();
   m_iRowStrands = 0;
   m_pHeadStrand = nullptr;
@@ -182,6 +183,22 @@ RowStrand* Partition::pHeadStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   return m_pHeadStrand;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get this partitions partitionId                                            */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iPartitionId(void)
+{
+  return m_iPartitionId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set this partitions partitionId                                            */
+/*----------------------------------------------------------------------------*/
+void Partition::vPartitionId(i8 iPartitionId)
+{
+  m_iPartitionId = iPartitionId;
 }
 
 /*----------------------------------------------------------------------------*/

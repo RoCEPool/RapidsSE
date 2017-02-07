@@ -38,6 +38,14 @@ Slots::Slots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
+  // initialize the partitionId's in the slots
+  for (i8 iSlot = 0; iSlot < gxArguments.m_nPartitions; iSlot++) {
+    
+    i8 iPartition = Partition::iSlotToPartition(iSlot);
+    m_xPartition[iSlot].vPartitionId(iPartition);
+    
+  }
+  
   _checkInitialised_(CN_SLOTS);
 }
 
@@ -52,13 +60,13 @@ Slots::~Slots(void)
 /*----------------------------------------------------------------------------*/
 /* get partition                                                              */
 /*----------------------------------------------------------------------------*/
-Partition* Slots::pPartition(i8 iPartition)
+Partition* Slots::pPartition(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   
   //vTrace("Partition %lld\n",iPartition);
   
-  return &m_xPartition[iPartition];
+  return &m_xPartition[iSlot];
 }
 
 /*----------------------------------------------------------------------------*/

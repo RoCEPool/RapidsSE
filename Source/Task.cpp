@@ -450,7 +450,6 @@ void Task::vAddConstants(void)
   
   /* 40 */ vAddConstant("CN_PARSER",       CN_PARSER);
   /* 41 */ vAddConstant("CN_PARTITION",    CN_PARTITION);
-  /* 42 */ vAddConstant("CN_PARTITIONS",   CN_PARTITIONS);
   /*    */ vAddConstant("CN_PLAN",         CN_PLAN);
   /*    */ vAddConstant("CN_PLANLIST",     CN_PLANLIST);
   /* 43 */ vAddConstant("CN_PROXY",        CN_PROXY);
@@ -480,6 +479,7 @@ void Task::vAddConstants(void)
   /* 62 */ vAddConstant("CN_SKIPCURSOR",   CN_SKIPCURSOR);
   /* 63 */ vAddConstant("CN_SKIPLIST",     CN_SKIPLIST);
   /* 64 */ vAddConstant("CN_SKIPNODE",     CN_SKIPNODE);
+  /*    */ vAddConstant("CN_SLOTS",        CN_SLOTS);
   /* 65 */ vAddConstant("CN_SMALLHEAP",    CN_SMALLHEAP);
   /* 66 */ vAddConstant("CN_SOCKET",       CN_SOCKET);
   /* 67 */ vAddConstant("CN_STACK",        CN_STACK);
@@ -608,8 +608,7 @@ void Task::vAddConstants(void)
   /* 27 */ vAddConstant("SIZEOF_NODECURSOR",   sizeof(NodeCursor));
   /* 28 */ vAddConstant("SIZEOF_PARSER",       sizeof(Parser));
   /* 29 */ vAddConstant("SIZEOF_PARTITION",    sizeof(Partition));
-  /* 30 */ vAddConstant("SIZEOF_PARTITIONS",   sizeof(Partitions));
-  /* 31 */ vAddConstant("SIZEOF_PROXY",        sizeof(Proxy));
+  /*    */ vAddConstant("SIZEOF_PROXY",        sizeof(Proxy));
   /* 32 */ vAddConstant("SIZEOF_PROXYSET",     sizeof(ProxySet));
   /* 33 */ vAddConstant("SIZEOF_QUEUE",        sizeof(Queue));
   /* 34 */ vAddConstant("SIZEOF_QUEUEBUFFER",  sizeof(QueueBuffer));
@@ -631,6 +630,7 @@ void Task::vAddConstants(void)
   /* 48 */ vAddConstant("SIZEOF_SKIPCURSOR",   sizeof(SkipCursor));
   /* 49 */ vAddConstant("SIZEOF_SKIPLIST",     sizeof(SkipList));
   /* 50 */ vAddConstant("SIZEOF_SKIPNODE",     sizeof(SkipNode));
+  /*    */ vAddConstant("SIZEOF_SLOTS",        sizeof(Slots));
   /* 51 */ vAddConstant("SIZEOF_SMALLHEAP",    sizeof(Heap));
   /* 52 */ vAddConstant("SIZEOF_SOCKET",       sizeof(Socket));
   /* 53 */ vAddConstant("SIZEOF_STACK",        sizeof(Stack));

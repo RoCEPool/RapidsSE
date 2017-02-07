@@ -11,10 +11,11 @@ namespace DBobjects
   class Partition : public Object
   {
   private:
-    Lock       m_zLock;        // lock covers all buffers
-    i8         m_iRowStrands;  // number of row strands
-    RowStrand* m_pHeadStrand;  // first strand in list
-    RowStrand* m_pTailStrand;  // last strand in list
+    i8         m_iPartitionId;   // partition number
+    Lock       m_zLock;          // lock covers all buffers
+    i8         m_iRowStrands;    // number of row strands
+    RowStrand* m_pHeadStrand;    // first strand in list
+    RowStrand* m_pTailStrand;    // last strand in list
     
     // must be last
     Footer m_xFooter;
@@ -35,6 +36,8 @@ namespace DBobjects
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
     RowStrand* pHeadStrand(void);
+    i8         iPartitionId(void);
+    void       vPartitionId(i8 iPartitionId);
     RowStrand* pTailStrand(void);
     
     void vTruncate(void);

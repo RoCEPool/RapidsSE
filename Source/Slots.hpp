@@ -26,7 +26,7 @@ namespace DBobjects
     Slots(void);
     ~Slots(void);
     
-    Partition* pPartition(i8 iPartition);
+    Partition* pPartition(i8 iSlot);
     
     void vTruncate(void);
     
