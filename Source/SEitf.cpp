@@ -9,6 +9,7 @@ extern Heap*      gpMediumHeap;
 extern Dic*       gpMainDic;
 extern SEitfList* gpSEitfList;
 extern AttachMap* gpAttachMap;
+extern Grid*      gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -67,7 +68,7 @@ SEitf::SEitf(i8 iPartition)
   // pid
   m_iPid = Process::iGetPid();
 
-  m_iSlots = gpAttachMap->m_iSlots;
+  m_iSlots = gpGrid->iSlots();
   m_iPartition  = iPartition;
   
   //m_xPathStack;

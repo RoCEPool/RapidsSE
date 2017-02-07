@@ -78,6 +78,7 @@ void Grid::vInit(void)
   m_pThisNode   = nullptr;
   m_iStartNode  = -1;
   m_bHasStarted = false;
+  m_iSlots      = gxArguments.m_nSlots;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,16 +112,6 @@ bool Grid::bHasStarted(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   return m_bHasStarted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of nodes in the grid                                            */
-/*----------------------------------------------------------------------------*/
-i8 Grid::iNodes(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
-  
-  return m_iNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -167,6 +158,26 @@ Node* Grid::pFindNode(i8 iNodeNo)
   pNodeCursor->vEnd();
   
   return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes in the grid                                            */
+/*----------------------------------------------------------------------------*/
+i8 Grid::iNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_iNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of partition slots per node in the grid                         */
+/*----------------------------------------------------------------------------*/
+i8 Grid::iSlots(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_iSlots;
 }
 
 /*----------------------------------------------------------------------------*/

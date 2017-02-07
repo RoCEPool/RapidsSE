@@ -4,9 +4,10 @@
 
 #include "Api.hpp"
 
-extern Arguments gxArguments;
+extern Arguments   gxArguments;
 extern BufferPool* gpBufferPool;
-extern AttachMap* gpAttachMap;
+extern AttachMap*  gpAttachMap;
+extern Grid*       gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* add a column to a table                                                    */
@@ -1008,7 +1009,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
     return EC_NULLPTR;
   }
 
-  *ppCount = &gpAttachMap->m_iSlots;
+  *ppCount = &gpGrid->m_iSlots;
   *ppPartitions = &gpAttachMap->m_iPartition;
   
   return EC_NONE;
