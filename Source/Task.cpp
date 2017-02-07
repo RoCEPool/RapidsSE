@@ -362,7 +362,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.config",      gxArguments.m_bConfig);
   vAddConstant("args.munged",      gxArguments.m_bMunged);
   
-  vAddConstant("args.nodes",       gxArguments.m_nNodes);
+  //vAddConstant("grid.nodes",       gxArguments.m_nNodes);
   vAddConstant("args.partitions",  gxArguments.m_nPartitions);
   vAddConstant("args.progress",    gxArguments.m_bProgress);
   vAddConstant("args.regionPrefix",gxArguments.m_sRegionPrefix.a());

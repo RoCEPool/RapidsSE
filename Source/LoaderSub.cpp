@@ -7,6 +7,7 @@
 #include "StorageEngine.h"
 
 extern Arguments gxArguments;
+extern Grid*     gpGrid;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -218,7 +219,7 @@ void LoaderSub::vHashRecord(void)
   // modulo to get partition number
   //m_iPartition = m_iHash % gxArguments.m_nPartitions;
   
-  m_iPartition = m_iHash % (gxArguments.m_nPartitions * gxArguments.m_nNodes);
+  m_iPartition = m_iHash % (gxArguments.m_nPartitions * gpGrid->iNodes());
   
   //vTrace("Partition: %lld\n",m_iPartition);
 }

@@ -5,9 +5,9 @@
 #include "StorageEngine.h"
 #include "DBobjects.h"
 
-extern Arguments       gxArguments;
-extern Grid*           gpGrid;
-extern AttachMap*      gpAttachMap;
+extern Arguments    gxArguments;
+extern Grid*        gpGrid;
+extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
@@ -80,7 +80,7 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iPartitionToNode(i8 iPartition)
 {
-  i8 iNode = iPartition % gpAttachMap->m_iNodes;
+  i8 iNode = iPartition % gpGrid->iNodes();
 
   return iNode;
 }
@@ -90,7 +90,7 @@ i8 Partition::iPartitionToNode(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iPartitionToSlot(i8 iPartition)
 {
-  i8 iSlot = iPartition / gpAttachMap->m_iNodes;
+  i8 iSlot = iPartition / gpGrid->iNodes();
   
   return iSlot;
 }
@@ -100,7 +100,7 @@ i8 Partition::iPartitionToSlot(i8 iPartition)
 /*----------------------------------------------------------------------------*/
 i8 Partition::iSlotToPartition(i8 iSlot)
 {
-  i8 iPartition = (iSlot * gpAttachMap->m_iNodes) + gpGrid->iThisNode();
+  i8 iPartition = (iSlot * gpGrid->iNodes()) + gpGrid->iThisNode();
   
   return iPartition;
 }

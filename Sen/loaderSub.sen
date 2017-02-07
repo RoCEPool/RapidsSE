@@ -178,7 +178,7 @@ tp: bufferFull
   locals| totalPartitions |
 
   // calculate total partitions in teh cluster
-  args.partitions args.nodes *
+  args.partitions grid.nodes *
   to totalPartitions
 
   // check for dangling buffers

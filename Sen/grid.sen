@@ -168,7 +168,7 @@ grid: grid.this
 
 //0 node.new grid.append
 
-//args.nodes 0 do
+//grid.nodes 0 do
 //  I node.new grid.appendNode
 //loop
 

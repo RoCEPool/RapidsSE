@@ -28,7 +28,7 @@ tp: connectorStart
 
   connectorTaskPrint if "Connector running..." . then
 
-  args.nodes 0 do
+  grid.nodes 0 do
 
     I grid.thisNode@ == if
 

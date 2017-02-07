@@ -52,7 +52,7 @@
 /*----------------------------------------------------------------------------*/
 : sendParticipantsPARALLEL // parallel form
 
-  args.nodes setAcks
+  grid.nodes setAcks
 
 tp: acksExpected
 
@@ -60,7 +60,7 @@ tp: acksExpected
 
   >r
 
-  args.nodes 0 do
+  grid.nodes 0 do
 
     2 rpick
 
@@ -122,7 +122,7 @@ tp: sendParticipants
 tp: movedToRstack
 
   // now send nested valset to each participant
-  args.nodes 0 do
+  grid.nodes 0 do
 
     // set ack of 1 (because its the serial form)
     1 setAcks
@@ -157,7 +157,7 @@ tp: running
 tp: <<
 
   // now scan resultset from each participant
-  args.nodes 0 do
+  grid.nodes 0 do
 
     // move from aux to data stack 
     a>
@@ -179,7 +179,7 @@ tp: <<
 
   loop
 
-  args.nodes
+  grid.nodes
 
   finalResult
 

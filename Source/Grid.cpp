@@ -4,7 +4,10 @@
 
 #include "GridModel.h"
 
+#include "AttachMap.hpp"
+
 extern Grid* gpGrid;
+extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -70,9 +73,10 @@ void Grid::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_iThisNode = -1;
-  m_pThisNode = nullptr;
-  m_iStartNode = -1;
+  m_iNodes      = gxArguments.m_nNodes;
+  m_iThisNode   = -1;
+  m_pThisNode   = nullptr;
+  m_iStartNode  = -1;
   m_bHasStarted = false;
 }
 
@@ -99,7 +103,6 @@ void Grid::vHasStarted(bool bHasStarted)
   m_bHasStarted = bHasStarted;
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get grid started                                                           */
 /*----------------------------------------------------------------------------*/
@@ -108,6 +111,16 @@ bool Grid::bHasStarted(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
   return m_bHasStarted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of nodes in the grid                                            */
+/*----------------------------------------------------------------------------*/
+i8 Grid::iNodes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  return m_iNodes;
 }
 
 /*----------------------------------------------------------------------------*/

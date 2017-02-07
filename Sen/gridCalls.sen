@@ -17,7 +17,7 @@
 
   */
 
-  args.nodes 0 do
+  grid.nodes 0 do
 
     //
     // participant for node I
@@ -108,7 +108,7 @@ tp: resumedbyCoord
   tp: >>oneParticipant>
 
   // check if grid has been started if number of nodes > 1
-  args.nodes 1 > if
+  grid.nodes 1 > if
     grid.started@ true != if
       "GRID NOT STARTED ..." . false
     then
@@ -149,7 +149,7 @@ tp: resumedbyCoord
 tp: >>allParticipants>
 
    // check if grid has been started if number of nodes > 1
-   args.nodes 1 > if
+   grid.nodes 1 > if
      grid.started@ true != if
        drop ( ) // drop the valsetr
        EC_CLUSTER_NOT_STARTED <FAILURE_RESULT> 1 false exit
