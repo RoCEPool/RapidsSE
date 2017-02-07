@@ -39,6 +39,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* unpack job and enque on operator queue                                     */
+/*----------------------------------------------------------------------------*/
+: enqueOnOp ( <<job>> taskNm -- true )
+
+  locals| op.task | ( <<job>> )
+
+  valset> ( << ..job.. >> )
+
+  // find task and put job onto its jobQueue
+  op.task find execute >jobQueue
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* add call to enque job on operator queue                                    */
+/*----------------------------------------------------------------------------*/
+: addEnqueOnOp ( valset taskNm -- valset )
+
+  "enqueOnOp" ( valset taskNm "enqueOnOp" )
+
+  tp: addingEnqueOnOp
+
+  >> ( valset )
+;
+
+/*----------------------------------------------------------------------------*/
 /* pipe to job queue on same node                                             */
 /*----------------------------------------------------------------------------*/
 : >>jobQueue_sameNode ( << [ rb true | false ] profile plan op.task -- )
@@ -51,7 +78,7 @@
 
   // find and put onto jobqueue
 
-  op.task find execute >jobqueue
+  op.task find execute >jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -67,7 +94,7 @@
 
   // find and put onto jobqueue
 
-  op.task find execute >jobqueue
+  op.task find execute >jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
