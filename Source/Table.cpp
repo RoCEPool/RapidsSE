@@ -65,7 +65,7 @@ Table::Table(void)
   
   //m_xDictionary
   //m_xRing
-  //m_xPartitions
+  //m_xSlots
   
   m_zRefCount.vCheckInit();
   
@@ -232,7 +232,7 @@ void Table::vTruncate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  m_xPartitions.vTruncate();
+  m_xSlots.vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -248,11 +248,11 @@ char* Table::pTableName(void)
 /*----------------------------------------------------------------------------*/
 /* get a partition                                                            */
 /*----------------------------------------------------------------------------*/
-Partition* Table::pPartition(i8 iPartition)
+Partition* Table::pPartition(i8 iSlot)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  Partition* pPart = m_xPartitions.pPartition(iPartition);
+  Partition* pPart = m_xSlots.pPartition(iSlot);
   
   return pPart;
 }

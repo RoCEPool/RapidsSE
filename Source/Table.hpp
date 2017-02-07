@@ -27,8 +27,8 @@ namespace DBobjects
     eTT m_eTableType;
     
     Dic   m_xSubDic;
-  //Ring       m_xRing;
-    Slots m_xPartitions;
+  //Ring  m_xRing;
+    Slots m_xSlots;
     
     Atomic m_zRefCount;    // reference count
     
@@ -64,7 +64,7 @@ namespace DBobjects
     
     //--------------------------------------------------------------------------
     
-    Partition* pPartition(i8);
+    Partition* pPartition(i8 iSlot);
     
     Footer* pFooter(void);
   };
