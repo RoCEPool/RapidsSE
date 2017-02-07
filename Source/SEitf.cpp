@@ -67,7 +67,7 @@ SEitf::SEitf(i8 iPartition)
   // pid
   m_iPid = Process::iGetPid();
 
-  m_iPartitions = gpAttachMap->m_iPartitions;
+  m_iSlots = gpAttachMap->m_iSlots;
   m_iPartition  = iPartition;
   
   //m_xPathStack;
@@ -164,7 +164,7 @@ void SEitf::vDump(eCN eClass, Object* pObject, const char* pTab)
          " requestQ %p responseQ %p response '%s'\n",
          pSEitf->m_iPid,
          Process::bTestPid(pSEitf->m_iPid) ? "exists" : "non-existant",
-         pSEitf->m_iPartitions,
+         pSEitf->m_iSlots,
          pSEitf->m_iPartition,
          pSEitf->m_pRequestQueue,
          pSEitf->m_pResponseQueue,

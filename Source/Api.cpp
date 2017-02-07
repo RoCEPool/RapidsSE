@@ -1008,7 +1008,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
     return EC_NULLPTR;
   }
 
-  *ppCount = &gpAttachMap->m_iPartitions;
+  *ppCount = &gpAttachMap->m_iSlots;
   *ppPartitions = &gpAttachMap->m_iPartition;
   
   return EC_NONE;

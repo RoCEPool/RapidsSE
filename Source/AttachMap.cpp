@@ -108,10 +108,10 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vUTC(m_sUTC);
   
   m_iRegionSize = gxArguments.m_iRegionSize;
-  m_iPartitions = gxArguments.m_nSlots;
+  m_iSlots = gxArguments.m_nSlots;
   m_iEpoch      = 0;
   
-  for (i8 iSlot = 0; iSlot < m_iPartitions; iSlot++) {
+  for (i8 iSlot = 0; iSlot < m_iSlots; iSlot++) {
     m_iPartition[iSlot] = Partition::iSlotToPartition(iSlot);
   }
   
@@ -145,7 +145,7 @@ void AttachMap::vDump(eCN eClass, Object* pObject, const char* pTab)
          pAttachMap->m_iPid,
          pAttachMap->m_sUTC.a(),
          pAttachMap->m_iRegionSize,
-         pAttachMap->m_iPartitions);
+         pAttachMap->m_iSlots);
 }
 
 /*----------------------------------------------------------------------------*/
