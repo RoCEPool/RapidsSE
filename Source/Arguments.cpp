@@ -23,7 +23,7 @@ Arguments::Arguments(void)
   m_sRegionName = "";
   m_sRegionPrefix = "SE_";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
-  m_nPartitions = 4;
+  m_nSlots      = 4;
   m_sNodeName   = "node";
   m_nNodes      = 0;
   m_bTracepoint = false;
@@ -97,7 +97,7 @@ void Arguments::vEnvironmentVariables(void)
 
   sVarName = "SE_PARTITIONS";
   if (Env::bGet(sVarName,sPartitions))
-    m_nPartitions = String::iToI8(sPartitions.a());
+    m_nSlots = String::iToI8(sPartitions.a());
   
   sVarName = "SE_WORKING_FOLDER";
   if (Env::bGet(sVarName,sFolder))
@@ -179,8 +179,8 @@ bool Arguments::bParse(int argc, const char* argv[])
     // Disabled partitionsPerNode for version 0.2.1
     /*
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
-      m_nPartitions = String::iToI8(argv[++iArg]);
-      if (m_nPartitions > C_MAX_PARTITIONS_PER_NODE) {
+      m_nSlots = String::iToI8(argv[++iArg]);
+      if (m_nSlots > C_MAX_SLOTS_PER_NODE) {
         vTrace("Maximum number of partitions allowed per node is %lld\n",
           C_MAX_PARTITIONS_PER_NODE);
         return false;
@@ -490,7 +490,7 @@ void Arguments::vPrint(void)
       m_xNodes[iIndex].m_iPortNo);
   }
   
-  //vTrace("  --partitionsPerNode %lld\n",m_nPartitions);
+  //vTrace("  --partitionsPerNode %lld\n",m_nSlots);
   vTrace("  --commands %s\n",m_sCommands.a());
 //#ifdef _DEBUG
   vTrace("  --sen %s\n",m_sSen.a());

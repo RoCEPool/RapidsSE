@@ -217,9 +217,9 @@ void LoaderSub::vHashRecord(void)
   m_iHash = XXH32(m_pRecord,iLength,0);
   
   // modulo to get partition number
-  //m_iPartition = m_iHash % gxArguments.m_nPartitions;
+  //m_iPartition = m_iHash % m_nSlots;
   
-  m_iPartition = m_iHash % (gxArguments.m_nPartitions * gpGrid->iNodes());
+  m_iPartition = m_iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
   
   //vTrace("Partition: %lld\n",m_iPartition);
 }

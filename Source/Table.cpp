@@ -112,7 +112,7 @@ void Table::vAnalyze(void)
   i8 nBuffersTotal = 0;
   i8 nStrandsTotal = 0;
   
-  for (i8 iSlot = 0; iSlot < gxArguments.m_nPartitions; iSlot++) {
+  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
     
@@ -148,7 +148,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  ASSERT(iPartition < gxArguments.m_nPartitions);
+  ASSERT(iPartition < gxArguments.m_nSlots);
   
   Partition* pPartition = this->pPartition(iPartition);
  
@@ -165,7 +165,7 @@ i8 Table::nRowBuffers(void)
   
   i8 iBuffers = 0;
 
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
     RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
     while (pStrand) {
       iBuffers += pStrand->nRowBuffers();

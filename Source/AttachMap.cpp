@@ -108,7 +108,7 @@ void AttachMap::vRecordGlobals(void)
   m_xTime.vUTC(m_sUTC);
   
   m_iRegionSize = gxArguments.m_iRegionSize;
-  m_iPartitions = gxArguments.m_nPartitions;
+  m_iPartitions = gxArguments.m_nSlots;
   m_iEpoch      = 0;
   
   for (i8 iSlot = 0; iSlot < m_iPartitions; iSlot++) {

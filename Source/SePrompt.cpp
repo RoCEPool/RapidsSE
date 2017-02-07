@@ -761,7 +761,7 @@ void SePrompt::vIterateRows(void)
   
   i8 iRowCount = 0;
   
-  for (i8 iPartition = 0; iPartition < gxArguments.m_nPartitions; iPartition++) {
+  for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
     vTrace("Partition %lld: \n", Partition::iSlotToPartition(iPartition));
     pSelCursor->vBegin(iPartition);
     pSelCursor->vFirst();
