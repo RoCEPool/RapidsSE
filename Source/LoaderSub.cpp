@@ -68,7 +68,6 @@ LoaderSub::LoaderSub(void)
   
   m_pRecord  = nullptr;
   m_iLength  = 0;
-  m_iHash    = 0;
   m_iPartition  = 0;
   m_bMoreChunks = false;
   m_pLoadChunk  = new LoadChunk;
@@ -214,14 +213,10 @@ void LoaderSub::vHashRecord(void)
     iLength++;
   
   // hash the field using xxhash
-  m_iHash = XXH32(m_pRecord,iLength,0);
+  //m_iHash = XXH32(m_pRecord,iLength,0);
+  //m_iPartition = m_iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
   
-  // modulo to get partition number
-  //m_iPartition = m_iHash % m_nSlots;
-  
-  m_iPartition = m_iHash % (gxArguments.m_nSlots * gpGrid->iNodes());
-  
-  //vTrace("Partition: %lld\n",m_iPartition);
+  m_iPartition = m_pTable->iRowPartition(m_pRecord);
 }
 
 /*----------------------------------------------------------------------------*/

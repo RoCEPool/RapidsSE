@@ -48,6 +48,7 @@ namespace DBobjects
     
     void vAnalyze(void);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
+    i8   iRowPartition(char* pRow);
     Dic* pSubDic(void);
     void vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength);
     i8   nRowBuffers(void);

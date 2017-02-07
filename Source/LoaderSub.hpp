@@ -21,7 +21,6 @@ namespace DBobjects
     
     char*    m_pRecord;      // record from file
     i8       m_iLength;      // length of record
-    i8       m_iHash;        // hash of record
     i8       m_iPartition;   // partition of record
     
     bool     m_bMoreChunks;  // continue while there are more chunks
