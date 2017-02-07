@@ -81,10 +81,10 @@ void Grid::vInit(void)
   m_iSlots      = gxArguments.m_nSlots;
   m_iPartitions = m_iSlots * m_iNodes;
   
+  // initialize the partition array
   for (i8 iPartition = 0; iPartition < C_MAX_SLOTS_PER_NODE; iPartition++) {
     m_iPartition[iPartition] = -1;
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -216,6 +216,12 @@ void Grid::vThisNode(i8 iNode)
   
   m_iThisNode = iNode;
   m_pThisNode = pFindNode(iNode);
+  
+  // now initialize the array of partition numbers on this node
+  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
+    m_iPartition[iSlot] = Partition::iSlotToPartition(iSlot);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
