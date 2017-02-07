@@ -79,6 +79,7 @@ void Grid::vInit(void)
   m_iStartNode  = -1;
   m_bHasStarted = false;
   m_iSlots      = gxArguments.m_nSlots;
+  m_iPartitions = m_iSlots * m_iNodes;
 }
 
 /*----------------------------------------------------------------------------*/

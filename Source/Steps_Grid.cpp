@@ -39,6 +39,7 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid.init",          &vGridInit,              false);
   vAddPrimitive("grid.node",          &vGridNode,              false);
   vAddPrimitive("grid.nodes",         &vGridNodes,             false);
+  vAddPrimitive("grid.partitions",    &vGridPartitions,        false);
   vAddPrimitive("grid.slots",         &vGridSlots,             false);
   vAddPrimitive("grid.started!",      &vGridStartedStore,      false);
   vAddPrimitive("grid.started@",      &vGridStartedFetch,      false);
@@ -133,6 +134,18 @@ void Task::vGridNodes(NNP_Task nnpTask)
   ENTRY("vGridNode");
 
   nnpTask->m_pDataStack->vPush(gpGrid->m_iNodes);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid.partitions -- get number of partitions in the grid                    */
+/*----------------------------------------------------------------------------*/
+void Task::vGridPartitions(NNP_Task nnpTask)
+{
+  ENTRY("vGridNode");
+  
+  nnpTask->m_pDataStack->vPush(gpGrid->m_iPartitions);
   
   EXIT();
 }

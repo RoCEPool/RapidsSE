@@ -18,6 +18,7 @@ namespace GridModel
     i8     m_iStartNode; // node that started the cluster
     bool   m_bHasStarted;// has the cluster started ?
     i8     m_iSlots;     // no of partition slots on each node
+    i8     m_iPartitions;  // total no of partitions in the grid
     
     // must be last
     Footer m_xFooter;
