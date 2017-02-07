@@ -16,7 +16,7 @@ namespace Interface
     
   public:
     i8     m_iPid;             // process which created this seitf
-    i8     m_iSlots;           // number of partitions in each node
+    i8     m_iSlots;           // number of partition slots in each node
     i8     m_iPartition;       // which partition this seitf connects to
     
     DicPath m_xPathStack;     // path stack
