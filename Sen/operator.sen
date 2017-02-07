@@ -97,21 +97,9 @@
 
     nodeNo grid.thisNode@ ==
     if
-      // -- profile has a #partitionId for this node
-
-      "Same node" .
-      // collapse values into one valset
-      >>
-      // find and put onto jobqueue
-      op.task find execute >jobqueue
+      op.task >>jobQueue_sameNode
     else
-      // -- profile has a #partitionId for other node
-
-      "Other node" .
-      // collapse values into one valset
-      >>
-      // find and put onto jobqueue
-      op.task find execute >jobqueue
+      op.task >>jobQueue_otherNode
     then
 
   else
@@ -121,21 +109,9 @@
 
     grid.thisNode@ 0==
     if
-      // -- profile is # only (and this is the orginating node)
-
-      "Same node" .
-      // collapse values into one valset
-      >>
-      // find and put onto jobqueue
-      op.task find execute >jobqueue
+      op.task >>jobQueue_sameNode
     else
-      // -- profile is # only (and this is not the orginating node)
-
-      "Other node" .
-      // collapse values into one valset
-      >>
-      // find and put onto jobqueue
-      op.task find execute >jobqueue
+      op.task >>jobQueue_otherNode
     then
 
   then
