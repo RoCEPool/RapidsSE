@@ -48,17 +48,28 @@
   // record the op.task
   locals| op.task | ( << [ rb true | false ] profile plan )
 
+  // partition
+  0 0 "" locals| profile partitionId nodeNo |
+
   // the profile contains partition information
-  over "Profile: " .put .put
-  over str.tailInt
+  over to profile
+
+  profile str.tailInt
   if
-    " partition " .put .put .\n
+    // profile has a #partitionId
+
+    to partitionId
+    partitionId grid::toNode to nodeNo
+
+    nodeNo partitionId profile "Profile %v: partition %v on node %v" str.format .
     // collapse values into one valset
     >>
     // find and put onto jobqueue
     op.task find execute >jobqueue
   else
-    " originating " .put .\n
+    // profile is # only
+
+    profile "Profile %v: on originating node" str.format .
     // collapse values into one valset
     >>
     // find and put onto jobqueue

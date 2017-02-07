@@ -255,7 +255,7 @@ void Task::vDstackNip(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* over -- place copy of 2nd value on top stack                               */
+/* over -- place copy of 2nd value on top stack  ( B A -- B A B )             */
 /*----------------------------------------------------------------------------*/
 void Task::vDstackOver(NNP_Task nnpTask)
 {
@@ -273,7 +273,7 @@ void Task::vDstackOver(NNP_Task nnpTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pick -- put copy of nth value onto stack ( ... D C B A n -- D C B A X ... )*/
+/* pick -- put copy of nth value onto stack ( ... D C B A n -- D C B A N ... )*/
 /*----------------------------------------------------------------------------*/
 void Task::vDstackPick(NNP_Task nnpTask)
 {
