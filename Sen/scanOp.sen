@@ -36,7 +36,7 @@ common/ scan rbCrs /
   $$tableNm find execute rbCrs rbCursor.table!
 
   // begin scan of partition
-  $$partition rbCrs rbCursor.begin
+  $$partition grid::toSlot rbCrs rbCursor.begin
 
   // get first rowBuffer of partition
   rbCrs rbCursor.first

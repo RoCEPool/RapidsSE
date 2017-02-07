@@ -73,13 +73,13 @@ void Grid::vInit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  m_iNodes      = gxArguments.m_nNodes;
+  m_nNodes      = gxArguments.m_nNodes;
   m_iThisNode   = -1;
   m_pThisNode   = nullptr;
   m_iStartNode  = -1;
   m_bHasStarted = false;
-  m_iSlots      = gxArguments.m_nSlots;
-  m_iPartitions = m_iSlots * m_iNodes;
+  m_nSlots      = gxArguments.m_nSlots;
+  m_nPartitions = m_nSlots * m_nNodes;
   
   // initialize the partition array
   for (i8 iPartition = 0; iPartition < C_MAX_SLOTS_PER_NODE; iPartition++) {
@@ -173,7 +173,7 @@ i8 Grid::iNodes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_iNodes;
+  return m_nNodes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,7 +183,7 @@ i8 Grid::iSlots(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
   
-  return m_iSlots;
+  return m_nSlots;
 }
 
 /*----------------------------------------------------------------------------*/

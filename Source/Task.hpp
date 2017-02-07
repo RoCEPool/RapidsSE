@@ -506,6 +506,7 @@ namespace Tasks
     static void vGridThisNodeNameFetch(NNP_Task nnpTask);
     static void vGridToNode(NNP_Task nnpTask);
     static void vGridToPartition(NNP_Task nnpTask);
+    static void vGridToSlot(NNP_Task nnpTask);
   
     // input
     static void vInputAccept(NNP_Task nnpTask);

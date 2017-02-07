@@ -7,15 +7,19 @@
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
-: trigger ( )
+: trigger ( profile plan -- )
 
   // record the plan and profile
   locals| thePlan profile |
+  0 locals| partitionId |
 
   // trigger scanOp by piping the plan to it
   grid.slots 0 do
+
+    I grid::toPartition to partitionid
+
     // << profile plan >> -->> nextOp
-    << I "scanOp#%v" str.format thePlan "scanOp.task" >>jobQueue
+    << partitionid "scanOp#%v" str.format thePlan "scanOp.task" >>jobQueue
   loop
 ;
 
@@ -35,7 +39,7 @@
     valset> ( profile plan nValues )
     drop ( profile plan )
 
-    trigger
+    trigger ( )
 
   again
 ;

@@ -1009,7 +1009,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
     return EC_NULLPTR;
   }
 
-  *ppCount = &gpGrid->m_iSlots;
+  *ppCount = &gpGrid->m_nSlots;
   *ppPartitions = &gpGrid->m_iPartition;
   
   return EC_NONE;

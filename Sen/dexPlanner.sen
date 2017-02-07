@@ -13,6 +13,7 @@
 
   // create a distributed export plan
   plan::new locals| dexPlan |
+  0 locals| partitionId |
 
   // synthesise any plan-level symbolic arguments into the lambda text of plan
   tableNm dexPlan ##: $$tableNm
@@ -22,9 +23,12 @@
 
   // create the named opFrames in plan and any fame-level symbolic arguments
   grid.slots 0 do
+
+    I grid::toPartition to partitionid
+
     // frame-level symbolic arguments for scanOp#I
-    I "scanOp#%v" str.format dexPlan plan.opFrame++ drop
-      I              dexPlan ##: $$partition   // partition
+    partitionid "scanOp#%v" str.format dexPlan plan.opFrame++ drop
+      partitionid    dexPlan ##: $$partition   // partition
       "writeOp.task" dexPlan ##: $$nextOp      // next op is writeOp
       "writeOp#"     dexPlan ##: $$nextProfile // next profile is writeOp#
   loop

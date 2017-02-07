@@ -50,6 +50,7 @@ void Task::vAddPrimitives_Grid(void)
   vAddPrimitive("grid.thisNodeName@", &vGridThisNodeNameFetch, false);
   vAddPrimitive("grid::toNode",       &vGridToNode,            false);
   vAddPrimitive("grid::toPartition",  &vGridToPartition,       false);
+  vAddPrimitive("grid::toSlot",       &vGridToSlot,            false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +134,7 @@ void Task::vGridNodes(NNP_Task nnpTask)
 {
   ENTRY("vGridNode");
 
-  nnpTask->m_pDataStack->vPush(gpGrid->m_iNodes);
+  nnpTask->m_pDataStack->vPush(gpGrid->m_nNodes);
   
   EXIT();
 }
@@ -145,7 +146,7 @@ void Task::vGridPartitions(NNP_Task nnpTask)
 {
   ENTRY("vGridNode");
   
-  nnpTask->m_pDataStack->vPush(gpGrid->m_iPartitions);
+  nnpTask->m_pDataStack->vPush(gpGrid->m_nPartitions);
   
   EXIT();
 }
@@ -157,7 +158,7 @@ void Task::vGridSlots(NNP_Task nnpTask)
 {
   ENTRY("vGridNode");
   
-  nnpTask->m_pDataStack->vPush(gpGrid->m_iSlots);
+  nnpTask->m_pDataStack->vPush(gpGrid->m_nSlots);
   
   EXIT();
 }
@@ -304,6 +305,24 @@ void Task::vGridToPartition(NNP_Task nnpTask)
   i8 iPartitionId = Partition::iSlotToPartition(iSlot);
   
   nnpTask->m_pDataStack->vPush(iPartitionId);              //! DISCUSS WITH ALKA
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grid::toSlot -- convert partitionId to slot                                */
+/*----------------------------------------------------------------------------*/
+void Task::vGridToSlot(NNP_Task nnpTask)
+{
+  ENTRY("vGridToSlot");
+  
+  i8 iPartitionId;
+  if ( ! nnpTask->m_pDataStack->bPop(iPartitionId) )
+    THROW_INVALID_DSTACK("grid::toSlot");
+  
+  i8 iSlot = Partition::iPartitionToSlot(iPartitionId);
+  
+  nnpTask->m_pDataStack->vPush(iSlot);                     //! DISCUSS WITH ALKA
   
   EXIT();
 }
