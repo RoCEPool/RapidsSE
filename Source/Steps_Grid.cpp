@@ -235,14 +235,18 @@ void Task::vGridStartedFetch(NNP_Task nnpTask)
 /*----------------------------------------------------------------------------*/
 void Task::vGridToNode(NNP_Task nnpTask)
 {
-  ENTRY("vGridToPartition");
+  ENTRY("vGridToNode");
   
-  i8 iNodeNo;
-  if ( ! nnpTask->m_pDataStack->bPop(iNodeNo) )
+  i8 iParitionId;
+  if ( ! nnpTask->m_pDataStack->bPop(iParitionId) )
     THROW_INVALID_DSTACK("grid::toNode");
   
   // for the moment its always node 0                      //! DISCUSS WITH ALKA
-  nnpTask->m_pDataStack->vPush((i8)0);
+  //nnpTask->m_pDataStack->vPush((i8)0);
+  
+  i8 iNodeNo = Partition::iPartitionToNode(iParitionId);
+  
+  nnpTask->m_pDataStack->vPush(iNodeNo);
   
   EXIT();
 }
