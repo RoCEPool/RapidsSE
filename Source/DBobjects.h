@@ -13,7 +13,7 @@
 #include "Index.hpp"
 
 #include "Partition.hpp"
-#include "Partitions.hpp"
+#include "Slots.hpp"
 
 #include "Ring.hpp"
 

@@ -35,7 +35,7 @@ namespace Interface
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;
     
-    RowBuffer* m_pRowBuffer[C_MAX_PARTITIONS_PER_NODE]; // working row buffers
+    RowBuffer* m_pRowBuffer[C_MAX_SLOTS_PER_NODE]; // working row buffers
     
     // must be last
     Footer m_xFooter;

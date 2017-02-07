@@ -18,7 +18,7 @@ namespace StorageEngine
     
     i8            m_iRegionSize;
     i8            m_iPartitions;
-    i8            m_iPartition[C_MAX_PARTITIONS_PER_NODE];
+    i8            m_iPartition[C_MAX_SLOTS_PER_NODE];
     i8            m_iNodes;
     
     i8            m_iEpoch;

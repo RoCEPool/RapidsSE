@@ -72,7 +72,6 @@ namespace Magic
     
     /* 41 */ CN_PARSER,
     /* 42 */ CN_PARTITION,
-    /* 43 */ CN_PARTITIONS,
     /*    */ CN_PLAN,
     /*    */ CN_PLANLIST,
     /* 44 */ CN_PROXY,
@@ -102,6 +101,7 @@ namespace Magic
     /* 63 */ CN_SKIPCURSOR,
     /* 64 */ CN_SKIPLIST,
     /* 65 */ CN_SKIPNODE,
+    /* 43 */ CN_SLOTS,
     /* 66 */ CN_SMALLHEAP,
     /* 67 */ CN_SOCKET,
     /* 68 */ CN_STACK,
@@ -198,7 +198,6 @@ namespace Magic
     
     /* 41 */ "PARSER",
     /* 42 */ "PARTITION",
-    /* 43 */ "PARTITIONS",
     /*    */ "PLAN",
     /*    */ "PLANLIST",
     /* 44 */ "PROXY",
@@ -228,6 +227,7 @@ namespace Magic
     /* 63 */ "SKIPCURSOR",
     /* 64 */ "SKIPLIST",
     /* 65 */ "SKIPNODE",
+    /*    */ "PARTITIONS",
     /* 66 */ "SMALLHEAP",
     /* 67 */ "SOCKET",
     /* 68 */ "STACK",

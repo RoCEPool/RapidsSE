@@ -71,7 +71,6 @@ pDUMPFUN *gpDump[]
   
   /* 41 */ &Parser::vDump,          // CN_PARSER
   /* 42 */ &Partition::vDump,       // CN_PARTITION
-  /* 43 */ &Dump::vUndefined,       // CN_PARTITIONS
   /*    */ &Plan::vDump,            // CN_PLAN
   /*    */ &PlanList::vDump,        // CN_PLANLIST
   /* 44 */ &Dump::vUndefined,       // CN_PROXY
@@ -101,6 +100,7 @@ pDUMPFUN *gpDump[]
   /* 63 */ &Dump::vUndefined,       // CN_SKIPCURSOR
   /* 64 */ &Dump::vUndefined,       // CN_SKIPLIST
   /* 65 */ &Dump::vUndefined,       // CN_SKIPNODE
+  /*    */ &Dump::vUndefined,       // CN_SLOTS
   /* 66 */ &Heap::vDump,            // CN_SMALLHEAP
   /* 67 */ &Socket::vDump,          // CN_SOCKET
   /* 68 */ &Stack::vDump,           // CN_STACK
@@ -197,7 +197,6 @@ i8 giClassSize[]
   
   /* 41 */ sizeof(Parser),             // CN_PARSER
   /* 42 */ sizeof(Partition),          // CN_PARTITION
-  /* 43 */ sizeof(Partitions),         // CN_PARTITIONS
   /*    */ sizeof(Plan),               // CN_PLAN
   /*    */ sizeof(PlanList),           // CN_PLANLIST
   /* 44 */ sizeof(Proxy),              // CN_PROXY
@@ -227,6 +226,7 @@ i8 giClassSize[]
   /* 63 */ sizeof(SkipCursor),         // CN_SKIPCURSOR
   /* 64 */ sizeof(SkipList),           // CN_SKIPLIST
   /* 65 */ sizeof(SkipNode),           // CN_SKIPNODE
+  /*    */ sizeof(Slots),              // CN_SLOTS
   /* 66 */ sizeof(Heap), // correct    // CN_SMALLHEAP
   /* 67 */ sizeof(Socket),             // CN_SOCKET
   /* 68 */ sizeof(Stack),              // CN_STACK
@@ -323,7 +323,6 @@ eHT geWhichHeap[]
   
   /* 41 */ HT_MEDIUM,  // CN_PARSER
   /* 42 */ HT_INVALID, // CN_PARTITION
-  /* 43 */ HT_INVALID, // CN_PARTITIONS
   /*    */ HT_MEDIUM,  // CN_PLAN
   /*    */ HT_SMALL,   // CN_PLANLIST
   /* 44 */ HT_INVALID, // CN_PROXY
@@ -353,6 +352,7 @@ eHT geWhichHeap[]
   /* 63 */ HT_INVALID, // CN_SKIPCURSOR
   /* 64 */ HT_SMALL,   // CN_SKIPLIST
   /* 65 */ HT_SMALL,   // CN_SKIPNODE
+  /*    */ HT_INVALID, // CN_SLOTS
   /* 66 */ HT_INVALID, // CN_SMALLHEAP
   /* 67 */ HT_SMALL,   // CN_SOCKET
   /* 68 */ HT_LARGE,   // CN_STACK

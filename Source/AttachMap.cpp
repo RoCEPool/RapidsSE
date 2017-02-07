@@ -53,7 +53,7 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  for (i8 iPartition = 0; iPartition < C_MAX_PARTITIONS_PER_NODE; iPartition++) {
+  for (i8 iPartition = 0; iPartition < C_MAX_SLOTS_PER_NODE; iPartition++) {
     m_iPartition[iPartition] = -1;
   }
   

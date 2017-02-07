@@ -26,9 +26,9 @@ namespace DBobjects
     s32 m_sTableName;
     eTT m_eTableType;
     
-    Dic        m_xSubDic;
+    Dic   m_xSubDic;
   //Ring       m_xRing;
-    Partitions m_xPartitions;
+    Slots m_xPartitions;
     
     Atomic m_zRefCount;    // reference count
     
