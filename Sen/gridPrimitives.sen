@@ -590,7 +590,7 @@ tp: addingPassOnToCP
   clusterString str.cat
   " --regionPrefix " str.cat args.regionPrefix str.cat
   " --name  " str.cat nodeName str.cat
-  //" --partitionsPerNode " str.cat args.partitions >str str.cat
+  //" --partitionsPerNode " str.cat grid.slots >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
   args.tracepoint if " --tracepoint " str.cat then
   args.verbose if " --verbose " str.cat then

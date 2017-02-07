@@ -13,7 +13,7 @@
   locals| thePlan profile |
 
   // trigger scanOp by piping the plan to it
-  args.partitions 0 do
+  grid.slots 0 do
     // << profile plan >> -->> nextOp
     << I "scanOp#%v" str.format thePlan "scanOp.task" >>jobQueue
   loop

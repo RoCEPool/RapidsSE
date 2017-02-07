@@ -216,7 +216,7 @@ int: queryCount
   // r0 ^selCursor
 
   r0 selCursor.table!
-  args.partitions 0
+  grid.slots 0
   do
     // r2 ^selCursor
     I r2 selCursor.begin
