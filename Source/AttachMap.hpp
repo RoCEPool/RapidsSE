@@ -17,8 +17,7 @@ namespace StorageEngine
     s32           m_sUTC;
     
     i8            m_iRegionSize;
-    i8            m_iPartition[C_MAX_SLOTS_PER_NODE];
-    
+        
     i8            m_iEpoch;
     
     BufferPool*   m_pBufferPool;

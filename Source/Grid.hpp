@@ -20,6 +20,9 @@ namespace GridModel
     i8     m_iSlots;     // no of partition slots on each node
     i8     m_iPartitions;  // total no of partitions in the grid
     
+    // NOT HAPPY WITH NAME - alka
+    i8     m_iPartition[C_MAX_SLOTS_PER_NODE]; // partition no's on this node
+    
     // must be last
     Footer m_xFooter;
     

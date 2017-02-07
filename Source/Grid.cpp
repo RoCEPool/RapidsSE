@@ -80,6 +80,11 @@ void Grid::vInit(void)
   m_bHasStarted = false;
   m_iSlots      = gxArguments.m_nSlots;
   m_iPartitions = m_iSlots * m_iNodes;
+  
+  for (i8 iPartition = 0; iPartition < C_MAX_SLOTS_PER_NODE; iPartition++) {
+    m_iPartition[iPartition] = -1;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

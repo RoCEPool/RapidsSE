@@ -1010,7 +1010,7 @@ eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppPartitions, void** ppCount)
   }
 
   *ppCount = &gpGrid->m_iSlots;
-  *ppPartitions = &gpAttachMap->m_iPartition;
+  *ppPartitions = &gpGrid->m_iPartition;
   
   return EC_NONE;
 }

@@ -53,10 +53,6 @@ AttachMap::AttachMap(void)
   // the attach map must always be the first buffer in the buffer pool
   ASSERT(nBufferNo() == 1_bn);
   
-  for (i8 iPartition = 0; iPartition < C_MAX_SLOTS_PER_NODE; iPartition++) {
-    m_iPartition[iPartition] = -1;
-  }
-  
   m_xMainDic.vName("<main>");
   
   _checkInitialised_(CN_ATTACHMAP);
@@ -109,10 +105,6 @@ void AttachMap::vRecordGlobals(void)
   
   m_iRegionSize = gxArguments.m_iRegionSize;
   m_iEpoch      = 0;
-  
-  for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
-    m_iPartition[iSlot] = Partition::iSlotToPartition(iSlot);
-  }
   
   m_pBufferPool = gpBufferPool;
   
