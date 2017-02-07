@@ -4,10 +4,12 @@
 
 "dexPlanner.sen" .verbose
 
+0 constant distDexPlan
+
 /*----------------------------------------------------------------------------*/
-/* distributed export planner                                                 */
+/* distributed export planner (initial, single node version)                  */
 /*----------------------------------------------------------------------------*/
-: dexPlanner ( tableNm fileNm -- dexPlan )
+: dexPlanner_singular ( tableNm fileNm -- dexPlan )
 
   locals| fileNm tableNm |
 
@@ -52,6 +54,64 @@
 
   // return dexPlan
   dexPlan
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed export planner (multi-node version)                            */
+/*----------------------------------------------------------------------------*/
+: dexPlanner_distributed ( tableNm fileNm -- dexPlan )
+
+  locals| fileNm tableNm |
+
+  // create a distributed export plan
+  plan::new locals| dexPlan |
+  0 locals| partitionId |
+
+  // synthesise any plan-level symbolic arguments into the lambda text of plan
+  tableNm dexPlan ##: $$tableNm
+  // nb: the above could have been a frame level, but left it as an example
+
+  "triggerOp" str.format dexPlan plan.opFrame++ drop
+
+  // create the named opFrames in plan and any fame-level symbolic arguments
+  grid.Partitions 0 do
+
+    I to partitionid
+
+    // frame-level symbolic arguments for scanOp#I
+    partitionid "scanOp#%v" str.format dexPlan plan.opFrame++ drop
+      partitionid    dexPlan ##: $$partition   // partition
+      "writeOp.task" dexPlan ##: $$nextOp      // next op is writeOp
+      "writeOp#"     dexPlan ##: $$nextProfile // next profile is writeOp#
+  loop
+
+  "writeOp#" dexPlan plan.opFrame++ drop
+    // frame-level symbolic arguments
+    fileNm            dexPlan ##: $$fileNm      // file to be exported to
+    grid.slots        dexPlan ##: $$nStreams    // number of streams in pipeline
+    "responseOp.task" dexPlan ##: $$nextOp      // pipe to next operator
+    "responseOp#"     dexPlan ##: $$nextProfile // pipe to next profile
+
+  "responseOp#" dexPlan plan.opFrame++ drop
+    "sinkOp.task"     dexPlan ##: $$nextOp      // pipe to next operator
+    "sinkOp#"         dexPlan ##: $$nextProfile // pipe to next profile
+
+  "sinkOp#" dexPlan plan.opFrame++ drop
+
+  // add plan to plan list
+  dexPlan planList::addPlan
+  planList::show
+
+  // return dexPlan
+  dexPlan
+;
+
+/*----------------------------------------------------------------------------*/
+/* distributed export planner                                                 */
+/*----------------------------------------------------------------------------*/
+: dexPlanner ( tableNm fileNm -- dexPlan )
+
+  distDexPlan if dexPlanner_distributed else dexPlanner_singular then
 ;
 
 /*============================================================================*/
