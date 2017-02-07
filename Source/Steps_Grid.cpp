@@ -178,7 +178,9 @@ void Task::vGridThisNodeStore(NNP_Task nnpTask)
     THROW("Cannot fine Node %s in the cluster", gxArguments.m_sNodeName.a());
   }
   
-  gpGrid->vThisNode(pThisNode->iNodeNo());
+  i8 iNodeNo = pThisNode->iNodeNo();
+  
+  gpGrid->vThisNode(iNodeNo);
   
   EXIT();
 }
@@ -192,7 +194,9 @@ void Task::vGridThisNodeFetch(NNP_Task nnpTask)
   
   Object* pPtrGrid;
   
-  nnpTask->m_pDataStack->vPush(gpGrid->iThisNode());
+  i8 iNodeNo = gpGrid->iThisNode();
+  
+  nnpTask->m_pDataStack->vPush(iNodeNo);
   
   EXIT();
 }
