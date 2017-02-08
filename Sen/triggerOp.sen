@@ -32,6 +32,8 @@
 
   begin
 
+    depth 0 != if "stack of task has grown" . debug.trap then
+
     // wait for next job
     jobQueue> ( valset )
 
