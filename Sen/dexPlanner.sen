@@ -62,14 +62,14 @@
 /*----------------------------------------------------------------------------*/
 /* distribute plan (multi-node version)                                       */
 /*----------------------------------------------------------------------------*/
-: distribute_plan allParticipants 1 checkResult ( dexPlan -- true n# true )
+: distributePlan allParticipants 1 checkResult ( dexPlan -- true n# true )
 
-tp: distribute_plan
+tp: distributePlan
 
   // add plan to plan list
   planList::addPlan
 
-tp: distribute_plan_done
+tp: distPlanDone
 
   "NODE %V" grid.thisNodeName@ str.format .
 
@@ -120,9 +120,6 @@ tp: distribute_plan_done
     "sinkOp#"         dexPlan ##: $$nextProfile // pipe to next profile
 
   "sinkOp#" dexPlan plan.opFrame++ drop
-
-  dexPlan distribute_plan
-  planList::show
 
   // return dexPlan
   dexPlan
