@@ -11,7 +11,7 @@
 
   ": sinkOp" .
 
-  0 0 locals| planTBD profile |
+  0 0 locals| thePlan profile |
 
   begin
 
@@ -21,21 +21,22 @@
 
     drop ( profile planId )
 
+    // find plan using planId
     planList::findPlan ( profile plan true )
     assert ( profile plan )
 
-    to planTBD
+    to thePlan
     to profile
 
     // push the op frame for this sinkOp
-    profile planTBD plan.opFrame? opFrame.push
+    profile thePlan plan.opFrame? opFrame.push
 
     // discard this op's reg frame
     opFrame.drop
 
-    planTBD planList::removePlan
+    thePlan planList::removePlan
 
-    planTBD plan.delete
+    thePlan plan.delete
 
     "removed & deleted plan" .
     planList::show
