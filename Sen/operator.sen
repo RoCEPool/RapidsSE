@@ -108,9 +108,11 @@ tp: >>jobQueue_otherNode
 
   nodeNo "jobQueue_otherNode NODE %V" str.format .
 
+  // get the planId from the plan
   plan.id@
   >>
 
+  // put the op.task and addEnqueOnOp
   op.task
   addEnqueOnOp
 
@@ -203,7 +205,7 @@ queue: writeOp_Queue
   //<< "triggerOp" thePlan >>
   //"triggerOp.task" find execute >jobQueue
 
-  << "triggerOp" thePlan "triggerOp.task" >>jobQueue
+  << "triggerOp" thePlan plan.id@ "triggerOp.task" >>jobQueue
 ;
 
 /*============================================================================*/

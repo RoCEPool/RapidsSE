@@ -86,8 +86,7 @@ common/ scan rbCrs /
     drop ( profile planId )
 
     planList::findPlan ( profile plan true )
-
-    assert
+    assert ( profile plan )
 
     // scan the table partition and pipe to write
     scanPartition ( )

@@ -155,10 +155,9 @@ common/ write nStreams    /
     // unpack it
     valset> ( profile plan nValues )
     drop ( profile planId )
-stk
-    planList::findPlan ( profile plan true )
 
-    assert
+    planList::findPlan ( profile plan true )
+    assert ( profile plan )
 
     // write row buffer to file
     writeRb ( )

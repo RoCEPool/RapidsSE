@@ -22,7 +22,7 @@
     drop ( profile planId )
 
     planList::findPlan ( profile plan true )
-    assert
+    assert ( profile plan )
 
     to planTBD
     to profile
