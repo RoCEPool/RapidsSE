@@ -16,17 +16,16 @@
   "part" "/tmp/part.csv" dexPlanner to dexPlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // distribute the plan
+  // distribute (and compile) the plan
   dexPlan distributePlan
-  planList::show
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the plan
-  dexPlan compilePlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the plan
   dexPlan executePlan
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reap the plan
+  //dexPlan reapPlan
 ;
 
 /*============================================================================*/

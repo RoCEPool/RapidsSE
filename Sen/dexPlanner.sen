@@ -51,30 +51,8 @@
   // finish planning
   dexPlan plan.finished
 
-  // add plan to plan list
-  dexPlan planList::addPlan
-  planList::show
-
   // return dexPlan
   dexPlan
-;
-
-/*----------------------------------------------------------------------------*/
-/* distribute plan (multi-node version)                                       */
-/*----------------------------------------------------------------------------*/
-: distributePlan allParticipants 1 checkResult ( dexPlan -- true n# true )
-
-tp: distributePlan
-
-  // add plan to plan list
-  planList::addPlan
-
-tp: distPlanDone
-
-  "NODE %V" grid.thisNodeName@ str.format .
-
-  planList::show
-  true <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/
