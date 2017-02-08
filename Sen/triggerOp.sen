@@ -13,7 +13,7 @@
   locals| thePlan profile |
   0 locals| partitionId |
 
-  thePlan "Triggering plan: %v" str.format .
+  thePlan plan.id@ "Triggering plan: %v" str.format .
 
   // trigger scanOp by piping the plan to it
   grid.slots 0 do
@@ -21,7 +21,7 @@
     I grid::toPartition to partitionid
 
     // << profile plan >> -->> nextOp
-    << partitionid "scanOp#%v" str.format thePlan "scanOp.task" >>jobQueue
+    << partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   loop
 ;
 
@@ -36,9 +36,14 @@
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( profile thePlan nValues )
-    drop ( profile thePlan )
+    valset> ( profile planId nValues )
+    drop ( profile planId )
 
+    // find plan using planId
+    planList::findPlan ( profile plan true )
+    assert ( profile plan )
+
+    // trigger the plan
     triggerPlan ( )
 
   again
