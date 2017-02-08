@@ -185,6 +185,21 @@ Dic* Plan::pDic(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* planning has finished                                                      */
+/*----------------------------------------------------------------------------*/
+void Plan::vFinished(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
+  
+  while (m_pRegList) {
+    RegFrame* pRegFrame = m_pRegList;
+    m_pRegList = m_pRegList->pNext();
+    
+    delete pRegFrame;
+  }  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get lambda text                                                            */
 /*----------------------------------------------------------------------------*/
 s48K& Plan::sLambda(void)

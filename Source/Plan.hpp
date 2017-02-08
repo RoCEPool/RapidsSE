@@ -42,6 +42,8 @@ namespace Plans
     void vName(s32& sName);
 
     Dic* pDic(void);
+  
+    void vFinished(void);
 
     s48K& sLambda(void);
     void vLambda(s48K& sLambda);

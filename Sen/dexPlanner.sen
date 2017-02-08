@@ -12,10 +12,10 @@
 : dexPlanner_singular ( tableNm fileNm -- dexPlan )
 
   locals| fileNm tableNm |
+  0 locals| partitionId |
 
   // create a distributed export plan
   plan::new locals| dexPlan |
-  0 locals| partitionId |
 
   // synthesise any plan-level symbolic arguments into the lambda text of plan
   tableNm dexPlan ##: $$tableNm
@@ -47,6 +47,9 @@
     "sinkOp#"         dexPlan ##: $$nextProfile // pipe to next profile
 
   "sinkOp#" dexPlan plan.opFrame++ drop
+
+  // finish planning
+  dexPlan plan.finished
 
   // add plan to plan list
   dexPlan planList::addPlan

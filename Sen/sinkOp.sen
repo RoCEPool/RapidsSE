@@ -28,12 +28,6 @@
     to thePlan
     to profile
 
-    // push the op frame for this sinkOp
-    profile thePlan plan.opFrame? opFrame.push
-
-    // discard this op's reg frame
-    opFrame.drop
-
     thePlan planList::removePlan
 
     thePlan plan.delete
