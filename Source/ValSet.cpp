@@ -97,7 +97,13 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
       *pVal = m_pRowBuffer;
     }
   }
-    
+  
+  // test for binary value
+  if (CN_BINVAL == pVal->eClass()) {
+    Object* pObjectVal = pVal->pObject();
+    *pVal = pObjectVal;
+  }
+  
   return true;
 }
 

@@ -46,7 +46,7 @@ void Task::vAddPrimitives_To(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* >toBinVal -- change object to binval                                       */
+/* >binval -- change object to binval                                         */
 /*----------------------------------------------------------------------------*/
 void Task::vToBinVal(NNP_Task nnpTask)
 {

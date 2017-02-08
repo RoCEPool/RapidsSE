@@ -4,7 +4,7 @@
 
 "dexPlanner.sen" .verbose
 
-0 constant distDexPlan
+1 constant distDexPlan
 
 /*----------------------------------------------------------------------------*/
 /* distributed export planner (initial, single node version)                  */
@@ -57,9 +57,27 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* distribute plan (multi-node version)                                       */
+/*----------------------------------------------------------------------------*/
+: distribute_plan allParticipants 1 checkResult ( dexPlan -- true n# true )
+
+tp: distribute_plan
+
+  // add plan to plan list
+  planList::addPlan
+
+tp: distribute_plan_done
+  "NODE %V" grid.thisNodeName@ str.format .
+  planList::show
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
 /* distributed export planner (multi-node version)                            */
 /*----------------------------------------------------------------------------*/
 : dexPlanner_distributed ( tableNm fileNm -- dexPlan )
+
+  "dexPlanner_distributed" .
 
   locals| fileNm tableNm |
 
@@ -98,13 +116,13 @@
 
   "sinkOp#" dexPlan plan.opFrame++ drop
 
-  // add plan to plan list
-  dexPlan planList::addPlan
+  dexPlan distribute_plan
   planList::show
 
   // return dexPlan
   dexPlan
 ;
+
 
 /*----------------------------------------------------------------------------*/
 /* distributed export planner                                                 */

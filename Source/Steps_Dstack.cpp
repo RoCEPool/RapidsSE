@@ -496,7 +496,19 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
   for (i8 iVal = 0; iVal < nVal; iVal++) {
     
     if ( ! nnpTask->m_pDataStack->bPop(xVal) )
-    THROW_INVALID_DSTACK(">valset");
+      THROW_INVALID_DSTACK(">valset");
+    
+    if (xVal.eClass() == CN_PTRVAL) {
+      PtrVal* pPtrVal = xVal.pAsPtrVal();
+      Object* pObject = pPtrVal->pObject();
+      eCN eObjectClass   = pObject->eClass();
+      
+      if (eObjectClass == CN_PLAN) {
+        ValWsp xBinVal;
+        xBinVal.vAssignBinary(pObject);
+        xVal = xBinVal;
+      }
+    }
     
     xValSet.vAppend(pCursor,xVal);
   }
