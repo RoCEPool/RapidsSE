@@ -57,6 +57,8 @@ void RapidsSE::vExecute(void)
       vSystemInit();
       vStartActors();
       vTrace("RapidsSE instance %s started\n",gxArguments.m_sRegionName.a());
+      gpGrid->vDumpPartitioning();
+      
       //vSkipListTest();
       if (gxArguments.m_bDocol) {
         vRunDocol();

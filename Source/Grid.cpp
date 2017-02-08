@@ -102,6 +102,19 @@ void Grid::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Grid::vDumpPartitioning(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  for (i8 iIndex = 0; iIndex < m_nPartitions; iIndex++)
+    vTrace("Partition: %lld; Node: %lld\n", iIndex,
+           Partition::iPartitionToNode(iIndex));
+  vTrace("\n");
+}
+
+/*----------------------------------------------------------------------------*/
 /* set grid started                                                           */
 /*----------------------------------------------------------------------------*/
 void Grid::vHasStarted(bool bHasStarted)

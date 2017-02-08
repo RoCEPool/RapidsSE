@@ -35,6 +35,7 @@ namespace GridModel
     ~Grid(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
+    void vDumpPartitioning(void);
     void vHasStarted(bool bHasStarted);
     bool bHasStarted(void);
     Node* pFindNode(char* pName);
