@@ -368,6 +368,7 @@ void Task::vAddConstants(void)
   vAddConstant("args.regionPrefix",gxArguments.m_sRegionPrefix.a());
   vAddConstant("args.regionSize",  gxArguments.m_iRegionSize - gxArguments.m_iJumboSize);
   vAddConstant("args.sleep",       gxArguments.m_iSleep);
+  vAddConstant("args.Traceapi",    gxArguments.m_bTraceapi);
   vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose",     gxArguments.m_bVerbose);
   vAddConstant("args.sen",         gxArguments.m_sSen.a());

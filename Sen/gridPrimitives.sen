@@ -592,6 +592,7 @@ tp: addingPassOnToCP
   " --name  " str.cat nodeName str.cat
   //" --partitionsPerNode " str.cat grid.slots >str str.cat
   " --sleep " str.cat args.sleep >str str.cat
+  args.Traceapi if " --Traceapi " str.cat then
   args.tracepoint if " --tracepoint " str.cat then
   args.verbose if " --verbose " str.cat then
 

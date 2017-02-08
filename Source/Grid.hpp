@@ -19,6 +19,7 @@ namespace GridModel
     bool   m_bHasStarted;// has the cluster started ?
     i8     m_nSlots;     // no of partition slots on each node
     i8     m_nPartitions;  // total no of partitions in the grid
+    bool   m_bTraceapi;    // trace seitf api calls
     
     // NOT HAPPY WITH NAME - alka
     i8     m_iPartition[C_MAX_SLOTS_PER_NODE]; // partition no's on this node

@@ -21,11 +21,12 @@ Arguments::Arguments(void)
   
   m_pRegionAddr = C_ADDR_POOL;
   m_sRegionName = "";
-  m_sRegionPrefix = "SE_";
+  m_sRegionPrefix = "/SE";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
   m_nSlots      = 4;
   m_sNodeName   = "node";
   m_nNodes      = 0;
+  m_bTraceapi   = false;
   m_bTracepoint = false;
   
 #ifdef __APPLE__
@@ -352,6 +353,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     if (String::bEqualTo("--notouch",argv[iArg],C_NO_CASE)) {
       m_bTouch = false;
+      continue;
+    }
+    
+    if (String::bEqualTo("--Traceapi",argv[iArg],C_NO_CASE)) {
+      m_bTraceapi = true;
       continue;
     }
     
