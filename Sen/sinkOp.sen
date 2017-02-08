@@ -5,35 +5,41 @@
 "sinkOp.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* sink                                                                       */
+/* sink the plan                                                              */
+/*----------------------------------------------------------------------------*/
+: sinkPlan ( profile plan -- )
+
+  // record the plan and profile
+  locals| thePlan profile |
+
+  thePlan planList::removePlan
+
+  thePlan plan.delete
+
+  "removed & deleted plan" .
+  planList::show
+;
+
+/*----------------------------------------------------------------------------*/
+/* sink operator loop                                                         */
 /*----------------------------------------------------------------------------*/
 : sinkOp operator ( -- NEVER )
 
-  ": sinkOp" .
-
-  0 0 locals| thePlan profile |
-
   begin
 
+    // wait for next job
     jobQueue> ( valset )
 
+    // unpack it
     valset> ( profile planId nValues )
-
     drop ( profile planId )
 
     // find plan using planId
     planList::findPlan ( profile plan true )
     assert ( profile plan )
 
-    to thePlan
-    to profile
-
-    thePlan planList::removePlan
-
-    thePlan plan.delete
-
-    "removed & deleted plan" .
-    planList::show
+    // sink the plan
+    sinkPlan ( )
 
   again
 ;
