@@ -46,6 +46,8 @@ namespace Plans
     s48K& sLambda(void);
     void vLambda(s48K& sLambda);
     
+    void vNullifyPointers(void);
+    
     RegFrame* pRegFrameFind(s32& sName);
     void      vRegFramePush(RegFrame* pRegFrame);
     RegFrame* pRegFrameTop(void);

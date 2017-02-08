@@ -17,9 +17,12 @@
 
     jobQueue> ( valset )
 
-    valset> ( profile plan nValues )
+    valset> ( profile planId nValues )
 
-    drop ( profile plan )
+    drop ( profile planId )
+
+    planList::findPlan ( profile plan true )
+    assert
 
     to planTBD
     to profile

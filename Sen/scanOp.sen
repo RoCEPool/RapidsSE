@@ -25,7 +25,7 @@ common/ scan rbCrs /
   thePlan plan.dic pathPush
 
   // [1] find and push opFrame (along with its dictionary onto path stack)
-  profile thePlan plan.opFrame? opFrame.push // [1]
+  profile thePlan stk plan.opFrame? opFrame.push // [1]
   //pathDump
 
   // [2] create a new rowCursor and record in opFrame.rbCrs
@@ -45,7 +45,7 @@ common/ scan rbCrs /
   begin while
 
     // << rb true profile plan profile >> -->> nextOp
-    << rbCrs rbCursor.get true $$nextProfile thePlan $$nextOp >>jobQueue
+    << rbCrs rbCursor.get true $$nextProfile thePlan plan.id@ $$nextOp >>jobQueue
 
     // next rowBuffer in partition
     rbCrs rbCursor.next
@@ -57,7 +57,7 @@ common/ scan rbCrs /
 
   // pipe EOD to writeOp
   // << false plan >> -->> nextOp
-  << false $$nextProfile thePlan $$nextOp >>jobQueue
+  << false $$nextProfile thePlan plan.Id@ $$nextOp >>jobQueue
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // [2] delete cursor
@@ -83,7 +83,11 @@ common/ scan rbCrs /
 
     // unpack it
     valset> ( profile plan nValues )
-    drop ( profile plan )
+    drop ( profile planId )
+
+    planList::findPlan ( profile plan true )
+
+    assert
 
     // scan the table partition and pipe to write
     scanPartition ( )

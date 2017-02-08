@@ -36,6 +36,7 @@ void Task::vAddPrimitives_Plan(void)
 {
   vAddPrimitive("plan.delete",       &vPlanDelete,       false);
   vAddPrimitive("plan.dic",          &vPlanDic,          false);
+  vAddPrimitive("plan.id@",          &vPlanIdFetch,    false);
   vAddPrimitive("plan.lambda+",      &vPlanLambdaAppend, false);
   vAddPrimitive("plan.lambda@",      &vPlanLambdaFetch,  false);
   vAddPrimitive("plan.lambda!",      &vPlanLambdaStore,  false);
@@ -84,6 +85,27 @@ void Task::vPlanDic(NNP_Task nnpTask)
   Dic* pPlanDic = pPlan->pDic();
   
   nnpTask->m_pDataStack->vPush(pPlanDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.id@ -- fetch plan id ( plan-- id )                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanIdFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlanIdFetch");
+  
+  Object* pPtrPlan;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.id@");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  u8 uId = pPlan->uPlanId();
+  
+  nnpTask->m_pDataStack->vPush(uId);
   
   EXIT();
 }

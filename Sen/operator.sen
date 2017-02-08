@@ -43,9 +43,15 @@
 /*----------------------------------------------------------------------------*/
 : enqueOnOp ( <<job>> taskNm -- true )
 
+tp: enqueOnOp
+
+  grid.thisNodeName@ .
+  task.this task.name@ .
+
   locals| op.task | ( <<job>> )
 
-  valset> ( << ..job.. >> )
+  //valset> ( << ..job.. >> )
+  op.task .
 
   // find task and put job onto its jobQueue
   op.task find execute >jobQueue
@@ -58,9 +64,11 @@
 /*----------------------------------------------------------------------------*/
 : addEnqueOnOp ( valset taskNm -- valset )
 
-  "enqueOnOp" ( valset taskNm "enqueOnOp" )
+tp: addEnqueOnOp
 
-  tp: addingEnqueOnOp
+  "enqueOnOp" ( valset taskNm "enqueOnOp" )
+stk
+tp: addingEnqueOnOp
 
   >> ( valset )
 ;
@@ -84,17 +92,32 @@
 /*----------------------------------------------------------------------------*/
 /* pipe to job queue on other node                                            */
 /*----------------------------------------------------------------------------*/
-: >>jobQueue_otherNode ( << [ rb true | false ] profile plan op.task -- )
+: >>jobQueue_otherNode ( << [ rb true | false ] profile plan op.task nodeNo -- )
 
+tp: >>jobQueue_otherNode
   "other node" .
 
-  locals| op.task | ( << [ rb true | false ] profile plan )
 
-  >>
+  locals| nodeNo op.task | ( << [ rb true | false ] profile plan )
 
+/*
   // find and put onto jobqueue
 
   op.task find execute >jobQueue
+*/
+
+  nodeNo "jobQueue_otherNode NODE %V" str.format .
+
+  plan.id@
+  >>
+
+  op.task
+  addEnqueOnOp
+
+  // get sender task
+  nodeNo senderTasks @ ( <<call>> task )
+
+  >jobQueue
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -126,7 +149,7 @@
     if
       op.task >>jobQueue_sameNode
     else
-      op.task >>jobQueue_otherNode
+      op.task nodeNo >>jobQueue_otherNode
     then
 
   else

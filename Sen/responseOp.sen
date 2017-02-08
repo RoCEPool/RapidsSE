@@ -18,7 +18,7 @@
   "DONE" .
 
   // << profile plan >> -->> nextOp
-  << $$nextProfile thePlan $$nextOp >>jobqueue
+  << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
 
   opFrame.drop
 ;
@@ -36,8 +36,12 @@
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( profile plan nValues )
-    drop ( profile plan )
+    valset> ( profile planId nValues )
+    drop ( profile planId )
+
+    planList::findPlan ( profile plan true )
+
+    assert
 
     // respond to seitf
     respond ( )

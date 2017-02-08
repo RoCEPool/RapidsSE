@@ -205,6 +205,16 @@ void Plan::vLambda(s48K& sLambda)
 }
 
 /*----------------------------------------------------------------------------*/
+/* nullify pointers (invoked before sending plan to anothetr node)            */
+/*----------------------------------------------------------------------------*/
+void Plan::vNullifyPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
+  
+  m_pRegList = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find register frame                                                        */
 /*----------------------------------------------------------------------------*/
 RegFrame* Plan::pRegFrameFind(s32& sName)

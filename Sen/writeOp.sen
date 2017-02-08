@@ -119,7 +119,7 @@ common/ write nStreams    /
       drop
     else
       //thePlan writePipeSink
-      << $$nextProfile thePlan $$nextOp >>jobqueue
+      << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
     then
 
   else
@@ -133,7 +133,7 @@ common/ write nStreams    /
       writeCloseFile
       if
         // << $$nextProfile thePlan >> -->> $$nextOp
-        << $$nextProfile thePlan $$nextOp >>jobqueue
+        << $$nextProfile thePlan plan.id@ $$nextOp >>jobqueue
       then
     then
 
@@ -154,7 +154,11 @@ common/ write nStreams    /
 
     // unpack it
     valset> ( profile plan nValues )
-    drop ( profile plan )
+    drop ( profile planId )
+stk
+    planList::findPlan ( profile plan true )
+
+    assert
 
     // write row buffer to file
     writeRb ( )
