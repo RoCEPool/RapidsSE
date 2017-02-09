@@ -1,6 +1,6 @@
 #Variables
 CPP = g++
-CPPFLAGS = -std=c++11 -D__LINUX__ -Wall -Wextra -O3
+CPPFLAGS = -std=c++11 -D__LINUX__ -DMUNGED -Wall -Wextra -O3
 LIBFLAGS = -shared
 PICFLAGS = -fPIC
 DIR_GUARD=@mkdir -p $(@D)
@@ -9,11 +9,11 @@ DIR_GUARD=@mkdir -p $(@D)
 CURRENT=${PWD}
 TARGET_PATH = $(CURRENT)/../Linux/bin
 TARGET_EXE = $(TARGET_PATH)/se 
-TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.1.4.so
+TARGET_LIBRARY = $(TARGET_PATH)/libRapidsSEv0.2.1.so
 
 #Source Files
 SOURCES = $(wildcard *.cpp)
-SOURCES += $(wildcard MUNGE/*.cpp)
+SOURCES += $(wildcard ../Munge/*.cpp)
 SOURCES := $(filter-out main.cpp, $(SOURCES))
 #S_SOURCES = $(wildcard *.s)
 
