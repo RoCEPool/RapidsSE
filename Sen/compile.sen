@@ -19,10 +19,11 @@
 "gridModel.sen" include
 "dbobjects.sen" include
 "actors.sen" include
-"utilities.sen" include
-"requests.sen" include
 "operators.sen" include
 "planners.sen" include
+"utilities.sen" include
+"requests.sen" include
+
 "munge.sen" include
 "testing.sen" include
 assert.stack_0

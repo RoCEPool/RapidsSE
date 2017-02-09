@@ -104,7 +104,7 @@ ddlLock.grabRead
   checkInTables not if <NIP+ERROR> exit then
   checkIsTable  not if <NIP+ERROR> exit then
 
-  tableExporter not if <NIP+ERROR> exit then
+  distTableExporter not if <NIP+ERROR> exit then
 
   <OK>
 ;

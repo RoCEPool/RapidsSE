@@ -1,81 +1,56 @@
 /*============================================================================*/
-/* exporter.sen -- table exporter                                              */
+/* distExporter.sen -- distributed table exporter                             */
 /*============================================================================*/
 
-"exporter.sen" .verbose
+"distExporter.sen" .verbose
 
-: export ( "<fileNm>" ^table )
-
-  swap file.new
-
-  >r
-  // r0 ^file
-
-  r0 file.path! OPEN_WRITE r0 file.open
-  if "file open!" . else "file not opened!" . rdrop drop EC_INVALID_FILE false exit then
-
-  "__sel_cursor" find dup if else
-    drop "__sel_cursor" :selCursor
-  then
-  execute
-
-  >r
-  // r0 ^selCursor
-  // r1 ^file
-
-  r0 selCursor.table!
-
-  grid.slots 0
-  do
-    // r2 ^selCursor
-    // r3 ^file
-
-    I r2 selCursor.begin
-    r2 selCursor.first
-    begin
-      while
-      r2 selCursor.get
-//dup .
-      r3 file.write
-      "\n" r3 file.write
-      r2 selCursor.next
-    repeat
-
-    r2 selCursor.end
-  loop
-
-  r1 file.close
-
-  rdrop rdrop
-
-  "__row_cursor" find word.forget
+/*----------------------------------------------------------------------------*/
+/* distributed export                                                         */
+/*----------------------------------------------------------------------------*/
+: distExport ( "<fileNm>" ^table )
 
   true
 ;
 
-: exportTest
+/*----------------------------------------------------------------------------*/
+/* distributed export                                                         */
+/*----------------------------------------------------------------------------*/
+: distTableExporter ( "<fileNm>" "<tableNm>" )
 
-//traceon
+  0 locals| dexPlan |
 
-    "/tmp/nation.txt" "nation" find execute
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // prepare plan
+  swap dexPlanner to dexPlan
 
-    export
+  // set this task as the executing task in the plan
+  task.this dexPlan plan.executingTask!
 
-traceoff
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // distribute (and compile) the plan
+  dexPlan distributePlan
+
+  // this task to wait for 1 ack
+  1 setAcks
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // execute the plan
+  dexPlan executePlan
+
+  "PlanTest waiting for ack" .
+
+  // this task waits till ack'd by the responseOp
+  ackWait
+
+  "PlanTest got ack" .
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reap the plan
+  //dexPlan reapPlan
+
+
+  true
 ;
-
-: tableExporter ( "<fileNm>" "<tableNm>" )
-
-  find execute ( "<fileNm>" table )
-
-  export
-  if
-    "exported!" . true
-  else
-    false
-  then
-;
-
 
 /*============================================================================*/
 /* end                                                                        */
