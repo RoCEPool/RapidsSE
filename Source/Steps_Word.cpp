@@ -566,6 +566,8 @@ void Task::vOneParticipant(NNP_Task nnpTask)
 void Task::vOpDic(NNP_Task nnpTask)
 {
   ENTRY("vOpDic");
+  
+  Dic* pOpDic = nullptr;
 
   s32 sNameOpFrame;
   
@@ -573,10 +575,26 @@ void Task::vOpDic(NNP_Task nnpTask)
   sNameOpFrame = nnpTask->m_pTokeniser->sToken();
   
   RegFrame* pOpFrame = nnpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
-  if ( ! pOpFrame )
-    THROW("No such op frame: %s",sNameOpFrame.a());
+  //if ( ! pOpFrame )
+  //  THROW("No such op frame: %s",sNameOpFrame.a());
   
-  Dic* pOpDic = pOpFrame->pOpDic();
+  if ( pOpFrame ) {
+    pOpDic = pOpFrame->pOpDic();
+  }
+  else {
+    // create the frame
+    pOpFrame = new RegFrame;
+    pOpFrame->vName(sNameOpFrame);
+    nnpTask->m_pPlan->vRegFramePush(pOpFrame);
+    
+    // create a op dictionary
+    s32 sNameDic;
+    String::vSprint(sNameDic.a(),"<%s>",sNameOpFrame.a());
+    
+    pOpDic = new Dic;
+    pOpDic->vName(sNameDic.a());
+    pOpFrame->vOpDic(pOpDic);
+  }
   
   nnpTask->m_xPathStack.vPush(pOpDic);
   

@@ -631,6 +631,7 @@ namespace Tasks
     static void vPlanCompile(NNP_Task nnpTask);
     static void vPlanDelete(NNP_Task nnpTask);
     static void vPlanDic(NNP_Task nnpTask);
+    static void vPlanFinished(NNP_Task nnpTask);
     static void vPlanIdFetch(NNP_Task nnpTask);
     static void vPlanLambdaAppend(NNP_Task nnpTask);
     static void vPlanLambdaFetch(NNP_Task nnpTask);

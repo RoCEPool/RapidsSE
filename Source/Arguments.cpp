@@ -23,7 +23,7 @@ Arguments::Arguments(void)
   m_sRegionName = "";
   m_sRegionPrefix = "/SE";
   m_iRegionSize = 1_GB * 4 + m_iJumboSize;
-  m_nSlots      = 4;
+  m_nSlots      = 1;
   m_sNodeName   = "node";
   m_nNodes      = 0;
   m_bTraceapi   = false;

@@ -16,12 +16,16 @@
   "part" "/tmp/part.csv" dexPlanner to dexPlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // compile the plan
-  dexPlan compilePlan
+  // distribute (and compile) the plan
+  dexPlan distributePlan
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the plan
   dexPlan executePlan
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reap the plan
+  //dexPlan reapPlan
 ;
 
 /*============================================================================*/

@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* respond                                                                    */
 /*----------------------------------------------------------------------------*/
-: respond ( )
+: respondSEitf ( plan -- )
 
   // record the plan and profile
   locals| thePlan profile |
@@ -28,9 +28,9 @@
 /*----------------------------------------------------------------------------*/
 : responseOp operator ( -- NEVER )
 
-  ": responseOp" .
-
   begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
 
     // wait for next job
     jobQueue> ( valset )
@@ -39,12 +39,12 @@
     valset> ( profile planId nValues )
     drop ( profile planId )
 
+    // find plan using planId
     planList::findPlan ( profile plan true )
-
-    assert
+    assert ( profile plan )
 
     // respond to seitf
-    respond ( )
+    respondSEitf ( )
 
   again
 ;

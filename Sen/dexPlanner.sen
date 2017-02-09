@@ -12,10 +12,10 @@
 : dexPlanner_singular ( tableNm fileNm -- dexPlan )
 
   locals| fileNm tableNm |
+  0 locals| partitionId |
 
   // create a distributed export plan
   plan::new locals| dexPlan |
-  0 locals| partitionId |
 
   // synthesise any plan-level symbolic arguments into the lambda text of plan
   tableNm dexPlan ##: $$tableNm
@@ -48,30 +48,11 @@
 
   "sinkOp#" dexPlan plan.opFrame++ drop
 
-  // add plan to plan list
-  dexPlan planList::addPlan
-  planList::show
+  // finish planning
+  dexPlan plan.finished
 
   // return dexPlan
   dexPlan
-;
-
-/*----------------------------------------------------------------------------*/
-/* distribute plan (multi-node version)                                       */
-/*----------------------------------------------------------------------------*/
-: distribute_plan allParticipants 1 checkResult ( dexPlan -- true n# true )
-
-tp: distribute_plan
-
-  // add plan to plan list
-  planList::addPlan
-
-tp: distribute_plan_done
-
-  "NODE %V" grid.thisNodeName@ str.format .
-
-  planList::show
-  true <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -117,9 +98,6 @@ tp: distribute_plan_done
     "sinkOp#"         dexPlan ##: $$nextProfile // pipe to next profile
 
   "sinkOp#" dexPlan plan.opFrame++ drop
-
-  dexPlan distribute_plan
-  planList::show
 
   // return dexPlan
   dexPlan

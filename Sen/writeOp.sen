@@ -143,19 +143,22 @@ common/ write nStreams    /
 ;
 
 /*----------------------------------------------------------------------------*/
-/* file write                                                                 */
+/* file write operator loop                                                   */
 /*----------------------------------------------------------------------------*/
 : writeOp operator ( -- NEVER )
 
   begin
 
+    depth 0 != if "stack of task has grown" . debug.trap then
+
     // wait for next job
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( profile plan nValues )
+    valset> ( profile planId nValues )
     drop ( profile planId )
 
+    // find plan using planId
     planList::findPlan ( profile plan true )
     assert ( profile plan )
 

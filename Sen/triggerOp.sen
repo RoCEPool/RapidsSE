@@ -7,11 +7,13 @@
 /*----------------------------------------------------------------------------*/
 /* trigger                                                                    */
 /*----------------------------------------------------------------------------*/
-: trigger ( profile plan -- )
+: triggerPlan ( profile plan -- )
 
   // record the plan and profile
   locals| thePlan profile |
   0 locals| partitionId |
+
+  thePlan plan.id@ "Triggering plan: %v" str.format .
 
   // trigger scanOp by piping the plan to it
   grid.slots 0 do
@@ -19,27 +21,32 @@
     I grid::toPartition to partitionid
 
     // << profile plan >> -->> nextOp
-    << partitionid "scanOp#%v" str.format thePlan "scanOp.task" >>jobQueue
+    << partitionid "scanOp#%v" str.format thePlan plan.id@ "scanOp.task" >>jobQueue
   loop
 ;
 
 /*----------------------------------------------------------------------------*/
-/* flow trigger operator                                                      */
+/* flow trigger operator loop                                                 */
 /*----------------------------------------------------------------------------*/
 : triggerOp operator ( -- NEVER )
 
-": triggerOp" .
-
   begin
+
+    depth 0 != if "stack of task has grown" . debug.trap then
 
     // wait for next job
     jobQueue> ( valset )
 
     // unpack it
-    valset> ( profile plan nValues )
-    drop ( profile plan )
+    valset> ( profile planId nValues )
+    drop ( profile planId )
 
-    trigger ( )
+    // find plan using planId
+    planList::findPlan ( profile plan true )
+    assert ( profile plan )
+
+    // trigger the plan
+    triggerPlan ( )
 
   again
 ;
