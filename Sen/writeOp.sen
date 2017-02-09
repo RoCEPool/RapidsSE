@@ -92,6 +92,7 @@ common/ write nStreams    /
   begin while
     rowCrs rowCursor.row
     filePointer file.write
+    "\n" filePointer file.write
     rowCrs rowCursor.next
   repeat
 ;

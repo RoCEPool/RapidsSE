@@ -172,6 +172,8 @@ void RowBuffer::vAppendBuffer(RowBuffer* pArgBuffer)
   i8 nBytes  = pArgBuffer->iBytesUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
   
+  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  
   // inc the number of rows in this buffer
   i8 nArgRows = pArgBuffer->nRows();
   m_nRows += nArgRows;

@@ -11,18 +11,10 @@
 
 tp: enqueOnOp
 
-  grid.thisNodeName@ .
-  task.this task.name@ .
-
   locals| op.task | ( <<job>> )
-
-  //valset> ( << ..job.. >> )
-  op.task .
 
   // find task and put job onto its jobQueue
   op.task find execute >jobQueue
-
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,8 +25,8 @@ tp: enqueOnOp
 tp: addEnqueOnOp
 
   "enqueOnOp" ( valset taskNm "enqueOnOp" )
-  stk
-  tp: addingEnqueOnOp
+
+tp: addingEnqueOnOp
 
   >> ( valset )
 ;
@@ -125,7 +117,7 @@ tp: >>jobQueue_otherNode
     if
       op.task >>jobQueue_sameNode
     else
-      op.task >>jobQueue_otherNode
+      op.task nodeNo >>jobQueue_otherNode
     then
 
   then

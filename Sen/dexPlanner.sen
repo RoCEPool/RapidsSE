@@ -4,7 +4,7 @@
 
 "dexPlanner.sen" .verbose
 
-0 constant distDexPlan
+1 constant distDexPlan
 
 /*----------------------------------------------------------------------------*/
 /* distributed export planner (initial, single node version)                  */
@@ -89,7 +89,7 @@
   "writeOp#" dexPlan plan.opFrame++ drop
     // frame-level symbolic arguments
     fileNm            dexPlan ##: $$fileNm      // file to be exported to
-    grid.slots        dexPlan ##: $$nStreams    // number of streams in pipeline
+    grid.partitions   dexPlan ##: $$nStreams    // number of streams in pipeline
     "responseOp.task" dexPlan ##: $$nextOp      // pipe to next operator
     "responseOp#"     dexPlan ##: $$nextProfile // pipe to next profile
 
