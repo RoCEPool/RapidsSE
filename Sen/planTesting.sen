@@ -15,13 +15,26 @@
   // prepare plan
   "part" "/tmp/part.csv" dexPlanner to dexPlan
 
+  // set this task as the executing task in the plan
+  task.this dexPlan plan.executingTask!
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // distribute (and compile) the plan
   dexPlan distributePlan
 
+  // this task to wait for 1 ack
+  1 setAcks
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the plan
   dexPlan executePlan
+
+  "PlanTest waiting for ack" .
+
+  // this task waits till ack'd by the responseOp
+  ackWait
+
+  "PlanTest got ack" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reap the plan

@@ -19,6 +19,7 @@ namespace Plans
     s48K   m_sLambda;  // generated text of words
     
     RegFrame* m_pRegList; // set of register frames for use by operators
+    Tasks::Task* m_pExecutingTask; // task executing the plan
     
     // always last
     Footer m_xFooter;
@@ -37,6 +38,9 @@ namespace Plans
     void vAppendToLambda(s48K& sText);
     
     u8   uPlanId(void);
+    
+    Tasks::Task* pExecutingTask(void);
+    void vExecutingTask(Tasks::Task* pTask);
     
     s32& sName(void);
     void vName(s32& sName);

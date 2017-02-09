@@ -34,20 +34,22 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Plan(void)
 {
-  vAddPrimitive("plan.delete",       &vPlanDelete,       false);
-  vAddPrimitive("plan.dic",          &vPlanDic,          false);
-  vAddPrimitive("plan.finished",     &vPlanFinished,     false);
-  vAddPrimitive("plan.id@",          &vPlanIdFetch,      false);
-  vAddPrimitive("plan.lambda+",      &vPlanLambdaAppend, false);
-  vAddPrimitive("plan.lambda@",      &vPlanLambdaFetch,  false);
-  vAddPrimitive("plan.lambda!",      &vPlanLambdaStore,  false);
-  vAddPrimitive("plan.name@",        &vPlanNameFetch,    false);
-  vAddPrimitive("plan.name!",        &vPlanNameStore,    false);
-  vAddPrimitive("plan::new",         &vPlanNew,          false);
-  vAddPrimitive("plan.opFrame++",    &vPlanOpFrameAdd,   false);
-  vAddPrimitive("plan.opFrame?",     &vPlanOpFrameFind,  false);
-  vAddPrimitive("plan.opFrame0",     &vPlanOpFrameTop,   false);
-  vAddPrimitive("plan.show",         &vPlanShow,         false);
+  vAddPrimitive("plan.delete",         &vPlanDelete,             false);
+  vAddPrimitive("plan.dic",            &vPlanDic,                false);
+  vAddPrimitive("plan.executingTask@", &vPlanExecutingTaskFetch, false);
+  vAddPrimitive("plan.executingTask!", &vPlanExecutingTaskStore, false);
+  vAddPrimitive("plan.finished",       &vPlanFinished,           false);
+  vAddPrimitive("plan.id@",            &vPlanIdFetch,            false);
+  vAddPrimitive("plan.lambda+",        &vPlanLambdaAppend,       false);
+  vAddPrimitive("plan.lambda@",        &vPlanLambdaFetch,        false);
+  vAddPrimitive("plan.lambda!",        &vPlanLambdaStore,        false);
+  vAddPrimitive("plan.name@",          &vPlanNameFetch,          false);
+  vAddPrimitive("plan.name!",          &vPlanNameStore,          false);
+  vAddPrimitive("plan::new",           &vPlanNew,                false);
+  vAddPrimitive("plan.opFrame++",      &vPlanOpFrameAdd,         false);
+  vAddPrimitive("plan.opFrame?",       &vPlanOpFrameFind,        false);
+  vAddPrimitive("plan.opFrame0",       &vPlanOpFrameTop,         false);
+  vAddPrimitive("plan.show",           &vPlanShow,               false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,6 +88,50 @@ void Task::vPlanDic(NNP_Task nnpTask)
   Dic* pPlanDic = pPlan->pDic();
   
   nnpTask->m_pDataStack->vPush(pPlanDic);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.executingTask@ -- fetch task executing the plan                       */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanExecutingTaskFetch(NNP_Task nnpTask)
+{
+  ENTRY("vPlanExecutingTaskFetch");
+  
+  Object* pPtrPlan;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.executingTask@");
+  
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  Task* pTask = pPlan->pExecutingTask();
+  
+  nnpTask->m_pDataStack->vPush(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* plan.executingTask! -- store the executingTask in the plan                 */
+/*----------------------------------------------------------------------------*/
+void Task::vPlanExecutingTaskStore(NNP_Task nnpTask)
+{
+  ENTRY("vPlanExecuteTaskStore");
+  
+  Object* pPtrPlan;
+  Object* pPtrTask;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrPlan) )
+    THROW_INVALID_DSTACK("plan.executingTask");
+  Plan* pPlan = _pPlan(pPtrPlan);
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrTask) )
+    THROW_INVALID_DSTACK("plan.executingTask");
+  Task* pTask = _pTask(pPtrTask);
+  
+  pPlan->vExecutingTask(pTask);
   
   EXIT();
 }

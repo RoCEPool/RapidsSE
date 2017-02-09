@@ -100,7 +100,8 @@ void Plan::vInit(void)
   //m_xDic
   //m_sLambda
   
-  m_pRegList = nullptr;
+  m_pRegList       = nullptr;
+  m_pExecutingTask = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,6 +143,26 @@ void Plan::vAppendToLambda(s48K& sText)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
   String::vConcat(m_sLambda.a(), sText.a());
+}
+
+/*----------------------------------------------------------------------------*/
+/* get execute task                                                           */
+/*----------------------------------------------------------------------------*/
+Tasks::Task* Plan::pExecutingTask(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
+  
+  return m_pExecutingTask;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set execute task                                                           */
+/*----------------------------------------------------------------------------*/
+void Plan::vExecutingTask(Tasks::Task* pExecutingTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
+  
+  m_pExecutingTask = pExecutingTask;
 }
 
 /*----------------------------------------------------------------------------*/
