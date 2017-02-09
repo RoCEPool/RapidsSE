@@ -1337,6 +1337,48 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
 /*----------------------------------------------------------------------------*/
 /* insert the given row into a table                                          */
 /*----------------------------------------------------------------------------*/
+eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition)
+{
+  if (gpGrid->m_bTraceapi)
+    vTrace("RapidsSE_InsertRow(%lld:0x%x) %s\n", pSEitf->iPartition(), pSEitf, pRow);
+  
+  // pSEitf cannot be null
+  if (pSEitf == nullptr) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be a pool address
+  if (!gpBufferPool->bValidAddress(pSEitf)) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // pSEitf should be an SEitf class
+  if (pSEitf->eClass() != CN_SEITF) {
+    return EC_INVALID_INTERFACE;
+  }
+  
+  // clear the last error
+  pSEitf->vClearLastError();
+  
+  if (!pRow) {
+    pSEitf->vSetLastError(EC_INVALID_PARAMETER);
+    return EC_INVALID_PARAMETER;
+  }
+  
+  if (!pSEitf->pCurrentTable()) {
+    pSEitf->vSetLastError(EC_NO_SUCH_TABLE);
+    return EC_NO_SUCH_TABLE;
+  }
+  
+  pSEitf->m_iRowPartition = pSEitf->pCurrentTable()->iRowPartition(pRow);
+  *ppPartition = &pSEitf->m_iRowPartition;
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert the given row into a table                                          */
+/*----------------------------------------------------------------------------*/
 eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow)
 {
   if (gpGrid->m_bTraceapi)

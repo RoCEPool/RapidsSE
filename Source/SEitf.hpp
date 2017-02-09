@@ -34,6 +34,7 @@ namespace Interface
     
     i8     m_iCurrentRequestId;
     i8     m_iNextRequestId;
+    i8     m_iRowPartition;
     
     RowBuffer* m_pRowBuffer[C_MAX_SLOTS_PER_NODE]; // working row buffers
     

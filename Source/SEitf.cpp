@@ -82,6 +82,7 @@ SEitf::SEitf(i8 iPartition)
   m_pTxRef          = nullptr;
   m_iCurrentRequestId = 0;
   m_iNextRequestId    = -1;
+  m_iRowPartition     = -1;
   
   SEitf* pSEitf = this;
   gpSEitfList->vAppend(pSEitf);
@@ -1208,7 +1209,7 @@ bool SEitf::bInsertRow(char* pRow)
   // get working buffer
   RowBuffer* pRowBuffer = m_pRowBuffer[m_iPartition];
   
-  //vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
+  vTrace("Buffer: %s Partition:%d\n",pRowBuffer, m_iPartition);
   
   // insert row into working buffer
   if (pRowBuffer->bInsertRow(m_pTxRef,pRow,String::iSize(pRow)))
@@ -1217,7 +1218,7 @@ bool SEitf::bInsertRow(char* pRow)
   // buffer full, append working buffer into table
   //m_pCurrentTable->vAppendBuffer(m_iPartition,pRowBuffer);
   
-  //vTrace("Buffer full... Inserting buffer\n");
+  vTrace("Buffer full... Inserting buffer\n");
   bool bResult = bInsertBuffer(pRowBuffer, m_iPartition);
   
   if (!bResult)
@@ -1275,7 +1276,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  //vTrace("inserting %x %d\n", pRowBuffer, m_iPartition);
+  vTrace("inserting %x %d\n", pRowBuffer, m_iPartition);
   
   char xArray[C_1KB * 2];
   char* pWords[16] = {
@@ -1305,7 +1306,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
   
   String::vConcat(a," append_table");
   
-  //vTrace("%s\n",a);
+  vTrace("%s\n",a);
   
   return bAppendRequest(sRequest);
 }

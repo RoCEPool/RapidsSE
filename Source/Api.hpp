@@ -22,6 +22,7 @@ extern "C" eEC RapidsSE_GetPartitions(SEitf* pSEitf, void** ppParitions, void** 
 extern "C" eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchema);
 extern "C" eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion);
 extern "C" eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTables);
+extern "C" eEC RapidsSE_HashRowPartition(SEitf* pSEitf, char* pRow, void** ppPartition);
 extern "C" eEC RapidsSE_InsertRow(SEitf* pSEitf, char* pRow);
 extern "C" eEC RapidsSE_PoolOpen(char* pInstanceName, void** ppInstance);
 extern "C" eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTable);
