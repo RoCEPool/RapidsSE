@@ -79,13 +79,18 @@ int main(int argc, const char* argv[])
   
 //  if (gxArguments.m_bVerbose)
     gxArguments.vPrint();
+
+  // write the regionName into a se.region file
+  // used by shell script to start se prompt
+  File xFile;
+  xFile.vPath("./se.region");
+  bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
+  ASSERT(b);
+  xFile.vPrint("%s\n",gxArguments.m_sRegionName.a());
+  xFile.vClose();
   
   // change working directory to commands dir
   bool bResult = xDir.bChangeCurrent(gxArguments.m_sCommands);
-  // ignore error
-//  if (xDir.bGetCurrent(sCurrent))
-//    printf("dir: %s\n",sCurrent.a());
-  
   
   // kill previous
   vKillPrev();
