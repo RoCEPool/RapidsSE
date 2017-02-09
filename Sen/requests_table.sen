@@ -26,6 +26,28 @@ ddlLock.grabWrite
 ;
 
 /*----------------------------------------------------------------------------*/
+/* detailed analysis of a table                                               */
+/*----------------------------------------------------------------------------*/
+: danalyze_table ( "<tableNm>" -- <R> )
+
+  tp: dropTable
+
+  ddlLock.grabWrite
+
+  checkInTables      not if <NIP+ERROR> exit then
+  checkIsTable       not if <NIP+ERROR> exit then
+
+  tp ( "<tableNm>" )
+
+  danalyzeTable ( ) assert.stack_0
+
+  tp: danalyzedTable
+
+  <OK>
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* append row buffer into table                                               */
 /*----------------------------------------------------------------------------*/
 : append_table ( "table", "buffer", "partition" -- <R> )

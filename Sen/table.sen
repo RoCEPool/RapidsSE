@@ -273,7 +273,23 @@ tp: analyzeTable
 
   find execute
 
-  table.analyze
+  0 table.analyze
+
+  true <SUCCESS_RESULT>
+;
+
+/*----------------------------------------------------------------------------*/
+/* analyze a table                                                            */
+/*----------------------------------------------------------------------------*/
+: danalyzeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
+
+  tp: danalyzeTable
+
+  dup
+
+  find execute
+
+  1 table.analyze
 
   true <SUCCESS_RESULT>
 ;

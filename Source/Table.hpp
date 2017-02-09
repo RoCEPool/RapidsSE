@@ -46,7 +46,7 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void vAnalyze(void);
+    void vAnalyze(bool bDetailed);
     void vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer);
     i8   iRowPartition(char* pRow);
     Dic* pSubDic(void);

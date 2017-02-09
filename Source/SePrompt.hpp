@@ -96,6 +96,7 @@ private:
   bool bEndInsert(void);
   bool bInsertRow(void);
   bool bAnalyzeTable(void);
+  bool bDanalyzeTable(void);
   bool bListDir(void);
   bool bNodeStatus(void);
   bool bObject(void);

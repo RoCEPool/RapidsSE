@@ -50,6 +50,7 @@ usesch  use_schema
 Table Requests:
 
 antbl   analyze_table
+dantbl  danalyze_table
 gettbl  get_table
 mktbl   create_table
 lstbl   list_tables

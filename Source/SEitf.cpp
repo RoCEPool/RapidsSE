@@ -328,6 +328,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bSame("cf",pWords[0])) return bPushDic(pWords);
   if (String::bSame("con",pWords[0])) return bConnect(pWords);
   if (String::bSame("cp",pWords[0])) return bCopyTable(pWords, iWords);
+  if (String::bSame("dantbl",pWords[0])) return bDanalyzeTable(pWords, iWords);
   if (String::bSame("dex",pWords[0])) return bDistExportTable(pWords, iWords);
   if (String::bSame("dis",pWords[0])) return bDisconnect(pWords);
   if (String::bSame("docol",pWords[0])) return bDocol(pWords);
@@ -852,6 +853,31 @@ bool SEitf::bAnalyzeTable(char* pWords[], i8 iWords)
   String::vConcat(a,"\"");
   
   String::vConcat(a," analyze_table");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyze a table                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bDanalyzeTable(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 2) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," danalyze_table");
   
   return bAppendRequest(sRequest);
 }

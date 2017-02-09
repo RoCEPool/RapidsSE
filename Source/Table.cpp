@@ -102,7 +102,7 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 /*analyze table                                                               */
 /*----------------------------------------------------------------------------*/
-void Table::vAnalyze(void)
+void Table::vAnalyze(bool bDetailed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
@@ -126,6 +126,19 @@ void Table::vAnalyze(void)
     i8 nStrands = 0;
     while (pStrand) {
       nStrands++;
+      
+      if (bDetailed) {
+        RowBuffer* pRowBuffer = pStrand->pFirstBuffer();
+        i8 nRowsInBuffer = 0;
+        i8 nRowBuffer = 0;
+        while (pRowBuffer) {
+          nRowBuffer++;
+          nRowsInBuffer = pRowBuffer->nRows();
+          pRowBuffer = pRowBuffer->pNextBuffer();
+          vTrace("   strand:%lld rowBuffer%lld: %lld rows\n", nStrands, nRowBuffer, nRowsInBuffer);
+        }
+      }
+      
       nBuffers += pStrand->nRowBuffers();
       nRows += pStrand->nRows();
       pStrand = pStrand->pNextStrand();

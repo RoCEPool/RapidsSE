@@ -55,12 +55,18 @@ void Task::vTableAnalyze(NNP_Task nnpTask)
   ENTRY("vTableAnalyze");
   
   Object* pPtrTable;
+  i8 iDetailed;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(iDetailed) )
+    THROW_INVALID_DSTACK("table.appendBuffer");
+  
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
     THROW_INVALID_DSTACK("table.appendBuffer");
+  
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vAnalyze();
+  pTable->vAnalyze(iDetailed == 1 ? true : false);
   
   EXIT();
 }

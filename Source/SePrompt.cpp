@@ -581,6 +581,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     return bAnalyzeTable();
   }
   
+  if (String::bEqualTo("dantbl",m_pToken[0],C_NO_CASE)) {
+    return bDanalyzeTable();
+  }
+  
   if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
     return bPrintWorkingDir();
   }
@@ -1075,6 +1079,21 @@ bool SePrompt::bAnalyzeTable(void)
   Dir xDir;
   
   ASSERT(String::bEqualTo(m_pToken[0],"antbl"));
+  
+  return bExecuteRequest();
+}
+
+/*----------------------------------------------------------------------------*/
+/* detailed analyze table                                                     */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bDanalyzeTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  s256 sDir;
+  Dir xDir;
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"dantbl"));
   
   return bExecuteRequest();
 }
