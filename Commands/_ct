@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 docol spawnNodes
+docol setStartNode
 docol connectorStart
 sleep 5
 
