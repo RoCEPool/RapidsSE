@@ -192,12 +192,11 @@ bool Arguments::bParse(int argc, const char* argv[])
     */
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    /*
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
       m_sRegionName = argv[++iArg];
       continue;
     }
-    */
+    
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--regionPrefix",argv[iArg],C_NO_CASE)) {
       m_sRegionPrefix = argv[++iArg];
@@ -459,10 +458,18 @@ bool Arguments::bParse(int argc, const char* argv[])
     m_xNodes[0].m_iPortNo =  -1;
   }
 
-  //String::vConcat( m_sRegionName.a(), "/");
-  String::vConcat( m_sRegionName.a(), m_sRegionPrefix.a());
-  String::vConcat( m_sRegionName.a(), "_");
-  String::vConcat( m_sRegionName.a(), m_sNodeName.a());
+  // if no regionName then form region name using regionPrefix and node name
+  if (String::bEqualTo(m_sRegionName.a(),"")) {
+    String::vConcat( m_sRegionName.a(), m_sRegionPrefix.a());
+    String::vConcat( m_sRegionName.a(), "_");
+    String::vConcat( m_sRegionName.a(), m_sNodeName.a());
+  }
+  else {
+    if (m_bStart && m_nNodes > 1) {
+      vTrace("--region not allowed with --start in a cluster\n");
+      return false;
+    }
+  }
   
   return true;
 }
