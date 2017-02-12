@@ -217,7 +217,7 @@ bool Arguments::bParse(int argc, const char* argv[])
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--prompt",argv[iArg],C_NO_CASE)) {
-#ifdef _RELEASE_VERSION
+
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
         return false;
@@ -226,11 +226,7 @@ bool Arguments::bParse(int argc, const char* argv[])
         vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
         return false;
       }
-      if (m_bStart) {
-        vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
-        return false;
-      }
-#endif
+
       m_bPrompt = true;
       continue;
     }
@@ -251,7 +247,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--start",argv[iArg],C_NO_CASE)) {
-#ifdef _RELEASE_VERSION
+
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
         return false;
@@ -260,18 +256,13 @@ bool Arguments::bParse(int argc, const char* argv[])
         vTrace("Incorrect argument: --status with %s\n",argv[iArg]);
         return false;
       }
-      if (m_bPrompt) {
-        vTrace("Incorrect argument: --prompt with %s\n",argv[iArg]);
-        return false;
-      }
-#endif
+
       m_bStart = true;
       continue;
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--status",argv[iArg],C_NO_CASE)) {
-#ifdef _RELEASE_VERSION
       if (m_bStop) {
         vTrace("Incorrect argument: --stop with %s\n",argv[iArg]);
         return false;
@@ -284,14 +275,14 @@ bool Arguments::bParse(int argc, const char* argv[])
         vTrace("Incorrect argument: --prompt with %s\n",argv[iArg]);
         return false;
       }
-#endif
+
       m_bStatus = true;
       continue;
     }
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--stop",argv[iArg],C_NO_CASE)) {
-#ifdef _RELEASE_VERSION
+
       if (m_bStart) {
         vTrace("Incorrect argument: --start with %s\n",argv[iArg]);
         return false;
@@ -304,7 +295,7 @@ bool Arguments::bParse(int argc, const char* argv[])
         vTrace("Incorrect argument: --prompt with %s\n",argv[iArg]);
         return false;
       }
-#endif
+
       m_bStop = true;
       continue;
     }

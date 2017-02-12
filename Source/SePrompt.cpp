@@ -336,143 +336,6 @@ void SePrompt::vGetCommandInput(void)
 /*----------------------------------------------------------------------------*/
 /* process command                                                            */
 /*----------------------------------------------------------------------------*/
-#ifdef _RELEASE_VERSION
-bool SePrompt::bProcessCommand(bool bPostProcess)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
-  
-  // - test for builtin comands
-  
-  if (String::bEqualTo("?",   m_pToken[0],C_NO_CASE) ||
-      String::bEqualTo("help",m_pToken[0],C_NO_CASE)) {
-    vHelp();
-    return true;
-  }
-  
-  if (String::bEqualTo("bye",m_pToken[0],C_NO_CASE)) {
-    m_bContinue = false;
-    return true;
-  }
-  
-  if (String::bEqualTo("sleep",m_pToken[0],C_NO_CASE)) {
-    return bSleep();
-  }
-
-  if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
-    return bChangeWorkingDir();
-  }
-  
-  if (String::bEqualTo("create",m_pToken[0],C_NO_CASE)) {
-    
-    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
-      return bCreateTenant();
-    }
-    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
-      return breateCatalog();
-    }
-    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      return breateSchema();
-    }
-    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
-      return bCreateTable();
-    }
-  }
-  
-  if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("tenant",m_pToken[1],C_NO_CASE)) {
-      return bDropTenant();
-    }
-    if (String::bEqualTo("catalog",m_pToken[1],C_NO_CASE)) {
-      return bDropCatalog();
-    }
-    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      return bDropSchema();
-    }
-    if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
-      return bDropTable();
-    }
-  }
-  
-  if (String::bEqualTo("print",m_pToken[0],C_NO_CASE)) {
-    bExecuteRequest();
-    return true;
-  }
-  
-  if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
-    return bPrintWorkingDir();
-  }
-  
-  if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
-    bool bListDir();
-  }
-  
-  if (String::bEqualTo("cf",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("cd",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("ld",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("lds",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("ex",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-
-  if (String::bEqualTo("lf",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("ls",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("lscol",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("pwd",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("pwf",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-
-  if (String::bEqualTo("rf",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  if (String::bEqualTo("use",m_pToken[0],C_NO_CASE)) {
-    if (String::bEqualTo("schema",m_pToken[1],C_NO_CASE)) {
-      return bUseSchema();
-    }
-  }
-  
-  if (String::bEqualTo("",m_pToken[0],C_NO_CASE)) {
-    return bExecuteRequest();
-  }
-  
-  m_xHistory.vAppend(m_pToken);
-  
-  if (bTestFile(m_pToken[0])) {
-    vPushFile(m_pToken[0]);
-    m_pTokeniser->vLineMode(true);
-    return true;
-  }
-  
-  //vTrace("Invalid command\n");
-  return false;
-}
-#else
-
 bool SePrompt::bProcessCommand(bool bPostProcess)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
@@ -554,6 +417,10 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
       return bCreateTable();
     }
+  }
+  
+  if (String::bEqualTo("connectCluster",m_pToken[0],C_NO_CASE)) {
+    return bConnectCluster();
   }
   
   if (String::bEqualTo("drop",m_pToken[0],C_NO_CASE)) {
@@ -662,7 +529,6 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
   return true;
 }
 
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* set echo result                                                            */
@@ -895,41 +761,17 @@ void SePrompt::vHelp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-#ifdef _RELEASE_VERSION
-  vTrace("se commands:\n");
-  vTrace("bye            -- quit se prompt\n");
-  vTrace("cd             -- change directory\n");
-  vTrace("cf             -- change folder\n");
-  vTrace("create catalog -- create a catalog\n");
-  vTrace("create schema  -- create a scheam\n");
-  vTrace("create table   -- create a table\n");
-  vTrace("create tenant  -- create a tenant\n");
-  vTrace("drop catalog   -- drop a catalog\n");
-  vTrace("drop schema    -- drop a schema\n");
-  vTrace("drop table     -- drop a table\n");
-  vTrace("drop tenant    -- drop a tenant\n");
-  vTrace("ex             -- export table t\n");
-  vTrace("ld             -- load table t\n");
-  vTrace("lf             -- list folder contents\n");
-  vTrace("ls             -- list directory contents\n");
-  vTrace("lscol          -- list columns of a table\n");
-  vTrace("print          -- print string\n");
-  vTrace("pwf            -- print working folder\n");
-  vTrace("pwd            -- print working directory\n");
-  vTrace("space          -- pool space\n");
-  vTrace("?              -- print this help\n");
-  vTrace("help           -- print this help\n");
-#else
   vTrace("se temporary commands:\n");
   vTrace("add    -- add column to table\n");
   vTrace("gettbl -- get address of table\n");
   vTrace("bye    -- quit se prompt\n");
   vTrace("cd     -- change directory\n");
   vTrace("cf     -- change folder\n");
-  vTrace("con    -- connect\n");
+  //vTrace("con    -- connect\n");
+  vTrace("connectCluster    -- connect the cluster\n");
   vTrace("cp     -- copy table\n");
   vTrace("create -- create table\n");
-  vTrace("dis    -- disconnect\n");
+  //vTrace("dis    -- disconnect\n");
   vTrace("do     -- do shorthand\n");
   vTrace("drop   -- dropTable\n");
   vTrace("dump   -- dump table\n");
@@ -964,7 +806,6 @@ void SePrompt::vHelp(void)
   vTrace("usesch -- use schema\n");
   vTrace("?      -- print this help\n");
   vTrace("help   -- print this help\n");
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1536,6 +1377,22 @@ void SePrompt::vCollectStatement(void)
   m_pTokeniser->vPrompt(m_sPrompt);
   
   //m_pTokeniser->vDumpTokens("Command : ",m_pToken,C_TOKENS);
+}
+
+/*----------------------------------------------------------------------------*/
+/* connect the cluster                                                        */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bConnectCluster(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"connectCluster"));
+  
+  if (!bExecuteRequest()) {
+    return false;
+  }
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

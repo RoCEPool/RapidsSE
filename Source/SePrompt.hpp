@@ -87,6 +87,8 @@ private:
   void vCollectStatement(void);
   bool bDocol(void);
   
+  bool bConnectCluster(void);
+  
   bool bDropCatalog(void);
   bool bDropSchema(void);
   bool bDropTable(void);

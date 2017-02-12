@@ -327,6 +327,7 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bSame("add",pWords[0])) return bAddColumn(pWords, iWords);
   if (String::bSame("cf",pWords[0])) return bPushDic(pWords);
   if (String::bSame("con",pWords[0])) return bConnect(pWords);
+  if (String::bSame("connectCluster",pWords[0])) return bConnectCluster(pWords);
   if (String::bSame("cp",pWords[0])) return bCopyTable(pWords, iWords);
   if (String::bSame("dantbl",pWords[0])) return bDanalyzeTable(pWords, iWords);
   if (String::bSame("dex",pWords[0])) return bDistExportTable(pWords, iWords);
@@ -390,6 +391,20 @@ bool SEitf::bConnect(char* pWords[])
   
   ASSERT(String::bEqualTo(pWords[0],"con"));
   sRequest = "connect";
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* connect the se cluster nodes                                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bConnectCluster(char* pWords[])
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  ASSERT(String::bEqualTo(pWords[0],"connectCluster"));
+  sRequest = "connectCluster";
   return bAppendRequest(sRequest);
 }
 

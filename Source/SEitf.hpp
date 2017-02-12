@@ -74,6 +74,7 @@ namespace Interface
     bool bDecode(char* pWords[], i8 iWords);
     
     bool bConnect(char* pWords[]);
+    bool bConnectCluster(char* pWords[]);
     bool bDisconnect(char* pWords[]);
     
     bool bDropDictionary(char* pWords[], i8 iWords);

@@ -25,6 +25,8 @@ createDefaultFolders
 
 Connection Requests:
 
+connectCluster connectCluster
+ 
 con     connect
 dis     disconnect
 
