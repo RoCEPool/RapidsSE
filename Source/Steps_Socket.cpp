@@ -237,9 +237,8 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   pSocket = reinterpret_cast<Socket*>(pObject);
   
-  //******************************************************************
-  // Send the size of valset
-  //******************************************************************
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // send the size of valset
   i8 iBytes = xValSet.iSize();
   bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
@@ -251,9 +250,8 @@ void Task::vSocketSend(NNP_Task nnpTask)
     EXIT();
   }
   
-  //******************************************************************
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // now send the actual value set
-  //******************************************************************
   bResult = pSocket->bSendTo(iBytes, &xValSet, xSysCall);
   
   if ( ! bResult ) {
@@ -261,16 +259,14 @@ void Task::vSocketSend(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPush((i8)0);
   }
   
-  //******************************************************************
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get rowBuffer if any in valset
-  //******************************************************************
   RowBuffer* pRowBuffer = xValSet.pGetRowBuffer();
   
   if (pRowBuffer) {
     
-    //******************************************************************
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send rowBuffer size
-    //******************************************************************
     i8 iBytes = pRowBuffer->iBytesUsed();
     bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
     
@@ -286,15 +282,17 @@ void Task::vSocketSend(NNP_Task nnpTask)
       EXIT();
     }
     
-    //******************************************************************
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // send rowBuffer itself
-    //******************************************************************
     bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
     
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // delete the rowbuffer
+    delete pRowBuffer;
+    
+    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
+    // test send result
     if ( ! bResult ) {
-      
-      // delete the rowbuffer
-      delete pRowBuffer;
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       nnpTask->m_pDataStack->vPush((i8)0);
@@ -302,10 +300,6 @@ void Task::vSocketSend(NNP_Task nnpTask)
       //goto exit;
       EXIT();
     }
-    
-    // delete the rowbuffer
-    delete pRowBuffer;
-    
   }
   
   nnpTask->m_pDataStack->vPush((i8)1);
