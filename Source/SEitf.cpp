@@ -1236,7 +1236,7 @@ bool SEitf::bTruncateTable(char* pWords[], i8 iWords)
 bool SEitf::bInsertRow(char* pRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
-  
+                              
   // check for working buffer
   if (! m_pRowBuffer[m_iPartition]) {
     m_pRowBuffer[m_iPartition] = RowBuffer::pNewRowBuffer();
@@ -1317,8 +1317,8 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
-  vTrace("inserting %x %d\n", pRowBuffer, m_iPartition);
-  
+  i8 iSlot = Partition::iPartitionToSlot(iPartition);
+                              
   char xArray[C_1KB * 2];
   char* pWords[16] = {
     &xArray[C_1KB * 0],
@@ -1330,7 +1330,7 @@ bool SEitf::bInsertBuffer(RowBuffer* pRowBuffer, i8 iPartition)
 
   char* a = sRequest.a();
   
-  String::wToString(iPartition, sBuffer.a());
+  String::wToString(iSlot, sBuffer.a());
   String::vCopy(a,"\"");
   String::vConcat(a,sBuffer.a());
   String::vConcat(a,"\"");
