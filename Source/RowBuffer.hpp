@@ -11,9 +11,27 @@ namespace DBobjects
   static const i8 C_BUFFER_THRESHOLD = 100;
   static const RowBuffer* C_ROWBUFFER_MARKER = (RowBuffer*)0xFFFFFFFFFFFFFFFF;
   
+  
+  enum eRD // Row Buffer Durability
+  {
+  /* 0 */ RD_NONE=0,
+  /* 1 */ RD_TEMPORARY,     // rb is temporary
+  /* 2 */ RD_PERMANENT,     // rb is permanent
+  /* 3 */ RD_ENUMS
+  };
+  
+  static const char* const pRD[]
+  {
+  /* 0 */ "NONE",
+  /* 1 */ "TEMPORARY",
+  /* 2 */ "PERMANENT",
+  /* 3 */ "ENUMS",
+  };
+  
   class RowBuffer : public Buffer
   {
   private:
+    eRD        m_eDurability; // row buffer durability
     Object*    m_pFreeSpace;  // ptr to free space within this buffer
     i8         m_nRows;       // number of rows in this buffer
     RowBuffer* m_pPrevBuffer; // prev buffer
@@ -33,6 +51,9 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
+    eRD        eDurability(void);
+    void       vDurability(eRD eDurability);
+  
     Row*       pAllocRow(i8 iDataBytes);
 
     void       vAppendBuffer(RowBuffer* pArgBuffer);
@@ -49,6 +70,8 @@ namespace DBobjects
     i8         iBytesUsed(void);
     i8         nRows(void);
     void       vRowCount(void);
+
+ 
     void       vCopyBuffer(RowBuffer* pFromBuffer);
     
     bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);

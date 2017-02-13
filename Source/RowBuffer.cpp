@@ -57,6 +57,7 @@ RowBuffer::RowBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 
+  m_eDurability = RD_TEMPORARY;
   m_pFreeSpace  = pDataArea();
   m_nRows       = 0;
   m_pPrevBuffer = nullptr;
@@ -131,6 +132,26 @@ void RowBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get durability                                                             */
+/*----------------------------------------------------------------------------*/
+eRD RowBuffer::eDurability(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  return m_eDurability;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set durability                                                             */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vDurability(eRD eDurability)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
+  
+  m_eDurability = eDurability;
+}
 
 /*----------------------------------------------------------------------------*/
 /* allocate a row in this segmented space                                     */
