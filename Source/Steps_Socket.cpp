@@ -287,8 +287,9 @@ void Task::vSocketSend(NNP_Task nnpTask)
     bResult = pSocket->bSendTo(iBytes, pRowBuffer->pDataArea(), xSysCall);
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // delete the rowbuffer
-    delete pRowBuffer;
+    // delete the rowbuffer if its temporary
+    if (RD_TEMPORARY == pRowBuffer->eDurability())
+      delete pRowBuffer;
     
     // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
     // test send result
