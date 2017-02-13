@@ -13,7 +13,7 @@
   locals| thePlan profile |
   0 locals| partitionId |
 
-  thePlan plan.id@ "Triggering plan: %v" str.format .
+  //thePlan plan.id@ "Triggering plan: %v" str.format .
 
   // trigger scanOp by piping the plan to it
   grid.slots 0 do
@@ -33,7 +33,7 @@
   // record the plan and profile
   locals| thePlan profile |
 
-  thePlan plan.id@ "Triggering plan: %v" str.format .
+  //thePlan plan.id@ "Triggering plan: %v" str.format .
 
   // trigger scanOp by piping the plan to it
   grid.partitions 0 do

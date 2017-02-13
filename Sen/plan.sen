@@ -36,7 +36,7 @@ tp: addingEnqueOnOp
 /*----------------------------------------------------------------------------*/
 : >>jobQueue_sameNode ( << [ rb true | false ] profile planId op.task -- )
 
-  "same node" .
+  //"same node" .
 
   locals| op.task | ( << [ rb true | false ] profile planId )
 
@@ -54,11 +54,12 @@ tp: addingEnqueOnOp
 : >>jobQueue_otherNode ( << [ rb true | false ] profile planId op.task nodeNo -- )
 
 tp: >>jobQueue_otherNode
-  "other node" .
+
+  //"other node" .
 
   locals| nodeNo op.task | ( << [ rb true | false ] profile plan )
 
-  nodeNo "jobQueue_otherNode NODE %V" str.format .
+  //nodeNo "jobQueue_otherNode NODE %V" str.format .
 
   // translate plan to planId
   //plan.id@ ( << [ rb true | false ] profile planId )
@@ -99,7 +100,7 @@ tp: >>jobQueue_otherNode
     to partitionId
     partitionId grid::toNode to nodeNo
 
-    nodeNo partitionId profile "Profile %v: partition %v on node %v" str.format .
+    //nodeNo partitionId profile "Profile %v: partition %v on node %v" str.format .
 
     nodeNo grid.thisNode@ ==
     if
@@ -111,7 +112,7 @@ tp: >>jobQueue_otherNode
     else
     // profile is # only
 
-    profile "Profile %v: on originating node" str.format .
+    //profile "Profile %v: on originating node" str.format .
 
     grid.thisNode@ 0==
     if

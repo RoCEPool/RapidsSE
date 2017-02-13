@@ -16,8 +16,8 @@
 
   thePlan plan.delete
 
-  "removed & deleted plan" .
-  planList::show
+  //"removed & deleted plan" .
+  //planList::show
 ;
 
 /*----------------------------------------------------------------------------*/

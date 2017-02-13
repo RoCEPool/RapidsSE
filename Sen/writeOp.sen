@@ -26,7 +26,7 @@ common/ write nStreams    /
 
   // get file name
   thePlan plan.dic task.this task.dicStack dicPath.push
-  $$fileNm dup .
+  $$fileNm //dup .
   task.this task.dicStack dicPath.drop
 
   // create a file pointer
@@ -38,10 +38,10 @@ common/ write nStreams    /
   // open file for writing
   OPEN_READ_WRITE_CREATE filePointer file.open
   if
-    ": writeOpenFile opened file" .
+    //": writeOpenFile opened file" .
       
     $$nStreams toCommon nStreams
-    nStreams .
+    //nStreams .
     EC_NONE
   else
     0 toCommon filePointer
@@ -56,9 +56,9 @@ common/ write nStreams    /
 
   nStreams 1- toCommon nStreams
 
-  ": writeCloseFile " .put
-  nStreams .put
-  " streams still open" .put .\n
+  //": writeCloseFile " .put
+  //nStreams .put
+  //" streams still open" .put .\n
 
   nStreams
   if
@@ -71,7 +71,7 @@ common/ write nStreams    /
 
   0 toCommon filePointer
 
-  ": writeCloseFile closed file" .
+  //": writeCloseFile closed file" .
 
   true
 ;

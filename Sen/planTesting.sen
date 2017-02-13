@@ -29,12 +29,12 @@
   // execute the plan
   dexPlan executePlan
 
-  "PlanTest waiting for ack" .
+  //"PlanTest waiting for ack" .
 
   // this task waits till ack'd by the responseOp
   ackWait
 
-  "PlanTest got ack" .
+  //"PlanTest got ack" .
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // reap the plan
