@@ -38,7 +38,7 @@
 /*----------------------------------------------------------------------------*/
 : createOpActors
 
-  "createOpActors" .
+  // "createOpActors" .
 
   0 "responseOp" dup :actor actor.spawn
   0 "scanOp"     dup :actor actor.spawn

@@ -133,8 +133,11 @@ tp: >>jobQueue_otherNode
   dup ( plan plan )
 
   plan.dic task.this task.dicStack dicPath.push ( plan )
-  pathDump
-  plan.lambda@ dup . >:
+  //pathDump
+
+  //plan.lambda@ .
+  plan.lambda@ >:
+
   task.this task.dicStack dicPath.drop
 
   0 task.this task.plan!
@@ -169,9 +172,9 @@ tp: distributePlan
 
 tp: distPlanDone
 
-  "NODE %V" grid.thisNodeName@ str.format .
+  //"NODE %V" grid.thisNodeName@ str.format .
 
-  planList::show
+  //planList::show
 
   // compile the plan
   thePlan compilePlan

@@ -60,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 : dexPlanner_distributed ( tableNm fileNm -- dexPlan )
 
-  "dexPlanner_distributed" .
+  //"dexPlanner_distributed" .
 
   locals| fileNm tableNm |
 
