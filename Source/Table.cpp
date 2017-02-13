@@ -163,6 +163,9 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
   
   ASSERT(iPartition < gxArguments.m_nSlots);
   
+  // mark buffer as permanent
+  pRowBuffer->vDurability(RD_PERMANENT);
+  
   Partition* pPartition = this->pPartition(iPartition);
  
   pPartition->vAppendBuffer(pRowBuffer);
