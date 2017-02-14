@@ -15,6 +15,7 @@
 #include "Partition.hpp"
 #include "Slots.hpp"
 
+#include "Data.hpp"
 #include "Ring.hpp"
 
 #include "Table.hpp"
