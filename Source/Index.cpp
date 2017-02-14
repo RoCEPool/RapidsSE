@@ -12,17 +12,17 @@ extern BufferPool*  gpBufferPool;
 void* Index::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Data* pData = nullptr;
+  Index* pIndex = nullptr;
   
-  return pData;
+  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Index::operator delete(void* pDataAddress)
+void Index::operator delete(void* pIndexAddress)
 {
-  RASSERT(pDataAddress);
+  RASSERT(pIndexAddress);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -12,6 +12,7 @@
 
 #include "IndexDefn.hpp"
 #include "Index.hpp"
+#include "IndexLevels.hpp"
 
 #include "Partition.hpp"
 #include "Slots.hpp"
