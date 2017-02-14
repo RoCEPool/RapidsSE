@@ -11,6 +11,7 @@
 #include "RowStrand.hpp"
 
 #include "IndexDefn.hpp"
+#include "Index.hpp"
 
 #include "Partition.hpp"
 #include "Slots.hpp"
