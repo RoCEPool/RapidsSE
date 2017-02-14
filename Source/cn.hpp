@@ -37,9 +37,12 @@ namespace Magic
     /* 16 */ CN_BUFFERPOOL,
     /* 17 */ CN_BPA,
   
+    /*    */ CN_DATA,
     /* 18 */ CN_DIC,
     /* 19 */ CN_DICPATH,
     /* 20 */ CN_DIR,
+  
+    /*    */ CN_ENTRY,
     
     /* 21 */ CN_FILE,
     /* 22 */ CN_FREEBUFFER,
@@ -53,7 +56,10 @@ namespace Magic
     /* 28 */ CN_HEAPBUFFER,
     
     /* 29 */ CN_INDEX,
-    
+    /*    */ CN_INDEXBUFFER,
+    /*    */ CN_INDEXDEFN,
+    /*    */ CN_INDEXLEVELS,
+  
     /* 30 */ CN_JUMBOHEAP,
     
     /* 31 */ CN_KEYCPP,
@@ -163,10 +169,12 @@ namespace Magic
     /* 16 */ "BUFFERPOOL",
     /* 17 */ "BPA",
     
+    /*    */ "DATA",
     /* 18 */ "DIC",
     /* 19 */ "DICPATH",
     /* 20 */ "DIR",
     
+    /* 21 */ "ENTRY",
     /* 21 */ "FILE",
     /* 22 */ "FREEBUFFER",
     /* 23 */ "FREECHUNK",
@@ -179,7 +187,10 @@ namespace Magic
     /* 28 */ "HEAPBUFFER",
     
     /* 29 */ "INDEX",
-    
+    /*    */ "INDEXBUFFER",
+    /*    */ "INDEXDEFN",
+    /*    */ "INDEXLEVELS",
+  
     /* 30 */ "JUMBOHEAP",
     
     /* 31 */ "KEYCPP",

@@ -36,10 +36,12 @@ pDUMPFUN *gpDump[]
   /* 16 */ &Dump::vInvalid,         // CN_BUFFERPOOL
   /* 17 */ &Dump::vInvalid,         // CN_BPA
 
+  /*    */ &Dump::vDummy,           // CN_DATA
   /* 18 */ &Dic::vDump,             // CN_DIC
   /* 19 */ &DicPath::vDump,         // CN_DICPATH
   /* 20 */ &Dump::vInvalid,         // CN_DIR
   
+  /*    */ &Dump::vDummy,           // CN_ENTRY
   /* 21 */ &Dump::vInvalid,         // CN_FILE
   /* 22 */ &Dump::vDummy,           // CN_FREEBUFFER
   /* 23 */ &Dump::vDummy,           // CN_FREECHUNK
@@ -52,7 +54,10 @@ pDUMPFUN *gpDump[]
   /* 28 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
   /* 29 */ &Index::vDump,           // CN_INDEX
-  
+  /*    */ &Dump::vDummy,           // CN_INDEXBUFFER
+  /*    */ &Dump::vDummy,           // CN_INDEXDEFN
+  /*    */ &Dump::vDummy,           // CN_INDEXLEVELS
+
   /* 30 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
   /* 31 */ &KeyCpp::vDump,          // CN_KEYCPP
@@ -162,9 +167,12 @@ i8 giClassSize[]
   /* 16 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 17 */ sizeof(BPA),                // CN_BPA
   
+  /*    */ 0,                          // CN_DATA
   /* 18 */ sizeof(Dic),                // CN_DIC
-  /* 19 */ sizeof(DicPath),           // CN_DICPATH
+  /* 19 */ sizeof(DicPath),            // CN_DICPATH
   /* 20 */ sizeof(Dir),                // CN_DIR
+  
+  /*    */ 0,                          // CN_ENTRY
   
   /* 21 */ sizeof(File),               // CN_FILE
   /* 22 */ sizeof(Buffer),             // CN_FREEBUFFER
@@ -178,6 +186,9 @@ i8 giClassSize[]
   /* 28 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
   /* 29 */ sizeof(Index),              // CN_INDEX
+  /*    */ 0,                          // CN_INDEXBUFFER
+  /*    */ 0,                          // CN_INDEXDEFN
+  /*    */ 0,                          // CN_INDEXLEVELS
   
   /* 30 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
   
@@ -288,9 +299,12 @@ eHT geWhichHeap[]
   /* 16 */ HT_INVALID, // CN_BUFFERPOOL
   /* 17 */ HT_INVALID, // CN_BPA
   
+  /*    */ HT_INVALID, // CN_DATA
   /* 18 */ HT_MEDIUM,  // CN_DIC
   /* 19 */ HT_INVALID, // CN_DICPATH
   /* 20 */ HT_SMALL,   // CN_DIR
+
+  /*    */ HT_INVALID, // CN_ENTRY
   
   /* 21 */ HT_SMALL,   // CN_FILE
   /* 22 */ HT_INVALID, // CN_FREEBUFFER
@@ -304,7 +318,10 @@ eHT geWhichHeap[]
   /* 28 */ HT_LARGE,   // CN_HEAPBUFFER
   
   /* 29 */ HT_INVALID, // CN_INDEX
-  
+  /*    */ HT_INVALID, // CN_INDEXBUFFER
+  /*    */ HT_INVALID, // CN_INDEXDEFN
+  /*    */ HT_INVALID, // CN_INDEXLEVELS
+
   /* 30 */ HT_INVALID, // CN_JUMBOHEAP
   
   /* 31 */ HT_LARGE,   // CN_KEYCPP
