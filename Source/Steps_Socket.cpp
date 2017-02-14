@@ -272,8 +272,9 @@ void Task::vSocketSend(NNP_Task nnpTask)
     
     if ( ! bResult ) {
       
-      // delete the rowbuffer
-      delete pRowBuffer;
+      // delete the rowbuffer if its temporary
+      if (RD_TEMPORARY == pRowBuffer->eDurability())
+        delete pRowBuffer;
       
       //THROW("Unable to sendTo socket: Errno %d!", xSysCall.iError());
       nnpTask->m_pDataStack->vPush((i8)0);
