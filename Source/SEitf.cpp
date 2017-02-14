@@ -346,10 +346,12 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bSame("lfG",pWords[0])) return bGetDicContentsG(pWords);
   if (String::bSame("lscat",pWords[0])) return bListCatalogs(pWords, iWords);
   if (String::bSame("lscol",pWords[0])) return bListColumns(pWords, iWords);
+  if (String::bSame("lsidx",pWords[0])) return bListIndices(pWords, iWords);
   if (String::bSame("lssch",pWords[0])) return bListSchemas(pWords, iWords);
   if (String::bSame("lstbl",pWords[0])) return bListTables(pWords, iWords);
   if (String::bSame("lsten",pWords[0])) return bListTenants(pWords, iWords);
   if (String::bSame("mkcat",pWords[0])) return bCreateCatalog(pWords, iWords);
+  if (String::bSame("mkidx",pWords[0])) return bCreateIndex(pWords, iWords);
   if (String::bSame("mksch",pWords[0])) return bCreateSchema(pWords, iWords);
   if (String::bSame("mktbl",pWords[0])) return bCreateTable(pWords, iWords);
   if (String::bSame("mkten",pWords[0])) return bCreateTenant(pWords, iWords);
@@ -671,6 +673,58 @@ bool SEitf::bUseSchema(char* pWords[], i8 iWords)
   
   String::vConcat(a," use_schema");
   
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* create an index                                                            */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bCreateIndex(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  char* a = sRequest.a();
+  
+  if (iWords != 4) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  String::vCopy(a,"\"");
+  String::vConcat(a,pWords[3]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," \"");
+  String::vConcat(a,pWords[2]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," \"");
+  String::vConcat(a,pWords[1]);
+  String::vConcat(a,"\"");
+  
+  String::vConcat(a," create_index");
+  
+  return bAppendRequest(sRequest);
+}
+
+/*----------------------------------------------------------------------------*/
+/* list indices                                                               */
+/*----------------------------------------------------------------------------*/
+bool SEitf::bListIndices(char* pWords[], i8 iWords)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
+  
+  s256 sRequest;
+  
+  if (iWords != 1) {
+    vSetLastError(EC_INVALID_PARAMETERS);
+    return false;
+  }
+  
+  ASSERT(String::bEqualTo(pWords[0],"lsidx"));
+  sRequest = "list_indices";
   return bAppendRequest(sRequest);
 }
 

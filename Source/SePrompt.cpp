@@ -417,6 +417,9 @@ bool SePrompt::bProcessCommand(bool bPostProcess)
     if (String::bEqualTo("table",m_pToken[1],C_NO_CASE)) {
       return bCreateTable();
     }
+    if (String::bEqualTo("index",m_pToken[1],C_NO_CASE)) {
+      return bCreateIndex();
+    }
   }
   
   if (String::bEqualTo("connectCluster",m_pToken[0],C_NO_CASE)) {
@@ -781,10 +784,12 @@ void SePrompt::vHelp(void)
   vTrace("ls     -- list directory contents\n");
   vTrace("lscat  -- list catalogs contents\n");
   vTrace("lscol  -- list columns\n");
+  vTrace("lsidx  -- list indices\n");
   vTrace("lssch  -- list schemas contents\n");
   vTrace("lstbl  -- list tables contents\n");
   vTrace("lsten  -- list tenants contents\n");
   vTrace("mkcat  -- create catalog\n");
+  vTrace("mkidx  -- create index\n");
   vTrace("mksch  -- create schema\n");
   vTrace("mktbl  -- create table\n");
   vTrace("mkten  -- create tenant\n");
@@ -993,6 +998,74 @@ bool SePrompt::bCreateCatalog(void)
     return false;
   
   //vTrace("Catalog created: %s\n", m_pToken2[2]);
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* create index                                                               */
+/*----------------------------------------------------------------------------*/
+bool SePrompt::bCreateIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  ASSERT(String::bEqualTo(m_pToken[0],"create"));
+  ASSERT(String::bEqualTo(m_pToken[1],"index"));
+  vCollectStatement();
+  
+  i8 iToken;
+  
+  // copy tokens from m_pToken to m_pToken2
+  // while doing that also validate the create statament
+  for (iToken = 0; iToken < C_TOKENS; iToken++) {
+    if (! *m_pToken[iToken])
+      break;
+    String::vCopy(m_pToken2[iToken], m_pToken[iToken]);
+    String::vCopy(m_pToken[iToken], "");
+  }
+  
+  i8 iValue;
+  i8 iNumTokens = iToken;
+  
+  // some validations
+  /// there should be a minumum of 8 tokens
+  if (iNumTokens < 8) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // token[3] should be 'on'
+  if (!String::bEqualTo(m_pToken2[3] , "on")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // token[5] should be '('
+  if (!String::bEqualTo(m_pToken2[5] , "(")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // 7 token should be ')'
+  if (!String::bEqualTo(m_pToken2[7] , ")")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // last token should be ';'
+  if (!String::bEqualTo(m_pToken2[iNumTokens-1] , ";")) {
+    m_pSEitf->vSetLastError(EC_INVALID_COMMAND);
+    return false;
+  }
+  
+  // create the table
+  String::vCopy(m_pToken[0], "mkidx");
+  String::vCopy(m_pToken[1], m_pToken2[2]);
+  String::vCopy(m_pToken[2], m_pToken2[4]);
+  String::vCopy(m_pToken[3], m_pToken2[6]);
+  
+  if (!bExecuteRequest())
+    return false;
+  
   return true;
 }
 

@@ -80,6 +80,7 @@ private:
   bool bChangeWorkingDir(void);
   
   bool bCreateCatalog(void);
+  bool bCreateIndex(void);
   bool bCreateSchema(void);
   bool bCreateTable(void);
   bool bCreateTenant(void);

@@ -8,6 +8,7 @@
 "requests_connection.sen" include
 "requests_tenant.sen"     include
 "requests_catalog.sen"    include
+"requests_index.sen"      include
 "requests_schema.sen"     include
 "requests_table.sen"      include
 "requests_column.sen"     include
@@ -54,10 +55,12 @@ Table Requests:
 antbl   analyze_table
 dantbl  danalyze_table
 gettbl  get_table
+mkidx   create_index
 mktbl   create_table
 lstbl   list_tables
 add     add_column
 lscol   list_columns
+lsidx   list_indices
 ld      load_table
 tblInUse  table_inuse
 sel     select_table
