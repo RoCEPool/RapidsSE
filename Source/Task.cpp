@@ -594,13 +594,13 @@ void Task::vAddConstants(void)
   /* 12 */ vAddConstant("SIZEOF_BUFFERPOOL",   sizeof(BufferPool));
   /* 13 */ vAddConstant("SIZEOF_BPA",          sizeof(BPA));
   /* 14 */ vAddConstant("SIZEOF_DIC",          sizeof(Dic));
-  /* 15 */ vAddConstant("SIZEOF_DICPATH",     sizeof(DicPath));
+  /* 15 */ vAddConstant("SIZEOF_DICPATH",      sizeof(DicPath));
   /* 16 */ vAddConstant("SIZEOF_DIR",          sizeof(Dir));
   /* 17 */ vAddConstant("SIZEOF_FILE",         sizeof(File));
   /* 18 */ vAddConstant("SIZEOF_FREECHUNK",    sizeof(FreeChunk));
   /* 19 */ vAddConstant("SIZEOF_GRID",         sizeof(Grid));
   /* 20 */ vAddConstant("SIZEOF_HEAPBUFFER",   sizeof(HeapBuffer));
-  /* 21 */ vAddConstant("SIZEOF_INDEX",        sizeof(Index));
+  /* 21 */ vAddConstant("SIZEOF_INDEXDEFN",    sizeof(IndexDefn));
   /* 22 */ vAddConstant("SIZEOF_LOADER",       sizeof(Loader));
   /* 23 */ vAddConstant("SIZEOF_LOADERSUB",    sizeof(LoaderSub));
   /* 24 */ vAddConstant("SIZEOF_LOCK",         sizeof(Lock));

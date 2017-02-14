@@ -10,7 +10,7 @@
 #include "RowBuffer.hpp"
 #include "RowStrand.hpp"
 
-#include "Index.hpp"
+#include "IndexDefn.hpp"
 
 #include "Partition.hpp"
 #include "Slots.hpp"

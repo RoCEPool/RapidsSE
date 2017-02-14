@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Index.hpp - Index                                                          */
+/* IndexDefn.hpp - index definition                                           */
 /*============================================================================*/
 
 #pragma once
@@ -20,7 +20,7 @@ namespace DBobjects
     /* 1 */ "SKIP_SEQUENTIAL"
   };
 
-  class Index : public Object
+  class IndexDefn : public Object
   {
   private:
     i8    m_iIndexNo;
@@ -36,8 +36,8 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    Index(const char* pIndexName);
-    ~Index(void);
+    IndexDefn(const char* pIndexName);
+    ~IndexDefn(void);
     
     char* pIndexName(void);
     Footer* pFooter(void);

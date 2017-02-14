@@ -54,9 +54,9 @@ pDUMPFUN *gpDump[]
 
   /* 31 */ &HeapBuffer::vDump,      // CN_HEAPBUFFER
   
-  /* 32 */ &Index::vDump,           // CN_INDEX
+  /* 32 */ &Dump::vDummy,           // CN_INDEX
   /* 33 */ &Dump::vDummy,           // CN_INDEXBUFFER
-  /* 34 */ &Dump::vDummy,           // CN_INDEXDEFN
+  /* 34 */ &IndexDefn::vDump,       // CN_INDEXDEFN
   /* 35 */ &Dump::vDummy,           // CN_INDEXLEVELS
 
   /* 36 */ &Dump::vDummy,           // CN_JUMBOHEAP
@@ -186,9 +186,9 @@ i8 giClassSize[]
   
   /* 31 */ sizeof(HeapBuffer),         // CN_HEAPBUFFER
   
-  /* 32 */ sizeof(Index),              // CN_INDEX
+  /* 32 */ 0,                          // CN_INDEX
   /* 33 */ 0,                          // CN_INDEXBUFFER
-  /* 34 */ 0,                          // CN_INDEXDEFN
+  /* 34 */ sizeof(IndexDefn),          // CN_INDEXDEFN
   /* 35 */ 0,                          // CN_INDEXLEVELS
   
   /* 36 */ sizeof(Heap), // correct    // CN_JUMBOHEAP

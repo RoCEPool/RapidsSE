@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Index.cpp - Table                                                          */
+/* IndexDefn.cpp - index definition                                           */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -9,75 +9,75 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* Index::operator new(size_t iSize)
+void* IndexDefn::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  Index* pIndex = nullptr;
+  IndexDefn* pIndexDefn = nullptr;
   
-  return pIndex;
+  return pIndexDefn;
 }
 
 /*----------------------------------------------------------------------------*/
 /* operator delete                                                            */
 /*----------------------------------------------------------------------------*/
-void Index::operator delete(void* pIndexAddress)
+void IndexDefn::operator delete(void* pIndexDefnAddress)
 {
-  RASSERT(pIndexAddress);
+  RASSERT(pIndexDefnAddress);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Index::Index(const char* pIndexName)
-: Object(CN_INDEX)
+IndexDefn::IndexDefn(const char* pIndexName)
+: Object(CN_INDEXDEFN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN,_FOOTER_);
   
   m_sIndexName = pIndexName;
   
-  _class_(CN_INDEX);
+  _class_(CN_INDEXDEFN);
   
-  _checkInitialised_(CN_INDEX);
+  _checkInitialised_(CN_INDEXDEFN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Index::~Index(void)
+IndexDefn::~IndexDefn(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN,_FOOTER_);
 }
 
-i8    m_iIndexNo;
-s32   m_sIndexName;
-eIT   m_eIndexType;
+i8    m_iIndexDefnNo;
+s32   m_sIndexDefnName;
+eIT   m_eIndexDefnType;
 
 /*----------------------------------------------------------------------------*/
 /* dump index                                                                 */
 /*----------------------------------------------------------------------------*/
-void Index::vDump(eCN eClass, Object* pObject, const char* pTab)
+void IndexDefn::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
-  ASSERT(eClass == CN_INDEX);
-  ASSERT(pObject->eClass() == CN_INDEX);
+  ASSERT(eClass == CN_INDEXDEFN);
+  ASSERT(pObject->eClass() == CN_INDEXDEFN);
   
-  Index* pIndex = reinterpret_cast<Index*>(pObject);
+  IndexDefn* pIndexDefn = reinterpret_cast<IndexDefn*>(pObject);
   
   vTrace("no %lld name %s type %p\n",
-         pIndex->m_iIndexNo,
-         pIndex->m_sIndexName.a(),
-         pIT[pIndex->m_eIndexType]);
+         pIndexDefn->m_iIndexNo,
+         pIndexDefn->m_sIndexName.a(),
+         pIT[pIndexDefn->m_eIndexType]);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the index name                                                         */
 /*----------------------------------------------------------------------------*/
-char* Index::pIndexName(void)
+char* IndexDefn::pIndexName(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN,_FOOTER_);
   
-  return m_sIndexName.a();
+  return m_sIndexDefnName.a();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,9 +87,9 @@ char* Index::pIndexName(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* Index::pFooter(void)
+Footer* IndexDefn::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN);
   
   return &m_xFooter;
 }
