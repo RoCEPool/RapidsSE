@@ -59,6 +59,7 @@ common/ write nStreams    /
   //": writeCloseFile " .put
   //nStreams .put
   //" streams still open" .put .\n
+  "." .put
 
   nStreams
   if
@@ -72,6 +73,8 @@ common/ write nStreams    /
   0 toCommon filePointer
 
   //": writeCloseFile closed file" .
+
+  .\n
 
   true
 ;

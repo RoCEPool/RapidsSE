@@ -106,14 +106,14 @@ void Task::vTaskAck(NNP_Task nnpTask)
     //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
     //           *nnpTask,nnpTask->m_sName.a(),
     //           pThatTask,iMore,pThatTask->m_sName.a());
-    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n",
-           gpGrid->iThisNode(),
-           nnpTask->m_sName.a(),
-           *nnpTask->m_zAcks,
-           nnpTask->m_sComment.a(),
-           
-           pThatTask->m_sName.a(),
-           iMore);
+//    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n",
+//           gpGrid->iThisNode(),
+//           nnpTask->m_sName.a(),
+//           *nnpTask->m_zAcks,
+//           nnpTask->m_sComment.a(),
+//           
+//           pThatTask->m_sName.a(),
+//           iMore);
     
   }
   
