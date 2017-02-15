@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
+/* get bytes required for key                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Key::iBytesRequired(const char* w)
 {
@@ -19,7 +19,7 @@ i8 Key::iBytesRequired(const char* w)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
+/* get bytes required for key                                                 */
 /*----------------------------------------------------------------------------*/
 i8 Key::iBytesRequired(i8 iDataBytes)
 {
@@ -76,7 +76,7 @@ Key::~Key(void)
 /*----------------------------------------------------------------------------*/
 char* Key::pData(void)
 {
-  char* pDataAddr = pcAdd(this,sizeof(Row));
+  char* pDataAddr = pcAdd(this,sizeof(Key));
   
   return pPoolCheck<char*>(pDataAddr);
 }
