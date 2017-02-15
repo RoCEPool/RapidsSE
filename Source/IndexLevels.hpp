@@ -14,6 +14,7 @@ namespace DBobjects
   class IndexLevels : public Object
   {
   private:
+    Lock         m_zLock;          // lock covers all levels
     IndexBuffer* m_pIndexBuffer[C_LEVELS_PER_INDEX];
   
     // must be last

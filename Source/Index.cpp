@@ -53,7 +53,6 @@ Index::Index(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEX,_FOOTER_);
   
   m_pIndexDefn = nullptr;
-  m_zLock.vCheckInit();
   m_pIndexLevels = nullptr;
   
   _checkInitialised_(CN_INDEX);
