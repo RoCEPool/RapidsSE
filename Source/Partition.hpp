@@ -12,8 +12,9 @@ namespace DBobjects
   {
   private:
     i8         m_iPartitionId;   // partition number
+    Data*      m_pData;
+  
 //Data:
-//  Data*      m_pData;
     Lock       m_zLock;          // lock covers all buffers
     i8         m_iRowStrands;    // number of row strands
     RowStrand* m_pHeadStrand;    // first strand in list
@@ -37,12 +38,15 @@ namespace DBobjects
     static i8   iPartitionToSlot(i8 iPartition);
     static i8   iSlotToPartition(i8 iSlot);
 
+    i8          iPartitionId(void);
+    void        vPartitionId(i8 iPartitionId);
+  
+    Data*       pData(void);
+  
     void vAppendBuffer(RowBuffer* pRowBuffer);
     bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
     RowStrand* pHeadStrand(void);
-    i8         iPartitionId(void);
-    void       vPartitionId(i8 iPartitionId);
     RowStrand* pTailStrand(void);
     
     void vTruncate(void);

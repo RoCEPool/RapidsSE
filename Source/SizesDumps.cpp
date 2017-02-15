@@ -168,7 +168,7 @@ i8 giClassSize[]
   /* 17 */ sizeof(BufferPool),         // CN_BUFFERPOOL
   /* 18 */ sizeof(BPA),                // CN_BPA
   
-  /* 19 */ 0,                          // CN_DATA
+  /* 19 */ sizeof(Data),               // CN_DATA
   /* 20 */ sizeof(Dic),                // CN_DIC
   /* 21 */ sizeof(DicPath),            // CN_DICPATH
   /* 22 */ sizeof(Dir),                // CN_DIR
@@ -300,7 +300,7 @@ eHT geWhichHeap[]
   /* 17 */ HT_INVALID, // CN_BUFFERPOOL
   /* 18 */ HT_INVALID, // CN_BPA
   
-  /* 19 */ HT_INVALID, // CN_DATA
+  /* 19 */ HT_SMALL,   // CN_DATA
   /* 20 */ HT_MEDIUM,  // CN_DIC
   /* 21 */ HT_INVALID, // CN_DICPATH
   /* 22 */ HT_SMALL,   // CN_DIR

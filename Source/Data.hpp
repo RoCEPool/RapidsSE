@@ -11,6 +11,10 @@ namespace DBobjects
   class Data : public Object
   {
   private:
+    Lock       m_zLock;          // lock covers all buffers
+    i8         m_iRowStrands;    // number of row strands
+    RowStrand* m_pHeadStrand;    // first strand in list
+    RowStrand* m_pTailStrand;    // last strand in list
   
     // must be last
     Footer m_xFooter;
@@ -23,7 +27,18 @@ namespace DBobjects
     
     Data(void);
     ~Data(void);
+  
+    void vAppendBuffer(RowBuffer* pRowBuffer);
+    bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
     
+    RowStrand* pHeadStrand(void);
+    RowStrand* pTailStrand(void);
+    
+    void vTruncate(void);  
+  
+  private:
+    bool bExtendPartition(void);
+  
     Footer* pFooter(void);
   };
 }

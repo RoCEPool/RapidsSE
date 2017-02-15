@@ -40,6 +40,8 @@ Partition::Partition(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
   
   m_iPartitionId = -1;
+  m_pData        = new Data;
+  
   m_zLock.vCheckInit();
   m_iRowStrands = 0;
   m_pHeadStrand = nullptr;

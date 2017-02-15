@@ -10,6 +10,8 @@
 #include "RowBuffer.hpp"
 #include "RowStrand.hpp"
 
+#include "Data.hpp"
+
 #include "IndexDefn.hpp"
 #include "Index.hpp"
 #include "IndexLevels.hpp"
@@ -19,7 +21,6 @@
 #include "Partition.hpp"
 #include "Slots.hpp"
 
-#include "Data.hpp"
 #include "Ring.hpp"
 
 #include "Table.hpp"
