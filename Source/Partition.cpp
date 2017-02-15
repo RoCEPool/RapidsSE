@@ -42,11 +42,6 @@ Partition::Partition(void)
   m_iPartitionId = -1;
   m_pData        = new Data;
   
-  m_zLock.vCheckInit();
-  m_iRowStrands = 0;
-  m_pHeadStrand = nullptr;
-  m_pTailStrand = nullptr;
-  
   _checkInitialised_(CN_PARTITION);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
@@ -71,10 +66,8 @@ void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   Partition* pPartition = reinterpret_cast<Partition*>(pObject);
   
-  vTrace("strands %lld head %p tail %p\n",
-         pPartition->m_iRowStrands,
-         pPartition->m_pHeadStrand,
-         pPartition->m_pTailStrand);
+  vTrace("Data %p\n",
+         pPartition->m_pData);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,79 +105,11 @@ i8 Partition::iSlotToPartition(i8 iSlot)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append row buffer                                                          */
+/* get data                                                                   */
 /*----------------------------------------------------------------------------*/
-void Partition::vAppendBuffer(RowBuffer* pRowBuffer)
+Data* Partition::pData(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  
-  m_zLock.vGrabWrite();
-  
-  if (! m_pTailStrand) {
-    if (! bExtendPartition()) {
-      m_zLock.vDropWrite();
-      return;
-    }
-  }
-  
-  bool bAppended = m_pTailStrand->bAppendBuffer(pRowBuffer);
-  if (bAppended) {
-    m_zLock.vDropWrite();
-    return;
-  }
-  
-  if (! bExtendPartition()) {
-    m_zLock.vDropWrite();
-    return;
-  }
-  
-  bAppended = m_pTailStrand->bAppendBuffer(pRowBuffer);
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert a row into this strand                                              */
-/*----------------------------------------------------------------------------*/
-bool Partition::bInsertRow(Transactions::TxRef* pTxRef, char* pRecord, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  
-  m_zLock.vGrabWrite();
-  
-  if (! m_pTailStrand) {
-    if (! bExtendPartition()) {
-      m_zLock.vDropWrite();
-      return false;
-    }
-  }
-  
-  bool bInserted = m_pTailStrand->bInsertRow(pTxRef,pRecord,iLength);
-  if (bInserted) {
-    m_zLock.vDropWrite();
-    return true;
-  }
-  
-  if (! bExtendPartition()) {
-    m_zLock.vDropWrite();
-    return false;
-  }
-  
-  bInserted = m_pTailStrand->bInsertRow(pTxRef,pRecord,iLength);
-  ASSERT(bInserted);
-  
-  m_zLock.vDropWrite();
-  
-  return bInserted;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get head strand                                                            */
-/*----------------------------------------------------------------------------*/
-RowStrand* Partition::pHeadStrand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  return m_pHeadStrand;
+  return m_pData;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,78 +126,6 @@ i8 Partition::iPartitionId(void)
 void Partition::vPartitionId(i8 iPartitionId)
 {
   m_iPartitionId = iPartitionId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tail strand                                                            */
-/*----------------------------------------------------------------------------*/
-RowStrand* Partition::pTailStrand(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  return m_pTailStrand;
-}
-
-/*----------------------------------------------------------------------------*/
-/* release all strands                                                        */
-/*----------------------------------------------------------------------------*/
-void Partition::vTruncate(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  
-  m_zLock.vGrabWrite();
-  
-  RowStrand* pNextRowStrand;
-  RowStrand* pRowStrand = m_pHeadStrand;
-  
-  while (pRowStrand) {
-    pRowStrand->vTruncate();
-    pNextRowStrand = pRowStrand->pNextStrand();
-    delete pRowStrand;
-    pRowStrand = pNextRowStrand;
-  }
-  
-  m_iRowStrands = 0;
-  m_pHeadStrand = nullptr;
-  m_pTailStrand = nullptr;
-  
-  m_zLock.vDropWrite();
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* extend this partition                                                      */
-/*----------------------------------------------------------------------------*/
-bool Partition::bExtendPartition(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
-  
-   RowStrand* pNewStrand = new RowStrand;
-  
-  if (! m_pHeadStrand) {
-    ASSERT(! m_iRowStrands);
-    ASSERT(! m_pTailStrand);
-    
-    m_pHeadStrand = pNewStrand;
-    m_pTailStrand = pNewStrand;
-    
-    m_iRowStrands = 1;
-  }
-  else {
-    ASSERT(m_iRowStrands);
-    ASSERT(m_pTailStrand);
-    
-    m_pTailStrand->vNextStrand(pNewStrand);
-    pNewStrand->vPrevStrand(m_pTailStrand);
-    
-    m_pTailStrand = pNewStrand;
-    
-    m_iRowStrands++;
-  }
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

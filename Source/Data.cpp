@@ -74,7 +74,7 @@ void Data::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 void Data::vAppendBuffer(RowBuffer* pRowBuffer)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -106,7 +106,7 @@ void Data::vAppendBuffer(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 bool Data::bInsertRow(Transactions::TxRef* pTxRef, char* pRecord, i8 iLength)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -141,7 +141,7 @@ bool Data::bInsertRow(Transactions::TxRef* pTxRef, char* pRecord, i8 iLength)
 /*----------------------------------------------------------------------------*/
 RowStrand* Data::pHeadStrand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   return m_pHeadStrand;
 }
 
@@ -150,7 +150,7 @@ RowStrand* Data::pHeadStrand(void)
 /*----------------------------------------------------------------------------*/
 RowStrand* Data::pTailStrand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   return m_pTailStrand;
 }
 
@@ -159,7 +159,7 @@ RowStrand* Data::pTailStrand(void)
 /*----------------------------------------------------------------------------*/
 void Data::vTruncate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
   m_zLock.vGrabWrite();
   
@@ -189,7 +189,7 @@ void Data::vTruncate(void)
 /*----------------------------------------------------------------------------*/
 bool Data::bExtendPartition(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DATA,_FOOTER_);
   
   RowStrand* pNewStrand = new RowStrand;
   

@@ -120,7 +120,7 @@ void Table::vAnalyze(bool bDetailed)
     //if (iNode != gxArguments.m_iNode)
     //  continue;
     
-    RowStrand *pStrand = pPartition(iSlot)->pHeadStrand();
+    RowStrand *pStrand = pPartition(iSlot)->pData()->pHeadStrand();
     i8 nRows = 0;
     i8 nBuffers = 0;
     i8 nStrands = 0;
@@ -168,7 +168,7 @@ void Table::vAppendBuffer(i8 iPartition, RowBuffer* pRowBuffer)
   
   Partition* pPartition = this->pPartition(iPartition);
  
-  pPartition->vAppendBuffer(pRowBuffer);
+  pPartition->pData()->vAppendBuffer(pRowBuffer);
   
 }
 
@@ -205,7 +205,7 @@ i8 Table::nRowBuffers(void)
   i8 iBuffers = 0;
 
   for (i8 iPartition = 0; iPartition < gxArguments.m_nSlots; iPartition++) {
-    RowStrand *pStrand = pPartition(iPartition)->pHeadStrand();
+    RowStrand *pStrand = pPartition(iPartition)->pData()->pHeadStrand();
     while (pStrand) {
       iBuffers += pStrand->nRowBuffers();
       pStrand = pStrand->pNextStrand();
@@ -259,7 +259,7 @@ void Table::vInsertRow(i8 iPartition, TxRef* pTxRef, char* pRecord, i8 iLength)
 
   Partition* pPartn = pPartition(iPartition);
   
-  bool bInserted = pPartn->bInsertRow(pTxRef,pRecord,iLength);
+  bool bInserted = pPartn->pData()->bInsertRow(pTxRef,pRecord,iLength);
   
   ASSERT(bInserted);
 }

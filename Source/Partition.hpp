@@ -14,12 +14,6 @@ namespace DBobjects
     i8         m_iPartitionId;   // partition number
     Data*      m_pData;
   
-//Data:
-    Lock       m_zLock;          // lock covers all buffers
-    i8         m_iRowStrands;    // number of row strands
-    RowStrand* m_pHeadStrand;    // first strand in list
-    RowStrand* m_pTailStrand;    // last strand in list
-  
 //Indexes:
 //  Index*     m_pIndex[C_INDEX];
   
@@ -43,16 +37,7 @@ namespace DBobjects
   
     Data*       pData(void);
   
-    void vAppendBuffer(RowBuffer* pRowBuffer);
-    bool bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
-    
-    RowStrand* pHeadStrand(void);
-    RowStrand* pTailStrand(void);
-    
-    void vTruncate(void);
-    
   private:
-    bool bExtendPartition(void);
     Footer* pFooter(void);
   };
 }

@@ -114,7 +114,7 @@ void SelCursor::vFirst(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SELCURSOR,_FOOTER_);
   
   m_pPartition = m_pTable->pPartition(m_iPartition);
-  m_pRowStrand = m_pPartition->pHeadStrand();
+  m_pRowStrand = m_pPartition->pData()->pHeadStrand();
   if (m_pRowStrand) {
     m_pRowBuffer = m_pRowStrand->pFirstBuffer();
     if (m_pRowBuffer)

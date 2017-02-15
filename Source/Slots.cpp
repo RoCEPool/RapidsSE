@@ -77,7 +77,7 @@ void Slots::vTruncate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOTS,_FOOTER_);
   i8 iPartn;
   for (iPartn = 0; iPartn < gxArguments.m_nSlots; iPartn++)
-    m_xPartition[iPartn].vTruncate();
+    m_xPartition[iPartn].pData()->vTruncate();
 }
 
 /*----------------------------------------------------------------------------*/
