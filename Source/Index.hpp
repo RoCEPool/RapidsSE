@@ -11,6 +11,11 @@ namespace DBobjects
   class Index : public Object
   {
   private:
+
+//  IndexDefn*   m_pIndexDefn;
+  
+//  Lock         m_zLock;          // lock covers all levels
+//  IndexLevels* m_pIndexLevels;
   
     // must be last
     Footer m_xFooter;

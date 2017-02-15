@@ -12,11 +12,16 @@ namespace DBobjects
   {
   private:
     i8         m_iPartitionId;   // partition number
+//Data:
+//  Data*      m_pData;
     Lock       m_zLock;          // lock covers all buffers
     i8         m_iRowStrands;    // number of row strands
     RowStrand* m_pHeadStrand;    // first strand in list
     RowStrand* m_pTailStrand;    // last strand in list
-    
+  
+//Indexes:
+//  Index*     m_pIndex[C_INDEX];
+  
     // must be last
     Footer m_xFooter;
     

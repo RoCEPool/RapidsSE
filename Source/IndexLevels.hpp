@@ -11,6 +11,9 @@ namespace DBobjects
   class IndexLevels : public Object
   {
   private:
+
+//
+//  IndexBuffer* m_pIndexBuffer[C_LEVELS];
   
     // must be last
     Footer m_xFooter;
