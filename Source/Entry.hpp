@@ -16,6 +16,9 @@ namespace DBobjects
     // ..data..
     
   public:
+    static i8 iBytesRequired(const char* w);
+    static i8 iBytesRequired(i8 iDataBytes);
+  
     void* operator new(size_t);
     void* operator new(size_t, Entry*);
     
@@ -29,9 +32,6 @@ namespace DBobjects
     i8    iSize(void);
     i8    iTxId(void);
     void  vTxId(i8 iTxId);
-    
-    static i8 iBytesRequired(const char* w);
-    static i8 iBytesRequired(i8 iDataBytes);
     
     Footer* pFooter(void);
   };

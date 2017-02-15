@@ -14,6 +14,7 @@
 #include "Footer.hpp"
 #include "Header.hpp"
 #include "Object.hpp"
+#include "Part.hpp"
 
 #include "s.hpp"
 #include "s32.hpp"
