@@ -26,6 +26,9 @@ namespace DBobjects
     ~Key(void);
     
     void  vContentDump(void);
+  
+    void  vKey(Key& xKey);
+  
     char* pData(void);
     i8    iDataBytes(void);
     void  vDataBytes(i8 iDataBytes);

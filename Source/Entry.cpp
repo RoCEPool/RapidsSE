@@ -9,17 +9,7 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
-/*----------------------------------------------------------------------------*/
-i8 Entry::iBytesRequired(const char* w)
-{
-  i8 iBytes = sizeof(Entry) + sizeof(Footer) + String::iSize(w);
-  
-  return iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get bytes required for row                                                 */
+/* get total bytes required for entry                                         */
 /*----------------------------------------------------------------------------*/
 i8 Entry::iBytesRequired(i8 iDataBytes)
 {
@@ -49,6 +39,7 @@ void* Entry::operator new(size_t iSize)
 void* Entry::operator new(size_t iSize, Entry* pEntry)
 {
   RASSERT(iSize);
+  
   return pEntry;
 }
 
@@ -59,8 +50,8 @@ Entry::Entry(i8 iDataBytes)
 : Header(CN_ENTRY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  m_iTxId      = -1;
+
+  //m_xRowNo
   m_iDataBytes = iDataBytes;
 
   _setFooter_();
@@ -80,6 +71,70 @@ Entry::~Entry(void)
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* show content                                                               */
+/*----------------------------------------------------------------------------*/
+void Entry::vContentDump(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  StrVal* pStr = (StrVal*)pData();
+  
+  vTrace("Entry %p: Row %llu.%llu (%lld databytes)\n",
+         this,
+         m_xRowNo.uBuffer(),
+         m_xRowNo.uRow(),
+         m_iDataBytes
+         );
+}
+
+/*----------------------------------------------------------------------------*/
+/* get rowNo                                                                  */
+/*----------------------------------------------------------------------------*/
+RowNo& Entry::xRowNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  return m_xRowNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rowNo                                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vRowNo(RowNo& xRowNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  m_xRowNo = xRowNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get key                                                                    */
+/*----------------------------------------------------------------------------*/
+Key& Entry::xKey(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Key* pKey = reinterpret_cast<Key*>(pData());
+
+  return reinterpret_cast<Key&>(pKey);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set key                                                                    */
+/*----------------------------------------------------------------------------*/
+void Entry::vKey(Key& xKey)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Key* pKey = reinterpret_cast<Key*>(pData());
+
+  pKey->vKey(xKey);
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -115,25 +170,6 @@ void Entry::vDataBytes(i8 iDataBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump                                                                       */
-/*----------------------------------------------------------------------------*/
-void Entry::vContentDump(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-  
-  StrVal* pStr = (StrVal*)pData();
-  
-  vTrace("Entry %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n",
-         this,
-         m_iTxId,
-         m_iDataBytes,
-         pData(),
-         String::iSize(pData()),
-         pStr->sStr()
-         );
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size in bytes of this row                                              */
 /*----------------------------------------------------------------------------*/
 i8 Entry::iSize(void)
@@ -143,26 +179,6 @@ i8 Entry::iSize(void)
   i8 iBytes = sizeof(Entry) + sizeof(Footer) + m_iDataBytes;
   
   return iBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get tx id                                                                  */
-/*----------------------------------------------------------------------------*/
-i8 Entry::iTxId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-
-  return m_iTxId;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set tx id                                                                  */
-/*----------------------------------------------------------------------------*/
-void Entry::vTxId(i8 iTxId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
-
-  m_iTxId = iTxId;
 }
 
 /*----------------------------------------------------------------------------*/
