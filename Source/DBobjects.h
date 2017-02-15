@@ -13,10 +13,11 @@
 #include "Data.hpp"
 
 #include "IndexDefn.hpp"
-#include "Index.hpp"
-#include "IndexLevels.hpp"
+
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
+#include "IndexLevels.hpp"
+#include "Index.hpp"
 
 #include "Partition.hpp"
 #include "Slots.hpp"

@@ -12,10 +12,10 @@ namespace DBobjects
   {
   private:
 
-//  IndexDefn*   m_pIndexDefn;
+    IndexDefn*   m_pIndexDefn;
   
-//  Lock         m_zLock;          // lock covers all levels
-//  IndexLevels* m_pIndexLevels;
+    Lock         m_zLock;          // lock covers all levels
+    IndexLevels* m_pIndexLevels;
   
     // must be last
     Footer m_xFooter;

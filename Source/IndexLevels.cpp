@@ -7,6 +7,25 @@
 extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump data                                                                  */
+/*----------------------------------------------------------------------------*/
+void IndexLevels::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_INDEXLEVELS);
+  ASSERT(pObject->eClass() == CN_INDEXLEVELS);
+  
+  Data* pData = reinterpret_cast<Data*>(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* IndexLevels::operator new(size_t iSize)
@@ -33,6 +52,9 @@ IndexLevels::IndexLevels(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
+  for (i8 iLevel = 0; iLevel < C_LEVELS_PER_INDEX; iLevel++)
+    m_pIndexBuffer[iLevel] = nullptr;
+  
   _checkInitialised_(CN_INDEXLEVELS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
@@ -47,15 +69,8 @@ IndexLevels::~IndexLevels(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump data                                                                  */
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void IndexLevels::vDump(eCN eClass, Object* pObject, const char* pTab)
-{
-  ASSERT(eClass == CN_INDEXLEVELS);
-  ASSERT(pObject->eClass() == CN_INDEXLEVELS);
-  
-  Data* pData = reinterpret_cast<Data*>(pObject);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
