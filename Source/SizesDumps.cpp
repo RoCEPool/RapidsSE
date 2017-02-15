@@ -61,8 +61,8 @@ pDUMPFUN *gpDump[]
 
   /* 36 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
-  /* 37 */ &KeyCpp::vDump,          // CN_KEYCPP
-  /* 38 */ &KeyVal::vDump,          // CN_KEYVAL
+  /* 37 */ &Dump::vDummy,          // CN_KEYCPP
+  /* 38 */ &Dump::vDummy,          // CN_KEYVAL
   
   /* 39 */ &LoadChunk::vDump,       // CN_LOADCHUNK
   /* 40 */ &Loader::vDump,          // CN_LOADER
@@ -193,8 +193,8 @@ i8 giClassSize[]
   
   /* 36 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
   
-  /* 37 */ sizeof(KeyCpp),             // CN_KEYCPP
-  /* 38 */ sizeof(KeyVal),             // CN_KEYVAL
+  /* 37 */ 0,                          // CN_KEYCPP
+  /* 38 */ 0,                          // CN_KEYVAL
   
   /* 39 */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 40 */ sizeof(Loader),             // CN_LOADER
