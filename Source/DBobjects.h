@@ -14,6 +14,7 @@
 
 #include "IndexDefn.hpp"
 
+#include "Key.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
 #include "IndexLevels.hpp"

@@ -89,7 +89,7 @@ char* Entry::pData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  char* pDataAddr = pcAdd(this,sizeof(Row));
+  char* pDataAddr = pcAdd(this,sizeof(Entry));
   
   return pPoolCheck<char*>(pDataAddr);
 }
@@ -140,7 +140,7 @@ i8 Entry::iSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  i8 iBytes = sizeof(Row) + sizeof(Footer) + m_iDataBytes;
+  i8 iBytes = sizeof(Entry) + sizeof(Footer) + m_iDataBytes;
   
   return iBytes;
 }
