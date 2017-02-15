@@ -10,6 +10,58 @@ extern Grid*        gpGrid;
 extern AttachMap*   gpAttachMap;
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dump partition                                                             */
+/*----------------------------------------------------------------------------*/
+void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
+{
+  ASSERT(eClass == CN_PARTITION);
+  ASSERT(pObject->eClass() == CN_PARTITION);
+  
+  Partition* pPartition = reinterpret_cast<Partition*>(pObject);
+  
+  vTrace("Data %p\n",
+         pPartition->m_pData);
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert partition number to node number                                    */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iPartitionToNode(i8 iPartition)
+{
+  i8 iNode = iPartition % gpGrid->iNodes();
+  
+  return iNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert partition number to slot number                                    */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iPartitionToSlot(i8 iPartition)
+{
+  i8 iSlot = iPartition / gpGrid->iNodes();
+  
+  return iSlot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert slot number to partition number                                    */
+/*----------------------------------------------------------------------------*/
+i8 Partition::iSlotToPartition(i8 iSlot)
+{
+  i8 iPartition = (iSlot * gpGrid->iNodes()) + gpGrid->iThisNode();
+  
+  return iPartition;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* Partition::operator new(size_t iSize)
@@ -42,6 +94,9 @@ Partition::Partition(void)
   m_iPartitionId = -1;
   m_pData        = new Data;
   
+  for (i8 iIndex = 0; iIndex < C_INDEXES_PER_TABLE; iIndex++)
+    m_pIndex[iIndex] = nullptr;
+  
   _checkInitialised_(CN_PARTITION);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PARTITION,_FOOTER_);
@@ -57,60 +112,8 @@ Partition::~Partition(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump partition                                                             */
-/*----------------------------------------------------------------------------*/
-void Partition::vDump(eCN eClass, Object* pObject, const char* pTab)
-{
-  ASSERT(eClass == CN_PARTITION);
-  ASSERT(pObject->eClass() == CN_PARTITION);
-  
-  Partition* pPartition = reinterpret_cast<Partition*>(pObject);
-  
-  vTrace("Data %p\n",
-         pPartition->m_pData);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert partition number to node number                                    */
-/*----------------------------------------------------------------------------*/
-i8 Partition::iPartitionToNode(i8 iPartition)
-{
-  i8 iNode = iPartition % gpGrid->iNodes();
-
-  return iNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert partition number to slot number                                    */
-/*----------------------------------------------------------------------------*/
-i8 Partition::iPartitionToSlot(i8 iPartition)
-{
-  i8 iSlot = iPartition / gpGrid->iNodes();
-  
-  return iSlot;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert slot number to partition number                                    */
-/*----------------------------------------------------------------------------*/
-i8 Partition::iSlotToPartition(i8 iSlot)
-{
-  i8 iPartition = (iSlot * gpGrid->iNodes()) + gpGrid->iThisNode();
-  
-  return iPartition;
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get data                                                                   */
-/*----------------------------------------------------------------------------*/
-Data* Partition::pData(void)
-{
-  return m_pData;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get this partitions partitionId                                            */
@@ -126,6 +129,22 @@ i8 Partition::iPartitionId(void)
 void Partition::vPartitionId(i8 iPartitionId)
 {
   m_iPartitionId = iPartitionId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get data                                                                   */
+/*----------------------------------------------------------------------------*/
+Data* Partition::pData(void)
+{
+  return m_pData;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get index                                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Partition::pIndex(i8 iIndex)
+{
+  return m_pIndex[iIndex];
 }
 
 /*----------------------------------------------------------------------------*/

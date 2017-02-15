@@ -181,7 +181,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     /*
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nSlots = String::iToI8(argv[++iArg]);
-      if (m_nSlots > C_MAX_SLOTS_PER_NODE) {
+      if (m_nSlots > C_SLOTS_PER_NODE) {
         vTrace("Maximum number of partitions allowed per node is %lld\n",
           C_MAX_PARTITIONS_PER_NODE);
         return false;

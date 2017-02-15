@@ -83,7 +83,7 @@ void Grid::vInit(void)
   m_bTraceapi   = gxArguments.m_bTraceapi;
   
   // initialize the partition array
-  for (i8 iPartition = 0; iPartition < C_MAX_SLOTS_PER_NODE; iPartition++) {
+  for (i8 iPartition = 0; iPartition < C_SLOTS_PER_NODE; iPartition++) {
     m_iPartition[iPartition] = -1;
   }
 }
