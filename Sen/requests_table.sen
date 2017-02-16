@@ -18,11 +18,11 @@ ddlLock.grabWrite
 
   tp ( "<tableNm>" )
 
-  analyzeTable ( ) assert.stack_0
+  analyzeTable ( )
 
   tp: analyzedTable
 
-  <OK>
+  <SUCCESS>
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -39,11 +39,11 @@ ddlLock.grabWrite
 
   tp ( "<tableNm>" )
 
-  danalyzeTable ( ) assert.stack_0
+  danalyzeTable ( )
 
   tp: danalyzedTable
 
-  <OK>
+  <SUCCESS>
 ;
 
 

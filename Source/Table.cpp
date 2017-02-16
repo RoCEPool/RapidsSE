@@ -102,16 +102,17 @@ Table::~Table(void)
 /*----------------------------------------------------------------------------*/
 /*analyze table                                                               */
 /*----------------------------------------------------------------------------*/
-void Table::vAnalyze(bool bDetailed)
+char* Table::pAnalyze(bool bDetailed)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  vTrace("N%lld: Analysis of Table %s\n",gpGrid->iThisNode(),m_sTableName.a());
-
   i8 nRowsTotal = 0;
   i8 nBuffersTotal = 0;
   i8 nStrandsTotal = 0;
+  s48K sAnalysis;
   
+  String::vSprintCat(sAnalysis.a(),"N%lld: Analysis of Table %s\n",gpGrid->iThisNode(),m_sTableName.a());
+
   for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
     
     i8 iPartition = Partition::iSlotToPartition(iSlot);
@@ -135,7 +136,8 @@ void Table::vAnalyze(bool bDetailed)
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nRows();
           pRowBuffer = pRowBuffer->pNextBuffer();
-          vTrace("   strand:%lld rowBuffer%lld: %lld rows\n", nStrands, nRowBuffer, nRowsInBuffer);
+          String::vSprintCat(sAnalysis.a(),
+              "   strand:%lld rowBuffer%lld: %lld rows\n", nStrands, nRowBuffer, nRowsInBuffer);
         }
       }
       
@@ -144,14 +146,16 @@ void Table::vAnalyze(bool bDetailed)
       pStrand = pStrand->pNextStrand();
     }
     
-    vTrace("  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
+    String::vSprintCat(sAnalysis.a(),"  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
            iPartition,nStrands,nBuffers,nRows);
     nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
     nStrandsTotal += nStrands;
   }
-  vTrace("        total: %3lld strands; %5lld buffers; %lld rows\n",
+  String::vSprintCat(sAnalysis.a(),"        total: %3lld strands; %5lld buffers; %lld rows\n",
          nStrandsTotal,nBuffersTotal,nRowsTotal);
+  
+  return sAnalysis.a();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -66,7 +66,9 @@ void Task::vTableAnalyze(NNP_Task nnpTask)
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
-  pTable->vAnalyze(iDetailed == 1 ? true : false);
+  s48K sAnalysis;
+  sAnalysis = pTable->pAnalyze(iDetailed == 1 ? true : false);
+  nnpTask->m_pDataStack->vPush(sAnalysis);
   
   EXIT();
 }
@@ -298,14 +300,13 @@ ENTRY("vTableSpace");
   
   Object* pPtrTable;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTable) )
-    THROW_INVALID_DSTACK("table.spave");
+    THROW_INVALID_DSTACK("table.space");
   
   Table* pTable = _pTable(pPtrTable);
   ASSERT(CN_TABLE == pTable->eClass());
   
   i8 nBuffers = pTable->nRowBuffers();
   i8 iSpace   = nBuffers * C_SIZE_POOL_BUFFER;
-  s256 sMag;
   
   nnpTask->m_pDataStack->vPush(iSpace);
   
