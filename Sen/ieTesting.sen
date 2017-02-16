@@ -11,7 +11,14 @@
 
   "IE testing" .
 
-  index::entryTest
+  // generate rows, calling entry test
+  10 0 do
+
+    16 str.random I "%v|%v|" str.format
+
+    index::entryTest
+
+  loop
 ;
 
 /*============================================================================*/

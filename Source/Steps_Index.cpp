@@ -44,7 +44,12 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
 {
   ENTRY("vIndexEntryTest");
   
-  vTrace("index::entryTest -- test (a)\n");
+  s48K sRow;
+  if ( ! nnpTask->m_pDataStack->bPop(sRow) )
+    THROW_INVALID_DSTACK("index::entryTest");
+
+  vTrace("index::entryTest -- %s\n",sRow.a());
+  
   EXIT();
 }
 
