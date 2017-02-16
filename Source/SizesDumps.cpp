@@ -62,8 +62,8 @@ pDUMPFUN *gpDump[]
 
   /* 36 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
-  /* 37 */ &Dump::vDummy,           // CN_KEYCPP
-  /* 38 */ &Dump::vDummy,           // CN_KEYVAL
+  /* 37 */ &Dump::vInvalid,         // CN_KEYCPP
+  /* 38 */ &Dump::vInvalid,         // CN_KEYWSP
   
   /* 39 */ &LoadChunk::vDump,       // CN_LOADCHUNK
   /* 40 */ &Loader::vDump,          // CN_LOADER
@@ -196,7 +196,7 @@ i8 giClassSize[]
   /* 36 */ sizeof(Heap), // correct    // CN_JUMBOHEAP
   
   /* 37 */ 0,                          // CN_KEYCPP
-  /* 38 */ 0,                          // CN_KEYVAL
+  /* 38 */ sizeof(KeyWsp),             // CN_KEYWSP
   
   /* 39 */ sizeof(LoadChunk),          // CN_LOADCHUNK
   /* 40 */ sizeof(Loader),             // CN_LOADER
@@ -329,7 +329,7 @@ eHT geWhichHeap[]
   /* 36 */ HT_INVALID, // CN_JUMBOHEAP
   
   /* 37 */ HT_LARGE,   // CN_KEYCPP
-  /* 38 */ HT_LARGE,   // CN_KEYVAL
+  /* 38 */ HT_INVALID, // CN_KEYWSP
 
   /* 39 */ HT_LARGE,   // CN_LOADCHUNK
   /* 40 */ HT_MEDIUM,  // CN_LOADER

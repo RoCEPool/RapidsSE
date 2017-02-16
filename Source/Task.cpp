@@ -436,7 +436,7 @@ void Task::vAddConstants(void)
   /* 29 */ vAddConstant("CN_JUMBOHEAP",    CN_JUMBOHEAP);
 
   /* 30 */ vAddConstant("CN_KEYCPP",       CN_KEYCPP);
-  /* 31 */ vAddConstant("CN_KEYVAL",       CN_KEYVAL);
+  /* 31 */ vAddConstant("CN_KEYWSP",       CN_KEYWSP);
   
   /* 32 */ vAddConstant("CN_LOADCHUNK",    CN_LOADCHUNK);
   /* 33 */ vAddConstant("CN_LOADER",       CN_LOADER);

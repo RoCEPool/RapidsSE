@@ -64,7 +64,7 @@ namespace Magic
     /* 36 */ CN_JUMBOHEAP,
     
     /* 37 */ CN_KEYCPP,         // no longer used
-    /* 38 */ CN_KEYVAL,         // no longer used
+    /* 38 */ CN_KEYWSP,
   
     /* 39 */ CN_LOADCHUNK,
     /* 40 */ CN_LOADER,
