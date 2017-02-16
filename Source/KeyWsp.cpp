@@ -32,18 +32,18 @@ void* KeyWsp::operator new(size_t iSize, KeyWsp* pKeyWsp)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 KeyWsp::KeyWsp(void)
-: Header(CN_ENTWSP)
+: Header(CN_KEYWSP)
 {
-  _precondition_(_MAGIC_,CN_ENTWSP);
+  _precondition_(_MAGIC_,CN_KEYWSP);
 
   //m_xRowId
   m_iDataBytes = 0;
 
-  _setFooter_();
+  //_setFooter_();
   
   _checkInitialisedSize_(sizeof(KeyWsp));
   
-  _postcondition_(_MAGIC_,CN_ENTWSP,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -51,7 +51,7 @@ KeyWsp::KeyWsp(void)
 /*----------------------------------------------------------------------------*/
 KeyWsp::~KeyWsp(void)
 {
-  _precondition_(_MAGIC_,CN_ENTWSP,_FOOTER_);
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,6 +69,13 @@ void KeyWsp::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add element to key                                                         */
+/*----------------------------------------------------------------------------*/
+void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
+{
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -77,12 +84,9 @@ void KeyWsp::vShow(void)
 /*----------------------------------------------------------------------------*/
 Footer* KeyWsp::pFooter(void)
 {
-  _precondition_(_MAGIC_,CN_ENTWSP);
+  _precondition_(_MAGIC_,CN_KEYWSP);
   
-  Footer* pFooter = static_cast<Footer*>(
-                      pvAdd(this,sizeof(KeyWsp) + m_iDataBytes));
-  
-  return pFooter;
+  return &m_xFooter;
 }
 
 /*============================================================================*/

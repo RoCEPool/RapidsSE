@@ -26,7 +26,9 @@ namespace DBobjects
     ~KeyWsp(void);
   
     void vShow(void);
-    
+
+    void vAddElement(ValWsp& xValWsp);
+
     Footer* pFooter(void);
   };
 }

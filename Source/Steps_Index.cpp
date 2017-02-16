@@ -50,16 +50,29 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
 
   vTrace("index::entryTest -- %s\n",sRow.a());
   
-  RowId xRowId;
   EntWsp xEntWsp;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set rowId
+  RowId xRowId;
   i8 iRowId = String::iToI8(sRow.a());
   
   xRowId.vBuffer(999);
   xRowId.vRow(iRowId);
-  
   xEntWsp.vRowId(xRowId);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add key
+  KeyWsp xKeyWsp;
+  ValWsp xValWsp;
   
+  i8 iKey0 = String::iToI8(sRow.a());
+  xValWsp = iKey0;
+  
+  xKeyWsp.vAddElement(xValWsp);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show
   xEntWsp.vShow();
   
   EXIT();

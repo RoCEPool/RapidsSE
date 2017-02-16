@@ -97,10 +97,7 @@ Footer* EntWsp::pFooter(void)
 {
   _precondition_(_MAGIC_,CN_ENTWSP);
   
-  Footer* pFooter = static_cast<Footer*>(
-                      pvAdd(this,sizeof(EntWsp) + m_iDataBytes));
-  
-  return pFooter;
+  return &m_xFooter;
 }
 
 /*============================================================================*/
