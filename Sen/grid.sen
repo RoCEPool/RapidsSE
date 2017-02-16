@@ -102,13 +102,19 @@ tp: printResult
     // concatenate the results resturned
     0 do  ( s n# t | s n# f .... )
 
+      I 0 == if
+        ""
+      then
+
+      3 roll ( " " s n# t )
+
       assert // should be true
 
-      grid.node node.name "%v: %v" str.format
+      grid.node node.name  ( " " s nodeName )
 
-      I 0 == if
-        " "
-      then
+      swap
+
+     "%v: %v\n" str.format
 
       str.cat
 
