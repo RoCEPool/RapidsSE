@@ -309,6 +309,8 @@ namespace Tasks
     // bp
     static void vBpAnalyze(NNP_Task nnpTask);
     static void vBpDump(NNP_Task nnpTask);
+    static void vBpEpochDump(NNP_Task nnpTask);
+    static void vBpEpochTake(NNP_Task nnpTask);
     static void vFreeBuffers(NNP_Task nnpTask);
     static void vFreePercent(NNP_Task nnpTask);
     static void vFreeSpace(NNP_Task nnpTask);
