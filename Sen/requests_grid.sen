@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* get status of nodes in the grid (run by participant)                       */
 /*----------------------------------------------------------------------------*/
-: get_status allParticipants 0 printResult ( -- str n# true )
+: get_status allParticipants 0 returnResult ( -- str n# true )
 
 tp: gettingStatus
 
@@ -25,9 +25,9 @@ tp: gettingStatus
 /*----------------------------------------------------------------------------*/
 : status ( -- <R> )
 
-  get_status ( ) assert.stack_0
+  get_status ( str )
 
-  <OK>
+  <SUCCESS>
 ;
 
 /*============================================================================*/

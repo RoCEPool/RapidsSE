@@ -92,6 +92,54 @@ tp: printResult
 /*----------------------------------------------------------------------------*/
 /* print grid result                                                          */
 /*----------------------------------------------------------------------------*/
+: returnResult ( s n# t | ec n# f .... nn t/f )
+
+  tp: printResult
+
+  // was the final result true ?
+  true == if ( s n# t | ec n# f .... nn )
+
+    // concatenate the results resturned
+    0 do  ( s n# t | s n# f .... )
+
+      assert // should be true
+
+      grid.node node.name "%v: %v" str.format
+
+      I 0 == if
+        " "
+      then
+
+      str.cat
+
+  loop
+
+  else
+
+    // lets see which node failed
+    0 do  ( s n# t | ec n# f .... )
+
+    false == if ( s n# t | ec n# )
+
+      swap error.msg swap
+      grid.node node.name
+      "%v ERROR: %v" str.format
+
+    else
+
+      drop drop
+
+    then
+
+  loop
+
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* print grid result                                                          */
+/*----------------------------------------------------------------------------*/
 : printFile ( NodeObject n# t | ec n# f .... nn t/f )
 
   tp: printFile
