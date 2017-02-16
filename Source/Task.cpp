@@ -757,6 +757,7 @@ void Task::vAddPrimitives(void)
   vAddPrimitives_File();
   vAddPrimitives_Flow();
   vAddPrimitives_Grid();
+  vAddPrimitives_Index();
   vAddPrimitives_Input();
   vAddPrimitives_Int();
   vAddPrimitives_Loader();

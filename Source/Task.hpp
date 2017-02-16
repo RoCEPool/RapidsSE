@@ -203,6 +203,7 @@ namespace Tasks
     void vAddPrimitives_File(void);
     void vAddPrimitives_Flow(void);
     void vAddPrimitives_Grid(void);
+    void vAddPrimitives_Index(void);
     void vAddPrimitives_Input(void);
     void vAddPrimitives_Int(void);
     void vAddPrimitives_Loader(void);
@@ -509,6 +510,9 @@ namespace Tasks
     static void vGridToNode(NNP_Task nnpTask);
     static void vGridToPartition(NNP_Task nnpTask);
     static void vGridToSlot(NNP_Task nnpTask);
+  
+    // index
+    static void vIndexEntryTest(NNP_Task nnpTask);
   
     // input
     static void vInputAccept(NNP_Task nnpTask);
