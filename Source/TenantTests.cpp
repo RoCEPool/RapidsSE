@@ -12,6 +12,9 @@ void TenantTests::vRun(RunTests* pRunTests)
   s256 sCommand;
   s256 sResponse;
   
+  sCommand = "docol epochTake";
+  vRequire(sCommand, true, EC_NONE);
+  
   // start with /tenants folder
   sCommand = "cf ~";
   vRequire(sCommand, true, EC_NONE);
@@ -32,17 +35,41 @@ void TenantTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, false, EC_INVALID_COMMAND);
   
   sCommand = "drop tenant ten;";
+  vRequire(sCommand, false, EC_FOLDER_NOT_EMPTY);
+  
+  sCommand = "cf ten ";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf catalogs";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop tenant ten;";
-  vRequire(sCommand, false, EC_NO_SUCH_TENANT);                        // ?? CHECK
+  vRequire(sCommand, false, EC_NOT_IN_TENANTS);
+  
+  sCommand = "cf .. ";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop tenant ten;";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop tenant ten;";
+  vRequire(sCommand, false, EC_NO_SUCH_WORD);
   
   sCommand = "create tenant x;";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "lsten";
-  sResponse = "x ";
+  sResponse = "x boray ";
   vRequire(sCommand, true, EC_NONE, sResponse);
+  
+  sCommand = "cf x ";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf catalogs";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf .. ";
+  vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop tenant x;";
   vRequire(sCommand, true, EC_NONE);

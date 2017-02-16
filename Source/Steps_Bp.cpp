@@ -29,6 +29,8 @@ extern Lock            gxDdlLock;
 extern Lock            gxDicLock;
 extern SEitfList*      gpSEitfList;
 
+i8 giCountObjects[CN_ENUMS];
+
 // bp: /////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +51,9 @@ void Task::vAddPrimitives_Bp(void)
 
   vAddPrimitive("bpa",             &vBpAnalyze,        false);
   vAddPrimitive("bpd",             &vBpDump,           false);
+ 
+  vAddPrimitive("epochDump",       &vBpEpochDump,      false);
+  vAddPrimitive("epochTake",       &vBpEpochTake,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +85,50 @@ void Task::vBpDump(NNP_Task nnpTask)
   
   delete pBPA;
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* epochDump -- dump an epoch                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vBpEpochDump(NNP_Task nnpTask)
+{
+  ENTRY("vBpEpochDump");
+  
+  BPA* pBPA = new BPA;
+  i8 iCountObjects[CN_ENUMS];
+  
+  vTrace("\n");
+  vTrace("%sWords created since last epoch:\n",pSingleTab());
+  
+  pBPA->vWordList(gpAttachMap->m_iEpoch);
+  pBPA->vObjectSnapshot(&iCountObjects[0]);
+  
+  vTrace("\n%sObjects created since last epoch:\n\n",pSingleTab());
+  
+  for (i8 iIndex =0 ; iIndex < CN_ENUMS; iIndex++) {
+    if (iCountObjects[iIndex] != giCountObjects[iIndex])
+      vTrace("%s  %12s %-6lld \n", pSingleTab(), pCN[iIndex],
+             iCountObjects[iIndex] - giCountObjects[iIndex]);
+  }
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* epochTake -- take an epoch                                                 */
+/*----------------------------------------------------------------------------*/
+void Task::vBpEpochTake(NNP_Task nnpTask)
+{
+  ENTRY("vBpEpochTake");
+  
+  // increment the epoch
+  gpAttachMap->m_iEpoch++;
+  BPA* pBPA = new BPA;
+  
+  pBPA->vObjectSnapshot(&giCountObjects[0]);
+  
+  vTrace("%sWords created since last epoch:\n",pSingleTab());
+
   EXIT();
 }
 

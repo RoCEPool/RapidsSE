@@ -265,33 +265,29 @@ int: queryCount
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-: analyzeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
+: analyzeTable allParticipants 1 returnResult ( "<tableNm>" -- true n# true )
 
 tp: analyzeTable
-
-  dup
 
   find execute
 
   0 table.analyze
 
-  true <SUCCESS_RESULT>
+  <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/
 /* analyze a table                                                            */
 /*----------------------------------------------------------------------------*/
-: danalyzeTable allParticipants 1 checkResult ( "<tableNm>" -- true n# true )
+: danalyzeTable allParticipants 1 returnResult ( "<tableNm>" -- true n# true )
 
   tp: danalyzeTable
-
-  dup
 
   find execute
 
   1 table.analyze
 
-  true <SUCCESS_RESULT>
+  <SUCCESS_RESULT>
 ;
 
 /*----------------------------------------------------------------------------*/

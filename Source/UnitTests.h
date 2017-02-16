@@ -7,6 +7,8 @@
 #include "SePrompt.hpp"
 #include "RunTests.hpp"
 #include "Tests.hpp"
+#include "EndTests.hpp"
+#include "StartTests.hpp"
 #include "TenantTests.hpp"
 #include "CatalogTests.hpp"
 #include "SchemaTests.hpp"

@@ -26,25 +26,34 @@ RunTests::~RunTests(void) {
 /*----------------------------------------------------------------------------*/
 void RunTests::vRunTests(void) {
   
-  vTrace("\n\nRunning Unit Tests...\n");
+  vTrace("Running Unit Tests...\n");
+  
+  //ClusterTests* pClusterTests
+/*
+  StartTests* pStartTests = new StartTests();
+  pStartTests->vRun(this);
   
   TenantTests* pTenantTests = new TenantTests();
   pTenantTests->vRun(this);
-  
+
   CatalogTests* pCatalogTests = new CatalogTests();
   pCatalogTests->vRun(this);
-  
+
   SchemaTests* pSchemaTests = new SchemaTests();
   pSchemaTests->vRun(this);
-  
+*/
   TableTests* pTableTests = new TableTests();
   pTableTests->vRun(this);
-
+/*
   InsertTests* pInsertTests = new InsertTests();
   pInsertTests->vRun(this);
   
   LoadTests* pLoadTests = new LoadTests();
   pLoadTests->vRun(this);
+*/
+  
+  EndTests* pEndTests = new EndTests();
+  pEndTests->vRun(this);
   
   vTrace("\n--------------------------------------\n");
   vTrace("Total Tests Executed : %lld\n", m_iTestsTotal);

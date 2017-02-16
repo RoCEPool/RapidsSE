@@ -43,7 +43,7 @@
 /*----------------------------------------------------------------------------*/
 /* get space in the pool (run by participant)                                 */
 /*----------------------------------------------------------------------------*/
-: get_space allParticipants 0 printResult ( -- str n# true )
+: get_space allParticipants 0 returnResult ( -- str n# true )
 
 tp: gettingSpace
 
@@ -65,9 +65,9 @@ tp: gettingSpace
 /*----------------------------------------------------------------------------*/
 : space ( -- <R> )
 
-  get_space ( ) assert.stack_0
+  get_space ( str )
 
-  <OK>
+  <SUCCESS>
 ;
 
 /*============================================================================*/

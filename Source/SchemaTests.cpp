@@ -70,18 +70,42 @@ void SchemaTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, false, EC_SCHEMA_EXISTS);
 
   sCommand = "drop schema sch;";
+  vRequire(sCommand, false, EC_FOLDER_NOT_EMPTY);
+  
+  sCommand = "cf sch";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf tables";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop schema sch;";
-  vRequire(sCommand, false, EC_NO_SUCH_SCHEMA);                         //??CHECK
-  
-  sCommand = "create schema x;";
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "drop schema x;";
+  sCommand = "drop schema sch;";
+  vRequire(sCommand, false, EC_NO_SUCH_WORD);                         //??CHECK
+  
+  sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf ~";
+  sCommand = "rf schemas";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop catalog cat;";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf catalogs";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop tenant ten;";

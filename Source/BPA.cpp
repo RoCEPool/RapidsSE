@@ -113,6 +113,58 @@ void BPA::vHeapDump(Heap* pHeap)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dump all objects in given heap                                             */
+/*----------------------------------------------------------------------------*/
+void BPA::vHeapDump(Heap* pHeap, i8 iEpoch)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  HeapBuffer* pHeapBuffer;
+  
+  vTrace("\n");
+  vTrace("%sWords in %s Heap:\n",
+         pDoubleTab(),
+         pHeap->iObjectSize() == C_SIZE_SMALL_OBJECT ? "Small" : "Medium");
+  
+  pHeap->vGrabLock();
+  
+  for (pHeapBuffer = pHeap->pFirstBuffer();
+       pHeapBuffer;
+       pHeapBuffer = pHeapBuffer->pNextBuffer()) {
+    for (FreeChunk* pChunk = pHeapBuffer->pFirstChunk();
+         pChunk;
+         pChunk = pHeapBuffer->pNextChunk(pChunk,pHeap->iObjectSize())) {
+      
+      eCN eClass = pChunk->eClass();
+      
+      if (CN_FREECHUNK == eClass)
+        continue;
+      
+      if (CN_WORD != eClass)
+        continue;
+      
+      Word* pWord = _pWord(pChunk);
+      
+      // dump only the objects
+      if (WT_OBJECT != pWord->eWordType())
+        continue;
+      
+      // dump only object created in last epoch
+      if (pWord->iEpoch() != iEpoch)
+        continue;
+      
+      pDUMPFUN* pDumpFun = gpDump[eClass];
+      
+      vTrace("%s%p %-12s: ",pDoubleTab(),pHeap,pCN[eClass]);
+      
+      (pDumpFun)(eClass, pChunk, pDoubleTab());
+    }
+  }
+  
+  pHeap->vDropLock();
+}
+
+/*----------------------------------------------------------------------------*/
 /* list all objects                                                           */
 /*----------------------------------------------------------------------------*/
 void BPA::vObjectList(void)
@@ -224,6 +276,30 @@ void BPA::vObjectSummary(void)
 //    
 //    vTrace("  %12s %-6lld \n", pCN[eClass], iCountObjects[eClass]);
 //  }
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* summary report on objects in the pool                                      */
+/*----------------------------------------------------------------------------*/
+void BPA::vObjectSnapshot(i8* pCountObjects)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  for (i8 index = 0; index < CN_ENUMS; index++)
+    pCountObjects[index] = 0;
+  
+  bn nBuffer = 0;
+  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
+  
+  for (bn nBuffer = gpBufferPool->nBufferFirst();
+       nBuffer <= nBufferCount;
+       nBuffer++) {
+    
+    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    pCountObjects[pBuffer->eClass()]++;
+  }
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }
@@ -343,6 +419,39 @@ void BPA::vResourceSummary(void)
          *gzSocketOpenCount,
          *gzThreadOpenCount);
   vTrace("****************************************************************\n");
+  
+  _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* list all words created since last epoch                                    */
+/*----------------------------------------------------------------------------*/
+void BPA::vWordList(i8 iEpoch)
+{
+  _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
+  
+  Buffer* pMediumHeap = nullptr;
+  Buffer* pSmallHeap  = nullptr;
+  
+  bn nBufferCount = gpBufferPool->m_nBuffers - 1;
+  for (bn nBuffer = gpBufferPool->nBufferFirst();
+       nBuffer <= nBufferCount;
+       nBuffer++) {
+    
+    Buffer* pBuffer = gpBufferPool->pToBuffer(nBuffer);
+    
+    if (CN_MEDIUMHEAP == pBuffer->eClass())
+    pMediumHeap = pBuffer;
+    
+    if (CN_SMALLHEAP == pBuffer->eClass())
+    pSmallHeap = pBuffer;
+  }
+  
+  if (pMediumHeap)
+    vHeapDump(reinterpret_cast<Heap*>(pMediumHeap), iEpoch);
+  
+  if (pSmallHeap)
+    vHeapDump(reinterpret_cast<Heap*>(pSmallHeap), iEpoch);
   
   _postcondition_(_MAGIC_,CN_BPA,_FOOTER_);
 }

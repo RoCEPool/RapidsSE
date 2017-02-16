@@ -104,6 +104,7 @@ namespace Dictionaries
     i8    iDataBytes(void);
     char* pDataEnd(void);
     Dic*  pDic(void);
+    i8    iEpoch(void);
     void  vEntryCell(Cell* pCell);
     Cell* pEntryCell(void);
     void  vEntryStep(TaskStep pStep);
