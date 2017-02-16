@@ -50,7 +50,10 @@ void TenantTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop tenant ten;";
-  vRequire(sCommand, true, EC_NONE);                        // ?? CHECK
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop tenant ten;";
+  vRequire(sCommand, false, EC_NO_SUCH_WORD);
   
   sCommand = "create tenant x;";
   vRequire(sCommand, true, EC_NONE);

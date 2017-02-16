@@ -55,23 +55,38 @@ void CatalogTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, false, EC_CATALOG_EXISTS);
   
   sCommand = "drop catalog cat;";
+  vRequire(sCommand, false, EC_FOLDER_NOT_EMPTY);
+  
+  sCommand = "cf cat ";
+  vRequire(sCommand, true, EC_NONE);
+
+  sCommand = "rf schemas";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop catalog cat;";
-  vRequire(sCommand, false, EC_NO_SUCH_CATALOG);                         //??CHECK
-
-  sCommand = "create catalog x;";
-  vRequire(sCommand, true, EC_NONE);
-
-  sCommand = "drop catalog x;";
+  vRequire(sCommand, false, EC_NOT_IN_CATALOGS);
+  
+  sCommand = "cf .. ";
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "cf ~";
+  sCommand = "drop catalog cat;";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop catalog cat;";
+  vRequire(sCommand, false, EC_NO_SUCH_WORD);                         //??CHECK
+  
+  sCommand = "cf .. ";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf catalogs";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf .. ";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop tenant ten;";
   vRequire(sCommand, true, EC_NONE);
-  
+
   pRunTests->m_iTestsTotal += m_iTestsTotal;
   pRunTests->m_iTestsPassed += m_iTestsPassed;
   pRunTests->m_iTestsFailed += m_iTestsFailed;

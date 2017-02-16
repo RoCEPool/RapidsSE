@@ -35,10 +35,10 @@ void RunTests::vRunTests(void) {
   
   TenantTests* pTenantTests = new TenantTests();
   pTenantTests->vRun(this);
-/*
+
   CatalogTests* pCatalogTests = new CatalogTests();
   pCatalogTests->vRun(this);
-
+/*
   SchemaTests* pSchemaTests = new SchemaTests();
   pSchemaTests->vRun(this);
   
