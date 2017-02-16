@@ -51,7 +51,7 @@ Entry::Entry(i8 iDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
 
-  //m_xRowNo
+  //m_xRowId
   m_iDataBytes = iDataBytes;
 
   _setFooter_();
@@ -84,30 +84,30 @@ void Entry::vContentDump(void)
   
   vTrace("Entry %p: Row %llu.%llu (%lld databytes)\n",
          this,
-         m_xRowNo.uBuffer(),
-         m_xRowNo.uRow(),
+         m_xRowId.uBuffer(),
+         m_xRowId.uRow(),
          m_iDataBytes
          );
 }
 
 /*----------------------------------------------------------------------------*/
-/* get rowNo                                                                  */
+/* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-RowNo& Entry::xRowNo(void)
+RowId& Entry::xRowId(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_xRowNo;
+  return m_xRowId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set rowNo                                                                  */
+/* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void Entry::vRowNo(RowNo& xRowNo)
+void Entry::vRowId(RowId& xRowId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  m_xRowNo = xRowNo;
+  m_xRowId = xRowId;
 }
 
 /*----------------------------------------------------------------------------*/

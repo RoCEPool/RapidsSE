@@ -11,7 +11,7 @@ namespace DBobjects
   class Entry : public Header
   {
   private:
-    RowNo m_xRowNo;      // row number
+    RowId m_xRowId;      // row number
     i8    m_iDataBytes;  // number of data bytes
     // ..data..
     
@@ -26,8 +26,8 @@ namespace DBobjects
     
     void  vContentDump(void);
 
-    RowNo& xRowNo(void);
-    void   vRowNo(RowNo& xRowNo);
+    RowId& xRowId(void);
+    void   vRowId(RowId& xRowId);
 
     Key&   xKey(void);
     void   vKey(Key& xKey);

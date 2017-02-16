@@ -36,7 +36,7 @@ EntWsp::EntWsp(void)
 {
   _precondition_(_MAGIC_,CN_ENTWSP);
 
-  //m_xRowNo
+  //m_xRowId
   m_iDataBytes = 0;
 
   _setFooter_();
@@ -63,27 +63,27 @@ EntWsp::~EntWsp(void)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vShow(void)
 {
-  vTrace("EntWsp %p: rowNo %llu.%llu\n",
+  vTrace("EntWsp %p: rowId %llu.%llu\n",
          this,
-         m_xRowNo.uBuffer(),
-         m_xRowNo.uRow()
+         m_xRowId.uBuffer(),
+         m_xRowId.uRow()
          );
 }
 
 /*----------------------------------------------------------------------------*/
-/* get row no                                                                 */
+/* get row id                                                                 */
 /*----------------------------------------------------------------------------*/
-RowNo& EntWsp::xRowNo(void)
+RowId& EntWsp::xRowId(void)
 {
-  return m_xRowNo;
+  return m_xRowId;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row no                                                                 */
+/* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void EntWsp::vRowNo(RowNo& xRowNo)
+void EntWsp::vRowId(RowId& xRowId)
 {
-  m_xRowNo = xRowNo;
+  m_xRowId = xRowId;
 }
 
 /*----------------------------------------------------------------------------*/

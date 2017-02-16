@@ -13,7 +13,7 @@ namespace DBobjects
     static const i8 C_ENTWSP_DATA = C_1KB*15;
   
   private:
-    RowNo  m_xRowNo;      // row number
+    RowId  m_xRowId;      // row id
     i8     m_iDataBytes;  // number of data bytes
     char   m_mData[C_ENTWSP_DATA];
     
@@ -28,8 +28,8 @@ namespace DBobjects
   
     void vShow(void);
   
-    RowNo& xRowNo(void);
-    void vRowNo(RowNo& xRowNo);
+    RowId& xRowId(void);
+    void vRowId(RowId& xRowId);
   
     Footer* pFooter(void);
   };

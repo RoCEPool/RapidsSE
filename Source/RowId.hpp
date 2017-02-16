@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowNo.hpp -- row number part of an index key                               */
+/* RowId.hpp -- row id part of an index key                                   */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class RowNo : public Part
+  class RowId : public Part
   {
   private:
   struct {
@@ -18,13 +18,13 @@ namespace DBobjects
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, RowNo*);
+    void* operator new(size_t, RowId*);
     
-    RowNo(void);
-    RowNo(RowNo& xRowNo);
-    ~RowNo(void);
+    RowId(void);
+    RowId(RowId& xRowId);
+    ~RowId(void);
     
-    void operator =(RowNo& xRowNo); // assignment
+    void operator =(RowId& xRowId); // assignment
   
     void  vContentDump(void);
     
@@ -34,7 +34,7 @@ namespace DBobjects
     u8    uRow(void);
     void  vRow(u8 uRow);
 
-    void  vRowNo(RowNo& xRowNo);
+    void  vRowId(RowId& xRowId);
   };
 }
 

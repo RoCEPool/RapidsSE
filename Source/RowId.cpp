@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* RowNo.cpp -- row number part of an index key                               */
+/* RowId.cpp -- row id part of an index key                                   */
 /*============================================================================*/
 
 #include "DBobjects.h"
@@ -11,10 +11,10 @@
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowNo::operator new(size_t iSize)
+void* RowId::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: RowNo class cannot be new'd\n");
+  vFatal("fatal: RowId class cannot be new'd\n");
   
   RASSERT(0);
 }
@@ -22,16 +22,16 @@ void* RowNo::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* RowNo::operator new(size_t iSize, RowNo* pRowNo)
+void* RowId::operator new(size_t iSize, RowId* pRowId)
 {
   RASSERT(iSize);
-  return pRowNo;
+  return pRowId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowNo::RowNo(void)
+RowId::RowId(void)
 {
   m_uBuffer = 0;
   m_uRow    = 0;
@@ -40,15 +40,15 @@ RowNo::RowNo(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-RowNo::RowNo(RowNo& xRowNo)
+RowId::RowId(RowId& xRowId)
 {
-  vRowNo(xRowNo);
+  vRowId(xRowId);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-RowNo::~RowNo(void)
+RowId::~RowId(void)
 {
 }
 
@@ -59,17 +59,17 @@ RowNo::~RowNo(void)
 /*----------------------------------------------------------------------------*/
 /* assignment                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowNo::operator =(RowNo& xRowNo)
+void RowId::operator =(RowId& xRowId)
 {
-  vRowNo(xRowNo);
+  vRowId(xRowId);
 }
 
 /*----------------------------------------------------------------------------*/
 /* dump                                                                       */
 /*----------------------------------------------------------------------------*/
-void RowNo::vContentDump(void)
+void RowId::vContentDump(void)
 {
-  vTrace("RowNo %p: %llu.%llu\n",
+  vTrace("RowId %p: %llu.%llu\n",
          this,
          m_uBuffer,
          m_uRow
@@ -79,7 +79,7 @@ void RowNo::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* get buffer                                                                 */
 /*----------------------------------------------------------------------------*/
-u8 RowNo::uBuffer(void)
+u8 RowId::uBuffer(void)
 {
   return m_uBuffer;
 }
@@ -87,7 +87,7 @@ u8 RowNo::uBuffer(void)
 /*----------------------------------------------------------------------------*/
 /* set buffer                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowNo::vBuffer(u8 uBuffer)
+void RowId::vBuffer(u8 uBuffer)
 {
   m_uBuffer = uBuffer;
 }
@@ -95,7 +95,7 @@ void RowNo::vBuffer(u8 uBuffer)
 /*----------------------------------------------------------------------------*/
 /* get row                                                                    */
 /*----------------------------------------------------------------------------*/
-u8 RowNo::uRow(void)
+u8 RowId::uRow(void)
 {
   return m_uRow;
 }
@@ -103,18 +103,18 @@ u8 RowNo::uRow(void)
 /*----------------------------------------------------------------------------*/
 /* set row                                                                    */
 /*----------------------------------------------------------------------------*/
-void RowNo::vRow(u8 uRow)
+void RowId::vRow(u8 uRow)
 {
   m_uRow = uRow;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row no                                                                 */
+/* set row id                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowNo::vRowNo(RowNo& xRowNo)
+void RowId::vRowId(RowId& xRowId)
 {
-  m_uBuffer = xRowNo.m_uBuffer;
-  m_uRow    = xRowNo.m_uRow;
+  m_uBuffer = xRowId.m_uBuffer;
+  m_uRow    = xRowId.m_uRow;
 }
 
 /*============================================================================*/

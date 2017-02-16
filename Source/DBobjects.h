@@ -14,7 +14,7 @@
 
 #include "IndexDefn.hpp"
 
-#include "RowNo.hpp"
+#include "RowId.hpp"
 #include "Element.hpp"
 #include "Key.hpp"
 #include "Entry.hpp"
