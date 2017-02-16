@@ -38,10 +38,10 @@ void RunTests::vRunTests(void) {
 
   CatalogTests* pCatalogTests = new CatalogTests();
   pCatalogTests->vRun(this);
-/*
+
   SchemaTests* pSchemaTests = new SchemaTests();
   pSchemaTests->vRun(this);
-  
+/*
   TableTests* pTableTests = new TableTests();
   pTableTests->vRun(this);
 
