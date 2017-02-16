@@ -20,6 +20,7 @@ pDUMPFUN *gpDump[]
   /*  4 */ &Dump::vInvalid,         // CN_S1M
   
   /*  5 */ &Dump::vInvalid,         // CN_BINVAL
+  /*    */ &Dump::vInvalid,         // CN_ENTWSP
   /*  6 */ &Dump::vInvalid,         // CN_INTVAL
   /*  7 */ &Dump::vInvalid,         // CN_IPVAL
   /*  8 */ &Dump::vInvalid,         // CN_OBJVAL
@@ -61,8 +62,8 @@ pDUMPFUN *gpDump[]
 
   /* 36 */ &Dump::vDummy,           // CN_JUMBOHEAP
 
-  /* 37 */ &Dump::vDummy,          // CN_KEYCPP
-  /* 38 */ &Dump::vDummy,          // CN_KEYVAL
+  /* 37 */ &Dump::vDummy,           // CN_KEYCPP
+  /* 38 */ &Dump::vDummy,           // CN_KEYVAL
   
   /* 39 */ &LoadChunk::vDump,       // CN_LOADCHUNK
   /* 40 */ &Loader::vDump,          // CN_LOADER
@@ -152,6 +153,7 @@ i8 giClassSize[]
   /*  4 */ sizeof(s1M),                // CN_S1M
   
   /*  5 */ sizeof(BinVal),             // CN_BINVAL
+  /*    */ 0,                          // CN_ENTWSP
   /*  6 */ sizeof(IntVal),             // CN_INTVAL
   /*  7 */ sizeof(PtrVal),             // CN_IPVAL
   /*  8 */ sizeof(ObjVal),             // CN_OBJVAL
@@ -284,6 +286,7 @@ eHT geWhichHeap[]
   /*  4 */ HT_INVALID, // CN_S1M
   
   /*  5 */ HT_INVALID, // CN_BINVAL
+  /*    */ HT_INVALID, // CN_ENTWSP,
   /*  6 */ HT_INVALID, // CN_INTVAL
   /*  7 */ HT_INVALID, // CN_IPVAL
   /*  8 */ HT_INVALID, // CN_OBJVAL

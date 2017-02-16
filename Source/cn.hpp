@@ -21,6 +21,7 @@ namespace Magic
     /*  4 */ CN_S1M,
     
     /*  5 */ CN_BINVAL,
+    /*    */ CN_ENTWSP,
     /*  6 */ CN_INTVAL,
     /*  7 */ CN_IPVAL,
     /*  8 */ CN_OBJVAL,
@@ -153,6 +154,7 @@ namespace Magic
     /*  4 */ "S1M",
     
     /*  5 */ "BINVAL",
+    /*    */ "ENTWSP",
     /*  6 */ "INTVAL",
     /*  7 */ "IPVAL",
     /*  8 */ "OBJVAL",
