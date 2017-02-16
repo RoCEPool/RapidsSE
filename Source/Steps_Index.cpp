@@ -50,6 +50,18 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
 
   vTrace("index::entryTest -- %s\n",sRow.a());
   
+  RowNo xRowNo;
+  EntWsp xEntWsp;
+
+  i8 iRowNo = String::iToI8(sRow.a());
+  
+  xRowNo.vBuffer(999);
+  xRowNo.vRow(iRowNo);
+  
+  xEntWsp.vRowNo(xRowNo);
+  
+  xEntWsp.vShow();
+  
   EXIT();
 }
 

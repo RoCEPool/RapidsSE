@@ -1323,13 +1323,13 @@ i8 String::iToI8(const char* s)
   
   if (*s && ('x' == *s || 'X' == *s)) {
     s++;
-    while (*s) {
+    while (*s && bIsHex(*s)) {
       i8 j = iHexToInw(*s++);
       i = i * 16 + j;
     }
   }
   else {
-    while (*s) {
+    while (*s && bIsDigit(*s)) {
       i8 j = (*s++ - '0');
       i = i * 10 + j;
     }

@@ -23,9 +23,14 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, EntWsp*);
     
-    EntWsp(i8 iDataBytes);
+    EntWsp(void);
     ~EntWsp(void);
-        
+  
+    void vShow(void);
+  
+    RowNo& xRowNo(void);
+    void vRowNo(RowNo& xRowNo);
+  
     Footer* pFooter(void);
   };
 }
