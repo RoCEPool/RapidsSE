@@ -276,9 +276,42 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "drop table t;";
   vRequire(sCommand, false, EC_NO_SUCH_TABLE);
 
-  sCommand = "cf ~";
+  sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
+  sCommand = "rf tables";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "drop schema sch;";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf schemas";
+  vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+  
+  vTrace("1\n");
+  
+  sCommand = "drop catalog cat;";                     //FOLDER_IN_USE
+  vRequire(sCommand, true, EC_NONE);
+
+  vTrace("2\n");
+  
+  sCommand = "rf catalogs";
+  vRequire(sCommand, true, EC_NONE);
+
+  vTrace("3\n");
+  
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
+
   sCommand = "drop tenant ten;";
   vRequire(sCommand, true, EC_NONE);
   
