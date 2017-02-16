@@ -112,8 +112,6 @@ tp: printResult
 
       grid.node node.name  ( " " s nodeName )
 
-      swap
-
      "%v: %v\n" str.format
 
       str.cat
