@@ -228,6 +228,7 @@ bool Socket::bConnectServer(const char* sAddr, int iPort, SysCall& SysCall)
                        );
   if (-1 == iResult) {
     SysCall.vError(errno);
+    bClose(SysCall);
     return false;
   }
   
