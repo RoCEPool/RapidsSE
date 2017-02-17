@@ -126,8 +126,6 @@ void Task::vBpEpochTake(NNP_Task nnpTask)
   BPA* pBPA = new BPA;
   
   pBPA->vObjectSnapshot(&giCountObjects[0]);
-  
-  vTrace("%sWords created since last epoch:\n",pSingleTab());
 
   EXIT();
 }

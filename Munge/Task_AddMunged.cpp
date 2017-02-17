@@ -4166,6 +4166,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "  \\\" --commands /Users/ray/Desktop/rapidsse/Commands\\\" str.cat\n"
     "  clusterString str.cat\n"
     "  \\\" --regionPrefix \\\" str.cat args.regionPrefix str.cat\n"
+    "  \\\" --partitionsPerNode \\\" str.cat args.partitionsPerNode >str str.cat\n"
     "  \\\" --name  \\\" str.cat nodeName str.cat\n"
     "  //\\\" --partitionsPerNode \\\" str.cat grid.slots >str str.cat\n"
     "  \\\" --sleep \\\" str.cat args.sleep >str str.cat\n"
@@ -4241,6 +4242,42 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "/*============================================================================*/\n"
     "\""
   " CONSTANT gridPrimitives.sen"
+  ;
+
+  pCompileConstant(sDefinition);
+
+  // munge of ieTesting.sen
+  sDefinition =
+    "\""
+    "\\\"munged ieTesting.sen\\\" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* ieTesting.sen -- index entry tests                                         */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\\\"ieTest.sen\\\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* index entry test                                                           */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": ieTest\n"
+    "\n"
+    "  \\\"IE testing\\\" .\n"
+    "\n"
+    "  // generate rows, calling entry test\n"
+    "  10 0 do\n"
+    "\n"
+    "    16 str.random I \\\"%v|%v|\\\" str.format\n"
+    "\n"
+    "    index::entryTest\n"
+    "\n"
+    "  loop\n"
+    ";\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\""
+  " CONSTANT ieTesting.sen"
   ;
 
   pCompileConstant(sDefinition);
@@ -10378,6 +10415,7 @@ void Task::vAddMunged(NNP_Task nnpTask)
     "\\\"unitTests.sen\\\" include\n"
     "\\\"1m.sen\\\" include\n"
     "\\\"planTesting.sen\\\" include\n"
+    "\\\"ieTesting.sen\\\" include\n"
     "\n"
     "/*============================================================================*/\n"
     "/* end                                                                        */\n"

@@ -177,19 +177,16 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // Disabled partitionsPerNode for version 0.2.1
-    /*
     if (String::bEqualTo("--partitionsPerNode",argv[iArg],C_NO_CASE)) {
       m_nSlots = String::iToI8(argv[++iArg]);
       if (m_nSlots > C_SLOTS_PER_NODE) {
         vTrace("Maximum number of partitions allowed per node is %lld\n",
-          C_MAX_PARTITIONS_PER_NODE);
+          C_SLOTS_PER_NODE);
         return false;
       }
       
       continue;
     }
-    */
     
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (String::bEqualTo("--region",argv[iArg],C_NO_CASE)) {
@@ -494,7 +491,7 @@ void Arguments::vPrint(void)
       m_xNodes[iIndex].m_iPortNo);
   }
   
-  //vTrace("  --partitionsPerNode %lld\n",m_nSlots);
+  vTrace("  --partitionsPerNode %lld\n",m_nSlots);
   vTrace("  --commands %s\n",m_sCommands.a());
 //#ifdef _DEBUG
   vTrace("  --sen %s\n",m_sSen.a());
