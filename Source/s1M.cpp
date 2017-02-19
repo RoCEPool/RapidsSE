@@ -12,11 +12,11 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(void)
-: s(CN_S1M,C_S_SIZE)
+: s(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
   _checkInitialised_(CN_S1M);
 }
@@ -25,11 +25,11 @@ s1M::s1M(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(s1M& rArg)
-: s(CN_S1M,C_S_SIZE)
+: s(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
 
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
   s::vCopy(rArg.a());
   
@@ -40,11 +40,11 @@ s1M::s1M(s1M& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(const char* aArg)
-: s(CN_S1M,C_S_SIZE)
+: s(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
   s::vCopy(aArg);
   

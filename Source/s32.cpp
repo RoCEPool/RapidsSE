@@ -12,11 +12,11 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(void)
-: s(CN_S32,C_S_SIZE)
+: s(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S32_DATAAREA);
   
   _checkInitialised_(CN_S32);
   
@@ -27,11 +27,11 @@ s32::s32(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(s32& rArg)
-: s(CN_S32,C_S_SIZE)
+: s(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S32_DATAAREA);
   s::vCopy(rArg.a());
   
   _checkInitialised_(CN_S32);
@@ -43,11 +43,11 @@ s32::s32(s32& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(const char* aArg)
-: s(CN_S32,C_S_SIZE)
+: s(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
 
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S32_DATAAREA);
   s::vCopy(aArg);
   
   _checkInitialised_(CN_S32);
@@ -100,7 +100,7 @@ void s32::vInit()
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  s::vInit(C_S_SIZE);
+  s::vInit(C_S32_DATAAREA);
 }
 
 /*----------------------------------------------------------------------------*/

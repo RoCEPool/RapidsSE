@@ -21,10 +21,6 @@ void* ValWsp::operator new(size_t iSize)
 ValWsp::ValWsp(void)
 : Value(CN_VALWSP)
 {
-//  Memory::vZero(m_mArray,C_VALWSP_ARRAY);
-//
-// _checkInitialised_(CN_VALWSP);
-
 }
 
 /*----------------------------------------------------------------------------*/

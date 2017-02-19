@@ -28,8 +28,8 @@ s::s(eCN eClassNo, i8 iSize)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_iSize = iSize;
-  *aWorkspace() = '\0';
+  m_nDataBytes = iSize;
+  *mDataArea() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,7 +47,7 @@ void s::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aWorkspace(),aArg,m_iSize-1);
+  String::vCopyLen(mDataArea(),aArg,m_nDataBytes-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -59,7 +59,7 @@ void s::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  String::vCopyLen(aWorkspace(),aArg,m_iSize-1);
+  String::vCopyLen(mDataArea(),aArg,m_nDataBytes-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -85,7 +85,7 @@ void s::vAppend(const char c)
   
   // limit???
   
-  String::vConcat(aWorkspace(),c);
+  String::vConcat(mDataArea(),c);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -97,21 +97,9 @@ void s::vAppend(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vConcat(aWorkspace(),aArg);
+  String::vConcat(mDataArea(),aArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get address of buffer                                                      */
-/*----------------------------------------------------------------------------*/
-char* s::aWorkspace(void)
-{
-  //_precondition_(_MAGIC_,_FOOTER_);
-  
-  char* p = pcAdd(this,sizeof(s));
-
-  return p;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,9 +109,41 @@ void s::vCopy(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(aWorkspace(),aArg,m_iSize-1);
+  String::vCopyLen(mDataArea(),aArg,m_nDataBytes-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+char* s::mDataArea(void)
+{
+  //_precondition_(_MAGIC_,_FOOTER_);
+  
+  char* p = pcAdd(this,sizeof(s));
+  
+  return p;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of data area                                                      */
+/*----------------------------------------------------------------------------*/
+i8 s::nDataBytes(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return m_nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set limit of data size (based on the string size)                          */
+/*----------------------------------------------------------------------------*/
+void s::vDataBytes(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_nDataBytes = String::iSize(mDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -133,7 +153,7 @@ bool s::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEnds(aWorkspace(),aSuffix);
+  bool b = String::bEnds(mDataArea(),aSuffix);
   
   return b;
 }
@@ -145,8 +165,8 @@ void s::vInit(i8 iSize)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_iSize = iSize;
-  *aWorkspace() = '\0';  
+  m_nDataBytes = iSize;
+  *mDataArea() = '\0';  
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -158,39 +178,19 @@ bool s::bIsEqual(s& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEqualTo(aWorkspace(),sArg.aWorkspace(),iCase);
+  bool b = String::bEqualTo(mDataArea(),sArg.mDataArea(),iCase);
   
   return b;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get length of buffer                                                       */
+/* get length of string in data area                                          */
 /*----------------------------------------------------------------------------*/
 i8 s::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::iLength(aWorkspace());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of buffer                                                         */
-/*----------------------------------------------------------------------------*/
-i8 s::iSize(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return m_iSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set size of buffer                                                         */
-/*----------------------------------------------------------------------------*/
-void s::vSize(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_iSize = String::iSize(aWorkspace());
+  return String::iLength(mDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -200,7 +200,7 @@ char* s::a(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return aWorkspace();
+  return mDataArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -210,7 +210,7 @@ char* s::z(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::zTerminator(aWorkspace());
+  return String::zTerminator(mDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,7 +224,7 @@ Footer* s::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,sizeof(s)+m_iSize));
+  Footer* pFooter = static_cast<Footer*>(pvAdd(this,sizeof(s)+m_nDataBytes));
   
   return pFooter;
 }

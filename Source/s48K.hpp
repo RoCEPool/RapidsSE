@@ -10,9 +10,9 @@ namespace Magic
   class s48K : public s
   {
   private:
-    static const i8 C_S_SIZE = C_48K;
+    static const i8 C_S48K_DATAAREA = C_48K;
     
-    char m_mWorkspace[C_S_SIZE]; // string workspace
+    char m_mDataArea[C_S48K_DATAAREA]; // string data area
     
     // must be last
     Footer m_xFooter;

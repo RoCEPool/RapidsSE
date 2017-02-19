@@ -12,11 +12,11 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(void)
-: s(CN_S48K,C_S_SIZE)
+: s(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
   _checkInitialised_(CN_S48K);
 }
@@ -25,11 +25,11 @@ s48K::s48K(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(s48K& rArg)
-: s(CN_S48K,C_S_SIZE)
+: s(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
 
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
   s::vCopy(rArg.a());
   
@@ -40,11 +40,11 @@ s48K::s48K(s48K& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(const char* aArg)
-: s(CN_S48K,C_S_SIZE)
+: s(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
   s::vCopy(aArg);
   

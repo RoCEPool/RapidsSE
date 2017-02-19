@@ -10,11 +10,11 @@ namespace DBobjects
 {
   class KeyWsp : public Header
   {
-    static const i8 C_KEYWSP_DATA = C_1KB*15;
+    static const i8 C_KEYWSP_DATAAREA = C_1KB*15;
   
   private:
     i8   m_nDataBytes;  // number of used data bytes
-    char m_mDataArea[C_KEYWSP_DATA]; // data area
+    char m_mDataArea[C_KEYWSP_DATAAREA]; // data area
   
     Footer m_xFooter;
     

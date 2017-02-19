@@ -22,11 +22,11 @@ void* s256::operator new(size_t iSize, s256* pS256)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(void)
-: s(CN_S256,C_S_SIZE)
+: s(CN_S256,C_S256_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S256_DATAAREA);
   
   _checkInitialised_(CN_S256);
   
@@ -37,11 +37,11 @@ s256::s256(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(s256& rArg)
-: s(CN_S256,C_S_SIZE)
+: s(CN_S256,C_S256_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S256_DATAAREA);
   
   s::vCopy(rArg.a());
   
@@ -54,11 +54,11 @@ s256::s256(s256& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(const char* aArg)
-: s(CN_S256,C_S_SIZE)
+: s(CN_S256,C_S256_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  Memory::vZero(m_mWorkspace, C_S_SIZE);
+  Memory::vZero(m_mDataArea, C_S256_DATAAREA);
   
   s::vCopy(aArg);
   
@@ -112,7 +112,7 @@ void s256::vInit()
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  s::vInit(C_S_SIZE);
+  s::vInit(C_S256_DATAAREA);
 }
 
 /*----------------------------------------------------------------------------*/
