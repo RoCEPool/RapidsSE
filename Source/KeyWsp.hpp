@@ -13,9 +13,9 @@ namespace DBobjects
     static const i8 C_KEYWSP_DATA = C_1KB*15;
   
   private:
-    i8     m_iDataBytes;  // number of data bytes
-    char   m_mData[C_KEYWSP_DATA];
-    
+    i8   m_nDataBytes;  // number of used data bytes
+    char m_mDataArea[C_KEYWSP_DATA]; // data area
+  
     Footer m_xFooter;
     
   public:
@@ -28,6 +28,10 @@ namespace DBobjects
     void vShow(void);
 
     void vAddElement(ValWsp& xValWsp);
+  
+    char* pDataArea(void);
+    i8    nDataBytes(void);
+    char* pDatumNext(void);
 
     Footer* pFooter(void);
   };

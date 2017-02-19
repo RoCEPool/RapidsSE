@@ -13,8 +13,13 @@ namespace Values
   private:
 
   public:
+    static i8   nCopyDatum(eCN eClass, void* pDst, void* pSrc);
     static void vCopyDatum(eCN eClass, void* pDst, void* pSrc);
+  
+    static i8   nCopyIntDatum(void* pDst, void* pSrc);
     static void vCopyIntDatum(void* pDst, void* pSrc);
+  
+    static i8   nCopyStrDatum(void* pDst, void* pSrc);
     static void vCopyStrDatum(void* pDst, void* pSrc);
   };
 }

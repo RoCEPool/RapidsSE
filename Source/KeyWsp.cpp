@@ -37,7 +37,7 @@ KeyWsp::KeyWsp(void)
   _precondition_(_MAGIC_,CN_KEYWSP);
 
   //m_xRowId
-  m_iDataBytes = 0;
+  m_nDataBytes = 0;
 
   //_setFooter_();
   
@@ -73,6 +73,37 @@ void KeyWsp::vShow(void)
 /*----------------------------------------------------------------------------*/
 void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
 {
+  ASSERT( ! m_nDataBytes );
+  
+  eCN eClass = xValWsp.eClass();
+  char* pDst = pDatumNext();
+  char* pSrc = xValWsp.pDataArea();
+  
+  m_nDataBytes += V::nCopyDatum(eClass,pDst,pSrc);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get data area                                                              */
+/*----------------------------------------------------------------------------*/
+char* KeyWsp::pDataArea(void)
+{
+  return m_mDataArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of data bytes in the key                                        */
+/*----------------------------------------------------------------------------*/
+i8 KeyWsp::nDataBytes(void)
+{
+  return m_nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next datum area                                                        */
+/*----------------------------------------------------------------------------*/
+char* KeyWsp::pDatumNext(void)
+{
+  return &m_mDataArea[m_nDataBytes];
 }
 
 /*----------------------------------------------------------------------------*/
