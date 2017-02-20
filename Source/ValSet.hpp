@@ -14,13 +14,13 @@ namespace Values
 {
   class ValSet : public Value
   {
-    static const i8 C_VALSET_WORKSPACE = C_1K * 63; // has to fit inside valwsp
+    static const i8 C_VALSET_DATAAREA = C_1K * 63; // has to fit inside valwsp
     
   private:
     i8  m_iBytes; // bytes used in work space
     DBobjects::RowBuffer* m_pRowBuffer;
     i8  m_iRowBufferBytes;
-    char m_wWorkspace[C_VALSET_WORKSPACE];
+    char m_wWorkspace[C_VALSET_DATAAREA];
     
   public:
     void* operator new(size_t);

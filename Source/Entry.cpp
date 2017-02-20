@@ -52,9 +52,26 @@ Entry::Entry(i8 iDataBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
 
   //m_xRowId
-  m_iDataBytes = iDataBytes;
+  m_nDataBytes = iDataBytes;
 
   _setFooter_();
+  
+  _checkInitialised_(CN_ENTRY);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Entry::Entry(EntWsp& xEntWsp)
+: Header(CN_ENTRY)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
+  
+  _setFooter_();
+  
+  vEntry(xEntWsp);
   
   _checkInitialised_(CN_ENTRY);
   
@@ -80,13 +97,11 @@ void Entry::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  StrVal* pStr = (StrVal*)pData();
-  
   vTrace("Entry %p: Row %llu.%llu (%lld databytes)\n",
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         m_iDataBytes
+         m_nDataBytes
          );
 }
 
@@ -111,13 +126,31 @@ void Entry::vRowId(RowId& xRowId)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set entry                                                                  */
+/*----------------------------------------------------------------------------*/
+void Entry::vEntry(EntWsp& xEntWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+
+  m_xRowId = xEntWsp.xRowId();
+
+  char* pDst = pDataNext();
+  char* pSrc = xEntWsp.pDataArea();
+  i8 nBytes  = xEntWsp.nDataBytes();
+  
+  Memory::vCopy(pDst,pSrc,nBytes);
+  
+  m_nDataBytes = nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get key                                                                    */
 /*----------------------------------------------------------------------------*/
 Key& Entry::xKey(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(pData());
+  Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
   return reinterpret_cast<Key&>(pKey);
 }
@@ -129,18 +162,30 @@ void Entry::vKey(Key& xKey)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  Key* pKey = reinterpret_cast<Key*>(pData());
+  Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
   pKey->vKey(xKey);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set key                                                                    */
+/*----------------------------------------------------------------------------*/
+void Entry::vKey(KeyWsp& xKeyWsp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  
+  Key* pKey = reinterpret_cast<Key*>(pDataArea());
+  
+  pKey->vKey(xKeyWsp);
 }
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get data                                                                   */
+/* get data area                                                              */
 /*----------------------------------------------------------------------------*/
-char* Entry::pData(void)
+char* Entry::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
@@ -156,29 +201,37 @@ i8 Entry::iDataBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  return m_iDataBytes;
+  return m_nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set data bytes                                                             */
 /*----------------------------------------------------------------------------*/
-void Entry::vDataBytes(i8 iDataBytes)
+void Entry::vDataBytes(i8 nDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  m_iDataBytes = iDataBytes;
+  m_nDataBytes = nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes of this row                                              */
+/* get next avaliable point in data area                                      */
+/*----------------------------------------------------------------------------*/
+char* Entry::pDataNext(void)
+{
+  return &pDataArea()[m_nDataBytes];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size in bytes of this entry                                            */
 /*----------------------------------------------------------------------------*/
 i8 Entry::iSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  i8 iBytes = sizeof(Entry) + sizeof(Footer) + m_iDataBytes;
+  i8 nBytes = sizeof(Entry) + sizeof(Footer) + m_nDataBytes;
   
-  return iBytes;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -193,7 +246,7 @@ Footer* Entry::pFooter(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
   
   Footer* pFooter = static_cast<Footer*>(
-                      pvAdd(this,sizeof(Entry) + m_iDataBytes));
+                      pvAdd(this,sizeof(Entry) + m_nDataBytes));
   
   return pFooter;
 }

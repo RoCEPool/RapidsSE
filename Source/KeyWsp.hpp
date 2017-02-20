@@ -31,7 +31,7 @@ namespace DBobjects
   
     char* pDataArea(void);
     i8    nDataBytes(void);
-    char* pDatumNext(void);
+    char* pDataNext(void);
 
     Footer* pFooter(void);
   };

@@ -16,8 +16,9 @@
 
 #include "RowId.hpp"
 #include "Element.hpp"
-#include "Key.hpp"
 #include "KeyWsp.hpp"
+#include "Key.hpp"
+#include "EntWsp.hpp"
 #include "Entry.hpp"
 #include "IndexBuffer.hpp"
 #include "IndexLevels.hpp"
@@ -42,7 +43,6 @@
 
 #include "User.hpp"
 
-#include "EntWsp.hpp"
 #include "RowWsp.hpp"
 
 //------------------------------------------------------------------------------

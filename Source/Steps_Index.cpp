@@ -73,7 +73,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add key to entry
-  //xEntWsp.vAddKey(xKey);
+  xEntWsp.vAddKey(xKeyWsp);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // show

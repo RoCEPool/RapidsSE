@@ -76,7 +76,7 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   ASSERT( ! m_nDataBytes );
   
   eCN eClass = xValWsp.eClass();
-  char* pDst = pDatumNext();
+  char* pDst = pDataNext();
   char* pSrc = xValWsp.pDataArea();
   
   m_nDataBytes += V::nCopyDatum(eClass,pDst,pSrc);
@@ -99,9 +99,9 @@ i8 KeyWsp::nDataBytes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next datum area                                                        */
+/* get next avaliable point in data area                                      */
 /*----------------------------------------------------------------------------*/
-char* KeyWsp::pDatumNext(void)
+char* KeyWsp::pDataNext(void)
 {
   return &m_mDataArea[m_nDataBytes];
 }

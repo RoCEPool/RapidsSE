@@ -55,9 +55,17 @@ void* Key::operator new(size_t iSize, Key* pKey)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Key::Key(i8 iDataBytes)
+Key::Key(i8 nDataBytes)
 {
-  m_iDataBytes = iDataBytes;
+  m_nDataBytes = nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Key::Key(KeyWsp& xKeyWsp)
+{
+  vKey(xKeyWsp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,32 +88,54 @@ void Key::vKey(Key& xKey)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set key from key wsp                                                       */
+/*----------------------------------------------------------------------------*/
+void Key::vKey(KeyWsp& xKeyWsp)
+{
+  char* pDst = pDataNext();
+  char* pSrc = xKeyWsp.pDataArea();
+  i8 nBytes  = xKeyWsp.nDataBytes();
+  
+  Memory::vCopy(pDst,pSrc,nBytes);
+  
+  m_nDataBytes = nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get data                                                                   */
 /*----------------------------------------------------------------------------*/
-char* Key::pData(void)
+char* Key::pDataArea(void)
 {
-  char* pDataAddr = pcAdd(this,sizeof(Key));
+  char* pDataArea = pcAdd(this,sizeof(Key));
   
-  return pPoolCheck<char*>(pDataAddr);
+  return pPoolCheck<char*>(pDataArea);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get data bytes                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Key::iDataBytes(void)
+i8 Key::nDataBytes(void)
 {
-  return m_iDataBytes;
+  return m_nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set data bytes                                                             */
 /*----------------------------------------------------------------------------*/
-void Key::vDataBytes(i8 iDataBytes)
+void Key::vDataBytes(i8 nDataBytes)
 {
-  m_iDataBytes = iDataBytes;
+  m_nDataBytes = nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next avaliable point in data area                                      */
+/*----------------------------------------------------------------------------*/
+char* Key::pDataNext(void)
+{
+  return &pDataArea()[m_nDataBytes];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,7 +145,7 @@ void Key::vContentDump(void)
 {
   vTrace("Key %p: (%lld bytes)\n",
          this,
-         m_iDataBytes
+         m_nDataBytes
          );
 }
 
@@ -124,9 +154,9 @@ void Key::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 i8 Key::iSize(void)
 {
-  i8 iBytes = sizeof(Key) + m_iDataBytes;
+  i8 nBytes = sizeof(Key) + m_nDataBytes;
   
-  return iBytes;
+  return nBytes;
 }
 
 /*============================================================================*/

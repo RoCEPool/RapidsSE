@@ -12,7 +12,7 @@ namespace DBobjects
   {
   private:
     RowId m_xRowId;      // row number
-    i8    m_iDataBytes;  // number of data bytes
+    i8    m_nDataBytes;  // number of data bytes
     // ..data..
     
   public:
@@ -22,6 +22,7 @@ namespace DBobjects
     void* operator new(size_t, Entry*);
     
     Entry(i8 iDataBytes);
+    Entry(EntWsp& xEntWsp);
     ~Entry(void);
     
     void  vContentDump(void);
@@ -29,14 +30,18 @@ namespace DBobjects
     RowId& xRowId(void);
     void   vRowId(RowId& xRowId);
 
+    void   vEntry(EntWsp& xEntWsp);
+
     Key&   xKey(void);
     void   vKey(Key& xKey);
+    void   vKey(KeyWsp& xKeyWsp);
   
     //------
   
-    char* pData(void);
+    char* pDataArea(void);
     i8    iDataBytes(void);
     void  vDataBytes(i8 iDataBytes);
+    char* pDataNext(void);
     i8    iSize(void);
   
     Footer* pFooter(void);

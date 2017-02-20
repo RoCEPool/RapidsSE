@@ -11,9 +11,8 @@ namespace DBobjects
   class Key : public Part
   {
   private:
-    i8  m_nElements;   // number of elements in the key
-    i8  m_iDataBytes;  // number of data bytes
-    // ..data..
+    i8  m_nDataBytes;  // number of data bytes in data area
+    // ..dataArea..
     
   public:
     static i8 iBytesRequired(const char* w);
@@ -22,16 +21,21 @@ namespace DBobjects
     void* operator new(size_t);
     void* operator new(size_t, Key*);
     
-    Key(i8 iDataBytes);
+    Key(i8 nDataBytes);
+    Key(KeyWsp& xKeyWsp);
     ~Key(void);
     
     void  vContentDump(void);
   
     void  vKey(Key& xKey);
+    void  vKey(KeyWsp& xKeyWsp);
   
-    char* pData(void);
-    i8    iDataBytes(void);
+    //----
+  
+    char* pDataArea(void);
+    i8    nDataBytes(void);
     void  vDataBytes(i8 iDataBytes);
+    char* pDataNext(void);
     i8    iSize(void);
   };
 }

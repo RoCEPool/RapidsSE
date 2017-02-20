@@ -37,7 +37,7 @@ EntWsp::EntWsp(void)
   _precondition_(_MAGIC_,CN_ENTWSP);
 
   //m_xRowId
-  m_iDataBytes = 0;
+  m_nDataBytes = 0;
 
   _setFooter_();
   
@@ -84,6 +84,44 @@ RowId& EntWsp::xRowId(void)
 void EntWsp::vRowId(RowId& xRowId)
 {
   m_xRowId = xRowId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a key                                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWsp::vAddKey(KeyWsp& xKeyWsp)
+{
+  char* pDst = pDataNext();
+  char* pSrc = xKeyWsp.pDataArea();
+  i8 nBytes  = xKeyWsp.nDataBytes();
+  
+  Memory::vCopy(pDst,pSrc,nBytes);
+  
+  m_nDataBytes += nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get data area                                                              */
+/*----------------------------------------------------------------------------*/
+char* EntWsp::pDataArea(void)
+{
+  return m_mDataArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of data bytes in the key                                        */
+/*----------------------------------------------------------------------------*/
+i8 EntWsp::nDataBytes(void)
+{
+  return m_nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next avaliable point in data area                                      */
+/*----------------------------------------------------------------------------*/
+char* EntWsp::pDataNext(void)
+{
+  return &m_mDataArea[m_nDataBytes];
 }
 
 /*----------------------------------------------------------------------------*/
