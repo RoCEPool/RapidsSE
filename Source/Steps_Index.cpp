@@ -35,6 +35,7 @@ extern SEitfList*      gpSEitfList;
 void Task::vAddPrimitives_Index(void)
 {
   vAddPrimitive("index::entryTest",  &vIndexEntryTest,  false);
+  vAddPrimitive("index::ibNew",      &vIndexIbNew,      false);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,6 +44,11 @@ void Task::vAddPrimitives_Index(void)
 void Task::vIndexEntryTest(NNP_Task nnpTask)
 {
   ENTRY("vIndexEntryTest");
+  
+  Object* pPtrIb = nullptr;
+  
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIb) )
+    THROW_INVALID_DSTACK("index::entryTest");
   
   s48K sRow;
   if ( ! nnpTask->m_pDataStack->bPop(sRow) )
@@ -79,6 +85,20 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   // show
   xEntWsp.vShow();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index::ibNew -- new index buffer (temporary?)                              */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIbNew(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIbNew");
+  
+  Object* pPtrIb = nullptr;
+  
+  nnpTask->m_pDataStack->vPush(pPtrIb);
+
   EXIT();
 }
 

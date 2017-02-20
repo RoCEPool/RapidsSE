@@ -513,6 +513,7 @@ namespace Tasks
   
     // index
     static void vIndexEntryTest(NNP_Task nnpTask);
+    static void vIndexIbNew(NNP_Task nnpTask);
   
     // input
     static void vInputAccept(NNP_Task nnpTask);
