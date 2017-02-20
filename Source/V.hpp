@@ -13,6 +13,10 @@ namespace Values
   private:
 
   public:
+    static i8   iCompareDatum(eCN eClass, void* pArg1, void* pArg2);
+    static i8   iCompareIntDatum(void* pArg1, void* pArg2);
+    static i8   iCompareStrDatum(void* pArg1, void* pArg2);
+  
     static i8   nCopyDatum(eCN eClass, void* pDst, void* pSrc);
     static void vCopyDatum(eCN eClass, void* pDst, void* pSrc);
   

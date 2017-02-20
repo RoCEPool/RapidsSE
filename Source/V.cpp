@@ -5,6 +5,44 @@
 #include "Pool.h"
   
 /*----------------------------------------------------------------------------*/
+/* compare datum (return -ve, 0, +ve)                                         */
+/*----------------------------------------------------------------------------*/
+i8 V::iCompareDatum(eCN eClass, void* pArg1, void* pArg2)
+{
+  switch (eClass) {
+      
+    case CN_INTVAL: return iCompareIntDatum(pArg1,pArg2);
+      
+    case CN_STRVAL: return iCompareStrDatum(pArg1,pArg2);
+      
+    default:
+      vFatal("V::iCompareDatum: Invalid compare: eClass %lld\n",
+             eClass);
+      return -1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare two int datums                                                     */
+/*----------------------------------------------------------------------------*/
+i8 V::iCompareIntDatum(void* pArg1, void* pArg2)
+{
+  i8 iCmp = *(i8*)pArg1 - *(i8*)pArg2;
+  
+  return iCmp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compare two str datums                                                     */
+/*----------------------------------------------------------------------------*/
+i8 V::iCompareStrDatum(void* pArg1, void* pArg2)
+{
+  i8 iCmp = String::iCompare((char*)pArg1,(char*)pArg2);
+  
+  return iCmp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy datum (return the number of bytes copied)                             */
 /*----------------------------------------------------------------------------*/
 i8 V::nCopyDatum(eCN eClass, void* pDst, void* pSrc)
