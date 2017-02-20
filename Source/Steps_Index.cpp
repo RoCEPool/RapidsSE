@@ -62,7 +62,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   xEntWsp.vRowId(xRowId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add key
+  // add element to key
   KeyWsp xKeyWsp;
   ValWsp xValWsp;
   
@@ -71,6 +71,10 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   xKeyWsp.vAddElement(xValWsp);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add key to entry
+  //xEntWsp.vAddKey(xKey);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // show
   xEntWsp.vShow();

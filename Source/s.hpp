@@ -10,8 +10,8 @@ namespace Magic
   class s : public Header
   {
   private:
-    i8   m_iSize;  // fixed size of the workspace (not the length of the string)
-    // ..data..
+    i8   m_nDataBytes; // size of the data area (may not be length of the string)
+    // ..dataArea..
     
   public:
     void* operator new(size_t);
@@ -25,14 +25,14 @@ namespace Magic
     
     void  vAppend(const char c);
     void  vAppend(const char* aArg);
-    char* aWorkspace(void);
     void  vCopy(const char* aArg);
+    char* mDataArea(void);
+    i8    nDataBytes(void);
+    void  vDataBytes(void);
     bool  bEnds(const char* aSuffix);
     void  vInit(i8 iSize);
     bool  bIsEqual(s& sArg, i8 iCase) ;
     i8    iLength(void);
-    i8    iSize(void);
-    void  vSize(void);
     char* a(void);
     char* z(void);
     

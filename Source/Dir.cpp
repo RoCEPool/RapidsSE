@@ -124,7 +124,7 @@ bool Dir::bGetCurrent(s256& rPath)
   
   m_xSysCall.vClear();
   
-  char* aDirPath = getcwd(rPath.a(),rPath.iSize());
+  char* aDirPath = getcwd(rPath.a(),rPath.nDataBytes());
 
   m_sDirPath = aDirPath;
   

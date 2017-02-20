@@ -286,7 +286,7 @@ void TableTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop schema sch;";
-  vRequire(sCommand, true, EC_NONE);
+  vRequire(sCommand, true, EC_NONE);                  // FOLDER IN USE
   
   sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);

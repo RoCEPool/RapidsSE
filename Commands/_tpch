@@ -66,7 +66,7 @@ create table orders (
 	 O_COMMENT         VARCHAR(79) NOT NULL
 );
 
-create table part (
+create table part2 (
 	 P_PARTKEY           INTEGER NOT NULL,
 	 P_NAME              VARCHAR(55) NOT NULL,
 	 P_MFGR              CHAR(25) NOT NULL,
@@ -78,7 +78,7 @@ create table part (
 	 P_COMMENT           VARCHAR(23) NOT NULL
 );
 
-create table partsupp (
+create table partsupp2 (
 	PS_PARTKEY      INTEGER NOT NULL,
 	PS_SUPPKEY      INTEGER NOT NULL,
 	PS_AVAILQTY     INTEGER NOT NULL,

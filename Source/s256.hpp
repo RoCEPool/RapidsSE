@@ -10,9 +10,9 @@ namespace Magic
   class s256 : public s
   {
   private:
-    static const i8 C_S_SIZE = 256;
+    static const i8 C_S256_DATAAREA = 256;
     
-    char m_mWorkspace[C_S_SIZE]; // string workspace 
+    char m_mDataArea[C_S256_DATAAREA]; // string data area
     
     // must be last
     Footer m_xFooter;

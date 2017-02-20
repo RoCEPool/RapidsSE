@@ -21,10 +21,6 @@ void* ValWsp::operator new(size_t iSize)
 ValWsp::ValWsp(void)
 : Value(CN_VALWSP)
 {
-//  Memory::vZero(m_mArray,C_VALWSP_ARRAY);
-//
-// _checkInitialised_(CN_VALWSP);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -79,6 +75,14 @@ void ValWsp::vAssignBinary(Object* pObject)
   vClass(CN_BINVAL);
   
   *pAsBinVal() = pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address of data area                                                   */
+/*----------------------------------------------------------------------------*/
+char* ValWsp::pDataArea(void)
+{
+  return m_mDataArea;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -32,7 +32,7 @@ void RunTests::vRunTests(void) {
 
   StartTests* pStartTests = new StartTests();
   pStartTests->vRun(this);
- 
+/*
   TenantTests* pTenantTests = new TenantTests();
   pTenantTests->vRun(this);
 
@@ -41,17 +41,16 @@ void RunTests::vRunTests(void) {
 
   SchemaTests* pSchemaTests = new SchemaTests();
   pSchemaTests->vRun(this);
-/*
+*/
   TableTests* pTableTests = new TableTests();
   pTableTests->vRun(this);
-
+/*
   InsertTests* pInsertTests = new InsertTests();
   pInsertTests->vRun(this);
   
   LoadTests* pLoadTests = new LoadTests();
   pLoadTests->vRun(this);
 */
-  
   EndTests* pEndTests = new EndTests();
   pEndTests->vRun(this);
   

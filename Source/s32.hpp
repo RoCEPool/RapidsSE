@@ -11,9 +11,9 @@ namespace Magic
   class s32 : public s
   {
   private:
-    static const i8 C_S_SIZE = 32;
+    static const i8 C_S32_DATAAREA = 32;
     
-    char m_mWorkspace[C_S_SIZE]; // string workspace 
+    char m_mDataArea[C_S32_DATAAREA]; // string data area
     
     // must be last
     Footer m_xFooter;

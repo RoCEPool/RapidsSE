@@ -10,9 +10,9 @@ namespace Magic
   class s1M : public s
   {
   private:
-    static const i8 C_S_SIZE = C_1M;
+    static const i8 C_S1M_DATAAREA = C_1M;
     
-    char m_mWorkspace[C_S_SIZE]; // string workspace
+    char m_mDataArea[C_S1M_DATAAREA]; // string workspace
     
     // must be last
     Footer m_xFooter;

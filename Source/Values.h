@@ -6,6 +6,8 @@
 
 #include "Common.h"
 
+#include "V.hpp"
+
 #include "Value.hpp"
 #include "ValWsp.hpp"
 #include "ValReg.hpp"
@@ -17,6 +19,7 @@
 #include "PtrVal.hpp"
 #include "StrVal.hpp"
 #include "ValSet.hpp"
+
 
 
 //-----------------------------------------------------------------------------
