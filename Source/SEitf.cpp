@@ -359,9 +359,9 @@ bool SEitf::bDecode(char* pWords[], i8 iWords)
   if (String::bSame("pRB",pWords[0])) return bPrintRowBuffer(pWords);
   if (String::bSame("pwf",pWords[0])) return bGetDicPath(pWords);
   if (String::bSame("rettbl",pWords[0])) return bRetTable(pWords, iWords);
-  if (String::bSame("rf",pWords[0])) return bDropDictionary(pWords, iWords);
+  if (String::bSame("rf",pWords[0])) return bRemoveFolder(pWords, iWords);
   if (String::bSame("rmcat",pWords[0])) return bDropCatalog(pWords, iWords);
-  if (String::bSame("rmdic",pWords[0])) return bDropDictionary(pWords, iWords);
+  if (String::bSame("rmdic",pWords[0])) return bRemoveFolder(pWords, iWords);
   if (String::bSame("rmsch",pWords[0])) return bDropSchema(pWords, iWords);
   if (String::bSame("rmtbl",pWords[0])) return bDropTable(pWords, iWords);
   if (String::bSame("rmten",pWords[0])) return bDropTenant(pWords, iWords);
@@ -425,9 +425,9 @@ bool SEitf::bDisconnect(char* pWords[])
 }
 
 /*----------------------------------------------------------------------------*/
-/* drop a dictionary                                                          */
+/* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bDropDictionary(char* pWords[], i8 iWords)
+bool SEitf::bRemoveFolder(char* pWords[], i8 iWords)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -439,7 +439,7 @@ bool SEitf::bDropDictionary(char* pWords[], i8 iWords)
   String::vConcat(a,pWords[1]);
   String::vConcat(a,"\"");
   
-  String::vConcat(a," drop_dictionary");
+  String::vConcat(a," remove_folder");
   
   return bAppendRequest(sRequest);
 }

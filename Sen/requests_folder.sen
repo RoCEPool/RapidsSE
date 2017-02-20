@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-: rf allParticipants 1 checkResult ( "<folderNm>" -- true n# true )
+: removeFolder allParticipants 1 checkResult ( "<folderNm>" -- true n# true )
 
 tp: removeFolder
 
@@ -69,17 +69,35 @@ tp: removeFolder
 ;
 
 /*----------------------------------------------------------------------------*/
+/* check if word is a removable folder                                        */
+/*----------------------------------------------------------------------------*/
+: checkRemoveFolder ( "<folderNm>" -- "<folderNm>" true | "<folderNm>" errorCode false )
+
+  dup ( "<folderNm>" "<folderNm>" )
+
+  checkIsWord     not if false exit then ( "<folderNm>" word )
+  checkIsEmpty    not if false exit then ( "<folderNm>" word )
+
+  drop ( "<folderNm>" )
+
+  true ( "<folderNm>" true )
+;
+
+
+/*----------------------------------------------------------------------------*/
 /* remove a folder                                                            */
 /*----------------------------------------------------------------------------*/
-: drop_dictionary ( "<folderNm>" -- <R> )
+: remove_folder ( "<folderNm>" -- <R> )
 
 tp: dropDic
 
 ddlLock.grabWrite
 
-  rf ( ) assert.stack_0
+  checkRemoveFolder not if <NIP+ERROR> exit then
 
-  tp: droppedDic
+  removeFolder ( ) assert.stack_0
+
+tp: droppedDic
 
   <OK>
 ;

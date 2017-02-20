@@ -77,7 +77,7 @@ namespace Interface
     bool bConnectCluster(char* pWords[]);
     bool bDisconnect(char* pWords[]);
     
-    bool bDropDictionary(char* pWords[], i8 iWords);
+    bool bRemoveFolder(char* pWords[], i8 iWords);
 
     bool bCreateTenant(char* pWords[], i8 iWords);
     bool bListTenants(char* pWords[], i8 iWords);

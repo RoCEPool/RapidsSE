@@ -80,7 +80,8 @@ cf ~
 cf
 pwf     pwf
 lf      lf
-
+rf      remove_folder
+ 
 Misc Requests:
 
 seitf   seitf_count
