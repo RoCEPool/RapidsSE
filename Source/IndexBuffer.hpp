@@ -11,19 +11,17 @@ namespace DBobjects
   class IndexBuffer : public Buffer
   {
   private:
-    Object*      m_pFreeSpace;  // beggining of free space within buffer
     i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
+    char*        m_pFreeSpace;  // beggining of free space within buffer
     // ..data..
     
   public:
     void* operator new(size_t);
-    void* operator new(size_t, void* pAddress);
     void  operator delete(void*);
     
     IndexBuffer(void);
-    IndexBuffer(i8 iDataBytes);
     ~IndexBuffer(void);
     
     static IndexBuffer* pNewIndexBuffer(void);
@@ -46,9 +44,9 @@ namespace DBobjects
     IndexBuffer* pPrevBuffer(void);
     void         vPrevBuffer(IndexBuffer* pPrevBuffer);
     
-    i8       nBytesUsed(void);
-    Object*  pDataArea(void);
-    i8       nFreeBytes(void);
+    i8    nBytesUsed(void);
+    char* pDataArea(void);
+    i8    nFreeBytes(void);
   };
   
   IndexBuffer* _pIndexBuffer(void* pAddr);

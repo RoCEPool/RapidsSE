@@ -23,28 +23,19 @@ IndexBuffer* DBobjects::_pIndexBuffer(void* pAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch a new buffer from buffer pool                                        */
+/* allocate an index buffer from the heap                                     */
 /*----------------------------------------------------------------------------*/
 void* IndexBuffer::operator new(size_t iSize)
 {
   RASSERT(iSize);
+  
   Buffer* pBuffer = (Buffer*)Heap::pAllocate(CN_INDEXBUFFER);
   
   return pBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
-/* fetch a new buffer from buffer pool                                        */
-/*----------------------------------------------------------------------------*/
-void* IndexBuffer::operator new(size_t iSize, void* pAddr)
-{
-  RASSERT(iSize);
-  
-  return pAddr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return a segment to the buffer pool                                        */
+/* free an index buffer to the heap                                           */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::operator delete(void* pIndexBufferAddress)
 {
@@ -61,31 +52,13 @@ IndexBuffer::IndexBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
+  m_nEntries    = 0;
+  m_pPrevBuffer = nullptr;
+  m_pNextBuffer = nullptr;
   m_pFreeSpace  = pDataArea();
-  m_nEntries    = 0;
-  m_pPrevBuffer = nullptr;
-  m_pNextBuffer = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
-  _checkInitialised_(CN_INDEXBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-IndexBuffer::IndexBuffer(i8 iDataBytes)
-: Buffer(CN_INDEXBUFFER)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  m_pFreeSpace  = static_cast<Object*>(pvAdd(pDataArea(),iDataBytes));
-  m_nEntries    = 0;
-  m_pPrevBuffer = nullptr;
-  m_pNextBuffer = nullptr;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
   _checkInitialised_(CN_INDEXBUFFER);
 }
 
@@ -106,15 +79,11 @@ IndexBuffer::~IndexBuffer(void)
 /*----------------------------------------------------------------------------*/
 IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 {
+  // should we be testing low buffers for index?
   if (gpBufferPool->iFreeCount() <= C_BUFFER_THRESHOLD)
     return nullptr;
   
-  IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(
-                            Heap::pAllocate(CN_INDEXBUFFER));
-  if (! pIndexBuffer)
-    return nullptr;
-  
-  new(pIndexBuffer) IndexBuffer;
+  IndexBuffer* pIndexBuffer = new IndexBuffer;
   
   return pIndexBuffer;
 }
@@ -129,9 +98,10 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(pObject);
   
-  vTrace("entries %lld freeSpace %p prevBuffer %p nextBuffer %p\n",
+  vTrace("entries %lld freeSpace %p (%lld bytes) prevBuffer %p nextBuffer %p\n",
          pIndexBuffer->m_nEntries,
          pIndexBuffer->m_pFreeSpace,
+         pIndexBuffer->nFreeBytes(),
          pIndexBuffer->m_pPrevBuffer,
          pIndexBuffer->m_pNextBuffer);
 }
@@ -147,7 +117,7 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // Copy Entry into IndexBuffer's DataBytes
+  // append entry onto IndexBuffer's data area
   void* pDst = pvAdd(pDataArea(),nBytesUsed());
   void* pSrc = &xEntry;
   i8 nBytes  = xEntry.iSize();
@@ -159,8 +129,8 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
   
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  // calculate beginning of free space
-  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  // recalculate beginning of free space
+  m_pFreeSpace = pcAdd(m_pFreeSpace,nBytes);
   
   // inc the number of entries in this buffer
   m_nEntries++;
@@ -179,7 +149,7 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   i8 nBytes  = pArgBuffer->nBytesUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  m_pFreeSpace = pcAdd(m_pFreeSpace,nBytes);
   
   // inc the number of entries in this buffer
   i8 nArgEntries = pArgBuffer->nEntries();
@@ -190,7 +160,7 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
 /* copy given buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
-{
+{                                            //! i'm not sure about this fn -ray
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   i8 nBytes = pFromBuffer->nBytesUsed();
@@ -199,7 +169,7 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
   
   char* pRevised = pcAdd(pDataArea(),nBytes);
   
-  m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
+  m_pFreeSpace = reinterpret_cast<char*>(pRevised);
   
   vEntryCount();
   
@@ -235,10 +205,14 @@ void IndexBuffer::vEntryCount(void)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: entries %lld\n",
+  vTrace("IndexBuffer %p: entries %lld freeSpace %p (%lld bytes)"
+         " prevBuffer %p nextBuffer %p\n",
          this,
-         m_nEntries
-         );
+         m_nEntries,
+         m_pFreeSpace,
+         nFreeBytes(),
+         m_pPrevBuffer,
+         m_pNextBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -329,11 +303,11 @@ i8 IndexBuffer::nBytesUsed(void)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-Object* IndexBuffer::pDataArea(void)
+char* IndexBuffer::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(IndexBuffer)));
+  char* pStart = pcAdd(this,sizeof(IndexBuffer));
   
   return pStart;
 }
