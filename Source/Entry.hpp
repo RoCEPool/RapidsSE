@@ -39,7 +39,7 @@ namespace DBobjects
     //------
   
     char* pDataArea(void);
-    i8    iDataBytes(void);
+    i8    nDataBytes(void);
     void  vDataBytes(i8 iDataBytes);
     char* pDataNext(void);
     i8    iSize(void);

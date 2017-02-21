@@ -142,7 +142,7 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
   // Copy Entry into IndexBuffer's DataBytes
   void* pDst = pvAdd(pDataArea(),iBytesUsed());
   void* pSrc = &xEntry;
-  i8 nBytes  = sizeof(Entry) + xEntry.iDataBytes();
+  i8 nBytes  = xEntry.iSize();
   Memory::vCopy(pDst,pSrc,nBytes);
   
   // calculate the free space
@@ -200,7 +200,7 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
-/* first row                                                                  */
+/* first entry                                                                */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::pFirstEntry(void)
 {
@@ -215,12 +215,11 @@ Entry* IndexBuffer::pFirstEntry(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* next row                                                                   */
+/* next entry                                                                 */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::pNextEntry(Entry* pCurr)
 {
-  
-  i8 iSize = sizeof(Entry) + pCurr->iDataBytes();
+  i8 iSize = pCurr->iSize();
   
   Entry* pNext = static_cast<Entry*>(pvAdd(pCurr,iSize));
   
@@ -301,7 +300,6 @@ void IndexBuffer::vShow(void)
          this,
          m_nRows
          );
-  
 }
 
 /*----------------------------------------------------------------------------*/

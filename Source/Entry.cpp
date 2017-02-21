@@ -199,7 +199,7 @@ char* Entry::pDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* get data bytes                                                             */
 /*----------------------------------------------------------------------------*/
-i8 Entry::iDataBytes(void)
+i8 Entry::nDataBytes(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
@@ -231,7 +231,7 @@ i8 Entry::iSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 
-  i8 nBytes = sizeof(Entry) + sizeof(Footer) + m_nDataBytes;
+  i8 nBytes = sizeof(Entry) + m_nDataBytes;
   
   return nBytes;
 }
