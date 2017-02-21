@@ -305,7 +305,7 @@ char* Word::pDataEnd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* pDataEnd = _pc(this) + sizeof(Word) + m_iDataBytes;
+  char* pDataEnd = pAdd<char*>(this,sizeof(Word) + m_iDataBytes);
   
   return pPoolCheck<char*>((void*)pDataEnd);
 }
@@ -706,7 +706,7 @@ Word* Word::pToWord(void* pData)
 {
   // static function
   
-  Word* pWord = _pWord( _pc(pData) - sizeof(Word) );
+  Word* pWord = _pWord( (char*)(pData) - sizeof(Word) );
   
   ASSERT(pWord->eClass() == CN_WORD);
   

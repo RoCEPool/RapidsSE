@@ -5,16 +5,6 @@
 #include "Magic.h"
 
 /*----------------------------------------------------------------------------*/
-/* address as a char*                                                         */
-/*----------------------------------------------------------------------------*/
-char* Magic::_pc(void* pVoidAddress)
-{
-  char* pCharAddress = reinterpret_cast<char*>(pVoidAddress);
-  
-  return pCharAddress;
-}
-
-/*----------------------------------------------------------------------------*/
 /* compute difference between two addresses                                   */
 /*----------------------------------------------------------------------------*/
 i8 Magic::iSub(void* pAddress0, void* pAddress1)
