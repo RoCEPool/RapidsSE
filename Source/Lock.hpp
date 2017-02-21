@@ -17,7 +17,9 @@ namespace Common
   {
   private:
     u8     m_uLockWord;        // lock word
-    
+  
+    const char* m_aName;       // name
+  
     Atomic m_zReadGrabs;       // number of read grabs
     Atomic m_zReadCollisions;  // number of read collisions
     
@@ -33,7 +35,9 @@ namespace Common
     
     Lock(void);
     ~Lock(void);
-    
+  
+    void vName(const char* aName);
+  
     void vCheckInit(void);
     bool bIsLocked(void);
     

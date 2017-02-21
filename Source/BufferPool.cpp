@@ -47,7 +47,8 @@ BufferPool::BufferPool(void)
   m_sShmName = gxArguments.m_sRegionName;
   m_iShmFD   = 0;
   
-  //m_zFreeLock
+  m_zFreeLock.vName("BufferPool::m_zFreeLock");
+  
   m_iAllocCount   = 0;
   m_iFreeCount    = 0;
   m_nFreeHead     = bn::nNil();
