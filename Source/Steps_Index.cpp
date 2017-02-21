@@ -34,8 +34,38 @@ extern SEitfList*      gpSEitfList;
 /*----------------------------------------------------------------------------*/
 void Task::vAddPrimitives_Index(void)
 {
+  vAddPrimitive("index::ibDump",     &vIndexIbDump,     false);
   vAddPrimitive("index::entryTest",  &vIndexEntryTest,  false);
   vAddPrimitive("index::ibNew",      &vIndexIbNew,      false);
+}
+
+/*----------------------------------------------------------------------------*/
+/* index::ibDump -- dump the index buffer                                     */
+/*----------------------------------------------------------------------------*/
+void Task::vIndexIbDump(NNP_Task nnpTask)
+{
+  ENTRY("vIndexIbDump");
+  
+  Object* pPtrIB;
+  if ( ! nnpTask->m_pDataStack->bPop(pPtrIB) )
+    THROW_INVALID_DSTACK("index::ibDump");
+  
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIB);
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
+  
+  vTrace("\n");
+  
+  pIndexBuffer->vShow();
+  
+  vTrace("\nIndex buffer (%p) dump:\n", pIndexBuffer);
+  Entry* pEntry = pIndexBuffer->pFirstEntry();
+  
+  while (pEntry) {
+    pEntry->vContentDump();
+    pEntry = pIndexBuffer->pNextEntry(pEntry);
+  }
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,6 +79,9 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrIb) )
     THROW_INVALID_DSTACK("index::entryTest");
+  
+  IndexBuffer* pIndexBuffer = _pIndexBuffer(pPtrIb);
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
   s48K sRow;
   if ( ! nnpTask->m_pDataStack->bPop(sRow) )
@@ -78,17 +111,17 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   xKeyWsp.vAddElement(xValWsp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // show
-  xEntWsp.vShow();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add key to entry
   xEntWsp.vAddKey(xKeyWsp);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show
+  xEntWsp.vShow();
+  
+  Entry xEntry(xEntWsp);
+  
   // add entry into index buffer
-  // ..Alka..
-  // pIb->vAddEntry(xEntWsp);
-  //pIb->vShow();
+  pIndexBuffer->vAddEntry(xEntry);
   
   EXIT();
 }
@@ -100,9 +133,10 @@ void Task::vIndexIbNew(NNP_Task nnpTask)
 {
   ENTRY("vIndexIbNew");
   
-  Object* pPtrIb = nullptr;
+  IndexBuffer* pIndexBuffer = new IndexBuffer;
+  ASSERT(CN_INDEXBUFFER == pIndexBuffer->eClass());
   
-  nnpTask->m_pDataStack->vPush(pPtrIb);
+  nnpTask->m_pDataStack->vPush(pIndexBuffer);
 
   EXIT();
 }

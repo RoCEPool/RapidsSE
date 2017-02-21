@@ -512,6 +512,7 @@ namespace Tasks
     static void vGridToSlot(NNP_Task nnpTask);
   
     // index
+    static void vIndexIbDump(NNP_Task nnpTask);
     static void vIndexEntryTest(NNP_Task nnpTask);
     static void vIndexIbNew(NNP_Task nnpTask);
   

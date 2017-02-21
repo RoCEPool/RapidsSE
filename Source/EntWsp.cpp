@@ -14,7 +14,7 @@
 void* EntWsp::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: RowWsp class cannot be new'd\n");
+  vFatal("fatal: EntWsp class cannot be new'd\n");
   
   RASSERT(0);
 }
@@ -63,10 +63,15 @@ EntWsp::~EntWsp(void)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vShow(void)
 {
-  vTrace("EntWsp %p: rowId %llu.%llu\n",
+  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
+  i8 iKey;
+  memcpy(&iKey,m_mDataArea,8);
+  vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
          this,
          m_xRowId.uBuffer(),
-         m_xRowId.uRow()
+         m_xRowId.uRow(),
+         m_nDataBytes,
+         iKey
          );
 }
 

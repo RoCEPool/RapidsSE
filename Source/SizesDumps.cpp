@@ -322,7 +322,7 @@ eHT geWhichHeap[]
   /* 31 */ HT_LARGE,   // CN_HEAPBUFFER
   
   /* 32 */ HT_INVALID, // CN_INDEX
-  /* 33 */ HT_INVALID, // CN_INDEXBUFFER
+  /* 33 */ HT_LARGE,   // CN_INDEXBUFFER
   /* 34 */ HT_INVALID, // CN_INDEXDEFN
   /* 35 */ HT_INVALID, // CN_INDEXLEVELS
 

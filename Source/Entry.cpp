@@ -47,35 +47,33 @@ void* Entry::operator new(size_t iSize, Entry* pEntry)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Entry::Entry(i8 iDataBytes)
-: Header(CN_ENTRY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
+  //_precondition_(_MAGIC_,CN_ENTRY);
 
   //m_xRowId
   m_nDataBytes = iDataBytes;
 
-  _setFooter_();
+  //_setFooter_();
   
   _checkInitialised_(CN_ENTRY);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Entry::Entry(EntWsp& xEntWsp)
-: Header(CN_ENTRY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
-  
-  _setFooter_();
+  //_precondition_(_MAGIC_,CN_ENTRY);
   
   vEntry(xEntWsp);
   
-  _checkInitialised_(CN_ENTRY);
+  //_setFooter_();
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_checkInitialised_(CN_ENTRY);
+  
+  //_postcondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,7 +81,7 @@ Entry::Entry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 Entry::~Entry(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,13 +93,17 @@ Entry::~Entry(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vContentDump(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY);
   
-  vTrace("Entry %p: Row %llu.%llu (%lld databytes)\n",
+  i8 iKeyData;
+  V::nCopyDatum(CN_INTVAL, &iKeyData, pDataArea());
+  
+  vTrace("Entry %p: Row %llu.%llu Key (size:%lld value:%lld)\n",
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         m_nDataBytes
+         m_nDataBytes,
+         iKeyData
          );
 }
 
@@ -110,7 +112,7 @@ void Entry::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 RowId& Entry::xRowId(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   return m_xRowId;
 }
@@ -120,7 +122,7 @@ RowId& Entry::xRowId(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vRowId(RowId& xRowId)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   m_xRowId = xRowId;
 }
@@ -130,14 +132,14 @@ void Entry::vRowId(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 void Entry::vEntry(EntWsp& xEntWsp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY);
 
   m_xRowId = xEntWsp.xRowId();
 
   char* pDst = pDataNext();
   char* pSrc = xEntWsp.pDataArea();
   i8 nBytes  = xEntWsp.nDataBytes();
-  
+
   Memory::vCopy(pDst,pSrc,nBytes);
   
   m_nDataBytes = nBytes;
@@ -148,7 +150,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 /*----------------------------------------------------------------------------*/
 Key& Entry::xKey(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
@@ -160,7 +162,7 @@ Key& Entry::xKey(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vKey(Key& xKey)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
@@ -172,7 +174,7 @@ void Entry::vKey(Key& xKey)
 /*----------------------------------------------------------------------------*/
 void Entry::vKey(KeyWsp& xKeyWsp)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   Key* pKey = reinterpret_cast<Key*>(pDataArea());
   
@@ -187,11 +189,11 @@ void Entry::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 char* Entry::pDataArea(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY);
   
   char* pDataAddr = pcAdd(this,sizeof(Entry));
   
-  return pPoolCheck<char*>(pDataAddr);
+  return pDataAddr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +201,7 @@ char* Entry::pDataArea(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::iDataBytes(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY);
   
   return m_nDataBytes;
 }
@@ -209,7 +211,7 @@ i8 Entry::iDataBytes(void)
 /*----------------------------------------------------------------------------*/
 void Entry::vDataBytes(i8 nDataBytes)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
   m_nDataBytes = nDataBytes;
 }
@@ -227,7 +229,7 @@ char* Entry::pDataNext(void)
 /*----------------------------------------------------------------------------*/
 i8 Entry::iSize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY,_FOOTER_);
+  //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 
   i8 nBytes = sizeof(Entry) + sizeof(Footer) + m_nDataBytes;
   
@@ -243,7 +245,7 @@ i8 Entry::iSize(void)
 /*----------------------------------------------------------------------------*/
 Footer* Entry::pFooter(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTRY);
+  //_precondition_(_MAGIC_,CN_ENTRY);
   
   Footer* pFooter = static_cast<Footer*>(
                       pvAdd(this,sizeof(Entry) + m_nDataBytes));

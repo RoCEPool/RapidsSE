@@ -78,8 +78,11 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   eCN eClass = xValWsp.eClass();
   char* pDst = pDataNext();
   char* pSrc = xValWsp.pDataArea();
+
+  //m_nDataBytes += V::nCopyDatum(eClass,pDst,pSrc);
   
-  m_nDataBytes += V::nCopyDatum(eClass,pDst,pSrc);
+  i8 iKey = xValWsp.iAsInt();
+  m_nDataBytes += V::nCopyDatum(eClass,pDst,&iKey);
 }
 
 /*----------------------------------------------------------------------------*/

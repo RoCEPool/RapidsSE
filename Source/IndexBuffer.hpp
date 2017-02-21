@@ -29,13 +29,14 @@ namespace DBobjects
     static IndexBuffer* pNewIndexBuffer(void);
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
-      
+    
+    void       vAddEntry(Entry& xEntry);
     Row*       pAllocRow(i8 iDataBytes);
 
     void       vAppendBuffer(IndexBuffer* pArgBuffer);
     
-    Row*       pFirstRow(void);
-    Row*       pNextRow(Row* pCurr);
+    Entry*     pFirstEntry();
+    Entry*     pNextEntry(Entry* pCurr);
     
     IndexBuffer* pNextBuffer(void);
     void       vNextBuffer(IndexBuffer* pNextBuffer);
@@ -46,7 +47,7 @@ namespace DBobjects
     i8         iBytesUsed(void);
     i8         nRows(void);
     void       vRowCount(void);
-
+    void       vShow(void);
  
     void       vCopyBuffer(IndexBuffer* pFromBuffer);
     
