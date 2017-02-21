@@ -73,7 +73,7 @@ void Task::vToBody(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">body");
   Word* pWord = _pWord(pWordObject);
   
-  char* pBody = pcAdd(pWord,sizeof(Word));
+  char* pBody = pAdd<char*>(pWord,sizeof(Word));
   
   Object* pPtrBody = reinterpret_cast<Object*>(pBody);
   

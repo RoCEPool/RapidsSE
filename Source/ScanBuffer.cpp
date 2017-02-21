@@ -112,7 +112,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
   
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
   
-  m_pEndData = pcAdd(m_pEndData,iBytesRead);
+  m_pEndData = pAdd<char*>(m_pEndData,iBytesRead);
   
   m_pNextMsg = pFirstByte();
   ASSERT(m_pEndData >= pFirstByte() - 1);
@@ -257,7 +257,7 @@ void ScanBuffer::vCopyUp(char* pDangling)
   ASSERT(iDanglingBytes <= C_WORKAREA);
   
   Memory::vCopy(pFirstByte(),pDangling,iDanglingBytes);
-  m_pEndData = pcAdd(pFirstByte(),iDanglingBytes - 1);
+  m_pEndData = pAdd<char*>(pFirstByte(),iDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
 //    printf("CopyUp %lld: ",iDanglingBytes);

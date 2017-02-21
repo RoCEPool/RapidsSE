@@ -57,7 +57,7 @@ char* Row::pData(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  char* pDataAddr = pcAdd(this,sizeof(Row));
+  char* pDataAddr = pAdd<char*>(this,sizeof(Row));
   
   return pPoolCheck<char*>(pDataAddr);
 }

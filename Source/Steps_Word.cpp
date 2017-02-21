@@ -723,7 +723,7 @@ void Task::vSee(NNP_Task nnpTask)
       }
       
       i8 iBytes = pValue->iSize();
-      pDoesCell = reinterpret_cast<Cell*>(pcAdd(pDoesCell,iBytes));
+      pDoesCell = pAdd<Cell*>(pDoesCell,iBytes);
       
       continue;
     }

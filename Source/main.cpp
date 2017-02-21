@@ -166,8 +166,7 @@ void vKillPrev(void)
     if ( ! (pRegion = Region::pOpen(sRegionName,iFD)) )
       continue;
     
-    AttachMap* pAttachMap =
-      reinterpret_cast<AttachMap*>(pcAdd(pRegion,C_SIZE_POOL_BUFFER));
+    AttachMap* pAttachMap = pAdd<AttachMap*>(pRegion,C_SIZE_POOL_BUFFER);
 
     if (pAttachMap->m_iPid &&
         pAttachMap->m_iPid != Process::iGetPid() &&

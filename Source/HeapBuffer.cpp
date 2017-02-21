@@ -188,7 +188,7 @@ char* HeapBuffer::pChunkEnd(FreeChunk* pChunk, i8 nBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  char* pChunkEnd = pcAdd(pChunk,nBytes - 1);
+  char* pChunkEnd = pAdd<char*>(pChunk,nBytes - 1);
   
   return pChunkEnd;
 }

@@ -97,7 +97,7 @@ char* Word::pAllot(i8 iBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  char* pAddress = pcAdd(pFirstCell(),m_iDataBytes);
+  char* pAddress = pAdd<char*>(pFirstCell(),m_iDataBytes);
   
   //gpMainDic->vExtendLinear(iBytes);
   
@@ -283,7 +283,7 @@ char* Word::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  char* pDataArea = pcAdd(this,sizeof(Word));
+  char* pDataArea = pAdd<char*>(this,sizeof(Word));
   
   return pPoolCheck<char*>((void*)pDataArea);
 }
@@ -467,7 +467,7 @@ Cell* Word::pFirstCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  Cell* pFirst = reinterpret_cast<Cell*>(pcAdd((void*)this,sizeof(Word)));
+  Cell* pFirst = pAdd<Cell*>((void*)this,sizeof(Word));
                                          
   return pPoolCheck<Cell*>(pFirst);
 }
@@ -567,7 +567,7 @@ Cell* Word::pLastCell(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
-  Cell* pLast = reinterpret_cast<Cell*>(pcAdd((void*)this,sizeof(Word) + m_iDataBytes));
+  Cell* pLast = pAdd<Cell*>((void*)this,sizeof(Word) + m_iDataBytes);
   
   return pPoolCheck<Cell*>(pLast);
 }

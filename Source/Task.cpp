@@ -319,7 +319,7 @@ void Task::vAdjustNext(i8 iBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  IP.m_pCell = reinterpret_cast<Cell*>(pcAdd(IP.m_pCell,iBytes));
+  IP.m_pCell = pAdd<Cell*>(IP.m_pCell,iBytes);
 }
 
 /*----------------------------------------------------------------------------*/

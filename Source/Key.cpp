@@ -99,7 +99,7 @@ void Key::vShow(void)
 /*----------------------------------------------------------------------------*/
 char* Key::pDataArea(void)
 {
-  char* pDataArea = pcAdd(this,sizeof(Key));
+  char* pDataArea = pAdd<char*>(this,sizeof(Key));
   
   return pPoolCheck<char*>(pDataArea);
 }

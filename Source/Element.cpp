@@ -76,7 +76,7 @@ Element::~Element(void)
 /*----------------------------------------------------------------------------*/
 char* Element::pData(void)
 {
-  char* pDataAddr = pcAdd(this,sizeof(Element));
+  char* pDataAddr = pAdd<char*>(this,sizeof(Element));
   
   return pPoolCheck<char*>(pDataAddr);
 }

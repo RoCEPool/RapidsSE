@@ -130,7 +130,7 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
   Memory::vCopy(pDst,pSrc,nBytes);
   
   // recalculate beginning of free space
-  m_pFreeSpace = pcAdd(m_pFreeSpace,nBytes);
+  m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
   
   // inc the number of entries in this buffer
   m_nEntries++;
@@ -149,7 +149,7 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   i8 nBytes  = pArgBuffer->nBytesUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  m_pFreeSpace = pcAdd(m_pFreeSpace,nBytes);
+  m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
   
   // inc the number of entries in this buffer
   i8 nArgEntries = pArgBuffer->nEntries();
@@ -167,7 +167,7 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
   
   Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),nBytes);
   
-  char* pRevised = pcAdd(pDataArea(),nBytes);
+  char* pRevised = pAdd<char*>(pDataArea(),nBytes);
   
   m_pFreeSpace = reinterpret_cast<char*>(pRevised);
   
@@ -332,7 +332,7 @@ char* IndexBuffer::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  char* pStart = pcAdd(this,sizeof(IndexBuffer));
+  char* pStart = pAdd<char*>(this,sizeof(IndexBuffer));
   
   return pStart;
 }

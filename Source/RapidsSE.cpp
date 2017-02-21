@@ -213,7 +213,7 @@ void RapidsSE::vSEitfDelete(SEitf* pSEitf)
 /*----------------------------------------------------------------------------*/
 void RapidsSE::vAttachObjects(void)
 {
-  gpAttachMap = reinterpret_cast<AttachMap*>(pcAdd(mpRegion,C_SIZE_POOL_BUFFER));
+  gpAttachMap = pAdd<AttachMap*>(mpRegion,C_SIZE_POOL_BUFFER);
   
   // get pointers to global objects from attach map
   gpAttachMap->vGetGlobals();

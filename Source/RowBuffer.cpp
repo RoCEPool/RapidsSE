@@ -319,7 +319,7 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
   
   Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),iBytes);
   
-  char* pRevised = pcAdd(pDataArea(),iBytes);
+  char* pRevised = pAdd<char*>(pDataArea(),iBytes);
   
   m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
 

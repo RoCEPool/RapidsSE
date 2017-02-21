@@ -121,7 +121,7 @@ char* s::mDataArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  char* p = pcAdd(this,sizeof(s));
+  char* p = pAdd<char*>(this,sizeof(s));
   
   return p;
 }

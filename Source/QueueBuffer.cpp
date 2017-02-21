@@ -62,7 +62,7 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   i8 nBytes = pValue->iSize();
   
-  char* pFinalByteOfValue = pcAdd(m_pNextFree,nBytes-1);
+  char* pFinalByteOfValue = pAdd<char*>(m_pNextFree,nBytes-1);
   
   if (pFinalByteOfValue > Buffer::pLastUsableByte())
     return false;

@@ -17,18 +17,6 @@ char* Magic::_pc(void* pVoidAddress)
 /*----------------------------------------------------------------------------*/
 /* add bytes to address                                                       */
 /*----------------------------------------------------------------------------*/
-char* Magic::pcAdd(void* pAddress, i8 nBytes)
-{
-  char* pAddr0 = reinterpret_cast<char*>(pAddress);
-  
-  char* pAddr1 = pAddr0 + nBytes;
-  
-  return pAddr1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* add bytes to address                                                       */
-/*----------------------------------------------------------------------------*/
 void* Magic::pvAdd(void* pAddress, i8 nBytes)
 {
   char* pAddr0 = reinterpret_cast<char*>(pAddress);
