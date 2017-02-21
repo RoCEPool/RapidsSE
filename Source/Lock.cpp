@@ -223,7 +223,17 @@ void Lock::vGrabWrite(void)
   
   ++m_zWriteCollisions;
   
+  Timer xTimer;
+  xTimer.vStart();
+  bool bReported = false;
+  
   do {
+    xTimer.vUpdate();
+    if (xTimer.iMilliseconds() > 100 && ! bReported) {
+      bReported = true;
+      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p\n",this);
+    }
+    
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
   } while ( ! rCode );
   
