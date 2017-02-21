@@ -138,7 +138,19 @@ void Lock::vGrabRead(void)
   
   ++m_zReadCollisions;
   
+  Timer xTimer;
+  xTimer.vStart();
+  bool bReported = false;
+  
   do {
+    xTimer.vUpdate();
+    if (xTimer.iMilliseconds() > 100 && ! bReported) {
+      bReported = true;
+      vTrace("Lock::vGrabRead -- Unable to grab read lock %p %s\n",
+             this,
+             m_aName ? m_aName : "<noName>");
+    }
+    
     rCode = Synch::iLockGrabRead(&m_uLockWord);
   } while ( ! rCode );
   
