@@ -48,6 +48,7 @@ BufferPool::BufferPool(void)
   m_iShmFD   = 0;
   
   m_zFreeLock.vName("BufferPool::m_zFreeLock");
+  m_zFreeLock.vCheckInit();
   
   m_iAllocCount   = 0;
   m_iFreeCount    = 0;

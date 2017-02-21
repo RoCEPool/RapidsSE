@@ -139,6 +139,11 @@ ENTRY("vLockInit");
   ASSERT(pLock);
   ASSERT(CN_LOCK == pLock->eClass());
   
+  Word* pLockWord = Word::pToWord(pLock);
+  
+  pLock->vName(pLockWord->sName().a());
+  pLock->vCheckInit();
+  
   EXIT();
 }
 

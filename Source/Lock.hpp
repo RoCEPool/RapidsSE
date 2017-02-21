@@ -19,6 +19,7 @@ namespace Common
     u8     m_uLockWord;        // lock word
   
     const char* m_aName;       // name
+    bool   m_bChecked;         // has checkInit been run? 
   
     Atomic m_zReadGrabs;       // number of read grabs
     Atomic m_zReadCollisions;  // number of read collisions

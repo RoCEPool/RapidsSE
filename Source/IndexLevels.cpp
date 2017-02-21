@@ -52,7 +52,9 @@ IndexLevels::IndexLevels(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXLEVELS,_FOOTER_);
   
+  m_zLock.vName("IndexLevels::m_zLock");
   m_zLock.vCheckInit();
+  
   for (i8 iLevel = 0; iLevel < C_LEVELS_PER_INDEX; iLevel++)
     m_pIndexBuffer[iLevel] = nullptr;
   

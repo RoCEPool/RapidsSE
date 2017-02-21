@@ -188,6 +188,7 @@ void Task::vInit(const char* aLambda)
   static i8 iTaskNo = 0;
   
   // basic state
+  m_xLock.vName("Task::m_xLock");
   m_xLock.vCheckInit();
   m_iTaskNo     = iTaskNo++;
   m_sName       = "<no task name>";
