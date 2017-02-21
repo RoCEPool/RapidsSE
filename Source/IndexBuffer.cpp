@@ -58,7 +58,7 @@ IndexBuffer::IndexBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
 
   m_pFreeSpace  = pDataArea();
-  m_nRows       = 0;
+  m_nEntries    = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
@@ -76,7 +76,7 @@ IndexBuffer::IndexBuffer(i8 iDataBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   m_pFreeSpace  = static_cast<Object*>(pvAdd(pDataArea(),iDataBytes));
-  m_nRows       = 0;
+  m_nEntries    = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
   
@@ -94,7 +94,7 @@ IndexBuffer::~IndexBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* row buffer factory                                                         */
+/* index buffer factory                                                       */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 {
@@ -112,7 +112,7 @@ IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dump rowbuffer                                                             */
+/* dump index buffer                                                          */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 {
@@ -121,8 +121,8 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   IndexBuffer* pIndexBuffer = reinterpret_cast<IndexBuffer*>(pObject);
   
-  vTrace("rows %lld freeSpace %p prevBuffer %p nextBuffer %p\n",
-         pIndexBuffer->m_nRows,
+  vTrace("entries %lld freeSpace %p prevBuffer %p nextBuffer %p\n",
+         pIndexBuffer->m_nEntries,
          pIndexBuffer->m_pFreeSpace,
          pIndexBuffer->m_pPrevBuffer,
          pIndexBuffer->m_pNextBuffer);
@@ -140,16 +140,22 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // Copy Entry into IndexBuffer's DataBytes
-  void* pDst = pvAdd(pDataArea(),iBytesUsed());
+  void* pDst = pvAdd(pDataArea(),nBytesUsed());
   void* pSrc = &xEntry;
   i8 nBytes  = xEntry.iSize();
+  
+  // test sufficient free space
+//  if (nFreeBytes() < iBytes) {
+//    return nullptr;
+//  }
+  
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  // calculate the free space
+  // calculate beginning of free space
   m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
   
-  // inc the number of rows in this buffer
-  m_nRows ++;
+  // inc the number of entries in this buffer
+  m_nEntries++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -161,8 +167,8 @@ Row* IndexBuffer::pAllocRow(i8 iDataBytes)
   
   i8 iBytes = Row::iBytesRequired(iDataBytes);
 
-  // test  sufficient freespace
-  if (iFreeSpace() < iBytes) {
+  // test sufficient free space
+  if (nFreeBytes() < iBytes) {
     return nullptr;
   }
   
@@ -172,7 +178,7 @@ Row* IndexBuffer::pAllocRow(i8 iDataBytes)
   
   new(pRow) Row(iDataBytes);
   
-  m_nRows++;
+  m_nEntries++;
     
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
   
@@ -180,23 +186,23 @@ Row* IndexBuffer::pAllocRow(i8 iDataBytes)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append rows of arg buffer into this buffer                                 */
+/* append entries of arg buffer into this buffer                              */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  // copy arg rows into this buffer
-  void* pDst = pvAdd(pDataArea(),iBytesUsed());
+  // copy arg entries into this buffer
+  void* pDst = pvAdd(pDataArea(),nBytesUsed());
   void* pSrc = pArgBuffer->pDataArea();
-  i8 nBytes  = pArgBuffer->iBytesUsed();
+  i8 nBytes  = pArgBuffer->nBytesUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
   
   m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
   
-  // inc the number of rows in this buffer
-  i8 nArgRows = pArgBuffer->nRows();
-  m_nRows += nArgRows;
+  // inc the number of entries in this buffer
+  i8 nArgEntries = pArgBuffer->nEntries();
+  m_nEntries += nArgEntries;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,23 +278,23 @@ void IndexBuffer::vPrevBuffer(IndexBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* calc bytes used                                                            */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iBytesUsed(void)
+i8 IndexBuffer::nBytesUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iBytes = iSub(m_pFreeSpace,pDataArea());
+  i8 nBytes = iSub(m_pFreeSpace,pDataArea());
   
-  return iBytes;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of rows in buffer                                               */
+/* get number of entries in buffer                                            */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::nRows(void)
+i8 IndexBuffer::nEntries(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  return m_nRows;
+  return m_nEntries;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -296,22 +302,22 @@ i8 IndexBuffer::nRows(void)
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vShow(void)
 {
-  vTrace("IndexBuffer %p: rows %lld\n",
+  vTrace("IndexBuffer %p: entries %lld\n",
          this,
-         m_nRows
+         m_nEntries
          );
 }
 
 /*----------------------------------------------------------------------------*/
-/* set row count                                                              */
+/* set entry count                                                            */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vRowCount(void)
+void IndexBuffer::vEntryCount(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  m_nRows = 0;
+  m_nEntries = 0;
    for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry))
-     m_nRows++;
+     m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
 }
@@ -323,15 +329,15 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 iBytes = pFromBuffer->iBytesUsed();
+  i8 nBytes = pFromBuffer->nBytesUsed();
   
-  Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),iBytes);
+  Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),nBytes);
   
-  char* pRevised = pcAdd(pDataArea(),iBytes);
+  char* pRevised = pcAdd(pDataArea(),nBytes);
   
   m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
 
-  vRowCount();
+  vEntryCount();
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
 }
@@ -406,9 +412,9 @@ Object* IndexBuffer::pDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* how much free space (in bytes) left in segment?                            */
+/* how much free space (in bytes) left in data area                           */
 /*----------------------------------------------------------------------------*/
-i8 IndexBuffer::iFreeSpace(void)
+i8 IndexBuffer::nFreeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
