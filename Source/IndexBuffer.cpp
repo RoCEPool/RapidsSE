@@ -7,6 +7,10 @@
 #include "StorageEngine.h"
 
 /*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* DBobjects::_pIndexBuffer(void* pAddr)
@@ -94,6 +98,10 @@ IndexBuffer::~IndexBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* index buffer factory                                                       */
 /*----------------------------------------------------------------------------*/
 IndexBuffer* IndexBuffer::pNewIndexBuffer(void)
@@ -129,7 +137,7 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -176,6 +184,61 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   // inc the number of entries in this buffer
   i8 nArgEntries = pArgBuffer->nEntries();
   m_nEntries += nArgEntries;
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy given buffer                                                          */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  i8 nBytes = pFromBuffer->nBytesUsed();
+  
+  Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),nBytes);
+  
+  char* pRevised = pcAdd(pDataArea(),nBytes);
+  
+  m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
+  
+  vEntryCount();
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of entries in buffer                                            */
+/*----------------------------------------------------------------------------*/
+i8 IndexBuffer::nEntries(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  return m_nEntries;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set entry count                                                            */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vEntryCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  m_nEntries = 0;
+  for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry))
+    m_nEntries++;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show                                                                       */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vShow(void)
+{
+  vTrace("IndexBuffer %p: entries %lld\n",
+         this,
+         m_nEntries
+         );
 }
 
 /*----------------------------------------------------------------------------*/
@@ -249,6 +312,9 @@ void IndexBuffer::vPrevBuffer(IndexBuffer* pPrevBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* calc bytes used                                                            */
 /*----------------------------------------------------------------------------*/
 i8 IndexBuffer::nBytesUsed(void)
@@ -259,65 +325,6 @@ i8 IndexBuffer::nBytesUsed(void)
   
   return nBytes;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get number of entries in buffer                                            */
-/*----------------------------------------------------------------------------*/
-i8 IndexBuffer::nEntries(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  return m_nEntries;
-}
-
-/*----------------------------------------------------------------------------*/
-/* show                                                                       */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vShow(void)
-{
-  vTrace("IndexBuffer %p: entries %lld\n",
-         this,
-         m_nEntries
-         );
-}
-
-/*----------------------------------------------------------------------------*/
-/* set entry count                                                            */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vEntryCount(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  m_nEntries = 0;
-   for (Entry* pEntry = pFirstEntry(); pEntry; pEntry = pNextEntry(pEntry))
-     m_nEntries++;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy given buffer                                                          */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  i8 nBytes = pFromBuffer->nBytesUsed();
-  
-  Memory::vCopy(pDataArea(),pFromBuffer->pDataArea(),nBytes);
-  
-  char* pRevised = pcAdd(pDataArea(),nBytes);
-  
-  m_pFreeSpace = reinterpret_cast<Object*>(pRevised);
-
-  vEntryCount();
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */

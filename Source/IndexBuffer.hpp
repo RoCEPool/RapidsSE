@@ -11,8 +11,8 @@ namespace DBobjects
   class IndexBuffer : public Buffer
   {
   private:
-    Object*    m_pFreeSpace;    // ptr to begiining free space within buffer
-    i8         m_nEntries;      // number of entries in this buffer
+    Object*      m_pFreeSpace;  // beggining of free space within buffer
+    i8           m_nEntries;    // number of entries in this buffer
     IndexBuffer* m_pPrevBuffer; // prev buffer
     IndexBuffer* m_pNextBuffer; // next buffer
     // ..data..
@@ -33,26 +33,22 @@ namespace DBobjects
     void vAddEntry(Entry& xEntry);
     void vAppendBuffer(IndexBuffer* pArgBuffer);
     void vCopyBuffer(IndexBuffer* pFromBuffer);
+    i8   nEntries(void);
+    void vEntryCount(void);
+    void vShow(void);
   
-    Entry*     pFirstEntry();
-    Entry*     pNextEntry(Entry* pCurr);
+    Entry* pFirstEntry();
+    Entry* pNextEntry(Entry* pCurr);
     
     IndexBuffer* pNextBuffer(void);
-    void       vNextBuffer(IndexBuffer* pNextBuffer);
+    void         vNextBuffer(IndexBuffer* pNextBuffer);
     
     IndexBuffer* pPrevBuffer(void);
-    void       vPrevBuffer(IndexBuffer* pPrevBuffer);
+    void         vPrevBuffer(IndexBuffer* pPrevBuffer);
     
-    i8         nBytesUsed(void);
-    i8         nEntries(void);
-    void       vEntryCount(void);
-    void       vShow(void);
- 
-  
-  
-    Object*    pDataArea(void);
-  
-    i8      nFreeBytes(void);
+    i8       nBytesUsed(void);
+    Object*  pDataArea(void);
+    i8       nFreeBytes(void);
   };
   
   IndexBuffer* _pIndexBuffer(void* pAddr);
