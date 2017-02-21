@@ -30,11 +30,10 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void       vAddEntry(Entry& xEntry);
-    Row*       pAllocRow(i8 iDataBytes);
-
-    void       vAppendBuffer(IndexBuffer* pArgBuffer);
-    
+    void vAddEntry(Entry& xEntry);
+    void vAppendBuffer(IndexBuffer* pArgBuffer);
+    void vCopyBuffer(IndexBuffer* pFromBuffer);
+  
     Entry*     pFirstEntry();
     Entry*     pNextEntry(Entry* pCurr);
     
@@ -49,14 +48,10 @@ namespace DBobjects
     void       vEntryCount(void);
     void       vShow(void);
  
-    void       vCopyBuffer(IndexBuffer* pFromBuffer);
-    
-    bool       bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength);
-    
+  
+  
     Object*    pDataArea(void);
-    
-  //private:
-    
+  
     i8      nFreeBytes(void);
   };
   

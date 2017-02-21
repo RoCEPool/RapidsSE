@@ -159,33 +159,6 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
 }
 
 /*----------------------------------------------------------------------------*/
-/* allocate a row in this segmented space                                     */
-/*----------------------------------------------------------------------------*/
-Row* IndexBuffer::pAllocRow(i8 iDataBytes)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  i8 iBytes = Row::iBytesRequired(iDataBytes);
-
-  // test sufficient free space
-  if (nFreeBytes() < iBytes) {
-    return nullptr;
-  }
-  
-  Row* pRow = reinterpret_cast<Row*>(m_pFreeSpace);
-
-  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,iBytes));
-  
-  new(pRow) Row(iDataBytes);
-  
-  m_nEntries++;
-    
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
-  
-  return pRow;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append entries of arg buffer into this buffer                              */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
@@ -340,59 +313,6 @@ void IndexBuffer::vCopyBuffer(IndexBuffer* pFromBuffer)
   vEntryCount();
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert row into this buffer                                                */
-/*----------------------------------------------------------------------------*/
-//bool IndexBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-//  
-//  i8 iDataBytes  = pRowStr->iSize();
-//  
-//  Row* pRow = pAllocRow(iDataBytes);
-//  if (!pRow)
-//    return false;
-//  
-//  i8 iTxId = pTxRef->iTxId();
-//  
-////  vTrace("TxId %lld\n",iTxId);
-//  
-//  pRow->vTxId(iTxId);
-//  
-//  Memory::vCopy(pRow->pData(),pRowStr,iDataBytes);
-//  
-//  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
-//
-//  return true;
-//}
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-bool IndexBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  i8 nBytesRequired = StrVal::nBytesRequired(iLength);
-  
-  Row* pRow = pAllocRow(nBytesRequired);
-  if (!pRow)
-    return false;
-  
-  i8 iTxId = pTxRef->iTxId();
-  
-  pRow->vTxId(iTxId);
-  
-  char* pData = pRow->pData();
-  
-  StrVal* pStr = new((StrVal*)pData) StrVal;
-  
-  Memory::vCopy(pStr->sStr(),pRecord,iLength);
-  pStr->pData()[iLength] = '\0';
-  pStr->vSize(iLength);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/
