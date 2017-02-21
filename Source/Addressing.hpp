@@ -9,8 +9,6 @@ namespace Magic
 {
   char* _pc(void* pAddress);
   
-  void* pvAdd(void* pAddress, i8 nBytes);
-
   i8    iSub(void* pAddress0, void* pAddress1);
 }
 
@@ -20,7 +18,11 @@ namespace Magic
 template <class CAST>
 static CAST pAdd(void* pAddress, i8 nBytes)
 {
-  return static_cast<CAST>(pvAdd(pAddress,nBytes));
+  char* pAddr0 = reinterpret_cast<char*>(pAddress);
+  
+  char* pAddr1 = pAddr0 + nBytes;
+
+  return reinterpret_cast<CAST>(pAddr1);
 }
 
 /*============================================================================*/

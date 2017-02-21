@@ -118,7 +118,7 @@ void IndexBuffer::vAddEntry(Entry& xEntry)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // append entry onto IndexBuffer's data area
-  void* pDst = pvAdd(pDataArea(),nBytesUsed());
+  void* pDst = pAdd<void*>(pDataArea(),nBytesUsed());
   void* pSrc = &xEntry;
   i8 nBytes  = xEntry.iSize();
   
@@ -144,7 +144,7 @@ void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   // copy arg entries into this buffer
-  void* pDst = pvAdd(pDataArea(),nBytesUsed());
+  void* pDst = pAdd<void*>(pDataArea(),nBytesUsed());
   void* pSrc = pArgBuffer->pDataArea();
   i8 nBytes  = pArgBuffer->nBytesUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
@@ -262,7 +262,7 @@ Entry* IndexBuffer::pNextEntry(Entry* pCurr)
 {
   i8 iSize = pCurr->iSize();
   
-  Entry* pNext = static_cast<Entry*>(pvAdd(pCurr,iSize));
+  Entry* pNext = pAdd<Entry*>(pCurr,iSize);
   
   if ((char*)pNext < (char*)m_pFreeSpace)
     return pNext;

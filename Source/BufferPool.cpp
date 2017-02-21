@@ -40,9 +40,8 @@ BufferPool::BufferPool(void)
   
 
   m_pBase  = reinterpret_cast<Buffer*>(this);
-  m_pLimit = reinterpret_cast<Buffer*>(pvAdd(m_pBase,gxArguments.m_iRegionSize));
-  m_pJumbo = reinterpret_cast<Buffer*>(
-                                       pvAdd(m_pLimit,-(gxArguments.m_nJumboTook * C_SIZE_POOL_BUFFER)));
+  m_pLimit = pAdd<Buffer*>(m_pBase,gxArguments.m_iRegionSize);
+  m_pJumbo = pAdd<Buffer*>(m_pLimit,-(gxArguments.m_nJumboTook * C_SIZE_POOL_BUFFER));
   
   m_sShmName = gxArguments.m_sRegionName;
   m_iShmFD   = 0;
@@ -363,8 +362,7 @@ Buffer* BufferPool::pNextJumbo(Buffer* pPrev)
     pJumbo = m_pJumbo;
   }
   else {
-    pJumbo = reinterpret_cast<Buffer*>(
-               pvAdd(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO));
+    pJumbo = pAdd<Buffer*>(pPrev,C_SIZE_POOL_BUFFER*C_JUMBO_RATIO);
     if (pJumbo >= m_pLimit)
       pJumbo = nullptr;
   }

@@ -260,8 +260,7 @@ Footer* Entry::pFooter(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  Footer* pFooter = static_cast<Footer*>(
-                      pvAdd(this,sizeof(Entry) + m_nDataBytes));
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(Entry) + m_nDataBytes);
   
   return pFooter;
 }

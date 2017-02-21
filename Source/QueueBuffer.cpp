@@ -69,7 +69,7 @@ bool QueueBuffer::bAppend(Value* pValue)
   
   Memory::vCopy(m_pNextFree,pValue,nBytes);
   
-  m_pNextFree = static_cast<Value*>(pvAdd(m_pNextFree,nBytes));
+  m_pNextFree = pAdd<Value*>(m_pNextFree,nBytes);
   
   m_nValues++;
   
@@ -156,7 +156,7 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
   Memory::vCopy(pValWsp,m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
-  m_pTopValue = static_cast<Value*>(pvAdd(m_pTopValue,nBytes));
+  m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);
   
   m_nValues--;
   
@@ -192,7 +192,7 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
   Memory::vCopy(pValSet,m_pTopValue,nBytes);
   
   //m_pTopValue = pNextValue(m_pTopValue);
-  m_pTopValue = static_cast<Value*>(pvAdd(m_pTopValue,nBytes));
+  m_pTopValue = pAdd<Value*>(m_pTopValue,nBytes);
   
   m_nValues--;
   
@@ -220,7 +220,7 @@ Value* QueueBuffer::pFirstValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  Value* pFirstValue = static_cast<Value*>(pvAdd(this,sizeof(QueueBuffer)));
+  Value* pFirstValue = pAdd<Value*>(this,sizeof(QueueBuffer));
   
   return pFirstValue;
 }
@@ -234,7 +234,7 @@ Value* QueueBuffer::pNextValue(Value* pValue)
   
   i8 nBytes = pValue->iSize();
   
-  Value* pNextValue = static_cast<Value*>(pvAdd(pValue,nBytes));
+  Value* pNextValue = pAdd<Value*>(pValue,nBytes);
   
   if (pNextValue < m_pNextFree)
     return pNextValue;

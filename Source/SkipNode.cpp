@@ -109,7 +109,7 @@ Footer* SkipNode::pFooter(void)
   
   i8 nSizeBytes = sizeof(SkipNode) + (sizeof(SkipNode*) * (m_nForward - 1));
   
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,nSizeBytes));
+  Footer* pFooter = pAdd<Footer*>(this,nSizeBytes);
   
   return pFooter;
 }

@@ -138,7 +138,7 @@ FreeChunk* HeapBuffer::pFirstChunk(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
-  FreeChunk* pFirstChunk = static_cast<FreeChunk*>(pvAdd(this,sizeof(HeapBuffer)));
+  FreeChunk* pFirstChunk = pAdd<FreeChunk*>(this,sizeof(HeapBuffer));
   
   return pFirstChunk;
 }
@@ -151,7 +151,7 @@ FreeChunk* HeapBuffer::pNextChunk(FreeChunk* pChunk, i8 nBytes)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HEAPBUFFER,_FOOTER_);
   
   // calculate address of next buffer
-  FreeChunk* pNextChunk = static_cast<FreeChunk*>(pvAdd(pChunk,nBytes));
+  FreeChunk* pNextChunk = pAdd<FreeChunk*>(pChunk,nBytes);
 
   // check next buffer ends within this segment
   if (pChunkEnd(pNextChunk,nBytes) > m_pLastByte)

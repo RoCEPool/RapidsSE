@@ -724,7 +724,7 @@ Footer* Word::pFooter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD);
   
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,sizeof(Word)+m_iDataBytes));
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(Word)+m_iDataBytes);
 
   return pFooter;
 }

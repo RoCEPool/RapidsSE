@@ -76,7 +76,7 @@ RowBuffer::RowBuffer(i8 iDataBytes)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  m_pFreeSpace  = static_cast<Object*>(pvAdd(pDataArea(),iDataBytes));
+  m_pFreeSpace  = pAdd<Object*>(pDataArea(),iDataBytes);
   m_nRows       = 0;
   m_pPrevBuffer = nullptr;
   m_pNextBuffer = nullptr;
@@ -169,7 +169,7 @@ Row* RowBuffer::pAllocRow(i8 iDataBytes)
   
   Row* pRow = reinterpret_cast<Row*>(m_pFreeSpace);
 
-  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,iBytes));
+  m_pFreeSpace = pAdd<Object*>(m_pFreeSpace,iBytes);
   
   new(pRow) Row(iDataBytes);
   
@@ -188,12 +188,12 @@ void RowBuffer::vAppendBuffer(RowBuffer* pArgBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
   // copy arg rows into this buffer
-  void* pDst = pvAdd(pDataArea(),iBytesUsed());
+  void* pDst = pAdd<void*>(pDataArea(),iBytesUsed());
   void* pSrc = pArgBuffer->pDataArea();
   i8 nBytes  = pArgBuffer->iBytesUsed();
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  m_pFreeSpace = static_cast<Object*>(pvAdd(m_pFreeSpace,nBytes));
+  m_pFreeSpace = pAdd<Object*>(m_pFreeSpace,nBytes);
   
   // inc the number of rows in this buffer
   i8 nArgRows = pArgBuffer->nRows();
@@ -224,7 +224,7 @@ Row* RowBuffer::pNextRow(Row* pCurr)
   
   i8 iSize = pCurr->iSize();
   
-  Row* pNext = static_cast<Row*>(pvAdd(pCurr,iSize));
+  Row* pNext = pAdd<Row*>(pCurr,iSize);
   
   if ((char*)pNext < (char*)m_pFreeSpace)
     return pNext;
@@ -392,7 +392,7 @@ Object* RowBuffer::pDataArea(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  Object* pStart = static_cast<Object*>(pvAdd(this,sizeof(RowBuffer)));
+  Object* pStart = pAdd<Object*>(this,sizeof(RowBuffer));
   
   return pStart;
 }

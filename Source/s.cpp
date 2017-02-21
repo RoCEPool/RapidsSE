@@ -224,7 +224,7 @@ Footer* s::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,sizeof(s)+m_nDataBytes));
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(s)+m_nDataBytes);
   
   return pFooter;
 }
