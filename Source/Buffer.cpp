@@ -128,7 +128,7 @@ Footer* Buffer::pFooter(void)
   // Note: cannot check _FOOTER_ here
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  Footer* pFooter = static_cast<Footer*>(pvAdd(this,C_SIZE_POOL_BUFFER-sizeof(Footer)));
+  Footer* pFooter = pAdd<Footer*>(this,C_SIZE_POOL_BUFFER-sizeof(Footer));
   
   return pFooter;
 }

@@ -204,7 +204,7 @@ char* Entry::pDataArea(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY);
   
-  char* pDataAddr = pcAdd(this,sizeof(Entry));
+  char* pDataAddr = pAdd<char*>(this,sizeof(Entry));
   
   return pDataAddr;
 }
