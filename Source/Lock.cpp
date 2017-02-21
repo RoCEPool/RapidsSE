@@ -225,7 +225,11 @@ bool Lock::bGrabWrite(void)
 void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
+
+//  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n",
+//         this,
+//         m_aName ? m_aName : "<noName>");
+
   ++m_zWriteGrabs;
   i8 rCode = Synch::iLockGrabWrite(&m_uLockWord);
   if (rCode) {
@@ -243,7 +247,9 @@ void Lock::vGrabWrite(void)
     xTimer.vUpdate();
     if (xTimer.iMilliseconds() > 100 && ! bReported) {
       bReported = true;
-      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p\n",this);
+      vTrace("Lock::vGrabWrite -- Unable to grab write lock %p %s\n",
+             this,
+             m_aName ? m_aName : "<noName>");
     }
     
     rCode = Synch::iLockGrabWrite(&m_uLockWord);
