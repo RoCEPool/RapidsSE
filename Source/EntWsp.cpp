@@ -63,9 +63,12 @@ EntWsp::~EntWsp(void)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vShow(void)
 {
-  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
   i8 iKey;
-  memcpy(&iKey,m_mDataArea,8);
+//  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
+//  memcpy(&iKey,m_mDataArea,8);
+  
+  V::vCopyIntDatum(&iKey,m_mDataArea);
+  
   vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
          this,
          m_xRowId.uBuffer(),

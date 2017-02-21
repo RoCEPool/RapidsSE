@@ -63,8 +63,11 @@ KeyWsp::~KeyWsp(void)
 /*----------------------------------------------------------------------------*/
 void KeyWsp::vShow(void)
 {
-  vTrace("KeyWsp %p: \n",
-         this
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
+  vTrace("KeyWsp %p: databytes %lld\n",
+         this,
+         m_nDataBytes
          );
 }
 
@@ -73,6 +76,9 @@ void KeyWsp::vShow(void)
 /*----------------------------------------------------------------------------*/
 void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
 {
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
+  // for the moment we only allow one element per key
   ASSERT( ! m_nDataBytes );
   
   eCN eClass = xValWsp.eClass();
@@ -90,6 +96,8 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
 /*----------------------------------------------------------------------------*/
 char* KeyWsp::pDataArea(void)
 {
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+
   return m_mDataArea;
 }
 
@@ -98,6 +106,8 @@ char* KeyWsp::pDataArea(void)
 /*----------------------------------------------------------------------------*/
 i8 KeyWsp::nDataBytes(void)
 {
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+
   return m_nDataBytes;
 }
 
@@ -106,6 +116,8 @@ i8 KeyWsp::nDataBytes(void)
 /*----------------------------------------------------------------------------*/
 char* KeyWsp::pDataNext(void)
 {
+  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
+  
   return &m_mDataArea[m_nDataBytes];
 }
 
