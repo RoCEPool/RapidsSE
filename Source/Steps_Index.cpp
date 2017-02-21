@@ -61,10 +61,10 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set rowId
   RowId xRowId;
-  i8 iRowId = String::iToI8(sRow.a());
+  i8 iRowNo = String::iToI8(sRow.a());
   
   xRowId.vBuffer(999);
-  xRowId.vRow(iRowId);
+  xRowId.vRow(iRowNo);
   xEntWsp.vRowId(xRowId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,12 +78,17 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   xKeyWsp.vAddElement(xValWsp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // show
+  xEntWsp.vShow();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add key to entry
   xEntWsp.vAddKey(xKeyWsp);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // show
-  xEntWsp.vShow();
+  // add entry into index buffer
+  // ..Alka..
+  // pIb->vAddEntry(xEntWsp);
+  //pIb->vShow();
   
   EXIT();
 }
