@@ -141,8 +141,7 @@ ENTRY("vLockInit");
   
   Word* pLockWord = Word::pToWord(pLock);
   
-  pLock->vName(pLockWord->sName().a());
-  pLock->vCheckInit();
+  pLock->vInit(pLockWord->sName().a());
   
   EXIT();
 }

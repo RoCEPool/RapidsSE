@@ -29,8 +29,7 @@ StepArray::StepArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPARRAY,_FOOTER_);
   
-  m_zLock.vName("StepArray::m_zLock");
-  m_zLock.vCheckInit();
+  m_zLock.vInit("StepArray::m_zLock");
   m_iNext = 0;
   //m_xStepAccum[]
   

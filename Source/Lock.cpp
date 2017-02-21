@@ -49,7 +49,6 @@ Lock::Lock(void)
   m_uLockWord = 0;
   
   m_aName = nullptr;
-  m_bChecked = false;
 
   m_zReadGrabs.vCheckInit();
   m_zReadCollisions.vCheckInit();
@@ -77,23 +76,13 @@ Lock::~Lock(void)
 /*----------------------------------------------------------------------------*/
 /* set name of lock                                                           */
 /*----------------------------------------------------------------------------*/
-void Lock::vName(const char* aName)
+void Lock::vInit(const char* aName)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   m_aName = aName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* check lock initialization                                                  */
-/*----------------------------------------------------------------------------*/
-void Lock::vCheckInit(void)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(0 == m_uLockWord); // logic check
-  
-  m_bChecked = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +127,6 @@ void Lock::vGrabRead(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_aName);
-  ASSERT(m_bChecked);
   
   ++m_zReadGrabs;
   
@@ -233,7 +221,6 @@ void Lock::vGrabWrite(void)
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
   ASSERT(m_aName);
-  ASSERT(m_bChecked);
 
 //  vTrace("Lock::vGrabWrite -- Grabbing write lock %p %s\n",
 //         this,

@@ -44,8 +44,7 @@ Heap::Heap(eCN eClassNo, i8 iObjectSize)
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
   m_iObjectSize  = iObjectSize;
-  m_zLock.vName("Heap::m_zLock");
-  m_zLock.vCheckInit();
+  m_zLock.vInit("Heap::m_zLock");
   m_iAllocCount  = 0;
   m_iBufferCount = 0;
   m_pFirstBuffer = nullptr;

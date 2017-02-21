@@ -52,8 +52,7 @@ LoadMap::LoadMap(void)
   
   m_iEntries = 0;
   m_bDone    = false;
-  m_zLock.vName("LoadMap::m_zLock");
-  m_zLock.vCheckInit();
+  m_zLock.vInit("LoadMap::m_zLock");
   m_iNext    = 0;
   for (i8 iEntry = 0; iEntry < C_LOADMAP_ENTRIES; iEntry++)
     m_iEolOffset[iEntry] = -1;

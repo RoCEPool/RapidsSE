@@ -34,8 +34,7 @@ RowStrand::RowStrand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWSTRAND,_FOOTER_);
   
-  m_zLock.vName("RowStrand::m_zLock");
-  m_zLock.vCheckInit();
+  m_zLock.vInit("RowStrand::m_zLock");
   m_nRowBuffers  = 0;
   m_pFirstBuffer = nullptr;
   m_pLastBuffer  = nullptr;

@@ -68,8 +68,7 @@ void* Collection_t<OBJECT>::operator new(size_t iSize)
 template <class OBJECT>
 Collection_t<OBJECT>::Collection_t(void)
 {
-  m_zLock.vName("Collection_t<OBJECT>::m_zLock");
-  m_zLock.vCheckInit();
+  m_zLock.vInit("Collection_t<OBJECT>::m_zLock");
   m_iCount = 0;
   m_pHead  = nullptr;
   m_pTail  = nullptr;

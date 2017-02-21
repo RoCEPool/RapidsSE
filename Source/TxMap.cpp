@@ -47,8 +47,7 @@ TxMap::TxMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TXMAP,_FOOTER_);
   
-  m_xLock.vName("TxMap::m_xLock");
-  m_xLock.vCheckInit();
+  m_xLock.vInit("TxMap::m_xLock");
   m_iSlot = -1;
   m_iId   = -1;
   m_pTxArray  = new TxArray;
