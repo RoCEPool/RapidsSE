@@ -5,9 +5,9 @@
 #include "Magic.h"
 
 /*----------------------------------------------------------------------------*/
-/* compute difference between two addresses                                   */
+/* compute byte difference between two addresses                              */
 /*----------------------------------------------------------------------------*/
-i8 Magic::iSub(void* pAddress0, void* pAddress1)
+i8 Magic::nSub(void* pAddress0, void* pAddress1)
 {
   char* pAddr0 = reinterpret_cast<char*>(pAddress0);
   char* pAddr1 = reinterpret_cast<char*>(pAddress1);

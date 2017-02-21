@@ -7,7 +7,7 @@
 
 namespace Magic
 {
-  i8 iSub(void* pAddress0, void* pAddress1);
+  i8 nSub(void* pAddress0, void* pAddress1);
 }
 
 /*----------------------------------------------------------------------------*/

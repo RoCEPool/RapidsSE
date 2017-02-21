@@ -320,7 +320,7 @@ i8 IndexBuffer::nBytesUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 nBytes = iSub(m_pFreeSpace,pDataArea());
+  i8 nBytes = nSub(m_pFreeSpace,pDataArea());
   
   return nBytes;
 }
@@ -344,7 +344,7 @@ i8 IndexBuffer::nFreeBytes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  i8 nBytes = iSub(m_pLastByte,m_pFreeSpace);
+  i8 nBytes = nSub(m_pLastByte,m_pFreeSpace);
 
   nBytes -= sizeof(Footer);
   

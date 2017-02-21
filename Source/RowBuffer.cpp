@@ -279,9 +279,9 @@ i8 RowBuffer::iBytesUsed(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 iBytes = iSub(m_pFreeSpace,pDataArea());
+  i8 nBytes = nSub(m_pFreeSpace,pDataArea());
   
-  return iBytes;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -404,7 +404,7 @@ i8 RowBuffer::iFreeSpace(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytes = iSub(m_pLastByte,m_pFreeSpace);
+  i8 nBytes = nSub(m_pLastByte,m_pFreeSpace);
 
   nBytes -= sizeof(Footer);
   

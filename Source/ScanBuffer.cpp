@@ -132,7 +132,7 @@ void ScanBuffer::vMore(i8& iBytesRead)
 /*----------------------------------------------------------------------------*/
 /* scan for next message                                                      */
 /*----------------------------------------------------------------------------*/
-char* ScanBuffer::pScan(i8& iMessageBytes)
+char* ScanBuffer::pScan(i8& nMessageBytes)
 {
   //
   // v- pFirstByte()                                          pLastByte() -v
@@ -146,7 +146,7 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
   
   // initial case of no data
   if ( ! m_pNextMsg ) {
-    iMessageBytes = 0;
+    nMessageBytes = 0;
     ASSERT(m_pEndData >= pFirstByte() - 1);
     ASSERT(m_pEndData <= pLastByte());
     return nullptr;
@@ -157,8 +157,8 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
   while (m_pNextMsg <= m_pEndData) {
   
     if (*m_pNextMsg == '\n') {
-      iMessageBytes = iSub(m_pNextMsg,pMsg);
-      ASSERT(iMessageBytes <= C_WORKAREA);
+      nMessageBytes = nSub(m_pNextMsg,pMsg);
+      ASSERT(nMessageBytes <= C_WORKAREA);
       m_pNextMsg++;
       ASSERT(m_pEndData >= pFirstByte() - 1);
       ASSERT(m_pEndData <= pLastByte());
@@ -171,7 +171,7 @@ char* ScanBuffer::pScan(i8& iMessageBytes)
   // no records left, copy dangling bytes to start of workarea
   vCopyUp(pMsg);
   
-  iMessageBytes = 0;
+  nMessageBytes = 0;
   ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
   m_pNextMsg = nullptr;
@@ -213,10 +213,10 @@ i8 ScanBuffer::iBytesAvailable(void)
   ASSERT(m_pEndData >= pFirstByte() - 1);
   ASSERT(m_pEndData <= pLastByte());
   
-  i8 iBytes = iSub(pLastByte(),m_pEndData);
-  ASSERT(iBytes <= C_WORKAREA);
+  i8 nBytes = nSub(pLastByte(),m_pEndData);
+  ASSERT(nBytes <= C_WORKAREA);
   
-  return iBytes;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,14 +253,14 @@ void ScanBuffer::vCopyUp(char* pDangling)
   ASSERT(pDangling <= pLastByte());
   
   // copy dangling data bytes to begining of workarea
-  i8 iDanglingBytes = iSub(pLastByte(),pDangling) + 1;
-  ASSERT(iDanglingBytes <= C_WORKAREA);
+  i8 nDanglingBytes = nSub(pLastByte(),pDangling) + 1;
+  ASSERT(nDanglingBytes <= C_WORKAREA);
   
-  Memory::vCopy(pFirstByte(),pDangling,iDanglingBytes);
-  m_pEndData = pAdd<char*>(pFirstByte(),iDanglingBytes - 1);
+  Memory::vCopy(pFirstByte(),pDangling,nDanglingBytes);
+  m_pEndData = pAdd<char*>(pFirstByte(),nDanglingBytes - 1);
   
 //  if (iDanglingBytes < 1000) {
-//    printf("CopyUp %lld: ",iDanglingBytes);
+//    printf("CopyUp %lld: ",nDanglingBytes);
 //    for (char* c = pFirstByte(); c <= m_pEndData; c++) {
 //      ASSERT(*c != 0xEF);
 //      printf("%c",*c);
@@ -348,9 +348,9 @@ void ScanBuffer::vWipe(char* pFrom)
   
   ASSERT(pFrom >= m_wWorkarea);
   
-  i8 iBytes = iSub(pLastByte(),pFrom) + 1;
+  i8 nBytes = nSub(pLastByte(),pFrom) + 1;
   
-  Memory::vSet(pFrom,0xEF,iBytes);
+  Memory::vSet(pFrom,0xEF,nBytes);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANBUFFER,_FOOTER_);
 }
