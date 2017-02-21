@@ -24,7 +24,9 @@ namespace DBobjects
     Key(i8 nDataBytes);
     Key(KeyWsp& xKeyWsp);
     ~Key(void);
-    
+  
+    bool operator <(Key* pKeyArg);
+
     void  vContentDump(void);
   
     void  vKey(Key& xKey);

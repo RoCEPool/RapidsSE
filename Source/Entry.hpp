@@ -33,6 +33,7 @@ namespace DBobjects
     void   vEntry(EntWsp& xEntWsp);
 
     Key&   xKey(void);
+    Key*   pKey(void);
     void   vKey(Key& xKey);
     void   vKey(KeyWsp& xKeyWsp);
   

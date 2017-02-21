@@ -122,7 +122,10 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   // add entry into index buffer
   pIndexBuffer->vAddEntry(xEntry);
-  
+
+  // verify index buffer
+  pIndexBuffer->vVerify();
+
   EXIT();
 }
 

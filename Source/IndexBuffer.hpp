@@ -34,6 +34,7 @@ namespace DBobjects
     i8   nEntries(void);
     void vEntryCount(void);
     void vShow(void);
+    void vVerify(void);
   
     Entry* pFirstEntry();
     Entry* pNextEntry(Entry* pCurr);

@@ -216,6 +216,31 @@ void IndexBuffer::vShow(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* verify                                                                     */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vVerify(void)
+{
+  Entry* pEntryA = pFirstEntry();
+  if ( ! pEntryA )
+    return;
+
+  Entry* pEntryB = pNextEntry(pEntryA);
+  if ( ! pEntryB )
+    return;
+  
+  while (pEntryB) {
+    
+    Key* pKeyA = pEntryA->pKey();
+    Key* pKeyB = pEntryB->pKey();
+  
+    ASSERT(*pEntryA->pKey() < pEntryB->pKey());
+    
+    pEntryA = pEntryB;
+    pEntryB = pNextEntry(pEntryA);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* first entry                                                                */
 /*----------------------------------------------------------------------------*/
 Entry* IndexBuffer::pFirstEntry(void)
