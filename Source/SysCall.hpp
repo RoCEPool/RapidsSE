@@ -26,7 +26,6 @@ namespace Common
   class SysCall : public Object
   {
   public:
-    cn       m_nClassNo; // class number
     eSysCall m_eStatus;  // return status
     i8       m_iErrNo;   // error number
     

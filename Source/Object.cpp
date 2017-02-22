@@ -51,17 +51,16 @@ void Object::vSetMagic(void)
 /*----------------------------------------------------------------------------*/
 eCN Object::eClass(void) const
 {
-  return m_xClass.eClass();
+  return m_eClass;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set class                                                                  */
 /*----------------------------------------------------------------------------*/
-void Object::vClass(eCN eClassNo)
+void Object::vClass(eCN eClass)
 {
-  m_xClass.vClass(eClassNo);
+  m_eClass = eClass;
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* set is word body                                                           */

@@ -275,24 +275,6 @@ namespace Magic
   
     /*104 */ "ENUMS"
   };
-  
-  class cn
-  {
-  private:
-    eCN m_eClassNo;
-    //u4  m_uFiller;
-    
-  public:
-    cn(void);
-    cn(eCN eClassNo);
-    ~cn(void);
-    
-//    void operator =(eCN eClassNo);
-//    bool operator ==(eCN eClassNo) const;
-    eCN  eClass(void) const;
-    void vClass(eCN eClassNo);
-  };
-  
 }
 
 /*============================================================================*/

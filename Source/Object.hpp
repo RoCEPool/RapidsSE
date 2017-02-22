@@ -12,7 +12,7 @@ namespace Magic
   {
   private:
     u8   m_uMagic;
-    cn   m_xClass;
+    eCN  m_eClass;
     bool m_bWordBody;
     
   public:
