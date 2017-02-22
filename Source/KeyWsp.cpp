@@ -35,11 +35,6 @@ KeyWsp::KeyWsp(void)
 : Object(CN_KEYWSP)
 {
   _precondition_(_MAGIC_,CN_KEYWSP);
-
-  //m_xRowId
-  m_nDataBytes = 0;
-
-  //_setFooter_();
   
   _checkInitialisedSize_(sizeof(KeyWsp));
   
@@ -65,9 +60,9 @@ void KeyWsp::vShow(void)
 {
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
-  vTrace("KeyWsp %p: databytes %lld\n",
+  vTrace("KeyWsp %p: bytesUsed %lld\n",
          this,
-         m_nDataBytes
+         nBytesUsed()
          );
 }
 
@@ -79,48 +74,17 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
   // for the moment we only allow one element per key
-  ASSERT( ! m_nDataBytes );
+  ASSERT( ! nBytesUsed() );
   
   eCN eClass = xValWsp.eClass();
-  char* pDst = pDataNext();
+  char* pDst = pNextChunk();
   char* pSrc = xValWsp.pDataArea();
   
   i8 iSrc = *(i8*)pSrc;
 
-  m_nDataBytes += V::nCopyDatum(eClass,pDst,pSrc);
+  i8 nBytesTaken = V::nCopyDatum(eClass,pDst,pSrc);
   
-  //i8 iKey = xValWsp.iAsInt();
-  //m_nDataBytes += V::nCopyDatum(eClass,pDst,&iKey);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data area                                                              */
-/*----------------------------------------------------------------------------*/
-char* KeyWsp::pDataArea(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
-
-  return m_mDataArea;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of data bytes in the key                                        */
-/*----------------------------------------------------------------------------*/
-i8 KeyWsp::nDataBytes(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
-
-  return m_nDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next avaliable point in data area                                      */
-/*----------------------------------------------------------------------------*/
-char* KeyWsp::pDataNext(void)
-{
-  _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
-  
-  return &m_mDataArea[m_nDataBytes];
+  vTakeBytes(nBytesTaken);
 }
 
 /*----------------------------------------------------------------------------*/

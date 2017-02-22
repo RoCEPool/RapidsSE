@@ -74,8 +74,8 @@ void Key::vKey(Key& xKey)
 void Key::vKey(KeyWsp& xKeyWsp)
 {
   char* pDst = pDataArea();
-  char* pSrc = xKeyWsp.pDataArea();
-  i8 nBytes  = xKeyWsp.nDataBytes();
+  char* pSrc = xKeyWsp.pByteArea();
+  i8 nBytes  = xKeyWsp.nBytesUsed();
   
   Memory::vCopy(pDst,pSrc,nBytes);
 }

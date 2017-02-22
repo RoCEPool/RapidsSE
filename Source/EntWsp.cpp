@@ -99,8 +99,8 @@ void EntWsp::vRowId(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 {
-  char* pSrc = xKeyWsp.pDataArea();
-  i8 nBytes  = xKeyWsp.nDataBytes();
+  char* pSrc = xKeyWsp.pByteArea();
+  i8 nBytes  = xKeyWsp.nBytesUsed();
   
   m_xArea.vAppendBytes(pSrc,nBytes);
 }

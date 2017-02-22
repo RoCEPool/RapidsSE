@@ -8,14 +8,10 @@
 
 namespace DBobjects
 {
-  class KeyWsp : public Object
+  class KeyWsp : public Object,
+                 public Area<C_1KB*15>
   {
-    static const i8 C_KEYWSP_DATAAREA = C_1KB*15;
-  
   private:
-    i8   m_nDataBytes;  // number of used data bytes
-    char m_mDataArea[C_KEYWSP_DATAAREA]; // data area
-  
     Footer m_xFooter;
     
   public:
@@ -29,10 +25,6 @@ namespace DBobjects
 
     void vAddElement(ValWsp& xValWsp);
   
-    char* pDataArea(void);
-    i8    nDataBytes(void);
-    char* pDataNext(void);
-
     Footer* pFooter(void);
   };
 }
