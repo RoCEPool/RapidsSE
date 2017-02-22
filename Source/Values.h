@@ -8,6 +8,8 @@
 
 #include "V.hpp"
 
+#include "Area.hpp"
+
 #include "Value.hpp"
 #include "ValWsp.hpp"
 #include "ValReg.hpp"
