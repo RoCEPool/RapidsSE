@@ -15,6 +15,7 @@
   #include "Asm.h"
 #endif
 
+#include "Static.hpp"
 #include "Synch.hpp"
 #include "BinaryNumbers.h"
 #include "Addressing.hpp"

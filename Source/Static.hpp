@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Magic.h"
+#include "Platform.h"
 
-namespace Magic
+namespace Platform
 {
   class Static
   {
