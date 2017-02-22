@@ -35,18 +35,18 @@ cn::~cn(void)
 /*----------------------------------------------------------------------------*/
 /* assign a magic number                                                      */
 /*----------------------------------------------------------------------------*/
-void cn::operator =(eCN eClassNo)
-{
-  m_eClassNo = eClassNo;
-}
+//void cn::operator =(eCN eClassNo)
+//{
+//  m_eClassNo = eClassNo;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* == operator                                                                */
 /*----------------------------------------------------------------------------*/
-bool cn::operator ==(eCN eClassNo) const
-{
-  return m_eClassNo == eClassNo;
-}
+//bool cn::operator ==(eCN eClassNo) const
+//{
+//  return m_eClassNo == eClassNo;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* ASSERT class number                                                        */

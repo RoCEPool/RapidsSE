@@ -11,8 +11,9 @@ extern BufferPool*  gpBufferPool;
 /* initialize magic                                                           */
 /*----------------------------------------------------------------------------*/
 Object::Object(eCN eClassNo)
-: cn(eClassNo)
 {
+  vClass(eClassNo);
+  
   m_bWordBody = false;
   
   _precondition_(_MAGIC_,eClassNo);
@@ -27,6 +28,23 @@ void Object::vInitMagic(void)
   
   vSetMagic();
 }
+
+/*----------------------------------------------------------------------------*/
+/* get class                                                                  */
+/*----------------------------------------------------------------------------*/
+eCN Object::eClass(void) const
+{
+  return m_xClass.eClass();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set class                                                                  */
+/*----------------------------------------------------------------------------*/
+void Object::vClass(eCN eClassNo)
+{
+  m_xClass.vClass(eClassNo);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* set is word body                                                           */

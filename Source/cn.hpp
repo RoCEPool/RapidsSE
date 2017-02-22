@@ -287,8 +287,8 @@ namespace Magic
     cn(eCN eClassNo);
     ~cn(void);
     
-    void operator =(eCN eClassNo);
-    bool operator ==(eCN eClassNo) const;
+//    void operator =(eCN eClassNo);
+//    bool operator ==(eCN eClassNo) const;
     eCN  eClass(void) const;
     void vClass(eCN eClassNo);
   };

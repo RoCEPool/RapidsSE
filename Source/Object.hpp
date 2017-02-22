@@ -8,16 +8,19 @@
 
 namespace Magic
 {
-  class Object : public mn,
-                 public cn
+  class Object : public mn
   {
   private:
+    cn   m_xClass;
     bool m_bWordBody;
     
   public:
     Object(eCN eClass);
     void vInitMagic(void);
-    
+  
+    eCN  eClass(void) const;
+    void vClass(eCN eClassNo);
+
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);
     
