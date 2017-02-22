@@ -9,7 +9,11 @@
 /*----------------------------------------------------------------------------*/
 void Magic::vCheckAssumptions(void)
 {
+  
   ASSERT(4  == sizeof(eCN));
+  ASSERT(16 == sizeof(Object));
+  ASSERT(8  == sizeof(Footer));
+  
   ASSERT(24 == sizeof(s));
   
   ASSERT(sizeof(s) + sizeof(Footer) + 32    == sizeof(s32));
