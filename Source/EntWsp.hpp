@@ -10,15 +10,12 @@ namespace DBobjects
 {
   class EntWsp : public Header
   {
-    static const i8 C_ENTWSP_DATAAREA = C_1KB*15;
-  
   private:
-    RowId  m_xRowId;      // row id
-    i8     m_nDataBytes;  // number of data bytes
-    char   m_mDataArea[C_ENTWSP_DATAAREA];
-    
-    Footer m_xFooter;
-    
+    RowId  m_xRowId;         // row id
+    Area<C_1KB*15> m_xArea;  // byte area
+  
+    Footer m_xFooter;        // footer
+  
   public:
     void* operator new(size_t);
     void* operator new(size_t, EntWsp*);

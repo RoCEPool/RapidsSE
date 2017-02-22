@@ -37,8 +37,8 @@ EntWsp::EntWsp(void)
   _precondition_(_MAGIC_,CN_ENTWSP);
 
   //m_xRowId
-  m_nDataBytes = 0;
-
+  //m_xArea
+  
   _setFooter_();
   
   _checkInitialisedSize_(sizeof(EntWsp));
@@ -67,13 +67,13 @@ void EntWsp::vShow(void)
 //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
 //  memcpy(&iKey,m_mDataArea,8);
   
-  V::vCopyIntDatum(&iKey,m_mDataArea);
+  V::vCopyIntDatum(&iKey,m_xArea.pByteArea());
   
   vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         m_nDataBytes,
+         m_xArea.nBytesUsed(),
          iKey
          );
 }
@@ -99,13 +99,10 @@ void EntWsp::vRowId(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 {
-  char* pDst = pDataNext();
   char* pSrc = xKeyWsp.pDataArea();
   i8 nBytes  = xKeyWsp.nDataBytes();
   
-  Memory::vCopy(pDst,pSrc,nBytes);
-  
-  m_nDataBytes += nBytes;
+  m_xArea.vAppendBytes(pSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +110,7 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 char* EntWsp::pDataArea(void)
 {
-  return m_mDataArea;
+  return m_xArea.pByteArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,15 +118,15 @@ char* EntWsp::pDataArea(void)
 /*----------------------------------------------------------------------------*/
 i8 EntWsp::nDataBytes(void)
 {
-  return m_nDataBytes;
+  return m_xArea.nBytesUsed();
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next avaliable point in data area                                      */
+/* get next available point in data area                                      */
 /*----------------------------------------------------------------------------*/
 char* EntWsp::pDataNext(void)
 {
-  return &m_mDataArea[m_nDataBytes];
+  return m_xArea.pNextChunk();
 }
 
 /*----------------------------------------------------------------------------*/
