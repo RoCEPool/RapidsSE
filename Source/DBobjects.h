@@ -15,7 +15,6 @@
 #include "IndexDefn.hpp"
 
 #include "RowId.hpp"
-#include "Element.hpp"
 #include "KeyWsp.hpp"
 #include "Key.hpp"
 #include "EntWsp.hpp"
