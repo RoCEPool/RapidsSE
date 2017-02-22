@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
+#include "Platform.h"
 
-namespace Magic
+namespace Platform
 {
   i8 nSub(void* pAddress0, void* pAddress1);
 }

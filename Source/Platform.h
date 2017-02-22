@@ -17,6 +17,7 @@
 
 #include "Synch.hpp"
 #include "BinaryNumbers.h"
+#include "Addressing.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Platform

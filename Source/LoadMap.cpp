@@ -138,7 +138,7 @@ bool LoadMap::bFindChunk(void)
   bool bFoundEol = String::bBackward(&z,m_xBlockTest,'\n');
   RASSERT(bFoundEol);
   
-  i8 nBytes = Magic::nSub((void*)z,m_xBlockTest) + 1;
+  i8 nBytes = Platform::nSub((void*)z,m_xBlockTest) + 1;
   
   i8 iEolOffset = iTestSeek + nBytes - 1;
   //vTrace("EolOffset %lld\n",iEolOffset);
