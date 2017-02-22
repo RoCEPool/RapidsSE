@@ -14,7 +14,8 @@ namespace Magic
     u8   m_uMagic;
     eCN  m_eClass;
     bool m_bWordBody;
-    
+    char m_uFiller[3];
+  
   public:
     Object(eCN eClass);
     void vInitMagic(void);

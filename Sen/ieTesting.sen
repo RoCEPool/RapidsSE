@@ -16,7 +16,7 @@
   // generate rows, calling entry test
   10 0 do
 
-    16 str.random I "%v|%v|" str.format
+    16 str.random I 10 + "%v|%v|" str.format
 
     ib
 

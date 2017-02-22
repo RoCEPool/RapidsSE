@@ -32,6 +32,8 @@ ValWsp::ValWsp(void)
 /*----------------------------------------------------------------------------*/
 void ValWsp::operator =(i8 iInt)
 {
+  //vTrace("ValWsp: diff %lld\n",nSub(&m_mDataArea,this));
+
   vClass(CN_INTVAL);
   
   *pAsIntVal() = iInt;

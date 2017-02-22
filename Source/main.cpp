@@ -18,23 +18,17 @@ void vKillPrev(void);
 /*----------------------------------------------------------------------------*/
 int main(int argc, const char* argv[])
 {
-//  i8 i = 0;
-//  Synch::uAtomicInc(&i);
-//  printf("AtomicInc i = %lld\n",i);
-//  Synch::uAtomicDec(&i);
-//  printf("AtomicDec i = %lld\n",i);
-//  
-//  u8 u = 2;
-//  bool b = Synch::bTestAndSet(&u,1,3);
-//  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
-  
-  
-//  Timer xTimer;
-//  xTimer.vStart();
-//  PosixThread::vSleepMicro(500);
-//  xTimer.vUpdate();
-//  
-//  printf("Timert %lld\n",xTimer.iMicroseconds());
+  printf(
+         "sizeof(eCN) %lu; sizeof(bool) %lu; \n"
+         "sizeof(Object) %lu; sizeof(s) %lu; \n"
+         "sizeof(s32) %lu; sizeof(s256) %lu; \n"
+         "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWsp) %lu \n"
+         "\n",
+         sizeof(eCN),sizeof(bool),
+         sizeof(Object),sizeof(s),
+         sizeof(s32),sizeof(s256),
+         sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
+  );
   
   const char *aRelDbg;
 #ifdef _DEBUG
@@ -211,6 +205,25 @@ void vTest1(void)
   
   xFile.vClose();
 }
+
+//  i8 i = 0;
+//  Synch::uAtomicInc(&i);
+//  printf("AtomicInc i = %lld\n",i);
+//  Synch::uAtomicDec(&i);
+//  printf("AtomicDec i = %lld\n",i);
+//
+//  u8 u = 2;
+//  bool b = Synch::bTestAndSet(&u,1,3);
+//  printf("TestAndSet %s u = %lld\n",b ? "true" : "false",u);
+
+
+//  Timer xTimer;
+//  xTimer.vStart();
+//  PosixThread::vSleepMicro(500);
+//  xTimer.vUpdate();
+//
+//  printf("Timert %lld\n",xTimer.iMicroseconds());
+
 
 /*============================================================================*/
 /* end                                                                        */

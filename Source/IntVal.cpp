@@ -43,6 +43,8 @@ IntVal::IntVal(void)
 /*----------------------------------------------------------------------------*/
 void IntVal::operator =(i8 iInt)
 {
+  //vTrace("IntVal: diff %lld\n",nSub(&m_iInt,this));
+  
   m_iInt = iInt;
 }
 
