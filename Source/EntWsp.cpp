@@ -37,9 +37,6 @@ EntWsp::EntWsp(void)
   _precondition_(_MAGIC_,CN_ENTWSP);
 
   //m_xRowId
-  //m_xArea
-  
-  _setFooter_();
   
   _checkInitialisedSize_(sizeof(EntWsp));
   
@@ -67,13 +64,13 @@ void EntWsp::vShow(void)
 //  i8* pKeyData = reinterpret_cast<i8*>(m_mDataArea);
 //  memcpy(&iKey,m_mDataArea,8);
   
-  V::vCopyIntDatum(&iKey,m_xArea.pWspArea());
+  V::vCopyIntDatum(&iKey,pWspArea());
   
   vTrace("EntWsp %p: rowId %llu.%llu key (size:%lld value:%lld)\n",
          this,
          m_xRowId.uBuffer(),
          m_xRowId.uRow(),
-         m_xArea.nWspUsed(),
+         nWspUsed(),
          iKey
          );
 }
@@ -102,46 +99,13 @@ void EntWsp::vAddKey(KeyWsp& xKeyWsp)
   char* pSrc = xKeyWsp.pWspArea();
   i8 nBytes  = xKeyWsp.nWspUsed();
   
-  m_xArea.vWspAppend(pSrc,nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get data area                                                              */
-/*----------------------------------------------------------------------------*/
-char* EntWsp::pDataArea(void)
-{
-  return m_xArea.pWspArea();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get number of data bytes in the key                                        */
-/*----------------------------------------------------------------------------*/
-i8 EntWsp::nDataBytes(void)
-{
-  return m_xArea.nWspUsed();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next available point in data area                                      */
-/*----------------------------------------------------------------------------*/
-char* EntWsp::pDataNext(void)
-{
-  return m_xArea.pWspNext();
+  vWspAppend(pSrc,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* EntWsp::pFooter(void)
-{
-  _precondition_(_MAGIC_,CN_ENTWSP);
-  
-  return &m_xFooter;
-}
+_pFooter_(EntWsp)
 
 /*============================================================================*/
 /* end                                                                        */

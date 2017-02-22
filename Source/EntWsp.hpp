@@ -8,13 +8,13 @@
 
 namespace DBobjects
 {
-  class EntWsp : public Object
+  class EntWsp : public Object,
+                 public Wsp<C_1KB*15>
   {
   private:
-    RowId  m_xRowId;         // row id
-    Wsp<C_1KB*15> m_xArea;  // byte area
+    RowId  m_xRowId;   // row id
   
-    Footer m_xFooter;        // footer
+    Footer m_xFooter;  // footer
   
   public:
     void* operator new(size_t);
@@ -29,10 +29,6 @@ namespace DBobjects
     void vRowId(RowId& xRowId);
   
     void vAddKey(KeyWsp& xKeyWsp);
-  
-    char* pDataArea(void);
-    i8    nDataBytes(void);
-    char* pDataNext(void);
   
     Footer* pFooter(void);
   };

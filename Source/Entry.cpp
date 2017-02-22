@@ -137,8 +137,8 @@ void Entry::vEntry(EntWsp& xEntWsp)
   m_xRowId = xEntWsp.xRowId();
 
   char* pDst = pDataNext();
-  char* pSrc = xEntWsp.pDataArea();
-  i8 nBytes  = xEntWsp.nDataBytes();
+  char* pSrc = xEntWsp.pWspArea();
+  i8 nBytes  = xEntWsp.nWspUsed();
 
   Memory::vCopy(pDst,pSrc,nBytes);
   
