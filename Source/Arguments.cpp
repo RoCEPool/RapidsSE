@@ -10,7 +10,7 @@ void* C_ADDR_POOL = (void*)0x204800000;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Arguments::Arguments(void)
-: Header(CN_ARGUMENTS)
+: Object(CN_ARGUMENTS)
 {
   _precondition_(_MAGIC_,CN_ARGUMENTS,_FOOTER_);
   

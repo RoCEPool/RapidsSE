@@ -8,7 +8,7 @@
 
 namespace StorageEngine
 {
-  class Arguments : public Header
+  class Arguments : public Object
   {
   public:
     // configuration

@@ -42,7 +42,7 @@ void Lock::operator delete(void* pLockAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Lock::Lock(void)
-: Header(CN_LOCK)
+: Object(CN_LOCK)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   

@@ -31,7 +31,7 @@ void BufferPool::operator delete(void* pRegion)
 /* constructor (new region)                                                   */
 /*----------------------------------------------------------------------------*/
 BufferPool::BufferPool(void)
-: Header(CN_BUFFERPOOL)
+: Object(CN_BUFFERPOOL)
 {
   gpBufferPool = this;
   

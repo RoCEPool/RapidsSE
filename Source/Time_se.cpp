@@ -23,7 +23,7 @@ void* Time::operator new(size_t iSize)
 /* Time: constructor                                                          */
 /*----------------------------------------------------------------------------*/
 Time::Time(void)
-: Header(CN_TIME)
+: Object(CN_TIME)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
   

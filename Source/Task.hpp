@@ -90,7 +90,7 @@ namespace Tasks
       Cell*   m_pCell;      // points to cell inside a word
       Value*  m_pValue;     // points to an embedded value within a word
       Object* m_pObject;    // points to an embedded object within a word
-      Header* m_pHeader;    // points to an embbeded header within a word
+      //Header* m_pHeader;    // points to an embbeded header within a word
     } IP;
     TaskStep* m_pEntryCell; // points to does arg (entry cell of word)
     

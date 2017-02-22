@@ -7,7 +7,7 @@
 
 namespace Magic
 {
-  class s : public Header
+  class s : public Object
   {
   private:
     i8   m_nDataBytes; // size of the data area (may not be length of the string)

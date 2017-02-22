@@ -15,7 +15,7 @@ Object::Object(eCN eClassNo)
 {
   m_bWordBody = false;
   
-  _precondition_(_ADDRESS_, _MAGIC_,eClassNo);
+  _precondition_(_MAGIC_,eClassNo);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -23,7 +23,7 @@ Object::Object(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 void Object::vInitMagic(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_MAGIC_);
   
   vSetMagic();
 }
@@ -33,7 +33,7 @@ void Object::vInitMagic(void)
 /*----------------------------------------------------------------------------*/
 void Object::vWordBody(bool bWordBody)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_MAGIC_);
   
   m_bWordBody = bWordBody;
 }
@@ -43,7 +43,7 @@ void Object::vWordBody(bool bWordBody)
 /*----------------------------------------------------------------------------*/
 bool Object::bWordBody(void)
 {
-  _precondition_(_ADDRESS_, _MAGIC_);
+  _precondition_(_MAGIC_);
   
   return m_bWordBody;
 }

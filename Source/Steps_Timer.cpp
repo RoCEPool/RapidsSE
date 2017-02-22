@@ -54,7 +54,7 @@ void Task::vTimerDelete(NNP_Task nnpTask)
 {
 ENTRY("vTimeDelete");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.delete");
@@ -78,7 +78,7 @@ void Task::vTimerInit(NNP_Task nnpTask)
 {
 ENTRY("vTimerInit");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.init");
   
@@ -97,7 +97,7 @@ void Task::vTimerMicrosecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerMicrosecs");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.microsecs");
   
@@ -118,7 +118,7 @@ void Task::vTimerMillisecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerMillisecs");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.millisecs");
   
@@ -139,7 +139,7 @@ void Task::vTimerNanosecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerNanosecs");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.nanosecs");
   
@@ -168,7 +168,7 @@ ENTRY("vTimerNew");
  
   ASSERT(CN_TIMER == pTimer->eClass());
   
-  Header* pPtrTimer = pTimer;
+  Object* pPtrTimer = pTimer;
   
   nnpTask->m_pDataStack->vPush(pPtrTimer);
   
@@ -182,7 +182,7 @@ void Task::vTimerReset(NNP_Task nnpTask)
 {
 ENTRY("vTimerReset");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.reset");
   
@@ -201,7 +201,7 @@ void Task::vTimerSecs(NNP_Task nnpTask)
 {
 ENTRY("vTimerSecs");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.secs");
   
@@ -222,7 +222,7 @@ void Task::vTimerStart(NNP_Task nnpTask)
 {
 ENTRY("vTimerStart");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.Start");
   
@@ -241,7 +241,7 @@ void Task::vTimerTicks(NNP_Task nnpTask)
 {
 ENTRY("vTimerTicks");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.ticks");
   
@@ -262,7 +262,7 @@ void Task::vTimerUpdate(NNP_Task nnpTask)
 {
 ENTRY("vTimerUpdate");
   
-  Header* pPtrTimer;
+  Object* pPtrTimer;
   if ( ! nnpTask->m_pDataStack->bPop(pPtrTimer) )
     THROW_INVALID_DSTACK("timer.update");
   

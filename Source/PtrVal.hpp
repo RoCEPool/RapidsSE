@@ -21,10 +21,8 @@ namespace Values
     PtrVal(void);
     
     void operator =(Object* pObject);
-    void operator =(Header* pHeader);
     
     i8      iSize(void) const;
-    Header* pHeader(void) const;
     Object* pObject(void) const;
     
     void vToCommand(char* aWorkspace);

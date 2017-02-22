@@ -11,7 +11,7 @@ namespace Pool
 {
   class Heap;
   
-  class BPA : public Header
+  class BPA : public Object
   {
   private:
     

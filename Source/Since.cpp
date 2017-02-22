@@ -12,7 +12,7 @@ extern BufferPool* gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Since::Since(void)
-: Header(CN_SINCE)
+: Object(CN_SINCE)
 {
   _precondition_(_MAGIC_,CN_SINCE,_FOOTER_);
   

@@ -7,7 +7,7 @@
 
 namespace Common
 {
-  class Dir : public Header
+  class Dir : public Object
   {
   private:
     s256    m_sDirPath;   // the path of the directory

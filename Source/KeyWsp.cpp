@@ -32,7 +32,7 @@ void* KeyWsp::operator new(size_t iSize, KeyWsp* pKeyWsp)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 KeyWsp::KeyWsp(void)
-: Header(CN_KEYWSP)
+: Object(CN_KEYWSP)
 {
   _precondition_(_MAGIC_,CN_KEYWSP);
 

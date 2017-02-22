@@ -20,7 +20,7 @@ void* Value::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Value::Value(eCN eClass)
-: Header(eClass)
+: Object(eClass)
 {
   _checkInitialisedSize_(sizeof(Value));
 }

@@ -8,7 +8,7 @@
 
 namespace Tasks
 {
-  class StepAccum : public Header
+  class StepAccum : public Object
   {
   public:
     const char* m_aFnName;  // name of function

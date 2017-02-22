@@ -49,7 +49,7 @@ namespace Structures
     
     bool bPop(Dictionaries::Cell*& pCell);
     bool bPop(eCN& eArg1);
-    bool bPop(Header*& pHeader);
+    //bool bPop(Header*& pHeader);
     bool bPop(i8& iArg1);
     bool bPop(i8& iArg1, i8& iArg2);
     bool bPop(i8& iArg1, Object*& pObject);
@@ -74,7 +74,7 @@ namespace Structures
     bool bPopParamInt(i8& iArg1);
     
     void vPushBinary(Object* pObject);
-    void vPush(Header* pHeader);
+    //void vPush(Header* pHeader);
     void vPush(i8 iInt);
     void vPush(Object* pObject);
     void vPush(s32& s32);

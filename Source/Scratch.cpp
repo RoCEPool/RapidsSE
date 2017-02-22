@@ -57,7 +57,7 @@ void Scratch::operator delete(void* pAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Scratch::Scratch(void)
-: Header(CN_SCRATCH)
+: Object(CN_SCRATCH)
 {
   _precondition_(_MAGIC_,CN_SCRATCH,_FOOTER_);
 

@@ -276,6 +276,20 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "drop table t;";
   vRequire(sCommand, false, EC_NO_SUCH_TABLE);
 
+  for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
+    String::vSprint(sCommand.a(),
+                    "create table t%d (col0 integer(10) unique, col0 timestamp(1) not null);",
+                    iIndex);
+    vRequire(sCommand, false, EC_INVALID_COMMAND);
+  }
+  
+  for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
+    String::vSprint(sCommand.a(),
+                    "drop table t%d;",
+                    iIndex);
+    vRequire(sCommand, false, EC_INVALID_COMMAND);
+  }
+ 
   sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
@@ -297,17 +311,17 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);
   
-  vTrace("1\n");
-  
-  sCommand = "drop catalog cat;";                     //FOLDER_IN_USE
+  sCommand = "drop catalog cat;";
   vRequire(sCommand, true, EC_NONE);
+  
+  sCommand = "rf catalogs";
+  vRequire(sCommand, false, EC_FOLDER_IN_USE);
 
-  vTrace("2\n");
+  sCommand = "cf ..";
+  vRequire(sCommand, true, EC_NONE);
   
   sCommand = "rf catalogs";
   vRequire(sCommand, true, EC_NONE);
-
-  vTrace("3\n");
   
   sCommand = "cf ..";
   vRequire(sCommand, true, EC_NONE);

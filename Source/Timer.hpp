@@ -7,7 +7,7 @@
 
 namespace Common
 {
-  class Timer : public Header
+  class Timer : public Object
   {
   public:
   

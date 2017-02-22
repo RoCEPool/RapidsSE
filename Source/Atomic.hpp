@@ -8,7 +8,7 @@
 
 namespace Common
 {
-  class Atomic : public Header
+  class Atomic : public Object
   {
   private:
     i8 m_iInt;

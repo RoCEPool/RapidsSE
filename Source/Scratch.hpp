@@ -7,7 +7,7 @@
 
 namespace Common
 {
-  class Scratch : public Header
+  class Scratch : public Object
   {
   private:
     static const i8 C_WORKAREA = C_512KB;

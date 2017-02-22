@@ -24,7 +24,7 @@ extern Atomic gzThreadOpenCount;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 BPA::BPA(void)
-: Header(CN_BPA)
+: Object(CN_BPA)
 {
   _magic_();
   

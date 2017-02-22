@@ -31,7 +31,7 @@ void Atomic::operator delete(void* pAtomicAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Atomic::Atomic(void)
-: Header(CN_ATOMIC)
+: Object(CN_ATOMIC)
 {
   m_iInt = 0;
   

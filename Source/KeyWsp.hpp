@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class KeyWsp : public Header
+  class KeyWsp : public Object
   {
     static const i8 C_KEYWSP_DATAAREA = C_1KB*15;
   

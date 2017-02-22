@@ -32,7 +32,7 @@ void* EntWsp::operator new(size_t iSize, EntWsp* pEntWsp)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWsp::EntWsp(void)
-: Header(CN_ENTWSP)
+: Object(CN_ENTWSP)
 {
   _precondition_(_MAGIC_,CN_ENTWSP);
 

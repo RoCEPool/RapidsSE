@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class EntWsp : public Header
+  class EntWsp : public Object
   {
   private:
     RowId  m_xRowId;         // row id

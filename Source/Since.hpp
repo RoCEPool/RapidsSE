@@ -8,7 +8,7 @@
 
 namespace Common
 {
-  class Since : public Header
+  class Since : public Object
   {
   public:
     i8 m_iSeconds;

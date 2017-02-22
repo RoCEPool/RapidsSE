@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class RowWsp : public Header
+  class RowWsp : public Object
   {
     static const i8 C_ROWWSP_DATA = C_1KB*15;
   private:

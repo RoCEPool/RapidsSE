@@ -25,7 +25,7 @@ namespace Common
 //  static const char* C_OPEN_READ_WRITE_CREATE;
 //  static const char* C_OPEN_READ_APPEND;
 
-  class File : public Header
+  class File : public Object
   {
   private:
     static const i8 C_WORKAREA = C_256KB;

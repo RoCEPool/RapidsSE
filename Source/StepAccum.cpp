@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StepAccum::StepAccum(void)
-: Header(CN_STEPACCUM)
+: Object(CN_STEPACCUM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STEPACCUM,_FOOTER_);
   

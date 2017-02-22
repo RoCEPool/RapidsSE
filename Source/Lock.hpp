@@ -13,7 +13,7 @@ namespace Common
   static const i8 C_HAVE_READ_LOCK  = 1;
   static const i8 C_HAVE_WRITE_LOCK = 2;
   
-  class Lock : public Header
+  class Lock : public Object
   {
   private:
     u8     m_uLockWord;        // lock word

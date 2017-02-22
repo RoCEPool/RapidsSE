@@ -85,7 +85,7 @@ void File::operator delete(void* pFileAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 File::File(void)
-: Header(CN_FILE)
+: Object(CN_FILE)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   

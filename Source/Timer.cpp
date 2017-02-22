@@ -43,7 +43,7 @@ void Timer::operator delete(void* pTimerAddress)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Timer::Timer(void)
-: Header(CN_TIMER)
+: Object(CN_TIMER)
 {
   _precondition_(_MAGIC_,CN_TIMER,_FOOTER_);
   

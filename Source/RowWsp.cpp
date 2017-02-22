@@ -28,7 +28,7 @@ void* RowWsp::operator new(size_t iSize, RowWsp* pRow)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowWsp::RowWsp(i8 iDataBytes)
-: Header(CN_ROW)
+: Object(CN_ROW)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
   

@@ -11,7 +11,7 @@ namespace Pool
 {
   class Buffer;
 
-  class BufferPool : public Header
+  class BufferPool : public Object
   {
     
     friend class BPA;

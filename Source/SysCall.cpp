@@ -8,7 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 SysCall::SysCall(void)
-: Header(CN_SYSCALL)
+: Object(CN_SYSCALL)
 {
   m_eStatus  = eSysCall_NOTSET;
   m_iErrNo   = 0;
