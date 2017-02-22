@@ -28,13 +28,14 @@ namespace DBobjects
     
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void vAddEntry(Entry& xEntry);
-    void vAppendBuffer(IndexBuffer* pArgBuffer);
-    void vCopyBuffer(IndexBuffer* pFromBuffer);
-    i8   nEntries(void);
-    void vEntryCount(void);
-    void vShow(void);
-    void vVerify(void);
+    void  vAppendBuffer(IndexBuffer* pArgBuffer);
+    void  vCopyBuffer(IndexBuffer* pFromBuffer);
+    i8    nEntries(void);
+    void  vEntryCount(void);
+    void* pFindPosition(Entry& xEntry);
+    void  vInsertEntry(Entry& xEntry);
+    void  vShow(void);
+    void  vVerify(void);
   
     Entry* pFirstEntry();
     Entry* pNextEntry(Entry* pCurr);

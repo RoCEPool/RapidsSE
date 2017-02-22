@@ -111,32 +111,6 @@ void IndexBuffer::vDump(eCN eClass, Object* pObject, const char* pTab)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add an entry into the index buffer                                         */
-/*----------------------------------------------------------------------------*/
-void IndexBuffer::vAddEntry(Entry& xEntry)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
-  
-  // append entry onto IndexBuffer's data area
-  void* pDst = pAdd<void*>(pDataArea(),nBytesUsed());
-  void* pSrc = &xEntry;
-  i8 nBytes  = xEntry.iSize();
-  
-  // test sufficient free space
-//  if (nFreeBytes() < iBytes) {
-//    return nullptr;
-//  }
-  
-  Memory::vCopy(pDst,pSrc,nBytes);
-  
-  // recalculate beginning of free space
-  m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
-  
-  // inc the number of entries in this buffer
-  m_nEntries++;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append entries of arg buffer into this buffer                              */
 /*----------------------------------------------------------------------------*/
 void IndexBuffer::vAppendBuffer(IndexBuffer* pArgBuffer)
@@ -198,6 +172,62 @@ void IndexBuffer::vEntryCount(void)
     m_nEntries++;
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_INDEXBUFFER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* insert an entry into the index buffer                                      */
+/*----------------------------------------------------------------------------*/
+void IndexBuffer::vInsertEntry(Entry& xNewEntry)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
+  
+  void* pDst;
+  void* pSrc = &xNewEntry;
+  
+  i8 nBytes  = xNewEntry.iSize();
+  
+  pDst = pAdd<void*>(pDataArea(),nBytesUsed());
+  
+  // find the position for the new entry in the index buffer
+  Entry* pEntry = pFirstEntry();
+  
+  while (pEntry) {
+    
+    Key* pKey = pEntry->pKey();
+    Key* pNewKey = xNewEntry.pKey();
+    
+    if (*pNewKey < pKey ) {
+      
+      // position the new entry at pKey location
+      pDst = pEntry;
+      
+      // shuffle right pEntry making space for new entry
+      i8 nSize = nBytesUsed() - nSub(pEntry,pDataArea());
+      
+      // test sufficient free space
+      //  if (nFreeBytes() < nBytes) {
+      //    return nullptr;
+      //  }
+
+      // calculate new postion to shuffle to
+      void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
+      
+      // do teh shuffle
+      Memory::vCopy(pShuffleTo,pEntry,nSize);
+      break;
+    }
+    
+    pEntry = pNextEntry(pEntry);
+  }
+  
+  // now copy the new entry at the pDst location
+  Memory::vCopy(pDst,pSrc,nBytes);
+  
+  // recalculate beginning of free space
+  m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
+  
+  // inc the number of entries in this buffer
+  m_nEntries++;
 }
 
 /*----------------------------------------------------------------------------*/

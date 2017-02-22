@@ -105,7 +105,8 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   KeyWsp xKeyWsp;
   ValWsp xValWsp;
   
-  i8 iKey0 = String::iToI8(sRow.a());
+  //i8 iKey0 = String::iToI8(sRow.a());
+  i8 iKey0 = Random::iRandom(0,100);
   xValWsp = iKey0;
   
   xKeyWsp.vAddElement(xValWsp);
@@ -120,8 +121,8 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   
   Entry xEntry(xEntWsp);
   
-  // add entry into index buffer
-  pIndexBuffer->vAddEntry(xEntry);
+  // insert entry into index buffer
+  pIndexBuffer->vInsertEntry(xEntry);
 
   // verify index buffer
   pIndexBuffer->vVerify();

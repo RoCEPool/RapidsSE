@@ -101,7 +101,8 @@ char* Key::pDataArea(void)
 {
   char* pDataArea = pAdd<char*>(this,sizeof(Key));
   
-  return pPoolCheck<char*>(pDataArea);
+  //return pPoolCheck<char*>(pDataArea);
+  return pDataArea;
 }
 
 /*----------------------------------------------------------------------------*/
