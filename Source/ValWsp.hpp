@@ -8,13 +8,11 @@
 
 namespace Values
 {
-  class ValWsp : public Value
+  class ValWsp : public Value,
+                 public Wsp<C_64K>
   {
-    static const i8 C_VALWSP_DATAAREA = C_64K; // less than medium block
-    
   private:
-    char m_mDataArea[C_VALWSP_DATAAREA];
-    
+  
   public:
     void* operator new(size_t);
     ValWsp(void);
@@ -25,8 +23,6 @@ namespace Values
     void operator =(const char* pStr);
     
     void vAssignBinary(Object* pObject);
-  
-    char* pDataArea(void);
   };
 }
 

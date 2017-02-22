@@ -18,8 +18,8 @@ namespace Values
   class Wsp : public Part
   {
   private:
-    i8   m_nBytesUsed;
     char m_mByteArea[SIZE];
+    i8   m_nBytesUsed;
   
   public:
     Wsp(void);
