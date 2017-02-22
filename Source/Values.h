@@ -8,7 +8,7 @@
 
 #include "V.hpp"
 
-#include "Area.hpp"
+#include "Wsp.hpp"
 
 #include "Value.hpp"
 #include "ValWsp.hpp"

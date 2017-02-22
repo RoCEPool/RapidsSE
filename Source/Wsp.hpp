@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Area.hpp -- data work area                                                 */
+/* Wsp.hpp -- data workspace                                                  */
 /*============================================================================*/
 
 /*
@@ -15,21 +15,21 @@
 namespace Values
 {
   template<int SIZE>
-  class Area : public Part
+  class Wsp : public Part
   {
   private:
     i8   m_nBytesUsed;
     char m_mByteArea[SIZE];
   
   public:
-    Area(void);
+    Wsp(void);
 
-    void  vAppendBytes(void* pSrc, i8 nBytes);
-    i8    nAreaSize(void);
-    char* pByteArea(void);
-    i8    nBytesUsed(void);
-    char* pNextChunk(void);
-    void  vTakeBytes(i8 nBytes);
+    void  vWspAppend(void* pSrc, i8 nBytes);
+    char* pWspArea(void);
+    i8    nWspUsed(void);
+    char* pWspNext(void);
+    i8    nWspSize(void);
+    void  vWspTake(i8 nBytes);
   };
 }
 
@@ -39,7 +39,7 @@ using namespace Values;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-Area<SIZE>::Area(void)
+Wsp<SIZE>::Wsp(void)
 {
   m_nBytesUsed = 0;
 }
@@ -48,31 +48,22 @@ Area<SIZE>::Area(void)
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-void Area<SIZE>::vAppendBytes(void* pSrc, i8 nBytes)
+void Wsp<SIZE>::vWspAppend(void* pSrc, i8 nBytes)
 {
-  void* pDst = pNextChunk();
+  void* pDst = pWspNext();
 
   ASSERT(m_nBytesUsed + nBytes <= SIZE);
   
   Memory::vCopy(pDst,pSrc,nBytes);
   
-  vTakeBytes(nBytes);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get size of byte area                                                      */
-/*----------------------------------------------------------------------------*/
-template<int SIZE>
-i8 Area<SIZE>::nAreaSize(void)
-{
-  return SIZE;
+  vWspTake(nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get ptr to byte area                                                       */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-char* Area<SIZE>::pByteArea(void)
+char* Wsp<SIZE>::pWspArea(void)
 {
   return m_mByteArea;
 }
@@ -81,7 +72,7 @@ char* Area<SIZE>::pByteArea(void)
 /* get number of used bytes                                                   */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-i8 Area<SIZE>::nBytesUsed(void)
+i8 Wsp<SIZE>::nWspUsed(void)
 {
   return m_nBytesUsed;
 }
@@ -90,16 +81,25 @@ i8 Area<SIZE>::nBytesUsed(void)
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-char* Area<SIZE>::pNextChunk(void)
+char* Wsp<SIZE>::pWspNext(void)
 {
   return &m_mByteArea[m_nBytesUsed];
+}
+
+/*----------------------------------------------------------------------------*/
+/* get size of byte area                                                      */
+/*----------------------------------------------------------------------------*/
+template<int SIZE>
+i8 Wsp<SIZE>::nWspSize(void)
+{
+  return SIZE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get next available chunk in data area                                      */
 /*----------------------------------------------------------------------------*/
 template<int SIZE>
-void Area<SIZE>::vTakeBytes(i8 nBytes)
+void Wsp<SIZE>::vWspTake(i8 nBytes)
 {
   m_nBytesUsed += nBytes;
   

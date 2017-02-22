@@ -12,7 +12,7 @@ namespace DBobjects
   {
   private:
     RowId  m_xRowId;         // row id
-    Area<C_1KB*15> m_xArea;  // byte area
+    Wsp<C_1KB*15> m_xArea;  // byte area
   
     Footer m_xFooter;        // footer
   

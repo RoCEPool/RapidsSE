@@ -62,7 +62,7 @@ void KeyWsp::vShow(void)
   
   vTrace("KeyWsp %p: bytesUsed %lld\n",
          this,
-         nBytesUsed()
+         nWspUsed()
          );
 }
 
@@ -74,17 +74,17 @@ void KeyWsp::vAddElement(Values::ValWsp &xValWsp)
   _precondition_(_MAGIC_,CN_KEYWSP,_FOOTER_);
   
   // for the moment we only allow one element per key
-  ASSERT( ! nBytesUsed() );
+  ASSERT( ! nWspUsed() );
   
   eCN eClass = xValWsp.eClass();
-  char* pDst = pNextChunk();
+  char* pDst = pWspNext();
   char* pSrc = xValWsp.pDataArea();
   
   i8 iSrc = *(i8*)pSrc;
 
   i8 nBytesTaken = V::nCopyDatum(eClass,pDst,pSrc);
   
-  vTakeBytes(nBytesTaken);
+  vWspTake(nBytesTaken);
 }
 
 /*----------------------------------------------------------------------------*/
