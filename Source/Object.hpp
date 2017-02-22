@@ -11,7 +11,7 @@ namespace Magic
   class Object
   {
   private:
-    mn   m_xMagic;
+    u8   m_uMagic;
     cn   m_xClass;
     bool m_bWordBody;
     

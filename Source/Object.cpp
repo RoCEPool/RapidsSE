@@ -12,6 +12,7 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 Object::Object(eCN eClassNo)
 {
+  vSetMagic();
   vClass(eClassNo);
   
   m_bWordBody = false;
@@ -34,7 +35,7 @@ void Object::vInitMagic(void)
 /*----------------------------------------------------------------------------*/
 i8 Object::iMagic(void) const
 {
-  return m_xMagic.iMagic();
+  return m_uMagic;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,7 +43,7 @@ i8 Object::iMagic(void) const
 /*----------------------------------------------------------------------------*/
 void Object::vSetMagic(void)
 {
-  m_xMagic.vSetMagic();
+  m_uMagic = MAGIC;
 }
 
 /*----------------------------------------------------------------------------*/
