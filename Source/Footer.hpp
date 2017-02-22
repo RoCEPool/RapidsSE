@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* footer.hpp -- Footer for Concrete Classes                                  */
+/* footer.hpp -- footer for concrete classes                                  */
 /*============================================================================*/
 #pragma once
 
@@ -23,6 +23,24 @@ namespace Magic
     void vSetFooter(void);
   };
 }
+
+//template <class C>
+//Footer* <C>::pFooter(void)
+//{
+//  _precondition_(_MAGIC_);
+//  
+//  return &m_xFooter;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* macro for standard pFooter() function                                      */
+/*----------------------------------------------------------------------------*/
+#define _pFooter_(CLASSNM) \
+  Footer* CLASSNM::pFooter(void) \
+  { \
+    _precondition_(_MAGIC_); \
+    return &m_xFooter; \
+  }
 
 /*============================================================================*/
 /* end                                                                        */
