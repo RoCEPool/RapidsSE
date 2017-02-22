@@ -16,6 +16,7 @@
 #endif
 
 #include "Synch.hpp"
+#include "BinaryNumbers.h"
 
 //-----------------------------------------------------------------------------
 namespace Platform
