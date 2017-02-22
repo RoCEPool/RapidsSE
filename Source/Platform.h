@@ -5,7 +5,7 @@
 
 #include "HashDefs.h"
 
-#include "_types.h"
+#include "MachineTypes.h"
 
 #include "SystemIncludes.h"
 #include "System.hpp"
