@@ -8,6 +8,8 @@
 namespace Platform
 {
   i8 nSub(void* pAddress0, void* pAddress1);
+  
+  void vCheckAddress(void* pAddress);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -3,10 +3,6 @@
 /*============================================================================*/
 
 #include "Strings.h"
-#include "String.hpp"
-#include "StorageEngine.h"
-
-extern BufferPool*  gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */

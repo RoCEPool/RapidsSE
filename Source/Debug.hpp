@@ -38,7 +38,7 @@ namespace Debugging
   #endif
   
   #ifdef ADDRESS_CHECK
-  #define _poolAddress_(pArg) gpBufferPool->vCheckAddress(pArg)
+  #define _poolAddress_(pArg) Platform::vCheckAddress(pArg)
   #else
   #define _poolAddress_(pArg)
   #endif
@@ -84,7 +84,7 @@ namespace Debugging
       }                                    \
       else if (checkValue == _ADDRESS_)    \
       {                                    \
-        gpBufferPool->vCheckAddress(this); \
+        _poolAddress_(this); \
       }                                    \
       else if (checkValue == _FOOTER_)     \
       {                                    \

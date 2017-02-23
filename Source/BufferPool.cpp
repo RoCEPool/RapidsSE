@@ -6,8 +6,9 @@
 
 #include "AttachMap.hpp"
 
-extern AttachMap* gpAttachMap;
-extern Arguments  gxArguments;
+extern AttachMap*  gpAttachMap;
+extern Arguments   gxArguments;
+extern BufferPool* gpBufferPool;
 
 /*----------------------------------------------------------------------------*/
 /* new operator                                                               */
@@ -491,6 +492,13 @@ Footer* BufferPool::pFooter(void)
   return &m_xFooter;
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- CheckAddress ------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+void Platform::vCheckAddress(void *pAddress)
+{
+  gpBufferPool->vCheckAddress(pAddress);
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
