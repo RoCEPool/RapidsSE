@@ -1500,40 +1500,43 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
       String::vSprintCat(a,"%lld",_pIntVal(pValWsp)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
-      if (pValWsp->pPtr()) {
-        if (CN_WORD == ((Object*)pValWsp->pPtr())->eClass())
+      if (_pPtrVal(pValWsp)->pPtr()) {
+        
+        Object* pPtr = _pPtrVal(pValWsp)->pPtr();
+        
+        eCN ePtrClass = _pPtrVal(pValWsp)->pPtr()->eClass();
+        
+        if (CN_WORD == ePtrClass)
           String::vSprintCat(a,"^%s=%p:%s",
-                             pCN[((Object*)pValWsp->pPtr())->eClass()],
-                             pValWsp->pPtr(),
-                             ((Word*)pValWsp->pPtr())->sName().a());
-        else if (CN_QUEUE == ((Object*)pValWsp->pPtr())->eClass() ) {
-          Word* pWord = Word::pToWord(pValWsp->pPtr());
+                             pCN[ePtrClass],
+                             pPtr,
+                             ((Word*)pPtr)->sName().a());
+        else if (CN_QUEUE == ePtrClass) {
+          Word* pWord = Word::pToWord(pPtr);
           String::vSprintCat(a,"^%s=%p:%s",
-                             pCN[((Object*)pValWsp->pPtr())->eClass()],
-                             pValWsp->pPtr(),
+                             pCN[ePtrClass],
+                             pPtr,
                              pWord->sName().a());
         }
-        else if (CN_TASK == ((Object*)pValWsp->pPtr())->eClass() ) {
-          Task* pTask = _pTask(pValWsp->pPtr());
+        else if (CN_TASK == ePtrClass) {
+          Task* pTask = _pTask(pPtr);
           String::vSprintCat(a,"^%s=%p:%s",
-                             pCN[((Object*)pValWsp->pPtr())->eClass()],
-                             pValWsp->pPtr(),
+                             pCN[ePtrClass],
+                             pPtr,
                              pTask->sName().a());
         }
         else {
-          Object* pObject = (Object*)pValWsp->pPtr();
-          
-          if (pObject->iMagic() == MAGIC && pObject->eClass() < CN_ENUMS)
+          if (pPtr->iMagic() == MAGIC && pPtr->eClass() < CN_ENUMS)
             String::vSprintCat(a,"^%s=%p",
-                               pCN[pObject->eClass()],
-                               pValWsp->pPtr());
+                               pCN[ePtrClass],
+                               pPtr);
           //else
           //  String::vSprintCat(a,"%p",
           //                     pValWsp->pPtr());
         }
       }
       else
-        String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),pValWsp->pPtr());
+        String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),_pPtrVal(pValWsp)->pPtr());
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
       String::vSprintCat(a,"%p",pValWsp->pIpPtr());            //RAY: looks good

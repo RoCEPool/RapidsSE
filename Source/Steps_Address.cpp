@@ -99,7 +99,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       break;
       
     case CN_IPVAL:
-      xValFetched = _pIpVal(pValue)->pPtr();
+      xValFetched = (Object*)_pIpVal(pValue)->pIpPtr();
       break;
   
     default:
@@ -140,7 +140,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
       break;
       
     case CN_PTRVAL:
-      *_pPtrVal(pValue) = xValStored.pPtr();
+      *_pPtrVal(pValue) = _pPtrVal(&xValStored)->pPtr();
       break;
       
     case CN_IPVAL:
