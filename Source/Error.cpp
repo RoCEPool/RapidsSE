@@ -1,19 +1,21 @@
 /*============================================================================*/
-/* Error -- errors                                                            */
+/* Error.cpp -- runtime errors                                                */
 /*============================================================================*/
 
 #include "Error.hpp"
+
 #include "String.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(eEC eErrorCode, const char* sFile, i8 iLine)
+Error::Error(i8 iErrorCode, const char* aFileName, i8 iLineNo)
 {
-  m_eErrorCode = eErrorCode;
-  String::vCopy(m_sFileName.a(), sFile);
-  m_iLineNumber = iLine;
-  String::vCopy(m_sErrorMsg.a(), pEC[m_eErrorCode]);
+  m_iErrorCode = iErrorCode;
+  m_aErrorMsg[0] = '\0';
+
+  String::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
+  m_iLineNo = iLineNo;
   
   _checkInitialisedSize_(sizeof(Error));
 }
@@ -21,15 +23,13 @@ Error::Error(eEC eErrorCode, const char* sFile, i8 iLine)
 /*----------------------------------------------------------------------------*/
 /* Constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Error::Error(eEC eErrorCode, const char* pErrorMsg, const char* sFile, i8 iLine)
+Error::Error(i8 iErrorCode, const char* aErrorMsg, const char* aFileName, i8 iLineNo)
 {
-  m_eErrorCode = eErrorCode;
-  String::vCopy(m_sFileName.a(), sFile);
-  m_iLineNumber = iLine;
-  String::vCopy(m_sErrorMsg.a(), pEC[m_eErrorCode]);
-  String::vConcat(m_sErrorMsg.a(), " (");
-  String::vConcat(m_sErrorMsg.a(), pErrorMsg);
-  String::vConcat(m_sErrorMsg.a(), ") ");
+  m_iErrorCode = iErrorCode;
+  String::vCopyLen(m_aErrorMsg, aErrorMsg, sizeof(m_aErrorMsg));
+
+  String::vCopyLen(m_aFileName, aFileName, sizeof(m_aFileName));
+  m_iLineNo = iLineNo;
 
   _checkInitialisedSize_(sizeof(Error));
 }
@@ -37,37 +37,25 @@ Error::Error(eEC eErrorCode, const char* pErrorMsg, const char* sFile, i8 iLine)
 /*----------------------------------------------------------------------------*/
 /* return error message                                                       */
 /*----------------------------------------------------------------------------*/
-const char* Error::pErrorMsg(void)
+const char* Error::aErrorMsg(void)
 {
-  return m_sErrorMsg.a();
+  return m_aErrorMsg;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return filename                                                            */
 /*----------------------------------------------------------------------------*/
-char* Error::pFileName(void)
+const char* Error::aFileName(void)
 {
-  return m_sFileName.a();
+  return m_aFileName;
 }
 
 /*----------------------------------------------------------------------------*/
 /* return line number                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Error::iLineNumber(void)
+i8 Error::iLineNo(void)
 {
-  return m_iLineNumber;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Footer ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get location of footer                                                     */
-/*----------------------------------------------------------------------------*/
-Footer* Error::pFooter(void)
-{
-  return &m_xFooter;
+  return m_iLineNo;
 }
 
 /*============================================================================*/

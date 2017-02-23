@@ -99,17 +99,17 @@ void* Thread::vEntry(void* pArg)
     
     const char* ps;
     
-    ps = String::sLast(pError->pFileName());
-    bool bBackSlash = String::bBackward(&ps,pError->pFileName(),'/');
+    ps = String::sLast(pError->aFileName());
+    bool bBackSlash = String::bBackward(&ps,(char*)pError->aFileName(),'/');
     if (bBackSlash) {
       String::vCopy(wFileName,ps+1);
     }
     else {
-      String::vCopy(wFileName, pError->pFileName());
+      String::vCopy(wFileName, pError->aFileName());
     }
     vFatal("ERROR: [ThreadLoop] %s: line %lld in %s\n",
-          pError->pErrorMsg(),
-          pError->iLineNumber(),
+          pError->aErrorMsg(),
+          pError->iLineNo(),
           wFileName);
   }
 
