@@ -2,7 +2,8 @@
 /* Report.cpp - message reporter                                             */
 /*===========================================================================*/
 
-#include "Common.h"
+#include "Debugging.h"
+#include "File.hpp"
 
 extern File* gpTraceFile;
 
@@ -13,7 +14,7 @@ bool mbReportTimestamp = true;
 /*---------------------------------------------------------------------------*/
 /* set reporting behavior                                                    */
 /*---------------------------------------------------------------------------*/
-void Common::vReportOption(i8 iTrace)
+void Debugging::vReportOption(i8 iTrace)
 {
   if (C_REPORT_TIMESTAMP == iTrace)
     mbReportTimestamp = true;
@@ -25,7 +26,7 @@ void Common::vReportOption(i8 iTrace)
 /*---------------------------------------------------------------------------*/
 /* report an information message                                             */
 /*---------------------------------------------------------------------------*/
-void Common::vInfo(const char* psFormat, ...)
+void Debugging::vInfo(const char* psFormat, ...)
 {
   va_list xArgs;
   
@@ -39,7 +40,7 @@ void Common::vInfo(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a trace message                                                    */
 /*---------------------------------------------------------------------------*/
-void Common::vTrace(const char* psFormat, ...)
+void Debugging::vTrace(const char* psFormat, ...)
 {
   va_list xArgs;
   
@@ -53,7 +54,7 @@ void Common::vTrace(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a warning message                                                  */
 /*---------------------------------------------------------------------------*/
-void Common::vWarn(const char* psFormat, ...)
+void Debugging::vWarn(const char* psFormat, ...)
 {
   va_list xArgs;
   
@@ -67,7 +68,7 @@ void Common::vWarn(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* report a recoverable error message                                        */
 /*---------------------------------------------------------------------------*/
-void Common::vError(const char* psFormat, ...)
+void Debugging::vError(const char* psFormat, ...)
 {
   va_list xArgs;
   
@@ -81,7 +82,7 @@ void Common::vError(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vFatal: report a non-recoverable fatal message                            */
 /*---------------------------------------------------------------------------*/
-void Common::vFatal(const char* psFormat, ...)
+void Debugging::vFatal(const char* psFormat, ...)
 {
   va_list xArgs;
   
@@ -96,13 +97,13 @@ void Common::vFatal(const char* psFormat, ...)
 /*---------------------------------------------------------------------------*/
 /* vReport: common reporter                                                  */
 /*---------------------------------------------------------------------------*/
-void Common::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
+void Debugging::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
 {
   i8 iLen = 0;
   char* s = gaReportBuffer;
   *s = '\0';
   
-  ASSERT(iLevel != 0);
+  assert(iLevel != 0);
   vsnprintf(s,sizeof(gaReportBuffer)-iLen-3,psFormat,xArgs);
     
   // print to file
@@ -118,7 +119,7 @@ void Common::vReport(i8 iLevel, const char* psFormat, va_list xArgs)
 /*---------------------------------------------------------------------------*/
 /* dump ascii string                                                         */
 /*---------------------------------------------------------------------------*/
-void Common::vDumpAscii(const char* aText, i8 nBytes)
+void Debugging::vDumpAscii(const char* aText, i8 nBytes)
 {
   printf(">>>");
   while (nBytes--)

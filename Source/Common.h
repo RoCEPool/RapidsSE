@@ -10,7 +10,6 @@
 #include "NP.hpp"
 #include "NNP.hpp"
 
-#include "Report.hpp"
 #include "SysCall.hpp"
 
 #if !( (defined(__APPLE__) || defined(__LINUX__)) )

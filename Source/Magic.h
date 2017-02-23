@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Platform.h"
+#include "Debugging.h"
 
 static const u8 MAGIC = 0x4F4E434947414D5E; // ^MAGICNO
 
@@ -28,7 +28,6 @@ static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
 
 #include "Magnitudes.hpp"
 
-#include "ClassNumbers.hpp"
 
 #include "Footer.hpp"
 #include "Object.hpp"

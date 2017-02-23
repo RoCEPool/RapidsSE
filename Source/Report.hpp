@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "Debugging.h"
 
-namespace Common
+namespace Debugging
 {
   static const i8 C_REPORT_TIMESTAMP    = 1;
   static const i8 C_REPORT_NO_TIMESTAMP = 0;
