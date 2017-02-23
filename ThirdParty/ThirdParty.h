@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Magic.h"
+#include "Platform.h"
 
 #include "bzlib.h"
 #include "lz4.h"

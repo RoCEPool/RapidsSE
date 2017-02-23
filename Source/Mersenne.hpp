@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "ThirdParty.h"
 
-namespace Common
+namespace ThirdParty
 {
 
   #define NN 312

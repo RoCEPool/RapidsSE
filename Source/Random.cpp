@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------//
 i8 Random::iRandom(void)
 {
-  i8 iRand = genrand64_int63();
+  i8 iRand = ThirdParty::genrand64_int63();
   
   return iRand;
 }
@@ -19,7 +19,7 @@ i8 Random::iRandom(void)
 //---------------------------------------------------------------------------//
 i8 Random::iRandom(i8 iMax)
 {
-  i8 iRand = genrand64_int63() %iMax;
+  i8 iRand = ThirdParty::genrand64_int63() %iMax;
   
   return iRand;
 }
@@ -29,7 +29,7 @@ i8 Random::iRandom(i8 iMax)
 /*---------------------------------------------------------------------------*/
 i8 Random::iRandom(i8 iLow, i8 iHigh)
 {
-  i8 r = genrand64_int63();
+  i8 r = ThirdParty::genrand64_int63();
   
   i8 m = iHigh - iLow + 1;
   i8 v = r % m;
@@ -46,7 +46,7 @@ i8 Random::iRandom(i8 iLow, i8 iHigh)
 //---------------------------------------------------------------------------//
 u8 Random::uRandom(void)
 {
-  u8 iRand = genrand64_int64();
+  u8 iRand = ThirdParty::genrand64_int64();
   
   return iRand;
 }
@@ -56,7 +56,7 @@ u8 Random::uRandom(void)
 //---------------------------------------------------------------------------//
 u8 Random::uRandom(u8 uMax)
 {
-  u8 uRand = genrand64_int64() % uMax;
+  u8 uRand = ThirdParty::genrand64_int64() % uMax;
   
   return uRand;
 }
@@ -66,7 +66,7 @@ u8 Random::uRandom(u8 uMax)
 /*---------------------------------------------------------------------------*/
 u8 Random::uRandom(u8 uLow, u8 uHigh)
 {
-  u8 r = genrand64_int64();
+  u8 r = ThirdParty::genrand64_int64();
   
   u8 m = uHigh - uLow + 1;
   u8 v = r % m;
