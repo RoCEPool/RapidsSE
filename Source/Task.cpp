@@ -1497,7 +1497,7 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
                          pObject);
     }
     else if (CN_INTVAL == eClass) {
-      String::vSprintCat(a,"%lld",pValWsp->iInt());
+      String::vSprintCat(a,"%lld",_pIntVal(pValWsp)->iInt());
     }
     else if (CN_PTRVAL == eClass) {
       if (pValWsp->pPtr()) {

@@ -40,7 +40,6 @@ namespace Values
     i8    iSize(void);
     
     i8    iAsInt(void);
-    i8    iInt(void);
     Dictionaries::Cell* pIpPtr(void);
     Object* pPtr(void);
     char* sStr(void);

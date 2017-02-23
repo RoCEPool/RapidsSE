@@ -661,7 +661,7 @@ i8 Stack::iPop(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  i8 iArg = m_pTop->iInt();
+  i8 iArg = _pIntVal(m_pTop)->iInt();
   
   vPopBy(sizeof(IntVal));
 
@@ -993,7 +993,7 @@ bool Stack::bPeekZero(void)
 
   Value* pValue = pTopValue();
   
-  if (CN_INTVAL == pValue->eClass() && 0 == pValue->iInt())
+  if (CN_INTVAL == pValue->eClass() && 0 == _pIntVal(pValue)->iInt())
     return true;
   
   return false;

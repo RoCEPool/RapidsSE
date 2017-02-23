@@ -63,7 +63,8 @@ void Task::vVectorDifference(NNP_Task nnpTask)
     
     bool bResult = xValSet1.bExtract(pCursor1,pValWsp1);
     ASSERT(bResult);
-    nnpTask->m_pDataStack->vPush(pValWsp1->iInt() - pValWsp2->iInt());
+    i8 iDiff = _pIntVal(pValWsp1)->iInt() - _pIntVal(pValWsp2)->iInt();
+    nnpTask->m_pDataStack->vPush(iDiff);
     nVals++;
   }
 

@@ -132,7 +132,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      *_pIntVal(pValue) = xValStored.iInt();
+      *_pIntVal(pValue) = _pIntVal(&xValStored)->iInt();
       break;
       
     case CN_STRVAL:
