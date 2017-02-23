@@ -36,7 +36,6 @@ namespace Values
     
     Value(eCN eClass);
     
-    void operator =(i8 iVal);
     
     i8    iSize(void);
     

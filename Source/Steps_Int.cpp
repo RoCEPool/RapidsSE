@@ -76,7 +76,7 @@ void Task::vIntAdd(NNP_Task nnpTask)
   Value* i = nnpTask->m_pDataStack->pTopValue();
   
   // add the two values and leave the result on the stack
-  *i = j->iInt() + i->iInt();
+  *_pIntVal(i) = j->iInt() + i->iInt();
   
   EXIT();
 }
