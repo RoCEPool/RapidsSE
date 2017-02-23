@@ -2,7 +2,7 @@
 /* s.cpp -- an s-string                                                       */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Strings.h"
 #include "String.hpp"
 #include "StorageEngine.h"
 

@@ -2,7 +2,7 @@
 /* s1M.cpp -- a 1M-byte s-string                                              */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Strings.h"
 #include "Memory.hpp"
 #include "StorageEngine.h"
 

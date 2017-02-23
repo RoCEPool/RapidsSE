@@ -2,7 +2,7 @@
 /* s48K.cpp -- a 8KB-byte s-string                                             */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Strings.h"
 #include "Memory.hpp"
 #include "StorageEngine.h"
 

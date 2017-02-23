@@ -25,7 +25,7 @@
 #include "String.hpp"
 
 #include "ByteLiterals.hpp"
-#include "StringLiterals.hpp"
+#include "Tabs.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Platform

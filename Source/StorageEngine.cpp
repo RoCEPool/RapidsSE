@@ -13,7 +13,9 @@ void StorageEngine::vCheckAllAssumptions(void)
 {
   // this is in reverse order of the spaces in the project
   Platform::vCheckAssumptions();
+  Debugging::vCheckAssumptions();
   Magic::vCheckAssumptions();
+  Strings::vCheckAssumptions();
   Common::vCheckAssumptions();
   Values::vCheckAssumptions();
   Pool::vCheckAssumptions();

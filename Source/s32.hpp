@@ -3,10 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
+#include "Strings.h"
 #include "Footer.hpp"
 
-namespace Magic
+namespace Strings
 {
   class s32 : public s
   {

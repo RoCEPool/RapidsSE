@@ -2,7 +2,7 @@
 /* s256.cpp -- a 256-byte s-string                                            */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Strings.h"
 #include "Memory.hpp"
 #include "StorageEngine.h"
 

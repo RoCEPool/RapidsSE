@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
+#include "Strings.h"
 
-namespace Magic
+namespace Strings
 {
   class s48K : public s
   {
