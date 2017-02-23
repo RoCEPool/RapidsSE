@@ -3,11 +3,11 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
+#include "Common.h"
 
-namespace Magic { }
+//namespace Magic { }
 
-using namespace Magic;
+using namespace Common;
 
 class Magnitudes {
 public:

@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Common.h"
+#include "Platform.h"
 
-namespace Common
+namespace Platform
 {
   class Memory : public Static
   {

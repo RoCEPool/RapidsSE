@@ -26,8 +26,6 @@ static const u8 C_MEMORY_MARKERE   = 0x070605040302010e;
 static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
 
 
-#include "Magnitudes.hpp"
-
 
 #include "Footer.hpp"
 #include "Object.hpp"

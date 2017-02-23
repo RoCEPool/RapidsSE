@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Common.h"
+#include "Platform.h"
 
-namespace Common
+namespace Platform
 {
   static const int C_NO_CASE    = 0;
   static const int C_CASE       = 1;

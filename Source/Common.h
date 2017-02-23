@@ -21,7 +21,7 @@
 #include "Env.hpp"
 #include "File.hpp"
 #include "Lock.hpp"
-#include "Memory.hpp"
+#include "Magnitudes.hpp"
 #include "Process.hpp"
 #include "Random.hpp"
 #include "Scratch.hpp"

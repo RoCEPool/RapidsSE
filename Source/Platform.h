@@ -20,6 +20,9 @@
 #include "BinaryNumbers.h"
 #include "Addressing.hpp"
 #include "ClassNumbers.hpp"
+#include "Memory.hpp"
+#include "String.hpp"
+
 #include "StringLiterals.hpp"
 
 //-----------------------------------------------------------------------------

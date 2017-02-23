@@ -321,7 +321,7 @@ void String::vDump(const char* s, i8 nMax, const char* pSuffix)
   char w[C_STACK_WSP];
   char *z = w;
   
-  for (int i = 0; i < nMax && i < 16_KB - 1; i++)
+  for (int i = 0; i < nMax && i < C_16KB - 1; i++)
   {
     if (isprint(s[i]))
     {
