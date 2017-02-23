@@ -5,6 +5,7 @@
 
 #include "Platform.h"
 
+#include "Debug.hpp"
 #include "Report.hpp"
 
 //-----------------------------------------------------------------------------

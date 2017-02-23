@@ -44,7 +44,7 @@ void Task::vDebugTrap(NNP_Task nnpTask)
 {
 ENTRY("vDebugTrap");
 
-  Common::vDebugTrap();
+  Debugging::vDebugTrap();
   
   EXIT();
 }

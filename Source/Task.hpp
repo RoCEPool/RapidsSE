@@ -1086,7 +1086,7 @@ namespace Tasks
       String::vSprint(sException.a(),p1); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
       pTask->vException(sFile,sException); \
-      Common::vThrowTrap(); \
+      Debugging::vThrowTrap(); \
       throw (i8)__LINE__; \
     }
         
@@ -1097,7 +1097,7 @@ namespace Tasks
       String::vSprint(sException.a(),p1,p2); \
       Task* pTask = reinterpret_cast<Task*>(PosixThread::pTlsGet(giTLS_TaskKey)); \
       pTask->vException(sFile,sException); \
-      Common::vThrowTrap(); \
+      Debugging::vThrowTrap(); \
       throw (i8)__LINE__; \
     }
         

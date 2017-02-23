@@ -2,12 +2,12 @@
 /* Debug.cpp -- Debugging Functions                                           */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Debugging.h"
 
 /*----------------------------------------------------------------------------*/
 /* assert trap                                                                */
 /*----------------------------------------------------------------------------*/
-void Common::vAssertTrap(void)
+void Debugging::vAssertTrap(void)
 {
   // put a breakpoint here to trap asserts
   sleep(0);
@@ -16,7 +16,7 @@ void Common::vAssertTrap(void)
 /*----------------------------------------------------------------------------*/
 /* debug trap                                                                 */
 /*----------------------------------------------------------------------------*/
-void Common::vDebugTrap(void)
+void Debugging::vDebugTrap(void)
 {
   // put a breakpoint here to trap specific debug points
   sleep(0);
@@ -25,7 +25,7 @@ void Common::vDebugTrap(void)
 /*----------------------------------------------------------------------------*/
 /* throw trap                                                                 */
 /*----------------------------------------------------------------------------*/
-void Common::vThrowTrap(void)
+void Debugging::vThrowTrap(void)
 {
   // put a breakpoint here to trap throws
   sleep(0);

@@ -4,7 +4,7 @@
 
 #pragma once
 
-namespace Common
+namespace Debugging
 {
   void vAssertTrap(void);
   void vDebugTrap(void);
@@ -47,7 +47,7 @@ namespace Common
   #define ASSERT(condition) \
   { \
     if ( !(condition) ) { \
-      Common::vAssertTrap(); \
+      Debugging::vAssertTrap(); \
       THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
     } \
   }
@@ -58,7 +58,7 @@ namespace Common
   #define RASSERT(condition) \
   { \
     if ( !(condition) ) { \
-      Common::vAssertTrap(); \
+      Debugging::vAssertTrap(); \
       THROW_ERROR_MSG(EC_ASSERT,(__builtin_expect(!(condition), 0) ? #condition : "")); \
     } \
   }
