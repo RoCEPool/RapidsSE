@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
+#include "Platform.h"
 
-namespace Magic
+namespace Platform
 {
   i8 operator "" _KB(unsigned long long i);
   i8 operator "" _MB(unsigned long long i);

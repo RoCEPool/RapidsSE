@@ -2,12 +2,12 @@
 /* ByteLiterals.cpp -- Byte Literals                                          */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Platform.h"
   
 /*----------------------------------------------------------------------------*/
 /* _KB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Magic::operator "" _KB(unsigned long long i)
+i8 Platform::operator "" _KB(unsigned long long i)
 {
   return i * C_1KB;
 }
@@ -15,7 +15,7 @@ i8 Magic::operator "" _KB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _MB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Magic::operator "" _MB(unsigned long long i)
+i8 Platform::operator "" _MB(unsigned long long i)
 {
   return i * C_1MB;
 }
@@ -23,7 +23,7 @@ i8 Magic::operator "" _MB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _GB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Magic::operator "" _GB(unsigned long long i)
+i8 Platform::operator "" _GB(unsigned long long i)
 {
   return i * C_1GB;
 }
@@ -31,7 +31,7 @@ i8 Magic::operator "" _GB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _TB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Magic::operator "" _TB(unsigned long long i)
+i8 Platform::operator "" _TB(unsigned long long i)
 {
   return i * C_1TB;
 }
@@ -39,7 +39,7 @@ i8 Magic::operator "" _TB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _PB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Magic::operator "" _PB(unsigned long long i)
+i8 Platform::operator "" _PB(unsigned long long i)
 {
   return i * C_1PB;
 }
@@ -47,7 +47,7 @@ i8 Magic::operator "" _PB(unsigned long long i)
 /*----------------------------------------------------------------------------*/
 /* _EB literal suffix                                                         */
 /*----------------------------------------------------------------------------*/
-i8 Magic::operator "" _EB(unsigned long long i)
+i8 Platform::operator "" _EB(unsigned long long i)
 {
   return i * C_1EB;
 }

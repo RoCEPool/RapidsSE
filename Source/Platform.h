@@ -23,6 +23,7 @@
 #include "Memory.hpp"
 #include "String.hpp"
 
+#include "ByteLiterals.hpp"
 #include "StringLiterals.hpp"
 
 //-----------------------------------------------------------------------------
