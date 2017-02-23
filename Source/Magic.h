@@ -42,7 +42,6 @@ static const u8 C_MEMORY_MARKERF   = 0x070605040302010f;
 #include "Error.hpp"
 
 #include "ByteLiterals.hpp"
-#include "StringLiterals.hpp"
 
 
 

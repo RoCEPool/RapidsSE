@@ -2,12 +2,12 @@
 /* StringLiterals.cpp -- String Literals                                      */
 /*============================================================================*/
 
-#include "Magic.h"
+#include "Platform.h"
 
 /*----------------------------------------------------------------------------*/
 /* single tab                                                                 */
 /*----------------------------------------------------------------------------*/
-const char* Magic::pSingleTab(void)
+const char* Platform::pSingleTab(void)
 {
   return "  ";
 }
@@ -15,7 +15,7 @@ const char* Magic::pSingleTab(void)
 /*----------------------------------------------------------------------------*/
 /* double tab                                                                 */
 /*----------------------------------------------------------------------------*/
-const char* Magic::pDoubleTab(void)
+const char* Platform::pDoubleTab(void)
 {
   return "      ";
 }

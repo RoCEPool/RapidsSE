@@ -20,6 +20,7 @@
 #include "BinaryNumbers.h"
 #include "Addressing.hpp"
 #include "ClassNumbers.hpp"
+#include "StringLiterals.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Platform

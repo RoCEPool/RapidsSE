@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Magic.h"
+#include "Platform.h"
 
-namespace Magic
+namespace Platform
 {
   const char  C_END_OF_LINE = '\n';
   
