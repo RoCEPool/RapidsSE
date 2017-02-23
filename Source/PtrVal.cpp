@@ -59,7 +59,7 @@ i8 PtrVal::iSize(void) const
 /*----------------------------------------------------------------------------*/
 /* as pointer to in memory pool object                                        */
 /*----------------------------------------------------------------------------*/
-Object* PtrVal::pObject(void) const
+Object* PtrVal::pPtr(void) const
 {
   return pPoolCheck<Object*>(m_pPtr);
 }

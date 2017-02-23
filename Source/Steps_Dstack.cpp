@@ -217,7 +217,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
   
   if (CN_PTRVAL == eClass) {
     PtrVal* pPtrVal = _pPtrVal(&xValWsp);
-    Object* pObject = pPtrVal->pObject();
+    Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n",
           nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
@@ -500,7 +500,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
     
     if (xVal.eClass() == CN_PTRVAL) {
       PtrVal* pPtrVal = _pPtrVal(&xVal);
-      Object* pObject = pPtrVal->pObject();
+      Object* pObject = pPtrVal->pPtr();
       eCN eObjectClass   = pObject->eClass();
       
       if (eObjectClass == CN_PLAN) {

@@ -290,7 +290,7 @@ bool Stack::bPop(i8& iArg1, Object*& pArg2)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pArg2 = xPtrVal1.pObject();
+  pArg2 = xPtrVal1.pPtr();
   
   return true;
 }
@@ -376,7 +376,7 @@ bool Stack::bPop(Object*& pObject)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject = xPtrVal1.pObject();
+  pObject = xPtrVal1.pPtr();
   
   return true;
 }
@@ -394,7 +394,7 @@ bool Stack::bPop(Object*& pObject, i8& iArg)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject = xPtrVal1.pObject();
+  pObject = xPtrVal1.pPtr();
   
   IntVal xIntVal1;
   vPopVal(&xIntVal1);
@@ -417,12 +417,12 @@ bool Stack::bPop(Object*& pObject1, Object*& pObject2)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject1 = xPtrVal1.pObject();
+  pObject1 = xPtrVal1.pPtr();
   
   PtrVal xPtrVal2;
   vPopVal(&xPtrVal2);
   
-  pObject2 = xPtrVal2.pObject();
+  pObject2 = xPtrVal2.pPtr();
   
   return true;
 }
@@ -440,7 +440,7 @@ bool Stack::bPop(Object*& pObject, Value& xValue)
   PtrVal xPtrVal1;
   vPopVal(&xPtrVal1);
   
-  pObject = xPtrVal1.pObject();
+  pObject = xPtrVal1.pPtr();
   
   return bPop(xValue);
 }
@@ -869,7 +869,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
     
     if (CN_PTRVAL == eClass) {
       PtrVal* pPtrVal = _pPtrVal(&xValWsp);
-      Object* pObject = pPtrVal->pObject();
+      Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
       vTrace("[%s] [%2lld] %s (%s %s)\n",
         aPrefix,iVal,sWorkspace.a(),aClass,pCN[ePtdClass]);

@@ -62,7 +62,7 @@ Object* Value::pPtr(void)
   
   PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
   
-  Object* p = pPtrVal->pObject();
+  Object* p = pPtrVal->pPtr();
   
   return p;
 }
