@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Vsp.hpp -- variable sized workspace                                        */
+/* Vsp.hpp -- variable-sized workspace                                        */
 /*============================================================================*/
 
 /*
@@ -10,14 +10,15 @@
 
 #pragma once
 
-#include "Values.h"
+#include "Magic.h"
 
-namespace Values
+namespace Magic
 {
   class Vsp : public Part
   {
   private:
     i8   m_nBytesUsed;
+    // ..dataArea..
   
   public:
     Vsp(void);
