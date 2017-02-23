@@ -20,11 +20,12 @@ namespace Magic
     Object(eCN eClass);
     void vInitMagic(void);
   
-    void vSetMagic(void);
-    i8   iMagic(void) const;
+    void  vSetMagic(void);
+    i8    iMagic(void) const;
   
-    eCN  eClass(void) const;
-    void vClass(eCN eClassNo);
+    char* aClass(void);
+    eCN   eClass(void) const;
+    void  vClass(eCN eClassNo);
 
     bool bWordBody(void);
     void vWordBody(bool bIsWordBody);

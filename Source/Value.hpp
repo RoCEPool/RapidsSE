@@ -38,7 +38,6 @@ namespace Values
     
     void operator =(i8 iVal);
     
-    char* aClass(void);
     i8    iSize(void);
     
     i8    iAsInt(void);
