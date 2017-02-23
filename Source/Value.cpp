@@ -54,20 +54,6 @@ i8 Value::iAsInt(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get word                                                                   */
-/*----------------------------------------------------------------------------*/
-Dictionaries::Word* Value::pWord(void)
-{
-  ASSERT(CN_PTRVAL == eClass());
-  
-  PtrVal* pPtrWord = reinterpret_cast<PtrVal*>(this);
-  
-  Dictionaries::Word* p = pPtrWord->pWord();
-  
-  return p;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
 i8 Value::iSize(void)

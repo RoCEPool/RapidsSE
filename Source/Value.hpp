@@ -41,7 +41,6 @@ namespace Values
     
     i8    iAsInt(void);
     Object* pNewObjBin(void);
-    Dictionaries::Word* pWord(void);
         
     void  vToCommand(char* aWorkspace);
     void  vToString(char* aWorkspace);
