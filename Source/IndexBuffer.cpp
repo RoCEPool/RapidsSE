@@ -181,14 +181,20 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
-  void* pDst;
-  void* pSrc = &xEntWsp;
   Entry* pNewEntry;
   
-  i8 nBytes;
+  // get the size of the EntWsp
+  i8 nBytes = xEntWsp.iSize();
   
-  pDst = pAdd<void*>(pDataArea(),nBytesUsed());
+  // test sufficient free space
+  //if (nFreeBytes() < nBytes) {
+    //return nullptr;
+  //}
   
+  // get the pDst as the staring of the free space in the buffer
+  void* pDst = pAdd<void*>(pDataArea(),nBytesUsed());
+
+  // get the vale of the EntWsp key
   Key* pNewKey = xEntWsp.pKey();
   
   // find the position for the new entry in the index buffer
@@ -202,18 +208,11 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
     
     if (*pNewKey < pKey ) {
       
-      // position the new entry at pKey location
+      // position the pDst at pEntry
       pDst = pEntry;
       
       // shuffle right pEntry making space for new entry
       i8 nSize = nBytesUsed() - nSub(pEntry,pDataArea());
-      
-      // test sufficient free space
-      //  if (nFreeBytes() < nBytes) {
-      //    return nullptr;
-      //  }
-
-      nBytes = xEntWsp.iSize();
       
       // calculate new postion to shuffle to
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
@@ -223,18 +222,18 @@ void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
       break;
     }
     
+    // get next entry
     pEntry = pNextEntry(pEntry);
   }
   
+  // map the pDst to an Entry
   pNewEntry = reinterpret_cast<Entry*>(pDst);
   
-  // copy into Index buffer entry from EntWsp
+  // copy EntWsp into Index buffer pNewEntry
   pNewEntry->vEntry(xEntWsp);
   
-  //pNewEntry->vContentDump();
-  
-  nBytes = pNewEntry->iSize();
-  ASSERT(nBytes == xEntWsp.iSize());
+  // size of EntWsp whould be the same as this NewEntry we just created
+  ASSERT(nBytes == pNewEntry->iSize());
   
   // recalculate beginning of free space
   m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
