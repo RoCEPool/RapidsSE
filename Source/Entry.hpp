@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Entry : public Part
+  class Entry 
   {
   private:
     RowId m_xRowId;      // row number

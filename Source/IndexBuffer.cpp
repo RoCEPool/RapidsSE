@@ -177,16 +177,19 @@ void IndexBuffer::vEntryCount(void)
 /*----------------------------------------------------------------------------*/
 /* insert an entry into the index buffer                                      */
 /*----------------------------------------------------------------------------*/
-void IndexBuffer::vInsertEntry(Entry& xNewEntry)
+void IndexBuffer::vInsertEntry(EntWsp& xEntWsp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXBUFFER,_FOOTER_);
   
   void* pDst;
-  void* pSrc = &xNewEntry;
+  void* pSrc = &xEntWsp;
+  Entry* pNewEntry;
   
-  i8 nBytes  = xNewEntry.iSize();
+  i8 nBytes;
   
   pDst = pAdd<void*>(pDataArea(),nBytesUsed());
+  
+  Key* pNewKey = xEntWsp.pKey();
   
   // find the position for the new entry in the index buffer
   Entry* pEntry = pFirstEntry();
@@ -194,7 +197,8 @@ void IndexBuffer::vInsertEntry(Entry& xNewEntry)
   while (pEntry) {
     
     Key* pKey = pEntry->pKey();
-    Key* pNewKey = xNewEntry.pKey();
+  
+    pKey->vShow();
     
     if (*pNewKey < pKey ) {
       
@@ -209,10 +213,12 @@ void IndexBuffer::vInsertEntry(Entry& xNewEntry)
       //    return nullptr;
       //  }
 
+      nBytes = xEntWsp.iSize();
+      
       // calculate new postion to shuffle to
       void* pShuffleTo = pAdd<void*>(pEntry,nBytes);
       
-      // do teh shuffle
+      // do the shuffle
       Memory::vCopy(pShuffleTo,pEntry,nSize);
       break;
     }
@@ -220,8 +226,15 @@ void IndexBuffer::vInsertEntry(Entry& xNewEntry)
     pEntry = pNextEntry(pEntry);
   }
   
-  // now copy the new entry at the pDst location
-  Memory::vCopy(pDst,pSrc,nBytes);
+  pNewEntry = reinterpret_cast<Entry*>(pDst);
+  
+  // copy into Index buffer entry from EntWsp
+  pNewEntry->vEntry(xEntWsp);
+  
+  //pNewEntry->vContentDump();
+  
+  nBytes = pNewEntry->iSize();
+  ASSERT(nBytes == xEntWsp.iSize());
   
   // recalculate beginning of free space
   m_pFreeSpace = pAdd<char*>(m_pFreeSpace,nBytes);
@@ -263,6 +276,9 @@ void IndexBuffer::vVerify(void)
     Key* pKeyA = pEntryA->pKey();
     Key* pKeyB = pEntryB->pKey();
   
+    pKeyA->vShow();
+    pKeyB->vShow();
+    
     ASSERT(*pEntryA->pKey() < pEntryB->pKey());
     
     pEntryA = pEntryB;

@@ -119,10 +119,8 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   // show
   xEntWsp.vShow();
   
-  Entry xEntry(xEntWsp);
-  
   // insert entry into index buffer
-  pIndexBuffer->vInsertEntry(xEntry);
+  pIndexBuffer->vInsertEntry(xEntWsp);
 
   // verify index buffer
   pIndexBuffer->vVerify();

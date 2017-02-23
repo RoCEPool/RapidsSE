@@ -66,6 +66,9 @@ bool Key::operator <(Key* pKeyArg)
 void Key::vKey(Key& xKey)
 {
   // more ???
+  char* pDst = pDataArea();
+  i8 nBytes  = xKey.nDataBytes();
+  Memory::vCopy(pDst,&xKey,nBytes);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,9 +88,13 @@ void Key::vKey(KeyWsp& xKeyWsp)
 /*----------------------------------------------------------------------------*/
 void Key::vShow(void)
 {
-  vTrace("Key %p: (size %lldB)\n",
+  i8 iKey;
+  V::vCopyIntDatum(&iKey,pDataArea());
+  
+  vTrace("Key %p: (size %lld value:%lld)\n",
          this,
-         iSize()
+         iSize(),
+         iKey
          );
 }
 
@@ -99,9 +106,12 @@ void Key::vShow(void)
 /*----------------------------------------------------------------------------*/
 char* Key::pDataArea(void)
 {
-  char* pDataArea = pAdd<char*>(this,sizeof(Key));
-  
+  //i8 iKeySize = sizeof(Key);
+  //char* pDataArea = reinterpret_cast<char*>(this); //pAdd<char*>(this,sizeof(Key));
   //return pPoolCheck<char*>(pDataArea);
+  
+  char* pDataArea = reinterpret_cast<char*>(this);
+  
   return pDataArea;
 }
 
@@ -118,8 +128,8 @@ i8 Key::nDataBytes(void)
 /*----------------------------------------------------------------------------*/
 i8 Key::iSize(void)
 {
-  i8 nBytes = sizeof(Key) + sizeof(i8);
-  
+  //i8 nBytes = sizeof(Key) + sizeof(i8);
+  i8 nBytes = sizeof(i8);
   return nBytes;
 }
 

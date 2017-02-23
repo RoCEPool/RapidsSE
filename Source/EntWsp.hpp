@@ -29,7 +29,9 @@ namespace DBobjects
     void vRowId(RowId& xRowId);
   
     void vAddKey(KeyWsp& xKeyWsp);
-  
+    Key* pKey(void);
+    i8   iSize(void);
+    
     Footer* pFooter(void);
   };
 }

@@ -136,7 +136,7 @@ void Entry::vEntry(EntWsp& xEntWsp)
 
   m_xRowId = xEntWsp.xRowId();
 
-  char* pDst = pDataNext();
+  char* pDst = pDataArea();
   char* pSrc = xEntWsp.pWspArea();
   i8 nBytes  = xEntWsp.nWspUsed();
 
@@ -164,8 +164,7 @@ Key* Entry::pKey(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   
-  //Key* pKey = reinterpret_cast<Key*>(pDataArea());
-  Key* pKey = reinterpret_cast<Key*>(&m_nDataBytes);
+  Key* pKey = reinterpret_cast<Key*>(pDataArea());
   
   return pKey;
 }
@@ -180,6 +179,7 @@ void Entry::vKey(Key& xKey)
   Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
   pKey->vKey(xKey);
+  m_nDataBytes += pKey->iSize();  
 }
 
 /*----------------------------------------------------------------------------*/

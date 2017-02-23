@@ -32,8 +32,7 @@ namespace DBobjects
     void  vCopyBuffer(IndexBuffer* pFromBuffer);
     i8    nEntries(void);
     void  vEntryCount(void);
-    void* pFindPosition(Entry& xEntry);
-    void  vInsertEntry(Entry& xEntry);
+    void  vInsertEntry(EntWsp& xEntWsp);
     void  vShow(void);
     void  vVerify(void);
   

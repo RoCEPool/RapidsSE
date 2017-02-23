@@ -8,7 +8,7 @@
 
 namespace DBobjects
 {
-  class Key : public Part
+  class Key 
   {
   private:
     // ..dataArea..
