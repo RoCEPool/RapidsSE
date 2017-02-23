@@ -513,11 +513,11 @@ void Task::vLocate(NNP_Task nnpTask)
 {
   ENTRY("vLocate");
   
-  i8 iAsInt;
-  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAsInt) )
+  i8 iAddrAsInt;
+  if ( ! nnpTask->m_pDataStack->bPopParamInt(iAddrAsInt) )
     THROW_INVALID_DSTACK("locate");
   
-  void* pCellVoid = (void*)iAsInt;
+  void* pCellVoid = (void*)iAddrAsInt;
   Cell* pCell = _pCell(pCellVoid);
   
   Word* pLocatedWord = nnpTask->m_xPathStack.pLocate(pCell);

@@ -39,7 +39,6 @@ namespace Values
     
     i8    iSize(void);
     
-    i8    iAsInt(void);
     Object* pNewObjBin(void);
         
     void  vToCommand(char* aWorkspace);

@@ -22,6 +22,7 @@ namespace Values
     void operator =(char* pStr);
     void operator =(const char* pStr);
     
+    i8    iAsInt(void);
     void vAssignBinary(Object* pObject);
   };
   
