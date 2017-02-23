@@ -24,6 +24,8 @@ namespace Values
     
     void vAssignBinary(Object* pObject);
   };
+  
+  ValWsp* _pValWsp(void* pAddr);
 }
 
 /*============================================================================*/

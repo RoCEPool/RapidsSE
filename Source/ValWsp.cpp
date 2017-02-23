@@ -5,6 +5,18 @@
 #include "Values.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ValWsp* Values::_pValWsp(void* pAddr)
+{
+  ValWsp* pValWsp = reinterpret_cast<ValWsp*>(pAddr);
+  
+  RASSERT( !pValWsp || CN_VALWSP == pValWsp->eClass() );
+  
+  return pValWsp;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* ValWsp::operator new(size_t iSize)

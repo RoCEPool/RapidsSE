@@ -5,6 +5,18 @@
 #include "Values.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ObjVal* Values::_pObjVal(void* pAddr)
+{
+  ObjVal* pObjVal = reinterpret_cast<ObjVal*>(pAddr);
+  
+  RASSERT( !pObjVal || CN_OBJVAL == pObjVal->eClass() );
+  
+  return pObjVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* ObjVal::operator new(size_t iSize)

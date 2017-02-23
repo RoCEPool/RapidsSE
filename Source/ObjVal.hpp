@@ -19,6 +19,8 @@ namespace Values
     ObjVal(i8 iSize);
     i8 iSize(void) const;
   };
+  
+  ObjVal* _pObjVal(void* pAddr);
 }
 
 /*============================================================================*/

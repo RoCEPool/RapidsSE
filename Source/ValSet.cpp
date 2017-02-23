@@ -10,6 +10,18 @@
 extern Arguments gxArguments;
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ValSet* Values::_pValSet(void* pAddr)
+{
+  ValSet* pValSet = reinterpret_cast<ValSet*>(pAddr);
+  
+  RASSERT( !pValSet || CN_VALSET == pValSet->eClass() );
+  
+  return pValSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* ValSet::operator new(size_t iSize)

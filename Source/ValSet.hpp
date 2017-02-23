@@ -47,6 +47,8 @@ namespace Values
     char* pLastByte(void);
     ValWsp* pToValWsp(char* pCursor);
   };
+  
+  ValSet* _pValSet(void* pAddr);
 }
 
 /*============================================================================*/

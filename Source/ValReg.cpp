@@ -5,6 +5,18 @@
 #include "Values.h"
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+ValReg* Values::_pValReg(void* pAddr)
+{
+  ValReg* pValReg = reinterpret_cast<ValReg*>(pAddr);
+  
+  RASSERT( !pValReg || CN_VALREG == pValReg->eClass() );
+  
+  return pValReg;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* ValReg::operator new(size_t iSize)
