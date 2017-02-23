@@ -48,7 +48,7 @@ void ValWsp::operator =(i8 iInt)
 
   vClass(CN_INTVAL);
   
-  *pAsIntVal() = iInt;
+  *_pIntVal(this) = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ void ValWsp::operator =(Object* pPtr)
 {
   vClass(CN_PTRVAL);
   
-  *pAsPtrVal() = pPtr;
+  *_pPtrVal(this) = pPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,7 +68,7 @@ void ValWsp::operator =(char* pStr)
 {
   vClass(CN_STRVAL);
 
-  *pAsStrVal() = pStr;
+  *_pStrVal(this) = pStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,7 +78,7 @@ void ValWsp::operator =(const char* pStr)
 {
   vClass(CN_STRVAL);
 
-  *pAsStrVal() = pStr;
+  *_pStrVal(this) = pStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +88,7 @@ void ValWsp::vAssignBinary(Object* pObject)
 {
   vClass(CN_BINVAL);
   
-  *pAsBinVal() = pObject;
+  *_pBinVal(this) = pObject;
 }
 
 /*----------------------------------------------------------------------------*/

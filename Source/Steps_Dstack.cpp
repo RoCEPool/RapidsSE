@@ -216,14 +216,14 @@ void Task::vDstackDump(NNP_Task nnpTask)
   eCN eClass = xValWsp.eClass();
   
   if (CN_PTRVAL == eClass) {
-    PtrVal* pPtrVal = xValWsp.pAsPtrVal();
+    PtrVal* pPtrVal = _pPtrVal(&xValWsp);
     Object* pObject = pPtrVal->pObject();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n",
           nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
-    IpVal* pIpVal = xValWsp.pAsIpVal();
+    IpVal* pIpVal = _pIpVal(&xValWsp);
     Cell* pCell = pIpVal->pIpPtr();
     vTrace("[%s] nullptr\n",nnpTask->m_sName.a());    //RAY: should trace pIpVal
 //  vTrace("[%s] %p\n",nnpTask->m_sName.a(),pIpVal);
@@ -499,7 +499,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
       THROW_INVALID_DSTACK(">valset");
     
     if (xVal.eClass() == CN_PTRVAL) {
-      PtrVal* pPtrVal = xVal.pAsPtrVal();
+      PtrVal* pPtrVal = _pPtrVal(&xVal);
       Object* pObject = pPtrVal->pObject();
       eCN eObjectClass   = pObject->eClass();
       

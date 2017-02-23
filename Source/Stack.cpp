@@ -868,14 +868,14 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
     eCN eClass = xValWsp.eClass();
     
     if (CN_PTRVAL == eClass) {
-      PtrVal* pPtrVal = xValWsp.pAsPtrVal();
+      PtrVal* pPtrVal = _pPtrVal(&xValWsp);
       Object* pObject = pPtrVal->pObject();
       eCN ePtdClass   = pObject->eClass();
       vTrace("[%s] [%2lld] %s (%s %s)\n",
         aPrefix,iVal,sWorkspace.a(),aClass,pCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
-      IpVal* pIpVal = xValWsp.pAsIpVal();
+      IpVal* pIpVal = _pIpVal(&xValWsp);
       Cell* pCell = pIpVal->pIpPtr();
       vTrace("[%s] [%2lld] nullptr\n",aPrefix,iVal);  //RAY: should trace pIpVal
 //    vTrace("[%s] [%2lld] %p\n",aPrefix,iVal,pIpVal);

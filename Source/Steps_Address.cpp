@@ -87,19 +87,19 @@ void Task::vAddressFetch(NNP_Task nnpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      xValFetched = pValue->pAsIntVal()->iInt();
+      xValFetched = _pIntVal(pValue)->iInt();
       break;
       
     case CN_STRVAL:
-      xValFetched = pValue->pAsStrVal()->sStr();
+      xValFetched = _pStrVal(pValue)->sStr();
       break;
       
     case CN_PTRVAL:
-      xValFetched = pValue->pAsPtrVal()->pPtr();
+      xValFetched = _pPtrVal(pValue)->pPtr();
       break;
       
     case CN_IPVAL:
-      xValFetched = pValue->pAsIpVal()->pPtr();
+      xValFetched = _pIpVal(pValue)->pPtr();
       break;
   
     default:
@@ -132,19 +132,19 @@ void Task::vAddressStore(NNP_Task nnpTask)
   
   switch (eClass) {
     case CN_INTVAL:
-      *pValue->pAsIntVal() = xValStored.iInt();
+      *_pIntVal(pValue) = xValStored.iInt();
       break;
       
     case CN_STRVAL:
-      *pValue->pAsStrVal() = xValStored.sStr();
+      *_pStrVal(pValue) = xValStored.sStr();
       break;
       
     case CN_PTRVAL:
-      *pValue->pAsPtrVal() = xValStored.pPtr();
+      *_pPtrVal(pValue) = xValStored.pPtr();
       break;
       
     case CN_IPVAL:
-      *pValue->pAsIpVal() = xValStored.pIpPtr();
+      *_pIpVal(pValue) = xValStored.pIpPtr();
       break;
   
     default:

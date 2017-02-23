@@ -220,8 +220,8 @@ ENTRY("vTableInsert");
   
   pTable->vInsertRow(iPartition,
                      pTxRef,
-                     xRow.pAsStrVal()->sStr(),
-                     xRow.pAsStrVal()->iChars());
+                     _pStrVal(&xRow)->sStr(),
+                     _pStrVal(&xRow)->iChars());
   
   EXIT();
 }

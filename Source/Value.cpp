@@ -32,70 +32,10 @@ void Value::operator =(i8 iInt)
 {
   vClass(CN_INTVAL);
   
-  IntVal* pIntVal = pAsIntVal();
+  IntVal* pIntVal = _pIntVal(this);
   
   *pIntVal = iInt;
   
-}
-
-/*----------------------------------------------------------------------------*/
-/* overlap this as a binval                                                   */
-/*----------------------------------------------------------------------------*/
-BinVal* Value::pAsBinVal(void)
-{
-  BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
-  
-  return pBinVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* overlap this as a intval                                                   */
-/*----------------------------------------------------------------------------*/
-IntVal* Value::pAsIntVal(void)
-{
-  IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
-  
-  return pIntVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* overlap this as a ipval                                                    */
-/*----------------------------------------------------------------------------*/
-IpVal* Value::pAsIpVal(void)
-{
-  IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
-  
-  return pIpVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* overlap this as a ptrval                                                   */
-/*----------------------------------------------------------------------------*/
-PtrVal* Value::pAsPtrVal(void)
-{
-  PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
-  
-  return pPtrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* overlap this as a strval                                                   */
-/*----------------------------------------------------------------------------*/
-StrVal* Value::pAsStrVal(void)
-{
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(this);
-  
-  return pStrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* overlap this as a valset                                                   */
-/*----------------------------------------------------------------------------*/
-ValSet* Value::pAsValSet(void)
-{
-  ValSet* pValSet = reinterpret_cast<ValSet*>(this);
-  
-  return pValSet;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -48,14 +48,7 @@ namespace Values
     char* sStr(void);
     Object* pObject(void);
     Dictionaries::Word* pWord(void);
-    
-    BinVal* pAsBinVal(void);
-    IntVal* pAsIntVal(void);
-    IpVal*  pAsIpVal(void);
-    PtrVal* pAsPtrVal(void);
-    StrVal* pAsStrVal(void);
-    ValSet* pAsValSet(void);
-    
+        
     void  vToCommand(char* aWorkspace);
     void  vToString(char* aWorkspace);
   };

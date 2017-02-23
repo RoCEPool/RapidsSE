@@ -93,7 +93,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   xStrR = xStrA;
   
   String::vConcat(xStrR.sStr(),xStrB.sStr());
-  xStrR.pAsStrVal()->vSize();
+  _pStrVal(&xStrR)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   
@@ -287,7 +287,7 @@ void Task::vStrPad(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("str.pad");
   
   String::vPad(xStringA.sStr(),iLength,' ');
-  xStringA.pAsStrVal()->vSize();
+  _pStrVal(&xStringA)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStringA);
   
@@ -334,7 +334,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   xStrR = xStrB;
   
   String::vConcat(xStrR.sStr(),xStrA.sStr());
-  xStrR.pAsStrVal()->vSize();
+  _pStrVal(&xStrR)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   

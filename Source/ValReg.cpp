@@ -51,7 +51,7 @@ void ValReg::operator =(i8 iInt)
 {
   vClass(CN_INTVAL);
   
-  *pAsIntVal() = iInt;
+  *_pIntVal(this) = iInt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ void ValReg::operator =(Object* pPtr)
 {
   vClass(CN_PTRVAL);
   
-  *pAsPtrVal() = pPtr;
+  *_pPtrVal(this) = pPtr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -71,7 +71,7 @@ void ValReg::operator =(char* pStr)
 {
   vClass(CN_STRVAL);
 
-  *pAsStrVal() = pStr;
+  *_pStrVal(this) = pStr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +81,7 @@ void ValReg::operator =(const char* pStr)
 {
   vClass(CN_STRVAL);
 
-  *pAsStrVal() = pStr;
+  *_pStrVal(this) = pStr;
 }
 
 /*----------------------------------------------------------------------------*/
