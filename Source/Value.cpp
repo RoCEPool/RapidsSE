@@ -26,9 +26,9 @@ Value::Value(eCN eClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get binary object                                                          */
+/* get new binary object                                                      */
 /*----------------------------------------------------------------------------*/
-Object* Value::pObject(void)
+Object* Value::pNewObjBin(void)
 {
   ASSERT(CN_BINVAL == eClass());
   

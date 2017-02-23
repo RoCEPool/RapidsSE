@@ -1491,7 +1491,7 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
     eCN eClass = pValWsp->eClass();
     
     if (CN_BINVAL == eClass) {
-      Object* pObject = pValWsp->pObject();
+      Object* pObject = pValWsp->pNewObjBin();
       String::vSprintCat(a,"(BINVAL)^%s=%p",
                          pCN[pObject->eClass()],
                          pObject);

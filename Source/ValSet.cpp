@@ -112,7 +112,7 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
   
   // test for binary value
   if (CN_BINVAL == pVal->eClass()) {
-    Object* pObjectVal = pVal->pObject();
+    Object* pObjectVal = pVal->pNewObjBin();
     ASSERT(pObjectVal->eClass() == CN_PLAN);
     Plan* pPlan = reinterpret_cast<Plan*>(pObjectVal);
     pPlan->vNullifyPointers();
