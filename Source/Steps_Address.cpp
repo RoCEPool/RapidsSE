@@ -144,7 +144,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
       break;
       
     case CN_IPVAL:
-      *_pIpVal(pValue) = xValStored.pIpPtr();
+      *_pIpVal(pValue) = _pIpVal(&xValStored)->pIpPtr();
       break;
   
     default:

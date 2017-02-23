@@ -1538,8 +1538,8 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
       else
         String::vSprintCat(a,"^%s=%p",pValWsp->aClass(),_pPtrVal(pValWsp)->pPtr());
     }
-    else if (CN_IPVAL == eClass) {                                       //RAY??
-      String::vSprintCat(a,"%p",pValWsp->pIpPtr());            //RAY: looks good
+    else if (CN_IPVAL == eClass) {                                      
+      String::vSprintCat(a,"%p",_pIpVal(pValWsp)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
       String::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->sStr());

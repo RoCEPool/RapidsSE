@@ -40,7 +40,6 @@ namespace Values
     i8    iSize(void);
     
     i8    iAsInt(void);
-    Dictionaries::Cell* pIpPtr(void);
     Object* pNewObjBin(void);
     Dictionaries::Word* pWord(void);
         
