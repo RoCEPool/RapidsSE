@@ -42,7 +42,6 @@ namespace Values
     i8    iAsInt(void);
     Dictionaries::Cell* pIpPtr(void);
     Object* pPtr(void);
-    char* sStr(void);
     Object* pObject(void);
     Dictionaries::Word* pWord(void);
         

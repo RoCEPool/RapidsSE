@@ -320,7 +320,7 @@ ENTRY("vThreadNameStore");
   if ( ! nnpTask->m_pDataStack->bPop(xNameWsp) )
     THROW_INVALID_DSTACK("thread.name!");
   
-  sName = xNameWsp.sStr();
+  sName = _pStrVal(&xNameWsp)->sStr();
   
   pThread->vName(sName);
   

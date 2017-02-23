@@ -92,7 +92,7 @@ void Task::vStrCat(NNP_Task nnpTask)
   
   xStrR = xStrA;
   
-  String::vConcat(xStrR.sStr(),xStrB.sStr());
+  String::vConcat(_pStrVal(&xStrR)->sStr(),_pStrVal(&xStrB)->sStr());
   _pStrVal(&xStrR)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
@@ -149,7 +149,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal");
   
-  i8 iEqual = String::bEqualTo(xStringA.sStr(),xStringB.sStr());
+  i8 iEqual = String::bEqualTo(_pStrVal(&xStringA)->sStr(),
+                               _pStrVal(&xStringB)->sStr());
   
   nnpTask->m_pDataStack->vPush(iEqual);
   
@@ -190,7 +191,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   s256 sFirstValue;
   
-  char* z = xStr.sStr();
+  char* z = _pStrVal(&xStr)->sStr();
   
   if (! String::bExtractItem(&z,sFirstValue.a()))
     sFirstValue = "";
@@ -286,7 +287,7 @@ void Task::vStrPad(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad");
   
-  String::vPad(xStringA.sStr(),iLength,' ');
+  String::vPad(_pStrVal(&xStringA)->sStr(),iLength,' ');
   _pStrVal(&xStringA)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStringA);
@@ -333,7 +334,7 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   xStrR = xStrB;
   
-  String::vConcat(xStrR.sStr(),xStrA.sStr());
+  String::vConcat(_pStrVal(&xStrR)->sStr(),_pStrVal(&xStrA)->sStr());
   _pStrVal(&xStrR)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);

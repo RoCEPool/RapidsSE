@@ -1127,7 +1127,7 @@ Word* Task::pCompileConstant(s& sDefinition)
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
-  vAddConstant(m_pTokeniser->sToken().a(),xValWsp.sStr());
+  vAddConstant(m_pTokeniser->sToken().a(),_pStrVal(&xValWsp)->sStr());
   
   m_pTokeniser->vNextToken();
   
@@ -1539,7 +1539,7 @@ void Task::vStackContents(Stack* pStack, s& sStackContents)
       String::vSprintCat(a,"%p",pValWsp->pIpPtr());            //RAY: looks good
     }
     else if (CN_STRVAL == eClass) {
-      String::vSprintCat(a,"\"%lls\"",pValWsp->sStr());
+      String::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->sStr());
     }
     else if (CN_VALSET == eClass) {
       String::vSprintCat(a,"<%s>=%p",pValWsp->aClass(),pValWsp);

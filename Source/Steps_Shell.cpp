@@ -51,7 +51,7 @@ void Task::vShellExecute(NNP_Task nnpTask)
   
   SysCall xSysCall;
   
-  i8 iExitStatus = Shell::iExecute(xCommand.sStr(),xSysCall);
+  i8 iExitStatus = Shell::iExecute(_pStrVal(&xCommand)->sStr(),xSysCall);
   
   nnpTask->m_pDataStack->vPush(iExitStatus);
   
