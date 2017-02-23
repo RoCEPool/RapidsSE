@@ -1057,7 +1057,7 @@ bool SePrompt::bCreateIndex(void)
     return false;
   }
   
-  // create the table
+  // create the index
   String::vCopy(m_pToken[0], "mkidx");
   String::vCopy(m_pToken[1], m_pToken2[2]);
   String::vCopy(m_pToken[2], m_pToken2[4]);
@@ -1396,8 +1396,18 @@ bool SePrompt::bCreateTable(void)
     String::vToLower(m_pToken[j]);
     
     // add the column
-    if (!bExecuteRequest())
+    if (!bExecuteRequest()) {
+      
+      // save error returned by addColumn
+      eEC eError = m_pSEitf->eGetLastError();
+      
+      // drop the table that was created
+      bDropReturnTable(m_pToken2[2]);
+      
+      // return error returned by addColumn
+      m_pSEitf->vSetLastError(eError);
       return false;
+    }
   }
   
   // derefernce and return the table first

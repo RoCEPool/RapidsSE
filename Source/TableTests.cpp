@@ -219,6 +219,12 @@ void TableTests::vRun(RunTests* pRunTests)
   sCommand = "create table t (col0 varchar not unique);";
   vRequire(sCommand, false, EC_INVALID_COMMAND);
   
+  sCommand = "create table t (col0 varchar, col0 integer);";
+  vRequire(sCommand, false, EC_DUPLICATE_COLUMN);
+  
+  sCommand = "create table t (col0 varchar, col1 integer, col1 decimal);";
+  vRequire(sCommand, false, EC_DUPLICATE_COLUMN);
+  
   sCommand = "drop table t;";
   vRequire(sCommand, false, EC_NO_SUCH_TABLE);
   
@@ -253,24 +259,27 @@ void TableTests::vRun(RunTests* pRunTests)
   vRequire(sCommand, true, EC_NONE);
 
   sCommand = "create table t (col0 integer primary key, col0 boolean not null);";
+  vRequire(sCommand, false, EC_DUPLICATE_COLUMN);
+  
+  sCommand = "create table t (col0 integer primary key, col1 boolean not null);";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
 
-  sCommand = "create table t (col0 integer unique, col0 timestamp not null);";
+  sCommand = "create table t (col0 integer unique, col1 timestamp not null);";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create table t (col0 integer(10) unique, col0 timestamp not null);";
+  sCommand = "create table t (col0 integer(10) unique, col1 timestamp not null);";
   vRequire(sCommand, true, EC_NONE);
   
   sCommand = "drop table t;";
   vRequire(sCommand, true, EC_NONE);
   
-  sCommand = "create table t (col0 integer(10) unique, col0 timestamp(1) not null);";
+  sCommand = "create table t (col0 integer(10) unique, col1 timestamp(1) not null);";
   vRequire(sCommand, false, EC_INVALID_COMMAND);
   
   sCommand = "drop table t;";
@@ -278,16 +287,16 @@ void TableTests::vRun(RunTests* pRunTests)
 
   for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
     String::vSprint(sCommand.a(),
-                    "create table t%d (col0 integer(10) unique, col0 timestamp(1) not null);",
+                    "create table t%d (col0 integer unique, col1 timestamp not null);",
                     iIndex);
-    vRequire(sCommand, false, EC_INVALID_COMMAND);
+    vRequire(sCommand, true, EC_NONE);
   }
   
   for (i8 iIndex=0 ; iIndex<1000; iIndex++) {
     String::vSprint(sCommand.a(),
                     "drop table t%d;",
                     iIndex);
-    vRequire(sCommand, false, EC_INVALID_COMMAND);
+    vRequire(sCommand, true, EC_NONE);
   }
  
   sCommand = "cf ..";

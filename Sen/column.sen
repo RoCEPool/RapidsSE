@@ -43,7 +43,26 @@
 
 : checkAddColumn ( -- true | eEC false )
 
+  locals| tableNm columnNm |
+
   checkInTables not if false exit then
+
+  tableNm
+  pushTable   assert // not if false exit then
+
+  columnNm
+  pushColumns assert // not if false exit then
+
+  // column should not already exist
+  find
+  if EC_DUPLICATE_COLUMN false popColumns popTable exit then
+
+  popColumns
+
+  popTable
+
+  columnNm
+  tableNm
 
   true
 ;
