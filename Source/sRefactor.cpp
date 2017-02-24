@@ -144,6 +144,16 @@ void sRefactor::operator = (sRefactor& rArg)
   _postcondition_(_MAGIC_,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* assign a value                                                             */
+/*----------------------------------------------------------------------------*/
+void sRefactor::vStrValAssign(const char* sStr)
+{
+  //ASSERT(m_nDataBytes);
+  
+  String::vCopy(pDataArea(),sStr);
+  m_nDataBytes = String::iSize(pDataArea());
+}
 
 
 

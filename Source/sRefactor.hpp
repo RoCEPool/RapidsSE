@@ -29,6 +29,8 @@ namespace Values
     void operator = (char* aArg);
     void operator = (sRefactor& rArg);
   
+    void vStrValAssign(const char* sStr);
+  
     char* pDataArea(void);
     i8    nDataBytes(void);
     void  vDataBytes(void);

@@ -12,7 +12,6 @@ namespace Values
   private:
   
   public:    
-    void vStrValAssign(const char* sStr);
   };
 }
 
