@@ -12,11 +12,8 @@ namespace Values
   private:
     
   public:
-    
     s(eCN eClass, i8 iSize);
    ~s(void);
-    
-    void operator = (s& rArg);    
   };
 }
 
