@@ -7,8 +7,6 @@
 
 
 
-#include "NP.hpp"
-#include "NNP.hpp"
 
 #include "SysCall.hpp"
 
