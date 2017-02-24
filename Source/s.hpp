@@ -26,7 +26,7 @@ namespace Strings
     void  vAppend(const char c);
     void  vAppend(const char* aArg);
     void  vCopy(const char* aArg);
-    char* mDataArea(void);
+    char* pDataArea(void);
     i8    nDataBytes(void);
     void  vDataBytes(void);
     bool  bEnds(const char* aSuffix);
@@ -266,7 +266,7 @@ bool sAlt<SIZE>::bIsEqual(s& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEqualTo(mDataArea(),sArg.mDataArea(),iCase);
+  bool b = String::bEqualTo(mDataArea(),sArg.pDataArea(),iCase);
   
   return b;
 }

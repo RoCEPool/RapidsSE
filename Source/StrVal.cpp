@@ -56,7 +56,7 @@ StrVal::StrVal(i8 iChars)
 {
   m_nDataBytes = iChars;
   
-  Memory::vZero(pData(),m_nDataBytes);
+  Memory::vZero(pDataArea(),m_nDataBytes);
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -121,13 +121,13 @@ void StrVal::vSize(i8 iSize)
 /*----------------------------------------------------------------------------*/
 char* StrVal::sStr(void)
 {
-  return &m_sStr[0];
+  return pDataArea();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get data area                                                              */
 /*----------------------------------------------------------------------------*/
-char* StrVal::pData(void)
+char* StrVal::pDataArea(void)
 {
   return &m_sStr[0];
 }

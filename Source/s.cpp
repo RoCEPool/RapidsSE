@@ -25,7 +25,7 @@ s::s(eCN eClassNo, i8 iSize)
   _precondition_(_MAGIC_,eClassNo);
   
   m_nDataBytes = iSize;
-  *mDataArea() = '\0';
+  *pDataArea() = '\0';
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,7 +43,7 @@ void s::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(mDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -55,7 +55,7 @@ void s::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 
-  String::vCopyLen(mDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -81,7 +81,7 @@ void s::vAppend(const char c)
   
   // limit???
   
-  String::vConcat(mDataArea(),c);
+  String::vConcat(pDataArea(),c);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -93,7 +93,7 @@ void s::vAppend(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vConcat(mDataArea(),aArg);
+  String::vConcat(pDataArea(),aArg);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -105,7 +105,7 @@ void s::vCopy(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  String::vCopyLen(mDataArea(),aArg,m_nDataBytes-1);
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -113,7 +113,7 @@ void s::vCopy(const char* aArg)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* s::mDataArea(void)
+char* s::pDataArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
@@ -139,7 +139,7 @@ void s::vDataBytes(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  m_nDataBytes = String::iSize(mDataArea());
+  m_nDataBytes = String::iSize(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -149,7 +149,7 @@ bool s::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEnds(mDataArea(),aSuffix);
+  bool b = String::bEnds(pDataArea(),aSuffix);
   
   return b;
 }
@@ -162,7 +162,7 @@ void s::vInit(i8 iSize)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_nDataBytes = iSize;
-  *mDataArea() = '\0';  
+  *pDataArea() = '\0';  
 
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -174,7 +174,7 @@ bool s::bIsEqual(s& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = String::bEqualTo(mDataArea(),sArg.mDataArea(),iCase);
+  bool b = String::bEqualTo(pDataArea(),sArg.pDataArea(),iCase);
   
   return b;
 }
@@ -186,7 +186,7 @@ i8 s::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::iLength(mDataArea());
+  return String::iLength(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,7 +196,7 @@ char* s::a(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return mDataArea();
+  return pDataArea();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,7 +206,7 @@ char* s::z(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  return String::zTerminator(mDataArea());
+  return String::zTerminator(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
