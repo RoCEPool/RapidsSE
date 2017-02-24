@@ -102,44 +102,6 @@ i8 Value::iSize(void)
   return nBytes;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert to command                                                         */
-/*----------------------------------------------------------------------------*/
-void Value::vToCommand(char* aCharArray)
-{
-  eCN eClass = this->eClass();
-  switch(eClass) {
-      
-    case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(this);
-      pIntVal->vToCommand(aCharArray);
-      break;
-    }
-      
-    case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(this);
-      pIpVal->vToCommand(aCharArray);
-      break;
-    }
-      
-    case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(this);
-      pPtrVal->vToCommand(aCharArray);
-      break;
-    }
-      
-    case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(this);
-      pStrVal->vToCommand(aCharArray);
-      break;
-    }
-      
-    default:
-      THROW("Invalid eClass %lld",eClass);
-      break;
-  }
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -41,7 +41,6 @@ namespace Values
     
     Object* pNewObjBin(void);
         
-    void  vToCommand(char* aWorkspace);
   };
 }
 

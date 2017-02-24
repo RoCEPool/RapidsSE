@@ -115,6 +115,45 @@ void V::vCopyStrDatum(void* pDst, void* pSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert to command                                                         */
+/*----------------------------------------------------------------------------*/
+void V::vToCommand(Object* pObject, char* aCharArray)
+{
+  eCN eClass = pObject->eClass();
+  
+  switch (eClass) {
+      
+    case CN_INTVAL: {
+      IntVal* pIntVal = _pIntVal(pObject);
+      pIntVal->vToCommand(aCharArray);
+      break;
+    }
+      
+    case CN_IPVAL: {
+      IpVal* pIpVal = _pIpVal(pObject);
+      pIpVal->vToCommand(aCharArray);
+      break;
+    }
+      
+    case CN_PTRVAL: {
+      PtrVal* pPtrVal = _pPtrVal(pObject);
+      pPtrVal->vToCommand(aCharArray);
+      break;
+    }
+      
+    case CN_STRVAL: {
+      StrVal* pStrVal = _pStrVal(pObject);
+      pStrVal->vToCommand(aCharArray);
+      break;
+    }
+      
+    default:
+      THROW("Invalid eClass %lld",eClass);
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
 void V::vToString(Object* pObject, char* aCharArray)
