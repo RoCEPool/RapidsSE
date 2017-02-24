@@ -92,8 +92,8 @@ void Task::vStrCat(NNP_Task nnpTask)
   
   xStrR = xStrA;
   
-  String::vConcat(_pStrVal(&xStrR)->sStr(),_pStrVal(&xStrB)->sStr());
-  _pStrVal(&xStrR)->vSize();
+  String::vConcat(_psRefactor(&xStrR)->sStr(),_psRefactor(&xStrB)->sStr());
+  _psRefactor(&xStrR)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   
@@ -149,8 +149,8 @@ void Task::vStrEqual(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xStringB,xStringA) )
     THROW_INVALID_DSTACK("str.equal");
   
-  i8 iEqual = String::bEqualTo(_pStrVal(&xStringA)->sStr(),
-                               _pStrVal(&xStringB)->sStr());
+  i8 iEqual = String::bEqualTo(_psRefactor(&xStringA)->sStr(),
+                               _psRefactor(&xStringB)->sStr());
   
   nnpTask->m_pDataStack->vPush(iEqual);
   
@@ -191,7 +191,7 @@ void Task::vStrFirstCsv(NNP_Task nnpTask)
   
   s256 sFirstValue;
   
-  char* z = _pStrVal(&xStr)->sStr();
+  char* z = _psRefactor(&xStr)->sStr();
   
   if (! String::bExtractItem(&z,sFirstValue.a()))
     sFirstValue = "";
@@ -287,8 +287,8 @@ void Task::vStrPad(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(iLength,xStringA) )
     THROW_INVALID_DSTACK("str.pad");
   
-  String::vPad(_pStrVal(&xStringA)->sStr(),iLength,' ');
-  _pStrVal(&xStringA)->vSize();
+  String::vPad(_psRefactor(&xStringA)->sStr(),iLength,' ');
+  _psRefactor(&xStringA)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStringA);
   
@@ -334,8 +334,8 @@ void Task::vStrPrepend(NNP_Task nnpTask)
   
   xStrR = xStrB;
   
-  String::vConcat(_pStrVal(&xStrR)->sStr(),_pStrVal(&xStrA)->sStr());
-  _pStrVal(&xStrR)->vSize();
+  String::vConcat(_psRefactor(&xStrR)->sStr(),_psRefactor(&xStrA)->sStr());
+  _psRefactor(&xStrR)->vSize();
   
   nnpTask->m_pDataStack->vPush(xStrR);
   

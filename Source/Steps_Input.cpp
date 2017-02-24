@@ -58,13 +58,13 @@ void Task::vInputAccept(NNP_Task nnpTask)
   ValWsp xWsp;
   xWsp.vClass(CN_STRVAL);
   
-  char* y = _pStrVal(&xWsp)->sStr();
+  char* y = _psRefactor(&xWsp)->sStr();
   
   while ( '\n' != (*y++ = getc(stdin)) ) ;
   
   *--y = '\0';
   
-  _pStrVal(&xWsp)->vSize();
+  _psRefactor(&xWsp)->vSize();
   
   nnpTask->m_pDataStack->vPush(xWsp);
   

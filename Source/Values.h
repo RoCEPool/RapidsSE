@@ -22,7 +22,6 @@
 
 #include "sRefactor.hpp"  // temp
 
-#include "StrVal.hpp"
 #include "ValSet.hpp"
 
 

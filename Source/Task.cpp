@@ -584,7 +584,7 @@ void Task::vAddConstants(void)
   /*  2 */ vAddConstant("SIZEOF_IPVAL",  sizeof(IpVal));
   /*  3 */ vAddConstant("SIZEOF_OBJVAL", sizeof(ObjVal));
   /*  4 */ vAddConstant("SIZEOF_PTRVAL", sizeof(PtrVal));
-  /*  5 */ vAddConstant("SIZEOF_STRVAL", sizeof(StrVal));
+  /*  5 */ vAddConstant("SIZEOF_STRVAL", sizeof(sRefactor));
   /*  6 */ vAddConstant("SIZEOF_VALSET", sizeof(ValWsp)); // correct
   /*  7 */ vAddConstant("SIZEOF_VALWSP", sizeof(ValWsp)); // correct
   
@@ -1127,7 +1127,7 @@ Word* Task::pCompileConstant(sRefactor& sDefinition)
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
-  vAddConstant(m_pTokeniser->sToken().a(),_pStrVal(&xValWsp)->sStr());
+  vAddConstant(m_pTokeniser->sToken().a(),_psRefactor(&xValWsp)->sStr());
   
   m_pTokeniser->vNextToken();
   
@@ -1542,7 +1542,7 @@ void Task::vStackContents(Stack* pStack, sRefactor& sStackContents)
       String::vSprintCat(a,"%p",_pIpVal(pValWsp)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
-      String::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->sStr());
+      String::vSprintCat(a,"\"%lls\"",_psRefactor(pValWsp)->sStr());
     }
     else if (CN_VALSET == eClass) {
       String::vSprintCat(a,"<%s>=%p",pValWsp->aClass(),pValWsp);

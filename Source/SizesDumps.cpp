@@ -158,7 +158,7 @@ i8 giClassSize[]
   /*  7 */ sizeof(PtrVal),             // CN_IPVAL
   /*  8 */ sizeof(ObjVal),             // CN_OBJVAL
   /*  9 */ sizeof(PtrVal),             // CN_PTRVAL
-  /* 10 */ sizeof(StrVal),             // CN_STRVAL
+  /* 10 */ sizeof(sRefactor),          // CN_STRVAL
   /* 11 */ sizeof(ValReg),             // CN_VALREG
   /* 12 */ sizeof(ValWsp), // correct  // CN_VALSET
   /* 13 */ sizeof(ValWsp),             // CN_VALWSP

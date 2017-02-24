@@ -333,7 +333,7 @@ bool Stack::bPop(i8& iArg1, s48K& sArg2)
   ValWsp xValWsp2;
   vPopVal(&xValWsp2);
   
-  sArg2 = _pStrVal(&xValWsp2)->sStr();
+  sArg2 = _psRefactor(&xValWsp2)->sStr();
   
   return true;
 }
@@ -458,7 +458,7 @@ bool Stack::bPop(s32& sArg1)
   ValWsp xValWsp1;
   vPopVal(&xValWsp1);
   
-  sArg1 = _pStrVal(&xValWsp1)->sStr();
+  sArg1 = _psRefactor(&xValWsp1)->sStr();
   
   return true;
 }
@@ -476,7 +476,7 @@ bool Stack::bPop(s256& sArg1)
   ValWsp xValWsp1;
   vPopVal(&xValWsp1);
   
-  sArg1 = _pStrVal(&xValWsp1)->sStr();
+  sArg1 = _psRefactor(&xValWsp1)->sStr();
   
   return true;
 }
@@ -494,7 +494,7 @@ bool Stack::bPop(s48K& sArg1)
   ValWsp xValWsp1;
   vPopVal(&xValWsp1);
   
-  sArg1 = _pStrVal(&xValWsp1)->sStr();
+  sArg1 = _psRefactor(&xValWsp1)->sStr();
   
   return true;
 }
@@ -512,7 +512,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2)
   ValWsp xValWsp1;
   vPopVal(&xValWsp1);
   
-  sArg1 = _pStrVal(&xValWsp1)->sStr();
+  sArg1 = _psRefactor(&xValWsp1)->sStr();
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
@@ -534,7 +534,7 @@ bool Stack::bPop(s48K& sArg1, i8& iArg2, i8& iArg3)
   
   ValWsp xValWsp1;
   vPopVal(&xValWsp1);
-  sArg1 = _pStrVal(&xValWsp1)->sStr();
+  sArg1 = _psRefactor(&xValWsp1)->sStr();
   
   IntVal xIntVal2;
   vPopVal(&xIntVal2);
@@ -560,12 +560,12 @@ bool Stack::bPop(s48K& sArg1, s48K& sArg2)
   ValWsp xValWsp1;
   vPopVal(&xValWsp1);
   
-  sArg1 = _pStrVal(&xValWsp1)->sStr();
+  sArg1 = _psRefactor(&xValWsp1)->sStr();
   
   ValWsp xValWsp2;
   vPopVal(&xValWsp2);
   
-  sArg2 = _pStrVal(&xValWsp2)->sStr();
+  sArg2 = _psRefactor(&xValWsp2)->sStr();
   
   return true;
 }

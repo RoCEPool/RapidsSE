@@ -7,18 +7,6 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* Values::_pStrVal(void* pAddr)
-{
-  StrVal* pStrVal = reinterpret_cast<StrVal*>(pAddr);
-  
-  RASSERT( !pStrVal || CN_STRVAL == pStrVal->eClass() );
-  
-  return pStrVal;
-}
-
-/*----------------------------------------------------------------------------*/
-/* safe cast                                                                  */
-/*----------------------------------------------------------------------------*/
 sRefactor* Values::_psRefactor(void* pAddr)
 {
   sRefactor* psRefactor = reinterpret_cast<sRefactor*>(pAddr);
@@ -321,7 +309,7 @@ i8 sRefactor::iSize(void) const
 {
   //i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
   
-  i8 iSize = sizeof(StrVal) + m_nDataBytes;
+  i8 iSize = sizeof(sRefactor) + m_nDataBytes;
   
   return iSize;
 }
@@ -389,7 +377,7 @@ void sRefactor::vCopyString(char* aStr, i8 iLength)
 /*----------------------------------------------------------------------------*/
 i8 sRefactor::nBytesRequired(i8 iLength)
 {
-  i8 nBytes = sizeof(StrVal) + iLength + 1;
+  i8 nBytes = sizeof(sRefactor) + iLength + 1;
   
   return nBytes;
 }
