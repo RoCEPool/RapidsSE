@@ -23,6 +23,10 @@ namespace Values
   
     ~sRefactor(void);
   
+    void operator = (const char* aArg);
+    void operator = (char* aArg);
+    void operator = (sRefactor& rArg);
+  
     char* pDataArea(void);
     i8    nDataBytes(void);
     void  vDataBytes(void);

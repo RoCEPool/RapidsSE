@@ -53,6 +53,46 @@ sRefactor::~sRefactor(void)
   _precondition_(_MAGIC_,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void sRefactor::operator = (const char* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void sRefactor::operator = (char* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void sRefactor::operator = (sRefactor& rArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  vCopy(rArg.a());
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
