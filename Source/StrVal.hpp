@@ -20,19 +20,6 @@ namespace Values
     
     void operator =(const char* sStr);
     
-    i8   iChars(void) const;
-    void vReset(void);
-    i8   iSize(void) const;
-    void vSize(void);
-    void vSize(i8 iSize);
-    char* sStr(void);
-    
-    void vToCommand(char* aWorkspace);
-    void vToString(char* aWorkspace);
-    
-    void  vCopyString(char* aStr, i8 iLength);
-    
-    static i8 nBytesRequired(i8 iLength);
   };
   
 }
