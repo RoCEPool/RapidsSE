@@ -16,7 +16,12 @@ namespace Values
   
   public:
     sRefactor(eCN eClass);
+  
+    Footer* pFooter(void);
+  
   };
+
+  StrVal* _pStrVal(void* pAddr);
 }
 
 /*============================================================================*/

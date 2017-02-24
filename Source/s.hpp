@@ -34,7 +34,6 @@ namespace Values
     char* a(void);
     char* z(void);
     
-    Footer* pFooter(void);
   };
 }
 
