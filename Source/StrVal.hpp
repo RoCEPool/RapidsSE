@@ -11,7 +11,7 @@ namespace Values
   class StrVal : public Value
   {
   private:
-    i8   m_iChars;
+    i8   m_nDataBytes;
     char m_sStr[8];  // should be ..data..
     
   public:

@@ -43,7 +43,7 @@ void* StrVal::operator new(size_t iSize, StrVal* pStrVal)
 StrVal::StrVal(void)
 : Value(CN_STRVAL)
 {
-  m_iChars = 0;
+  m_nDataBytes = 0;
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -54,9 +54,9 @@ StrVal::StrVal(void)
 StrVal::StrVal(i8 iChars)
 : Value(CN_STRVAL)
 {
-  m_iChars = iChars;
+  m_nDataBytes = iChars;
   
-  Memory::vZero(pData(),m_iChars);
+  Memory::vZero(pData(),m_nDataBytes);
   
   _checkInitialised_(CN_STRVAL);
 }
@@ -66,10 +66,10 @@ StrVal::StrVal(i8 iChars)
 /*----------------------------------------------------------------------------*/
 void StrVal::operator =(const char* sStr)
 {
-  //ASSERT(m_iChars);
+  //ASSERT(m_nDataBytes);
   
   String::vCopy(m_sStr,sStr);
-  m_iChars = String::iSize(m_sStr);
+  m_nDataBytes = String::iSize(m_sStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ void StrVal::operator =(const char* sStr)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iChars(void) const
 {
-  return m_iChars;
+  return m_nDataBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,7 +85,7 @@ i8 StrVal::iChars(void) const
 /*----------------------------------------------------------------------------*/
 void StrVal::vReset(void)
 {
-  m_iChars = 0;
+  m_nDataBytes = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,7 +93,7 @@ void StrVal::vReset(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iSize(void) const
 {
-  i8 iOverrun = m_iChars > 8 ? m_iChars - 8 : 0;
+  i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
   
   i8 iSize = sizeof(StrVal) + iOverrun;
   
@@ -105,7 +105,7 @@ i8 StrVal::iSize(void) const
 /*----------------------------------------------------------------------------*/
 void StrVal::vSize(void)
 {
-  m_iChars = String::iSize(m_sStr);
+  m_nDataBytes = String::iSize(m_sStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,7 +113,7 @@ void StrVal::vSize(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vSize(i8 iSize)
 {
-  m_iChars = iSize;
+  m_nDataBytes = iSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,7 +159,7 @@ void StrVal::vCopyString(char* aStr, i8 iLength)
   
   String::vCopyLen(m_sStr,aStr,iLength);
   
-  m_iChars = String::iSize(m_sStr);
+  m_nDataBytes = String::iSize(m_sStr);
 }
 
 /*----------------------------------------------------------------------------*/
