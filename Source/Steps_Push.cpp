@@ -98,7 +98,7 @@ void Task::vPushValue(NNP_Task nnpTask)
   
   nnpTask->m_pDataStack->vPush(pValue);
   
-  nnpTask->vAdjustNext(pValue->iSize());
+  nnpTask->vAdjustNext(V::iSize(pValue));
   
   EXIT();
 }

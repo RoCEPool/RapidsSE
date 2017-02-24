@@ -60,7 +60,7 @@ bool QueueBuffer::bAppend(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  i8 nBytes = pValue->iSize();
+  i8 nBytes = V::iSize(pValue);
   
   char* pFinalByteOfValue = pAdd<char*>(m_pNextFree,nBytes-1);
   
@@ -151,7 +151,7 @@ bool QueueBuffer::bPop(ValWsp* pValWsp, bool& bDiscardable)
     return false;
   }
   
-  i8 nBytes = m_pTopValue->iSize();
+  i8 nBytes = V::iSize(m_pTopValue);
 
   Memory::vCopy(pValWsp,m_pTopValue,nBytes);
   
@@ -187,7 +187,7 @@ bool QueueBuffer::bPop(ValSet* pValSet, bool& bDiscardable)
     return false;
   }
   
-  i8 nBytes = m_pTopValue->iSize();
+  i8 nBytes = V::iSize(m_pTopValue);
   
   Memory::vCopy(pValSet,m_pTopValue,nBytes);
   
@@ -232,7 +232,7 @@ Value* QueueBuffer::pNextValue(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_QUEUEBUFFER,_FOOTER_);
   
-  i8 nBytes = pValue->iSize();
+  i8 nBytes = V::iSize(pValue);
   
   Value* pNextValue = pAdd<Value*>(pValue,nBytes);
   

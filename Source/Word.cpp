@@ -178,7 +178,7 @@ void* Word::pAppend(Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
 
-  i8 iSize = pValue->iSize();
+  i8 iSize = V::iSize(pValue);
   
   char* pValueAddress = pAllot(iSize);
   

@@ -722,7 +722,7 @@ void Task::vSee(NNP_Task nnpTask)
         vTrace(" %s\n",sWorkspace.a());
       }
       
-      i8 iBytes = pValue->iSize();
+      i8 iBytes = V::iSize(pValue);
       pDoesCell = pAdd<Cell*>(pDoesCell,iBytes);
       
       continue;

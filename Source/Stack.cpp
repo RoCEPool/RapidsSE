@@ -837,7 +837,7 @@ void Stack::vDiscard(void)
   _hazard_footer_();
 
   Value* pValue = reinterpret_cast<Value*>(m_pTop);
-  i8 iSize = pValue->iSize();
+  i8 iSize = V::iSize(pValue);
   
   vPopBy(iSize);
   m_iValues--;
@@ -917,7 +917,7 @@ void Stack::vPeek(i8 iNthValue, Value* pValue)
   
   Value* pPeekedValue = pPeek(iNthValue);
 
-  i8 iSize = pPeekedValue->iSize();
+  i8 iSize = V::iSize(pPeekedValue);
   
   //vTrace("Peek: %lld %p %lld\n",iNthValue,pPeekedValue,iSize);
   
@@ -931,7 +931,7 @@ void Stack::vPoke(i8 iNthValue, Value* pValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
 
-  i8 iSize = pValue->iSize();
+  i8 iSize = V::iSize(pValue);
   
   Value* pPokeAddress = pPeek(iNthValue);
   
@@ -1013,7 +1013,7 @@ Value* Stack::pGetValue(i8 iNthValue)
   Value* pValue = pTopValue();
   while (iNthValue--) {
     char* pAddress = reinterpret_cast<char*>(pValue);
-    i8 iSize = pValue->iSize();
+    i8 iSize = V::iSize(pValue);
     pAddress += iSize;
     pValue = reinterpret_cast<Value*>(pAddress);
   }
@@ -1060,7 +1060,7 @@ void Stack::vPopVal(Value* pValue)
   //m_xHazard.vAssertFooter();
   _hazard_footer_();
   
-  i8 iSize = pTopValue()->iSize();
+  i8 iSize = V::iSize(pTopValue());
   
   Memory::vCopy(pValue,m_pTop,iSize);
   vPopBy(iSize);
@@ -1079,7 +1079,7 @@ void Stack::vPushVal(Value* pValue)
   //m_xHazard.vAssertFooter();
   _hazard_footer_();
   
-  i8 iSize = pValue->iSize();
+  i8 iSize = V::iSize(pValue);
   
   vPushBy(iSize);
   Memory::vCopy(m_pTop,pValue,iSize);

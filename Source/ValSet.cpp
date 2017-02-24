@@ -55,7 +55,7 @@ ValSet::ValSet(void)
 /*----------------------------------------------------------------------------*/
 void ValSet::vAppend(char*& pCursor, ValWsp& xVal)
 {
-  i8 iSize = xVal.iSize();
+  i8 iSize = V::iSize(&xVal);
   
   ASSERT(m_iBytes + iSize < C_VALSET_DATAAREA);
   
@@ -98,7 +98,7 @@ bool ValSet::bExtract(char*& pCursor, ValWsp*& pVal)
 
   pVal = pToValWsp(pCursor);
   
-  i8 iSize = pVal->iSize();
+  i8 iSize = V::iSize(pVal);
   
   pCursor += iSize;
   
@@ -137,7 +137,7 @@ bool ValSet::bExtract(char*& pCursor, eCN& eClassNo, ValWsp*& pVal)
   
   pVal = pToValWsp(pCursor);
   
-  i8 iSize = pVal->iSize();
+  i8 iSize = V::iSize(pVal);
   
   pCursor += iSize;
   

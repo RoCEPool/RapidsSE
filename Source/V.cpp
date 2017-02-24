@@ -115,6 +115,67 @@ void V::vCopyStrDatum(void* pDst, void* pSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size (in bytes) of value                                               */
+/*----------------------------------------------------------------------------*/
+i8 V::iSize(Object* pObject)
+{
+  i8 nBytes = 0;
+  
+  eCN eClass = pObject->eClass();
+  
+  switch (eClass) {
+      
+    case CN_BINVAL: {
+      BinVal* pBinVal = _pBinVal(pObject);
+      nBytes = pBinVal->iSize();
+      break;
+    }
+      
+    case CN_INTVAL: {
+      IntVal* pIntVal = _pIntVal(pObject);
+      nBytes = pIntVal->iSize();
+      break;
+    }
+      
+    case CN_IPVAL: {
+      IpVal* pIpVal = _pIpVal(pObject);
+      nBytes = pIpVal->iSize();
+      break;
+    }
+      
+    case CN_OBJVAL: {
+      ObjVal* pObjVal = _pObjVal(pObject);
+      nBytes = pObjVal->iSize();
+      break;
+    }
+      
+    case CN_PTRVAL: {
+      PtrVal* pPtrVal = _pPtrVal(pObject);
+      nBytes = pPtrVal->iSize();
+      break;
+    }
+      
+    case CN_STRVAL: {
+      StrVal* pStrVal = _pStrVal(pObject);
+      nBytes = pStrVal->iSize();
+      break;
+    }
+      
+    case CN_VALSET: {
+      ValSet* pValSet = _pValSet(pObject);
+      nBytes = pValSet->iSize();
+      break;
+    }
+      
+    default:
+      THROW("Invalid eClass %lld",eClass);
+      break;
+  }
+  
+  return nBytes;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
 void V::vToCommand(Object* pObject, char* aCharArray)

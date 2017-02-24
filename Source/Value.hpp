@@ -37,7 +37,6 @@ namespace Values
     Value(eCN eClass);
     
     
-    i8    iSize(void);
     
         
   };
