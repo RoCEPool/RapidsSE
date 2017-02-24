@@ -12,7 +12,7 @@ namespace Values
   private:
   
   public:    
-    void operator =(const char* sStr);
+    void vStrValAssign(const char* sStr);
   };
 }
 

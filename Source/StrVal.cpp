@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void StrVal::operator =(const char* sStr)
+void StrVal::vStrValAssign(const char* sStr)
 {
   //ASSERT(m_nDataBytes);
   
