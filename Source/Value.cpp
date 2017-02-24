@@ -105,32 +105,32 @@ i8 Value::iSize(void)
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void Value::vToCommand(char* aWorkspace)
+void Value::vToCommand(char* aCharArray)
 {
   eCN eClass = this->eClass();
   switch(eClass) {
       
     case CN_INTVAL: {
-      IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
-      pIntVal->vToCommand(aWorkspace);
+      IntVal* pIntVal = _pIntVal(this);
+      pIntVal->vToCommand(aCharArray);
       break;
     }
       
     case CN_IPVAL: {
-      IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
-      pIpVal->vToCommand(aWorkspace);
+      IpVal* pIpVal = _pIpVal(this);
+      pIpVal->vToCommand(aCharArray);
       break;
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
-      pPtrVal->vToCommand(aWorkspace);
+      PtrVal* pPtrVal = _pPtrVal(this);
+      pPtrVal->vToCommand(aCharArray);
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = reinterpret_cast<StrVal*>(this);
-      pStrVal->vToCommand(aWorkspace);
+      StrVal* pStrVal = _pStrVal(this);
+      pStrVal->vToCommand(aCharArray);
       break;
     }
       
@@ -143,45 +143,45 @@ void Value::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void Value::vToString(char* aWorkspace)
+void Value::vToString(char* aCharArray)
 {
   eCN eClass = this->eClass();
   
   switch(eClass) {
       
     case CN_BINVAL: {
-      BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
-      pBinVal->vToString(aWorkspace);
+      BinVal* pBinVal = _pBinVal(this);
+      pBinVal->vToString(aCharArray);
       break;
     }
       
     case CN_INTVAL: {
-      IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
-      pIntVal->vToString(aWorkspace);
+      IntVal* pIntVal = _pIntVal(this);
+      pIntVal->vToString(aCharArray);
       break;
     }
     
     case CN_IPVAL: {
-      IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
-      pIpVal->vToString(aWorkspace);
+      IpVal* pIpVal = _pIpVal(this);
+      pIpVal->vToString(aCharArray);
       break;
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
-      pPtrVal->vToString(aWorkspace);
+      PtrVal* pPtrVal = _pPtrVal(this);
+      pPtrVal->vToString(aCharArray);
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = reinterpret_cast<StrVal*>(this);
-      pStrVal->vToString(aWorkspace);
+      StrVal* pStrVal = _pStrVal(this);
+      pStrVal->vToString(aCharArray);
       break;
     }
       
     case CN_VALSET: {
-      ValSet* pValSet = reinterpret_cast<ValSet*>(this);
-      pValSet->vToString(aWorkspace);
+      ValSet* pValSet = _pValSet(this);
+      pValSet->vToString(aCharArray);
       break;
     }
       
