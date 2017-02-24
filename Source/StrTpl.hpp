@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  template <class CLASS, int SIZE>
+  template <int SIZE>
   class StrTpl : public StrVal
   {
   private:

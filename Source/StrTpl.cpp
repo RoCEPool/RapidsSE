@@ -11,8 +11,8 @@ extern BufferPool*  gpBufferPool;
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-StrTpl<CLASS,SIZE>::StrTpl(void)
+template <int SIZE>
+StrTpl<SIZE>::StrTpl(void)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
@@ -27,8 +27,8 @@ StrTpl<CLASS,SIZE>::StrTpl(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-StrTpl<CLASS,SIZE>::StrTpl(StrVal& rArg)
+template <int SIZE>
+StrTpl<SIZE>::StrTpl(StrVal& rArg)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
@@ -44,8 +44,8 @@ StrTpl<CLASS,SIZE>::StrTpl(StrVal& rArg)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-StrTpl<CLASS,SIZE>::StrTpl(const char* aArg)
+template <int SIZE>
+StrTpl<SIZE>::StrTpl(const char* aArg)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
@@ -61,8 +61,8 @@ StrTpl<CLASS,SIZE>::StrTpl(const char* aArg)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-StrTpl<CLASS,SIZE>::~StrTpl(void)
+template <int SIZE>
+StrTpl<SIZE>::~StrTpl(void)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
@@ -70,19 +70,8 @@ StrTpl<CLASS,SIZE>::~StrTpl(void)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-void StrTpl<CLASS,SIZE>::operator = (const char* aArg)
-{
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
-  
-  StrVal::vCopy(aArg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-void StrTpl<CLASS,SIZE>::operator = (char* aArg)
+template <int SIZE>
+void StrTpl<SIZE>::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -92,8 +81,19 @@ void StrTpl<CLASS,SIZE>::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-void StrTpl<CLASS,SIZE>::operator = (StrVal& rArg)
+template <int SIZE>
+void StrTpl<SIZE>::operator = (char* aArg)
+{
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
+  StrVal::vCopy(aArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void StrTpl<SIZE>::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -103,8 +103,8 @@ void StrTpl<CLASS,SIZE>::operator = (StrVal& rArg)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-void StrTpl<CLASS,SIZE>::vInit()
+template <int SIZE>
+void StrTpl<SIZE>::vInit()
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -118,8 +118,8 @@ void StrTpl<CLASS,SIZE>::vInit()
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-template <class CLASS, int SIZE>
-Footer* StrTpl<CLASS,SIZE>::pFooter(void)
+template <int SIZE>
+Footer* StrTpl<SIZE>::pFooter(void)
 {
   _precondition_(_MAGIC_,CN_S32);
   

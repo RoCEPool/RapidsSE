@@ -31,6 +31,11 @@
 #include "s48K.hpp"
 #include "s1M.hpp"
 
+typedef StrTpl<32>    sf32;
+typedef StrTpl<256>   sf256;
+typedef StrTpl<C_48K> sf48K;
+typedef StrTpl<C_1M>  sf1M;
+
 //-----------------------------------------------------------------------------
 namespace Values
 {
