@@ -17,6 +17,18 @@ StrVal* Values::_pStrVal(void* pAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* safe cast                                                                  */
+/*----------------------------------------------------------------------------*/
+sRefactor* Values::_psRefactor(void* pAddr)
+{
+  sRefactor* psRefactor = reinterpret_cast<sRefactor*>(pAddr);
+  
+  RASSERT( !psRefactor || CN_STRVAL == psRefactor->eClass() );
+  
+  return psRefactor;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
 void* sRefactor::operator new(size_t iSize)
