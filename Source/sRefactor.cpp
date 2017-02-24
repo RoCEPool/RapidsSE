@@ -37,6 +37,26 @@ char* sRefactor::pDataArea(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get size of data area                                                      */
+/*----------------------------------------------------------------------------*/
+i8 sRefactor::nDataBytes(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  return m_nDataBytes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set limit of data size (based on the string size)                          */
+/*----------------------------------------------------------------------------*/
+void sRefactor::vDataBytes(void)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  m_nDataBytes = String::iSize(pDataArea());
+}
+
+/*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
 char* sRefactor::a(void)

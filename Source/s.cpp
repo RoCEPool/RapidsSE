@@ -111,26 +111,6 @@ void s::vCopy(const char* aArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get size of data area                                                      */
-/*----------------------------------------------------------------------------*/
-i8 s::nDataBytes(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return m_nDataBytes;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set limit of data size (based on the string size)                          */
-/*----------------------------------------------------------------------------*/
-void s::vDataBytes(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_nDataBytes = String::iSize(pDataArea());
-}
-
-/*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
 bool s::bEnds(const char* aSuffix)

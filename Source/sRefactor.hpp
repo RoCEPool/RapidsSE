@@ -18,6 +18,8 @@ namespace Values
     sRefactor(eCN eClass);
   
     char* pDataArea(void);
+    i8    nDataBytes(void);
+    void  vDataBytes(void);
   
     char* a(void);
     char* z(void);
