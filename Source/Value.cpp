@@ -46,50 +46,51 @@ Object* Value::pNewObjBin(void)
 /*----------------------------------------------------------------------------*/
 i8 Value::iSize(void)
 {
-  i8 iSize = 0;
+  i8 nBytes = 0;
   
   eCN eClass = this->eClass();
-  switch(eClass) {
+  
+  switch (eClass) {
     
     case CN_BINVAL: {
-      BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
-      iSize = pBinVal->iSize();
+      BinVal* pBinVal = _pBinVal(this);
+      nBytes = pBinVal->iSize();
       break;
     }
       
     case CN_INTVAL: {
-      IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
-      iSize = pIntVal->iSize();
+      IntVal* pIntVal = _pIntVal(this);
+      nBytes = pIntVal->iSize();
       break;
     }
       
     case CN_IPVAL: {
-      IpVal* pIpVal = reinterpret_cast<IpVal*>(this);
-      iSize = pIpVal->iSize();
+      IpVal* pIpVal = _pIpVal(this);
+      nBytes = pIpVal->iSize();
       break;
     }
       
     case CN_OBJVAL: {
-      ObjVal* pObjVal = reinterpret_cast<ObjVal*>(this);
-      iSize = pObjVal->iSize();
+      ObjVal* pObjVal = _pObjVal(this);
+      nBytes = pObjVal->iSize();
       break;
     }
       
     case CN_PTRVAL: {
-      PtrVal* pPtrVal = reinterpret_cast<PtrVal*>(this);
-      iSize = pPtrVal->iSize();
+      PtrVal* pPtrVal = _pPtrVal(this);
+      nBytes = pPtrVal->iSize();
       break;
     }
       
     case CN_STRVAL: {
-      StrVal* pStrVal = reinterpret_cast<StrVal*>(this);
-      iSize = pStrVal->iSize();
+      StrVal* pStrVal = _pStrVal(this);
+      nBytes = pStrVal->iSize();
       break;
     }
       
     case CN_VALSET: {
-      ValSet* pValSet = reinterpret_cast<ValSet*>(this);
-      iSize = pValSet->iSize();
+      ValSet* pValSet = _pValSet(this);
+      nBytes = pValSet->iSize();
       break;
     }
       
@@ -98,7 +99,7 @@ i8 Value::iSize(void)
       break;
   }
   
-  return iSize;
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
