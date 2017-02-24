@@ -21,6 +21,7 @@ namespace Values
     sRefactor(void);
     sRefactor(eCN eClass);
     sRefactor(i8 iChars);
+    sRefactor(eCN eClass, i8 iSize);
   
     ~sRefactor(void);
   
