@@ -27,18 +27,6 @@ s::~s(void)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s::operator = (const char* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
-
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
 void s::operator = (s& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);

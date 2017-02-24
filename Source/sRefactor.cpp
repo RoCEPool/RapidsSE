@@ -23,7 +23,13 @@ sRefactor* Values::_psRefactor(void* pAddr)
 {
   sRefactor* psRefactor = reinterpret_cast<sRefactor*>(pAddr);
   
-  RASSERT( !psRefactor || CN_STRVAL == psRefactor->eClass() );
+  RASSERT( !psRefactor
+          || CN_STRVAL == psRefactor->eClass()
+          || CN_S32    == psRefactor->eClass()
+          || CN_S256   == psRefactor->eClass()
+          || CN_S48K   == psRefactor->eClass()
+          || CN_S1M    == psRefactor->eClass()
+          );
   
   return psRefactor;
 }

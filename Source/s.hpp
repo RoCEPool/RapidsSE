@@ -16,9 +16,7 @@ namespace Values
     s(eCN eClass, i8 iSize);
    ~s(void);
     
-    void operator = (const char* aArg);
-    void operator = (s& rArg);
-    
+    void operator = (s& rArg);    
   };
 }
 
