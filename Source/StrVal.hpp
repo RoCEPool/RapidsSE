@@ -11,9 +11,7 @@ namespace Values
   {
   private:
   
-  public:
-    StrVal(void);
-    
+  public:    
     void operator =(const char* sStr);
   };
 }
