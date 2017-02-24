@@ -21,13 +21,6 @@ namespace Values
     void operator = (char* aArg);
     void operator = (s& rArg);
     
-    void  vAppend(const char c);
-    void  vAppend(const char* aArg);
-    void  vCopy(const char* aArg);
-    bool  bEnds(const char* aSuffix);
-    void  vInit(i8 iSize);
-    bool  bIsEqual(sRefactor& sArg, i8 iCase) ;
-    i8    iLength(void);
   };
 }
 
