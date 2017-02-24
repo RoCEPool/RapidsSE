@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Values.h"
+#include "Common.h"
 
 static const u8 C_SIZE_POOL_BUFFER   = C_1MB;
 

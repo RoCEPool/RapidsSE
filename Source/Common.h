@@ -3,10 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "Strings.h"
-
-
-
+#include "Values.h"
 
 #include "SysCall.hpp"
 
