@@ -1,7 +1,6 @@
 /*============================================================================*/
 /* StrVal.hpp - string value                                                  */
 /*============================================================================*/
-
 #pragma once
 
 #include "Values.h"
@@ -11,8 +10,6 @@ namespace Values
   class StrVal : public sRefactor
   {
   private:
-    i8   m_nDataBytes;
-    // ..dataArea..
   
   public:
     void* operator new(size_t);

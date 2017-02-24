@@ -10,8 +10,6 @@ namespace Values
   class s : public sRefactor
   {
   private:
-    i8   m_nDataBytes; // size of the data area (may not be length of the string)
-    // ..dataArea..
     
   public:
     void* operator new(size_t);
