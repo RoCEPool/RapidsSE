@@ -20,7 +20,7 @@ void* s::operator new(size_t iSize)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s::s(eCN eClassNo, i8 iSize)
-: Object(eClassNo)
+: Value(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
