@@ -7,7 +7,7 @@
 
 namespace Values
 {
-  class s1M : public s
+  class s1M : public sRefactor
   {
   private:
     static const i8 C_S1M_DATAAREA = C_1M;
@@ -26,7 +26,7 @@ namespace Values
 
     void operator = (const char* aArg);
     void operator = (char* aArg);
-    void operator = (s& rArg);
+    void operator = (sRefactor& rArg);
     
     Footer* pFooter(void);
   };

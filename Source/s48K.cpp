@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(void)
-: s(CN_S48K,C_S48K_DATAAREA)
+: sRefactor(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
@@ -25,13 +25,13 @@ s48K::s48K(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(s48K& rArg)
-: s(CN_S48K,C_S48K_DATAAREA)
+: sRefactor(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
 
   Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
-  s::vCopy(rArg.a());
+  sRefactor::vCopy(rArg.a());
   
   _checkInitialised_(CN_S48K);
 }
@@ -40,13 +40,13 @@ s48K::s48K(s48K& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(const char* aArg)
-: s(CN_S48K,C_S48K_DATAAREA)
+: sRefactor(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
   
   _checkInitialised_(CN_S48K);
 }
@@ -67,7 +67,7 @@ void s48K::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,13 +77,13 @@ void s48K::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s48K::operator = (s& rArg)
+void s48K::operator = (sRefactor& rArg)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   

@@ -141,7 +141,7 @@ char* sRefactor::pDataArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  char* p = pAdd<char*>(this,sizeof(s));
+  char* p = pAdd<char*>(this,sizeof(sRefactor));
   
   return p;
 }

@@ -531,7 +531,7 @@ void Word::vImmediate(bool bImmediate)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Word::bIsName(s& sName)
+bool Word::bIsName(sRefactor& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   
@@ -575,7 +575,7 @@ Cell* Word::pLastCell(void)
 /*----------------------------------------------------------------------------*/
 /* get name                                                                   */
 /*----------------------------------------------------------------------------*/
-s& Word::sName(void)
+sRefactor& Word::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WORD,_FOOTER_);
   

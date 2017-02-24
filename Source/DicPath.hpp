@@ -34,11 +34,11 @@ namespace Dictionaries
 
     void vContentDump(void);
     void vDiscard(void);
-    Word* pFindWord(s& sName);
+    Word* pFindWord(sRefactor& sName);
     Word* pFindWord(const char* aName);
     Word* pFindInCurrent(const char* aName);
     Word* pFindStep(TaskStep pStep);
-    bool  bForget(s& sName);
+    bool  bForget(sRefactor& sName);
     Word* pLocate(Cell* pCell);
     Dic* pPick(i8 iDic);
     void vPush(Dic* pDic);

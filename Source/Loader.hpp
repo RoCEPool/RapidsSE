@@ -32,8 +32,8 @@ namespace DBobjects
     void     vFinalize(void);
     bool     bFindChunk(void);
     LoadMap* pLoadMap(void);
-    s&       sPath(void);
-    void     vPath(s& sPath);
+    sRefactor&       sPath(void);
+    void     vPath(sRefactor& sPath);
     Table*   pTable(void);
     void     vTable(Table* pTable);
     TxRef*   pTxRef(void);

@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(void)
-: s(CN_S1M,C_S1M_DATAAREA)
+: sRefactor(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
@@ -25,13 +25,13 @@ s1M::s1M(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(s1M& rArg)
-: s(CN_S1M,C_S1M_DATAAREA)
+: sRefactor(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
 
   Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
-  s::vCopy(rArg.a());
+  sRefactor::vCopy(rArg.a());
   
   _checkInitialised_(CN_S1M);
 }
@@ -40,13 +40,13 @@ s1M::s1M(s1M& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(const char* aArg)
-: s(CN_S1M,C_S1M_DATAAREA)
+: sRefactor(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
   
   _checkInitialised_(CN_S1M);
 }
@@ -67,7 +67,7 @@ void s1M::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,13 +77,13 @@ void s1M::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s1M::operator = (s& rArg)
+void s1M::operator = (sRefactor& rArg)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   

@@ -22,11 +22,11 @@ namespace UnitTests
     
     static void vAssertFailed(void);
     
-    void vRequire(s& sCommand, bool bResult, eEC eErrorExpected);
-    void vRequire(s& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows);
-    void vRequire(s& sCommand, bool bResult, eEC eErrorExpected, s& sResponse);
+    void vRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected);
+    void vRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows);
+    void vRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected, sRefactor& sResponse);
     
-    char* pRequire(s& sCommand, bool bResult, eEC eErrorExpected);
+    char* pRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected);
 
 
   };

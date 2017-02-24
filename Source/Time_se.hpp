@@ -39,7 +39,7 @@ namespace Common
     void vAppendUtc(char** pz);
     bool bExtractUTC(char** ps);
     
-    void vUTC(s& sUTC);
+    void vUTC(sRefactor& sUTC);
     
     Footer* pFooter(void);
   };

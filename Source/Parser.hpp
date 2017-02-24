@@ -52,13 +52,13 @@ namespace Parsing
    
     
     // Options
-    void vPrompt(s& sPrompt);
+    void vPrompt(sRefactor& sPrompt);
     void vLineMode(bool bLineMode);
     
     // Use What
-    bool bUseFile(s& sPath);
+    bool bUseFile(sRefactor& sPath);
     void vUseStdin(void);
-    void vUseString(s& sString);
+    void vUseString(sRefactor& sString);
     void vUseEnd(void);
 
     // Parsing Stack

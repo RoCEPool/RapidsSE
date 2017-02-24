@@ -198,7 +198,7 @@ void SePrompt::vLoop(void)
 /*----------------------------------------------------------------------------*/
 /* execute request from given string                                          */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
+bool SePrompt::bExecuteString(sRefactor& sRequest, eEC& eErrorCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -221,7 +221,7 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode)
 /*----------------------------------------------------------------------------*/
 /* execute request from given string                                          */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, s& sResponse)
+bool SePrompt::bExecuteString(sRefactor& sRequest, eEC& eErrorCode, sRefactor& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
@@ -245,7 +245,7 @@ bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, s& sResponse)
 /*----------------------------------------------------------------------------*/
 /* execute request from given string                                          */
 /*----------------------------------------------------------------------------*/
-bool SePrompt::bExecuteString(s& sRequest, eEC& eErrorCode, char** ppRowPtr)
+bool SePrompt::bExecuteString(sRefactor& sRequest, eEC& eErrorCode, char** ppRowPtr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   

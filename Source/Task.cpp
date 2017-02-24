@@ -1014,7 +1014,7 @@ void Task::vAddRoutines(void)
 /*----------------------------------------------------------------------------*/
 /* compile given : routine                                                    */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileColon(s& sDefinition)
+Word* Task::pCompileColon(sRefactor& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1103,7 +1103,7 @@ Word* Task::pCompileColon(s& sDefinition)
 /*----------------------------------------------------------------------------*/
 /* compile a constant definition                                              */
 /*----------------------------------------------------------------------------*/
-Word* Task::pCompileConstant(s& sDefinition)
+Word* Task::pCompileConstant(sRefactor& sDefinition)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1179,7 +1179,7 @@ void Task::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* set exception                                                              */
 /*----------------------------------------------------------------------------*/
-void Task::vException(s& sFile, s& eException)
+void Task::vException(sRefactor& sFile, sRefactor& eException)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1190,7 +1190,7 @@ void Task::vException(s& sFile, s& eException)
 /*----------------------------------------------------------------------------*/
 /* is given name?                                                             */
 /*----------------------------------------------------------------------------*/
-bool Task::bIsName(s& sName)
+bool Task::bIsName(sRefactor& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1228,7 +1228,7 @@ void Task::vLocalsPush(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this task                                                      */
 /*----------------------------------------------------------------------------*/
-s& Task::sName(void)
+sRefactor& Task::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1238,7 +1238,7 @@ s& Task::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this task                                                      */
 /*----------------------------------------------------------------------------*/
-void Task::vName(s& sName)
+void Task::vName(sRefactor& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
@@ -1472,7 +1472,7 @@ void Task::vSeedDocol(void)
 /*----------------------------------------------------------------------------*/
 /* stack contents as string                                                   */
 /*----------------------------------------------------------------------------*/
-void Task::vStackContents(Stack* pStack, s& sStackContents)
+void Task::vStackContents(Stack* pStack, sRefactor& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   

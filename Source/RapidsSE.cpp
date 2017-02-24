@@ -186,7 +186,7 @@ void RapidsSE::vPoolOpen(void)
 /*----------------------------------------------------------------------------*/
 /* attach or create the shm region                                            */
 /*----------------------------------------------------------------------------*/
-bool RapidsSE::bPoolOpen(s& sPoolName)
+bool RapidsSE::bPoolOpen(sRefactor& sPoolName)
 {
   bool bResult = Region::bAttach(sPoolName);
   if (!bResult)

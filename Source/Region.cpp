@@ -13,7 +13,7 @@ extern void* C_ADDR_POOL;
 /*----------------------------------------------------------------------------*/
 /* attach to an existing shm region                                           */
 /*----------------------------------------------------------------------------*/
-bool Region::bAttach(s& sRegionName)
+bool Region::bAttach(sRefactor& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -89,7 +89,7 @@ bool Region::bAttach(s& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* create new shm region                                                      */
 /*----------------------------------------------------------------------------*/
-void Region::vCreate(s& sRegionName)
+void Region::vCreate(sRefactor& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -153,7 +153,7 @@ void Region::vCreate(s& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* test for region                                                            */
 /*----------------------------------------------------------------------------*/
-bool Region::bTest(s& sRegionName)
+bool Region::bTest(sRefactor& sRegionName)
 {
   int iFD;
   SysCall xSysCall;
@@ -171,7 +171,7 @@ bool Region::bTest(s& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* unlink region                                                              */
 /*----------------------------------------------------------------------------*/
-void Region::vUnlink(s& sRegionName)
+void Region::vUnlink(sRefactor& sRegionName)
 {
   SysCall xSysCall;
   
@@ -186,7 +186,7 @@ void Region::vUnlink(s& sRegionName)
 /*----------------------------------------------------------------------------*/
 /* attempt to open a pool                                                     */
 /*----------------------------------------------------------------------------*/
-void* Region::pOpen(s& sRegionName, int& iFD)
+void* Region::pOpen(sRefactor& sRegionName, int& iFD)
 {
   SysCall xSysCall;
   bool bResult;

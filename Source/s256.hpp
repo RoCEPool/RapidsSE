@@ -7,7 +7,7 @@
 
 namespace Values
 {
-  class s256 : public s
+  class s256 : public sRefactor
   {
   private:
     static const i8 C_S256_DATAAREA = 256;
@@ -28,7 +28,7 @@ namespace Values
 
     void operator = (const char* aArg);
     void operator = (char* aArg);
-    void operator = (s& rArg);
+    void operator = (sRefactor& rArg);
     
     void vInit(void);
     

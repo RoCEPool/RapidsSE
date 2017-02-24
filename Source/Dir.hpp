@@ -39,7 +39,7 @@ namespace Common
     //--
     
     void vClose(void);
-    s&   sEntryName(void);
+    sRefactor&   sEntryName(void);
     i8   iEntryType(void);
     //bool bExists(void);
     //bool bGetCurrent(void);
@@ -47,7 +47,7 @@ namespace Common
     bool bIsOpen(void);
     //bool bMake(void);
     bool bOpen(void);
-    s&   sPath(void);
+    sRefactor&   sPath(void);
     void vPath(s256& sPath);
     bool bRead(void);
     //bool bRemove(void);

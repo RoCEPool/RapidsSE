@@ -71,10 +71,10 @@ namespace Common
     bool bOpen(const char* aFilePath, const char* aOpenMode, i8 iTraceLevel=0);
     s256& sPath(void);
     void vPath(const char* aFilePath);
-    void vPath(s& sFilePath);
+    void vPath(sRefactor& sFilePath);
     void vPrint(const char* sFormat,...);
     i8   iReadChunk(void* pChunk, i8 nBytes);
-    bool bReadLine(s& s);
+    bool bReadLine(sRefactor& s);
     bool bReadLine(char* y);
     bool bReadRecord(void);
     Scratch* pRecord(void);

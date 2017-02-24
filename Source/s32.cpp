@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(void)
-: s(CN_S32,C_S32_DATAAREA)
+: sRefactor(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -27,12 +27,12 @@ s32::s32(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(s32& rArg)
-: s(CN_S32,C_S32_DATAAREA)
+: sRefactor(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S32_DATAAREA);
-  s::vCopy(rArg.a());
+  sRefactor::vCopy(rArg.a());
   
   _checkInitialised_(CN_S32);
   
@@ -43,12 +43,12 @@ s32::s32(s32& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(const char* aArg)
-: s(CN_S32,C_S32_DATAAREA)
+: sRefactor(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
 
   Memory::vZero(m_mDataArea, C_S32_DATAAREA);
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
   
   _checkInitialised_(CN_S32);
   
@@ -70,7 +70,7 @@ void s32::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,13 +80,13 @@ void s32::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s32::operator = (s& rArg)
+void s32::operator = (sRefactor& rArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -100,7 +100,7 @@ void s32::vInit()
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  s::vInit(C_S32_DATAAREA);
+  sRefactor::vInit(C_S32_DATAAREA);
 }
 
 /*----------------------------------------------------------------------------*/

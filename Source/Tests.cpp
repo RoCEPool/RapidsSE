@@ -34,7 +34,7 @@ void Tests::vAssertFailed(void) {
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected)
+void Tests::vRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected)
 {
   eEC eErrorReturned;
   
@@ -58,7 +58,7 @@ void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected)
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-char* Tests::pRequire(s& sCommand, bool bResult, eEC eErrorExpected)
+char* Tests::pRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -86,7 +86,7 @@ char* Tests::pRequire(s& sCommand, bool bResult, eEC eErrorExpected)
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected, s& sResponseExpected)
+void Tests::vRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected, sRefactor& sResponseExpected)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;
@@ -116,7 +116,7 @@ void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected, s& sResponse
 /*----------------------------------------------------------------------------*/
 /* run unit tests                                                             */
 /*----------------------------------------------------------------------------*/
-void Tests::vRequire(s& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows)
+void Tests::vRequire(sRefactor& sCommand, bool bResult, eEC eErrorExpected, i8 iExpectedRows)
 {
   eEC eErrorReturned;
   s256 sResponseReturned;

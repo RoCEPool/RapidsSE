@@ -24,12 +24,12 @@ void Values::vCheckAssumptions(void)
          ==  sizeof(ValSet));
 
 
-  ASSERT(24 == sizeof(s));
+  ASSERT(24 == sizeof(sRefactor));
   
-  ASSERT(sizeof(s) + sizeof(Footer) + 32    == sizeof(s32));
-  ASSERT(sizeof(s) + sizeof(Footer) + 256   == sizeof(s256));
-  ASSERT(sizeof(s) + sizeof(Footer) + C_48K == sizeof(s48K));
-  ASSERT(sizeof(s) + sizeof(Footer) + C_1M  == sizeof(s1M));
+  ASSERT(sizeof(sRefactor) + sizeof(Footer) + 32    == sizeof(s32));
+  ASSERT(sizeof(sRefactor) + sizeof(Footer) + 256   == sizeof(s256));
+  ASSERT(sizeof(sRefactor) + sizeof(Footer) + C_48K == sizeof(s48K));
+  ASSERT(sizeof(sRefactor) + sizeof(Footer) + C_1M  == sizeof(s1M));
 }
 
 /*============================================================================*/

@@ -22,7 +22,7 @@ void* s256::operator new(size_t iSize, s256* pS256)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(void)
-: s(CN_S256,C_S256_DATAAREA)
+: sRefactor(CN_S256,C_S256_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
@@ -37,13 +37,13 @@ s256::s256(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(s256& rArg)
-: s(CN_S256,C_S256_DATAAREA)
+: sRefactor(CN_S256,C_S256_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S256_DATAAREA);
   
-  s::vCopy(rArg.a());
+  sRefactor::vCopy(rArg.a());
   
   _checkInitialised_(CN_S256);
   
@@ -54,13 +54,13 @@ s256::s256(s256& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s256::s256(const char* aArg)
-: s(CN_S256,C_S256_DATAAREA)
+: sRefactor(CN_S256,C_S256_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S256_DATAAREA);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
   
   _checkInitialised_(CN_S256);
   
@@ -82,7 +82,7 @@ void s256::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -92,13 +92,13 @@ void s256::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  s::vCopy(aArg);
+  sRefactor::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s256::operator = (s& rArg)
+void s256::operator = (sRefactor& rArg)
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
@@ -112,7 +112,7 @@ void s256::vInit()
 {
   _precondition_(_MAGIC_,CN_S256,_FOOTER_);
   
-  s::vInit(C_S256_DATAAREA);
+  sRefactor::vInit(C_S256_DATAAREA);
 }
 
 /*----------------------------------------------------------------------------*/

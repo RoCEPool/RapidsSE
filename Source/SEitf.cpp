@@ -1645,7 +1645,7 @@ bool SEitf::bX(char* pWords[])
 /*----------------------------------------------------------------------------*/
 /* append request to request queue                                            */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bAppendRequest(s& sRequest)
+bool SEitf::bAppendRequest(sRefactor& sRequest)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
@@ -1715,7 +1715,7 @@ eEC SEitf::eGetResponse(void)
 /*----------------------------------------------------------------------------*/
 /* pop response from response queue                                           */
 /*----------------------------------------------------------------------------*/
-bool SEitf::bPopResponse(eEC& eResult, s& sResponse)
+bool SEitf::bPopResponse(eEC& eResult, sRefactor& sResponse)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEITF,_FOOTER_);
   
