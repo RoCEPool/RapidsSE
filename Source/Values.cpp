@@ -22,6 +22,14 @@ void Values::vCheckAssumptions(void)
   
   ASSERT(sizeof(Value) + sizeof(i8)*2 + sizeof(void*) + (C_1K*63)
          ==  sizeof(ValSet));
+
+
+  ASSERT(24 == sizeof(s));
+  
+  ASSERT(sizeof(s) + sizeof(Footer) + 32    == sizeof(s32));
+  ASSERT(sizeof(s) + sizeof(Footer) + 256   == sizeof(s256));
+  ASSERT(sizeof(s) + sizeof(Footer) + C_48K == sizeof(s48K));
+  ASSERT(sizeof(s) + sizeof(Footer) + C_1M  == sizeof(s1M));
 }
 
 /*============================================================================*/

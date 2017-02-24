@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Strings.h"
+#include "Values.h"
 
-namespace Strings
+namespace Values
 {
   class s1M : public s
   {

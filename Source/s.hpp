@@ -3,9 +3,9 @@
 /*============================================================================*/
 #pragma once
 
-#include "Strings.h"
+#include "Values.h"
 
-namespace Strings
+namespace Values
 {
   class s : public Object
   {
@@ -79,7 +79,7 @@ namespace Strings
   
 }
 
-using namespace Strings;
+using namespace Values;
 
 /*----------------------------------------------------------------------------*/
 /* operator new: class cannot be new'd                                        */

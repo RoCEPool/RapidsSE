@@ -3,10 +3,10 @@
 /*============================================================================*/
 #pragma once
 
-#include "Strings.h"
+#include "Values.h"
 #include "Footer.hpp"
 
-namespace Strings
+namespace Values
 {
   class s32 : public s
   {

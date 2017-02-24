@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Strings.h"
+#include "Magic.h"
 
 #include "V.hpp"
 
@@ -23,6 +23,11 @@
 #include "ValSet.hpp"
 
 
+#include "s.hpp"
+#include "s32.hpp"
+#include "s256.hpp"
+#include "s48K.hpp"
+#include "s1M.hpp"
 
 //-----------------------------------------------------------------------------
 namespace Values

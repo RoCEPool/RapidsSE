@@ -2,7 +2,7 @@
 /* s32.cpp -- a 256 byte s-string                                             */
 /*============================================================================*/
 
-#include "Strings.h"
+#include "Values.h"
 #include "Memory.hpp"
 #include "StorageEngine.h"
 

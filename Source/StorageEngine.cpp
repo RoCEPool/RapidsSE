@@ -15,9 +15,8 @@ void StorageEngine::vCheckAllAssumptions(void)
   Platform::vCheckAssumptions();
   Debugging::vCheckAssumptions();
   Magic::vCheckAssumptions();
-  Strings::vCheckAssumptions();
-  Common::vCheckAssumptions();
   Values::vCheckAssumptions();
+  Common::vCheckAssumptions();
   Pool::vCheckAssumptions();
   Structures::vCheckAssumptions();
   Parsing::vCheckAssumptions();
