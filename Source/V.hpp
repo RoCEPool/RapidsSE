@@ -25,6 +25,8 @@ namespace Values
   
     static i8   nCopyStrDatum(void* pDst, void* pSrc);
     static void vCopyStrDatum(void* pDst, void* pSrc);
+  
+    static void vToString(Object* pObject, char* aCharArray);
   };
 }
 

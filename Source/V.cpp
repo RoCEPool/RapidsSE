@@ -3,7 +3,8 @@
 /*============================================================================*/
 
 #include "Pool.h"
-  
+#include "StorageEngine.h"
+
 /*----------------------------------------------------------------------------*/
 /* compare datum (return -ve, 0, +ve)                                         */
 /*----------------------------------------------------------------------------*/
@@ -112,6 +113,58 @@ void V::vCopyStrDatum(void* pDst, void* pSrc)
 {
   String::vCopy((char*)pDst,(char*)pSrc);
 }
+
+/*----------------------------------------------------------------------------*/
+/* convert to string                                                          */
+/*----------------------------------------------------------------------------*/
+void V::vToString(Object* pObject, char* aCharArray)
+{
+  eCN eClass = pObject->eClass();
+  
+  switch (eClass) {
+      
+    case CN_BINVAL: {
+      BinVal* pBinVal = _pBinVal(pObject);
+      pBinVal->vToString(aCharArray);
+      break;
+    }
+      
+    case CN_INTVAL: {
+      IntVal* pIntVal = _pIntVal(pObject);
+      pIntVal->vToString(aCharArray);
+      break;
+    }
+      
+    case CN_IPVAL: {
+      IpVal* pIpVal = _pIpVal(pObject);
+      pIpVal->vToString(aCharArray);
+      break;
+    }
+      
+    case CN_PTRVAL: {
+      PtrVal* pPtrVal = _pPtrVal(pObject);
+      pPtrVal->vToString(aCharArray);
+      break;
+    }
+      
+    case CN_STRVAL: {
+      StrVal* pStrVal = _pStrVal(pObject);
+      pStrVal->vToString(aCharArray);
+      break;
+    }
+      
+    case CN_VALSET: {
+      ValSet* pValSet = _pValSet(pObject);
+      pValSet->vToString(aCharArray);
+      break;
+    }
+      
+    default:
+      THROW("Invalid eClass %lld",eClass);
+      break;
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

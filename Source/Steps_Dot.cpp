@@ -53,7 +53,7 @@ void Task::vDot(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".");
   
-  xValWsp.vToString(sWorkspace.a());
+  V::vToString(&xValWsp,sWorkspace.a());
   /*
   vTrace("[N%lld:%8s\\%lld %-11s] %s\n",
          
@@ -91,7 +91,7 @@ void Task::vDotPut(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(xValWsp) )
     THROW_INVALID_DSTACK(".put");
   
-  xValWsp.vToString(sWorkspace.a());
+  V::vToString(&xValWsp,sWorkspace.a());
   vTrace("%s",sWorkspace.a());
   
   EXIT();
@@ -123,7 +123,7 @@ void Task::vDotVerbose(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(".verbose");
   
   if (gxArguments.m_bVerbose) {
-    xValWsp.vToString(sWorkspace.a());
+    V::vToString(&xValWsp,sWorkspace.a());
     vTrace("[%p %s] %s\n",*nnpTask,nnpTask->m_sName.a(),sWorkspace.a());
   }
   

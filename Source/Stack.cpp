@@ -862,7 +862,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
     
     vPeek(iVal,&xValWsp);
     
-    xValWsp.vToString(sWorkspace.a());
+    V::vToString(&xValWsp,sWorkspace.a());
     char* aClass = xValWsp.aClass();
     
     eCN eClass = xValWsp.eClass();

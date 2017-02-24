@@ -140,57 +140,6 @@ void Value::vToCommand(char* aCharArray)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert to string                                                          */
-/*----------------------------------------------------------------------------*/
-void Value::vToString(char* aCharArray)
-{
-  eCN eClass = this->eClass();
-  
-  switch(eClass) {
-      
-    case CN_BINVAL: {
-      BinVal* pBinVal = _pBinVal(this);
-      pBinVal->vToString(aCharArray);
-      break;
-    }
-      
-    case CN_INTVAL: {
-      IntVal* pIntVal = _pIntVal(this);
-      pIntVal->vToString(aCharArray);
-      break;
-    }
-    
-    case CN_IPVAL: {
-      IpVal* pIpVal = _pIpVal(this);
-      pIpVal->vToString(aCharArray);
-      break;
-    }
-      
-    case CN_PTRVAL: {
-      PtrVal* pPtrVal = _pPtrVal(this);
-      pPtrVal->vToString(aCharArray);
-      break;
-    }
-      
-    case CN_STRVAL: {
-      StrVal* pStrVal = _pStrVal(this);
-      pStrVal->vToString(aCharArray);
-      break;
-    }
-      
-    case CN_VALSET: {
-      ValSet* pValSet = _pValSet(this);
-      pValSet->vToString(aCharArray);
-      break;
-    }
-      
-    default:
-      THROW("Invalid eClass %lld",eClass);
-      break;
-  }
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
