@@ -26,7 +26,7 @@ namespace Values
     void  vCopy(const char* aArg);
     bool  bEnds(const char* aSuffix);
     void  vInit(i8 iSize);
-    bool  bIsEqual(s& sArg, i8 iCase) ;
+    bool  bIsEqual(sRefactor& sArg, i8 iCase) ;
     i8    iLength(void);
   };
 }

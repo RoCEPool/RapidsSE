@@ -138,7 +138,7 @@ void s::vInit(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* is euqal to given argument?                                                */
 /*----------------------------------------------------------------------------*/
-bool s::bIsEqual(s& sArg, i8 iCase) 
+bool s::bIsEqual(sRefactor& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
