@@ -40,6 +40,17 @@ void* sRefactor::operator new(size_t iSize, sRefactor* pStrVal)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+sRefactor::sRefactor(void)
+: Value(CN_STRVAL)
+{
+  m_nDataBytes = 0;
+  
+  _checkInitialised_(CN_STRVAL);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 sRefactor::sRefactor(eCN eClass)
 : Value(eClass)
 {

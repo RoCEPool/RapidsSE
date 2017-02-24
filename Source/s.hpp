@@ -12,7 +12,6 @@ namespace Values
   private:
     
   public:
-    void* operator new(size_t);
     
     s(eCN eClass, i8 iSize);
    ~s(void);

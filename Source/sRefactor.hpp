@@ -18,6 +18,7 @@ namespace Values
     void* operator new(size_t);
     void* operator new(size_t, sRefactor* pRefactor);
   
+    sRefactor(void);
     sRefactor(eCN eClass);
     sRefactor(i8 iChars);
   
