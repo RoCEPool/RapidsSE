@@ -17,7 +17,6 @@ namespace Values
    ~s(void);
     
     void operator = (const char* aArg);
-    void operator = (char* aArg);
     void operator = (s& rArg);
     
   };
