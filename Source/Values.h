@@ -24,6 +24,7 @@
 
 #include "ValSet.hpp"
 
+#include "StrTpl.hpp"
 
 #include "s32.hpp"
 #include "s256.hpp"
