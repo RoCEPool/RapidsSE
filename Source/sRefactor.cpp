@@ -77,6 +77,19 @@ sRefactor::sRefactor(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+sRefactor::sRefactor(i8 iChars)
+: Value(CN_STRVAL)
+{
+  m_nDataBytes = iChars;
+  
+  Memory::vZero(pDataArea(),m_nDataBytes);
+  
+  _checkInitialised_(CN_STRVAL);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 sRefactor::sRefactor(eCN eClassNo, i8 iSize)
 : Value(eClassNo)
 {

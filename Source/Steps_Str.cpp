@@ -65,11 +65,11 @@ void Task::vS256Init(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(pPtrStrVal) )
     THROW_INVALID_DSTACK("s256.init");
   
-  StrVal* pStrVal = _pStrVal(pPtrStrVal);
+  sRefactor* psRefactor = _psRefactor(pPtrStrVal);
   
-  ASSERT(CN_STRVAL == pStrVal->eClass());
+  ASSERT(CN_STRVAL == psRefactor->eClass());
   
-  new(pStrVal) StrVal(256);
+  new(psRefactor) sRefactor(256);
   
   EXIT();
 }

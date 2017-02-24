@@ -17,19 +17,6 @@ StrVal::StrVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-StrVal::StrVal(i8 iChars)
-: sRefactor(CN_STRVAL)
-{
-  m_nDataBytes = iChars;
-  
-  Memory::vZero(pDataArea(),m_nDataBytes);
-  
-  _checkInitialised_(CN_STRVAL);
-}
-
-/*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
 void StrVal::operator =(const char* sStr)

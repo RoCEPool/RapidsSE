@@ -13,7 +13,6 @@ namespace Values
   
   public:
     StrVal(void);
-    StrVal(i8 iChars);
     
     void operator =(const char* sStr);
   };
