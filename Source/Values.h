@@ -19,6 +19,9 @@
 #include "IpVal.hpp"
 #include "ObjVal.hpp"
 #include "PtrVal.hpp"
+
+#include "sRefactor.hpp"  // temp
+
 #include "StrVal.hpp"
 #include "ValSet.hpp"
 

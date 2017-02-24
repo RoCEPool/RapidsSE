@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class StrVal : public Value
+  class StrVal : public sRefactor
   {
   private:
     i8   m_nDataBytes;

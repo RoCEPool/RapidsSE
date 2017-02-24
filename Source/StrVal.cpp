@@ -41,7 +41,7 @@ void* StrVal::operator new(size_t iSize, StrVal* pStrVal)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal::StrVal(void)
-: Value(CN_STRVAL)
+: sRefactor(CN_STRVAL)
 {
   m_nDataBytes = 0;
   
@@ -52,7 +52,7 @@ StrVal::StrVal(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 StrVal::StrVal(i8 iChars)
-: Value(CN_STRVAL)
+: sRefactor(CN_STRVAL)
 {
   m_nDataBytes = iChars;
   

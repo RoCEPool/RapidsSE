@@ -7,7 +7,7 @@
 
 namespace Values
 {
-  class s : public Value
+  class s : public sRefactor
   {
   private:
     i8   m_nDataBytes; // size of the data area (may not be length of the string)
