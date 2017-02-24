@@ -15,12 +15,12 @@ void Common::vCheckAssumptions(void)
   ASSERT(16 == sizeof(Object));
   ASSERT(8  == sizeof(Footer));
   
-  ASSERT(24 == sizeof(sRefactor));
+  ASSERT(24 == sizeof(StrVal));
   
-  ASSERT(sizeof(sRefactor) + sizeof(Footer) + 32    == sizeof(s32));
-  ASSERT(sizeof(sRefactor) + sizeof(Footer) + 256   == sizeof(s256));
-  ASSERT(sizeof(sRefactor) + sizeof(Footer) + C_48K == sizeof(s48K));
-  ASSERT(sizeof(sRefactor) + sizeof(Footer) + C_1M  == sizeof(s1M));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + 32    == sizeof(s32));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + 256   == sizeof(s256));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_48K == sizeof(s48K));
+  ASSERT(sizeof(StrVal) + sizeof(Footer) + C_1M  == sizeof(s1M));
 }
 
 /*============================================================================*/

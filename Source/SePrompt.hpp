@@ -51,9 +51,9 @@ public:
   static void vDump(eCN eClass, Object* pObject, const char* pTab);
   
   void vLoop(void);
-  bool bExecuteString(sRefactor& sCommand, eEC& eErrorCode);
-  bool bExecuteString(sRefactor& sCommand, eEC& eErrorCode, sRefactor& sResponse);
-  bool bExecuteString(sRefactor& sCommand, eEC& eErrorCode, char** ppRowPtr);
+  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode);
+  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, StrVal& sResponse);
+  bool bExecuteString(StrVal& sCommand, eEC& eErrorCode, char** ppRowPtr);
 
 private:
   void vGetCommand(void);

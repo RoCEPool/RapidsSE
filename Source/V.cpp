@@ -156,7 +156,7 @@ i8 V::iSize(Object* pObject)
     }
       
     case CN_STRVAL: {
-      sRefactor* pStrVal = _psRefactor(pObject);
+      StrVal* pStrVal = _psRefactor(pObject);
       nBytes = pStrVal->iSize();
       break;
     }
@@ -203,7 +203,7 @@ void V::vToCommand(Object* pObject, char* aCharArray)
     }
       
     case CN_STRVAL: {
-      sRefactor* pStrVal = _psRefactor(pObject);
+      StrVal* pStrVal = _psRefactor(pObject);
       pStrVal->vToCommand(aCharArray);
       break;
     }
@@ -248,7 +248,7 @@ void V::vToString(Object* pObject, char* aCharArray)
     }
       
     case CN_STRVAL: {
-      sRefactor* pStrVal = _psRefactor(pObject);
+      StrVal* pStrVal = _psRefactor(pObject);
       pStrVal->vToString(aCharArray);
       break;
     }

@@ -469,7 +469,7 @@ void File::vPath(const char* aFilePath)
 /*----------------------------------------------------------------------------*/
 /* set path                                                                   */
 /*----------------------------------------------------------------------------*/
-void File::vPath(sRefactor& sFilePath)
+void File::vPath(StrVal& sFilePath)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
@@ -564,7 +564,7 @@ bool File::bReadLine(char* aBuffer)
 /*----------------------------------------------------------------------------*/
 /* read next line                                                             */
 /*----------------------------------------------------------------------------*/
-//bool File::bReadLine(sRefactor& s)
+//bool File::bReadLine(StrVal& s)
 //{
 //  _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 //
@@ -610,7 +610,7 @@ bool File::bReadLine(char* aBuffer)
 //  }
 //}
 //------------------------------------------------------------------------------
-bool File::bReadLine(sRefactor& s)
+bool File::bReadLine(StrVal& s)
 {
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   

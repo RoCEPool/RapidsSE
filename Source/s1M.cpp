@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(void)
-: sRefactor(CN_S1M,C_S1M_DATAAREA)
+: StrVal(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
@@ -25,13 +25,13 @@ s1M::s1M(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(s1M& rArg)
-: sRefactor(CN_S1M,C_S1M_DATAAREA)
+: StrVal(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
 
   Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
-  sRefactor::vCopy(rArg.a());
+  StrVal::vCopy(rArg.a());
   
   _checkInitialised_(CN_S1M);
 }
@@ -40,13 +40,13 @@ s1M::s1M(s1M& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s1M::s1M(const char* aArg)
-: sRefactor(CN_S1M,C_S1M_DATAAREA)
+: StrVal(CN_S1M,C_S1M_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S1M_DATAAREA);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
   
   _checkInitialised_(CN_S1M);
 }
@@ -67,7 +67,7 @@ void s1M::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,13 +77,13 @@ void s1M::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s1M::operator = (sRefactor& rArg)
+void s1M::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_S1M,_FOOTER_);
   

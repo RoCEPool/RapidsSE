@@ -37,7 +37,7 @@ namespace DBobjects
 
     static void vDump(eCN eClass, Object* pObject, const char* pTab);
     
-    void vFilePath(sRefactor& sPath);
+    void vFilePath(StrVal& sPath);
     
     bool bFindChunk(void);
     

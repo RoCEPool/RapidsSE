@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* sRefactor.cpp -- temporary class for refactoring s                         */
+/* StrVal.cpp -- string value                                                 */
 /*============================================================================*/
 
 #include "Values.h"
@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-sRefactor* Values::_psRefactor(void* pAddr)
+StrVal* Values::_psRefactor(void* pAddr)
 {
-  sRefactor* psRefactor = reinterpret_cast<sRefactor*>(pAddr);
+  StrVal* psRefactor = reinterpret_cast<StrVal*>(pAddr);
   
   RASSERT( !psRefactor
           || CN_STRVAL == psRefactor->eClass()
@@ -25,10 +25,10 @@ sRefactor* Values::_psRefactor(void* pAddr)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* sRefactor::operator new(size_t iSize)
+void* StrVal::operator new(size_t iSize)
 {
   RASSERT(iSize);
-  vFatal("fatal: sRefactor class cannot be new'd\n");
+  vFatal("fatal: StrVal class cannot be new'd\n");
   
   RASSERT(0);
 }
@@ -36,7 +36,7 @@ void* sRefactor::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* sRefactor::operator new(size_t iSize, sRefactor* pStrVal)
+void* StrVal::operator new(size_t iSize, StrVal* pStrVal)
 {
   RASSERT(iSize);
   
@@ -46,7 +46,7 @@ void* sRefactor::operator new(size_t iSize, sRefactor* pStrVal)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-sRefactor::sRefactor(void)
+StrVal::StrVal(void)
 : Value(CN_STRVAL)
 {
   m_nDataBytes = 0;
@@ -57,7 +57,7 @@ sRefactor::sRefactor(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-sRefactor::sRefactor(eCN eClass)
+StrVal::StrVal(eCN eClass)
 : Value(eClass)
 {
 }
@@ -65,7 +65,7 @@ sRefactor::sRefactor(eCN eClass)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-sRefactor::sRefactor(i8 iChars)
+StrVal::StrVal(i8 iChars)
 : Value(CN_STRVAL)
 {
   m_nDataBytes = iChars;
@@ -78,7 +78,7 @@ sRefactor::sRefactor(i8 iChars)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-sRefactor::sRefactor(eCN eClassNo, i8 iSize)
+StrVal::StrVal(eCN eClassNo, i8 iSize)
 : Value(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
@@ -90,7 +90,7 @@ sRefactor::sRefactor(eCN eClassNo, i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-sRefactor::~sRefactor(void)
+StrVal::~StrVal(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
 }
@@ -99,19 +99,7 @@ sRefactor::~sRefactor(void)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void sRefactor::operator = (const char* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-void sRefactor::operator = (char* aArg)
+void StrVal::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -123,7 +111,19 @@ void sRefactor::operator = (char* aArg)
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void sRefactor::operator = (sRefactor& rArg)
+void StrVal::operator = (char* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+void StrVal::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -135,7 +135,7 @@ void sRefactor::operator = (sRefactor& rArg)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vStrValAssign(const char* sStr)
+void StrVal::vStrValAssign(const char* sStr)
 {
   //ASSERT(m_nDataBytes);
   
@@ -148,11 +148,11 @@ void sRefactor::vStrValAssign(const char* sStr)
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
 /*----------------------------------------------------------------------------*/
-char* sRefactor::pDataArea(void)
+char* StrVal::pDataArea(void)
 {
   //_precondition_(_MAGIC_,_FOOTER_);
   
-  char* p = pAdd<char*>(this,sizeof(sRefactor));
+  char* p = pAdd<char*>(this,sizeof(StrVal));
   
   return p;
 }
@@ -160,7 +160,7 @@ char* sRefactor::pDataArea(void)
 /*----------------------------------------------------------------------------*/
 /* get size of data area                                                      */
 /*----------------------------------------------------------------------------*/
-i8 sRefactor::nDataBytes(void)
+i8 StrVal::nDataBytes(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -170,7 +170,7 @@ i8 sRefactor::nDataBytes(void)
 /*----------------------------------------------------------------------------*/
 /* set limit of data size (based on the string size)                          */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vDataBytes(void)
+void StrVal::vDataBytes(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -180,7 +180,7 @@ void sRefactor::vDataBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-char* sRefactor::a(void)
+char* StrVal::a(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -190,7 +190,7 @@ char* sRefactor::a(void)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
-char* sRefactor::z(void)
+char* StrVal::z(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -203,7 +203,7 @@ char* sRefactor::z(void)
 /*----------------------------------------------------------------------------*/
 /* append given character                                                     */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vAppend(const char c)
+void StrVal::vAppend(const char c)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -217,7 +217,7 @@ void sRefactor::vAppend(const char c)
 /*----------------------------------------------------------------------------*/
 /* append argument                                                            */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vAppend(const char* aArg)
+void StrVal::vAppend(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -229,7 +229,7 @@ void sRefactor::vAppend(const char* aArg)
 /*----------------------------------------------------------------------------*/
 /* copy argument                                                              */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vCopy(const char* aArg)
+void StrVal::vCopy(const char* aArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -241,7 +241,7 @@ void sRefactor::vCopy(const char* aArg)
 /*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
 /*----------------------------------------------------------------------------*/
-bool sRefactor::bEnds(const char* aSuffix)
+bool StrVal::bEnds(const char* aSuffix)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -253,7 +253,7 @@ bool sRefactor::bEnds(const char* aSuffix)
 /*----------------------------------------------------------------------------*/
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vInit(i8 iSize)
+void StrVal::vInit(i8 iSize)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -266,7 +266,7 @@ void sRefactor::vInit(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* is euqal to given argument?                                                */
 /*----------------------------------------------------------------------------*/
-bool sRefactor::bIsEqual(sRefactor& sArg, i8 iCase)
+bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -278,7 +278,7 @@ bool sRefactor::bIsEqual(sRefactor& sArg, i8 iCase)
 /*----------------------------------------------------------------------------*/
 /* get length of string in data area                                          */
 /*----------------------------------------------------------------------------*/
-i8 sRefactor::iLength(void)
+i8 StrVal::iLength(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
@@ -289,7 +289,7 @@ i8 sRefactor::iLength(void)
 /*----------------------------------------------------------------------------*/
 /* get iChars                                                                 */
 /*----------------------------------------------------------------------------*/
-i8 sRefactor::iChars(void) const
+i8 StrVal::iChars(void) const
 {
   return m_nDataBytes;
 }
@@ -297,7 +297,7 @@ i8 sRefactor::iChars(void) const
 /*----------------------------------------------------------------------------*/
 /* reset string value                                                         */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vReset(void)
+void StrVal::vReset(void)
 {
   m_nDataBytes = 0;
 }
@@ -305,11 +305,11 @@ void sRefactor::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 sRefactor::iSize(void) const
+i8 StrVal::iSize(void) const
 {
   //i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
   
-  i8 iSize = sizeof(sRefactor) + m_nDataBytes;
+  i8 iSize = sizeof(StrVal) + m_nDataBytes;
   
   return iSize;
 }
@@ -317,7 +317,7 @@ i8 sRefactor::iSize(void) const
 /*----------------------------------------------------------------------------*/
 /* set size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vSize(void)
+void StrVal::vSize(void)
 {
   m_nDataBytes = String::iSize(pDataArea());
 }
@@ -325,7 +325,7 @@ void sRefactor::vSize(void)
 /*----------------------------------------------------------------------------*/
 /* set size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vSize(i8 iSize)
+void StrVal::vSize(i8 iSize)
 {
   m_nDataBytes = iSize;
 }
@@ -333,7 +333,7 @@ void sRefactor::vSize(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* get sStr                                                                   */
 /*----------------------------------------------------------------------------*/
-char* sRefactor::sStr(void)
+char* StrVal::sStr(void)
 {
   return pDataArea();
 }
@@ -341,7 +341,7 @@ char* sRefactor::sStr(void)
 /*----------------------------------------------------------------------------*/
 /* convert to command                                                         */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vToCommand(char* aWorkspace)
+void StrVal::vToCommand(char* aWorkspace)
 {
   String::vCopy(aWorkspace,"\"");
   String::vCopy(aWorkspace,pDataArea());
@@ -351,7 +351,7 @@ void sRefactor::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* convert to string                                                          */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vToString(char* aWorkspace)
+void StrVal::vToString(char* aWorkspace)
 {
   String::vCopy(aWorkspace,pDataArea());
 }
@@ -359,7 +359,7 @@ void sRefactor::vToString(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* copy a string into workspace                                               */
 /*----------------------------------------------------------------------------*/
-void sRefactor::vCopyString(char* aStr, i8 iLength)
+void StrVal::vCopyString(char* aStr, i8 iLength)
 {
   vClass(CN_STRVAL);
   
@@ -375,9 +375,9 @@ void sRefactor::vCopyString(char* aStr, i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* calculate number of bytes reqired to hold string of given length           */
 /*----------------------------------------------------------------------------*/
-i8 sRefactor::nBytesRequired(i8 iLength)
+i8 StrVal::nBytesRequired(i8 iLength)
 {
-  i8 nBytes = sizeof(sRefactor) + iLength + 1;
+  i8 nBytes = sizeof(StrVal) + iLength + 1;
   
   return nBytes;
 }
@@ -391,11 +391,11 @@ i8 sRefactor::nBytesRequired(i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-Footer* sRefactor::pFooter(void)
+Footer* StrVal::pFooter(void)
 {
   _precondition_(_MAGIC_);
   
-  Footer* pFooter = pAdd<Footer*>(this,sizeof(sRefactor)+m_nDataBytes);
+  Footer* pFooter = pAdd<Footer*>(this,sizeof(StrVal)+m_nDataBytes);
   
   return pFooter;
 }

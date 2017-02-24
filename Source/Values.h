@@ -20,7 +20,7 @@
 #include "ObjVal.hpp"
 #include "PtrVal.hpp"
 
-#include "sRefactor.hpp"  // temp
+#include "StrVal.hpp"  // temp
 
 #include "ValSet.hpp"
 

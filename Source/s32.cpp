@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(void)
-: sRefactor(CN_S32,C_S32_DATAAREA)
+: StrVal(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -27,12 +27,12 @@ s32::s32(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(s32& rArg)
-: sRefactor(CN_S32,C_S32_DATAAREA)
+: StrVal(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S32_DATAAREA);
-  sRefactor::vCopy(rArg.a());
+  StrVal::vCopy(rArg.a());
   
   _checkInitialised_(CN_S32);
   
@@ -43,12 +43,12 @@ s32::s32(s32& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s32::s32(const char* aArg)
-: sRefactor(CN_S32,C_S32_DATAAREA)
+: StrVal(CN_S32,C_S32_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
 
   Memory::vZero(m_mDataArea, C_S32_DATAAREA);
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
   
   _checkInitialised_(CN_S32);
   
@@ -70,7 +70,7 @@ void s32::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,13 +80,13 @@ void s32::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s32::operator = (sRefactor& rArg)
+void s32::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -100,7 +100,7 @@ void s32::vInit()
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
-  sRefactor::vInit(C_S32_DATAAREA);
+  StrVal::vInit(C_S32_DATAAREA);
 }
 
 /*----------------------------------------------------------------------------*/

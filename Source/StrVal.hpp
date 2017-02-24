@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* sRefactor.hpp -- temporary class for refactoring s                         */
+/* StrVal.hpp -- string value                                                 */
 /*============================================================================*/
 
 #pragma once
@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class sRefactor : public Value
+  class StrVal : public Value
   {
   protected:
     i8   m_nDataBytes; // size of the data area (may not be length of the string)
@@ -16,18 +16,18 @@ namespace Values
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, sRefactor* pRefactor);
+    void* operator new(size_t, StrVal* pRefactor);
   
-    sRefactor(void);
-    sRefactor(eCN eClass);
-    sRefactor(i8 iChars);
-    sRefactor(eCN eClass, i8 iSize);
+    StrVal(void);
+    StrVal(eCN eClass);
+    StrVal(i8 iChars);
+    StrVal(eCN eClass, i8 iSize);
   
-    ~sRefactor(void);
+    ~StrVal(void);
   
     void operator = (const char* aArg);
     void operator = (char* aArg);
-    void operator = (sRefactor& rArg);
+    void operator = (StrVal& rArg);
   
     void vStrValAssign(const char* sStr);
   
@@ -46,7 +46,7 @@ namespace Values
     void  vCopy(const char* aArg);
     bool  bEnds(const char* aSuffix);
     void  vInit(i8 iSize);
-    bool  bIsEqual(sRefactor& sArg, i8 iCase) ;
+    bool  bIsEqual(StrVal& sArg, i8 iCase) ;
     i8    iLength(void);
   
   
@@ -72,7 +72,7 @@ namespace Values
   
   };
 
-  sRefactor* _psRefactor(void* pAddr);
+  StrVal* _psRefactor(void* pAddr);
 }
 
 /*============================================================================*/

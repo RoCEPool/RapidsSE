@@ -181,7 +181,7 @@ char* SelCursor::pRowAsStr(void)
   if (! m_pRow)
     return nullptr;
   
-  sRefactor* pStrVal = reinterpret_cast<sRefactor*>(m_pRow->pData());
+  StrVal* pStrVal = reinterpret_cast<StrVal*>(m_pRow->pData());
   
   if (pStrVal)
     return pStrVal->sStr();

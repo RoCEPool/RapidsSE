@@ -270,7 +270,7 @@ void Thread::vLoop(void)
 /*----------------------------------------------------------------------------*/
 /* get name of this thread                                                    */
 /*----------------------------------------------------------------------------*/
-sRefactor& Thread::sName(void)
+StrVal& Thread::sName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   
@@ -280,7 +280,7 @@ sRefactor& Thread::sName(void)
 /*----------------------------------------------------------------------------*/
 /* set name of this thread                                                    */
 /*----------------------------------------------------------------------------*/
-void Thread::vName(sRefactor& sName)
+void Thread::vName(StrVal& sName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
   

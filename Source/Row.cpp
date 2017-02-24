@@ -89,7 +89,7 @@ void Row::vContentDump(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
   
-  sRefactor* pStr = (sRefactor*)pData();
+  StrVal* pStr = (StrVal*)pData();
   
   vTrace("Row %p: TxId %lld DataBytes %lld %s (%lld bytes) %s\n",
          this,

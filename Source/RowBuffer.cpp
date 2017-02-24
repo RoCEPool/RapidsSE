@@ -331,7 +331,7 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-//bool RowBuffer::bInsertRow(TxRef* pTxRef, sRefactor* pRowStr)
+//bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
 //  
@@ -358,7 +358,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 nBytesRequired = sRefactor::nBytesRequired(iLength);
+  i8 nBytesRequired = StrVal::nBytesRequired(iLength);
   
   Row* pRow = pAllocRow(nBytesRequired);
   if (!pRow)
@@ -370,7 +370,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
   
   char* pData = pRow->pData();
   
-  sRefactor* pStr = new((sRefactor*)pData) sRefactor;
+  StrVal* pStr = new((StrVal*)pData) StrVal;
   
   Memory::vCopy(pStr->sStr(),pRecord,iLength);
   pStr->pDataArea()[iLength] = '\0';

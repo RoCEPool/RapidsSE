@@ -122,14 +122,14 @@ namespace Dictionaries
     Cell* pFirstCell(void);
     bool  bHasCell(Cell* pCell);
     bool  bImmediate(void);
-    bool  bIsName(sRefactor& sName);
+    bool  bIsName(StrVal& sName);
     void  vImmediate(bool bImmediate);
     bool  bIndirect(void);
     void  vIndirect(bool bIndirect);
     Word* pKind(void);
     void  vKind(Word* pKind);
     Cell* pLastCell(void);
-    sRefactor&    sName(void);
+    StrVal&    sName(void);
     void  vObjectDump(const char* pTab);
     void  vParams(i8 iParams);
     i8    iParams(void);

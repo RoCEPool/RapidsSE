@@ -40,8 +40,8 @@ namespace Threads
     i8   iCpu(void);
     void vContentDump(void) const;
     void vLoop(void);
-    sRefactor&   sName(void);
-    void vName(sRefactor& sName);
+    StrVal&   sName(void);
+    void vName(StrVal& sName);
     void vSpawn(void);
     i8   iThreadNo(void);
     

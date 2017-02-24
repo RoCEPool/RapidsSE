@@ -8,7 +8,7 @@
 
 namespace Values
 {
-  class s32 : public sRefactor
+  class s32 : public StrVal
   {
   private:
     static const i8 C_S32_DATAAREA = 32;
@@ -27,7 +27,7 @@ namespace Values
     
     void operator = (const char* aArg);
     void operator = (char* aArg);
-    void operator = (sRefactor& rArg);
+    void operator = (StrVal& rArg);
     
     void vInit(void);
     

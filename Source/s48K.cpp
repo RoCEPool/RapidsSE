@@ -12,7 +12,7 @@ extern BufferPool*  gpBufferPool;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(void)
-: sRefactor(CN_S48K,C_S48K_DATAAREA)
+: StrVal(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
@@ -25,13 +25,13 @@ s48K::s48K(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(s48K& rArg)
-: sRefactor(CN_S48K,C_S48K_DATAAREA)
+: StrVal(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
 
   Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
-  sRefactor::vCopy(rArg.a());
+  StrVal::vCopy(rArg.a());
   
   _checkInitialised_(CN_S48K);
 }
@@ -40,13 +40,13 @@ s48K::s48K(s48K& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 s48K::s48K(const char* aArg)
-: sRefactor(CN_S48K,C_S48K_DATAAREA)
+: StrVal(CN_S48K,C_S48K_DATAAREA)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
   Memory::vZero(m_mDataArea, C_S48K_DATAAREA);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
   
   _checkInitialised_(CN_S48K);
 }
@@ -67,7 +67,7 @@ void s48K::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -77,13 +77,13 @@ void s48K::operator = (char* aArg)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   
-  sRefactor::vCopy(aArg);
+  StrVal::vCopy(aArg);
 }
 
 /*----------------------------------------------------------------------------*/
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
-void s48K::operator = (sRefactor& rArg)
+void s48K::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_S48K,_FOOTER_);
   

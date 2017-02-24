@@ -11,14 +11,14 @@ namespace StorageEngine
   class Region
   {
   public:
-    static bool bAttach(sRefactor& sRegionName);
-    static void vCreate(sRefactor& sRegionName);
-    static bool bTest(sRefactor& sRegionName);
-    static void vUnlink(sRefactor& sRegionName);
+    static bool bAttach(StrVal& sRegionName);
+    static void vCreate(StrVal& sRegionName);
+    static bool bTest(StrVal& sRegionName);
+    static void vUnlink(StrVal& sRegionName);
     
     ////////////////////////////////////////////////////////////////////////////
 
-    static void* pOpen(sRefactor& sRegionName, int& iFD);
+    static void* pOpen(StrVal& sRegionName, int& iFD);
     static void  vClose(void* pRegion, int iFD);
   };
 }

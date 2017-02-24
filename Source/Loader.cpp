@@ -132,7 +132,7 @@ LoadMap* Loader::pLoadMap(void)
 /*----------------------------------------------------------------------------*/
 /* get path                                                                   */
 /*----------------------------------------------------------------------------*/
-sRefactor& Loader::sPath(void)
+StrVal& Loader::sPath(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
 
@@ -142,7 +142,7 @@ sRefactor& Loader::sPath(void)
 /*----------------------------------------------------------------------------*/
 /* set path                                                                   */
 /*----------------------------------------------------------------------------*/
-void Loader::vPath(sRefactor& sPath)
+void Loader::vPath(StrVal& sPath)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOADER,_FOOTER_);
   

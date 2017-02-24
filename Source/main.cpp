@@ -20,12 +20,12 @@ int main(int argc, const char* argv[])
 {
   printf(
          "sizeof(eCN) %lu; sizeof(bool) %lu; \n"
-         "sizeof(Object) %lu; sizeof(sRefactor) %lu; \n"
+         "sizeof(Object) %lu; sizeof(StrVal) %lu; \n"
          "sizeof(s32) %lu; sizeof(s256) %lu; \n"
          "sizeof(Value) %lu; sizeof(IntVal) %lu; sizeof(ValWsp) %lu \n"
          "\n",
          sizeof(eCN),sizeof(bool),
-         sizeof(Object),sizeof(sRefactor),
+         sizeof(Object),sizeof(StrVal),
          sizeof(s32),sizeof(s256),
          sizeof(Value),sizeof(IntVal),sizeof(ValWsp)
   );
