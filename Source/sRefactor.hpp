@@ -15,7 +15,13 @@ namespace Values
     // ..dataArea..
   
   public:
+    void* operator new(size_t);
+    void* operator new(size_t, sRefactor* pRefactor);
+  
     sRefactor(eCN eClass);
+    sRefactor(i8 iChars);
+  
+    ~sRefactor(void);
   
     char* pDataArea(void);
     i8    nDataBytes(void);
