@@ -32,6 +32,8 @@ namespace Values
     void vSize(i8 iSize);
     void vToString(char* aWorkspace);
         
+    Object* pNewObject(void);
+  
     static i8 nBytesRequired(i8 iLength);
   };
   

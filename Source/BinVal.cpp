@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Values.h"
+#include "StorageEngine.h"
 
 extern i8 giClassSize[];
 
@@ -147,6 +148,22 @@ void BinVal::vToString(char* aWorkspace)
                   this,
                   pCN[pEmbedded->eClass()],
                   m_iBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get new object from binary                                                 */
+/*----------------------------------------------------------------------------*/
+Object* BinVal::pNewObject(void)
+{
+  ASSERT(CN_BINVAL == eClass());
+  
+  //BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
+  
+  i8 iSize = this->iSize();
+  Object* pObject = Heap::pAllocate(eObjectClass());
+  Memory::vCopy(pObject, pData(), iSize);
+  
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/

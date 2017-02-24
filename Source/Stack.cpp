@@ -683,7 +683,7 @@ bool Stack::bPopBinary(Object*& pObject)
   ValWsp xBinVal;
   vPopVal(&xBinVal);
   
-  pObject = xBinVal.pNewObjBin();
+  pObject = _pBinVal(&xBinVal)->pNewObject();
   
   return true;
 }

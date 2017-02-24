@@ -39,7 +39,6 @@ namespace Values
     
     i8    iSize(void);
     
-    Object* pNewObjBin(void);
         
   };
 }

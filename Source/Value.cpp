@@ -26,22 +26,6 @@ Value::Value(eCN eClass)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get new binary object                                                      */
-/*----------------------------------------------------------------------------*/
-Object* Value::pNewObjBin(void)
-{
-  ASSERT(CN_BINVAL == eClass());
-  
-  BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
-  
-  i8 iSize = pBinVal->iSize();
-  Object* pObject = Heap::pAllocate(pBinVal->eObjectClass());
-  Memory::vCopy(pObject, pBinVal->pData(), iSize);
-  
-  return pObject;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get size (in bytes) of value                                               */
 /*----------------------------------------------------------------------------*/
 i8 Value::iSize(void)
