@@ -20,21 +20,15 @@
 #include "ObjVal.hpp"
 #include "PtrVal.hpp"
 
-#include "StrVal.hpp"  // temp
+#include "StrVal.hpp"
+#include "StrTpl.hpp"
 
 #include "ValSet.hpp"
 
-#include "StrTpl.hpp"
-
-#include "s32.hpp"
-#include "s256.hpp"
-#include "s48K.hpp"
-#include "s1M.hpp"
-
-typedef StrTpl<32>    sf32;
-typedef StrTpl<256>   sf256;
-typedef StrTpl<C_48K> sf48K;
-typedef StrTpl<C_1M>  sf1M;
+typedef StrTpl<32>    s32;
+typedef StrTpl<256>   s256;
+typedef StrTpl<C_48K> s48K;
+typedef StrTpl<C_1M>  s1M;
 
 //-----------------------------------------------------------------------------
 namespace Values
