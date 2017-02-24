@@ -21,7 +21,8 @@ namespace DBobjects
     ~Key(void);
   
     bool operator <(Key* pKeyArg);
-
+    bool operator <=(Key* pKeyArg);
+    
     void  vShow(void);
   
     void  vKey(Key& xKey);
