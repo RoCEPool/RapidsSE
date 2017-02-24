@@ -12,8 +12,8 @@ namespace Values
   {
   private:
     i8   m_nDataBytes;
-    char m_sStr[8];  // should be ..data..
-    
+    // ..dataArea..
+  
   public:
     void* operator new(size_t);
     void* operator new(size_t, StrVal* pStrVal);

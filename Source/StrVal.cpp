@@ -68,8 +68,8 @@ void StrVal::operator =(const char* sStr)
 {
   //ASSERT(m_nDataBytes);
   
-  String::vCopy(m_sStr,sStr);
-  m_nDataBytes = String::iSize(m_sStr);
+  String::vCopy(pDataArea(),sStr);
+  m_nDataBytes = String::iSize(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -93,9 +93,9 @@ void StrVal::vReset(void)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iSize(void) const
 {
-  i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
+  //i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
   
-  i8 iSize = sizeof(StrVal) + iOverrun;
+  i8 iSize = sizeof(StrVal) + m_nDataBytes;
   
   return iSize;
 }
@@ -105,7 +105,7 @@ i8 StrVal::iSize(void) const
 /*----------------------------------------------------------------------------*/
 void StrVal::vSize(void)
 {
-  m_nDataBytes = String::iSize(m_sStr);
+  m_nDataBytes = String::iSize(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,9 @@ char* StrVal::sStr(void)
 /*----------------------------------------------------------------------------*/
 char* StrVal::pDataArea(void)
 {
-  return &m_sStr[0];
+  char* pArea = pAdd<char*>(&m_nDataBytes,sizeof(m_nDataBytes));
+                            
+  return pArea;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -138,7 +140,7 @@ char* StrVal::pDataArea(void)
 void StrVal::vToCommand(char* aWorkspace)
 {
   String::vCopy(aWorkspace,"\"");
-  String::vCopy(aWorkspace,m_sStr);
+  String::vCopy(aWorkspace,pDataArea());
   String::vCopy(aWorkspace,"\"");
 }
 
@@ -147,7 +149,7 @@ void StrVal::vToCommand(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 void StrVal::vToString(char* aWorkspace)
 {
-  String::vCopy(aWorkspace,m_sStr);
+  String::vCopy(aWorkspace,pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,9 +159,9 @@ void StrVal::vCopyString(char* aStr, i8 iLength)
 {
   vClass(CN_STRVAL);
   
-  String::vCopyLen(m_sStr,aStr,iLength);
+  String::vCopyLen(pDataArea(),aStr,iLength);
   
-  m_nDataBytes = String::iSize(m_sStr);
+  m_nDataBytes = String::iSize(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,7 +173,7 @@ void StrVal::vCopyString(char* aStr, i8 iLength)
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nBytesRequired(i8 iLength)
 {
-  i8 nBytes = sizeof(StrVal) + iLength + 1 - 8;
+  i8 nBytes = sizeof(StrVal) + iLength + 1;
   
   return nBytes;
 }
