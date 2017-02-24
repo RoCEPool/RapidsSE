@@ -27,8 +27,6 @@ namespace Values
     void vSize(i8 iSize);
     char* sStr(void);
     
-    char* pDataArea(void);
-
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);
     
