@@ -17,6 +17,11 @@ namespace Values
   public:
     sRefactor(eCN eClass);
   
+    char* pDataArea(void);
+  
+    char* a(void);
+    char* z(void);
+
     Footer* pFooter(void);
   
   };
