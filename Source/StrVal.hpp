@@ -36,7 +36,7 @@ namespace Values
     void  vAppend(const char c);
     void  vAppend(const char* aArg);
     void  vCopy(const char* aArg);
-    void  vCopyString(char* aStr, i8 iLength);
+    void  vCopy(const char* aStr, i8 iLength);
     void  vStrValAssign(const char* aStr);
     void  vStrValAssign(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);

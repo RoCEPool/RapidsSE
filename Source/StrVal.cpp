@@ -329,7 +329,7 @@ void StrVal::vToString(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 /* copy a string into workspace                                               */
 /*----------------------------------------------------------------------------*/
-void StrVal::vCopyString(char* aStr, i8 iLength)
+void StrVal::vCopy(const char* aStr, i8 iLength)
 {
   vClass(CN_STRVAL);
   
