@@ -14,10 +14,6 @@ pDUMPFUN *gpDump[]
 {
   /*  0 */ &Dump::vInvalid,         // CN_NONE
   
-  /*  1 */ &Dump::vInvalid,         // CN_STRFXD
-  /*  2 */ &Dump::vInvalid,         // CN_S256
-  /*  3 */ &Dump::vInvalid,         // CN_S48K
-  /*  4 */ &Dump::vInvalid,         // CN_S1M
   
   /*  5 */ &Dump::vInvalid,         // CN_BINVAL
   /*    */ &Dump::vInvalid,         // CN_ENTWSP
@@ -25,6 +21,7 @@ pDUMPFUN *gpDump[]
   /*  7 */ &Dump::vInvalid,         // CN_IPVAL
   /*  8 */ &Dump::vInvalid,         // CN_OBJVAL
   /*  9 */ &Dump::vInvalid,         // CN_PTRVAL
+  /*  1 */ &Dump::vInvalid,         // CN_STRFXD
   /* 10 */ &Dump::vInvalid,         // CN_STRVAL
   /* 11 */ &Dump::vInvalid,         // CN_VALREG
   /* 12 */ &Dump::vInvalid,         // CN_VALSET
@@ -147,10 +144,6 @@ i8 giClassSize[]
 {
   /*  0 */ 0,
   
-  /*  1 */ sizeof(s32),                // CN_STRFXD
-  /*  2 */ sizeof(s256),               // CN_S256
-  /*  3 */ sizeof(s48K),               // CN_S48K
-  /*  4 */ sizeof(s1M),                // CN_S1M
   
   /*  5 */ sizeof(BinVal),             // CN_BINVAL
   /*    */ 0,                          // CN_ENTWSP
@@ -158,7 +151,8 @@ i8 giClassSize[]
   /*  7 */ sizeof(PtrVal),             // CN_IPVAL
   /*  8 */ sizeof(ObjVal),             // CN_OBJVAL
   /*  9 */ sizeof(PtrVal),             // CN_PTRVAL
-  /* 10 */ sizeof(StrVal),          // CN_STRVAL
+  /*  1 */ sizeof(s32),                // CN_STRFXD
+  /* 10 */ sizeof(StrVal),             // CN_STRVAL
   /* 11 */ sizeof(ValReg),             // CN_VALREG
   /* 12 */ sizeof(ValWsp), // correct  // CN_VALSET
   /* 13 */ sizeof(ValWsp),             // CN_VALWSP
@@ -280,10 +274,6 @@ eHT geWhichHeap[]
 {
   /*  0 */ HT_INVALID,
   
-  /*  1 */ HT_INVALID, // CN_STRFXD
-  /*  2 */ HT_INVALID, // CN_S256
-  /*  3 */ HT_INVALID, // CN_S48K
-  /*  4 */ HT_INVALID, // CN_S1M
   
   /*  5 */ HT_INVALID, // CN_BINVAL
   /*    */ HT_INVALID, // CN_ENTWSP,
@@ -291,6 +281,7 @@ eHT geWhichHeap[]
   /*  7 */ HT_INVALID, // CN_IPVAL
   /*  8 */ HT_INVALID, // CN_OBJVAL
   /*  9 */ HT_INVALID, // CN_PTRVAL
+  /*  1 */ HT_INVALID, // CN_STRFXD
   /* 10 */ HT_INVALID, // CN_STRVAL
   /* 11 */ HT_INVALID, // CN_VALREG
   /* 12 */ HT_INVALID, // CN_VALSET

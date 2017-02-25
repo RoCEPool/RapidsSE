@@ -395,15 +395,12 @@ void Task::vAddConstants(void)
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE",         CN_NONE);
 
-  /*  1 */ vAddConstant("CN_STRFXD",          CN_STRFXD);
-  /*  2 */ vAddConstant("CN_S256",         CN_S256);
-  /*  3 */ vAddConstant("CN_S48K",          CN_S48K);
-  
   /*    */ vAddConstant("CN_BINVAL",       CN_BINVAL);
   /*  4 */ vAddConstant("CN_INTVAL",       CN_INTVAL);
   /*  5 */ vAddConstant("CN_IPVAL",        CN_IPVAL);
   /*  6 */ vAddConstant("CN_OBJVAL",       CN_OBJVAL);
   /*  7 */ vAddConstant("CN_PTRVAL",       CN_PTRVAL);
+  /*  1 */ vAddConstant("CN_STRFXD",       CN_STRFXD);
   /*  8 */ vAddConstant("CN_STRVAL",       CN_STRVAL);
   /*  9 */ vAddConstant("CN_VALREG",       CN_VALREG);
   /* 10 */ vAddConstant("CN_VALSET",       CN_VALSET);

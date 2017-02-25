@@ -15,17 +15,13 @@ namespace Platform
     
     /*  0 */ CN_NONE=0,
     
-    /*  1 */ CN_STRFXD,
-    /*  2 */ CN_S256,
-    /*  3 */ CN_S48K,
-    /*  4 */ CN_S1M,
-    
     /*  5 */ CN_BINVAL,
     /*    */ CN_ENTWSP,
     /*  6 */ CN_INTVAL,
     /*  7 */ CN_IPVAL,
     /*  8 */ CN_OBJVAL,
     /*  9 */ CN_PTRVAL,
+    /*  1 */ CN_STRFXD,
     /* 10 */ CN_STRVAL,
     /* 11 */ CN_VALREG,
     /* 12 */ CN_VALSET,
@@ -148,17 +144,14 @@ namespace Platform
   {
     /*  0 */ "NONE",
     
-    /*  1 */ "S32",
-    /*  2 */ "S256",
-    /*  3 */ "S8K",
-    /*  4 */ "S1M",
-    
+  
     /*  5 */ "BINVAL",
     /*    */ "ENTWSP",
     /*  6 */ "INTVAL",
     /*  7 */ "IPVAL",
     /*  8 */ "OBJVAL",
     /*  9 */ "PTRVAL",
+    /*  1 */ "STRFXD",
     /* 10 */ "STRVAL",
     /* 11 */ "VALREG",
     /* 12 */ "VALSET",
