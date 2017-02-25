@@ -21,14 +21,14 @@
 #include "PtrVal.hpp"
 
 #include "StrVal.hpp"
-#include "StrTpl.hpp"
+#include "StrFxd.hpp"
 
 #include "ValSet.hpp"
 
-typedef StrTpl<32>    s32;
-typedef StrTpl<256>   s256;
-typedef StrTpl<C_48K> s48K;
-typedef StrTpl<C_1M>  s1M;
+typedef StrFxd<32>    s32;
+typedef StrFxd<256>   s256;
+typedef StrFxd<C_48K> s48K;
+typedef StrFxd<C_1M>  s1M;
 
 //-----------------------------------------------------------------------------
 namespace Values

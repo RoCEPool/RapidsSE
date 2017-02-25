@@ -37,6 +37,8 @@ void Task::vAddPrimitives_Str(void)
   vAddPrimitive("s256.init",    &vS256Init,      false);
   
   vAddPrimitive("str::algebra", &vStrAlgebra,    false);
+  vAddPrimitive("strAlgebra",   &vStrAlgebra,    false);
+  
   vAddPrimitive("str.cat",      &vStrCat,        false);
   vAddPrimitive("str.clip",     &vStrClip,       false);
   vAddPrimitive("str.equal",    &vStrEqual,      false);

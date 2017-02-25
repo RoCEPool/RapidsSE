@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StrTpl.hpp -- fixed-length string template                                 */
+/* StrFxd.hpp -- fixed-length string template                                 */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 namespace Values
 {
   template <int SIZE>
-  class StrTpl : public StrVal
+  class StrFxd : public StrVal
   {
   private:
     char m_mDataArea[SIZE]; // string data area
@@ -17,11 +17,11 @@ namespace Values
     Footer m_xFooter;
     
   public:    
-    StrTpl(void);
-    StrTpl(StrVal& xArg);
-    StrTpl(const char* aArg);
-    StrTpl(const char* aArg, i8 nChars);
-   ~StrTpl(void);
+    StrFxd(void);
+    StrFxd(StrVal& xArg);
+    StrFxd(const char* aArg);
+    StrFxd(const char* aArg, i8 nChars);
+   ~StrFxd(void);
     
     void operator = (const char* aArg);
     void operator = (char* aArg);
@@ -40,7 +40,7 @@ using namespace Values;
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrTpl<SIZE>::StrTpl(void)
+StrFxd<SIZE>::StrFxd(void)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
@@ -56,7 +56,7 @@ StrTpl<SIZE>::StrTpl(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrTpl<SIZE>::StrTpl(StrVal& rArg)
+StrFxd<SIZE>::StrFxd(StrVal& rArg)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
@@ -73,7 +73,7 @@ StrTpl<SIZE>::StrTpl(StrVal& rArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrTpl<SIZE>::StrTpl(const char* aArg)
+StrFxd<SIZE>::StrFxd(const char* aArg)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
@@ -90,7 +90,7 @@ StrTpl<SIZE>::StrTpl(const char* aArg)
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrTpl<SIZE>::~StrTpl(void)
+StrFxd<SIZE>::~StrFxd(void)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
@@ -99,18 +99,7 @@ StrTpl<SIZE>::~StrTpl(void)
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrTpl<SIZE>::operator = (const char* aArg)
-{
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
-  
-  StrVal::vCopy(aArg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* assignment operator                                                        */
-/*----------------------------------------------------------------------------*/
-template <int SIZE>
-void StrTpl<SIZE>::operator = (char* aArg)
+void StrFxd<SIZE>::operator = (const char* aArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -121,7 +110,18 @@ void StrTpl<SIZE>::operator = (char* aArg)
 /* assignment operator                                                        */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrTpl<SIZE>::operator = (StrVal& rArg)
+void StrFxd<SIZE>::operator = (char* aArg)
+{
+  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  
+  StrVal::vCopy(aArg);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assignment operator                                                        */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+void StrFxd<SIZE>::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -132,7 +132,7 @@ void StrTpl<SIZE>::operator = (StrVal& rArg)
 /* init                                                                       */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-void StrTpl<SIZE>::vInit()
+void StrFxd<SIZE>::vInit()
 {
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
@@ -147,7 +147,7 @@ void StrTpl<SIZE>::vInit()
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-Footer* StrTpl<SIZE>::pFooter(void)
+Footer* StrFxd<SIZE>::pFooter(void)
 {
   _precondition_(_MAGIC_,CN_S32);
   
