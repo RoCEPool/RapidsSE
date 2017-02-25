@@ -49,7 +49,6 @@ namespace Values
   
     // from sFactor::
     i8   iChars(void) const;
-    void vReset(void);
     i8   iSize(void) const;
     void vSize(void);
     char* sStr(void);
