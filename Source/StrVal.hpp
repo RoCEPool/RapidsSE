@@ -40,13 +40,12 @@ namespace Values
     void  vCopy(const char* aArg);
     void  vCopy(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);
-    bool  bIsEqual(StrVal& sArg, i8 iCase) ;
+    bool  bIsEqual(StrVal& sArg, i8 iCase);
     i8    iLength(void);
   
   
   
     // from sFactor::
-    i8   iChars(void) const;
     i8   iSize(void) const;
     void vSize(void);
     char* aStr(void);
