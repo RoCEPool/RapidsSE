@@ -25,7 +25,7 @@ namespace Values
     
     void operator =(Dictionaries::Cell* pPtr);
     
-    i8      iSize(void) const;
+    i8      nSize(void) const;
     Dictionaries::Cell* pIpPtr(void) const;
     
     void vToCommand(char* aWorkspace);

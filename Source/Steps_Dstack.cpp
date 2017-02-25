@@ -513,7 +513,7 @@ void Task::vDstackToValSet(NNP_Task nnpTask)
     xValSet.vAppend(pCursor,xVal);
   }
   
-  //  vTrace("ValSet %lld bytes\n",xValSet.iSize());
+  //  vTrace("ValSet %lld bytes\n",xValSet.nSize());
   
   nnpTask->m_pDataStack->vPush(xValSet);
   

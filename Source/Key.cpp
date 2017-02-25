@@ -106,7 +106,7 @@ void Key::vShow(void)
   
   vTrace("Key %p: (size %lld value:%lld)\n",
          this,
-         iSize(),
+         nSize(),
          iKey
          );
 }
@@ -139,7 +139,7 @@ i8 Key::nDataBytes(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this key                                              */
 /*----------------------------------------------------------------------------*/
-i8 Key::iSize(void)
+i8 Key::nSize(void)
 {
   //i8 nBytes = sizeof(Key) + sizeof(i8);
   i8 nBytes = sizeof(i8);

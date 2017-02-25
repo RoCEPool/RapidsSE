@@ -239,7 +239,7 @@ void Task::vSocketSend(NNP_Task nnpTask)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // send the size of valset
-  i8 iBytes = xValSet.iSize();
+  i8 iBytes = xValSet.nSize();
   bResult = pSocket->bSendTo(sizeof(iBytes), &iBytes, xSysCall);
   
   if ( ! bResult ) {

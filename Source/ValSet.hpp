@@ -37,7 +37,7 @@ namespace Values
     bool bHasRowBuffer();
     bool bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer);
     
-    i8   iSize(void);
+    i8   nSize(void);
     
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);

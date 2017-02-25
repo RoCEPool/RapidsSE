@@ -179,7 +179,7 @@ void Entry::vKey(Key& xKey)
   Key* pKey = reinterpret_cast<Key*>(pDataArea());
 
   pKey->vKey(xKey);
-  m_nDataBytes += pKey->iSize();  
+  m_nDataBytes += pKey->nSize();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,7 +240,7 @@ char* Entry::pDataNext(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry                                            */
 /*----------------------------------------------------------------------------*/
-i8 Entry::iSize(void)
+i8 Entry::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
 

@@ -104,7 +104,7 @@ void Row::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this row                                              */
 /*----------------------------------------------------------------------------*/
-i8 Row::iSize(void)
+i8 Row::nSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROW,_FOOTER_);
 

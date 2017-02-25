@@ -51,7 +51,7 @@ void IpVal::operator =(Cell* pPtr)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 IpVal::iSize(void) const
+i8 IpVal::nSize(void) const
 {
   return sizeof(PtrVal);
 }

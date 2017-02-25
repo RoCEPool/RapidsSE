@@ -111,7 +111,7 @@ void BinVal::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 BinVal::iSize(void) const
+i8 BinVal::nSize(void) const
 {
   i8 iOverrun = m_iBytes > 8 ? m_iBytes - 8 : 0;
   
@@ -159,7 +159,7 @@ Object* BinVal::pNewObject(void)
   
   //BinVal* pBinVal = reinterpret_cast<BinVal*>(this);
   
-  i8 iSize = this->iSize();
+  i8 iSize = this->nSize();
   Object* pObject = Heap::pAllocate(eObjectClass());
   Memory::vCopy(pObject, pData(), iSize);
   

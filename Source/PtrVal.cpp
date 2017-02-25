@@ -51,7 +51,7 @@ void PtrVal::operator =(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 PtrVal::iSize(void) const
+i8 PtrVal::nSize(void) const
 {
   return sizeof(PtrVal);
 }

@@ -222,9 +222,9 @@ Row* RowBuffer::pNextRow(Row* pCurr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
   
-  i8 iSize = pCurr->iSize();
+  i8 nBytes = pCurr->nSize();
   
-  Row* pNext = pAdd<Row*>(pCurr,iSize);
+  Row* pNext = pAdd<Row*>(pCurr,nBytes);
   
   if ((char*)pNext < (char*)m_pFreeSpace)
     return pNext;
@@ -331,29 +331,6 @@ void RowBuffer::vCopyBuffer(RowBuffer* pFromBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert row into this buffer                                                */
 /*----------------------------------------------------------------------------*/
-//bool RowBuffer::bInsertRow(TxRef* pTxRef, StrVal* pRowStr)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);
-//  
-//  i8 iDataBytes  = pRowStr->iSize();
-//  
-//  Row* pRow = pAllocRow(iDataBytes);
-//  if (!pRow)
-//    return false;
-//  
-//  i8 iTxId = pTxRef->iTxId();
-//  
-////  vTrace("TxId %lld\n",iTxId);
-//  
-//  pRow->vTxId(iTxId);
-//  
-//  Memory::vCopy(pRow->pData(),pRowStr,iDataBytes);
-//  
-//  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
-//
-//  return true;
-//}
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ROWBUFFER,_FOOTER_);

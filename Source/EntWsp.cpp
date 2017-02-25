@@ -94,7 +94,7 @@ void EntWsp::vRowId(RowId& xRowId)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of this entry                                            */
 /*----------------------------------------------------------------------------*/
-i8 EntWsp::iSize(void)
+i8 EntWsp::nSize(void)
 {
   //_precondition_(_MAGIC_,CN_ENTRY,_FOOTER_);
   

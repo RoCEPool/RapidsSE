@@ -41,7 +41,7 @@ ObjVal::ObjVal(i8 iSize)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes                                                          */
 /*----------------------------------------------------------------------------*/
-i8 ObjVal::iSize(void) const
+i8 ObjVal::nSize(void) const
 {
   return m_iSize;
 }

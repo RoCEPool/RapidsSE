@@ -127,31 +127,31 @@ i8 V::iSize(Object* pObject)
       
     case CN_BINVAL: {
       BinVal* pBinVal = _pBinVal(pObject);
-      nBytes = pBinVal->iSize();
+      nBytes = pBinVal->nSize();
       break;
     }
       
     case CN_INTVAL: {
       IntVal* pIntVal = _pIntVal(pObject);
-      nBytes = pIntVal->iSize();
+      nBytes = pIntVal->nSize();
       break;
     }
       
     case CN_IPVAL: {
       IpVal* pIpVal = _pIpVal(pObject);
-      nBytes = pIpVal->iSize();
+      nBytes = pIpVal->nSize();
       break;
     }
       
     case CN_OBJVAL: {
       ObjVal* pObjVal = _pObjVal(pObject);
-      nBytes = pObjVal->iSize();
+      nBytes = pObjVal->nSize();
       break;
     }
       
     case CN_PTRVAL: {
       PtrVal* pPtrVal = _pPtrVal(pObject);
-      nBytes = pPtrVal->iSize();
+      nBytes = pPtrVal->nSize();
       break;
     }
       
@@ -163,12 +163,12 @@ i8 V::iSize(Object* pObject)
       
     case CN_VALSET: {
       ValSet* pValSet = _pValSet(pObject);
-      nBytes = pValSet->iSize();
+      nBytes = pValSet->nSize();
       break;
     }
       
     default:
-      THROW("Invalid eClass %lld",eClass);
+      THROW("V::iSize -- invalid eClass %lld",eClass);
       break;
   }
   

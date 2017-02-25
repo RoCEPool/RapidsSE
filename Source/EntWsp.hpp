@@ -30,7 +30,7 @@ namespace DBobjects
   
     void vAddKey(KeyWsp& xKeyWsp);
     Key* pKey(void);
-    i8   iSize(void);
+    i8   nSize(void);
     
     Footer* pFooter(void);
   };

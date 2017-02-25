@@ -27,7 +27,7 @@ namespace Values
     char* pData(void);
     eCN  eObjectClass(void);
     void vReset(void);
-    i8   iSize(void) const;
+    i8   nSize(void) const;
     void vSize(void);
     void vSize(i8 iSize);
     void vToString(char* aWorkspace);

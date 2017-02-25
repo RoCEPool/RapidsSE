@@ -20,7 +20,7 @@ namespace Values
     
     void operator =(i8 iVal);
     
-    i8 iSize(void) const;
+    i8 nSize(void) const;
     i8 iInt(void) const;
     
     void vToCommand(char* aWorkspace);

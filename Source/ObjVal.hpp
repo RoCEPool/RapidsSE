@@ -17,7 +17,7 @@ namespace Values
     void* operator new(size_t);
     
     ObjVal(i8 iSize);
-    i8 iSize(void) const;
+    i8 nSize(void) const;
   };
   
   ObjVal* _pObjVal(void* pAddr);

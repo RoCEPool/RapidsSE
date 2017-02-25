@@ -265,7 +265,7 @@ bool ValSet::bSetRowBuffer(DBobjects::RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* get size in bytes of the entire valset                                     */
 /*----------------------------------------------------------------------------*/
-i8 ValSet::iSize(void)
+i8 ValSet::nSize(void)
 {
   i8 iSize = pFirstByte() - (char*)this + m_iBytes;
   

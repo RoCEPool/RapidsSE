@@ -22,7 +22,7 @@ namespace Values
     
     void operator =(Object* pObject);
     
-    i8      iSize(void) const;
+    i8      nSize(void) const;
     Object* pPtr(void) const;
     
     void vToCommand(char* aWorkspace);
