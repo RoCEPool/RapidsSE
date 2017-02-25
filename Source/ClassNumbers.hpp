@@ -15,7 +15,7 @@ namespace Platform
     
     /*  0 */ CN_NONE=0,
     
-    /*  1 */ CN_S32,
+    /*  1 */ CN_STRFXD,
     /*  2 */ CN_S256,
     /*  3 */ CN_S48K,
     /*  4 */ CN_S1M,

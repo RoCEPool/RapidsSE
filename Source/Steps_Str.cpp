@@ -70,7 +70,7 @@ void Task::vS256Init(NNP_Task nnpTask)
   
   s256* ps256 = (s256*)_pStrFxd(pPtrStrVal);
   
-  ASSERT(CN_S32 == ps256->eClass());
+  ASSERT(CN_STRFXD == ps256->eClass());
   
   new(ps256) s256(ps256);
   

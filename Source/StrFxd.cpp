@@ -11,7 +11,7 @@ void* Values::_pStrFxd(void* pAddr)
 {
   Object* pStrFxd = reinterpret_cast<Object*>(pAddr);
   
-  RASSERT( !pStrFxd || CN_S32 == pStrFxd->eClass() );
+  RASSERT( !pStrFxd || CN_STRFXD == pStrFxd->eClass() );
   
   return pStrFxd;
 }

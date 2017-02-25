@@ -40,15 +40,15 @@ using namespace Values;
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 StrFxd<SIZE>::StrFxd(void)
-: StrVal(CN_S32,SIZE)
+: StrVal(CN_STRFXD,SIZE)
 {
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
   Memory::vZero(m_mDataArea,SIZE);
   
   _checkInitialisedSize_(SIZE);
   
-  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,9 +56,9 @@ StrFxd<SIZE>::StrFxd(void)
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 StrFxd<SIZE>::StrFxd(const char* aArg)
-: StrVal(CN_S32,SIZE)
+: StrVal(CN_STRFXD,SIZE)
 {
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
   Memory::vZero(m_mDataArea,SIZE);
   
@@ -66,7 +66,7 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
   
   _checkInitialisedSize_(SIZE);
   
-  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,11 +74,11 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
 StrFxd<SIZE>::StrFxd(StrFxd* pThis)
-: StrVal(CN_S32,SIZE)
+: StrVal(CN_STRFXD,SIZE)
 {
-  _precondition_(_MAGIC_,CN_S32);
+  _precondition_(_MAGIC_,CN_STRFXD);
   
-  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _postcondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -87,7 +87,7 @@ StrFxd<SIZE>::StrFxd(StrFxd* pThis)
 template <int SIZE>
 StrFxd<SIZE>::~StrFxd(void)
 {
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ StrFxd<SIZE>::~StrFxd(void)
 template <int SIZE>
 void StrFxd<SIZE>::operator = (const char* aArg)
 {
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
   StrVal::vCopy(aArg);
 }
@@ -107,7 +107,7 @@ void StrFxd<SIZE>::operator = (const char* aArg)
 template <int SIZE>
 void StrFxd<SIZE>::operator = (char* aArg)
 {
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
   StrVal::vCopy(aArg);
 }
@@ -118,7 +118,7 @@ void StrFxd<SIZE>::operator = (char* aArg)
 template <int SIZE>
 void StrFxd<SIZE>::operator = (StrVal& rArg)
 {
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
   vCopy(rArg.a());
 }
@@ -133,7 +133,7 @@ void StrFxd<SIZE>::operator = (StrVal& rArg)
 template <int SIZE>
 Footer* StrFxd<SIZE>::pFooter(void)
 {
-  _precondition_(_MAGIC_,CN_S32);
+  _precondition_(_MAGIC_,CN_STRFXD);
   
   return &m_xFooter;
 }

@@ -395,7 +395,7 @@ void Task::vAddConstants(void)
   // CN_ : class numbers
   /*  0 */ vAddConstant("CN_NONE",         CN_NONE);
 
-  /*  1 */ vAddConstant("CN_S32",          CN_S32);
+  /*  1 */ vAddConstant("CN_STRFXD",          CN_STRFXD);
   /*  2 */ vAddConstant("CN_S256",         CN_S256);
   /*  3 */ vAddConstant("CN_S48K",          CN_S48K);
   
