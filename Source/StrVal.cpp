@@ -44,9 +44,10 @@ void* StrVal::operator new(size_t iSize, StrVal* pThis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(eCN eClass)
-: Value(eClass)
+StrVal::StrVal(eCN eClassNo)
+: Value(eClassNo)
 {
+  _precondition_(_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,6 +56,8 @@ StrVal::StrVal(eCN eClass)
 StrVal::StrVal(StrVal* pThis)
 : Value(CN_STRVAL)
 {
+  _precondition_(_MAGIC_,CN_STRVAL);
+  
   ASSERT(this == pThis);
   
   m_nDataBytes = 0;
@@ -68,6 +71,8 @@ StrVal::StrVal(StrVal* pThis)
 StrVal::StrVal(StrVal* pThis, i8 nChars)
 : Value(CN_STRVAL)
 {
+  _precondition_(_MAGIC_,CN_STRVAL);
+  
   ASSERT(this == pThis);
   
   m_nDataBytes = nChars;
