@@ -16,9 +16,9 @@ namespace Values
   
   public:
     void* operator new(size_t);
-    void* operator new(size_t, StrVal* pRefactor);
+    void* operator new(size_t, StrVal* pThis);
   
-    StrVal(void);
+    StrVal(StrVal* pThis);
     StrVal(eCN eClass);
     StrVal(i8 iChars);
     StrVal(eCN eClass, i8 iSize);

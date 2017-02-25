@@ -36,19 +36,21 @@ void* StrVal::operator new(size_t iSize)
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
-void* StrVal::operator new(size_t iSize, StrVal* pStrVal)
+void* StrVal::operator new(size_t iSize, StrVal* pThis)
 {
   RASSERT(iSize);
   
-  return pStrVal;
+  return pThis;
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(void)
+StrVal::StrVal(StrVal* pThis)
 : Value(CN_STRVAL)
 {
+  ASSERT(this == pThis);
+  
   m_nDataBytes = 0;
   
   _checkInitialised_(CN_STRVAL);

@@ -78,11 +78,15 @@ void Task::vS256Init(NNP_Task nnpTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* str.algebra -- string algebra testings                                    */
+/* str.algebra -- string algebra tests                                        */
 /*----------------------------------------------------------------------------*/
 void Task::vStrAlgebra(NNP_Task nnpTask)
 {
   ENTRY("vStrAlgebra");
+ 
+  // (1) StrVal's cannot be declared as local variables
+  //StrVal xStrval;  // uncommenting this line should produce a compile error
+  
   EXIT();
 }
 

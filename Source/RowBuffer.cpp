@@ -370,7 +370,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
   
   char* pData = pRow->pData();
   
-  StrVal* pStr = new((StrVal*)pData) StrVal;
+  StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
   
   Memory::vCopy(pStr->sStr(),pRecord,iLength);
   pStr->pDataArea()[iLength] = '\0';
