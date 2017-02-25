@@ -32,10 +32,6 @@ namespace Values
     void vStrValAssign(const char* sStr);
     void vStrValAssign(const char* sStr, i8 iLength);
   
-    char* pDataArea(void);
-    i8    nDataBytes(void);
-    void  vDataBytes(void);
-  
     char* a(void);
     char* z(void);
 
@@ -65,10 +61,14 @@ namespace Values
     
     static i8 nBytesRequired(i8 iLength);
   
-  
+
+    i8    nDataBytes(void);
+
+  private:
+    char* pDataArea(void);
+    void  vDataBytes(void);
   
     Footer* pFooter(void);
-  
   };
 
   StrVal* _pStrVal(void* pAddr);
