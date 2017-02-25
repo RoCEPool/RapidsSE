@@ -217,7 +217,7 @@ ENTRY("vDicName");
   Dic* pDic = _pDic(pPtrDic);
 
   ValWsp sName;
-  sName = pDic->sName().a();
+  sName = pDic->sName().aStr();
   
   nnpTask->m_pDataStack->vPush(sName);
   

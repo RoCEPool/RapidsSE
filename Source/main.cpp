@@ -56,7 +56,7 @@ int main(int argc, const char* argv[])
   Dir xDir;
   s256 sCurrent;
 //  if (xDir.bGetCurrent(sCurrent))
-//    printf("dir: %s\n",sCurrent.a());
+//    printf("dir: %s\n",sCurrent.aStr());
   
   
 //  vTrace("Task::vWord %p\n",Task::vWord);
@@ -81,7 +81,7 @@ int main(int argc, const char* argv[])
     xFile.vPath("./se.region");
     bool b = xFile.bOpen(C_OPEN_READ_WRITE_CREATE);
     ASSERT(b);
-    xFile.vPrint("%s\n",gxArguments.m_sRegionName.a());
+    xFile.vPrint("%s\n",gxArguments.m_sRegionName.aStr());
     xFile.vClose();
   }
   
@@ -114,7 +114,7 @@ int main(int argc, const char* argv[])
 //      bool bResult = xDir.bSetCurrent(gxArguments.m_sCommands);
 //      // ignore error
 //      if (xDir.bGetCurrent(sCurrent))
-//        printf("dir: %s\n",sCurrent.a());
+//        printf("dir: %s\n",sCurrent.aStr());
 //    }
     SePrompt* pSePrompt = new SePrompt();
     pSePrompt->vLoop();
@@ -150,9 +150,9 @@ void vKillPrev(void)
   
   for (i8 iIndex=0; iIndex < gxArguments.m_nNodes; iIndex++) {
     
-    String::vSprint(sRegionName.a(),"%s_%s",
-      gxArguments.m_sRegionPrefix.a(),
-      gxArguments.m_xNodes[iIndex].m_sNodeName.a());
+    String::vSprint(sRegionName.aStr(),"%s_%s",
+      gxArguments.m_sRegionPrefix.aStr(),
+      gxArguments.m_xNodes[iIndex].m_sNodeName.aStr());
     
     if ( ! Region::bTest(sRegionName) )
       continue;

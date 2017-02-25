@@ -11,11 +11,11 @@ bool Env::bGet(s256& sName, s256& sValue)
 {
   char* aValue;
   
-  aValue = getenv(sName.a());
+  aValue = getenv(sName.aStr());
   if ( ! aValue )
     return false;
   
-  String::vCopyLen(sValue.a(),aValue,256);
+  String::vCopyLen(sValue.aStr(),aValue,256);
   
   return true;
 }

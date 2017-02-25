@@ -30,7 +30,7 @@ namespace Values
     void operator = (StrVal& rArg);
   
   
-    char* a(void);
+  //char* a(void);
     char* z(void);
 
   

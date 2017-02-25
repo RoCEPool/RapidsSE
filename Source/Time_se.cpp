@@ -190,7 +190,7 @@ void Time::vUTC(StrVal& sUTC)
 {
   _precondition_(_MAGIC_,CN_TIME,_FOOTER_);
 
-  char* pz = sUTC.a();
+  char* pz = sUTC.aStr();
   
   vAppendUtc(&pz);
 }

@@ -111,7 +111,10 @@ char* Table::pAnalyze(bool bDetailed)
   i8 nStrandsTotal = 0;
   s48K sAnalysis;
   
-  String::vSprintCat(sAnalysis.a(),"N%lld: Analysis of Table %s\n",gpGrid->iThisNode(),m_sTableName.a());
+  String::vSprintCat(sAnalysis.aStr(),
+                     "N%lld: Analysis of Table %s\n",
+                     gpGrid->iThisNode(),
+                     m_sTableName.aStr());
 
   for (i8 iSlot = 0; iSlot < gxArguments.m_nSlots; iSlot++) {
     
@@ -136,8 +139,11 @@ char* Table::pAnalyze(bool bDetailed)
           nRowBuffer++;
           nRowsInBuffer = pRowBuffer->nRows();
           pRowBuffer = pRowBuffer->pNextBuffer();
-          String::vSprintCat(sAnalysis.a(),
-              "   strand:%lld rowBuffer%lld: %lld rows\n", nStrands, nRowBuffer, nRowsInBuffer);
+          String::vSprintCat(sAnalysis.aStr(),
+                             "   strand:%lld rowBuffer%lld: %lld rows\n",
+                             nStrands,
+                             nRowBuffer,
+                             nRowsInBuffer);
         }
       }
       
@@ -146,16 +152,18 @@ char* Table::pAnalyze(bool bDetailed)
       pStrand = pStrand->pNextStrand();
     }
     
-    String::vSprintCat(sAnalysis.a(),"  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
-           iPartition,nStrands,nBuffers,nRows);
+    String::vSprintCat(sAnalysis.aStr(),
+                       "  partition %lld: %3lld strands; %5lld buffers; %lld rows\n",
+                       iPartition,nStrands,nBuffers,nRows);
     nRowsTotal += nRows;
     nBuffersTotal += nBuffers;
     nStrandsTotal += nStrands;
   }
-  String::vSprintCat(sAnalysis.a(),"        total: %3lld strands; %5lld buffers; %lld rows\n",
-         nStrandsTotal,nBuffersTotal,nRowsTotal);
+  String::vSprintCat(sAnalysis.aStr(),
+                     "        total: %3lld strands; %5lld buffers; %lld rows\n",
+                     nStrandsTotal,nBuffersTotal,nRowsTotal);
   
-  return sAnalysis.a();
+  return sAnalysis.aStr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -250,7 +258,7 @@ void Table::vDump(eCN eClass, Object* pObject, const char* pTab)
   Table* pTable = reinterpret_cast<Table*>(pObject);
   
   vTrace("name %s type %s\n",
-         pTable->m_sTableName.a(),
+         pTable->m_sTableName.aStr(),
          pTT[pTable->m_eTableType]);
 }
 
@@ -285,7 +293,7 @@ char* Table::pTableName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
-  return m_sTableName.a();
+  return m_sTableName.aStr();
 }
 
 /*----------------------------------------------------------------------------*/

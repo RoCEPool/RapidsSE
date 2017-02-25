@@ -17,7 +17,7 @@ bool Shm::bAttach(StrVal& sRegionName, int& iFD, SysCall& xSysCall)
   xSysCall.vClear();
     
   // open shared memory region and get a fd
-  iFD = shm_open(sRegionName.a(), O_RDWR, S_IRUSR | S_IWUSR);
+  iFD = shm_open(sRegionName.aStr(), O_RDWR, S_IRUSR | S_IWUSR);
   
   if (iFD == -1) {
     xSysCall.vError(errno);
@@ -67,7 +67,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
   
   // unlink the shm region (in case created earlier; this needs work)
   if (bRecreate)
-    rCode = shm_unlink(sRegionName.a());
+    rCode = shm_unlink(sRegionName.aStr());
   
   // we ignore the error
 
@@ -75,7 +75,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     vTrace("Shm::bCreate B\n");
   
   // open shared memory region and get a fd
-  iFD = shm_open(sRegionName.a(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
+  iFD = shm_open(sRegionName.aStr(), O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
   
   if (gxArguments.m_bVerbose)
     vTrace("Shm::bCreate C\n");
@@ -104,7 +104,7 @@ bool Shm::bCreate(StrVal& sRegionName, i8 iSize, int& iFD,
     xSysCall.vError(errno);
     vTrace("Shm::bCreate: ftruncate() error; errno=%d %s\n",errno,strerror(errno));
     
-    int rCode = shm_unlink(sRegionName.a());
+    int rCode = shm_unlink(sRegionName.aStr());
     
     if (0 != rCode) {
       xSysCall.vError(errno);
@@ -200,7 +200,7 @@ bool Shm::bUnlink(StrVal& sRegionName, SysCall& xSysCall)
 {
   xSysCall.vClear();
   
-  int rCode = shm_unlink(sRegionName.a());
+  int rCode = shm_unlink(sRegionName.aStr());
 
   if (0 != rCode) {
     xSysCall.vError(errno);

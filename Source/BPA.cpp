@@ -361,14 +361,14 @@ void BPA::vRegionSummary(void)
   _precondition_(_MAGIC_,CN_BPA,_FOOTER_);
   
   // get magnitudes of the various buffer pools
-  s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall.a());
-  s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium.a());
-  s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge.a());
-  s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.a());
+  s32 sMagSmall;  Magnitudes::vMagnitude(C_SIZE_SMALL_OBJECT, sMagSmall.aStr());
+  s32 sMagMedium; Magnitudes::vMagnitude(C_SIZE_MEDIUM_OBJECT,sMagMedium.aStr());
+  s32 sMagLarge;  Magnitudes::vMagnitude(C_SIZE_LARGE_OBJECT, sMagLarge.aStr());
+  s32 sMagJumbo;  Magnitudes::vMagnitude(C_SIZE_JUMBO_OBJECT, sMagJumbo.aStr());
   
   vTrace("\n");
   vTrace("  Region %s %p size %lldB epoch %lld\n",
-         gxArguments.m_sRegionName.a(),
+         gxArguments.m_sRegionName.aStr(),
          gpBufferPool,
          gxArguments.m_iRegionSize,
          gpAttachMap->m_iEpoch);
@@ -376,26 +376,26 @@ void BPA::vRegionSummary(void)
   vTrace("\n");
   
   vTrace("  BufferPool (%4s) buffers %-6lld alloc %-6lld free %-6lld \n",
-         sMagLarge.a(),
+         sMagLarge.aStr(),
          gpBufferPool->m_nBuffers,
          gpBufferPool->m_iAllocCount,
          gpBufferPool->m_iFreeCount
          );
   
   vTrace("   SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
-         sMagSmall.a(),
+         sMagSmall.aStr(),
          gpSmallHeap->iBufferCount(),
          gpSmallHeap->iAllocCount(),
          gpSmallHeap->iFreeCount());
   
   vTrace("  MediumHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
-         sMagMedium.a(),
+         sMagMedium.aStr(),
          gpMediumHeap->iBufferCount(),
          gpMediumHeap->iAllocCount(),
          gpMediumHeap->iFreeCount());
   
   vTrace("   JumboHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n",
-         sMagJumbo.a(),
+         sMagJumbo.aStr(),
          gpJumboHeap->iBufferCount(),
          gpJumboHeap->iAllocCount(),
          gpJumboHeap->iFreeCount());

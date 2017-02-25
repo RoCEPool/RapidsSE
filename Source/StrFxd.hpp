@@ -112,7 +112,7 @@ void StrFxd<SIZE>::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  vCopy(rArg.a());
+  vCopy(rArg.aStr());
 }
 
 /*----------------------------------------------------------------------------*/

@@ -208,7 +208,7 @@ void Task::vFlowTest(NNP_Task nnpTask)
 {
   ENTRY("vFlowTest");
   
-  vTrace("[%s] Test\n",nnpTask->m_sName.a());
+  vTrace("[%s] Test\n",nnpTask->m_sName.aStr());
   
   EXIT();
 }

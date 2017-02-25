@@ -661,7 +661,7 @@ bool RapidsSE_ExecuteRequest(SEitf* pSEitf, char* pWords[], i8 iWords, char** pp
   eEC eResult = eGetResponse(pSEitf);
   
   // put response into caller
-  *ppResponse = pSEitf->m_sResponse.a();
+  *ppResponse = pSEitf->m_sResponse.aStr();
   
   if (eResult == EC_NONE)
     return true;
@@ -749,7 +749,7 @@ eEC RapidsSE_GetCatalogs(SEitf* pSEitf, void** ppCatalogs)
   }
   
   // return list of catalogs
-  *ppCatalogs = pSEitf->m_sResponse.a();
+  *ppCatalogs = pSEitf->m_sResponse.aStr();
   
   return eResult;
 }
@@ -904,7 +904,7 @@ eEC RapidsSE_GetColumns(SEitf* pSEitf, char* pCatalog, char* pSchema,
   }
 
   // return the list of columns of pTable
-  *ppColumns = pSEitf->m_sResponse.a();
+  *ppColumns = pSEitf->m_sResponse.aStr();
   
   return eResult;
 }
@@ -916,7 +916,7 @@ eEC RapidsSE_GetLastError(SEitf* pSEitf, void** ppError)
 {
   vTrace("RapidsSE_GetLastError\n");
   
-  *ppError = pSEitf->m_sErrorMsg.a();
+  *ppError = pSEitf->m_sErrorMsg.aStr();
   
   if (gpGrid->m_bTraceapi)
     vTrace("Error : %s\n", *ppError);
@@ -956,7 +956,7 @@ eEC RapidsSE_GetNextRow(SEitf* pSEitf, void** ppRow)
     return EC_NULLPTR;
   }
 
-  i8 iAddress = String::iToI8( pSEitf->m_sResponse.a());
+  i8 iAddress = String::iToI8( pSEitf->m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -1141,7 +1141,7 @@ eEC RapidsSE_GetSchemas(SEitf* pSEitf, char* pCatalog, void** ppSchemas)
   }
   
   // return list of schemas in ppSchemas
-  *ppSchemas = pSEitf->m_sResponse.a();
+  *ppSchemas = pSEitf->m_sResponse.aStr();
   
   return eResult;
 }
@@ -1187,7 +1187,7 @@ eEC RapidsSE_GetEngineVersion(SEitf* pSEitf, void** ppVersion)
   }
   
   // return SE version
-  *ppVersion = pSEitf->m_sResponse.a();
+  *ppVersion = pSEitf->m_sResponse.aStr();
   
   return EC_NONE;
 }
@@ -1329,7 +1329,7 @@ eEC RapidsSE_GetTables(SEitf* pSEitf, char* pCatalog, char* pSchema, void** ppTa
   }
   
   // return list of tables in ppSchemas
-  *ppTables = pSEitf->m_sResponse.a();
+  *ppTables = pSEitf->m_sResponse.aStr();
   
   return eResult;
 }
@@ -1587,7 +1587,7 @@ eEC RapidsSE_ScanTable(SEitf* pSEitf, char* pCatalog, char* pSchema, char* pTabl
 
   ASSERT(pSEitf->pCurrentTable() != nullptr);
   
-  i8 iAddress = String::iToI8(pSEitf->m_sResponse.a());
+  i8 iAddress = String::iToI8(pSEitf->m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -1747,7 +1747,7 @@ eEC eGetResponse(SEitf* pSEitf)
 {
   // get response
   eEC eError = pSEitf->eGetResponse();
-  //vTrace("rsp : %s %lld\n", pSEitf->m_sResponse.a(), eError);
+  //vTrace("rsp : %s %lld\n", pSEitf->m_sResponse.aStr(), eError);
   
   return eError;
 }

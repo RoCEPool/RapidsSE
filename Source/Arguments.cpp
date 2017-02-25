@@ -94,11 +94,11 @@ void Arguments::vEnvironmentVariables(void)
 
   sVarName = "SE_INSTANCE_SIZE";
   if (Env::bGet(sVarName,sRegionSize))
-    m_iRegionSize = String::iToI8(sRegionSize.a());
+    m_iRegionSize = String::iToI8(sRegionSize.aStr());
 
   sVarName = "SE_PARTITIONS";
   if (Env::bGet(sVarName,sPartitions))
-    m_nSlots = String::iToI8(sPartitions.a());
+    m_nSlots = String::iToI8(sPartitions.aStr());
   
   sVarName = "SE_WORKING_FOLDER";
   if (Env::bGet(sVarName,sFolder))
@@ -395,10 +395,10 @@ bool Arguments::bParse(int argc, const char* argv[])
     }
     
   /*
-    if (String::iLength(m_sCommand.a()))
-      String::vConcat(m_sCommand.a(),' ');
+    if (String::iLength(m_sCommand.aStr()))
+      String::vConcat(m_sCommand.aStr(),' ');
     
-    String::vConcat(m_sCommand.a(),argv[iArg]);
+    String::vConcat(m_sCommand.aStr(),argv[iArg]);
     m_bCommand = true;
     m_bPrompt  = true;
     m_bWelcome = false;
@@ -427,7 +427,7 @@ bool Arguments::bParse(int argc, const char* argv[])
     // the current node should have been specfied in the --node
     bool bFound = false;
     for (i8 iIndex = 0; iIndex < m_nNodes; iIndex++) {
-      if (String::bEqualTo(m_xNodes[iIndex].m_sNodeName.a(), m_sNodeName.a(), C_NO_CASE)) {
+      if (String::bEqualTo(m_xNodes[iIndex].m_sNodeName.aStr(), m_sNodeName.aStr(), C_NO_CASE)) {
         bFound = true;
         break;
       }
@@ -447,10 +447,10 @@ bool Arguments::bParse(int argc, const char* argv[])
   }
 
   // if no regionName then form region name using regionPrefix and node name
-  if (String::bEqualTo(m_sRegionName.a(),"")) {
-    String::vConcat( m_sRegionName.a(), m_sRegionPrefix.a());
-    String::vConcat( m_sRegionName.a(), "_");
-    String::vConcat( m_sRegionName.a(), m_sNodeName.a());
+  if (String::bEqualTo(m_sRegionName.aStr(),"")) {
+    String::vConcat( m_sRegionName.aStr(), m_sRegionPrefix.aStr());
+    String::vConcat( m_sRegionName.aStr(), "_");
+    String::vConcat( m_sRegionName.aStr(), m_sNodeName.aStr());
   }
   else {
     if (m_bStart && m_nNodes > 1) {
@@ -479,22 +479,22 @@ void Arguments::vPrint(void)
   if (m_bStatus)   vTrace("  --status\n");
   if (m_bStop)     vTrace("  --stop\n");
 
-  vTrace("  --name %s\n",m_sNodeName.a());
-  vTrace("  --regionPrefix %s\n",m_sRegionPrefix.a());
+  vTrace("  --name %s\n",m_sNodeName.aStr());
+  vTrace("  --regionPrefix %s\n",m_sRegionPrefix.aStr());
   vTrace("  --address %p\n",m_pRegionAddr);
   vTrace("  --size %lld\n",m_iRegionSize);
   
   for (i8 iIndex=0; iIndex < m_nNodes; iIndex++) {
     vTrace("  --node %s %s %lld\n",
-      m_xNodes[iIndex].m_sNodeName.a(),
-      m_xNodes[iIndex].m_sIPAddress.a(),
+      m_xNodes[iIndex].m_sNodeName.aStr(),
+      m_xNodes[iIndex].m_sIPAddress.aStr(),
       m_xNodes[iIndex].m_iPortNo);
   }
   
   vTrace("  --partitionsPerNode %lld\n",m_nSlots);
-  vTrace("  --commands %s\n",m_sCommands.a());
+  vTrace("  --commands %s\n",m_sCommands.aStr());
 //#ifdef _DEBUG
-  vTrace("  --sen %s\n",m_sSen.a());
+  vTrace("  --sen %s\n",m_sSen.aStr());
 //#endif
   if (m_bMunged) vTrace("  --munged\n");
   

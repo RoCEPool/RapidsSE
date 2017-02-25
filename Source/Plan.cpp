@@ -128,7 +128,7 @@ void Plan::vDump(eCN eClass, Object* pObject, const char* pTab)
   vTrace("planId %lld.%lld name %s\n",
          pPlan->m_uPlanId >> 48,
          pPlan->m_uPlanId & 0x00FFFFFFFFFFFFFF,
-         pPlan->m_sName.a());
+         pPlan->m_sName.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +142,7 @@ void Plan::vAppendToLambda(s48K& sText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PLAN,_FOOTER_);
   
-  String::vConcat(m_sLambda.a(), sText.a());
+  String::vConcat(m_sLambda.aStr(), sText.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -260,7 +260,7 @@ RegFrame* Plan::pRegFrameFind(s32& sName)
   RegFrame* pRegFrame = nullptr;
   
   for (pRegFrame = m_pRegList; pRegFrame; pRegFrame = pRegFrame->pNext())
-    if (String::bSame(pRegFrame->sName().a(), sName.a()))
+    if (String::bSame(pRegFrame->sName().aStr(), sName.aStr()))
       break;
   
   return pRegFrame;
@@ -299,7 +299,7 @@ void Plan::vShow(void)
          this,
          m_uPlanId >> 48,
          m_uPlanId & 0x00FFFFFFFFFFFFFF,
-         m_sName.a());
+         m_sName.aStr());
 }
 
 /*----------------------------------------------------------------------------*/

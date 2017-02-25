@@ -62,8 +62,8 @@ void Task::vGridAppendNodes(NNP_Task nnpTask)
   
   for (i8 iNode = 0; iNode < gxArguments.m_nNodes; iNode++) {
     Node* pNode = new Node(iNode,
-                           gxArguments.m_xNodes[iNode].m_sNodeName.a(),
-                           gxArguments.m_xNodes[iNode].m_sIPAddress.a(),
+                           gxArguments.m_xNodes[iNode].m_sNodeName.aStr(),
+                           gxArguments.m_xNodes[iNode].m_sIPAddress.aStr(),
                            gxArguments.m_xNodes[iNode].m_iPortNo);
     ASSERT(CN_NODE == pNode->eClass());
     gpGrid->vAppend(pNode);
@@ -83,7 +83,7 @@ void Task::vGridFindNode(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sPtrNodeName) )
     THROW_INVALID_DSTACK("grid.find");
   
-  Node* pNode = gpGrid->pFindNode(sPtrNodeName.a());
+  Node* pNode = gpGrid->pFindNode(sPtrNodeName.aStr());
   
   nnpTask->m_pDataStack->vPush(pNode);
   
@@ -173,9 +173,9 @@ void Task::vGridThisNodeStore(NNP_Task nnpTask)
   s256 sPtrNodeName;
   i8 iNode;
   
-  Node* pThisNode = gpGrid->pFindNode(gxArguments.m_sNodeName.a());
+  Node* pThisNode = gpGrid->pFindNode(gxArguments.m_sNodeName.aStr());
   if ( ! pThisNode ) {
-    THROW("Cannot fine Node %s in the cluster", gxArguments.m_sNodeName.a());
+    THROW("Cannot fine Node %s in the cluster", gxArguments.m_sNodeName.aStr());
   }
   
   i8 iNodeNo = pThisNode->iNodeNo();

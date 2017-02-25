@@ -108,7 +108,7 @@ ENTRY("vInputNext");
     ASSERT(nnpTask->m_iTracing);
   }
   
-  char* aToken = nnpTask->m_pTokeniser->sToken().a();
+  char* aToken = nnpTask->m_pTokeniser->sToken().aStr();
   
   eTK eToken = nnpTask->m_pTokeniser->eNextToken(aToken);
   
@@ -130,7 +130,7 @@ ENTRY("vInputOpen");
   bool bOpened = nnpTask->m_pTokeniser->bUseFile(sFilePath);
   
   if ( ! bOpened )
-    THROW("No such file: %s",sFilePath.a());
+    THROW("No such file: %s",sFilePath.aStr());
   
   EXIT();
 }

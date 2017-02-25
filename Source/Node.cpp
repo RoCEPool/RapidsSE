@@ -121,7 +121,7 @@ void Node::vDump(eCN eClass, Object* pObject, const char* pTab)
 char* Node::pNodeIP(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_sNodeIP.a();
+  return m_sNodeIP.aStr();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -130,7 +130,7 @@ char* Node::pNodeIP(void)
 char* Node::pNodeName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_NODE,_FOOTER_);
-  return m_sNodeName.a();
+  return m_sNodeName.aStr();
 }
 
 /*----------------------------------------------------------------------------*/

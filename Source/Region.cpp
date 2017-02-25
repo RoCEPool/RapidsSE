@@ -20,13 +20,13 @@ bool Region::bAttach(StrVal& sRegionName)
   bool bResult;
   
   if (gxArguments.m_bWelcome)
-    vTrace("Attaching to SE instance %s\n",sRegionName.a());
+    vTrace("Attaching to SE instance %s\n",sRegionName.aStr());
   
   // open existing shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n",
-           sRegionName.a());
+           sRegionName.aStr());
     return false;
   }
   
@@ -60,7 +60,7 @@ bool Region::bAttach(StrVal& sRegionName)
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("RapidsSE::vAttach: failed to open region: %s\n",
-           sRegionName.a());
+           sRegionName.aStr());
     return false;
   }
   
@@ -95,11 +95,11 @@ void Region::vCreate(StrVal& sRegionName)
   SysCall xSysCall;
   s256 sSize;
   
-  Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize.a());
+  Magnitudes::vMagnitude(gxArguments.m_iRegionSize, sSize.aStr());
 
   vTrace("Creating RapidsSE instance %s; size %s (%lldB)...\n",
-         sRegionName.a(),
-         sSize.a(),
+         sRegionName.aStr(),
+         sSize.aStr(),
          gxArguments.m_iRegionSize);
   
   if (gxArguments.m_bVerbose)
@@ -117,7 +117,7 @@ void Region::vCreate(StrVal& sRegionName)
   
   if ( ! bResult ) {
     vTrace("RapidsSE::vCreate: failed to create region %s\n",
-           sRegionName.a());
+           sRegionName.aStr());
     ASSERT(0);
   }
   
@@ -176,9 +176,9 @@ void Region::vUnlink(StrVal& sRegionName)
   SysCall xSysCall;
   
   if (Shm::bUnlink(sRegionName,xSysCall))
-    vTrace("Region %s succesfully unlinked\n",sRegionName.a());
+    vTrace("Region %s succesfully unlinked\n",sRegionName.aStr());
   else
-    vTrace("Region %s not unlinked\n",sRegionName.a());
+    vTrace("Region %s not unlinked\n",sRegionName.aStr());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -191,13 +191,13 @@ void* Region::pOpen(StrVal& sRegionName, int& iFD)
   SysCall xSysCall;
   bool bResult;
   
-  vTrace("Region::pOpen %s\n",sRegionName.a());
+  vTrace("Region::pOpen %s\n",sRegionName.aStr());
   
   // open shm region
   bResult = Shm::bAttach(sRegionName,iFD,xSysCall);
   if ( ! bResult ) {
     vTrace("Region::pOpen: failed to open region: %s\n",
-           sRegionName.a());
+           sRegionName.aStr());
     return nullptr;
   }
   

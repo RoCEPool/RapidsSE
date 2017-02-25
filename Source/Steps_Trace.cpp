@@ -77,7 +77,7 @@ void Task::vTracePoint(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("tracePoint");
   
   if (gxArguments.m_bTracepoint)
-    nnpTask->vTracePoint(sPointName.a());
+    nnpTask->vTracePoint(sPointName.aStr());
   
   EXIT();
 }

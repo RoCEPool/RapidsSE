@@ -85,7 +85,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
   
   pCurrentWord->vDistributed(DT_ALLPARTICIPANTS);
   
@@ -93,7 +93,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   // convert string to integer
-  char* aToken = nnpTask->m_pTokeniser->sToken().a();
+  char* aToken = nnpTask->m_pTokeniser->sToken().aStr();
   i8 iParams = String::iToI8(aToken);
   
   // set the number of parameters in the current word
@@ -101,7 +101,7 @@ void Task::vAllParticipants(NNP_Task nnpTask)
   
   // get result routine name to be called after all participants have responded
   nnpTask->m_pTokeniser->vNextToken();
-  aToken = nnpTask->m_pTokeniser->sToken().a();
+  aToken = nnpTask->m_pTokeniser->sToken().aStr();
   
   // set the distributed result routine name in the word
   pCurrentWord->vFinalRoutine(aToken);
@@ -162,7 +162,7 @@ void Task::vColon(NNP_Task nnpTask)
     pDic = nnpTask->m_xPathStack.pTop();
   else
     pDic = gpMainDic;
-  Word* pNewWord = new(pDic) Word(sName.a());
+  Word* pNewWord = new(pDic) Word(sName.aStr());
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -224,7 +224,7 @@ ENTRY("vCreate");
   else
     pDic = gpMainDic;
   
-  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().a());
+  Word* pNewWord = new(pDic) Word(nnpTask->m_pTokeniser->sToken().aStr());
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -248,7 +248,7 @@ ENTRY("vCreateFrom");
   else
     pDic = gpMainDic;
   
-  Word* pNewWord = new(pDic) Word(sName.a());
+  Word* pNewWord = new(pDic) Word(sName.aStr());
   
   nnpTask->m_pCurrentWord = pNewWord;
   
@@ -332,7 +332,7 @@ ENTRY("vFind");
     i8 i = 0;
   }
   
-  Word* pWord = nnpTask->m_xPathStack.pFindWord(sName.a());
+  Word* pWord = nnpTask->m_xPathStack.pFindWord(sName.aStr());
   
   nnpTask->m_pDataStack->vPush(pWord);
   
@@ -354,7 +354,7 @@ void Task::vFindInCurrent(NNP_Task nnpTask)
     i8 i = 0; i++;
   }
   
-  Word* pWord = nnpTask->m_xPathStack.pFindInCurrent(sName.a());
+  Word* pWord = nnpTask->m_xPathStack.pFindInCurrent(sName.aStr());
   
   nnpTask->m_pDataStack->vPush(pWord);
   
@@ -370,10 +370,10 @@ ENTRY("vForget");
   
   nnpTask->m_pTokeniser->vNextToken();
   
-  Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   
   if ( ! pWord )
-    THROW("No such word: %s",nnpTask->m_pTokeniser->sToken().a());
+    THROW("No such word: %s",nnpTask->m_pTokeniser->sToken().aStr());
   
   bool bResult = nnpTask->m_xPathStack.bForget(nnpTask->m_pTokeniser->sToken());
   ASSERT(bResult);
@@ -436,7 +436,7 @@ void Task::vHashHashColon(NNP_Task nnpTask)
   pW->vEncode("pushValue",&xWsp); //   push " : "
   pW->vEncode("str.cat");         //   form "opDic <opDicNm> : "
   
-  xWsp = sSymbolicArg.a();
+  xWsp = sSymbolicArg.aStr();
   pW->vEncode("pushValue",&xWsp); //   push "<symNm>"
   pW->vEncode("str.cat");         //   form "opDic <opDicNm> : <symNm>"
   
@@ -469,7 +469,7 @@ void Task::vIndirect(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
   
   pCurrentWord->vIndirect(true);
   
@@ -485,7 +485,7 @@ void Task::vImmediate(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
   
   pCurrentWord->vImmediate(true);
   
@@ -544,7 +544,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   
   Word* pCurrentWord = nnpTask->m_pCurrentWord;
   
-  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().a());
+  //vTrace("Task::vImmediate: %s\n",pCurrentWord->sName().aStr());
   
   pCurrentWord->vDistributed(DT_ONEPARTICIPANT);
   
@@ -552,7 +552,7 @@ void Task::vOneParticipant(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   // convert token to integer
-  i8 iParams = String::iToI8(nnpTask->m_pTokeniser->sToken().a());
+  i8 iParams = String::iToI8(nnpTask->m_pTokeniser->sToken().aStr());
   
   // set the number of parameters in the current word
   pCurrentWord->vParams(iParams);
@@ -576,7 +576,7 @@ void Task::vOpDic(NNP_Task nnpTask)
   
   RegFrame* pOpFrame = nnpTask->m_pPlan->pRegFrameFind(sNameOpFrame);
   //if ( ! pOpFrame )
-  //  THROW("No such op frame: %s",sNameOpFrame.a());
+  //  THROW("No such op frame: %s",sNameOpFrame.aStr());
   
   if ( pOpFrame ) {
     pOpDic = pOpFrame->pOpDic();
@@ -589,10 +589,10 @@ void Task::vOpDic(NNP_Task nnpTask)
     
     // create a op dictionary
     s32 sNameDic;
-    String::vSprint(sNameDic.a(),"<%s>",sNameOpFrame.a());
+    String::vSprint(sNameDic.aStr(),"<%s>",sNameOpFrame.aStr());
     
     pOpDic = new Dic;
-    pOpDic->vName(sNameDic.a());
+    pOpDic->vName(sNameDic.aStr());
     pOpFrame->vOpDic(pOpDic);
   }
   
@@ -632,9 +632,9 @@ void Task::vPostpone(NNP_Task nnpTask)
   nnpTask->m_pTokeniser->vNextToken();
   
   // find the word in dic stack
-  Word* pCalledWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  Word* pCalledWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   if ( ! pCalledWord )
-    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
+    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().aStr());
   
   if (pCalledWord->bImmediate()) {
     
@@ -672,13 +672,13 @@ void Task::vSee(NNP_Task nnpTask)
   
   nnpTask->m_pTokeniser->vNextToken();
   
-  Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   if ( ! pWord ) {
-    vTrace("See: %s unknown\n",nnpTask->m_pTokeniser->sToken().a());
+    vTrace("See: %s unknown\n",nnpTask->m_pTokeniser->sToken().aStr());
     return;
   }
   
-  vTrace("See: %s\n",pWord->sName().a());
+  vTrace("See: %s\n",pWord->sName().aStr());
   
   Cell* pDoesCell = pWord->pEntryCell();
   
@@ -694,7 +694,7 @@ void Task::vSee(NNP_Task nnpTask)
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpFalse ||
         *pDoesCell->m_ppEntryStep == Task::vFlowJumpTrue ) {
       
-      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
+      vTrace("%p: %s",pDoesCell,pCallsWord->sName().aStr());
       
       pDoesCell++;
       
@@ -708,7 +708,7 @@ void Task::vSee(NNP_Task nnpTask)
     // push
     if ( *pDoesCell->m_ppEntryStep == Task::vPushValue ) {
       
-      vTrace("%p: %s",pDoesCell,pCallsWord->sName().a());
+      vTrace("%p: %s",pDoesCell,pCallsWord->sName().aStr());
       
       pDoesCell++;
       
@@ -718,8 +718,8 @@ void Task::vSee(NNP_Task nnpTask)
         vTrace(" \"%s\"\n",_pStrVal(pValue)->aStr());
       }
       else {
-        V::vToString(pValue,sWorkspace.a());
-        vTrace(" %s\n",sWorkspace.a());
+        V::vToString(pValue,sWorkspace.aStr());
+        vTrace(" %s\n",sWorkspace.aStr());
       }
       
       i8 iBytes = V::iSize(pValue);
@@ -734,13 +734,13 @@ void Task::vSee(NNP_Task nnpTask)
       Word* pCallsWord = (Word*)( ((u8)pDoesCell->m_ppEntryStep & (u8)~0xFFFF)
                                  + sizeof(HeapBuffer));
       
-      vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
+      vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().aStr());
       pDoesCell++;
       continue;
     }
     
     // other
-    vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().a());
+    vTrace("%p: %s\n",pDoesCell,pCallsWord->sName().aStr());
     
     pDoesCell++;
   }
@@ -778,7 +778,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     
     s32 sTildeName;
     sTildeName = "~";
-    String::vConcat(sTildeName.a(),pCurrentWord->sName().a());
+    String::vConcat(sTildeName.aStr(),pCurrentWord->sName().aStr());
     
     // create new word for tilde of current word
     Dic* pDic;
@@ -786,13 +786,13 @@ void Task::vSemicolon(NNP_Task nnpTask)
       pDic = nnpTask->m_xPathStack.pTop();
     else
       pDic = gpMainDic;
-    Word* pWordTilde = new(pDic) Word(sTildeName.a());
+    Word* pWordTilde = new(pDic) Word(sTildeName.aStr());
     // ** do not set as current word **
     
     // encode the word
     ValWsp xValWsp;
     
-    xValWsp = sTildeName.a();
+    xValWsp = sTildeName.aStr();
     pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
     
@@ -800,7 +800,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("put$$");
     
-    xValWsp = pCurrentWord->sName().a();
+    xValWsp = pCurrentWord->sName().aStr();
     pWordTilde->vEncode("pushValue",&xValWsp);
     
     xValWsp = "theIndirectCall";
@@ -814,7 +814,7 @@ void Task::vSemicolon(NNP_Task nnpTask)
     else
       pWordTilde->vEncode(">>oneParticipant>");
     
-    xValWsp = sTildeName.a();
+    xValWsp = sTildeName.aStr();
     pWordTilde->vEncode("pushValue",&xValWsp);
     pWordTilde->vEncode("tracePoint");
     
@@ -846,7 +846,7 @@ void Task::vSubDic(NNP_Task nnpTask)
   
   Word* pWordSubDic = nnpTask->m_xPathStack.pFindWord(sNameSubDic);
   if ( ! pWordSubDic )
-    THROW("No such subDic: %s",sNameSubDic.a());
+    THROW("No such subDic: %s",sNameSubDic.aStr());
   
   Dic* pDic = _pDic(pWordSubDic->pDataArea());
   
@@ -875,7 +875,7 @@ void Task::vTick(NNP_Task nnpTask)
   Word* pWord = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken());
   
   if ( ! pWord )
-    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().a());
+    THROW("No word: %s ",nnpTask->m_pTokeniser->sToken().aStr());
   
   if (nnpTask->m_bCompiling) {
     Word* pCurrentWord = nnpTask->m_pCurrentWord;
@@ -1065,7 +1065,7 @@ ENTRY("vWordName");
     THROW_INVALID_DSTACK("word.name");
   Word* pWord = _pWord(pWordObject);
   
-  s32 sWordName(pWord->sName().a());
+  s32 sWordName(pWord->sName().aStr());
   
   nnpTask->m_pDataStack->vPush(sWordName);
   

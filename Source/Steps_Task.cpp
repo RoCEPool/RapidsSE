@@ -82,16 +82,16 @@ void Task::vTaskAck(NNP_Task nnpTask)
   
   if ( ! iMore ) {
     //    vTrace("Task::vTaskSignal: task %p %s resuming task %p %s\n",
-    //           *nnpTask,nnpTask->m_sName.a(),
-    //           pThatTask,pThatTask->m_sName.a());
+    //           *nnpTask,nnpTask->m_sName.aStr(),
+    //           pThatTask,pThatTask->m_sName.aStr());
     if (gxArguments.m_bTracepoint)
       vTrace("[N%lld:%8s\\%lld %-11s] ack resumes %s\\%lld\n",
              gpGrid->iThisNode(),
-             nnpTask->m_sName.a(),
+             nnpTask->m_sName.aStr(),
              *nnpTask->m_zAcks,
-             nnpTask->m_sComment.a(),
+             nnpTask->m_sComment.aStr(),
              
-             pThatTask->m_sName.a(),
+             pThatTask->m_sName.aStr(),
              *pThatTask->m_zAcks);
     
     while (TS_WAITING_ACK != pThatTask->m_eState)
@@ -104,15 +104,15 @@ void Task::vTaskAck(NNP_Task nnpTask)
   }
   else {
     //    vTrace("Task::vTaskSignal: task %p %s signalled task %p\\%lld %s\n",
-    //           *nnpTask,nnpTask->m_sName.a(),
-    //           pThatTask,iMore,pThatTask->m_sName.a());
+    //           *nnpTask,nnpTask->m_sName.aStr(),
+    //           pThatTask,iMore,pThatTask->m_sName.aStr());
 //    vTrace("[N%lld:%8s\\%lld %-11s] ack'd %s\\%lld\n",
 //           gpGrid->iThisNode(),
-//           nnpTask->m_sName.a(),
+//           nnpTask->m_sName.aStr(),
 //           *nnpTask->m_zAcks,
-//           nnpTask->m_sComment.a(),
+//           nnpTask->m_sComment.aStr(),
 //           
-//           pThatTask->m_sName.a(),
+//           pThatTask->m_sName.aStr(),
 //           iMore);
     
   }
@@ -364,7 +364,7 @@ ENTRY("vTaskNew");
   s32 sSeed;
   if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.new");
-  char* aSeedWord = sSeed.a();
+  char* aSeedWord = sSeed.aStr();
   
   i8 nTaskArgs;
   if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )
@@ -495,7 +495,7 @@ ENTRY("vTaskSeed");
   s32 sSeed;
   if ( ! nnpTask->m_pDataStack->bPop(sSeed) )
     THROW_INVALID_DSTACK("task.seed");
-  pThatTask->vSeedWord(sSeed.a());
+  pThatTask->vSeedWord(sSeed.aStr());
 
   i8 nTaskArgs;
   if ( ! nnpTask->m_pDataStack->bPop(nTaskArgs) )

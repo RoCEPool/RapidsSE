@@ -135,7 +135,7 @@ void StrVal::operator = (StrVal& rArg)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  vCopy(rArg.a());
+  vCopy(rArg.aStr());
   
   _postcondition_(_MAGIC_,_FOOTER_);
 }
@@ -195,16 +195,6 @@ void StrVal::vDataBytes(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   m_nDataBytes = String::iSize(pDataArea());
-}
-
-/*----------------------------------------------------------------------------*/
-/* get value                                                                  */
-/*----------------------------------------------------------------------------*/
-char* StrVal::a(void)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  return pDataArea();
 }
 
 /*----------------------------------------------------------------------------*/

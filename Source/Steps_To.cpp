@@ -103,12 +103,12 @@ void Task::vToCmd(NNP_Task nnpTask)
     nnpTask->m_pDataStack->vPeek(i,&xValWsp);
     
     if (i)
-      String::vConcat(sCmd.a()," ");
+      String::vConcat(sCmd.aStr()," ");
     
     V::vToCommand(&xValWsp,sCmd.z());
   }
   
-  xStr = sCmd.a();
+  xStr = sCmd.aStr();
   
   nnpTask->m_pDataStack->vPush(&xStr);
   
@@ -127,9 +127,9 @@ void Task::vToInt(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">int");
   
   s256 sBuff;
-  V::vToString(&xStr,sBuff.a());
+  V::vToString(&xStr,sBuff.aStr());
   
-  i8 i = String::iToI8(sBuff.a());
+  i8 i = String::iToI8(sBuff.aStr());
   
   nnpTask->m_pDataStack->vPush(i);
   
@@ -186,7 +186,7 @@ void Task::vToStr(NNP_Task nnpTask)
     THROW_INVALID_DSTACK(">str");
   
   s48K sString;
-  V::vToString(&xVal,sString.a());
+  V::vToString(&xVal,sString.aStr());
   
   nnpTask->m_pDataStack->vPush(sString);
   

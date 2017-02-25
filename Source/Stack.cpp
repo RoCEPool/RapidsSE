@@ -769,7 +769,7 @@ void Stack::vPush(s32& sArg1)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
-  xStrVal1 = sArg1.a();
+  xStrVal1 = sArg1.aStr();
   
   vPush(xStrVal1);
 }
@@ -782,7 +782,7 @@ void Stack::vPush(s256& sArg1)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
-  xStrVal1 = sArg1.a();
+  xStrVal1 = sArg1.aStr();
   
   vPush(xStrVal1);
 }
@@ -795,7 +795,7 @@ void Stack::vPush(s48K& sArg1)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   ValWsp xStrVal1;
-  xStrVal1 = sArg1.a();
+  xStrVal1 = sArg1.aStr();
   
   vPush(xStrVal1);
 }
@@ -862,7 +862,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
     
     vPeek(iVal,&xValWsp);
     
-    V::vToString(&xValWsp,sWorkspace.a());
+    V::vToString(&xValWsp,sWorkspace.aStr());
     char* aClass = xValWsp.aClass();
     
     eCN eClass = xValWsp.eClass();
@@ -872,7 +872,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
       Object* pObject = pPtrVal->pPtr();
       eCN ePtdClass   = pObject->eClass();
       vTrace("[%s] [%2lld] %s (%s %s)\n",
-        aPrefix,iVal,sWorkspace.a(),aClass,pCN[ePtdClass]);
+        aPrefix,iVal,sWorkspace.aStr(),aClass,pCN[ePtdClass]);
     }
     else if (CN_IPVAL == eClass) {                                       //RAY??
       IpVal* pIpVal = _pIpVal(&xValWsp);
@@ -882,7 +882,7 @@ void Stack::vContentDump(const char* aPrefix, const char* aTitle)
     }
     else {
       vTrace("[%s] [%2lld] %s (%s)\n",
-             aPrefix,iVal,sWorkspace.a(),aClass);
+             aPrefix,iVal,sWorkspace.aStr(),aClass);
     }
   }
   

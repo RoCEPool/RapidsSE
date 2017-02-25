@@ -66,7 +66,7 @@ void IndexDefn::vDump(eCN eClass, Object* pObject, const char* pTab)
   
   vTrace("no %lld name %s type %p\n",
          pIndexDefn->m_iIndexNo,
-         pIndexDefn->m_sIndexName.a(),
+         pIndexDefn->m_sIndexName.aStr(),
          pIT[pIndexDefn->m_eIndexType]);
 }
 
@@ -77,7 +77,7 @@ char* IndexDefn::pIndexName(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXDEFN,_FOOTER_);
   
-  return m_sIndexDefnName.a();
+  return m_sIndexDefnName.aStr();
 }
 
 /*----------------------------------------------------------------------------*/

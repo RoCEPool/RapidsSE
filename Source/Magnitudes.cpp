@@ -46,39 +46,39 @@ bool Magnitudes::bBytes(const char* psBuf, i8& iBytes)
   
   sString = psBuf;
   
-  String::vToLower(sString.a());
+  String::vToLower(sString.aStr());
   
-  if (String::bContains(sString.a(), "kb")) {
-    String::vCopyTill(sNumber.a(), sString.a(), 'k');
+  if (String::bContains(sString.aStr(), "kb")) {
+    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'k');
     iMagnitude = C_1KB;
     
-  } else if (String::bContains(sString.a(), "mb")) {
-    String::vCopyTill(sNumber.a(), sString.a(), 'm');
+  } else if (String::bContains(sString.aStr(), "mb")) {
+    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'm');
     iMagnitude = C_1MB;
     
-  } else if (String::bContains(sString.a(), "gb")) {
-    String::vCopyTill(sNumber.a(), sString.a(), 'g');
+  } else if (String::bContains(sString.aStr(), "gb")) {
+    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'g');
     iMagnitude = C_1GB;
     
-  } else if (String::bContains(sString.a(), "tb")) {
-    String::vCopyTill(sNumber.a(), sString.a(), 't');
+  } else if (String::bContains(sString.aStr(), "tb")) {
+    String::vCopyTill(sNumber.aStr(), sString.aStr(), 't');
     iMagnitude = C_1TB;
     
-  } else if (String::bContains(sString.a(), "pb")) {
-    String::vCopyTill(sNumber.a(), sString.a(), 'p');
+  } else if (String::bContains(sString.aStr(), "pb")) {
+    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'p');
     iMagnitude = C_1PB;
     
-  } else if (String::bContains(sString.a(), "b")) {
-    if (!String::bEqualTo(String::sLast(sString.a()), "b")) {
+  } else if (String::bContains(sString.aStr(), "b")) {
+    if (!String::bEqualTo(String::sLast(sString.aStr()), "b")) {
       return false;
     }
-    String::vCopyTill(sNumber.a(), sString.a(), 'b');
+    String::vCopyTill(sNumber.aStr(), sString.aStr(), 'b');
     iMagnitude = 1;
   } else {
-    sNumber = sString.a();
+    sNumber = sString.aStr();
   }
   
-  char* ps = sNumber.a();
+  char* ps = sNumber.aStr();
   i8 iVal;
   
   if (!String::bIsNumeric(ps)){

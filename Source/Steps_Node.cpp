@@ -98,8 +98,8 @@ ENTRY("vNodeNew");
     THROW_INVALID_DSTACK("node.new");
   
   Node* pNode = new Node(iNodeNo,
-                         gxArguments.m_xNodes[iNodeNo].m_sNodeName.a(),
-                         gxArguments.m_xNodes[iNodeNo].m_sIPAddress.a(),
+                         gxArguments.m_xNodes[iNodeNo].m_sNodeName.aStr(),
+                         gxArguments.m_xNodes[iNodeNo].m_sIPAddress.aStr(),
                          gxArguments.m_xNodes[iNodeNo].m_iPortNo);
   ASSERT(CN_NODE == pNode->eClass());
 
@@ -180,9 +180,9 @@ void Task::vNodeStatus(NNP_Task nnpTask)
   s256 s;
   
   if (Region::bTest(gxArguments.m_sRegionName))
-    String::vSprint(s.a(),"RapidsSE instance %s running", gxArguments.m_sRegionName.a());
+    String::vSprint(s.aStr(),"RapidsSE instance %s running", gxArguments.m_sRegionName.aStr());
   else
-    String::vSprint(s.a(),"RapidsSE instance %s not running",gxArguments.m_sRegionName.a());
+    String::vSprint(s.aStr(),"RapidsSE instance %s not running",gxArguments.m_sRegionName.aStr());
   
   nnpTask->m_pDataStack->vPush(s);
   

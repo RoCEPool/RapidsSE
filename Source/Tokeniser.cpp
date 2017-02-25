@@ -231,7 +231,7 @@ void Tokeniser::vNextToken(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOKENISER,_FOOTER_);
 
-  eTK eToken = eNextToken(m_sToken.a());
+  eTK eToken = eNextToken(m_sToken.aStr());
 }
 
 /*----------------------------------------------------------------------------*/

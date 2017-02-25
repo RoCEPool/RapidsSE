@@ -98,7 +98,7 @@ Task::Task(void)
   
 //  // this contructor is invoked only for root task creation
 //  if (gnpRootTask != nullptr) {
-//    String::vSprint(m_sException.a(),"Root task already exits!");
+//    String::vSprint(m_sException.aStr(),"Root task already exits!");
 //    m_sFile = __FILE__;
 //    throw (i8)__LINE__;
 //  }
@@ -227,7 +227,7 @@ void Task::vInit(const char* aLambda)
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    String::vConcat(m_sLambda.a()," exit");
+    String::vConcat(m_sLambda.aStr()," exit");
   
   m_pTokeniser = new Tokeniser;
   m_pTokeniser->vPush();
@@ -365,13 +365,13 @@ void Task::vAddConstants(void)
   //vAddConstant("grid.nodes",       gxArguments.m_nNodes);
   vAddConstant("args.partitionsPerNode", gxArguments.m_nSlots);
   vAddConstant("args.progress",          gxArguments.m_bProgress);
-  vAddConstant("args.regionPrefix",gxArguments.m_sRegionPrefix.a());
+  vAddConstant("args.regionPrefix",gxArguments.m_sRegionPrefix.aStr());
   vAddConstant("args.regionSize",  gxArguments.m_iRegionSize - gxArguments.m_iJumboSize);
   vAddConstant("args.sleep",       gxArguments.m_iSleep);
   vAddConstant("args.Traceapi",    gxArguments.m_bTraceapi);
   vAddConstant("args.tracepoint",  gxArguments.m_bTracepoint);
   vAddConstant("args.verbose",     gxArguments.m_bVerbose);
-  vAddConstant("args.sen",         gxArguments.m_sSen.a());
+  vAddConstant("args.sen",         gxArguments.m_sSen.aStr());
   
   vAddConstant("true",    (i8)1);
   vAddConstant("false",   (i8)0);
@@ -1024,11 +1024,11 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   // get :
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n",m_sToken.a());
+  //vTrace("CompileColon: %s\n",m_sToken.aStr());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileColon: %s\n",m_sToken.a());
+  //vTrace("CompileColon: %s\n",m_sToken.aStr());
   
   Dic* pDic;
   if (m_xPathStack.iCount())
@@ -1036,7 +1036,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   else
     pDic = gpMainDic;
 
-  pNewWord = new(pDic) Word(m_pTokeniser->sToken().a());
+  pNewWord = new(pDic) Word(m_pTokeniser->sToken().aStr());
   
   m_pCurrentWord = pNewWord;
 
@@ -1044,20 +1044,20 @@ Word* Task::pCompileColon(StrVal& sDefinition)
   
   while (TK_NONE != m_pTokeniser->eToken()) {
     
-    //vTrace("CompileColon: %s\n",m_sToken.a());
+    //vTrace("CompileColon: %s\n",m_sToken.aStr());
     
-    if (String::bEqualTo(";",m_pTokeniser->sToken().a()))
+    if (String::bEqualTo(";",m_pTokeniser->sToken().aStr()))
       break;
     
     switch (m_pTokeniser->eToken()) {
         
       case TK_INTEGER:
-        xValWsp = String::iToI8(m_pTokeniser->sToken().a());
+        xValWsp = String::iToI8(m_pTokeniser->sToken().aStr());
         pNewWord->vEncode("pushValue",&xValWsp);
         break;
         
       case TK_NAME:
-        pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken().a());
+        pCalledWord = m_xPathStack.pFindWord(m_pTokeniser->sToken().aStr());
         if (WT_PRIMITIVE == pCalledWord->eWordType()) {
           pStep = pCalledWord->pEntryStep();
           if (pCalledWord->bImmediate())
@@ -1076,7 +1076,7 @@ Word* Task::pCompileColon(StrVal& sDefinition)
         break;
         
       case TK_STRING: {
-        xValWsp = m_pTokeniser->sToken().a();
+        xValWsp = m_pTokeniser->sToken().aStr();
         pNewWord->vEncode("pushValue",&xValWsp);
         break;
       }
@@ -1113,18 +1113,18 @@ Word* Task::pCompileConstant(StrVal& sDefinition)
   
   // get string
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
-  xValWsp = m_pTokeniser->sToken().a();
+  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
+  xValWsp = m_pTokeniser->sToken().aStr();
   
   // get CONSTANT
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
+  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
   
   // get name of word
   m_pTokeniser->vNextToken();
-  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
+  //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().aStr());
 
-  vAddConstant(m_pTokeniser->sToken().a(),_pStrVal(&xValWsp)->aStr());
+  vAddConstant(m_pTokeniser->sToken().aStr(),_pStrVal(&xValWsp)->aStr());
   
   m_pTokeniser->vNextToken();
   
@@ -1151,7 +1151,7 @@ void Task::vDump(eCN eClass, Object* pObject, const char* pTab)
   Task* pTask = reinterpret_cast<Task*>(pObject);
   
   vTrace("%s TaskNo %lld state %s txId %lld\n",
-         pTask->m_sName.a(),
+         pTask->m_sName.aStr(),
          pTask->m_iTaskNo,
          pTS[pTask->m_eState],
          pTask->m_iTxId);
@@ -1168,7 +1168,7 @@ void Task::vContentDump(void)
          pDoubleTab(),
          m_iTaskNo,
          this,
-         m_sName.a(),
+         m_sName.aStr(),
          pTS[m_eState],
          m_iTxId);
 }
@@ -1298,7 +1298,7 @@ void Task::vPrimitive(const char* aPrimitive)
   Cell* pCell = IP.m_pCell;
   Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
-    String::vCopy(aRoutine,pLocatedWord->sName().a());
+    String::vCopy(aRoutine,pLocatedWord->sName().aStr());
   else
     String::vCopy(aRoutine,"<unknown>");
   
@@ -1336,7 +1336,7 @@ void Task::vPrimitive(const char* aPrimitive)
   s48K sStackContents;
   vStackContents(m_pDataStack, sStackContents);
   
-  vTrace("%s\n",sStackContents.a());
+  vTrace("%s\n",sStackContents.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1381,7 +1381,7 @@ Thread* Task::pRootThread(void)
   Object* pThreadEmb;
   
   if ( ! m_pDataStack->bPop(pThreadEmb) ) {
-    String::vSprint(m_sException.a(),"Invalid data stack  for: h.spawn");
+    String::vSprint(m_sException.aStr(),"Invalid data stack  for: h.spawn");
     m_sFile = __FILE__;
     throw (i8)__LINE__;
   }
@@ -1436,7 +1436,7 @@ void Task::vSeedWord(const char* aLambda)
   
   m_sLambda = aLambda;
   if (m_sLambda.iLength())
-    String::vConcat(m_sLambda.a()," ::task_exit");
+    String::vConcat(m_sLambda.aStr()," ::task_exit");
   
   m_pTokeniser->vUseString(m_sLambda);
 }
@@ -1473,7 +1473,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  char* a = sStackContents.a();
+  char* a = sStackContents.aStr();
   *a = '\0';
   
   i8 iParamValues = pStack->iValues();
@@ -1507,20 +1507,20 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
           String::vSprintCat(a,"^%s=%p:%s",
                              pCN[ePtrClass],
                              pPtr,
-                             ((Word*)pPtr)->sName().a());
+                             ((Word*)pPtr)->sName().aStr());
         else if (CN_QUEUE == ePtrClass) {
           Word* pWord = Word::pToWord(pPtr);
           String::vSprintCat(a,"^%s=%p:%s",
                              pCN[ePtrClass],
                              pPtr,
-                             pWord->sName().a());
+                             pWord->sName().aStr());
         }
         else if (CN_TASK == ePtrClass) {
           Task* pTask = _pTask(pPtr);
           String::vSprintCat(a,"^%s=%p:%s",
                              pCN[ePtrClass],
                              pPtr,
-                             pTask->sName().a());
+                             pTask->sName().aStr());
         }
         else {
           if (pPtr->iMagic() == MAGIC && pPtr->eClass() < CN_ENUMS)
@@ -1610,7 +1610,7 @@ void Task::vTracePoint(const char* aMark)
   
   Word* pLocatedWord = m_xPathStack.pLocate(pCell);
   if (pLocatedWord)
-    String::vCopy(aRoutine,pLocatedWord->sName().a());
+    String::vCopy(aRoutine,pLocatedWord->sName().aStr());
   else
     String::vCopy(aRoutine,"<unknown>");
   
@@ -1621,9 +1621,9 @@ void Task::vTracePoint(const char* aMark)
          
          gpGrid->pThisNode()->pNodeName(),
          gpGrid->iThisNode(),
-         m_sName.a(),
+         m_sName.aStr(),
          *m_zAcks,
-         m_sComment.a(),
+         m_sComment.aStr(),
          
          aRoutine,
          aMark,
@@ -1632,13 +1632,13 @@ void Task::vTracePoint(const char* aMark)
   s48K sStackContents;
   vStackContents(m_pAuxStack, sStackContents);
   
-  vTrace("%s",sStackContents.a());
+  vTrace("%s",sStackContents.aStr());
   
   vTrace(" r%2lld  d%2lld=", iReturnValues, iDataValues);
 
   vStackContents(m_pDataStack, sStackContents);
   
-  vTrace("%s\n",sStackContents.a());
+  vTrace("%s\n",sStackContents.aStr());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1694,18 +1694,18 @@ void Task::vLoop(void)
       
       const char* ps;
       
-      ps = String::sLast(m_sFile.a());
-      String::bBackward(&ps,m_sFile.a(),'/');
-      bool bBackSlash = String::bBackward(&ps,m_sFile.a(),'/');
+      ps = String::sLast(m_sFile.aStr());
+      String::bBackward(&ps,m_sFile.aStr(),'/');
+      bool bBackSlash = String::bBackward(&ps,m_sFile.aStr(),'/');
       if (bBackSlash) {
         String::vCopy(wFileName,ps+1);
       }
       else {
-        String::vCopy(wFileName, m_sFile.a());
+        String::vCopy(wFileName, m_sFile.aStr());
       }
       vError("[%s] %s : line %lld in %s\n",
-             m_sName.a(),
-             m_sException.a(),
+             m_sName.aStr(),
+             m_sException.aStr(),
              iException,
              wFileName);
       vRetry();
@@ -1720,7 +1720,7 @@ void Task::vLoop(void)
       String::bBackward(&ps,(char*)pError->aFileName(),'/');
       String::vCopy(wFileName,ps+1);
       vError("[%s] %s: line %lld in %s\n",
-             m_sName.a(),
+             m_sName.aStr(),
              pError->aErrorMsg(),
              pError->iLineNo(),
              wFileName);

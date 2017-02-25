@@ -85,7 +85,7 @@ void Task::vBytesMagnitude(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("bytes.magnitude");
   
   s256 sMag;
-  Magnitudes::vMagnitude(iBytes, sMag.a());
+  Magnitudes::vMagnitude(iBytes, sMag.aStr());
   
   nnpTask->m_pDataStack->vPush(sMag);
   
@@ -110,7 +110,7 @@ void Task::vNumberMagnitude(NNP_Task nnpTask)
   
   s256 s;
   
-  Magnitudes::vMagnitude(iNumber, iScale, s.a());
+  Magnitudes::vMagnitude(iNumber, iScale, s.aStr());
   
   nnpTask->m_pDataStack->vPush(s);
   

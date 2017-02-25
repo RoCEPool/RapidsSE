@@ -168,9 +168,9 @@ void Task::vIntHash(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sString) )
     THROW_INVALID_DSTACK("hash");
   
-  i8 iLength = String::iLength(sString.a());
+  i8 iLength = String::iLength(sString.aStr());
   
-  i8 iHash = XXH32(sString.a(),iLength,0);
+  i8 iHash = XXH32(sString.aStr(),iLength,0);
   
   nnpTask->m_pDataStack->vPush(iHash);
   

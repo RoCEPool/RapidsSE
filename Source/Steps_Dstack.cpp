@@ -210,7 +210,7 @@ void Task::vDstackDump(NNP_Task nnpTask)
     THROW_INVALID_DSTACK("dump");
   
   s48K sWorkspace;
-  V::vToString(&xValWsp,sWorkspace.a());
+  V::vToString(&xValWsp,sWorkspace.aStr());
   char* aClass = xValWsp.aClass();
   
   eCN eClass = xValWsp.eClass();
@@ -220,17 +220,17 @@ void Task::vDstackDump(NNP_Task nnpTask)
     Object* pObject = pPtrVal->pPtr();
     eCN ePtdClass   = pObject->eClass();
     vTrace("[%s] %s (%s %s)\n",
-          nnpTask->m_sName.a(),sWorkspace.a(),aClass,pCN[ePtdClass]);
+          nnpTask->m_sName.aStr(),sWorkspace.aStr(),aClass,pCN[ePtdClass]);
   }
   else if (CN_IPVAL == eClass) {                                         //RAY??
     IpVal* pIpVal = _pIpVal(&xValWsp);
     Cell* pCell = pIpVal->pIpPtr();
-    vTrace("[%s] nullptr\n",nnpTask->m_sName.a());    //RAY: should trace pIpVal
-//  vTrace("[%s] %p\n",nnpTask->m_sName.a(),pIpVal);
+    vTrace("[%s] nullptr\n",nnpTask->m_sName.aStr());    //RAY: should trace pIpVal
+//  vTrace("[%s] %p\n",nnpTask->m_sName.aStr(),pIpVal);
   }
   else {
     vTrace("[%s] %s (%s)\n",
-           nnpTask->m_sName.a(),sWorkspace.a(),aClass);
+           nnpTask->m_sName.aStr(),sWorkspace.aStr(),aClass);
   }
   
   EXIT();
@@ -450,7 +450,7 @@ void Task::vDstackStk(NNP_Task nnpTask)
 {
   ENTRY("vDstackStk");
   
-  nnpTask->m_pDataStack->vContentDump(nnpTask->m_sName.a(),"DataStack:");
+  nnpTask->m_pDataStack->vContentDump(nnpTask->m_sName.aStr(),"DataStack:");
   
   EXIT();
 }

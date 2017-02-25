@@ -47,10 +47,10 @@ SePrompt::SePrompt(void)
   m_bContinue = true;
   
   //m_sPrompt = "se ";
-  //String::vConcat(m_sPrompt.a(), RAPIDSSE_VERSION_STRING);
-  //String::vConcat(m_sPrompt.a(), "> ");
+  //String::vConcat(m_sPrompt.aStr(), RAPIDSSE_VERSION_STRING);
+  //String::vConcat(m_sPrompt.aStr(), "> ");
   
-  String::vSprint(m_sPrompt.a(),
+  String::vSprint(m_sPrompt.aStr(),
                   "[N%lld %lld] se %s%c> ",
                   gpGrid->iThisNode(),
                   Process::iGetPid(),
@@ -154,8 +154,8 @@ void SePrompt::vLoop(void)
     bool b = bProcessCommand();
     
     if (m_bExpect) {
-      if ( ! String::bEqualTo(m_sExpect.a(),m_sResponse.a(),C_NO_CASE)) {
-        vTrace("Expected \"%s\" : Got \"%s\"\n",m_sExpect.a(),m_sResponse.a());
+      if ( ! String::bEqualTo(m_sExpect.aStr(),m_sResponse.aStr(),C_NO_CASE)) {
+        vTrace("Expected \"%s\" : Got \"%s\"\n",m_sExpect.aStr(),m_sResponse.aStr());
         PosixThread::vSleepSec(10000);
       }
     }
@@ -167,14 +167,14 @@ void SePrompt::vLoop(void)
           break;
         vTrace("%s ",m_pToken[iToken]);
       }
-      vTrace(": got: %s\n",m_sResponse.a());
+      vTrace(": got: %s\n",m_sResponse.aStr());
       continue;
     }
     
     if (b) {
       if ( ! m_bExpect )
-        if ( ! String::bEqualTo(m_sResponse.a(), "<ok>") ) {
-          vTrace("%s\n",m_sResponse.a());
+        if ( ! String::bEqualTo(m_sResponse.aStr(), "<ok>") ) {
+          vTrace("%s\n",m_sResponse.aStr());
       }
     }
     else {
@@ -286,7 +286,7 @@ void SePrompt::vGetCommandArgument(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  //String::vCopy(m_pToken[0],gxArguments.m_sCommand.a());
+  //String::vCopy(m_pToken[0],gxArguments.m_sCommand.aStr());
   //String::vCopy(m_pToken[1],"");
 
   i8 iToken = 0;
@@ -627,7 +627,7 @@ void SePrompt::vIterateRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iAddress = String::iToI8(m_sResponse.a());
+  i8 iAddress = String::iToI8(m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -662,7 +662,7 @@ bool SePrompt::bReturnTable(void)
   String::vCopy(m_pToken[1], "");
   
   if (!bExecuteRequest()) {
-    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n", m_sResponse.a());
+    vTrace("bReturnTable: (%s) Return Table FAILED!!! : %s\n", m_sResponse.aStr());
     return false;
   }
   return true;
@@ -675,7 +675,7 @@ bool SePrompt::bGetFirstRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iAddress = String::iToI8(m_sResponse.a());
+  i8 iAddress = String::iToI8(m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -703,7 +703,7 @@ bool SePrompt::bGetNextRow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
-  i8 iAddress = String::iToI8(m_sResponse.a());
+  i8 iAddress = String::iToI8(m_sResponse.aStr());
   
   SelCursor* pSelCursor = reinterpret_cast<SelCursor*>(iAddress);
   ASSERT(CN_SELCURSOR == pSelCursor->eClass());
@@ -898,13 +898,13 @@ bool SePrompt::bChangeWorkingDir(void)
   
   ASSERT(String::bEqualTo(m_pToken[0],"cd"));
   
-  String::vCopy(sDir.a(), m_pToken[1]);
+  String::vCopy(sDir.aStr(), m_pToken[1]);
   
   i8 iToken;
   for (iToken = 2; iToken < C_TOKENS; iToken++) {
     if (! *m_pToken[iToken])
       break;
-    String::vConcat(sDir.a(), m_pToken[iToken]);
+    String::vConcat(sDir.aStr(), m_pToken[iToken]);
   }
 
   if ( ! xDir.bChangeCurrent(sDir) ) {
@@ -1631,7 +1631,7 @@ bool SePrompt::bDropReturnTable(char* pTableName)
   String::vCopy(m_pToken[2], "");
   
   if (!bExecuteRequest()) {
-    //vTrace("Error: (%s) Drop Table %s\n", m_sResponse.a(), pTableName);
+    //vTrace("Error: (%s) Drop Table %s\n", m_sResponse.aStr(), pTableName);
     return false;
   }
   return true;
@@ -1850,7 +1850,7 @@ bool SePrompt::bListDir(void)
   while(xDir.bRead()) {
     sDirEntry = xDir.sEntryName();
     iEntryType = xDir.iEntryType();
-    vTrace("%c %s\n", iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.a());
+    vTrace("%c %s\n", iEntryType == DT_DIR ? 'd' : 'f', sDirEntry.aStr());
   }
   
   // close the current directory
@@ -1923,7 +1923,7 @@ bool SePrompt::bPrintWorkingDir(void)
   ASSERT(String::bEqualTo(m_pToken[0],"pwd"));
   
   if (xDir.bGetCurrent(sDir)) {
-    vTrace("%s", sDir.a());
+    vTrace("%s", sDir.aStr());
   }
   
   // clear the respnse

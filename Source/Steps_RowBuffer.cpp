@@ -65,7 +65,7 @@ ENTRY("vRowBufferAppend");
 
   i8 iLength = sRecord.iLength();
   
-  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord.a(),iLength);
+  bool b = pRowBuffer->bInsertRow(pTxRef,sRecord.aStr(),iLength);
   
   if (b) {
     nnpTask->m_pDataStack->vPush((i8)1);

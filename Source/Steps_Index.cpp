@@ -87,14 +87,14 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   if ( ! nnpTask->m_pDataStack->bPop(sRow) )
     THROW_INVALID_DSTACK("index::entryTest");
 
-  vTrace("index::entryTest -- %s\n",sRow.a());
+  vTrace("index::entryTest -- %s\n",sRow.aStr());
   
   EntWsp xEntWsp;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set rowId
   RowId xRowId;
-  i8 iRowNo = String::iToI8(sRow.a());
+  i8 iRowNo = String::iToI8(sRow.aStr());
   
   xRowId.vBuffer(999);
   xRowId.vRow(iRowNo);
@@ -105,7 +105,7 @@ void Task::vIndexEntryTest(NNP_Task nnpTask)
   KeyWsp xKeyWsp;
   ValWsp xValWsp;
   
-  //i8 iKey0 = String::iToI8(sRow.a());
+  //i8 iKey0 = String::iToI8(sRow.aStr());
   i8 iKey0 = Random::iRandom(0,100);
   xValWsp = iKey0;
   

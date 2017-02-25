@@ -116,7 +116,7 @@ ENTRY("vCommonSlash");
     }
     else {
       // create a common dictionary      
-      pWordDic = new(gpMainDic) Word(sDicName.a());
+      pWordDic = new(gpMainDic) Word(sDicName.aStr());
       pWordDic->vWordType(WT_OBJECT);
       pWordDic->pAllot(sizeof(Dic));
       
@@ -129,7 +129,7 @@ ENTRY("vCommonSlash");
     sVarName = nnpTask->m_pTokeniser->sToken();
     
     // create new word for common in current dictionary
-    Word* pWordCommon = new(pSubDic) Word(sVarName.a());
+    Word* pWordCommon = new(pSubDic) Word(sVarName.aStr());
     // ** do not set as current word **
     
     // set word as variable
@@ -164,7 +164,7 @@ ENTRY("vCommonToCommon");
   // get name of common
   nnpTask->m_pTokeniser->vNextToken();
 
-  Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().a());
+  Word* pWordCommon = nnpTask->m_xPathStack.pFindWord(nnpTask->m_pTokeniser->sToken().aStr());
   ASSERT(pWordCommon);
  
   ValWsp xValWsp;

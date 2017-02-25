@@ -96,7 +96,7 @@ bool Dir::bExists(s256& rPath)
   
   struct stat xStat;
 
-  int iCode = stat(rPath.a(),&xStat);
+  int iCode = stat(rPath.aStr(),&xStat);
 
   if (0 == iCode && (xStat.st_mode & S_IFDIR)) {
     m_xSysCall.vSuccess();
@@ -110,7 +110,7 @@ bool Dir::bExists(s256& rPath)
 
   m_xSysCall.vError(errno);
   
-  vError("Dir::bExists: stat(%s) error; errno=%d",rPath.a(),errno);
+  vError("Dir::bExists: stat(%s) error; errno=%d",rPath.aStr(),errno);
 
   return false;
 }
@@ -124,7 +124,7 @@ bool Dir::bGetCurrent(s256& rPath)
   
   m_xSysCall.vClear();
   
-  char* aDirPath = getcwd(rPath.a(),rPath.nDataBytes());
+  char* aDirPath = getcwd(rPath.aStr(),rPath.nDataBytes());
 
   m_sDirPath = aDirPath;
   
@@ -160,7 +160,7 @@ bool Dir::bMake(s256& rPath)
   
   m_xSysCall.vClear();
   
-  char* aPath = rPath.a();
+  char* aPath = rPath.aStr();
 
   if (mkdir(aPath,0777) != 0 && EEXIST != errno) {
     m_xSysCall.vError(errno);
@@ -181,7 +181,7 @@ bool Dir::bRemove(s256& rPath)
   
   m_xSysCall.vClear();
   
-  char* aPath = rPath.a();
+  char* aPath = rPath.aStr();
   
   int rCode = rmdir(aPath);
 
@@ -203,7 +203,7 @@ bool Dir::bChangeCurrent(s256& rPath)
   _precondition_(_MAGIC_,CN_DIR,_FOOTER_);
   
   m_xSysCall.vClear();
-  i8 iCode = chdir(rPath.a());
+  i8 iCode = chdir(rPath.aStr());
   
   if (iCode) {
     m_xSysCall.vError(errno);
@@ -299,7 +299,7 @@ bool Dir::bOpen(void)
   
   ASSERT(bIsClosed());
   
-  char* wPath = m_sDirPath.a();
+  char* wPath = m_sDirPath.aStr();
  
   m_pDirPtr = opendir(wPath);
   if (! m_pDirPtr) {

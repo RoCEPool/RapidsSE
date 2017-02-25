@@ -140,7 +140,7 @@ void Dic::vDump(eCN eClass, Object* pObject, const char* pTab)
   Dic* pDic = reinterpret_cast<Dic*>(pObject);
   
   vTrace("name %s lastWord %p\n",
-         pDic->m_sName.a(),
+         pDic->m_sName.aStr(),
          pDic->m_pLastWord);
   
   //for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord())
@@ -157,7 +157,7 @@ Word* Dic::pFindWord(const char* aName)
   m_xLock.vGrabRead();
   
   for (Word* pWord = m_pLastWord; pWord; pWord = pWord->pPrevWord()) {
-    if (String::bEqualTo(aName,pWord->sName().a(),C_NO_CASE)) {
+    if (String::bEqualTo(aName,pWord->sName().aStr(),C_NO_CASE)) {
       m_xLock.vDropRead();
       return pWord;
     }
@@ -343,7 +343,7 @@ void Dic::vRefDec(void)
   
   u8 iRef = --m_zRefCount;
   
-  //vTrace("DIC: %s --ref : %lld\n",m_sName.a(),iRef);
+  //vTrace("DIC: %s --ref : %lld\n",m_sName.aStr(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -355,7 +355,7 @@ void Dic::vRefInc(void)
   
   u8 iRef = ++m_zRefCount;
   
-  //vTrace("DIC: %s ++ref : %lld\n",m_sName.a(),iRef);
+  //vTrace("DIC: %s ++ref : %lld\n",m_sName.aStr(),iRef);
 }
 
 /*----------------------------------------------------------------------------*/

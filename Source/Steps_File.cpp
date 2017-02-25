@@ -140,7 +140,7 @@ ENTRY("vFileOpen");
   if ( ! nnpTask->m_pDataStack->bPop(sMode) )
     THROW("file.open");
   
-  bool bOpened = pFile->bOpen(sMode.a());
+  bool bOpened = pFile->bOpen(sMode.aStr());
   
   nnpTask->m_pDataStack->vPush(bOpened);
   
@@ -187,7 +187,7 @@ ENTRY("vFilePathSet");
   if ( ! nnpTask->m_pDataStack->bPop(sPath) )
     THROW_INVALID_DSTACK("file.path!");
   
-  pFile->vPath(sPath.a());
+  pFile->vPath(sPath.aStr());
   
   EXIT();
 }
@@ -265,7 +265,7 @@ ENTRY("vFileWrite");
   if ( ! nnpTask->m_pDataStack->bPop(sLine) )
     THROW_INVALID_DSTACK("file.write");
   
-  char* wStr = sLine.a();
+  char* wStr = sLine.aStr();
   
   pFile->vPrint("%s",wStr);
   
