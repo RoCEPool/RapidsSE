@@ -22,7 +22,6 @@ namespace Magic
     ~Footer(void);
     
     void vAssertFooter(void) const;
-    u8   uFooter(void);
     void vSetFooter(void);
   };
 }

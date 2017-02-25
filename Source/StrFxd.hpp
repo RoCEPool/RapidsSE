@@ -20,7 +20,7 @@ namespace Values
     StrFxd(void);
     StrFxd(StrVal& xArg);
     StrFxd(const char* aArg);
-    StrFxd(const char* aArg, i8 nChars);
+    StrFxd(StrFxd* pThis, i8 nChars);
    ~StrFxd(void);
     
     void operator = (const char* aArg);
@@ -31,6 +31,8 @@ namespace Values
     
     Footer* pFooter(void);
   };
+  
+  void* _pStrFxd(void* pAddr);
 }
 
 using namespace Values;
@@ -83,6 +85,20 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
   
   _checkInitialisedSize_(SIZE);
   
+  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+template <int SIZE>
+StrFxd<SIZE>::StrFxd(StrFxd* pThis, i8 nChars)
+: StrVal(CN_S32,SIZE)
+{
+  _precondition_(_MAGIC_,CN_S32);
+  
+  m_xFooter.vSetFooter();
+    
   _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 

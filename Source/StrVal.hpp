@@ -18,9 +18,9 @@ namespace Values
     void* operator new(size_t);
     void* operator new(size_t, StrVal* pThis);
   
-    StrVal(StrVal* pThis);
     StrVal(eCN eClass);
-    StrVal(i8 iChars);
+    StrVal(StrVal* pThis);
+    StrVal(StrVal* pThis, i8 iChars);
     StrVal(eCN eClass, i8 iSize);
   
     ~StrVal(void);
