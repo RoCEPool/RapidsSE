@@ -30,6 +30,7 @@ namespace Values
     void operator = (StrVal& rArg);
   
     void vStrValAssign(const char* sStr);
+    void vStrValAssign(const char* sStr, i8 iLength);
   
     char* pDataArea(void);
     i8    nDataBytes(void);
@@ -55,7 +56,6 @@ namespace Values
     void vReset(void);
     i8   iSize(void) const;
     void vSize(void);
-    void vSize(i8 iSize);
     char* sStr(void);
     
     void vToCommand(char* aWorkspace);

@@ -151,7 +151,19 @@ void StrVal::vStrValAssign(const char* sStr)
   m_nDataBytes = String::iSize(pDataArea());
 }
 
-
+/*----------------------------------------------------------------------------*/
+/* assign a value                                                             */
+/*----------------------------------------------------------------------------*/
+void StrVal::vStrValAssign(const char* sStr, i8 iLength)
+{
+  //ASSERT(m_nDataBytes);
+  
+  String::vCopyLen(pDataArea(),sStr,iLength);
+  
+  pDataArea()[iLength] = '\0';
+  
+  m_nDataBytes = iLength;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
@@ -315,14 +327,6 @@ i8 StrVal::iSize(void) const
 void StrVal::vSize(void)
 {
   m_nDataBytes = String::iSize(pDataArea());
-}
-
-/*----------------------------------------------------------------------------*/
-/* set size in bytes                                                          */
-/*----------------------------------------------------------------------------*/
-void StrVal::vSize(i8 iSize)
-{
-  m_nDataBytes = iSize;
 }
 
 /*----------------------------------------------------------------------------*/
