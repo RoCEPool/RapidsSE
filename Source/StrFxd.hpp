@@ -19,7 +19,7 @@ namespace Values
   public:    
     StrFxd(void);
     StrFxd(const char* aArg);
-    StrFxd(StrFxd* pThis, i8 nChars);
+    StrFxd(StrFxd* pThis);
    ~StrFxd(void);
     
     void operator = (const char* aArg);
@@ -73,13 +73,11 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 template <int SIZE>
-StrFxd<SIZE>::StrFxd(StrFxd* pThis, i8 nChars)
+StrFxd<SIZE>::StrFxd(StrFxd* pThis)
 : StrVal(CN_S32,SIZE)
 {
   _precondition_(_MAGIC_,CN_S32);
   
-  m_xFooter.vSetFooter();
-    
   _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
 }
 
