@@ -87,6 +87,9 @@ void Task::vStrAlgebra(NNP_Task nnpTask)
   // (1) StrVal's cannot be declared as local variables
   //StrVal xStrval;  // uncommenting this line should produce a compile error
   
+  // declaring a fixed length string
+  s32 xString("A test");
+  
   EXIT();
 }
 

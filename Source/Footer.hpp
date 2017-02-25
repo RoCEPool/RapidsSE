@@ -12,8 +12,11 @@ namespace Magic
   class Footer
   {
   private:
-    u8 m_uFooter;
-    
+  union {
+    u8   m_uFooter;
+    char m_cFooter[8];
+  };
+  
   public:
     Footer(void);
     ~Footer(void);

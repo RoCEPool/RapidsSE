@@ -11,7 +11,10 @@ namespace Magic
   class Object
   {
   private:
-    u8   m_uMagic;
+    union {
+      u8   m_uMagic;
+      char m_cMagic[8];
+    };
     eCN  m_eClass;
     bool m_bWordBody;
     char m_uFiller[3];
