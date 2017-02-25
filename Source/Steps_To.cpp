@@ -105,7 +105,9 @@ void Task::vToCmd(NNP_Task nnpTask)
     if (i)
       String::vConcat(sCmd.aStr()," ");
     
-    V::vToCommand(&xValWsp,sCmd.z());
+    char* aCmdEnd = String::zTerminator(sCmd.aStr());
+    
+    V::vToCommand(&xValWsp,aCmdEnd);
   }
   
   xStr = sCmd.aStr();

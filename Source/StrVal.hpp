@@ -30,9 +30,6 @@ namespace Values
     void operator = (StrVal& rArg);
   
   
-  //char* a(void);
-    char* z(void);
-
   
   
     // from s::
