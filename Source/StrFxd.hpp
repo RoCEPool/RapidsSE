@@ -18,7 +18,6 @@ namespace Values
     
   public:    
     StrFxd(void);
-    StrFxd(StrVal& xArg);
     StrFxd(const char* aArg);
     StrFxd(StrFxd* pThis, i8 nChars);
    ~StrFxd(void);
@@ -48,23 +47,6 @@ StrFxd<SIZE>::StrFxd(void)
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
   Memory::vZero(m_mDataArea,SIZE);
-  
-  _checkInitialisedSize_(SIZE);
-  
-  _postcondition_(_MAGIC_,CN_S32,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-template <int SIZE>
-StrFxd<SIZE>::StrFxd(StrVal& rArg)
-: StrVal(CN_S32,SIZE)
-{
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
-  
-  Memory::vZero(m_mDataArea,SIZE);
-  StrVal::vCopy(rArg.a());
   
   _checkInitialisedSize_(SIZE);
   
