@@ -44,11 +44,7 @@ StrFxd<SIZE>::StrFxd(void)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  Memory::vZero(m_mDataArea,SIZE);
-  
   _checkInitialisedSize_(SIZE);
-  
-  _postcondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,13 +56,9 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
 {
   _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  Memory::vZero(m_mDataArea,SIZE);
-  
   StrVal::vCopy(aArg);
   
   _checkInitialisedSize_(SIZE);
-  
-  _postcondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,9 +68,9 @@ template <int SIZE>
 StrFxd<SIZE>::StrFxd(StrFxd* pThis)
 : StrVal(CN_STRFXD,SIZE)
 {
-  _precondition_(_MAGIC_,CN_STRFXD);
+  _precondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
   
-  _postcondition_(_MAGIC_,CN_STRFXD,_FOOTER_);
+  _checkInitialisedSize_(SIZE);
 }
 
 /*----------------------------------------------------------------------------*/

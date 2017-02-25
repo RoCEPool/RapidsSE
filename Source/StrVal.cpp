@@ -65,12 +65,12 @@ StrVal::StrVal(StrVal* pThis)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(StrVal* pThis, i8 iChars)
+StrVal::StrVal(StrVal* pThis, i8 nChars)
 : Value(CN_STRVAL)
 {
   ASSERT(this == pThis);
   
-  m_nDataBytes = iChars;
+  m_nDataBytes = nChars;
   
   Memory::vZero(pDataArea(),m_nDataBytes);
   
@@ -80,13 +80,14 @@ StrVal::StrVal(StrVal* pThis, i8 iChars)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StrVal::StrVal(eCN eClassNo, i8 iSize)
+StrVal::StrVal(eCN eClassNo, i8 nChars)
 : Value(eClassNo)
 {
   _precondition_(_MAGIC_,eClassNo);
   
-  m_nDataBytes = iSize;
-  *pDataArea() = '\0';
+  m_nDataBytes = nChars;
+  
+  Memory::vZero(pDataArea(),nChars);
 }
 
 /*----------------------------------------------------------------------------*/
