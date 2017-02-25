@@ -25,9 +25,7 @@ namespace Values
     void operator = (const char* aArg);
     void operator = (char* aArg);
     void operator = (StrVal& xArg);
-    
-    void vInit(void);
-    
+  
     Footer* pFooter(void);
   };
   
@@ -63,6 +61,7 @@ StrFxd<SIZE>::StrFxd(const char* aArg)
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
   Memory::vZero(m_mDataArea,SIZE);
+  
   StrVal::vCopy(aArg);
   
   _checkInitialisedSize_(SIZE);
@@ -124,17 +123,6 @@ void StrFxd<SIZE>::operator = (StrVal& rArg)
   _precondition_(_MAGIC_,CN_S32,_FOOTER_);
   
   vCopy(rArg.a());
-}
-
-/*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-template <int SIZE>
-void StrFxd<SIZE>::vInit()
-{
-  _precondition_(_MAGIC_,CN_S32,_FOOTER_);
-  
-  StrVal::vInit(SIZE);
 }
 
 /*----------------------------------------------------------------------------*/

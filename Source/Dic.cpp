@@ -286,7 +286,7 @@ void Dic::vInit(void)
   
   Word* pWord = Word::pToWord(this);
   
-  m_sName.vInit();
+  //m_sName.vInit();
   m_sName = pWord->sName();
   
   m_nWords = 0;
