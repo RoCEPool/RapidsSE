@@ -13,6 +13,8 @@ namespace Values
   {
   private:
   
+    Footer m_xFooter;
+  
   public:
     void* operator new(size_t);
     ValWsp(void);
@@ -24,6 +26,8 @@ namespace Values
     
     i8    iAsInt(void);
     void vAssignBinary(Object* pObject);
+  
+    Footer* pFooter(void);
   };
   
   ValWsp* _pValWsp(void* pAddr);

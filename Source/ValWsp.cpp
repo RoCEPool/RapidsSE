@@ -33,6 +33,9 @@ void* ValWsp::operator new(size_t iSize)
 ValWsp::ValWsp(void)
 : Value(CN_VALWSP)
 {
+  _precondition_(_MAGIC_,CN_VALWSP);                    //! need to add _FOOTER_
+  
+  _postcondition_(_MAGIC_,CN_VALWSP);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,10 +48,11 @@ ValWsp::ValWsp(void)
 void ValWsp::operator =(i8 iInt)
 {
   //vTrace("ValWsp: diff %lld\n",nSub(&m_mDataArea,this));
-
   vClass(CN_INTVAL);
+  _precondition_(_MAGIC_,CN_INTVAL);
   
   *_pIntVal(this) = iInt;
+  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +61,7 @@ void ValWsp::operator =(i8 iInt)
 void ValWsp::operator =(Object* pPtr)
 {
   vClass(CN_PTRVAL);
+  _precondition_(_MAGIC_,CN_PTRVAL);
   
   *_pPtrVal(this) = pPtr;
 }
@@ -67,6 +72,7 @@ void ValWsp::operator =(Object* pPtr)
 void ValWsp::operator =(char* pStr)
 {
   vClass(CN_STRVAL);
+  _precondition_(_MAGIC_,CN_STRVAL);
 
   _pStrVal(this)->vStrValAssign(pStr);
 }
@@ -77,6 +83,7 @@ void ValWsp::operator =(char* pStr)
 void ValWsp::operator =(const char* pStr)
 {
   vClass(CN_STRVAL);
+  _precondition_(_MAGIC_,CN_STRVAL);
 
   _pStrVal(this)->vStrValAssign(pStr);
 }
@@ -87,6 +94,7 @@ void ValWsp::operator =(const char* pStr)
 void ValWsp::vAssignBinary(Object* pObject)
 {
   vClass(CN_BINVAL);
+  _precondition_(_MAGIC_,CN_BINVAL);
   
   *_pBinVal(this) = pObject;
 }
@@ -96,6 +104,8 @@ void ValWsp::vAssignBinary(Object* pObject)
 /*----------------------------------------------------------------------------*/
 i8 ValWsp::iAsInt(void)
 {
+  _precondition_(_MAGIC_);
+  
   IntVal* pIntVal = reinterpret_cast<IntVal*>(this);
   
   i8 i = pIntVal->iInt();
@@ -110,10 +120,12 @@ i8 ValWsp::iAsInt(void)
 /*----------------------------------------------------------------------------*/
 /* get location of footer                                                     */
 /*----------------------------------------------------------------------------*/
-//Footer* ValWsp::pFooter(void)
-//{
-//  return &m_xFooter;
-//}
+Footer* ValWsp::pFooter(void)
+{
+  _precondition_(_MAGIC_);
+  
+  return &m_xFooter;
+}
 
 /*============================================================================*/
 /* end                                                                        */
