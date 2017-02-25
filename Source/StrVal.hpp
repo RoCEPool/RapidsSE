@@ -72,7 +72,7 @@ namespace Values
   
   };
 
-  StrVal* _psRefactor(void* pAddr);
+  StrVal* _pStrVal(void* pAddr);
 }
 
 /*============================================================================*/

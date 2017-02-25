@@ -91,7 +91,7 @@ void Task::vAddressFetch(NNP_Task nnpTask)
       break;
       
     case CN_STRVAL:
-      xValFetched = _psRefactor(pValue)->sStr();
+      xValFetched = _pStrVal(pValue)->sStr();
       break;
       
     case CN_PTRVAL:
@@ -136,7 +136,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
       break;
       
     case CN_STRVAL:
-      _psRefactor(pValue)->vStrValAssign( _psRefactor(&xValStored)->sStr() );
+      _pStrVal(pValue)->vStrValAssign( _pStrVal(&xValStored)->sStr() );
       break;
       
     case CN_PTRVAL:

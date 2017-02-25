@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
 /*----------------------------------------------------------------------------*/
-StrVal* Values::_psRefactor(void* pAddr)
+StrVal* Values::_pStrVal(void* pAddr)
 {
   StrVal* psRefactor = reinterpret_cast<StrVal*>(pAddr);
   
