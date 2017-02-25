@@ -259,19 +259,6 @@ bool StrVal::bEnds(const char* aSuffix)
 }
 
 /*----------------------------------------------------------------------------*/
-/* init                                                                       */
-/*----------------------------------------------------------------------------*/
-void StrVal::vInit(i8 iSize)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  m_nDataBytes = iSize;
-  *pDataArea() = '\0';
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* is euqal to given argument?                                                */
 /*----------------------------------------------------------------------------*/
 bool StrVal::bIsEqual(StrVal& sArg, i8 iCase)

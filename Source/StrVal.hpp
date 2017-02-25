@@ -45,7 +45,6 @@ namespace Values
     void  vAppend(const char* aArg);
     void  vCopy(const char* aArg);
     bool  bEnds(const char* aSuffix);
-    void  vInit(i8 iSize);
     bool  bIsEqual(StrVal& sArg, i8 iCase) ;
     i8    iLength(void);
   
