@@ -244,10 +244,18 @@ i8 StrVal::nDataBytes(void)
 /*----------------------------------------------------------------------------*/
 void StrVal::vDataBytes(void)
 {
-  _precondition_(_MAGIC_,_FOOTER_);
+  //_precondition_(_MAGIC_,_FOOTER_);
   
   m_nDataBytes = String::iSize(pDataArea());
 }
+
+/*----------------------------------------------------------------------------*/
+/* set size in bytes                                                          */
+/*----------------------------------------------------------------------------*/
+//void StrVal::vSize(void)
+//{
+//  m_nDataBytes = String::iSize(pDataArea());
+//}
 
 
 
@@ -287,23 +295,15 @@ i8 StrVal::iLength(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* get size in bytes                                                          */
+/* get size of this StrVal in bytes                                           */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::iSize(void) const
 {
   //i8 iOverrun = m_nDataBytes > 8 ? m_nDataBytes - 8 : 0;
   
-  i8 iSize = sizeof(StrVal) + m_nDataBytes;
+  i8 nBytes = sizeof(StrVal) + m_nDataBytes;
   
-  return iSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set size in bytes                                                          */
-/*----------------------------------------------------------------------------*/
-void StrVal::vSize(void)
-{
-  m_nDataBytes = String::iSize(pDataArea());
+  return nBytes;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,7 +337,7 @@ void StrVal::vToString(char* aWorkspace)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* calculate number of bytes reqired to hold string of given length           */
+/* calculate number of bytes required to hold string of given length          */
 /*----------------------------------------------------------------------------*/
 i8 StrVal::nBytesRequired(i8 iLength)
 {

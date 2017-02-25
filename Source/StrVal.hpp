@@ -47,7 +47,7 @@ namespace Values
   
     // from sFactor::
     i8   iSize(void) const;
-    void vSize(void);
+  //void vSize(void);
     char* aStr(void);
     
     void vToCommand(char* aWorkspace);
@@ -58,10 +58,10 @@ namespace Values
   
 
     i8    nDataBytes(void);
+    void  vDataBytes(void);
 
   private:
     char* pDataArea(void);
-    void  vDataBytes(void);
   
     Footer* pFooter(void);
   };
