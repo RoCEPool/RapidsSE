@@ -36,6 +36,7 @@ void Task::vAddPrimitives_Str(void)
 {
   vAddPrimitive("s256.init",    &vS256Init,      false);
   
+  vAddPrimitive("str::algebra", &vStrAlgebra,    false);
   vAddPrimitive("str.cat",      &vStrCat,        false);
   vAddPrimitive("str.clip",     &vStrClip,       false);
   vAddPrimitive("str.equal",    &vStrEqual,      false);
@@ -77,7 +78,16 @@ void Task::vS256Init(NNP_Task nnpTask)
 ////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
-/* str.cat -- str.cat two strings                                              */
+/* str.algebra -- string algebra testings                                    */
+/*----------------------------------------------------------------------------*/
+void Task::vStrAlgebra(NNP_Task nnpTask)
+{
+  ENTRY("vStrAlgebra");
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* str.cat -- concat two strings                                              */
 /*----------------------------------------------------------------------------*/
 void Task::vStrCat(NNP_Task nnpTask)
 {

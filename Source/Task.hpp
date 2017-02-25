@@ -835,6 +835,7 @@ namespace Tasks
     
     // string
 
+    static void vStrAlgebra(NNP_Task nnpTask);
     static void vStrCat(NNP_Task nnpTask);
     static void vStrClip(NNP_Task nnpTask);
     static void vStrEqual(NNP_Task nnpTask);
