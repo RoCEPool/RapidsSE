@@ -35,10 +35,10 @@ namespace Values
     // from s::
     void  vAppend(const char c);
     void  vAppend(const char* aArg);
+    void  vAssign(const char* aStr);
+    void  vAssign(const char* aStr, i8 iLength);
     void  vCopy(const char* aArg);
     void  vCopy(const char* aStr, i8 iLength);
-    void  vStrValAssign(const char* aStr);
-    void  vStrValAssign(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase) ;
     i8    iLength(void);

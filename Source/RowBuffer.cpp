@@ -372,7 +372,7 @@ bool RowBuffer::bInsertRow(TxRef* pTxRef, char* pRecord, i8 iLength)
   
   StrVal* pStr = new((StrVal*)pData) StrVal((StrVal*)pData);
   
-  pStr->vStrValAssign(pRecord,iLength);  
+  pStr->vAssign(pRecord,iLength);  
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_,CN_ROWBUFFER);
   

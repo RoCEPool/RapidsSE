@@ -141,9 +141,35 @@ void StrVal::operator = (StrVal& rArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
+/* append given character                                                     */
 /*----------------------------------------------------------------------------*/
-void StrVal::vStrValAssign(const char* aStr)
+void StrVal::vAppend(const char c)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  // limit???
+  
+  String::vConcat(pDataArea(),c);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append argument                                                            */
+/*----------------------------------------------------------------------------*/
+void StrVal::vAppend(const char* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  String::vConcat(pDataArea(),aArg);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* assign argument                                                             */
+/*----------------------------------------------------------------------------*/
+void StrVal::vAssign(const char* aStr)
 {
   //ASSERT(m_nDataBytes);
   
@@ -152,9 +178,9 @@ void StrVal::vStrValAssign(const char* aStr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* assign a value                                                             */
+/* assign argument                                                            */
 /*----------------------------------------------------------------------------*/
-void StrVal::vStrValAssign(const char* aStr, i8 iLength)
+void StrVal::vAssign(const char* aStr, i8 iLength)
 {
   //ASSERT(m_nDataBytes);
   
@@ -164,6 +190,32 @@ void StrVal::vStrValAssign(const char* aStr, i8 iLength)
   
   m_nDataBytes = iLength;
 }
+
+/*----------------------------------------------------------------------------*/
+/* copy argument                                                              */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopy(const char* aArg)
+{
+  _precondition_(_MAGIC_,_FOOTER_);
+  
+  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
+  
+  _postcondition_(_MAGIC_,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* copy a string into workspace                                               */
+/*----------------------------------------------------------------------------*/
+void StrVal::vCopy(const char* aStr, i8 iLength)
+{
+  vClass(CN_STRVAL);
+  
+  String::vCopyLen(pDataArea(),aStr,iLength);
+  
+  m_nDataBytes = String::iSize(pDataArea());
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* get address of data area                                                   */
@@ -198,44 +250,6 @@ void StrVal::vDataBytes(void)
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/* append given character                                                     */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAppend(const char c)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  // limit???
-  
-  String::vConcat(pDataArea(),c);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append argument                                                            */
-/*----------------------------------------------------------------------------*/
-void StrVal::vAppend(const char* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  String::vConcat(pDataArea(),aArg);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy argument                                                              */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aArg)
-{
-  _precondition_(_MAGIC_,_FOOTER_);
-  
-  String::vCopyLen(pDataArea(),aArg,m_nDataBytes-1);
-  
-  _postcondition_(_MAGIC_,_FOOTER_);
-}
 
 /*----------------------------------------------------------------------------*/
 /* test if string ends with given suffix                                      */
@@ -324,18 +338,6 @@ void StrVal::vToCommand(char* aWorkspace)
 void StrVal::vToString(char* aWorkspace)
 {
   String::vCopy(aWorkspace,pDataArea());
-}
-
-/*----------------------------------------------------------------------------*/
-/* copy a string into workspace                                               */
-/*----------------------------------------------------------------------------*/
-void StrVal::vCopy(const char* aStr, i8 iLength)
-{
-  vClass(CN_STRVAL);
-  
-  String::vCopyLen(pDataArea(),aStr,iLength);
-  
-  m_nDataBytes = String::iSize(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/

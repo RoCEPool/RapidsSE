@@ -137,7 +137,7 @@ void Task::vAddressStore(NNP_Task nnpTask)
       
     case CN_STRFXD:
     case CN_STRVAL:
-      _pStrVal(pValue)->vStrValAssign( _pStrVal(&xValStored)->aStr() );
+      _pStrVal(pValue)->vAssign( _pStrVal(&xValStored)->aStr() );
       break;
       
     case CN_PTRVAL:
