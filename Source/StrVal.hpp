@@ -29,8 +29,6 @@ namespace Values
     void operator = (char* aArg);
     void operator = (StrVal& rArg);
   
-    void vStrValAssign(const char* sStr);
-    void vStrValAssign(const char* sStr, i8 iLength);
   
     char* a(void);
     char* z(void);
@@ -41,6 +39,9 @@ namespace Values
     void  vAppend(const char c);
     void  vAppend(const char* aArg);
     void  vCopy(const char* aArg);
+    void  vCopyString(char* aStr, i8 iLength);
+    void  vStrValAssign(const char* aStr);
+    void  vStrValAssign(const char* aStr, i8 iLength);
     bool  bEnds(const char* aSuffix);
     bool  bIsEqual(StrVal& sArg, i8 iCase) ;
     i8    iLength(void);
@@ -51,13 +52,12 @@ namespace Values
     i8   iChars(void) const;
     i8   iSize(void) const;
     void vSize(void);
-    char* sStr(void);
+    char* aStr(void);
     
     void vToCommand(char* aWorkspace);
     void vToString(char* aWorkspace);
     
-    void  vCopyString(char* aStr, i8 iLength);
-    
+  
     static i8 nBytesRequired(i8 iLength);
   
 

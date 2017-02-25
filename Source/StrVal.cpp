@@ -143,22 +143,22 @@ void StrVal::operator = (StrVal& rArg)
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void StrVal::vStrValAssign(const char* sStr)
+void StrVal::vStrValAssign(const char* aStr)
 {
   //ASSERT(m_nDataBytes);
   
-  String::vCopy(pDataArea(),sStr);
+  String::vCopy(pDataArea(),aStr);
   m_nDataBytes = String::iSize(pDataArea());
 }
 
 /*----------------------------------------------------------------------------*/
 /* assign a value                                                             */
 /*----------------------------------------------------------------------------*/
-void StrVal::vStrValAssign(const char* sStr, i8 iLength)
+void StrVal::vStrValAssign(const char* aStr, i8 iLength)
 {
   //ASSERT(m_nDataBytes);
   
-  String::vCopyLen(pDataArea(),sStr,iLength);
+  String::vCopyLen(pDataArea(),aStr,iLength);
   
   pDataArea()[iLength] = '\0';
   
@@ -322,9 +322,9 @@ void StrVal::vSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get sStr                                                                   */
+/* get aStr                                                                   */
 /*----------------------------------------------------------------------------*/
-char* StrVal::sStr(void)
+char* StrVal::aStr(void)
 {
   return pDataArea();
 }

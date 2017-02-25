@@ -1124,7 +1124,7 @@ Word* Task::pCompileConstant(StrVal& sDefinition)
   m_pTokeniser->vNextToken();
   //vTrace("CompileConstant: %s\n",m_pTokeniser->sToken().a());
 
-  vAddConstant(m_pTokeniser->sToken().a(),_pStrVal(&xValWsp)->sStr());
+  vAddConstant(m_pTokeniser->sToken().a(),_pStrVal(&xValWsp)->aStr());
   
   m_pTokeniser->vNextToken();
   
@@ -1323,7 +1323,7 @@ void Task::vPrimitive(const char* aPrimitive)
 //      vTrace("%p (%s)",pValWsp->pPtr(),pValWsp->aClass());
 //    }
 //    else if (CN_STRVAL == eClass) {
-//      vTrace("\"%lls\"",pValWsp->sStr());
+//      vTrace("\"%lls\"",pValWsp->aStr());
 //    }
 //    else if (CN_VALSET == eClass) {
 //      vTrace("%p (%s)",pValWsp,pValWsp->aClass());
@@ -1539,7 +1539,7 @@ void Task::vStackContents(Stack* pStack, StrVal& sStackContents)
       String::vSprintCat(a,"%p",_pIpVal(pValWsp)->pIpPtr());
     }
     else if (CN_STRVAL == eClass) {
-      String::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->sStr());
+      String::vSprintCat(a,"\"%lls\"",_pStrVal(pValWsp)->aStr());
     }
     else if (CN_VALSET == eClass) {
       String::vSprintCat(a,"<%s>=%p",pValWsp->aClass(),pValWsp);

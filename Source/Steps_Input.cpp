@@ -58,7 +58,7 @@ void Task::vInputAccept(NNP_Task nnpTask)
   ValWsp xWsp;
   xWsp.vClass(CN_STRVAL);
   
-  char* y = _pStrVal(&xWsp)->sStr();
+  char* y = _pStrVal(&xWsp)->aStr();
   
   while ( '\n' != (*y++ = getc(stdin)) ) ;
   

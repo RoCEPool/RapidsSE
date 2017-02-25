@@ -1670,11 +1670,11 @@ bool SEitf::bAppendRequest(StrVal& sRequest)
   String::vCopy(wWorkspace,wItfAddr);
   String::vConcat(wWorkspace," >seitf task.this task.seitf! ");
   xVal = wWorkspace;
-  //vTrace("%s\n",xVal.sStr());
+  //vTrace("%s\n",xVal.aStr());
   xValSet.vAppend(pCursor,xVal);
   
   xVal = sRequest.a();
-  //vTrace("%s\n",xVal.sStr());
+  //vTrace("%s\n",xVal.aStr());
   xValSet.vAppend(pCursor,xVal);
   
   // if the current request id matches the next request id, it means
@@ -1734,7 +1734,7 @@ bool SEitf::bPopResponse(eEC& eResult, StrVal& sResponse)
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(b);
-  *_pStrVal(&sResponse) = _pStrVal(pValWsp)->sStr();
+  *_pStrVal(&sResponse) = _pStrVal(pValWsp)->aStr();
   
   b = xValSet.bExtract(pCursor,pValWsp);
   ASSERT(! b);
